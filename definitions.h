@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2003 NetCitadel, LLC
+                 Copyright (C) 2007 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
@@ -30,7 +30,9 @@
 #ifndef __DEFINITIONS_
 #define __DEFINITIONS_
 
+// Various #defines that are needed both in the GUI and compilers
 
+// definitions for ipfw classify methods
 #define DIVERTSOCKET 0
 #define DUMMYNETPIPE 1
 #define DUMMYNETQUEUE 2
