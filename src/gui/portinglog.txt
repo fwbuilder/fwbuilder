@@ -1,0 +1,110 @@
+Log for qt3to4 on Wed Aug 15 20:07:00 2007. Number of log entries: 45
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 51 column 21: qobjectlist.h -> qobject.h
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 52 column 19: qlistview.h -> q3listview.h
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 55 column 17: qheader.h -> q3header.h
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 56 column 22: qwidgetstack.h -> q3widgetstack.h
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 67 column 20: qpopupmenu.h -> q3popupmenu.h
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 68 column 22: qtextbrowser.h -> q3textbrowser.h
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 135 column 21: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 162 column 14: QPopupMenu -> Q3PopupMenu
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 162 column 47: QPopupMenu -> Q3PopupMenu
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 272 column 36: QPixmap::fromMimeSource -> qPixmapFromMimeSource
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 342 column 21: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 360 column 13: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 371 column 13: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 389 column 13: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 414 column 17: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 460 column 17: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 563 column 21: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 587 column 17: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 646 column 55: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 652 column 20: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 660 column 36: QPixmap::fromMimeSource -> qPixmapFromMimeSource
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 708 column 68: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 709 column 57: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 733 column 40: QPixmap::fromMimeSource -> qPixmapFromMimeSource
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 743 column 40: QPixmap::fromMimeSource -> qPixmapFromMimeSource
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 771 column 20: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 815 column 49: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 832 column 14: QPopupMenu -> Q3PopupMenu
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 832 column 36: QPopupMenu -> Q3PopupMenu
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 836 column 14: QPopupMenu -> Q3PopupMenu
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 836 column 44: QPopupMenu -> Q3PopupMenu
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 837 column 14: QPopupMenu -> Q3PopupMenu
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 837 column 44: QPopupMenu -> Q3PopupMenu
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 1829 column 21: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 2062 column 13: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 2107 column 48: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp at line 2142 column 13: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.cpp: Added the following include directives:
+	#include <QPixmap> 	#include <q3mimefactory.h> 
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.h at line 36 column 19: qlistview.h -> q3listview.h
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.h at line 51 column 16: QPopupMenu -> Q3PopupMenu
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.h at line 82 column 25: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.h at line 110 column 55: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.h at line 141 column 35: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.h at line 190 column 34: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectManipulator.h: Added the following include directives:
+	#include <Q3PopupMenu> 
+
+Log for qt3to4 on Wed Aug 15 20:16:20 2007. Number of log entries: 57
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.h at line 38 column 19: qlistview.h -> q3listview.h
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.h at line 39 column 21: qdragobject.h -> q3dragobject.h
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.h at line 40 column 19: qiconview.h -> q3iconview.h
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.h at line 49 column 39: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.h at line 53 column 17: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.h at line 54 column 17: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.h at line 74 column 23: QDragObject -> Q3DragObject
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.h at line 89 column 69: WFlags -> Qt::WFlags
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.h at line 120 column 37: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.h at line 121 column 38: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.h at line 122 column 33: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.h at line 123 column 32: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.h: Added the following include directives:
+	#include <QDragEnterEvent> 	#include <QDropEvent> 	#include <QMouseEvent> 	#include <QDragMoveEvent> 	#include <QKeyEvent> 	#include <QFocusEvent> 	#include <QDragLeaveEvent> 
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 53 column 21: qdragobject.h -> q3dragobject.h
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 54 column 19: qlistview.h -> q3listview.h
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 55 column 17: qheader.h -> q3header.h
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 72 column 73: WFlags -> Qt::WFlags
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 73 column 13: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 88 column 54: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 89 column 52: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 94 column 49: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 95 column 47: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 97 column 48: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 98 column 46: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 114 column 30: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 116 column 35: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 121 column 31: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 124 column 28: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 130 column 49: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 140 column 44: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 147 column 43: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 173 column 17: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 192 column 13: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 193 column 17: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 201 column 13: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 202 column 17: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 210 column 25: QListViewItemIterator -> Q3ListViewItemIterator
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 211 column 17: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 259 column 11: QDragObject -> Q3DragObject
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 263 column 17: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 346 column 17: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 361 column 21: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 418 column 17: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 467 column 13: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 480 column 13: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 504 column 13: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 514 column 13: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 572 column 17: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 593 column 13: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 601 column 13: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 617 column 48: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 624 column 13: QListView -> Q3ListView
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 654 column 25: QListViewItemIterator -> Q3ListViewItemIterator
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 659 column 25: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 674 column 25: QListViewItemIterator -> Q3ListViewItemIterator
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp at line 681 column 25: QListViewItem -> Q3ListViewItem
+In file /home/krava/work/someproj/src/gui/ObjectTreeView.cpp: Added the following include directives:
+	#include <QDragMoveEvent> 	#include <QDropEvent> 	#include <QDragLeaveEvent> 	#include <QFocusEvent> 	#include <QPixmap> 	#include <QMouseEvent> 	#include <QKeyEvent> 	#include <QDragEnterEvent> 
+

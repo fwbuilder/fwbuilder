@@ -1,0 +1,587 @@
+<ui version="4.0" >
+ <class>instOptionsDialog_q</class>
+ <widget class="QDialog" name="instOptionsDialog_q" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>578</width>
+    <height>819</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="maximumSize" >
+   <size>
+    <width>32767</width>
+    <height>32767</height>
+   </size>
+  </property>
+  <property name="font" >
+   <font/>
+  </property>
+  <property name="focusPolicy" >
+   <enum>Qt::StrongFocus</enum>
+  </property>
+  <property name="windowTitle" >
+   <string>Install options</string>
+  </property>
+  <property name="sizeGripEnabled" >
+   <bool>false</bool>
+  </property>
+  <layout class="QGridLayout" >
+   <property name="leftMargin" >
+    <number>4</number>
+   </property>
+   <property name="topMargin" >
+    <number>4</number>
+   </property>
+   <property name="rightMargin" >
+    <number>4</number>
+   </property>
+   <property name="bottomMargin" >
+    <number>4</number>
+   </property>
+   <item row="0" column="0" >
+    <widget class="QFrame" name="titleFrame" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize" >
+      <size>
+       <width>32767</width>
+       <height>32767</height>
+      </size>
+     </property>
+     <property name="frameShape" >
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Plain</enum>
+     </property>
+     <layout class="QHBoxLayout" >
+      <item>
+       <widget class="QLabel" name="dialogTitleLine" >
+        <property name="text" >
+         <string>&lt;p align="center">&lt;b>&lt;font size="+2">Install options for firewall '%1'&lt;/font>&lt;/b>&lt;/p></string>
+        </property>
+        <property name="wordWrap" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" >
+    <widget class="QFrame" name="buttonsFrame" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize" >
+      <size>
+       <width>32767</width>
+       <height>32767</height>
+      </size>
+     </property>
+     <property name="frameShape" >
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Plain</enum>
+     </property>
+     <layout class="QGridLayout" >
+      <item row="0" column="1" >
+       <widget class="QPushButton" name="okButton" >
+        <property name="text" >
+         <string>OK</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" >
+       <widget class="QPushButton" name="cancelButton" >
+        <property name="text" >
+         <string>Cancel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType" >
+         <enum>QSizePolicy::Expanding</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>230</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <widget class="QFrame" name="mainBox" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Minimum" hsizetype="Preferred" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="frameShape" >
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Plain</enum>
+     </property>
+     <layout class="QGridLayout" >
+      <item row="4" column="0" colspan="2" >
+       <widget class="QFrame" name="testOptionsBox" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="frameShape" >
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow" >
+         <enum>QFrame::Plain</enum>
+        </property>
+        <layout class="QGridLayout" >
+         <item row="2" column="2" >
+          <widget class="QLabel" name="rollbackTimeUnit" >
+           <property name="text" >
+            <string>min</string>
+           </property>
+           <property name="wordWrap" >
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1" >
+          <widget class="QSpinBox" name="rollbackTime" >
+           <property name="maximum" >
+            <number>99999</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3" colspan="2" >
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType" >
+            <enum>QSizePolicy::Expanding</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>140</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="0" colspan="4" >
+          <widget class="QCheckBox" name="testRun" >
+           <property name="text" >
+            <string>Test run: run the script on the firewall but do not store it permanently.</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="4" >
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType" >
+            <enum>QSizePolicy::Expanding</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>30</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="0" >
+          <widget class="QCheckBox" name="rollback" >
+           <property name="toolTip" >
+            <string>Rebooting the firewall will restore its original policy. To cancel reboot, install the policy with "test run" option turned off</string>
+           </property>
+           <property name="text" >
+            <string>Schedule reboot in </string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" colspan="5" >
+          <widget class="QLabel" name="textLabel1" >
+           <property name="text" >
+            <string>If you install the policy in test mode, it will not be saved permanently, so you can revert to the last working configuration by rebooting the firewall</string>
+           </property>
+           <property name="alignment" >
+            <set>Qt::AlignVCenter</set>
+           </property>
+           <property name="wordWrap" >
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="5" >
+          <widget class="QCheckBox" name="cancelRollbackIfSuccess" >
+           <property name="text" >
+            <string>Cancel reboot if policy activation was successfull</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2" >
+       <widget class="QFrame" name="generalOptionsBox" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="frameShape" >
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow" >
+         <enum>QFrame::Plain</enum>
+        </property>
+        <layout class="QGridLayout" >
+         <item row="0" column="0" >
+          <widget class="QCheckBox" name="quiet" >
+           <property name="text" >
+            <string>Quiet install: do not print anything as commands are executed on the firewall</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" >
+          <widget class="QCheckBox" name="verbose" >
+           <property name="text" >
+            <string>Verbose: print all commands as they are executed on the firewall</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" >
+          <widget class="QCheckBox" name="stripComments" >
+           <property name="text" >
+            <string>Remove comments from configuration</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" >
+          <widget class="QCheckBox" name="compressScript" >
+           <property name="text" >
+            <string>Compress script</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" >
+          <widget class="QCheckBox" name="copyFWB" >
+           <property name="text" >
+            <string>Store a copy of fwb file on the firewall</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="0" >
+       <widget class="QLabel" name="altAddressLabel" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text" >
+         <string>Alternative address to communicate with the firewall:</string>
+        </property>
+        <property name="alignment" >
+         <set>Qt::AlignVCenter</set>
+        </property>
+        <property name="wordWrap" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" >
+       <widget class="QLineEdit" name="altAddress" >
+        <property name="minimumSize" >
+         <size>
+          <width>200</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize" >
+         <size>
+          <width>32767</width>
+          <height>32767</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2" >
+       <widget class="QGroupBox" name="PIXgroupBox" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title" >
+         <string>Options for PIX and fwsm firewalls :</string>
+        </property>
+        <property name="flat" >
+         <bool>false</bool>
+        </property>
+        <layout class="QGridLayout" >
+         <property name="leftMargin" >
+          <number>0</number>
+         </property>
+         <property name="topMargin" >
+          <number>0</number>
+         </property>
+         <property name="rightMargin" >
+          <number>0</number>
+         </property>
+         <property name="bottomMargin" >
+          <number>0</number>
+         </property>
+         <item row="5" column="0" colspan="2" >
+          <widget class="QCheckBox" name="saveStandby" >
+           <property name="text" >
+            <string>Write configuration to standby PIX</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" colspan="2" >
+          <widget class="QCheckBox" name="test" >
+           <property name="text" >
+            <string>Dry run (commands won't be executed on the firewall)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="2" >
+          <widget class="QCheckBox" name="saveDiff" >
+           <property name="text" >
+            <string>Store configuration diff in a file</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="2" >
+          <widget class="QCheckBox" name="incr" >
+           <property name="toolTip" >
+            <string>Calculate difference between current firewall state and generated configuration and install only those commands that update state of the firewall</string>
+           </property>
+           <property name="text" >
+            <string>install only ACL, 'icmp', 'telnet', 'ssh', 'nat', 'global' and 'static' commands</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" >
+          <widget class="QLabel" name="backupConfigFileLbl" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string>Make a backup copy of the firewall configuration in this file:</string>
+           </property>
+           <property name="alignment" >
+            <set>Qt::AlignVCenter</set>
+           </property>
+           <property name="wordWrap" >
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" >
+          <widget class="QLineEdit" name="backupConfigFile" >
+           <property name="minimumSize" >
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="2" >
+       <widget class="QFrame" name="frame15" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="frameShape" >
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow" >
+         <enum>QFrame::Plain</enum>
+        </property>
+        <layout class="QGridLayout" >
+         <item row="1" column="2" >
+          <widget class="QLineEdit" name="pwd" />
+         </item>
+         <item row="1" column="1" >
+          <widget class="QLabel" name="pwdLbl" >
+           <property name="text" >
+            <string>Password or passphrase:</string>
+           </property>
+           <property name="wordWrap" >
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" >
+          <widget class="QLabel" name="unameLbl" >
+           <property name="text" >
+            <string>User name:</string>
+           </property>
+           <property name="wordWrap" >
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2" >
+          <widget class="QLineEdit" name="uname" />
+         </item>
+         <item row="0" column="3" >
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType" >
+            <enum>QSizePolicy::Expanding</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="0" >
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType" >
+            <enum>QSizePolicy::Expanding</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="2" >
+          <widget class="QLineEdit" name="epwd" />
+         </item>
+         <item row="2" column="1" >
+          <widget class="QLabel" name="epwdLbl" >
+           <property name="text" >
+            <string>Enable password:</string>
+           </property>
+           <property name="wordWrap" >
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <tabstops>
+  <tabstop>uname</tabstop>
+  <tabstop>pwd</tabstop>
+  <tabstop>epwd</tabstop>
+  <tabstop>backupConfigFile</tabstop>
+  <tabstop>incr</tabstop>
+  <tabstop>saveDiff</tabstop>
+  <tabstop>test</tabstop>
+  <tabstop>saveStandby</tabstop>
+  <tabstop>altAddress</tabstop>
+  <tabstop>quiet</tabstop>
+  <tabstop>verbose</tabstop>
+  <tabstop>stripComments</tabstop>
+  <tabstop>compressScript</tabstop>
+  <tabstop>copyFWB</tabstop>
+  <tabstop>testRun</tabstop>
+  <tabstop>rollback</tabstop>
+  <tabstop>rollbackTime</tabstop>
+  <tabstop>cancelRollbackIfSuccess</tabstop>
+  <tabstop>okButton</tabstop>
+  <tabstop>cancelButton</tabstop>
+ </tabstops>
+ <includes/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>okButton</sender>
+   <signal>clicked()</signal>
+   <receiver>instOptionsDialog_q</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cancelButton</sender>
+   <signal>clicked()</signal>
+   <receiver>instOptionsDialog_q</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

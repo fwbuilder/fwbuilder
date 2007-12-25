@@ -1,0 +1,99 @@
+$Id: Credits 899 2005-12-14 06:58:43Z vkurland $
+
+We would like to thank the following people who helped us in various
+ways to make this project happen:
+
+Special thanks to Friedhelm Düsterhöft <fd@msdd.net> for help with XML
+development and initial XSLT filters implementation.
+
+For icons : Hector Rivera Falu <misha@phreaker.net>
+
+For icons and a first web site: Tanya Soussokolova <ts@vk.crocodile.org>
+
+For debugging on SuSE, building packages for SuSE and for help 
+with answering support requests:
+    Marc Pfefferkorn <marc.pfefferkorn@post.rwth-aachen.de>
+
+For German translation for Firewall Builder v1.x:
+    Marc Pfefferkorn <marc.pfefferkorn@post.rwth-aachen.de>
+    Jens Hektor <hektor@RZ.RWTH-Aachen.DE>
+    Axel Stenkamp <axel.stenkamp@post.rwth-aachen.de>
+
+For localization patch (gettext support) and French translation
+for Firewall Builder v1.x: 
+    Florent MANENS <manens@efrei.fr>
+
+For French translation for Firewall Builder v2.x
+    Jean-Michel PourÌ© <jm@poure.com>
+
+For Japanese translation for Firewall Builder v2.x
+    Tadashi Jokagi <elf@elf.no-ip.org>
+
+For Swedish translation: Daniel Nylander <yeager@lidkoping.net>
+
+For ideas, suggestions, patches and contributions:
+-------------------------------------------------------------
+Friedhelm Düsterhöft" <friedhelm.duesterhoeft@msdd.net> 
+- many suggestions and prototype for DTD.
+
+
+Jeremy T. Bouse <jbouse@Debian.org>
+- package maintainer for Debian
+- libxml2 support.
+- X.509 certificate generation druid assistance
+- iptables/iproute2 patches
+
+
+Carlo Wood  <carlo@alinoe.com>
+- many valuable patches and bug reports
+- suggestions regarding rpm building process and changes to spec file
+
+
+Jochen Friedrich <jochen+fwbuilder-dev@scram.de>
+- ideas for future development
+
+
+Vadim Fedukovich <vf@unity.net> 
+- help with OpenSSL and answering related questins.
+
+
+David Gullasch <gullasch@secunet.de> and
+stephan_r@users.sourceforge.net
+- firewall policy installation script
+
+
+Igor Morozov <igor@grad.kiev.ua>
+- first attempt at Win32 porting and a prototype
+
+
+Mark Vevers <mark@vevers.net>
+- for an idea and a patch that fixes optimizer in fwb_ipt
+Patch information:
+
+Author: Mark Vevers
+Copyright (c) 2004 Research Machines Plc
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+
+
+

@@ -1,0 +1,178 @@
+#!/bin/sh
+#
+#
+# Description:
+#
+#  this script transfers compiled fwbuilder rulesets via ssh
+#  to a firewall and activates them. Optionally it transfers
+#  a backup of the .xml source file, too
+#
+###
+#
+# Disclaimer:
+#
+#  (K) 2001 by David Gullasch <xonox@web.de>, <gullasch@secunet.de>
+#  All rights reversed. Copy what you like, but give credit
+#  and include this note. Don't blame me when this script does
+#  not do what you want it to - there is no bug-free software.
+#
+#
+############################################################################
+#
+#  Updated script to use command line object lookup tool fwblookup.
+#  This makes the script independent of changes in DTD (since it now
+#  uses libfwbuilder API to work with xml files)
+#
+#  Caveats:
+#
+#    The script uses address of firewall's interface which is marked
+#    as "management". The script aborts if there is no management interface.
+#
+#    There still is a depenency on the current DTD structure in that 
+#    the script assumes that all firewalls are always located in 
+#    the tree branch "Firewalls". This may change in the future; the script
+#    will need to be updated then.
+#
+#              11/29/2002   vadim@fwbuilder.org
+############################################################################
+#
+# Modified by stephan_r@users.sourceforge.net
+#
+# Added config option "SSH_PORT" in fwb_install for non-standart ssh
+# ports as lots of admins prefer firewalls to let ssh listen on
+# something else as 22.
+#
+############################################################################
+#
+# Important:
+#
+#  The firewall rules should allow ssh traffic to the
+#  firewall, or you will lock yourself out.
+#
+###
+#
+# Installation Procedure:
+#
+#  On the local machine:
+#
+#  You should have a ssh and sshd installed and configured
+#  properly. (--> RTFmanpage!)
+#
+#  make a public/private keypair, the private key goes into
+#  ~$REMOTEUSER/.ssh/ on the firewall, $SSHIDENTITY locally
+#  points to the private key.
+#
+#  Adjust the following variables:
+
+#   where the firewall script will be placed:
+REMOTEDIR="/etc/firewall"
+
+#   the user on the firewall allowed to set up the firewall rulesets:
+REMOTEUSER="root"
+
+#   do we want to store a backup copy of the .xml on the firewall?
+DOXMLBACKUP="YES"
+
+#   location of private ssh key:
+SSHIDENTITY="${HOME}/.ssh/id_dsa"
+
+
+#   on which port does your ssh deamon listen? (default: 22)
+SSH_PORT="22"
+
+#
+#  Copy this file somewhere into your path, e.g.:
+#
+#	# cp fwb_install /usr/local/bin
+#
+#  Tell fwbuilder to use the script:
+#
+#   use "fwb_install" as installer script in the firewall dialog
+#
+#########################################################
+
+start_agent() {
+    test -z "$SSH_AUTH_SOCK" && {
+        ssh-agent -s > /tmp/ssh-agent.$$
+        . /tmp/ssh-agent.$$
+        rm -f /tmp/ssh-agent.$$
+	echo "SSH Agent started: $SSH_AGENT_PID"
+	echo
+	SSH_AGENT_PID_VAR_NAME="SSH_AGENT_PID_"$$
+	eval "$SSH_AGENT_PID_VAR_NAME=$SSH_AGENT_PID"
+    }
+    ssh-add -l || {
+        ssh-add $SSHIDENTITY </dev/null || {
+		echo "Failure adding identity, can not continue"
+		exit 1
+	}
+	ssh-add -l 
+	sleep 1
+    }
+}
+
+stop_agent() {
+    test -n "$SSH_AGENT_PID_VAR_NAME" && {
+        SSH_AGENT_PID_VAR_NAME="SSH_AGENT_PID_"$$
+        cmd="echo \$"$SSH_AGENT_PID_VAR_NAME
+        zz=`eval $cmd`
+        echo "SSH Agent PID=$zz"
+        test "x$zz" != "x" && kill $zz
+    }
+}
+
+
+
+# fetch our options
+XMLFILE="objects.xml"	# default fallback if -f option is missing
+DIR="."
+LASTOPT="foo"
+for i in "$@" ; do
+	case "$LASTOPT" in
+		-f)	XMLFILE="$i" ;;
+		-d)	DIR="$i" ;;
+		*)	;;
+	esac
+	LASTOPT="$i"
+done
+
+FWPATH="$i"
+FIREWALL=`echo $FWPATH | awk -F/ '{print $NF;}'`
+
+#FWIP=`awk -F \> -v 'RS=<Firewall ' \
+#	'/^[^>]*name="'$FIREWALL'"/ {print $1}' < $XMLFILE | \
+#	sed -n -e '/address="[0-9\\.]*"/ {
+#	s/^.*address="\([0-9\\.]*\)".*$/\\1/p
+#	}'`
+
+FWIP=`fwblookup21 -M -f $XMLFILE $FWPATH`
+if [ $? -ne 0 ]; then
+  exit 1;
+fi
+
+FWSCRIPT="$DIR/$FIREWALL.fw"
+
+trap stop_agent EXIT
+
+start_agent
+
+echo -n "Transferring $DIR/$FIREWALL.fw to $FWIP:$REMOTEDIR/$FIREWALL.fw ... "
+scp -P$SSH_PORT -o "User $REMOTEUSER" -o "IdentityFile $SSHIDENTITY" -qC \
+        "$DIR/$FIREWALL.fw" "$FWIP:$REMOTEDIR/$FIREWALL.fw"
+if [ "$?" -ne 0 ] ; then echo "Error." ; exit $? ; else echo "Ok." ; fi
+
+if [ "$DOXMLBACKUP" = "YES" ] ; then
+	echo -n "Transferring $XMLFILE to $FWIP:$REMOTEDIR/"`basename $XMLFILE`" ... "
+	scp -P$SSH_PORT -o "User $REMOTEUSER" -o "IdentityFile $SSHIDENTITY" -qBC \
+		"$XMLFILE" "$FWIP:$REMOTEDIR/"`basename $XMLFILE`
+	if [ "$?" -ne 0 ] ; then echo "Error." ; exit $? ; else echo "Ok." ; fi
+fi
+
+echo -n "Executing $REMOTEDIR/$FIREWALL.fw on $FWIP ... "
+ssh -n -p $SSH_PORT -o "User $REMOTEUSER" -o "IdentityFile $SSHIDENTITY" "$FWIP" "$REMOTEDIR/$FIREWALL.fw"
+if [ "$?" -ne 0 ] ; then echo "Error." ; exit $? ; else echo "Ok." ; fi
+
+echo "Firewall ruleset successfully installed."
+
+
+

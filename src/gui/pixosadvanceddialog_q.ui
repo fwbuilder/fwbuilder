@@ -1,0 +1,574 @@
+<ui version="4.0" >
+ <class>pixosAdvancedDialog_q</class>
+ <widget class="QDialog" name="pixosAdvancedDialog_q" >
+  <property name="enabled" >
+   <bool>true</bool>
+  </property>
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>402</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>PIX Advanced Configuration Options</string>
+  </property>
+  <layout class="QGridLayout" >
+   <property name="margin" >
+    <number>11</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item row="0" column="0" >
+    <widget class="QTabWidget" name="notebook305" >
+     <property name="currentIndex" >
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="TabPage" >
+      <attribute name="title" >
+       <string>General</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <property name="margin" >
+        <number>6</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item row="0" column="0" >
+        <widget class="QCheckBox" name="pix_set_host_name" >
+         <property name="text" >
+          <string>Set PIX host name using object's name</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QCheckBox" name="pix_ip_address" >
+         <property name="text" >
+          <string>Generate commands to configure addresses for interfaces</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="label593" >
+      <attribute name="title" >
+       <string>NTP</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <property name="margin" >
+        <number>6</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item row="1" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>30</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="0" >
+        <widget class="QGroupBox" name="buttonGroup41" >
+         <property name="title" >
+          <string>NTP Servers:</string>
+         </property>
+         <layout class="QGridLayout" >
+          <property name="margin" >
+           <number>6</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item row="1" column="1" >
+           <widget class="QLineEdit" name="ntp1" />
+          </item>
+          <item row="2" column="1" >
+           <widget class="QLineEdit" name="ntp2" />
+          </item>
+          <item row="3" column="2" >
+           <widget class="QRadioButton" name="ntp3_pref" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2" >
+           <widget class="QRadioButton" name="ntp2_pref" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1" >
+           <widget class="QLineEdit" name="ntp3" />
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label580_2" >
+            <property name="text" >
+             <string>Server 1:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="label580_2_2" >
+            <property name="text" >
+             <string>Server 2:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" >
+           <widget class="QLabel" name="label580_2_3" >
+            <property name="text" >
+             <string>Server 3:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2" >
+           <widget class="QRadioButton" name="ntp1_pref" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2" >
+           <widget class="QLabel" name="label609" >
+            <property name="text" >
+             <string>Preffered:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" >
+           <widget class="QLabel" name="label610" >
+            <property name="text" >
+             <string>IP address:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="label602" >
+      <attribute name="title" >
+       <string>SNMP</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <property name="margin" >
+        <number>6</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item row="0" column="0" >
+        <widget class="QCheckBox" name="disable_snmp_agent" >
+         <property name="text" >
+          <string>Disable SNMP Agent</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QCheckBox" name="set_communities" >
+         <property name="text" >
+          <string>Set SNMP communities using data from the firewall object dialog</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="4" column="0" >
+        <widget class="QGroupBox" name="frame149" >
+         <property name="title" >
+          <string>SNMP servers</string>
+         </property>
+         <layout class="QGridLayout" >
+          <property name="margin" >
+           <number>6</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item row="1" column="1" >
+           <widget class="QLineEdit" name="snmp_server1" />
+          </item>
+          <item row="2" column="1" >
+           <widget class="QLineEdit" name="snmp_server2" />
+          </item>
+          <item row="1" column="2" >
+           <widget class="QComboBox" name="snmp_poll_traps_1" >
+            <item>
+             <property name="text" >
+              <string>Poll</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Poll and Traps</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Traps</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="2" column="2" >
+           <widget class="QComboBox" name="snmp_poll_traps_2" >
+            <item>
+             <property name="text" >
+              <string>Poll</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Poll and Traps</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Traps</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="0" column="2" >
+           <widget class="QLabel" name="label604" >
+            <property name="text" >
+             <string>Enable:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" >
+           <widget class="QLabel" name="label603" >
+            <property name="sizePolicy" >
+             <sizepolicy>
+              <hsizetype>7</hsizetype>
+              <vsizetype>5</vsizetype>
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text" >
+             <string>IP address:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label606" >
+            <property name="text" >
+             <string>SNMP Server 1:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="label607" >
+            <property name="text" >
+             <string>SNMP Server 2:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="0" >
+        <widget class="QCheckBox" name="enable_traps" >
+         <property name="text" >
+          <string>Enable sending log messages as SNMP trap notifications</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="label608" >
+      <attribute name="title" >
+       <string>Options</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <property name="margin" >
+        <number>6</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item row="0" column="0" >
+        <widget class="QCheckBox" name="tcpmss" >
+         <property name="text" >
+          <string>Change TCP MSS to</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>162</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="1" >
+        <widget class="QSpinBox" name="tcpmss_value" >
+         <property name="maximum" >
+          <number>4096</number>
+         </property>
+         <property name="minimum" >
+          <number>0</number>
+         </property>
+         <property name="singleStep" >
+          <number>10</number>
+         </property>
+         <property name="value" >
+          <number>1380</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2" >
+        <widget class="QLabel" name="label567" >
+         <property name="text" >
+          <string>bytes</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <layout class="QHBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType" >
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="ok_button" >
+       <property name="text" >
+        <string>OK</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label590" >
+       <property name="alignment" >
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="wordWrap" >
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancel_button" >
+       <property name="text" >
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <tabstops>
+  <tabstop>notebook305</tabstop>
+  <tabstop>pix_set_host_name</tabstop>
+  <tabstop>pix_ip_address</tabstop>
+  <tabstop>ok_button</tabstop>
+  <tabstop>cancel_button</tabstop>
+  <tabstop>ntp1</tabstop>
+  <tabstop>ntp1_pref</tabstop>
+  <tabstop>ntp2</tabstop>
+  <tabstop>ntp2_pref</tabstop>
+  <tabstop>ntp3</tabstop>
+  <tabstop>ntp3_pref</tabstop>
+  <tabstop>disable_snmp_agent</tabstop>
+  <tabstop>set_communities</tabstop>
+  <tabstop>enable_traps</tabstop>
+  <tabstop>snmp_server1</tabstop>
+  <tabstop>snmp_poll_traps_1</tabstop>
+  <tabstop>snmp_server2</tabstop>
+  <tabstop>snmp_poll_traps_2</tabstop>
+  <tabstop>tcpmss</tabstop>
+  <tabstop>tcpmss_value</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>ok_button</sender>
+   <signal>clicked()</signal>
+   <receiver>pixosAdvancedDialog_q</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cancel_button</sender>
+   <signal>clicked()</signal>
+   <receiver>pixosAdvancedDialog_q</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

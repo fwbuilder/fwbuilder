@@ -1,0 +1,128 @@
+ *** Loading standard data file ... done
+Ruleset: INPUT
+Ruleset: FORWARD
+Ruleset: OUTPUT
+Ruleset: user_chain
+Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
+Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
+Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
+Address object: h-21.21.21.21
+TCP Service object: tcp 22-22:
+Parser error: Rule passes control to branch drop_invalid which 
+is already used by some rule prior to this one. 
+fwbuilder 2.1 does not support multiple rules 
+passing control to the same branch. This will 
+be fixed in the next major release (v3.0)
+Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
+Interface: lo
+TCP Service object: tcp 0-8000
+UDP Service object: udp 0-0:0-8000
+Parser error: Rule passes control to branch user_chain which 
+is already used by some rule prior to this one. 
+fwbuilder 2.1 does not support multiple rules 
+passing control to the same branch. This will 
+be fixed in the next major release (v3.0)
+Network object: net-192.168.0.0/16
+Network object: net-128.143.0.0/16
+ICMP Service object: icmp -1/-1
+Address object: h-192.168.1.1
+IP Service object: ip-47
+Interface: eth0
+Network object: net-1.1.0.0/16
+Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
+Network object: net-192.168.19.0/24
+TCP Service object: tcp 5432-5432
+Address object: h-192.168.16.125
+TCP Service object: tcp 873-873
+TCP Service object: tcp 22-22
+Address object: h-192.0.34.166
+TCP Service object: tcp 137-139
+UDP Service object: udp 0-0:137-137
+UDP Service object: udp 0-0:138-138
+TCP Service object: tcp 139-139
+TCP Service object: tcp 445-445
+TCP Service object: tcp 80-80
+TCP Service object: tcp 8080-8080
+TCP Service object: tcp 443-443
+Address object: h-127.0.0.1
+TCP Service object: tcp 631-631
+TCP Service object: tcp 515-515
+TCP Service object: tcp fsrpau/fpu
+TCP Service object: tcp fsrpau/fsrau
+TCP Service object: tcp fsrpau/fsrpau
+TCP Service object: tcp fsrpau/f
+TCP Service object: tcp sr/sr
+TCP Service object: tcp fs/fs
+TCP Service object: tcp fsrpau/N
+Parser error: Port spec 'foo' unknown. Error basic_ios::clear
+Parser error: Port spec 'foo' unknown. Error basic_ios::clear
+TCP Service object: tcp 
+TCP Service object: tcp 427-427
+UDP Service object: udp 0-0:427-427
+TCP Service object: tcp 548-548
+TCP Service object: tcp 201-201
+TCP Service object: tcp 202-202
+TCP Service object: tcp 204-204
+TCP Service object: tcp 206-206
+Ruleset: PREROUTING
+Ruleset: INPUT
+Ruleset: FORWARD
+Ruleset: OUTPUT
+Ruleset: POSTROUTING
+TCP Service object: tcp 25-25
+Interface: eth1
+Skip command with '-j CONNMARK --restore-mark' This rule is generated automatically.
+TCP Service object: tcp 25-25:
+Turned option on in previous rule with action Mark for '-j CONNMARK --save-mark' 
+Tag Service object: tag-1
+Interface: eth2
+Tag Service object: tag-2
+Parser error: Rule passes control to branch TOS which 
+is already used by some rule prior to this one. 
+fwbuilder 2.1 does not support multiple rules 
+passing control to the same branch. This will 
+be fixed in the next major release (v3.0)
+Ruleset: PREROUTING
+Ruleset: POSTROUTING
+Ruleset: OUTPUT
+Network object: net-192.168.1.0/24
+Address object: h-222.222.222.222
+Parser error: Original rule defines outbound interface 'eth1'.
+ Replace address in TSrc with matching interface of the firewall.
+Parser error: Original rule defines outbound interface 'eth0'.
+ Replace address in TSrc with matching interface of the firewall.
+Network object: net-192.168.1.32/27
+AddressRange object: range-222.222.222.10-222.222.222.100
+Parser error: Original rule defines outbound interface 'eth+'.
+ Replace address in TSrc with matching interface of the firewall.
+Address object: h-192.168.1.20
+Parser error: Original rule defines outbound interface 'eth+'.
+ Replace address in TSrc with matching interface of the firewall.
+Address object: h-192.168.1.10
+TCP Service object: tcp 1000-1010:
+Parser error: Original rule defines outbound interface 'eth1'.
+ Replace address in TSrc with matching interface of the firewall.
+Network object: net-222.222.222.0/24
+ICMP Service object: icmp 8/0
+TCP Service object: tcp 4000-4010
+TCP Service object: tcp 6667-6667
+TCP Service object: tcp 3128-3128
+TCP Service object: tcp 113-113
+TCP Service object: tcp 53-53
+TCP Service object: tcp 21-21
+TCP Service object: tcp 119-119
+TCP Service object: tcp 23-23
+TCP Service object: tcp 540-540
+TCP Service object: tcp 70-70
+TCP Service object: tcp 13-13
+TCP Service object: tcp 2105-2105
+Address object: h-192.168.3.145
+Address object: h-1.1.1.1
+Parser error: Original rule defines inbound interface 'eth0'.
+ Replace address in ODst with matching interface of the firewall.
+Network object: net-192.168.2.0/24
+Address object: h-192.168.1.22
+Address object: h-192.168.2.10
+Address object: h-22.22.22.23
+ICMP Service object: icmp 11/0
+

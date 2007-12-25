@@ -1,0 +1,62 @@
+.de Sp
+.if n .sp
+.if t .sp 0.4
+..
+.TH fwbuilder 1 "" FWB "Firewall Builder"
+.SH NAME
+fwbuilder \- Multiplatform firewall configuration tool
+.SH SYNOPSIS
+
+.B /usr/bin/fwbuilder
+[
+.B -f file.xml
+] 
+
+.SH "DESCRIPTION"
+
+.B fwbuilder
+is the Graphic User Interface (GUI) component of Firewall Builder. 
+
+Firewall Builder consists of a GUI and set of policy 
+compilers for various firewall platforms. It helps 
+users maintain a database of objects and allows policy 
+editing using simple drag-and-drop operations. GUI 
+generates firewall description in the form of XML file,
+which compilers then interpret and generate platform-specific
+code. Several algorithms are provided for automated 
+network objects discovery and bulk import of data. The 
+GUI and policy compilers are completely independent, 
+this provides for a consistent abstract model and the 
+same GUI for different firewall platforms.
+
+At the moment of this writing Firewall Builder supports firewalls
+based on iptables (available on Linux, kernel 2.4.x, see
+fwb_ipt(1)), ipfilter (available on a variety of platforms
+including *BSD, Solaris and others, see fwb_ipf(1)) and pf (available
+on OpenBSD 3.0, see fwb_pf(1))
+
+.SH OPTIONS
+.IP "-f FILE"
+Specify the name of the file to be loaded when program starts.
+
+.SH FILES
+.IP $HOME/.qt/firewallbuilder2rc
+fwbuilder stores user preferences in this file 
+
+.SH URL
+Firewall Builder home page is located at the following URL:
+.B http://www.fwbuilder.org/
+
+.SH BUGS
+Please report bugs using bug tracking system on SourceForge: 
+
+.BR http://sourceforge.net/tracker/?group_id=5314&atid=105314
+
+
+.SH SEE ALSO
+.BR fwblookup(1),
+.BR fwb_ipt(1),
+.BR fwb_ipf(1),
+.BR fwb_pf(1)
+
+.P

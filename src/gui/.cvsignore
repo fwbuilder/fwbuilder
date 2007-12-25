@@ -1,0 +1,8 @@
+Makefile
+.moc
+.ui
+*.app
+*.fw
+*.fwb
+*.fwl
+*.tbl

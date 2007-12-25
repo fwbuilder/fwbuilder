@@ -1,0 +1,67 @@
+                         Firewall Builder Release Notes
+
+Version 2.1.13
+
+   Released 07/22/2007
+   GUI and compilers v2.1.13 require API library libfwbuilder version 2.1.13
+
+Summary
+
+   This is bugfix release; its main focus is better support for new features
+   available in PF in OpenBSD 4.1
+
+   For those who wish to build from source, instructions are outlined in the
+   document "Install and Build instructions" on our web site here
+
+Improvements and bug fixes in the GUI
+
+     * fixed bug #1740766: "lock not saved". This method now copies the value
+       of "ro" attribute (read-only). Clear it in the caller if neccessary.
+       Method duplicate() clears it after calling shallowDuplicate in order
+       to be able to modify the object, then restores this attribute to its
+       original value.
+     * fixed bug #1743117: "crash while editing any". Added check, user
+       should not be able to unlock Standard objects library
+     * fixed bug #1753188: "policy activation fails on PIX and IOS".
+       Installer failed if account used to authenticate to the router or PIX
+       went straight to 'enable' mode after login.
+     * added simple template object for Cisco router 36xx
+
+Improvements and bug fixes in policy compiler for iptables
+
+     * fixed bug #1746257: "fwbuilder breaks IPv6". Added an option to the
+       firewall settings dialog for iptables that controls whether compiler
+       should skip generation of the code to set default policy of all ipv6
+       chains to DROP. This option is off by default, that is compiler puts
+       the code in. This helps maintain backwards compatibility with old data
+       files that do not have this option, which is equivalent to this option
+       being "off".
+     * fixed bug #1747332: "missing CONNMARK/ restore mark in Output Chain"
+     * compiler permits setting direction in the rule while interface field
+       is "All". This generates iptables command in chain INPUT or OUTPUT
+       with "-i +" or "-o +" interface specification to match all interfaces.
+
+Improvements and bug fixes in policy compiler for PF
+
+     * fixed bug #1747828: "anchors generation - "log" not supported". "Log"
+       keyword is not allowed in "anchor" rules; compiler should not generate
+       it even if user turned logging on in a rule with action 'Branch'
+     * implemented support for PF limit options "src-nodes", "tables" and
+       "table-entries". Feature Req. #1674919: "Support "set limit
+       table-entries""
+     * better compliance with PF 4.x. Feature Req. #1679793: "add 'no state'
+       and 'flags any'". If version is set to 4.x, compiler skips "flags S/SA
+       keep state" for rules mathcing tcp services. However, according to the
+       section "1.2. Operational changes" in PF FAQ at
+       http://www.openbsd.org/faq/upgrade41.html , there should be a way to
+       add "keep state" explicitly for rules on interface enc0. Added this
+       option to the rule options dialog.
+     * Added support for "set skip on " command for PF. If an interface is
+       marked as "unprotected" in the GUI, compiler generates this command
+       for it. This is useful for loopback or other virtual interfaces.
+
+Improvements and bug fixes in policy compilers for Cisco IOS ACL
+
+     * Fixed bug that caused compiler to exit abnormally while compiling a
+       rule with interface field "all". Compiler should generate ACL lines
+       for all interfaces of the router (except those marked "unprotected")

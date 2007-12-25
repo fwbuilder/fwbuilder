@@ -1,0 +1,18 @@
+#!/usr/bin/perl
+
+$XMLFILE=@ARGV[0];
+
+if (-x "/usr/bin/opendiff") { $TOOL="opendiff"; }
+else                        { $TOOL="tkdiff -b -B "; }
+
+
+
+while (<>) {
+  $str=$_;
+  while ( $str=~ /<Firewall / ) {
+    $str=~ /<Firewall [^>]+name="([^"]*).*$"/;
+    $fw=$1;
+    printf "$TOOL %s.fw.orig %s.fw\n",$fw,$fw;
+    $str=~ s/^.*<Firewall [^>]+name="$fw"[^>]+>//;
+  }
+}

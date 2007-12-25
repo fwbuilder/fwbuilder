@@ -1,0 +1,83 @@
+ *** Loading standard data file ... done
+Host name: "c3620"
+Interface: FastEthernet0/0
+Interface address: 192.168.100.100/255.255.255.0
+Interface address: 10.3.14.201/255.255.255.0
+Interface  ruleset fe0_0_acl_in direction 'in' (set to 'in')
+Interface  ruleset fe0_0_acl_out direction 'out' (set to 'out')
+Interface: Ethernet1/0
+Interface comment: Test [ test ] { test } ( and one more test) / weird:characters#$%^&*/ 
+Interface address: 192.168.171.2/255.255.255.0
+Interface  ruleset e1_0_acl_in direction 'in' (set to 'in')
+Interface  ruleset e1_0_acl_out direction 'out' (set to 'out')
+Interface: Serial1/0
+Interface: Ethernet1/1
+Interface address: 10.10.10.10/255.255.255.0
+Interface  ruleset acl_133 direction 'in' (set to 'in')
+Interface  ruleset acl_133 direction 'out' (set to 'both')
+Interface: Ethernet1/2
+Interface address: 10.10.20.20/255.255.255.0
+Interface  ruleset acl_133 direction 'in' (set to 'in')
+Interface  ruleset acl_133 direction 'out' (set to 'both')
+Ruleset: e1_0_acl_in
+IP Service object: ip-0 fragm
+Address object: h-10.3.14.40
+Address object: h-192.168.171.2
+TCP Service object: tcp 22-22
+Address object: h-10.3.14.201
+Network object: net-10.3.14.0/255.255.255.0
+Ruleset: e1_0_acl_out
+Ruleset: fe0_0_acl_in
+Ruleset: fe0_0_acl_out
+Ruleset: outside
+Rule comment: / / path1/path2/path3 
+Rule comment: access list comment 
+UDP Service object: udp 0-0:500-500
+TCP Service object: tcp 80-80:
+TCP Service object: tcp 80-80: est
+TCP Service object: tcp 1023-65535:
+TCP Service object: tcp 0-1023:
+TCP Service object: tcp 80-80
+TCP Service object: tcp 22-80
+TCP Service object: tcp 2967-2967
+TCP Service object: tcp 2967-2967:
+UDP Service object: udp 0-0:2967-2967
+UDP Service object: udp 2967-2967:0-0
+IP Service object: ip-51
+IP Service object: ip-50
+ICMP Service object: icmp -1/-1
+ICMP Service object: icmp 8/0
+ICMP Service object: icmp 3/-1
+ICMP Service object: icmp 3/1
+ICMP Service object: icmp 3/14
+UDP Service object: udp 0-0:68-68
+UDP Service object: udp 0-0:67-67
+UDP Service object: udp 53-53:0-0
+Network object: net-10.10.10.0/255.255.255.0
+Ruleset: tmp_acl
+Ruleset: acl_133
+Ruleset: acl_133
+Ruleset: acl_133
+Ruleset: acl_144
+Network object: net-10.2.1.0/255.255.255.0
+Ruleset: acl_144
+Ruleset: acl_144
+Ruleset: acl_144
+Ruleset: acl_144
+Address object: h-192.168.171.1
+Ruleset: acl_144
+Ruleset: acl_144
+Ruleset: acl_144
+Ruleset: acl_199
+Ruleset: acl_199
+Ruleset: acl_1300
+Rule comment: Standard access lists are 1 to 99 and 1300 to 1999 
+Ruleset: acl_1300
+Address object: h-22.22.22.21
+Ruleset: acl_1300
+Address object: h-22.23.24.25
+Ruleset: acl_1300
+Network object: net-22.23.25.0/255.255.255.240
+Ruleset: acl_1300
+Network object: net-10.0.0.0/255.0.0.0
+

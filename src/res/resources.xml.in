@@ -1,0 +1,532 @@
+<?xml version="1.0"?>
+<FWBuilderResources version="@VERSION@">
+  <Paths>
+    <Icndir>@PACKAGE_PIXMAPS_DIR@</Icndir>
+  </Paths>
+  <UI>
+    <Icons>
+      <neg>neg.png</neg>
+      <Accept>accept_25.png</Accept>
+      <Tag>tag_25.png</Tag>
+      <Pipe>pipe_25.png</Pipe>
+      <Deny>deny_25.png</Deny>
+      <Reject>reject_25.png</Reject>
+      <Continue>continue_25.png</Continue>
+      <Accounting>accounting_25.png</Accounting>
+      <Classify>classify_25.png</Classify>
+      <Custom>custom_25.png</Custom>
+      <Branch>branch_25.png</Branch>
+      <Route>route_25.png</Route>
+      <Inbound>inbound.png</Inbound>
+      <Outbound>outbound.png</Outbound>
+      <Both>both.png</Both>
+      <Log>log_25.png</Log>
+      <Blank>blank.png</Blank>
+      <Error>error.png</Error>
+      <Warning>warning.png</Warning>
+      <Question>question.png</Question>
+      <Info>info_25.png</Info>
+      <Generic>generic.png</Generic>
+      <Check>check.png</Check>
+      <Uncheck>uncheck.png</Uncheck>
+      <Drag>drag_object.png</Drag>
+      <Options>options_25.png</Options>
+      <ProtectHost>protect_host.png</ProtectHost>
+      <ProtectNet>protect_net.png</ProtectNet>
+      <ProtectNetAndDMZ>protect_net_and_dmz.png</ProtectNetAndDMZ>
+      <Discover>binoculars64.png</Discover>
+      <RulesDruidLogo>rules_druid_logo.png</RulesDruidLogo>
+      <UpArrow>up-arrow.png</UpArrow>
+      <DownArrow>down-arrow.png</DownArrow>
+      <LeftArrow>left-arrow.png</LeftArrow>
+      <RightArrow>right-arrow.png</RightArrow>
+      <BigUpArrow>big-up-arrow.png</BigUpArrow>
+      <BigDownArrow>big-down-arrow.png</BigDownArrow>
+      <BigLeftArrow>big-left-arrow.png</BigLeftArrow>
+      <BigRightArrow>big-right-arrow.png</BigRightArrow>
+      <Cancel>cancel.png</Cancel>
+      <Ok>ok.png</Ok>
+      <Close>close.png</Close>
+      <Stop>stop.png</Stop>
+      <Redo>redo.png</Redo>
+      <Undo>undo.png</Undo>
+      <Apply>apply.png</Apply>
+      <Yes>yes.png</Yes>
+      <No>no.png</No>
+      <CertDruidLogo>cert_druid_logo.png</CertDruidLogo>
+      <NewHostDruidLogo>host_64.png</NewHostDruidLogo>
+      <Key>key.png</Key>
+      <FWBuilderWin32Ico>fwbuilder.ico</FWBuilderWin32Ico>
+      <Floppy>floppy.png</Floppy>
+    </Icons>
+    <SmallIconSize>25</SmallIconSize>
+    <LargeIconSize>64</LargeIconSize>
+  </UI>
+
+  <FWBD>
+    <port>9999</port>
+  </FWBD>
+
+  <RuleElements>
+
+     <RuleElementResources RuleElement="OSrc">
+       <label>Original Src</label>
+     </RuleElementResources>
+    
+     <RuleElementResources RuleElement="ODst" >
+       <label>Original Dst</label>
+     </RuleElementResources>
+    
+     <RuleElementResources RuleElement="OSrv" >
+       <label>Original Srv</label>
+     </RuleElementResources>
+    
+     <RuleElementResources RuleElement="TSrc" >
+       <label>Translated Src</label>
+     </RuleElementResources>
+    
+     <RuleElementResources RuleElement="TDst" >
+       <label>Translated Dst</label>
+     </RuleElementResources>
+    
+     <RuleElementResources RuleElement="TSrv" >
+       <label>Translated Srv</label>
+     </RuleElementResources>
+    
+     <RuleElementResources RuleElement="Com">
+       <label>Comment</label>
+     </RuleElementResources>
+    
+    
+     <RuleElementResources RuleElement="Src" >
+       <label>Source</label>
+     </RuleElementResources>
+    
+     <RuleElementResources RuleElement="Dst" >
+       <label>Destination</label>
+     </RuleElementResources>
+    
+     <RuleElementResources RuleElement="Srv" >
+       <label>Service</label>
+     </RuleElementResources>
+    
+     <RuleElementResources RuleElement="Itf" >
+       <label>Interface</label>
+     </RuleElementResources>
+    
+
+     <RuleElementResources RuleElement="RDst" >
+       <label>Destination</label>
+     </RuleElementResources>
+    
+     <RuleElementResources RuleElement="RGtw" >
+       <label>Gateway</label>
+     </RuleElementResources>
+    
+     <RuleElementResources RuleElement="RItf" >
+       <label>Interface</label>
+     </RuleElementResources>
+    
+
+     <RuleElementResources RuleElement="Act" >
+       <label>Action</label>
+     </RuleElementResources>
+    
+     <RuleElementResources RuleElement="Dir" >
+       <label>Direction</label>
+     </RuleElementResources>
+    
+     <RuleElementResources RuleElement="Log" >
+       <label>Log</label>
+     </RuleElementResources>
+    
+     <RuleElementResources RuleElement="When">
+       <label>Time</label>
+     </RuleElementResources>
+    
+     <RuleElementResources RuleElement="Opt">
+       <label>Options</label>
+     </RuleElementResources>
+    
+     <RuleElementResources RuleElement="Com">
+       <label>Comment</label>
+     </RuleElementResources>
+
+  </RuleElements>
+
+
+  <Type>
+    <DEFAULT>
+      <icon>blank.png</icon>
+      <hidden>false</hidden>
+      <system>false</system>
+      <delete>true</delete>
+      <write>true</write>
+      <rename>true</rename>
+    </DEFAULT>
+    
+    <FWObjectDatabase>
+      <description>Network Objects</description>
+      <icon>blank.png</icon>
+    </FWObjectDatabase>
+
+    <Library>
+      <description>Library Of Objects</description>
+      <hidden>false</hidden>
+      <system>true</system>
+      <delete>false</delete>
+      <write>false</write>
+      <icon>library_25.png</icon>
+      <icon-neg>library-neg.png</icon-neg>
+      <icon-ref>library-ref.png</icon-ref>
+      <icon-tree>library_16.png</icon-tree>
+    </Library>
+
+    <Host>
+      <description>Host</description>
+      <icon>host_25.png</icon>
+      <icon-neg>host-neg_25.png</icon-neg>
+      <icon-ref>host-ref_25.png</icon-ref>
+      <icon-tree>host_16.png</icon-tree>
+      <options>
+        <use_mac_addr>false</use_mac_addr>
+      </options>
+    </Host>
+
+    <Network>
+      <description>Network</description>
+      <icon>network_25.png</icon>
+      <icon-neg>network-neg_25.png</icon-neg>
+      <icon-ref>network-ref_25.png</icon-ref>
+      <icon-tree>network_16.png</icon-tree>
+    </Network>
+
+    <AddressRange>
+      <description>Address Range</description>
+      <icon>rangeaddress_25.png</icon>
+      <icon-neg>rangeaddress-neg_25.png</icon-neg>
+      <icon-ref>rangeaddress-ref_25.png</icon-ref>
+      <icon-tree>rangeaddress_16.png</icon-tree>
+    </AddressRange>
+
+    <Firewall>
+      <description>Firewall</description>
+      <icon>firewall_25.png</icon>
+      <icon-neg>firewall-neg_25.png</icon-neg>
+      <icon-ref>firewall-ref_25.png</icon-ref>
+      <icon-tree>firewall_16.png</icon-tree>
+      <properties>
+        <platform>unknown</platform>
+        <host_OS>unknown_os</host_OS>
+      </properties>
+    </Firewall>
+
+    <ObjectGroup>
+      <description>Group of Objects</description>
+      <icon>object-group_25.png</icon>
+      <icon-neg>object-group-neg_25.png</icon-neg>
+      <icon-ref>object-group-ref_25.png</icon-ref>
+      <icon-tree>object-group_16.png</icon-tree>
+    </ObjectGroup>
+
+    <ServiceGroup>
+      <description>Group of Services</description>
+      <icon>service-group_25.png</icon>
+      <icon-neg>service-group-neg_25.png</icon-neg>
+      <icon-ref>service-group-ref_25.png</icon-ref>
+      <icon-tree>service-group_16.png</icon-tree>
+    </ServiceGroup>
+
+    <IntervalGroup>
+      <description>Group of time intervals</description>
+      <icon>clock-group_25.png</icon>
+      <icon-neg>clock-group-neg_25.png</icon-neg>
+      <icon-ref>clock-group-ref_25.png</icon-ref>
+      <icon-tree>clock-group_16.png</icon-tree>
+    </IntervalGroup>
+
+    <Interface>
+      <description>Interface</description>
+      <icon>interface_25.png</icon>
+      <icon-neg>interface-neg_25.png</icon-neg>
+      <icon-ref>interface-ref_25.png</icon-ref>
+      <icon-tree>interface_16.png</icon-tree>
+      <hidden>false</hidden>
+    </Interface>
+
+    <physAddress>
+      <description>Physical address</description>
+      <icon>physaddress_25.png</icon>
+      <icon-neg>physaddress-neg_25.png</icon-neg>
+      <icon-ref>physaddress-ref_25.png</icon-ref>
+      <icon-tree>physaddress_16.png</icon-tree>
+      <hidden>false</hidden>
+    </physAddress>
+
+    <IPv4>
+      <description>IPv4 address</description>
+      <icon>address_25.png</icon>
+      <icon-neg>address-neg_25.png</icon-neg>
+      <icon-ref>address-ref_25.png</icon-ref>
+      <icon-tree>address_16.png</icon-tree>
+      <hidden>false</hidden>
+    </IPv4>
+    
+    <DNSName>
+      <description>DNS Name</description>
+      <icon>domainname_25.png</icon>
+      <icon-neg>domainname-neg_25.png</icon-neg>
+      <icon-ref>domainname-ref_25.png</icon-ref>
+      <icon-tree>domainname_16.png</icon-tree>
+      <hidden>false</hidden>
+    </DNSName>
+
+    <AddressTable>
+      <description>Address Table</description>
+      <icon>addresstable_25.png</icon>
+      <icon-neg>addresstable-neg_25.png</icon-neg>
+      <icon-ref>addresstable-ref_25.png</icon-ref>
+      <icon-tree>addresstable_16.png</icon-tree>
+      <hidden>false</hidden>
+    </AddressTable>
+    
+    <Management>
+      <description>Management</description>
+      <icon>blank.png</icon>
+      <icon-neg>blank.png</icon-neg>
+      <hidden>true</hidden>
+    </Management>
+
+    <SNMPManagement>
+      <description>Management</description>
+      <icon>blank.png</icon>
+      <icon-neg>blank.png</icon-neg>
+      <hidden>true</hidden>
+    </SNMPManagement>
+
+    <FWBDManagement>
+      <description>Management</description>
+      <icon>blank.png</icon>
+      <icon-neg>blank.png</icon-neg>
+      <hidden>true</hidden>
+    </FWBDManagement>
+
+    <IPService>
+      <description>IP</description>
+      <icon>service-ip_25.png</icon>
+      <icon-neg>service-ip-neg_25.png</icon-neg>
+      <icon-ref>service-ip-ref_25.png</icon-ref>
+      <icon-tree>service-ip_16.png</icon-tree>
+    </IPService>
+
+    <ICMPService>
+      <description>ICMP</description>
+      <icon>service-icmp_25.png</icon>
+      <icon-neg>service-icmp-neg_25.png</icon-neg>
+      <icon-ref>service-icmp-ref_25.png</icon-ref>
+      <icon-tree>service-icmp_16.png</icon-tree>
+    </ICMPService>
+
+    <TCPService>
+      <description>TCP</description>
+      <icon>service-tcp_25.png</icon>
+      <icon-neg>service-tcp-neg_25.png</icon-neg>
+      <icon-ref>service-tcp-ref_25.png</icon-ref>
+      <icon-tree>service-tcp_16.png</icon-tree>
+    </TCPService>
+
+    <UDPService>
+      <description>UDP</description>
+      <icon>service-udp_25.png</icon>
+      <icon-neg>service-udp-neg_25.png</icon-neg>
+      <icon-ref>service-udp-ref_25.png</icon-ref>
+      <icon-tree>service-udp_16.png</icon-tree>
+    </UDPService>
+
+    <TagService>
+      <description>Tag</description>
+      <icon>service-tag_25.png</icon>
+      <icon-neg>service-tag-neg_25.png</icon-neg>
+      <icon-ref>service-tag-ref_25.png</icon-ref>
+      <icon-tree>service-tag_16.png</icon-tree>
+    </TagService>
+
+    <CustomService>
+      <description>Custom</description>
+      <icon>service-custom_25.png</icon>
+      <icon-neg>service-custom-neg_25.png</icon-neg>
+      <icon-ref>service-custom-ref_25.png</icon-ref>
+      <icon-tree>service-custom_16.png</icon-tree>
+    </CustomService>
+
+    <NAT>
+      <description>NAT</description>
+      <icon-tree>blank_2x16.png</icon-tree>
+    </NAT>
+
+    <Policy>
+      <description>Policy</description>
+      <icon-tree>blank_2x16.png</icon-tree>
+    </Policy>
+
+    <Routing>
+      <description>Routing</description>
+      <icon-tree>blank_2x16.png</icon-tree>
+    </Routing>
+
+    <InterfacePolicy>
+      <description>Policy</description>
+      <icon-tree>blank_2x16.png</icon-tree>
+    </InterfacePolicy>
+
+    <RuleElement>
+      <description>Rule Element</description>
+      <icon>generic.png</icon>
+      <icon-tree>blank_2x16.png</icon-tree>
+      <hidden>true</hidden>
+    </RuleElement>
+
+    <PolicyRule>
+      <description>Rule</description>
+      <icon>generic.png</icon>
+      <icon-tree>blank_2x16.png</icon-tree>
+      <hidden>true</hidden>
+    </PolicyRule>
+
+    <NATRule>
+      <description>Rule</description>
+      <icon>generic.png</icon>
+      <icon-tree>blank_2x16.png</icon-tree>
+      <hidden>true</hidden>
+    </NATRule>
+
+    <RoutingRule>
+      <description>Rule</description>
+      <icon>generic.png</icon>
+      <icon-tree>blank_2x16.png</icon-tree>
+      <hidden>true</hidden>
+    </RoutingRule>
+
+    <ObjectRef>
+      <description>Reference</description>
+      <icon>ref.png</icon>
+      <hidden>true</hidden>
+    </ObjectRef>
+
+    <ServiceRef>
+      <description>Reference</description>
+      <icon>ref.png</icon>
+      <hidden>true</hidden>
+    </ServiceRef>
+
+    <IntervalRef>
+      <description>Reference</description>
+      <icon>ref.png</icon>
+      <hidden>true</hidden>
+    </IntervalRef>
+
+    <Interval>
+      <description>Time</description>
+      <icon>clock_25.png</icon>
+      <icon-neg>clock-neg_25.png</icon-neg>
+      <icon-ref>clock-ref_25.png</icon-ref>
+      <icon-tree>clock_16.png</icon-tree>
+      <properties>
+        <from_minute>-1</from_minute>
+        <from_hour>-1</from_hour>
+        <from_day>-1</from_day>
+        <from_month>-1</from_month>
+        <from_year>-1</from_year>
+        <from_weekday>-1</from_weekday>
+        <to_minute>-1</to_minute>
+        <to_hour>-1</to_hour>
+        <to_day>-1</to_day>
+        <to_month>-1</to_month>
+        <to_year>-1</to_year>
+        <to_weekday>-1</to_weekday>
+      </properties>
+    </Interval>
+
+    <HostOptions>
+      <description>Host Options</description>
+      <hidden>true</hidden>
+    </HostOptions>
+
+    <FirewallOptions>
+      <description>Firewall Options</description>
+      <hidden>true</hidden>
+    </FirewallOptions>
+
+    <PolicyRuleOptions>
+      <description>Policy Rule Options</description>
+      <hidden>true</hidden>
+    </PolicyRuleOptions>
+
+    <NATRuleOptions>
+      <description>NAT Rule Options</description>
+      <hidden>true</hidden>
+    </NATRuleOptions>
+
+    <TMPGroup>
+      <description>Temporary Objects</description>
+      <hidden>true</hidden>
+    </TMPGroup>
+
+  </Type>
+
+
+  <Object>
+
+    <root>
+      <description>Object Database</description>
+      <hidden>false</hidden>
+      <system>true</system>
+      <delete>false</delete>
+      <write>false</write>
+      <icon>blank.png</icon>
+    </root>
+
+    <sysid0>
+      <description>Any</description>
+      <hidden>true</hidden>
+      <system>true</system>
+      <delete>false</delete>
+      <write>false</write>
+      <icon>blank.png</icon>
+    </sysid0>
+
+    <sysid1>
+      <description>Any</description>
+      <hidden>true</hidden>
+      <system>true</system>
+      <delete>false</delete>
+      <write>false</write>
+      <icon>blank.png</icon>
+    </sysid1>
+
+    <sysid2>
+      <description>Any</description>
+      <hidden>true</hidden>
+      <system>true</system>
+      <delete>false</delete>
+      <write>false</write>
+      <icon>blank.png</icon>
+    </sysid2>
+
+    <sysid99>
+      <description>Deleted Objects</description>
+      <hidden>true</hidden>
+      <system>true</system>
+      <delete>false</delete>
+      <write>false</write>
+      <icon>blank.png</icon>
+    </sysid99>
+
+  </Object>
+
+</FWBuilderResources>
+
+
+
+
+

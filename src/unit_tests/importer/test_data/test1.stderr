@@ -1,0 +1,189 @@
+VERSION 12.2
+HOSTNAME LT0="c3620"
+69: INTRFACE ADDRESS: 172.16.1.1/255.255.255.128 
+73: INTRFACE ADDRESS: 172.16.10.1/255.255.255.0 
+90: INTRFACE: FastEthernet0/0
+91: INTRFACE ADDRESS: 192.168.100.100/255.255.255.0 secondary
+92: INTRFACE ADDRESS: 10.3.14.201/255.255.255.0 
+93: INTRFACE: ACL 'fe0_0_acl_in' in
+94: INTRFACE: ACL 'fe0_0_acl_out' out
+99: INTRFACE: Ethernet1/0
+100: INTERFACE DESCRIPTION Test [ test ] { test } ( and one more test) / weird:characters#$%^&*/ 
+101: INTRFACE ADDRESS: 192.168.171.2/255.255.255.0 
+102: INTRFACE: ACL 'e1_0_acl_in' in
+103: INTRFACE: ACL 'e1_0_acl_out' out
+109: INTRFACE: Serial1/0
+112: INTERFACE SHUTDOWN 
+115: INTRFACE: Ethernet1/1
+116: INTRFACE ADDRESS: 10.10.10.10/255.255.255.0 
+120: INTRFACE: ACL '133' in
+121: INTRFACE: ACL '133' out
+125: INTRFACE: Ethernet1/2
+126: INTRFACE ADDRESS: 10.10.20.20/255.255.255.0 
+131: INTRFACE: ACL '133' in
+132: INTRFACE: ACL '133' out
+154: ACL ext e1_0_acl_in
+155: deny   protocol ip 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) fragments 
+156: permit protocol tcp 10.3.14.40/0.0.0.0(src) 192.168.171.2/0.0.0.0(dst) eq 22 logging 
+Convert TCP/UDP port spec: port_op= port_spec=
+Convert TCP/UDP port spec: port_op=eq port_spec= 22
+157: permit protocol tcp 10.3.14.40/0.0.0.0(src) 10.3.14.201/0.0.0.0(dst) eq 22 logging 
+Convert TCP/UDP port spec: port_op= port_spec=
+Convert TCP/UDP port spec: port_op=eq port_spec= 22
+158: permit protocol ip 0.0.0.0/0.0.0.0(src) 10.3.14.0/0.0.0.255(dst) logging 
+159: deny   protocol ip 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) logging 
+160: ACL end
+
+161: ACL ext e1_0_acl_out
+162: permit protocol ip 10.3.14.0/0.0.0.255(src) 0.0.0.0/0.0.0.0(dst) logging 
+163: deny   protocol ip 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) logging 
+164: ACL end
+
+165: ACL ext fe0_0_acl_in
+166: permit protocol tcp 10.3.14.40/0.0.0.0(src) 192.168.171.2/0.0.0.0(dst) eq 22 logging 
+Convert TCP/UDP port spec: port_op= port_spec=
+Convert TCP/UDP port spec: port_op=eq port_spec= 22
+167: permit protocol tcp 10.3.14.40/0.0.0.0(src) 10.3.14.201/0.0.0.0(dst) eq 22 logging 
+Convert TCP/UDP port spec: port_op= port_spec=
+Convert TCP/UDP port spec: port_op=eq port_spec= 22
+168: permit protocol ip 10.3.14.0/0.0.0.255(src) 0.0.0.0/0.0.0.0(dst) logging 
+169: deny   protocol ip 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) logging 
+170: ACL end
+
+171: ACL ext fe0_0_acl_out
+172: permit protocol ip 0.0.0.0/0.0.0.0(src) 10.3.14.0/0.0.0.255(dst) logging 
+173: deny   protocol ip 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) logging 
+174: ACL end
+
+175: ACL ext outside
+176: REMARK / / path1/path2/path3 
+177: REMARK access list comment 
+179: permit protocol udp 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) eq isakmp 
+Convert TCP/UDP port spec: port_op= port_spec=
+Convert TCP/UDP port spec: port_op=eq port_spec= isakmp
+181: permit protocol tcp 0.0.0.0/0.0.0.0(src) eq 80 0.0.0.0/0.0.0.0(dst) 
+Convert TCP/UDP port spec: port_op=eq port_spec= 80
+Convert TCP/UDP port spec: port_op= port_spec=
+183: permit protocol tcp 0.0.0.0/0.0.0.0(src) eq 80 0.0.0.0/0.0.0.0(dst) established 
+Convert TCP/UDP port spec: port_op=eq port_spec= 80
+Convert TCP/UDP port spec: port_op= port_spec=
+185: permit protocol tcp 0.0.0.0/0.0.0.0(src) gt 1023 0.0.0.0/0.0.0.0(dst) 
+Convert TCP/UDP port spec: port_op=gt port_spec= 1023
+Convert TCP/UDP port spec: port_op= port_spec=
+186: deny   protocol tcp 0.0.0.0/0.0.0.0(src) lt 1023 0.0.0.0/0.0.0.0(dst) 
+Convert TCP/UDP port spec: port_op=lt port_spec= 1023
+Convert TCP/UDP port spec: port_op= port_spec=
+188: permit protocol tcp 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) eq www 
+Convert TCP/UDP port spec: port_op= port_spec=
+Convert TCP/UDP port spec: port_op=eq port_spec= www
+190: permit protocol tcp 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) range 22 80 
+Convert TCP/UDP port spec: port_op= port_spec=
+Convert TCP/UDP port spec: port_op=range port_spec= 22 80
+191: permit protocol tcp 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) range 22 www 
+Convert TCP/UDP port spec: port_op= port_spec=
+Convert TCP/UDP port spec: port_op=range port_spec= 22 www
+194: deny   protocol tcp 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) eq 2967 
+Convert TCP/UDP port spec: port_op= port_spec=
+Convert TCP/UDP port spec: port_op=eq port_spec= 2967
+195: deny   protocol tcp 0.0.0.0/0.0.0.0(src) eq 2967 0.0.0.0/0.0.0.0(dst) 
+Convert TCP/UDP port spec: port_op=eq port_spec= 2967
+Convert TCP/UDP port spec: port_op= port_spec=
+196: deny   protocol udp 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) eq 2967 
+Convert TCP/UDP port spec: port_op= port_spec=
+Convert TCP/UDP port spec: port_op=eq port_spec= 2967
+197: deny   protocol udp 0.0.0.0/0.0.0.0(src) eq 2967 0.0.0.0/0.0.0.0(dst) 
+Convert TCP/UDP port spec: port_op=eq port_spec= 2967
+Convert TCP/UDP port spec: port_op= port_spec=
+199: permit protocol ahp 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) 
+200: permit protocol esp 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) 
+202: permit protocol icmp 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) 
+204: permit protocol icmp 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) 8 0 
+206: permit protocol icmp 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) unreachable 
+207: permit protocol icmp 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) host-unreachable 
+208: permit protocol icmp 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) host-precedence-unreachable 
+212: permit protocol udp 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) eq bootpc 
+Convert TCP/UDP port spec: port_op= port_spec=
+Convert TCP/UDP port spec: port_op=eq port_spec= bootpc
+213: permit protocol udp 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) eq bootps 
+Convert TCP/UDP port spec: port_op= port_spec=
+Convert TCP/UDP port spec: port_op=eq port_spec= bootps
+214: permit protocol udp 0.0.0.0/0.0.0.0(src) eq domain 0.0.0.0/0.0.0.0(dst) 
+Convert TCP/UDP port spec: port_op=eq port_spec= domain
+Convert TCP/UDP port spec: port_op= port_spec=
+216: permit protocol tcp 10.10.10.0/0.0.0.255(src) eq 80 10.3.14.40/0.0.0.0(dst) established time_range evening 
+Convert TCP/UDP port spec: port_op=eq port_spec= 80
+Convert TCP/UDP port spec: port_op= port_spec=
+217: deny   protocol ip 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) logging 
+218: ACL end
+
+219: ACL ext tmp_acl
+220: permit protocol ip 10.3.14.0/0.0.0.255(src) 0.0.0.0/0.0.0.0(dst) 
+221: deny   protocol ip 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) 
+222: ACL end
+
+223: ACL #133 223: permit protocol ip 10.3.14.0/0.0.0.255(src) 10.10.10.0/0.0.0.255(dst) 
+224: ACL #133 224: permit protocol ip 10.10.10.0/0.0.0.255(src) 10.3.14.0/0.0.0.255(dst) 
+225: ACL #133 225: deny   protocol ip 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) logging 
+226: ACL #144 226: permit protocol icmp 10.3.14.0/0.0.0.255(src) 10.2.1.0/0.0.0.255(dst) 
+227: ACL #144 227: permit protocol icmp 10.2.1.0/0.0.0.255(src) 10.3.14.0/0.0.0.255(dst) 
+228: ACL #144 228: permit protocol ip 10.3.14.0/0.0.0.255(src) 10.2.1.0/0.0.0.255(dst) 
+229: ACL #144 229: permit protocol ip 10.2.1.0/0.0.0.255(src) 10.3.14.0/0.0.0.255(dst) 
+230: ACL #144 230: permit protocol icmp 10.3.14.0/0.0.0.255(src) 192.168.171.1/0.0.0.0(dst) 
+231: ACL #144 231: permit protocol icmp 192.168.171.1/0.0.0.0(src) 10.3.14.0/0.0.0.255(dst) 
+232: ACL #144 232: permit protocol ip 10.3.14.0/0.0.0.255(src) 192.168.171.1/0.0.0.0(dst) 
+233: ACL #144 233: permit protocol ip 192.168.171.1/0.0.0.0(src) 10.3.14.0/0.0.0.255(dst) 
+234: ACL #199 234: permit protocol icmp 10.3.14.0/0.0.0.255(src) 10.10.10.0/0.0.0.255(dst) logging 
+235: ACL #199 235: permit protocol ip 0.0.0.0/0.0.0.0(src) 0.0.0.0/0.0.0.0(dst) 
+237: ACL #1300 237: REMARK Standard access lists are 1 to 99 and 1300 to 1999 
+238: ACL #1300 238: permit 22.22.22.21/0.0.0.0(std) 
+239: ACL #1300 239: permit 22.23.24.25/0.0.0.0(std) 
+240: ACL #1300 240: permit 22.23.25.0/0.0.0.15(std) 
+241: ACL #1300 241: permit 10.0.0.0/0.255.255.255(std) 
+IPTImporter::finalize()
+Setting interface and direction for all rules
+all_rulesets.size()=10
+  irs->name=acl_1300
+  irs->intf_dir.size()=0
+  irs->ruleset->size()=4
+ruleset done
+  irs->name=acl_133
+  irs->intf_dir.size()=2
+  irs->ruleset->size()=3
+Interface group with name 'intf-acl_133', sig 'acl_133__Ethernet1/1_Ethernet1/2'
+ruleset done
+  irs->name=acl_144
+  irs->intf_dir.size()=0
+  irs->ruleset->size()=8
+ruleset done
+  irs->name=acl_199
+  irs->intf_dir.size()=0
+  irs->ruleset->size()=2
+ruleset done
+  irs->name=e1_0_acl_in
+  irs->intf_dir.size()=1
+  irs->ruleset->size()=5
+    interface=Ethernet1/0
+ruleset done
+  irs->name=e1_0_acl_out
+  irs->intf_dir.size()=1
+  irs->ruleset->size()=2
+    interface=Ethernet1/0
+ruleset done
+  irs->name=fe0_0_acl_in
+  irs->intf_dir.size()=1
+  irs->ruleset->size()=4
+    interface=FastEthernet0/0
+ruleset done
+  irs->name=fe0_0_acl_out
+  irs->intf_dir.size()=1
+  irs->ruleset->size()=2
+    interface=FastEthernet0/0
+ruleset done
+  irs->name=outside
+  irs->intf_dir.size()=0
+  irs->ruleset->size()=24
+ruleset done
+  irs->name=tmp_acl
+  irs->intf_dir.size()=0
+  irs->ruleset->size()=2
+ruleset done

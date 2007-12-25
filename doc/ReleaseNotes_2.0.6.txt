@@ -1,0 +1,166 @@
+                         Firewall Builder Release Notes
+
+Version 2.0.6
+
+   Released 02/17/05
+   GUI and compilers v2.0.6 require API library libfwbuilder version 2.0.6
+
+Summary
+
+   This release adds ability to print firewall rulesets
+
+   For those who wish to build from source, instructions are outlined in the
+   document "Install and Build instructions" on our web site here
+
+What's new
+
+     * Improvements in the GUI
+
+          * Support for printing of firewall rulesets:
+
+               * prints policies and NAT rules for the currently opened
+                 firewall object
+               * can print a header on each page, header includes file name,
+                 RCS revision number and page number. Header can be turned
+                 off
+               * can print a legend at the end of the printout. Legend shows
+                 each icon and what object type it corresponds to. Printing
+                 of the legend can be turned off.
+               * can print a list of objects used in all rules of the
+                 firewall. Each object is accompanied with a brief summary of
+                 its parameters. This can be turned off as well.
+               * While printing rule sets, the program will break the table
+                 on the boundary of a rule when it reaches end of the page
+               * Rule sets are printed as screenshots of the same table
+                 widget used in the GUI. The user can change scaling factor
+                 for the tables to make them fit on the page
+               * Printing has been tested on Linux, Windows and Mac OS X
+
+          * slightly changed logic with user warnings in the object removal
+            code. The program asks the user for confirmation if they remove
+            an ordinary object from a regular library. Confirmation is not
+            asked if object is removed from "Deleted objects" library or when
+            a library is being deleted (in this case we ask a different
+            quastion later anyway). This helps avoid double warning when a
+            library is deleted.
+
+          * New service objects:
+
+               * TCP service objects for regular VNC viewer (displays 0 and
+                 1) and Java VNC viewer (displays 0 and 1)
+               * UDP service object for OpenVPN
+
+     * Improvements in compiler for iptables fwb_ipt
+
+          * implemented feature req. #1112980: "Need unique names for
+            accounting rules". User can now specify a unique name for rules
+            with action 'Accounting'; this name will be converted to a chain
+            name. This simplifies accounting since chain name for such rule
+            won't change if the user adds or removes rules above or below.
+
+     ----------------------------------------------------------------------
+
+Bugs fixed in GUI:
+
+     * bug #1107838: "bug in configure script in fwbuilder 2.0.6". Need to
+       specify path "./" when calling runqmake.sh
+     * bug #1109631: "can not copy firewall script to /etc on Linksys". Added
+       an option ot all OS resource files that determines whether user is
+       allowed to change installation directory on the firewall. Currently it
+       is allowed on all supported OS except Linksys/Sveasoft because there
+       /etc/ resides on read-only filesystem
+     * bug #1109174: "Cannot print rule base" - implemented printing
+     * bug #1111244 "GUI allows to add more than one MAC address to an
+       interface". There can only be one MAC address for each interface.
+     * bug #1112264: "Load last edited file" setting doesn't work. This was
+       broken only on Mac OS X.
+     * bug #1112764: "some Objects are partially obscured in printout". Parts
+       of the "Objects" table were clipped.
+     * bug #1112776: "some items touching seperator lines on printouts". Rule
+       elements "Action", "Direction", "Options" and "Comment" were placed
+       right at the top of the table cell which led to their clipping when
+       rule set was printed on Mac OS X. Need more testing.
+     * bug #1115412: "Problem installer FWbuilder 2.0.5 for Windows".
+       Switched to command line option "-l" to specify user name for external
+       ssh in installer. This was necessary because Van Dyke SecureCRT on
+       Windows does not support user@host syntax.
+     * bug #1030538: "incorrect highlighting when selecting multiple rules".
+       This bug seems to be specific to Mac OS X
+     * support request #1118039: "Error when Windows client calls plink
+       -ssh". The problem is that putty ignores protocol and port specified
+       in the session file if command line option -ssh is given. On the other
+       hand, the sign of session usage is an empty user name, so we can check
+       for that. If user name is empty, then putty will use current Windows
+       account name to log in to the firewall and this is unlikely to work
+       anyway. This seems to be a decent workaround.
+     * bug #1118717: "fwbuilder 206 on Windows XP SP2: error checking out".
+       Env variable USERNAME was not set in user's profile, which triggered
+       this bug. Now using getuid to get user name on Unix and GetUserName on
+       Windows. This should make the program more resilient for situations
+       when environment variable LOGNAME or USERNAME is not set
+     * bug #1120904: "GUI hangs when accessing RCS file". Improved parsing of
+       rlog output.
+
+Bugs fixed in API:
+
+     * bug #1108861: "two rules using MAC address matching shadow each
+       other". Need to check for MAC addresses while processing rules for
+       shadowing.
+     * bug #1105167: "Crash when importing a library that has been deleted".
+
+Bugs fixed in policy compiler for iptables fwb_ipt:
+
+     * bug #1106701: 'backup ssh access' and statefulness interation. Need to
+       add rules matching states ESTABLISHED and RELATED for the backup ssh
+       access to make sure it works even if global rule matching these states
+       is disabled.
+     * bug #1101910: "Samba problem with Bridged Firewall". Need to split
+       rule to take care of broadcasts forwarded by the bridge and broadcasts
+       that are accepted by the firewall itself. Need to do this only if the
+       rule is not associated with any bridging interface.
+     * bug #1102629: "lost chain in accounting rules". Rules with multiple
+       objects in one of the rule elements and action 'Accounting' generated
+       code that ignored objects in that rule element
+     * bug #1112976: "Accounting rule with logging produces looped iptables
+       command"
+     * bug #1112470: "Problem with FW part of ANY in Bridged mode". If fw is
+       considered part of any, we should place rule in INPUT/OUTPUT chains
+       even if it is a bridging fw since fw itself may send or receive
+       packets.
+     * bug #1123748 "busybox grep -E". Busybox does not support option "-E"
+       with grep, however it has "egrep".
+     * bug #1123933 "iptables add_addr() expr binary not found". As it turns
+       out, /usr/bin/ is not in PATH during boot time on Slackware. I added
+       /usr/bin/ to PATH variable in generated iptables script.
+
+Bugs fixed in policy compiler for pf fwb_pf:
+
+     * bug #1105755 "Custom Service objects not working for PF compiler".User
+       tried to generate a nat rule like this using CustomService object:
+
+         nat on eth1 proto {tcp udp icmp gre} from 192.168.1.0/24 to any ->
+         22.22.22.22
+
+       Taken from the bug report:
+
+       as it turned out, I can not fix this. You are trying to use Custom
+       Service object to insert protocol list into a "nat" rule. Normally, a
+       service object such as TCP or UDP service generates two components for
+       any rule where it is used: a protocol specification and port
+       specification (type/ code spec for ICMP). PF is sensitive to the order
+       of parameters in the rule, in particular, protocol must be defined
+       after interface but before src/dst addresses in the rule, while port
+       numbers go after addresses. Compiler easily retrieves this information
+       from IP, TCP, UDP and ICMP services and places it in a proper slots in
+       the rule it generates. CustomService does not have a notion of
+       protocol and parameters for it, so compiler puts a string that is
+       configured in the CustomService in the place reserved for port
+       numbers. This means you can not use CustomService to specify
+       protocols.
+
+       There still was a bug in fwb_pf where it would print "custom_service"
+       in place of protocol. This is fixed in 2.0.6 build 542. Protocols can
+       not be inserted with Custom Service though.
+
+       Feature request #1111267 "CustomService should specify protocol and
+       parameters for it" has been opened

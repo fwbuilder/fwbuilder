@@ -1,0 +1,168 @@
+<RCC>
+    <qresource>
+        <file alias="Icons/Accept">Icons/accept_25.png</file>
+        <file alias="Icons/Accounting">Icons/accounting_25.png</file>
+        <file alias="Icons/IPv4/icon-neg">Icons/address-neg_25.png</file>
+        <file alias="Icons/IPv4/icon-ref">Icons/address-ref_25.png</file>
+        <file alias="Icons/IPv4/icon-tree">Icons/address_16.png</file>
+        <file alias="Icons/IPv4/icon">Icons/address_25.png</file>
+        <file alias="Icons/AddressTable/icon-neg">Icons/addresstable-neg_25.png</file>
+        <file alias="Icons/AddressTable/icon-ref">Icons/addresstable-ref_25.png</file>
+        <file alias="Icons/AddressTable/icon-tree">Icons/addresstable_16.png</file>
+        <file alias="Icons/AddressTable/icon">Icons/addresstable_25.png</file>
+        <file>Icons/apply.png</file>
+        <file alias="Icons/Return">Icons/back_25.png</file>
+        <file>Icons/back_32.png</file>
+        <file>Icons/big-down-arrow.png</file>
+        <file>Icons/big-left-arrow.png</file>
+        <file>Icons/big-right-arrow.png</file>
+        <file>Icons/big-up-arrow.png</file>
+        <file>Icons/binoculars64.png</file>
+        <file>Icons/blank.png</file>
+        <file>Icons/blank_2x16.png</file>
+        <file>Icons/books1.png</file>
+        <file alias="Icons/Both">Icons/both.png</file>
+        <file alias="Icons/Branch">Icons/branch_25.png</file>
+        <file>Icons/cancel.png</file>
+        <file>Icons/cert_druid_logo.png</file>
+        <file>Icons/check.png</file>
+        <file alias="Icons/Classify">Icons/classify_25.png</file>
+        <file alias="Icons/Interval/icon-neg">Icons/clock-group-neg_25.png</file>
+        <file alias="Icons/Interval/icon-ref">Icons/clock-group-ref_25.png</file>
+        <file alias="Icons/Interval/icon-tree">Icons/clock-group_16.png</file>
+        <file alias="Icons/Interval/icon">Icons/clock-group_25.png</file>
+        <file>Icons/clock-neg_25.png</file>
+        <file>Icons/clock-ref_25.png</file>
+        <file>Icons/clock_16.png</file>
+        <file>Icons/clock_25.png</file>
+        <file>Icons/close.png</file>
+        <file>Icons/compile_25.png</file>
+        <file alias="Icons/Continue">Icons/continue_25.png</file>
+        <file alias="Icons/Custom">Icons/custom_25.png</file>
+        <file alias="Icons/Deny">Icons/deny_25.png</file>
+        <file alias="Icons/DNSName/icon-neg">Icons/domainname-neg_25.png</file>
+        <file alias="Icons/DNSName/icon-ref">Icons/domainname-ref_25.png</file>
+        <file alias="Icons/DNSName/icon-tree">Icons/domainname_16.png</file>
+        <file alias="Icons/DNSName/icon">Icons/domainname_25.png</file>
+        <file>Icons/down-arrow.png</file>
+        <file>Icons/drag_object.png</file>
+        <file>Icons/error.png</file>
+        <file alias="Icons/Firewall/icon-neg">Icons/firewall-neg_25.png</file>
+        <file alias="Icons/Firewall/icon-ref">Icons/firewall-ref_25.png</file>
+        <file alias="Icons/Firewall/icon-tree">Icons/firewall_16.png</file>
+        <file alias="Icons/Firewall/icon">Icons/firewall_25.png</file>
+        <file>Icons/firewall_64.png</file>
+        <file>Icons/firewall_64.xpm</file>
+        <file>Icons/floppy.png</file>
+        <file>Icons/folder1.png</file>
+        <file>Icons/generic.png</file>
+        <file alias="Icons/Host/icon-neg">Icons/host-neg_25.png</file>
+        <file alias="Icons/Host/icon-ref">Icons/host-ref_25.png</file>
+        <file alias="Icons/Host/icon-tree">Icons/host_16.png</file>
+        <file alias="Icons/Host/icon">Icons/host_25.png</file>
+        <file>Icons/host_64.png</file>
+        <file>Icons/host_64.xpm</file>
+        <file alias="Icons/Inbound">Icons/inbound.png</file>
+        <file>Icons/info_25.png</file>
+        <file>Icons/install_25.png</file>
+        <file alias="Icons/Interface/icon-neg">Icons/interface-neg_25.png</file>
+        <file alias="Icons/Interface/icon-ref">Icons/interface-ref_25.png</file>
+        <file alias="Icons/Interface/icon-tree">Icons/interface_16.png</file>
+        <file alias="Icons/Interface/icon">Icons/interface_25.png</file>
+        <file>Icons/key.png</file>
+        <file>Icons/left-arrow.png</file>
+        <file alias="Icons/Library/icon-tree">Icons/library_16.png</file>
+        <file alias="Icons/Library/icon">Icons/library_25.png</file>
+        <file>Icons/lock.png</file>
+        <file>Icons/log.png</file>
+        <file>Icons/log_25.png</file>
+        <file alias="Icons/neg">Icons/neg.png</file>
+        <file alias="Icons/Network/icon-neg">Icons/network-neg_25.png</file>
+        <file alias="Icons/Network/icon-ref">Icons/network-ref_25.png</file>
+        <file alias="Icons/Network/icon-tree">Icons/network_16.png</file>
+        <file alias="Icons/Network/icon">Icons/network_25.png</file>
+        <file>Icons/newfile_25.png</file>
+        <file>Icons/newobject_25.png</file>
+        <file>Icons/newobject_32.png</file>
+        <file>Icons/no.png</file>
+        <file alias="Icons/ObjectGroup/icon-neg">Icons/object-group-neg_25.png</file>
+        <file alias="Icons/ObjectGroup/icon-ref">Icons/object-group-ref_25.png</file>
+        <file alias="Icons/ObjectGroup/icon-tree">Icons/object-group_16.png</file>
+        <file alias="Icons/ObjectGroup/icon">Icons/object-group_25.png</file>
+        <file>Icons/ok.png</file>
+        <file>Icons/openfile_25.png</file>
+        <file alias="Icons/Options">Icons/options_25.png</file>
+        <file alias="Icons/Outbound">Icons/outbound.png</file>
+        <file>Icons/physaddress-neg_25.png</file>
+        <file>Icons/physaddress-ref_25.png</file>
+        <file>Icons/physaddress_16.png</file>
+        <file>Icons/physaddress_25.png</file>
+        <file alias="Icons/Pipe">Icons/pipe_25.png</file>
+        <file>Icons/protect_host.png</file>
+        <file>Icons/protect_net.png</file>
+        <file>Icons/protect_net_and_dmz.png</file>
+        <file>Icons/question.png</file>
+        <file alias="Icons/AddressRange/icon-neg">Icons/rangeaddress-neg_25.png</file>
+        <file alias="Icons/AddressRange/icon-ref">Icons/rangeaddress-ref_25.png</file>
+        <file alias="Icons/AddressRange/icon-tree">Icons/rangeaddress_16.png</file>
+        <file alias="Icons/AddressRange/icon">Icons/rangeaddress_25.png</file>
+        <file>Icons/redo.png</file>
+        <file>Icons/ref.png</file>
+        <file alias="Icons/Reject">Icons/reject_25.png</file>
+        <file>Icons/right-arrow.png</file>
+        <file alias="Icons/Route">Icons/route_25.png</file>
+        <file>Icons/rules_druid_logo.png</file>
+        <file>Icons/save_25.png</file>
+        <file>Icons/search_25.png</file>
+        <file alias="Icons/CustomService/icon-neg">Icons/service-custom-neg_25.png</file>
+        <file alias="Icons/CustomService/icon-ref">Icons/service-custom-ref_25.png</file>
+        <file alias="Icons/CustomService/icon-tree">Icons/service-custom_16.png</file>
+        <file alias="Icons/CustomService/icon">Icons/service-custom_25.png</file>
+        <file alias="Icons/ServiceGroup/icon-neg">Icons/service-group-neg_25.png</file>
+        <file alias="Icons/ServiceGroup/icon-ref">Icons/service-group-ref_25.png</file>
+        <file alias="Icons/ServiceGroup/icon-tree">Icons/service-group_16.png</file>
+        <file alias="Icons/ServiceGroup/icon">Icons/service-group_25.png</file>
+        <file alias="Icons/ICMPService/icon-neg">Icons/service-icmp-neg_25.png</file>
+        <file alias="Icons/ICMPService/icon-ref">Icons/service-icmp-ref_25.png</file>
+        <file alias="Icons/ICMPService/icon-tree">Icons/service-icmp_16.png</file>
+        <file alias="Icons/ICMPService/icon">Icons/service-icmp_25.png</file>
+        <file alias="Icons/IPService/icon-neg">Icons/service-ip-neg_25.png</file>
+        <file alias="Icons/IPService/icon-ref">Icons/service-ip-ref_25.png</file>
+        <file alias="Icons/IPService/icon-tree">Icons/service-ip_16.png</file>
+        <file alias="Icons/IPService/icon">Icons/service-ip_25.png</file>
+        <file alias="Icons/TagService/icon-neg">Icons/service-tag-neg_25.png</file>
+        <file alias="Icons/TagService/icon-ref">Icons/service-tag-ref_25.png</file>
+        <file alias="Icons/TagService/icon-tree">Icons/service-tag_16.png</file>
+        <file alias="Icons/TagService/icon">Icons/service-tag_25.png</file>
+        <file alias="Icons/TCPService/icon-neg">Icons/service-tcp-neg_25.png</file>
+        <file alias="Icons/TCPService/icon-ref">Icons/service-tcp-ref_25.png</file>
+        <file alias="Icons/TCPService/icon-tree">Icons/service-tcp_16.png</file>
+        <file alias="Icons/TCPService/icon">Icons/service-tcp_25.png</file>
+        <file alias="Icons/UDPService/icon-neg">Icons/service-udp-neg_25.png</file>
+        <file alias="Icons/UDPService/icon-ref">Icons/service-udp-ref_25.png</file>
+        <file alias="Icons/UDPService/icon-tree">Icons/service-udp_16.png</file>
+        <file alias="Icons/UDPService/icon">Icons/service-udp_25.png</file>
+        <file>Icons/stop.png</file>
+        <file alias="Icons/Tag">Icons/tag_25.png</file>
+        <file>Icons/uncheck.png</file>
+        <file>Icons/undo.png</file>
+        <file>Icons/up-arrow.png</file>
+        <file>Icons/warning.png</file>
+        <file>Icons/yes.png</file>
+        
+        <file>Images/designer_dataview.png</file>
+        <file>Images/designer_searchfind.png</file>
+        <file>Images/editcopy</file>
+        <file>Images/editcut</file>
+        <file>Images/editpaste</file>
+        <file>Images/filenew</file>
+        <file>Images/fileopen</file>
+        <file>Images/filesave</file>
+        <file>Images/library.png</file>
+        <file>Images/print</file>
+        <file>Images/redo</file>
+        <file>Images/searchfind</file>
+        <file>Images/tabwidget.png</file>
+        <file>Images/undo</file>
+    </qresource>
+</RCC>

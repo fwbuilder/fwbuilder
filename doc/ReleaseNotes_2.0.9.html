@@ -1,0 +1,100 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+    <link rel="stylesheet" type="text/css" href="http://www.fwbuilder.org/pages/fwbuilder.css">
+  </head>
+  <body>
+    <h1>		Firewall Builder Release Notes </h1>
+    <br>
+    <h2> Version  2.0.9   </h2>
+    <br>
+    <p>
+      Released 09/17/2005
+      <br>
+      <b>GUI and compilers v2.0.9 require API library libfwbuilder version 2.0.9</b>
+      <br>
+    <h2>Summary </h2>
+    <p>
+      This is a bug fix release
+    <p>
+      <b>For those who wish to build from source, instructions are outlined
+        in the document "Install and Build instructions" on our web site <a
+          href="http://www.fwbuilder.org/archives/cat_installation.html">here</a></b>
+
+    <h2>What's new</h2>
+    <ul>
+      <li>Added support for Cisco FWSM. This includes recognition
+      of platform-specific options and parameters for FWSM v2.3
+      (based on PIX 6.3), as well as interaction with FWSM in
+      built-in policy installer. Firewall Builder for PIX v1.1.10
+      is required to generate configuration compatible with FWSM.
+      </li>
+
+      <li>Improvements in the GUI
+        <p>
+        <ul>
+          <li>Feature Request #1225393 "Print comments on objects"
+          </li>
+
+          <li>Feature Request #1187461 "Add "commit" menu item". This
+          menu item commits opened data file to RCS but keeps it
+          opened so the user can continue editing.</li>
+
+          <li>Spanish translation has been added, thanks to Carlos
+          Lozano &lt;clozano@andago.com&gt;</li>
+
+        </ul>
+      </li>
+    </ul>
+
+    <br>
+    <br>
+    <h2>Bugs fixed in the GUI:</h2>
+    <ul>
+      <li>bug #1254775: "RCS checkin fails on Windows when data file
+      is too big". RCS tools failed to check the file in if it
+      consisted of one huge line of text. This fix makes th GUI save
+      data file (.fwb) in formatted form on Windows, just like on
+      Linux. This means each XML element is saved on separate line
+      instead of all of them being on the same line.</li>
+
+      <li>bug #1226069: "Segfault: Drag&Drop between two
+      instances". If user started two instances of the GUI and tried
+      to drag and drop objects between them, the instance receiving an
+      object crashed.</li>
+
+      <li>bugs #1233165: "Illegal Logging-Limit string" and #1287755:
+      "i18n is breaking iptables script". The GUI stored options of the
+      "limit" module as translated strings instead of standard
+      attributes.</li>
+
+      <li>bug #1240205: "Iilegal --log-level Information". The GUI
+      stored log levels as translated strings instead of standard
+      attributes.
+      </li>
+
+      <li>bug #1277129: "script is truncated when installed by the GUI
+      running on Mac". Built-in installer truncated firewall script
+      while copying it to the firewall if GUI was running on Mac OS X
+      and the script was relatively large. This bug triggered only on
+      Mac OS X.</li>
+
+    </ul>
+
+    <br>
+    <br>
+    <h2>Bugs fixed in policy compiler for PF:</h2>
+    <ul>
+      <li>bug #1276083: "Destination NAT rules". Old restriction on
+      "rdr" rules that required service in OSrv is not valid anymore,
+      pf supports rdr rules with no protocol specification. </li>
+
+    </ul>
+
+
+    
+
+
+
+  </body>
+</html>

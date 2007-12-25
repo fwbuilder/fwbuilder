@@ -1,0 +1,59 @@
+.TH  fwb_ipt  1 "" FWB "Firewall Builder"
+.SH NAME
+fwb_ipt \- Policy compiler for iptables
+.SH SYNOPSIS
+
+.B fwb_ipt
+.RB [-wvV]
+.RB [-d wdir]
+.RB [-o output.fw]
+.RB -f data_file.xml
+object_name
+
+.SH "DESCRIPTION"
+
+.B fwb_ipt
+is a firewall policy compiler component of Firewall Builder (see
+fwbuilder(1)). Compiler reads objects definitions and firewall
+description from the data file specified with "-f" option and
+generates resultant iptables script. The script is written to
+the file with the name the same as the name of the firewall
+object, plus extension ".fw".
+
+The data file and the name of the firewall objects must be specified
+on the command line. Other command line parameters are optional.
+
+.SH OPTIONS
+.IP "-f FILE"
+Specify the name of the data file to be processed.
+
+.IP "-o output.fw"
+Specify output file name
+
+.IP "-d wdir"
+Specify working directory. Compiler creates file with iptables script
+in this directory.  If this parameter is missing, then iptables script
+will be placed in the current working directory.
+
+.IP "-v"
+Be verbose: compiler prints diagnostic messages when it works.
+
+.IP "-V"
+Print version number and quit.
+
+.SH URL
+Firewall Builder home page is located at the following URL:
+.B http://www.fwbuilder.org/
+
+.SH BUGS
+Please report bugs using bug tracking system on SourceForge: 
+
+.BR http://sourceforge.net/tracker/?group_id=5314&atid=105314
+
+
+.SH SEE ALSO
+.BR fwbuilder(1),
+.BR fwb_ipf(1),
+.BR fwb_pf(1)
+
+.P

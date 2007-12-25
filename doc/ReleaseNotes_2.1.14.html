@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<link rel="stylesheet" type="text/css" href="http://www.fwbuilder.org/pages/fwbuilder.css">
+</head>
+ <body>
+<h1>		Firewall Builder Release Notes </h1>
+<br>
+<h2> Version  2.1.14   </h2>
+<br>
+<p>
+Released 09/10/2007
+<br>
+<b>GUI and compilers v2.1.14 require API library libfwbuilder version 2.1.14</b>
+<br>
+<h2>Summary </h2>
+<p>
+This is another bugfix release, it comes with numerous improvements in
+the iptables policy importer and fixes for gcc 4.2 and 4.3
+
+<p>
+<b>For those who wish to build from source, instructions are outlined
+in the document "Install and Build instructions" on our web site <a
+href="http://www.fwbuilder.org/archives/cat_installation.html">here</a></b>
+
+
+
+<h2>Improvements and bug fixes in libfwbuilder library</h2>
+<ul>
+
+  <li>fixed bug #1761373: "libfwbuilder doesn't build on Mandriva
+    cooker". Applied fixes to make the code compile with gcc 4.2</li>
+
+</ul>
+
+<h2>Improvements and bug fixes in the policy importer for iptables</h2>
+<ul>
+  <li>fixed bug #1764988: "iptables import -> GUI crash":
+    <p>
+      <ul>
+
+        <li>iptables policy importer recognizes and parses target
+          RETURN</li>
+
+        <li>iptables policy importer recognizes and parses TCP flag
+          parameters ALL and NONE</li>
+
+        <li>syntax for TCP flag matching in iptables-save should allow
+          for more than 2 flags in 'comp' part</li>
+
+      </ul>
+      <p>
+  </li>
+
+  <li>fixed bug (no num): iptables policy importer should properly
+    parse numeric protocol specification (e.g. "-p 47").</li>
+
+  <li>added missing supprot for "--log-tcp-sequence",
+"--log-tcp-options" and "--log-ip-options" options for target LOG to
+    iptables policy importer</li>
+
+  <li>added a workaround for a situation when several iptables
+    commands pass control to the same user-define chain in the
+    iptables-save file. As of fwbuilder v2.1, branch ruleset is a
+    child object of PolicyRule. This means two different rules can not
+    point at the same branch ruleset. This is unfortunate but it is
+    hard to fix in the current version because it requires changes XML
+    DTD and API. Will do this in 3.0. Meanwhile, checking if branch
+    ruleset with requested name already exists and change the name by
+    adding suffix '1', '2' etc to make it different. Imported rule is
+    marked as 'bad' (red background) and gets a comment explaining
+    this.</li>
+
+  <li>fixed bug (no num): importer for iptables should properly assign
+    rule options when it finds "-m limit" and "--limit" options in the
+    input file.</li>
+
+</ul>
+
+<h2>Improvements and bug fixes in the GUI</h2>
+<ul>
+  <li>configure.in: another patch by Carlos Silva
+      &lt;r3pek@r3pek.org&gt; to add third parameter to
+      AC_DEFINE_UNQUOTED </r3pek>
+
+  <li>fixed bug reported in Debian Bug report #417685 - added missing
+      #include <algorithm> to make code compile with gcc 4.3</li>
+
+  <li>applied patch by Carlos Silva &lt;r3pek@r3pek.org&gt; to make
+      configure.in use ANTLR C++ run-time installed on the system if
+    it can find one; otherwise it uses copy in src/antlr</li>
+
+  <li>fixed bug #1772722: "installer should recognize when it uses
+    plink 0.60". We detect when installer uses plink on Windows by
+    checking the name of the configured ssh client. The check should
+    be case-insensitive.</li>
+
+  <li>fixed bug #1764971: "allowed value range for burst
+    limit". Iptables "--limit-burst" option should not be limited in
+    the GUI.</li>
+
+</ul>
+
+ </body>
+</html>

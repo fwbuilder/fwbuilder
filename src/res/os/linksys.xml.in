@@ -1,0 +1,107 @@
+<?xml version="1.0"?> <!-- -*- mode: xml; -*- -->
+<FWBuilderResources version="@VERSION@">
+    <Target name="linksys">
+      <description>Linksys/Sveasoft</description>
+      <family>linux24</family>
+      <dialog>linksys</dialog>
+
+      <options>
+        <user_can_change_install_dir>false</user_can_change_install_dir>
+        <default>
+          <linux24_ip_forward>1</linux24_ip_forward>
+          <loopback_interface>lo</loopback_interface>
+          <prompt1>$ </prompt1>
+          <prompt2> # </prompt2>
+        </default>
+
+        <activation>
+
+          <fwdir>/tmp</fwdir>
+
+          <fwdir_test>/tmp</fwdir_test>
+
+          <timeout_units>sec</timeout_units>
+
+          <root>
+            <run>
+              <copy>
+echo '%FWBPROMPT%';
+cat > /tmp/%FWSCRIPT%
+              </copy>
+
+              <compression>
+echo '%FWBPROMPT%';
+mv /tmp/%FWSCRIPT% /tmp/fwb;
+/usr/sbin/nvram unset rc_firewall;
+/usr/sbin/nvram set rc_firewall="/usr/sbin/nvram get fwb|uudecode|gzip -dc|sh";
+/usr/sbin/nvram unset fwb;
+/usr/sbin/nvram set fwb="`cat /tmp/fwb|gzip|uuencode -`" || exit 1;
+rm /tmp/fwb;
+echo "Saving data to flash memory";
+/usr/sbin/nvram commit || exit 1;
+echo "Flash memory:";
+/usr/sbin/nvram show >/dev/null;
+echo "Activating policy";
+/usr/sbin/nvram get fwb|uudecode|gzip -dc|sh &#38;&#38; (killall reboot;echo 'Policy activated')
+              </compression>
+
+              <no_compression>
+echo '%FWBPROMPT%';
+mv /tmp/%FWSCRIPT% /tmp/fwb;
+/usr/sbin/nvram set rc_firewall="/usr/sbin/nvram get fwb|sh";
+/usr/sbin/nvram unset fwb;
+/usr/sbin/nvram set fwb="`cat /tmp/fwb`" || exit 1;
+rm /tmp/fwb;
+echo "Saving data to flash memory";
+/usr/sbin/nvram commit || exit 1;
+echo "Flash memory:";
+/usr/sbin/nvram show >/dev/null;
+echo "Activating policy";
+/usr/sbin/nvram get fwb|sh &#38;&#38; (killall reboot; echo 'Policy activated')
+              </no_compression>
+            </run>
+
+            <test>
+              <copy>
+echo '%FWBPROMPT%';
+cat > /tmp/%FWSCRIPT%
+              </copy>
+
+              <rollback>
+echo '%FWBPROMPT%';
+cp /tmp/crontab /tmp/crontab.o;
+echo '* * * * * root cat /tmp/crontab.o > /tmp/crontab; reboot -d%RBTIMEOUT%' >> /tmp/crontab;
+sh /tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
+              </rollback>
+              <no_rollback>
+echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
+              </no_rollback>
+            </test>
+
+          </root>
+        </activation>
+
+<!-- set to True if you want to suppress comments in the generated script -->
+        <suppress_comments>True</suppress_comments>
+<!-- set to True if you do not need the script to load kernel modules -->
+        <suppress_modules>True</suppress_modules>
+
+      </options>
+
+      <capabilities>
+        <supports_routing>True</supports_routing>
+      </capabilities>
+
+      <tools>
+        <Unknown>
+          <path_lsmod>lsmod</path_lsmod>
+          <path_modprobe>modprobe</path_modprobe>
+          <path_iptables>iptables</path_iptables>
+          <path_iptables_restore>iptables-restore</path_iptables_restore>
+          <path_ip>ip</path_ip>
+          <path_logger>logger</path_logger>
+        </Unknown>
+      </tools>
+    </Target>
+
+</FWBuilderResources>

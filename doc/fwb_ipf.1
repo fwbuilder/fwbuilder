@@ -1,0 +1,139 @@
+.de Sp
+.if n .sp
+.if t .sp 0.4
+..
+.TH  fwb_ipf  1 "" FWB "Firewall Builder"
+.SH NAME
+fwb_ipf \- Policy compiler for ipfilter
+.SH SYNOPSIS
+
+.B fwb_ipf
+.B [-vVx]
+.B [-d wdir]
+.B [-o output.fw]
+.B -f data_file.xml
+object_name
+
+.SH "DESCRIPTION"
+
+.B fwb_ipf
+is a firewall policy compiler component of Firewall Builder (see
+fwbuilder(1)). This compiler generates code for ipfilter. Compiler
+reads objects definitions and firewall description from the data file
+specified with "-f" option and generates ipfilter configuration files
+and firewall activation script.
+
+All generated files have names that start with the name of the
+firewall object. Firewall activation script has extension ".fw" and is
+simple shell script that flushes current policy, loads new filter and
+nat rules and then activates ipfilter.  IPFilter configuration file name
+starts with the name of the firewall object, plus "-ipf.conf".  NAT
+configuration file name also starts with the name of the firewall
+object, plus "-nat.conf". For example, if firewall object has name
+"myfirewall", then compiler will create three files: "myfirewall.fw",
+"myfirewall-pf.conf", "myfirewall-nat.conf".
+
+The data file and the name of the firewall objects must be specified
+on the command line. Other command line parameters are optional.
+
+
+.SH OPTIONS
+.IP "-f FILE"
+Specify the name of the data file to be processed.
+
+.IP "-o output.fw"
+Specify output file name
+
+.IP "-d wdir"
+Specify  working  directory.  Compiler  creates  firewall activation
+script and ipfilter configuration files in this directory.  If this 
+parameter is missing, then all files will be placed in the 
+current working directory.
+
+.IP "-v"
+Be verbose: compiler prints diagnostic messages when it works.
+
+.IP "-V"
+Print version number and quit.
+
+.IP "-x"
+Generate debugging information while working. This option is intended
+for debugging only and may produce lots of cryptic messages.
+
+.SH NOTES
+
+Support for ipf returned in version 1.0.1 of Firewall Builder
+
+Supported features:
+
+
+.IP o 
+both ipf.conf and nat.conf files are generated
+
+.IP o 
+negation in policy rules
+
+.IP o 
+stateful inspection in individual rule can be turned off in rule
+options dialog. By default compiler adds "keep state" or "modulate
+state" to each rule with action 'pass'
+
+.IP o 
+rule options dialog provides a choice of icmp or tcp rst replies for
+rules with action "Reject"
+
+.IP o 
+compiler adds flag "allow-opts" if match on ip options is needed
+
+.IP o 
+compiler can generate rules matching on TCP flags
+
+.IP o 
+compiler can generate script adding ip aliases for NAT rules using addresses
+that do not belong to any interface of the firewall
+
+.IP o 
+compiler always adds rule "block quick all" at the very bottom of
+the script to ensure "block all by default" policy even if the policy
+is empty.
+
+.IP o 
+Address ranges in both policy and NAT
+
+
+
+.PP
+Features that are not supported (yet)
+
+.IP o
+negation in NAT
+
+.IP o
+custom services
+
+
+
+.PP
+Features that won't be supported (at least not anytime soon)
+
+.IP o
+policy routing
+
+
+
+.SH URL
+Firewall Builder home page is located at the following URL:
+.B http://www.fwbuilder.org/
+
+.SH BUGS
+Please report bugs using bug tracking system on SourceForge: 
+
+.BR http://sourceforge.net/tracker/?group_id=5314&atid=105314
+
+
+.SH SEE ALSO
+.BR fwbuilder(1),
+.BR fwb_ipt(1),
+.BR fwb_pf(1)
+
+.P

@@ -1,0 +1,284 @@
+/* 
+
+                          Firewall Builder
+
+                 Copyright (C) 2003 NetCitadel, LLC
+
+  Author:  Vadim Kurland     vadim@fwbuilder.org
+
+  $Id: RuleOptionsDialog.cpp,v 1.24 2007/07/14 21:08:42 vkurland Exp $
+
+  This program is free software which we release under the GNU General Public
+  License. You may redistribute and/or modify this program under the terms
+  of that license as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+ 
+  To get a copy of the GNU General Public License, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+*/
+
+
+#include "config.h"
+#include "global.h"
+#include "utils.h"
+#include "platforms.h"
+
+#include "RuleOptionsDialog.h"
+#include "ObjectManipulator.h"
+#include "RuleSetView.h"
+#include "FWWindow.h"
+
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/FWOptions.h"
+#include "fwbuilder/Resources.h"
+#include "fwbuilder/Rule.h"
+
+#include <qstackedwidget.h>
+#include <qlineedit.h>
+#include <qcombobox.h>
+#include <qpushbutton.h>
+#include <qspinbox.h>
+#include <qcheckbox.h>
+#include <qmessagebox.h>
+#include <qregexp.h>
+#include <qlabel.h>
+
+#include <iostream>
+
+using namespace libfwbuilder;
+using namespace std;
+
+RuleOptionsDialog::~RuleOptionsDialog()
+{
+    delete m_dialog;
+}
+
+RuleOptionsDialog::RuleOptionsDialog(QWidget *parent) : QWidget(parent)
+{
+    m_dialog = new Ui::RuleOptionsDialog_q;
+    m_dialog->setupUi(this);
+    
+    init=false;
+}
+
+void RuleOptionsDialog::loadFWObject(FWObject *o)
+{
+    obj=o;
+//    rsv=rv;
+
+    FWObject *p=obj;
+    while ( !Firewall::isA(p) ) p=p->getParent();
+    platform=p->getStr("platform").c_str();
+
+    
+    Rule      *rule = dynamic_cast<Rule*>(o);
+    FWOptions *ropt = rule->getOptionsObject();
+    
+    m_dialog->editorTitle->setText(QString("%1 / %2 / %3 ")
+            .arg(QString::fromUtf8(p->getName().c_str()))
+            .arg(rule->getTypeName().c_str())
+            .arg(rule->getPosition()));
+
+    int wid=0;
+    if (platform=="iptables") wid=0;
+    if (platform=="ipf")      wid=1;
+    if (platform=="pf")       wid=2;
+    if (platform=="ipfw")     wid=3;
+    if (platform=="pix" || platform=="fwsm")      wid=4;
+    if (platform=="iosacl")   wid=5;
+
+    m_dialog->wStack->widget(wid)->raise();
+    m_dialog->wStack->setCurrentWidget(m_dialog->wStack->widget(wid));
+
+    QStringList  logLevels=getLogLevels( obj->getStr("platform").c_str() );
+    m_dialog->ipt_logLevel->clear();
+    m_dialog->ipt_logLevel->addItems(getScreenNames(logLevels));
+    m_dialog->ipf_logLevel->clear();
+    m_dialog->ipf_logLevel->addItems(getScreenNames(logLevels));
+    m_dialog->pix_logLevel->clear();
+    m_dialog->pix_logLevel->addItems(getScreenNames(logLevels));
+
+    QStringList  logFacilities=getLogFacilities( obj->getStr("platform").c_str() );
+    m_dialog->ipf_logFacility->clear();
+    m_dialog->ipf_logFacility->addItems(getScreenNames(logFacilities));    
+    QStringList limitSuffixes=getLimitSuffixes( obj->getStr("platform").c_str() );
+    m_dialog->ipt_limitSuffix->clear();
+    m_dialog->ipt_limitSuffix->addItems(getScreenNames(limitSuffixes));
+    
+    
+    data.clear();
+    
+    if (platform=="iptables")
+    {
+        data.registerOption( m_dialog->ipt_logPrefix            , ropt,  "log_prefix" );
+        data.registerOption( m_dialog->ipt_logLevel             , ropt,  "log_level", logLevels );
+        data.registerOption( m_dialog->ipt_nlgroup              , ropt,  "ulog_nlgroup" );
+        data.registerOption( m_dialog->ipt_limit                , ropt,  "limit_value" );
+        data.registerOption( m_dialog->ipt_limitSuffix          , ropt,  "limit_suffix", limitSuffixes);
+        data.registerOption( m_dialog->ipt_burst                , ropt,  "limit_burst" );
+
+        data.registerOption( m_dialog->ipt_connlimit            , ropt,  "connlimit_value" );
+        data.registerOption( m_dialog->ipt_connlimit_masklen    , ropt,  "connlimit_masklen" );
+
+        data.registerOption( m_dialog->ipt_hashlimit            , ropt,  "hashlimit_value" );
+        data.registerOption( m_dialog->ipt_hashlimit_suffix     , ropt,  "hashlimit_suffix" );
+        data.registerOption( m_dialog->ipt_hashlimit_burst      , ropt,  "hashlimit_burst" );
+        data.registerOption( m_dialog->ipt_hashlimit_mode       , ropt,  "hashlimit_mode" );
+        data.registerOption( m_dialog->ipt_hashlimit_dstlimit   , ropt,  "hashlimit_dstlimit");
+        data.registerOption( m_dialog->ipt_hashlimit_name       , ropt,  "hashlimit_name");
+        data.registerOption( m_dialog->ipt_hashlimit_size       , ropt,  "hashlimit_size");
+        data.registerOption( m_dialog->ipt_hashlimit_max        , ropt,  "hashlimit_max");
+        data.registerOption( m_dialog->ipt_hashlimit_expire     , ropt,  "hashlimit_expire");
+        data.registerOption( m_dialog->ipt_hashlimit_gcinterval , ropt,  "hashlimit_gcinterval");
+
+        data.registerOption( m_dialog->ipt_assumeFwIsPartOfAny  , ropt,  "firewall_is_part_of_any_and_networks" );
+        data.registerOption( m_dialog->ipt_stateless            , ropt,  "stateless" );
+    }
+
+
+    if (platform=="ipf")
+    {
+        data.registerOption( m_dialog->ipf_logFacility     , ropt,  "ipf_log_facility", logFacilities);
+        data.registerOption( m_dialog->ipf_logLevel        , ropt,  "log_level" , logLevels);
+        data.registerOption( m_dialog->ipf_masq_icmp       , ropt,  "ipf_return_icmp_as_dest");
+        data.registerOption( m_dialog->ipf_stateless       , ropt,  "stateless" );
+        data.registerOption( m_dialog->ipf_keep_frags      , ropt,  "ipf_keep_frags" );
+    }
+
+    if (platform=="pf")
+    {
+        data.registerOption( m_dialog->pf_logPrefix        , ropt,  "log_prefix" );
+        data.registerOption( m_dialog->pf_stateless        , ropt,  "stateless" );
+        data.registerOption( m_dialog->pf_keep_state       , ropt,  "pf_keep_state" );
+        data.registerOption( m_dialog->pf_rule_max_state   , ropt,  "pf_rule_max_state" );
+        data.registerOption( m_dialog->pf_source_tracking  , ropt,  "pf_source_tracking" );
+        data.registerOption( m_dialog->pf_max_src_nodes    , ropt,  "pf_max_src_nodes" );
+        data.registerOption( m_dialog->pf_max_src_states   , ropt,  "pf_max_src_states" );
+
+        data.registerOption( m_dialog->pf_max_src_conn     , ropt,  "pf_max_src_conn" );
+        data.registerOption( m_dialog->pf_max_src_conn_overload_table     ,
+                             ropt,  "pf_max_src_conn_overload_table" );
+        data.registerOption( m_dialog->pf_max_src_conn_flush, ropt,  "pf_max_src_conn_flush" );
+        data.registerOption( m_dialog->pf_max_src_conn_global, ropt, "pf_max_src_conn_global" );
+
+        data.registerOption( m_dialog->pf_max_src_conn_rate_num     , ropt,  "pf_max_src_conn_rate_num" );
+        data.registerOption( m_dialog->pf_max_src_conn_rate_seconds , ropt,  "pf_max_src_conn_rate_seconds" );
+        data.registerOption( m_dialog->pf_max_src_conn_rate_overload_table     ,
+                             ropt,  "pf_max_src_conn_rate_overload_table" );
+        data.registerOption( m_dialog->pf_max_src_conn_rate_flush, ropt,  "pf_max_src_conn_rate_flush" );
+        data.registerOption( m_dialog->pf_max_src_conn_rate_global, ropt, "pf_max_src_conn_rate_global" );
+    }
+
+    if (platform=="ipfw")
+    {
+        data.registerOption( m_dialog->ipfw_stateless      , ropt,"stateless" );
+    }
+
+    if (platform=="pix" || platform=="fwsm")
+    {
+        string vers="version_"+p->getStr("version");
+        if ( Resources::platform_res[platform.toAscii().constData()]->getResourceBool(
+              "/FWBuilderResources/Target/options/"+vers+"/pix_rule_syslog_settings"))
+        {
+            m_dialog->pix_disable_rule_log->setEnabled(true);
+            m_dialog->pix_logLevel->setEnabled(true);
+            m_dialog->pix_log_interval->setEnabled(true);
+
+            data.registerOption( m_dialog->pix_disable_rule_log, ropt,"disable_logging_for_this_rule" );
+            data.registerOption( m_dialog->pix_logLevel        , ropt,"log_level" ,logLevels);
+            data.registerOption( m_dialog->pix_log_interval    , ropt,"log_interval" );
+        } else
+        {
+            m_dialog->pix_disable_rule_log->setEnabled(false);
+            m_dialog->pix_logLevel->setEnabled(false);
+            m_dialog->pix_log_interval->setEnabled(false);
+        }
+
+    }
+
+    init=true;
+    data.loadAll();
+
+    m_dialog->pf_max_src_nodes->setEnabled( m_dialog->pf_source_tracking->isChecked() );
+    m_dialog->pf_max_src_states->setEnabled( m_dialog->pf_source_tracking->isChecked() );
+
+    //apply->setEnabled( false );
+    init=false;
+}
+    
+void RuleOptionsDialog::changed()
+{
+    //apply->setEnabled( true );
+
+    m_dialog->pf_max_src_nodes->setEnabled( m_dialog->pf_source_tracking->isChecked() );
+    m_dialog->pf_max_src_states->setEnabled( m_dialog->pf_source_tracking->isChecked() );
+
+    m_dialog->pf_max_src_conn_overload_table->setEnabled( m_dialog->pf_max_src_conn->value()>0 );
+    m_dialog->pf_max_src_conn_flush->setEnabled( m_dialog->pf_max_src_conn->value()>0 );
+    m_dialog->pf_max_src_conn_global->setEnabled( m_dialog->pf_max_src_conn->value()>0 );
+
+    m_dialog->pf_max_src_conn_rate_overload_table->setEnabled( m_dialog->pf_max_src_conn_rate_num->value()>0 && m_dialog->pf_max_src_conn_rate_seconds->value()>0);
+    m_dialog->pf_max_src_conn_rate_flush->setEnabled( m_dialog->pf_max_src_conn_rate_num->value()>0 && m_dialog->pf_max_src_conn_rate_seconds->value()>0 );
+    m_dialog->pf_max_src_conn_rate_global->setEnabled( m_dialog->pf_max_src_conn_rate_num->value()>0 && m_dialog->pf_max_src_conn_rate_seconds->value()>0 );
+
+    emit changed_sign();
+}
+
+void RuleOptionsDialog::validate(bool *res)
+{
+    *res=true;
+}
+
+void RuleOptionsDialog::isChanged(bool *res)
+{
+    //*res=(!init && apply->isEnabled());
+}
+
+void RuleOptionsDialog::libChanged()
+{
+    changed();
+}
+
+void RuleOptionsDialog::applyChanges()
+{
+    if (!isTreeReadWrite(this,obj)) return;
+
+    init=true;
+    data.saveAll();
+    init=false;
+
+    mw->updateRuleOptions();
+
+    //apply->setEnabled( false );
+    om->updateLastModifiedTimestampForAllFirewalls(obj);
+}
+
+void RuleOptionsDialog::cancelChanges()
+{
+    //apply->setEnabled( false );
+    close();
+}
+
+void RuleOptionsDialog::discardChanges()
+{
+    loadFWObject(obj);
+}
+
+
+/* ObjectEditor class connects its slot to this signal and does all
+ * the verification for us, then accepts (or not) the event. So we do
+ * nothing here and defer all the processing to ObjectEditor
+ */
+void RuleOptionsDialog::closeEvent(QCloseEvent *e)
+{
+    emit close_sign(e);
+
+}
+

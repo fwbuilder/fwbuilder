@@ -1,0 +1,78 @@
+.de Sp
+.if n .sp
+.if t .sp 0.4
+..
+.TH  fwb_ipfw  1 "" FWB "Firewall Builder"
+.SH NAME
+fwb_ipfw \- Policy compiler for ipfw
+.SH SYNOPSIS
+
+.B fwb_ipfw
+.B [-vVx]
+.B [-d wdir]
+.B [-o output.fw]
+.B -f data_file.xml
+object_name
+
+.SH "DESCRIPTION"
+
+.B fwb_ipfw
+is a firewall policy compiler component of Firewall Builder (see
+fwbuilder(1)). This compiler generates code for ipfw - a firewall and
+traffic shaper in FreeBSD (see ipfw(8)). Compiler reads objects
+definitions and firewall description from the data file specified with
+"-f" option and generates firewall configuration and activation
+script.
+
+The generated file has a name that starts with the name of the
+firewall object, with an extension ".fw". It is a shell script that
+flushes current policy, then loads new filter and nat rules.  
+
+The data file and the name of the firewall objects must be specified
+on the command line. Other command line parameters are optional.
+
+
+.SH OPTIONS
+.IP "-f FILE"
+Specify the name of the data file to be processed.
+
+.IP "-o output.fw"
+Specify output file name
+
+.IP "-d wdir"
+Specify working directory.  Compiler creates firewall activation
+script in this directory.  If this parameter is missing, then all
+files will be placed in the current working directory.
+
+.IP "-v"
+Be verbose: compiler prints diagnostic messages when it works.
+
+.IP "-V"
+Print version number and quit.
+
+.IP "-x"
+Generate debugging information while working. This option is intended
+for debugging only and may produce lots of cryptic messages.
+
+.SH NOTES
+
+Support for ipfw was added in version 1.0.10 of Firewall Builder
+
+
+.SH URL
+Firewall Builder home page is located at the following URL:
+.B http://www.fwbuilder.org/
+
+.SH BUGS
+Please report bugs using bug tracking system on SourceForge: 
+
+.BR http://sourceforge.net/tracker/?group_id=5314&atid=105314
+
+
+.SH SEE ALSO
+.BR fwbuilder(1),
+.BR fwb_ipt(1),
+.BR fwb_pf(1)
+.BR fwb_ipf(1)
+
+.P

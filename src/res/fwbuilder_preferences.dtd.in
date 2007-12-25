@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Firewall Builder Preferences Document Type Definition
+     http://www.fwbuilder.org/
+     Version: $Revision: 2 $
+     Authors:  Friedhelm Duesterhoeft, Vadim Zaliva, Vadim Kurland
+     
+     Build Date: 04/16/2001; Initial Release
+-->
+
+<!ENTITY % STRING    "CDATA">
+
+<!-- File name -->
+<!ENTITY % FN "(#PCDATA)">
+
+<!-- Fully qualified directory name -->
+<!ENTITY % FQDN "(#PCDATA)">
+
+<!-- Fully qualified file name -->
+<!ENTITY % FQFN "(#PCDATA)">
+
+<!-- Unsigned Integer -->
+<!ENTITY % USINT "(#PCDATA)">
+
+<!ENTITY % BOOLEAN "(#PCDATA)">
+
+<!ELEMENT Command %FN;>
+<!ELEMENT Filter %FN;>
+<!ELEMENT ToFile %BOOLEAN;> 
+
+<!ELEMENT SNMPTimeout %USINT;>
+<!ELEMENT SNMPRetries %USINT;>
+<!ELEMENT DNSTimeout %USINT;>
+<!ELEMENT DNSRetries %USINT;>
+
+<!ELEMENT Wdir %FQDN;>
+
+<!ELEMENT Autosave %BOOLEAN;>
+<!ELEMENT ShowIconsInPolicy %BOOLEAN;>
+<!ELEMENT LargeIconsInGroups %BOOLEAN;>
+<!ELEMENT ShowHidden %BOOLEAN;>
+<!ELEMENT ObjectQuickView (#PCDATA)>
+<!ELEMENT ObjectQuickViewTimeout %USINT;>
+<!ELEMENT HideNavigationBar %BOOLEAN;>
+<!ELEMENT RememberWindowPositionAndSize %BOOLEAN;>
+<!ELEMENT ObjectTreeMode (#PCDATA)>
+<!ELEMENT FloatObjectTree %BOOLEAN;>
+<!ELEMENT ShowObjectPropertiesInTree %BOOLEAN;>
+<!ELEMENT ShowIconsInTree %BOOLEAN;>
+
+<!ELEMENT MainWindowX %USINT;>
+<!ELEMENT MainWindowY %USINT;>
+<!ELEMENT MainWindowW %USINT;>
+<!ELEMENT MainWindowH %USINT;>
+<!ELEMENT MainWindowDivider %USINT;>
+
+<!ELEMENT TreeWindowX %USINT;>
+<!ELEMENT TreeWindowY %USINT;>
+<!ELEMENT TreeWindowW %USINT;>
+<!ELEMENT TreeWindowH %USINT;>
+	  
+<!ELEMENT ObjWindowX %USINT;>
+<!ELEMENT ObjWindowY %USINT;>
+<!ELEMENT ObjWindowW %USINT;>
+<!ELEMENT ObjWindowH %USINT;>
+
+<!ELEMENT PKCS12Identity (#PCDATA)>
+<!ATTLIST PKCS12Identity
+ id          %STRING; #REQUIRED
+ description %STRING; #REQUIRED
+>
+
+<!ELEMENT File1 %FQFN;>
+<!ELEMENT File2 %FQFN;>
+<!ELEMENT File3 %FQFN;>
+<!ELEMENT File4 %FQFN;>
+
+<!ELEMENT Security (PKCS12Identity*)>
+<!ELEMENT Network (SNMPTimeout,SNMPRetries,DNSTimeout,DNSRetries)>
+<!ELEMENT Print (Command,Filter,ToFile)>
+<!ELEMENT Paths (Wdir)>
+<!ELEMENT UI (ShowIconsInTree,
+                ShowObjectPropertiesInTree,
+		HideNavigationBar,
+		RememberWindowPositionAndSize,
+		MainWindowX,
+		MainWindowY,
+		MainWindowW,
+		MainWindowH,
+		MainWindowDivider,
+		TreeWindowX,
+		TreeWindowY,
+		TreeWindowW,
+		TreeWindowH,
+		ObjWindowX ,
+		ObjWindowY ,
+		ObjWindowW ,
+		ObjWindowH ,
+		ObjectTreeMode,
+		FloatObjectTree,
+		Autosave,
+		ShowIconsInPolicy,
+		LargeIconsInGroups,
+		ShowHidden,
+		ObjectQuickView,
+		ObjectQuickViewTimeout)>
+<!ELEMENT History (File1,File2,File3,File4)>
+
+<!ELEMENT FWBuilderPreferences (Network,Print,Paths,UI,History,Security?)>
+<!ATTLIST FWBuilderPreferences
+   version %STRING; #FIXED "@VERSION@"
+>
+
+
+
+
+
+
+
+
+
+

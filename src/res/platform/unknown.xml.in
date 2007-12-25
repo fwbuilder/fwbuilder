@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<FWBuilderResources version="@VERSION@">
+    <Target name="unknown">
+      <description>Unknown</description>
+      <compiler></compiler>
+      <dialog>unknown</dialog>
+      <supported_os>unknown</supported_os>
+
+      <options>
+        <default>
+        </default>
+      </options>
+    </Target>
+
+</FWBuilderResources>

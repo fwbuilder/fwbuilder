@@ -1,0 +1,126 @@
+.\"-*- mode: nroff; tab-width: 4; -*-
+.\"
+.de Sp
+.if n .sp
+.if t .sp 0.4
+..
+.TH  fwb_install  1 "" FWB "Firewall Builder"
+.SH NAME
+fwb_install \- Firewall policy installation and activation script
+.SH SYNOPSIS
+
+.B fwb_install
+.B [-d wdir]
+.B -f data_file.xml
+object_name
+
+.SH "DESCRIPTION"
+
+.B fwb_install
+is firewall policy installation and activation script for Firewall
+Builder (see fwbuilder(1)).  This script transfers compiled 
+rulesets via ssh to a firewall and activates them. Optionally it
+transfers a backup of the .xml source file, too.
+.PP
+The data file and the name of the firewall objects must be specified
+on the command line. Other command line parameters are optional.
+.PP
+The firewall rules should allow ssh traffic to the firewall, or you
+will lock yourself out.
+.PP
+
+.SH INSTALLATION
+
+You should have a ssh and sshd installed and configured properly.
+.PP
+Make a public/private keypair using ssh-keygen tool, the public key
+goes into ~$REMOTEUSER/.ssh/ on the firewall, $SSHIDENTITY locally
+points to the private key. Protect your key with a good passphrase!
+.PP
+Tell fwbuilder to use the script: enter /home/vadim/Projects/fwb/fwbuilder/../usr//bin/fwb_install (a full
+path and name for this script) in the "install script" entry field in
+the firewall object dialog.
+.PP
+To customize the script you can adjust the following variables inside
+of it :
+.PP
+.PD 0
+.TP
+.B REMOTEDIR
+Specifies where the firewall script or configuration file will be
+placed on the firewall (default: "/etc/firewall")
+.TP
+.B REMOTEUSER
+Specifies the user on the firewall allowed to set up the firewall rulesets
+(default: "root")
+.TP
+.B DOXMLBACKUP
+Specifies whether we want to store a backup copy of the .xml on the firewall
+(default: "YES")
+.TP
+.B SSHIDENTITY
+location of private ssh key (default: "${HOME}/.ssh/id_dsa")
+
+
+.SH OPTIONS
+.IP "-f FILE"
+Specify the name of the data file to be processed.
+
+.IP "-d wdir"
+Specify working directory. Policy compilers create firewall
+configurations and/or scripts in this directory.  If this parameter is
+missing, then script looks in the current working directory.
+
+.SH CAVEATS
+
+The firewall rules should allow ssh traffic to the firewall, or you
+will lock yourself out.
+
+.PP
+The script uses address of firewall's interface which is marked as
+"management". The script aborts if there is no management interface.
+
+.PP
+There still is a depenency on the current DTD structure in that the
+script assumes that all firewalls are always located in the tree
+branch "Firewalls". This may change in the future; the script will
+need to be updated then.
+
+.PP
+This script has been developed and tested for iptables firewall on
+Linux systems. To the best of my knowledge, nobody used this script
+for any other firewall type or OS, however it should work for any
+firewall running on a Unix box where firewall configuration is
+represented in a form of a shell script. On example is ipfw used on
+FreeBSD or Mac OS X.
+
+.PP
+.SH URL
+Firewall Builder home page is located at the following URL:
+.B http://www.fwbuilder.org/
+
+.SH BUGS
+Please report bugs using bug tracking system on SourceForge: 
+
+.BR http://sourceforge.net/tracker/?group_id=5314&atid=105314
+
+.SH AUTHOR
+
+David Gullasch <xonox@web.de>, <gullasch@secunet.de>
+Changes and corrections by Vadim Kurland <vadim@fwbuilder.org>
+
+.SH DISCLAIMER
+
+(K) 2001 by David Gullasch <xonox@web.de>, <gullasch@secunet.de> All
+rights reversed. Copy what you like, but give credit and include this
+note. Don't blame me when this script does not do what you want it to
+- there is no bug-free software.
+
+
+.SH SEE ALSO
+.BR fwbuilder(1),
+.BR fwb_ipt(1),
+.BR fwb_ipf(1),
+.BR fwb_pf(1)
+
+.P

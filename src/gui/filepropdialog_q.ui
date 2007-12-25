@@ -1,0 +1,315 @@
+<ui version="4.0" >
+ <class>filePropDialog_q</class>
+ <widget class="QDialog" name="filePropDialog_q" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>415</width>
+    <height>438</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>File Properties</string>
+  </property>
+  <widget class="QLabel" name="textLabel1" >
+   <property name="geometry" >
+    <rect>
+     <x>11</x>
+     <y>11</y>
+     <width>92</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Location:</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="fileRevHistory" >
+   <property name="enabled" >
+    <bool>true</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>11</x>
+     <y>160</y>
+     <width>393</width>
+     <height>238</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="Line" name="line5" >
+   <property name="geometry" >
+    <rect>
+     <x>11</x>
+     <y>71</y>
+     <width>393</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="frameShape" >
+    <enum>QFrame::HLine</enum>
+   </property>
+   <property name="frameShadow" >
+    <enum>QFrame::Sunken</enum>
+   </property>
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="fileRO" >
+   <property name="geometry" >
+    <rect>
+     <x>11</x>
+     <y>31</y>
+     <width>393</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>RO</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel2" >
+   <property name="geometry" >
+    <rect>
+     <x>11</x>
+     <y>80</y>
+     <width>393</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Revision Control:</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel1_2" >
+   <property name="geometry" >
+    <rect>
+     <x>11</x>
+     <y>51</y>
+     <width>189</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Time of last modification:</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel4" >
+   <property name="geometry" >
+    <rect>
+     <x>11</x>
+     <y>100</y>
+     <width>189</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Revision:</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel7" >
+   <property name="geometry" >
+    <rect>
+     <x>11</x>
+     <y>120</y>
+     <width>189</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Locked by user:</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="fileLocation" >
+   <property name="geometry" >
+    <rect>
+     <x>109</x>
+     <y>11</y>
+     <width>295</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="sizePolicy" >
+    <sizepolicy>
+     <hsizetype>7</hsizetype>
+     <vsizetype>5</vsizetype>
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="text" >
+    <string>location</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lastModified" >
+   <property name="geometry" >
+    <rect>
+     <x>206</x>
+     <y>51</y>
+     <width>198</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>lastModified</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="fileRev" >
+   <property name="geometry" >
+    <rect>
+     <x>206</x>
+     <y>100</y>
+     <width>198</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="sizePolicy" >
+    <sizepolicy>
+     <hsizetype>7</hsizetype>
+     <vsizetype>5</vsizetype>
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="text" >
+    <string>rev</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="fileLockedBy" >
+   <property name="geometry" >
+    <rect>
+     <x>206</x>
+     <y>120</y>
+     <width>198</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="sizePolicy" >
+    <sizepolicy>
+     <hsizetype>7</hsizetype>
+     <vsizetype>5</vsizetype>
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="text" >
+    <string>lockedBy</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel9" >
+   <property name="geometry" >
+    <rect>
+     <x>11</x>
+     <y>140</y>
+     <width>393</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Revision history:</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="bt_OK" >
+   <property name="geometry" >
+    <rect>
+     <x>310</x>
+     <y>400</y>
+     <width>93</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>OK</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="bt_print" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>400</y>
+     <width>93</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Print</string>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <tabstops>
+  <tabstop>fileRevHistory</tabstop>
+  <tabstop>bt_print</tabstop>
+  <tabstop>bt_OK</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>bt_OK</sender>
+   <signal>released()</signal>
+   <receiver>filePropDialog_q</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bt_print</sender>
+   <signal>released()</signal>
+   <receiver>filePropDialog_q</receiver>
+   <slot>printRevHistory()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

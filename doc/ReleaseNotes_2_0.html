@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<link rel="stylesheet" type="text/css" href="http://www.fwbuilder.org/pages/fwbuilder.css">
+</head>
+ <body>
+<h1>		Firewall Builder Release Notes </h1>
+<br>
+<h2> Version  2.0   </h2>
+<br>
+<p>
+Released 07/28/04
+<br>
+<b>GUI and compilers v2.0 require API library libfwbuilder version 2.0</b>
+<br>
+<h2>Summary </h2>
+<p>
+
+<b>Firewall Builder GUI v2.0 has been completely rewritten using QT</b>
+<p>
+<b>For those who wish to build from source, instructions are outlined
+in <a
+href="http://www.fwbuilder.org/archives/cat_installation.html">"Install
+and Build instructions"</a></b>
+
+    <h2>What's new</h2>
+    <p>
+      The GUI has been rewritten from scratch. The new GUI is based on
+      QT 3.x. It has been tested with Qt v3.1.1, 3.2.3 and 3.3.1. We
+      build on RedHat 9.0, Mandrake 10, SuSE 9.1, FreeBSD 5.2 using QT
+      packages that come with these systems.
+      
+    <p>The GUI has been redesigned to addresses problems known to
+    exist in fwbuilder 1.1.x user interface:
+
+    <ul>
+      <li>Speed imporevements in the GUI. Firewall policy that consist
+      of 1000 rules renders just as fast as policy that has only 10
+      rules. The GUI has actually been tested with 1000 rules
+      policies.</li>
+
+      <li>Object tree is not synchronized with firewall policy
+      view. Selecting an object in the tree does not immediately open
+      it in the right hand panel in the main window. Right hand side
+      panel is dedicated for the policy view and always shows policy
+      or NAT rules of the firewall selected in the pull-down menu
+      above it. Editing of all objects is done in a separate floating
+      editor window that can be kept open at all times.
+      </li>
+
+      <li>Properties of an object selected in the tree or in any rule
+      are shown in the information panel under the tree. The size of
+      the panel can be changed; the panel has three modes of
+      operation: a) hidden, b) showing only comment associated with
+      selected object, c) showing its parameters and comment. User can
+      choose the mode by clilcking on the toolbar button under the
+      information panel.</li>
+
+      <li>"Find object" function finds obejcts by their name in the
+      tree, in groups and in rules. Regular expressions are
+      recognized.</li>
+
+      <li>Built-in version control based on RCS provides for a simple
+      way to track  changes.</li>
+
+      <li>Data file can be opened read-only for inspection. If the
+      file is checked out and locked by a different user, it can only
+      be opened read-only.</li>
+
+      <li>Data file can be given on the command line without "-f"
+      switch. The "-f" is also supported for backwards
+      compatibility. </li>
+
+      <li>The program does not make copies of standard objects in user
+      data file anymore (per Feature Request #810504 "'Standard'
+      definitions should not be saved" )</li>
+
+      <li>Users can create and distribute their own libraries of
+      objects. The GUI allows for objects to be exported to external
+      library file with extension .fwl and imported from such
+      file.</li>
+
+      <li>Objects in the 'Standard' objects library, as well as
+      objects in libraries imported from external files, are
+      read-only</li>
+
+      <li>Added an option for autosave - if this option is turned on,
+      the gui periodically saves data to the file. The autosave
+      interval can be set between 1 minute and 2 hours.</li>
+
+      <li>The GUI detects collisions between objects when external
+      library is imported. Collision is detected when any attribute of
+      an objects in the tree is different from that attribute in the
+      object with the same unique ID in the file being imported. Some
+      old data files may trigger collisions because of subtle
+      differences in comments</li>
+
+      <li>Whenever user changes the name of a firewall, host or an
+      interface object, the GUI asks whether they want to also rename
+      all IP and MAC addresses that belong to that firewall or
+      host. If user agrees to rename them, the program generates names
+      automatically using scheme 'host_name:interface_name:ip' and
+      'host_name:interface_name:mac'</li>
+
+      <li>Deleted objects are moved to a special library and can be
+      recovered with "Undelete" operation</li>
+
+      <li>Rules can be color-labeled in all policies.</li>
+
+      <li>Window size and position is remembered across multiple
+      sessions for all dialogs.</li>
+
+      <li>Two modes of drag-and-drop of objects in policy and NAT
+      rules: dragging of an object moves it; dragging of an object
+      with Ctrl key pressed copies it</li>
+
+      <li>Multiple objects can be selected in the tree. Operations
+      such as duplication, moving between libraries, copy/paste can be
+      performed on multiple selected objects</li>
+
+      <li>Multiple rules can also be selected for operations such as
+      moving, deleting, copy/paste, setting colors</li>
+      
+      <li>A collection of firewall template objects comes in a
+      separate XML file with the package. You can create a new
+      firewall object using one for these templates. This replaced
+      "help me build firewall" wizard. </li>
+
+      <li>The "Help me build firewall policy" wizard was phased out
+      and replaced with firewall templates. The template library will
+      be extended in the future releases.</li>
+
+      <li>GUI has a built-in installer that uses external ssh client
+      to communicate with firewall. Installer has simple GUI interface
+      and works on both Linux and Windows (uses putty or SecureCRT on
+      Windows). There is no need in external install script
+      fwb_install anymore.</li>
+
+      <li>An option has been added to firewall platforms iptables,
+      ipfilter, pf and ipfw that sets up a policy rule to permit ssh
+      access from one specified IP address to the firewall regardless
+      of other rules. This is for a backup ssh access from the
+      management workstation in case of an error in the policy that
+      locks user out of the firewall. The option (a checkbox and entry
+      field for the management station address) is located in the
+      "Compiler" tab of the firewall settings dialog. A command that
+      permits ssh to the firewall from the given address is added on
+      top of all other rules.</li>
+
+      <li>Packages for Windows 2000, Windows XP and Mac OS X will be
+      distributed under a different license.</li>
+
+      <li>The build process is based on qmake and uses autoconf
+      sparingly. Libtool is not used at all.</li>
+
+      <li>Internationalization is done using gettext 0.14.1 which
+      supports QT .qm files</li>
+
+      <li>Reasonably complete French translation is provided.</li>
+
+      <li>Object names and comments are stored in the object file in
+      UTF-8 format. This allows for names and comments to be entered
+      and displayed in local languages. Although object names can be
+      localized, it is recommended to keep firewall names in plain
+      ASCII because compilers do not support UTF-8 yet. This fixes
+      very old bug #657156: "Special characters problem".</li>
+
+      <li>Code compiles with gcc 3.4</li>
+    </ul>
+    <br>
+
+
+    <br>
+    <br>
+    <h2>New firewall platforms and new features that apply to all
+    platforms:</h2>
+    <ul>
+      <li>
+        Added support for Linksys devices running Sveasoft
+        firmware. Firewall object should be configured as platform
+        "iptables", host OS "linksys". Policy installer works both
+        using password and public key authentication.</li>
+
+      <li>Added an option to firewall platforms iptables, ipfilter, pf
+      and ipfw that sets up a policy rule to permit ssh access from
+      one specified IP address to the firewall regardless of other
+      rules. This is for a backup ssh access from the management
+      workstation in case of an error in the policy that locks user
+      out of the firewall. The option (a checkbox and entry field for
+      the management station address) is located in the "Compiler" tab
+      of the firewall settings dialog. A command that permits ssh to
+      the firewall from the given address is added on top of all other
+      rules.</li>
+
+      <li>added attribute 'lastModified' to element FWBObjectDatabase
+      in DTD. this attribute holds time of last modification done to
+      any object in the database (GMT). Added support for this
+      attribute in class FWObjectDatabase. This attribute is
+      implied.</li>
+    </ul>
+    
+    <br>
+    <br>
+    <hr>
+
+    <h2>Bugs fixed in libfwbuilder API:</h2>
+    <ul>
+      <li>fixed bug that appeared only when used with libxml2 2.6.6
+      and libxslt 1.0.33 - '*Group' elements were not converted
+      properly (losing all child elements). It worked on RH 9 with
+      libxml2 2.5.4 and libxslt 1.0.27. Fix tested with libxml2 2.6.6
+      and libxslt 1.0.33 on Fedora C1 </li>
+
+      <li>Method Firewall::duplicate replaces references to the
+      firewall, its interfaces as well as IPv4 and physical addresses
+      of the interfaces in all rule sets with references to the copies
+      of corresponding objects. Now firewall created from another one
+      using 'duplicate' does not reference interfaces or addresses
+      that belong to the original firewall object. </li>
+
+      <li>bug #950857: "Incorrect conversion of address range" -
+      address range that consisted of two IP addresses was converted
+      to a set of networks incorrectly.</li>
+
+      <li>bug that occured on big endian architecture (e.g. Macintosh)
+      because of incorrect usage of preprocessor directives to check
+      BYTE_ORDER. This bug caused incorrect address arithmetics.</li>
+
+      <li>bug #906709: "A dynamic interface". Dynamic interface used
+      to "shadow" old broadcast object (0.0.0.0)</li>
+    </ul>
+
+
+    <br>
+    <br>
+    <h2>New features in iptables policy compiler fwb_ipt:</h2>
+    <ul>
+      <li>Feature Request #913273: make "assume fw is part of any" a
+      per-rule option</li>
+
+      <li>Processing of policy rules where firewall object is used in
+      src or dst with negation (possibly in combination with other
+      objects) has been optimized. Before, generated script would
+      match firewall's addresses in INPUT/OUTPUT and FORWARD chains
+      which added redundant checks in the FORWARD chain.</li>
+    </ul>
+
+
+    <br>
+    <br>
+    <h2>Bugs fixed in iptables policy compiler fwb_ipt:</h2>
+    <ul>
+      <li>
+        bug #956544: "Error into load modules script generation",
+        where generated script would not load kernel modules with
+        names "module.ko.gz". Regular expression should match on
+        ".ko.*$" to find these modules properly. Thanks to Andrey
+        Kaminsky <and@fao.lv> who pointed this out.
+      </li>
+
+      <li>bug #934949: "duplicate rules". fwb_ipt created duplicate
+      rules for a bridging firewall if fw object or its interfaces or
+      their addresses were not in the source or desintaion</li>
+
+      <li>bug #912849: "Reorder activation of network interfaces in
+      IPT" - script generated by the compiler for iptables sets
+      default policy to DROP, flushes all rules and then reconfigures
+      interfaces of the firewall (it used to reconfigure intefaces and
+      then flush the rules).</li>
+
+      <li>bug #906709: "A dynamic interface". Dynamic interface used
+      to "shadow" old broadcast object (0.0.0.0)</li>
+
+      <li>bug #979484: "improper command for rule with service any and
+      action reject."  For rules like that, and if rule options dialog
+      does not specify particular way to handle this combination, the
+      compiler splits the rule; the first iptables command rejects any
+      tcp packet with TCP RST, while the second rejects everything
+      else with ICMP message.</li>
+
+      <li>bug #917422: "compiler misinterprets interface with addr
+      0.0.0.0". If an interface has IP address "0.0.0.0", it is
+      considered an error.</li>
+
+      <li>bug #978854: "false rule generated for fw object in
+      interface rule". Policy compiler for iptables generated
+      incorrect code for rules using negated firewall object in source
+      or destination when global option "assume firewall is part of
+      any" was turned off.</li>
+
+      <li>bug #925199: "compiles wrongly a double negation". Policy
+      compiler for iptables generated incorrect code for rules where
+      two rule elements used negation (i.e. both src and dst, or dst
+      and srv, etc.)</li>
+
+      <li>bug #988860: "Logging missing when firewall start is
+      aborted". When iptables script generated by fwb_ipt finds
+      missing interfaces, it prints error message both on stdout and
+      sends it to the log.</li>
+
+      <li>bug #965558: "False ruleset generated for iptables (negate
+      w/ nat)". There were problems with double negations in NAT rules
+      (OSrc and ODst, or ODst and OSrv, etc).</li>
+
+      <li>bugs #935794: "dual translation and negation in fwb_ipt" and
+      #986376: "Wrong result for negated source in NAT rules". Dual
+      translation rule with negation in OSrc did not process negation
+      in the second half (POSTROUTING rule, the one that translates
+      the source).</li>
+
+      <li>bug #990037: "Wrong rule generated: fw interface included in
+      negated group". Rules with negation should not generate code in
+      INPUT/OUTPUT chains if option "assume firewall is part of any"
+      is off.</li>
+    </ul>
+
+
+    <br>
+    <br>
+    <h2>Bugs fixed in iptables policy compiler fwb_pf:</h2>
+    <ul>
+      <li> bug (no number) where fwb_pf would not include code defined by
+        custom service object in the .conf file</li>
+      
+      <li>bug #985527: pf NAT rules miss destination port
+      specification. NAT rules that translate to "map" missed
+      destination port specification.  </li>
+
+      <li>bug #986518: "PF redirection always point to loopback
+      address"</li>
+    </ul>
+    
+</body>
+</html>

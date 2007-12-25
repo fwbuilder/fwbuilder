@@ -1,0 +1,68 @@
+fwb_ipt(1)               Firewall Builder              fwb_ipt(1)
+
+
+
+NNAAMMEE
+       fwb_ipt - Policy compiler for iptables
+
+SSYYNNOOPPSSIISS
+       ffwwbb__iipptt [[--wwvvVV]] [[--dd wwddiirr]] --ff ddaattaa__ffiillee..xxmmll object_name
+
+
+DDEESSCCRRIIPPTTIIOONN
+       ffwwbb__iipptt  is firewall policy compiler component of Firewall
+       Builder (see fwbuilder(1)). Compiler reads objects defini­
+       tions  and  firewall description from the data file speci­
+       fied with "-f" option  and  generates  resultant  iptables
+       script.  The  script  is written to the file with the name
+       the same as the name of the firewall object,  plus  exten­
+       sion ".fw".
+
+       The data file and the name of the firewall objects must be
+       specified on the command line. Other command line  parame­
+       ters are optional.
+
+
+OOPPTTIIOONNSS
+       -f FILE
+              Specify  the name of the data file to be processed.
+
+
+       -d wdir
+              Specify working directory.  Compiler  creates  file
+              with  iptables  script  in this directory.  If this
+              parameter is missing, then iptables script will  be
+              placed in the current working directory.
+
+
+       -w     Supress compiler's warnings
+
+
+       -v     Be  verbose:  compiler  prints  diagnostic messages
+              when it works.
+
+
+       -V     Print version number and quit.
+
+
+UURRLL
+       Firewall Builder home page is  located  at  the  following
+       URL: hhttttpp::////wwwwww..ffwwbbuuiillddeerr..oorrgg//
+
+
+BBUUGGSS
+       Please  report  bugs  using bug tracking system on Source­
+       Forge:
+
+       hhttttpp::////ssoouurrcceeffoorrggee..nneett//ttrraacckkeerr//??ggrroouupp__iidd==55331144&&aattiidd==110055331144
+
+
+
+SSEEEE AALLSSOO
+       ffwwbbuuiillddeerr((11)),, ffwwbb__iippff((11)),, ffwwbb__ppff((11))
+
+
+
+
+
+FWB                                                    fwb_ipt(1)

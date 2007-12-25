@@ -1,0 +1,261 @@
+<ui version="4.0" >
+ <class>findDialog_q</class>
+ <widget class="QDialog" name="findDialog_q" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>424</width>
+    <height>196</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Minimum" hsizetype="Preferred" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="focusPolicy" >
+   <enum>Qt::StrongFocus</enum>
+  </property>
+  <property name="windowTitle" >
+   <string>Find Object</string>
+  </property>
+  <layout class="QGridLayout" >
+   <item row="0" column="2" >
+    <widget class="QComboBox" name="findText" >
+     <property name="editable" >
+      <bool>true</bool>
+     </property>
+     <property name="insertPolicy" >
+      <enum>QComboBox::InsertAtTop</enum>
+     </property>
+     <property name="duplicatesEnabled" >
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2" >
+    <widget class="QLabel" name="textLabel1" >
+     <property name="text" >
+      <string>Text to be found in object names:</string>
+     </property>
+     <property name="wordWrap" >
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="3" >
+    <widget class="QCheckBox" name="searchInRules" >
+     <property name="text" >
+      <string>Search in policy rules</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="3" >
+    <widget class="QCheckBox" name="searchInTree" >
+     <property name="text" >
+      <string>Search in the tree</string>
+     </property>
+     <property name="checked" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType" >
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>20</width>
+       <height>30</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="6" column="2" >
+    <widget class="QPushButton" name="findBtn" >
+     <property name="text" >
+      <string>Find</string>
+     </property>
+     <property name="default" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="3" >
+    <widget class="Line" name="line1" >
+     <property name="frameShape" >
+      <enum>QFrame::HLine</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Sunken</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2" >
+    <widget class="QComboBox" name="findAttr" >
+     <property name="editable" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <widget class="QLabel" name="textLabel1_2" >
+     <property name="text" >
+      <string>Matching attribute:</string>
+     </property>
+     <property name="wordWrap" >
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" >
+    <widget class="QComboBox" name="attribute" >
+     <item>
+      <property name="text" >
+       <string>Address</string>
+      </property>
+     </item>
+     <item>
+      <property name="text" >
+       <string>TCP/UDP port</string>
+      </property>
+     </item>
+     <item>
+      <property name="text" >
+       <string>Protocol number</string>
+      </property>
+     </item>
+     <item>
+      <property name="text" >
+       <string>ICMP type</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="3" >
+    <widget class="QCheckBox" name="useRegexp" >
+     <property name="text" >
+      <string>Search for substring using regular expressions</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <tabstops>
+  <tabstop>findText</tabstop>
+  <tabstop>attribute</tabstop>
+  <tabstop>findAttr</tabstop>
+  <tabstop>useRegexp</tabstop>
+  <tabstop>searchInTree</tabstop>
+  <tabstop>searchInRules</tabstop>
+  <tabstop>findBtn</tabstop>
+ </tabstops>
+ <includes/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>findBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>findDialog_q</receiver>
+   <slot>find()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>findText</sender>
+   <signal>activated(QString)</signal>
+   <receiver>findDialog_q</receiver>
+   <slot>findTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>findText</sender>
+   <signal>editTextChanged(QString)</signal>
+   <receiver>findDialog_q</receiver>
+   <slot>findTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>findAttr</sender>
+   <signal>activated(QString)</signal>
+   <receiver>findDialog_q</receiver>
+   <slot>findAttrChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>findAttr</sender>
+   <signal>editTextChanged(QString)</signal>
+   <receiver>findDialog_q</receiver>
+   <slot>findAttrChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>attribute</sender>
+   <signal>activated(QString)</signal>
+   <receiver>findDialog_q</receiver>
+   <slot>findAttrChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

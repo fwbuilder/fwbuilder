@@ -1,0 +1,67 @@
+#!/bin/sh
+#
+#
+#                          Firewall Builder
+#
+#                 Copyright (C) 2003 NetCitadel, LLC
+#
+#  Author:  Vadim Kurland     vadim@vk.crocodile.org
+#
+#  $Id: fwb_compile_all 784 2005-05-28 21:16:19Z vkurland $
+#
+#  This program is free software which we release under the GNU General Public
+#  License. You may redistribute and/or modify this program under the terms
+#  of that license as published by the Free Software Foundation; either
+#  version 2 of the License, or (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  To get a copy of the GNU General Public License, write to the Free Software
+#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#
+
+XMLFILE="objects.xml"   # default fallback if -f option is missing
+DIR="."
+V=""
+LIB="User"              # default library
+
+while getopts f:d:l:va opt
+do
+    case "$opt" in
+        a)  all="yes"        ;;
+        v)  V="-v "          ;;
+        f)  XMLFILE=$OPTARG  ;;
+        d)  DIR=$OPTARG      ;;
+        l)  LIB=$OPTARG      ;;
+        \?)  ;;
+        esac
+    done
+
+shift `expr $OPTIND - 1`
+
+test -n "$all" && LIST=`fwblookup -f $XMLFILE -lN /${LIB}/Firewalls | grep -v Firewalls` || {
+    while test -n "$1"; do
+        LIST="$LIST $1"
+        shift
+    done
+}
+
+for f in `echo $LIST`; do
+    platform=`fwblookup -f $XMLFILE -a platform /${LIB}/Firewalls/$f`
+    case "$platform" in
+        iptables) comp="fwb_ipt" ;;
+        ipf)      comp="fwb_ipf" ;;
+        ipfw)     comp="fwb_ipfw";;
+        pf)       comp="fwb_pf"  ;;
+        pix)      comp="fwb_pix" ;;
+        \?)       echo "Unknown platform \"$platform\""; exit 1 ;;
+    esac
+    echo
+    echo "################ $f"
+    $comp $V -f $XMLFILE -d $DIR $f;
+  done
+

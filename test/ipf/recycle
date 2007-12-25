@@ -1,0 +1,17 @@
+#!/bin/sh
+
+for f in *.fw; do
+  j=${f}.orig
+  mv $f $j
+done
+
+for f in *-ipf.conf; do
+  j=${f}.orig
+  mv $f $j
+done
+
+for f in *-nat.conf; do
+  j=${f}.orig
+  mv $f $j
+done
+

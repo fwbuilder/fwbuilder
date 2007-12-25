@@ -1,0 +1,55 @@
+                                   Firewall Builder Release Notes
+
+Version 2.0.1
+
+   Released 08/11/04
+   GUI and compilers v2.0.1 require API library libfwbuilder version 2.0.1
+
+Summary
+
+   Firewall Builder GUI v2.0.1 is a maintenance release that includes fixes for bugs discovered
+   since 2.0 has been released.
+
+   For those who wish to build from source, instructions are outlined in "Install and Build
+   instructions"
+
+Bugs fixed in libfwbuilder API:
+
+     * bug #1001725: "object with empty name can not be deleted". the problem was caused by the
+       algorithm used in FWObject::getPath. If object had had a blank name, the path returned by
+       this method would end with the name of its parent without slash.
+
+Bugs fixed in GUI:
+
+     * bug #1001521: "Cant create ICMP service". ICMP Service dialog did not save icmp code and
+       type numbers in the object.
+     * bug #1001275: "object duplication fails w/ no action". GUI used to not allow user to
+       duplicate IP address object. Now any object can be duplicated so that the copy is placed
+       under the same parent, including IP address.
+     * bug #1000862: "Creating groups in Deleted Objects". Library "Deleted objects" should not
+       be offered as a choice for "group objects" operation.
+     * bug #1000485: "Firewalls in the drop-down box not ordered". List of firewalls in the
+       pull-down that controls policy views is now alphabetically sorted on program startup.
+     * there were two TCP Service objects "linuxconf" in the Standard objects library. Object
+       with ID id3AED0D6D has been removed. It seems this object has been duplicated long time
+       ago (at least it was like this in 1.1.2)
+     * bug #1002388: "Clamp MSS to MTU" option was missing in 2.0
+     * bug #1001833: fixed memory leak that appeared when autosave option was used
+     * bug #1003068: "object copy/paste not always working". IP address object could not be
+       placed under interface using copy/paste operation. Now ip address object can be pasted to
+       interface as well as to Objects/Addresses folder.
+     * Operation File/discard could not be used if the file was upgraded. Changed the way
+       operation File/Discard works: it now closes the file, discards all the changes that have
+       been made to it and replaces it with a fresh copy of the head revision from RCS. This
+       works if user wants to abort file upgrade when they switch to the new version of
+       fwbuilder.
+
+Bugs fixed in iptables policy compiler fwb_ipt:
+
+     * bug #1004153 "limit-burst = 0 is not valid". Iptables does not accept the rule using
+       "limit-burst" option if it is set to zero.
+
+     ------------------------------------------------------------------------------------------
+
+   Last modified: Wed Aug 11 20:54:38 PDT 2004 
+6 PDT 2004 

@@ -1,0 +1,115 @@
+<?xml version="1.0"?> <!-- -*- mode: xml; -*- -->
+<FWBuilderResources version="@VERSION@">
+    <Target name="solaris">
+      <description>Solaris</description>
+      <family>solaris</family>
+      <dialog>solaris</dialog>
+
+      <options>
+        <user_can_change_install_dir>true</user_can_change_install_dir>
+        <default>
+          <solaris_ip_forward>1</solaris_ip_forward>
+          <loopback_interface>lo0</loopback_interface>
+        </default>
+
+        <activation>
+
+          <fwdir>/etc/fw</fwdir>
+
+          <fwdir_test>/tmp</fwdir_test>
+
+          <timeout_units>sec</timeout_units>
+
+          <reg_user>
+            <run>
+              <copy>
+echo '%FWBPROMPT%';
+cat > %FWDIR%/%FWSCRIPT%;
+              </copy>
+
+              <compression>
+echo '%FWBPROMPT%';
+chmod +x %FWDIR%/%FWSCRIPT%;
+sudo -S %FWDIR%/%FWSCRIPT% &#38;&#38; sudo -S pkill shutdown; echo 'Policy activated'
+              </compression>
+              <no_compression>
+echo '%FWBPROMPT%';
+chmod +x %FWDIR%/%FWSCRIPT%;
+sudo -S %FWDIR%/%FWSCRIPT% &#38;&#38; sudo -S pkill shutdown; echo 'Policy activated'
+              </no_compression>
+            </run>
+
+            <test>
+              <copy>
+echo '%FWBPROMPT%';
+mkdir -p %FWDIR%/tmp;
+cat > %FWDIR%/tmp/%FWSCRIPT%;
+              </copy>
+
+              <rollback>
+echo '%FWBPROMPT%';
+chmod +x %FWDIR%/tmp/%FWSCRIPT%;
+echo 'sudo -S /usr/sbin/shutdown -y -i6 -g%RBTIMEOUT% &#38;'|sh;
+sudo -S %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
+              </rollback>
+              <no_rollback>
+echo '%FWBPROMPT%';
+chmod +x %FWDIR%/tmp/%FWSCRIPT%;
+sudo -S %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
+              </no_rollback>
+            </test>
+          </reg_user>
+
+          <root>
+            <run>
+              <copy>
+echo '%FWBPROMPT%';
+cat > %FWDIR%/%FWSCRIPT%;
+              </copy>
+
+              <compression>
+echo '%FWBPROMPT%';
+sh %FWDIR%/%FWSCRIPT% &#38;&#38; pkill shutdown; echo 'Policy activated'
+              </compression>
+              <no_compression>
+echo '%FWBPROMPT%';
+sh %FWDIR%/%FWSCRIPT% &#38;&#38; pkill shutdown; echo 'Policy activated'
+              </no_compression>
+            </run>
+
+            <test>
+              <copy>
+echo '%FWBPROMPT%';
+mkdir -p %FWDIR%/tmp;
+cat > %FWDIR%/tmp/%FWSCRIPT%;
+              </copy>
+
+              <rollback>
+echo '%FWBPROMPT%';
+echo '/usr/sbin/shutdown -y -i6 -g%RBTIMEOUT% &#38;'|sh;
+sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
+              </rollback>
+              <no_rollback>
+echo '%FWBPROMPT%';
+sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
+              </no_rollback>
+            </test>
+
+          </root>
+        </activation>
+
+      </options>
+
+      <capabilities>
+        <supports_routing>False</supports_routing>
+      </capabilities>
+
+      <tools>
+        <path_ipf>/sbin/ipf</path_ipf>
+        <path_ipnat>/sbin/ipnat</path_ipnat>
+        <path_logger>/usr/bin/logger</path_logger>
+        <path_expect>/usr/bin/expect</path_expect>
+      </tools>
+    </Target>
+
+</FWBuilderResources>

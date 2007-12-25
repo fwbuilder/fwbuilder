@@ -1,0 +1,487 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<link rel="stylesheet" type="text/css" href="http://www.fwbuilder.org/pages/fwbuilder.css">
+</head>
+ <body>
+<h1>		Firewall Builder Release Notes </h1>
+<br>
+<h2> Version  2.1.7   </h2>
+<br>
+<p>
+Released 10/31/2006
+<br>
+<b>GUI and compilers v2.1.7 require API library libfwbuilder version 2.1.7</b>
+<br>
+<h2>Summary </h2>
+<p>
+
+<p>
+<b>For those who wish to build from source, instructions are outlined
+in the document "Install and Build instructions" on our web site <a
+href="http://www.fwbuilder.org/archives/cat_installation.html">here</a></b>
+
+
+<h2>Installation</h2>
+
+<p>
+  Packages of Firewall Builder 2.1 are built in a such way that you
+  should be able to install them on the same machine with Firewall
+  Builder 2.0.X. All binaries have names that end with <b>"21"</b>,
+  e.g. <b>"fwbuilder21"</b> or <b>"fwb_ipt21"</b>. On Windows the
+  binary name is the same but the package installs in
+  directory <b>c:\FWBuilder21</b> which is different from the default
+  directory for Firewall Builder 2.0; all registry entries are also
+  located in different subtrees. All this is done to ensure the user
+  can run Firewall Builder 2.1 while still using stable version 2.0.12
+  on the same machine.
+</p>
+
+<h2>Improvements and changes in the GUI</h2>
+<ul>
+
+  <li>The GUI works much faster with very large object trees. Tested
+    using a data file with over 3000 objects)
+    <p>
+    </p>
+  </li>
+
+  <li>"Where used" menu item has been added to quickly find and show
+    all groups and firewall rules that reference given
+    object. Confirmation dialog that is shown when user tries to
+    delete an object also shows all groups and rules that use it.
+    <p>
+    </p>
+  </li>
+
+  <li>By popular request, built-in installer can now save a copy of
+    .fwb file to the firewall.
+    <p>
+    </p>
+  </li>
+
+  <li>Compile/install dialog is now an independent window instead of a
+    modal dialog, this means the user can look at the policy and
+    objects while compilation and/or installation is going on. This is
+    especially convenient as it allows one to inspect the rules after
+    failed compilation while still having compiler error on screen.
+    <p>
+    </p>
+  </li>
+
+
+  <li>Network discovery driud is back, ported from fwbuilder
+    1.0. As before, it supports reading object definitions from a
+    file in <b>/etc/hosts</b> format, can read DNS zone and also can
+    crawl the network using SNMP queries.
+    <p>
+    </p>
+  </li>
+
+  <li>Startup wizard ("Welcome to Firewall Builder") has been
+    removed. The GUI now starts either into an empty database or
+    opens data file specified on the command line.
+    <p>
+  </li>
+
+  <li>Keeping track of dependencies between objects. This is
+    useful when many firewalls in the tree use the same set of
+    objects. Each firewall object keeps track of objects it
+    depends on, so if any object is modified, all firewalls that
+    use it in their rules are marked with bold font to indicate
+    that they need to be recompiled. Object dependencies are
+    tracked not only when objects are directly used in rules,
+    but also when they apepar there indirectly, as members of
+    groups
+    <p>
+  </li>
+
+  <li>Added bulk compile and install operations. This is useful
+    when there are many firewalls in the tree that need to be
+    compiled and installed in one go. Bulk install operation is
+    only possible if all firewalls use the same user name and
+    password for authentication. If this is not the case,
+    built-in installer can be instructed to ask for the
+    authentication information before it touches each firewall.
+    <p>
+  </li>
+
+  <li>All object dialogs have been converted into built-in
+    panels that appear in the right hand part of the main
+    window. This simplifies navigation ( pop-up dialogs used to
+    obscure parts of the main window). Objects open in the
+    editor on a single mouse click in the tree and rules.
+    <p>
+  </li>
+
+  <li>Improvements in "Find" function: administrator can now
+    drag an object into a well in the find dialog panel to make
+    it search for this particular object. This is useful if the
+    name of the obejct is not unique. Search by object's name or
+    a value of its attribute is also possible.
+    <p>
+      <img src="http://www.fwbuilder.org/images/find_dialog_1.png">
+    <p>
+  </li>
+
+  <li>In addition to the "Find" function, the "Find and replace"
+    operation has been implemented. Objects can be found and
+    replaced in groups and firewall rules
+    <p>
+      <img src="http://www.fwbuilder.org/images/find_replace_1.png">
+    <p>
+  </li>
+
+</ul>
+
+
+<h2>New object types, new rule types and rule elements, new
+  actions and other new features</h2>
+<ul>
+  <li><b>AddressTable</b>&nbsp; This object resolves to a set of
+    IP addresses defined in an external file. The object can be
+    configured to read the file at compile time or at run time.  For
+    each compile-time AddressTable object defined in the object tree
+    compiler tries to find and read the file specified in the object
+    configuration. Compiler aborts processing if the file can not be
+    found or can not be read. If the file is in place and can be
+    read, such AddressTable object behaves as if it was a group of
+    IP address objects, that is, all addresses are explicitly copied
+    into generated configuration, although compiler may use target
+    firewall syntax that helps to group such sets of addresses into
+    tables. Compilers for iptables, ipfw, ipf and PIX generate bunch
+    of rules matching each address read from the file. Compiler for
+    PF creates a table and also lists all IP addresses it reads from
+    the file; it uses the name of the AddressTable object for the
+    name of the table it creates.<p>
+      
+
+    Run-time AddressTable objects are only supported by
+      compilers for iptables and PF.  Compiler for iptables
+      generates shell code to read the contents of the file when
+      firewall configuration is activated. Compiler for PF uses
+      native <b>"table &lt;name&gt; persist file &lt;file_name&gt;"</b>
+      syntax. Here also the name of the table is the same as the
+      name of the AddressTable object it was created for.
+    <p>
+  </li>
+  
+  <li><b>DNSName:</b>&nbsp; This object resolves a host name to
+    the IP address using DNS. Object can be confgiured to do so at
+    compile time or run time. Resolution is done using system call
+    gethostbyaddr() to read DNS A records for the name. System
+    resolver should take care of recursion and CNAME records, if
+    any. If the name resolves to several IP addresses, all addresses
+    are used in the generated firewall configuration. Run-time
+    DNSName objects rely on the target firewall software to be able
+    to convert symbolic names used in rules into actual IP addresses
+    at a time when policy is activated. Not all platforms provide
+    means to support run-time DNSName objects.
+    <p>
+  </li>
+
+
+  <li><b>TagService:</b>&nbsp; This object matches tags set by
+    action <b>Tag</b>. It is translated into <b>--mark
+      &lt;mark_code&gt;</b> for iptables and <b>tag</b> option for
+    PF. This service object is only supported by compilers for
+    iptables and PF.
+    <p>
+  </li>
+
+  <li><b>Interface</b> objects can now have an attribute to mark
+    them as bridge ports, used for bridging firewalls.
+    <p>
+  </li>
+
+
+  <li>Support for routing rules has been implemented using patch
+    provided by Tidei Maurizio &lt;fwbuilder-routing at
+    compal.de&gt; Support for routing rules is only implemented in
+    compiler for iptables. See file README.routing included in
+    fwbuilder2 package.
+    <p>
+      <blockquote>
+        <b>NOTE:</b>&nbsp;I can only provide very limited support for this feature, please direct your questions and bugreports to the author
+      </blockquote>
+    <p>
+  </li>
+
+  <li>Global policy and interface policies have been merged. Each
+    policy rule now has rule element "Interface". Administrator
+    can drag and drop interface object of the firewall into this
+    rule element field. Policy compilers support multiple
+    interfaces and negation in "Interface" rule element. Rule
+    element "direction" that previously was only part of the
+    interface policy rules is now part of all policy rules.
+    <p>
+  </li>
+
+  <li>Policy rules can have the following new actions:<p>
+      <ul>
+        <li><b>Queue:</b>&nbsp; This action passes the packet to
+          user space process for inspection, it is translated
+          into <b>QUEUE</b> for iptables and <b>divert</b> for
+          ipfw. This action is only supported by compilers for
+          iptables and ipfw..
+          <p>
+        </li>
+
+        <li><b>Custom:</b>&nbsp; This action allows administrator
+          to define arbitrary piece of code to be used in place of
+          an action. Supported by compilers for iptables, ipf and
+          ipfw
+          <p>
+        </li>
+
+        <li><b>Branch:</b>&nbsp; This action is used to create a
+          branch in the rule set. It works on target platforms that
+          provide suitable syntax and allow control to return to the
+          higher level rule set if the branch can not make final
+          decision about the packet. For iptables this action is
+          translated into user-defined chain. The name of the chain
+          is the name of the branch choosen by administrator. For PF
+          this action is translated into an anchor with the name the
+          same as the name of the branch defined by the
+          administrator. This action is only supported by compilers
+          for iptables and PF.
+          <p>
+            <img src="http://www.fwbuilder.org/images/action_branch_1.png"><br>
+            Fig.1 <i>Rule #0 of the global policy creates a branch with the name <b>rule0_branch</b></i>
+          <p>
+          <p>
+        </li>
+
+        <li><b>Tag:</b>&nbsp; This action associates internal tag
+          with the packet. Tag can later be inspected using
+          service object <b>TagService</b>. This action is
+          translated into <b>MARK</b> target with
+          corresponding <b>--set-mark</b> parameter and optionally
+          additional rule with <b>CONNMARK --save-mark</b> target
+          for iptables. If option that activates <b>CONNMARK</b>
+          target is used, compiler also adds a rule at the very
+          top of the policy to restore the mark.  Rules are placed
+          in <b>INPUT</b>,<b>OUTPUT</b> and <b>FORWARD</b> chain
+          of the <b>"mangle"</b> table, this ensures
+          that <b>DNAT</b> happens before rules placed in the
+          mangle table see the packet. <b>PREROUTING</b> chain in
+          mangle table is executed before <b>PREROUTING</b> chain
+          in the nat table, so placing tagging rules in the
+          <b>PREROUTING</b> chain would make them fire before
+          <b>DNAT</b>. <b>POSTROUTING</b> chain of the mangle
+          table, as well as its <b>FORWARD</b> and <b>OUTPUT</b>
+          chains, work before corresponding chains of the nat
+          table. In all cases the goal is to make sure <b>DNAT</b>
+          rules process the packet before, and SNAT rules process
+          it after filtering and tagging rules.<p>
+            
+            For PF this action is translated into <b>tag</b>.
+            Supported only by compilers for iptables and PF.
+          <p>
+            <img src="http://www.fwbuilder.org/images/action_tag_1.png"><br>
+            Fig.2 <i>Example of a rule utilizing action <b>Tag</b>. To illustrate policy branches, this rule belongs to the branch with the name <b>rule0_branch</b></i>
+          <p>
+          <p>
+        </li>
+
+        <li><b>Classify:</b>&nbsp; This action allows the firewall
+          to define QoS class for the packet that matches the
+          rule. It is translated into <b>CLASSIFY</b> for
+          iptables, with parameter <b>--set-class</b>. For PF it
+          is translated into <b>queue</b>; compiler for ipfw can
+          use <b>pipe</b>, <b>queue</b> or <b>divert</b> depending
+          on how the action is configured by the administrator in
+          the GUI. This action is only supported by compilers for
+          iptables, PF and ipfw.
+          <p>
+        </li>
+
+        <li><b>Route:</b>&nbsp; This action makes the firewall to
+          route the packet that matches the rule through an
+          interface or a gateway specified in the parameters of the
+          action. This action is translated into <b>ROUTE</b> target
+          for iptables and <b>route</b> option for PF and
+          ipfilter. Compilers for PF and ipfilter
+          support <b><i>fastroute</i></b>, <b><i>route-to</i></b>,
+          <b><i>reply-to</i></b> and <b><i>dup-to</i></b> options.
+          <p>
+            <img src="http://www.fwbuilder.org/images/action_route.png"><br>
+            Fig.3 <i>Rules #0 and #1 tag packets entering the firewall through interfaces <b>eth0</b> and <b>eth2</b>; rules #3 and #4 help route reply packets back through the same interfaces</i>
+          <p>
+          <p>
+
+        </li>
+      </ul>
+    <p>
+      The GUI uses different names for the new actions depending
+      on the target firewall platform to simplify adoption. For
+      example, new action that created branch in rule set is
+      called <b>Chain</b> for iptables firewalls and <b>Anchor</b>
+      for PF fierwalls. 
+    </p>
+  </li>
+
+  <li>Firewall object now has an attribute <b>"inactive"</b>. Firewall
+    marked as inactive will not be picked by the GUI for the bulk
+    compile and install operations even if the timestamps indicate
+    that this firewall object needs to be recompiled
+    <p>
+  </li>
+
+</ul>
+
+
+<h2>Compiler for iptables</h2>
+<ul>
+  <li>Support for address tables loaded from external files at
+    compile or run time
+    <p>
+  </li>
+
+  <li>Support user defined chains with predefined names (using
+    special action )
+    <p>
+  </li>
+
+  <li>Support
+    for <b>CLASSIFY</b>, <b>MARK</b>, <b>CONNMARK</b>, <b>QUEUE</b>, <b>ROUTE</b>
+    targets
+    <p>
+  </li>
+
+  <li>Support for <b>physdev</b> module for bridging firewalls
+    <p>
+  </li>
+
+  <li>additional optimization of rules i INPUT and OUTPUT chain:
+    now removing firewall object from src or dst to simplify rule
+    if it uses OUTPUT or INPUT chain. Doing this only if original
+    rule did not have negation and we do not add any virtual
+    addresses for NAT.  After removal the rule collapses to a
+    simple command like this:
+    <p>
+      <pre>
+	iptables -A INPUT -p tcp --dport 22 -m state --state NEW -j ACCEPT
+      </pre>
+    <p>
+      this works fine except if we have added virtual addresses for
+      NAT. It is assumed that firewall object in rules represents
+      combination of addresses configured in its interfaces in the
+      GUI. Virtual addresses added for NAT are considered to be a
+      side effect and connections should not be implicitly permitted
+      to them by a rule with fw object in destination. The same
+      applies to fw object in source. See bug #685947 for
+      discussion. To avoid inadvertently opening holes in the
+      firewall by a rule like that, we remove fw object only when it
+      is safe to do so.
+    <p>
+  </li>
+
+  <li> support for modules <b>connlimit</b>
+    and <b>hashlimit</b>. There is an option to generate commands
+    for the latter module using name <b>dstlimit</b> because older
+    versions of iptables included this module under this (now
+    obsolete) name.
+    <p>
+  </li>
+
+</ul>
+
+
+<h2>Compiler for PF</h2>
+<ul>
+
+  <li>Support for load balancing rules</li>
+
+  <li>Support for <b>tag</b> and <b>route</b> options</li>
+
+  <li>Support for address ranges and networ objects in TSrc in NAT
+    rules</li>
+
+  <li>Support for pool types in NAT rules ('bitmask', 'random',
+    'source-hash', 'round-robin'), as well as 'static-port'
+    option.</li>
+
+  <li>Supprot for anchors (by way of a special action)</li>
+
+  <li>Support for tables with predefined names (using AddressTable object)</li>
+
+  <li>Support for packet 'tagging' (by way of a special action and service object TagService)</li>
+
+</ul>
+
+
+<h2>Compiler for ipfilter</h2>
+<ul>
+  <li>Support for PPTP and IRC proxies</li>
+
+  <li>Support for <b>route</b> option</li>
+
+</ul>
+
+<h2>API</h2>
+<ul>
+  <li>internal object ID is augumented with process ID of the
+    program that creates an object. This allows fwbedit to quickly
+    create objects and still ensure their IDs are unique
+  </li>
+
+  <li>
+</ul>
+
+<h2>fwbedit</h2>
+
+<p>
+  Fwbedit can now create objects and repair broken object
+  database. This tool can now be used to populate object database
+  using shell scripts or other automation. For example, to create an
+  address object in object library 'Test' one could run it like
+  this:
+</p>
+<p>
+    
+  <blockquote>
+    fwbedit -f filename.fwb -t IPv4 -n newAddress -L Test -o 192.0.2.1
+  </blockquote>
+
+  <pre>
+       Firewall Builder:  general purpose object tree editing tool
+       Version 2.1.5-b
+       Usage: fwbedit21 -f filename.fwb -u [-a obj,grp] [-r obj,grp] [-d obj] [-s] [-l path] [(-p parent|-L library) -t objtype -n objname [-o object attributes]] 
+
+       -t objtype : create an object of this type
+       -L library : specify library when creating a new object
+       -p obj     : specify parent object when creating a new object
+       -n name    : specify a name of the new object
+       -o attribute1[,attribute2...]  :  specify attributes when creating a new object
+       -a obj,grp :  create reference to object 'obj' in the group 'grp'
+       -r obj,grp :  remove reference to object 'obj' from the group 'grp'
+       -d obj     :  delete object 'obj' and remove references to it from
+       all rules and groups
+       -l path    :  print list of objects for 'path'
+       -s         :  test and repair object tree structure
+       -u         : autoupgrade of file
+
+       An object and a group can be defined by their ID or 
+       by the full path and name in the XML tree
+
+       Object creation syntax:
+
+       -t Firewall -n obj_name -L User -o platform, host OS
+       -t IPv4 -n obj_name -L User -o IP address
+       -t DNSName -n obj_name -L User -o DNS record,run time
+       -t AddressRange -n obj_name -L User -o start address, end address
+       -t ObjectGroup
+       -t Network -n obj_name -L User -o address,netmask
+       -t Interval -n obj_name -L User -o start time,start date,start day,end time, end date, end day
+       -t Interface -n obj_name -L User -o security level,address type (dynamic or unnumbered),management
+       -t Host
+       -t TCPService -n obj_name -L User -o source port range start,end,Destination port range start,end,UAPRSF,UAPRSF
+       -t UDPService -n obj_name -L User -o source port range start,end,Destination port range start,end
+       -t ICMPService -n obj_name -L User -o ICMP type,ICMP code
+       -t IPService -n obj_name -L User -o protocol number,lsrr/ssrr/rr/ts/fragm/short_fragm 
+  </pre>
+     
+ </body>
+</html>

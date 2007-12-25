@@ -1,0 +1,82 @@
+fwb_ipfw(1)              Firewall Builder             fwb_ipfw(1)
+
+
+
+NNAAMMEE
+       fwb_ipfw - Policy compiler for ipfw
+
+SSYYNNOOPPSSIISS
+       ffwwbb__iippffww [[--vvVVxx]] [[--dd wwddiirr]] --ff ddaattaa__ffiillee..xxmmll object_name
+
+
+DDEESSCCRRIIPPTTIIOONN
+       ffwwbb__iippffww  is a firewall policy compiler component of Fire­
+       wall Builder (see fwbuilder(1)). This  compiler  generates
+       code  for  ipfw - a firewall and traffic shaper in FreeBSD
+       (see ipfw(8)).  Compiler  reads  objects  definitions  and
+       firewall  description  from  the  data file specified with
+       "-f" option and generates firewall configuration and acti­
+       vation script.
+
+       The generated file has a name that starts with the name of
+       the firewall object, with an  extension  ".fw".  It  is  a
+       shell  script  that flushes current policy, then loads new
+       filter and nat rules.
+
+       The data file and the name of the firewall objects must be
+       specified  on the command line. Other command line parame­
+       ters are optional.
+
+
+
+OOPPTTIIOONNSS
+       -f FILE
+              Specify the name of the data file to be  processed.
+
+
+       -d wdir
+              Specify  working directory.  Compiler creates fire­
+              wall activation script in this directory.  If  this
+              parameter is missing, then all files will be placed
+              in the current working directory.
+
+
+       -v     Be verbose:  compiler  prints  diagnostic  messages
+              when it works.
+
+
+       -V     Print version number and quit.
+
+
+       -x     Generate  debugging information while working. This
+              option is intended for debugging only and may  pro­
+              duce lots of cryptic messages.
+
+
+NNOOTTEESS
+       Support  for  ipfw was added in version 1.0.10 of Firewall
+       Builder
+
+
+
+UURRLL
+       Firewall Builder home page is  located  at  the  following
+       URL: hhttttpp::////wwwwww..ffwwbbuuiillddeerr..oorrgg//
+
+
+BBUUGGSS
+       Please  report  bugs  using bug tracking system on Source­
+       Forge:
+
+       hhttttpp::////ssoouurrcceeffoorrggee..nneett//ttrraacckkeerr//??ggrroouupp__iidd==55331144&&aattiidd==110055331144
+
+
+
+SSEEEE AALLSSOO
+       ffwwbbuuiillddeerr((11)),, ffwwbb__iipptt((11)),, ffwwbb__ppff((11)) ffwwbb__iippff((11))
+
+
+
+
+
+FWB                                                   fwb_ipfw(1)

@@ -1,0 +1,75 @@
+
+
+Policy compiler for Cisco IOS Access lists has been implemented as
+part of the Firewall Builder GUI as of version 2.1.12. The first
+functional build were importer worked on all supported OS was build
+270 (May 22, 2007)
+
+
+Support for Cisco IOS access lists in Firewall Builder v2.1.12, build 270:
+----------------------------------------------------------------
+
+Features implemented in this version:
+
+ - The compiler generates extended ACLs using "ip access-list
+   extended" command. ACL names are automatically generated using
+   abbreviated interface names and direction symbols to make it easy
+   to figure out which ACL is which. Compiler uses rather minimal set
+   of options of the "ip access-list" command and should generate code
+   that will work for IOS 12.x. I did not test with 11.x but I am
+   pretty sure it will work, at least with the latest versions of
+   11.x.
+
+ - Compiler can also add commands to configure logging.
+
+ - The GUI includes built-in installer for routers which works just
+   like installer for PIX. Both installers were updated however to
+   improve support for the automatic roll-back feature in case you
+   lose connect with the firewall or the router because of an error in
+   the policy. Now you can make installer schedule reboot in a few
+   minutes, then upload new policy or ACLs and then cancel reboot if
+   upload was successful. While before auto-rollback option was only
+   available if you installed in the test mode, now you can always use
+   it. Test mode means that installer does not save configuration in
+   the permanent memory, as before.
+
+ - All three installation methods that were available for PIX are now
+   available for routers: you can make it clear all access lists and
+   then load new ones or just update access lists without
+   clearing. The last method (the "safety net" method) creates
+   temporary acl to permit communication with the management station,
+   assigns it to the interface marked as management interface, then
+   clears all access lists and loads new ones and in the end swaps
+   proper list on the management interface.  This helps prevent
+   locking yourself out of the router in the middle of the
+   installation process in case of an error in the ACL and at the same
+   time does not leave the router with no acls for the time it takes
+   to install new policy. In combination with automatic roll-back,
+   installation process is pretty reliable.
+
+ - New option has been added to the interface object, called
+   "unprotected". This allows you to mark some interfaces to be
+   skipped by the compiler when it picks interfaces for ACL
+   rules. This should be useful when you have routers with many
+   interfaces and only want to add ACLs to some of them. Also, you can
+   explicitly put interface objects into policy rules and specify
+   direction if you want to do this manually.
+
+ - Since router ACLs have no state, all rules should be created in the
+   policy pretty much like you do it on the router, including rules
+   that permit reply packets.  New option has been added to the TCP
+   Service object, called "established". This makes compiler use
+   option "established" in rules it generates if it is supported by
+   the firewall platform. Compilers for iptables, ipfilter, pf and PIX
+   can not use objects with this option and treat it as an error
+   because corresponding platforms do not support it. IPFW, on the
+   other hand, supports it so compiler fwb_ipfw can use it.
+
+
+Shortcomings of this version:
+
+ - "tos", "precedence" and "time-range" options are not supported
+
+ - "igmp" access lists can no be generated
+
+

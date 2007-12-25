@@ -1,0 +1,5 @@
+.moc
+.ui
+Makefile
+POmakefile
+*.app

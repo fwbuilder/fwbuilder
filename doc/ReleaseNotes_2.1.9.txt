@@ -1,0 +1,118 @@
+                         Firewall Builder Release Notes
+
+Version 2.1.9
+
+   Released 02/10/2007
+   GUI and compilers v2.1.9 require API library libfwbuilder version 2.1.9
+
+Summary
+
+   This is bugfix release.
+
+   For those who wish to build from source, instructions are outlined in the
+   document "Install and Build instructions" on our web site here
+
+Improvements and bug fixes in the GUI
+
+     * New feature: new operation "Tools/Find Conflicting Objects in Two Data
+       Files". This operation inspects two data files (either .fwb or .fwl)
+       and finds conflicting objects. Conflicting objects have the same
+       internal ID but different attributes. Two data files can not be
+       merged, or one imported into another, if they contain such objects.
+       This operation also helps identify changes made to objects in two
+       copies of the same data file. This operation does not find objects
+       present in one file but not in the other, such objects present no
+       problem for merge or import operations. This operation works with two
+       external files, neither of which needs to be opened in the program.
+       Currently opened data file is not affected by this operation and
+       objects in the tree do not change. In the process of this operation
+       user is presented with series of dialogs showing conflicting objects
+       side by side. In the end the program can generate report and write it
+       to a text file.
+     * installOptionsDialog was too large and did not fit on some laptop
+       screens. Doing tricks to make sure the dialog properly resized after
+       unused GUI elements are hidden.
+     * bug #1629521: "can't delete empty chain/policy tab"
+     * bug #1619842: "prolog "script editor" opens behind other windows"
+     * bug #1620206: "RuleOptions' "Apply" button greyed-out until menu
+       selection"
+     * bug 1619930: "Prolog tab's ScriptEditor's import fails to overwrite"
+     * bug #1617501:"Install fails after compile". The GUI got confused when
+       user enter full path to the policy file in the "Output file name"
+       input field in the "Compiler" tab of firewall object dialog. Making
+       sure we always strip directory path from the file name if user
+       specified full path for the policy file in the "Output file name"
+       input field in the "Compiler" tab of firewall object dialog. Need to
+       strip path when macro "%FWSCRIPT%" is substituted in installation
+       scriptlets and in some other places.
+     * "Apply" and "Close" buttons in the objct editor panel should be of
+       fixed size horizontally
+     * bug #1624577: "group window doesn't stay open on multiple-adds". Using
+       special flag to tell ObjectTreeView that it should ignore
+       MouseReleaseEvent it gets after d&d operation, so it wont switch
+       object in the editor panel. Note the bug triggered only on Mac OS X.
+     * bug (no num.): GUI used show fanthom 'Policy', 'NAT' and 'Routing'
+       tabs when user deleted objects from the Deleted Objects library,
+       provided some of these objects were previously deleted firewalls.
+     * bug #1620284: "conflict when adding library to Preferences/Libraries".
+       When the user tried to add a library to the list in
+       Preferemces/Libraries when a data file with the same object library
+       was loaded, the GUI detected the conflict and showed error dialog.
+     * bug #1650369: "[patch] please add support for GNU/kFreeBSD". Applied
+       patch to make code compile on kFreeBSD.
+
+Compiler for iptables
+
+     * bug #1623338: "Can not disable rules in a branch". Compiler for
+       iptables ignored flag 'disabled' on rules in a branch.
+     * bug #1623113: 'connlimit fails in compiled "address table" rules'
+       Module connlimit can only be used in iptables rules matching TCP
+       services. Such iptables commands have "-p tcp" and/or "-m tcp"
+       options. If a rule in fwbuilder uses TCP Service and connlimit option
+       and has multiple objects in src and dst, optimizer used to split it to
+       minimize matches. It however preserved connlimit option in all
+       subrules, even though some of them did not have TCP service after the
+       split. This lead to generation of incorrect iptables commands.
+     * bug #1620925: "compile-time AddressTable object with empty file".
+       Compile-time AddressTable object that uses file with no addresses
+       should be treated as an empty group according to the "Ignore empty
+       groups" option.
+     * bug #1618381: "CLASSIFY/MARK are non-terminating". This bug report in
+       fact reported several problems.
+
+          * For action Branch with option to add branching rule to the mangle
+            table: we now generate rules in PREROUTING, POSTROUTING, INPUT,
+            OUTPUT and FORWARD chains. This is because some targets can only
+            work in PREROUTING or POSTROUTING chains but we do not know what
+            rules will user put in the branch. So we need to branch in all
+            chains
+          * For rules in mangle table with direction set to Inbound or
+            Outbound force chain to PREROUTING or POSTROUTING respectively
+            early. This eliminates duplicates such as the same rule in
+            PREROUTING and INPUT chains. Also since most (all?) targets that
+            require mangle table go into either PREROUTING or POSTROUTING
+            chains, it should be enough to use these two chains.
+          * Non-terminating rules shadow each other "backwards", that is more
+            general rule shadows other rules _above_ it. Added flag 'reverse'
+            to the method find_more_general_rule and added new rule processor
+            DetectShadowingForNonTerminatingRules that finds such cases of
+            'reverse' shadowing. Using it for rules in the mangle table for
+            iptables.
+          * Adding iptables rule with target ACCEPT to emulate terminating
+            behavior for Tag and Classify actions. Emulation is controlled by
+            a global option in the "Compiler" tab of the firewall properties
+            dialog (default is "off"). This means emulation can be turned on
+            and off for all rules that might require it at once. It is
+            impossible to mix such rules with terminating and
+            non-termninating behavior. The reason for this is that shadowing
+            detection algorithm can only work with either terminating or
+            non-terminating rules, not with the mix.
+
+     * bug #1628989: "run-time-loaded rules don't accept ";" as line comment"
+     * bug #1632054: "Runtime AddressObjects FAIL to load if "Name:" contains
+       "."". Compiler checks if the name of the run-time AddressTable object
+       contains characters that have special meaning in sheel and relaces
+       them with '_' when it generates the name of the temporary shell
+       variable.
+     * bug (no num.): data files used for run-time AddressTable objects can
+       have empty lines, the script should skip them.

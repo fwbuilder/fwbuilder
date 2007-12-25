@@ -1,0 +1,129 @@
+<ui version="4.0" stdsetdef="1" >
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>newGroupDialog_q</class>
+  <widget class="QDialog" name="newGroupDialog_q" >
+  <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>314</width>
+        <height>156</height>
+      </rect>
+    </property>
+    <property name="sizePolicy" >
+      <sizepolicy>
+        <hsizetype>1</hsizetype>
+        <vsizetype>1</vsizetype>
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+      </sizepolicy>
+    </property>
+    <property name="windowTitle" >
+      <string>New Group</string>
+    </property>
+    <layout class="QGridLayout" >
+      <item row="2" column="0" >
+        <widget class="QLabel" name="textLabel1_2" >
+          <property name="text" >
+            <string>Library:</string>
+          </property>
+          <property name="wordWrap" >
+            <bool>false</bool>
+          </property>
+        </widget>
+      </item>
+      <item rowspan="1" row="2" column="1" colspan="2" >
+        <widget class="QComboBox" name="libs" >
+          <property name="sizePolicy" >
+            <sizepolicy>
+              <hsizetype>7</hsizetype>
+              <vsizetype>0</vsizetype>
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+            </sizepolicy>
+          </property>
+        </widget>
+      </item>
+      <item rowspan="1" row="1" column="1" colspan="2" >
+        <widget class="QLineEdit" name="obj_name" />
+      </item>
+      <item row="1" column="0" >
+        <widget class="QLabel" name="textLabel1" >
+          <property name="text" >
+            <string>Group Name:</string>
+          </property>
+	  <property name="wordWrap" >
+		  <bool>false</bool>
+          </property>
+        </widget>
+      </item>
+      <item rowspan="1" row="0" column="0" colspan="3" >
+        <widget class="QLabel" name="textLabel3" >
+          <property name="text" >
+            <string>This operation will create a new group and put selected objects in it</string>
+          </property>
+          <property name="alignment" >
+            <set>Qt::AlignVCenter</set>
+          </property>
+          <property name="wordWrap" >
+            <bool>true</bool>
+          </property>
+        </widget>
+      </item>
+      <item row="3" column="0" >
+        <spacer name="spacer3" >
+          <property name="sizeHint" >
+            <size>
+              <width>55</width>
+              <height>20</height>
+            </size>
+          </property>
+          <property name="sizeType" >
+            <enum>Expanding</enum>
+          </property>
+          <property name="orientation" >
+            <enum>Horizontal</enum>
+          </property>
+        </spacer>
+      </item>
+      <item row="3" column="1" >
+        <widget class="QPushButton" name="applyBtn" >
+          <property name="text" >
+            <string>Create a group</string>
+          </property>
+        </widget>
+      </item>
+      <item row="3" column="2" >
+        <widget class="QPushButton" name="cancelBtn" >
+          <property name="text" >
+            <string>Cancel</string>
+          </property>
+        </widget>
+      </item>
+    </layout>
+  </widget>
+  <layoutdefault spacing="6" margin="11" />
+  <pixmapfunction></pixmapfunction>
+  <tabstops>
+    <tabstop>obj_name</tabstop>
+    <tabstop>libs</tabstop>
+    <tabstop>applyBtn</tabstop>
+    <tabstop>cancelBtn</tabstop>
+  </tabstops>
+  <connections>
+    <connection>
+      <sender>cancelBtn</sender>
+      <signal>clicked()</signal>
+      <receiver>newGroupDialog_q</receiver>
+      <slot>reject()</slot>
+    </connection>
+    <connection>
+      <sender>applyBtn</sender>
+      <signal>clicked()</signal>
+      <receiver>newGroupDialog_q</receiver>
+      <slot>accept()</slot>
+    </connection>
+  </connections>
+</ui>

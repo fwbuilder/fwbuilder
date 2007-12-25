@@ -1,0 +1,412 @@
+<ui version="4.0" stdsetdef="1" >
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>macosxAdvancedDialog_q</class>
+  <widget class="QDialog" name="macosxAdvancedDialog_q" >
+    <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>389</width>
+        <height>237</height>
+      </rect>
+    </property>
+    <property name="windowTitle" >
+      <string>MacOS X: advanced settings</string>
+    </property>
+    <layout class="QGridLayout" >
+      <item row="1" column="0" >
+        <layout class="QHBoxLayout" >
+          <property name="margin" >
+            <number>0</number>
+          </property>
+          <property name="spacing" >
+            <number>6</number>
+          </property>
+          <item>
+            <spacer name="Horizontal Spacing2" >
+              <property name="sizeHint" >
+                <size>
+                  <width>20</width>
+                  <height>20</height>
+                </size>
+              </property>
+              <property name="sizeType" >
+                <enum>Expanding</enum>
+              </property>
+              <property name="orientation" >
+                <enum>Horizontal</enum>
+              </property>
+            </spacer>
+          </item>
+          <item>
+            <widget class="QPushButton" name="buttonOk" >
+              <property name="text" >
+                <string>&amp;OK</string>
+              </property>
+              <property name="shortcut" >
+                <string/>
+              </property>
+              <property name="autoDefault" >
+                <bool>true</bool>
+              </property>
+              <property name="default" >
+                <bool>true</bool>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QPushButton" name="buttonCancel" >
+              <property name="text" >
+                <string>&amp;Cancel</string>
+              </property>
+              <property name="shortcut" >
+                <string/>
+              </property>
+              <property name="autoDefault" >
+                <bool>true</bool>
+              </property>
+            </widget>
+          </item>
+        </layout>
+      </item>
+      <item row="0" column="0" >
+        <widget class="QTabWidget" name="tabWidget7" >
+          <property name="tabShape" >
+            <enum>QTabWidget::Rounded</enum>
+          </property>
+          <widget class="QWidget" name="tab0" >
+            <attribute name="title" >
+              <string>Options</string>
+            </attribute>
+            <layout class="QGridLayout" >
+              <property name="margin" >
+                <number>0</number>
+              </property>
+              <item row="3" column="0" >
+                <widget class="QLabel" name="label592" >
+                  <property name="text" >
+                    <string>Generate ICMP redirects</string>
+                  </property>
+                  <property name="alignment" >
+                    <set>Qt::AlignCenter</set>
+                  </property>
+                  <property name="wordWrap" >
+                    <bool>false</bool>
+                  </property>
+                </widget>
+              </item>
+              <item row="1" column="0" >
+                <widget class="QLabel" name="label590" >
+                  <property name="text" >
+                    <string>Packet forwarding</string>
+                  </property>
+                  <property name="alignment" >
+                    <set>Qt::AlignCenter</set>
+                  </property>
+                  <property name="wordWrap" >
+                    <bool>false</bool>
+                  </property>
+                </widget>
+              </item>
+              <item row="1" column="1" >
+                <widget class="QComboBox" name="macosx_ip_forward" >
+                  <item>
+                    <property name="text" >
+                      <string>No change</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text" >
+                      <string>On</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text" >
+                      <string>Off</string>
+                    </property>
+                  </item>
+                </widget>
+              </item>
+              <item row="3" column="1" >
+                <widget class="QComboBox" name="macosx_ip_redirect" >
+                  <item>
+                    <property name="text" >
+                      <string>No change</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text" >
+                      <string>On</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text" >
+                      <string>Off</string>
+                    </property>
+                  </item>
+                </widget>
+              </item>
+              <item row="2" column="1" >
+                <widget class="QComboBox" name="macosx_ip_sourceroute" >
+                  <item>
+                    <property name="text" >
+                      <string>No change</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text" >
+                      <string>On</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text" >
+                      <string>Off</string>
+                    </property>
+                  </item>
+                </widget>
+              </item>
+              <item row="2" column="0" >
+                <widget class="QLabel" name="label591" >
+                  <property name="text" >
+                    <string>Forward source routed packets</string>
+                  </property>
+                  <property name="alignment" >
+                    <set>Qt::AlignCenter</set>
+                  </property>
+                  <property name="wordWrap" >
+                    <bool>false</bool>
+                  </property>
+                </widget>
+              </item>
+              <item row="4" column="0" >
+                <spacer name="spacer56" >
+                  <property name="sizeHint" >
+                    <size>
+                      <width>151</width>
+                      <height>20</height>
+                    </size>
+                  </property>
+                  <property name="sizeType" >
+                    <enum>Fixed</enum>
+                  </property>
+                  <property name="orientation" >
+                    <enum>Horizontal</enum>
+                  </property>
+                </spacer>
+              </item>
+              <item row="0" column="0" >
+                <spacer name="spacer25_2" >
+                  <property name="sizeHint" >
+                    <size>
+                      <width>20</width>
+                      <height>20</height>
+                    </size>
+                  </property>
+                  <property name="sizeType" >
+                    <enum>Fixed</enum>
+                  </property>
+                  <property name="orientation" >
+                    <enum>Vertical</enum>
+                  </property>
+                </spacer>
+              </item>
+              <item row="1" column="2" >
+                <spacer name="spacer97" >
+                  <property name="sizeHint" >
+                    <size>
+                      <width>40</width>
+                      <height>20</height>
+                    </size>
+                  </property>
+                  <property name="sizeType" >
+                    <enum>Expanding</enum>
+                  </property>
+                  <property name="orientation" >
+                    <enum>Horizontal</enum>
+                  </property>
+                </spacer>
+              </item>
+              <item row="4" column="1" >
+                <spacer name="spacer98" >
+                  <property name="sizeHint" >
+                    <size>
+                      <width>20</width>
+                      <height>40</height>
+                    </size>
+                  </property>
+                  <property name="sizeType" >
+                    <enum>Expanding</enum>
+                  </property>
+                  <property name="orientation" >
+                    <enum>Vertical</enum>
+                  </property>
+                </spacer>
+              </item>
+            </layout>
+          </widget>
+          <widget class="QWidget" name="tab1" >
+            <attribute name="title" >
+              <string>Path</string>
+            </attribute>
+            <layout class="QGridLayout" >
+              <property name="margin" >
+                <number>0</number>
+              </property>
+              <item row="1" column="1" >
+                <widget class="QLabel" name="label594" >
+                  <property name="text" >
+                    <string>ipfw:</string>
+                  </property>
+                  <property name="alignment" >
+                    <set>Qt::AlignCenter</set>
+                  </property>
+                  <property name="wordWrap" >
+                    <bool>false</bool>
+                  </property>
+                </widget>
+              </item>
+              <item row="2" column="1" >
+                <widget class="QLabel" name="label596" >
+                  <property name="text" >
+                    <string>sysctl:</string>
+                  </property>
+                  <property name="alignment" >
+                    <set>Qt::AlignCenter</set>
+                  </property>
+                  <property name="wordWrap" >
+                    <bool>false</bool>
+                  </property>
+                </widget>
+              </item>
+              <item rowspan="1" row="0" column="0" colspan="4" >
+                <widget class="QLabel" name="label593" >
+                  <property name="text" >
+                    <string>Specify directory path and a file name for the following utilities on the OS your firewall machine is running. Leave these empty if you want to use default values.</string>
+                  </property>
+                  <property name="alignment" >
+                    <set>Qt::AlignCenter</set>
+                  </property>
+                  <property name="wordWrap" >
+                    <bool>true</bool>
+                  </property>
+                </widget>
+              </item>
+              <item row="1" column="2" >
+                <widget class="QLineEdit" name="macosx_path_ipfw" >
+                  <property name="sizePolicy" >
+                    <sizepolicy>
+                      <hsizetype>0</hsizetype>
+                      <vsizetype>0</vsizetype>
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                    </sizepolicy>
+                  </property>
+                  <property name="minimumSize" >
+                    <size>
+                      <width>200</width>
+                      <height>0</height>
+                    </size>
+                  </property>
+                </widget>
+              </item>
+              <item row="2" column="2" >
+                <widget class="QLineEdit" name="macosx_path_sysctl" >
+                  <property name="sizePolicy" >
+                    <sizepolicy>
+                      <hsizetype>0</hsizetype>
+                      <vsizetype>0</vsizetype>
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                    </sizepolicy>
+                  </property>
+                  <property name="minimumSize" >
+                    <size>
+                      <width>200</width>
+                      <height>0</height>
+                    </size>
+                  </property>
+                </widget>
+              </item>
+              <item row="1" column="3" >
+                <spacer name="spacer104" >
+                  <property name="sizeHint" >
+                    <size>
+                      <width>40</width>
+                      <height>20</height>
+                    </size>
+                  </property>
+                  <property name="sizeType" >
+                    <enum>Expanding</enum>
+                  </property>
+                  <property name="orientation" >
+                    <enum>Horizontal</enum>
+                  </property>
+                </spacer>
+              </item>
+              <item rowspan="2" row="1" column="0" colspan="1" >
+                <spacer name="spacer105" >
+                  <property name="sizeHint" >
+                    <size>
+                      <width>40</width>
+                      <height>20</height>
+                    </size>
+                  </property>
+                  <property name="sizeType" >
+                    <enum>Expanding</enum>
+                  </property>
+                  <property name="orientation" >
+                    <enum>Horizontal</enum>
+                  </property>
+                </spacer>
+              </item>
+              <item row="3" column="2" >
+                <spacer name="spacer106" >
+                  <property name="sizeHint" >
+                    <size>
+                      <width>20</width>
+                      <height>40</height>
+                    </size>
+                  </property>
+                  <property name="sizeType" >
+                    <enum>Expanding</enum>
+                  </property>
+                  <property name="orientation" >
+                    <enum>Vertical</enum>
+                  </property>
+                </spacer>
+              </item>
+            </layout>
+          </widget>
+        </widget>
+      </item>
+    </layout>
+  </widget>
+  <layoutdefault spacing="6" margin="11" />
+  <pixmapfunction></pixmapfunction>
+  <tabstops>
+    <tabstop>macosx_ip_forward</tabstop>
+    <tabstop>macosx_ip_sourceroute</tabstop>
+    <tabstop>macosx_ip_redirect</tabstop>
+    <tabstop>buttonOk</tabstop>
+    <tabstop>buttonCancel</tabstop>
+    <tabstop>macosx_path_ipfw</tabstop>
+    <tabstop>macosx_path_sysctl</tabstop>
+    <tabstop>tabWidget7</tabstop>
+  </tabstops>
+  <connections>
+    <connection>
+      <sender>buttonOk</sender>
+      <signal>clicked()</signal>
+      <receiver>macosxAdvancedDialog_q</receiver>
+      <slot>accept()</slot>
+    </connection>
+    <connection>
+      <sender>buttonCancel</sender>
+      <signal>clicked()</signal>
+      <receiver>macosxAdvancedDialog_q</receiver>
+      <slot>reject()</slot>
+    </connection>
+  </connections>
+</ui>

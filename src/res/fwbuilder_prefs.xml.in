@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE FWBuilderPreferences SYSTEM "fwbuilder_preferences.dtd">
+<FWBuilderPreferences version="@VERSION@">
+  <Network>
+    <SNMPTimeout>10</SNMPTimeout>
+    <SNMPRetries>1</SNMPRetries>
+    <DNSTimeout>10</DNSTimeout>
+    <DNSRetries>1</DNSRetries>
+  </Network>
+  <Print>
+      <Command>lpr</Command>
+      <Filter>null.xsl</Filter>
+      <ToFile>false</ToFile>
+  </Print>
+  <Paths>
+    <Wdir/>
+  </Paths>
+  <UI>
+    <ShowIconsInTree>true</ShowIconsInTree>
+    <ShowObjectPropertiesInTree>false</ShowObjectPropertiesInTree>
+    <HideNavigationBar>true</HideNavigationBar>
+    <RememberWindowPositionAndSize>false</RememberWindowPositionAndSize>
+    <MainWindowX>0</MainWindowX>
+    <MainWindowY>0</MainWindowY>
+    <MainWindowW>0</MainWindowW>
+    <MainWindowH>0</MainWindowH>
+    <MainWindowDivider>0</MainWindowDivider>
+    <TreeWindowX>0</TreeWindowX>
+    <TreeWindowY>0</TreeWindowY>
+    <TreeWindowW>0</TreeWindowW>
+    <TreeWindowH>0</TreeWindowH>
+    <ObjWindowX>0</ObjWindowX>
+    <ObjWindowY>0</ObjWindowY>
+    <ObjWindowW>0</ObjWindowW>
+    <ObjWindowH>0</ObjWindowH>
+    <ObjectTreeMode>Split</ObjectTreeMode>
+    <FloatObjectTree>false</FloatObjectTree>
+    <Autosave>false</Autosave>
+    <ShowIconsInPolicy>true</ShowIconsInPolicy>
+    <LargeIconsInGroups>true</LargeIconsInGroups>
+    <ShowHidden>false</ShowHidden>
+    <ObjectQuickView>popup</ObjectQuickView>
+    <ObjectQuickViewTimeout>2</ObjectQuickViewTimeout>
+  </UI>
+  <History>
+    <File1></File1>
+    <File2></File2>
+    <File3></File3>
+    <File4></File4>
+  </History>
+</FWBuilderPreferences>
+
+
+

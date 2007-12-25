@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<link rel="stylesheet" type="text/css" href="http://www.fwbuilder.org/pages/fwbuilder.css">
+</head>
+ <body>
+<h1>		Firewall Builder Release Notes </h1>
+<br>
+<h2> Version  2.1.8   </h2>
+<br>
+<p>
+Released 12/02/2006
+<br>
+<b>GUI and compilers v2.1.8 require API library libfwbuilder version 2.1.8</b>
+<br>
+<h2>Summary </h2>
+<p>
+
+<p>
+<b>For those who wish to build from source, instructions are outlined
+in the document "Install and Build instructions" on our web site <a
+href="http://www.fwbuilder.org/archives/cat_installation.html">here</a></b>
+
+
+<h2>Installation</h2>
+
+<p>
+  <b>
+  Optinon poll ran on the fwbuilder-discussion mailing list showed
+  that majority of users are not interested in ability to install and
+  run both fwbuilder 2.0 and 2.1 on the same machine at the same
+  time. Hence we are reverting to the old naming schema without suffix
+  '21' for the binaries and man pages in this release.
+  </b>
+</p>
+
+<h2>Improvements and bug fixes in the GUI</h2>
+<ul>
+
+  <li>The user can search for objects using regular expressions
+  matching their names or attributes.
+    <p>
+    </p>
+  </li>
+
+  <li>Fixed bug #1592130: "Policy Chaining Issues". The GUI should
+    properly display nested branch rulesets. The user can create
+    policy branches within other branches.
+  </li>
+
+
+</ul>
+
+
+<h2>All compilers</h2>
+
+<ul>
+  <li>Fixed bug #1590746 "problem with using "DNS Names" objects on MS
+  Windows". Compiler failed to convert DNSName objects set to resolve
+  at compile time into IP addresses.
+  </li>
+</ul>
+
+
+<h2>Compiler for iptables</h2>
+<ul>
+  <li>fixed bug #1593221: "iptables filtering bridge problem - PHYSDEV:
+    no physdev opti..."  Some times rules were generated with "-m
+    physdev" but witout  "--physdev-in" or "--physdev-out" options.
+  </li>
+</ul>
+
+<h2>Compiler for Cisco PIX</h2>
+<ul>
+
+  <li>fixed a bug (no num, support req. #1604103: "fwb_pix policy
+    compiler dies when SNMP or NTP hosts defined".  Compiler did not
+    print error message when it could not find an interface with
+    network zone matching IP address of NTP or SNMP server (it just
+    printed the address without explanation of what went wrong)
+  </li>
+
+  <li>Experimental utility <b>fwb_pix_diff</b> has been added to the
+    package. This utility takes two PIX configurations on the command
+    line and produces the 'diff' that consists of a set of commands
+    that should bring the firewall from the state defined by the first
+    config to the state defined by the second. Only PIX 7.0 is
+    supported. This utility will be incorporated into policy installer
+    in the future to make policy updates simpler and faster,
+    especially when small changes are made to the large set of access
+    lists and nat rules.
+  </li>
+</ul>
+
+ </body>
+</html>

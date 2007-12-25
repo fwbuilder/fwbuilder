@@ -1,0 +1,206 @@
+
+ //=========================================================================\\
+ ||          Firewall Builder Routing Add-On                                ||
+ ||                                                                         ||
+ ||          Copyright (c) 2004 Compal GmbH, Germany                        ||
+ ||          Tidei Maurizio, fwbuilder-routing at compal.de                 ||
+ ||                                                                         ||
+ \\=========================================================================//
+
+
+
+ Index
+
+ 1 - Requirements 
+ 2 - Features
+ 3 - Problems
+ 4 - Future
+
+
+
+(1) Requirements 
+================
+   
+The routing rules composed in the gui can be compiled using the ip
+tables compiler, which now generates "ip route" commands, too. The
+"ip" command is available since Linux 2.2. The other compilers (ipf,
+ipfw, pf and cisco pix) simply ignore the routing rules.
+
+If you want to use ECMP routing rules (Equal Cost Multi Path), make
+sure your kernel is compiled with the CONFIG_IP_ROUTE_MULTIPATH
+option.
+
+
+
+(2) Features
+============
+
+The GUI's routing add-on offers object based definition of the routing
+rules, exactly the same way as you define policy rules. This enables
+you to use the same objects you already defined to build the firewall
+policy in your routing rules.  You won't have to update them
+separately when you change something in your network.
+
+In the GUI a routing rule is composed of a Destination, a Gateway, an
+Interface, a Metric and the Comment.  The following table shows what
+can be inserted for this elements:
+
+                        |                               |               |               |       |
+                        |Destination                    |Gateway        |Interface      |Metric |Comment
+------------------------|-------------------------------|---------------|---------------|-------|--------
+What can be inserted?   |all Objects under the          |- ip-adress    |- interface    |int    |text
+                        |library's "Objects" section:   |- interface    |               |       |
+                        |- address ranges               |- host         |               |       |
+                        |- addresses                    |               |               |       |
+                        |- groups                       |               |               |       |
+                        |- hosts                        |               |               |       |
+                        |- networks                     |               |               |       |
+------------------------|-------------------------------|---------------|---------------|-------|--------
+Restrictions            |none                           |Only one       |The interface  |0-255  |none
+                        |                               |interface or   |has to be a    |       |
+                        |                               |host with ONE  |child of the   |       |
+                        |                               |ip adress can  |current fire-  |       |
+                        |                               |be inserted    |wall           |       |
+------------------------|-------------------------------|---------------|---------------|-------|--------
+Default value           |"Default" (0.0.0.0/0)          |none           |none           |0      |""
+                        |                               |               |               |       |
+
+To build a valid routing rule you have to insert at least one of the
+two elements gateway and interface.  More than one path can be
+sprecified for one destination.
+
+"This approach is called 'Equal-Cost Multi-Path Routing' and is used
+for load balancing (Note that this does not provide failover). With
+ECMP, a router potentially has several available next hops towards any
+given destination. A new gateway is chosen for each new
+source/destination IP pair. This means that, for example, one FTP
+connection will use only one link, but new connection to a different
+server will use another link. This also means that routes to
+often-used sites will always be over the same provider. But on big
+backbones this should distribute traffic fine. Also this has another
+good feature - single connection packets do not get reordered and
+therefore do not kill TCP performance."  (The last Paragraph is a
+quotation from
+"http://www.mikrotik.com/Documentation/manual_2.7/IP/Route.html")
+
+To create an ECMP rule simply specify several rules with different
+paths, i.e. different combinations of Gateway and Interface, for the
+same Destination and with the same metric.
+
+Example:
+
+Destination    Gateway    Interface    Metric    Comment
+
+hostA          hostB       eth1         0         first possible route
+hostA          hostC                    0         second possible route
+hostA                      eth3         0         third possible route
+
+If you try to insert a non-valid object in a field, it will be ignored
+and a message box informs you of the mistake.
+
+The "Default" route can be specified by inserting a new rule or
+deleting all the destination of an existing rule.
+
+Before compiling the rules, they traverse several checks, to make sure
+that only complete, non-ambiguous and non-concurring rules are
+translated into ip commands. Follow the instructions of the compiler
+to correct the errors.
+
+If no error was found, the rules are automatically classified in ECMP
+rules and non-ECMP.  The ECMP rules are written out in a separated
+section of the firewall script after the "normal" routing rules.
+
+
+
+(3) Problems
+============
+
+1.
+  Please note that when executing a firewall script all existing
+  routing rules previously set by user space processes will be
+  deleted.
+
+  To see which rules will be deleted, you can use the command "ip
+  route show". All lines not including "proto kernel" will be deleted
+  upon reload of the firewall script.
+
+2.
+  *** NOTE FOR REDHAT 8.0 ***
+
+  Redhat seems to reset routing rules explicitly upon system
+  startup. Therefore its hard to distinguish interface rules from
+  rules setup by the user. On Redhat systems you need to include the
+  interface basic routing rules into your fwbuilder routing setup. IF
+  YOU DO NOT FOLLOW THIS HINT, YOUR MACHINE WILL FREEZE ANY NETWORK
+  TRAFFIC UPON START OF THE FIREWALL SCRIPT.  This means e.g. if eth0
+  has network 192.168.3.0/24 attached to it, you need to add a route
+  with Destination=Network(192.168.3.0/24), Gateway empty and
+  Interface=eth0.  We encountered this problem on redhat 8.0. Other
+  versions and distros might be affected too.  Debian sarge and SuSE
+  Linux work fine without interface routing rules being included in
+  fwbuilders routing rules.
+
+3.
+  If the firewall script states that the ECMP routes could not be
+  installed on your system, make sure your Kernel was compiled with
+  the CONFIG_IP_ROUTE_MULTIPATH option or renounce to ECMP rules.
+
+4.
+  If you have interfaces with a dynamic address or a point-to-point
+  address and you try to insert a routing rule for the default
+  gateway, compilation might fail, stateing "gateway not reachable".
+  Typically this is the case for DSL dialup links. Solution: leave the
+  gateway field empty.  Just specify the interface.
+
+  Example:
+
+  The firewall connects itself to the internet by a DSL link via
+  interface ppp0. During dialup pppd configures the default route:
+
+    default via 62.14.190.33 dev ppp
+
+  After specifying a routing rule in fwbuilder Destination=default,
+  Gateway empty, Interface=ppp0 and running the script on the
+  firewall, the route looks like:
+
+    default dev ppp0  scope link
+
+  Besides this, the kernel generates another route automaticelly upon
+  default gw setup:
+
+    62.14.190.33 dev ppp0  proto kernel  scope link  src 191.54.12.143
+
+  We tested this on Debian/sarge with kernel 2.4.27.
+
+  Technical explanation:
+
+  On compilation, fwbuilder checks if gateways are reachable through
+  any local network of the firewall.  Otherwise setting up routing
+  rules will fail on the firewall upon install. In case of
+  point-to-point interfaces fwbuilder doesn't know the point-to-point
+  address of the interface. Therefore this check fails since for
+  fwbuilder it looks like the gateway is not from any local network.
+  The only workaround available so far is to leave the gateway empty
+  and to specify the interface only.  Pakets will find their way to
+  the internet anyway, since they are traveling over a point-to-point
+  interface.
+
+
+(4) Future 
+==========
+
+Ideas, that could be implemented in the future, are: 
+
+  - Multiple customizable routing tables
+  
+    The idea is to add an option to the policy rules enabling the user
+    to mark matching packets with a color.  For every used color a new
+    routing table would have to be built, that will be used only for
+    packets marked with the associated color.
+    
+    
+  - Load balancing
+  
+    Another idea is to integrate more sophisticated load balancing
+    options in fwbuilder's GUI.
+

@@ -1,0 +1,94 @@
+.TH  fwbedit  1 "" FWB "Firewall Builder"
+.LO 1
+.SH NAME
+fwbedit \- General purpose object tree editing tool
+.SH SYNOPSIS
+
+.B fwbedit
+.RB [-a obj,grp]
+.RB [-r obj,grp]
+.RB [-d obj]
+.RB -f data_file.xml
+
+
+.SH "DESCRIPTION"
+
+.B fwbedit
+is a general purpose object tree editing tool for Firewall Builder (see
+fwbuilder(1)). This tool can be used in the shell scripts written for
+batch-processing of the Firewall Builder data files. Fwbedit can
+perform the following operations on the objects and the tree: add a
+reference to the given object to a group, remove reference to an
+object from a group and delete an object and all references to it from
+the tree. Both object and a group can be specified by their ID or
+by their name and a full path in the tree (see section 
+.B EXAMPLES
+below).
+
+.SH OPTIONS
+.IP "-f FILE"
+Specify the name of the data file to be processed.
+
+.IP "-a obj,grp"
+Adds reference to object 'obj' to the group 'grp'. 
+
+.IP "-r obj,grp"
+Removes reference to object 'obj' from the group 'grp'. 
+
+.IP "-d obj"
+Deletes object 'obj' and references to it from all groups and rules.
+
+.IP "-V"
+Prints version number and quit.
+
+.SH EXAMPLES
+.PP
+fwbedit -f x.xml -a /Objects/Hosts/A,/Objects/Groups/B
+.PP
+Adds reference to the Host object 'A' to the group 'B'.
+.PP
+.PP
+fwbedit -f x.xml -a id3D71A1BA,id3D151943
+.PP
+Adds reference to the object with ID id3D71A1BA to the group with ID
+id3D151943. If objects with given IDs do not exist, fwbedit prints an
+error message and does not make any changes in the data file.
+.PP
+.PP
+fwbedit -f x.xml -a id3D71A1BA,/Objects/Groups/testgroup
+.PP
+Adds reference to the object with ID id3D71A1BA to the group
+'testgroup'.
+.PP
+.PP
+fwbedit can be used in combination with fwblookup to execute
+operations on many objects:
+.LP
+  fwblookup -f x.xml -lP /Objects/Hosts | \\
+  grep domain.com | \\
+  while read h; do \\
+    fwbedit -f x.xml -a $h,/Objects/Groups/domainGRP; \\
+  done
+.PP
+first, this script uses fwblookup to print full path of all Host
+objects (option -l in combination with option -P prints full path for
+all children objects of /Objects/Hosts), then uses grep to filter only
+those hosts that have 'domain.com' in their name, then cycles through
+the obtained list and uses fwbedit to add them to the group 'domainGRP'.
+
+
+.SH URL
+Firewall Builder home page is located at the following URL:
+.B http://www.fwbuilder.org/
+
+.SH BUGS
+Please report bugs using bug tracking system on SourceForge: 
+
+.BR http://sourceforge.net/tracker/?group_id=5314&atid=105314
+
+
+.SH SEE ALSO
+.BR fwbuilder(1),
+.BR fwblookup(1),
+
+.P

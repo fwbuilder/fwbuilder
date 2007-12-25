@@ -1,0 +1,71 @@
+<?xml version="1.0"?> <!-- -*- mode: xml; -*- -->
+<FWBuilderResources version="@VERSION@-@RELEASE_NUM@">
+    <Target name="ios">
+      <description>Cisco IOS</description>
+      <compiler>fwb_iosacl</compiler>
+      <family>ios</family>
+      <dialog>ios</dialog>
+
+      <options>
+        <user_can_change_install_dir>false</user_can_change_install_dir>
+        <default>
+        </default>
+
+        <activation>
+          <fwdir></fwdir>
+          <fwdir_test></fwdir_test>
+
+          <timeout_units>min</timeout_units>
+
+          <reg_user>
+            <run>
+              <pre_config_commands>
+                terminal width 256
+                terminal length 0
+              </pre_config_commands>
+
+              <post_config_commands>
+                wr mem
+              </post_config_commands>
+
+              <schedule_rollback>
+                reload in %RBTIMEOUT%
+              </schedule_rollback>
+
+              <cancel_rollback>
+                reload cancel
+              </cancel_rollback>
+
+              <save_standby>
+              </save_standby>
+            </run>
+
+            <test>
+              <pre_config_commands>
+                terminal width 256
+                terminal length 0
+              </pre_config_commands>
+
+              <post_config_commands>
+              </post_config_commands>
+
+              <schedule_rollback>
+                reload in %RBTIMEOUT%
+              </schedule_rollback>
+
+              <cancel_rollback>
+                reload cancel
+              </cancel_rollback>
+
+              <save_standby>
+              </save_standby>
+
+            </test>
+
+          </reg_user>
+
+        </activation>
+      </options>
+    </Target>
+
+</FWBuilderResources>

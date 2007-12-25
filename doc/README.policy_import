@@ -1,0 +1,166 @@
+
+
+Policy importer has been implemented as part of the Firewall Builder
+GUI as of version 2.1.12. The first functional build were importer
+worked on all supported OS was build 270 (May 22, 2007)
+
+Policy importer uses ANTLR lexer and parser ( http://www.antlr.org/ )
+Version 2.7.7 is used in Firewall Builder v2.1.12 ( http://www.antlr2.org/ )
+
+Firewall Builder needs ANTLR C++ runtime header files and library and
+include these in the source tree under src/antlr.  Unless you want to
+change the grammar (*.g files) you don't need to install ANTLR
+separately. All relevant ANTLR files are included in the package.  For
+more information on ANTRL see: http://www.antlr2.org
+
+
+
+Policy import iptables configurations (v2.1.12, build 281 and later)
+----------------------------------------------------------------
+
+ Features implemented in this version :
+
+ - Importer can parse iptables config saved using iptables-save
+   utility.  Because of the huge variety of iptables modules, Importer
+   can only interpret basic iptables configuration and a subset of
+   modules. Currently the following modules are supported:
+
+    * state
+    * multiport
+    * limit
+    * mark
+
+ - Importer creates firewall object with all interfaces. It can not
+   assign object name for the firewall object nor add IP and MAC
+   addresses to interfaces because this information is not present in
+   iptables-save file.
+
+ - option "Assume firewall is part of 'any'" is off in the created
+   firewall object. Import is done this way in order to preserve logic
+   of chains INPUT, OUTPUT and FORWARD in the recreated fwbuilder
+   rules. Rules that had chain INPUT in the imported script will have
+   firewall object in "destination" in the corresponding fwbuilder
+   rules. Firewall object is placed in "Source" for rules with chain
+   OUTPUT. For rules with chain FORWARD rule elements "Source" and
+   "Destination" are populated with objects created using options "-s"
+   and "-d" of the original rules or left empty ("any").
+
+ - all recognized iptables rules are imported and interface and
+   direction are set in all rules appropriately. Interface objects are
+   created as parser finds them in the script.
+
+ - targets ACCEPT, DROP, REJECT, MARK and others are converted to the
+   corresponding fwbuilder policy rule actions. Unrecognized targets
+   and converted to branching rules, where the name of the target
+   becomes the name of the branch.
+
+ - SNAT, DNAT, MASQUERADING, REDIRECT and NETMAP targets and their
+    parameters are recognized in the NAT rules.
+
+ - Address and service objects are created in the process for all
+   addresses and ports used in all rules.
+
+ - iptables rules can refer to tcp/udp ports both by name or by
+   number. Importer can properly interpret both formats using system
+   function getservbyname() to convert service name to the port
+   number. Since the result of this function depends on the OS, some
+   port names may not convert on some systems. For example, Windows
+   can convert more limited set of service names compared to Linux or
+   BSD.
+
+ - targets LOG and ULOG are converted to the "logging" option in
+   fwbuilder rules with action "Continue". This is an empty action
+   that does not affect packet flow through the firewall but can be
+   used in combination with "logging" option to log the packet. If
+   such empty (logging-only) rule is undesired, it must be manually
+   merged with some other rule in the policy.
+
+ - "--log-prefix", and "--log-level" options of the LOG target are
+   recognized
+
+ - "--ulog-prefix" option of the ULOG target is recognized. Other
+   options of the ULOG target are not.
+
+ - Address and service objects are reused in the process of import.
+
+ - in case when importer fails to parse some part of the iptables-save
+   file, corresponding policy rule is colored red and appropriate
+   diagnostic message added to its comment. The problem must be
+   corrected manually.
+
+ - comments ("#") found inside access lists are ignored.
+
+
+Shortcomings of this version:
+
+ - user-defined chains in table "nat" are not supported
+
+ - no import of time intervals
+
+ - no MAC address matching import
+
+
+
+
+Policy import of Cisco IOS access lists (v2.1.12, build 270)
+----------------------------------------------------------------
+
+ Features implemented in this version :
+
+ - Importer can parse router config saved using "show run"
+   command. Although importer can only interpret a subset of IOS
+   configuration commands, other commands that it does not understand
+   will be ignored and should not affect operation. No manual editing
+   of the config is required prior to import.
+
+ - Importer creates firewall object with all interfaces
+
+ - firewall object name is assigned if "hostname" command is found in
+   the configuration. If this command is not present, the name remains
+   generic "New Firewall"
+
+ - interface addresses are assigned if command "ip address" is found
+   (multiple addresses per interface are supported). Interfaces
+   without "ip address" in the configuration are marked as
+   "unnumbered" in the firewall builder object tree.
+
+ - all access lists are imported and interface and direction are set
+   in all rules appropriately
+
+ - Address and service objects are created in the process for all
+   addresses and ports used in access lists
+
+ - IOS access lists can define ip protocol, icmp code and type, and
+    tcp/udp ports both by name or by number. Importer can properly
+    interpret both formats.
+
+ - "log", "log-input", "fragments", "established" keywords are
+   supported and translated into rule or object options as
+   appropriate.
+
+ - Address and service objects are reused in the process of import.
+
+ - in case when importer fails to parse some part of the access-list
+   command, corresponding policy rule is colored in red and
+   appropriate diagnostic message added to its comment. The problem
+   must be corrected manually.
+
+ - "remark" commands found inside access lists are translated into
+   rule comments
+
+ - comments ("!") found inside access lists are ignored.
+
+
+Shortcomings of this version:
+
+ - importer does not use address and service objects that existed in
+   the tree before the operation has started, it creates new
+   ones. Deduplication only works for objects created in the process
+   of import.
+
+ - the following keywords available in extended access lists are not
+   supported at this time:  tos, precedence, time-range.
+
+ - igmp access lists are not parsed.
+
+

@@ -1,0 +1,56 @@
+.TH  fwb_compile_all  1 "" FWB "Firewall Builder"
+.SH NAME
+fwb_compile_all \- Wrapper script that compiles policies for multiple firewall objects
+.SH SYNOPSIS
+
+.B fwb_compile_all
+.RB -f file.xml
+.RB [-d wdir]
+.RB [-av]
+[obj[ obj ...]]
+
+.SH "DESCRIPTION"
+
+.B fwb_compile_all
+is a wrapper script that compiles policies for several firewall
+objects in one batch job. This script takes a list of firewall object
+names on the command line (or '-a' command line option, see below) and
+calls policy compiler for each one. The script correctly determines
+which policy compiler is needed depending on the firewall platform of
+each object.
+
+.SH OPTIONS
+.IP "-a"
+The script processes all firewall objects in the "/Firewalls" subtree.
+
+.IP "-d wdir"
+Specify working directory.  Compiler creates file with iptables script
+in this directory.  If this parameter is missing, then iptables script
+will be placed in the current working directory.
+
+.IP "-f FILE"
+Specify the name of the data file to be processed.
+
+.IP "-v"
+Script passes this option to the compiler, this makes it print
+diagnostic messages indicating its progress.
+
+.SH URL
+Firewall Builder home page is located at the following URL:
+.B http://www.fwbuilder.org/
+
+.SH BUGS
+Please report bugs using bug tracking system on SourceForge: 
+
+.BR http://sourceforge.net/tracker/?group_id=5314&atid=105314
+
+
+.SH SEE ALSO
+.BR fwbuilder(1),
+.BR fwb_ipt(1)
+.BR fwb_ipf(1)
+.BR fwb_pf(1)
+.BR fwbedit(1),
+.BR fwblookup(1)
+
+.P

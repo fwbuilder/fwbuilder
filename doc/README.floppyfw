@@ -1,0 +1,73 @@
+
+
+How to generate firewall script for floppyfw
+(http://www.zelow.no/floppyfw/index.html)
+
+
+1. in Firewall dialog, tab "Firewall", set the following parameters:
+
+  - "Load modules" - OFF
+  - "Create virtual addresses for NAT rules" - ON
+  - "Use numeric log levels"  - ON
+
+
+2. download and install rpm "fwbuilder-floppyfw-0.9.7"
+
+
+3. in "Compile/Install" tab configure full path and name of the
+install script "/usr/bin/floppyfw_install.sh". Now you can compile
+policy in a usual way using menu Rules->Compile and then install it
+to floppyfw floppy using menu Rules->Install. Install script makes
+certain checks to verify that floppy you use indeed contains floppyfw
+code. Install script depends on mtools package.
+
+
+4. some useful configuration parameters for floppyfw:
+
+  - activate serial console for kernel boot-time messages and shell:
+      in file "config" :  SERIAL_CONSOLE=ttyS0
+      in file "syslinux.cfg" add "console=ttyS0,9600" kernel parameters: 
+
+------- file config ----------------------
+# Choose the serial port for the console "n" for none.
+SERIAL_CONSOLE=ttyS0
+------------------------------------------
+
+------- file syslinux.cfg ----------------
+default floppyfw
+display floppyfw.msg
+label floppyfw
+  kernel vmlinuz
+  append initrd=initrd.gz root=/dev/fd0 console=ttyS0,9600 ether=0,0,0,eth0 ether=0,0,0,eth1
+------------------------------------------
+
+
+
+  - logging via syslog: 
+      in file "config" set USE_SYSLOG=y and add "-R" to log to remote loghost
+      
+------- file config ----------------------
+# Turning on syslogd and klogd.
+# This is a nice thing but will eat CPU which is why it is turned
+# off by default.
+#
+USE_SYSLOG=y
+
+# This SYSLOG does not use syslogd.conf so we have to set things here.
+# Flags:
+# Log to /dev/tty3 instead of /var/log/messages which aren't exactly a
+# good idea on a ramdisk.
+# -O /dev/tty3
+# Log to network. host:port
+# -R 10.42.42.42:514
+# Log to both network and file:
+# -L
+# --MARK-- 0 is no mark.
+# -m 0
+# SYSLOG_FLAGS="-m 360 -O /dev/tty3"
+SYSLOG_FLAGS="-m 360 -R 10.42.42.4:514"
+------------------------------------------
+
+  - do not forget to add rule to the firewall policy to permit sending
+    syslog packets from firewall to your loghost
+

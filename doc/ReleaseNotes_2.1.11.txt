@@ -1,0 +1,65 @@
+                         Firewall Builder Release Notes
+
+Version 2.1.11
+
+   Released 04/29/2007
+   GUI and compilers v2.1.11 require API library libfwbuilder version 2.1.11
+
+Summary
+
+   This is bugfix release.
+
+   For those who wish to build from source, instructions are outlined in the
+   document "Install and Build instructions" on our web site here
+
+Improvements and bug fixes in the GUI
+
+     * redesigned TimeService object dialog
+     * minor redesign of the interface object dialog to make network zone
+       more prominent and easier to set when network and group objects have
+       long names.
+     * fixed bug #1685741: "GUI crash: click on an empty part of obj tree,
+       then desktop"
+     * fixed bug #1692411: "can't set accouting rule name (fwbuilder 2.1.11)"
+     * fixed bug #1684334: "RCS should use $LOGNAME when commit"
+     * fixed bug #1701971: "Enabeling test mode doent activate the reboot
+       interval". Checking "Test mode" checkbox in the installer options
+       dialog should enable widgets that configure automatic reboot timeout.
+     * fixed bug #1702830: "fwbuilder does not detect errors during policy
+       install". Built-in installer detects error messages printed by
+       iptables and iptables-restore and aborts installation process. Summary
+       page shown in the end reflects this as failed install.
+
+Improvements and bug fixes in policy compiler for iptables
+
+     * Added support for --datestart and --datestop options for module 'time'
+       in compiler for iptables
+     * fixed bug #1672191: "Time limit generates unexpected iptables command"
+     * fixed bug #1695481: "compliation error with lower end port". Before,
+       user could enter start port range number greater than the end port
+       range number. Neither the GUI nor compiler noticed this, which
+       resulted in the incorrect firewall configuration. This fix adds check
+       in the GUI to not let the user enter port ranges like that.
+     * fixed bug 1699483: "hashlimit-htable-expire not set". Added GUI
+       controls and compiler support for hashlimit module options
+       "--hashlimit-name", "--hashlimit-htable-size",
+       "--hashlimit-htable-max", "--hashlimit-htable-expire" and
+       "--hashlimit-htable-gcinterval"
+     * fixed bug #1703954: "Mark target in postrouting chain". Packets that
+       originate on the firewall should be marked in the OUTPUT chain.
+       According to the netfilter packet flow diagram at
+       http://www.shorewall.net/NetfilterOverview.html , rerouting happens
+       after OUTPUT hook but before POSTROUTING hook. So in order to be able
+       to reroute packet originated on the firewall, they should be marked in
+       OUTPUT
+
+Improvements and bug fixes in policy compiler for PF
+
+     * fixed bug #1674940: "if max-src-conn == 0: syntax error". Options
+       max-src-conn and max-src-states can not have value '0'
+
+Improvements and bug fixes in policy compiler for ipfilter
+
+     * fixed bug #1678410: "Ipfilter compiler uses wrong keyword for
+       "fragment""
+     * fixed bug #1676845: "lsrr option not compiling"

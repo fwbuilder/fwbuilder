@@ -1,0 +1,461 @@
+dnl $Id: configure.in,v 1.70 2007/06/07 02:33:53 vkurland Exp $
+
+AC_INIT(src/gui/main.cpp)
+AC_CANONICAL_SYSTEM
+AC_CONFIG_HEADER(config.h)
+
+PACKAGE=fwbuilder
+AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE", [package])
+AC_SUBST(PACKAGE)
+
+dnl
+dnl all version numbers are defined in the file VERSION
+dnl
+. ./VERSION
+
+BUILD_NUM=`cat build_num | cut -d' ' -f3`
+
+AC_SUBST(FWB_MAJOR_VERSION)
+AC_SUBST(FWB_MINOR_VERSION)
+AC_SUBST(FWB_MICRO_VERSION)
+AC_SUBST(FWB_VERSION)
+
+SHORTVERSION=${FWB_MAJOR_VERSION}${FWB_MINOR_VERSION}${FWB_MICRO_VERSION}
+AC_SUBST(SHORTVERSION)
+
+AC_SUBST(RELEASE_NUM)
+AC_DEFINE_UNQUOTED(RELEASE_NUM, "$RELEASE_NUM", [release_num])
+
+AC_SUBST(REQUIRED_LIBFWBUILDER_VERSION)
+AC_SUBST(LIBFWBUILDER_SOMAJOR)
+
+echo "Creating VERSION.h file..."
+
+echo "#define VERSION      \"$VERSION\""      > VERSION.h
+echo "#define RELEASE_NUM  \"$RELEASE_NUM\"" >> VERSION.h
+
+dnl try to find QT
+dnl
+AC_ARG_WITH(qtdir,[  --with-qtdir=DIR        Specify directory path for QT ])
+
+AC_MSG_CHECKING(looking for QT)
+if test -n "$with_qtdir"; then
+    QTDIR="$with_qtdir";
+elif test -z "$QTDIR"; then
+    test -f "/usr/local/lib/qt3/include/qstyle.h" && QTDIR="/usr/local/lib/qt3"
+    test -f "/opt/lib/qt3/include/qstyle.h"       && QTDIR="/opt/lib/qt3"
+    test -f "/opt/qt3/include/qstyle.h"           && QTDIR="/opt/qt3"
+    test -f "/usr/lib/qt3/include/qstyle.h"       && QTDIR="/usr/lib/qt3"
+    test -f "/usr/lib/qt-3.1/include/qstyle.h"    && QTDIR="/usr/lib/qt-3.1"
+    test -f "/usr/lib/qt-3.2/include/qstyle.h"    && QTDIR="/usr/lib/qt-3.2"
+    test -f "/usr/lib/qt-3.3/include/qstyle.h"    && QTDIR="/usr/lib/qt-3.3"
+    test -f "/usr/local/include/qstyle.h"         && QTDIR="/usr/local"
+    test -f "/usr/include/qstyle.h"               && QTDIR="/usr"
+    test -f "/usr/lib64/qt-3.3/include/qstyle.h"  && QTDIR="/usr/lib64/qt-3.3"
+fi
+export QTDIR
+AC_MSG_RESULT($QTDIR)
+
+echo $QTDIR > qtdir
+
+QTTRANSLATIONSDIR="${QTDIR}/translations"
+AC_DEFINE_UNQUOTED(QTTRANSLATIONSDIR, "$QTTRANSLATIONSDIR", [qttranslationsdir])
+AC_SUBST(QTTRANSLATIONSDIR)
+
+EXTENDED_PATH="${QTDIR}/bin:/usr/local/bin:$PATH"
+
+AC_PATH_PROG(QMAKE,  qmake,      ,[$EXTENDED_PATH])
+if test -z "$QMAKE"; then
+    AC_MSG_ERROR("Could not find qmake")
+fi
+
+AC_MSG_CHECKING(checking version of QT this qmake is part of)
+qmake_version=`$QMAKE -v 2>&1 | awk '/Using Qt version/ { print $4;}'`
+case $qmake_version in
+    4.*) AC_MSG_RESULT( $qmake_version ) ;;
+     *) AC_MSG_ERROR( "$qmake_version -- v4.x is required") ;;
+esac
+
+
+
+AC_ARG_WITH(templatedir, [  --with-templatedir=DIR  Specify directory path for fwbuilder template files ])
+AC_ARG_WITH(docdir,      [  --with-docdir=DIR       Specify directory path for fwbuilder 
+                          documentation files  ])
+
+
+
+dnl
+dnl   Determine init dir and add definition to config.h. Program
+dnl   determines prefix name of the directory it was started from
+dnl   and prepends it to the RES_DIR
+dnl
+
+PREFIX=$ac_default_prefix
+
+if test "x$prefix" != "xNONE"; then
+  PREFIX=$prefix
+fi
+AC_DEFINE_UNQUOTED(PREFIX, "${PREFIX}", [prefix])
+AC_SUBST(PREFIX)
+
+AC_DEFINE_UNQUOTED(VERSION,              "$VERSION", [version])
+AC_SUBST(VERSION)
+
+
+AC_PROG_INSTALL
+
+AC_ISC_POSIX
+AC_PROG_CC
+dnl  AM_PROG_CC_STDC
+AC_HEADER_STDC
+AC_PROG_CPP
+AC_PROG_CXX
+AC_PROG_CXXCPP
+
+dnl need this for intl to compile on FreeBSD and may be other platforms
+AC_CHECK_FUNCS(strchr memcpy)
+
+
+dnl AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
+dnl AC_CANONICAL_HOST
+
+AC_PROG_MAKE_SET
+
+
+dnl Check for GNU make 
+dnl 
+AC_MSG_CHECKING(whether make is GNU Make)
+if ${MAKE-make} -q --version 2>/dev/null | grep '^GNU Make ' >/dev/null ; then
+      AC_MSG_RESULT(yes)
+else
+      AC_MSG_RESULT(no)
+      if test "$host_vendor" = "sun" ; then
+              AC_MSG_ERROR("SUN make does not work for building Firewall Builder. Please install GNU make")
+      fi
+fi
+
+dnl some platform-dependent flags
+dnl 
+dnl e.g. we need to set -I/sw/include before check for GETTEXT
+dnl
+GUILINKFLAGS=
+case "$build_os" in
+  *solaris*)
+    GUILINKFLAGS="-export-dynamic"
+    ;;
+  *darwin*)
+    if test -d /sw/include; then
+      CXXFLAGS="-I/sw/include"
+      CPPFLAGS="-I/sw/include"
+      CFLAGS="-I/sw/include"
+      LDFLAGS="-flat_namespace"
+    fi
+    LIBS="$LIBS -L/sw/lib"
+    AC_CHECK_LIB(poll, poll, [LIBS="$LIBS -lpoll"],[
+        AC_MSG_ERROR([Could not link with libpoll: library is not installed on this system]) 
+    ])
+    ;;
+ esac
+AC_SUBST(GUILINKFLAGS)
+
+dnl
+dnl forkpty is in libutil on Linux and BSD, while on Mac it is in libc
+dnl
+AC_CHECK_HEADERS( [pty.h libutil.h util.h],[],[],[#include <sys/types.h>])
+AC_CHECK_LIB(c,forkpty,[
+  AC_DEFINE_UNQUOTED(HAVE_FORKPTY, 1, [forkpty])
+  ],[
+  AC_CHECK_LIB(util,forkpty,[
+    AC_DEFINE_UNQUOTED(HAVE_FORKPTY, 1, [forkpty])
+    LIBS="-lutil $LIBS"
+    ],[
+    AC_MSG_RESULT(["forkpty not found, will use emulation"])
+  ],[])
+],[])
+
+AC_CHECK_LIB(c,cfmakeraw,[
+  AC_DEFINE_UNQUOTED(HAVE_CFMAKERAW, 1, [cfmakeraw])
+])
+
+dnl standard LIBTOOL fragment
+dnl
+dnl     commented out 12/20 - we now use qmake and do not need libtool 
+dnl
+dnl AC_LIBTOOL_DLOPEN
+dnl AC_PROG_LIBTOOL
+dnl AC_SUBST(LIBTOOL_DEPS)
+dnl AM_PROG_LIBTOOL
+dnl AC_PROG_RANLIB
+
+AC_CHECK_HEADERS([getopt.h])
+AC_CHECK_HEADERS([signal.h])
+
+AC_CHECK_FUNCS(stat _stat signal)
+
+AC_STRUCT_TM
+AC_STRUCT_TIMEZONE
+
+dnl do not insert spaces in these macros, even outside of []
+AC_PATH_PROG(RCS_FILE_NAME,[rcs],[rcs],[$EXTENDED_PATH])
+AC_PATH_PROG(RCSDIFF_FILE_NAME,[rcsdiff],[rcsdiff],[$EXTENDED_PATH])
+AC_PATH_PROG(RLOG_FILE_NAME,[rlog],[rlog],[$EXTENDED_PATH])
+AC_PATH_PROG(CI_FILE_NAME,[ci],[ci],[$EXTENDED_PATH])
+AC_PATH_PROG(CO_FILE_NAME,[co],[co],[$EXTENDED_PATH])
+
+AC_DEFINE_UNQUOTED(RCS_FILE_NAME,      ["$RCS_FILE_NAME"], [rcs_file_name])
+AC_DEFINE_UNQUOTED(RCSDIFF_FILE_NAME,  ["$RCSDIFF_FILE_NAME"], [rcsdiff_file_name])
+AC_DEFINE_UNQUOTED(RLOG_FILE_NAME,     ["$RLOG_FILE_NAME"], [rlog_file_name])
+AC_DEFINE_UNQUOTED(CI_FILE_NAME,       ["$CI_FILE_NAME"], [ci_file_name])
+AC_DEFINE_UNQUOTED(CO_FILE_NAME,       ["$CO_FILE_NAME"], [co_file_name])
+
+
+AC_PATH_PROG(LIBFWBUILDER_CONFIG, libfwbuilder-config-${FWB_MAJOR_VERSION}.${FWB_MINOR_VERSION},  ,[$EXTENDED_PATH])
+
+if test x$LIBFWBUILDER_CONFIG = x ; then
+   AC_MSG_ERROR([*** libfwbuilder not installed, or libfwbuilder-config-2 is not in path])
+else
+  LIBFWBUILDER_CFLAGS_FWBUILDER="`$LIBFWBUILDER_CONFIG --cflags fwbuilder`"
+  LIBFWBUILDER_CFLAGS_FWCOMPILER="`$LIBFWBUILDER_CONFIG --cflags fwcompiler`"
+  LIBFWBUILDER_CFLAGS_FWBD="`$LIBFWBUILDER_CONFIG --cflags fwbd`"
+  LIBFWBUILDER_INCLUDEPATH="`$LIBFWBUILDER_CONFIG --includepath`"
+  LIBFWBUILDER_LIBPATH="`$LIBFWBUILDER_CONFIG --libpath`"
+  LIBFWBUILDER_LIBS_FWBUILDER="`$LIBFWBUILDER_CONFIG --libs fwbuilder`"
+  LIBFWBUILDER_LIBS_FWCOMPILER="`$LIBFWBUILDER_CONFIG --libs fwcompiler`"
+  LIBFWBUILDER_LIBS_FWBD="`$LIBFWBUILDER_CONFIG --libs fwbd`"
+  LIBFWBUILDER_STATICLIBS="`$LIBFWBUILDER_CONFIG --staticlibs`"
+  LIBFWBUILDER_VERSION="`$LIBFWBUILDER_CONFIG --version`"
+
+  AC_MSG_CHECKING(libfwbuilder version)
+  if test x${LIBFWBUILDER_VERSION} != x${REQUIRED_LIBFWBUILDER_VERSION} ; then
+    AC_MSG_ERROR([*** Need libfwbuilder version $REQUIRED_LIBFWBUILDER_VERSION, found $LIBFWBUILDER_VERSION ])
+  fi
+  AC_MSG_RESULT($LIBFWBUILDER_VERSION)
+
+  AC_SUBST(LIBFWBUILDER_CFLAGS_FWBUILDER)
+  AC_SUBST(LIBFWBUILDER_CFLAGS_FWCOMPILER)
+  AC_SUBST(LIBFWBUILDER_LIBS_FWBUILDER) 
+  AC_SUBST(LIBFWBUILDER_LIBS_FWCOMPILER) 
+  AC_SUBST(LIBFWBUILDER_LIBPATH) 
+  AC_SUBST(LIBFWBUILDER_INCLUDEPATH)
+  AC_SUBST(LIBFWBUILDER_STATICLIBS) 
+  AC_SUBST(LIBFWBUILDER_VERSION)
+
+fi
+
+AC_DEFINE_UNQUOTED(LIBFWBUILDER_VERSION, "$LIBFWBUILDER_VERSION", [libfwbuilder_version])
+
+AC_SUBST(LIBS) 
+
+AC_LANG_CPLUSPLUS
+
+AC_PATH_PROG(ANTLR_CONFIG, antlr-config, , [$EXTENDED_PATH])
+AC_MSG_CHECKING(antlr)
+HAVE_ANTLR_RUNTIME="1"
+HAVE_EXTERNAL_ANTLR="0";
+if test x$ANTLR_CONFIG = x; then
+  ANTLR_INCLUDEPATH="`pwd`/src/"
+  ANTLR_LIBS="`pwd`/src/antlr/libantlr.a"
+  AC_MSG_RESULT(using provided)
+else
+  ANTLR_VERSION="`$ANTLR_CONFIG --version`"
+  if test x$ANTLR_VERSION != x2.7.7; then
+    ANTLR_INCLUDEPATH="`pwd`/src/"
+    ANTLR_LIBS="`pwd`/src/antlr/libantlr.a"
+    AC_MSG_RESULT(using provided)
+  else
+    ANTLR_INCLUDEPATH="`$ANTLR_CONFIG --cflags`"
+    ANTLR_LIBS="`$ANTLR_CONFIG --libs`"
+    HAVE_EXTERNAL_ANTLR="1"
+    AC_MSG_RESULT(using external version $ANTLR_VERSION)
+  fi
+fi
+AC_DEFINE_UNQUOTED(HAVE_ANTLR_RUNTIME, 1, [antlr_runtime])
+AC_DEFINE_UNQUOTED(HAVE_EXTERNAL_ANTLR, $HAVE_EXTERNAL_ANTLR, [external_antlr])
+AC_SUBST(HAVE_ANTLR_RUNTIME) 
+AC_SUBST(HAVE_EXTERNAL_ANTLR) 
+AC_SUBST(ANTLR_LIBS)
+AC_SUBST(ANTLR_INCLUDEPATH)
+
+
+
+dnl ********************************************************************
+
+if test -z ${RELEASE_NUM}; then
+  RPMRELEASE="1"
+else
+  RPMRELEASE="${RELEASE_NUM}";
+fi
+AC_SUBST(RPMRELEASE)
+
+AC_MSG_CHECKING(what OS this is)
+
+case ${host} in
+  *-*-cygwin*)
+    OS=cygwin
+    OS_CYGWIN=1
+    AC_MSG_RESULT(Win32 cygwin)
+    DEFAULT_RES_DIR="resources"
+    ;;
+
+  *-*-mingw32*)
+    OS=mingw32
+    OS_MINGW=1
+    AC_MSG_RESULT(Win32 mingw)
+    DEFAULT_RES_DIR="resources"
+    ;;
+
+  *-*-darwin*)
+    OS=MacOSX
+    OS_MACOSX=1
+    MANDIR="${PREFIX}/share/man/"
+    AC_MSG_RESULT(MacOSX)
+    DEFAULT_RES_DIR="../Resources"
+    ;;
+
+  *-*-solaris*)
+    OS=Solaris
+    OS_SOLARIS=1
+    MANDIR="${PREFIX}/share/man/"
+    AC_MSG_RESULT(Solaris)
+    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder${FWB_MAJOR_VERSION}${FWB_MINOR_VERSION}"
+    ;;
+
+  *-*-freebsd*)
+    OS=FreeBSD
+    OS_FREEBSD=1
+    MANDIR="${PREFIX}/man/"
+    AC_MSG_RESULT(FreeBSD)
+    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder${FWB_MAJOR_VERSION}${FWB_MINOR_VERSION}"
+    ;;
+
+  *-*-openbsd*)
+    OS=OpenBSD
+    OS_OPENBSD=1
+    MANDIR="${PREFIX}/man/"
+    AC_MSG_RESULT(OpenBSD)
+    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder${FWB_MAJOR_VERSION}${FWB_MINOR_VERSION}"
+    ;;
+
+  *-*-kfreebsd*)
+    OS=FreeBSD
+    OS_FREEBSD=1
+    if test -f /etc/debian_version ; then
+       DISTRO=Debian
+    else
+       DISTRO="Unknown"
+    fi
+    MANDIR="${PREFIX}/share/man/"
+    AC_MSG_RESULT($DISTRO GNU/kFreeBSD)
+    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder${FWB_MAJOR_VERSION}${FWB_MINOR_VERSION}"
+    ;;
+
+  *-*-linux*)
+    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder${FWB_MAJOR_VERSION}${FWB_MINOR_VERSION}"
+    OS=Linux
+    OS_LINUX=1
+    if test -f /etc/debian_version ; then
+	DISTRO=Debian
+    elif test -f /etc/mandrake-release ; then
+	DISTRO=Mandrake
+    elif test -f /etc/slackware-version ; then
+	DISTRO=Slackware
+    elif test -f /etc/SuSE-release ; then
+        DISTRO=SuSE
+    elif test -f /etc/redhat-release ; then
+#
+# Mandrake has symlink /etc/redhat-release -> /etc/manrake-release ,
+# so this check must be the last
+#
+	DISTRO=RedHat
+    else
+	DISTRO="Unknown"
+    fi
+    MANDIR="${PREFIX}/share/man/"
+    AC_MSG_RESULT($DISTRO Linux)
+    ;;
+
+  *)
+    OS=Unknown
+    OS_UNKNOWN=1
+    DISTRO=Unknown
+    MANDIR="${PREFIX}/share/man/"
+    AC_MSG_RESULT(Unknown)
+    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder${FWB_MAJOR_VERSION}${FWB_MINOR_VERSION}"
+    ;;
+esac
+
+if test "x$with_templatedir" != "x"; then
+  RES_DIR="${with_templatedir}"
+else
+  RES_DIR="$DEFAULT_RES_DIR"
+fi
+
+AC_DEFINE_UNQUOTED(RES_DIR, "$RES_DIR", [res_dir])
+AC_SUBST(RES_DIR)
+
+
+if test "x$with_docdir" != "x"; then
+  DOCDIR="${with_docdir}"
+else
+  DOCDIR="${PREFIX}/share/doc/fwbuilder-${VERSION}"
+fi
+DOCDIRPATH=`dirname ${DOCDIR}`
+
+AC_SUBST(OS)
+AC_DEFINE_UNQUOTED(OS,               "${OS}", [os])
+test -n "$OS_CYGWIN"  && AC_DEFINE_UNQUOTED(OS_CYGWIN,        "${OS_CYGWIN}", [cygwin])
+test -n "$OS_MINGW"   && AC_DEFINE_UNQUOTED(OS_MINGW,         "${OS_MINGW}", [mingw])
+test -n "$OS_MACOSX"  && AC_DEFINE_UNQUOTED(OS_MACOSX,        "${OS_MACOSX}", [macosx])
+test -n "$OS_SOLARIS" && AC_DEFINE_UNQUOTED(OS_SOLARIS,       "${OS_SOLARIS}", [solaris])
+test -n "$OS_FREEBSD" && AC_DEFINE_UNQUOTED(OS_FREEBSD,       "${OS_FREEBSD}", [freebsd])
+test -n "$OS_OPENBSD" && AC_DEFINE_UNQUOTED(OS_OPENBSD,       "${OS_OPENBSD}", [openbsd])
+test -n "$OS_LINUX"   && AC_DEFINE_UNQUOTED(OS_LINUX,         "${OS_LINUX}", [linux])
+test -n "$OS_UNKNOWN" && AC_DEFINE_UNQUOTED(OS_UNKNOWN,       "${OS_UNKNOWN}", [unknown])
+
+AC_SUBST(DISTRO)
+AC_DEFINE_UNQUOTED(DISTRO,           "${DISTRO}", [distro])
+
+AC_SUBST(DOCDIRPATH)
+AC_DEFINE_UNQUOTED(DOCDIRPATH,       "${DOCDIRPATH}", [docdirpath])
+
+AC_SUBST(DOCDIR)
+AC_DEFINE_UNQUOTED(DOCDIR,           "${DOCDIR}", [docdir])
+
+AC_SUBST(MANDIR)
+
+AC_PATH_PROG(CCACHE, ccache, , )
+
+dnl Support for the po directory.
+AM_PO_SUBDIRS
+
+dnl AC_CONFIG_FILES([ Main.make ])
+AC_CONFIG_FILES([ qmake.inc ])
+AC_CONFIG_FILES([ po/POmakefile ],  [AM_POSTPROCESS_PO_MAKEFILE])
+
+AC_CONFIG_FILES([ src/res/objects_init.xml ])
+AC_CONFIG_FILES([ src/res/templates.xml ])
+AC_CONFIG_FILES([ src/res/resources.xml ])
+AC_CONFIG_FILES([ src/res/os/fwsm_os.xml ])
+AC_CONFIG_FILES([ src/res/os/freebsd.xml ])
+AC_CONFIG_FILES([ src/res/os/linux24.xml ])
+AC_CONFIG_FILES([ src/res/os/linksys.xml ])
+AC_CONFIG_FILES([ src/res/os/macosx.xml ])
+AC_CONFIG_FILES([ src/res/os/openbsd.xml ])
+AC_CONFIG_FILES([ src/res/os/pix_os.xml ])
+AC_CONFIG_FILES([ src/res/os/ios.xml ])
+AC_CONFIG_FILES([ src/res/os/solaris.xml ])
+AC_CONFIG_FILES([ src/res/os/unknown_os.xml ])
+AC_CONFIG_FILES([ src/res/platform/fwsm.xml ])
+AC_CONFIG_FILES([ src/res/platform/ipf.xml ])
+AC_CONFIG_FILES([ src/res/platform/ipfw.xml ])
+AC_CONFIG_FILES([ src/res/platform/iptables.xml ])
+AC_CONFIG_FILES([ src/res/platform/pf.xml ])
+AC_CONFIG_FILES([ src/res/platform/pix.xml ])
+AC_CONFIG_FILES([ src/res/platform/iosacl.xml ])
+AC_CONFIG_FILES([ src/res/platform/unknown.xml ])
+
+
+AC_OUTPUT
+
+. ./runqmake.sh
+

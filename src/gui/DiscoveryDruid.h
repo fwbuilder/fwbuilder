@@ -1,0 +1,306 @@
+/* 
+
+                          Firewall Builder
+
+                 Copyright (C) 2005 NetCitadel, LLC
+
+  Author:  Illiya Yalovoy <yalovoy@gmail.com>
+
+  $Id: DiscoveryDruid.h,v 1.17 2007/06/13 02:58:48 vkurland Exp $
+
+  This program is free software which we release under the GNU General Public
+  License. You may redistribute and/or modify this program under the terms
+  of that license as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+ 
+  To get a copy of the GNU General Public License, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+*/
+
+
+#ifndef __DISCOVERYDRUID_H_
+#define __DISCOVERYDRUID_H_
+
+#include "config.h"
+#include <ui_discoverydruid_q.h>
+#include <QDialog>
+
+#include <qobject.h>
+#include <qthread.h>
+#include <qhostinfo.h>
+
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/dns.h"
+#include "fwbuilder/snmp.h"
+#include "fwbuilder/IPAddress.h"
+#include "fwbuilder/Logger.h"
+
+#include "FilterDialog.h"
+#include "fakeWizard.h"
+
+#include <vector>
+#include <string>
+
+
+using namespace std;
+using namespace libfwbuilder;
+
+class Importer;
+
+// ---------------- OBJECT DESCRIPTOR ------------------ //
+
+class ObjectDescriptor 
+{
+    public:
+
+    bool    have_snmpd ;
+    string  descr, contact, location, sysname    ;
+    string  type;
+    bool isSelected;
+    
+
+    map<int, libfwbuilder::Interface> interfaces ;
+
+    string                          MAC_addr ;
+    libfwbuilder::HostEnt           dns_info ;
+    libfwbuilder::IPAddress         addr     ;
+    libfwbuilder::Netmask           netmask  ;
+
+    
+    ObjectDescriptor();
+    ObjectDescriptor(const ObjectDescriptor& od);
+
+    std::string toString()
+    {
+        ostringstream ost;
+        ost << sysname;
+        //if(interfaces.size()>1)
+        //   ost <<" [" <<interfaces.size() <<"]";
+        ost <<" (" << addr.toString() <<")";
+        return ost.str();
+    }
+    
+#ifdef HAVE_LIBSNMP
+    ObjectDescriptor(const libfwbuilder::CrawlerFind& cf);
+#endif
+
+    virtual ~ObjectDescriptor();
+
+    ObjectDescriptor& operator=(const ObjectDescriptor& od);
+
+};
+
+
+
+// -------------------- EVENTS --------------------- //
+enum {ProgressEv = 1001, DoneEv = 1002}; 
+class ProgressEvent : public QEvent
+{
+    public:
+        ProgressEvent():QEvent(static_cast<QEvent::Type>(ProgressEv)) {value=0;}
+        int value;
+};
+
+class DoneEvent : public QEvent
+{
+    public:
+        DoneEvent():QEvent(static_cast<QEvent::Type>(DoneEv)) {}
+};
+
+
+// ---------------- WORKER THREAD ------------------ //
+
+typedef enum {BT_NONE,BT_HOSTS,BT_DNS,BT_SNMP,BT_IMPORT} BackgroundTask;
+
+class WorkerThread : public QThread, QObject 
+{
+    QWidget *Widget;
+
+protected:
+    QString last_error;
+    
+public:
+    Logger *Log;
+
+    void setProgress(int p);
+    void done();
+    void setTargetWidget(QWidget *w) {Widget=w;}
+    QString getError();
+    WorkerThread();
+    virtual ~WorkerThread();
+
+    virtual void run();
+};
+
+class HostsFileImport : public WorkerThread
+{
+    QString file_name;
+
+public:
+    vector<ObjectDescriptor>  hosts;
+
+    HostsFileImport(const QString &f);
+
+    virtual void run();
+};
+
+class ConfigImport : public WorkerThread
+{
+    std::string *buffer;
+    Importer    *imp;
+    std::string  platform;
+        
+public:
+    ConfigImport(std::string *buffer, const std::string &platform);
+    virtual ~ConfigImport();
+
+    virtual void run();
+    Importer* getImporterObject() { return imp; }
+};
+
+// ---------------- DISCOVERY DRUID ------------------ //
+
+class DiscoveryDruid : public QDialog, public FakeWizard
+{
+    Q_OBJECT
+private:
+    WorkerThread *thread;
+    BackgroundTask current_task;
+    Filter * flt_obj;
+    Filter * flt_last;
+    Filter * flt_net;
+    FilterDialog * flt_obj_d;
+    FilterDialog * flt_last_d;
+    FilterDialog * flt_net_d;
+    Ui::DiscoveryDruid_q * m_dialog;
+    QButtonGroup * dm_method;
+
+    bool isSeedHostOK;
+    bool isSNMPInclNetOK;
+    bool userIsTyping;
+    
+    //QueueLogger * logger;
+    Logger * logger;
+    BackgroundOp *bop;
+
+    QHostInfo *dns;
+    
+    int FromPage;
+    QMap<QString,ObjectDescriptor> Objects;
+    QMap<QString,ObjectDescriptor> Networks;
+    QMap<QString,IPAddress> NameServers;
+    vector<libfwbuilder::IPNetwork>  include_networks;
+
+    QTimer* timer;
+    QTimer* prg_timer;
+    int unProg;
+    QProgressBar *unBar;
+    QLabel *errMessage;
+    QString HostName;
+    
+    void setDiscoveryMethod_file();
+    void setDiscoveryMethod_DNS();
+    void setDiscoveryMethod_SNMP();
+    void setDiscoveryMethod_Import();
+
+    void startBackgroundProcess();
+    void DataFromCrawler();
+    int monitorOperation();
+    void autorename(FWObject *obj,const string &objtype,const string &namesuffix);
+    void restore();
+    void save();
+
+public:
+
+    DiscoveryDruid(QWidget *parent, bool start_with_import=false);
+    virtual ~DiscoveryDruid();
+    void fillListOfObjects();
+    void fillTypeChangingList();
+    void fillObjects();
+    void fillNetworks();
+    void loadDataFromFile();
+    void loadDataFromImporter();
+    void loadDataFromCrawler();
+    void loadDataFromDNS();
+    void fillListOfNetworks();
+    void createRealObjects();
+//    void stripObjects();
+    void getNameServers();
+    IPAddress getNS();
+    IPAddress getSeedHostAddress();
+    bool isIPAddress(const QString s);
+    QString testIPAddress(const QString s);
+
+    virtual void customEvent(QEvent *event);
+    
+
+public slots:
+    virtual void changedSelected( const int &page );
+    virtual void changedDiscoveryMethod(int);
+    virtual void browseHostsFile();
+    virtual void browseForImport();
+    virtual void saveScanLog();
+    virtual void startHostsScan();
+    virtual void startDNSScan();
+    virtual void startSNMPScan();
+    virtual void startConfigImport();
+    virtual void importPlatformChanged(int cp);
+
+    virtual void changedDomainName();
+    virtual void changedHostsFileName();
+    virtual void changedSNMPOptions();
+    virtual void changedSeedHost();
+    virtual void changedInclNet();
+    virtual void stopBackgroundProcess();
+    virtual void addNetwork();
+    virtual void removeNetwork();
+    virtual void setNetworkFilter();
+    virtual void removeNetworkFilter();
+    virtual void setLastFilter();
+    virtual void removeLastFilter();
+    virtual void addObject();
+    virtual void removeObject();
+    virtual void setObjectFilter();
+    virtual void removeObjectFilter();
+    virtual void updateLog();
+    virtual void updatePrg();
+    virtual void checkHostName();
+    virtual void checkSNMPCommunity();
+    virtual void selectAllResNets();
+    virtual void selectAllNets();
+    virtual void selectAllResObjs();
+    virtual void selectAllObjs();
+    virtual void selectAllLast();
+    virtual void unselectAllLast();
+    virtual void changeTargetObject(const QString &buf);
+    virtual void typeAddress();
+    virtual void typeHost();
+    virtual void typeFirewall();
+    virtual void dnsFinish(QHostInfo);
+    virtual void changedNameServer();
+    virtual void typedCustomNS();
+//    virtual void createObjects(const QString &buf);
+    
+    virtual void nextClicked();
+    virtual void backClicked();
+    virtual void cancelClicked();
+    virtual void finishClicked();
+ signals:
+    
+    
+};
+const int  WIZARD_PAGES=13;        
+const bool WIZARD_FILE_PAGES[] =   {1,1,0,0,0,0,0,0,1,0,1,0,1,1};
+const bool WIZARD_DNS_PAGES[]  =   {1,0,0,1,1,0,0,0,1,0,1,0,1,1};
+const bool WIZARD_SNMP_PAGES[] =   {1,0,0,0,0,1,1,1,1,1,1,1,1,1};
+const bool WIZARD_IMPORT_PAGES[] = {1,0,1,0,0,0,0,0,1,0,0,0,0,0};
+
+
+
+#endif 

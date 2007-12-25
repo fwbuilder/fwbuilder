@@ -1,0 +1,267 @@
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT  -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/local/Trolltech/Qt-4.2.1/mkspecs/linux-g++ -I. -I/usr/local/Trolltech/Qt-4.2.1/include/QtCore -I/usr/local/Trolltech/Qt-4.2.1/include/QtCore -I/usr/local/Trolltech/Qt-4.2.1/include/QtNetwork -I/usr/local/Trolltech/Qt-4.2.1/include/QtNetwork -I/usr/local/Trolltech/Qt-4.2.1/include/QtGui -I/usr/local/Trolltech/Qt-4.2.1/include/QtGui -I/usr/local/Trolltech/Qt-4.2.1/include -I. -Isrc/gui -I. -I. -o FWWindow.o src/gui/FWWindow.cpp
+In file included from src/gui/FWWindow.cpp:29:
+src/gui/utils.h:47:32: fwbuilder/FWObject.h: No such file or directory
+src/gui/utils.h:48:35: fwbuilder/FWReference.h: No such file or directory
+In file included from src/gui/FWWindow.cpp:29:
+src/gui/utils.h:79: error: `libfwbuilder' has not been declared
+src/gui/utils.h:79: error: `FWObject' has not been declared
+src/gui/utils.h:80: error: ISO C++ forbids declaration of `obj' with no type
+src/gui/utils.h:81: error: `libfwbuilder' has not been declared
+src/gui/utils.h:81: error: `FWObject' has not been declared
+src/gui/utils.h:82: error: ISO C++ forbids declaration of `obj' with no type
+src/gui/utils.h:92: error: `libfwbuilder' has not been declared
+src/gui/utils.h:92: error: `FWObject' has not been declared
+src/gui/utils.h:92: error: ISO C++ forbids declaration of `obj' with no type
+src/gui/utils.h:101: error: `libfwbuilder' has not been declared
+src/gui/utils.h:101: error: `FWObject' has not been declared
+src/gui/utils.h:102: error: ISO C++ forbids declaration of `obj' with no type
+In file included from src/gui/FWWindow.cpp:30:
+src/gui/utils_no_qt.h:43: error: `libfwbuilder' has not been declared
+src/gui/utils_no_qt.h:43: error: `FWObject' was not declared in this scope
+src/gui/utils_no_qt.h:43: error: `libfwbuilder' has not been declared
+src/gui/utils_no_qt.h:43: error: `FWObject' was not declared in this scope
+src/gui/utils_no_qt.h:44: error: template argument 1 is invalid
+src/gui/utils_no_qt.h:44: error: template argument 2 is invalid
+src/gui/utils_no_qt.h:45: error: `libfwbuilder' has not been declared
+src/gui/utils_no_qt.h:45: error: `FWObject' has not been declared
+src/gui/utils_no_qt.h:45: error: `libfwbuilder' has not been declared
+src/gui/utils_no_qt.h:45: error: `FWObject' has not been declared
+src/gui/utils_no_qt.h:46: error: ISO C++ forbids declaration of `a' with no type
+src/gui/utils_no_qt.h:46: error: ISO C++ forbids declaration of `b' with no type
+src/gui/utils_no_qt.h: In member function `bool FWObjectNameCmpPredicate::operator()(int*, int*)':
+src/gui/utils_no_qt.h:47: error: request for member `getName' in `*a', which is of non-class type `int'
+src/gui/utils_no_qt.h:47: error: request for member `getName' in `*b', which is of non-class type `int'
+src/gui/utils_no_qt.h: At global scope:
+src/gui/utils_no_qt.h:51: error: `libfwbuilder' has not been declared
+src/gui/utils_no_qt.h:51: error: `FWObject' was not declared in this scope
+src/gui/utils_no_qt.h:52: error: template argument 1 is invalid
+src/gui/utils_no_qt.h:56: error: `libfwbuilder' has not been declared
+src/gui/utils_no_qt.h:56: error: expected `,' or `...' before '*' token
+src/gui/utils_no_qt.h:57: error: ISO C++ forbids declaration of `FWObject' with no type
+src/gui/utils_no_qt.h: In member function `bool findFWObjectIDPredicate::operator()(int) const':
+src/gui/utils_no_qt.h:57: error: `o' was not declared in this scope
+src/gui/utils_no_qt.h:57: warning: unused variable 'o'
+src/gui/utils_no_qt.h: At global scope:
+src/gui/utils_no_qt.h:60: error: `libfwbuilder' has not been declared
+src/gui/utils_no_qt.h:60: warning: `findFirewalls' initialized and declared `extern'
+src/gui/utils_no_qt.h:60: error: variable or field `findFirewalls' declared void
+src/gui/utils_no_qt.h:60: error: `FWObject' was not declared in this scope
+src/gui/utils_no_qt.h:60: error: `o' was not declared in this scope
+src/gui/utils_no_qt.h:61: error: `libfwbuilder' has not been declared
+src/gui/utils_no_qt.h:61: error: `FWObject' was not declared in this scope
+src/gui/utils_no_qt.h:61: error: template argument 1 is invalid
+src/gui/utils_no_qt.h:61: error: template argument 2 is invalid
+src/gui/utils_no_qt.h:61: error: `fwlist' was not declared in this scope
+src/gui/utils_no_qt.h:62: error: expected primary-expression before "bool"
+src/gui/utils_no_qt.h:62: error: initializer expression list treated as compound expression
+src/gui/utils_no_qt.h:64: error: `libfwbuilder' has not been declared
+src/gui/utils_no_qt.h:64: warning: `findHosts' initialized and declared `extern'
+src/gui/utils_no_qt.h:64: error: variable or field `findHosts' declared void
+src/gui/utils_no_qt.h:64: error: `FWObject' was not declared in this scope
+src/gui/utils_no_qt.h:64: error: `o' was not declared in this scope
+src/gui/utils_no_qt.h:65: error: `libfwbuilder' has not been declared
+src/gui/utils_no_qt.h:65: error: `FWObject' was not declared in this scope
+src/gui/utils_no_qt.h:65: error: template argument 1 is invalid
+src/gui/utils_no_qt.h:65: error: template argument 2 is invalid
+src/gui/utils_no_qt.h:65: error: `fwlist' was not declared in this scope
+src/gui/utils_no_qt.h:66: error: expected primary-expression before "bool"
+src/gui/utils_no_qt.h:66: error: initializer expression list treated as compound expression
+src/gui/utils_no_qt.h:68: error: `libfwbuilder' has not been declared
+src/gui/utils_no_qt.h:68: warning: `findByObjectType' initialized and declared `extern'
+src/gui/utils_no_qt.h:68: error: variable or field `findByObjectType' declared void
+src/gui/utils_no_qt.h:68: error: `FWObject' was not declared in this scope
+src/gui/utils_no_qt.h:68: error: `o' was not declared in this scope
+src/gui/utils_no_qt.h:69: error: expected primary-expression before "const"
+src/gui/utils_no_qt.h:70: error: `libfwbuilder' has not been declared
+src/gui/utils_no_qt.h:70: error: `FWObject' was not declared in this scope
+src/gui/utils_no_qt.h:70: error: template argument 1 is invalid
+src/gui/utils_no_qt.h:70: error: template argument 2 is invalid
+src/gui/utils_no_qt.h:70: error: `fwlist' was not declared in this scope
+src/gui/utils_no_qt.h:71: error: expected primary-expression before "bool"
+src/gui/utils_no_qt.h:71: error: initializer expression list treated as compound expression
+src/gui/utils_no_qt.h:73: error: `libfwbuilder' has not been declared
+src/gui/utils_no_qt.h:73: error: expected initializer before '*' token
+In file included from src/gui/FWWindow.cpp:32:
+src/gui/FWWindow.h:75: error: `FWObject' is not a member of `libfwbuilder'
+src/gui/FWWindow.h:75: error: `FWObject' is not a member of `libfwbuilder'
+src/gui/FWWindow.h:75: error: template argument 1 is invalid
+src/gui/FWWindow.h:75: error: template argument 2 is invalid
+src/gui/FWWindow.h:75: error: ISO C++ forbids declaration of `firewalls' with no type
+src/gui/FWWindow.h:76: error: `FWObject' is not a member of `libfwbuilder'
+src/gui/FWWindow.h:76: error: `FWObject' is not a member of `libfwbuilder'
+src/gui/FWWindow.h:76: error: template argument 1 is invalid
+src/gui/FWWindow.h:76: error: template argument 3 is invalid
+src/gui/FWWindow.h:76: error: template argument 4 is invalid
+src/gui/FWWindow.h:76: error: ISO C++ forbids declaration of `ruleSetViews' with no type
+src/gui/FWWindow.h:79: error: using-declaration for non-member at class scope
+src/gui/FWWindow.h:79: error: expected `;' before '*' token
+src/gui/FWWindow.h:81: error: using-declaration for non-member at class scope
+src/gui/FWWindow.h:81: error: expected `;' before '*' token
+src/gui/FWWindow.h:90: error: using-declaration for non-member at class scope
+src/gui/FWWindow.h:90: error: expected `;' before '*' token
+src/gui/FWWindow.h:91: error: using-declaration for non-member at class scope
+src/gui/FWWindow.h:91: error: expected `;' before '*' token
+src/gui/FWWindow.h:104: error: `libfwbuilder::FWObject' has not been declared
+src/gui/FWWindow.h:104: error: ISO C++ forbids declaration of `fw' with no type
+src/gui/FWWindow.h:135: error: `std::set' has not been declared
+src/gui/FWWindow.h:135: error: expected `,' or `...' before '<' token
+src/gui/FWWindow.h:135: error: ISO C++ forbids declaration of `parameter' with no type
+src/gui/FWWindow.h:137: error: `std::set' has not been declared
+src/gui/FWWindow.h:137: error: expected `,' or `...' before '<' token
+src/gui/FWWindow.h:137: error: ISO C++ forbids declaration of `parameter' with no type
+src/gui/FWWindow.h:185: error: `libfwbuilder::FWObject' has not been declared
+src/gui/FWWindow.h:185: error: ISO C++ forbids declaration of `f' with no type
+src/gui/FWWindow.h:186: error: `libfwbuilder::FWObject' has not been declared
+src/gui/FWWindow.h:186: error: ISO C++ forbids declaration of `f' with no type
+src/gui/FWWindow.h:187: error: `libfwbuilder::FWObject' has not been declared
+src/gui/FWWindow.h:187: error: ISO C++ forbids declaration of `f' with no type
+src/gui/FWWindow.h:188: error: `libfwbuilder::FWObject' has not been declared
+src/gui/FWWindow.h:188: error: ISO C++ forbids declaration of `f' with no type
+src/gui/FWWindow.h:192: error: `libfwbuilder::FWReference' has not been declared
+src/gui/FWWindow.h:192: error: ISO C++ forbids declaration of `obj' with no type
+src/gui/FWWindow.h:200: error: `libfwbuilder::FWObject' has not been declared
+src/gui/FWWindow.h:200: error: ISO C++ forbids declaration of `fw' with no type
+src/gui/FWWindow.h:202: error: `libfwbuilder::FWObject' has not been declared
+src/gui/FWWindow.h:202: error: ISO C++ forbids declaration of `obj' with no type
+src/gui/FWWindow.h:218: error: using-declaration for non-member at class scope
+src/gui/FWWindow.h:218: error: expected `;' before '*' token
+src/gui/FWWindow.h:219: error: expected `;' before "QString"
+src/gui/FWWindow.h:221: error: `libfwbuilder::FWObject' has not been declared
+src/gui/FWWindow.h:221: error: ISO C++ forbids declaration of `o' with no type
+src/gui/FWWindow.h:224: error: `libfwbuilder::FWObject' has not been declared
+src/gui/FWWindow.h:224: error: ISO C++ forbids declaration of `parameter' with no type
+src/gui/FWWindow.h:225: error: `libfwbuilder::FWObject' has not been declared
+src/gui/FWWindow.h:225: error: ISO C++ forbids declaration of `parameter' with no type
+src/gui/FWWindow.h:226: error: expected `;' before '(' token
+src/gui/FWWindow.h:244: error: `FWObject' is not a member of `libfwbuilder'
+src/gui/FWWindow.h:244: error: `FWObject' is not a member of `libfwbuilder'
+src/gui/FWWindow.h:244: error: template argument 1 is invalid
+src/gui/FWWindow.h:244: error: template argument 2 is invalid
+src/gui/FWWindow.h:244: error: ISO C++ forbids declaration of `selectedLibs' with no type
+src/gui/FWWindow.h:245: error: `FWObject' is not a member of `libfwbuilder'
+src/gui/FWWindow.h:245: error: `FWObject' is not a member of `libfwbuilder'
+src/gui/FWWindow.h:245: error: template argument 1 is invalid
+src/gui/FWWindow.h:245: error: template argument 2 is invalid
+src/gui/FWWindow.h:245: error: ISO C++ forbids declaration of `selectedLibs' with no type
+src/gui/FWWindow.h:247: error: `libfwbuilder::FWObject' has not been declared
+src/gui/FWWindow.h:248: error: `libfwbuilder::FWObject' has not been declared
+src/gui/FWWindow.h:249: error: `FWReference' is not a member of `libfwbuilder'
+src/gui/FWWindow.h:249: error: `FWReference' is not a member of `libfwbuilder'
+src/gui/FWWindow.h:249: error: template argument 1 is invalid
+src/gui/FWWindow.h:249: error: template argument 2 is invalid
+src/gui/FWWindow.h:249: error: ISO C++ forbids declaration of `lib' with no type
+src/gui/FWWindow.h:249: error: ISO C++ forbids declaration of `root' with no type
+src/gui/FWWindow.h:249: error: ISO C++ forbids declaration of `extRefs' with no type
+src/gui/FWWindow.cpp:354: error: variable or field `info' declared void
+src/gui/FWWindow.cpp:354: error: `int FWWindow::info' is not a static member of `class FWWindow'
+src/gui/FWWindow.cpp:354: error: `FWObject' was not declared in this scope
+src/gui/FWWindow.cpp:354: error: `obj' was not declared in this scope
+src/gui/FWWindow.cpp:355: error: expected `,' or `;' before '{' token
+src/gui/FWWindow.cpp:1566: error: variable or field `findExternalRefs' declared void
+src/gui/FWWindow.cpp:1566: error: `int FWWindow::findExternalRefs' is not a static member of `class FWWindow'
+src/gui/FWWindow.cpp:1566: error: `FWObject' was not declared in this scope
+src/gui/FWWindow.cpp:1566: error: `lib' was not declared in this scope
+src/gui/FWWindow.cpp:1567: error: `FWObject' was not declared in this scope
+src/gui/FWWindow.cpp:1567: error: `root' was not declared in this scope
+src/gui/FWWindow.cpp:1568: error: `FWReference' was not declared in this scope
+src/gui/FWWindow.cpp:1568: error: template argument 1 is invalid
+src/gui/FWWindow.cpp:1568: error: template argument 2 is invalid
+src/gui/FWWindow.cpp:1568: error: `extRefs' was not declared in this scope
+src/gui/FWWindow.cpp:1569: error: initializer expression list treated as compound expression
+src/gui/FWWindow.cpp:1569: error: expected `,' or `;' before '{' token
+src/gui/FWWindow.cpp:1586: error: `FWObject' was not declared in this scope
+src/gui/FWWindow.cpp:1586: error: template argument 1 is invalid
+src/gui/FWWindow.cpp:1586: error: template argument 2 is invalid
+src/gui/FWWindow.cpp:1587: error: ISO C++ forbids declaration of `selectedLibs' with no type
+src/gui/FWWindow.cpp:1732: error: `FWObject' was not declared in this scope
+src/gui/FWWindow.cpp:1732: error: template argument 1 is invalid
+src/gui/FWWindow.cpp:1732: error: template argument 2 is invalid
+src/gui/FWWindow.cpp:1733: error: ISO C++ forbids declaration of `selectedLibs' with no type
+src/gui/FWWindow.cpp:1867: error: `int FWWindow::findFirewallInList' is not a static member of `class FWWindow'
+src/gui/FWWindow.cpp:1867: error: `FWObject' was not declared in this scope
+src/gui/FWWindow.cpp:1867: error: `f' was not declared in this scope
+src/gui/FWWindow.cpp:1868: error: expected `,' or `;' before '{' token
+src/gui/FWWindow.cpp:1878: error: variable or field `addFirewallToList' declared void
+src/gui/FWWindow.cpp:1878: error: `int FWWindow::addFirewallToList' is not a static member of `class FWWindow'
+src/gui/FWWindow.cpp:1878: error: `FWObject' was not declared in this scope
+src/gui/FWWindow.cpp:1878: error: `o' was not declared in this scope
+src/gui/FWWindow.cpp:1879: error: expected `,' or `;' before '{' token
+src/gui/FWWindow.cpp:1908: error: variable or field `removeFirewallFromList' declared void
+src/gui/FWWindow.cpp:1908: error: `int FWWindow::removeFirewallFromList' is not a static member of `class FWWindow'
+src/gui/FWWindow.cpp:1908: error: `FWObject' was not declared in this scope
+src/gui/FWWindow.cpp:1908: error: `o' was not declared in this scope
+src/gui/FWWindow.cpp:1909: error: expected `,' or `;' before '{' token
+src/gui/FWWindow.cpp:1926: error: variable or field `ensureObjectVisibleInRules' declared void
+src/gui/FWWindow.cpp:1926: error: `int FWWindow::ensureObjectVisibleInRules' is not a static member of `class FWWindow'
+src/gui/FWWindow.cpp:1926: error: `FWReference' was not declared in this scope
+src/gui/FWWindow.cpp:1926: error: `obj' was not declared in this scope
+src/gui/FWWindow.cpp:1927: error: expected `,' or `;' before '{' token
+src/gui/FWWindow.cpp:1964: error: variable or field `updateFirewallName' declared void
+src/gui/FWWindow.cpp:1964: error: `int FWWindow::updateFirewallName' is not a static member of `class FWWindow'
+src/gui/FWWindow.cpp:1964: error: `FWObject' was not declared in this scope
+src/gui/FWWindow.cpp:1964: error: `obj' was not declared in this scope
+src/gui/FWWindow.cpp:1964: error: expected primary-expression before "const"
+src/gui/FWWindow.cpp:1965: error: initializer expression list treated as compound expression
+src/gui/FWWindow.cpp:1965: error: expected `,' or `;' before '{' token
+src/gui/FWWindow.cpp:1993: error: variable or field `deleteFirewall' declared void
+src/gui/FWWindow.cpp:1993: error: `int FWWindow::deleteFirewall' is not a static member of `class FWWindow'
+src/gui/FWWindow.cpp:1993: error: `FWObject' was not declared in this scope
+src/gui/FWWindow.cpp:1993: error: `fw' was not declared in this scope
+src/gui/FWWindow.cpp:1994: error: expected `,' or `;' before '{' token
+src/gui/FWWindow.cpp:2170: error: variable or field `showFirewall' declared void
+src/gui/FWWindow.cpp:2170: error: `int FWWindow::showFirewall' is not a static member of `class FWWindow'
+src/gui/FWWindow.cpp:2170: error: `FWObject' was not declared in this scope
+src/gui/FWWindow.cpp:2170: error: `obj' was not declared in this scope
+src/gui/FWWindow.cpp:2171: error: expected `,' or `;' before '{' token
+src/gui/FWWindow.cpp:2210: error: variable or field `showFirewallRuleSets' declared void
+src/gui/FWWindow.cpp:2210: error: `int FWWindow::showFirewallRuleSets' is not a static member of `class FWWindow'
+src/gui/FWWindow.cpp:2210: error: `FWObject' was not declared in this scope
+src/gui/FWWindow.cpp:2210: error: `fw' was not declared in this scope
+src/gui/FWWindow.cpp:2211: error: expected `,' or `;' before '{' token
+src/gui/FWWindow.cpp:2351: error: variable or field `compile' declared void
+src/gui/FWWindow.cpp:2351: error: `int FWWindow::compile' is not a static member of `class FWWindow'
+src/gui/FWWindow.cpp:2351: error: `set' was not declared in this scope
+src/gui/FWWindow.cpp:2351: error: expected primary-expression before '*' token
+src/gui/FWWindow.cpp:2351: error: expected primary-expression before '>' token
+src/gui/FWWindow.cpp:2351: error: `vf' was not declared in this scope
+src/gui/FWWindow.cpp:2352: error: expected `,' or `;' before '{' token
+src/gui/FWWindow.cpp:2377: error: variable or field `install' declared void
+src/gui/FWWindow.cpp:2377: error: `int FWWindow::install' is not a static member of `class FWWindow'
+src/gui/FWWindow.cpp:2377: error: `set' was not declared in this scope
+src/gui/FWWindow.cpp:2377: error: expected primary-expression before '*' token
+src/gui/FWWindow.cpp:2377: error: expected primary-expression before '>' token
+src/gui/FWWindow.cpp:2377: error: `vf' was not declared in this scope
+src/gui/FWWindow.cpp:2378: error: expected `,' or `;' before '{' token
+src/gui/FWWindow.cpp:2506: error: variable or field `findWhereUsed' declared void
+src/gui/FWWindow.cpp:2506: error: `int FWWindow::findWhereUsed' is not a static member of `class FWWindow'
+src/gui/FWWindow.cpp:2506: error: `FWObject' was not declared in this scope
+src/gui/FWWindow.cpp:2506: error: `obj' was not declared in this scope
+src/gui/FWWindow.cpp:2507: error: expected `,' or `;' before '{' token
+src/gui/FWWindow.cpp:2585: error: variable or field `findObject' declared void
+src/gui/FWWindow.cpp:2585: error: `int FWWindow::findObject' is not a static member of `class FWWindow'
+src/gui/FWWindow.cpp:2585: error: `FWObject' was not declared in this scope
+src/gui/FWWindow.cpp:2585: error: `o' was not declared in this scope
+src/gui/FWWindow.cpp:2586: error: expected `,' or `;' before '{' token
+src/gui/FWWindow.cpp:2656: warning: unused parameter 'w'
+src/gui/FWWindow.cpp:2611: warning: unused parameter 'w'
+src/gui/FWWindow.cpp:2531: warning: unused parameter 'ev'
+src/gui/FWWindow.cpp:2514: warning: unused parameter 'ev'
+src/gui/FWWindow.cpp:2321: warning: unused parameter 'ev'
+src/gui/FWWindow.cpp:2189: warning: unused parameter 'idx'
+src/gui/FWWindow.cpp:2049: warning: unused parameter 'subset'
+src/gui/FWWindow.cpp:2014: warning: unused parameter 'subset'
+src/gui/FWWindow.cpp:2003: warning: unused parameter 'subset'
+src/gui/FWWindow.cpp:1824: warning: unused parameter 'open_first_firewall'
+src/gui/FWWindow.cpp:1733: warning: unused parameter 'fname'
+src/gui/FWWindow.cpp:1733: warning: unused parameter 'selectedLibs'
+src/gui/FWWindow.cpp:1733: warning: unused parameter 'rof'
+src/gui/FWWindow.cpp:1587: warning: unused parameter 'selectedLibs'
+src/gui/FWWindow.cpp:1336: warning: unused parameter 'libfpath'
+src/gui/FWWindow.cpp:1195: warning: unused parameter 'unlock'
+src/gui/FWWindow.cpp:778: warning: unused parameter 'dialogs_parent'
+src/gui/FWWindow.cpp:470: warning: unused parameter 'fname'
+src/gui/FWWindow.cpp:443: warning: unused parameter 'fname'
+src/gui/FWWindow.cpp:443: warning: unused parameter 'checkPresence'
+src/gui/FWWindow.cpp:443: warning: unused parameter 'title'
+src/gui/FWWindow.cpp:410: warning: unused parameter 'fname'
+make: *** [FWWindow.o] Error 1

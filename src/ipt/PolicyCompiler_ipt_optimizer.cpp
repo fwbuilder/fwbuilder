@@ -1,0 +1,287 @@
+/* 
+
+                          Firewall Builder
+
+                 Copyright (C) 2002 NetCitadel, LLC
+
+  Author:  Vadim Kurland     vadim@vk.crocodile.org
+
+  $Id: PolicyCompiler_ipt_optimizer.cpp 1389 2007-07-19 01:46:30Z vkurland $
+
+  This program is free software which we release under the GNU General Public
+  License. You may redistribute and/or modify this program under the terms
+  of that license as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+ 
+  To get a copy of the GNU General Public License, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+*/
+
+#include "PolicyCompiler_ipt.h"
+
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/RuleElement.h"
+#include "fwbuilder/IPService.h"
+#include "fwbuilder/ICMPService.h"
+#include "fwbuilder/TCPService.h"
+#include "fwbuilder/UDPService.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/Firewall.h"
+
+#include "combinedAddress.h"
+
+#include <limits.h>
+
+#include <iostream>
+#include <iomanip>
+#include <sstream>
+
+#include <assert.h>
+
+using namespace libfwbuilder;
+using namespace fwcompiler;
+using namespace std;
+
+/*
+ * Optimizer 1:
+ *
+ * splits rule, making sure we make only one parameter check at a time
+ * That is, we only check source, or destination or service and then
+ * pass control to a user-defined chain to check for the next
+ * parameter. This helps avoid multiple checks for the same parameter.
+ *
+ * Assumtions:
+ *
+ * Can use this process with multiple objects in src,dst,srv
+ * Run splitRuleIfSrvAnyActionReject before this processor to make sure
+ * Srv contains only TCP objects if action is "Reject" and TCP RST is required
+ */
+void PolicyCompiler_ipt::optimize1::optimizeForRuleElement(PolicyRule    *rule, 
+                                                      const std::string  &re_type)
+{
+    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyRule     *r;
+
+    string this_chain  =rule->getStr("ipt_chain");
+    string new_chain=PolicyCompiler_ipt::getNewTmpChainName(rule);
+
+    r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+    compiler->temp_ruleset->add(r);
+    r->duplicate(rule);
+
+    for (FWObject::iterator i=r->begin(); i!=r->end(); ++i)
+    {
+        if (RuleElement::cast(*i)!=NULL)
+        {
+            if ((*i)->getTypeName()!=re_type && (*i)->size()!=1)
+            {
+               RuleElement *nre=RuleElement::cast(*i);
+               nre->clearChildren();  
+               nre->setAnyElement();
+            } else
+            {
+               RuleElement *re=RuleElement::cast(rule->getFirstByType((*i)->getTypeName()));
+/* 
+ * put "any tcp" service back in srv field if it was originally some
+ * tcp service. This is needed because we may need to produce
+ * --reject-with tcp-reset if the action is reject and we need to
+ * reject with TCP RST.
+ */
+
+               if (RuleElementSrv::isA(re) &&
+                   r->getAction()==PolicyRule::Reject &&
+                   ipt_comp->isActionOnRejectTCPRST(r))
+               {
+                   Service  *srv= compiler->getFirstSrv(r);
+                   if (TCPService::isA(srv))
+                   {
+                       re->clearChildren();
+                       re->addRef(compiler->dbcopy->findInIndex(ANY_TCP_OBJ_ID));
+/* also leave a flag indicating that further optimization by service
+ * is not needed */
+                       rule->setBool("do_not_optimize_by_srv",true);
+                       r->setBool("do_not_optimize_by_srv",true);
+                   }
+                   else
+                   {
+                       re->reset();
+                   }
+               } else
+               {
+                   re->reset();  
+               }
+            }      
+        }
+    }
+    r->setStr("ipt_target",new_chain);
+    tmp_queue.push_back(r);
+
+    FWOptions *ruleopt=rule->getOptionsObject();
+    ruleopt->setBool("stateless",true);
+    ruleopt->setInt("limit_value",-1);
+    ruleopt->setInt("connlimit_value",-1);
+    ruleopt->setInt("hashlimit_value",-1);
+    rule->setStr("ipt_chain",new_chain);
+    rule->setBool("force_state_check",false);
+    rule->setStr("upstream_rule_chain",this_chain);
+    if (rule->getInterfaceStr()=="")
+        rule->setInterfaceStr("nil");
+    rule->setDirection( PolicyRule::Both ); 
+   
+    tmp_queue.push_back(rule);
+}
+
+bool PolicyCompiler_ipt::optimize1::processNext()
+{
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+
+    RuleElementSrc      *srcrel=rule->getSrc();
+    RuleElementDst      *dstrel=rule->getDst();
+    RuleElementSrv      *srvrel=rule->getSrv();
+    RuleElementInterval *intrel=rule->getWhen();
+
+    bool srcany=srcrel->isAny();
+    bool dstany=dstrel->isAny();
+    bool srvany=srvrel->isAny();
+    bool intany=(intrel!=NULL && intrel->isAny());
+
+    int  srcn=srcrel->size();
+    int  dstn=dstrel->size();
+    int  srvn=srvrel->size();
+    int  intn=1;
+    if (intrel!=NULL) intn=intrel->size();
+
+    bool all_tcp_or_udp = true;
+    for (FWObject::iterator i=srvrel->begin(); i!=srvrel->end(); i++)
+    {
+        FWObject *o= *i;
+        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+	    
+        Service *s=Service::cast( o );
+        assert(s);
+
+// tcp and udp will be collapsed because we can use multiport module
+        if ( !TCPService::isA(s) && !UDPService::isA(s))
+        {
+            all_tcp_or_udp = false;
+            break;
+        }
+    }
+    
+    if (all_tcp_or_udp) srvn = 1;
+
+// Golden rule - try to introduce minimum forward rules ....
+// we can't optimize 1 src, 1 dstn, 1 service and 1 time interval
+// we can't optimize if we've got three 'anys' ..
+    if ((srcn <= 1 && dstn <= 1 && srvn <= 1 && intn <= 1) ||
+        (srcany && dstany && srvany) ||
+        (srcany && dstany && intany) ||
+        (srcany && srvany && intany) ||
+        (dstany && srvany && intany) )
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
+
+// Assume any means LOTS of rules - i.e. not good candidate for optimization
+    if (srcany) srcn=INT_MAX;
+    if (dstany) dstn=INT_MAX;
+    if (srvany) srvn=INT_MAX;
+    if (intany) intn=INT_MAX;
+
+
+// Now work out which is best optimization to do.
+// this rule is called twice so we only need to do one op on each
+
+    if ( !srvany && (srvn <= dstn) && (srvn <= srcn) && (srvn <= intn) &&
+         ! rule->getBool("do_not_optimize_by_srv") )
+    {
+        optimizeForRuleElement(rule,RuleElementSrv::TYPENAME);
+        return true;
+    }
+
+    if ( !srcany && (srcn <= dstn) && (srcn <= srvn) && (srcn <= intn))
+    {
+        optimizeForRuleElement(rule,RuleElementSrc::TYPENAME);
+        return true;
+    }
+
+    if ( !dstany && (dstn <= srcn) && (dstn <= srvn) && (dstn <= intn))
+    {
+        optimizeForRuleElement(rule,RuleElementDst::TYPENAME);
+        return true;
+    }
+
+    if ( !intany && (intn <= srcn) && (intn <= dstn) && (intn <= srvn))
+    {
+        optimizeForRuleElement(rule,RuleElementInterval::TYPENAME);
+        return true;
+    }
+
+
+    tmp_queue.push_back(rule);
+
+    return true;
+}
+
+bool PolicyCompiler_ipt::optimize2::processNext()
+{
+    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+
+    RuleElementSrv *srvrel=rule->getSrv();
+
+    if (rule->getBool("final"))
+    {
+        if ( rule->getAction()==PolicyRule::Reject && ipt_comp->isActionOnRejectTCPRST(rule))
+        {
+// preserve service
+            ;
+        } else 
+        {
+            srvrel->clearChildren();
+            srvrel->setAnyElement();
+        }
+    }
+
+    tmp_queue.push_back(rule);
+
+    return true;
+}
+
+/*
+ *  this processor eliminates duplicate rules _generated for the same
+ *  high level rule_ This is different from processor
+ *  PolicyCompiler_ipf::eliminateDuplicateRules, which finds and
+ *  eliminates duplicate rules throughout the whole generated script.
+ */
+bool PolicyCompiler_ipt::optimize3::processNext()
+{
+    PolicyRule *rule;
+    rule=getNext(); if (rule==NULL) return false;
+
+    if (rule->isFallback() || rule->isHidden())
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
+
+    if (printRule==NULL)
+    {
+        printRule=new PrintRule("");
+        printRule->setContext(compiler);
+    }
+    string thisRule = rule->getLabel() + " " + printRule->PolicyRuleToString(rule);
+    if (rules_seen_so_far.count(thisRule)!=0) return true;
+
+    tmp_queue.push_back(rule);
+    rules_seen_so_far[thisRule]=true;
+
+    return true;
+}

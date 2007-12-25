@@ -1,0 +1,354 @@
+<ui version="4.0" stdsetdef="1" >
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>IPv4Dialog_q</class>
+  <widget class="QWidget" name="IPv4Dialog_q" >
+    <property name="enabled" >
+      <bool>true</bool>
+    </property>
+    <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>562</width>
+        <height>297</height>
+      </rect>
+    </property>
+    <property name="windowTitle" >
+      <string>IPv4</string>
+    </property>
+    <layout class="QGridLayout" >
+      <item row="0" column="0" >
+        <layout class="QVBoxLayout" >
+          <property name="margin" >
+            <number>0</number>
+          </property>
+          <item>
+            <widget class="QFrame" name="frame3" >
+              <property name="sizePolicy" >
+                <sizepolicy>
+                  <hsizetype>5</hsizetype>
+                  <vsizetype>0</vsizetype>
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                </sizepolicy>
+              </property>
+              <property name="frameShape" >
+                <enum>Box</enum>
+              </property>
+              <property name="frameShadow" >
+                <enum>Sunken</enum>
+              </property>
+              <layout class="QGridLayout" >
+                <property name="margin" >
+                  <number>5</number>
+                </property>
+                <item row="0" column="1" >
+                  <widget class="QLabel" name="editorTitle" >
+                    <property name="font" >
+                      <font>
+                        <bold>true</bold>
+                      </font>
+                    </property>
+                    <property name="text" >
+                      <string>Address</string>
+                    </property>
+                    <property name="wordWrap" >
+                      <bool>false</bool>
+                    </property>
+                  </widget>
+                </item>
+                <item row="0" column="0" >
+                  <widget class="QLabel" name="pixmapLabel1" >
+                    <property name="sizePolicy" >
+                      <sizepolicy>
+                        <hsizetype>0</hsizetype>
+                        <vsizetype>0</vsizetype>
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                      </sizepolicy>
+                    </property>
+                    <property name="pixmap" >
+                      <pixmap>address_25.png</pixmap>
+                    </property>
+                    <property name="scaledContents" >
+                      <bool>true</bool>
+                    </property>
+                    <property name="wordWrap" >
+                      <bool>false</bool>
+                    </property>
+                  </widget>
+                </item>
+              </layout>
+            </widget>
+          </item>
+          <item>
+            <widget class="QFrame" name="frame7" >
+              <property name="sizePolicy" >
+                <sizepolicy>
+                  <hsizetype>5</hsizetype>
+                  <vsizetype>5</vsizetype>
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                </sizepolicy>
+              </property>
+              <property name="frameShape" >
+                <enum>Box</enum>
+              </property>
+              <property name="frameShadow" >
+                <enum>Sunken</enum>
+              </property>
+              <layout class="QGridLayout" >
+                <property name="spacing" >
+                  <number>10</number>
+                </property>
+                <item row="0" column="1" >
+                  <widget class="QLabel" name="textLabel2" >
+                    <property name="text" >
+                      <string>Comment:</string>
+                    </property>
+                    <property name="wordWrap" >
+                      <bool>false</bool>
+                    </property>
+                  </widget>
+                </item>
+                <item row="1" column="1" >
+                  <widget class="QTextEdit" name="comment" >
+                    <property name="sizePolicy" >
+                      <sizepolicy>
+                        <hsizetype>7</hsizetype>
+                        <vsizetype>7</vsizetype>
+                        <horstretch>0</horstretch>
+                        <verstretch>100</verstretch>
+                      </sizepolicy>
+                    </property>
+                    <property name="minimumSize" >
+                      <size>
+                        <width>200</width>
+                        <height>0</height>
+                      </size>
+                    </property>
+                    <property name="tabChangesFocus" >
+                      <bool>true</bool>
+                    </property>
+                  </widget>
+                </item>
+                <item row="1" column="2" >
+                  <spacer name="spacer142" >
+                    <property name="sizeHint" >
+                      <size>
+                        <width>0</width>
+                        <height>20</height>
+                      </size>
+                    </property>
+                    <property name="sizeType" >
+                      <enum>Expanding</enum>
+                    </property>
+                    <property name="orientation" >
+                      <enum>Horizontal</enum>
+                    </property>
+                  </spacer>
+                </item>
+                <item row="1" column="0" >
+                  <widget class="QFrame" name="frame14" >
+                    <property name="frameShape" >
+                      <enum>Box</enum>
+                    </property>
+                    <property name="frameShadow" >
+                      <enum>Sunken</enum>
+                    </property>
+                    <layout class="QGridLayout" >
+                      <item row="0" column="1" >
+                        <widget class="QLineEdit" name="obj_name" >
+                          <property name="sizePolicy" >
+                            <sizepolicy>
+                              <hsizetype>5</hsizetype>
+                              <vsizetype>0</vsizetype>
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                            </sizepolicy>
+                          </property>
+                        </widget>
+                      </item>
+                      <item row="0" column="0" >
+                        <widget class="QLabel" name="textLabel1" >
+                          <property name="text" >
+                            <string>Name:</string>
+                          </property>
+                          <property name="wordWrap" >
+                            <bool>false</bool>
+                          </property>
+                        </widget>
+                      </item>
+                      <item row="1" column="1" >
+                        <widget class="QComboBox" name="libs" >
+                          <property name="sizePolicy" >
+                            <sizepolicy>
+                              <hsizetype>5</hsizetype>
+                              <vsizetype>0</vsizetype>
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                            </sizepolicy>
+                          </property>
+                        </widget>
+                      </item>
+                      <item row="1" column="0" >
+                        <widget class="QLabel" name="textLabel1_2" >
+                          <property name="text" >
+                            <string>Library:</string>
+                          </property>
+                          <property name="wordWrap" >
+                            <bool>false</bool>
+                          </property>
+                        </widget>
+                      </item>
+                      <item row="2" column="1" >
+                        <widget class="QLineEdit" name="address" >
+                          <property name="sizePolicy" >
+                            <sizepolicy>
+                              <hsizetype>5</hsizetype>
+                              <vsizetype>0</vsizetype>
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                            </sizepolicy>
+                          </property>
+                        </widget>
+                      </item>
+                      <item row="2" column="0" >
+                        <widget class="QLabel" name="textLabel2_2" >
+                          <property name="text" >
+                            <string>Address:</string>
+                          </property>
+                          <property name="wordWrap" >
+                            <bool>false</bool>
+                          </property>
+                        </widget>
+                      </item>
+                      <item row="3" column="1" >
+                        <widget class="QLineEdit" name="netmask" >
+                          <property name="sizePolicy" >
+                            <sizepolicy>
+                              <hsizetype>5</hsizetype>
+                              <vsizetype>0</vsizetype>
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                            </sizepolicy>
+                          </property>
+                        </widget>
+                      </item>
+                      <item row="3" column="0" >
+                        <widget class="QLabel" name="netmaskLabel" >
+                          <property name="text" >
+                            <string>Netmask:</string>
+                          </property>
+                          <property name="wordWrap" >
+                            <bool>false</bool>
+                          </property>
+                        </widget>
+                      </item>
+                      <item rowspan="1" row="4" column="0" colspan="2" >
+                        <layout class="QHBoxLayout" >
+                          <property name="margin" >
+                            <number>0</number>
+                          </property>
+                          <item>
+                            <spacer name="spacer12" >
+                              <property name="sizeHint" >
+                                <size>
+                                  <width>30</width>
+                                  <height>20</height>
+                                </size>
+                              </property>
+                              <property name="sizeType" >
+                                <enum>Expanding</enum>
+                              </property>
+                              <property name="orientation" >
+                                <enum>Horizontal</enum>
+                              </property>
+                            </spacer>
+                          </item>
+                          <item>
+                            <widget class="QPushButton" name="dnsLookup" >
+                              <property name="text" >
+                                <string>DNS Lookup...</string>
+                              </property>
+                            </widget>
+                          </item>
+                        </layout>
+                      </item>
+                    </layout>
+                  </widget>
+                </item>
+              </layout>
+            </widget>
+          </item>
+        </layout>
+      </item>
+      <item row="0" column="1" >
+        <spacer name="spacer88" >
+          <property name="sizeHint" >
+            <size>
+              <width>40</width>
+              <height>20</height>
+            </size>
+          </property>
+          <property name="sizeType" >
+            <enum>Expanding</enum>
+          </property>
+          <property name="orientation" >
+            <enum>Horizontal</enum>
+          </property>
+        </spacer>
+      </item>
+    </layout>
+  </widget>
+  <layoutdefault spacing="6" margin="11" />
+  <pixmapfunction></pixmapfunction>
+  <tabstops>
+    <tabstop>obj_name</tabstop>
+    <tabstop>libs</tabstop>
+    <tabstop>address</tabstop>
+    <tabstop>netmask</tabstop>
+    <tabstop>dnsLookup</tabstop>
+    <tabstop>comment</tabstop>
+  </tabstops>
+  <connections>
+    <connection>
+      <sender>comment</sender>
+      <signal>textChanged()</signal>
+      <receiver>IPv4Dialog_q</receiver>
+      <slot>changed()</slot>
+    </connection>
+    <connection>
+      <sender>address</sender>
+      <signal>textChanged(QString)</signal>
+      <receiver>IPv4Dialog_q</receiver>
+      <slot>changed()</slot>
+    </connection>
+    <connection>
+      <sender>libs</sender>
+      <signal>activated(int)</signal>
+      <receiver>IPv4Dialog_q</receiver>
+      <slot>changed()</slot>
+    </connection>
+    <connection>
+      <sender>netmask</sender>
+      <signal>textChanged(QString)</signal>
+      <receiver>IPv4Dialog_q</receiver>
+      <slot>changed()</slot>
+    </connection>
+    <connection>
+      <sender>obj_name</sender>
+      <signal>textChanged(QString)</signal>
+      <receiver>IPv4Dialog_q</receiver>
+      <slot>changed()</slot>
+    </connection>
+    <connection>
+      <sender>dnsLookup</sender>
+      <signal>clicked()</signal>
+      <receiver>IPv4Dialog_q</receiver>
+      <slot>DNSlookup()</slot>
+    </connection>
+  </connections>
+</ui>

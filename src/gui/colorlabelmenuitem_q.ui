@@ -1,0 +1,231 @@
+<ui version="4.0" stdsetdef="1" >
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>colorLabelMenuItem_q</class>
+  <widget class="QWidget" name="colorLabelMenuItem_q" >
+    <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>124</width>
+        <height>16</height>
+      </rect>
+    </property>
+    <property name="windowTitle" >
+      <string/>
+    </property>
+    <layout class="QGridLayout" >
+      <property name="margin" >
+        <number>4</number>
+      </property>
+      <property name="spacing" >
+        <number>4</number>
+      </property>
+      <item row="0" column="2" >
+        <widget class="QToolButton" name="orangeBtn" >
+          <property name="maximumSize" >
+            <size>
+              <width>8</width>
+              <height>8</height>
+            </size>
+          </property>
+          <property name="text" >
+            <string/>
+          </property>
+          <property name="autoRaise" >
+            <bool>true</bool>
+          </property>
+          <property name="toolTip" stdset="0" >
+            <string>Orange</string>
+          </property>
+        </widget>
+      </item>
+      <item row="0" column="4" >
+        <widget class="QToolButton" name="greenBtn" >
+          <property name="maximumSize" >
+            <size>
+              <width>8</width>
+              <height>8</height>
+            </size>
+          </property>
+          <property name="text" >
+            <string/>
+          </property>
+          <property name="autoRaise" >
+            <bool>true</bool>
+          </property>
+          <property name="toolTip" stdset="0" >
+            <string>Green</string>
+          </property>
+        </widget>
+      </item>
+      <item row="0" column="6" >
+        <widget class="QToolButton" name="purpleBtn" >
+          <property name="maximumSize" >
+            <size>
+              <width>8</width>
+              <height>8</height>
+            </size>
+          </property>
+          <property name="text" >
+            <string/>
+          </property>
+          <property name="autoRaise" >
+            <bool>true</bool>
+          </property>
+          <property name="toolTip" stdset="0" >
+            <string>Purple</string>
+          </property>
+        </widget>
+      </item>
+      <item row="0" column="5" >
+        <widget class="QToolButton" name="blueBtn" >
+          <property name="maximumSize" >
+            <size>
+              <width>8</width>
+              <height>8</height>
+            </size>
+          </property>
+          <property name="text" >
+            <string/>
+          </property>
+          <property name="autoRaise" >
+            <bool>true</bool>
+          </property>
+          <property name="toolTip" stdset="0" >
+            <string>Blue</string>
+          </property>
+        </widget>
+      </item>
+      <item row="0" column="3" >
+        <widget class="QToolButton" name="yellowBtn" >
+          <property name="maximumSize" >
+            <size>
+              <width>8</width>
+              <height>8</height>
+            </size>
+          </property>
+          <property name="text" >
+            <string/>
+          </property>
+          <property name="autoRaise" >
+            <bool>true</bool>
+          </property>
+          <property name="toolTip" stdset="0" >
+            <string>Yellow</string>
+          </property>
+        </widget>
+      </item>
+      <item row="0" column="7" >
+        <widget class="QToolButton" name="grayBtn" >
+          <property name="maximumSize" >
+            <size>
+              <width>8</width>
+              <height>8</height>
+            </size>
+          </property>
+          <property name="text" >
+            <string/>
+          </property>
+          <property name="autoRaise" >
+            <bool>true</bool>
+          </property>
+          <property name="toolTip" stdset="0" >
+            <string>Gray</string>
+          </property>
+        </widget>
+      </item>
+      <item row="0" column="1" >
+        <widget class="QToolButton" name="redBtn" >
+          <property name="maximumSize" >
+            <size>
+              <width>8</width>
+              <height>8</height>
+            </size>
+          </property>
+          <property name="text" >
+            <string/>
+          </property>
+          <property name="autoRaise" >
+            <bool>true</bool>
+          </property>
+          <property name="toolTip" stdset="0" >
+            <string>Red</string>
+          </property>
+        </widget>
+      </item>
+      <item row="0" column="0" >
+        <widget class="QToolButton" name="noneBtn" >
+          <property name="maximumSize" >
+            <size>
+              <width>8</width>
+              <height>8</height>
+            </size>
+          </property>
+          <property name="text" >
+            <string/>
+          </property>
+          <property name="autoRaise" >
+            <bool>true</bool>
+          </property>
+          <property name="toolTip" stdset="0" >
+            <string>No color</string>
+          </property>
+        </widget>
+      </item>
+    </layout>
+  </widget>
+  <layoutdefault spacing="6" margin="11" />
+  <pixmapfunction></pixmapfunction>
+  <connections>
+    <connection>
+      <sender>redBtn</sender>
+      <signal>clicked()</signal>
+      <receiver>colorLabelMenuItem_q</receiver>
+      <slot>redColorClicked()</slot>
+    </connection>
+    <connection>
+      <sender>orangeBtn</sender>
+      <signal>clicked()</signal>
+      <receiver>colorLabelMenuItem_q</receiver>
+      <slot>orangeColorClicked()</slot>
+    </connection>
+    <connection>
+      <sender>yellowBtn</sender>
+      <signal>clicked()</signal>
+      <receiver>colorLabelMenuItem_q</receiver>
+      <slot>yellowColorClicked()</slot>
+    </connection>
+    <connection>
+      <sender>greenBtn</sender>
+      <signal>clicked()</signal>
+      <receiver>colorLabelMenuItem_q</receiver>
+      <slot>greenColorClicked()</slot>
+    </connection>
+    <connection>
+      <sender>blueBtn</sender>
+      <signal>clicked()</signal>
+      <receiver>colorLabelMenuItem_q</receiver>
+      <slot>blueColorClicked()</slot>
+    </connection>
+    <connection>
+      <sender>purpleBtn</sender>
+      <signal>clicked()</signal>
+      <receiver>colorLabelMenuItem_q</receiver>
+      <slot>purpleColorClicked()</slot>
+    </connection>
+    <connection>
+      <sender>grayBtn</sender>
+      <signal>clicked()</signal>
+      <receiver>colorLabelMenuItem_q</receiver>
+      <slot>grayColorClicked()</slot>
+    </connection>
+    <connection>
+      <sender>noneBtn</sender>
+      <signal>clicked()</signal>
+      <receiver>colorLabelMenuItem_q</receiver>
+      <slot>noneColorClicked()</slot>
+    </connection>
+  </connections>
+</ui>

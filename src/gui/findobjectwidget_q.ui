@@ -1,0 +1,593 @@
+<ui version="4.0" >
+ <class>findObjectWidget_q</class>
+ <widget class="QWidget" name="findObjectWidget_q" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>919</width>
+    <height>184</height>
+   </rect>
+  </property>
+  <property name="font" >
+   <font/>
+  </property>
+  <property name="windowTitle" >
+   <string>Form1</string>
+  </property>
+  <layout class="QGridLayout" >
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item row="2" column="2" colspan="3" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType" >
+      <enum>QSizePolicy::MinimumExpanding</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>75</width>
+       <height>1</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="4" >
+    <widget class="QPushButton" name="repNextButton" >
+     <property name="text" >
+      <string>Replace &amp;&amp; Find</string>
+     </property>
+     <property name="shortcut" >
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item rowspan="2" row="0" column="1" >
+    <widget class="QGroupBox" name="groupBox5" >
+     <property name="sizePolicy" >
+      <sizepolicy>
+       <hsizetype>5</hsizetype>
+       <vsizetype>5</vsizetype>
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="title" >
+      <string> Replace object </string>
+     </property>
+     <layout class="QVBoxLayout" >
+      <property name="margin" >
+       <number>6</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="FWObjectDropArea" native="1" name="replaceDropArea" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>0</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize" >
+         <size>
+          <width>100</width>
+          <height>80</height>
+         </size>
+        </property>
+        <property name="font" >
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="5" >
+    <widget class="QPushButton" name="closeButton" >
+     <property name="sizePolicy" >
+      <sizepolicy>
+       <hsizetype>1</hsizetype>
+       <vsizetype>0</vsizetype>
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text" >
+      <string>Close</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="6" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeType" >
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>110</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="6" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeType" >
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>100</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="2" colspan="3" >
+    <widget class="QGroupBox" name="buttonGroup2" >
+     <property name="sizePolicy" >
+      <sizepolicy>
+       <hsizetype>7</hsizetype>
+       <vsizetype>5</vsizetype>
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="title" >
+      <string>Scope for search and replace :</string>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>4</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item row="0" column="0" >
+       <widget class="QComboBox" name="srScope" >
+        <item>
+         <property name="text" >
+          <string>Tree only</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>Tree and policy of all firewalls</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>Policy of all firewalls</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>policy of the opened firewall</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="1" >
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType" >
+         <enum>QSizePolicy::Expanding</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="3" >
+    <widget class="QPushButton" name="replaceButton" >
+     <property name="text" >
+      <string>Replace</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2" >
+    <widget class="QPushButton" name="replaceAllButton" >
+     <property name="text" >
+      <string>Replace all</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="5" >
+    <widget class="QPushButton" name="findButton" >
+     <property name="text" >
+      <string>Next</string>
+     </property>
+     <property name="default" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item rowspan="2" row="0" column="0" >
+    <widget class="QGroupBox" name="groupBox4" >
+     <property name="sizePolicy" >
+      <sizepolicy>
+       <hsizetype>7</hsizetype>
+       <vsizetype>5</vsizetype>
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="title" >
+      <string> Find object</string>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item rowspan="2" row="0" column="1" >
+       <widget class="FWObjectDropArea" native="1" name="findDropArea" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>0</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize" >
+         <size>
+          <width>100</width>
+          <height>80</height>
+         </size>
+        </property>
+        <property name="font" >
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QComboBox" name="attribute" >
+        <property name="font" >
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <item>
+         <property name="text" >
+          <string>Name</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>Address</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>TCP/UDP port</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>Protocol number</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>ICMP type</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="QComboBox" name="findAttr" >
+        <property name="font" >
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="editable" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" >
+       <widget class="QCheckBox" name="useRegexp" >
+        <property name="text" >
+         <string>Use regular expressions</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <customwidgets>
+  <customwidget>
+   <class>FWObjectDropArea</class>
+   <extends>QWidget</extends>
+   <header>FWObjectDropArea.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>attribute</tabstop>
+  <tabstop>findAttr</tabstop>
+  <tabstop>srScope</tabstop>
+  <tabstop>replaceAllButton</tabstop>
+  <tabstop>replaceButton</tabstop>
+  <tabstop>repNextButton</tabstop>
+  <tabstop>findButton</tabstop>
+  <tabstop>closeButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>closeButton</sender>
+   <signal>clicked()</signal>
+   <receiver>findObjectWidget_q</receiver>
+   <slot>hidePanel()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>findDropArea</sender>
+   <signal>objectDeleted()</signal>
+   <receiver>findObjectWidget_q</receiver>
+   <slot>enableAll()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>findDropArea</sender>
+   <signal>objectInserted()</signal>
+   <receiver>findObjectWidget_q</receiver>
+   <slot>objectInserted()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>findButton</sender>
+   <signal>clicked()</signal>
+   <receiver>findObjectWidget_q</receiver>
+   <slot>find()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>findAttr</sender>
+   <signal>activated(QString)</signal>
+   <receiver>findObjectWidget_q</receiver>
+   <slot>findAttrChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>findAttr</sender>
+   <signal>editTextChanged(QString)</signal>
+   <receiver>findObjectWidget_q</receiver>
+   <slot>findAttrChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>attribute</sender>
+   <signal>activated(QString)</signal>
+   <receiver>findObjectWidget_q</receiver>
+   <slot>findAttrChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>replaceButton</sender>
+   <signal>clicked()</signal>
+   <receiver>findObjectWidget_q</receiver>
+   <slot>replace()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>replaceAllButton</sender>
+   <signal>clicked()</signal>
+   <receiver>findObjectWidget_q</receiver>
+   <slot>replaceAll()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>srScope</sender>
+   <signal>activated(int)</signal>
+   <receiver>findObjectWidget_q</receiver>
+   <slot>reset()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>replaceDropArea</sender>
+   <signal>objectDeleted()</signal>
+   <receiver>findObjectWidget_q</receiver>
+   <slot>replaceDisable()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>replaceDropArea</sender>
+   <signal>objectInserted()</signal>
+   <receiver>findObjectWidget_q</receiver>
+   <slot>replaceEnable()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>repNextButton</sender>
+   <signal>clicked()</signal>
+   <receiver>findObjectWidget_q</receiver>
+   <slot>replaceNext()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>srScope</sender>
+   <signal>activated(int)</signal>
+   <receiver>findObjectWidget_q</receiver>
+   <slot>scopeChanged()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

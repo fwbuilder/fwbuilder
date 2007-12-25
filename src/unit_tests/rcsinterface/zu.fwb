@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="2.1.5" lastModified="1153280413" id="root">
+  <Library color="#d2ffd0" id="id40CCB499" name="User" ro="False">
+    <ObjectGroup id="id40CCB49A" name="Objects">
+      <ObjectGroup id="id40CCB49A_og_ats_1" name="Address Tables"/>
+      <ObjectGroup id="id40CCB49B" name="Addresses"/>
+      <ObjectGroup id="id40CCB49C" name="Groups"/>
+      <ObjectGroup id="id40CCB49D" name="Hosts"/>
+      <ObjectGroup id="id40CCB49E" name="Networks"/>
+      <ObjectGroup id="id40CCB49F" name="Address Ranges"/>
+      <ObjectGroup id="id44BDA99120157" name="DNS Names">
+        <DNSName comment="" dnsrec="www.cnn.com" id="id44BDAF4720160" name="www.cnn.com" run_time="False"/>
+      </ObjectGroup>
+    </ObjectGroup>
+    <ServiceGroup id="id40CCB4A0" name="Services">
+      <ServiceGroup id="id40CCB4A0_og_tag_1" name="TagServices"/>
+      <ServiceGroup id="id40CCB4A1" name="Groups"/>
+      <ServiceGroup id="id40CCB4A2" name="ICMP"/>
+      <ServiceGroup id="id40CCB4A3" name="IP"/>
+      <ServiceGroup id="id40CCB4A4" name="TCP"/>
+      <ServiceGroup id="id40CCB4A5" name="UDP"/>
+      <ServiceGroup id="id40CCB4A6" name="Custom"/>
+    </ServiceGroup>
+    <ObjectGroup id="id40CCB4A7" name="Firewalls"/>
+    <IntervalGroup id="id40CCB4A8" name="Time"/>
+  </Library>
+</FWObjectDatabase>

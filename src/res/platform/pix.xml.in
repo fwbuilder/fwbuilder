@@ -1,0 +1,447 @@
+<?xml version="1.0"?>
+<FWBuilderResources version="@VERSION@-@RELEASE_NUM@">
+    <Target name="pix">
+      <description>PIX</description>
+      <compiler>fwb_pix</compiler>
+      <dialog>pix</dialog>
+      <installer>fwb_inst_pix</installer>
+      <diff>fwb_pix_diff</diff>
+      <supported_os>pix_os</supported_os>
+
+      <versions>6.1,6.2,6.3,7.0</versions>
+
+      <options>
+        <default>
+          <pix_emulate_out_acl>true</pix_emulate_out_acl>
+          <pix_include_comments>true</pix_include_comments>
+          <pix_use_acl_remarks>true</pix_use_acl_remarks>
+          <pix_add_clear_statements>true</pix_add_clear_statements>
+          <pix_assume_fw_part_of_any>true</pix_assume_fw_part_of_any>
+          <pix_floodguard>true</pix_floodguard>
+          <pix_default_logint>300</pix_default_logint>
+          <pix_emblem_log_format>false</pix_emblem_log_format>
+          <pix_rule_syslog_settings>false</pix_rule_syslog_settings>
+          <pix_syslog_device_id_supported>false</pix_syslog_device_id_supported>
+          <pix_security_fragguard_supported>true</pix_security_fragguard_supported>
+          <pix_route_dnat_supported>true</pix_route_dnat_supported>
+        </default>
+
+        <version_6.1>
+          <pix_emulate_out_acl>true</pix_emulate_out_acl>
+          <pix_include_comments>true</pix_include_comments>
+          <pix_use_acl_remarks>true</pix_use_acl_remarks>
+          <pix_add_clear_statements>true</pix_add_clear_statements>
+          <pix_assume_fw_part_of_any>true</pix_assume_fw_part_of_any>
+          <pix_floodguard_supported>true</pix_floodguard_supported>
+          <pix_floodguard>true</pix_floodguard>
+          <pix_default_logint>300</pix_default_logint>
+          <pix_emblem_log_format>false</pix_emblem_log_format>
+          <pix_rule_syslog_settings>false</pix_rule_syslog_settings>
+          <pix_syslog_device_id_supported>false</pix_syslog_device_id_supported>
+          <pix_security_fragguard_supported>true</pix_security_fragguard_supported>
+          <pix_route_dnat_supported>true</pix_route_dnat_supported>
+          <pix_outbound_acl_supported>false</pix_outbound_acl_supported>
+          <pix_timeout_rpc_is_sunrpc>false</pix_timeout_rpc_is_sunrpc>
+          <pix_commands>
+            <clear_acl>clear access-list</clear_acl>
+            <clear_og>clear object-group</clear_og>
+            <clear_icmp>clear icmp</clear_icmp>
+            <clear_telnet>clear telnet</clear_telnet>
+            <clear_ssh>clear ssh</clear_ssh>
+            <clear_ntp>clear ntp</clear_ntp>
+            <clear_snmp>clear snmp-server</clear_snmp>
+            <clear_xlate>clear xlate</clear_xlate>
+            <clear_static>clear static</clear_static>
+            <clear_global>clear global</clear_global>
+            <clear_nat>clear nat</clear_nat>
+            <ip_addr_static>
+ip address %il %a %n
+            </ip_addr_static>
+            <ip_addr_dyn>
+ip address %il dhcp setroute retry 10
+            </ip_addr_dyn>
+            <nameif>
+nameif %in %il security%sl
+            </nameif>
+          </pix_commands>
+
+          <timeouts>
+              <xlate_hh>3</xlate_hh>
+              <xlate_mm>0</xlate_mm>
+              <xlate_ss>0</xlate_ss>
+      
+              <conn_hh>1</conn_hh>
+              <conn_mm>0</conn_mm>
+              <conn_ss>0</conn_ss>
+      
+              <udp_hh>0</udp_hh>
+              <udp_mm>2</udp_mm>
+              <udp_ss>0</udp_ss>
+      
+              <rpc_hh>0</rpc_hh>
+              <rpc_mm>10</rpc_mm>
+              <rpc_ss>0</rpc_ss>
+      
+              <h323_hh>0</h323_hh>
+              <h323_mm>5</h323_mm>
+              <h323_ss>0</h323_ss>
+      
+              <sip_hh>0</sip_hh>
+              <sip_mm>30</sip_mm>
+              <sip_ss>0</sip_ss>
+      
+              <sip_media_hh>0</sip_media_hh>
+              <sip_media_mm>2</sip_media_mm>
+              <sip_media_ss>0</sip_media_ss>
+      
+              <half-closed_hh>0</half-closed_hh>
+              <half-closed_mm>10</half-closed_mm>
+              <half-closed_ss>0</half-closed_ss>
+
+              <uauth_hh>2</uauth_hh>
+              <uauth_mm>0</uauth_mm>
+              <uauth_ss>0</uauth_ss>
+              <uauth_abs>True</uauth_abs>
+              <uauth_inact>False</uauth_inact>
+      
+            <telnet_timeout>5</telnet_timeout>
+            <ssh_timeout>5</ssh_timeout>
+          </timeouts>
+    
+          <fixups>
+            <list>ftp_fixup,http_fixup,h323_h225_fixup,h323_ras_fixup,rsh_fixup,rtsp_fixup,sip_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup</list>
+            <use_mpf>false</use_mpf>
+          </fixups>
+        </version_6.1>
+    
+        <version_6.2>
+          <pix_emulate_out_acl>true</pix_emulate_out_acl>
+          <pix_include_comments>true</pix_include_comments>
+          <pix_use_acl_remarks>true</pix_use_acl_remarks>
+          <pix_add_clear_statements>true</pix_add_clear_statements>
+          <pix_assume_fw_part_of_any>true</pix_assume_fw_part_of_any>
+          <pix_floodguard_supported>true</pix_floodguard_supported>
+          <pix_floodguard>true</pix_floodguard>
+          <pix_default_logint>300</pix_default_logint>
+          <pix_emblem_log_format>false</pix_emblem_log_format>
+          <pix_rule_syslog_settings>false</pix_rule_syslog_settings>
+          <pix_syslog_device_id_supported>false</pix_syslog_device_id_supported>
+          <pix_security_fragguard_supported>true</pix_security_fragguard_supported>
+          <pix_route_dnat_supported>true</pix_route_dnat_supported>
+          <pix_outbound_acl_supported>false</pix_outbound_acl_supported>
+          <pix_timeout_rpc_is_sunrpc>false</pix_timeout_rpc_is_sunrpc>
+          <pix_commands>
+            <clear_acl>clear access-list</clear_acl>
+            <clear_og>clear object-group</clear_og>
+            <clear_icmp>clear icmp</clear_icmp>
+            <clear_telnet>clear telnet</clear_telnet>
+            <clear_ssh>clear ssh</clear_ssh>
+            <clear_ntp>clear ntp</clear_ntp>
+            <clear_snmp>clear snmp-server</clear_snmp>
+            <clear_xlate>clear xlate</clear_xlate>
+            <clear_static>clear static</clear_static>
+            <clear_global>clear global</clear_global>
+            <clear_nat>clear nat</clear_nat>
+            <ip_addr_static>
+ip address %il %a %n
+            </ip_addr_static>
+            <ip_addr_dyn>
+ip address %il dhcp setroute retry 10
+            </ip_addr_dyn>
+            <nameif>
+nameif %in %il security%sl
+            </nameif>
+          </pix_commands>
+    
+          <timeouts>
+              <xlate_hh>3</xlate_hh>
+              <xlate_mm>0</xlate_mm>
+              <xlate_ss>0</xlate_ss>
+      
+              <conn_hh>1</conn_hh>
+              <conn_mm>0</conn_mm>
+              <conn_ss>0</conn_ss>
+      
+              <udp_hh>0</udp_hh>
+              <udp_mm>2</udp_mm>
+              <udp_ss>0</udp_ss>
+      
+              <rpc_hh>0</rpc_hh>
+              <rpc_mm>10</rpc_mm>
+              <rpc_ss>0</rpc_ss>
+      
+              <h323_hh>0</h323_hh>
+              <h323_mm>5</h323_mm>
+              <h323_ss>0</h323_ss>
+      
+              <sip_hh>0</sip_hh>
+              <sip_mm>30</sip_mm>
+              <sip_ss>0</sip_ss>
+      
+              <sip_media_hh>0</sip_media_hh>
+              <sip_media_mm>2</sip_media_mm>
+              <sip_media_ss>0</sip_media_ss>
+      
+              <half-closed_hh>0</half-closed_hh>
+              <half-closed_mm>10</half-closed_mm>
+              <half-closed_ss>0</half-closed_ss>
+
+              <uauth_hh>2</uauth_hh>
+              <uauth_mm>0</uauth_mm>
+              <uauth_ss>0</uauth_ss>
+              <uauth_abs>True</uauth_abs>
+              <uauth_inact>False</uauth_inact>
+      
+            <telnet_timeout>5</telnet_timeout>
+            <ssh_timeout>5</ssh_timeout>
+          </timeouts>
+        
+          <fixups>
+            <list>ftp_fixup,http_fixup,h323_h225_fixup,h323_ras_fixup,ils_fixup,rsh_fixup,rtsp_fixup,sip_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup</list>
+            <use_mpf>false</use_mpf>
+          </fixups>
+        </version_6.2>
+
+        <version_6.3>
+          <pix_emulate_out_acl>true</pix_emulate_out_acl>
+          <pix_include_comments>true</pix_include_comments>
+          <pix_use_acl_remarks>true</pix_use_acl_remarks>
+          <pix_add_clear_statements>true</pix_add_clear_statements>
+          <pix_assume_fw_part_of_any>true</pix_assume_fw_part_of_any>
+          <pix_floodguard_supported>true</pix_floodguard_supported>
+          <pix_floodguard>true</pix_floodguard>
+          <pix_default_logint>300</pix_default_logint>
+          <pix_emblem_log_format>true</pix_emblem_log_format>
+          <pix_rule_syslog_settings>true</pix_rule_syslog_settings>
+          <pix_syslog_device_id_supported>true</pix_syslog_device_id_supported>
+          <pix_security_fragguard_supported>false</pix_security_fragguard_supported>
+          <pix_route_dnat_supported>false</pix_route_dnat_supported>
+          <pix_outbound_acl_supported>false</pix_outbound_acl_supported>
+          <pix_timeout_rpc_is_sunrpc>false</pix_timeout_rpc_is_sunrpc>
+          <pix_commands>
+            <clear_acl>clear access-list</clear_acl>
+            <clear_og>clear object-group</clear_og>
+            <clear_icmp>clear icmp</clear_icmp>
+            <clear_telnet>clear telnet</clear_telnet>
+            <clear_ssh>clear ssh</clear_ssh>
+            <clear_ntp>clear ntp</clear_ntp>
+            <clear_snmp>clear snmp-server</clear_snmp>
+            <clear_xlate>clear xlate</clear_xlate>
+            <clear_static>clear static</clear_static>
+            <clear_global>clear global</clear_global>
+            <clear_nat>clear nat</clear_nat>
+            <ip_addr_static>
+ip address %il %a %n
+            </ip_addr_static>
+            <ip_addr_dyn>
+ip address %il dhcp setroute retry 10
+            </ip_addr_dyn>
+            <nameif>
+nameif %in %il security%sl
+            </nameif>
+          </pix_commands>
+    
+          <timeouts>
+              <xlate_hh>3</xlate_hh>
+              <xlate_mm>0</xlate_mm>
+              <xlate_ss>0</xlate_ss>
+      
+              <conn_hh>1</conn_hh>
+              <conn_mm>0</conn_mm>
+              <conn_ss>0</conn_ss>
+      
+              <udp_hh>0</udp_hh>
+              <udp_mm>2</udp_mm>
+              <udp_ss>0</udp_ss>
+      
+              <rpc_hh>0</rpc_hh>
+              <rpc_mm>10</rpc_mm>
+              <rpc_ss>0</rpc_ss>
+      
+              <h323_hh>0</h323_hh>
+              <h323_mm>5</h323_mm>
+              <h323_ss>0</h323_ss>
+      
+              <sip_hh>0</sip_hh>
+              <sip_mm>30</sip_mm>
+              <sip_ss>0</sip_ss>
+      
+              <sip_media_hh>0</sip_media_hh>
+              <sip_media_mm>2</sip_media_mm>
+              <sip_media_ss>0</sip_media_ss>
+      
+              <half-closed_hh>0</half-closed_hh>
+              <half-closed_mm>10</half-closed_mm>
+              <half-closed_ss>0</half-closed_ss>
+
+              <uauth_hh>2</uauth_hh>
+              <uauth_mm>0</uauth_mm>
+              <uauth_ss>0</uauth_ss>
+              <uauth_abs>True</uauth_abs>
+              <uauth_inact>False</uauth_inact>
+      
+            <telnet_timeout>5</telnet_timeout>
+            <ssh_timeout>5</ssh_timeout>
+          </timeouts>
+        
+          <fixups>
+            <list>ctiqbe_fixup,dns_fixup,espike_fixup,ftp_fixup,h323_h225_fixup,h323_ras_fixup,http_fixup,icmp_error_fixup,ils_fixup,mgcp_fixup,pptp_fixup,rsh_fixup,rtsp_fixup,sip_fixup,sip_udp_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup,tftp_fixup</list>
+            <use_mpf>false</use_mpf>
+          </fixups>
+        </version_6.3>
+
+        <version_7.0>
+          <pix_emulate_out_acl>true</pix_emulate_out_acl>
+          <pix_include_comments>true</pix_include_comments>
+          <pix_use_acl_remarks>true</pix_use_acl_remarks>
+          <pix_add_clear_statements>true</pix_add_clear_statements>
+          <pix_assume_fw_part_of_any>true</pix_assume_fw_part_of_any>
+          <pix_floodguard_supported>false</pix_floodguard_supported>
+          <pix_floodguard>true</pix_floodguard>
+          <pix_default_logint>300</pix_default_logint>
+          <pix_emblem_log_format>true</pix_emblem_log_format>
+          <pix_rule_syslog_settings>true</pix_rule_syslog_settings>
+          <pix_syslog_device_id_supported>true</pix_syslog_device_id_supported>
+          <pix_security_fragguard_supported>false</pix_security_fragguard_supported>
+          <pix_route_dnat_supported>false</pix_route_dnat_supported>
+          <pix_outbound_acl_supported>true</pix_outbound_acl_supported>
+          <pix_timeout_rpc_is_sunrpc>true</pix_timeout_rpc_is_sunrpc>
+          <pix_commands>
+            <clear_acl>clear config access-list</clear_acl>
+            <clear_og>clear config object-group</clear_og>
+            <clear_icmp>clear config icmp</clear_icmp>
+            <clear_telnet>clear config telnet</clear_telnet>
+            <clear_ssh>clear config ssh</clear_ssh>
+            <clear_ntp>clear config ntp</clear_ntp>
+            <clear_snmp>clear config snmp-server</clear_snmp>
+            <clear_xlate>clear xlate</clear_xlate>
+            <clear_static>clear config static</clear_static>
+            <clear_global>clear config global</clear_global>
+            <clear_nat>clear config nat</clear_nat>
+            <ip_addr_static>
+interface %in
+  ip address %a %n
+exit
+            </ip_addr_static>
+            <ip_addr_dyn>
+interface %in
+  ip address dhcp setroute
+exit
+            </ip_addr_dyn>
+            <nameif>
+interface %in
+  nameif %il
+  security-level %sl
+exit
+            </nameif>
+          </pix_commands>
+    
+          <timeouts>
+              <xlate_hh>3</xlate_hh>
+              <xlate_mm>0</xlate_mm>
+              <xlate_ss>0</xlate_ss>
+      
+              <conn_hh>1</conn_hh>
+              <conn_mm>0</conn_mm>
+              <conn_ss>0</conn_ss>
+      
+              <udp_hh>0</udp_hh>
+              <udp_mm>2</udp_mm>
+              <udp_ss>0</udp_ss>
+      
+              <rpc_hh>0</rpc_hh>
+              <rpc_mm>10</rpc_mm>
+              <rpc_ss>0</rpc_ss>
+      
+              <h323_hh>0</h323_hh>
+              <h323_mm>5</h323_mm>
+              <h323_ss>0</h323_ss>
+      
+              <sip_hh>0</sip_hh>
+              <sip_mm>30</sip_mm>
+              <sip_ss>0</sip_ss>
+      
+              <sip_media_hh>0</sip_media_hh>
+              <sip_media_mm>2</sip_media_mm>
+              <sip_media_ss>0</sip_media_ss>
+      
+              <half-closed_hh>0</half-closed_hh>
+              <half-closed_mm>10</half-closed_mm>
+              <half-closed_ss>0</half-closed_ss>
+
+              <uauth_hh>2</uauth_hh>
+              <uauth_mm>0</uauth_mm>
+              <uauth_ss>0</uauth_ss>
+              <uauth_abs>True</uauth_abs>
+              <uauth_inact>False</uauth_inact>
+      
+            <telnet_timeout>5</telnet_timeout>
+            <ssh_timeout>5</ssh_timeout>
+          </timeouts>
+        
+          <fixups>
+            <list>ctiqbe_fixup,dns_fixup,ftp_fixup,h323_h225_fixup,h323_ras_fixup,http_fixup,icmp_error_fixup,ils_fixup,mgcp_fixup,rsh_fixup,rtsp_fixup,sip_fixup,sip_udp_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup,tftp_fixup</list>
+            <use_mpf>true</use_mpf>
+          </fixups>
+        </version_7.0>
+
+      </options>
+
+      <capabilities>
+        <negation_in_interface_policy>False</negation_in_interface_policy>
+        <negation_in_policy>False</negation_in_policy>
+        <negation_in_nat>False</negation_in_nat>
+        <logging_in_policy>True</logging_in_policy>
+        <options_in_policy>True</options_in_policy>
+        <supports_nat>True</supports_nat>
+        <supports_time>False</supports_time>
+        <supports_accounting>False</supports_accounting>
+        <security_levels>True</security_levels>
+        <network_zones>True</network_zones>
+        <unprotected_interfaces>False</unprotected_interfaces>
+        <actions>
+            <Accept>
+                <supported>True</supported>
+                <parameter>None</parameter>
+            </Accept>
+            <Deny>
+                <supported>True</supported>
+                <parameter>None</parameter>
+            </Deny>
+            <Reject>
+                <supported>True</supported>
+                <parameter>Reject</parameter>
+            </Reject>
+            <Accounting>
+                <supported>True</supported>
+                <parameter>None</parameter>
+            </Accounting>
+            <Tag>
+                <supported>False</supported>
+                <parameter>None</parameter>
+            </Tag>
+            <Pipe>
+                <supported>False</supported>
+                <parameter>None</parameter>
+            </Pipe>
+            <Classify>
+                <supported>False</supported>
+                <parameter>None</parameter>
+            </Classify>
+            <Custom>
+                <supported>False</supported>
+                <parameter>None</parameter>
+            </Custom>
+            <Branch>
+                <supported>False</supported>
+                <parameter>None</parameter>
+            </Branch>
+            <Route>
+                <supported>False</supported>
+                <parameter>None</parameter>
+            </Route>
+        </actions>
+      </capabilities>
+    </Target>
+
+</FWBuilderResources>

@@ -1,0 +1,108 @@
+<?xml version="1.0"?> <!-- -*- mode: xml; -*- -->
+<FWBuilderResources version="@VERSION@">
+    <Target name="unknown_os">
+      <description>Unknown</description>
+      <family>unknown</family>
+      <dialog>unknown</dialog>
+
+      <options>
+        <user_can_change_install_dir>true</user_can_change_install_dir>
+        <default>
+        </default>
+
+        <activation>
+
+          <fwdir>/etc/fw</fwdir>
+
+          <fwdir_test>/tmp</fwdir_test>
+
+          <timeout_units>sec</timeout_units>
+
+          <reg_user>
+            <copy>
+echo '%FWBPROMPT%';
+cat > %FWDIR%/%FWSCRIPT%;
+            </copy>
+
+            <run>
+              <compression>
+echo '%FWBPROMPT%';
+chmod +x %FWDIR%/%FWSCRIPT%;
+sudo -S %FWDIR%/%FWSCRIPT% &#38;&#38; (sudo -S ps ax|awk '/shutdown/ &#38;&#38; \!/awk/ {printf "kill %d\n",$1;}'|sh; echo 'Policy activated')
+              </compression>
+              <no_compression>
+echo '%FWBPROMPT%';
+chmod +x %FWDIR%/%FWSCRIPT%;
+sudo -S %FWDIR%/%FWSCRIPT% &#38;&#38; (sudo -S ps ax|awk '/shutdown/ &#38;&#38; \!/awk/ {printf "kill %d\n",$1;}'|sh; echo 'Policy activated')
+              </no_compression>
+            </run>
+
+            <test>
+              <rollback>
+echo '%FWBPROMPT%';
+chmod +x /tmp/%FWSCRIPT%;
+sudo -S /sbin/shutdown -r +%RBTIMEOUT%;
+sudo -S /tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
+              </rollback>
+              <no_rollback>
+echo '%FWBPROMPT%';
+chmod +x /tmp/%FWSCRIPT%;
+sudo -S /tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
+              </no_rollback>
+            </test>
+          </reg_user>
+
+          <root>
+            <copy>
+echo '%FWBPROMPT%';
+cat > %FWDIR%/%FWSCRIPT%;
+            </copy>
+
+            <run>
+              <compression>
+echo '%FWBPROMPT%';
+sh %FWDIR%/%FWSCRIPT% &#38;&#38; (ps ax|awk '/shutdown/ &#38;&#38; \!/awk/ {printf "kill %d\n",$1;}'|sh; echo 'Policy activated')
+              </compression>
+              <no_compression>
+echo '%FWBPROMPT%';
+sh %FWDIR%/%FWSCRIPT% &#38;&#38; (ps ax|awk '/shutdown/ &#38;&#38; \!/awk/ {printf "kill %d\n",$1;}'|sh; echo 'Policy activated')
+              </no_compression>
+            </run>
+
+            <test>
+              <rollback>
+echo '%FWBPROMPT%';
+/sbin/shutdown -r +%RBTIMEOUT%;
+sh /tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
+              </rollback>
+              <no_rollback>
+echo '%FWBPROMPT%';
+sh /tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
+              </no_rollback>
+            </test>
+
+          </root>
+        </activation>
+
+      </options>
+
+      <capabilities>
+        <supports_routing>False</supports_routing>
+      </capabilities>
+
+      <tools>
+        <path_lsmod>/sbin/lsmod</path_lsmod>
+        <path_modprobe>/sbin/modprobe</path_modprobe>
+        <path_iptables>/sbin/iptables</path_iptables>
+        <path_ip>/sbin/ip</path_ip>
+        <path_logger>/usr/bin/logger</path_logger>
+        <path_expect>/usr/bin/expect</path_expect>
+        <path_ipfw>/sbin/ipfw</path_ipfw>
+        <path_ipf>/sbin/ipf</path_ipf>
+        <path_ipnat>/sbin/ipnat</path_ipnat>
+        <path_sysctl>/sbin/sysctl</path_sysctl>
+      </tools>
+
+    </Target>
+
+</FWBuilderResources>

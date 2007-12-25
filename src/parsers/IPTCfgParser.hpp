@@ -1,0 +1,159 @@
+#ifndef INC_IPTCfgParser_hpp_
+#define INC_IPTCfgParser_hpp_
+
+#line 27 "iptables.g"
+
+    // gets inserted before antlr generated includes in the header
+    // file
+
+#line 10 "IPTCfgParser.hpp"
+#include <antlr/config.hpp>
+/* $ANTLR 2.7.4: "iptables.g" -> "IPTCfgParser.hpp"$ */
+#include <antlr/TokenStream.hpp>
+#include <antlr/TokenBuffer.hpp>
+#include "IPTCfgParserTokenTypes.hpp"
+#include <antlr/LLkParser.hpp>
+
+#line 32 "iptables.g"
+
+    // gets inserted after antlr generated includes in the header file
+    // outside any generated namespace specifications
+
+#include <sstream>
+
+class IPTImporter;
+
+#line 27 "IPTCfgParser.hpp"
+#line 62 "iptables.g"
+
+    // gets inserted after generated namespace specifications in the
+    // header file. But outside the generated class.
+
+#line 33 "IPTCfgParser.hpp"
+class CUSTOM_API IPTCfgParser : public ANTLR_USE_NAMESPACE(antlr)LLkParser, public IPTCfgParserTokenTypes
+{
+#line 79 "iptables.g"
+
+// additional methods and members
+
+    public:
+    
+    std::ostream *dbg;
+    IPTImporter *importer;
+#line 37 "IPTCfgParser.hpp"
+public:
+	void initializeASTFactory( ANTLR_USE_NAMESPACE(antlr)ASTFactory& factory );
+protected:
+	IPTCfgParser(ANTLR_USE_NAMESPACE(antlr)TokenBuffer& tokenBuf, int k);
+public:
+	IPTCfgParser(ANTLR_USE_NAMESPACE(antlr)TokenBuffer& tokenBuf);
+protected:
+	IPTCfgParser(ANTLR_USE_NAMESPACE(antlr)TokenStream& lexer, int k);
+public:
+	IPTCfgParser(ANTLR_USE_NAMESPACE(antlr)TokenStream& lexer);
+	IPTCfgParser(const ANTLR_USE_NAMESPACE(antlr)ParserSharedInputState& state);
+	int getNumTokens() const
+	{
+		return IPTCfgParser::NUM_TOKENS;
+	}
+	const char* getTokenName( int type ) const
+	{
+		if( type > getNumTokens() ) return 0;
+		return IPTCfgParser::tokenNames[type];
+	}
+	const char* const* getTokenNames() const
+	{
+		return IPTCfgParser::tokenNames;
+	}
+	public: void cfgfile();
+	public: void comment();
+	public: void start_table();
+	public: void create_chain();
+	public: void add_rule();
+	public: void commit();
+	public: void chain_def();
+	public: void ipt_option();
+	public: void module();
+	public: void src();
+	public: void dst();
+	public: void i_intf();
+	public: void o_intf();
+	public: void proto();
+	public: void target();
+	public: void fragm();
+	public: void icmp_type_spec();
+	public: void basic_tcp_udp_port_spec();
+	public: void multiport_tcp_udp_port_spec();
+	public: void tcp_options();
+	public: void match_mark();
+	public: void match_limit();
+	public: void match_limit_burst();
+	public: void unknown_option();
+	public: void unknown_parameter();
+	public: void m_state();
+	public: void m_mport();
+	public: void m_icmp();
+	public: void m_tcp();
+	public: void m_udp();
+	public: void m_mark();
+	public: void m_limit();
+	public: void m_unknown_module();
+	public: void protocol_word();
+	public: void target_options();
+	public: void nat_spec();
+	public: void redirect_spec();
+	public: void nat_addr_range();
+	public: void nat_port_def_with_range();
+	public: void state_word();
+	public: void limit_rate();
+	public: void port_def_no_range();
+	public: void port_def_with_range();
+	public: void syn();
+	public: void tcp_flags();
+	public: void tcp_flag_word();
+	public: void tcp_flags_list();
+public:
+	ANTLR_USE_NAMESPACE(antlr)RefAST getAST()
+	{
+		return returnAST;
+	}
+	
+protected:
+	ANTLR_USE_NAMESPACE(antlr)RefAST returnAST;
+private:
+	static const char* tokenNames[];
+#ifndef NO_STATIC_CONSTS
+	static const int NUM_TOKENS = 119;
+#else
+	enum {
+		NUM_TOKENS = 119
+	};
+#endif
+	
+	static const unsigned long _tokenSet_0_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_0;
+	static const unsigned long _tokenSet_1_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_1;
+	static const unsigned long _tokenSet_2_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_2;
+	static const unsigned long _tokenSet_3_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_3;
+	static const unsigned long _tokenSet_4_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_4;
+	static const unsigned long _tokenSet_5_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_5;
+	static const unsigned long _tokenSet_6_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_6;
+	static const unsigned long _tokenSet_7_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_7;
+	static const unsigned long _tokenSet_8_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_8;
+	static const unsigned long _tokenSet_9_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_9;
+	static const unsigned long _tokenSet_10_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_10;
+	static const unsigned long _tokenSet_11_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_11;
+};
+
+#endif /*INC_IPTCfgParser_hpp_*/
