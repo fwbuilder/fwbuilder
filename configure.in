@@ -1,0 +1,757 @@
+dnl $Id: configure.in 1046 2007-10-21 20:27:01Z vk $
+
+AC_INIT(src/fwbuilder/FWObject.cpp)
+
+AC_CANONICAL_SYSTEM
+AC_CONFIG_HEADER(src/fwbuilder/libfwbuilder-config.h)
+
+AC_PROG_INSTALL
+
+dnl
+dnl all version numbers are defined in the file VERSION
+dnl
+. ./VERSION
+
+AC_SUBST(LIBMAJOR)
+AC_SUBST(RELEASE_NUM)
+AC_SUBST(LIBFWBUILDER_SO_VERSION)
+AC_SUBST(LIBFWBUILDER_SOLIB_VERSION)
+AC_SUBST(LIBFWBUILDER_VERSION)
+AC_SUBST(LIBFWBUILDER_LIB_VER)
+AC_SUBST(LIBFWBUILDER_SOLIB_SYMLINK1_VERSION)
+AC_SUBST(LIBFWBUILDER_SOLIB_SYMLINK2_VERSION)
+
+if test -z ${RELEASE_NUM}; then
+  RPMRELEASE="1"
+else
+  RPMRELEASE=${RELEASE_NUM};
+fi
+AC_SUBST(RPMRELEASE)
+
+echo "Creating VERSION.h file..."
+
+echo "#define LIBFWBUILDER_FORMAT_VERSION  \"$LIBFWBUILDER_VERSION\"" > src/fwbuilder/libfwbuilder-version.h
+
+dnl try to find QT
+dnl
+AC_ARG_WITH(qtdir,[  --with-qtdir=DIR        Specify directory path for QT ])
+
+AC_MSG_CHECKING(looking for QT)
+if test -n "$with_qtdir"; then
+    QTDIR="$with_qtdir";
+elif test -z "$QTDIR"; then
+    test -f "/usr/local/lib/qt3/include/qstyle.h" && QTDIR="/usr/local/lib/qt3"
+    test -f "/opt/lib/qt3/include/qstyle.h"       && QTDIR="/opt/lib/qt3"
+    test -f "/opt/qt3/include/qstyle.h"           && QTDIR="/opt/qt3"
+    test -f "/usr/lib/qt3/include/qstyle.h"       && QTDIR="/usr/lib/qt3"
+    test -f "/usr/lib/qt-3.1/include/qstyle.h"    && QTDIR="/usr/lib/qt-3.1"
+    test -f "/usr/lib/qt-3.2/include/qstyle.h"    && QTDIR="/usr/lib/qt-3.2"
+    test -f "/usr/lib/qt-3.3/include/qstyle.h"    && QTDIR="/usr/lib/qt-3.3"
+    test -f "/usr/local/include/qstyle.h"         && QTDIR="/usr/local"
+    test -f "/usr/include/qstyle.h"               && QTDIR="/usr"
+    test -f "/usr/lib64/qt-3.3/include/qstyle.h"  && QTDIR="/usr/lib64/qt-3.3"
+fi
+export QTDIR
+AC_MSG_RESULT($QTDIR)
+
+echo $QTDIR > qtdir
+
+EXTENDED_PATH="${QTDIR}/bin:/usr/local/bin:$PATH"
+
+AC_PATH_PROG(QMAKE,  qmake,      ,[$EXTENDED_PATH])
+if test -z "$QMAKE"; then
+    AC_MSG_ERROR("Could not find qmake")
+fi
+
+AC_MSG_CHECKING(checking version of QT this qmake is part of)
+qmake_version=`$QMAKE -v 2>&1 | awk '/Using Qt version/ { print $4;}'`
+case $qmake_version in
+    4*) AC_MSG_RESULT( $qmake_version ) ;;
+     *) AC_MSG_ERROR( $qmake_version ) ;;
+esac
+
+dnl
+dnl we do not want to build .a libraries. We could supply "--disable-static" option
+dnl to the call for configure, but it requires changes in the package configuration
+dnl files for all OS and that is just too much to remember.
+dnl
+enable_static=no
+
+LIBFWBUILDER_FORMAT_VERSION="${LIBFWBUILDER_VERSION}"
+
+AC_DEFINE_UNQUOTED(LIBFWBUILDER_FORMAT_VERSION, "${LIBFWBUILDER_FORMAT_VERSION}")
+
+AC_ARG_WITH(templatedir,[  --with-templatedir=DIR  Specify directory path for libfwbuilder 
+                          template files  ])
+
+AC_ARG_WITH(docdir,[  --with-docdir=DIR       Specify directory path for libfwbuilder 
+                          documentation files  ])
+
+AC_ARG_WITH(lwres, [  --with-lwres            use lightweight resolver library (needs bind 9) (default is NO)])
+
+AC_ARG_WITH(qtdir,[  --with-advanced-dns      Run checks for thread-safe resolver and dns zone transfer functions (default is NO) ])
+
+AC_ISC_POSIX
+AC_PROG_CC
+AC_HEADER_STDC
+AC_PROG_CPP
+AC_PROG_CXX
+AC_PROG_CXXCPP
+
+AC_C_BIGENDIAN(AC_DEFINE(WORDS_BIGENDIAN),
+               AC_DEFINE(WORDS_LITTLEENDIAN),
+               AC_MSG_ERROR(Failed to determine endianness!!))
+
+
+dnl standard LIBTOOL fragment
+dnl
+dnl AC_LIBTOOL_DLOPEN
+dnl AC_PROG_LIBTOOL
+dnl AC_SUBST(LIBTOOL_DEPS)
+
+
+AC_PROG_MAKE_SET
+
+LIBFWBUILDER_LIBDIR='-L${libdir}'
+
+dnl some basic functions check
+
+AC_CHECK_FUNCS(strtok_r)
+AC_CHECK_HEADERS(endian.h)
+AC_CHECK_HEADERS(getopt.h)
+
+dnl Check for GNU make 
+dnl 
+AC_MSG_CHECKING(whether make is GNU Make)
+if ${MAKE-make} -q --version 2>/dev/null | grep '^GNU Make ' >/dev/null ; then
+        AC_MSG_RESULT(yes)
+else
+        AC_MSG_RESULT(no)
+        if test "$host_vendor" = "sun" ; then
+AC_MSG_ERROR("SUN make does not work for building libfwbuilder. Please install GNU make")
+        fi
+fi
+
+
+
+dnl  Some OS have stuff installed in various local directories
+dnl
+case "$build_os" in
+  freebsd*|openbsd*|solaris*)
+   CPPFLAGS="-I/usr/local/include ${CFLAGS}"
+   CFLAGS="-I/usr/local/include ${CFLAGS}"
+   LIBS="-L/usr/local/lib ${LIBS}"
+   ;;
+   
+  *darwin*)
+    if test -d /sw/include; then
+      CFLAGS="-I/sw/include ${CFLAGS}"
+      LDFLAGS="-flat_namespace"
+    fi
+    ;;
+esac
+
+
+dnl check for pthreads
+ACX_PTHREAD([
+#
+# Somehow, standard macro tries -lpthreads, while pthread library really
+# is "libpthread" on Linux. Thus only test using -pthread suceeds, but
+# PTHREAD_LIBS macro ends up empty.
+#
+   test -z "$PTHREAD_LIBS" && test "$PTHREAD_CFLAGS" = "-pthread" && PTHREAD_LIBS="-pthread"
+
+   echo "Found pthread library:"
+   echo "PTHREAD_CFLAGS="$PTHREAD_CFLAGS
+   echo "PTHREAD_LIBS="$PTHREAD_LIBS
+
+] , [
+   AC_MSG_ERROR([POSIX threads library not present or not configured])
+])
+
+dnl check for XML library
+
+AC_PATH_PROG(XML2_CONFIG, xml2-config,  ,[$EXTENDED_PATH])
+
+if test x$XML2_CONFIG = x ; then
+   AC_MSG_ERROR([libxml2 not present or not configured])
+else
+  XML_CFLAGS="`$XML2_CONFIG --cflags`"
+  XML_LIBS="`$XML2_CONFIG --libs`"
+fi
+XML_CFLAGS=`echo $XML_CFLAGS | sed 's/-I\/usr\/include //'`
+AC_SUBST(XML_CFLAGS)
+AC_SUBST(XML_LIBS) 
+
+SAVE_LIBS=${LIBS}
+LIBS="$XML_LIBS $LIBS"
+AC_CHECK_FUNCS(xmlSaveFormatFileEnc)
+LIBS=${SAVE_LIBS}
+
+dnl check for XSLT library
+
+AC_PATH_PROG(XSLT_CONFIG, xslt-config,  ,[$EXTENDED_PATH])
+
+if test x$XSLT_CONFIG = x ; then
+   AC_MSG_ERROR([libxslt not present or not configured])
+else
+  XSLT_CFLAGS="`$XSLT_CONFIG --cflags`"
+  XSLT_LIBS="`$XSLT_CONFIG --libs`"
+fi
+XSLT_CFLAGS=`echo $XSLT_CFLAGS | sed 's/-I\/usr\/include //'`
+
+dnl
+dnl purely aestetical: xslt-config often reports the same flags as 
+dnl xml2-config
+dnl
+ac_xslt_var=""
+for w in ${XSLT_CFLAGS}; do
+  case " ${XML_CFLAGS} " in
+    *\ $w\ *) ;;
+    *) ac_xslt_var="$ac_xslt_var $w" ;;
+  esac
+done
+XSLT_CFLAGS=$ac_xslt_var
+
+ac_xslt_var=""
+for w in ${XSLT_LIBS}; do
+  case " ${XML_LIBS} " in
+    *\ $w\ *) ;;
+    *) ac_xslt_var="$ac_xslt_var $w" ;;
+  esac
+done
+XSLT_LIBS=$ac_xslt_var
+
+AC_SUBST(XSLT_CFLAGS)
+AC_SUBST(XSLT_LIBS) 
+ 
+dnl libXslt header libxslt/xsltconfig.h only present in newew version of libxslt
+dnl for instance it is not part of 1.0.1 but present in 1.0.7.
+AC_CHECK_HEADERS(libxslt/xsltconfig.h)
+
+dnl
+dnl  We also support "--with-ucdsnmp=no" and "--without-ucdsnmp"
+dnl  By default we assume user wants snmp support, provided script
+dnl  can find the library
+dnl
+dnl  Just in case we support both --with-ucdsnmp and --with-ucd-snmp
+dnl                                    --vk
+dnl
+
+check_for_ucdsnmp=yes
+if test x$with_ucdsnmp = xno ; then
+  check_for_ucdsnmp=no
+fi
+
+if test x$with_ucd_snmp = xno ; then
+  check_for_ucdsnmp=no
+fi
+
+if test $check_for_ucdsnmp = yes ; then
+
+dnl
+dnl net-snmp library includes script net-snmp-config which I use to determine cflags
+dnl and libs. Unfortunately even if this script is there and is used  flags, 
+dnl the program may still not link with the library. Currently having this problem on 
+dnl FreeBSD 4.7 - after upgrade of openssl, code using net-snmp stopped linking. That 
+dnl is why I still try to do linking test even if script is present.
+dnl
+dnl Testing for presence of includes and doing linking test assures that -devel 
+dnl package is indeed installed (primitive test program could link with libsnmp.so 
+dnl even if -devel package is not installed and headers are not there).
+dnl
+  AC_PATH_PROG(NET_SNMP_CONFIG, net-snmp-config,  ,[$EXTENDED_PATH])
+  if test x$NET_SNMP_CONFIG != x ; then
+    ac_LIBSNMP_LIBS="`$NET_SNMP_CONFIG --libs`"
+    ac_LIBSNMP_CFLAGS="`$NET_SNMP_CONFIG --cflags`"
+    AC_CHECK_LIB(netsnmp, init_snmp,
+    [
+      HAVE_LIBSNMP="1"
+      AC_DEFINE(HAVE_LIBSNMP)
+      NET_SNMP="1"
+      AC_DEFINE(NET_SNMP)
+      LIBSNMP_LIBS=$ac_LIBSNMP_LIBS
+      LIBSNMP_CFLAGS=$ac_LIBSNMP_CFLAGS
+      AC_CHECK_LIB(netsnmp, snprint_objid, [
+        AC_DEFINE(HAVE_SNPRINT_OBJID)
+      ], ,$ac_LIBSNMP_LIBS)
+    ], ,$ac_LIBSNMP_LIBS)
+  else
+    AC_CHECK_HEADERS([ucd-snmp/asn1.h], [
+      AC_CHECK_HEADER(ucd-snmp/snmp.h, [
+        AC_CHECK_LIBSNMP( snmp )
+        if test "Z$HAVE_LIBSNMP" != "Z"; then
+          UCD_SNMP="1"
+          AC_DEFINE(UCD_SNMP)
+          save_LIBS=$LIBS
+          LIBS="$LIBSNMP_LIBS $LIBS"
+          AC_CHECK_LIB(snmp, snprint_objid, [
+            AC_DEFINE(HAVE_SNPRINT_OBJID)
+          ])
+          LIBS=$save_LIBS
+        fi
+      ], ,[
+#include <sys/types.h>
+#include <ucd-snmp/asn1.h>
+      ])
+    ])
+  fi
+
+  LIBS="${LIBSNMP_LIBS} ${LIBS}"
+
+fi
+AC_SUBST(LIBSNMP_LIBS) 
+
+
+AC_LANG_CPLUSPLUS
+
+
+
+dnl Check for bind specific headers and libraries
+dnl if they are present, use them, rather than ones
+dnl coming with libc.
+
+AC_CHECK_HEADER(bind/resolv.h, [
+  CPPFLAGS="$CPPFLAGS -I/usr/include/bind"
+  HAVE_RESOLV_H=yes
+] , [ AC_CHECK_HEADER(/usr/local/bind/include/resolv.h, [
+    CPPFLAGS="$CPPFLAGS -I/usr/local/bind/include/"
+    HAVE_RESOLV_H=yes
+  ], [ 
+    AC_CHECK_HEADERS([resolv.h], [ HAVE_RESOLV_H=yes ], [], [
+#include <sys/types.h>
+#include <netinet/in.h> 
+    ] )
+  ] )
+], [
+#include <netinet/in.h>
+] )
+
+
+dnl
+dnl  We support "--with-advanced-dns=no" and "--without-advanced-dns"
+dnl  By default we assume user wants dns multi-threaded resolution and
+dnl  zone transfers support, provided script can find the library
+dnl
+
+if test x$with_advanced_dns == xyes ; then
+
+  LIB_RESOLV=""
+  HAVE_RES_NQUERY=""
+  
+  if test -n "$HAVE_RESOLV_H"; then
+    AC_CHECK_LIB(resolv,   res_nquery, HAVE_RES_NQUERY=1 )
+    AC_CHECK_LIB(resolv, __res_nquery, HAVE_RES_NQUERY=1 )
+  
+    if test -n "$HAVE_RES_NQUERY"; then
+      if test -z "$LIB_RESOLV"; then
+        AC_CHECK_LIB(resolv, __ns_parserr, [
+          LIB_RESOLV="-lresolv"
+  	HAVE_GOODLIBRESOLV="yes"
+          AC_DEFINE(HAVE_GOODLIBRESOLV)
+        ])
+      fi
+      CFLAGS="$CFLAGS -Wfatal-errors"
+      if test "$build_cpu" = "x86_64"; then
+        if test -z "$LIB_RESOLV"; then
+          AC_CHECK_LIB(c, __ns_parserr, [
+            LIB_RESOLV="/usr/lib64/libresolv.a"
+  	  HAVE_GOODLIBRESOLV="yes"
+            AC_DEFINE(HAVE_GOODLIBRESOLV)
+          ], , /usr/lib/libresolv.a)
+        fi
+      else
+        if test -z "$LIB_RESOLV"; then
+          AC_CHECK_LIB(c, __ns_parserr, [
+            LIB_RESOLV="/usr/lib/libresolv.a"
+  	  HAVE_GOODLIBRESOLV="yes"
+            AC_DEFINE(HAVE_GOODLIBRESOLV)
+          ], , /usr/lib/libresolv.a)
+        fi
+      fi
+    fi
+  fi
+  
+  AC_SUBST(LIB_RESOLV) 
+  AC_CHECK_LIB(bind_r, res_init)
+  
+  dnl AC_PATH_PROG(ISC_CONFIG, isc-config.sh, )
+  dnl 
+  dnl if test x$ISC_CONFIG != x ; then
+  dnl   OLDCFLAGS=$CFLAGS
+  dnl   OLDLIBS=$LIBS
+  dnl   BIND_CFLAGS="`$ISC_CONFIG --cflags isc dns | sed 's#-I/usr/include$##; s#-I/usr/include ##'`"
+  dnl   BIND_LIBS="`$ISC_CONFIG --libs isc dns | sed 's#-I/usr/lib$##; s#-I/usr/lib ##'`"
+  dnl   CFLAGS="${BIND_CFLAGS} ${CFLAGS}"
+  dnl   LIBS="${BIND_LIBS} ${LIBS}"
+  dnl 
+  dnl # we do not simply trust isc-config.sh because sometimes this script is
+  dnl # present but library libdns is missing (hint: SuSE :-( )
+  dnl 
+  dnl   AC_CHECK_LIB(dns, dns_master_loadfile)
+  dnl 
+  dnl fi
+  
+  dnl AC_CHECK_LIB(dns, dns_master_loadfile, LIBS="-ldns -lisc ${LIBS}", , -lisc)
+  
+  dnl --------------------------------------------------------------------------
+  dnl
+  dnl  We support "--with-lwres"
+  dnl  By default it is "no", that is we do not want it.
+  dnl
+  dnl if we use lwres, then we use lwres_getipnode and do not need 
+  dnl to check for the number of arguments 
+  dnl of gethostbyname_r and gethostbyaddr_r
+  dnl
+  if test "X$with_lwres" = "Xyes" ; then
+    AC_PATH_PROG(ISC_CONFIG, isc-config.sh,  ,[$EXTENDED_PATH])
+    if test x$ISC_CONFIG != x ; then
+      LWRES_CFLAGS="`$ISC_CONFIG --cflags lwres | sed 's#-I/usr/include$##; s#-I/usr/include ##'`"
+      LWRES_LIBS="`$ISC_CONFIG --libs lwres`"
+  
+      AC_DEFINE(HAVE_LWRES) 
+      HAVE_LWRES=1
+    else
+  
+  dnl
+  dnl if lwres is installed, the netdb.h should be in lwres/netdb.h
+  dnl
+      AC_CHECK_HEADERS( lwres/netdb.h, [ 
+        LWRES_LIBS="-llwres"
+        AC_DEFINE(HAVE_LWRES) 
+        HAVE_LWRES=1
+      ],[
+  
+        if test "${ac_cv_header_lwres_netdb_h+set}" = "set"; then
+            unset ac_cv_header_lwres_netdb_h
+        fi
+  
+        LWRES_CFLAGS="-I/usr/include/bind"
+        save_CFLAGS=${CFLAGS}
+        save_CPPFLAGS=${CPPFLAGS}
+        CFLAGS="${LWRES_CFLAGS} ${CFLAGS}"
+        CPPFLAGS="${LWRES_CFLAGS} ${CPPFLAGS}"
+        AC_CHECK_HEADERS( lwres/netdb.h, [ 
+          LWRES_LIBS="-llwres"
+          AC_DEFINE(HAVE_LWRES) 
+          HAVE_LWRES=1
+        ],[
+          LWRES_CFLAGS=""
+        ] , /* */ )
+        CFLAGS=${save_CFLAGS}
+        CPPFLAGS=${save_CPPFLAGS}
+  
+      ] ,
+      /* */ )
+  
+    fi
+  
+    save_CFLAGS=${CFLAGS}
+    save_CPPFLAGS=${CPPFLAGS}
+    save_LIBS=${LIBS}
+    CFLAGS="${LWRES_CFLAGS} ${CFLAGS}"
+    CPPFLAGS="${LWRES_CFLAGS} ${CPPFLAGS}"
+    LIBS="${LWRES_LIBS}"
+    AC_CHECK_FUNCS(lwres_getipnodebyname, HAVE_LWRES_GETIPNODE=1,
+      AC_MSG_ERROR([Could not find lwres library or link with it.]) )
+    AC_DEFINE(HAVE_LWRES_GETIPNODE) 
+  
+    CFLAGS=${save_CFLAGS}
+    CPPFLAGS=${save_CPPFLAGS}
+    LIBS=${save_LIBS}
+  
+  else
+  
+  dnl
+  dnl We do not use lwres, using old gethostbyname_r and gethostbyaddr_r
+  dnl
+  
+  dnl check gethostbyname_r function presense
+  dnl
+  dnl On Solaris8 gethostbyname needs 'libnsl'
+  dnl let's check for it first.
+  AC_CHECK_LIB(nsl, rpc_call)
+  
+  
+  
+  AC_MSG_CHECKING(if gethostbyname_r is declared)
+  AC_TRY_COMPILE([
+  #include <sys/types.h>
+  #include <netdb.h>
+  ],[
+  #ifndef gethostbyname_r
+    char *p=(char*)gethostbyname_r;
+  #endif
+  ],[
+        AC_MSG_RESULT(yes)
+        DECL_GETHOSTBYNAME_R="yes"
+        DEFINE_FOR_GETHOSTBYNAME_R=""
+  ],[
+        AC_MSG_RESULT(no)
+  
+        AC_MSG_CHECKING(if gethostbyname_r is declared with -D_REENTRANT)
+        AC_TRY_COMPILE([
+  #define _REENTRANT
+  #include <sys/types.h>
+  #include <netdb.h>
+  	 ],[
+  #ifndef gethostbyname_r
+    char *p=(char*)gethostbyname_r;
+  #endif
+        ],[
+        AC_MSG_RESULT(yes)
+        DECL_GETHOSTBYNAME_R="yes"
+        DEFINE_FOR_GETHOSTBYNAME_R="_REENTRANT"
+        ],[
+        AC_MSG_RESULT(no)
+        ])
+  
+  ])
+  
+  
+  if test "x$DECL_GETHOSTBYNAME_R" != "x"; then
+      AC_CHECK_FUNCS(gethostbyname_r, HAVE_GETHOSTBYNAME_R=1,
+         AC_MSG_WARN([Thread-safe gethostbyname_r is not available; try to use option --with-lwres ]) )
+  
+      if test "x$HAVE_GETHOSTBYNAME_R" != "x"; then
+         AC_CHECK_GETHOSTBYNAME_R([$DEFINE_FOR_GETHOSTBYNAME_R])
+     fi
+  fi 
+  
+  
+  
+  dnl it is rather strange, but FreeBSD 5.0 has gethostbyaddr_r in libc
+  dnl but declaration of it is nowhere to be found in /usr/include or
+  dnl /usr/local/include (except in lwres/netdb.h, but that's different
+  dnl story)
+  
+  dnl if macro AC_CHECK_DECL is available:
+  dnl
+  dnl AC_CHECK_DECL( gethostbyaddr_r, [
+  dnl   AC_CHECK_FUNCS(gethostbyaddr_r, HAVE_GETHOSTBYADDR_R=1,
+  dnl       AC_MSG_WARN([Thread-safe gethostbyaddr_r is not available; try to use option --with-lwres ]) )
+  dnl   ] )
+  
+  AC_MSG_CHECKING(if gethostbyaddr_r is declared)
+  AC_TRY_COMPILE([
+  #include <sys/types.h>
+  #include <netdb.h>
+  ],[
+  #ifndef gethostbyaddr_r
+    char *p=(char*)gethostbyaddr_r;
+  #endif
+  ],[
+        AC_MSG_RESULT(yes)
+        DECL_GETHOSTBYADDR_R="yes"
+        DEFINE_FOR_GETHOSTBYADDR_R=""
+  ],[
+        AC_MSG_RESULT(no)
+  
+        AC_MSG_CHECKING(if gethostbyaddr_r is declared with -D_REENTRANT)
+        AC_TRY_COMPILE([
+  #define _REENTRANT
+  #include <sys/types.h>
+  #include <netdb.h>
+  	 ],[
+  #ifndef gethostbyaddr_r
+    char *p=(char*)gethostbyaddr_r;
+  #endif
+        ],[
+        AC_MSG_RESULT(yes)
+        DECL_GETHOSTBYADDR_R="yes"
+        DEFINE_FOR_GETHOSTBYADDR_R="_REENTRANT"
+        ],[
+        AC_MSG_RESULT(no)
+        ])
+  
+  ])
+  
+  if test "x$DECL_GETHOSTBYADDR_R" != "x"; then
+     AC_CHECK_FUNCS(gethostbyaddr_r, HAVE_GETHOSTBYADDR_R=1,
+         AC_MSG_WARN([Thread-safe gethostbyaddr_r is not available; try to use option --with-lwres ]) )
+  
+     if test "x$HAVE_GETHOSTBYADDR_R" != "x"; then
+         AC_CHECK_GETHOSTBYADDR_R([$DEFINE_FOR_GETHOSTBYADDR_R])
+     fi
+  fi 
+  fi
+
+  AC_SUBST(LWRES_CFLAGS) 
+  AC_SUBST(LWRES_LIBS) 
+
+fi  # if test x$with_advanced-dns != xno
+
+dnl
+dnl prepare equivalents of *_CFLAGS variables for qmake
+dnl qmake requires these to be without "-I"
+dnl
+XML_CFLAGS_Q=`echo ${XML_CFLAGS} | sed 's/-I//g'`
+XSLT_CFLAGS_Q=`echo ${XSLT_CFLAGS} | sed 's/-I//g'`
+PTHREAD_CFLAGS_Q=`echo ${PTHREAD_CFLAGS} | sed 's/-I//g'`
+LWRES_CFLAGS_Q=`echo ${LWRES_CFLAGS} | sed 's/-I//g'`
+LIBS_Q=`echo ${LIBS} | sed 's/-I//g'`
+
+AC_SUBST(XML_CFLAGS_Q)
+AC_SUBST(XSLT_CFLAGS_Q)
+AC_SUBST(PTHREAD_CFLAGS_Q)
+AC_SUBST(LWRES_CFLAGS_Q)
+AC_SUBST(LIBS_Q)
+
+
+dnl
+dnl end of section dealing with lwres_getipnode / gethostbyname_r, gethostbyaddr_r
+dnl -------------------------------------------------------------------------------
+
+AC_ARG_WITH(stlport, [  --with-stlport            use STLport library (default is NO)])
+
+if test "X$with_stlport" = "Xyes" ; then
+  STL_CFLAGS="-nostdinc++ -I/usr/local/include/stlport -D_STLP_USE_STATIC_LIB"
+  STL_LIBS="${LIBS} /usr/local/lib/libstlport_gcc.a"
+  STL_LDFLAGS="-nodefaultlibs -lgcc"
+fi
+AC_SUBST(STL_CFLAGS)
+AC_SUBST(STL_LIBS) 
+AC_SUBST(STL_LDFLAGS) 
+
+
+dnl AC_LANG_CPLUSPLUS
+
+
+dnl
+dnl   Determine init dir and add definition to config.h
+dnl
+
+PREFIX=$ac_default_prefix
+
+if test "x$prefix" != "xNONE"; then
+  PREFIX=$prefix
+fi
+
+dnl   prefix has bogus value while building RPM. Since program
+dnl   should incrorporate full path to the templates directory into
+dnl   the code via config.h file, we need to keep track of
+dnl   this directory twice: TEMPLATE_DIR is what goes to config.h, while
+dnl   "install" Makefile targets will use $(prefix) to build install
+dnl   path
+
+if test "x$with_templatedir" != "x"; then
+  TEMPLATE_DIR="${with_templatedir}"
+else
+  TEMPLATE_DIR="${PREFIX}/share/libfwbuilder21"
+fi
+AC_DEFINE_UNQUOTED(LIBFWBUILDER_TEMPLATE_DIR, "${TEMPLATE_DIR}")
+AC_SUBST(TEMPLATE_DIR)
+
+AC_DEFINE_UNQUOTED(VERSION,          "$LIBFWBUILDER_VERSION")
+
+AC_PATH_PROG(MD5, md5,  ,[$EXTENDED_PATH])
+if test x$MD5 = x ; then
+  AC_PATH_PROG(MD5, md5sum,  ,[$EXTENDED_PATH])
+fi
+AC_SUBST(MD5)
+
+
+
+dnl Check for doc++ which is used to build online API reference
+
+AC_CHECK_PROG(DOCPP, doc++, doc++)
+
+IS_WIN32_PLATFORM=no
+
+case ${host} in
+  *-*-mingw32*)
+	IS_WIN32_PLATFORM=yes
+	;;
+  *-*-solaris*)
+        LIBFWBUILDER_LIBDIR="${LIBFWBUILDER_LIBDIR} -R${libdir}"
+        ;;
+esac
+
+AC_SUBST(LIBFWBUILDER_LIBDIR)
+AC_SUBST(IS_WIN32_PLATFORM)
+
+AC_MSG_CHECKING(where to install documentation)
+if test "x$with_docdir" != "x"; then
+  DOCDIR="${with_docdir}"
+else
+  DOCDIR="${PREFIX}/share/doc/libfwbuilder-${LIBFWBUILDER_VERSION}"
+fi
+AC_MSG_RESULT($DOCDIR)
+
+AC_SUBST(DOCDIR)
+AC_DEFINE_UNQUOTED(DOCDIR,           "${DOCDIR}")
+
+AC_PATH_PROG(CCACHE, ccache, , )
+
+
+
+
+
+# qmake does not understand syntax ${var}, but configure defines
+# libdir as ${exec_prefix}/lib. Convert it to $$exec_prefix/lib for qmake
+#
+LIBDIR=`echo $libdir|sed 's/{//; s/}//; s/\\$/$$/'`
+AC_SUBST(LIBDIR)
+
+# the same goes for exec_prefix - configure defines it as '${prefix}'
+# if it was not specified on the command line via --exec_prefix argument
+# We do essentially the same thing as configure does, except use 
+# syntax qmake can understand.
+#
+EXEC_PREFIX="$exec_prefix"
+if test "x$EXEC_PREFIX" = xNONE
+then
+  EXEC_PREFIX='$$prefix'
+else
+  EXEC_PREFIX=`echo $EXEC_PREFIX|sed 's/{//; s/}//; s/\\$/$$/'`
+fi
+AC_SUBST(EXEC_PREFIX)
+
+AC_OUTPUT(qmake.inc
+          src/confscript/libfwbuilder-config-2.1
+	  etc/fwbuilder.dtd )
+
+dnl qmake just copies the file; we need to make it executable before that
+dnl 
+chmod a+x src/confscript/libfwbuilder-config-2.1
+
+
+
+
+echo
+echo "-------------------------------------------------------------------"
+
+echo -n "Support for SNMP queries  :                              " 
+if test "Z$HAVE_LIBSNMP" != "Z"; then
+  echo "YES"
+  echo -n "    Using ucd_snmp library :                             "
+  if test "Z$UCD_SNMP" != "Z";  then  echo "YES"; else  echo "NO"; fi
+  echo -n "    Using net_snmp library :                             "
+  if test "Z$NET_SNMP" != "Z";  then  echo "YES"; else  echo "NO"; fi
+else  echo "NO"; fi
+
+echo -n "Support for thread-safe resolver and DNS zone transfers: "
+if test "Z$HAVE_GOODLIBRESOLV" != "Z"; then  echo "YES"; else  echo "NO"; fi
+echo -n "Using lwres resolver library:                            "
+if test "Z$HAVE_LWRES" != "Z"; then    echo "YES"; else  echo "NO"; fi
+
+if test "Z$ac_cv_func_which_gethostname_r" != "Z"; then
+  echo "Function gethostbyname_r takes $ac_cv_func_which_gethostname_r arguments"
+else
+  echo "Function gethostbyname_r is not available"
+fi
+
+if test "Z$ac_cv_gethostbyaddr_args" != "Z"; then
+  echo "Function gethostbyaddr_r takes $ac_cv_gethostbyaddr_args arguments"
+  echo -n "First argument for gethostbyaddr_r is "
+  if   test "Z$ac_cv_gethostbyaddr_first_arg" == "Zcharptr"; then echo "const char *"
+  elif test "Z$ac_cv_gethostbyaddr_first_arg" == "Zvoidptr"; then echo "const void *"
+  else echo 
+  fi
+else
+  echo "Function gethostbyaddr_r is not available"
+fi
+
+echo "-------------------------------------------------------------------"
+
+. ./runqmake.sh

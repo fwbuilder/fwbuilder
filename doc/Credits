@@ -1,0 +1,72 @@
+$Id: Credits 378 2002-09-09 04:29:46Z vkurland $
+
+We wold like to thank the following people who helped us in various
+ways to make this project happen:
+
+Special thanks to Friedhelm Düsterhöft <fd@msdd.net> for help with XML
+development on early stages of the project and initial implementation
+of XSLT filters.
+
+Special thanks to Marc Pfefferkorn <marc.pfefferkorn@post.rwth-aachen.de>
+for help in debugging on SuSE,  building packages for SuSE and help in
+managing support requests.
+
+Special thanks to Jeremy T. Bouse <Jeremy.Bouse@UnderGrid.net> for
+mantaining fwbuilder packages on Debian, help in managing support
+requests and for ideas and contributions.
+
+
+
+
+
+For icons : Hector Rivera Falu <misha@phreaker.net>
+
+For art and a web site: Tanya Soussokolova <ts@vk.crocodile.org>
+
+For accounts given to us so we could compile and debug fwbuilder on
+different platforms: Vlad Karpinsky <vlad@crocodile.org>, 
+Vadim Getmanschuk <vaget@vaget.org>
+
+
+For ideas, suggestions, patches:
+
+Friedhelm Düsterhöft" <friedhelm.duesterhoeft@msdd.net> 
+- many suggestions and prototype for DTD.
+
+Carlo Wood  <carlo@alinoe.com>
+- many valuable patches and bug reports
+- suggestions regarding rpm building process and changes to spec file
+
+Jochen Friedrich <jochen+fwbuilder-dev@scram.de>
+- ideas for future development
+
+Vadim Fedukovich <vf@unity.net> 
+- help with OpenSSL and answering related questins.
+
+
+For contributions:
+
+David Gullasch <gullasch@secunet.de>
+- firewall policy installation script
+
+Igor Morozov <igor@grad.kiev.ua>
+- Win32 porting
+
+Andrew Hood <mithrandir@alwaysonline.net.au>
+- suggestion and a patch for proper use of libsnmp
+
+
+
+
+
+For beta-testng:
+
+Eric S. Johansson <esj@harvee.billerica.ma.us>
+Friedhelm Düsterhöft" <friedhelm.duesterhoeft@msdd.net> 
+Joerg Fritsch <joerg.fritsch@planet-interkom.de>
+karsten reincke <reincke@icdm.de>
+Rob Wallace <rwallace@videotron.ca> 
+Vidal Augusto Zapparoli Castro Melo <vaugusto@lsi.usp.br>
+tobias.manthey@progredy.de
+
+

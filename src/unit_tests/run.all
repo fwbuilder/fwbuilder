@@ -1,0 +1,19 @@
+#!/bin/sh
+
+system=`uname -s`
+
+case $system in
+    Linux)
+        export LD_LIBRARY_PATH=../fwbuilder:../fwcompiler
+
+	./dns_test
+        ;;
+
+    Darwin)
+	export DYLD_LIBRARY_PATH=../fwbuilder/:../fwcompiler
+
+	./dns_test.app/Contents/MacOS/dns_test
+        ;;
+esac
+
+

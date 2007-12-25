@@ -1,0 +1,225 @@
+/* 
+
+                          Firewall Builder
+
+                 Copyright (C) 2000 NetCitadel, LLC
+
+  Author:  Vadim Kurland     vadim@vk.crocodile.org
+
+  $Id: XMLTools.h 1045 2007-08-30 04:47:19Z vk $
+
+
+  This program is free software which we release under the GNU General Public
+  License. You may redistribute and/or modify this program under the terms
+  of that license as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+ 
+  To get a copy of the GNU General Public License, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+*/
+
+/*
+ * This file contains assorted XML handling code
+ */
+
+#ifndef __XML_TOOLS_HH_FLAG__
+#define __XML_TOOLS_HH_FLAG__
+
+#include <fwbuilder/libfwbuilder-config.h>
+
+#include <fwbuilder/Tools.h>
+#include <fwbuilder/FWException.h>
+
+#include <string>
+#include <functional>
+
+#include <libxml/parser.h>
+#include <libxml/tree.h>
+#include <libxml/xmlIO.h>
+#include <libxml/parserInternals.h>
+#include <libxml/xmlmemory.h>
+
+
+namespace libfwbuilder
+{
+
+//TODO: define type cast operators for these
+#define FROMXMLCAST(x) ((const char *)x)
+#define STRTOXMLCAST(x) ((xmlChar *)x.c_str())
+#define TOXMLCAST(x) ((xmlChar *)x)
+
+
+/**
+ * this macro is used to free data chunks allocated by libxml2.
+ * Funtion xmlGetProp and the likes return data in the blocks of memory
+ * that they allocate internally using malloc. To prevent memory leaks
+ * these blocks need to be freed. Memory must be freed using xmlFree function.
+ *
+ * The problem though is that in the win32 version of libxml that I use,
+ * declarations of all memory handling functions are commented out. This is so
+ * as of Dec2003, ver. 2.6.3, see in include/libxml/xmlmemory.h
+ */
+#ifdef xmlFree
+#  define FREEXMLBUFF(x) (xmlFree((void*)(x)))
+#else
+#  define FREEXMLBUFF(x)   ;
+#endif
+
+class XMLTools
+{
+    public:
+
+    static xmlNodePtr getXmlNodeByPath(xmlNodePtr r,const char   *path       );
+    static xmlNodePtr getXmlNodeByPath(xmlNodePtr r,const std::string &path  );
+
+    static xmlNodePtr getXmlChildNode (xmlNodePtr r,const char   *child_name );
+
+    static void initXMLTools();
+
+    class UpgradePredicate
+    {
+        public:
+
+        virtual ~UpgradePredicate() {}
+
+        virtual bool operator()(const std::string&) const 
+        { 
+            return true;
+        }
+    };
+
+    static std::string readFile(const std::string &file_name) throw(FWException);
+    
+    /**
+     * Loads given file, performing version conversion
+     * if neccessary.
+     */
+    static xmlDocPtr loadFile(const std::string &file_name, 
+                              const std::string &type_name, 
+                              const std::string &dtd_file,
+                              const UpgradePredicate *upgrade,
+                              const std::string &template_dir,
+                              const std::string &current_version = std::string(LIBFWBUILDER_FORMAT_VERSION)
+    ) throw(FWException);
+
+    static void setDTD(xmlDocPtr doc, 
+                       const std::string &type_name, 
+                       const std::string &dtd_file) throw(FWException);
+    
+    /**
+     * Saves to file with setting DTD.
+     */
+    static void saveFile(xmlDocPtr doc, 
+                         const std::string &file_name, 
+                         const std::string &type_name,
+                         const std::string &dtd_file) throw(FWException);
+
+    /**
+     * Saves XML document to the memory buffer
+     */
+    static void dumpToMemory(xmlDocPtr doc, 
+                             xmlChar **buffer,
+                             int      *size,
+                             const std::string &type_name,
+                             const std::string &dtd_file) throw(FWException);
+        
+    static xmlExternalEntityLoader defaultLoader;
+
+    /**
+     * parses contents of the file file_name which is preloaded into
+     * buffer, without version conversion. File name is passed for
+     * pretty error printing.
+     *
+     * @return document pointer
+     */
+    static xmlDocPtr parseFile(const std::string &file_name,
+                               const std::string &buffer, 
+                               bool use_dtd, const std::string &template_dir
+    ) throw(FWException);
+    
+    /**
+     * Performs XSLT transformation of the document in memory
+     * @return new document
+     */
+    static xmlDocPtr transformDocument(xmlDocPtr doc, 
+                                       const std::string &stylesheet_file,
+                                       const char **params
+    ) throw(FWException);
+
+    /**
+     * Performs XSLT transformation of the document. Results are
+     * stored in dst file.
+     */
+    static void transformDocumentToFile(xmlDocPtr doc, 
+                                        const std::string &stylesheet_file,
+                                        const char **params,
+                                        const std::string &dst_file
+    ) throw(FWException);
+
+    /**
+     * Performs XSLT transformation of the src file. Results are
+     * stored in dst file.
+     */
+    static void transformFileToFile(const std::string &src_file,
+				    const std::string &stylesheet_file,
+				    const char **params,
+				    const std::string &dst_file
+    ) throw(FWException);
+
+
+    static std::string quote_linefeeds  (const std::string &s);
+    static std::string unquote_linefeeds(const std::string &s);
+
+    /** 
+     * checks all characters in str and makes sure they all conform
+     * with UTF8 encoding. Replaces unconforming characters with '?'
+     */
+    static std::string cleanForUTF8(const std::string &str);
+
+    /** 
+     * checks all characters in str and makes sure they all conform
+     * to NVT ASCII encoding. Replaces unconforming characters with '?'
+     */
+    static std::string cleanForNVTASCII(const std::string &str);
+
+
+    /**
+     * Compares 2 product version numbers in dotted notation
+     * @return 0 if equal, positive if v1>v2, negative if v1<v2
+     */
+    static int version_compare(const std::string &v1, const std::string &v2);
+
+    
+    private:
+    
+    /**
+     * Convert file from older version to current one
+     * @return pointer to new document or NULL if doc is unchanged.
+     *         if pointer to new document is returned, doc parameter
+     *         becomes invalid and should not be used.
+     */
+    static xmlDocPtr convert(xmlDocPtr doc, 
+                             const std::string &file_name, 
+                             const std::string &type_name,
+                             const std::string &template_dir,
+                             const std::string &current_version = std::string(LIBFWBUILDER_FORMAT_VERSION)
+    ) throw(FWException);
+
+    /**
+     * returns first component of dotted notation.
+     */
+    static int major_number(const std::string &v, std::string &rest);
+
+};
+
+}
+
+#endif
+
+
