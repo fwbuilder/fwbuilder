@@ -5,11 +5,21 @@ TEMPLATE	= app
 LANGUAGE	= C++
 QT             += network
 
+TARGET = fwbuilder3
+
+include(../../qmake.inc)
+
+exists(qmake.inc) {
+  include( qmake.inc)
+}
+
+
 HEADERS	+= ../../config.h \
 	utils.h \
 	utils_no_qt.h \
     Importer.h \
     IOSImporter.h \
+	IPTImporter.h \
 	SSHSession.h \
 	SSHUnx.h \
 	SSHPIX.h \
@@ -106,7 +116,6 @@ HEADERS	+= ../../config.h \
 	ConfirmDeleteObjectDialog.h \
 	FakeWizard.h \
 	FWBAboutDialog.h
-#	..\common\commoninit.h
 
 SOURCES	+= main.cpp \
 	utils.cpp \
@@ -114,6 +123,8 @@ SOURCES	+= main.cpp \
     Importer.cpp \
     IOSImporter.cpp \
     IOSImporterRun.cpp \
+	IPTImporter.cpp \
+	IPTImporterRun.cpp \
 	SSHSession.cpp \
 	SSHUnx.cpp \
 	SSHPIX.cpp \
@@ -279,36 +290,13 @@ FORMS	= FWBMainWindow_q.ui \
 	findwhereusedwidget_q.ui \
 	confirmdeleteobjectdialog_q.ui
 
-	HEADERS += IPTImporter.h
-	SOURCES += IPTImporter.cpp IPTImporterRun.cpp
-
-#
-include(../../qmake.inc)
-#
-exists(qmake.inc) {
-  include( qmake.inc)
-}
-
-#
-#
-#
-#
-TARGET = fwbuilder4
-#
-
 contains( HAVE_ANTLR_RUNTIME, 1 ) {
 	INCLUDEPATH	 += $$ANTLR_INCLUDEPATH
 	LIBS		 += $$FWBPARSER_LIB  $$ANTLR_LIBS 
 	DEFINES		 += $$ANTLR_DEFINES
 }
 
-#unix  {
-#  !macx {
-#      #  }
-#}
-
 QMAKE_COPY    = ../../install.sh -m 0755 -s
 
 RESOURCES += MainRes.qrc
-
 
