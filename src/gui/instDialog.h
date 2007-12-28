@@ -151,7 +151,6 @@ class instDialog : public QDialog, public FakeWizard
     bool testFirewall(libfwbuilder::Firewall*);
     void finishInstall(bool success=true);
     void fillInstallOpList();
-    void installSelected();
     void initInstall();
     void analyseInstallQueue(bool &fPix, bool &fCustInst);
     libfwbuilder::Firewall *findFirewallbyListItem(QTreeWidgetItem* item);
@@ -193,19 +192,20 @@ protected:
     QString getFullPath(instConf &cnf, const QString &file );
 
  protected slots:
-     void processExited(int code);
-     void installerFinished();
-     void installerError();
-     void showPage(const int page);
+    void processExited(int code);
+    void installerFinished();
+    void installerError();
+    void installSelected();
+    void showPage(const int page);
      
-     void finishClicked();
-     void cancelClicked();
+    void finishClicked();
+    void cancelClicked();
      
-     void testRunRequested();
+    void testRunRequested();
      
-     void append(const QString &line);
-     void appendRich(const QString &line);
-     void updateProgressBar(int n,bool setsize);
+    void append(const QString &line);
+    void appendRich(const QString &line);
+    void updateProgressBar(int n,bool setsize);
 
     void continueRun();
     virtual void saveLog();
@@ -219,6 +219,7 @@ protected:
     virtual void nextClicked();
     virtual void backClicked();
 
+    void stopSessionAndDisconnectSignals();
     
     void compileSelected();
     void stopCompile();

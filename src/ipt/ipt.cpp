@@ -594,65 +594,33 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
         if (options->getBool("use_iptables_restore"))
         {
-            if (have_dynamic_interfaces)
+            script << "(" << endl;
+
+            script << c.flushAndSetDefaultPolicy();
+
+            if (prolog_place == "after_flush")
             {
-                script << "(" << endl;
-
-                script << c.flushAndSetDefaultPolicy();
-
-                if (prolog_place == "after_flush")
-                {
-                    script << addPrologScript(nocomm, 
-                                 fw->getOptionsObject()->getStr("prolog_script"));
-                }
-
-                script << c.getCompiledScript();
-                script << c.commit();
-
-                if (m.getCompiledScriptLength()>0)
-                {
-                    script << m.flushAndSetDefaultPolicy();
-                    script << m.getCompiledScript();
-                    script << m.commit();
-                }
-                if (n.getCompiledScriptLength()>0)
-                {
-                    script << n.flushAndSetDefaultPolicy();
-                    script << n.getCompiledScript();
-                    script << n.commit();
-                }
-                script << "#" << endl;
-                script << ") | $IPTABLES_RESTORE" << endl;
-            } else
-            {
-                script << "cat << EOF | $IPTABLES_RESTORE" << endl;
-
-                script << c.flushAndSetDefaultPolicy();
-
-                if (prolog_place == "after_flush")
-                {
-                    script << addPrologScript(nocomm, 
-                                 fw->getOptionsObject()->getStr("prolog_script"));
-                }
-
-                script << c.getCompiledScript();
-                script << c.commit();
-
-                if (m.getCompiledScriptLength()>0)
-                {
-                    script << m.flushAndSetDefaultPolicy();
-                    script << m.getCompiledScript();
-                    script << m.commit();
-                }
-                if (n.getCompiledScriptLength()>0)
-                {
-                    script << n.flushAndSetDefaultPolicy();
-                    script << n.getCompiledScript();
-                    script << n.commit();
-                }
-                script << "#" << endl;
-                script << "EOF" << endl;
+                script << addPrologScript(nocomm, 
+                                          fw->getOptionsObject()->getStr("prolog_script"));
             }
+
+            script << c.getCompiledScript();
+            script << c.commit();
+
+            if (m.getCompiledScriptLength()>0)
+            {
+                script << m.flushAndSetDefaultPolicy();
+                script << m.getCompiledScript();
+                script << m.commit();
+            }
+            if (n.getCompiledScriptLength()>0)
+            {
+                script << n.flushAndSetDefaultPolicy();
+                script << n.getCompiledScript();
+                script << n.commit();
+            }
+            script << "#" << endl;
+            script << ") | $IPTABLES_RESTORE; IPTABLES_RESTORE_RES=$?" << endl;
         } else
         {
 
@@ -709,51 +677,14 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             script << "#" << endl;
         }
 
+        script << endl;
+
+        if (options->getBool("use_iptables_restore"))
+            script << "exit $IPTABLES_RESTORE_RES";
+
 	script << endl;
 
         string sbuf = script.str();
-
-/* starting with 2.0.3 we copy script to linksys using scp and do not
- * need to escape double quotes and '$' anymore
- */
-
-#if 0
-        if ( Resources::getTargetOptionBool(fw->getStr("host_OS"),
-                                            "escape_everything") )
-        {
-/* need to escape single and double quotes, as well as '$' in the script */
-
-            string::size_type i;
-
-            i = 0;
-            while ( (i=sbuf.find('\"',i))!=string::npos )
-            {
-                sbuf.replace(i,1,"\\\"");
-                i+=2;
-            }
-
-            i = 0;
-            while ( (i=sbuf.find('\'',i))!=string::npos )
-            {
-                sbuf.replace(i,1,"\\\'");
-                i+=2;
-            }
-
-            i = 0;
-            while ( (i=sbuf.find('`',i))!=string::npos )
-            {
-                sbuf.replace(i,1,"\\`");
-                i+=2;
-            }
-
-            i = 0;
-            while ( (i=sbuf.find('$',i))!=string::npos )
-            {
-                sbuf.replace(i,1,"\\$");
-                i+=2;
-            }
-        }
-#endif
 
 	ofstream fw_file;
         fw_file.exceptions(ofstream::eofbit|ofstream::failbit|ofstream::badbit);

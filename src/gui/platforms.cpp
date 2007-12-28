@@ -49,6 +49,7 @@ QStringList logLevels;
 QStringList logFacilities;
 QStringList actionsOnReject;
 QStringList routeOptions_pf_ipf;
+QStringList routeLoadOptions_pf;
 QStringList prologPlaces_ipt;
 QStringList prologPlaces_pf;
 QStringList limitSuffixes;
@@ -135,12 +136,23 @@ void init_platforms()
     actionsOnReject.push_back(QObject::tr("TCP RST"));
     actionsOnReject.push_back("TCP RST");
 
+    routeOptions_pf_ipf.push_back(QObject::tr("None"));
+    routeOptions_pf_ipf.push_back("none");
     routeOptions_pf_ipf.push_back(QObject::tr("Route through"));
     routeOptions_pf_ipf.push_back("route_through");
     routeOptions_pf_ipf.push_back(QObject::tr("Route reply through"));
     routeOptions_pf_ipf.push_back("route_reply_through");
     routeOptions_pf_ipf.push_back(QObject::tr("Route a copy through"));
     routeOptions_pf_ipf.push_back("route_copy_through");
+    
+    routeLoadOptions_pf.push_back(QObject::tr("None"));
+    routeLoadOptions_pf.push_back("none");
+    routeLoadOptions_pf.push_back(QObject::tr("Random"));
+    routeLoadOptions_pf.push_back("random");
+    routeLoadOptions_pf.push_back(QObject::tr("Source Hash"));
+    routeLoadOptions_pf.push_back("source_hash");
+    routeLoadOptions_pf.push_back(QObject::tr("Round Robin"));
+    routeLoadOptions_pf.push_back("round_robin");
     
     prologPlaces_ipt.push_back(QObject::tr("on top of the script"));
     prologPlaces_ipt.push_back("top");
@@ -458,6 +470,11 @@ const QStringList& getActionsOnReject(const QString &platform)
 const QStringList& getRouteOptions_pf_ipf(const QString &platform)
 {
     return routeOptions_pf_ipf;
+}
+
+const QStringList& getRouteLoadOptions_pf(const QString &platform)
+{
+    return routeLoadOptions_pf;
 }
 
 const QStringList& getPrologPlaces(const QString &platform)

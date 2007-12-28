@@ -641,7 +641,6 @@ string  OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
                                                      const string &command)
 {
     string command_line = command;
-    ostringstream  res;
     ostringstream  ext_command_line;
 
     int nlines = 0;
@@ -674,41 +673,62 @@ string  OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
     }
 
 /* if anywhere in command_line we used variable holding an address of
- * dynamic interface (named $i_something) then we need to add
- * this command with a check for the value of this variable. We execute
+ * dynamic interface (named $i_something) then we need to add this
+ * command with a check for the value of this variable. We execute
  * iptables command only if the value is a non-empty string.
+ *
+ * bug #1851166: there could be two dynamic interfaces in the same
+ * rule.
  */
+    if (command_line.find("$i_")==string::npos) return command_line;
 
-    p1=command_line.find("$i_");
-    string  iface_name;
-    string  iface_var;
-    if ( p1==string::npos ) return command_line;
+    ostringstream  res;
+    bool wildcard_interfaces = false;
+    p1=0;
+    while ((p1=command_line.find("$i_", p1))!=string::npos)
+    {
+        string  iface_name;
+        string  iface_var;
 
-    p2=command_line.find(" ",p1);
-    p3=command_line.find("_",p1) +1;
-    iface_name=command_line.substr(p3,p2-p3);
-    iface_var= command_line.substr(p1,p2-p1);
+        p2=command_line.find(" ",p1);
+        p3=command_line.find("_",p1) +1;
+        iface_name=command_line.substr(p3,p2-p3);
+        iface_var= command_line.substr(p1,p2-p1);
 
 /* if interface name ends with '*', this is a wildcard interface. */
-    string::size_type p4;
-    if ((p4=iface_name.find("*"))!=string::npos)
+        string::size_type p4;
+        if ((p4=iface_name.find("*"))!=string::npos)
+        {
+            wildcard_interfaces = true;
+            string cmdline=command_line;
+            string iface_family_name=iface_name.substr(0,p4);
+            res << "getinterfaces " << iface_family_name << " | while read I; do" << endl;
+            res << "  ivar=`getInterfaceVarName $I`" << endl;
+            res << "  getaddr $I $ivar" << endl;
+            res << "  cmd=\"$\"$ivar"   << endl;
+            res << "  eval \"addr=$cmd\""          << endl;
+            cmdline.replace(p1,p2-p1,"$addr");
+            res << "  test -n \"$addr\" && ";
+            if (nlines>1) res << "{" << endl;
+            res << cmdline;
+            if (nlines>1) res << "}" << endl;
+            res << "done" << endl;
+        } else
+        {
+            // bug #1851166: there could be two dynamic interfaces in
+            // the same rule. Just print "test" command here and continue
+            // in the "while" loop. We'll print actual commands when the loop
+            // ends.
+            res << "test -n \"" << iface_var << "\" && ";
+        }
+        p1++;  // p1 points at the previous "$i_" fragment
+    }
+
+
+    // for wildcard interfaces we only support one such interface
+    // per rule and we have already printed the actual command above.
+    if (!wildcard_interfaces)
     {
-        string cmdline=command_line;
-        string iface_family_name=iface_name.substr(0,p4);
-        res << "getinterfaces " << iface_family_name << " | while read I; do" << endl;
-        res << "  ivar=`getInterfaceVarName $I`" << endl;
-        res << "  getaddr $I $ivar" << endl;
-        res << "  cmd=\"$\"$ivar"   << endl;
-        res << "  eval \"addr=$cmd\""          << endl;
-        cmdline.replace(p1,p2-p1,"$addr");
-        res << "  test -n \"$addr\" && ";
-        if (nlines>1) res << "{" << endl;
-        res << cmdline;
-        if (nlines>1) res << "}" << endl;
-        res << "done" << endl;
-    } else
-    {
-        res << "test -n \"" << iface_var << "\" && ";
         if (nlines>1) res << "{" << endl;
         res << command_line;
         if (nlines>1) res << "}" << endl;

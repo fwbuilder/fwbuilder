@@ -134,34 +134,137 @@ void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
 
     if (rule->getAction() == PolicyRule::Route)
     {
-        if (ruleopt->getBool("pf_fastroute"))
+	string prefix = "pf";
+	if (compiler->myPlatformName()=="ipf")
+		prefix="ipf";
+	string ro = ruleopt->getStr(prefix+"_route_option");
+        if (ruleopt->getBool("pf_fastroute") && ro != "none")
+	{
+            compiler->abort("Cannot use fastroute and route method in same rule they are mutually exclusive in rule "+rule->getLabel());
+	} else if (ruleopt->getBool("pf_fastroute") && ro == "none" ) {
             compiler->output << "fastroute ";
+	} else {
+            string roif = ruleopt->getStr(prefix+"_route_opt_if");
+            string roaddr_list = ruleopt->getStr(prefix+"_route_opt_addr");
+            string roload = ruleopt->getStr("pf_route_load_option");
+            if (!ro.empty())
+            {
+                if (roif.empty())
+                    compiler->abort("Interface specification is required for action Route in rule "+rule->getLabel());
 
-        string prefix = "pf";
-        if (compiler->myPlatformName()=="ipf")
-            prefix="ipf";
+                if (ro == "route_through")
+                    compiler->output << "route-to ";
+                else if (ro == "route_reply_through")
+                    compiler->output << "reply-to ";
+                else if (ro == "route_copy_through")
+                    compiler->output << "dup-to ";
+                else
+                    compiler->abort("Unknown option for rule action Route: '" + 
+                                    ro + "' in rule "+rule->getLabel());
+            		
+                compiler->output << "{ ";
 
-        string ro = ruleopt->getStr(prefix+"_route_option");
-        string roif = ruleopt->getStr(prefix+"_route_opt_if");
-        string roaddr = ruleopt->getStr(prefix+"_route_opt_addr");
+                int route_member = 0;
+	    
+                std::istringstream buf(roaddr_list);
+                string roaddr;
+                while (std::getline(buf, roaddr, ','))
+                {
+                    if (!roaddr.empty())
+                    {
+                        if (route_member > 0 )
+                        {
+                            compiler->output << ", ";
+                        }
+                        compiler->output << "( ";
+                        compiler->output << roif << " ";
+                        compiler->output << roaddr << " ";
+                        compiler->output << ") ";
+                        int sp = roaddr.find('/');
+                        if (sp!=std::string::npos) 
+                        {
+                            // roaddr is addr/netmask
+                            try 
+                            {
+                                string a = roaddr.substr(0,sp);
+                                IPAddress roaddr_addr = IPAddress(a);
+                            } catch (FWException &ex)
+                            {
+                                compiler->abort(
+        "Illegal IP address for next hop in rule "+rule->getLabel());
+                            }
+                            try
+                            {
+                                Netmask roaddr_netmask;
+                                string n = roaddr.substr(sp+1);
+                                if (n.find('.')!=std::string::npos)
+                                {
+                                    roaddr_netmask = n;
+                                } else
+                                {
+                                    roaddr_netmask = Netmask(
+                                        atoi(n.c_str()));
+                                }
+                                if (roaddr_netmask.getLength()==32)
+                                    route_member++;
+                                else
+                                    // lame way to tell compiler that
+                                    // we actually have several addresses for
+                                    // the next hop. We do not exactly care
+                                    // how many there are, as long as it is
+                                    // greater than 1.
+                                    route_member += 2;
+                            } catch (FWException &ex)
+                            {
+                                compiler->abort(
+        "Illegal netmask for next hop in rule "+rule->getLabel());
+                            }
+                        } else
+                        {
+                            // roaddr is just an addres
+                            try 
+                            {
+                                IPAddress roaddr_addr = IPAddress(roaddr);
+                            } catch (FWException &ex)
+                            {
+                                compiler->abort(
+        "Illegal IP address for next hop in rule "+rule->getLabel());
+                            }
+                            route_member++;
+                        }
+                    }
+                }
+                if (route_member < 1)
+                {
+                    compiler->abort("No router specified rule action Route: '"+ 
+                                    ro + "' in rule "+rule->getLabel());
+                }
+                if (route_member >= 2 && (roload.empty() || roload == "none"))
+                {
+                    compiler->abort("More than one router specified without load balancing for rule action Route: '" + 
+                                    ro + "' in rule "+rule->getLabel());
+                }
+                if (route_member == 1 && ((!roload.empty()) && roload != "none"))
+                {
+                    compiler->abort("Only one router specified with load balancing for rule action Route: '" + 
+                                    ro + "' in rule "+rule->getLabel());
+                }
 
-        if (!ro.empty())
-        {
-           if (roif.empty())
-                compiler->abort("Interface specification is required for action Route in rule "+rule->getLabel());
-
-            if (ro == "route_through")       compiler->output << "route-to ";
-            else if (ro == "route_reply_through") compiler->output << "reply-to ";
-            else if (ro == "route_copy_through")  compiler->output << "dup-to ";
-            else
-                compiler->abort("Unknown option for rule action Route: '" + 
-                                ro + "' in rule "+rule->getLabel());
-
-            compiler->output << "( ";
-            compiler->output << roif << " ";
-            if (!roaddr.empty())  compiler->output << roaddr << " ";
-            compiler->output << ") ";
-        }
+                compiler->output << "} ";
+			
+                if (!roload.empty())
+                {
+                    if (roload == "bitmask")
+                        compiler->output << "bitmask ";
+                    else if (roload == "random")
+                        compiler->output << "random ";
+                    else if (roload == "source_hash")
+                        compiler->output << "source-hash ";
+                    else if (roload == "round_robin")
+                        compiler->output << "round-robin ";
+                }
+            }
+	}
     }
 }
 

@@ -53,6 +53,7 @@ bool isDefaultPolicyRuleOptions(libfwbuilder::FWOptions *opt);
 bool isDefaultNATRuleOptions(libfwbuilder::FWOptions *opt);
 bool isDefaultRoutingRuleOptions(libfwbuilder::FWOptions *opt);
 
+
 // using list of pairs instead of a map or QMap because maps are dictionaries
 // and do not preserve order of elements
 std::list<QStringPair> getVersionsForPlatform(const QString &platform);
@@ -82,6 +83,8 @@ const QStringList& getActionsOnReject(const QString &platform);
  * 
  */
 const QStringList& getRouteOptions_pf_ipf(const QString &platform);
+
+const QStringList& getRouteLoadOptions_pf(const QString &platform);
 
 /**
  * returns a list of Prolog places (mapping list)

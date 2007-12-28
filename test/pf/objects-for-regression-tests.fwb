@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="2.1.15" lastModified="1193632637" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="2.1.16" lastModified="1197750649" id="root">
   <Library color="#d2ffd0" comment="User defined objects" id="syslib001" name="User" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects">
       <ObjectGroup id="stdid01_1_og_ats_1" name="Address Tables">
@@ -9147,6 +9147,884 @@
           <Option name="use_ip_tool">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="use_tables">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall comment="testing Route action&#10;with load balancing&#10;" host_OS="openbsd" id="id476458AA9697" inactive="False" lastCompiled="1157930816" lastInstalled="0" lastModified="1197750649" name="firewall40-1" platform="pf" ro="False" version="">
+        <NAT id="id476458FA9697">
+          <NATRule comment="Translate source address&#10;for outgoing connections" disabled="False" id="id476458FB9697" position="0">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id476459189697"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule comment="Translate source address&#10;for outgoing connections" disabled="False" id="id476459099697" position="1">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id476459219697"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+        </NAT>
+        <Policy id="id476458B09697">
+          <PolicyRule action="Route" comment="" direction="Inbound" disabled="False" id="id47646C979697" log="False" position="0">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4764591B9697"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_anchor_name"></Option>
+              <Option name="branch_chain_name"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#8BC065</Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_flush">False</Option>
+              <Option name="pf_max_src_conn_rate_global">False</Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_route_load_option">random</Option>
+              <Option name="pf_route_opt_addr">192.0.2.1,192.0.2.2,192.0.2.3</Option>
+              <Option name="pf_route_opt_if">le1</Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_source_tracking">False</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Route" comment="" direction="Inbound" disabled="False" id="id47646C869697" log="False" position="1">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4764591B9697"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_anchor_name"></Option>
+              <Option name="branch_chain_name"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#8BC065</Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_flush">False</Option>
+              <Option name="pf_max_src_conn_rate_global">False</Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_route_load_option">round_robin</Option>
+              <Option name="pf_route_opt_addr">192.0.2.1,192.0.2.2,192.0.2.3</Option>
+              <Option name="pf_route_opt_if">le2</Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_source_tracking">False</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Route" comment="" direction="Inbound" disabled="False" id="id47646C759697" log="False" position="2">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4764591B9697"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_anchor_name"></Option>
+              <Option name="branch_chain_name"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#8BC065</Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_flush">False</Option>
+              <Option name="pf_max_src_conn_rate_global">False</Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_route_load_option">round_robin</Option>
+              <Option name="pf_route_opt_addr">192.0.2.1,192.0.2.2,192.0.2.3</Option>
+              <Option name="pf_route_opt_if">le2</Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_source_tracking">False</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Route" comment="" direction="Inbound" disabled="False" id="id476480059697" log="False" position="3">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4764591B9697"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_anchor_name"></Option>
+              <Option name="branch_chain_name"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#7694C0</Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_flush">False</Option>
+              <Option name="pf_max_src_conn_rate_global">False</Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_route_load_option">round_robin</Option>
+              <Option name="pf_route_opt_addr">192.0.2.1,192.0.2.2,192.0.2.3</Option>
+              <Option name="pf_route_opt_if">le1</Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_source_tracking">False</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Route" comment="" direction="Inbound" disabled="False" id="id476480169697" log="False" position="4">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4764591B9697"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_anchor_name"></Option>
+              <Option name="branch_chain_name"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#7694C0</Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_flush">False</Option>
+              <Option name="pf_max_src_conn_rate_global">False</Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_route_load_option">round_robin</Option>
+              <Option name="pf_route_opt_addr">192.0.2.1,192.0.2.2,192.0.2.3</Option>
+              <Option name="pf_route_opt_if">le2</Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_source_tracking">False</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Route" comment="" direction="Inbound" disabled="False" id="id476480279697" log="False" position="5">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4764591B9697"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_anchor_name"></Option>
+              <Option name="branch_chain_name"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#7694C0</Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_flush">False</Option>
+              <Option name="pf_max_src_conn_rate_global">False</Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_route_load_option">round_robin</Option>
+              <Option name="pf_route_opt_addr">192.0.2.1,192.0.2.2,192.0.2.3</Option>
+              <Option name="pf_route_opt_if">le2</Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_source_tracking">False</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Route" comment="" direction="Inbound" disabled="False" id="id476458C99697" log="False" position="6">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4764591B9697"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_anchor_name"></Option>
+              <Option name="branch_chain_name"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#C0BA44</Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_flush">False</Option>
+              <Option name="pf_max_src_conn_rate_global">False</Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_route_load_option">random</Option>
+              <Option name="pf_route_opt_addr">192.0.2.0/24</Option>
+              <Option name="pf_route_opt_if">le1</Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_source_tracking">False</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Route" comment="" direction="Inbound" disabled="False" id="id476458D69697" log="False" position="7">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4764591B9697"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_anchor_name"></Option>
+              <Option name="branch_chain_name"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#C0BA44</Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_flush">False</Option>
+              <Option name="pf_max_src_conn_rate_global">False</Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_route_load_option">source_hash</Option>
+              <Option name="pf_route_opt_addr">192.0.2.0/24</Option>
+              <Option name="pf_route_opt_if">le2</Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_source_tracking">False</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Route" comment="" direction="Inbound" disabled="False" id="id4764592B9697" log="False" position="8">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4764591B9697"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_anchor_name"></Option>
+              <Option name="branch_chain_name"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#C0BA44</Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_flush">False</Option>
+              <Option name="pf_max_src_conn_rate_global">False</Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_route_load_option">round_robin</Option>
+              <Option name="pf_route_opt_addr">192.0.2.0/255.255.255.0</Option>
+              <Option name="pf_route_opt_if">le2</Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_source_tracking">False</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Route" comment="this should fail because&#10;it has one address for the next&#10;hop and it is /32.&#10;Run compiler with&#10;command line argument -xt&#10;to convert errors to warnings&#10;and make it generate .conf &#10;file anyway" direction="Inbound" disabled="False" id="id4764BABB9697" log="False" position="9">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4764591B9697"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_anchor_name"></Option>
+              <Option name="branch_chain_name"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#C86E6E</Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_flush">False</Option>
+              <Option name="pf_max_src_conn_rate_global">False</Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_route_load_option">round_robin</Option>
+              <Option name="pf_route_opt_addr">192.0.2.1</Option>
+              <Option name="pf_route_opt_if">le2</Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_source_tracking">False</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Route" comment="this should fail because&#10;it has one address for the next&#10;hop and it is /32.&#10;" direction="Inbound" disabled="False" id="id4764BACC9697" log="False" position="10">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4764591B9697"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_anchor_name"></Option>
+              <Option name="branch_chain_name"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#C86E6E</Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_flush">False</Option>
+              <Option name="pf_max_src_conn_rate_global">False</Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_route_load_option">round_robin</Option>
+              <Option name="pf_route_opt_addr">192.0.2.1/32</Option>
+              <Option name="pf_route_opt_if">le2</Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_source_tracking">False</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Route" comment="this should fail because&#10;it ip address in next hop&#10;is illegal" direction="Inbound" disabled="False" id="id476509419697" log="False" position="11">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4764591B9697"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_anchor_name"></Option>
+              <Option name="branch_chain_name"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#C86E6E</Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_flush">False</Option>
+              <Option name="pf_max_src_conn_rate_global">False</Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_route_load_option">round_robin</Option>
+              <Option name="pf_route_opt_addr">192.0.300.1/32</Option>
+              <Option name="pf_route_opt_if">le2</Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_source_tracking">False</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Routing id="id476459179697"/>
+        <Interface bridgeport="False" comment="" dyn="False" id="id476459189697" label="" mgmt="False" name="le1" security_level="0" unnum="False" unprotected="False">
+          <IPv4 address="192.0.2.1" comment="This is a test address, change it to your real one" id="id4764591A9697" name="firewall40-1:le1:ip" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface bridgeport="False" comment="" dyn="False" id="id4764591B9697" label="" mgmt="True" name="fxp0" security_level="100" unnum="False" unprotected="False">
+          <IPv4 address="192.168.1.1" comment="" id="id4764591D9697" name="firewall40-1:fxp0:ip" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface bridgeport="False" comment="" dyn="False" id="id4764591E9697" label="" mgmt="False" name="lo0" security_level="100" unnum="False" unprotected="False">
+          <IPv4 address="127.0.0.1" comment="" id="id476459209697" name="firewall40-1:lo0:ip" netmask="255.0.0.0"/>
+        </Interface>
+        <Interface bridgeport="False" comment="" dyn="False" id="id476459219697" label="" mgmt="False" name="le2" security_level="0" unnum="False" unprotected="False">
+          <IPv4 address="192.0.3.1" comment="" id="id476459239697" name="firewall40-1:le2:ip" netmask="255.255.255.0"/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">true</Option>
+          <Option name="accept_new_tcp_with_no_syn">True</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">True</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="debug">False</Option>
+          <Option name="eliminate_duplicates">true</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="fallback_log">False</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">True</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">true</Option>
+          <Option name="local_nat">false</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo0</Option>
+          <Option name="macosx_ip_forward">1</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="modulate_state">True</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
+          <Option name="pass_all_out">False</Option>
+          <Option name="pf_adaptive_end">0</Option>
+          <Option name="pf_adaptive_start">0</Option>
+          <Option name="pf_do_limit_frags">False</Option>
+          <Option name="pf_do_limit_states">False</Option>
+          <Option name="pf_do_scrub">False</Option>
+          <Option name="pf_do_timeout_frag">False</Option>
+          <Option name="pf_do_timeout_interval">False</Option>
+          <Option name="pf_icmp_error">0</Option>
+          <Option name="pf_icmp_first">0</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_optimization"></Option>
+          <Option name="pf_other_first">0</Option>
+          <Option name="pf_other_multiple">0</Option>
+          <Option name="pf_other_single">0</Option>
+          <Option name="pf_scrub_fragm_crop">False</Option>
+          <Option name="pf_scrub_fragm_drop_ovl">False</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_scrub_minttl">0</Option>
+          <Option name="pf_scrub_no_df">False</Option>
+          <Option name="pf_scrub_random_id">False</Option>
+          <Option name="pf_scrub_reassemble">True</Option>
+          <Option name="pf_scrub_use_maxmss">False</Option>
+          <Option name="pf_scrub_use_minttl">False</Option>
+          <Option name="pf_set_adaptive">False</Option>
+          <Option name="pf_set_icmp_error">False</Option>
+          <Option name="pf_set_icmp_first">False</Option>
+          <Option name="pf_set_other_first">False</Option>
+          <Option name="pf_set_other_multiple">False</Option>
+          <Option name="pf_set_other_single">False</Option>
+          <Option name="pf_set_tcp_closed">False</Option>
+          <Option name="pf_set_tcp_closing">False</Option>
+          <Option name="pf_set_tcp_established">False</Option>
+          <Option name="pf_set_tcp_finwait">False</Option>
+          <Option name="pf_set_tcp_first">False</Option>
+          <Option name="pf_set_tcp_opening">False</Option>
+          <Option name="pf_set_udp_first">False</Option>
+          <Option name="pf_set_udp_multiple">False</Option>
+          <Option name="pf_set_udp_single">False</Option>
+          <Option name="pf_tcp_closed">0</Option>
+          <Option name="pf_tcp_closing">0</Option>
+          <Option name="pf_tcp_established">0</Option>
+          <Option name="pf_tcp_finwait">0</Option>
+          <Option name="pf_tcp_first">0</Option>
+          <Option name="pf_tcp_opening">0</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pf_udp_first">0</Option>
+          <Option name="pf_udp_multiple">0</Option>
+          <Option name="pf_udp_single">0</Option>
+          <Option name="pix_add_clear_statements">true</Option>
+          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_default_logint">300</Option>
+          <Option name="pix_emblem_log_format">false</Option>
+          <Option name="pix_emulate_out_acl">true</Option>
+          <Option name="pix_floodguard">true</Option>
+          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_route_dnat_supported">true</Option>
+          <Option name="pix_rule_syslog_settings">false</Option>
+          <Option name="pix_security_fragguard_supported">true</Option>
+          <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="prompt1">$ </Option>
+          <Option name="prompt2"> # </Option>
+          <Option name="solaris_ip_forward">1</Option>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>

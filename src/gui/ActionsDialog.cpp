@@ -249,6 +249,7 @@ void ActionsDialog::setRule(PolicyRule *r )
 
     // build a map for combobox so visible combobox items can be localized
     QStringList route_options = getRouteOptions_pf_ipf( platform.c_str() );
+    QStringList route_load_options = getRouteLoadOptions_pf( platform.c_str() );
 
     // iptables
     data.registerOption ( m_dialog->ipt_iif             , ropt , "ipt_iif" );
@@ -265,6 +266,7 @@ void ActionsDialog::setRule(PolicyRule *r )
 
     // pf
     data.registerOption ( m_dialog->pf_fastroute        , ropt , "pf_fastroute"     ); 
+    data.registerOption( m_dialog->pf_route_load_option , ropt , "pf_route_load_option", route_load_options );
     data.registerOption ( m_dialog->pf_route_option     , ropt , "pf_route_option",
                           route_options); 
     data.registerOption ( m_dialog->pf_route_opt_if     , ropt , "pf_route_opt_if"  ); 

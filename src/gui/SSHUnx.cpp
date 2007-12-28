@@ -71,6 +71,7 @@ SSHUnx::SSHUnx(QWidget *_par,
 
     iptables_errors.push_back("'iptables --help' for more information.");
     iptables_errors.push_back("'iptables-restore --help' for more information.");
+    iptables_errors.push_back("iptables-restore: line .* failed");
 }
 
 SSHUnx::~SSHUnx()
@@ -87,7 +88,7 @@ bool SSHUnx::checkForErrors(QStringList *errptr)
         if (fwbdebug)
             qDebug(QString("SSHUnx::stateMachine:  error='%1'").arg(*i).toAscii().constData());
 
-        if ( stdoutBuffer.lastIndexOf(*i,-1)!=-1 )
+        if ( stdoutBuffer.lastIndexOf(QRegExp(*i),-1)!=-1 )
         {
             if (fwbdebug)
                 qDebug("SSHUnx::stateMachine: MATCH. Error detected.");

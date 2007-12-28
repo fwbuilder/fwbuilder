@@ -103,8 +103,21 @@ instDialog::instDialog(QWidget* p, BatchOperation op, t_fwSet reqFirewalls_) : Q
     pendingLogLine = "";
     rejectDialogFlag=false;
 
+    /* object proc is used to launch policy compilers as background
+     * processes. SSH sessions in installers are controlled by class
+     * SSHSession (and classes derived from it). This leads to some
+     * duplication, such as all the apparatus for reading from stdout
+     * of the background process is duplicated in SSHSession and here.
+     *
+     * The same object is also used to launch custom installer scripts.
+     *
+     * TODO(vadim): need to move everything that deals with compiler
+     * process into its own class CompilerSession derived from
+     * SSHSession. Perhaps also rename SSHSession to BackgroundSession
+     * or something.
+     */
+      
     connect(&proc, SIGNAL(readyReadStandardOutput()), this, SLOT(readFromStdout()) );
-    //connect(&proc, SIGNAL(readyReadStandardError()), this, SLOT(readFromStderr()) );
     connect(&proc, SIGNAL(finished(int,QProcess::ExitStatus)),   this, SLOT(processExited(int)) );
 
     proc.setProcessChannelMode(QProcess::MergedChannels);
@@ -119,7 +132,7 @@ instDialog::instDialog(QWidget* p, BatchOperation op, t_fwSet reqFirewalls_) : Q
     findFirewalls();
     if (firewalls.size()==0)
     {
-        setTitle( pageCount()-1, tr("There is no firewalls to process.") );
+        setTitle( pageCount()-1, tr("There are no firewalls to process.") );
         for (int i=0;i<pageCount()-1;i++)
         {
             setAppropriate(i,false);
@@ -262,7 +275,7 @@ void instDialog::prepareInstallerOptions()
 {
     if (fwbdebug) qDebug("instDialog::prepareInstallerOptions");
     ready=false;
-    activationCommandDone=false;
+    activationCommandDone = false;
     FWOptions  *fwopt = cnf.fwobj->getOptionsObject();
 
     fwb_prompt="--**--**--";
@@ -855,7 +868,8 @@ bool instDialog::doInstallPage(Firewall* f)
 #else
         args.push_back(argv0.c_str());
         args.push_back("-X");   // fwbuilder works as ssh wrapper
-//            args.push_back("-d");
+        //if (fwbdebug)
+        //    args.push_back("-d");
         args.push_back("-t");
         args.push_back("-t");
 
@@ -967,9 +981,35 @@ bool instDialog::doInstallPage(Firewall* f)
     return true;
 }
 
+/* reset ssh session to continue the same installation process, such as
+ * when we need to copy several files to the firewall
+ */
 void instDialog::resetInstallSSHSession()
 {
     if (fwbdebug) qDebug("instDialog::resetInstallSSHSession");
+
+    if (session!=NULL)
+        QTimer::singleShot( 0, this, SLOT(stopSessionAndDisconnectSignals()));
+
+    activationCommandDone = false;
+
+    if (fwbdebug) qDebug("instDialog::resetInstallSSHSession  done");
+}
+
+/* instDialog::stopSessionAndDisconnectSignals runs when we have no
+ * other events in the events queue. This is necessary because call to
+ * instDialog::finishInstall can come from inside the state machine
+ * (e.g. when error was detected). This means we are trying to
+ * terminate working session right in the middle, when there could be
+ * some more output from its stdout to be collected. To avoid race
+ * conditions with events that have not been processed, we schedule
+ * all termination and clean-up operations so they will be done at
+ * idle time when there are no events in the queue
+ */
+void instDialog::stopSessionAndDisconnectSignals()
+{
+    if (fwbdebug)
+        qDebug("instDialog::stopSessionAndDisconnectSignals()");
 
     if (session!=NULL)
     {
@@ -991,7 +1031,8 @@ void instDialog::resetInstallSSHSession()
         session=NULL;
     }
 
-    activationCommandDone=false;
+    if (fwbdebug)
+        qDebug("instDialog::stopSessionAndDisconnectSignals() done");
 }
 
 /*
@@ -1129,7 +1170,9 @@ void instDialog::initiateCopy(const QString &file)
 #else
     args.push_back(argv0.c_str());
     args.push_back("-X");   // fwbuilder works as ssh wrapper
-//    if (fwbdebug>1) args.push_back("-d");
+    //if (fwbdebug)
+    //    args.push_back("-d");
+
 //    args.push_back("-t");
 //    args.push_back("-t");
 #endif
@@ -1249,31 +1292,26 @@ void instDialog::finishInstall(bool success)
     
     if(opListIterator!=opList.end() && m_dialog->batchInstall->isChecked() && !stopProcessFlag) 
     {
-        installSelected();
+//        installSelected();
+        QTimer::singleShot( 0, this, SLOT(installSelected()));
         return;
     }
     setNextEnabled( 1, true);
 }
 
+/*
+ * continueRun is called via idle event handler after the session object
+ * is destroyed in stopSessionAndDisconnectSignals.
+ *
+ * Various methods call resetInstallSSHSession, which schedules call
+ * to stopSessionAndDisconnectSignals. installerFinished() also
+ * schedules call to continueRun() right after that. So continueRun()
+ * is always called when we have no active session object.
+ */
 void instDialog::continueRun()
 {
     if (fwbdebug) qDebug("instDialog::continueRun");
     
-    if (session)
-    {
-        if (session->getErrorStatus())
-        {
-            if (fwbdebug) qDebug("session error");
-            addToLog( tr("Fatal error, terminating install sequence\n") );
-            finishInstall(false);
-            //setFinishEnabled( page(1), true );
-            return;
-        }
-
-        delete session;
-        session=NULL;
-    }
-
     if (activationCommandDone)
     {
         if (fwbdebug) qDebug("activationCommandDone");
@@ -1314,6 +1352,8 @@ void instDialog::continueRun()
 #else
             args.push_back(argv0.c_str());
             args.push_back("-X");   // fwbuilder works as ssh wrapper
+            //if (fwbdebug)
+            //    args.push_back("-d");
             args.push_back("-t");
             args.push_back("-t");
 #endif
@@ -1344,7 +1384,7 @@ void instDialog::continueRun()
 
             if (cnf.verbose) displayCommand(args);
 
-            activationCommandDone=true;
+            activationCommandDone = true;
 
             runSSH( new SSHUnx(this,
                                cnf.fwobj->getName().c_str(),
@@ -1400,29 +1440,9 @@ void instDialog::finishClicked()
 void instDialog::cancelClicked()
 {
     if (fwbdebug) qDebug("instDialog::cancelClicked()");
-    if (session!=NULL)
-    {
-        if (fwbdebug)
-            qDebug("instDialog::reject()  killing ssh session");
+    stopSessionAndDisconnectSignals();
 
-        disconnect(session,SIGNAL(printStdout_sign(const QString&)),
-                   this,SLOT(append(const QString&)));
-
-        disconnect(session,SIGNAL(sessionFinished_sign()),
-                   this,SLOT(installerFinished()));
-
-        disconnect(session,SIGNAL(sessionFatalError_sign()),
-                   this,SLOT(installerError()));
-
-        disconnect(session,SIGNAL(updateProgressBar_sign(int,bool)),
-                   this,SLOT(updateProgressBar(int,bool)));
-
-        session->terminate();
-
-        delete session;
-        session=NULL;
-    }
-
+    // What is this? Do we need this? This code is not present in 2.1.16.
     if (proc.state() == QProcess::Running)
     {
         rejectDialogFlag = true;
@@ -1885,25 +1905,22 @@ void instDialog::installerError()
     addToLog( tr("Error: Terminating install sequence\n") );
     finishInstall(false);
 
-    resetInstallSSHSession();
-    //setFinishEnabled( page(1), true );
-
-    if (session) delete session;
-    session=NULL;
+    // session object is destroyed in stopSessionAndDisconnectSignals()
+    QTimer::singleShot( 0, this, SLOT(stopSessionAndDisconnectSignals()));
 }
 
 void instDialog::installerFinished()
 {
     if( fwbdebug) qDebug("instDialog::installerFinished");
-        
+
     if (session->getErrorStatus())
-    {
         installerError();
+    else
+    {
+        // session object is destroyed in stopSessionAndDisconnectSignals()
+        QTimer::singleShot( 0, this, SLOT(stopSessionAndDisconnectSignals()));
     }
-
-    if (session) delete session;
-    session=NULL;
-
+        
     QTimer::singleShot( 0, this, SLOT(continueRun()) );
 }
 
@@ -1944,7 +1961,7 @@ void instDialog::processExited(int res)
         
         if (opListIterator!=opList.end() && m_dialog->batchInstall->isChecked() && !stopProcessFlag)
         {
-            installSelected();
+            QTimer::singleShot( 0, this, SLOT(installSelected()));
         }
         else
         {
@@ -2021,7 +2038,8 @@ void instDialog::processExited(int res)
         }
         ++opListIterator;   
     }
-    if (currentFirewallsBar) currentFirewallsBar->setValue(currentFirewallsBar->maximum());
+    if (currentFirewallsBar)
+        currentFirewallsBar->setValue(currentFirewallsBar->maximum());
     
     if (currentStopButton)
     {
@@ -2235,20 +2253,19 @@ bool instDialog::runInstall(Firewall *fw)
         if (fwbdebug) qDebug("custom script");
         summary();
         
-        addToLog( args.join(" ") );
+        addToLog(args.join(" "));
         
         QString path = args[0];
         args.pop_front();
         proc.start(path, args);
         
-        if ( !proc.waitForStarted() )
+        if (!proc.waitForStarted())
         {
             addToLog( tr("Error: Failed to start program") );
             return false;
         }
         
         args.push_front(path); //return to previous state
-        
     }
     else
     {

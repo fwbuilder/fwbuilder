@@ -47,7 +47,9 @@ doc.files   = AUTHORS                 \
 			  ReleaseNotes_2.1.14.html  \
 			  ReleaseNotes_2.1.14.txt   \
 			  ReleaseNotes_2.1.15.html  \
-			  ReleaseNotes_2.1.15.txt
+			  ReleaseNotes_2.1.15.txt   \
+			  ReleaseNotes_2.1.16.html  \
+			  ReleaseNotes_2.1.16.txt
 
 doc.path    = $$DOCDIR
 

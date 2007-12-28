@@ -372,16 +372,17 @@ int main( int argc, char ** argv )
     i=1;
     j=1;
 
-    for ( ; argv[i]!=NULL; i++)
+    //for ( ; argv[i]!=NULL; i++)
+    for ( ; i<argc; i++)
     {
         if (strncmp(argv[i], "-X", 2)==0) { ssh_wrapper=true; continue; }
         else
             if (strncmp(argv[i], "-d", 2)==0) { fwbdebug++; continue; }
             else
-                arg[j]=strdup(argv[i]);
+                arg[j] = strdup(argv[i]);
         j++;
     }
-    arg[j]=NULL;
+    arg[j] = NULL;
 
     if (ssh_wrapper)
     {
@@ -415,8 +416,15 @@ int main( int argc, char ** argv )
         arg[0]=strdup( sshcmd.toLatin1().constData() );
 
         if (fwbdebug)
+        {
             qDebug("cmd: %s",arg[0]);
-
+            qDebug("Arguments:");
+            for (const char **cptr = arg; *cptr!=NULL; cptr++)
+            {
+                qDebug("    %s", *cptr);
+                cptr++;
+            }
+        }
 
 /* forks ssh with a pty and proxies its communication on stdin/stdout
  * to avoid having to deal with pty. This is only needed on Unix.

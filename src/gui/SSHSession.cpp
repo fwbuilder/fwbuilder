@@ -135,20 +135,29 @@ void SSHSession::startSession()
         qDebug("SSHSession::startSession  this=%p  proc=%p   heartBeatTimer=%p",
                this,proc,heartBeatTimer);
 
-    connect(proc,SIGNAL(readyReadStandardOutput()), this,  SLOT(readFromStdout() ) );
-    connect(proc,SIGNAL(readyReadStandardError()), this,  SLOT(readFromStderr() ) );
-    connect(proc,SIGNAL(finished( int, QProcess::ExitStatus )),   this,  SLOT(finished( int ) ) );
+    connect(proc,SIGNAL(readyReadStandardOutput()),
+            this,  SLOT(readFromStdout() ) );
+    connect(proc,SIGNAL(readyReadStandardError()),
+            this,  SLOT(readFromStderr() ) );
+    connect(proc,SIGNAL(finished( int, QProcess::ExitStatus )),
+            this,  SLOT(finished( int ) ) );
 
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("latin1"));
     
-    QStringList arguments;
+    assert(args.size() > 0);
 
-    for (QStringList::const_iterator i=args.begin(); i!=args.end(); ++i)
+    QStringList arguments;
+    QStringList::const_iterator i=args.begin();
+    QString program = *i;
+    ++i;
+
+    for ( ; i!=args.end(); ++i)
     {
         arguments << *i;
         //proc->addArgument( *i );
         cmd += *i;
     }
+
 
     QStringList env;
 
@@ -178,9 +187,15 @@ void SSHSession::startSession()
 
     proc->setEnvironment(env);
     
-    assert(arguments.size() > 0);   //i suppose first argument is the program to start
-    QString program = arguments[0]; //if it isn't so, we'll fail here
-    
+    if (fwbdebug)
+    {
+        qDebug("Launch external ssh client %s", program.toAscii().constData());
+        qDebug("Arguments:");
+        QStringList::const_iterator i;
+        for (i=arguments.begin(); i!=arguments.end(); ++i)
+            qDebug("    %s", (*i).toAscii().constData());
+    }
+
     proc->start(program, arguments);
     
     if ( !proc->waitForStarted() )
@@ -201,7 +216,9 @@ void SSHSession::startSession()
 
 SSHSession::~SSHSession()
 {
+    if (fwbdebug) qDebug("SSHSession::destructor");
     terminate();
+    if (fwbdebug) qDebug("SSHSession::destructor done");
 }
 
 /*

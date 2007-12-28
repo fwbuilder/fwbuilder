@@ -1,3 +1,39 @@
+2007-12-19  vadim  <vadim@vk.crocodile.org>
+
+	* v2.1.16 release
+
+2007-12-15  vadim  <vadim@vk.crocodile.org>
+
+	* OSConfigurator_linux24.cpp
+	(OSConfigurator_linux24::printRunTimeWrappers):
+	fixed bug #1851166: "Installscript does not test for destination
+	ip address". The problem affected specific case of a firewall with
+	two (or more) interfaces that get their address dynamically and a
+	policy rule that has one such interface in source and another in
+	destination. Generated iptables script retrieves actual addresses
+	of both interfaces and assigns them to variables, then uses these
+	variables in actual iptables rules. Special check is provided in
+	case some interface did not obtain any ip address at a time of
+	execution of the script. Previously such test was only done for
+	one dynamic interface per rule. This change makes the script check
+	for both.
+
+	* ipt.cpp: bug #1850352: "Install script wrongly completes
+	successful". Storing exit status of iptables-restore so that
+	generated firewall script can return the same status after it
+	executes commands that set kernel parameters and runs user-defined
+	epilog code.
+
+	* PolicyCompiler_pf_writers.cpp (PrintRule::_printRouteOptions):
+	applied patch #1850357: "Add support fo load balancing with pf to
+	PolicyRule::Route" by Tom Judge (tomjudge@users.sourceforge.net)
+	that adds support for load balancing rules in PF. Extended the
+	patch adding support for address/netmask format of the next hop.
+	Added checks for illegal IP addresses and netmasks in the next
+	hop.  Test cases for the PF load balancing rules are in
+	test/pf/objects-for-regression-tests.fwb, firewall object
+	firewall40-1.
+
 2007-12-13  vadim  <vadim@vk.crocodile.org>
 
 	* linux24.xml.in: working on bug #1850352: "Install script wrongly
