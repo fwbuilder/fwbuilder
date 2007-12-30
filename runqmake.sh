@@ -2,25 +2,19 @@
 
 test -z "${QMAKE}" && QMAKE="qmake"
 
-echo "Running qmake: ${QMAKE}"
+C=""
+test -n "$CCACHE" && C='QMAKE_CXX="ccache g++"'
 
-${QMAKE}
-${QMAKE}  -o src/Makefile  src/src.pro
+echo "QTDIR=$QTDIR"
+echo "Running qmake: ${QMAKE} $C"
 
-if test -n "$CCACHE"; then
-    ${QMAKE}  'QMAKE_CXX=ccache g++' -o src/fwbuilder/Makefile  src/fwbuilder/fwbuilder.pro
-    ${QMAKE}  'QMAKE_CXX=ccache g++' -o src/fwcompiler/Makefile src/fwcompiler/fwcompiler.pro
-    ${QMAKE}  'QMAKE_CXX=ccache g++' -o src/test/Makefile       src/test/test.pro
-else
-    ${QMAKE}                         -o src/fwbuilder/Makefile  src/fwbuilder/fwbuilder.pro
-    ${QMAKE}                         -o src/fwcompiler/Makefile src/fwcompiler/fwcompiler.pro
-    ${QMAKE}                         -o src/test/Makefile       src/test/test.pro
-fi
-
-${QMAKE} -o src/confscript/Makefile src/confscript/confscript.pro
-
-${QMAKE} -o etc/Makefile        etc/etc.pro
-${QMAKE} -o doc/Makefile        doc/doc.pro
-${QMAKE} -o migration/Makefile  migration/migration.pro
-
+oIFS=$IFS
+IFS=
+${QMAKE} $C
+for d in src/ src/fwbuilder/ src/fwcompiler/ src/test/ \
+         src/confscript/ etc/ doc/ migration/
+do
+  (cd $d; ${QMAKE} $C)
+done
+IFS=$oIFS
 

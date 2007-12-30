@@ -36,27 +36,14 @@ dnl try to find QT
 dnl
 AC_ARG_WITH(qtdir,[  --with-qtdir=DIR        Specify directory path for QT ])
 
-AC_MSG_CHECKING(looking for QT)
 if test -n "$with_qtdir"; then
-    QTDIR="$with_qtdir";
-elif test -z "$QTDIR"; then
-    test -f "/usr/local/lib/qt3/include/qstyle.h" && QTDIR="/usr/local/lib/qt3"
-    test -f "/opt/lib/qt3/include/qstyle.h"       && QTDIR="/opt/lib/qt3"
-    test -f "/opt/qt3/include/qstyle.h"           && QTDIR="/opt/qt3"
-    test -f "/usr/lib/qt3/include/qstyle.h"       && QTDIR="/usr/lib/qt3"
-    test -f "/usr/lib/qt-3.1/include/qstyle.h"    && QTDIR="/usr/lib/qt-3.1"
-    test -f "/usr/lib/qt-3.2/include/qstyle.h"    && QTDIR="/usr/lib/qt-3.2"
-    test -f "/usr/lib/qt-3.3/include/qstyle.h"    && QTDIR="/usr/lib/qt-3.3"
-    test -f "/usr/local/include/qstyle.h"         && QTDIR="/usr/local"
-    test -f "/usr/include/qstyle.h"               && QTDIR="/usr"
-    test -f "/usr/lib64/qt-3.3/include/qstyle.h"  && QTDIR="/usr/lib64/qt-3.3"
+   AC_MSG_CHECKING(Using QT in )
+   QTDIR="$with_qtdir";
+   export QTDIR
+   AC_MSG_RESULT($QTDIR)
 fi
-export QTDIR
-AC_MSG_RESULT($QTDIR)
 
-echo $QTDIR > qtdir
-
-EXTENDED_PATH="${QTDIR}/bin:/usr/local/bin:$PATH"
+EXTENDED_PATH="/usr/local/bin:$PATH"
 
 AC_PATH_PROG(QMAKE,  qmake,      ,[$EXTENDED_PATH])
 if test -z "$QMAKE"; then
@@ -754,4 +741,4 @@ fi
 
 echo "-------------------------------------------------------------------"
 
-. ./runqmake.sh
+CCACHE=$CCACHE ./runqmake.sh
