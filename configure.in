@@ -410,12 +410,8 @@ AC_SUBST(MANDIR)
 
 AC_PATH_PROG(CCACHE, ccache, , )
 
-dnl Support for the po directory.
-AM_PO_SUBDIRS
-
 dnl AC_CONFIG_FILES([ Main.make ])
 AC_CONFIG_FILES([ qmake.inc ])
-AC_CONFIG_FILES([ po/POmakefile ],  [AM_POSTPROCESS_PO_MAKEFILE])
 
 AC_CONFIG_FILES([ src/res/objects_init.xml ])
 AC_CONFIG_FILES([ src/res/templates.xml ])

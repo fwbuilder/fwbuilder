@@ -16,7 +16,6 @@ for d in src/ \
     src/res/ \
     src/tools/ \
     doc/ \
-    po/ \
     src/antlr/ \
     src/gui/ \
     src/fwblookup/ \
