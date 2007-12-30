@@ -300,3 +300,9 @@ QMAKE_COPY    = ../../install.sh -m 0755 -s
 
 RESOURCES += MainRes.qrc
 
+TRANSLATIONS = fwbuilder_ru.ts
+
+ru.path  = $$PKGLOCALEDIR
+ru.files = fwbuilder_ru.qm
+
+INSTALLS += ru

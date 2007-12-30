@@ -3,5 +3,5 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS = po src doc
+SUBDIRS = src doc
 
