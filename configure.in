@@ -38,32 +38,17 @@ dnl try to find QT
 dnl
 AC_ARG_WITH(qtdir,[  --with-qtdir=DIR        Specify directory path for QT ])
 
-AC_MSG_CHECKING(looking for QT)
 if test -n "$with_qtdir"; then
-    QTDIR="$with_qtdir";
-elif test -z "$QTDIR"; then
-    test -f "/usr/local/lib/qt3/include/qstyle.h" && QTDIR="/usr/local/lib/qt3"
-    test -f "/opt/lib/qt3/include/qstyle.h"       && QTDIR="/opt/lib/qt3"
-    test -f "/opt/qt3/include/qstyle.h"           && QTDIR="/opt/qt3"
-    test -f "/usr/lib/qt3/include/qstyle.h"       && QTDIR="/usr/lib/qt3"
-    test -f "/usr/lib/qt-3.1/include/qstyle.h"    && QTDIR="/usr/lib/qt-3.1"
-    test -f "/usr/lib/qt-3.2/include/qstyle.h"    && QTDIR="/usr/lib/qt-3.2"
-    test -f "/usr/lib/qt-3.3/include/qstyle.h"    && QTDIR="/usr/lib/qt-3.3"
-    test -f "/usr/local/include/qstyle.h"         && QTDIR="/usr/local"
-    test -f "/usr/include/qstyle.h"               && QTDIR="/usr"
-    test -f "/usr/lib64/qt-3.3/include/qstyle.h"  && QTDIR="/usr/lib64/qt-3.3"
+   AC_MSG_CHECKING(Using QT in )
+   QTDIR="$with_qtdir";
+   export QTDIR
+   AC_MSG_RESULT($QTDIR)
 fi
-export QTDIR
-AC_MSG_RESULT($QTDIR)
 
-echo $QTDIR > qtdir
+# TODO: do we need to add $QTDIR/bin to PATH to find qmake?
+EXTENDED_PATH="/usr/local/bin:$PATH"
 
-QTTRANSLATIONSDIR="${QTDIR}/translations"
-AC_DEFINE_UNQUOTED(QTTRANSLATIONSDIR, "$QTTRANSLATIONSDIR", [qttranslationsdir])
-AC_SUBST(QTTRANSLATIONSDIR)
-
-EXTENDED_PATH="${QTDIR}/bin:/usr/local/bin:$PATH"
-
+# TODO: add support for --with-qmake option
 AC_PATH_PROG(QMAKE,  qmake,      ,[$EXTENDED_PATH])
 if test -z "$QMAKE"; then
     AC_MSG_ERROR("Could not find qmake")
@@ -73,7 +58,7 @@ AC_MSG_CHECKING(checking version of QT this qmake is part of)
 qmake_version=`$QMAKE -v 2>&1 | awk '/Using Qt version/ { print $4;}'`
 case $qmake_version in
     4.*) AC_MSG_RESULT( $qmake_version ) ;;
-     *) AC_MSG_ERROR( "$qmake_version -- v4.x is required") ;;
+      *) AC_MSG_ERROR( "$qmake_version -- v4.x is required") ;;
 esac
 
 
@@ -457,5 +442,5 @@ AC_CONFIG_FILES([ src/res/platform/unknown.xml ])
 
 AC_OUTPUT
 
-. ./runqmake.sh
+CCACHE=$CCACHE QTDIR=$QTDIR ./runqmake.sh
 

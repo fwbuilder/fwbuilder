@@ -644,35 +644,9 @@ int main( int argc, char ** argv )
         new FWObjectDatabase();
         new FWObjectClipboard();
 
-//    cerr << "*** Current locale: " << QTextCodec::locale() << endl;
-
         if (fwbdebug) qDebug("loading translation for the current locale ...");
 
-/* this is an ugly hack to work around broken qt_es.qm translation
- * file shipped with QT 3.3 for Fedora-C4 and possibly other
- * distros. Only Spanish translation seems to be affected.  Trolltech
- * support req. N80793 (although I never got any suggestions for the
- * workaround, nor did they clearly admit the problem despite my
- * sending a simple example program to them to illustrate the
- * bug). They did not seem to care since Spanish translation file that
- * support guy had on his computer was fine, but he admitted it was
- * different from the one shipped with QT 3.3.4 for Fedora-C4 and for
- * Mac OS X. All I got from them was a promise to look into packaging
- * process.
- */
         QString local = QLocale::system().name();
-        
-        if (QString(local).indexOf("es")!=0)
-        {
-            QTranslator qt1(0);
-            qt1.load( QString( "qt_" ) + local, QTTRANSLATIONSDIR );
-            app->installTranslator( &qt1 );
-        
-            QTranslator qt2(0);
-            qt2.load( QString( "qt_" ) + local,  localepath.c_str() );
-            app->installTranslator( &qt2 );
-        }
-
         QTranslator translator(0);
         translator.load(QString("fwbuilder_")+QString(local),localepath.c_str());
         app->installTranslator (&translator);

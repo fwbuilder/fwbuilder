@@ -13,9 +13,6 @@
 #undef CI_FILE_NAME
 #undef CO_FILE_NAME
 
-/* Where system-wide QT translations are installed */
-#undef QTTRANSLATIONSDIR
-
 /* Define if you have the <X11/SM/SMlib.h> header file.  */
 #undef HAVE_X11_SM_SMLIB_H
 
