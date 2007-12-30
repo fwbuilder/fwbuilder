@@ -1813,7 +1813,7 @@ void instDialog::addToLog(const QString &line)
 //        currentLog->insert( line );
         currentLog->append( line );
         
-                               if (words.first().indexOf("rule")>=0)
+        if (words.first().indexOf("rule")>=0)
         {
             currentProgressBar->setValue(++processedRules);
         } else
@@ -2305,6 +2305,7 @@ void instDialog::fillInstallOpList()
         }
     }
 }
+
 void instDialog::initInstall()
 {
     if (fwbdebug)

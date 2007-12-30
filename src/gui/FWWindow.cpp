@@ -158,6 +158,8 @@ FWWindow::FWWindow()
     if (fwbdebug)
         qDebug("FWWindow constructor");
 
+    setUnifiedTitleAndToolBarOnMac(true);
+
     m_mainWindow = new Ui::FWBMainWindow_q();
     m_mainWindow->setupUi(dynamic_cast<QMainWindow*>(this)); 
 

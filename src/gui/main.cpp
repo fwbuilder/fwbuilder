@@ -48,8 +48,9 @@
 #include <qpixmapcache.h>
 #include <QTextCodec>
 #include <QLocale>
-//Added by qt3to4:
+
 #include <QTranslator>
+#include <QLibraryInfo>
 
 /*
 #ifdef _WIN32
@@ -350,8 +351,6 @@ int main( int argc, char ** argv )
     fwbdebug=0;
     safemode=false;
 
-    bool desktopaware = true;
-
 /*
  * I am using njamd a lot, but gtkmm and probably some other libs
  * generate trap in their global static initialization code. Therefore
@@ -573,10 +572,6 @@ int main( int argc, char ** argv )
 	    cout << VERSION << endl;
 	    exit(0);
 
-        case 'x':
-            desktopaware=!desktopaware;
-            break;
-
         case 's':
             safemode = true;
             break;
@@ -600,8 +595,12 @@ int main( int argc, char ** argv )
 
         if (fwbdebug) qDebug("creating app ...");
     
-        QApplication::setDesktopSettingsAware(desktopaware);
+        //QApplication::setDesktopSettingsAware(desktopaware);
         app = new QApplication( argc, argv );
+        app->setOrganizationName(QLatin1String("NetCitadel LLC"));
+        app->setApplicationName(QLatin1String("Firewall Builder"));
+
+        Q_INIT_RESOURCE(MainRes);
 
         if (fwbdebug) qDebug("reading settings ...");
 
@@ -648,8 +647,19 @@ int main( int argc, char ** argv )
 
         QString local = QLocale::system().name();
         QTranslator translator(0);
-        translator.load(QString("fwbuilder_")+QString(local),localepath.c_str());
+        translator.load(QLatin1String("fwbuilder_") + 
+                        QString(local), localepath.c_str());
         app->installTranslator (&translator);
+
+        QString qt_resource_dir =
+            QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+
+
+        QTranslator qt_translator(0);
+        qt_translator.load(QLatin1String("qt_") + QLocale::system().name(),
+                           qt_resource_dir);
+        app->installTranslator (&qt_translator);
+
 
 /* must build list of available libraries _after_ creation of
  * FWObjectDatabase and settings */

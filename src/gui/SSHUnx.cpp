@@ -223,7 +223,7 @@ void SSHUnx::stateMachine()
         {
             if (fwbdebug) qDebug("SSHUnx::stateMachine - sending a file");
             emit updateProgressBar_sign(input.size(),true);
-            connect(proc,SIGNAL(wroteToStdin()),this,SLOT(readyToSend()));
+            connect(proc,SIGNAL(bytesWritten(qint64)),this,SLOT(readyToSend()));
             sendLine();
             break;
         }
