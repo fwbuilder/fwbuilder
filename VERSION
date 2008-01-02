@@ -7,18 +7,8 @@ FWB_MINOR_VERSION=1
 FWB_MICRO_VERSION=99
 VERSION=$FWB_MAJOR_VERSION.$FWB_MINOR_VERSION.$FWB_MICRO_VERSION
 
-#
-# release num. I use it to distinguish between pre-release builds and
-# in rare situation when I need to produce replacement RPMs and do not
-# want to change version number.
-# 
-# Set it to "1" before publishing the release.
-#
-
-RELEASE_NUM="1"
-# RELEASE_NUM="`date +%Y%m%d`cvs"
-# RELEASE_NUM="RC1"
-# RELEASE_NUM="b"
+# RELEASE="1"
+RELEASE="@BUILD_NUM@"
 
 BETA="no"
 
