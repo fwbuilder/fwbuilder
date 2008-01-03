@@ -5,7 +5,7 @@ TEMPLATE	= app
 LANGUAGE	= C++
 QT             += network
 
-TARGET = fwbuilder3
+TARGET = fwbuilder
 
 include(../../qmake.inc)
 
