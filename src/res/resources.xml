@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<FWBuilderResources version="2.1.99">
+<FWBuilderResources version="3.0.0">
   <Paths>
     <Icndir>@PACKAGE_PIXMAPS_DIR@</Icndir>
   </Paths>

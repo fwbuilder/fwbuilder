@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="@LIBFWBUILDER_VERSION@" lastModified="1184450093" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="@FWBUILDER_XML_VERSION@" lastModified="1184450093" id="root">
   <Library color="#d4f8ff" comment="Standard objects" id="syslib000" name="Standard" ro="False">
     <AnyNetwork comment="Any Network" id="sysid0" name="Any" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService comment="Any IP Service" id="sysid1" name="Any" protocol_num="0"/>

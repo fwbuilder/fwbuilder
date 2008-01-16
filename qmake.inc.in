@@ -35,8 +35,8 @@ unix {
 	exec_prefix             = @EXEC_PREFIX@
 	DESTDIR                 =
 
-        LIBS_FWCOMPILER         = @LIBFWBUILDER_LIBS_FWCOMPILER@
-        LIBS_FWBUILDER          = @LIBFWBUILDER_LIBS_FWBUILDER@
+    LIBS_FWCOMPILER         = @LIBFWBUILDER_LIBS_FWCOMPILER@
+    LIBS_FWBUILDER          = @LIBFWBUILDER_LIBS_FWBUILDER@
 
 	target.path             = $$PREFIX/bin
 	dtd.path                = @TEMPLATE_DIR@/
@@ -47,20 +47,20 @@ unix {
 #	unix:target.path     = $$PREFIX/share/fwbuilder/
 #	macx:target.path     = $$PREFIX/
 
-	res.files            	= src/res/objects_init.xml src/res/templates.xml src/res/resources.xml
-	res.path		= @RES_DIR@
-	res_os.files         	= src/res/os/*.xml
+	res.files           = src/res/objects_init.xml src/res/templates.xml src/res/resources.xml
+	res.path			= @RES_DIR@
+	res_os.files        = src/res/os/*.xml
 	res_os.path 		= @RES_DIR@/os/
-	res_platform.files   	= src/res/platform/*.xml
+	res_platform.files  = src/res/platform/*.xml
 	res_platform.path 	= @RES_DIR@/platform/
 
-        INSTALLS   += res 
-        INSTALLS   += res_os
-        INSTALLS   += res_platform
+    INSTALLS		   += res 
+    INSTALLS		   += res_os
+    INSTALLS		   += res_platform
 #        INSTALLS   += icns
 	LIBS                   += $$LIBS_FWBUILDER @LIBS@
 
-	PKGLOCALEDIR		= $$res.path/locale
+	PKGLOCALEDIR			= $$res.path/locale
 
 	CONFIG                 += warn_on debug
 	QMAKE_CFLAGS_DEBUG     += -Wno-unused-parameter

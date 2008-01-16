@@ -58,18 +58,28 @@ debugDialog::debugDialog(QWidget *parent) : QDialog(parent)
  * send me a screenshot of the "about" dialog and get the idea about
  * their environment etc.)
  */
-    m_dialog->debugText->append( QString("Path to executable: %1").arg(argv0.c_str()) );
-    m_dialog->debugText->append( QString("Path to resources: %1").arg(respath.c_str()) );
-    m_dialog->debugText->append( QString("Path to locale: %1").arg(localepath.c_str()) );
-    m_dialog->debugText->append( QString("Path to lib resources: %1").arg(librespath.c_str()) );
-    m_dialog->debugText->append( QString("appRootDir: %1").arg(appRootDir.c_str()) );
+    m_dialog->debugText->append( QString("Path to executable: %1")
+        .arg(argv0.c_str()) );
+    m_dialog->debugText->append( QString("Path to resources: %1")
+        .arg(respath.c_str()) );
+    m_dialog->debugText->append( QString("Path to locale: %1")
+        .arg(localepath.c_str()) );
+    m_dialog->debugText->append( QString("Path to lib resources: %1")
+        .arg(librespath.c_str()) );
+    m_dialog->debugText->append( QString("appRootDir: %1")
+        .arg(appRootDir.c_str()) );
     m_dialog->debugText->append( "\n" );
-    m_dialog->debugText->append( QString("sysfname: %1").arg(sysfname.c_str()) );
-    m_dialog->debugText->append( QString("tempfname: %1").arg(tempfname.c_str()) );
+    m_dialog->debugText->append( QString("sysfname: %1")
+        .arg(sysfname.c_str()) );
+    m_dialog->debugText->append( QString("tempfname: %1")
+        .arg(tempfname.c_str()) );
     m_dialog->debugText->append( "\n" );
-    m_dialog->debugText->append( QString("Path to rcs: %1").arg(RCS_FILE_NAME) );
-    m_dialog->debugText->append( QString("Path to rcsdiff: %1").arg(RCSDIFF_FILE_NAME) );
-    m_dialog->debugText->append( QString("Path to rlog: %1").arg(RLOG_FILE_NAME) );
+    m_dialog->debugText->append( QString("Path to rcs: %1")
+        .arg(RCS_FILE_NAME) );
+    m_dialog->debugText->append( QString("Path to rcsdiff: %1")
+        .arg(RCSDIFF_FILE_NAME) );
+    m_dialog->debugText->append( QString("Path to rlog: %1")
+        .arg(RLOG_FILE_NAME) );
     m_dialog->debugText->append( QString("Path to ci: %1").arg(CI_FILE_NAME) );
     m_dialog->debugText->append( QString("Path to co: %1").arg(CO_FILE_NAME) );
     m_dialog->debugText->append( "\n" );
@@ -81,22 +91,33 @@ debugDialog::debugDialog(QWidget *parent) : QDialog(parent)
     m_dialog->debugText->append( RCS::getEnv()->join("\n").toAscii() );
     m_dialog->debugText->append( "\n" );
 
-    m_dialog->debugText->append( QString("Current locale: %1").arg(QLocale::system().name()) );
+    m_dialog->debugText->append( QString("Current locale: %1")
+        .arg(QLocale::system().name()) );
     m_dialog->debugText->append( "\n" );
     m_dialog->debugText->append( QString("Versions:") );
-    m_dialog->debugText->append( QString("  Firewall Builder %1").arg(VERSION) );
-    m_dialog->debugText->append( QString("  Release %1  Build %2").arg(RELEASE_NUM).arg(BUILD_NUM) );
+    m_dialog->debugText->append( QString("  Firewall Builder %1")
+        .arg(VERSION) );
+    m_dialog->debugText->append( QString("  Release %1  Build %2")
+        .arg(RELEASE_NUM).arg(BUILD_NUM) );
     m_dialog->debugText->append( QString("  Using libfwbuilder %1")
-                 .arg( libfwbuilder::Constants::getLibraryVersion().c_str() ) );
-    m_dialog->debugText->append( QString("  Built with QT %1").arg(QT_VERSION_STR) );
+        .arg( libfwbuilder::Constants::getLibraryVersion().c_str() ) );
+
+    m_dialog->debugText->append( QString("  Data format version %1")
+        .arg(libfwbuilder::Constants::getDataFormatVersion().c_str() ) );
+
+
+    m_dialog->debugText->append( QString("  Built with QT %1")
+        .arg(QT_VERSION_STR) );
     m_dialog->debugText->append( QString("  Using QT %1").arg( qVersion() ) );
-    m_dialog->debugText->append( QString("  Built with libxml2 %1").arg(LIBXML_DOTTED_VERSION) );
+    m_dialog->debugText->append( QString("  Built with libxml2 %1")
+        .arg(LIBXML_DOTTED_VERSION) );
 #if !defined(Q_OS_MACX)
-    m_dialog->debugText->append( QString("  Using libxml2 %1").arg(xmlParserVersion) );
+    m_dialog->debugText->append( QString("  Using libxml2 %1")
+        .arg(xmlParserVersion) );
 #endif
     m_dialog->debugText->append( "\n" );
 
-    m_dialog->debugText->append( QString("FWObjectDatabase index statistics:") );
+    m_dialog->debugText->append( QString("FWObjectDatabase index statistics:"));
     
     int s,h,m;
     mw->db()->getIndexStats(s,h,m);
@@ -105,7 +126,8 @@ debugDialog::debugDialog(QWidget *parent) : QDialog(parent)
     m_dialog->debugText->append( QString("  misses: %1").arg(m) );
     m_dialog->debugText->append( "\n" );
 
-    m_dialog->debugText->append( QString("QPixmapCache limit: %1 kb").arg(QPixmapCache::cacheLimit()));
+    m_dialog->debugText->append( QString("QPixmapCache limit: %1 kb")
+        .arg(QPixmapCache::cacheLimit()));
 }
 
 debugDialog::~debugDialog()

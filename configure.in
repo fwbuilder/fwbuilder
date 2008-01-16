@@ -194,7 +194,7 @@ AC_DEFINE_UNQUOTED(CI_FILE_NAME,       ["$CI_FILE_NAME"], [ci_file_name])
 AC_DEFINE_UNQUOTED(CO_FILE_NAME,       ["$CO_FILE_NAME"], [co_file_name])
 
 
-AC_PATH_PROG(LIBFWBUILDER_CONFIG, libfwbuilder-config-${FWB_MAJOR_VERSION}.${FWB_MINOR_VERSION},  ,[$EXTENDED_PATH])
+AC_PATH_PROG(LIBFWBUILDER_CONFIG, libfwbuilder-config-${FWB_MAJOR_VERSION},  ,[$EXTENDED_PATH])
 
 if test x$LIBFWBUILDER_CONFIG = x ; then
    AC_MSG_ERROR([*** libfwbuilder not installed, or libfwbuilder-config-2 is not in path])
@@ -209,6 +209,7 @@ else
   LIBFWBUILDER_LIBS_FWBD="`$LIBFWBUILDER_CONFIG --libs fwbd`"
   LIBFWBUILDER_STATICLIBS="`$LIBFWBUILDER_CONFIG --staticlibs`"
   LIBFWBUILDER_VERSION="`$LIBFWBUILDER_CONFIG --version`"
+  FWBUILDER_XML_VERSION="`$LIBFWBUILDER_CONFIG --xml_version`"
 
   AC_MSG_CHECKING(libfwbuilder version)
   if test x${LIBFWBUILDER_VERSION} != x${REQUIRED_LIBFWBUILDER_VERSION} ; then
@@ -224,6 +225,7 @@ else
   AC_SUBST(LIBFWBUILDER_INCLUDEPATH)
   AC_SUBST(LIBFWBUILDER_STATICLIBS) 
   AC_SUBST(LIBFWBUILDER_VERSION)
+  AC_SUBST(FWBUILDER_XML_VERSION)
 
 fi
 
@@ -302,7 +304,7 @@ case ${host} in
     OS_SOLARIS=1
     MANDIR="${PREFIX}/share/man/"
     AC_MSG_RESULT(Solaris)
-    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder${FWB_MAJOR_VERSION}${FWB_MINOR_VERSION}"
+    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder-${VERSION}"
     ;;
 
   *-*-freebsd*)
@@ -310,7 +312,7 @@ case ${host} in
     OS_FREEBSD=1
     MANDIR="${PREFIX}/man/"
     AC_MSG_RESULT(FreeBSD)
-    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder${FWB_MAJOR_VERSION}${FWB_MINOR_VERSION}"
+    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder-${VERSION}"
     ;;
 
   *-*-openbsd*)
@@ -318,7 +320,7 @@ case ${host} in
     OS_OPENBSD=1
     MANDIR="${PREFIX}/man/"
     AC_MSG_RESULT(OpenBSD)
-    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder${FWB_MAJOR_VERSION}${FWB_MINOR_VERSION}"
+    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder-${VERSION}"
     ;;
 
   *-*-kfreebsd*)
@@ -331,11 +333,11 @@ case ${host} in
     fi
     MANDIR="${PREFIX}/share/man/"
     AC_MSG_RESULT($DISTRO GNU/kFreeBSD)
-    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder${FWB_MAJOR_VERSION}${FWB_MINOR_VERSION}"
+    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder-${VERSION}"
     ;;
 
   *-*-linux*)
-    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder${FWB_MAJOR_VERSION}${FWB_MINOR_VERSION}"
+    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder-${VERSION}"
     OS=Linux
     OS_LINUX=1
     if test -f /etc/debian_version ; then
@@ -365,7 +367,7 @@ case ${host} in
     DISTRO=Unknown
     MANDIR="${PREFIX}/share/man/"
     AC_MSG_RESULT(Unknown)
-    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder${FWB_MAJOR_VERSION}${FWB_MINOR_VERSION}"
+    DEFAULT_RES_DIR="${PREFIX}/share/fwbuilder-${VERSION}"
     ;;
 esac
 
