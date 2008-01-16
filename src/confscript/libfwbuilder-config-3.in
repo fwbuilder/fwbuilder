@@ -11,7 +11,9 @@ PTHREAD_CFLAGS="@PTHREAD_CFLAGS@"
 PTHREAD_LIBS="@PTHREAD_LIBS@"
 
 RANLIB="@RANLIB@"
+
 VERSION="@LIBFWBUILDER_VERSION@"
+XML_VERSION="@FWBUILDER_XML_VERSION@"
 
 XML_CFLAGS="@XML_CFLAGS@"
 XML_LIBS="@XML_LIBS@"
@@ -43,6 +45,7 @@ Options:
   --libpath             print the path to the library directory
   --help		display this help and exit
   --version		output version information
+  --xml_version		output data format version information
 
 Libraries:
 
@@ -91,6 +94,11 @@ while test $# -gt 0; do
 	exit 0
 	;;
 
+    --xml_version)
+	echo ${XML_VERSION}
+	exit 0
+	;;
+
     --help)
 	usage 0
 	;;
@@ -133,7 +141,7 @@ if test "$TP" != "usr" ; then
   includedir="-I${prefix}/include/"
 fi
 
-includedir="${includedir} -I${prefix}/include/fwb-2.1"
+includedir="${includedir} -I${prefix}/include/fwb-3"
 
 
 the_libs="$the_libs ${LIBFWBUILDER_LIBDIR}  ${LIBS} ${PTHREAD_LIBS} ${XSLT_LIBS} ${XML_LIBS} ${LIBSNMP_LIBS} ${LWRES_LIBS} ${LIB_RESOLV}"

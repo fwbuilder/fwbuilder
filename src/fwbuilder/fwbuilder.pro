@@ -116,7 +116,7 @@ HEADERS  = 	Address.h \
 			XMLTools.h
 
 headers.files =$$HEADERS
-headers.path  =$$prefix/include/fwb-2.1/fwbuilder
+headers.path  =$$prefix/include/fwb-3/fwbuilder
 
 TARGET    = fwbuilder
 

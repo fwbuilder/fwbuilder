@@ -22,7 +22,7 @@ HEADERS  = 	Compiler.h \
 			RoutingCompiler.h
 
 headers.files =$$HEADERS
-headers.path  =$$prefix/include/fwb-2.1/fwcompiler
+headers.path  =$$prefix/include/fwb-3/fwcompiler
 
 macx {
         LIBS += -L../fwbuilder -lfwbuilder

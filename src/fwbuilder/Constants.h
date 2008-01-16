@@ -53,6 +53,11 @@ class Constants
     static const std::string getLibraryVersion();
 
     /**
+     * Returns data format version number
+     */
+    static const std::string getDataFormatVersion();
+
+    /**
      * Returns directory in which library stores it's data files.
      */
     static const std::string getTemplateDirectory();

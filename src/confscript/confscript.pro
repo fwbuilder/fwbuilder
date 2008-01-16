@@ -10,7 +10,7 @@ QMAKE_LINK      = @echo
 QMAKE_COPY      = ../../install.sh -c -m 0755
 QMAKE_COPY_FILE = ../../install.sh -c -m 0755
 
-TARGET          = libfwbuilder-config-2.1
+TARGET          = libfwbuilder-config-3
 
 !macx {
 	target.path   = $$prefix/bin
@@ -18,7 +18,7 @@ TARGET          = libfwbuilder-config-2.1
 
 macx {
 	script.path   =$$prefix/bin
-	script.files  =libfwbuilder-config-2.1
+	script.files  =libfwbuilder-config-3
 
 	INSTALLS     -= target
 	INSTALLS     += script

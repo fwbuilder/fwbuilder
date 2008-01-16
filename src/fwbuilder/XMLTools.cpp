@@ -742,8 +742,19 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
     while(!vers.empty() && (c=version_compare(current_version,vers))!=0)
     {
         if(c<0)
-            throw FWException(string("Data file '"+file_name+ "' was created by the future version of Firewall Builder."));
-            
+        {
+            string err;
+            err = string("Data file '");
+            err += file_name;
+            err += string("' was created by the future version of Firewall Builder.\n");
+            err += string(" File version: ");
+            err += vers;
+            err += string("\n");
+            err += string(" Current libfwbuilder data format version: ");
+            err += current_version;
+            throw FWException(err);
+        }
+
         string oldversion=vers;
         
 #ifdef FW_XMLTOOLS_VERBOSE

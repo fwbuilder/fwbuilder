@@ -37,6 +37,11 @@ const string Constants::getLibraryDescription()
 
 const string Constants::getLibraryVersion() 
 { 
+    return string(LIBFWBUILDER_VERSION); 
+}
+
+const string Constants::getDataFormatVersion()
+{
     return string(LIBFWBUILDER_FORMAT_VERSION); 
 }
 

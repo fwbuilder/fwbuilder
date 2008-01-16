@@ -1,10 +1,10 @@
 <!--
-   Filename:     FWObjectDatabase_2.1.16.xslt
+   Filename:     FWObjectDatabase_2.1.15.xslt
    Author:       Vadim Kurland
-   Build date:   01/16/2008
-   Last changed: 01/16/2008
+   Build date:   10/21/2007
+   Last changed: 10/21/2007
    Version:      1.0.0
-   Description:  translates fwbuilder object database from v2.1.16 to v3
+   Description:  translates fwbuilder object database from v2.1.15 to v3
                  only changes version number
 -->
 

@@ -20,6 +20,7 @@ AC_SUBST(LIBFWBUILDER_VERSION)
 AC_SUBST(LIBFWBUILDER_LIB_VER)
 AC_SUBST(LIBFWBUILDER_SOLIB_SYMLINK1_VERSION)
 AC_SUBST(LIBFWBUILDER_SOLIB_SYMLINK2_VERSION)
+AC_SUBST(FWBUILDER_XML_VERSION)
 
 if test -z ${RELEASE_NUM}; then
   RPMRELEASE="1"
@@ -28,9 +29,10 @@ else
 fi
 AC_SUBST(RPMRELEASE)
 
-echo "Creating VERSION.h file..."
+echo "Creating libfwbuilder-version.h file..."
 
-echo "#define LIBFWBUILDER_FORMAT_VERSION  \"$LIBFWBUILDER_VERSION\"" > src/fwbuilder/libfwbuilder-version.h
+echo "#define LIBFWBUILDER_VERSION  \"$LIBFWBUILDER_VERSION\"" > src/fwbuilder/libfwbuilder-version.h
+echo "#define LIBFWBUILDER_FORMAT_VERSION  \"$FWBUILDER_XML_VERSION\"" >> src/fwbuilder/libfwbuilder-version.h
 
 dnl try to find QT
 dnl
@@ -624,7 +626,7 @@ dnl   path
 if test "x$with_templatedir" != "x"; then
   TEMPLATE_DIR="${with_templatedir}"
 else
-  TEMPLATE_DIR="${PREFIX}/share/libfwbuilder21"
+  TEMPLATE_DIR="${PREFIX}/share/libfwbuilder-${LIBFWBUILDER_VERSION}"
 fi
 AC_DEFINE_UNQUOTED(LIBFWBUILDER_TEMPLATE_DIR, "${TEMPLATE_DIR}")
 AC_SUBST(TEMPLATE_DIR)
@@ -695,12 +697,12 @@ fi
 AC_SUBST(EXEC_PREFIX)
 
 AC_OUTPUT(qmake.inc
-          src/confscript/libfwbuilder-config-2.1
+          src/confscript/libfwbuilder-config-3
 	  etc/fwbuilder.dtd )
 
 dnl qmake just copies the file; we need to make it executable before that
 dnl 
-chmod a+x src/confscript/libfwbuilder-config-2.1
+chmod a+x src/confscript/libfwbuilder-config-3
 
 
 
