@@ -20,7 +20,7 @@
 
 <xsl:template match="*[attribute::id='root']">
   <FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/">
-  <xsl:attribute name="version">3</xsl:attribute>
+  <xsl:attribute name="version">4</xsl:attribute>
   <xsl:attribute name="id">root</xsl:attribute>
   <xsl:copy-of select="*"/>
   </FWObjectDatabase>
