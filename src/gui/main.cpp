@@ -619,10 +619,15 @@ int main( int argc, char ** argv )
         registered=init2(argv0, "Firewall Builder","fwb_gui","FirewallBuilder/2.1",true,true);
 #endif
 
-        if (fwbdebug) qDebug("reading resources ...");
-        
+        string full_res_path = respath+FS_SEPARATOR+"resources.xml";
+
+        if (fwbdebug)
+        {
+            qDebug("reading resources from '%s' ...",full_res_path.c_str());
+        }
+
         //respath = RES_DIR;
-        new Resources(respath+FS_SEPARATOR+"resources.xml");
+        new Resources(full_res_path);
         if (fwbdebug) qDebug("done");
 
 #if 0
