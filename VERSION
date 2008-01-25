@@ -1,7 +1,7 @@
 #-*- mode: shell-script; tab-width: 4; -*-
 # $Id: VERSION,v 1.47 2007/07/21 23:44:19 vkurland Exp $
 
-
+# current version 3.0.0
 FWB_MAJOR_VERSION=3
 FWB_MINOR_VERSION=0
 FWB_MICRO_VERSION=0
