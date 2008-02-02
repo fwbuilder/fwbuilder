@@ -109,7 +109,7 @@
          <enum>QFrame::Plain</enum>
         </property>
         <property name="currentIndex" >
-         <number>12</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="TagStrPage" >
          <layout class="QGridLayout" >
@@ -396,7 +396,7 @@
           <item row="3" column="0" >
            <widget class="QLabel" name="tag_txt_1" >
             <property name="text" >
-             <string>Note: this action translates into MARK target for iptables. Normally this target is non-terminating, that is, other rules with Classify or Tag actions belog this one will process the same packet. However, Firewall Builder can emulate terminating behavior for this action. Option in the "compiler" tab of the firewall object properties dialog activates emulation.</string>
+             <string>Note: this action translates into MARK target for iptables. Normally this target is non-terminating, that is, other rules with Classify or Tag actions below this one will process the same packet. However, Firewall Builder can emulate terminating behavior for this action. Option in the "compiler" tab of the firewall object properties dialog activates emulation.</string>
             </property>
             <property name="alignment" >
              <set>Qt::AlignVCenter</set>
