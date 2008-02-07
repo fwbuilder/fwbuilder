@@ -1,3 +1,12 @@
+2008-02-06    <vadim@vk.crocodile.org>
+
+	* pix_os.xml.in: more for the bug #1816798: "Installing policy on
+	PIX 501 fails". The fix that was made for v2.1.16 did not cover
+	test-mode install, which is now fixed too. Command "terminal pager
+	" is valid only for PIX 7.x and caused error while installing
+	policy on PIX 6.3. Removed this command from the install sequence,
+	it was not essential.
+
 2007-12-29    <vadim@vk.crocodile.org>
 
 	* SSHUnx.cpp (SSHUnx::stateMachine): using signal proper for qt4

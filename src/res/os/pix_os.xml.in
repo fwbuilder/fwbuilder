@@ -41,7 +41,6 @@
 
             <test>
               <pre_config_commands>
-                terminal pager lines 0
               </pre_config_commands>
 
               <post_config_commands>
