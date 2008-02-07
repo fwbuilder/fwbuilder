@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="2.1.16" lastModified="1197750649" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="2.1.16" lastModified="1200415283" id="root">
   <Library color="#d2ffd0" comment="User defined objects" id="syslib001" name="User" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects">
       <ObjectGroup id="stdid01_1_og_ats_1" name="Address Tables">
@@ -498,7 +498,7 @@
       </ServiceGroup>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls">
-      <Firewall comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" host_OS="openbsd" id="fw-firewall2" inactive="False" lastCompiled="1157930800" lastInstalled="0" lastModified="1193632365" name="firewall" platform="pf" ro="False" version="">
+      <Firewall comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" host_OS="openbsd" id="fw-firewall2" inactive="False" lastCompiled="1157930800" lastInstalled="0" lastModified="1200415143" name="firewall" platform="pf" ro="False" version="">
         <NAT id="nat-firewall2">
           <NATRule comment="" disabled="False" id="nat-firewall2-0" position="0">
             <OSrc neg="False">
@@ -1192,7 +1192,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="this object is used to test all kinds of negation in policy rules&#10;Also using interface policy on eth1 to test specific case with negation and&#10;rule shading depection&#10;" host_OS="openbsd" id="id3AF5AA0A" inactive="False" lastCompiled="1157930802" lastInstalled="0" lastModified="1193632373" name="firewall1" platform="pf" ro="False" version="">
+      <Firewall comment="this object is used to test all kinds of negation in policy rules&#10;Also using interface policy on eth1 to test specific case with negation and&#10;rule shading depection&#10;" host_OS="openbsd" id="id3AF5AA0A" inactive="False" lastCompiled="1157930802" lastInstalled="0" lastModified="1200415171" name="firewall1" platform="pf" ro="False" version="">
         <NAT id="id3AF5AA0D">
           <NATRule disabled="False" id="id3C98491C" position="0">
             <OSrc neg="False">
@@ -2244,7 +2244,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " host_OS="openbsd" id="id3AFB66C6" inactive="False" lastCompiled="1157930805" lastInstalled="0" lastModified="1193632390" name="firewall2" platform="pf" ro="False" version="">
+      <Firewall comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " host_OS="openbsd" id="id3AFB66C6" inactive="False" lastCompiled="1157930805" lastInstalled="0" lastModified="1200415283" name="firewall2" platform="pf" ro="False" version="">
         <NAT id="id3AFB66C7">
           <NATRule disabled="False" id="id3AFB66C8" position="0">
             <OSrc neg="False">
@@ -3265,8 +3265,8 @@
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
-          <Option name="mgmt_ssh">False</Option>
+          <Option name="mgmt_addr">192.168.1.100</Option>
+          <Option name="mgmt_ssh">True</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
@@ -3277,14 +3277,20 @@
           <Option name="pf_adaptive_end">0</Option>
           <Option name="pf_adaptive_start">0</Option>
           <Option name="pf_do_limit_frags">True</Option>
+          <Option name="pf_do_limit_src_nodes">False</Option>
           <Option name="pf_do_limit_states">True</Option>
+          <Option name="pf_do_limit_table_entries">False</Option>
+          <Option name="pf_do_limit_tables">False</Option>
           <Option name="pf_do_scrub">True</Option>
           <Option name="pf_do_timeout_frag">False</Option>
           <Option name="pf_do_timeout_interval">False</Option>
           <Option name="pf_icmp_error">0</Option>
           <Option name="pf_icmp_first">0</Option>
           <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_src_nodes">0</Option>
           <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_limit_table_entries">0</Option>
+          <Option name="pf_limit_tables">0</Option>
           <Option name="pf_optimization">Aggressive</Option>
           <Option name="pf_other_first">0</Option>
           <Option name="pf_other_multiple">0</Option>
@@ -3340,7 +3346,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="this object is used to test a configuration where firewall has dynamic address " host_OS="openbsd" id="id3B0C6380" inactive="False" lastCompiled="1157930815" lastInstalled="0" lastModified="1193632406" name="firewall4" platform="pf" ro="False" version="">
+      <Firewall comment="this object is used to test a configuration where firewall has dynamic address " host_OS="openbsd" id="id3B0C6380" inactive="False" lastCompiled="1157930815" lastInstalled="0" lastModified="1200415196" name="firewall4" platform="pf" ro="False" version="">
         <NAT id="id3B0C6381">
           <NATRule disabled="False" id="id3B0C6382" position="0">
             <OSrc neg="False">
@@ -3748,7 +3754,7 @@
           <Option name="use_tables">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="testing IP fragments and scrub" host_OS="openbsd" id="id3E1FC43C" inactive="False" lastCompiled="1157930819" lastInstalled="0" lastModified="1193632531" name="firewall5" platform="pf" ro="False" version="">
+      <Firewall comment="testing IP fragments and scrub" host_OS="openbsd" id="id3E1FC43C" inactive="False" lastCompiled="1157930819" lastInstalled="0" lastModified="1200415199" name="firewall5" platform="pf" ro="False" version="">
         <NAT id="id3E1FC43D">
           <NATRule disabled="True" id="id3E1FC8FC" position="0">
             <OSrc neg="False">
@@ -3929,7 +3935,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="testing rule with firewall in dst and negation" host_OS="openbsd" id="id3C698F1D" inactive="False" lastCompiled="1157930821" lastInstalled="0" lastModified="1193632535" name="firewall6" platform="pf" ro="False" version="">
+      <Firewall comment="testing rule with firewall in dst and negation" host_OS="openbsd" id="id3C698F1D" inactive="False" lastCompiled="1157930821" lastInstalled="0" lastModified="1200415203" name="firewall6" platform="pf" ro="False" version="">
         <NAT id="id3C698F1E"/>
         <Policy id="id3C698F9D">
           <PolicyRule action="Deny" comment="" direction="Inbound" disabled="False" id="id3C699028" log="True" position="0">
@@ -4056,7 +4062,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="testing rules with broadcasts" host_OS="openbsd" id="id3C69BD4F" inactive="False" lastCompiled="1157930822" lastInstalled="0" lastModified="1193632538" name="firewall7" platform="pf" ro="False" version="">
+      <Firewall comment="testing rules with broadcasts" host_OS="openbsd" id="id3C69BD4F" inactive="False" lastCompiled="1157930822" lastInstalled="0" lastModified="1200415209" name="firewall7" platform="pf" ro="False" version="">
         <NAT id="id3C69BD50"/>
         <Policy id="id3C69BD51">
           <PolicyRule action="Deny" direction="Inbound" disabled="False" id="id3C69BDE1" log="True" position="0">
@@ -4184,7 +4190,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="" host_OS="openbsd" id="id3D581152" inactive="False" lastCompiled="1157930823" lastInstalled="0" lastModified="1193632541" name="firewall8" platform="pf" ro="False" version="">
+      <Firewall comment="" host_OS="openbsd" id="id3D581152" inactive="False" lastCompiled="1157930823" lastInstalled="0" lastModified="1200415211" name="firewall8" platform="pf" ro="False" version="">
         <NAT id="id3D581156">
           <NATRule disabled="False" id="id3D58164E" position="0">
             <OSrc neg="False">
@@ -4546,7 +4552,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="testing rules with broadcasts" host_OS="freebsd" id="id3E853CBE" inactive="False" lastCompiled="1157930825" lastInstalled="0" lastModified="1193632544" name="firewall9" platform="pf" ro="False" version="">
+      <Firewall comment="testing rules with broadcasts" host_OS="freebsd" id="id3E853CBE" inactive="False" lastCompiled="1157930825" lastInstalled="0" lastModified="1200415214" name="firewall9" platform="pf" ro="False" version="">
         <NAT id="id3E853CBF">
           <NATRule disabled="True" id="id3E853EF8" position="0">
             <OSrc neg="False">
@@ -6079,7 +6085,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="testing NAT rules with multiple objects in TSrc and TDst and NAT rule options" host_OS="openbsd" id="id43F7DBEE31316" inactive="False" lastCompiled="1157930807" lastInstalled="0" lastModified="1193632393" name="firewall3" platform="pf" ro="False" version="">
+      <Firewall comment="testing NAT rules with multiple objects in TSrc and TDst and NAT rule options" host_OS="openbsd" id="id43F7DBEE31316" inactive="False" lastCompiled="1157930807" lastInstalled="0" lastModified="1200415192" name="firewall3" platform="pf" ro="False" version="">
         <NAT id="id43F7DC6531316">
           <NATRule disabled="False" id="id43F7DC6631316" position="0">
             <OSrc neg="False">
@@ -7362,7 +7368,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="PF 3.x, testing &#10;&quot;flags S/SA keep state&quot;" host_OS="openbsd" id="id4699449021967" inactive="False" lastCompiled="1190517987" lastInstalled="0" lastModified="1193632585" name="firewall10-1" platform="pf" ro="False" version="3.x">
+      <Firewall comment="PF 3.x, testing &#10;&quot;flags S/SA keep state&quot;" host_OS="openbsd" id="id4699449021967" inactive="False" lastCompiled="1190517987" lastInstalled="0" lastModified="1200415220" name="firewall10-1" platform="pf" ro="False" version="3.x">
         <NAT id="id469944D321967">
           <NATRule disabled="True" id="id469944D421967" position="0">
             <OSrc neg="False">

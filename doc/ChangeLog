@@ -1,5 +1,9 @@
 2008-02-06    <vadim@vk.crocodile.org>
 
+ 	* RCS.cpp (RCSEnvFix::RCSEnvFix): fixed bug #1849392: "RCS using
+ 	windows 2003 without administrator rights". Pass TMP and TEMP
+ 	environment variables to RCS tools
+ 
 	* pix_os.xml.in: more for the bug #1816798: "Installing policy on
 	PIX 501 fails". The fix that was made for v2.1.16 did not cover
 	test-mode install, which is now fixed too. Command "terminal pager
