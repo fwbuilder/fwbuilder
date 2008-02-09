@@ -159,10 +159,10 @@ FWWindow::FWWindow()
         qDebug("FWWindow constructor");
 
     setUnifiedTitleAndToolBarOnMac(true);
-
+    
     m_mainWindow = new Ui::FWBMainWindow_q();
     m_mainWindow->setupUi(dynamic_cast<QMainWindow*>(this)); 
-
+    QApplication::setFont(st->getUiFont());
     rcs             = NULL;
     systemFile      = true;
     visibleFirewall = NULL;
@@ -2369,7 +2369,13 @@ void FWWindow::editPaste()
 void FWWindow::editPrefs()
 {
     PrefsDialog pd(this);
-    pd.exec();
+    if ((QDialog::Accepted == pd.exec()) && (m_mainWindow->ruleSets->count()!=0))
+    {
+        QApplication::setFont(st->getUiFont());
+        for (int i = 0; i < m_mainWindow->ruleSets->count(); i++)
+            dynamic_cast<RuleSetView*>(m_mainWindow->ruleSets->widget(i))->updateAll();        
+        om->getCurrentObjectTree()->updateAfterPrefEdit();
+    }
 }
 
 void FWWindow::closeEvent( QCloseEvent * ev)

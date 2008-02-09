@@ -36,10 +36,12 @@
 #include <list>
 #include <string>
 #include <map>
+#include <qfont.h>
 
 #include <qstring.h>
 
 class QPushButton;
+
 
 class PrefsDialog : public QDialog
 {
@@ -50,7 +52,11 @@ class PrefsDialog : public QDialog
 
     std::map<int,QString> colors;
     Ui::prefsDialog_q *m_dialog;
-    
+
+    QFont rulesFont;
+    QFont treeFont;
+    QFont uiFont;
+    void changeFont(QFont *font);
  public:
     PrefsDialog(QWidget *parent);
     ~PrefsDialog();
@@ -69,7 +75,12 @@ public slots:
     virtual void changeBlueColor();
     virtual void changePurpleColor();
     virtual void changeGrayColor();
-    
+    virtual void changeIconSize25();
+    virtual void changeIconSize16();
+    virtual void changeShowIcons();
+    virtual void changeRulesFont();
+    virtual void changeTreeFont();
+    virtual void changeUiFont();
 };
 
 #endif // __PREFSDIALOG_H

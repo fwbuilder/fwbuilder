@@ -422,8 +422,15 @@ private:
     
     QPixmap getPixmap(libfwbuilder::FWObject *obj, PixmapAttr pmattr = Normal) const;
     QString objectText(libfwbuilder::RuleElement *re,libfwbuilder::FWObject *obj); 
+ 
+    QSize getPMSize();
 
     void fixRulePosition(libfwbuilder::Rule *r, libfwbuilder::FWObject *parent, int pos); 
+    QSize drawIconInRule(QPainter &p, int x, int y, libfwbuilder::RuleElement *re, 
+                         libfwbuilder::FWObject *o1);
+    QString chooseIcon(QString icn);
+    bool showComment(QPoint pos, QHelpEvent *he);
+    void drawComment(QPainter &p, int row, int col, const QRect &cr);
 };
 
 

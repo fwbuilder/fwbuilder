@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1">
+<!DOCTYPE TS><TS version="1.1" language="ru">
+<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
@@ -4679,7 +4680,7 @@ and special characters.</source>
     </message>
     <message>
         <location filename="actionsdialog_q.ui" line="399"/>
-        <source>Note: this action translates into MARK target for iptables. Normally this target is non-terminating, that is, other rules with Classify or Tag actions belog this one will process the same packet. However, Firewall Builder can emulate terminating behavior for this action. Option in the &quot;compiler&quot; tab of the firewall object properties dialog activates emulation.</source>
+        <source>Note: this action translates into MARK target for iptables. Normally this target is non-terminating, that is, other rules with Classify or Tag actions below this one will process the same packet. However, Firewall Builder can emulate terminating behavior for this action. Option in the &quot;compiler&quot; tab of the firewall object properties dialog activates emulation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8267,7 +8268,7 @@ Do you want to delete selected objects anyway ?</source>
 <context>
     <name>ObjectTreeView</name>
     <message>
-        <location filename="ObjectTreeView.cpp" line="131"/>
+        <location filename="ObjectTreeView.cpp" line="132"/>
         <source>Object</source>
         <translation>Объект</translation>
     </message>
@@ -8361,7 +8362,7 @@ Do you want to delete selected objects anyway ?</source>
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="PrefsDialog.cpp" line="231"/>
+        <location filename="PrefsDialog.cpp" line="281"/>
         <source>Find working directory</source>
         <translation>Определить рабочий каталог</translation>
     </message>
@@ -8371,12 +8372,12 @@ Do you want to delete selected objects anyway ?</source>
         <translation type="obsolete">Определить утилиту scp</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="240"/>
+        <location filename="PrefsDialog.cpp" line="290"/>
         <source>Find Secure Shell utility</source>
         <translation>Определить утилиту ssh</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="290"/>
+        <location filename="PrefsDialog.cpp" line="340"/>
         <source>Find add-on library</source>
         <translation>Определить библиотеку дополнений</translation>
     </message>
@@ -9009,7 +9010,7 @@ because of incompatible type.</source>
 из-за несовместимости типов объектов.</translation>
     </message>
     <message>
-        <location filename="FWBTree.cpp" line="399"/>
+        <location filename="FWBTree.cpp" line="398"/>
         <source>New Library</source>
         <translation>Новая библиотека</translation>
     </message>
@@ -9297,7 +9298,7 @@ part of the tee or data file was opened read-only</source>
         <translation>&lt;b&gt;Имя Объекта:&lt;/b&gt; </translation>
     </message>
     <message>
-        <location filename="FWBSettings.cpp" line="149"/>
+        <location filename="FWBSettings.cpp" line="156"/>
         <source>Working directory %1 does not exist and could not be created.
 Ignoring this setting.</source>
         <translation>Рабочий каталог %1 не существует и не может быть создан.
@@ -10967,52 +10968,52 @@ for this rule</source>
         <translation type="obsolete">Учёт</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="899"/>
+        <location filename="RuleSetView.cpp" line="959"/>
         <source>Outbound </source>
         <translation>Исходящее</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="957"/>
+        <location filename="RuleSetView.cpp" line="1018"/>
         <source>Original</source>
         <translation>Исходный</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2029"/>
+        <location filename="RuleSetView.cpp" line="2135"/>
         <source>Insert Rule</source>
         <translation>Вставить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1777"/>
+        <location filename="RuleSetView.cpp" line="1883"/>
         <source>Paste Rule</source>
         <translation>Вставить правило из буфера обмена</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2081"/>
+        <location filename="RuleSetView.cpp" line="2187"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1931"/>
+        <location filename="RuleSetView.cpp" line="2037"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1933"/>
+        <location filename="RuleSetView.cpp" line="2039"/>
         <source>Cut</source>
         <translation>Вырезать</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1934"/>
+        <location filename="RuleSetView.cpp" line="2040"/>
         <source>Paste</source>
         <translation>Вставить из буфера обмена</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1937"/>
+        <location filename="RuleSetView.cpp" line="2043"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1945"/>
+        <location filename="RuleSetView.cpp" line="2051"/>
         <source>Negate</source>
         <translation>Отрицание</translation>
     </message>
@@ -11032,67 +11033,67 @@ for this rule</source>
         <translation type="obsolete">Цветовая метка:</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2031"/>
+        <location filename="RuleSetView.cpp" line="2137"/>
         <source>Add Rule Below</source>
         <translation>Добавить правило ниже</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2034"/>
+        <location filename="RuleSetView.cpp" line="2140"/>
         <source>Remove Rule</source>
         <translation>Удалить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2035"/>
+        <location filename="RuleSetView.cpp" line="2141"/>
         <source>Remove Rules</source>
         <translation>Удалить правила</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2038"/>
+        <location filename="RuleSetView.cpp" line="2144"/>
         <source>Move Rule</source>
         <translation>Переместить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2039"/>
+        <location filename="RuleSetView.cpp" line="2145"/>
         <source>Move Rules</source>
         <translation>Переместить правила</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2045"/>
+        <location filename="RuleSetView.cpp" line="2151"/>
         <source>Copy Rule</source>
         <translation>Копировать правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2047"/>
+        <location filename="RuleSetView.cpp" line="2153"/>
         <source>Cut Rule</source>
         <translation>Вырезать правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2049"/>
+        <location filename="RuleSetView.cpp" line="2155"/>
         <source>Paste Rule Above</source>
         <translation>Вставить правило выше</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2051"/>
+        <location filename="RuleSetView.cpp" line="2157"/>
         <source>Paste Rule Below</source>
         <translation>Вставить правило ниже</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2058"/>
+        <location filename="RuleSetView.cpp" line="2164"/>
         <source>Enable Rule</source>
         <translation>Включить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2059"/>
+        <location filename="RuleSetView.cpp" line="2165"/>
         <source>Enable Rules</source>
         <translation>Включить правила</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2063"/>
+        <location filename="RuleSetView.cpp" line="2169"/>
         <source>Disable Rule</source>
         <translation>Отключить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2064"/>
+        <location filename="RuleSetView.cpp" line="2170"/>
         <source>Disable Rules</source>
         <translation>Отключить правила</translation>
     </message>
@@ -11102,7 +11103,7 @@ for this rule</source>
         <translation type="obsolete">Редактор комментариев</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="970"/>
+        <location filename="RuleSetView.cpp" line="1031"/>
         <source>Any</source>
         <translation>Любой</translation>
     </message>
@@ -11127,112 +11128,112 @@ for this rule</source>
         <translation type="obsolete">Учитывать</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1898"/>
+        <location filename="RuleSetView.cpp" line="2004"/>
         <source>Inbound</source>
         <translation>Входящее</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1900"/>
+        <location filename="RuleSetView.cpp" line="2006"/>
         <source>Outbound</source>
         <translation>Исходящее</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1902"/>
+        <location filename="RuleSetView.cpp" line="2008"/>
         <source>Both</source>
         <translation>Оба</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1909"/>
+        <location filename="RuleSetView.cpp" line="2015"/>
         <source>Rule Options</source>
         <translation>Опции правила</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1915"/>
+        <location filename="RuleSetView.cpp" line="2021"/>
         <source>Logging On</source>
         <translation>Включить протоколирование</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1917"/>
+        <location filename="RuleSetView.cpp" line="2023"/>
         <source>Logging Off</source>
         <translation>Отключить протоколирование</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="958"/>
+        <location filename="RuleSetView.cpp" line="1019"/>
         <source>Default</source>
         <translation>По-умолчанию</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="961"/>
+        <location filename="RuleSetView.cpp" line="1022"/>
         <source>All</source>
         <translation>Все</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1883"/>
+        <location filename="RuleSetView.cpp" line="1989"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1942"/>
+        <location filename="RuleSetView.cpp" line="2048"/>
         <source>Reveal in tree</source>
         <translation>Показывать в дереве</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1940"/>
+        <location filename="RuleSetView.cpp" line="2046"/>
         <source>Where used</source>
         <translation type="unfinished">Используется</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1993"/>
+        <location filename="RuleSetView.cpp" line="2099"/>
         <source>Rules %1-%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1996"/>
+        <location filename="RuleSetView.cpp" line="2102"/>
         <source>Rule %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1998"/>
+        <location filename="RuleSetView.cpp" line="2104"/>
         <source>Change color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2002"/>
+        <location filename="RuleSetView.cpp" line="2108"/>
         <source>No color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2005"/>
+        <location filename="RuleSetView.cpp" line="2111"/>
         <source>Red</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2008"/>
+        <location filename="RuleSetView.cpp" line="2114"/>
         <source>Orange</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2011"/>
+        <location filename="RuleSetView.cpp" line="2117"/>
         <source>Yellow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2014"/>
+        <location filename="RuleSetView.cpp" line="2120"/>
         <source>Green</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2017"/>
+        <location filename="RuleSetView.cpp" line="2123"/>
         <source>Blue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2020"/>
+        <location filename="RuleSetView.cpp" line="2126"/>
         <source>Purple</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2023"/>
+        <location filename="RuleSetView.cpp" line="2129"/>
         <source>Gray</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16963,92 +16964,92 @@ First, create temporary access list to permit connections from the management su
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="55"/>
+        <location filename="prefsdialog_q.ui" line="76"/>
         <source>&amp;OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="71"/>
+        <location filename="prefsdialog_q.ui" line="92"/>
         <source>&amp;Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="87"/>
+        <location filename="prefsdialog_q.ui" line="111"/>
         <source>General</source>
         <translation>Общие</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="381"/>
+        <location filename="prefsdialog_q.ui" line="427"/>
         <source>Working directory:</source>
         <translation>Рабочий каталог:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="507"/>
+        <location filename="prefsdialog_q.ui" line="578"/>
         <source>Browse...</source>
         <translation>Выбрать...</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="323"/>
+        <location filename="prefsdialog_q.ui" line="371"/>
         <source>On startup: </source>
         <translation>При запуске:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="334"/>
+        <location filename="prefsdialog_q.ui" line="382"/>
         <source>Load standard objects</source>
         <translation>Загрузить стандартные объекты</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="339"/>
+        <location filename="prefsdialog_q.ui" line="387"/>
         <source>Load last edited file</source>
         <translation>Загрузить последний редактированный проект</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="347"/>
+        <location filename="prefsdialog_q.ui" line="395"/>
         <source>Expand all branches in the object tree</source>
         <translation>Раскрыть все дерево объектов</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="229"/>
+        <location filename="prefsdialog_q.ui" line="265"/>
         <source>Tooltip delay:</source>
         <translation>Задержка всплывающей подсказки:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="269"/>
+        <location filename="prefsdialog_q.ui" line="305"/>
         <source>Automatically save data in dialogs when switching between objects</source>
         <translation>Автоматически сохранять данные в диалогах при переключении между объектами</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="215"/>
+        <location filename="prefsdialog_q.ui" line="251"/>
         <source>Periodically save data to file every </source>
         <translation>Периодически сохранять данные в файл, каждые</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="195"/>
+        <location filename="prefsdialog_q.ui" line="231"/>
         <source>minutes</source>
         <translation>минут</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="239"/>
+        <location filename="prefsdialog_q.ui" line="275"/>
         <source>Enable object tooltips</source>
         <translation>Включить всплывающие подсказки для объектов</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="246"/>
+        <location filename="prefsdialog_q.ui" line="282"/>
         <source>Show deleted objects</source>
         <translation>Показывать удаленные объекты</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="419"/>
+        <location filename="prefsdialog_q.ui" line="468"/>
         <source>Revision Control</source>
         <translation>Управление версиями (ревизиями)</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="431"/>
+        <location filename="prefsdialog_q.ui" line="492"/>
         <source>Do not ask for the log record when checking in new file revision.</source>
         <translation>Всегда помещать файл в систему контроля версий с пустой записью в журнал.</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="455"/>
+        <location filename="prefsdialog_q.ui" line="516"/>
         <source>SSH</source>
         <translation>SSH</translation>
     </message>
@@ -17058,92 +17059,92 @@ First, create temporary access list to permit connections from the management su
         <translation type="obsolete">Полный путь к утилите SCP (например, scp для Unix и pscp.exe или vcp.exe для Windows):</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="486"/>
+        <location filename="prefsdialog_q.ui" line="559"/>
         <source>A full path to the Secure Shell utility (remote command execution; for example ssh on Unix or plink.exe or vsh.exe on Windows):</source>
         <translation>Полный путь к утилите SSH (например, ssh для Unix и plink.exe или vsh.exe для Windows):</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="515"/>
+        <location filename="prefsdialog_q.ui" line="586"/>
         <source>Libraries</source>
         <translation>Библиотеки</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="527"/>
+        <location filename="prefsdialog_q.ui" line="610"/>
         <source>Add...</source>
         <translation>Добавить...</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="534"/>
+        <location filename="prefsdialog_q.ui" line="617"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="549"/>
+        <location filename="prefsdialog_q.ui" line="630"/>
         <source>If you remove libraries from the list, changes get in effect next time you start the program</source>
         <translation>При удалении библиотеки, изменения вступят в силу после перезапуска программы</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="562"/>
+        <location filename="prefsdialog_q.ui" line="643"/>
         <source>Available libraries:</source>
         <translation>Доступные библиотеки:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="573"/>
+        <location filename="prefsdialog_q.ui" line="654"/>
         <source>Name</source>
         <translation>Название</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="578"/>
+        <location filename="prefsdialog_q.ui" line="659"/>
         <source>Load</source>
         <translation>Загрузить</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="583"/>
+        <location filename="prefsdialog_q.ui" line="664"/>
         <source>File Path</source>
         <translation>Путь к файлу</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="592"/>
+        <location filename="prefsdialog_q.ui" line="673"/>
         <source>Labels</source>
         <translation>Метки</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="604"/>
+        <location filename="prefsdialog_q.ui" line="697"/>
         <source>Use these labels to mark rules in the firewall policy</source>
         <translation>Использовать эти метки для маркировки правил в наборе</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="741"/>
+        <location filename="prefsdialog_q.ui" line="846"/>
         <source>Green</source>
         <translation>Зеленый</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="727"/>
+        <location filename="prefsdialog_q.ui" line="832"/>
         <source>Purple</source>
         <translation>Пурпурный</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="664"/>
+        <location filename="prefsdialog_q.ui" line="769"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="692"/>
+        <location filename="prefsdialog_q.ui" line="797"/>
         <source>Orange</source>
         <translation>Оранжевый</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="671"/>
+        <location filename="prefsdialog_q.ui" line="776"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="748"/>
+        <location filename="prefsdialog_q.ui" line="853"/>
         <source>Gray</source>
         <translation>Серый</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="678"/>
+        <location filename="prefsdialog_q.ui" line="783"/>
         <source>Yellow</source>
         <translation>Желтый</translation>
     </message>
@@ -17166,6 +17167,76 @@ First, create temporary access list to permit connections from the management su
         <location filename="" line="1651992111"/>
         <source>Ask user what to do</source>
         <translation type="obsolete">Спросить, что делать дальше</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="863"/>
+        <source>Icons</source>
+        <translation>Иконки</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="872"/>
+        <source>Show icons in rules</source>
+        <translation>Показывать иконки в правилах</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="882"/>
+        <source>Icon size:</source>
+        <translation>Размер иконок:</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="898"/>
+        <source>25x25</source>
+        <translation>25x25</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="891"/>
+        <source>16x16</source>
+        <translation>16x16</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="460"/>
+        <source>Show comments in tooltips</source>
+        <translation>Показывать комментарии во всплывающих подсказках</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="866"/>
+        <source>Icons settings</source>
+        <translation>Настройки иконок</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="925"/>
+        <source>Fonts</source>
+        <translation>Шрифты</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="931"/>
+        <source>Choose font for rules sets</source>
+        <translation>Выберите шрифт для правил</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="934"/>
+        <source>Rules font </source>
+        <translation>Шрифт правил</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="954"/>
+        <source>Choose font for tree</source>
+        <translation>Выберите шрифт для дерева</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="957"/>
+        <source>Tree font</source>
+        <translation>Шрифт дерева</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="964"/>
+        <source>Choose font for the rest of the interface</source>
+        <translation>Выберите шрифт для остальной части интерфейса</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="967"/>
+        <source>Interface font</source>
+        <translation>Шрифт интерфейса</translation>
     </message>
 </context>
 <context>

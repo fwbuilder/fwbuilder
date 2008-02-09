@@ -29,6 +29,7 @@
 #include <qsettings.h>
 #include <qrect.h>
 #include <qprinter.h>
+#include <qfont.h>
 
 class QWidget;
 
@@ -47,6 +48,7 @@ class FWBSettings : public QSettings {
  public:
 
     enum LabelColors { RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, GRAY };
+    enum IconSize{ SIZE25X25, SIZE16X16};
 
  private:
     QString getLabelColorStr(enum LabelColors c);
@@ -134,6 +136,26 @@ class FWBSettings : public QSettings {
 
     void    getPrinterOptions(QPrinter *printer,int &pageWidth,int &pageHeight);
     void    setPrinterOptions(QPrinter *printer,int pageWidth,int pageHeight);
+
+    enum IconSize getIconsInRulesSize();
+    void setIconsInRulesSize(enum IconSize size);
+
+    bool getShowIconsInRules();
+    void setShowIconsInRules(bool showIcons);
+
+    QFont getRulesFont();
+    void setRulesFont(const QFont &font);
+
+    QFont getTreeFont();
+    void setTreeFont(const QFont &font);
+
+    QFont getUiFont();
+    void setUiFont(const QFont &font);
+
+    bool getShowCommentTip();
+    void setShowCommentTip(bool);
+private:
+    QFont getFontByType(const char*type);
 };
 
 #endif

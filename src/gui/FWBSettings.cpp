@@ -96,6 +96,13 @@ const char* WindowGeometrySetpath= SETTINGS_PATH_PREFIX "/Layout/";
 const char* screenPositionSetpath= SETTINGS_PATH_PREFIX "/ScreenPos/";
 
 const char* SSHPath              = SETTINGS_PATH_PREFIX "/SSH/SSHPath";
+const char* showIconsInRules     = SETTINGS_PATH_PREFIX "/UI/Icons/ShowIconsInRules";
+const char* iconsInRulesSize     = SETTINGS_PATH_PREFIX "/UI/Icons/IconsInRulesSize";
+const char* rulesFont            = SETTINGS_PATH_PREFIX "/UI/Fonts/RulesFont";
+const char* treeFont             = SETTINGS_PATH_PREFIX "/UI/Fonts/TreeFont";
+const char* uiFont               = SETTINGS_PATH_PREFIX "/UI/Fonts/UiFont";
+
+const char* showCommentTip       = SETTINGS_PATH_PREFIX "/UI/ShowCommentTip";
 
 FWBSettings::FWBSettings() : QSettings(QSettings::UserScope, "netcitadel.com", "Firewall Builder")
 {
@@ -162,7 +169,7 @@ void FWBSettings::init()
 
     QString c;
     if (getLabelColor(RED   ).isEmpty())
-    { setLabelColor(RED   ,"#C86E6E"); setLabelText(RED   ,"Red"); }
+    { setLabelColor(RED   ,"#C86E6E"); setLabelText(RED,"Red"); }
     if (getLabelColor(ORANGE).isEmpty())
     { setLabelColor(ORANGE,"#C08B5A"); setLabelText(ORANGE,"Orange"); }
     if (getLabelColor(YELLOW).isEmpty())
@@ -175,6 +182,24 @@ void FWBSettings::init()
     { setLabelColor(PURPLE,"#A37EC0"); setLabelText(PURPLE,"Purple"); }
     if (getLabelColor(GRAY  ).isEmpty())
     { setLabelColor(GRAY  ,"#C0C0C0"); setLabelText(GRAY  ,"Gray"); }
+
+    ok = contains(showIconsInRules);
+    if (!ok) setShowIconsInRules(true);
+
+    ok = contains(iconsInRulesSize);
+    if (!ok) setIconsInRulesSize(SIZE25X25);
+
+    ok = contains(rulesFont);
+    if (!ok) setRulesFont(QFont("times", 11, QFont::Normal));
+
+    ok = contains(treeFont);
+    if (!ok) setTreeFont(QFont("times", 11, QFont::Normal));
+
+    ok = contains(uiFont);
+    if (!ok) setUiFont(QFont("times", 11, QFont::Normal));
+    
+    ok = contains(showCommentTip);
+    if (!ok) setShowCommentTip(false);
 
 #ifndef _WIN32
     if (getSSHPath().isEmpty())  setSSHPath("ssh");
@@ -486,7 +511,7 @@ QString FWBSettings::getSSHPath()
     return value(SSHPath).toString();
 }
 
-void    FWBSettings::setSSHPath(const QString &path)
+void FWBSettings::setSSHPath(const QString &path)
 {
     setValue(SSHPath,path);
 }
@@ -529,3 +554,77 @@ void    FWBSettings::setPrinterOptions(QPrinter *printer,int pageWidth,int pageH
     setInt("PrintSetup/pageHeight",pageHeight);
 }
 
+
+FWBSettings::IconSize FWBSettings::getIconsInRulesSize()
+{
+    QString val = value(QString(iconsInRulesSize)).toString();
+    if ("SIZE25X25" == val)
+        return SIZE25X25;
+    if ("SIZE16X16" == val)
+        return SIZE16X16;
+    return SIZE25X25;
+}
+
+void FWBSettings::setIconsInRulesSize(FWBSettings::IconSize size)
+{
+    setValue(QString(iconsInRulesSize), QString(SIZE25X25 == size ? "SIZE25X25":"SIZE16X16"));
+}
+
+bool FWBSettings::getShowIconsInRules()
+{
+    return value(showIconsInRules).toBool();
+}
+
+void FWBSettings::setShowIconsInRules(bool showIcons)
+{
+    setValue(showIconsInRules, showIcons);
+}
+
+QFont FWBSettings::getRulesFont()
+{
+    return getFontByType(rulesFont);
+}
+
+void FWBSettings::setRulesFont(const QFont &font)
+{
+    setValue(rulesFont, font.toString());
+}
+
+QFont FWBSettings::getTreeFont()
+{
+    return getFontByType(treeFont);
+}
+
+void FWBSettings::setTreeFont(const QFont &font)
+{
+    setValue(treeFont, font.toString());
+}
+
+QFont FWBSettings::getUiFont()
+{
+    return getFontByType(uiFont);
+}
+
+void FWBSettings::setUiFont(const QFont &font)
+{
+    setValue(uiFont, font.toString());
+}
+
+QFont FWBSettings::getFontByType(const char *type)
+{
+    QFont font = QFont();
+    bool ok = font.fromString(value(type).toString());
+    if (ok)
+      return font;
+    return QFont("times", 11, QFont::Normal);
+}
+
+bool FWBSettings::getShowCommentTip()
+{
+    return value(showCommentTip).toBool();
+}
+
+void FWBSettings::setShowCommentTip(bool showTooltip)
+{
+    setValue(showCommentTip, showTooltip);
+}

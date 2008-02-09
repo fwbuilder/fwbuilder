@@ -112,7 +112,7 @@ class ObjectTreeView : public QTreeWidget {
 
     void becomingVisible() { visible=true; }
     void becomingHidden()  { visible=false; }
-
+    void updateAfterPrefEdit();
 /* Under some circumstances, user may select several host or fw
  * objects so that their children objects are selected as well
  * (e.g. when shift-click is used). "Delete objects" or "group

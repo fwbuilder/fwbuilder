@@ -298,8 +298,7 @@ FWBTree::FWBTree()
     deleteMenuState["Services/TCP"] = false;
     deleteMenuState["Services/UDP"] = false;
     deleteMenuState["Services/TagServices"] = false;
-    deleteMenuState["Time"] = false;
-
+    deleteMenuState["Time"] = false;    
 }
 
 /**

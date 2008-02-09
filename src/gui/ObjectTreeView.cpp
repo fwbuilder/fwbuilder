@@ -80,6 +80,7 @@ ObjectTreeView::ObjectTreeView(QWidget* parent, const char * name, Qt::WFlags f)
 {
     setObjectName(name);
     this->setParent(parent, f);
+    setFont (st->getTreeFont());
 //    setAcceptDrops( TRUE );
     item_before_drag_started=NULL;
     lastSelected = NULL;
@@ -879,3 +880,7 @@ int  ObjectTreeView::getNumSelected()
     return selectedObjects.size();
 }
 
+void ObjectTreeView::updateAfterPrefEdit()
+{
+     setFont(st->getTreeFont());
+}

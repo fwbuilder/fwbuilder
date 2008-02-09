@@ -47,6 +47,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <list>
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Resources.h"
@@ -122,7 +123,7 @@ void RuleTableModel::setRowCount ( const int &value )
     //need to reset model for RuleSetView::iinit (two is)
 }
     
-QVariant RuleTableModel::data ( const QModelIndex &, int ) const
+QVariant RuleTableModel::data ( const QModelIndex &, int role) const
 {
     return QVariant();
 }
@@ -145,7 +146,8 @@ QVariant RuleTableModel::headerData(int section, Qt::Orientation orientation, in
             return QString::number(section);
         if (role == Qt::FontRole)
         {
-            QFont f = QAbstractTableModel::headerData(section, orientation, role ).value<QFont>();
+            //QFont f = QAbstractTableModel::headerData(section, orientation, role ).value<QFont>();
+            QFont f = st->getRulesFont();
             
             if ((section >= ruleSetView->firstSelectedRule) && (section <= ruleSetView->lastSelectedRule))
                 f.setBold(true);
@@ -172,21 +174,21 @@ bool RuleTableModel::setHeader ( QStringList qsl )
 void RuleTableModel::insertRow( const int before_pos )
 {
     m_rowCount++;
-    
+
     ruleSetView->freezeRowSizing();
-    
+
     ruleSetView->rowHeights.push_back(0);
     for (int i = static_cast<int>(ruleSetView->rowHeights.size())-1; i >= before_pos; i--)
         ruleSetView->rowHeights[i+1] = ruleSetView->rowHeights[i];
     ruleSetView->rowHeights[before_pos] = 30; //standard size
-    
+
     //we add a row here and system resets below rows' sizes
     //so we had to freeze our sizes for restoring them later
-    
+
     QAbstractTableModel::beginInsertRows( QModelIndex(), before_pos, before_pos );
     QAbstractTableModel::insertRow(before_pos);
     QAbstractTableModel::endInsertRows();
-    
+
     //somehow QAbstractItemModel breaks all the sizes after "before_pos" row
     //so we restore them
     if (before_pos > 0)
@@ -404,7 +406,7 @@ RuleSetView::RuleSetView( int r, int c, QWidget *parent ) : QTableView( /*r, c,*
 {
     firstSelectedRule = -1;
     lastSelectedRule = -1;
-    
+    setFont(st->getRulesFont());
     rowSizingFrozen = false;
     
     ruleModel = new RuleTableModel(r, c, this);
@@ -430,7 +432,7 @@ RuleSetView::RuleSetView( int r, int c, QWidget *parent ) : QTableView( /*r, c,*
 
     setSelectionMode( QAbstractItemView::ContiguousSelection );
     setSelectionBehavior( QAbstractItemView::SelectRows );
-
+    
     int lm, tm, rm, bm;
     getContentsMargins(&lm, &tm, &rm, &bm);
     setContentsMargins(fontMetrics().width( "W999W" ), tm, rm, bm);
@@ -473,17 +475,52 @@ RuleSetView::~RuleSetView()
 {
 }
 
+bool RuleSetView::showComment(QPoint pos, QHelpEvent *he)
+{
+    if (!st->getShowCommentTip())
+        return false;
+    int col = columnAt(pos.x() - verticalHeader()->width());
+    if((pos.y() >= horizontalHeader()->height()) && RuleSetView::Comment == getColType(col))
+    {            
+        
+        QString t="";
+        int row = rowAt(pos.y() - horizontalHeader()->height());
+          
+        QRect   cr;
+
+        cr=ruleDelegate->cellGeometry(row,col);
+        PolicyRule *rule = PolicyRule::cast( getRule(row) );
+        if (rule!=NULL)
+        {
+            Rule *rule = Rule::cast(ruleIndex[row]);
+            t= QString::fromUtf8(rule->getComment().c_str());
+        }
+        cr = QRect(
+                cr.left() - horizontalOffset() - 2,
+                cr.top() - verticalOffset() - 2,
+                cr.width() + 4,
+                cr.height() + 4); 
+
+        QRect global = QRect(
+            viewport()->mapToGlobal(cr.topLeft()), viewport()->mapToGlobal(cr.bottomRight()));
+        QToolTip::showText(mapToGlobal( he->pos() ), t, this, global);
+        return true;
+    }
+    return false;
+}
+      
 bool RuleSetView::event ( QEvent * event )
 {
     if (event->type() == QEvent::ToolTip)
     {
         QHelpEvent *he = (QHelpEvent*) event;
         QPoint pos = he->pos();
-
+        if (showComment(pos, he))
+            return true;
         if ((st->getObjTooltips()) && (pos.y() >= horizontalHeader()->height()))
         {
-            int row = rowAt(pos.y() - horizontalHeader()->height());
             int col = columnAt(pos.x() - verticalHeader()->width());
+            int row = rowAt(pos.y() - horizontalHeader()->height());            
 
             if ((row < 0) || (col < 0)) return true;
 
@@ -494,6 +531,7 @@ bool RuleSetView::event ( QEvent * event )
             contentsMouse.setY(contentsMouse.y() + verticalOffset() + 3);//+3 for fitting purposed
 
             cr=ruleDelegate->cellGeometry(row,col);
+            qDebug("%d", getColType(col));
 
             if ( RuleSetView::Options == getColType(col) )
             {
@@ -706,7 +744,7 @@ void RuleSetView::init()
     map<int,int> colW;
     bool         userColWidth=false;
 
-    QFontMetrics p(font());
+    QFontMetrics p(st->getRulesFont());
 
     QString k = settingsKey();
     QString v = st->getStr(k);
@@ -721,6 +759,7 @@ void RuleSetView::init()
         {
             QString lbl = ruleModel->headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();//horzHeaderLabels->stringList()[col];
             
+
             QRect br=p.boundingRect(QRect(0,0,1000,1000),
                                     Qt::AlignLeft|Qt::AlignVCenter,
                                     lbl );
@@ -739,7 +778,7 @@ void RuleSetView::init()
         }
 //        adjustRow(row);
 
-        int h=20;
+        int h=16;
         for (int col=0; col<ncols; col++)
         {
             QRect cr = calculateCellSize(row,col);
@@ -762,26 +801,43 @@ void RuleSetView::init()
     QApplication::restoreOverrideCursor();
 }
 
+QSize RuleSetView::getPMSize()
+{
+    if (!st->getShowIconsInRules()){
+        pixmap_h    = 0;
+        pixmap_w    = 0;
+        return QSize();
+    }
+    QString icn="icon-ref";
+    if (FWBSettings::SIZE16X16 == st->getIconsInRulesSize())
+        icn="icon-tree";
+//    return QPixmap::fromMimeSource( 
+//        Resources::global_res->getObjResourceStr(obj, icn).c_str() );
+
+    QString icn_file = QString(":/Icons/AddressTable/")+icn;
+    
+    if (fwbdebug)
+        qDebug("RuleSetView::getPMSize()   icn=%s",icn.toAscii().constData());
+    QPixmap pm;
+    LoadPixmap(icn_file, pm);
+    
+    pixmap_h    = pm.height();
+    pixmap_w    = pm.width();
+    return pm.size();
+}
+
 void RuleSetView::iinit()
 {
     ruleModel->setRowCount( ruleset->size() );
 
-    QString icn = ":/Icons/Accept";
+    QSize sz = getPMSize();
 
-    if (fwbdebug)
-        qDebug("RuleSetView::iinit()   icn=%s",icn.toAscii().constData());
-
-    QPixmap pm;
-    LoadPixmap(icn, pm);
-
-    pixmap_h    = pm.height();
-    pixmap_w    = pm.width();
-
-    QFontMetrics p(font());
+    QFontMetrics p(st->getRulesFont());
     QRect br = p.boundingRect(QRect(0, 0, 1000, 1000),
                               Qt::AlignLeft|Qt::AlignVCenter,"WMWM" );
     text_h   = br.height();
     item_h   = ( (pixmap_h>text_h)?pixmap_h:text_h ) + RuleElementSpacing;
+    //qDebug("pixmap_h = %d text_h = %d item_h = %d", pixmap_h, text_h, item_h);
 
     FWObject *f = getFirewall();
 
@@ -816,16 +872,20 @@ void RuleSetView::clear()
 
 QRect RuleSetView::calculateCellSize( int row, int col )
 {
-    int h = 20;
+    int h = 16;
     int re_size;
-
+    getPMSize();
 //    if (fwbdebug)
 //        qDebug("RuleSetView::calculateCellSize: row=%d col=%d",
 //               row,col);
 
     //QPainter p(this);
-    QFontMetrics p(font());
+    QFontMetrics p(st->getRulesFont());
+    QRect br = p.boundingRect(QRect(0, 0, 1000, 1000),
+                              Qt::AlignLeft|Qt::AlignVCenter,"WMWM" );
+    text_h   = br.height();
 
+    item_h = ((pixmap_h>text_h) ? pixmap_h:text_h) + RuleElementSpacing;
     Rule *rule = Rule::cast( ruleIndex[row] );
 
     int hc=0;
@@ -914,7 +974,7 @@ QRect RuleSetView::calculateCellSize( int row, int col )
                                     Qt::AlignLeft|Qt::AlignVCenter,
                                     QString::fromUtf8(rule->getComment().c_str()) );
             
-            hc = br.height() + RuleElementSpacing;
+            hc = item_h; //  br.height() + RuleElementSpacing; //
             wc = RuleElementSpacing/2 + br.width();
             break;
         }
@@ -924,7 +984,7 @@ QRect RuleSetView::calculateCellSize( int row, int col )
             QRect br=p.boundingRect(QRect(0, 0, 1000, 1000),
                                     Qt::AlignLeft|Qt::AlignVCenter,
                                     QString::fromUtf8(RoutingRule::cast(rule)->getMetricAsString().c_str()) );
-            hc = br.height() + RuleElementSpacing;
+            hc = item_h; //br.height() + RuleElementSpacing;
             wc = RuleElementSpacing/2 + br.width();
             break;
         }
@@ -934,6 +994,7 @@ QRect RuleSetView::calculateCellSize( int row, int col )
     }
 
     h = QMAX(h, hc);
+    h = QMAX(h, pixmap_h+RuleElementSpacing);
     
     wc = QMAX(wc, QApplication::globalStrut().width());
     wc += RuleElementSpacing/2;  // some padding
@@ -985,6 +1046,7 @@ QPixmap RuleSetView::getPixmap(FWObject *obj, PixmapAttr pmattr) const
     QString icn_file = (":/Icons/"+obj->getTypeName()+"/"+icn).c_str();// = Resources::global_res->getObjResourceStr(obj, icn).c_str();
     QPixmap pm;
     LoadPixmap(icn_file, pm);
+    //qDebug("here %s", icn_file.toAscii().constData());
 
     return pm;
 }
@@ -1011,9 +1073,8 @@ void RuleSetView::paintCell(QPainter *pntr,
     /*if (fwbdebug)
         qDebug("Draw cell: row=%d col=%d  current palette=%d",
                row,col,palette().serialNumber());*/
-
     if (ruleIndex.count(row)==0) return;
-
+    
     QString     rclr;
     Rule *rule = Rule::cast( ruleIndex[row] );
     if (rule==NULL) return;
@@ -1034,6 +1095,8 @@ void RuleSetView::paintCell(QPainter *pntr,
     bufferpixmap.fill( cg.base().color() );
 
     QPainter p( &bufferpixmap );
+    QFont font = st->getRulesFont();
+    p.setFont(font);
 
     QRect r = ruleDelegate->cellRect(row,col);
 
@@ -1094,24 +1157,13 @@ void RuleSetView::paintCell(QPainter *pntr,
             }
             x = r.left()+1;
 
-            //QPixmap pm = getPixmap(o1 , re->getNeg()?Neg:Normal );
-
-            string icn = "icon";
-            if (re->getNeg()) icn = "icon-neg";
-
-            QString icn_file = (":/Icons/"+o1->getTypeName()+"/"+icn).c_str();
-
-            QPixmap pm;
-
-            LoadPixmap(icn_file, pm);
-
-            if (!re->isAny())
-                p.drawPixmap( x, y + RuleElementSpacing/2, pm );
-
-            x += pm.width()+1;
-
+            QSize sz = drawIconInRule(p, x, y, re, o1);
+        
+            x += sz.width()+1;
+            
+            
             p.drawText( x, y + RuleElementSpacing/2,
-                        cr.width()-pm.width()-1, item_h,
+                        cr.width()-sz.width()-1, item_h,
                         Qt::AlignLeft|Qt::AlignVCenter, objectText(re,o1) );
             
             FWObject *mwSelObj = selectedObject;
@@ -1166,14 +1218,12 @@ void RuleSetView::paintCell(QPainter *pntr,
                 if (rule==NULL) return;
 
                 QString platform=getPlatform();
-                string act = rule->getActionAsString();
+                string act = rule->getActionAsString(); 
 
-                QString icn = (":/Icons/" + act).c_str(); //for example :/Icons/Continue
+                QString icn = chooseIcon((":/Icons/" + act).c_str()); //for example :/Icons/Continue
                 QString res="";
             //FWOptions *ropt = rule->getOptionsObject();
                 res = FWObjectPropertiesFactory::getRuleActionProperties(rule);
-
-                assert(icn!="");
                 QPixmap pm;
                 LoadPixmap(icn, pm);
 
@@ -1193,8 +1243,8 @@ void RuleSetView::paintCell(QPainter *pntr,
 
                 string dir = rule->getDirectionAsString();
                 if (dir.empty()) dir = "Both";
-                QString icn = (":/Icons/" + dir).c_str();
-                assert(icn!="");
+                QString icn = chooseIcon((":/Icons/" + dir).c_str());
+                
                 QPixmap pm;
                 LoadPixmap(icn, pm);
 
@@ -1231,7 +1281,8 @@ void RuleSetView::paintCell(QPainter *pntr,
                     (natRule     && ! isDefaultNATRuleOptions( rule->getOptionsObject()))
                    )
                 {
-                    QString icn = ":/Icons/Options";
+                    QString icn = chooseIcon(":/Icons/Options");
+                    //QString icn = ":/Icons/Options";//There isn't icon 16x16 for options...
 
                     QPixmap pm;
                     LoadPixmap(icn, pm);
@@ -1242,19 +1293,7 @@ void RuleSetView::paintCell(QPainter *pntr,
             }
             case Comment:
             {
-                /* comments are found in both policy and nat rules, so we cast to Rule here */
-                Rule *rule = Rule::cast( ruleIndex[row] );
-                if (rule==NULL) return;
-
-                QRect br=p.boundingRect(QRect(x, y, 1000, 1000),
-                                        Qt::AlignLeft|Qt::AlignVCenter,
-                                        QString::fromUtf8(rule->getComment().c_str()) );
-                p.drawText( x, y + RuleElementSpacing/2,
-                            br.width(),
-                            br.height(),
-                            Qt::AlignLeft|Qt::AlignVCenter,
-                            QString::fromUtf8(rule->getComment().c_str()) );
-
+                drawComment(p, row, col, cr);
                 break;
             }
             case Metric:
@@ -1280,6 +1319,70 @@ void RuleSetView::paintCell(QPainter *pntr,
     return;
 }
 
+void RuleSetView::drawComment(QPainter &p, int row, int col, const QRect &cr)
+{
+    /* comments are found in both policy and nat rules, so we cast to Rule here */
+    Rule *rule = Rule::cast( ruleIndex[row] );
+    if (rule==NULL) return;
+
+    QRect r = ruleDelegate->cellRect(row,col);
+
+    int x  = r.left() + RuleElementSpacing/2;
+    int y  = r.top();
+    QString comm = QString::fromUtf8(rule->getComment().c_str());
+    QRect br=p.boundingRect(QRect(x, y, 1000, 1000),
+                            Qt::AlignLeft|Qt::AlignVCenter,
+                            comm);
+    if (st->getShowCommentTip() && text_h > 0)
+    {
+        QStringList strs = comm.split('\n');
+
+        int h = cr.height()/text_h;
+        if (h >= 1 && h<= strs.size())
+        {
+            std::list<QString> lst(strs.begin(), strs.begin()+h);
+            comm = QStringList(QStringList::fromStdList(lst)).join("\n");
+        }
+    }
+    p.drawText( x, y + RuleElementSpacing/2,
+                    br.width(),
+                    br.height(),
+                    Qt::AlignLeft|Qt::AlignTop,
+                    comm);
+}
+
+QString RuleSetView::chooseIcon(QString icn)
+{
+    if (!st->getShowIconsInRules())
+        return QString();
+    if (FWBSettings::SIZE16X16 == st->getIconsInRulesSize())
+    {
+        if (icn.contains("-ref"))
+            return icn.replace("-ref", "-tree");
+        if (icn.contains("-neg"))
+            return icn.replace("-neg", "-tree");
+        return QString();
+    }
+    return icn;
+}
+
+QSize RuleSetView::drawIconInRule(QPainter &p, int x, int y, RuleElement *re, FWObject *o1)
+{
+
+    if (!st->getShowIconsInRules())
+        return QSize();
+    QPixmap pm; 
+    if (FWBSettings::SIZE16X16 == st->getIconsInRulesSize())  
+        pm = getPixmap(o1, Tree);
+    
+    if (FWBSettings::SIZE25X25 == st->getIconsInRulesSize())  
+        pm = getPixmap(o1, Normal);
+    if (!re->isAny())
+        p.drawPixmap( x, y + RuleElementSpacing/2, pm );
+
+    return pm.size();
+}
+        
 QString RuleSetView::getPlatform()
 {
     return  getFirewall()->getStr("platform").c_str();
@@ -1382,7 +1485,7 @@ void RuleSetView::adjustColumn( int col )
 {
     QString lbl = ruleModel->headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();
     
-    QFontMetrics p(font());//(this);
+    QFontMetrics p(st->getRulesFont());//(this);
     QRect br=p.boundingRect(QRect(0, 0, 1000, 1000),
                             Qt::AlignLeft|Qt::AlignVCenter,
                             lbl );
@@ -1406,16 +1509,19 @@ void RuleSetView::adjustRow_int( int row, int h )
          * element as defined in QApplication)
  */
     QHeaderView * leftHeader = verticalHeader();
-    
+
     h = QMAX(h, leftHeader->fontMetrics().height() + 2);
     h = QMAX(h, QApplication::globalStrut().height());
-
+    if (h == leftHeader->sectionSize(row))
+        //if new height is equal to old function vertSectionResized is
+        //not called and row heights are not set
+        setRowHeight(row, h);
     verticalHeader()->resizeSection(row, h);
 }
 
 void RuleSetView::adjustRow( int row )
 {
-    int h = 20;
+    int h = 18;
 
     for (int col=0; col<ncols; col++)
     {
@@ -3438,6 +3544,11 @@ void RuleSetView::restoreSelection(bool same_widget)
 void RuleSetView::updateAll()
 {
     int r=0;
+    init();
+    QFontMetrics p(st->getRulesFont());
+    QRect br = p.boundingRect(QRect(0, 0, 1000, 1000),
+                              Qt::AlignLeft|Qt::AlignVCenter,"WMWM" );
+    text_h   = br.height();
     for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++,r++)
         adjustRow(r);
         //dirtyRows[r] = 1;
@@ -3450,8 +3561,6 @@ void RuleSetView::updateCurrentCell()
 {
     updateCell(m_currentRow, m_currentColumn);
 }
-
-
 
 
 

@@ -14,7 +14,7 @@
   version 2 of the License, or (at your option) any later version.
 
   This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  but WITHOUT ANY WARRANTY; without even the implied wdarranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
  
@@ -49,7 +49,7 @@
 #include <qcolordialog.h>
 #include <qcolor.h>
 #include <qpixmapcache.h>
-
+#include <qfontdialog.h>
 /*
 
 #include <sys/types.h>
@@ -174,6 +174,18 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     setButtonColor(m_dialog->grayBtn,colors[FWBSettings::GRAY]);
     m_dialog->grayText->setText(t);
 
+    m_dialog->chShowIcons->setChecked(st->getShowIconsInRules() );
+
+    if (FWBSettings::SIZE25X25 == st->getIconsInRulesSize())
+        m_dialog->rb25->setChecked(true);
+    else
+        m_dialog->rb16->setChecked(true);
+    changeShowIcons();
+    
+    rulesFont = st->getRulesFont();
+    treeFont = st->getTreeFont();
+    uiFont = st->getUiFont();
+    m_dialog->chCommentTip->setChecked(st->getShowCommentTip() );
 }
 
 void PrefsDialog::changeColor(QPushButton *btn,
@@ -186,7 +198,6 @@ void PrefsDialog::changeColor(QPushButton *btn,
     colors[colorCode]= clr.name();
     setButtonColor(btn,colors[colorCode]);
 }
-
 
 void PrefsDialog::changeRedColor()
 {
@@ -223,6 +234,45 @@ void PrefsDialog::changeGrayColor()
     changeColor(m_dialog->grayBtn, FWBSettings::GRAY);
 }
 
+void PrefsDialog::changeIconSize25()
+{
+    //st->setIconsInRulesSize(FWBSettings::SIZE25X25);
+}
+
+void PrefsDialog::changeIconSize16()
+{
+    //st->setIconsInRulesSize(FWBSettings::SIZE16X16);
+}
+
+void PrefsDialog::changeShowIcons()
+{
+    bool areShown = m_dialog->chShowIcons->isChecked();
+    m_dialog->rb16->setEnabled(areShown);
+    m_dialog->rb25->setEnabled(areShown);
+}
+
+void PrefsDialog::changeRulesFont()
+{
+    changeFont(&rulesFont);
+}
+
+void PrefsDialog::changeTreeFont()
+{
+    changeFont(&treeFont);
+}
+
+void PrefsDialog::changeUiFont()
+{
+    changeFont(&uiFont);
+}
+
+void PrefsDialog::changeFont(QFont *font)
+{
+    bool ok;
+    QFont f = QFontDialog::getFont(&ok, *font, this);
+    if (ok)
+        *font = f;
+}
 
 void PrefsDialog::findWDir()
 {
@@ -384,9 +434,20 @@ void PrefsDialog::accept()
     st->setLabelText (FWBSettings::BLUE,   m_dialog->blueText->text() );
     st->setLabelText (FWBSettings::PURPLE, m_dialog->purpleText->text() );
     st->setLabelText (FWBSettings::GRAY,   m_dialog->grayText->text() );
+    
+    st->setShowIconsInRules(m_dialog->chShowIcons->isChecked());
+    FWBSettings::IconSize sz = m_dialog->rb25->isChecked() ? 
+        FWBSettings::SIZE25X25 : FWBSettings::SIZE16X16;
+    st->setIconsInRulesSize(sz);
+    
+    st->setRulesFont(rulesFont);
+    st->setTreeFont(treeFont);
+    st->setUiFont(uiFont);
 
+    st->setShowCommentTip(m_dialog->chCommentTip->isChecked());
+    
     st->setSSHPath( m_dialog->sshPath->text() );
-
+    
     QDir d;
     d.mkdir( wd );
 
@@ -395,4 +456,3 @@ void PrefsDialog::accept()
 
     QDialog::accept();
 }
-
