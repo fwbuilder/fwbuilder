@@ -185,7 +185,7 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     rulesFont = st->getRulesFont();
     treeFont = st->getTreeFont();
     uiFont = st->getUiFont();
-    m_dialog->chCommentTip->setChecked(st->getShowCommentTip() );
+    m_dialog->chClipComment->setChecked(st->getClipComment() );
 }
 
 void PrefsDialog::changeColor(QPushButton *btn,
@@ -444,7 +444,7 @@ void PrefsDialog::accept()
     st->setTreeFont(treeFont);
     st->setUiFont(uiFont);
 
-    st->setShowCommentTip(m_dialog->chCommentTip->isChecked());
+    st->setClipComment(m_dialog->chClipComment->isChecked());
     
     st->setSSHPath( m_dialog->sshPath->text() );
     

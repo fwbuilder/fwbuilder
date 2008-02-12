@@ -429,7 +429,7 @@ private:
     QSize drawIconInRule(QPainter &p, int x, int y, libfwbuilder::RuleElement *re, 
                          libfwbuilder::FWObject *o1);
     QString chooseIcon(QString icn);
-    bool showComment(QPoint pos, QHelpEvent *he);
+    bool showCommentTip(QPoint pos, QHelpEvent *he);
     void drawComment(QPainter &p, int row, int col, const QRect &cr);
 };
 

@@ -475,9 +475,9 @@ RuleSetView::~RuleSetView()
 {
 }
 
-bool RuleSetView::showComment(QPoint pos, QHelpEvent *he)
+bool RuleSetView::showCommentTip(QPoint pos, QHelpEvent *he)
 {
-    if (!st->getShowCommentTip())
+    if (!st->getClipComment())
         return false;
     int col = columnAt(pos.x() - verticalHeader()->width());
     if((pos.y() >= horizontalHeader()->height()) && RuleSetView::Comment == getColType(col))
@@ -515,7 +515,7 @@ bool RuleSetView::event ( QEvent * event )
     {
         QHelpEvent *he = (QHelpEvent*) event;
         QPoint pos = he->pos();
-        if (showComment(pos, he))
+        if (showCommentTip(pos, he))
             return true;
         if ((st->getObjTooltips()) && (pos.y() >= horizontalHeader()->height()))
         {
@@ -531,7 +531,6 @@ bool RuleSetView::event ( QEvent * event )
             contentsMouse.setY(contentsMouse.y() + verticalOffset() + 3);//+3 for fitting purposed
 
             cr=ruleDelegate->cellGeometry(row,col);
-            qDebug("%d", getColType(col));
 
             if ( RuleSetView::Options == getColType(col) )
             {
@@ -974,7 +973,7 @@ QRect RuleSetView::calculateCellSize( int row, int col )
                                     Qt::AlignLeft|Qt::AlignVCenter,
                                     QString::fromUtf8(rule->getComment().c_str()) );
             
-            hc = item_h; //  br.height() + RuleElementSpacing; //
+            hc = st->getClipComment() ? item_h : (br.height() + RuleElementSpacing/2); 
             wc = RuleElementSpacing/2 + br.width();
             break;
         }
@@ -1333,7 +1332,7 @@ void RuleSetView::drawComment(QPainter &p, int row, int col, const QRect &cr)
     QRect br=p.boundingRect(QRect(x, y, 1000, 1000),
                             Qt::AlignLeft|Qt::AlignVCenter,
                             comm);
-    if (st->getShowCommentTip() && text_h > 0)
+    if (st->getClipComment() && text_h > 0)
     {
         QStringList strs = comm.split('\n');
 

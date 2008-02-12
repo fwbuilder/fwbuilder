@@ -9227,7 +9227,7 @@ because of incompatible type.</source>
         <translation type="obsolete">1.2.9 или старше</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="573"/>
+        <location filename="RCS.cpp" line="575"/>
         <source>Fatal error during initial RCS checkin of file %1 :
  %2
 Exit status %3</source>
@@ -9236,12 +9236,12 @@ Exit status %3</source>
 Код возврата %3</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="966"/>
+        <location filename="RCS.cpp" line="968"/>
         <source>Fatal error running rlog for %1</source>
         <translation>Фатальная ошибка при выполнении rlog для %1</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="1011"/>
+        <location filename="RCS.cpp" line="1013"/>
         <source>Fatal error running rcsdiff for file %1</source>
         <translation>Фатальная ошибка при выполнении rcsdiff для файла %1</translation>
     </message>
@@ -10250,34 +10250,34 @@ Builder GUI and save back to file again.</source>
 <context>
     <name>RCS</name>
     <message>
-        <location filename="RCS.cpp" line="824"/>
+        <location filename="RCS.cpp" line="826"/>
         <source>Error checking file out: %1</source>
         <translation>Ошибка при получении файла %1 из системы контроля версий</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="825"/>
+        <location filename="RCS.cpp" line="827"/>
         <source>&amp;Continue</source>
         <translation>Продолжить</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="703"/>
+        <location filename="RCS.cpp" line="705"/>
         <source>Error creating temporary file </source>
         <translation>Ошибка при создании временного файла</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="716"/>
+        <location filename="RCS.cpp" line="718"/>
         <source>Error writing to temporary file </source>
         <translation>Ошибка при записи во временный файл</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="749"/>
+        <location filename="RCS.cpp" line="751"/>
         <source>File is opened and locked by %1.
 You can only open it read-only.</source>
         <translation>Файл уже открыт и заблокирован %1.
 Вы можете открыть его только для чтения.</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="763"/>
+        <location filename="RCS.cpp" line="765"/>
         <source>Revision %1 of this file has been checked out and locked by you earlier.
 The file may be opened in another copy of Firewall Builder or was left opened
 after the program crashed.</source>
@@ -10286,17 +10286,17 @@ after the program crashed.</source>
 возможно остался открытым после краха предидущей копии программы.</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="764"/>
+        <location filename="RCS.cpp" line="766"/>
         <source>Open &amp;read-only</source>
         <translation>Открыть только для чтения</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="764"/>
+        <location filename="RCS.cpp" line="766"/>
         <source>&amp;Open and continue editing</source>
         <translation>Открыть и продолжить редактирование</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="764"/>
+        <location filename="RCS.cpp" line="766"/>
         <source>&amp;Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -10968,52 +10968,52 @@ for this rule</source>
         <translation type="obsolete">Учёт</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="959"/>
+        <location filename="RuleSetView.cpp" line="958"/>
         <source>Outbound </source>
         <translation>Исходящее</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1018"/>
+        <location filename="RuleSetView.cpp" line="1017"/>
         <source>Original</source>
         <translation>Исходный</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2135"/>
+        <location filename="RuleSetView.cpp" line="2134"/>
         <source>Insert Rule</source>
         <translation>Вставить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1883"/>
+        <location filename="RuleSetView.cpp" line="1882"/>
         <source>Paste Rule</source>
         <translation>Вставить правило из буфера обмена</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2187"/>
+        <location filename="RuleSetView.cpp" line="2186"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2037"/>
+        <location filename="RuleSetView.cpp" line="2036"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2039"/>
+        <location filename="RuleSetView.cpp" line="2038"/>
         <source>Cut</source>
         <translation>Вырезать</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2040"/>
+        <location filename="RuleSetView.cpp" line="2039"/>
         <source>Paste</source>
         <translation>Вставить из буфера обмена</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2043"/>
+        <location filename="RuleSetView.cpp" line="2042"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2051"/>
+        <location filename="RuleSetView.cpp" line="2050"/>
         <source>Negate</source>
         <translation>Отрицание</translation>
     </message>
@@ -11033,67 +11033,67 @@ for this rule</source>
         <translation type="obsolete">Цветовая метка:</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2137"/>
+        <location filename="RuleSetView.cpp" line="2136"/>
         <source>Add Rule Below</source>
         <translation>Добавить правило ниже</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2140"/>
+        <location filename="RuleSetView.cpp" line="2139"/>
         <source>Remove Rule</source>
         <translation>Удалить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2141"/>
+        <location filename="RuleSetView.cpp" line="2140"/>
         <source>Remove Rules</source>
         <translation>Удалить правила</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2144"/>
+        <location filename="RuleSetView.cpp" line="2143"/>
         <source>Move Rule</source>
         <translation>Переместить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2145"/>
+        <location filename="RuleSetView.cpp" line="2144"/>
         <source>Move Rules</source>
         <translation>Переместить правила</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2151"/>
+        <location filename="RuleSetView.cpp" line="2150"/>
         <source>Copy Rule</source>
         <translation>Копировать правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2153"/>
+        <location filename="RuleSetView.cpp" line="2152"/>
         <source>Cut Rule</source>
         <translation>Вырезать правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2155"/>
+        <location filename="RuleSetView.cpp" line="2154"/>
         <source>Paste Rule Above</source>
         <translation>Вставить правило выше</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2157"/>
+        <location filename="RuleSetView.cpp" line="2156"/>
         <source>Paste Rule Below</source>
         <translation>Вставить правило ниже</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2164"/>
+        <location filename="RuleSetView.cpp" line="2163"/>
         <source>Enable Rule</source>
         <translation>Включить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2165"/>
+        <location filename="RuleSetView.cpp" line="2164"/>
         <source>Enable Rules</source>
         <translation>Включить правила</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2169"/>
+        <location filename="RuleSetView.cpp" line="2168"/>
         <source>Disable Rule</source>
         <translation>Отключить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2170"/>
+        <location filename="RuleSetView.cpp" line="2169"/>
         <source>Disable Rules</source>
         <translation>Отключить правила</translation>
     </message>
@@ -11103,7 +11103,7 @@ for this rule</source>
         <translation type="obsolete">Редактор комментариев</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1031"/>
+        <location filename="RuleSetView.cpp" line="1030"/>
         <source>Any</source>
         <translation>Любой</translation>
     </message>
@@ -11128,112 +11128,112 @@ for this rule</source>
         <translation type="obsolete">Учитывать</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2004"/>
+        <location filename="RuleSetView.cpp" line="2003"/>
         <source>Inbound</source>
         <translation>Входящее</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2006"/>
+        <location filename="RuleSetView.cpp" line="2005"/>
         <source>Outbound</source>
         <translation>Исходящее</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2008"/>
+        <location filename="RuleSetView.cpp" line="2007"/>
         <source>Both</source>
         <translation>Оба</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2015"/>
+        <location filename="RuleSetView.cpp" line="2014"/>
         <source>Rule Options</source>
         <translation>Опции правила</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2021"/>
+        <location filename="RuleSetView.cpp" line="2020"/>
         <source>Logging On</source>
         <translation>Включить протоколирование</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2023"/>
+        <location filename="RuleSetView.cpp" line="2022"/>
         <source>Logging Off</source>
         <translation>Отключить протоколирование</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1019"/>
+        <location filename="RuleSetView.cpp" line="1018"/>
         <source>Default</source>
         <translation>По-умолчанию</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1022"/>
+        <location filename="RuleSetView.cpp" line="1021"/>
         <source>All</source>
         <translation>Все</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1989"/>
+        <location filename="RuleSetView.cpp" line="1988"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2048"/>
+        <location filename="RuleSetView.cpp" line="2047"/>
         <source>Reveal in tree</source>
         <translation>Показывать в дереве</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2046"/>
+        <location filename="RuleSetView.cpp" line="2045"/>
         <source>Where used</source>
         <translation type="unfinished">Используется</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2099"/>
+        <location filename="RuleSetView.cpp" line="2098"/>
         <source>Rules %1-%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2102"/>
+        <location filename="RuleSetView.cpp" line="2101"/>
         <source>Rule %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2104"/>
+        <location filename="RuleSetView.cpp" line="2103"/>
         <source>Change color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2108"/>
+        <location filename="RuleSetView.cpp" line="2107"/>
         <source>No color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2111"/>
+        <location filename="RuleSetView.cpp" line="2110"/>
         <source>Red</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2114"/>
+        <location filename="RuleSetView.cpp" line="2113"/>
         <source>Orange</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2117"/>
+        <location filename="RuleSetView.cpp" line="2116"/>
         <source>Yellow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2120"/>
+        <location filename="RuleSetView.cpp" line="2119"/>
         <source>Green</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2123"/>
+        <location filename="RuleSetView.cpp" line="2122"/>
         <source>Blue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2126"/>
+        <location filename="RuleSetView.cpp" line="2125"/>
         <source>Purple</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2129"/>
+        <location filename="RuleSetView.cpp" line="2128"/>
         <source>Gray</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17195,8 +17195,8 @@ First, create temporary access list to permit connections from the management su
     </message>
     <message>
         <location filename="prefsdialog_q.ui" line="460"/>
-        <source>Show comments in tooltips</source>
-        <translation>Показывать комментарии во всплывающих подсказках</translation>
+        <source>Clip comments in rules</source>
+        <translation>Обрезать в правилах комментарии по размеру ячейки</translation>
     </message>
     <message>
         <location filename="prefsdialog_q.ui" line="866"/>

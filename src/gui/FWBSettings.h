@@ -152,8 +152,8 @@ class FWBSettings : public QSettings {
     QFont getUiFont();
     void setUiFont(const QFont &font);
 
-    bool getShowCommentTip();
-    void setShowCommentTip(bool);
+    bool getClipComment();
+    void setClipComment(bool);
 private:
     QFont getFontByType(const char*type);
 };

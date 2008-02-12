@@ -209,7 +209,7 @@
          </property>
         </spacer>
        </item>
-       <item row="5" column="7">
+       <item row="5" column="7" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
@@ -455,9 +455,9 @@
         </widget>
        </item>
        <item row="7" column="1" colspan="6" >
-        <widget class="QCheckBox" name="chCommentTip" >
+        <widget class="QCheckBox" name="chClipComment" >
          <property name="text" >
-          <string>Show comments in tooltips</string>
+          <string>Clip comments in rules</string>
          </property>
         </widget>
        </item>
@@ -1248,53 +1248,101 @@
      <y>20</y>
     </hint>
    </hints>
- </connection>
- <connection>
+  </connection>
+  <connection>
    <sender>btRulesFont</sender>
    <signal>clicked()</signal>
    <receiver>prefsDialog_q</receiver>
    <slot>changeRulesFont()</slot>
    <hints>
-     <hint type="sourcelabel" >
-       <x>20</x>
-       <y>20</y>
-     </hint>
-     <hint type="destinationlabel" >
-       <x>20</x>
-       <y>20</y>
-     </hint>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
    </hints>
- </connection>
- <connection>
+  </connection>
+  <connection>
+   <sender>chShowIcons</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>changeShowIcons()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rb16</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>changeIconSize16()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rb25</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>changeIconSize25()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>btTreeFont</sender>
    <signal>clicked()</signal>
    <receiver>prefsDialog_q</receiver>
    <slot>changeTreeFont()</slot>
    <hints>
-     <hint type="sourcelabel" >
-       <x>20</x>
-       <y>20</y>
-     </hint>
-     <hint type="destinationlabel" >
-       <x>20</x>
-       <y>20</y>
-     </hint>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
    </hints>
- </connection>
- <connection>
+  </connection>
+  <connection>
    <sender>btUiFont</sender>
    <signal>clicked()</signal>
    <receiver>prefsDialog_q</receiver>
    <slot>changeUiFont()</slot>
    <hints>
-     <hint type="sourcelabel" >
-       <x>20</x>
-       <y>20</y>
-     </hint>
-     <hint type="destinationlabel" >
-       <x>20</x>
-       <y>20</y>
-     </hint>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
    </hints>
   </connection>
  </connections>

@@ -102,7 +102,7 @@ const char* rulesFont            = SETTINGS_PATH_PREFIX "/UI/Fonts/RulesFont";
 const char* treeFont             = SETTINGS_PATH_PREFIX "/UI/Fonts/TreeFont";
 const char* uiFont               = SETTINGS_PATH_PREFIX "/UI/Fonts/UiFont";
 
-const char* showCommentTip       = SETTINGS_PATH_PREFIX "/UI/ShowCommentTip";
+const char* clipComment       = SETTINGS_PATH_PREFIX "/UI/ClipComment";
 
 FWBSettings::FWBSettings() : QSettings(QSettings::UserScope, "netcitadel.com", "Firewall Builder")
 {
@@ -198,8 +198,8 @@ void FWBSettings::init()
     ok = contains(uiFont);
     if (!ok) setUiFont(QFont("times", 11, QFont::Normal));
     
-    ok = contains(showCommentTip);
-    if (!ok) setShowCommentTip(false);
+    ok = contains(clipComment);
+    if (!ok) setClipComment(true);
 
 #ifndef _WIN32
     if (getSSHPath().isEmpty())  setSSHPath("ssh");
@@ -619,12 +619,12 @@ QFont FWBSettings::getFontByType(const char *type)
     return QFont("times", 11, QFont::Normal);
 }
 
-bool FWBSettings::getShowCommentTip()
+bool FWBSettings::getClipComment()
 {
-    return value(showCommentTip).toBool();
+    return value(clipComment).toBool();
 }
 
-void FWBSettings::setShowCommentTip(bool showTooltip)
+void FWBSettings::setClipComment(bool clip)
 {
-    setValue(showCommentTip, showTooltip);
+    setValue(clipComment, clip);
 }
