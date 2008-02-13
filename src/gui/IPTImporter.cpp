@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id: IPTImporter.cpp,v 1.9 2007/08/06 07:07:22 vkurland Exp $
+  $Id: IPTImporter.cpp,v 1.10 2008/02/11 01:30:39 vkurland Exp $
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -479,9 +479,20 @@ void IPTImporter::pushPolicyRule()
         ropt->setBool("ipt_continue", !action_params["route_continue"].empty());
         ropt->setBool("ipt_tee",      !action_params["route_tee"].empty());
     }
+
     if (target=="RETURN")
     {
         action = PolicyRule::Continue;
+    }
+
+    if (target=="TCPMSS" && action_params["clamp-mss-to-pmtu"]=="--clamp-mss-to-pmtu")
+    {
+        fwopt->setBool("clamp_mss_to_mtu", true);
+        skip_rule = true;
+        *Importer::logger
+            << "Using automatic rule controlled by option "
+            << "Clamp MSS to MTU"
+            << "\n";
     }
 
     if (action==PolicyRule::Unknown)

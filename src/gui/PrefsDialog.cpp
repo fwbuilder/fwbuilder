@@ -90,7 +90,9 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->setupUi(this);
     
     m_dialog->wDir->setText( st->getWDir() );
-    m_dialog->startupAction->setCurrentIndex( st->getStartupAction() );
+    int sa_itm = st->getStartupAction();
+    if (sa_itm < 0 || sa_itm > 1) sa_itm = 0;
+    m_dialog->startupAction->setCurrentIndex( sa_itm );
     m_dialog->expandTree->setChecked( st->getExpandTree() );
 //    mergeLibs->setChecked( st->getMergeLibs() );
 

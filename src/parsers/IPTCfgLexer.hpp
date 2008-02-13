@@ -72,6 +72,7 @@ public:
 	public: void mMATCH_DST_PORT(bool _createToken);
 	public: void mMATCH_SYN(bool _createToken);
 	public: void mMATCH_TCP_FLAGS(bool _createToken);
+	public: void mMATCH_TCP_OPTION(bool _createToken);
 	public: void mMATCH_SRC_PORT_SHORT(bool _createToken);
 	public: void mMATCH_DST_PORT_SHORT(bool _createToken);
 	public: void mMATCH_ICMP_TYPE(bool _createToken);
@@ -101,6 +102,7 @@ public:
 	public: void mTO_DESTINATION(bool _createToken);
 	public: void mTO_PORTS(bool _createToken);
 	public: void mTO_NETMAP(bool _createToken);
+	public: void mCLAMP_MSS(bool _createToken);
 	public: void mOPT_MODULE(bool _createToken);
 	public: void mOPT_SRC(bool _createToken);
 	public: void mOPT_DST(bool _createToken);

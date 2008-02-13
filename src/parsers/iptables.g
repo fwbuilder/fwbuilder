@@ -514,6 +514,12 @@ target_options :
                     *dbg << "/" << LT(0)->getText();
                 }
             )
+        |
+            CLAMP_MSS
+            {
+                importer->action_params["clamp-mss-to-pmtu"] = "--clamp-mss-to-pmtu";
+                *dbg << " TO-NETMAP";
+            }
         )
     ;
 
@@ -828,7 +834,7 @@ m_tcp : TCP
 // tcp options can follow "-p tcp", the "-m tcp" seems to be optional,
 // at least in the older versions of iptables
 
-tcp_options : ( syn | tcp_flags)
+tcp_options : ( syn | tcp_flags | tcp_option)
     ;
 
 syn :   (   
@@ -909,6 +915,9 @@ tcp_flags : MATCH_TCP_FLAGS
         }
     ;
 
+// --tcp-option is not supported in fwbuilder at this time
+tcp_option : MATCH_TCP_OPTION (NUMBER | EXCLAMATION NUMBER)
+    ;
 
 //****************************************************************
 
@@ -1026,6 +1035,7 @@ MATCH_DST_PORT : "--destination-port" ;
 
 MATCH_SYN : "--syn" ;
 MATCH_TCP_FLAGS : "--tcp-flags" ;
+MATCH_TCP_OPTION : "--tcp-option" ;
 
 MATCH_SRC_PORT_SHORT : "--sport" ;
 MATCH_DST_PORT_SHORT : "--dport" ;
@@ -1064,6 +1074,8 @@ TO_SOURCE : "--to-source" ;
 TO_DESTINATION : "--to-destination" ;
 TO_PORTS : "--to-ports" ;
 TO_NETMAP : "--to" ;
+
+CLAMP_MSS : "--clamp-mss-to-pmtu" ;
 
 // ----------------------------------------------------------------
 // these are the basic iptables options, not too many really

@@ -110,6 +110,7 @@ public:
 	public: void port_def_with_range();
 	public: void syn();
 	public: void tcp_flags();
+	public: void tcp_option();
 	public: void tcp_flag_word();
 	public: void tcp_flags_list();
 public:
@@ -123,10 +124,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 119;
+	static const int NUM_TOKENS = 121;
 #else
 	enum {
-		NUM_TOKENS = 119
+		NUM_TOKENS = 121
 	};
 #endif
 	

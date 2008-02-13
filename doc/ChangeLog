@@ -1,3 +1,20 @@
+2008-02-10  vadim  <vadim@vk.crocodile.org>
+
+	* pt_BR.po: updated Brazilian Portuguese translation by Rubens
+	Ferreira Neto <rubens.ferreiraneto@ig.com.br> and Jose
+	Carlos Medeiros <jose@psabs.com.br>
+
+	* PrefsDialog.cpp (PrefsDialog::PrefsDialog): fixed bug #1886570:
+	Diagnostic related to Edit->Preferences. Removed harmless but
+	annoying error message that appeared on stderr when user opened
+	Preferences dialog.
+
+	* IPTImporter.cpp (IPTImporter::pushPolicyRule): Fixed bug
+	1883536: "fwbuilder segfaults when importing iptables conf". Added
+	support for TCPMSS target with option --clamp-mss-to-pmtu in
+	iptables importer; also made importer upderstand option
+	--tcp-option but skip it since it is not supported in fwbuilder.
+
 2008-02-06    <vadim@vk.crocodile.org>
 
  	* RCS.cpp (RCSEnvFix::RCSEnvFix): fixed bug #1849392: "RCS using

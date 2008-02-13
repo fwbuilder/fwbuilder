@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="2.1.16" lastModified="1200415283" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="2.1.17" lastModified="1202686020" id="root">
   <Library color="#d2ffd0" comment="User defined objects" id="syslib001" name="User" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects">
       <ObjectGroup id="stdid01_1_og_ats_1" name="Address Tables">
@@ -498,7 +498,7 @@
       </ServiceGroup>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls">
-      <Firewall comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" host_OS="openbsd" id="fw-firewall2" inactive="False" lastCompiled="1157930800" lastInstalled="0" lastModified="1200415143" name="firewall" platform="pf" ro="False" version="">
+      <Firewall comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" host_OS="openbsd" id="fw-firewall2" inactive="False" lastCompiled="1157930800" lastInstalled="0" lastModified="1202682308" name="firewall" platform="pf" ro="False" version="">
         <NAT id="nat-firewall2">
           <NATRule comment="" disabled="False" id="nat-firewall2-0" position="0">
             <OSrc neg="False">
@@ -7368,7 +7368,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="PF 3.x, testing &#10;&quot;flags S/SA keep state&quot;" host_OS="openbsd" id="id4699449021967" inactive="False" lastCompiled="1190517987" lastInstalled="0" lastModified="1200415220" name="firewall10-1" platform="pf" ro="False" version="3.x">
+      <Firewall comment="PF 3.x, testing &#10;&quot;flags S/SA keep state&quot;" host_OS="openbsd" id="id4699449021967" inactive="False" lastCompiled="1202682006" lastInstalled="0" lastModified="1202681966" name="firewall10-1" platform="pf" ro="False" version="3.x">
         <NAT id="id469944D321967">
           <NATRule disabled="True" id="id469944D421967" position="0">
             <OSrc neg="False">
@@ -7581,8 +7581,8 @@
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
-          <Option name="mgmt_ssh">False</Option>
+          <Option name="mgmt_addr">192.168.1.100</Option>
+          <Option name="mgmt_ssh">True</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
@@ -7660,7 +7660,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="PF 4.x, testing &#10;&quot;flags S/SA keep state&quot;" host_OS="openbsd" id="id4699570022254" inactive="False" lastCompiled="1190517989" lastInstalled="0" lastModified="1193632589" name="firewall10-2" platform="pf" ro="False" version="4.x">
+      <Firewall comment="PF 4.x, testing &#10;&quot;flags S/SA keep state&quot;" host_OS="openbsd" id="id4699570022254" inactive="False" lastCompiled="1202682007" lastInstalled="0" lastModified="1202682031" name="firewall10-2" platform="pf" ro="False" version="4.x">
         <NAT id="id4699573822254">
           <NATRule disabled="True" id="id4699573922254" position="0">
             <OSrc neg="False">
@@ -7873,8 +7873,8 @@
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
-          <Option name="mgmt_ssh">False</Option>
+          <Option name="mgmt_addr">192.168.1.100</Option>
+          <Option name="mgmt_ssh">True</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
@@ -7952,7 +7952,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="PF 3.x, testing &#10;&quot;flags S/SA keep state&quot;&#10;&quot;Accept tcp sessions opened&#10;prior to restart&quot; ON&#10;" host_OS="openbsd" id="id469948EA22616" inactive="False" lastCompiled="1190517992" lastInstalled="0" lastModified="1193632596" name="firewall10-3" platform="pf" ro="False" version="3.x">
+      <Firewall comment="PF 3.x, testing &#10;&quot;flags S/SA keep state&quot;&#10;&quot;Accept tcp sessions opened&#10;prior to restart&quot; ON&#10;" host_OS="openbsd" id="id469948EA22616" inactive="False" lastCompiled="1202682008" lastInstalled="0" lastModified="1202681977" name="firewall10-3" platform="pf" ro="False" version="3.x">
         <NAT id="id4699492222616">
           <NATRule disabled="True" id="id4699492322616" position="0">
             <OSrc neg="False">
@@ -8165,8 +8165,8 @@
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
-          <Option name="mgmt_ssh">False</Option>
+          <Option name="mgmt_addr">192.168.1.100</Option>
+          <Option name="mgmt_ssh">True</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
@@ -8244,7 +8244,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="PF 4.x, testing &#10;&quot;flags S/SA keep state&quot;&#10;&quot;Accept tcp sessions opened&#10;prior to restart&quot; is ON&#10;" host_OS="openbsd" id="id4699494C22616" inactive="False" lastCompiled="1190517994" lastInstalled="0" lastModified="1193632600" name="firewall10-4" platform="pf" ro="False" version="4.x">
+      <Firewall comment="PF 4.x, testing &#10;&quot;flags S/SA keep state&quot;&#10;&quot;Accept tcp sessions opened&#10;prior to restart&quot; is ON&#10;" host_OS="openbsd" id="id4699494C22616" inactive="False" lastCompiled="1202682010" lastInstalled="0" lastModified="1202681983" name="firewall10-4" platform="pf" ro="False" version="4.x">
         <NAT id="id4699498422616">
           <NATRule disabled="True" id="id4699498522616" position="0">
             <OSrc neg="False">
@@ -8457,8 +8457,8 @@
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
-          <Option name="mgmt_ssh">False</Option>
+          <Option name="mgmt_addr">192.168.1.100</Option>
+          <Option name="mgmt_ssh">True</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
@@ -8536,7 +8536,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="PF 3.x, testing &#10;&quot;flags S/SA keep state&quot;&#10;&quot;Accept tcp sessions opened&#10;prior to restart&quot; ON&#10;Using &quot;pass all outgoing&quot;&#10;" host_OS="openbsd" id="id46F605DE10002" inactive="False" lastCompiled="1190518248" lastInstalled="0" lastModified="1193632637" name="firewall10-5" platform="pf" ro="False" version="3.x">
+      <Firewall comment="PF 3.x, testing &#10;&quot;flags S/SA keep state&quot;&#10;&quot;Accept tcp sessions opened&#10;prior to restart&quot; ON&#10;Using &quot;pass all outgoing&quot;&#10;" host_OS="openbsd" id="id46F605DE10002" inactive="False" lastCompiled="1202682011" lastInstalled="0" lastModified="1202681989" name="firewall10-5" platform="pf" ro="False" version="3.x">
         <NAT id="id46F6061610002">
           <NATRule disabled="True" id="id46F6061710002" position="0">
             <OSrc neg="False">
@@ -8784,8 +8784,8 @@
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
-          <Option name="mgmt_ssh">False</Option>
+          <Option name="mgmt_addr">192.168.1.100</Option>
+          <Option name="mgmt_ssh">True</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
@@ -8863,7 +8863,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="PF 4.x, testing &#10;&quot;flags S/SA keep state&quot;&#10;&quot;Accept tcp sessions opened&#10;prior to restart&quot; is ON&#10;Using &quot;pass all outgoing&quot;&#10;" host_OS="openbsd" id="id46F6064010002" inactive="False" lastCompiled="1190517998" lastInstalled="0" lastModified="1190517917" name="firewall10-6" platform="pf" ro="False" version="4.x">
+      <Firewall comment="PF 4.x, testing &#10;&quot;flags S/SA keep state&quot;&#10;&quot;Accept tcp sessions opened&#10;prior to restart&quot; is ON&#10;Using &quot;pass all outgoing&quot;&#10;" host_OS="openbsd" id="id46F6064010002" inactive="False" lastCompiled="1202682012" lastInstalled="0" lastModified="1202681995" name="firewall10-6" platform="pf" ro="False" version="4.x">
         <NAT id="id46F6067810002">
           <NATRule disabled="True" id="id46F6067910002" position="0">
             <OSrc neg="False">
@@ -9076,8 +9076,8 @@
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
-          <Option name="mgmt_ssh">False</Option>
+          <Option name="mgmt_addr">192.168.1.100</Option>
+          <Option name="mgmt_ssh">True</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
@@ -10818,10 +10818,30 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="firewall protects host it is running on&#10;&#10;Note that we set output file name to  /tmp/labfw.fw to test what compiler is going to do (since it generates three files rather than one), as well as to test installer in this case&#10;" host_OS="openbsd" id="id45DE9C5B2560" inactive="False" lastCompiled="1172207768" lastInstalled="1172207785" lastModified="1172207759" name="openbsd-4.0" platform="pf" ro="False" version="">
+      <Firewall comment="firewall protects host it is running on&#10;&#10;Note that we set output file name to  /tmp/labfw.fw to test what compiler is going to do (since it generates three files rather than one), as well as to test installer in this case&#10;" host_OS="openbsd" id="id45DE9C5B2560" inactive="False" lastCompiled="1202683169" lastInstalled="1202683190" lastModified="1202683163" name="openbsd-4.0" platform="pf" ro="False" version="ge_3.7">
         <NAT id="id45DE9CDB2560"/>
         <Policy id="id45DE9C612560">
-          <PolicyRule action="Deny" direction="Outbound" disabled="False" id="id45DE9C6F2560" log="True" position="0">
+          <PolicyRule action="Accept" direction="Both" disabled="True" id="id47B0069F19082" log="False" position="0">
+            <Src neg="False">
+              <ObjectRef ref="id4144D5A0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id45DE9C5B2560"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Deny" direction="Outbound" disabled="False" id="id45DE9C6F2560" log="True" position="1">
             <Src neg="True">
               <ObjectRef ref="id45DE9C5B2560"/>
             </Src>
@@ -10841,7 +10861,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" direction="Both" disabled="False" id="id45DE9C7C2560" log="False" position="1">
+          <PolicyRule action="Accept" direction="Both" disabled="False" id="id45DE9C7C2560" log="False" position="2">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -10859,7 +10879,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule action="Branch" direction="Inbound" disabled="False" id="id45DE9C882560" log="False" position="2">
+          <PolicyRule action="Branch" direction="Inbound" disabled="False" id="id45DE9C882560" log="False" position="3">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -10928,7 +10948,7 @@
               </PolicyRule>
             </Policy>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="allow all outgoing connections" direction="Both" disabled="False" id="id45DE9CC22560" log="False" position="3">
+          <PolicyRule action="Accept" comment="allow all outgoing connections" direction="Both" disabled="False" id="id45DE9CC22560" log="False" position="4">
             <Src neg="False">
               <ObjectRef ref="id45DE9C5B2560"/>
             </Src>
@@ -10946,7 +10966,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule action="Deny" comment="'catch all' rule" direction="Both" disabled="False" id="id45DE9CCF2560" log="True" position="4">
+          <PolicyRule action="Deny" comment="'catch all' rule" direction="Both" disabled="False" id="id45DE9CCF2560" log="True" position="5">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -11042,6 +11062,308 @@
           <Option name="pf_icmp_first">0</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_optimization"></Option>
+          <Option name="pf_other_first">0</Option>
+          <Option name="pf_other_multiple">0</Option>
+          <Option name="pf_other_single">0</Option>
+          <Option name="pf_scrub_fragm_crop">False</Option>
+          <Option name="pf_scrub_fragm_drop_ovl">False</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_scrub_minttl">1</Option>
+          <Option name="pf_scrub_no_df">False</Option>
+          <Option name="pf_scrub_random_id">False</Option>
+          <Option name="pf_scrub_reassemble">True</Option>
+          <Option name="pf_scrub_use_maxmss">False</Option>
+          <Option name="pf_scrub_use_minttl">False</Option>
+          <Option name="pf_set_adaptive">False</Option>
+          <Option name="pf_set_icmp_error">False</Option>
+          <Option name="pf_set_icmp_first">False</Option>
+          <Option name="pf_set_other_first">False</Option>
+          <Option name="pf_set_other_multiple">False</Option>
+          <Option name="pf_set_other_single">False</Option>
+          <Option name="pf_set_tcp_closed">False</Option>
+          <Option name="pf_set_tcp_closing">False</Option>
+          <Option name="pf_set_tcp_established">False</Option>
+          <Option name="pf_set_tcp_finwait">False</Option>
+          <Option name="pf_set_tcp_first">False</Option>
+          <Option name="pf_set_tcp_opening">False</Option>
+          <Option name="pf_set_udp_first">False</Option>
+          <Option name="pf_set_udp_multiple">False</Option>
+          <Option name="pf_set_udp_single">False</Option>
+          <Option name="pf_tcp_closed">0</Option>
+          <Option name="pf_tcp_closing">0</Option>
+          <Option name="pf_tcp_established">0</Option>
+          <Option name="pf_tcp_finwait">0</Option>
+          <Option name="pf_tcp_first">0</Option>
+          <Option name="pf_tcp_opening">0</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pf_udp_first">0</Option>
+          <Option name="pf_udp_multiple">0</Option>
+          <Option name="pf_udp_single">0</Option>
+          <Option name="platform">iptables</Option>
+          <Option name="prolog_place">fw_file</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="script_env_path"></Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
+          <Option name="use_ip_tool">False</Option>
+          <Option name="use_numeric_log_levels">False</Option>
+          <Option name="use_tables">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall comment="firewall protects host it is running on&#10;&#10;Note that we set output file name to  /tmp/labfw.fw to test what compiler is going to do (since it generates three files rather than one), as well as to test installer in this case&#10;" host_OS="openbsd" id="id47B07CD419082" inactive="False" lastCompiled="1202686003" lastInstalled="1202686020" lastModified="1202685992" name="openbsd-4.2" platform="pf" ro="False" version="4.x">
+        <NAT id="id47B07D4319082"/>
+        <Policy id="id47B07CDA19082">
+          <PolicyRule action="Accept" direction="Both" disabled="True" id="id47B07CDB19082" log="False" position="0">
+            <Src neg="False">
+              <ObjectRef ref="id4144D5A0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id47B07CD419082"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Deny" direction="Outbound" disabled="False" id="id47B07CE719082" log="True" position="1">
+            <Src neg="True">
+              <ObjectRef ref="id47B07CD419082"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id47B07D4519082"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Accept" direction="Both" disabled="False" id="id47B07CF319082" log="False" position="2">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id47B07D4819082"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule action="Branch" direction="Inbound" disabled="False" id="id47B07CFF19082" log="False" position="3">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id47B07CD419082"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id47B07D4519082"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="branch_name">rule3_branch</Option>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+            <Policy id="id47B07D0B19082">
+              <PolicyRule action="Deny" comment="block fragments" direction="Both" disabled="False" id="id47B07D0C19082" log="True" position="0">
+                <Src neg="False">
+                  <ObjectRef ref="sysid0"/>
+                </Src>
+                <Dst neg="False">
+                  <ObjectRef ref="id47B07CD419082"/>
+                </Dst>
+                <Srv neg="False">
+                  <ServiceRef ref="ip-IP_Fragments"/>
+                </Srv>
+                <Itf neg="False">
+                  <ObjectRef ref="sysid0"/>
+                </Itf>
+                <When neg="False">
+                  <IntervalRef ref="sysid2"/>
+                </When>
+                <PolicyRuleOptions>
+                  <Option name="stateless">True</Option>
+                </PolicyRuleOptions>
+              </PolicyRule>
+              <PolicyRule action="Accept" comment="" direction="Both" disabled="False" id="id47B07D1819082" log="False" position="1">
+                <Src neg="True">
+                  <ObjectRef ref="id4144D59F"/>
+                  <ObjectRef ref="id4144D5A0"/>
+                </Src>
+                <Dst neg="False">
+                  <ObjectRef ref="id47B07CD419082"/>
+                </Dst>
+                <Srv neg="False">
+                  <ServiceRef ref="tcp-SMTP"/>
+                  <ServiceRef ref="tcp-HTTP"/>
+                  <ServiceRef ref="tcp-SSH"/>
+                  <ServiceRef ref="tcp-FTP"/>
+                  <ServiceRef ref="tcp-Telnet"/>
+                  <ServiceRef ref="icmp-Unreachables"/>
+                  <ServiceRef ref="icmp-ping_request"/>
+                </Srv>
+                <Itf neg="False">
+                  <ObjectRef ref="sysid0"/>
+                </Itf>
+                <When neg="False">
+                  <IntervalRef ref="sysid2"/>
+                </When>
+                <PolicyRuleOptions/>
+              </PolicyRule>
+            </Policy>
+          </PolicyRule>
+          <PolicyRule action="Accept" comment="allow all outgoing connections" direction="Both" disabled="False" id="id47B07D2B19082" log="False" position="4">
+            <Src neg="False">
+              <ObjectRef ref="id47B07CD419082"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule action="Deny" comment="'catch all' rule" direction="Both" disabled="False" id="id47B07D3719082" log="True" position="5">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Routing id="id47B07D4419082"/>
+        <Interface bridgeport="False" comment="" dyn="False" id="id47B07D4519082" label="" mgmt="True" name="pcn0" security_level="0" unnum="False" unprotected="False">
+          <IPv4 address="10.3.14.50" comment="" id="id47B07D4719082" name="openbsd-4.2:pcn0:ip" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface bridgeport="False" dyn="False" id="id47B07D4819082" name="lo" security_level="100" unnum="False" unprotected="False">
+          <IPv4 address="127.0.0.1" id="id47B07D4A19082" name="openbsd-4.2:lo:ip" netmask="255.0.0.0"/>
+        </Interface>
+        <Management address="10.3.14.50">
+          <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
+          <FWBDManagement enabled="True" identity="" port="9999"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">True</Option>
+          <Option name="accept_new_tcp_with_no_syn">True</Option>
+          <Option name="action_on_reject">ICMP host prohibited</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser">root</Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">True</Option>
+          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">False</Option>
+          <Option name="debug">True</Option>
+          <Option name="dyn_addr">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="fallback_log">False</Option>
+          <Option name="firewall_dir">/etc/fw</Option>
+          <Option name="firewall_is_part_of_any">True</Option>
+          <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">True</Option>
+          <Option name="inst_cmdline"></Option>
+          <Option name="inst_script"></Option>
+          <Option name="install_script"></Option>
+          <Option name="limit_suffix">/day</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">0</Option>
+          <Option name="linux24_tcp_fin_timeout">30</Option>
+          <Option name="linux24_tcp_keepalive_interval">1800</Option>
+          <Option name="load_modules">False</Option>
+          <Option name="log_all_dropped">False</Option>
+          <Option name="log_ip_opt">False</Option>
+          <Option name="log_level">debug</Option>
+          <Option name="log_limit_suffix"></Option>
+          <Option name="log_limit_value">0</Option>
+          <Option name="log_prefix"></Option>
+          <Option name="log_tcp_opt">False</Option>
+          <Option name="log_tcp_seq">False</Option>
+          <Option name="manage_virtual_addr">False</Option>
+          <Option name="mgmt_addr">10.3.14.42</Option>
+          <Option name="mgmt_ssh">True</Option>
+          <Option name="modulate_state">False</Option>
+          <Option name="no_iochains_for_any">False</Option>
+          <Option name="no_optimisation">False</Option>
+          <Option name="openbsd_ip_directed_broadcast"></Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="openbsd_ip_redirect"></Option>
+          <Option name="openbsd_ip_sourceroute"></Option>
+          <Option name="openbsd_path_pfctl"></Option>
+          <Option name="openbsd_path_sysctl"></Option>
+          <Option name="output_file"></Option>
+          <Option name="pass_all_out">False</Option>
+          <Option name="pf_adaptive_end">0</Option>
+          <Option name="pf_adaptive_start">0</Option>
+          <Option name="pf_do_limit_frags">False</Option>
+          <Option name="pf_do_limit_src_nodes">False</Option>
+          <Option name="pf_do_limit_states">False</Option>
+          <Option name="pf_do_limit_table_entries">False</Option>
+          <Option name="pf_do_limit_tables">False</Option>
+          <Option name="pf_do_scrub">True</Option>
+          <Option name="pf_do_timeout_frag">False</Option>
+          <Option name="pf_do_timeout_interval">False</Option>
+          <Option name="pf_icmp_error">0</Option>
+          <Option name="pf_icmp_first">0</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_src_nodes">0</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_limit_table_entries">0</Option>
+          <Option name="pf_limit_tables">0</Option>
           <Option name="pf_optimization"></Option>
           <Option name="pf_other_first">0</Option>
           <Option name="pf_other_multiple">0</Option>

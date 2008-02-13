@@ -50,29 +50,29 @@ IPTCfgLexer::IPTCfgLexer(const ANTLR_USE_NAMESPACE(antlr)LexerSharedInputState& 
 
 void IPTCfgLexer::initLiterals()
 {
-	literals["SYN"] = 81;
+	literals["SYN"] = 82;
 	literals["udp"] = 31;
-	literals["multiport"] = 70;
+	literals["multiport"] = 71;
 	literals["tcp"] = 30;
-	literals["NEW"] = 59;
+	literals["NEW"] = 60;
 	literals["INPUT"] = 9;
-	literals["mark"] = 65;
-	literals["PSH"] = 86;
-	literals["FIN"] = 83;
-	literals["RST"] = 84;
-	literals["RELATED"] = 61;
-	literals["state"] = 62;
+	literals["mark"] = 66;
+	literals["PSH"] = 87;
+	literals["FIN"] = 84;
+	literals["RST"] = 85;
+	literals["RELATED"] = 62;
+	literals["state"] = 63;
 	literals["icmp"] = 32;
-	literals["ALL"] = 87;
-	literals["URG"] = 85;
-	literals["limit"] = 67;
+	literals["ALL"] = 88;
+	literals["URG"] = 86;
+	literals["limit"] = 68;
 	literals["COMMIT"] = 6;
-	literals["INVALID"] = 58;
-	literals["ESTABLISHED"] = 60;
+	literals["INVALID"] = 59;
+	literals["ESTABLISHED"] = 61;
 	literals["OUTPUT"] = 11;
-	literals["ACK"] = 82;
+	literals["ACK"] = 83;
 	literals["PREROUTING"] = 12;
-	literals["NONE"] = 88;
+	literals["NONE"] = 89;
 	literals["FORWARD"] = 10;
 	literals["POSTROUTING"] = 13;
 }
@@ -375,6 +375,14 @@ ANTLR_USE_NAMESPACE(antlr)RefToken IPTCfgLexer::nextToken()
 					mULOG_CPR(true);
 					theRetToken=_returnToken;
 				}
+				else if ((LA(1) == 0x2d /* '-' */ ) && (LA(2) == 0x2d /* '-' */ ) && (LA(3) == 0x74 /* 't' */ ) && (LA(4) == 0x63 /* 'c' */ ) && (LA(5) == 0x70 /* 'p' */ ) && (LA(6) == 0x2d /* '-' */ ) && (LA(7) == 0x66 /* 'f' */ )) {
+					mMATCH_TCP_FLAGS(true);
+					theRetToken=_returnToken;
+				}
+				else if ((LA(1) == 0x2d /* '-' */ ) && (LA(2) == 0x2d /* '-' */ ) && (LA(3) == 0x74 /* 't' */ ) && (LA(4) == 0x63 /* 'c' */ ) && (LA(5) == 0x70 /* 'p' */ ) && (LA(6) == 0x2d /* '-' */ ) && (LA(7) == 0x6f /* 'o' */ )) {
+					mMATCH_TCP_OPTION(true);
+					theRetToken=_returnToken;
+				}
 				else if ((LA(1) == 0x2d /* '-' */ ) && (LA(2) == 0x2d /* '-' */ ) && (LA(3) == 0x73 /* 's' */ ) && (LA(4) == 0x70 /* 'p' */ ) && (LA(5) == 0x6f /* 'o' */ ) && (LA(6) == 0x72 /* 'r' */ ) && (LA(7) == 0x74 /* 't' */ ) && (true)) {
 					mMATCH_SRC_PORT_SHORT(true);
 					theRetToken=_returnToken;
@@ -447,16 +455,16 @@ ANTLR_USE_NAMESPACE(antlr)RefToken IPTCfgLexer::nextToken()
 					mMATCH_SYN(true);
 					theRetToken=_returnToken;
 				}
-				else if ((LA(1) == 0x2d /* '-' */ ) && (LA(2) == 0x2d /* '-' */ ) && (LA(3) == 0x74 /* 't' */ ) && (LA(4) == 0x63 /* 'c' */ )) {
-					mMATCH_TCP_FLAGS(true);
-					theRetToken=_returnToken;
-				}
 				else if ((LA(1) == 0x2d /* '-' */ ) && (LA(2) == 0x2d /* '-' */ ) && (LA(3) == 0x69 /* 'i' */ ) && (LA(4) == 0x63 /* 'c' */ )) {
 					mMATCH_ICMP_TYPE(true);
 					theRetToken=_returnToken;
 				}
 				else if ((LA(1) == 0x2d /* '-' */ ) && (LA(2) == 0x2d /* '-' */ ) && (LA(3) == 0x73 /* 's' */ ) && (LA(4) == 0x61 /* 'a' */ )) {
 					mSAVE_MARK(true);
+					theRetToken=_returnToken;
+				}
+				else if ((LA(1) == 0x2d /* '-' */ ) && (LA(2) == 0x2d /* '-' */ ) && (LA(3) == 0x63 /* 'c' */ ) && (LA(4) == 0x6f /* 'o' */ )) {
+					mCONTINUE(true);
 					theRetToken=_returnToken;
 				}
 				else if ((LA(1) == 0x2d /* '-' */ ) && (LA(2) == 0x2d /* '-' */ ) && (LA(3) == 0x69 /* 'i' */ ) && (LA(4) == 0x69 /* 'i' */ )) {
@@ -471,12 +479,12 @@ ANTLR_USE_NAMESPACE(antlr)RefToken IPTCfgLexer::nextToken()
 					mTO_NETMAP(true);
 					theRetToken=_returnToken;
 				}
-				else if ((LA(1) == 0x2d /* '-' */ ) && (LA(2) == 0x2d /* '-' */ ) && (LA(3) == 0x6d /* 'm' */ )) {
-					mMATCH_MARK(true);
+				else if ((LA(1) == 0x2d /* '-' */ ) && (LA(2) == 0x2d /* '-' */ ) && (LA(3) == 0x63 /* 'c' */ ) && (LA(4) == 0x6c /* 'l' */ )) {
+					mCLAMP_MSS(true);
 					theRetToken=_returnToken;
 				}
-				else if ((LA(1) == 0x2d /* '-' */ ) && (LA(2) == 0x2d /* '-' */ ) && (LA(3) == 0x63 /* 'c' */ )) {
-					mCONTINUE(true);
+				else if ((LA(1) == 0x2d /* '-' */ ) && (LA(2) == 0x2d /* '-' */ ) && (LA(3) == 0x6d /* 'm' */ )) {
+					mMATCH_MARK(true);
 					theRetToken=_returnToken;
 				}
 				else if ((LA(1) == 0x2d /* '-' */ ) && (LA(2) == 0x2d /* '-' */ ) && (LA(3) == 0x6f /* 'o' */ )) {
@@ -583,11 +591,11 @@ void IPTCfgLexer::mLINE_COMMENT(bool _createToken) {
 			}
 		}
 		else {
-			goto _loop125;
+			goto _loop127;
 		}
 		
 	}
-	_loop125:;
+	_loop127:;
 	} // ( ... )*
 	mNEWLINE(false);
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -619,9 +627,9 @@ void IPTCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 964 "iptables.g"
+#line 973 "iptables.g"
 		newline();
-#line 625 "IPTCfgLexer.cpp"
+#line 633 "IPTCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -700,9 +708,9 @@ void IPTCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 962 "iptables.g"
+#line 971 "iptables.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
-#line 706 "IPTCfgLexer.cpp"
+#line 714 "IPTCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -814,28 +822,13 @@ void IPTCfgLexer::mNUMBER(bool _createToken) {
 	int _saveIndex;
 	
 	{
-	bool synPredMatched144 = false;
+	bool synPredMatched146 = false;
 	if ((((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ )) && (_tokenSet_2.member(LA(2))) && (_tokenSet_2.member(LA(3))) && (_tokenSet_2.member(LA(4))) && (_tokenSet_2.member(LA(5))) && (_tokenSet_2.member(LA(6))) && (_tokenSet_2.member(LA(7))) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true))) {
-		int _m144 = mark();
-		synPredMatched144 = true;
+		int _m146 = mark();
+		synPredMatched146 = true;
 		inputState->guessing++;
 		try {
 			{
-			{ // ( ... )+
-			int _cnt139=0;
-			for (;;) {
-				if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
-					mDIGIT(false);
-				}
-				else {
-					if ( _cnt139>=1 ) { goto _loop139; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
-				}
-				
-				_cnt139++;
-			}
-			_loop139:;
-			}  // ( ... )+
-			mDOT(false);
 			{ // ( ... )+
 			int _cnt141=0;
 			for (;;) {
@@ -865,31 +858,31 @@ void IPTCfgLexer::mNUMBER(bool _createToken) {
 			}
 			_loop143:;
 			}  // ( ... )+
+			mDOT(false);
+			{ // ( ... )+
+			int _cnt145=0;
+			for (;;) {
+				if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
+					mDIGIT(false);
+				}
+				else {
+					if ( _cnt145>=1 ) { goto _loop145; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+				}
+				
+				_cnt145++;
+			}
+			_loop145:;
+			}  // ( ... )+
 			}
 		}
 		catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& pe) {
-			synPredMatched144 = false;
+			synPredMatched146 = false;
 		}
-		rewind(_m144);
+		rewind(_m146);
 		inputState->guessing--;
 	}
-	if ( synPredMatched144 ) {
+	if ( synPredMatched146 ) {
 		{
-		{ // ( ... )+
-		int _cnt147=0;
-		for (;;) {
-			if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
-				mDIGIT(false);
-			}
-			else {
-				if ( _cnt147>=1 ) { goto _loop147; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
-			}
-			
-			_cnt147++;
-		}
-		_loop147:;
-		}  // ( ... )+
-		mDOT(false);
 		{ // ( ... )+
 		int _cnt149=0;
 		for (;;) {
@@ -934,36 +927,36 @@ void IPTCfgLexer::mNUMBER(bool _createToken) {
 		}
 		_loop153:;
 		}  // ( ... )+
+		mDOT(false);
+		{ // ( ... )+
+		int _cnt155=0;
+		for (;;) {
+			if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
+				mDIGIT(false);
+			}
+			else {
+				if ( _cnt155>=1 ) { goto _loop155; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+			}
+			
+			_cnt155++;
+		}
+		_loop155:;
+		}  // ( ... )+
 		}
 		if ( inputState->guessing==0 ) {
-#line 984 "iptables.g"
+#line 993 "iptables.g"
 			_ttype = IPV4;
-#line 942 "IPTCfgLexer.cpp"
+#line 950 "IPTCfgLexer.cpp"
 		}
 	}
 	else {
-		bool synPredMatched159 = false;
+		bool synPredMatched161 = false;
 		if ((((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ )) && (_tokenSet_2.member(LA(2))) && (_tokenSet_2.member(LA(3))) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true))) {
-			int _m159 = mark();
-			synPredMatched159 = true;
+			int _m161 = mark();
+			synPredMatched161 = true;
 			inputState->guessing++;
 			try {
 				{
-				{ // ( ... )+
-				int _cnt156=0;
-				for (;;) {
-					if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
-						mDIGIT(false);
-					}
-					else {
-						if ( _cnt156>=1 ) { goto _loop156; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
-					}
-					
-					_cnt156++;
-				}
-				_loop156:;
-				}  // ( ... )+
-				mDOT(false);
 				{ // ( ... )+
 				int _cnt158=0;
 				for (;;) {
@@ -978,31 +971,31 @@ void IPTCfgLexer::mNUMBER(bool _createToken) {
 				}
 				_loop158:;
 				}  // ( ... )+
+				mDOT(false);
+				{ // ( ... )+
+				int _cnt160=0;
+				for (;;) {
+					if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
+						mDIGIT(false);
+					}
+					else {
+						if ( _cnt160>=1 ) { goto _loop160; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+					}
+					
+					_cnt160++;
+				}
+				_loop160:;
+				}  // ( ... )+
 				}
 			}
 			catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& pe) {
-				synPredMatched159 = false;
+				synPredMatched161 = false;
 			}
-			rewind(_m159);
+			rewind(_m161);
 			inputState->guessing--;
 		}
-		if ( synPredMatched159 ) {
+		if ( synPredMatched161 ) {
 			{
-			{ // ( ... )+
-			int _cnt162=0;
-			for (;;) {
-				if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
-					mDIGIT(false);
-				}
-				else {
-					if ( _cnt162>=1 ) { goto _loop162; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
-				}
-				
-				_cnt162++;
-			}
-			_loop162:;
-			}  // ( ... )+
-			mDOT(false);
 			{ // ( ... )+
 			int _cnt164=0;
 			for (;;) {
@@ -1017,34 +1010,7 @@ void IPTCfgLexer::mNUMBER(bool _createToken) {
 			}
 			_loop164:;
 			}  // ( ... )+
-			}
-		}
-		else if ((LA(1) == 0x30 /* '0' */ ) && (LA(2) == 0x78 /* 'x' */ )) {
-			{
-			match('0');
-			match('x');
-			{ // ( ... )+
-			int _cnt169=0;
-			for (;;) {
-				if ((_tokenSet_3.member(LA(1)))) {
-					mHEXDIGIT(false);
-				}
-				else {
-					if ( _cnt169>=1 ) { goto _loop169; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
-				}
-				
-				_cnt169++;
-			}
-			_loop169:;
-			}  // ( ... )+
-			}
-			if ( inputState->guessing==0 ) {
-#line 990 "iptables.g"
-				_ttype = HEX_CONST;
-#line 1045 "IPTCfgLexer.cpp"
-			}
-		}
-		else if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ )) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true)) {
+			mDOT(false);
 			{ // ( ... )+
 			int _cnt166=0;
 			for (;;) {
@@ -1059,10 +1025,52 @@ void IPTCfgLexer::mNUMBER(bool _createToken) {
 			}
 			_loop166:;
 			}  // ( ... )+
+			}
+		}
+		else if ((LA(1) == 0x30 /* '0' */ ) && (LA(2) == 0x78 /* 'x' */ )) {
+			{
+			match('0');
+			match('x');
+			{ // ( ... )+
+			int _cnt171=0;
+			for (;;) {
+				if ((_tokenSet_3.member(LA(1)))) {
+					mHEXDIGIT(false);
+				}
+				else {
+					if ( _cnt171>=1 ) { goto _loop171; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+				}
+				
+				_cnt171++;
+			}
+			_loop171:;
+			}  // ( ... )+
+			}
 			if ( inputState->guessing==0 ) {
-#line 988 "iptables.g"
+#line 999 "iptables.g"
+				_ttype = HEX_CONST;
+#line 1053 "IPTCfgLexer.cpp"
+			}
+		}
+		else if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ )) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true)) {
+			{ // ( ... )+
+			int _cnt168=0;
+			for (;;) {
+				if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
+					mDIGIT(false);
+				}
+				else {
+					if ( _cnt168>=1 ) { goto _loop168; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+				}
+				
+				_cnt168++;
+			}
+			_loop168:;
+			}  // ( ... )+
+			if ( inputState->guessing==0 ) {
+#line 997 "iptables.g"
 				_ttype = INT_CONST;
-#line 1066 "IPTCfgLexer.cpp"
+#line 1074 "IPTCfgLexer.cpp"
 			}
 		}
 	else {
@@ -1329,11 +1337,11 @@ void IPTCfgLexer::mWORD(bool _createToken) {
 		}
 		default:
 		{
-			goto _loop173;
+			goto _loop175;
 		}
 		}
 	}
-	_loop173:;
+	_loop175:;
 	} // ( ... )*
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -1355,11 +1363,11 @@ void IPTCfgLexer::mSTRING(bool _createToken) {
 			matchNot('"');
 		}
 		else {
-			goto _loop176;
+			goto _loop178;
 		}
 		
 	}
-	_loop176:;
+	_loop178:;
 	} // ( ... )*
 	match('"');
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1390,9 +1398,9 @@ void IPTCfgLexer::mSECONDS(bool _createToken) {
 	
 	match("--seconds");
 	if ( inputState->guessing==0 ) {
-#line 1006 "iptables.g"
+#line 1015 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
-#line 1396 "IPTCfgLexer.cpp"
+#line 1404 "IPTCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -1409,9 +1417,9 @@ void IPTCfgLexer::mSET(bool _createToken) {
 	
 	match("--set");
 	if ( inputState->guessing==0 ) {
-#line 1009 "iptables.g"
+#line 1018 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
-#line 1415 "IPTCfgLexer.cpp"
+#line 1423 "IPTCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -1428,9 +1436,9 @@ void IPTCfgLexer::mRSOURCE(bool _createToken) {
 	
 	match("--rsource");
 	if ( inputState->guessing==0 ) {
-#line 1012 "iptables.g"
+#line 1021 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
-#line 1434 "IPTCfgLexer.cpp"
+#line 1442 "IPTCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -1572,6 +1580,20 @@ void IPTCfgLexer::mMATCH_TCP_FLAGS(bool _createToken) {
 	int _saveIndex;
 	
 	match("--tcp-flags");
+	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
+	   _token = makeToken(_ttype);
+	   _token->setText(text.substr(_begin, text.length()-_begin));
+	}
+	_returnToken = _token;
+	_saveIndex=0;
+}
+
+void IPTCfgLexer::mMATCH_TCP_OPTION(bool _createToken) {
+	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; int _begin=text.length();
+	_ttype = MATCH_TCP_OPTION;
+	int _saveIndex;
+	
+	match("--tcp-option");
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
 	   _token->setText(text.substr(_begin, text.length()-_begin));
@@ -1895,9 +1917,9 @@ void IPTCfgLexer::mULOG_QTHR(bool _createToken) {
 	
 	match("--ulog-qthreshold");
 	if ( inputState->guessing==0 ) {
-#line 1059 "iptables.g"
+#line 1069 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
-#line 1901 "IPTCfgLexer.cpp"
+#line 1923 "IPTCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -1914,9 +1936,9 @@ void IPTCfgLexer::mULOG_NLG(bool _createToken) {
 	
 	match("--ulog-nlgroup");
 	if ( inputState->guessing==0 ) {
-#line 1060 "iptables.g"
+#line 1070 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
-#line 1920 "IPTCfgLexer.cpp"
+#line 1942 "IPTCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -1933,9 +1955,9 @@ void IPTCfgLexer::mULOG_CPR(bool _createToken) {
 	
 	match("--ulog-cprange");
 	if ( inputState->guessing==0 ) {
-#line 1061 "iptables.g"
+#line 1071 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
-#line 1939 "IPTCfgLexer.cpp"
+#line 1961 "IPTCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -1993,6 +2015,20 @@ void IPTCfgLexer::mTO_NETMAP(bool _createToken) {
 	int _saveIndex;
 	
 	match("--to");
+	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
+	   _token = makeToken(_ttype);
+	   _token->setText(text.substr(_begin, text.length()-_begin));
+	}
+	_returnToken = _token;
+	_saveIndex=0;
+}
+
+void IPTCfgLexer::mCLAMP_MSS(bool _createToken) {
+	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; int _begin=text.length();
+	_ttype = CLAMP_MSS;
+	int _saveIndex;
+	
+	match("--clamp-mss-to-pmtu");
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
 	   _token->setText(text.substr(_begin, text.length()-_begin));
@@ -2487,7 +2523,7 @@ const unsigned long IPTCfgLexer::_tokenSet_1_data_[] = { 4294958072UL, 429496729
 // 0x15 0x16 0x17 0x18 0x19 0x1a 0x1b 0x1c 0x1d 0x1e 0x1f   ! " # $ % & 
 // \' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ? @ A B C D E F G H 
 // I J K L M N O P Q R S T U V W X Y Z [ \\ ] ^ _ ` a b c d e f g h i j 
-// k l m n o p q r s t u v 
+// k l m n o p q r s t u v w x 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IPTCfgLexer::_tokenSet_1(_tokenSet_1_data_,16);
 const unsigned long IPTCfgLexer::_tokenSet_2_data_[] = { 0UL, 67059712UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // . 0 1 2 3 4 5 6 7 8 9 
@@ -2500,6 +2536,6 @@ const unsigned long IPTCfgLexer::_tokenSet_4_data_[] = { 4294967288UL, 429496729
 // 0x14 0x15 0x16 0x17 0x18 0x19 0x1a 0x1b 0x1c 0x1d 0x1e 0x1f   ! # $ 
 // % & \' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ? @ A B C D E F 
 // G H I J K L M N O P Q R S T U V W X Y Z [ \\ ] ^ _ ` a b c d e f g h 
-// i j k l m n o p q r s t u v 
+// i j k l m n o p q r s t u v w x 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IPTCfgLexer::_tokenSet_4(_tokenSet_4_data_,16);
 
