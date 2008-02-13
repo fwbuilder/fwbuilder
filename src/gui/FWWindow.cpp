@@ -376,11 +376,8 @@ void FWWindow::info(FWObject *obj, bool forced)
                 + QString("<hr height=\"0\">");
             oi->setText(s);
         }
-
-        oi->setFontWeight(QFont::Normal);
-        oi->setFontItalic(false);
-        oi->setFontUnderline(false);
-        oi->setTextColor(Qt::black);
+        
+        oi->setFont(st->getUiFont());
         s=QString::fromUtf8(obj->getComment().c_str());
         oi->append(s);
         oi->moveCursor(QTextCursor::Start);
