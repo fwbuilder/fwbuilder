@@ -1,3 +1,5 @@
+argv0=./importer_test
+appRootDir=./
 TABLE filter
 NEW CHAIN INPUT
 NEW CHAIN FORWARD

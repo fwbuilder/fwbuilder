@@ -1,3 +1,5 @@
+argv0=./importer_test
+appRootDir=./
 VERSION 12.2
 HOSTNAME LT0="c3620"
 69: INTRFACE ADDRESS: 172.16.1.1/255.255.255.128 
