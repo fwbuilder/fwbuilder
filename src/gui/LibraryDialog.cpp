@@ -42,6 +42,7 @@
 #include <qpixmapcache.h>
 #include <qpushbutton.h>
 #include <qpainter.h>
+#include "FWBSettings.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -52,7 +53,9 @@ LibraryDialog::LibraryDialog(QWidget *parent) : QWidget(parent)
     m_dialog->setupUi(this);
     
     obj=NULL;
-
+    setFont(st->getUiFont());
+    //layout()->setSizeConstraint(QLayout::SetFixedSize);
+    
     Qt::WindowFlags flags = windowFlags();
     flags &= ~Qt::WindowMaximizeButtonHint;
     flags &= ~Qt::WindowMinimizeButtonHint;

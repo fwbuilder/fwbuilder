@@ -1,113 +1,136 @@
-<ui version="4.0" stdsetdef="1" >
-  <author></author>
-  <comment></comment>
-  <exportmacro></exportmacro>
-  <class>MetricEditorPanel_q</class>
-  <widget class="QWidget" name="MetricEditorPanel_q" >
-    <property name="enabled" >
+<ui version="4.0" >
+ <class>MetricEditorPanel_q</class>
+ <widget class="QWidget" name="MetricEditorPanel_q" >
+  <property name="enabled" >
+   <bool>true</bool>
+  </property>
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>313</width>
+    <height>154</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Script Editor</string>
+  </property>
+  <layout class="QGridLayout" >
+   <property name="leftMargin" >
+    <number>2</number>
+   </property>
+   <property name="topMargin" >
+    <number>2</number>
+   </property>
+   <property name="rightMargin" >
+    <number>2</number>
+   </property>
+   <property name="bottomMargin" >
+    <number>2</number>
+   </property>
+   <property name="horizontalSpacing" >
+    <number>2</number>
+   </property>
+   <property name="verticalSpacing" >
+    <number>2</number>
+   </property>
+   <item row="2" column="0" >
+    <widget class="QSpinBox" name="spin_box" >
+     <property name="enabled" >
       <bool>true</bool>
-    </property>
-    <property name="geometry" >
-      <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>313</width>
-        <height>154</height>
-      </rect>
-    </property>
-    <property name="windowTitle" >
-      <string>Script Editor</string>
-    </property>
-    <layout class="QGridLayout" >
-      <item row="2" column="0" >
-        <widget class="QSpinBox" name="spin_box" >
-          <property name="enabled" >
-            <bool>true</bool>
-          </property>
-          <property name="prefix" >
-            <string/>
-          </property>
-          <property name="buttonSymbols" >
-            <enum>QAbstractSpinBox::PlusMinus</enum>
-          </property>
-          <property name="maximum" >
-            <number>255</number>
-          </property>
-          <property name="singleStep" >
-            <number>1</number>
-          </property>
-        </widget>
-      </item>
-      <item row="3" column="0" >
-        <spacer name="spacer4" >
-          <property name="sizeHint" >
-            <size>
-              <width>20</width>
-              <height>40</height>
-            </size>
-          </property>
-          <property name="sizeType" >
-            <enum>Expanding</enum>
-          </property>
-          <property name="orientation" >
-            <enum>Vertical</enum>
-          </property>
-        </spacer>
-      </item>
-      <item row="2" column="1" >
-        <spacer name="spacer3" >
-          <property name="sizeHint" >
-            <size>
-              <width>40</width>
-              <height>20</height>
-            </size>
-          </property>
-          <property name="sizeType" >
-            <enum>Expanding</enum>
-          </property>
-          <property name="orientation" >
-            <enum>Horizontal</enum>
-          </property>
-        </spacer>
-      </item>
-      <item rowspan="1" row="1" column="0" colspan="2" >
-        <widget class="Line" name="line6" >
-          <property name="sizePolicy" >
-            <sizepolicy>
-              <hsizetype>1</hsizetype>
-              <vsizetype>0</vsizetype>
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-            </sizepolicy>
-          </property>
-          <property name="frameShape" >
-            <enum>QFrame::HLine</enum>
-          </property>
-          <property name="frameShadow" >
-            <enum>QFrame::Sunken</enum>
-          </property>
-        </widget>
-      </item>
-      <item rowspan="1" row="0" column="0" colspan="2" >
-        <widget class="QLabel" name="editorTitle" >
-          <property name="text" >
-            <string>textLabel2</string>
-          </property>
-          <property name="wordWrap" >
-            <bool>false</bool>
-          </property>
-        </widget>
-      </item>
-    </layout>
-  </widget>
-  <layoutdefault spacing="6" margin="11" />
-  <pixmapfunction></pixmapfunction>
-  <connections>
-    <connection>
-      <sender>spin_box</sender>
-      <signal>valueChanged(int)</signal>
-      <receiver>MetricEditorPanel_q</receiver>
-      <slot>changed()</slot>
-    </connection>
-  </connections>
+     </property>
+     <property name="buttonSymbols" >
+      <enum>QAbstractSpinBox::PlusMinus</enum>
+     </property>
+     <property name="prefix" >
+      <string/>
+     </property>
+     <property name="maximum" >
+      <number>255</number>
+     </property>
+     <property name="singleStep" >
+      <number>1</number>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType" >
+      <enum>QSizePolicy::MinimumExpanding</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="1" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType" >
+      <enum>QSizePolicy::MinimumExpanding</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>40</width>
+       <height>5</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="0" colspan="2" >
+    <widget class="Line" name="line6" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="frameShape" >
+      <enum>QFrame::HLine</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Sunken</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2" >
+    <widget class="QLabel" name="editorTitle" >
+     <property name="text" >
+      <string>textLabel2</string>
+     </property>
+     <property name="wordWrap" >
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <resources/>
+ <connections>
+  <connection>
+   <sender>spin_box</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MetricEditorPanel_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

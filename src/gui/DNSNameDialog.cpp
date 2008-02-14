@@ -46,6 +46,7 @@
 #include <qpushbutton.h>
 #include <qapplication.h>
 #include <qcursor.h>
+#include "FWBSettings.h"
 
 #include <iostream>
 
@@ -56,6 +57,7 @@ DNSNameDialog::DNSNameDialog(QWidget *parent) : QWidget(parent)
 { 
     m_dialog = new Ui::DNSNameDialog_q;
     m_dialog->setupUi(this);
+    setFont(st->getUiFont());
     
     obj=NULL; 
 }

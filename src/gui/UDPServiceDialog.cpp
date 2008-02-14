@@ -42,6 +42,7 @@
 #include <qcombobox.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
+#include "FWBSettings.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -50,6 +51,7 @@ UDPServiceDialog::UDPServiceDialog(QWidget *parent) : QWidget(parent)
 { 
     m_dialog = new Ui::UDPServiceDialog_q;
     m_dialog->setupUi(this);
+    setFont(st->getUiFont());
         
     obj=NULL; 
 }

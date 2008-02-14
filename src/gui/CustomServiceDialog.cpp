@@ -43,6 +43,7 @@
 #include <qpushbutton.h>
 
 #include <iostream>
+#include "FWBSettings.h"
 
 using namespace libfwbuilder;
 using namespace std;
@@ -51,6 +52,7 @@ CustomServiceDialog::CustomServiceDialog(QWidget *parent) : QWidget(parent)
 { 
     m_dialog = new Ui::CustomServiceDialog_q;
     m_dialog->setupUi(this);
+    setFont(st->getUiFont());
     obj=NULL; 
 }
 

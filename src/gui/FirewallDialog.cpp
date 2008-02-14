@@ -40,6 +40,7 @@
 #include "fwbuilder/Management.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Resources.h"
+#include "FWBSettings.h"
 
 #include <vector>
 #include <map>
@@ -71,6 +72,7 @@ FirewallDialog::FirewallDialog(QWidget *parent) : QWidget(parent)
     m_dialog = new Ui::FirewallDialog_q;
     m_dialog->setupUi(this);
     obj=NULL; 
+    setFont(st->getUiFont());
 }
 
 void FirewallDialog::loadFWObject(FWObject *o)

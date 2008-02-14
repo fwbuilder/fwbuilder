@@ -44,6 +44,7 @@
 #include <qpushbutton.h>
 
 #include <iostream>
+#include "FWBSettings.h"
 
 using namespace libfwbuilder;
 using namespace std;
@@ -52,6 +53,7 @@ IPServiceDialog::IPServiceDialog(QWidget *parent) : QWidget(parent)
 { 
     m_dialog = new Ui::IPServiceDialog_q;
     m_dialog->setupUi(this);
+    setFont(st->getUiFont());
     obj=NULL; 
 }
 

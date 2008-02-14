@@ -62,6 +62,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include "FWBSettings.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -77,6 +78,7 @@ GroupObjectDialog::GroupObjectDialog(QWidget *parent) :
 {
     m_dialog = new Ui::GroupObjectDialog_q;
     m_dialog->setupUi(this);
+    setFont(st->getUiFont());
     
     obj=NULL;
     selectedObject=NULL;

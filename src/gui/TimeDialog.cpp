@@ -45,6 +45,7 @@
 #include <qcheckbox.h>
 
 #include <iostream>
+#include "FWBSettings.h"
 
 using namespace libfwbuilder;
 using namespace std;
@@ -53,6 +54,7 @@ TimeDialog::TimeDialog(QWidget *parent) : QWidget(parent)
 { 
     m_dialog = new Ui::TimeDialog_q;
     m_dialog->setupUi(this);
+    setFont(st->getUiFont());
     
     obj=NULL;
 }

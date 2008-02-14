@@ -46,6 +46,7 @@
 #include <qhostinfo.h>
 #include <qapplication.h>
 #include <qcursor.h>
+#include "FWBSettings.h"
 
 #include <iostream>
 
@@ -56,6 +57,7 @@ IPv4Dialog::IPv4Dialog(QWidget *parent) : QWidget(parent)
 { 
     m_dialog = new Ui::IPv4Dialog_q;
     m_dialog->setupUi(this);
+    setFont(st->getUiFont());
     obj=NULL; 
 }
 

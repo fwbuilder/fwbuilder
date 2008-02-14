@@ -41,6 +41,7 @@
 #include <qtextedit.h>
 #include <qcombobox.h>
 #include <qpushbutton.h>
+#include "FWBSettings.h"
 
 #include <iostream>
 
@@ -52,6 +53,7 @@ ICMPServiceDialog::ICMPServiceDialog(QWidget *parent) :
 { 
     m_dialog = new Ui::ICMPServiceDialog_q;
     m_dialog->setupUi(this);
+    setFont(st->getUiFont());
     obj=NULL; 
 }
 

@@ -44,6 +44,7 @@
 #include <qcombobox.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
+#include "FWBSettings.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -52,6 +53,7 @@ HostDialog::HostDialog(QWidget *parent) : QWidget(parent)
 { 
     m_dialog = new Ui::HostDialog_q;
     m_dialog->setupUi(this);
+    setFont(st->getUiFont());
     obj=NULL; 
 }
 

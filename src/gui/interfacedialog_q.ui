@@ -9,7 +9,7 @@
     <x>0</x>
     <y>0</y>
     <width>780</width>
-    <height>437</height>
+    <height>236</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -23,19 +23,28 @@
   </property>
   <layout class="QGridLayout" >
    <property name="leftMargin" >
-    <number>11</number>
+    <number>2</number>
    </property>
    <property name="topMargin" >
-    <number>11</number>
+    <number>2</number>
    </property>
    <property name="rightMargin" >
-    <number>11</number>
+    <number>2</number>
    </property>
    <property name="bottomMargin" >
-    <number>11</number>
+    <number>2</number>
+   </property>
+   <property name="horizontalSpacing" >
+    <number>0</number>
+   </property>
+   <property name="verticalSpacing" >
+    <number>0</number>
    </property>
    <item row="0" column="0" >
     <layout class="QVBoxLayout" >
+     <property name="spacing" >
+      <number>2</number>
+     </property>
      <item>
       <widget class="QFrame" name="frame3" >
        <property name="sizePolicy" >
@@ -43,6 +52,12 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="minimumSize" >
+        <size>
+         <width>16</width>
+         <height>20</height>
+        </size>
        </property>
        <property name="frameShape" >
         <enum>QFrame::Box</enum>
@@ -52,19 +67,31 @@
        </property>
        <layout class="QGridLayout" >
         <property name="leftMargin" >
-         <number>5</number>
+         <number>2</number>
         </property>
         <property name="topMargin" >
-         <number>5</number>
+         <number>2</number>
         </property>
         <property name="rightMargin" >
-         <number>5</number>
+         <number>2</number>
         </property>
         <property name="bottomMargin" >
-         <number>5</number>
+         <number>2</number>
+        </property>
+        <property name="horizontalSpacing" >
+         <number>2</number>
+        </property>
+        <property name="verticalSpacing" >
+         <number>2</number>
         </property>
         <item row="0" column="1" >
          <widget class="QLabel" name="editorTitle" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="font" >
            <font>
             <weight>75</weight>
@@ -117,33 +144,23 @@
        </property>
        <layout class="QGridLayout" >
         <property name="leftMargin" >
-         <number>11</number>
+         <number>1</number>
         </property>
         <property name="topMargin" >
-         <number>11</number>
+         <number>1</number>
         </property>
         <property name="rightMargin" >
-         <number>11</number>
+         <number>1</number>
         </property>
         <property name="bottomMargin" >
-         <number>11</number>
+         <number>1</number>
         </property>
-        <item row="1" column="4" >
-         <spacer>
-          <property name="orientation" >
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType" >
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" >
-           <size>
-            <width>16</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
+        <property name="horizontalSpacing" >
+         <number>2</number>
+        </property>
+        <property name="verticalSpacing" >
+         <number>2</number>
+        </property>
         <item row="0" column="3" >
          <widget class="QLabel" name="textLabel2" >
           <property name="text" >
@@ -157,7 +174,7 @@
         <item rowspan="3" row="1" column="3" >
          <widget class="QTextEdit" name="comment" >
           <property name="sizePolicy" >
-           <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+           <sizepolicy vsizetype="MinimumExpanding" hsizetype="Expanding" >
             <horstretch>0</horstretch>
             <verstretch>100</verstretch>
            </sizepolicy>
@@ -183,16 +200,22 @@
           </property>
           <layout class="QGridLayout" >
            <property name="leftMargin" >
-            <number>11</number>
+            <number>2</number>
            </property>
            <property name="topMargin" >
-            <number>11</number>
+            <number>2</number>
            </property>
            <property name="rightMargin" >
-            <number>11</number>
+            <number>2</number>
            </property>
            <property name="bottomMargin" >
-            <number>11</number>
+            <number>2</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>2</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>2</number>
            </property>
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
@@ -273,34 +296,18 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
               <enum>Qt::Vertical</enum>
              </property>
              <property name="sizeType" >
-              <enum>QSizePolicy::Expanding</enum>
+              <enum>QSizePolicy::MinimumExpanding</enum>
              </property>
              <property name="sizeHint" >
               <size>
                <width>20</width>
-               <height>16</height>
+               <height>2</height>
               </size>
              </property>
             </spacer>
            </item>
           </layout>
          </widget>
-        </item>
-        <item row="3" column="2" >
-         <spacer>
-          <property name="orientation" >
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType" >
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" >
-           <size>
-            <width>20</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item row="2" column="1" colspan="2" >
          <widget class="QComboBox" name="netzone" >
@@ -350,22 +357,12 @@ If network zone for this interface consists of only one subnet, you can simply c
            <property name="bottomMargin" >
             <number>0</number>
            </property>
-           <item row="7" column="0" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::Expanding</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
+           <property name="horizontalSpacing" >
+            <number>1</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>1</number>
+           </property>
            <item row="1" column="0" >
             <widget class="QCheckBox" name="ext" >
              <property name="toolTip" >
@@ -435,25 +432,9 @@ If network zone for this interface consists of only one subnet, you can simply c
      </item>
     </layout>
    </item>
-   <item row="0" column="1" >
-    <spacer>
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType" >
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="sizeHint" >
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="2" margin="2" />
  <tabstops>
   <tabstop>obj_name</tabstop>
   <tabstop>libs</tabstop>
@@ -468,7 +449,6 @@ If network zone for this interface consists of only one subnet, you can simply c
   <tabstop>comment</tabstop>
   <tabstop>netzone</tabstop>
  </tabstops>
- <includes/>
  <resources/>
  <connections>
   <connection>

@@ -52,6 +52,7 @@
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
+#include "FWBSettings.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -61,6 +62,7 @@ InterfaceDialog::InterfaceDialog(QWidget *parent) :
 {
     m_dialog = new Ui::InterfaceDialog_q;
     m_dialog->setupUi(this);
+    setFont(st->getUiFont());
 /*
     seclevel->hide();    seclevelLabel->hide();
     netzone->hide();     netzoneLabel->hide();

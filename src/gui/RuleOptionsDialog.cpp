@@ -51,6 +51,7 @@
 #include <qlabel.h>
 
 #include <iostream>
+#include "FWBSettings.h"
 
 using namespace libfwbuilder;
 using namespace std;
@@ -64,6 +65,7 @@ RuleOptionsDialog::RuleOptionsDialog(QWidget *parent) : QWidget(parent)
 {
     m_dialog = new Ui::RuleOptionsDialog_q;
     m_dialog->setupUi(this);
+    setFont(st->getUiFont());
     
     init=false;
 }

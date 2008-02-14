@@ -48,6 +48,7 @@
 #include <qlabel.h>
 
 #include <iostream>
+#include "FWBSettings.h"
 
 using namespace libfwbuilder;
 using namespace std;
@@ -61,6 +62,7 @@ RoutingRuleOptionsDialog::RoutingRuleOptionsDialog(QWidget *parent) : QWidget(pa
 {
     m_dialog = new Ui::RoutingRuleOptionsDialog_q;
     m_dialog->setupUi(this);
+    setFont(st->getUiFont());
 }
 
 void RoutingRuleOptionsDialog::loadFWObject(FWObject *o)

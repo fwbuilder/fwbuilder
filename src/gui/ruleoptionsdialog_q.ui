@@ -5,2033 +5,2097 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>983</width>
-    <height>510</height>
+    <width>605</width>
+    <height>215</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Rule Options for ipt</string>
   </property>
-  <widget class="QFrame" name="frame3" >
-   <property name="geometry" >
-    <rect>
-     <x>11</x>
-     <y>11</y>
-     <width>882</width>
-     <height>40</height>
-    </rect>
+  <layout class="QVBoxLayout" >
+   <property name="spacing" >
+    <number>2</number>
    </property>
-   <property name="sizePolicy" >
-    <sizepolicy>
-     <hsizetype>5</hsizetype>
-     <vsizetype>0</vsizetype>
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
+   <property name="leftMargin" >
+    <number>2</number>
    </property>
-   <property name="frameShape" >
-    <enum>QFrame::Box</enum>
+   <property name="topMargin" >
+    <number>2</number>
    </property>
-   <property name="frameShadow" >
-    <enum>QFrame::Sunken</enum>
+   <property name="rightMargin" >
+    <number>2</number>
    </property>
-   <layout class="QGridLayout" >
-    <property name="margin" >
-     <number>0</number>
-    </property>
-    <property name="spacing" >
-     <number>6</number>
-    </property>
-    <item row="0" column="0" >
-     <widget class="QLabel" name="editorTitle" >
-      <property name="font" >
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
+   <property name="bottomMargin" >
+    <number>2</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="frame3" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize" >
+      <size>
+       <width>16</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="frameShape" >
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="leftMargin" >
+       <number>0</number>
       </property>
-      <property name="text" >
-       <string>fw/rule num</string>
+      <property name="topMargin" >
+       <number>0</number>
       </property>
-      <property name="wordWrap" >
-       <bool>false</bool>
+      <property name="rightMargin" >
+       <number>0</number>
       </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QStackedWidget" name="wStack" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>50</y>
-     <width>954</width>
-     <height>269</height>
-    </rect>
-   </property>
-   <property name="sizePolicy" >
-    <sizepolicy>
-     <hsizetype>1</hsizetype>
-     <vsizetype>5</vsizetype>
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="frameShape" >
-    <enum>QFrame::Box</enum>
-   </property>
-   <property name="frameShadow" >
-    <enum>QFrame::Sunken</enum>
-   </property>
-   <property name="lineWidth" >
-    <number>1</number>
-   </property>
-   <property name="midLineWidth" >
-    <number>0</number>
-   </property>
-   <property name="currentIndex" >
-    <number>0</number>
-   </property>
-   <widget class="QWidget" name="page0" >
-    <layout class="QGridLayout" >
-     <property name="margin" >
-      <number>6</number>
+      <property name="bottomMargin" >
+       <number>0</number>
+      </property>
+      <property name="horizontalSpacing" >
+       <number>2</number>
+      </property>
+      <property name="verticalSpacing" >
+       <number>2</number>
+      </property>
+      <item row="0" column="0" >
+       <widget class="QLabel" name="editorTitle" >
+        <property name="font" >
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text" >
+         <string>fw/rule num</string>
+        </property>
+        <property name="wordWrap" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QStackedWidget" name="wStack" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="spacing" >
-      <number>6</number>
+     <property name="frameShape" >
+      <enum>QFrame::Box</enum>
      </property>
-     <item row="1" column="0" >
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeType" >
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" >
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="0" >
-      <widget class="QTabWidget" name="tabw0" >
-       <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>7</hsizetype>
-         <vsizetype>5</vsizetype>
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="tabShape" >
-        <enum>QTabWidget::Triangular</enum>
-       </property>
-       <property name="currentIndex" >
-        <number>0</number>
-       </property>
-       <widget class="QWidget" name="tab1" >
-        <attribute name="title" >
-         <string>General</string>
-        </attribute>
-        <layout class="QGridLayout" >
-         <property name="margin" >
-          <number>6</number>
-         </property>
-         <property name="spacing" >
-          <number>6</number>
-         </property>
-         <item row="0" column="0" >
-          <widget class="QCheckBox" name="ipt_assumeFwIsPartOfAny" >
-           <property name="text" >
-            <string>Assume firewall is part of 'any' (this setting only affects code generated for this rule)</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" >
-          <widget class="QCheckBox" name="ipt_stateless" >
-           <property name="text" >
-            <string>Stateless rule</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" >
-          <widget class="QLabel" name="textLabel7" >
-           <property name="text" >
-            <string>Normally policy compiler uses stateful inspection in each rule. Activating next option makes this rule stateless.</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignVCenter</set>
-           </property>
-           <property name="wordWrap" >
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="3" column="0" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>20</width>
-             <height>16</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab2" >
-        <attribute name="title" >
-         <string>Logging</string>
-        </attribute>
-        <layout class="QGridLayout" >
-         <property name="margin" >
-          <number>6</number>
-         </property>
-         <property name="spacing" >
-          <number>6</number>
-         </property>
-         <item row="1" column="1" >
-          <widget class="QComboBox" name="ipt_logLevel" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>5</hsizetype>
-             <vsizetype>0</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize" >
-            <size>
-             <width>200</width>
-             <height>32767</height>
-            </size>
-           </property>
-           <item>
-            <property name="text" >
-             <string/>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>alert</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>crit</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>error</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>warning</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>notice</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>info</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>debug</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="0" column="1" >
-          <widget class="QLineEdit" name="ipt_logPrefix" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>5</hsizetype>
-             <vsizetype>0</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize" >
-            <size>
-             <width>200</width>
-             <height>32767</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0" >
-          <widget class="QLabel" name="logPrefixLbl" >
-           <property name="text" >
-            <string>Log prefix:</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" >
-          <widget class="QLabel" name="textLabel2" >
-           <property name="text" >
-            <string>Log level:</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="4" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="1" column="2" >
-          <widget class="QLabel" name="textLabel3" >
-           <property name="text" >
-            <string>Netlink group (if using ULOG): </string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="3" >
-          <widget class="QSpinBox" name="ipt_nlgroup" >
-           <property name="maximum" >
-            <number>32</number>
-           </property>
-           <property name="minimum" >
-            <number>1</number>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>20</width>
-             <height>30</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab3" >
-        <attribute name="title" >
-         <string>limit</string>
-        </attribute>
-        <layout class="QGridLayout" >
-         <property name="margin" >
-          <number>6</number>
-         </property>
-         <property name="spacing" >
-          <number>6</number>
-         </property>
-         <item row="1" column="0" >
-          <widget class="QLabel" name="textLabel4" >
-           <property name="text" >
-            <string>Rate (rule matches if it hits this often or less):</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0" colspan="6" >
-          <widget class="QLabel" name="textLabel5" >
-           <property name="text" >
-            <string>Module limit</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignVCenter</set>
-           </property>
-           <property name="wordWrap" >
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="5" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>60</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="1" column="3" >
-          <widget class="QLabel" name="textLabel6" >
-           <property name="text" >
-            <string>Burst:</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="4" >
-          <widget class="QSpinBox" name="ipt_burst" />
-         </item>
-         <item row="1" column="2" >
-          <widget class="QComboBox" name="ipt_limitSuffix" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>5</hsizetype>
-             <vsizetype>0</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize" >
-            <size>
-             <width>200</width>
-             <height>32767</height>
-            </size>
-           </property>
-           <item>
-            <property name="text" >
-             <string/>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>/day</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>/hour</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>/minute</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>/second</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="1" column="1" >
-          <widget class="QSpinBox" name="ipt_limit" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>0</hsizetype>
-             <vsizetype>0</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximum" >
-            <number>10000</number>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab4" >
-        <attribute name="title" >
-         <string>connlimit</string>
-        </attribute>
-        <layout class="QGridLayout" >
-         <property name="margin" >
-          <number>6</number>
-         </property>
-         <property name="spacing" >
-          <number>6</number>
-         </property>
-         <item row="2" column="2" colspan="2" >
-          <widget class="QLabel" name="textLabel5_2" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>1</hsizetype>
-             <vsizetype>5</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text" >
-            <string>bit</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="4" colspan="2" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="2" column="1" >
-          <widget class="QSpinBox" name="ipt_connlimit_masklen" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>0</hsizetype>
-             <vsizetype>0</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximum" >
-            <number>10000</number>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" >
-          <widget class="QLabel" name="textLabel3_3" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>1</hsizetype>
-             <vsizetype>5</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text" >
-            <string>per network with netmask of </string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="3" colspan="2" >
-          <widget class="QSpinBox" name="ipt_connlimit" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>0</hsizetype>
-             <vsizetype>0</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximum" >
-            <number>10000</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="5" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="1" column="0" colspan="3" >
-          <widget class="QLabel" name="textLabel2_6" >
-           <property name="text" >
-            <string>Number of allowed connections per client host</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0" >
-          <widget class="QLabel" name="textLabel3_4" >
-           <property name="text" >
-            <string>Module connlimit</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="2" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>20</width>
-             <height>16</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab5" >
-        <attribute name="title" >
-         <string>hashlimit</string>
-        </attribute>
-        <layout class="QGridLayout" >
-         <property name="margin" >
-          <number>6</number>
-         </property>
-         <property name="spacing" >
-          <number>6</number>
-         </property>
-         <item row="0" column="0" colspan="4" >
-          <widget class="QLabel" name="textLabel2_5" >
-           <property name="text" >
-            <string>Module hashlimit</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" colspan="15" >
-          <widget class="QCheckBox" name="ipt_hashlimit_dstlimit" >
-           <property name="text" >
-            <string>On some older systems this module has name 'dstlimit'. Check here if you need to use this name.</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="15" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="2" column="0" >
-          <widget class="QLabel" name="textLabel1_4" >
-           <property name="text" >
-            <string>Rate:</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4" >
-          <widget class="QLabel" name="textLabel1_6" >
-           <property name="text" >
-            <string>Name:</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5" colspan="6" >
-          <widget class="QLineEdit" name="ipt_hashlimit_name" />
-         </item>
-         <item row="2" column="7" colspan="2" >
-          <widget class="QSpinBox" name="ipt_hashlimit_burst" >
-           <property name="maximumSize" >
-            <size>
-             <width>80</width>
-             <height>32767</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1" colspan="2" >
-          <widget class="QSpinBox" name="ipt_hashlimit" >
-           <property name="maximumSize" >
-            <size>
-             <width>80</width>
-             <height>32767</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="3" colspan="2" >
-          <widget class="QComboBox" name="ipt_hashlimit_suffix" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>5</hsizetype>
-             <vsizetype>0</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize" >
-            <size>
-             <width>200</width>
-             <height>32767</height>
-            </size>
-           </property>
-           <item>
-            <property name="text" >
-             <string/>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>/day</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>/hour</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>/minute</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>/second</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="2" column="5" colspan="2" >
-          <widget class="QLabel" name="textLabel6_2" >
-           <property name="text" >
-            <string>Burst:</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="9" >
-          <widget class="QLabel" name="textLabel5_3" >
-           <property name="text" >
-            <string>Mode:</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="10" colspan="3" >
-          <widget class="QComboBox" name="ipt_hashlimit_mode" >
-           <item>
-            <property name="text" >
-             <string>dstip</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>srcip</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>dstip,dstport</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>srcip,srcport</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="2" column="13" colspan="3" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>300</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="11" colspan="5" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>360</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="3" column="0" colspan="16" >
-          <widget class="Line" name="line1" >
-           <property name="frameShape" >
-            <enum>QFrame::HLine</enum>
-           </property>
-           <property name="frameShadow" >
-            <enum>QFrame::Sunken</enum>
-           </property>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0" colspan="2" >
-          <widget class="QLabel" name="textLabel2_7" >
-           <property name="text" >
-            <string>htable-size:</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="2" colspan="2" >
-          <widget class="QSpinBox" name="ipt_hashlimit_size" >
-           <property name="toolTip" >
-            <string>The number of buckets of the hash table (omit this option in generated script if set to 0)</string>
-           </property>
-           <property name="maximum" >
-            <number>999999</number>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="4" colspan="2" >
-          <widget class="QLabel" name="textLabel2_7_2" >
-           <property name="text" >
-            <string>htable-max:</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="6" colspan="2" >
-          <widget class="QSpinBox" name="ipt_hashlimit_max" >
-           <property name="toolTip" >
-            <string>Maximum number of entries in the hash (omit this option in generated script if set to 0)</string>
-           </property>
-           <property name="maximum" >
-            <number>999999</number>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="8" colspan="2" >
-          <widget class="QLabel" name="textLabel3_6" >
-           <property name="text" >
-            <string>htable-expire:</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="10" colspan="2" >
-          <widget class="QSpinBox" name="ipt_hashlimit_expire" >
-           <property name="toolTip" >
-            <string>After how many milliseconds do hash entries expire (omit this option in the generated script if set to 0)</string>
-           </property>
-           <property name="maximum" >
-            <number>999999</number>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="12" colspan="2" >
-          <widget class="QLabel" name="textLabel4_3" >
-           <property name="text" >
-            <string>htable-gcinterval:</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="14" >
-          <widget class="QSpinBox" name="ipt_hashlimit_gcinterval" >
-           <property name="toolTip" >
-            <string>How many milliseconds between garbage collection intervals (omit this option in generated script if set to 0)</string>
-           </property>
-           <property name="maximum" >
-            <number>999999</number>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="15" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>130</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="4" column="0" colspan="16" >
-          <widget class="QLabel" name="textLabel5_5" >
-           <property name="text" >
-            <string>Options below control size of the hash table and expiration time. They will be omitted from the generated script if set to zero.</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignVCenter</set>
-           </property>
-           <property name="wordWrap" >
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="10" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>20</width>
-             <height>16</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="page1" >
-    <layout class="QGridLayout" >
-     <property name="margin" >
-      <number>6</number>
+     <property name="frameShadow" >
+      <enum>QFrame::Sunken</enum>
      </property>
-     <property name="spacing" >
-      <number>6</number>
+     <property name="lineWidth" >
+      <number>1</number>
      </property>
-     <item row="0" column="0" >
-      <widget class="QTabWidget" name="tabw1" >
-       <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>7</hsizetype>
-         <vsizetype>1</vsizetype>
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+     <property name="midLineWidth" >
+      <number>0</number>
+     </property>
+     <property name="currentIndex" >
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="page0" >
+      <layout class="QGridLayout" >
+       <property name="leftMargin" >
+        <number>2</number>
        </property>
-       <property name="tabShape" >
-        <enum>QTabWidget::Triangular</enum>
+       <property name="topMargin" >
+        <number>2</number>
        </property>
-       <widget class="QWidget" name="tab7" >
-        <attribute name="title" >
-         <string>General</string>
-        </attribute>
-        <layout class="QGridLayout" >
-         <property name="margin" >
-          <number>6</number>
+       <property name="rightMargin" >
+        <number>2</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>2</number>
+       </property>
+       <property name="horizontalSpacing" >
+        <number>2</number>
+       </property>
+       <property name="verticalSpacing" >
+        <number>2</number>
+       </property>
+       <item row="1" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
          </property>
-         <property name="spacing" >
-          <number>6</number>
+         <property name="sizeType" >
+          <enum>QSizePolicy::MinimumExpanding</enum>
          </property>
-         <item row="4" column="0" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>20</width>
-             <height>8</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="0" >
-          <widget class="QLabel" name="textLabel7_2" >
-           <property name="text" >
-            <string>Normally policy compiler uses stateful inspection in each rule. Activating next option makes this rule stateless.</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignVCenter</set>
-           </property>
-           <property name="wordWrap" >
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="1" column="0" >
-          <widget class="QCheckBox" name="ipf_stateless" >
-           <property name="text" >
-            <string>Stateless rule</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" >
-          <widget class="QCheckBox" name="ipf_masq_icmp" >
-           <property name="text" >
-            <string>Send ICMP 'unreachable' packet masquerading as being from the original destination</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0" colspan="2" >
-          <widget class="QCheckBox" name="ipf_keep_frags" >
-           <property name="text" >
-            <string>Keep information on fragmented packets, to be applied to later fragments</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab8" >
-        <attribute name="title" >
-         <string>Logging</string>
-        </attribute>
-        <layout class="QGridLayout" >
-         <property name="margin" >
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="0" >
+        <widget class="QTabWidget" name="tabw0" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="tabShape" >
+          <enum>QTabWidget::Triangular</enum>
+         </property>
+         <property name="currentIndex" >
           <number>0</number>
          </property>
-         <property name="spacing" >
-          <number>6</number>
-         </property>
-         <item row="0" column="0" >
-          <widget class="QLabel" name="textLabel2_2_2" >
-           <property name="text" >
-            <string>Log facility:</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1" >
-          <widget class="QComboBox" name="ipf_logFacility" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>7</hsizetype>
-             <vsizetype>0</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" >
-          <widget class="QLabel" name="textLabel2_2" >
-           <property name="text" >
-            <string>Log level:</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1" >
-          <widget class="QComboBox" name="ipf_logLevel" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>7</hsizetype>
-             <vsizetype>0</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="2" column="1" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>20</width>
-             <height>30</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-     </item>
-     <item row="1" column="0" >
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeType" >
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" >
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="page2" >
-    <layout class="QGridLayout" >
-     <property name="margin" >
-      <number>6</number>
-     </property>
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <item row="1" column="0" >
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeType" >
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" >
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="0" >
-      <widget class="QTabWidget" name="tabw2" >
-       <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>7</hsizetype>
-         <vsizetype>1</vsizetype>
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="tabShape" >
-        <enum>QTabWidget::Triangular</enum>
-       </property>
-       <widget class="QWidget" name="tab10" >
-        <attribute name="title" >
-         <string>General</string>
-        </attribute>
-        <layout class="QGridLayout" >
-         <property name="margin" >
-          <number>6</number>
-         </property>
-         <property name="spacing" >
-          <number>6</number>
-         </property>
-         <item row="0" column="0" >
-          <widget class="QLabel" name="textLabel7_2_2" >
-           <property name="minimumSize" >
-            <size>
-             <width>400</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text" >
-            <string>Normally policy compiler uses stateful inspection in each rule. Activating next option makes this rule stateless.</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignVCenter</set>
-           </property>
-           <property name="wordWrap" >
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" >
-          <widget class="QCheckBox" name="pf_stateless" >
-           <property name="text" >
-            <string>Stateless rule</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" >
-          <widget class="QLabel" name="textLabel1_8" >
-           <property name="text" >
-            <string>In PF 4.x "flags S/SA keep state" is the default. Compiler will omit these flags while generating code for stateful rules matching tcp services. However, according to the PF FAQ, care should be taken while dealing with states and interface enc0. To avoid leaking unencrypted traffic out, the FAQ recommends setting 'keep state' explicitly in all rules on the enc0 interface. This option applies only if version is set to 4.x.</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignVCenter</set>
-           </property>
-           <property name="wordWrap" >
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0" >
-          <widget class="QCheckBox" name="pf_keep_state" >
-           <property name="text" >
-            <string>Add 'keep state' </string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab11" >
-        <attribute name="title" >
-         <string>Logging</string>
-        </attribute>
-        <layout class="QGridLayout" >
-         <property name="margin" >
-          <number>6</number>
-         </property>
-         <property name="spacing" >
-          <number>6</number>
-         </property>
-         <item row="0" column="1" >
-          <widget class="QLineEdit" name="pf_logPrefix" />
-         </item>
-         <item row="0" column="0" >
-          <widget class="QLabel" name="logPrefixLbl_2" >
-           <property name="text" >
-            <string>Log prefix:</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>301</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="1" column="1" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>20</width>
-             <height>51</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab12" >
-        <attribute name="title" >
-         <string>Tracking</string>
-        </attribute>
-        <layout class="QGridLayout" >
-         <property name="margin" >
-          <number>6</number>
-         </property>
-         <property name="spacing" >
-          <number>6</number>
-         </property>
-         <item row="0" column="0" >
-          <widget class="QCheckBox" name="pf_source_tracking" >
-           <property name="toolTip" >
-            <string>When this option is checked, the number of states per source IP is tracked </string>
-           </property>
-           <property name="text" >
-            <string>Activate source tracking</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1" colspan="2" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="1" column="2" >
-          <widget class="QSpinBox" name="pf_max_src_nodes" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>0</hsizetype>
-             <vsizetype>0</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximum" >
-            <number>1000000</number>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2" >
-          <widget class="QSpinBox" name="pf_max_src_states" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>0</hsizetype>
-             <vsizetype>0</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximum" >
-            <number>1000000</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" colspan="2" >
-          <widget class="QLabel" name="textLabel1_3" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>5</hsizetype>
-             <vsizetype>5</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize" >
-            <size>
-             <width>300</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text" >
-            <string>Maximum number of source addresses which can simultaneously have state table entries (max-src-nodes):</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignVCenter</set>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" colspan="2" >
-          <widget class="QLabel" name="textLabel2_4" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>5</hsizetype>
-             <vsizetype>5</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize" >
-            <size>
-             <width>300</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text" >
-            <string>Maximum number of simultaneous state entries that a single source address can create with this rule (max-src-states):</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignVCenter</set>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="3" column="1" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab13" >
-        <attribute name="title" >
-         <string>Limits</string>
-        </attribute>
-        <layout class="QGridLayout" >
-         <property name="margin" >
-          <number>6</number>
-         </property>
-         <property name="spacing" >
-          <number>6</number>
-         </property>
-         <item row="5" column="4" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="4" column="3" >
-          <widget class="QSpinBox" name="pf_max_src_conn_rate_seconds" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>0</hsizetype>
-             <vsizetype>0</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize" >
-            <size>
-             <width>80</width>
-             <height>32767</height>
-            </size>
-           </property>
-           <property name="maximum" >
-            <number>1000000</number>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="6" >
-          <widget class="QLineEdit" name="pf_max_src_conn_rate_overload_table" >
-           <property name="minimumSize" >
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="5" >
-          <widget class="QLabel" name="textLabel1_5" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>1</hsizetype>
-             <vsizetype>5</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text" >
-            <string>overload table:</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="7" colspan="2" >
-          <widget class="QCheckBox" name="pf_max_src_conn_rate_flush" >
-           <property name="text" >
-            <string>flush</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" colspan="11" >
-          <widget class="QLabel" name="textLabel3_5" >
-           <property name="text" >
-            <string>Maximum number of simultaneous TCP connections that a single host can make (max-src-conn):</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignVCenter</set>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="9" >
-          <widget class="QCheckBox" name="pf_max_src_conn_global" >
-           <property name="text" >
-            <string>global</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0" colspan="11" >
-          <widget class="QLabel" name="textLabel4_2" >
-           <property name="text" >
-            <string>The limit of new connections over a time interval (max-src-conn-rate):</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignVCenter</set>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="2" >
-          <widget class="QLabel" name="textLabel5_4" >
-           <property name="text" >
-            <string>/</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="6" >
-          <widget class="QLineEdit" name="pf_max_src_conn_overload_table" >
-           <property name="minimumSize" >
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1" >
-          <widget class="QSpinBox" name="pf_max_src_conn" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>0</hsizetype>
-             <vsizetype>0</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximum" >
-            <number>1000000</number>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="9" >
-          <widget class="QCheckBox" name="pf_max_src_conn_rate_global" >
-           <property name="text" >
-            <string>global</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2" colspan="3" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>125</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="2" column="7" colspan="2" >
-          <widget class="QCheckBox" name="pf_max_src_conn_flush" >
-           <property name="text" >
-            <string>flush</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="5" >
-          <widget class="QLabel" name="textLabel1_5_2" >
-           <property name="text" >
-            <string>overload table:</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="4" column="4" >
-          <widget class="QLabel" name="textLabel6_3" >
-           <property name="text" >
-            <string>sec</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1" >
-          <widget class="QSpinBox" name="pf_max_src_conn_rate_num" >
-           <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>0</hsizetype>
-             <vsizetype>0</vsizetype>
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize" >
-            <size>
-             <width>80</width>
-             <height>32767</height>
-            </size>
-           </property>
-           <property name="maximum" >
-            <number>1000000</number>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="2" column="10" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>80</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="4" column="10" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>70</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="10" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>60</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="8" colspan="2" >
-          <widget class="QSpinBox" name="pf_rule_max_state" >
-           <property name="toolTip" >
-            <string>When this limit is reached, further packets matching the rule that would create state are dropped, until existing states time out.</string>
-           </property>
-           <property name="maximum" >
-            <number>1000000</number>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0" colspan="8" >
-          <widget class="QLabel" name="textLabel1_2" >
-           <property name="minimumSize" >
-            <size>
-             <width>300</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text" >
-            <string>Maximum number of concurrent states this rule may create. Unlimited if set to zero  (option 'max').</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignVCenter</set>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="page3" >
-    <layout class="QGridLayout" >
-     <property name="margin" >
-      <number>6</number>
-     </property>
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <item row="0" column="0" >
-      <widget class="QFrame" name="frame6_2_2_2" >
-       <property name="frameShape" >
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow" >
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <layout class="QGridLayout" >
-        <property name="margin" >
-         <number>11</number>
-        </property>
-        <property name="spacing" >
-         <number>6</number>
-        </property>
-        <item row="2" column="0" >
-         <spacer>
-          <property name="orientation" >
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType" >
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" >
-           <size>
-            <width>20</width>
-            <height>90</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="0" >
-         <widget class="QCheckBox" name="ipfw_stateless" >
-          <property name="text" >
-           <string>Stateless rule</string>
-          </property>
+         <widget class="QWidget" name="tab1" >
+          <attribute name="title" >
+           <string>General</string>
+          </attribute>
+          <layout class="QGridLayout" >
+           <property name="leftMargin" >
+            <number>2</number>
+           </property>
+           <property name="topMargin" >
+            <number>2</number>
+           </property>
+           <property name="rightMargin" >
+            <number>2</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>2</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>2</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>2</number>
+           </property>
+           <item row="0" column="0" >
+            <widget class="QCheckBox" name="ipt_assumeFwIsPartOfAny" >
+             <property name="text" >
+              <string>Assume firewall is part of 'any' (this setting only affects code generated for this rule)</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" >
+            <widget class="QCheckBox" name="ipt_stateless" >
+             <property name="text" >
+              <string>Stateless rule</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" >
+            <widget class="QLabel" name="textLabel7" >
+             <property name="text" >
+              <string>Normally policy compiler uses stateful inspection in each rule. Activating next option makes this rule stateless.</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::MinimumExpanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>40</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="3" column="0" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::MinimumExpanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </widget>
-        </item>
-        <item row="0" column="0" >
-         <widget class="QLabel" name="textLabel7_2_2_2" >
-          <property name="minimumSize" >
-           <size>
-            <width>300</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text" >
-           <string>Normally policy compiler uses stateful inspection in each rule. Activating next option makes this rule stateless.</string>
-          </property>
-          <property name="alignment" >
-           <set>Qt::AlignVCenter</set>
-          </property>
-          <property name="wordWrap" >
-           <bool>true</bool>
-          </property>
+         <widget class="QWidget" name="tab2" >
+          <attribute name="title" >
+           <string>Logging</string>
+          </attribute>
+          <layout class="QGridLayout" >
+           <property name="leftMargin" >
+            <number>2</number>
+           </property>
+           <property name="topMargin" >
+            <number>2</number>
+           </property>
+           <property name="rightMargin" >
+            <number>2</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>2</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>2</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>2</number>
+           </property>
+           <item row="1" column="1" >
+            <widget class="QComboBox" name="ipt_logLevel" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>200</width>
+               <height>32767</height>
+              </size>
+             </property>
+             <item>
+              <property name="text" >
+               <string/>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>alert</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>crit</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>error</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>warning</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>notice</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>info</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>debug</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="0" column="1" >
+            <widget class="QLineEdit" name="ipt_logPrefix" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>200</width>
+               <height>32767</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" >
+            <widget class="QLabel" name="logPrefixLbl" >
+             <property name="text" >
+              <string>Log prefix:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" >
+            <widget class="QLabel" name="textLabel2" >
+             <property name="text" >
+              <string>Log level:</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="4" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::MinimumExpanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>0</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="1" column="2" >
+            <widget class="QLabel" name="textLabel3" >
+             <property name="text" >
+              <string>Netlink group (if using ULOG): </string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3" >
+            <widget class="QSpinBox" name="ipt_nlgroup" >
+             <property name="minimum" >
+              <number>1</number>
+             </property>
+             <property name="maximum" >
+              <number>32</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::MinimumExpanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </widget>
-        </item>
-        <item row="0" column="1" >
-         <spacer>
-          <property name="orientation" >
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType" >
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" >
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="page4" >
-    <layout class="QGridLayout" >
-     <property name="margin" >
-      <number>6</number>
-     </property>
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <item row="0" column="0" >
-      <widget class="QFrame" name="frame7" >
-       <property name="frameShape" >
-        <enum>QFrame::NoFrame</enum>
+         <widget class="QWidget" name="tab3" >
+          <attribute name="title" >
+           <string>limit</string>
+          </attribute>
+          <layout class="QGridLayout" >
+           <property name="leftMargin" >
+            <number>2</number>
+           </property>
+           <property name="topMargin" >
+            <number>2</number>
+           </property>
+           <property name="rightMargin" >
+            <number>2</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>2</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>2</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>2</number>
+           </property>
+           <item row="1" column="0" >
+            <widget class="QLabel" name="textLabel4" >
+             <property name="text" >
+              <string>Rate (rule matches if it hits this often or less):</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="6" >
+            <widget class="QLabel" name="textLabel5" >
+             <property name="text" >
+              <string>Module limit</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="5" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::MinimumExpanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="1" column="3" >
+            <widget class="QLabel" name="textLabel6" >
+             <property name="text" >
+              <string>Burst:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="4" >
+            <widget class="QSpinBox" name="ipt_burst" />
+           </item>
+           <item row="1" column="2" >
+            <widget class="QComboBox" name="ipt_limitSuffix" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>200</width>
+               <height>32767</height>
+              </size>
+             </property>
+             <item>
+              <property name="text" >
+               <string/>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>/day</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>/hour</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>/minute</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>/second</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="1" column="1" >
+            <widget class="QSpinBox" name="ipt_limit" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximum" >
+              <number>10000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::MinimumExpanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab4" >
+          <attribute name="title" >
+           <string>connlimit</string>
+          </attribute>
+          <layout class="QGridLayout" >
+           <property name="leftMargin" >
+            <number>2</number>
+           </property>
+           <property name="topMargin" >
+            <number>2</number>
+           </property>
+           <property name="rightMargin" >
+            <number>2</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>2</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>2</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>2</number>
+           </property>
+           <item row="2" column="2" colspan="2" >
+            <widget class="QLabel" name="textLabel5_2" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>bit</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="4" colspan="2" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="1" >
+            <widget class="QSpinBox" name="ipt_connlimit_masklen" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximum" >
+              <number>10000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" >
+            <widget class="QLabel" name="textLabel3_3" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>per network with netmask of </string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3" colspan="2" >
+            <widget class="QSpinBox" name="ipt_connlimit" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximum" >
+              <number>10000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="5" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="1" column="0" colspan="3" >
+            <widget class="QLabel" name="textLabel2_6" >
+             <property name="text" >
+              <string>Number of allowed connections per client host</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" >
+            <widget class="QLabel" name="textLabel3_4" >
+             <property name="text" >
+              <string>Module connlimit</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::MinimumExpanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab5" >
+          <attribute name="title" >
+           <string>hashlimit</string>
+          </attribute>
+          <layout class="QGridLayout" >
+           <property name="leftMargin" >
+            <number>2</number>
+           </property>
+           <property name="topMargin" >
+            <number>2</number>
+           </property>
+           <property name="rightMargin" >
+            <number>2</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>2</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>2</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>2</number>
+           </property>
+           <item row="0" column="0" colspan="4" >
+            <widget class="QLabel" name="textLabel2_5" >
+             <property name="text" >
+              <string>Module hashlimit</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="15" >
+            <widget class="QCheckBox" name="ipt_hashlimit_dstlimit" >
+             <property name="text" >
+              <string>On some older systems this module has name 'dstlimit'. Check here if you need to use this name.</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="15" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="0" >
+            <widget class="QLabel" name="textLabel1_4" >
+             <property name="text" >
+              <string>Rate:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="4" >
+            <widget class="QLabel" name="textLabel1_6" >
+             <property name="text" >
+              <string>Name:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="5" colspan="6" >
+            <widget class="QLineEdit" name="ipt_hashlimit_name" />
+           </item>
+           <item row="2" column="7" colspan="2" >
+            <widget class="QSpinBox" name="ipt_hashlimit_burst" >
+             <property name="maximumSize" >
+              <size>
+               <width>80</width>
+               <height>32767</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1" colspan="2" >
+            <widget class="QSpinBox" name="ipt_hashlimit" >
+             <property name="maximumSize" >
+              <size>
+               <width>80</width>
+               <height>32767</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3" colspan="2" >
+            <widget class="QComboBox" name="ipt_hashlimit_suffix" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>200</width>
+               <height>32767</height>
+              </size>
+             </property>
+             <item>
+              <property name="text" >
+               <string/>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>/day</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>/hour</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>/minute</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>/second</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="2" column="5" colspan="2" >
+            <widget class="QLabel" name="textLabel6_2" >
+             <property name="text" >
+              <string>Burst:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="9" >
+            <widget class="QLabel" name="textLabel5_3" >
+             <property name="text" >
+              <string>Mode:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="10" colspan="3" >
+            <widget class="QComboBox" name="ipt_hashlimit_mode" >
+             <item>
+              <property name="text" >
+               <string>dstip</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>srcip</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>dstip,dstport</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>srcip,srcport</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="2" column="13" colspan="3" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>300</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="0" column="11" colspan="5" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>360</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="3" column="0" colspan="16" >
+            <widget class="Line" name="line1" >
+             <property name="frameShape" >
+              <enum>QFrame::HLine</enum>
+             </property>
+             <property name="frameShadow" >
+              <enum>QFrame::Sunken</enum>
+             </property>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0" colspan="2" >
+            <widget class="QLabel" name="textLabel2_7" >
+             <property name="text" >
+              <string>htable-size:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="2" colspan="2" >
+            <widget class="QSpinBox" name="ipt_hashlimit_size" >
+             <property name="toolTip" >
+              <string>The number of buckets of the hash table (omit this option in generated script if set to 0)</string>
+             </property>
+             <property name="maximum" >
+              <number>999999</number>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="4" colspan="2" >
+            <widget class="QLabel" name="textLabel2_7_2" >
+             <property name="text" >
+              <string>htable-max:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="6" colspan="2" >
+            <widget class="QSpinBox" name="ipt_hashlimit_max" >
+             <property name="toolTip" >
+              <string>Maximum number of entries in the hash (omit this option in generated script if set to 0)</string>
+             </property>
+             <property name="maximum" >
+              <number>999999</number>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="8" colspan="2" >
+            <widget class="QLabel" name="textLabel3_6" >
+             <property name="text" >
+              <string>htable-expire:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="10" colspan="2" >
+            <widget class="QSpinBox" name="ipt_hashlimit_expire" >
+             <property name="toolTip" >
+              <string>After how many milliseconds do hash entries expire (omit this option in the generated script if set to 0)</string>
+             </property>
+             <property name="maximum" >
+              <number>999999</number>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="12" colspan="2" >
+            <widget class="QLabel" name="textLabel4_3" >
+             <property name="text" >
+              <string>htable-gcinterval:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="14" >
+            <widget class="QSpinBox" name="ipt_hashlimit_gcinterval" >
+             <property name="toolTip" >
+              <string>How many milliseconds between garbage collection intervals (omit this option in generated script if set to 0)</string>
+             </property>
+             <property name="maximum" >
+              <number>999999</number>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="15" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>130</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="4" column="0" colspan="16" >
+            <widget class="QLabel" name="textLabel5_5" >
+             <property name="text" >
+              <string>Options below control size of the hash table and expiration time. They will be omitted from the generated script if set to zero.</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="10" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::MinimumExpanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page1" >
+      <layout class="QGridLayout" >
+       <property name="leftMargin" >
+        <number>2</number>
        </property>
-       <property name="frameShadow" >
-        <enum>QFrame::Raised</enum>
+       <property name="topMargin" >
+        <number>2</number>
        </property>
-       <layout class="QGridLayout" >
-        <property name="margin" >
-         <number>11</number>
-        </property>
-        <property name="spacing" >
-         <number>6</number>
-        </property>
-        <item row="0" column="0" >
-         <widget class="QLabel" name="textLabel1" >
-          <property name="text" >
-           <string>These options are only valid for PIX running software v6.3 or later</string>
-          </property>
-          <property name="alignment" >
-           <set>Qt::AlignVCenter</set>
-          </property>
-          <property name="wordWrap" >
-           <bool>true</bool>
-          </property>
+       <property name="rightMargin" >
+        <number>2</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>2</number>
+       </property>
+       <property name="horizontalSpacing" >
+        <number>2</number>
+       </property>
+       <property name="verticalSpacing" >
+        <number>2</number>
+       </property>
+       <item row="0" column="0" >
+        <widget class="QTabWidget" name="tabw1" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Minimum" hsizetype="Expanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="tabShape" >
+          <enum>QTabWidget::Triangular</enum>
+         </property>
+         <widget class="QWidget" name="tab7" >
+          <attribute name="title" >
+           <string>General</string>
+          </attribute>
+          <layout class="QGridLayout" >
+           <property name="leftMargin" >
+            <number>2</number>
+           </property>
+           <property name="topMargin" >
+            <number>2</number>
+           </property>
+           <property name="rightMargin" >
+            <number>2</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>2</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>2</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>2</number>
+           </property>
+           <item row="4" column="0" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>8</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="0" column="0" >
+            <widget class="QLabel" name="textLabel7_2" >
+             <property name="text" >
+              <string>Normally policy compiler uses stateful inspection in each rule. Activating next option makes this rule stateless.</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="1" column="0" >
+            <widget class="QCheckBox" name="ipf_stateless" >
+             <property name="text" >
+              <string>Stateless rule</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" >
+            <widget class="QCheckBox" name="ipf_masq_icmp" >
+             <property name="text" >
+              <string>Send ICMP 'unreachable' packet masquerading as being from the original destination</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" colspan="2" >
+            <widget class="QCheckBox" name="ipf_keep_frags" >
+             <property name="text" >
+              <string>Keep information on fragmented packets, to be applied to later fragments</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
-        </item>
-        <item row="1" column="0" >
-         <spacer>
-          <property name="orientation" >
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType" >
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" >
-           <size>
-            <width>20</width>
-            <height>16</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="2" column="0" >
-         <widget class="QCheckBox" name="pix_disable_rule_log" >
-          <property name="text" >
-           <string>completely disable logging for this rule</string>
-          </property>
+         <widget class="QWidget" name="tab8" >
+          <attribute name="title" >
+           <string>Logging</string>
+          </attribute>
+          <layout class="QGridLayout" >
+           <property name="leftMargin" >
+            <number>0</number>
+           </property>
+           <property name="topMargin" >
+            <number>0</number>
+           </property>
+           <property name="rightMargin" >
+            <number>0</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>0</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>2</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>2</number>
+           </property>
+           <item row="0" column="0" >
+            <widget class="QLabel" name="textLabel2_2_2" >
+             <property name="text" >
+              <string>Log facility:</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" >
+            <widget class="QComboBox" name="ipf_logFacility" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" >
+            <widget class="QLabel" name="textLabel2_2" >
+             <property name="text" >
+              <string>Log level:</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1" >
+            <widget class="QComboBox" name="ipf_logLevel" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="1" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>30</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </widget>
-        </item>
-        <item row="3" column="0" >
-         <layout class="QHBoxLayout" >
-          <property name="margin" >
-           <number>0</number>
+        </widget>
+       </item>
+       <item row="1" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page2" >
+      <layout class="QGridLayout" >
+       <property name="leftMargin" >
+        <number>2</number>
+       </property>
+       <property name="topMargin" >
+        <number>2</number>
+       </property>
+       <property name="rightMargin" >
+        <number>2</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>2</number>
+       </property>
+       <property name="horizontalSpacing" >
+        <number>2</number>
+       </property>
+       <property name="verticalSpacing" >
+        <number>2</number>
+       </property>
+       <item row="1" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="0" >
+        <widget class="QTabWidget" name="tabw2" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Minimum" hsizetype="Expanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="tabShape" >
+          <enum>QTabWidget::Triangular</enum>
+         </property>
+         <widget class="QWidget" name="tab10" >
+          <attribute name="title" >
+           <string>General</string>
+          </attribute>
+          <layout class="QGridLayout" >
+           <property name="leftMargin" >
+            <number>2</number>
+           </property>
+           <property name="topMargin" >
+            <number>2</number>
+           </property>
+           <property name="rightMargin" >
+            <number>2</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>2</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>2</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>2</number>
+           </property>
+           <item row="0" column="0" >
+            <widget class="QLabel" name="textLabel7_2_2" >
+             <property name="minimumSize" >
+              <size>
+               <width>400</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text" >
+              <string>Normally policy compiler uses stateful inspection in each rule. Activating next option makes this rule stateless.</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" >
+            <widget class="QCheckBox" name="pf_stateless" >
+             <property name="text" >
+              <string>Stateless rule</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" >
+            <widget class="QLabel" name="textLabel1_8" >
+             <property name="text" >
+              <string>In PF 4.x "flags S/SA keep state" is the default. Compiler will omit these flags while generating code for stateful rules matching tcp services. However, according to the PF FAQ, care should be taken while dealing with states and interface enc0. To avoid leaking unencrypted traffic out, the FAQ recommends setting 'keep state' explicitly in all rules on the enc0 interface. This option applies only if version is set to 4.x.</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" >
+            <widget class="QCheckBox" name="pf_keep_state" >
+             <property name="text" >
+              <string>Add 'keep state' </string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab11" >
+          <attribute name="title" >
+           <string>Logging</string>
+          </attribute>
+          <layout class="QGridLayout" >
+           <property name="leftMargin" >
+            <number>2</number>
+           </property>
+           <property name="topMargin" >
+            <number>2</number>
+           </property>
+           <property name="rightMargin" >
+            <number>2</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>2</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>2</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>2</number>
+           </property>
+           <item row="0" column="1" >
+            <widget class="QLineEdit" name="pf_logPrefix" />
+           </item>
+           <item row="0" column="0" >
+            <widget class="QLabel" name="logPrefixLbl_2" >
+             <property name="text" >
+              <string>Log prefix:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>301</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="1" column="1" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>51</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab12" >
+          <attribute name="title" >
+           <string>Tracking</string>
+          </attribute>
+          <layout class="QGridLayout" >
+           <property name="leftMargin" >
+            <number>2</number>
+           </property>
+           <property name="topMargin" >
+            <number>2</number>
+           </property>
+           <property name="rightMargin" >
+            <number>2</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>2</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>2</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>2</number>
+           </property>
+           <item row="0" column="0" >
+            <widget class="QCheckBox" name="pf_source_tracking" >
+             <property name="toolTip" >
+              <string>When this option is checked, the number of states per source IP is tracked </string>
+             </property>
+             <property name="text" >
+              <string>Activate source tracking</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" colspan="2" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="1" column="2" >
+            <widget class="QSpinBox" name="pf_max_src_nodes" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximum" >
+              <number>1000000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2" >
+            <widget class="QSpinBox" name="pf_max_src_states" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximum" >
+              <number>1000000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2" >
+            <widget class="QLabel" name="textLabel1_3" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>300</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text" >
+              <string>Maximum number of source addresses which can simultaneously have state table entries (max-src-nodes):</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2" >
+            <widget class="QLabel" name="textLabel2_4" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>300</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text" >
+              <string>Maximum number of simultaneous state entries that a single source address can create with this rule (max-src-states):</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="3" column="1" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab13" >
+          <attribute name="title" >
+           <string>Limits</string>
+          </attribute>
+          <layout class="QGridLayout" >
+           <property name="leftMargin" >
+            <number>2</number>
+           </property>
+           <property name="topMargin" >
+            <number>2</number>
+           </property>
+           <property name="rightMargin" >
+            <number>2</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>2</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>2</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>2</number>
+           </property>
+           <item row="5" column="4" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="4" column="3" >
+            <widget class="QSpinBox" name="pf_max_src_conn_rate_seconds" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>80</width>
+               <height>32767</height>
+              </size>
+             </property>
+             <property name="maximum" >
+              <number>1000000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="6" >
+            <widget class="QLineEdit" name="pf_max_src_conn_rate_overload_table" >
+             <property name="minimumSize" >
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="5" >
+            <widget class="QLabel" name="textLabel1_5" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>overload table:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="7" colspan="2" >
+            <widget class="QCheckBox" name="pf_max_src_conn_rate_flush" >
+             <property name="text" >
+              <string>flush</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="11" >
+            <widget class="QLabel" name="textLabel3_5" >
+             <property name="text" >
+              <string>Maximum number of simultaneous TCP connections that a single host can make (max-src-conn):</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="9" >
+            <widget class="QCheckBox" name="pf_max_src_conn_global" >
+             <property name="text" >
+              <string>global</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" colspan="11" >
+            <widget class="QLabel" name="textLabel4_2" >
+             <property name="text" >
+              <string>The limit of new connections over a time interval (max-src-conn-rate):</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2" >
+            <widget class="QLabel" name="textLabel5_4" >
+             <property name="text" >
+              <string>/</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="6" >
+            <widget class="QLineEdit" name="pf_max_src_conn_overload_table" >
+             <property name="minimumSize" >
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1" >
+            <widget class="QSpinBox" name="pf_max_src_conn" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximum" >
+              <number>1000000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="9" >
+            <widget class="QCheckBox" name="pf_max_src_conn_rate_global" >
+             <property name="text" >
+              <string>global</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2" colspan="3" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>125</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="7" colspan="2" >
+            <widget class="QCheckBox" name="pf_max_src_conn_flush" >
+             <property name="text" >
+              <string>flush</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="5" >
+            <widget class="QLabel" name="textLabel1_5_2" >
+             <property name="text" >
+              <string>overload table:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="4" column="4" >
+            <widget class="QLabel" name="textLabel6_3" >
+             <property name="text" >
+              <string>sec</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1" >
+            <widget class="QSpinBox" name="pf_max_src_conn_rate_num" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>80</width>
+               <height>32767</height>
+              </size>
+             </property>
+             <property name="maximum" >
+              <number>1000000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="10" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>80</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="4" column="10" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>70</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="0" column="10" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>60</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="0" column="8" colspan="2" >
+            <widget class="QSpinBox" name="pf_rule_max_state" >
+             <property name="toolTip" >
+              <string>When this limit is reached, further packets matching the rule that would create state are dropped, until existing states time out.</string>
+             </property>
+             <property name="maximum" >
+              <number>1000000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="8" >
+            <widget class="QLabel" name="textLabel1_2" >
+             <property name="minimumSize" >
+              <size>
+               <width>300</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text" >
+              <string>Maximum number of concurrent states this rule may create. Unlimited if set to zero  (option 'max').</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page3" >
+      <layout class="QGridLayout" >
+       <property name="leftMargin" >
+        <number>2</number>
+       </property>
+       <property name="topMargin" >
+        <number>2</number>
+       </property>
+       <property name="rightMargin" >
+        <number>2</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>2</number>
+       </property>
+       <property name="horizontalSpacing" >
+        <number>2</number>
+       </property>
+       <property name="verticalSpacing" >
+        <number>2</number>
+       </property>
+       <item row="0" column="0" >
+        <widget class="QFrame" name="frame6_2_2_2" >
+         <property name="frameShape" >
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Sunken</enum>
+         </property>
+         <layout class="QGridLayout" >
+          <property name="leftMargin" >
+           <number>2</number>
           </property>
-          <property name="spacing" >
-           <number>6</number>
+          <property name="topMargin" >
+           <number>2</number>
           </property>
-          <item>
-           <widget class="QLabel" name="textLabel2_3" >
-            <property name="text" >
-             <string>Log level:</string>
+          <property name="rightMargin" >
+           <number>2</number>
+          </property>
+          <property name="bottomMargin" >
+           <number>2</number>
+          </property>
+          <property name="horizontalSpacing" >
+           <number>2</number>
+          </property>
+          <property name="verticalSpacing" >
+           <number>2</number>
+          </property>
+          <item row="2" column="0" >
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Vertical</enum>
             </property>
-            <property name="wordWrap" >
-             <bool>false</bool>
+            <property name="sizeType" >
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" >
+             <size>
+              <width>20</width>
+              <height>90</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QCheckBox" name="ipfw_stateless" >
+            <property name="text" >
+             <string>Stateless rule</string>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QComboBox" name="pix_logLevel" />
+          <item row="0" column="0" >
+           <widget class="QLabel" name="textLabel7_2_2_2" >
+            <property name="minimumSize" >
+             <size>
+              <width>300</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text" >
+             <string>Normally policy compiler uses stateful inspection in each rule. Activating next option makes this rule stateless.</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignVCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
-          <item>
+          <item row="0" column="1" >
            <spacer>
             <property name="orientation" >
              <enum>Qt::Horizontal</enum>
@@ -2041,136 +2105,293 @@
             </property>
             <property name="sizeHint" >
              <size>
-              <width>51</width>
+              <width>40</width>
               <height>20</height>
              </size>
             </property>
            </spacer>
           </item>
          </layout>
-        </item>
-        <item row="4" column="0" >
-         <layout class="QHBoxLayout" >
-          <property name="margin" >
-           <number>0</number>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page4" >
+      <layout class="QGridLayout" >
+       <property name="leftMargin" >
+        <number>2</number>
+       </property>
+       <property name="topMargin" >
+        <number>2</number>
+       </property>
+       <property name="rightMargin" >
+        <number>2</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>2</number>
+       </property>
+       <property name="horizontalSpacing" >
+        <number>2</number>
+       </property>
+       <property name="verticalSpacing" >
+        <number>2</number>
+       </property>
+       <item row="0" column="0" >
+        <widget class="QFrame" name="frame7" >
+         <property name="frameShape" >
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QGridLayout" >
+          <property name="leftMargin" >
+           <number>2</number>
           </property>
-          <property name="spacing" >
-           <number>6</number>
+          <property name="topMargin" >
+           <number>2</number>
           </property>
-          <item>
-           <widget class="QLabel" name="textLabel3_2" >
+          <property name="rightMargin" >
+           <number>2</number>
+          </property>
+          <property name="bottomMargin" >
+           <number>2</number>
+          </property>
+          <property name="horizontalSpacing" >
+           <number>2</number>
+          </property>
+          <property name="verticalSpacing" >
+           <number>2</number>
+          </property>
+          <item row="0" column="0" >
+           <widget class="QLabel" name="textLabel1" >
             <property name="text" >
-             <string>Logging interval:</string>
+             <string>These options are only valid for PIX running software v6.3 or later</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignVCenter</set>
             </property>
             <property name="wordWrap" >
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QSpinBox" name="pix_log_interval" >
-            <property name="maximum" >
-             <number>10000</number>
-            </property>
-           </widget>
-          </item>
-          <item>
+          <item row="1" column="0" >
            <spacer>
             <property name="orientation" >
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType" >
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" >
+             <size>
+              <width>20</width>
+              <height>16</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="0" >
+           <widget class="QCheckBox" name="pix_disable_rule_log" >
+            <property name="text" >
+             <string>completely disable logging for this rule</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" >
+           <layout class="QHBoxLayout" >
+            <property name="spacing" >
+             <number>2</number>
+            </property>
+            <property name="leftMargin" >
+             <number>0</number>
+            </property>
+            <property name="topMargin" >
+             <number>0</number>
+            </property>
+            <property name="rightMargin" >
+             <number>0</number>
+            </property>
+            <property name="bottomMargin" >
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="textLabel2_3" >
+              <property name="text" >
+               <string>Log level:</string>
+              </property>
+              <property name="wordWrap" >
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="pix_logLevel" />
+            </item>
+            <item>
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType" >
+               <enum>QSizePolicy::Expanding</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>51</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item row="4" column="0" >
+           <layout class="QHBoxLayout" >
+            <property name="spacing" >
+             <number>2</number>
+            </property>
+            <property name="leftMargin" >
+             <number>0</number>
+            </property>
+            <property name="topMargin" >
+             <number>0</number>
+            </property>
+            <property name="rightMargin" >
+             <number>0</number>
+            </property>
+            <property name="bottomMargin" >
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="textLabel3_2" >
+              <property name="text" >
+               <string>Logging interval:</string>
+              </property>
+              <property name="wordWrap" >
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="pix_log_interval" >
+              <property name="maximum" >
+               <number>10000</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType" >
+               <enum>QSizePolicy::Expanding</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>51</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item row="5" column="0" >
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Vertical</enum>
             </property>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
             <property name="sizeHint" >
              <size>
-              <width>51</width>
+              <width>20</width>
               <height>20</height>
              </size>
             </property>
            </spacer>
           </item>
          </layout>
-        </item>
-        <item row="5" column="0" >
-         <spacer>
-          <property name="orientation" >
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType" >
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" >
-           <size>
-            <width>20</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="page5" >
-    <layout class="QGridLayout" >
-     <property name="margin" >
-      <number>6</number>
-     </property>
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <item row="0" column="0" >
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Vertical</enum>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page5" >
+      <layout class="QGridLayout" >
+       <property name="leftMargin" >
+        <number>2</number>
        </property>
-       <property name="sizeType" >
-        <enum>QSizePolicy::Expanding</enum>
+       <property name="topMargin" >
+        <number>2</number>
        </property>
-       <property name="sizeHint" >
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
+       <property name="rightMargin" >
+        <number>2</number>
        </property>
-      </spacer>
-     </item>
-     <item row="1" column="0" >
-      <widget class="QLabel" name="textLabel1_7" >
-       <property name="text" >
-        <string>There are no options for this firewall platform</string>
+       <property name="bottomMargin" >
+        <number>2</number>
        </property>
-       <property name="alignment" >
-        <set>Qt::AlignCenter</set>
+       <property name="horizontalSpacing" >
+        <number>2</number>
        </property>
-       <property name="wordWrap" >
-        <bool>false</bool>
+       <property name="verticalSpacing" >
+        <number>2</number>
        </property>
-      </widget>
-     </item>
-     <item row="2" column="0" >
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeType" >
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" >
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </widget>
-  </widget>
+       <item row="0" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QLabel" name="textLabel1_7" >
+         <property name="text" >
+          <string>There are no options for this firewall platform</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="2" margin="2" />
  <tabstops>
   <tabstop>pix_disable_rule_log</tabstop>
   <tabstop>pix_logLevel</tabstop>

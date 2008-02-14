@@ -9,36 +9,61 @@
     <x>0</x>
     <y>0</y>
     <width>643</width>
-    <height>254</height>
+    <height>217</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Comment Editor Panel</string>
   </property>
   <layout class="QGridLayout" >
-   <property name="margin" >
-    <number>11</number>
+   <property name="leftMargin" >
+    <number>2</number>
    </property>
-   <property name="spacing" >
-    <number>6</number>
+   <property name="topMargin" >
+    <number>2</number>
+   </property>
+   <property name="rightMargin" >
+    <number>2</number>
+   </property>
+   <property name="bottomMargin" >
+    <number>2</number>
+   </property>
+   <property name="horizontalSpacing" >
+    <number>2</number>
+   </property>
+   <property name="verticalSpacing" >
+    <number>2</number>
    </property>
    <item row="0" column="0" >
     <layout class="QVBoxLayout" >
-     <property name="margin" >
-      <number>6</number>
-     </property>
      <property name="spacing" >
-      <number>6</number>
+      <number>2</number>
+     </property>
+     <property name="leftMargin" >
+      <number>2</number>
+     </property>
+     <property name="topMargin" >
+      <number>2</number>
+     </property>
+     <property name="rightMargin" >
+      <number>2</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>2</number>
      </property>
      <item>
       <widget class="QFrame" name="frame3" >
        <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>5</hsizetype>
-         <vsizetype>0</vsizetype>
+        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="minimumSize" >
+        <size>
+         <width>16</width>
+         <height>20</height>
+        </size>
        </property>
        <property name="frameShape" >
         <enum>QFrame::Box</enum>
@@ -47,11 +72,23 @@
         <enum>QFrame::Sunken</enum>
        </property>
        <layout class="QGridLayout" >
-        <property name="margin" >
-         <number>11</number>
+        <property name="leftMargin" >
+         <number>2</number>
         </property>
-        <property name="spacing" >
-         <number>6</number>
+        <property name="topMargin" >
+         <number>2</number>
+        </property>
+        <property name="rightMargin" >
+         <number>2</number>
+        </property>
+        <property name="bottomMargin" >
+         <number>2</number>
+        </property>
+        <property name="horizontalSpacing" >
+         <number>2</number>
+        </property>
+        <property name="verticalSpacing" >
+         <number>2</number>
         </property>
         <item row="0" column="0" >
          <widget class="QLabel" name="editorTitle" >
@@ -85,9 +122,7 @@
      <item>
       <widget class="Line" name="line6" >
        <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>1</hsizetype>
-         <vsizetype>0</vsizetype>
+        <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -105,11 +140,20 @@
      </item>
      <item>
       <layout class="QHBoxLayout" >
-       <property name="margin" >
-        <number>6</number>
-       </property>
        <property name="spacing" >
-        <number>6</number>
+        <number>2</number>
+       </property>
+       <property name="leftMargin" >
+        <number>2</number>
+       </property>
+       <property name="topMargin" >
+        <number>2</number>
+       </property>
+       <property name="rightMargin" >
+        <number>2</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>2</number>
        </property>
        <item>
         <widget class="QPushButton" name="inputFromFileButton" >
@@ -137,22 +181,6 @@
       </layout>
      </item>
     </layout>
-   </item>
-   <item row="0" column="1" >
-    <spacer>
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType" >
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="sizeHint" >
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>

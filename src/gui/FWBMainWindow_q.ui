@@ -413,7 +413,7 @@
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
                <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
+               <verstretch>144</verstretch>
               </sizepolicy>
              </property>
              <widget class="QWidget" name="tab" >
@@ -471,7 +471,7 @@
            <item row="2" column="0" >
             <widget class="QFrame" name="objectEditorFrame" >
              <property name="sizePolicy" >
-              <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Preferred" >
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -504,10 +504,16 @@
               <item row="0" column="0" >
                <widget class="QStackedWidget" name="objectEditorStack" >
                 <property name="sizePolicy" >
-                 <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+                 <sizepolicy vsizetype="Minimum" hsizetype="Expanding" >
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
+                </property>
+                <property name="minimumSize" >
+                 <size>
+                  <width>16</width>
+                  <height>10</height>
+                 </size>
                 </property>
                 <property name="focusPolicy" >
                  <enum>Qt::StrongFocus</enum>
@@ -515,7 +521,14 @@
                 <property name="frameShape" >
                  <enum>QFrame::NoFrame</enum>
                 </property>
-                <widget class="QWidget" name="WStackPage" />
+                <widget class="QWidget" name="WStackPage" >
+                 <property name="sizePolicy" >
+                  <sizepolicy vsizetype="Minimum" hsizetype="Preferred" >
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                </widget>
                </widget>
               </item>
               <item row="1" column="0" >
@@ -653,7 +666,7 @@
      <x>0</x>
      <y>0</y>
      <width>741</width>
-     <height>24</height>
+     <height>32</height>
     </rect>
    </property>
    <widget class="QMenu" name="editMenu" >

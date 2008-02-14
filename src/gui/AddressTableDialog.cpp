@@ -53,6 +53,7 @@
 #include <qfile.h>
 #include <qtextstream.h> 
 #include <qdir.h>
+#include "FWBSettings.h"
 
 
 #include <iostream>
@@ -64,6 +65,7 @@ AddressTableDialog::AddressTableDialog(QWidget *parent) : QWidget(parent)
 {
     m_dialog = new Ui::AddressTableDialog_q;
     m_dialog->setupUi(this);
+    setFont(st->getUiFont());
     obj=NULL; 
 }
 

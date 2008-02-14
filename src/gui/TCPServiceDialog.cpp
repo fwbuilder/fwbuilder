@@ -43,6 +43,7 @@
 #include <qpushbutton.h>
 #include <qmessagebox.h>
 #include <qlabel.h>
+#include "FWBSettings.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -51,6 +52,7 @@ TCPServiceDialog::TCPServiceDialog(QWidget *parent) : QWidget(parent)
 { 
     m_dialog = new Ui::TCPServiceDialog_q;
     m_dialog->setupUi(this);
+    setFont(st->getUiFont());
         
     obj=NULL; 
 }

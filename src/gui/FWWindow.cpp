@@ -2369,6 +2369,9 @@ void FWWindow::editPrefs()
     if ((QDialog::Accepted == pd.exec()) && (m_mainWindow->ruleSets->count()!=0))
     {
         QApplication::setFont(st->getUiFont());
+        oi->setFont(st->getUiFont());
+        for (int i = 0; i < m_mainWindow->objectEditorStack->count(); i++)
+            m_mainWindow->objectEditorStack->widget(i)->setFont(st->getUiFont());
         for (int i = 0; i < m_mainWindow->ruleSets->count(); i++)
             dynamic_cast<RuleSetView*>(m_mainWindow->ruleSets->widget(i))->updateAll();        
         om->getCurrentObjectTree()->updateAfterPrefEdit();
@@ -2668,8 +2671,10 @@ void FWWindow::closeEditorPanel()
 }
 
 void FWWindow::openEditorPanel()
-{
+{   
+    m_mainWindow->objectEditorFrame->adjustSize();    
     m_mainWindow->objectEditorFrame->show();
+    
 }
 
 void FWWindow::ruleSetTabChanged(int tab)

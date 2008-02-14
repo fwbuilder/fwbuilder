@@ -48,6 +48,7 @@
 #include <qcursor.h>
 
 #include <iostream>
+#include "FWBSettings.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -61,6 +62,7 @@ TagServiceDialog::TagServiceDialog(QWidget *parent) : QWidget(parent)
 { 
     m_dialog = new Ui::TagServiceDialog_q;
     m_dialog->setupUi(this);
+    setFont(st->getUiFont());
     obj=NULL; 
 }
 

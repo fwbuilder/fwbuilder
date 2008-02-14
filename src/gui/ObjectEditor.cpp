@@ -190,15 +190,15 @@ ObjectEditor::ObjectEditor( QWidget *parent ): QObject(parent)
     w= DialogFactory::createDialog(parent,DNSName::TYPENAME);
     stackIds[DNSName::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[DNSName::TYPENAME]] = w;
-    
+
     w= DialogFactory::createDialog(parent,AddressTable::TYPENAME);
     stackIds[AddressTable::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[AddressTable::TYPENAME]] = w;
-    
+
     w= DialogFactory::createDialog(parent,TagService::TYPENAME);
     stackIds[TagService::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[TagService::TYPENAME]] = w;
-    
+
 
     w= new ActionsDialog(parent);
     stackIds[getOptDialogName(optAction)]  = parentWidget->addWidget(w);
@@ -208,7 +208,7 @@ ObjectEditor::ObjectEditor( QWidget *parent ): QObject(parent)
     stackIds[getOptDialogName(optComment)]  = parentWidget->addWidget(w);
     dialogs[stackIds[getOptDialogName(optComment)]] = w;
 
-   
+
     w= new MetricEditorPanel(parent);
     stackIds[getOptDialogName(optMetric)]  = parentWidget->addWidget(w);
     dialogs[stackIds[getOptDialogName(optMetric)]] = w;
@@ -216,7 +216,7 @@ ObjectEditor::ObjectEditor( QWidget *parent ): QObject(parent)
     w=new QWidget(parent);
     stackIds["BLANK"]  = parentWidget->addWidget(w);
     dialogs[stackIds["BLANK"]] = w;
-    
+
 
 }
 

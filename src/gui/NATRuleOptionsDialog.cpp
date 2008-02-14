@@ -43,6 +43,7 @@
 #include <qlabel.h>
 
 #include <iostream>
+#include "FWBSettings.h"
 
 using namespace libfwbuilder;
 using namespace std;
@@ -56,6 +57,7 @@ NATRuleOptionsDialog::NATRuleOptionsDialog(QWidget *parent) : QWidget(parent)
 {
     m_dialog = new Ui::NATRuleOptionsDialog_q;
     m_dialog->setupUi(this);
+    setFont(st->getUiFont());
     
     init=false;
 }
