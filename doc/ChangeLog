@@ -1,3 +1,10 @@
+2008-02-18  vadim  <vadim@vk.crocodile.org>
+
+	* CircularQueue.hpp (antlr): fixed crash of the policy importer on
+	64-bit systems. This fixes bug #1886575: "Seg Fault on reading
+	vanilla Fedora iptables file". See comment in module
+	CircularQueue.hpp for details.
+
 2008-02-10  vadim  <vadim@vk.crocodile.org>
 
 	* pt_BR.po: updated Brazilian Portuguese translation by Rubens

@@ -40,7 +40,17 @@ public:
 	}
 
 	/// @todo this should use at or should have a check
-	inline T elementAt( size_t idx ) const
+        //
+        // -------------------- vk --------------------------------------------
+        // Fix for 64-bt systems. Originally argument was defined as
+        // size_t idx; size_t is defined as unsigned integral type. This leads
+        // to a crash when parser requests LT(0) at the very beginning of
+        // the circular buffer because TokenBuffer::LT calls elementAt
+        // with argument markerOffset+i-1, which is at that point equal
+        // to -1. If idx is defined as size_t, it ends up equal to
+        // 4294967295, which means we are looking past the end of the buffer.
+        // -------------------- vk --------------------------------------------
+	inline T elementAt( int idx ) const
 	{
 		return storage[idx+m_offset];
 	}
