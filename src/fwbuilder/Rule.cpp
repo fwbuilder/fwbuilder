@@ -52,6 +52,7 @@ Rule::Rule()
     enable();
     setFallback(false);
     setHidden(false);
+    setRuleGroupName("");
 }
 
 Rule::Rule(const FWObject *root,bool prepopulate) : Group(root,prepopulate)
@@ -71,6 +72,15 @@ void       Rule::disable()           {    setBool("disabled",true); }
 void       Rule::enable()            {    setBool("disabled",false);}
 bool       Rule::isDisabled() const  {    return( getBool("disabled") );}
 bool       Rule::isEmpty() const     {    return false;             }
+
+string Rule::getRuleGroupName() const { return getStr("group"); }
+
+void Rule::setRuleGroupName(const std::string &group_name)
+{
+    setStr("group", group_name);
+}
+
+
 
 FWObject& Rule::shallowDuplicate(const FWObject *x, bool preserve_id) throw(FWException)
 {
@@ -174,7 +184,7 @@ PolicyRule::Action PolicyRule::getAction()  const
     if (a=="Classify")   return Classify;
     if (a=="Custom")     return Custom;
     if (a=="Branch")     return Branch;
-    if (a=="Route")     return Route;
+    if (a=="Route")      return Route;
     return Deny;
 }
 
@@ -290,6 +300,13 @@ void PolicyRule::fromXML(xmlNodePtr root) throw(FWException)
     if(n)
     {
         setStr("direction",n);
+        FREEXMLBUFF(n);
+    }
+
+    n= FROMXMLCAST(xmlGetProp(root,TOXMLCAST("group")));
+    if(n)
+    {
+        setStr("group",n);
         FREEXMLBUFF(n);
     }
 
@@ -420,10 +437,26 @@ void NATRule::fromXML(xmlNodePtr root) throw(FWException)
     FWObject::fromXML(root);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("disabled")));
-    if(n)  setStr("disabled",n);
+    if(n)
+    {
+        setStr("disabled",n);
+        FREEXMLBUFF(n);
+    }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("position")));
-    if(n)  setStr("position",n);
+    if(n)
+    {
+        setStr("position",n);
+        FREEXMLBUFF(n);
+    }
+
+    n= FROMXMLCAST(xmlGetProp(root,TOXMLCAST("group")));
+    if(n)
+    {
+        setStr("group",n);
+        FREEXMLBUFF(n);
+    }
+
 }
 
 xmlNodePtr NATRule::toXML(xmlNodePtr parent) throw(FWException)
@@ -592,13 +625,33 @@ void RoutingRule::fromXML(xmlNodePtr root) throw(FWException)
     FWObject::fromXML(root);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("disabled")));
-    if(n)  setStr("disabled",n);
-    
+    if(n)
+    {
+        setStr("disabled",n);
+        FREEXMLBUFF(n);
+    }
+
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("metric")));
-    if(n)  setStr("metric",n);
+    if(n)
+    {
+        setStr("metric",n);
+        FREEXMLBUFF(n);
+    }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("position")));
-    if(n)  setStr("position",n);
+    if(n)
+    {
+        setStr("position",n);
+        FREEXMLBUFF(n);
+    }
+
+    n= FROMXMLCAST(xmlGetProp(root,TOXMLCAST("group")));
+    if(n)
+    {
+        setStr("group",n);
+        FREEXMLBUFF(n);
+    }
+
 }
 
 xmlNodePtr RoutingRule::toXML(xmlNodePtr parent) throw(FWException)

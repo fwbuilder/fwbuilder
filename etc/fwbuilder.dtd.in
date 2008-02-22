@@ -168,6 +168,7 @@ own compiler) we do not define content model for this element.
  disabled  %BOOLEAN;   "False"
  position  %NUMBER;    #REQUIRED
  comment   %STRING;    #IMPLIED
+ group     %STRING;    #IMPLIED
 >
 
 <!ELEMENT When (IntervalRef*)>
@@ -213,6 +214,7 @@ own compiler) we do not define content model for this element.
  position  %NUMBER;    #REQUIRED
  metric    %NUMBER;    "0"
  comment   %STRING;    #IMPLIED
+ group     %STRING;    #IMPLIED
 >
 
 <!ELEMENT RDst (ObjectRef*)>
@@ -240,6 +242,7 @@ own compiler) we do not define content model for this element.
  action    %ACTION;    #REQUIRED
  log       %BOOLEAN;   #REQUIRED
  comment   %STRING;    #IMPLIED
+ group     %STRING;    #IMPLIED
 >
 
 <!ELEMENT Src (ObjectRef*)>

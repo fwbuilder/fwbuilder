@@ -96,6 +96,9 @@ class Rule : public Group
     std::string getLabel() const { return label; }
     void setLabel(const std::string &l) { label=l; }
 
+    std::string getRuleGroupName() const;
+    void setRuleGroupName(const std::string &group_name);
+
     int  getAbsRuleNumber() const { return abs_rule_number; }
     void setAbsRuleNumber(int rn) { abs_rule_number=rn; }
 
