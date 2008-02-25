@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -145,9 +147,9 @@ RCSEnvFix::RCSEnvFix()
     int tzoffset;
     QString tzsign = "";
 
-    time_t clock; 
-    struct tm *ltm; 
-    time(&clock); 
+    time_t clock;
+    struct tm *ltm;
+    time(&clock);
     ltm = (struct tm *) localtime(&clock);
 
 #if defined(HAVE_STRUCT_TM_TM_ZONE)
@@ -170,7 +172,7 @@ RCSEnvFix::RCSEnvFix()
     } else {
         tzsign = "+";
     }
-    
+
 #else
 // global variable timezone has seconds West of GMT (positive in
 // timezones west of GMT)
@@ -292,7 +294,7 @@ RCS::RCS(const QString &file)
  */
         QString rl = rlog();
         QStringList split_log = rl.split(QRegExp("------|======"));
-                                                   
+
         QString head_section = split_log[0];
 
         QRegExp head_rx("head:\\s+([0-9\\.]+)\\s*\\n");
@@ -385,7 +387,7 @@ RCS::RCS(const QString &file)
                 r.rev       = (*i).section(QRegExp("\\s+"),1,1);
                 QString lb  = (*i).section(QRegExp("[\\s;]+"),4,4);
                 if (lb!="")
-                {       
+                {
                     r.locked_by = lb;
                     locked      = true;
                     locked_by   = lb;
@@ -491,7 +493,7 @@ void RCS::abandon()
     proc->setEnvironment(*rcsenvfix->getEnv());
     proc->start( co_file_name, arglist );
     proc->waitForStarted();
-    
+
     if (fwbdebug) qDebug("running co");
 
     if (proc->state() == QProcess::Running)
@@ -511,7 +513,7 @@ void RCS::abandon()
     selectedRev = "";
 
     checked_out=false;
-    
+
     QString err = tr("Error checking file out: %1").arg(stderrBuffer);
     QMessageBox::critical(app->activeWindow(), "Firewall Builder", err, tr("&Continue") );
 
@@ -531,7 +533,7 @@ void RCS::add() throw(libfwbuilder::FWException)
     if (!rcsdir.exists("RCS")) rcsdir.mkdir("RCS");
 
     QStringList arglist;
-    
+
     arglist << "-q" << "-i" << "-kb" << QString("-z") + rcsenvfix->getTZOffset() << "-t-\"Initial checkin\"" << filename;
 
     stdoutBuffer="";
@@ -547,7 +549,7 @@ void RCS::add() throw(libfwbuilder::FWException)
         if (proc->state() == QProcess::NotRunning && proc->exitCode()==0)
         {
             arglist.clear();
-            
+
             arglist << "-q" << "-u" << QString("-z") + rcsenvfix->getTZOffset() << filename;
 
             stdoutBuffer="";
@@ -581,14 +583,14 @@ bool RCS::isInRCS()
     if (tracking_file) return inrcs;
 
     QStringList arglist;
-    
+
     arglist << QString("-z") + rcsenvfix->getTZOffset() << "-R" << filename;
 
     stdoutBuffer="";
     stderrBuffer="";
 
     proc->setEnvironment(*rcsenvfix->getEnv());
-    
+
     proc->start( rlog_file_name, arglist );
     proc->waitForStarted();
     if (proc->state() != QProcess::Running)
@@ -654,7 +656,7 @@ bool RCS::co(const QString &rev,bool force) throw(libfwbuilder::FWException)
     {
         if (rev==head || rev=="") return true;
 
-/* check out requested revision to stdout 
+/* check out requested revision to stdout
  *
  * TODO: right now it loads the whole file into memory, then writes it
  * to the temp file. It should be more efficient to read and write in
@@ -663,7 +665,7 @@ bool RCS::co(const QString &rev,bool force) throw(libfwbuilder::FWException)
  */
         QStringList arglist;
 
-        arglist << QString("-q") << QString("-kb") << 
+        arglist << QString("-q") << QString("-kb") <<
                 QString("-z") + rcsenvfix->getTZOffset() << QString("-p")+rev << filename;
 
         stdoutBuffer="";
@@ -678,7 +680,7 @@ bool RCS::co(const QString &rev,bool force) throw(libfwbuilder::FWException)
         proc->setEnvironment(*rcsenvfix->getEnv());
         proc->start( co_file_name, arglist );
         proc->waitForStarted();
-    
+
         if (fwbdebug) qDebug("running co");
 
         if (proc->state() == QProcess::Running)
@@ -699,7 +701,7 @@ bool RCS::co(const QString &rev,bool force) throw(libfwbuilder::FWException)
                 strncpy(tname, filename.toLatin1().constData(), sizeof(tname)-20 );
                 strcat(tname,"_temp_XXXXXX");
                 int fd = mkstemp(tname);
-#endif 
+#endif
 		if (fd<0)
 		{
                     QString err = tr("Error creating temporary file ")+tname+QString(" :\n")+strerror(errno);
@@ -746,7 +748,7 @@ bool RCS::co(const QString &rev,bool force) throw(libfwbuilder::FWException)
             if (me!=locked_by)
             {
                 switch (QMessageBox::warning(
-                            app->activeWindow(),"Firewall Builder", 
+                            app->activeWindow(),"Firewall Builder",
                             tr("File is opened and locked by %1.\nYou can only open it read-only.")
                             .arg(locked_by),
                             "Open &read-only", "&Cancel", QString::null,
@@ -875,7 +877,7 @@ bool RCS::ci( const QString &_lm,
  * Also it seems on windows all data is sent to the process and slot
  * is called while we still are inside launch, so that once we exit
  * from it, all is done and there is no need to enter event loop.
- */    
+ */
     ciRunning=true;
     ciproc->setEnvironment(*rcsenvfix->getEnv());
     ciproc->start( ci_file_name, arglist );
@@ -895,9 +897,9 @@ bool RCS::ci( const QString &_lm,
     rcslogCopy = rcslog;
 
     ciproc->write((const char*)rcslogCopy, rcslog.length());
-    
+
     QByteArray arr;
-    arr = "\n.\n"; 
+    arr = "\n.\n";
     ciproc->write((const char*)(arr),arr.length());
 
     if (fwbdebug) qDebug("all data sent to ci");
@@ -940,7 +942,7 @@ QString RCS::rlog() throw(libfwbuilder::FWException)
 
     arglist << QString("-z") + rcsenvfix->getTZOffset() << filename;
 //    proc->addArgument( "-zLT" );
-    
+
     if (fwbdebug)
         qDebug("Running rlog: %s %s",rlog_file_name.toAscii().constData(),arglist.join(" ").toAscii().constData());
 
@@ -950,7 +952,7 @@ QString RCS::rlog() throw(libfwbuilder::FWException)
     //proc->setEnvironment(*rcsenvfix->getEnv());
     proc->start( rlog_file_name, arglist );
     proc->waitForStarted();
-    
+
     if (proc->state() != QProcess::Running)
         throw(FWException("Fatal error running rlog "));
 

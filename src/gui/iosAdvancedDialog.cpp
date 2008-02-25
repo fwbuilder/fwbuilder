@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,7 +17,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
@@ -25,12 +25,14 @@
 
 
 
+#include "fwbuilder_ph.h"
+
 #include "config.h"
 #include "global.h"
 #include "utils.h"
 
 #include "iosAdvancedDialog.h"
-#include "ObjectManipulator.h"
+#include "FWWindow.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
@@ -78,7 +80,7 @@ iosAdvancedDialog::iosAdvancedDialog(QWidget *parent,FWObject *o)
 void iosAdvancedDialog::accept()
 {
     data.saveAll();
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

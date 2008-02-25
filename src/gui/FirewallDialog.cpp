@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,20 +17,22 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+#include "fwbuilder_ph.h"
+
 #include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "platforms.h"
+#include "ProjectPanel.h"
 
 #include "FWBTree.h"
 #include "FirewallDialog.h"
-#include "ObjectManipulator.h"
 #include "DialogFactory.h"
 #include "FWWindow.h"
 
@@ -62,16 +64,16 @@
 using namespace std;
 using namespace libfwbuilder;
 
-FirewallDialog::~FirewallDialog() 
-{ 
+FirewallDialog::~FirewallDialog()
+{
     delete m_dialog;
 }
 
-FirewallDialog::FirewallDialog(QWidget *parent) : QWidget(parent) 
-{ 
+FirewallDialog::FirewallDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+{
     m_dialog = new Ui::FirewallDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL; 
+    obj=NULL;
     setFont(st->getUiFont());
 }
 
@@ -141,7 +143,7 @@ void FirewallDialog::loadFWObject(FWObject *o)
 
     m_dialog->inactive->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->inactive);
-    
+
 
     init=false;
 }
@@ -259,14 +261,14 @@ void FirewallDialog::applyChanges()
     obj->setStr("platform", pl );
 
     obj->setStr("host_OS", readHostOS(m_dialog->hostOS).toLatin1().constData() );
-    
+
     s->setInactive(m_dialog->inactive->isChecked());
-    
+
     saveVersion();
 
     string newVer=obj->getStr("version");
-        
-    om->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+
+    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     if (oldplatform!=pl || oldname!=newname || oldVer!=newVer)
     {
@@ -290,13 +292,13 @@ void FirewallDialog::applyChanges()
     init=true;
 
 /* move to another lib if we have to */
-    if (! FWBTree::isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        om->moveObject(m_dialog->libs->currentText(), obj);
+    if (! m_project->isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
+        mw->moveObject(m_dialog->libs->currentText(), obj);
 
     init=false;
 
     //apply->setEnabled( false );
-    om->updateLastModifiedTimestampForAllFirewalls(s);
+    mw->updateLastModifiedTimestampForAllFirewalls(s);
 
 }
 

@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,13 +17,15 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -43,7 +45,7 @@
 #include <errno.h>
 #ifndef errno
 extern int errno;
-#endif 
+#endif
 
 using namespace std;
 
@@ -178,7 +180,7 @@ void SSHPIX::stateMachine()
  * user account is configured with "privilege 15"
  */
         if ( cmpPrompt(stdoutBuffer,QRegExp(enable_prompt)) )
-        {       
+        {
             state=WAITING_FOR_ENABLE;
             stateMachine();
             break;
@@ -248,7 +250,7 @@ void SSHPIX::stateMachine()
             break;
         }
         if ( cmpPrompt(stdoutBuffer,QRegExp(enable_prompt)) )
-        {       
+        {
             emit printStdout_sign( tr("In enable mode."));
             emit printStdout_sign( "\n");
             state=ENABLE;  // and go to ENABLE target in switch
@@ -327,7 +329,7 @@ void SSHPIX::stateMachine()
 
     case EXECUTING_COMMAND:
         if ( cmpPrompt(stdoutBuffer,QRegExp(enable_prompt)) )
-        {       
+        {
             //QApplication::eventLoop()->exitLoop();
             QCoreApplication::exit();
             state=COMMAND_DONE;
@@ -596,9 +598,9 @@ void SSHPIX::clearACLs()
     emit printStdout_sign( "\n");
     emit printStdout_sign(tr("*** Clearing unused access lists"));
     emit printStdout_sign( "\n");
-    
+
     QString ca;
-        
+
     while (currentAcls.size()!=0)
     {
         ca=currentAcls.front();
@@ -661,9 +663,9 @@ void SSHPIX::clearObjectGroups()
     emit printStdout_sign( "\n");
     emit printStdout_sign(tr("*** Clearing unused object groups"));
     emit printStdout_sign( "\n");
-    
+
     QString ca;
-        
+
     while (currentObjectGroups.size()!=0)
     {
         ca=currentObjectGroups.front();
@@ -734,7 +736,7 @@ void SSHPIX::PIXincrementalInstall()
             emit printStdout_sign( "\n");
             switch (errno)
             {
-            case EAGAIN: 
+            case EAGAIN:
             case ENOMEM:
                 emit printStdout_sign(tr("Not enough memory.") + "\n");
                 break;

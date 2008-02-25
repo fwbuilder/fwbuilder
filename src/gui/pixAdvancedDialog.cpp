@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,7 +17,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
@@ -25,13 +25,14 @@
 
 
 
+#include "fwbuilder_ph.h"
+
 #include "config.h"
 #include "global.h"
 #include "utils.h"
 
 #include "pixAdvancedDialog.h"
 #include "SimpleTextEditor.h"
-#include "ObjectManipulator.h"
 #include "FWWindow.h"
 #include "FWBSettings.h"
 
@@ -73,7 +74,7 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget *parent,FWObject *o)//(parent)
     Firewall  *fw=Firewall::cast(obj);
     FWOptions *fwopt=fw->getOptionsObject();
     string compiler=fwopt->getStr("compiler");
-    if (compiler=="") 
+    if (compiler=="")
     {
         compiler=Resources::platform_res[fw->getStr("platform")]->getCompiler();
     }
@@ -109,7 +110,7 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget *parent,FWObject *o)//(parent)
     connect(fwb_pix_proc, SIGNAL(readyReadStandardError()), this,  SLOT(readFromStderr() ) );
     connect(fwb_pix_proc, SIGNAL(stateChanged( QProcess::ProcessState )),   this,  SLOT(fwb_pix_Finished( QProcess::ProcessState ) ) );
     connect(fwb_pix_proc, SIGNAL(bytesWritten(qint64)),   this,  SLOT(allXMLSent() ) );
-    
+
     compilerPath = compiler.c_str();
     argumentList << "-f" << "-" << "-i" << fw->getName().c_str();
 
@@ -143,27 +144,27 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget *parent,FWObject *o)//(parent)
     s=QObject::tr("3 - Error Message");
     logLevels.push_back(s);
     logLevelMapping.push_back(s);
-    logLevelMapping.push_back("3"); 
+    logLevelMapping.push_back("3");
 
     s=QObject::tr("4 - Warning Message");
     logLevels.push_back(s);
     logLevelMapping.push_back(s);
-    logLevelMapping.push_back("4"); 
+    logLevelMapping.push_back("4");
 
     s=QObject::tr("5 - Normal but significant condition");
     logLevels.push_back(s);
     logLevelMapping.push_back(s);
-    logLevelMapping.push_back("5"); 
+    logLevelMapping.push_back("5");
 
     s=QObject::tr("6 - Informational");
     logLevels.push_back(s);
     logLevelMapping.push_back(s);
-    logLevelMapping.push_back("6"); 
+    logLevelMapping.push_back("6");
 
     s=QObject::tr("7 - Debug Message");
     logLevels.push_back(s);
     logLevelMapping.push_back(s);
-    logLevelMapping.push_back("7"); 
+    logLevelMapping.push_back("7");
 
 /* do not need to translate syslog facilities, but will use the same
  * method just in case */
@@ -219,7 +220,7 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget *parent,FWObject *o)//(parent)
     /*
      * If none of the new pix_acl_* options is set and old pix_add_clear_statements
      * option is true, set pix_acl_basic to true.
-     * 
+     *
      * If old option pix_add_clear_statements iss false, set
      * pix_acl_no_clear to true
      */
@@ -245,75 +246,75 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget *parent,FWObject *o)//(parent)
     data.registerOption( m_dialog->outputFileName       , fwoptions,
                          "output_file"  );
 
-    data.registerOption( m_dialog->pix_assume_fw_part_of_any  , fwoptions,  
+    data.registerOption( m_dialog->pix_assume_fw_part_of_any  , fwoptions,
                          "pix_assume_fw_part_of_any" );
 
-    data.registerOption( m_dialog->pix_replace_natted_objects  , fwoptions,  
+    data.registerOption( m_dialog->pix_replace_natted_objects  , fwoptions,
                          "pix_replace_natted_objects" );
 
-    data.registerOption( m_dialog->pix_emulate_out_acl  , fwoptions,  
+    data.registerOption( m_dialog->pix_emulate_out_acl  , fwoptions,
                          "pix_emulate_out_acl" );
 
-    data.registerOption( m_dialog->pix_generate_out_acl  , fwoptions,  
+    data.registerOption( m_dialog->pix_generate_out_acl  , fwoptions,
                          "pix_generate_out_acl" );
 
 
-    data.registerOption( m_dialog->pix_acl_basic , fwoptions,  
+    data.registerOption( m_dialog->pix_acl_basic , fwoptions,
                          "pix_acl_basic" );
 
 /*
-    data.registerOption( m_dialog->pix_acl_alwaysNew , fwoptions,  
+    data.registerOption( m_dialog->pix_acl_alwaysNew , fwoptions,
                          "pix_acl_always_new" );
 */
 
-    data.registerOption( m_dialog->pix_acl_no_clear , fwoptions,  
+    data.registerOption( m_dialog->pix_acl_no_clear , fwoptions,
                          "pix_acl_no_clear" );
 
-    data.registerOption( m_dialog->pix_acl_substitution , fwoptions,  
+    data.registerOption( m_dialog->pix_acl_substitution , fwoptions,
                          "pix_acl_substitution" );
 
-    data.registerOption( m_dialog->pix_acl_temp_addr , fwoptions,  
+    data.registerOption( m_dialog->pix_acl_temp_addr , fwoptions,
                          "pix_acl_temp_addr" );
 
 
-    data.registerOption( m_dialog->pix_include_comments , fwoptions,  
+    data.registerOption( m_dialog->pix_include_comments , fwoptions,
                          "pix_include_comments" );
 
-    data.registerOption( m_dialog->pix_use_acl_remarks , fwoptions,  
+    data.registerOption( m_dialog->pix_use_acl_remarks , fwoptions,
                          "pix_use_acl_remarks" );
 
-    data.registerOption( m_dialog->pix_regroup_commands , fwoptions,  
+    data.registerOption( m_dialog->pix_regroup_commands , fwoptions,
                          "pix_regroup_commands" );
 
-    data.registerOption( m_dialog->pix_use_manual_commit , fwoptions,  
+    data.registerOption( m_dialog->pix_use_manual_commit , fwoptions,
                          "pix_use_manual_commit" );
 
     m_dialog->pix_use_manual_commit->setEnabled(platform=="fwsm");
 /*
-    data.registerOption( m_dialog->pix_add_clear_statements , fwoptions,  
+    data.registerOption( m_dialog->pix_add_clear_statements , fwoptions,
                          "pix_add_clear_statements" );
 */
 
-    data.registerOption( m_dialog->pix_optimize_default_nat , fwoptions,  
+    data.registerOption( m_dialog->pix_optimize_default_nat , fwoptions,
                          "pix_optimize_default_nat" );
 
-    data.registerOption( m_dialog->pix_check_shadowing    , fwoptions,  
+    data.registerOption( m_dialog->pix_check_shadowing    , fwoptions,
                          "check_shading"  );
 
-    data.registerOption( m_dialog->pix_ignore_empty_groups , fwoptions,  
+    data.registerOption( m_dialog->pix_ignore_empty_groups , fwoptions,
                          "ignore_empty_groups" );
 
 
-    data.registerOption( m_dialog->pix_check_duplicate_nat    , fwoptions,  
+    data.registerOption( m_dialog->pix_check_duplicate_nat    , fwoptions,
                          "pix_check_duplicate_nat"  );
 
-    data.registerOption( m_dialog->pix_check_overlapping_global_pools , fwoptions,  
+    data.registerOption( m_dialog->pix_check_overlapping_global_pools , fwoptions,
                          "pix_check_overlapping_global_pools" );
 
-    data.registerOption( m_dialog->pix_check_overlapping_statics , fwoptions,  
+    data.registerOption( m_dialog->pix_check_overlapping_statics , fwoptions,
                          "pix_check_overlapping_statics" );
 
-    data.registerOption( m_dialog->pix_check_overlapping_global_statics , fwoptions,  
+    data.registerOption( m_dialog->pix_check_overlapping_global_statics , fwoptions,
                          "pix_check_overlapping_global_statics" );
 
     data.registerOption( m_dialog->mgmt_ssh     , fwoptions,  "mgmt_ssh"  );
@@ -332,10 +333,10 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget *parent,FWObject *o)//(parent)
 
 
 /* page "Prolog/Epilog" */
-    data.registerOption( m_dialog->pix_prolog_script    , fwoptions,  
+    data.registerOption( m_dialog->pix_prolog_script    , fwoptions,
                          "pix_prolog_script"  );
 
-    data.registerOption( m_dialog->pix_epilog_script    , fwoptions,  
+    data.registerOption( m_dialog->pix_epilog_script    , fwoptions,
                          "pix_epilog_script"  );
 
 /* page "Timeouts" */
@@ -366,7 +367,7 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget *parent,FWObject *o)//(parent)
     data.registerOption( m_dialog->sip_media_hh   , fwoptions, "sip_media_hh"  );
     data.registerOption( m_dialog->sip_media_mm   , fwoptions, "sip_media_mm"  );
     data.registerOption( m_dialog->sip_media_ss   , fwoptions, "sip_media_ss"  );
-                                                                  
+
     data.registerOption( m_dialog->half_closed_hh , fwoptions, "half-closed_hh");
     data.registerOption( m_dialog->half_closed_mm , fwoptions, "half-closed_mm");
     data.registerOption( m_dialog->half_closed_ss , fwoptions, "half-closed_ss");
@@ -407,7 +408,7 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget *parent,FWObject *o)//(parent)
 
     if (fwbdebug)
         qDebug("pixAdvancedDialog::pixAdvancedDialog lst = %s",lst.c_str());
-    
+
 
     for (list<fixupControl>::iterator fi=allFixups.begin(); fi!=allFixups.end(); fi++)
     {
@@ -431,7 +432,7 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget *parent,FWObject *o)//(parent)
         while ( i<lst.size() )
         {
             j=lst.find(",",i);
-            if (QString(lst.substr(i,j-i).c_str())==fi->fwoption) 
+            if (QString(lst.substr(i,j-i).c_str())==fi->fwoption)
             { present=true; break; }
             if (j==string::npos) break;
             i=j+1;
@@ -481,7 +482,7 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget *parent,FWObject *o)//(parent)
 
     QStringList interfaces;
     list<FWObject*> l2=obj->getByType(Interface::TYPENAME);
-    for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) 
+    for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
         interfaces.push_back( (Interface::cast(*i))->getLabel().c_str() );
 
     m_dialog->syslog_device_id_interface_val->addItems(interfaces);
@@ -595,7 +596,7 @@ void pixAdvancedDialog::changeAllFixups(int state)
         if (!fi->active) continue;
 
         fi->switch_widget->setCurrentIndex(
-            translateFixupSwitchFromOptionToWidget(state) );            
+            translateFixupSwitchFromOptionToWidget(state) );
     }
     updateFixupCommandsDisplay();
 }
@@ -683,7 +684,7 @@ void pixAdvancedDialog::displayCommands()
     FREEXMLBUFF(buffer);
 
     fwb_pix_proc->start(compilerPath, argumentList);
-    if ( !fwb_pix_proc->waitForStarted() ) 
+    if ( !fwb_pix_proc->waitForStarted() )
     {
         m_dialog->pix_generated_fixup->append(
             tr("Error: Policy compiler for PIX is not installed") );
@@ -710,7 +711,7 @@ void pixAdvancedDialog::readFromStderr()
 void pixAdvancedDialog::fwb_pix_Finished( QProcess::ProcessState newState )
 {
     if (newState != QProcess::NotRunning) return;
-    
+
     if (fwb_pix_proc->exitStatus() != QProcess::NormalExit)
         m_dialog->pix_generated_fixup->append( tr("Compiler error") );
 }
@@ -733,7 +734,7 @@ void pixAdvancedDialog::updateFixupCommandsDisplay()
 }
 
 void pixAdvancedDialog::fixupCmdChanged()
-{  
+{
     updateFixupCommandsDisplay();
 }
 
@@ -754,7 +755,7 @@ void pixAdvancedDialog::accept()
 //    PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
 //    pis->setCommand( installScript->text() );
 //    pis->setArguments( installScriptArgs->text() );
-    
+
     mgmt->setAddress( (Firewall::cast(obj))->getAddress() );
 
 
@@ -783,7 +784,7 @@ void pixAdvancedDialog::accept()
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData() );
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData() );
 
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 
@@ -815,7 +816,7 @@ void pixAdvancedDialog::setDefaultTimeoutValue(const QString &option)
     string platform = obj->getStr("platform");   // could be 'pix' or 'fwsm'
     FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
     assert(fwoptions!=NULL);
-    
+
     string vers="version_"+obj->getStr("version");
 
     if (option=="uauth_abs" || option=="uauth_inact")
@@ -832,7 +833,7 @@ void pixAdvancedDialog::defaultTimeouts()
 {
     FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
     assert(fwoptions!=NULL);
-    
+
     string vers="version_"+obj->getStr("version");
 
     setDefaultTimeoutValue("xlate_hh"       );

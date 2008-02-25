@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,7 +17,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
@@ -25,13 +25,14 @@
 
 
 
+#include "fwbuilder_ph.h"
+
 #include "config.h"
 #include "global.h"
 #include "utils.h"
 
 #include "iosaclAdvancedDialog.h"
 #include "SimpleTextEditor.h"
-#include "ObjectManipulator.h"
 #include "FWWindow.h"
 #include "FWBSettings.h"
 
@@ -73,13 +74,13 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
 {
     m_dialog = new Ui::iosaclAdvancedDialog_q;
     m_dialog->setupUi(this);
-    
+
     obj=o;
 
     Firewall  *fw=Firewall::cast(obj);
     FWOptions *fwopt=fw->getOptionsObject();
     string compiler=fwopt->getStr("compiler");
-    if (compiler=="") 
+    if (compiler=="")
     {
         compiler=Resources::platform_res[fw->getStr("platform")]->getCompiler();
     }
@@ -139,27 +140,27 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
     s=QObject::tr("3 - Error Message");
     logLevels.push_back(s);
     logLevelMapping.push_back(s);
-    logLevelMapping.push_back("3"); 
+    logLevelMapping.push_back("3");
 
     s=QObject::tr("4 - Warning Message");
     logLevels.push_back(s);
     logLevelMapping.push_back(s);
-    logLevelMapping.push_back("4"); 
+    logLevelMapping.push_back("4");
 
     s=QObject::tr("5 - Normal but significant condition");
     logLevels.push_back(s);
     logLevelMapping.push_back(s);
-    logLevelMapping.push_back("5"); 
+    logLevelMapping.push_back("5");
 
     s=QObject::tr("6 - Informational");
     logLevels.push_back(s);
     logLevelMapping.push_back(s);
-    logLevelMapping.push_back("6"); 
+    logLevelMapping.push_back("6");
 
     s=QObject::tr("7 - Debug Message");
     logLevels.push_back(s);
     logLevelMapping.push_back(s);
-    logLevelMapping.push_back("7"); 
+    logLevelMapping.push_back("7");
 
 /* do not need to translate syslog facilities, but will use the same
  * method just in case */
@@ -213,7 +214,7 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
     /*
      * If none of the new iosacl_acl_* options is set and old iosacl_add_clear_statements
      * option is true, set iosacl_acl_basic to true.
-     * 
+     *
      * If old option iosacl_add_clear_statements iss false, set
      * iosacl_acl_no_clear to true
      */
@@ -231,33 +232,33 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->outputFileName       , fwoptions,
                          "output_file"  );
 
-    data.registerOption( m_dialog->iosacl_acl_basic , fwoptions,  
+    data.registerOption( m_dialog->iosacl_acl_basic , fwoptions,
                          "iosacl_acl_basic" );
 
 /*
-    data.registerOption( m_dialog->iosacl_acl_alwaysNew , fwoptions,  
+    data.registerOption( m_dialog->iosacl_acl_alwaysNew , fwoptions,
                          "iosacl_acl_always_new" );
 */
 
-    data.registerOption( m_dialog->iosacl_acl_no_clear , fwoptions,  
+    data.registerOption( m_dialog->iosacl_acl_no_clear , fwoptions,
                          "iosacl_acl_no_clear" );
 
-    data.registerOption( m_dialog->iosacl_acl_substitution , fwoptions,  
+    data.registerOption( m_dialog->iosacl_acl_substitution , fwoptions,
                          "iosacl_acl_substitution" );
 
-    data.registerOption( m_dialog->iosacl_acl_temp_addr , fwoptions,  
+    data.registerOption( m_dialog->iosacl_acl_temp_addr , fwoptions,
                          "iosacl_acl_temp_addr" );
 
-    data.registerOption( m_dialog->iosacl_include_comments , fwoptions,  
+    data.registerOption( m_dialog->iosacl_include_comments , fwoptions,
                          "iosacl_include_comments" );
 
-    data.registerOption( m_dialog->iosacl_regroup_commands , fwoptions,  
+    data.registerOption( m_dialog->iosacl_regroup_commands , fwoptions,
                          "iosacl_regroup_commands" );
 
-    data.registerOption( m_dialog->iosacl_check_shadowing    , fwoptions,  
+    data.registerOption( m_dialog->iosacl_check_shadowing    , fwoptions,
                          "check_shading"  );
 
-    data.registerOption( m_dialog->iosacl_ignore_empty_groups , fwoptions,  
+    data.registerOption( m_dialog->iosacl_ignore_empty_groups , fwoptions,
                          "ignore_empty_groups" );
 
     data.registerOption( m_dialog->mgmt_ssh     , fwoptions,  "mgmt_ssh"  );
@@ -276,10 +277,10 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
 
 
 /* page "Prolog/Epilog" */
-    data.registerOption( m_dialog->iosacl_prolog_script    , fwoptions,  
+    data.registerOption( m_dialog->iosacl_prolog_script    , fwoptions,
                          "iosacl_prolog_script"  );
 
-    data.registerOption( m_dialog->iosacl_epilog_script    , fwoptions,  
+    data.registerOption( m_dialog->iosacl_epilog_script    , fwoptions,
                          "iosacl_epilog_script"  );
 
 /* page Logging */
@@ -333,7 +334,7 @@ void iosaclAdvancedDialog::accept()
 //    PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
 //    pis->setCommand( installScript->text() );
 //    pis->setArguments( installScriptArgs->text() );
-    
+
     mgmt->setAddress( (Firewall::cast(obj))->getAddress() );
 
 
@@ -341,7 +342,7 @@ void iosaclAdvancedDialog::accept()
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData() );
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData() );
 
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

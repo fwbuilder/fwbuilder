@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,12 +17,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -47,8 +49,8 @@
 
 using namespace std;
 
-    
-debugDialog::debugDialog(QWidget *parent) : QDialog(parent) 
+
+debugDialog::debugDialog(QWidget *parent) : QDialog(parent)
 {
     m_dialog = new Ui::debugDialog_q;
     m_dialog->setupUi(this);
@@ -118,7 +120,7 @@ debugDialog::debugDialog(QWidget *parent) : QDialog(parent)
     m_dialog->debugText->append( "\n" );
 
     m_dialog->debugText->append( QString("FWObjectDatabase index statistics:"));
-    
+
     int s,h,m;
     mw->db()->getIndexStats(s,h,m);
     m_dialog->debugText->append( QString("  index size: %1 records").arg(s) );

@@ -40,6 +40,7 @@
 
 class ObjectIconViewItem;
 class ObjectListViewItem;
+class ProjectPanel;
 
 class GroupObjectDialog : public QWidget
 {
@@ -59,6 +60,7 @@ class GroupObjectDialog : public QWidget
 
     bool init;
 
+    ProjectPanel *m_project;
     void addIcon(libfwbuilder::FWObject *o);
     void addIcon(libfwbuilder::FWObject *o, bool ref);
 
@@ -68,7 +70,7 @@ class GroupObjectDialog : public QWidget
     void saveColumnWidths();
 
  public:
-    GroupObjectDialog(QWidget *parent);
+    GroupObjectDialog(ProjectPanel *project, QWidget *parent);
     ~GroupObjectDialog();
 
     enum viewType { Icon, List };

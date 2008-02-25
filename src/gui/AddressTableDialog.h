@@ -34,6 +34,7 @@
 #include "fwbuilder/FWObject.h"
 
 
+class ProjectPanel;
 class AddressTableDialog : public QWidget
 {
     Q_OBJECT
@@ -41,9 +42,10 @@ class AddressTableDialog : public QWidget
     libfwbuilder::FWObject *obj;
     bool init;
     Ui::AddressTableDialog_q *m_dialog;
+    ProjectPanel *m_project;
 
  public:
-     AddressTableDialog(QWidget *parent);
+     AddressTableDialog(ProjectPanel *project, QWidget *parent);
      ~AddressTableDialog();
     virtual void closeEvent(QCloseEvent *e);
     

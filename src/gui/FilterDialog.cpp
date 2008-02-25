@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -45,7 +47,7 @@
 #include <qlineedit.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h> 
+#include <qbuttongroup.h>
 #include <qradiobutton.h>
 #include <qtextedit.h>
 #include <qcombobox.h>
@@ -60,7 +62,7 @@
 #include <qcursor.h>
 #include <qregexp.h>
 #include <qtablewidget.h>
-#include <qmessagebox.h> 
+#include <qmessagebox.h>
 
 #include <iostream>
 #include <stdlib.h>
@@ -87,16 +89,16 @@ void FilterDialog::setFilter(Filter * f)
     QString p_n;
     QString p_a;
     int f_a,f_n,f_w,f_c;
-    
+
     f_w=flt->isWildcard();
     f_c=flt->isCaseSens();
     f_a=flt->flt_addr;
     f_n=flt->flt_name;
     p_a=flt->getAddrPattern();
     p_n=flt->getNamePattern();
-    
+
     init(f_w,f_c,f_a,f_n,p_a,p_n);
-      */ 
+      */
     //table->setColumnStretchable(2,true);
 }
 void FilterDialog::apply()
@@ -131,8 +133,8 @@ void  FilterDialog::save()
                     "Save file dialog",
                     dir,
                     "FWBuilder filter files (*.fwf)");
-    
-    
+
+
     if (!s.isEmpty())
     {
         if (!s.endsWith(".fwf"))
@@ -141,10 +143,10 @@ void  FilterDialog::save()
         }
 
         xmlDocPtr doc;
-        
+
         xmlNodePtr node;
         //xmlNodePtr tree;
-        
+
         doc = xmlNewDoc(TOXMLCAST("1.0"));
         doc->children = xmlNewDocNode(doc, NULL, TOXMLCAST("FWB_FILTER"), NULL);
 
@@ -164,20 +166,20 @@ void  FilterDialog::save()
             buf=QString("%1").arg(((QComboBox*)m_dialog->table->cellWidget(i,0))->currentIndex());
             xmlSetProp(node,(const xmlChar*)  "Target",
                     TOXMLCAST(buf.toLatin1().constData()) );
-            
+
             buf=QString("%1").arg(((QComboBox*)m_dialog->table->cellWidget(i,1))->currentIndex());
             xmlSetProp(node, (const xmlChar*) "Type",
                     TOXMLCAST(buf.toLatin1().constData()) );
-            
+
             xmlSetProp(node, (const xmlChar*) "Pattern",
                        TOXMLCAST(m_dialog->table->item(i,2)->text().toLatin1().constData()));
         }
 
-        
+
         xmlSaveFile(s.toLatin1().constData(),doc);
         xmlFreeDoc(doc);
 
-    } 
+    }
 }
 void  FilterDialog::load()
 {
@@ -185,17 +187,17 @@ void  FilterDialog::load()
     dir=st->getWDir();
     if (dir.isEmpty())  dir=st->getOpenFileDir();
     if (dir.isEmpty())  dir="~";
-    
+
     QString s = QFileDialog::getOpenFileName(
                     this,
                     "Open file dialog",
                     dir,
                     "FWBuilder filter files (*.fwf)");
-    
-    
+
+
     if (!s.isEmpty())
     {
-        
+
         xmlDocPtr doc=xmlParseFile(s.toLatin1().constData());
         //TODO: use local codepage
         if (doc == NULL)
@@ -212,7 +214,7 @@ void  FilterDialog::load()
             xmlFreeDoc(doc);
             return;
         }
-        
+
         if (xmlStrcmp(node->name,(const xmlChar*) "FWB_FILTER"))
         {
             qDebug("document of the wrong type. (FWB_FILTER)");
@@ -232,7 +234,7 @@ void  FilterDialog::load()
         qbuf=FROMXMLCAST(xmlbuf);
         FREEXMLBUFF(xmlbuf);
         m_dialog->combo->setCurrentIndex(qbuf.toInt());
-      
+
 
         node=node->xmlChildrenNode;
         while (node != NULL)
@@ -243,33 +245,33 @@ void  FilterDialog::load()
                 xmlFreeDoc(doc);
                 return;
             }
-            
+
             addPattern();
             int n=m_dialog->table->rowCount()-1;
-            
-            
+
+
             xmlbuf=xmlGetProp(node,(const xmlChar*) "Target");
             qbuf=FROMXMLCAST(xmlbuf);
             FREEXMLBUFF(xmlbuf);
             ((QComboBox*)m_dialog->table->cellWidget(n,0))->setCurrentIndex(
                        qbuf.toInt());
-            
+
             xmlbuf=xmlGetProp(node,(const xmlChar*) "Type");
             qbuf=FROMXMLCAST(xmlbuf);
             FREEXMLBUFF(xmlbuf);
             ((QComboBox*)m_dialog->table->cellWidget(n,1))->setCurrentIndex(
                        qbuf.toInt());
-            
+
 
             xmlbuf=xmlGetProp(node,(const xmlChar*) "Pattern");
             qbuf=FROMXMLCAST(xmlbuf);
             FREEXMLBUFF(xmlbuf);
             m_dialog->table->item(n,2)->setText(qbuf);
-            
+
             node=node->next;
-        }      
+        }
         LastFile=s;
-    } 
+    }
 }
 
 void FilterDialog::update()
@@ -280,7 +282,7 @@ void FilterDialog::update()
     newflt.setMatchAny(m_dialog->combo->currentIndex());
     newflt.setCaseSens(m_dialog->case_sensitive->isChecked());
     newflt.clear();
-    
+
     int n=m_dialog->table->rowCount();
     for(int i=0; i<n;i++)
     {
@@ -302,16 +304,16 @@ void FilterDialog::update()
                 }
         }
     }
-    
+
     if (newflt.isValid())
     {
         *flt=newflt;
     }
     /*
     bool res=false;
-    
+
     Filter newflt;
-    
+
     newflt.setAddrPattern( addresspattern->text());
     newflt.setNamePattern( namepattern->text());
 
@@ -320,13 +322,13 @@ void FilterDialog::update()
 
     newflt.flt_name = name_checkbox->isChecked();
     newflt.flt_addr = addr_checkbox->isChecked();
-    
+
     if (newflt.isValid())
     {
         *flt=newflt;
         res=true;
     }
-    
+
     return res;
     */
 }
@@ -345,9 +347,9 @@ bool FilterDialog::validate()
             m_dialog->table->selectRow(i);
             return res;
         }
-            
+
     }
-    
+
     return res;
 }
 QRegExp FilterDialog::constructRegExp(int p)
@@ -358,13 +360,13 @@ QRegExp FilterDialog::constructRegExp(int p)
             Qt::CaseSensitive:Qt::CaseInsensitive);
     switch(((QComboBox*)m_dialog->table->cellWidget(p,1))->currentIndex())
     {
-        case FWF_CONTAINS: 
+        case FWF_CONTAINS:
             {
                 r.setPatternSyntax(QRegExp::Wildcard);
                 buf=m_dialog->table->item(p,2)->text().toLatin1().constData();
                 break;
             }
-        case FWF_IS_EQUAL_TO: 
+        case FWF_IS_EQUAL_TO:
             {
                 r.setPatternSyntax(QRegExp::RegExp);
                 buf="^";
@@ -372,27 +374,27 @@ QRegExp FilterDialog::constructRegExp(int p)
                 buf+="$";
                 break;
             }
-        case FWF_STARTS_WITH: 
+        case FWF_STARTS_WITH:
             {
                 r.setPatternSyntax(QRegExp::RegExp);
                 buf="^";
                 buf+=m_dialog->table->item(p,2)->text().toLatin1().constData();
                 break;
             }
-        case FWF_ENDS_WITH: 
+        case FWF_ENDS_WITH:
             {
                 r.setPatternSyntax(QRegExp::RegExp);
                 buf=m_dialog->table->item(p,2)->text().toLatin1().constData();
                 buf+="$";
                 break;
             }
-        case FWF_MATCHES_WILDCARD: 
+        case FWF_MATCHES_WILDCARD:
             {
                 r.setPatternSyntax(QRegExp::Wildcard);
                 buf=m_dialog->table->item(p,2)->text().toLatin1().constData();
                 break;
             }
-        case FWF_MATCHES_REGEXP: 
+        case FWF_MATCHES_REGEXP:
             {
                 r.setPatternSyntax(QRegExp::RegExp);
                 buf=m_dialog->table->item(p,2)->text().toLatin1().constData();
@@ -408,11 +410,11 @@ QRegExp FilterDialog::constructRegExp(int p)
 void FilterDialog::addPattern()
 {
     updateData();
-    
+
     QStringList trg;
     trg+=tr("Name");
     trg+=tr("Address");
-    
+
     QStringList tp;
     tp+=tr("Contains");
     tp+=tr("Is equal to");
@@ -420,22 +422,22 @@ void FilterDialog::addPattern()
     tp+=tr("Ends with");
     tp+=tr("Matches Wildcard");
     tp+=tr("Matches RegExp");
-    
+
     int n=m_dialog->table->rowCount();
     m_dialog->table->setRowCount(n+1);
-    
+
     QComboBox *cb = new QComboBox(m_dialog->table);
     cb->addItems(trg);
     m_dialog->table->setCellWidget(n,0,cb);
-    
+
     cb = new QComboBox(m_dialog->table);
     cb->addItems(tp);
     m_dialog->table->setCellWidget(n,1,cb);
-    
+
     QTableWidgetItem *itm = new QTableWidgetItem;
     itm->setFlags(itm->flags() | Qt::ItemIsEditable);
     m_dialog->table->setItem(n,2,itm);
-    
+
     /*m_dialog->table->setItem(n,0,new QTableWidgetItem(m_dialog->table,trg));
     m_dialog->table->setItem(n,1,new QTableWidgetItem(m_dialog->table,tp));
     //table->setItem(n,2,new QTableWidgetItem(table,QTableWidgetItem::Always));
@@ -457,7 +459,7 @@ void FilterDialog::updateData()
     int row=m_dialog->table->currentRow();
     QTableWidgetItem * item=m_dialog->table->item(row,2);
     QWidget * w =m_dialog->table->cellWidget (row,2 );
-    if (w) item->setText ( ((QComboBox*)w)->currentText() ); 
+    if (w) item->setText ( ((QComboBox*)w)->currentText() );
 }
 //------------------------------------------------------------------
 bool Filter::isCaseSens()
@@ -472,7 +474,7 @@ void Filter::addAddrRegExp(const QRegExp &r)
 {
     addr_patterns.push_back(r);
 }
-    
+
 QString  Filter::getNamePatternString(int p)
 {
     return name_patterns[p].pattern();
@@ -506,8 +508,8 @@ Filter & Filter::operator=(const Filter& f)
     name_patterns=f.name_patterns;
     CaseSensitive=f.CaseSensitive;
     MatchAny=f.MatchAny;
-    
-    return *this;    
+
+    return *this;
 }
 /*
 void FilterDialog::closeEvent(QCloseEvent *e)
@@ -555,7 +557,7 @@ bool Filter::testName(const QString &s)
 {
     int cmp;
     if (name_patterns.isEmpty())
-    {        
+    {
         return addr_patterns.isEmpty() || !MatchAny;
     }
     for (int i=0;i<name_patterns.size();i++)
@@ -580,7 +582,7 @@ bool Filter::testAddr(const QString &s)
     {
         return (name_patterns.isEmpty() || !MatchAny);
     }
-    
+
     for (int i=0;i<addr_patterns.size();i++)
     {
         addr_patterns[i].setCaseSensitivity(Qt::CaseSensitive);
@@ -608,5 +610,5 @@ bool Filter::isValid()
 {
     bool res=true;
     //TODO: Filter validity test
-    return res;    
+    return res;
 }

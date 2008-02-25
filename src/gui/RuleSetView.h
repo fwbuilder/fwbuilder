@@ -64,7 +64,7 @@ namespace libfwbuilder {
 };
 
 class RuleSetView;
-
+class ProjectPanel;
 /**
  * this class is used to intercept mouse clicks on the vertical header
  * of the table so we could open a context menu
@@ -366,7 +366,7 @@ class RuleSetView : public QTableView
 
  public:
      
-    RuleSetView( int r, int c, QWidget *parent);
+    RuleSetView(ProjectPanel *project, int r, int c, QWidget *parent);
     virtual ~RuleSetView();
     virtual void init();
     
@@ -416,7 +416,7 @@ class RuleSetView : public QTableView
     REType  getColType(int col) const;
 
 private:
-
+    ProjectPanel *m_project;
     virtual libfwbuilder::RuleElement* getRE( int row, int col )  = 0;
     virtual libfwbuilder::RuleElement* getRE( libfwbuilder::Rule* r, int col )  = 0;
     
@@ -441,7 +441,7 @@ class PolicyView : public RuleSetView
 
  public:
 
-    PolicyView(libfwbuilder::Policy *p, QWidget *parent);
+    PolicyView(ProjectPanel *project, libfwbuilder::Policy *p, QWidget *parent);
     virtual ~PolicyView() {}
 
     virtual void init();
@@ -455,7 +455,7 @@ class InterfacePolicyView : public RuleSetView
 
  public:
 
-    InterfacePolicyView(libfwbuilder::InterfacePolicy *p, QWidget *parent);
+    InterfacePolicyView(ProjectPanel *project, libfwbuilder::InterfacePolicy *p, QWidget *parent);
     virtual ~InterfacePolicyView() {}
 
     virtual void init();
@@ -470,7 +470,7 @@ class NATView : public RuleSetView
 
  public:
 
-    NATView(libfwbuilder::NAT *p, QWidget *parent);
+    NATView(ProjectPanel *project, libfwbuilder::NAT *p, QWidget *parent);
     virtual ~NATView() {}
 
     virtual void init();
@@ -485,7 +485,7 @@ class RoutingView : public RuleSetView
 
  public:
 
-    RoutingView(libfwbuilder::Routing *p, QWidget *parent);
+    RoutingView(ProjectPanel *project, libfwbuilder::Routing *p, QWidget *parent);
     virtual ~RoutingView() {}
 
     virtual void init();

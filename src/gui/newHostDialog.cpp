@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,12 +17,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -32,7 +34,6 @@
 
 #include "newHostDialog.h"
 #include "InterfaceData.h"
-#include "ObjectManipulator.h"
 #include "FWWindow.h"
 #include "ObjConflictResolutionDialog.h"
 #include "upgradePredicate.h"
@@ -76,15 +77,15 @@ newHostDialog::newHostDialog() : QDialog()
 {
     m_dialog = new Ui::newHostDialog_q;
     m_dialog->setupUi(this);
-    
-    setControlWidgets(this, m_dialog->stackedWidget, 
+
+    setControlWidgets(this, m_dialog->stackedWidget,
                       m_dialog->nextButton,
                       m_dialog->finishButton,
                       m_dialog->backButton,
                       m_dialog->cancelButton,
                       m_dialog->titleLabel);
-    
-    nhst=NULL; 
+
+    nhst=NULL;
     tmpldb = NULL;
     snmpPollCompleted=false;
     q=NULL;
@@ -191,7 +192,7 @@ void  newHostDialog::monitor()
     const map<int, Interface> &intf = q->getInterfaces();
     for(map<int, Interface>::const_iterator i=intf.begin();i!=intf.end(); ++i)
     {
-        if ( i->second.isUp() ) 
+        if ( i->second.isUp() )
         {
             InterfaceData idata( i->second );
 
@@ -236,10 +237,10 @@ void newHostDialog::getInterfacesViaSNMP()
 
     string rcomm=m_dialog->snmp_community->text().toLatin1().constData();
 
-    if ( rcomm.empty() ) 
+    if ( rcomm.empty() )
     {
         QMessageBox::warning(
-            this,"Firewall Builder", 
+            this,"Firewall Builder",
             tr("Missing SNMP community string."),
             "&Continue", QString::null, QString::null, 0, 1 );
         return ;
@@ -249,7 +250,7 @@ void newHostDialog::getInterfacesViaSNMP()
 
     IPAddress addr;
     QString name=m_dialog->obj_name->text().toLatin1().constData();
-    try 
+    try
     {
         QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
         QString a = getAddrByName(name);
@@ -258,7 +259,7 @@ void newHostDialog::getInterfacesViaSNMP()
     } catch (FWException &ex)
     {
         QMessageBox::warning(
-            this,"Firewall Builder", 
+            this,"Firewall Builder",
             tr("Address of %1 could not be obtained via DNS")
             .arg(m_dialog->obj_name->text()),
             "&Continue", QString::null, QString::null, 0, 1 );
@@ -275,7 +276,7 @@ void newHostDialog::getInterfacesViaSNMP()
 
     timer->setSingleShot(false);
     timer->start(0);
-    
+
     try
     {
         logger = q->start_operation();
@@ -358,13 +359,13 @@ void newHostDialog::showPage(const int page)
         FWObject *tlib = mw->db()->getById(TEMPLATE_LIB);
         if (tlib==NULL)
         {
-            FWObject *cl = om->getCurrentLib();
+            FWObject *cl = mw->getCurrentLib();
             mw->loadLibrary(tempfname);
             unloadTemplatesLib = true;
-            om->loadObjects();
+            mw->loadObjects();
             tlib = mw->db()->getById(TEMPLATE_LIB);
 /* restore library that was opened prior loading templates */
-            om->openLib(cl);
+            mw->openLib(cl);
         }
 #endif
 
@@ -390,7 +391,7 @@ void newHostDialog::showPage(const int page)
             QListWidgetItem *item = new QListWidgetItem(
                     QIcon(pm), QString(o->getName().c_str()));
             m_dialog->templateList->addItem(item);
-            
+
             templates[ m_dialog->templateList->item( m_dialog->templateList->count()-1 ) ]=o;
         }
         m_dialog->templateList->setCurrentItem(0);
@@ -504,19 +505,19 @@ void newHostDialog::addInterface()
         catch (FWException &ex)
         {
             QMessageBox::warning(
-                this,"Firewall Builder", 
+                this,"Firewall Builder",
                 tr("Illegal address '%1/%2'").arg(addr).arg(netm),
                 "&Continue", QString::null, QString::null, 0, 1 );
             return;
         }
     }
     QStringList sl;
-    sl << m_dialog->iface_name->text() 
-       << m_dialog->iface_label->text() 
+    sl << m_dialog->iface_name->text()
+       << m_dialog->iface_label->text()
        << addr
        << netm
        << m_dialog->iface_physaddr->text();
-    
+
     new QTreeWidgetItem(m_dialog->iface_list, sl);
 }
 
@@ -553,7 +554,7 @@ void newHostDialog::deleteInterface()
 {
     QTreeWidgetItem *itm = m_dialog->iface_list->currentItem();
     if (itm==NULL) return;
-    m_dialog->iface_list->takeTopLevelItem( 
+    m_dialog->iface_list->takeTopLevelItem(
             m_dialog->iface_list->indexOfTopLevelItem(itm) );
 }
 
@@ -565,14 +566,14 @@ void newHostDialog::cancelClicked()
 void newHostDialog::finishClicked()
 {
     int p = currentPage();
-    
+
     if (p==TEMPLATES_PAGE)
     {
         QListWidgetItem *itm = m_dialog->templateList->currentItem();
         FWObject *o=templates[itm];
         assert (o!=NULL);
 
-        FWObject *no = om->duplicateObject(om->getCurrentLib(),
+        FWObject *no = mw->duplicateObject(mw->getCurrentLib(),
                                            o,
                                            m_dialog->obj_name->text(),
                                            false );  // do not ask to autorename
@@ -585,7 +586,7 @@ void newHostDialog::finishClicked()
     } else
     {
         FWObject *o;
-        o=om->createObject(Host::TYPENAME, m_dialog->obj_name->text() );
+        o=mw->createObject(Host::TYPENAME, m_dialog->obj_name->text() );
         if (o==NULL)
         {
           QDialog::accept();
@@ -608,7 +609,7 @@ void newHostDialog::finishClicked()
             QString physaddr=  itm->text(5);
 
             Interface *oi = Interface::cast(
-                om->createObject(nhst,Interface::TYPENAME, name)
+                mw->createObject(nhst,Interface::TYPENAME, name)
             );
 #ifdef USE_INTERFACE_POLICY
             oi->add(new InterfacePolicy());
@@ -624,13 +625,13 @@ void newHostDialog::finishClicked()
                 QString addrname=QString("%1:%2:ip")
                     .arg(m_dialog->obj_name->text()).arg(name);
                 IPv4 *oa = IPv4::cast(
-                    om->createObject(oi, IPv4::TYPENAME,addrname)
+                    mw->createObject(oi, IPv4::TYPENAME,addrname)
                 );
                 oa->setAddress( addr.toLatin1().constData()    );
                 oa->setNetmask( netmask.toLatin1().constData() );
             }
 
-            om->updateObjName(oi,"","",false);
+            mw->updateObjName(oi,"","",false);
         }
     }
     if (unloadTemplatesLib)
@@ -640,7 +641,7 @@ void newHostDialog::finishClicked()
         assert (tlib!=NULL);
         string tlibID = tlib->getId();
         if (fwbdebug) qDebug("  Delete library of templates");
-        om->delObj(tlib,false);
+        mw->delObj(tlib,false);
 
 /*
  * deleting an object places it in the "Deleted objects" library, so
@@ -653,7 +654,7 @@ void newHostDialog::finishClicked()
         if (delObjLib!=NULL && delObjLib->getById(tlibID)!=NULL)
         {
             if (fwbdebug) qDebug("  Delete library of templates from 'Deleted objects'");
-            om->delObj(tlib,false);  // this time from deleted objects lib
+            mw->delObj(tlib,false);  // this time from deleted objects lib
         }
 #endif
 

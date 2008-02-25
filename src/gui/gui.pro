@@ -1,20 +1,24 @@
 #-*- mode: makefile; tab-width: 4; -*-
 #
 #
-TEMPLATE	= app
-LANGUAGE	= C++
-QT             += network
+TEMPLATE = app
+LANGUAGE = C++
+QT += network
 
 TARGET = fwbuilder
 
 include(../../qmake.inc)
 
-exists(qmake.inc) {
-  include( qmake.inc)
+exists(qmake.inc){
+    include( qmake.inc)
 }
 
+PRECOMPILED_HEADER = fwbuilder_ph.h
+CONFIG += debug_and_release precompile_header
 
-HEADERS	+= ../../config.h \
+HEADERS += ../../config.h \
+    FWWindow.h \
+    ProjectPanel.h \
 	utils.h \
 	utils_no_qt.h \
     Importer.h \
@@ -42,7 +46,6 @@ HEADERS	+= ../../config.h \
 	FWObjectClipboard.h \
 	platforms.h \
 	global.h \
-	FWWindow.h \
 	printerStream.h \
 	PrintingProgressDialog.h \
 	FWObjectPropertiesFactory.h \
@@ -115,9 +118,12 @@ HEADERS	+= ../../config.h \
 	FindWhereUsedWidget.h \
 	ConfirmDeleteObjectDialog.h \
 	FakeWizard.h \
-	FWBAboutDialog.h
+	FWBAboutDialog.h \
+        fwbuilder_ph.h
 
-SOURCES	+= main.cpp \
+SOURCES += ProjectPanel.cpp \
+    FWWindow.cpp \
+    main.cpp \
 	utils.cpp \
 	utils_no_qt.cpp \
     Importer.cpp \
@@ -146,7 +152,6 @@ SOURCES	+= main.cpp \
 	RCSFilePreview.cpp \
 	FWObjectClipboard.cpp \
 	platforms.cpp \
-	FWWindow.cpp \
 	FWWindowPrint.cpp \
 	printerStream.cpp \
 	PrintingProgressDialog.cpp \
@@ -218,9 +223,9 @@ SOURCES	+= main.cpp \
 	MetricEditorPanel.cpp \
 	FindWhereUsedWidget.cpp \
 	ConfirmDeleteObjectDialog.cpp \
-	FakeWizard.cpp
+	FakeWizard.cpp 
 
-FORMS	= FWBMainWindow_q.ui \
+FORMS = FWBMainWindow_q.ui \
 	execdialog_q.ui \
 	customservicedialog_q.ui \
 	ipservicedialog_q.ui \
@@ -288,21 +293,22 @@ FORMS	= FWBMainWindow_q.ui \
 	commenteditorpanel_q.ui \
 	metriceditorpanel_q.ui \
 	findwhereusedwidget_q.ui \
-	confirmdeleteobjectdialog_q.ui
+	confirmdeleteobjectdialog_q.ui\
+        projectpanel_q.ui
 
-contains( HAVE_ANTLR_RUNTIME, 1 ) {
-	INCLUDEPATH	 += $$ANTLR_INCLUDEPATH
-	LIBS		 += $$FWBPARSER_LIB  $$ANTLR_LIBS 
-	DEFINES		 += $$ANTLR_DEFINES
+contains( HAVE_ANTLR_RUNTIME, 1 ){
+    INCLUDEPATH += $$ANTLR_INCLUDEPATH
+    LIBS += $$FWBPARSER_LIB  $$ANTLR_LIBS 
+    DEFINES += $$ANTLR_DEFINES
 }
 
-QMAKE_COPY    = ../../install.sh -m 0755 -s
+QMAKE_COPY = ../../install.sh -m 0755 -s
 
 RESOURCES += MainRes.qrc
 
 TRANSLATIONS = fwbuilder_ru.ts
 
-ru.path  = $$PKGLOCALEDIR
+ru.path = $$PKGLOCALEDIR
 ru.files = fwbuilder_ru.qm
 
 INSTALLS += ru

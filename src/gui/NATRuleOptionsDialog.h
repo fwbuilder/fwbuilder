@@ -35,6 +35,7 @@
 
 class RuleSetView;
 
+class ProjectPanel;
 class NATRuleOptionsDialog : public QWidget
 {
     Q_OBJECT
@@ -44,11 +45,12 @@ class NATRuleOptionsDialog : public QWidget
     QString                 platform;
     RuleSetView            *rsv;
     Ui::NATRuleOptionsDialog_q *m_dialog;
+    ProjectPanel *m_project;
     
     bool init;
 
  public:
-    NATRuleOptionsDialog(QWidget *parent);
+    NATRuleOptionsDialog(ProjectPanel *project, QWidget *parent);
     ~NATRuleOptionsDialog();
     
 public slots:

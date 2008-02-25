@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,12 +17,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -101,7 +103,7 @@ bool printerStream::begin()
 
     yPos = 0;
     pageNo = 1;
-     
+
     return true;
 }
 
@@ -214,7 +216,7 @@ void printerStream::printPixmap(const QPixmap &pm, bool newLine)
 void printerStream::printQTable(QTableView *tbl, bool left_margin, bool top_margin)
 {
     if (fwbdebug)
-    {       
+    {
         qDebug("printQTable ----------------------------------------------");
         qDebug("Size: %dx%d",tbl->width(),tbl->height());
         qDebug("Visible: %dx%d",tbl->contentsRect().width(),tbl->contentsRect().height());
@@ -263,7 +265,7 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin, bool top_marg
 
         int firstRowPos = tbl->verticalHeader()->sectionPosition(firstRow);
         int lastRowPos = tbl->verticalHeader()->sectionPosition(lastRow);
-           
+
         if (fwbdebug)
             qDebug("Page %d -- %d rows (%d-%d) tblHeight: %d firstRowPos: %d lastRowPos: %d",
                    pageNo, rowCount,
@@ -287,7 +289,7 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin, bool top_marg
             tbl->horizontalHeader()->height());
 
         if (fwbdebug)
-        {       
+        {
             qDebug("    After resize:");
             qDebug("    Size: %dx%d",tbl->width(),tbl->height());
             qDebug("    Visible: %dx%d",

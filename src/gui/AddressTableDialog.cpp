@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,19 +17,21 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+#include "fwbuilder_ph.h"
+
 #include "config.h"
 #include "global.h"
 #include "utils.h"
+#include "ProjectPanel.h"
 
 #include "AddressTableDialog.h"
 #include "SimpleTextView.h"
-#include "ObjectManipulator.h"
 #include "FWBSettings.h"
 #include "FWWindow.h"
 
@@ -51,7 +53,7 @@
 #include <qcursor.h>
 #include <qfiledialog.h>
 #include <qfile.h>
-#include <qtextstream.h> 
+#include <qtextstream.h>
 #include <qdir.h>
 #include "FWBSettings.h"
 
@@ -61,12 +63,12 @@
 using namespace std;
 using namespace libfwbuilder;
 
-AddressTableDialog::AddressTableDialog(QWidget *parent) : QWidget(parent) 
+AddressTableDialog::AddressTableDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
 {
     m_dialog = new Ui::AddressTableDialog_q;
     m_dialog->setupUi(this);
     setFont(st->getUiFont());
-    obj=NULL; 
+    obj=NULL;
 }
 
 AddressTableDialog::~AddressTableDialog()
@@ -79,8 +81,8 @@ void AddressTableDialog::loadFWObject(FWObject *o)
     obj=o;
     AddressTable *s = dynamic_cast<AddressTable*>(obj);
     assert(s!=NULL);
-    
-    
+
+
     init=true;
 
     fillLibraries(m_dialog->libs,obj);
@@ -93,7 +95,7 @@ void AddressTableDialog::loadFWObject(FWObject *o)
     m_dialog->r_runtime->setChecked(s->isRunTime() );
 
     //BrowseButton->setEnabled(s->isCompileTime() );
-    
+
     //apply->setEnabled( false );
 
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
@@ -110,7 +112,7 @@ void AddressTableDialog::loadFWObject(FWObject *o)
 
     init=false;
 }
-    
+
 void AddressTableDialog::changed()
 {
     //BrowseButton->setEnabled(r_compiletime->isChecked() );
@@ -151,19 +153,19 @@ void AddressTableDialog::applyChanges()
     s->setSourceName( (const char *)cs );
     s->setRunTime(m_dialog->r_runtime->isChecked() );
 
-    om->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     init=true;
 
 /* move to another lib if we have to */
     if ( ! Interface::isA( obj->getParent() ) &&
            m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        om->moveObject(m_dialog->libs->currentText(), obj);
+        mw->moveObject(m_dialog->libs->currentText(), obj);
 
     init=false;
 
     //apply->setEnabled( false );
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
 }
 
 void AddressTableDialog::discardChanges()
@@ -186,12 +188,12 @@ void AddressTableDialog::browse()
     dir=st->getWDir();
     if (dir.isEmpty())  dir=st->getOpenFileDir();
     if (dir.isEmpty())  dir="~";
-    
+
     QString s = QFileDialog::getOpenFileName(this,
                     "Choose a file",
                     dir,
                     "All files (*.*)");
-    
+
     if (!s.isEmpty())
     {
         m_dialog->filename->setText(s);
@@ -201,7 +203,7 @@ void AddressTableDialog::preview( void )
 {
     SimpleTextView tv(this);
     tv.setName(m_dialog->obj_name->text());
-    
+
     QFile f;
     QTextStream ts;
     QString filePath = m_dialog->filename->text();

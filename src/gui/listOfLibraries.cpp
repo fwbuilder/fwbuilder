@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -134,10 +136,10 @@ class MessageBoxNeverUpgradePredicate: public libfwbuilder::XMLTools::UpgradePre
 {
  public:
     MessageBoxNeverUpgradePredicate() {}
-    
-    virtual bool operator()(const std::string &msg) const 
-    { 
-        QMessageBox::information( NULL , "Firewall Builder", 
+
+    virtual bool operator()(const std::string &msg) const
+    {
+        QMessageBox::information( NULL , "Firewall Builder",
                                   QObject::tr(
 "The library file you are trying to open\n\
 has been saved in an older version of\n\
@@ -182,7 +184,7 @@ list<libData>::iterator listOfLibraries::add(const QString &path, bool load)
     } catch(FWException &ex)
     {
         QMessageBox::warning(
-            NULL,"Firewall Builder", 
+            NULL,"Firewall Builder",
             QObject::tr("Error loading file %1:\n%2").
                  arg(path).arg(ex.toString().c_str()),
             QObject::tr("&Continue"), QString::null,QString::null,
@@ -210,7 +212,7 @@ list<libData>::iterator listOfLibraries::add(const QString &path, bool load)
     )
     {
         QMessageBox::warning(
-            NULL,"Firewall Builder", 
+            NULL,"Firewall Builder",
             QObject::tr("Duplicate library '%1'").arg(QString::fromUtf8(name)),
             QObject::tr("&Continue"), QString::null,QString::null,
             0, 1 );

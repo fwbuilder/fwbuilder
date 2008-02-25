@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,20 +17,22 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
 
+#include "fwbuilder_ph.h"
+
 #include "config.h"
 #include "global.h"
 #include "utils.h"
 
+#include "ProjectPanel.h"
 #include "FWBTree.h"
 #include "ICMPServiceDialog.h"
-#include "ObjectManipulator.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/ICMPService.h"
@@ -45,16 +47,17 @@
 
 #include <iostream>
 
+#include "FWWindow.h"
 using namespace std;
 using namespace libfwbuilder;
 
-ICMPServiceDialog::ICMPServiceDialog(QWidget *parent) : 
-        QWidget(parent) 
-{ 
+ICMPServiceDialog::ICMPServiceDialog(ProjectPanel *project, QWidget *parent) :
+        QWidget(parent), m_project(project)
+{
     m_dialog = new Ui::ICMPServiceDialog_q;
     m_dialog->setupUi(this);
     setFont(st->getUiFont());
-    obj=NULL; 
+    obj=NULL;
 }
 
 ICMPServiceDialog::~ICMPServiceDialog()
@@ -96,7 +99,7 @@ void ICMPServiceDialog::loadFWObject(FWObject *o)
 
     init=false;
 }
-    
+
 void ICMPServiceDialog::changed()
 {
     //apply->setEnabled( true );
@@ -129,18 +132,18 @@ void ICMPServiceDialog::applyChanges()
     obj->setInt("type", m_dialog->icmpType->value() );
     obj->setInt("code", m_dialog->icmpCode->value() );
 
-    om->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     init=true;
 
 /* move to another lib if we have to */
-    if (! FWBTree::isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        om->moveObject(m_dialog->libs->currentText(), obj);
+    if (! m_project->isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
+        mw->moveObject(m_dialog->libs->currentText(), obj);
 
     init=false;
 
     //apply->setEnabled( false );
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
 }
 
 void ICMPServiceDialog::discardChanges()

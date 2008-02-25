@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -144,7 +146,7 @@ void init_platforms()
     routeOptions_pf_ipf.push_back("route_reply_through");
     routeOptions_pf_ipf.push_back(QObject::tr("Route a copy through"));
     routeOptions_pf_ipf.push_back("route_copy_through");
-    
+
     routeLoadOptions_pf.push_back(QObject::tr("None"));
     routeLoadOptions_pf.push_back("none");
     routeLoadOptions_pf.push_back(QObject::tr("Random"));
@@ -153,14 +155,14 @@ void init_platforms()
     routeLoadOptions_pf.push_back("source_hash");
     routeLoadOptions_pf.push_back(QObject::tr("Round Robin"));
     routeLoadOptions_pf.push_back("round_robin");
-    
+
     prologPlaces_ipt.push_back(QObject::tr("on top of the script"));
     prologPlaces_ipt.push_back("top");
     prologPlaces_ipt.push_back(QObject::tr("after interface configuration"));
     prologPlaces_ipt.push_back("after_interfaces");
     prologPlaces_ipt.push_back(QObject::tr("after policy reset"));
     prologPlaces_ipt.push_back("after_flush");
-    
+
     prologPlaces_pf.push_back(QObject::tr("in the activation shell script"));
     prologPlaces_pf.push_back("fw_file");
 
@@ -175,7 +177,7 @@ void init_platforms()
 
     prologPlaces_pf.push_back(QObject::tr("in the pf rule file, after table definitions"));
     prologPlaces_pf.push_back("pf_file_after_tables");
-    
+
     limitSuffixes.push_back("");
     limitSuffixes.push_back("");
     limitSuffixes.push_back(QObject::tr("/day"));
@@ -217,10 +219,10 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
     if (PolicyRuleOptions::isA(opt))
     {
 
-	if (platform=="iptables") 
+	if (platform=="iptables")
         {
-	    res= ( opt->getStr("log_prefix").empty() && 
-                   opt->getStr("log_level").empty()      && 
+	    res= ( opt->getStr("log_prefix").empty() &&
+                   opt->getStr("log_level").empty()      &&
 		   opt->getInt("limit_value")<=0         &&
 		   opt->getInt("limit_burst")<=0         &&
 		   opt->getInt("connlimit_value")<=0     &&
@@ -239,13 +241,13 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
                    ! opt->getBool("firewall_is_part_of_any_and_networks"));
 	}
 
-	if (platform=="pix" || platform=="fwsm") 
+	if (platform=="pix" || platform=="fwsm")
         {
             string vers="version_"+p->getStr("version");
             if ( Resources::platform_res[platform.toAscii().constData()]->getResourceBool(
                   "/FWBuilderResources/Target/options/"+vers+"/pix_rule_syslog_settings"))
             {
-                res= ( opt->getStr("log_level").empty()        && 
+                res= ( opt->getStr("log_level").empty()        &&
                    opt->getInt("log_interval")<=0          &&
                    ! opt->getBool("disable_logging_for_this_rule") );
             }
@@ -255,12 +257,12 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
             }
 	}
 
-	if (platform=="pf") 
+	if (platform=="pf")
         {
             string vers=p->getStr("version");
             if (vers=="4.x")
             {
-                res= ( opt->getStr("log_prefix").empty()       &&  
+                res= ( opt->getStr("log_prefix").empty()       &&
                        opt->getInt("pf_rule_max_state")<=0     &&
                        ! opt->getBool("pf_source_tracking")    &&
                        opt->getInt("pf_max_src_conn")<=0       &&
@@ -270,7 +272,7 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
                 );
             }else
             {
-                res= ( opt->getStr("log_prefix").empty()       &&  
+                res= ( opt->getStr("log_prefix").empty()       &&
                        opt->getInt("pf_rule_max_state")<=0     &&
                        ! opt->getBool("pf_source_tracking")    &&
                        opt->getInt("pf_max_src_conn")<=0       &&
@@ -280,15 +282,15 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
             }
 	}
 
-	if (platform=="ipf") 
+	if (platform=="ipf")
         {
-	    res= ( opt->getStr("ipf_log_facility").empty()       && 
-                   opt->getStr("log_level").empty()      && 
+	    res= ( opt->getStr("ipf_log_facility").empty()       &&
+                   opt->getStr("log_level").empty()      &&
 		   ! opt->getBool("ipf_keep_frags") &&
                    ! opt->getBool("ipf_return_icmp_as_dest") );
 	}
 
-	if (platform=="ipfw") 
+	if (platform=="ipfw")
         {
 	    //res= ( ! opt->getBool("stateless") );
             res = true;
@@ -315,7 +317,7 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
 	}
 
     }
-    return res; 
+    return res;
 }
 
 bool isDefaultNATRuleOptions(FWOptions *opt)
@@ -336,22 +338,22 @@ bool isDefaultNATRuleOptions(FWOptions *opt)
 
     if (NATRuleOptions::isA(opt))
     {
-	if (platform=="pf") 
+	if (platform=="pf")
         {
-            // if "pf_pool_type_none" is undefined, then all others 
+            // if "pf_pool_type_none" is undefined, then all others
             // should not be defined too because they all are set by
             // the same dialog
             // In this case consider options default.
             res = (opt->getStr("pf_pool_type_none") == "" ||
                    ( opt->getBool("pf_pool_type_none") &&
                      ! opt->getBool("pf_bitmask")      &&
-                     ! opt->getBool("pf_random")       &&  
-                     ! opt->getBool("pf_source_hash")  &&  
-                     ! opt->getBool("pf_round_robin")  &&  
+                     ! opt->getBool("pf_random")       &&
+                     ! opt->getBool("pf_source_hash")  &&
+                     ! opt->getBool("pf_round_robin")  &&
                      ! opt->getBool("pf_static_port") ) );
 	}
     }
-    return res; 
+    return res;
 }
 
 bool isDefaultRoutingRuleOptions(FWOptions *opt)
@@ -364,7 +366,7 @@ bool isDefaultRoutingRuleOptions(FWOptions *opt)
     if (RoutingRuleOptions::isA(opt))
     {
         res= ( ! opt->getBool("no_fail") );
-    } 
+    }
     return res;
 }
 
@@ -407,7 +409,7 @@ list<QStringPair> getVersionsForPlatform(const QString &platform)
                 res.push_back(QStringPair(*i,*i));
         } else
         {
-            if (platform=="pf") 
+            if (platform=="pf")
             {
                 res.push_back(QStringPair("","- any -"));
                 res.push_back(QStringPair("3.x", QObject::tr("3.x")));
@@ -416,13 +418,13 @@ list<QStringPair> getVersionsForPlatform(const QString &platform)
 /* add pf versions here */
             } else
             {
-                if (platform=="ipf") 
+                if (platform=="ipf")
                 {
                     res.push_back(QStringPair("","- any -"));
 /* add ipf versions here */
                 } else
                 {
-                    if (platform=="ipfw") 
+                    if (platform=="ipfw")
                     {
                         res.push_back(QStringPair("","- any -"));
 /* add ipfw versions here */
@@ -494,8 +496,8 @@ const QStringList& getLimitSuffixes(const QString &platform)
 QStringList getScreenNames(const QStringList &sl)
 {
     QStringList res;
-    
-    for( QStringList::const_iterator it = sl.begin(); 
+
+    for( QStringList::const_iterator it = sl.begin();
          it!=sl.end();
          ++it,++it)
     {
@@ -507,7 +509,7 @@ QStringList getScreenNames(const QStringList &sl)
 QString getScreenName(QString s, const QStringList &sl)
 {
     QString res;
-    for( QStringList::const_iterator it = sl.begin(); 
+    for( QStringList::const_iterator it = sl.begin();
          it!=sl.end();
          ++it)
     {

@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "../../config.h"
 #include "global.h"
@@ -33,7 +35,6 @@
 #include "SSHUnx.h"
 #include "SSHPIX.h"
 #include "SSHIOS.h"
-#include "ObjectManipulator.h"
 #include "FWWindow.h"
 #include "InstallFirewallViewItem.h"
 #include "instOptionsDialog.h"
@@ -84,8 +85,8 @@ instDialog::instDialog(QWidget* p, BatchOperation op, t_fwSet reqFirewalls_) : Q
 {
     m_dialog = new Ui::instDialog_q;
     m_dialog->setupUi(this);
-    
-    setControlWidgets(this, m_dialog->stackedWidget, 
+
+    setControlWidgets(this, m_dialog->stackedWidget,
                       m_dialog->nextButton,
                       m_dialog->finishButton,
                       m_dialog->backButton,
@@ -97,7 +98,7 @@ instDialog::instDialog(QWidget* p, BatchOperation op, t_fwSet reqFirewalls_) : Q
     session=NULL;
     dlg=NULL;
     currentLog = NULL;
-    currentSaveButton = NULL;    
+    currentSaveButton = NULL;
     currentStopButton = NULL;
     showSelectedFlag=false;
     pendingLogLine = "";
@@ -116,16 +117,16 @@ instDialog::instDialog(QWidget* p, BatchOperation op, t_fwSet reqFirewalls_) : Q
      * SSHSession. Perhaps also rename SSHSession to BackgroundSession
      * or something.
      */
-      
+
     connect(&proc, SIGNAL(readyReadStandardOutput()), this, SLOT(readFromStdout()) );
     connect(&proc, SIGNAL(finished(int,QProcess::ExitStatus)),   this, SLOT(processExited(int)) );
 
     proc.setProcessChannelMode(QProcess::MergedChannels);
-    
+
     m_dialog->listView4->setSortingEnabled(false);
 
     setFinishEnabled(pageCount()-1,true);
-    
+
     lastPage=-1;
     reqFirewalls = reqFirewalls_;
 
@@ -145,9 +146,9 @@ instDialog::instDialog(QWidget* p, BatchOperation op, t_fwSet reqFirewalls_) : Q
     operation=op;
 
     creatingTable = false;
-    
+
     showPage(0);
-    
+
     switch(op)
     {
         case BATCH_COMPILE:
@@ -155,8 +156,8 @@ instDialog::instDialog(QWidget* p, BatchOperation op, t_fwSet reqFirewalls_) : Q
                 m_dialog->selectInfoLabel->setText(tr("<p align=\"center\"><b><font size=\"+2\">Select firewalls for compilation.</font></b></p>"));
                 m_dialog->batchInstFlagFrame->hide();
                 setAppropriate(2,false);
-                
-                
+
+
                 m_dialog->selectTable->hideColumn(1);
                 break;
             }
@@ -170,7 +171,7 @@ instDialog::instDialog(QWidget* p, BatchOperation op, t_fwSet reqFirewalls_) : Q
                 for (int i=0;i<pageCount()-1;i++)
                 {
                     setAppropriate(i,false);
-                } 
+                }
                 showPage(pageCount()-1);
             }
     }
@@ -188,7 +189,7 @@ instDialog::instDialog(QWidget* p, BatchOperation op, t_fwSet reqFirewalls_) : Q
 instDialog::~instDialog()
 {
     delete m_dialog;
-    if (dlg) 
+    if (dlg)
     {
         delete dlg;
         dlg=NULL;
@@ -268,7 +269,7 @@ void instDialog::togleDetailMC()
 void instDialog::prepareInstConf(Firewall *)
 {
     if (fwbdebug) qDebug("instDialog::prepareInstConf");
-    
+
 }
 
 void instDialog::prepareInstallerOptions()
@@ -300,7 +301,7 @@ void instDialog::prepareInstallerOptions()
 /* TODO: set cnf.pgm to ssh path here */
 
     QString platform = cnf.fwobj->getStr("platform").c_str();
-    
+
     //bool f = dlg->testRun->isChecked();
 
     //QSize pix_options_frame_size = dlg->PIXgroupBox->sizeHint();
@@ -332,7 +333,7 @@ void instDialog::prepareInstallerOptions()
         saveDiff->setEnabled(false);
     }
 */
-        
+
     try
     {
         if (cnf.fwobj!=NULL && ! cnf.fwbfile.isEmpty())
@@ -383,7 +384,7 @@ void instDialog::storeInstallerOptions()
     st->setValue("/FirewallBuilder2/Installer/testRun",  cnf.testRun);
     st->setValue("/FirewallBuilder2/Installer/rollback", cnf.rollback);
     st->setValue("/FirewallBuilder2/Installer/rollbackTime", cnf.rollbackTime);
-    st->setValue("/FirewallBuilder2/Installer/canceRollbackIfSuccess", 
+    st->setValue("/FirewallBuilder2/Installer/canceRollbackIfSuccess",
       cnf.cancelRollbackIfSuccess);
 }
 
@@ -446,35 +447,35 @@ void instDialog::summary()
 void instDialog::fillCompileSelectList()
 {
     if (fwbdebug) qDebug("instDialog::fillCompileSelectList");
-    
+
     compileMapping.clear();
     installMapping.clear();
-    
-    m_dialog->selectTable->setRowCount(firewalls.size()); 
-    
 
-    QTableWidgetItem * citem; 
-        
+    m_dialog->selectTable->setRowCount(firewalls.size());
+
+
+    QTableWidgetItem * citem;
+
     Firewall* f;
     QDateTime dt;
     int row=0;
-    
+
     bool show_library=false;
     string tmp_libname="";
 
     if (fwbdebug && reqFirewalls.empty())
         qDebug("instDialog::fillCompileSelectList reqFirewalls is empty");
-    
+
     creatingTable = true;
     for (std::list<libfwbuilder::Firewall *>::iterator i=firewalls.begin();
             i!=firewalls.end(); ++i)
     {
         f=*i;
-        
+
         time_t lm=f->getInt("lastModified");
         time_t lc=f->getInt("lastCompiled");
         time_t li=f->getInt("lastInstalled");
-        
+
         citem=new QTableWidgetItem;
         citem->setText(QString::fromUtf8(f->getName().c_str()));
         m_dialog->selectTable->setItem(row,2,citem);
@@ -486,19 +487,19 @@ void instDialog::fillCompileSelectList()
         if (!show_library && tmp_libname != "" && tmp_libname != f->getLibraryName())
             show_library = true;
         tmp_libname = f->getLibraryName();
-        
+
         citem=new QTableWidgetItem;
         citem->setText(QString::fromUtf8(tmp_libname.c_str()));
         m_dialog->selectTable->setItem(row,3,citem);
         //m_dialog->selectTable->setColumnReadOnly(3,true);
-        
+
         citem=new QTableWidgetItem; //usual type
-        bool checked = (f->needsCompile() && reqFirewalls.empty() && !f->getInactive()) || 
+        bool checked = (f->needsCompile() && reqFirewalls.empty() && !f->getInactive()) ||
                 (!reqFirewalls.empty() && reqFirewalls.find(f)!=reqFirewalls.end());
         citem->setCheckState(checked?Qt::Checked:Qt::Unchecked);
         m_dialog->selectTable->setItem(row,0,citem);
         compileMapping[f]=citem;
-        
+
         citem=new QTableWidgetItem; //usual type
         checked = (operation==BATCH_INSTALL) &&
                 ((f->needsInstall() && reqFirewalls.empty() && !f->getInactive()) ||
@@ -506,22 +507,22 @@ void instDialog::fillCompileSelectList()
         citem->setCheckState(checked?Qt::Checked:Qt::Unchecked);
         m_dialog->selectTable->setItem(row,1,citem);
         installMapping[f]=citem;
-            
+
 
         QLabel *l;
         QFont font;
-        
-        
+
+
         dt.setTime_t(lm);
         l=new QLabel(m_dialog->selectTable);
         QPalette temp = l->palette();
         temp.setColor(QPalette::Window, Qt::white);
         l->setPalette(temp);
-        
+
         if (lm>lc && lm>li) {font=l->font();font.setBold(true);l->setFont(font);}
         l->setText((lm)?dt.toString():QString("---"));
         m_dialog->selectTable->setCellWidget(row,4,l);
-        
+
         dt.setTime_t(lc);
         l=new QLabel(m_dialog->selectTable);
         temp = l->palette();
@@ -530,7 +531,7 @@ void instDialog::fillCompileSelectList()
         if (lc>lm && lc>li) {font=l->font();font.setBold(true);l->setFont(font);}
         l->setText((lm)?dt.toString():QString("---"));
         m_dialog->selectTable->setCellWidget(row,5,l);
-        
+
         dt.setTime_t(li);
         l=new QLabel(m_dialog->selectTable);
         temp = l->palette();
@@ -539,23 +540,23 @@ void instDialog::fillCompileSelectList()
         if (li>lc && li>lm) {font=l->font();font.setBold(true);l->setFont(font);}
         l->setText((lm)?dt.toString():QString("---"));
         m_dialog->selectTable->setCellWidget(row,6,l);
-        
-        row++;        
+
+        row++;
     }
     creatingTable = false;
     if (show_library)
         m_dialog->selectTable->showColumn(3);
     else
         m_dialog->selectTable->hideColumn(3);
-       
+
     for (int i=0;i<m_dialog->selectTable->columnCount();i++)
     {
-        if (i<4)            
+        if (i<4)
             m_dialog->selectTable->resizeColumnToContents (i);
         else
             m_dialog->selectTable->setColumnWidth(i,200);
     }
-    
+
     //selectTable->setColumnStretchable(2,true);
     //selectTable->sortColumn(2,true,true);
 }
@@ -563,7 +564,7 @@ void instDialog::fillCompileSelectList()
 void instDialog::showPage(const int page)
 {
     FakeWizard::showPage(page);
-    
+
     if (fwbdebug && reqFirewalls.empty())
         qDebug("instDialog::showPage reqFirewalls is empty");
 
@@ -578,7 +579,7 @@ void instDialog::showPage(const int page)
     {
         if (lastPage<0) fillCompileSelectList();
         setNextEnabled(0, isTableHasChecked());
-        break;   
+        break;
     }
     case 1: // compiling (installing) firewalls
     {
@@ -593,7 +594,7 @@ void instDialog::showPage(const int page)
                 // what about installation?
 
                 compileFlag=false;
-                     
+
                 fillInstallOpList();
                 opListIterator=opList.begin();
                 if(opList.size()==0)
@@ -625,13 +626,13 @@ void instDialog::showPage(const int page)
                 if (stopProcessFlag) return;
             }
         }
-                
+
         break;
     }
     case 2: // fin
     {
         setBackEnabled(2,false);
-        if (compileFlag && operation==BATCH_INSTALL) 
+        if (compileFlag && operation==BATCH_INSTALL)
         {
             fillInstallOpList();
             initInstall();
@@ -649,8 +650,8 @@ void instDialog::showPage(const int page)
         }
 
         if (
-            !compileFlag && 
-            opList.end()!=opListIterator && 
+            !compileFlag &&
+            opList.end()!=opListIterator &&
             operation==BATCH_INSTALL &&
             !stopProcessFlag)
         {
@@ -676,7 +677,7 @@ QString instDialog::getFullPath(instConf &cnf, const QString &file )
 bool instDialog::doInstallPage(Firewall* f)
 {
     if (fwbdebug) qDebug("instDialog::doInstallPage");
-    
+
 /* change of the page when flag ready is 'true' means we should start
  * operation */
     cnf.fwobj = f;
@@ -709,7 +710,7 @@ bool instDialog::doInstallPage(Firewall* f)
             qDebug(
                 QString("instDialog::doInstallPage: alternative address %1")
                 .arg(aaddr).toAscii().constData());
-    
+
     } else
     {
         FWOptions  *fwopt = cnf.fwobj->getOptionsObject();
@@ -717,7 +718,7 @@ bool instDialog::doInstallPage(Firewall* f)
         if (!aaddr.isEmpty())
             cnf.maddr = aaddr;
         else
-            cnf.maddr = 
+            cnf.maddr =
                 cnf.fwobj->getManagementAddress().toString().c_str();
     }
 
@@ -778,7 +779,7 @@ bool instDialog::doInstallPage(Firewall* f)
     if (cnf.copyFWB)
     {
         QFileInfo fwbfile_base(cnf.fwbfile);
-            
+
         if (fwbdebug)
             qDebug( QString("Will copy data file: %1").arg(fwbfile_base.fileName()).toAscii().constData());
 
@@ -917,7 +918,7 @@ bool instDialog::doInstallPage(Firewall* f)
          * and "post_config" hooks in SSHPIX / SSHIOS classes. Need to
          * do the same for Unix firewalls.
          */
-        
+
         QString cmd = "";
         QStringList pre_config_commands;
         QStringList post_config_commands;
@@ -1036,7 +1037,7 @@ void instDialog::stopSessionAndDisconnectSignals()
 }
 
 /*
- * This method builds and returns activation command 
+ * This method builds and returns activation command
  * This method is used for all firewall platforms but PIX
  */
 QString instDialog::getActivationCmd()
@@ -1054,7 +1055,7 @@ QString instDialog::getActivationCmd()
     else                     optpath += "reg_user/";
 
     if (cnf.testRun)
-    {       
+    {
         optpath += "test/";
         if (cnf.rollback) optpath += "rollback/";
         else               optpath += "no_rollback/";
@@ -1116,7 +1117,7 @@ void instDialog::initiateCopy(const QString &file)
     //if (platform!="pix" && platform!="fwsm") progressBar->show();
 
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("latin1"));
-    
+
     std::ifstream   *wfile;
 
     QString file_with_path = getFullPath(cnf,file);
@@ -1232,7 +1233,7 @@ void instDialog::initiateCopy(const QString &file)
     cmd.replace("%FWBPROMPT%", fwb_prompt);
 
     args.push_back(cmd);
-        
+
     addToLog( tr("\nCopying %1 -> %2:%3\n")
                 .arg(file_with_path).arg(cnf.maddr).arg(cnf.fwdir) );
 
@@ -1248,7 +1249,7 @@ void instDialog::initiateCopy(const QString &file)
                               cnf.pwd,
                               "",
                               allConfig);
-    
+
     s->setCloseStdin(true);
     runSSH(s);
 }
@@ -1273,10 +1274,10 @@ void instDialog::displayCommand(const QStringList &args)
 void instDialog::finishInstall(bool success)
 {
     if (fwbdebug) qDebug("instDialog::finishInstall");
-    
-    if (success) 
+
+    if (success)
     {
-        om->updateLastInstalledTimestamp(*opListIterator);
+        mw->updateLastInstalledTimestamp(*opListIterator);
         opListMapping[*opListIterator]->setText(1,tr("Success"));
         processedFirewalls[*opListIterator].second=tr("Success");
         setSuccessState(opListMapping[*opListIterator]);
@@ -1287,10 +1288,10 @@ void instDialog::finishInstall(bool success)
         processedFirewalls[*opListIterator].second=tr("Error");
         setErrorState(opListMapping[*opListIterator]);
     }
-    
+
     opListIterator++;
-    
-    if(opListIterator!=opList.end() && m_dialog->batchInstall->isChecked() && !stopProcessFlag) 
+
+    if(opListIterator!=opList.end() && m_dialog->batchInstall->isChecked() && !stopProcessFlag)
     {
 //        installSelected();
         QTimer::singleShot( 0, this, SLOT(installSelected()));
@@ -1311,7 +1312,7 @@ void instDialog::finishInstall(bool success)
 void instDialog::continueRun()
 {
     if (fwbdebug) qDebug("instDialog::continueRun");
-    
+
     if (activationCommandDone)
     {
         if (fwbdebug) qDebug("activationCommandDone");
@@ -1464,7 +1465,7 @@ void instDialog::hideEvent( QHideEvent *ev)
     st->saveGeometry(this);
     QDialog::hideEvent(ev);
 }
-    
+
 void instDialog::testRunRequested()
 {
 #if 0
@@ -1493,7 +1494,7 @@ void instDialog::saveLog()
                     "Choose a file",
                     dir,
                     "Text file (*.txt)");
-    
+
     if (fwbdebug)
         qDebug( "Saving log to file %s", s.toAscii().constData() );
 
@@ -1511,13 +1512,13 @@ void instDialog::saveLog()
             str << logText;
             f.close();
         }
-    }    
+    }
 }
 
 void instDialog::findFirewalls()
 {
     firewalls.clear();
-    om->findAllFirewalls(firewalls);
+    mw->findAllFirewalls(firewalls);
     firewalls.sort(FWObjectNameCmpPredicate());
     m_dialog->saveMCLogButton->setEnabled(true);
 }
@@ -1531,8 +1532,8 @@ bool instDialog::runCompile(Firewall *fw)
         qDebug(("Firewall:"+fw->getName()).c_str());
     }
 
-   
-    addToLog( QString("\n") + 
+
+    addToLog( QString("\n") +
                 QObject::tr("Compiling rule sets for firewall: %1").arg(
                     fw->getName().c_str()
                 )
@@ -1551,7 +1552,7 @@ bool instDialog::runCompile(Firewall *fw)
         return false;
     }
     args.push_front(path);
-    
+
     return true;
 }
 
@@ -1600,11 +1601,11 @@ bool instDialog::testFirewall(Firewall *fw)
         if (fwbdebug) qDebug("Firewall isn't compiled.");
         return false;
     }
-    
+
 
     args.clear();
-    
-   
+
+
     if ( /*! pis->isEnabled() || */ pis->getCommand()=="" )
     {
         //instConf cnf;
@@ -1669,7 +1670,7 @@ bool instDialog::testFirewall(Firewall *fw)
 
         //int exec_result=dlg.run();
         //qDebug(QString("Result: %1").arg(exec_result));
-        //if (exec_result==0) om->updateLastInstalledTimestamp(fw);
+        //if (exec_result==0) mw->updateLastInstalledTimestamp(fw);
     }
     return true;
 }
@@ -1683,7 +1684,7 @@ bool instDialog::prepareArgForCompiler(Firewall *fw)
  * no platform (e.g. for experiments)
  */
     string compiler=fwopt->getStr("compiler");
-    if (compiler=="") 
+    if (compiler=="")
     {
         compiler=Resources::platform_res[fw->getStr("platform")]->getCompiler();
     }
@@ -1691,7 +1692,7 @@ bool instDialog::prepareArgForCompiler(Firewall *fw)
     if (compiler=="")
     {
         QMessageBox::warning(
-            this,"Firewall Builder", 
+            this,"Firewall Builder",
             tr("Firewall platform is not specified in this object.\n\
 Can't compile firewall policy."),
             tr("&Continue"), QString::null,QString::null,
@@ -1757,7 +1758,7 @@ Can't compile firewall policy."),
     }
 
     QString ofname = QString::fromUtf8(fwopt->getStr("output_file").c_str());
-    if (!ofname.isEmpty()) 
+    if (!ofname.isEmpty())
     {
         args.push_back("-o");
         args.push_back(ofname);
@@ -1767,7 +1768,7 @@ Can't compile firewall policy."),
  * directory /usr/share/fwbuilder-2.1 (it used to be just
  * /usr/share/fwbuilder) Compilers that are packaged separately need
  * to know about this but I do not want to hard-code it. It is easier
- * to pass the path on the command line 
+ * to pass the path on the command line
  *
  * Update 01/16/06:
  *
@@ -1802,17 +1803,17 @@ void instDialog::addToLog(const QString &line)
 
         QStringList words=line.split(" ");
 
-#if 0  
+#if 0
 // although it is nice to be able to print errors in red, this
 // will break because of localization
         QColor oc=currentLog->color();
         if (words.first().find("Error")>=0) currentLog->setColor(Qt::red);
         if (words.first().find("Abnormal")>=0) currentLog->setColor(Qt::red);
         if (words.first().find("Warning")>=0) currentLog->setColor(Qt::blue);
-#endif        
+#endif
 //        currentLog->insert( line );
         currentLog->append( line );
-        
+
         if (words.first().indexOf("rule")>=0)
         {
             currentProgressBar->setValue(++processedRules);
@@ -1845,7 +1846,7 @@ void instDialog::addToLog(const QString &line)
         if (fwbdebug)
             qDebug( QString("instDialog::addToLog Current log buffer contents %3").
                     arg(currentLog->toPlainText()).toAscii().constData() );
-        
+
     }
 }
 
@@ -1920,7 +1921,7 @@ void instDialog::installerFinished()
         // session object is destroyed in stopSessionAndDisconnectSignals()
         QTimer::singleShot( 0, this, SLOT(stopSessionAndDisconnectSignals()));
     }
-        
+
     QTimer::singleShot( 0, this, SLOT(continueRun()) );
 }
 
@@ -1940,25 +1941,25 @@ void instDialog::processExited(int res)
     if (!compileFlag && customScriptFlag)
     {
         if( fwbdebug) qDebug("Custom script installer");
-            
+
         if(res==0)
         {
-            om->updateLastInstalledTimestamp(*opListIterator);
+            mw->updateLastInstalledTimestamp(*opListIterator);
             processedFirewalls[*opListIterator].second="Success";
             opListMapping[*opListIterator]->setText(1,tr("Success"));
             setSuccessState(opListMapping[*opListIterator]);
-        }   
+        }
         else
         {
             processedFirewalls[*opListIterator].second="Error";
             opListMapping[*opListIterator]->setText(1,tr("Error"));
             setErrorState(opListMapping[*opListIterator]);
         }
-        currentProgressBar->setValue(currentProgressBar->maximum () ); 
+        currentProgressBar->setValue(currentProgressBar->maximum () );
         qApp->processEvents();
-            
+
         opListIterator++;
-        
+
         if (opListIterator!=opList.end() && m_dialog->batchInstall->isChecked() && !stopProcessFlag)
         {
             QTimer::singleShot( 0, this, SLOT(installSelected()));
@@ -1972,10 +1973,10 @@ void instDialog::processExited(int res)
         return;
     }
 
-        
-    if(res==0 && proc.state()==QProcess::NotRunning && !stopProcessFlag)   
+
+    if(res==0 && proc.state()==QProcess::NotRunning && !stopProcessFlag)
     {
-        om->updateLastCompiledTimestamp(*opListIterator);
+        mw->updateLastCompiledTimestamp(*opListIterator);
         processedFirewalls[*opListIterator].first=tr("Success");
         opListMapping[*opListIterator]->setText(1,tr("Success"));
         setSuccessState(opListMapping[*opListIterator]);
@@ -2006,9 +2007,9 @@ void instDialog::processExited(int res)
 
     Firewall *f;
     QTreeWidgetItem* item;
-    
+
     opListIterator++;
-    
+
     while (opListIterator!=opList.end() && !stopProcessFlag)
     {
         if (currentFirewallsBar) currentFirewallsBar->setValue(++progress);
@@ -2017,10 +2018,10 @@ void instDialog::processExited(int res)
         f=*opListIterator;
         item=opListMapping[f];
         currentFWLabel->setText(QString::fromUtf8(f->getName().c_str()));
-        
+
 
         m_dialog->listView4->scrollToItem( opListMapping[f]  );
-        
+
         if(runCompile(f))
         {
             item->setText(1,tr("Compiling ..."));
@@ -2036,18 +2037,18 @@ void instDialog::processExited(int res)
             setFailureState(item);
 
         }
-        ++opListIterator;   
+        ++opListIterator;
     }
     if (currentFirewallsBar)
         currentFirewallsBar->setValue(currentFirewallsBar->maximum());
-    
+
     if (currentStopButton)
     {
         currentStopButton->setText(tr("Recompile"));
         disconnect (currentStopButton , SIGNAL(clicked()), this ,SLOT(stopCompile()));
         connect(currentStopButton,SIGNAL(clicked()),this,SLOT(compileSelected()));
         currentStopButton->setEnabled(true);
-        
+
     }
     currentSaveButton->setEnabled(true);
     if (operation==BATCH_COMPILE)
@@ -2078,11 +2079,11 @@ void instDialog::deselectAllFirewalls()
 void instDialog::selectAll(t_tableMap &mapping)
 {
     if (fwbdebug) qDebug("instDialog::selectAll");
-    
+
     t_tableMap::iterator i;
 
     QTableWidgetItem *item;
-    
+
     for(i=mapping.begin();i!=mapping.end();++i)
     {
         item=(*i).second;
@@ -2106,7 +2107,7 @@ void instDialog::fillCompileOpList()
     opList.clear();
     processedFirewalls.clear();
     opListMapping.clear();
-    
+
     Firewall * f;
     InstallFirewallViewItem * item;
     t_fwList::reverse_iterator i;
@@ -2120,19 +2121,19 @@ void instDialog::fillCompileOpList()
                                      QString::fromUtf8(f->getName().c_str()),
                                      false);
             m_dialog->listView4->insertTopLevelItem(0, item);
-            
+
             opListMapping[f]=item;
 
             processedFirewalls[f]=make_pair("","");
         }
     }
-    
+
 }
 void instDialog::compileSelected()
 {
     if (fwbdebug) qDebug("instDialog::compileSelected");
     setTitle(1,tr("Batch policy rules compilation"));
-    
+
     currentLog = m_dialog->procLogDisplay;
     currentSaveButton = m_dialog->saveMCLogButton;
     currentSaveButton->setEnabled(true);
@@ -2143,7 +2144,7 @@ void instDialog::compileSelected()
     currentFWLabel = m_dialog->fwMCLabel;
     currentSearchString="Compiling rule sets for firewall: ";
     setNextEnabled(0,false);
-    
+
     mw->fileSave();
     compileFlag=true;
 
@@ -2153,23 +2154,23 @@ void instDialog::compileSelected()
     progress=0;
     stopProcessFlag=false;
 
-    
+
     currentLog->clear();
 
-    if (currentStopButton) 
+    if (currentStopButton)
     {
         disconnect(currentStopButton,SIGNAL(clicked()),this,SLOT(compileSelected()));
         connect(currentStopButton,SIGNAL(clicked()),this,SLOT(stopCompile()));
         currentStopButton->setText(tr("Stop"));
         currentStopButton->setEnabled(true);
-        
+
     }
-    
+
     Firewall *f;
     QTreeWidgetItem* item;
-    
+
     opListIterator=opList.begin();
-    
+
     while (opListIterator!=opList.end() && !stopProcessFlag)
     {
         if (currentFirewallsBar) currentFirewallsBar->setValue(++progress);
@@ -2178,10 +2179,10 @@ void instDialog::compileSelected()
         f=*opListIterator;
         item=opListMapping[f];
         currentFWLabel->setText(QString::fromUtf8(f->getName().c_str()));
-        
+
 
         m_dialog->listView4->scrollToItem( opListMapping[f]  );
-        
+
         if(runCompile(f))
         {
             setInProcessState(item);
@@ -2194,18 +2195,18 @@ void instDialog::compileSelected()
             item->setText(1,tr("Failure"));
             setFailureState(item);
         }
-        ++opListIterator;   
+        ++opListIterator;
 
         m_dialog->listView4->update();
         /*m_dialog->listView4->dataChanged ( m_dialog->listView4->indexFromItem(item,0), m_dialog->listView4->indexFromItem(item,1) );*/
     }
-    
+
 }
 void instDialog::stopCompile()
 {
     if( fwbdebug) qDebug("instDialog::stopCompile");
     stopProcessFlag=true;
-    
+
     currentStopButton->setEnabled(false);
 
     proc.terminate();                                  //try to close proc.
@@ -2221,26 +2222,26 @@ void instDialog::stopInstall()
 void instDialog::fillLastList()
 {
     m_dialog->lastListView->clear();
-    
+
     QTreeWidgetItem *item;
     Firewall* f;
     t_procMess m;
-    
+
     for (map<libfwbuilder::Firewall *, t_procMess>::iterator i=processedFirewalls.begin();
             i!=processedFirewalls.end(); ++i)
     {
         f=(*i).first;
         m=(*i).second;
-        
+
         item=new QTreeWidgetItem(m_dialog->lastListView,
                 QStringList(QString::fromUtf8(f->getName().c_str())));
-        
-        
+
+
         item->setText(1,m.first);
         item->setText(2,m.second);
 
     }
-    
+
     m_dialog->lastListView->setSortingEnabled(true);
     m_dialog->lastListView->sortByColumn(0, Qt::AscendingOrder);
 }
@@ -2252,19 +2253,19 @@ bool instDialog::runInstall(Firewall *fw)
     {
         if (fwbdebug) qDebug("custom script");
         summary();
-        
+
         addToLog(args.join(" "));
-        
+
         QString path = args[0];
         args.pop_front();
         proc.start(path, args);
-        
+
         if (!proc.waitForStarted())
         {
             addToLog( tr("Error: Failed to start program") );
             return false;
         }
-        
+
         args.push_front(path); //return to previous state
     }
     else
@@ -2281,10 +2282,10 @@ void instDialog::fillInstallOpList()
     m_dialog->listView4->clear();
     opListMapping.clear();
     opList.clear();
-    
+
     InstallFirewallViewItem * item;
     Firewall * f;
-    
+
     t_fwList::reverse_iterator i;
     for(i=firewalls.rbegin();i!=firewalls.rend();++i)
     {
@@ -2298,7 +2299,7 @@ void instDialog::fillInstallOpList()
                                      false);
 
             m_dialog->listView4->insertTopLevelItem(0, item);
-            
+
             opListMapping[f]=item;
             if (processedFirewalls.find(f)==processedFirewalls.end())
                 processedFirewalls[f]=make_pair("","");
@@ -2316,7 +2317,7 @@ void instDialog::initInstall()
     currentFirewallsBar->setMaximum(opList.size());
     currentStopButton = m_dialog->controlMCButton;
     currentStopButton->setText(tr("Stop"));
-    
+
     disconnect(currentStopButton,SIGNAL(clicked()));
     connect(currentStopButton,SIGNAL(clicked()),this,SLOT(stopInstall()));
 
@@ -2339,7 +2340,7 @@ void instDialog::installSelected()
     setNextEnabled(1,false);
 
     bool fPix=false,fCustInst=true;
-    
+
     if (opListIterator==opList.begin() && m_dialog->batchInstall->isChecked())
     {
         // check if this is PIX and if we use custom
@@ -2351,10 +2352,10 @@ void instDialog::installSelected()
         currentSaveButton->setEnabled(true);
         currentProgressBar->reset();
         currentProgressBar->setMaximum(100);
-        
+
         currentLabel->setText(QString::fromUtf8((*opListIterator)->getName().c_str()));
         compileFlag=false;
-        
+
         resetInstallSSHSession();
         currentFirewallsBar->setValue(++progress);
 
@@ -2363,14 +2364,14 @@ void instDialog::installSelected()
                     QString::fromUtf8((*opListIterator)->getName().c_str())+"</b>");
         appendRich("\n");
         //qApp->processEvents();
-        
-    
+
+
         if (testFirewall(*opListIterator))
         {
             opListMapping[*opListIterator]->setText(1,tr("Installing ..."));
             setInProcessState(opListMapping[*opListIterator]);
             //qApp->processEvents();
-            
+
             if (customScriptFlag && fCustInst)
             { // custom installer
                 if (fwbdebug) qDebug("custom install script.");
@@ -2383,19 +2384,19 @@ void instDialog::installSelected()
                 if (!m_dialog->batchInstall->isChecked() ||
                     opListIterator==opList.begin())
                 {
-                    if (dlg) 
+                    if (dlg)
                     {
                         delete dlg;
                         dlg=NULL;
                     }
-                    
+
                     prepareInstallerOptions();
-                    
+
                     if (m_dialog->batchInstall->isChecked())
                         dlg=new instBatchOptionsDialog(this, &cnf);
                     else
                         dlg=new instOptionsDialog(this, &cnf);
-                    
+
                     if (dlg->exec()==QDialog::Rejected)
                     {
                         delete dlg;
@@ -2418,7 +2419,7 @@ void instDialog::installSelected()
                             //if (opList.end()!=opListIterator && batchInstall->isChecked())
                             //    showPage(page(2));
                             return;
-                            
+
                         }
                     }
                     // clear aternative address in the dialog if this is batch install.
@@ -2440,7 +2441,7 @@ void instDialog::installSelected()
                         if (opList.end()!=opListIterator && m_dialog->batchInstall->isChecked())
                             showPage(2);
                         return;
-                        
+
                     }
 
                     return;
@@ -2491,10 +2492,10 @@ Firewall * instDialog::findFirewallbyListItem(QTreeWidgetItem *item)
 {
     Firewall * res=NULL;
     t_listMap::iterator i;
-    
+
     for(i=opListMapping.begin();i!=opListMapping.end();++i)
     {
-        if ((*i).second==item) 
+        if ((*i).second==item)
         {
             res=(*i).first;
             break;
@@ -2507,10 +2508,10 @@ Firewall * instDialog::findFirewallbyTableItem(QTableWidgetItem *item)
 {
     Firewall * res=NULL;
     t_tableMap::iterator i;
-    
+
     for(i=compileMapping.begin();i!=compileMapping.end();++i)
     {
-        if ((*i).second==item) 
+        if ((*i).second==item)
         {
             res=(*i).first;
             return res;
@@ -2519,35 +2520,35 @@ Firewall * instDialog::findFirewallbyTableItem(QTableWidgetItem *item)
 
     for(i=installMapping.begin();i!=installMapping.end();++i)
     {
-        if ((*i).second==item) 
+        if ((*i).second==item)
         {
             res=(*i).first;
             return res;
         }
     }
-    
+
     return res;
 }
 void instDialog::showSelected()
 {
-    
+
     QTableWidgetItem* item;
     Firewall *f;
-    
+
     t_fwList::iterator i;
     bool sel;
-    
+
     for(i=firewalls.begin();i!=firewalls.end();++i)
     {
         sel=false;
-        
+
         f=(*i);
         item=compileMapping[f];
         sel|=item->checkState()==Qt::Checked;
 
         item=installMapping[f];
         sel|=item->checkState()==Qt::Checked;
-        
+
         if(!sel )
         {
             if (showSelectedFlag)
@@ -2560,7 +2561,7 @@ void instDialog::showSelected()
             }
         }
     }
-    if (showSelectedFlag) 
+    if (showSelectedFlag)
     {
         m_dialog->showSelButton->setText(tr("Show selected"));
         m_dialog->pushButton16->setEnabled(true);
@@ -2573,7 +2574,7 @@ void instDialog::showSelected()
         m_dialog->pushButton17->setEnabled(false);
     }
     showSelectedFlag=!showSelectedFlag;
-    
+
 }
 
 void instDialog::tableValueChanged(int row, int col)
@@ -2582,16 +2583,16 @@ void instDialog::tableValueChanged(int row, int col)
     if (fwbdebug) qDebug("instDialog::tableValueChanged");
     QTableWidgetItem *item;
     Firewall *f;
-    
+
     item=m_dialog->selectTable->item(row,col);
     f=findFirewallbyTableItem(item);
 
-    
+
     if (col==0)
     { // Compilation flag has been changed
         if (
-                (item->checkState()==Qt::Unchecked) && 
-                f->getInt("lastCompiled")==0 && 
+                (item->checkState()==Qt::Unchecked) &&
+                f->getInt("lastCompiled")==0 &&
                 (installMapping[f]->checkState()==Qt::Checked))
         {
             installMapping[f]->setCheckState(Qt::Unchecked);
@@ -2600,14 +2601,14 @@ void instDialog::tableValueChanged(int row, int col)
     else if (col==1)
     { // Installation flag has been changed
         if (
-                (item->checkState()==Qt::Checked) && 
-                f->getInt("lastCompiled")==0) 
+                (item->checkState()==Qt::Checked) &&
+                f->getInt("lastCompiled")==0)
         {
             compileMapping[f]->setCheckState(Qt::Checked);
         }
-        
+
     }
-    
+
     setNextEnabled(0, isTableHasChecked());
 }
 
@@ -2615,18 +2616,18 @@ bool instDialog::isTableHasChecked()
 {
     QTableWidgetItem *item;
     Firewall *f;
-    
+
     t_fwList::iterator i;
-    
+
     bool res=false;
-    
+
     for(i=firewalls.begin();i!=firewalls.end();++i)
     {
         f=(*i);
         item=compileMapping[f];
         if(!item) return false;
         if(item->checkState()==Qt::Checked) res = true;
-        
+
         item=installMapping[f];
         if(!item) return false;
         if(item->checkState()==Qt::Checked) res = true;
@@ -2641,10 +2642,10 @@ void instDialog::analyseInstallQueue(bool &fPix, bool &fCustInst)
     //FWOptions *fwopt;
     Management *mgmt;
     PolicyInstallScript *pis;
-    
+
     fPix=false;
     fCustInst=true;
-    
+
     t_fwList::iterator i;
     for(i=opList.begin(); i!=opList.end(); ++i)
     {
@@ -2652,17 +2653,17 @@ void instDialog::analyseInstallQueue(bool &fPix, bool &fCustInst)
         //fwopt=f->getOptionsObject();
         mgmt=f->getManagementObject();
         pis   = mgmt->getPolicyInstallScript();
-        
+
         fPix = fPix || f->getStr("platform")=="pix" || f->getStr("platform")=="fwsm" || f->getStr("platform")=="iosacl";
         fCustInst =  fCustInst && !( pis->getCommand()=="" );
-        
+
         if (fwbdebug)
         {
             qDebug(("f:"+f->getName()).c_str());
             qDebug(("p:"+f->getStr("platform")).c_str());
             qDebug((QString("fPix:")+(fPix?"true":"false")).toAscii().constData());
         }
-        
+
         if (fPix && !fCustInst) return;// nothing can change if we continue loop
     }
 }

@@ -1,11 +1,11 @@
-/* 
+/*
 
                           Firewall Builder
 
                  Copyright (C) 2006 NetCitadel, LLC
 
   Author:  Illiya Yalovoy <yalovoy@gmail.com>
-  
+
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -15,12 +15,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -28,9 +30,9 @@
 #include "platforms.h"
 
 #include "NATRuleOptionsDialog.h"
-#include "ObjectManipulator.h"
 #include "RuleSetView.h"
 #include "FWWindow.h"
+#include "ProjectPanel.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Rule.h"
@@ -53,12 +55,12 @@ NATRuleOptionsDialog::~NATRuleOptionsDialog()
     delete m_dialog;
 }
 
-NATRuleOptionsDialog::NATRuleOptionsDialog(QWidget *parent) : QWidget(parent)
+NATRuleOptionsDialog::NATRuleOptionsDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
 {
     m_dialog = new Ui::NATRuleOptionsDialog_q;
     m_dialog->setupUi(this);
     setFont(st->getUiFont());
-    
+
     init=false;
 }
 
@@ -105,7 +107,7 @@ void NATRuleOptionsDialog::loadFWObject(FWObject *o)
     //apply->setEnabled( false );
     init=false;
 }
-    
+
 void NATRuleOptionsDialog::changed()
 {
     //apply->setEnabled( true );

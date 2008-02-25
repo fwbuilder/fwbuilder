@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "utils.h"
@@ -108,7 +110,7 @@ void DialogData::loadToWidget( DialogOption &dopt , bool override)
         QString      s = (override) ? dopt.override_str_val : QString(dopt.obj->getStr(dopt.attr.toLatin1().constData()).c_str());
 
         QStringList slist;
-        
+
         int current_item = 0;
         if (!dopt.mapping.empty())
         {
@@ -126,7 +128,7 @@ void DialogData::loadToWidget( DialogOption &dopt , bool override)
  *  the array from 1).
  */
             slist.clear();
-            
+
             unsigned idx = 0;
             QStringList::iterator i1 = dopt.mapping.begin();
             QStringList::iterator i2 = dopt.mapping.begin();
@@ -159,7 +161,7 @@ void DialogData::loadToWidget( DialogOption &dopt , bool override)
                 {
                     current_item = i; //lbx->index( lbx->findItem(s,Qt::ExactMatch) );
                     break;
-                }    
+                }
         }
         cbx->setCurrentIndex( current_item );
     }
@@ -189,7 +191,7 @@ void DialogData::loadToWidget( DialogOption &dopt , bool override)
         sbx->setValue( (override)?dopt.override_int_val:dopt.obj->getInt(dopt.attr.toLatin1().constData()) );
     }
 }
-    
+
 
 void DialogData::loadAll()
 {

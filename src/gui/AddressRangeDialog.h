@@ -34,6 +34,7 @@
 #include "fwbuilder/FWObject.h"
 
 
+class ProjectPanel;
 class AddressRangeDialog : public QWidget
 {
     Q_OBJECT
@@ -43,8 +44,9 @@ class AddressRangeDialog : public QWidget
     
     Ui::AddressRangeDialog_q *m_dialog;
 
+    ProjectPanel *m_project;
  public:
-    AddressRangeDialog(QWidget *parent);
+    AddressRangeDialog(ProjectPanel *project, QWidget *parent);
     ~AddressRangeDialog();
     
 public slots:

@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -31,7 +33,6 @@
 
 #include "newFirewallDialog.h"
 #include "InterfaceData.h"
-#include "ObjectManipulator.h"
 #include "FWWindow.h"
 #include "ObjConflictResolutionDialog.h"
 #include "upgradePredicate.h"
@@ -72,14 +73,14 @@ newFirewallDialog::newFirewallDialog() : QDialog()
 {
     m_dialog = new Ui::newFirewallDialog_q;
     m_dialog->setupUi(this);
-    
-    setControlWidgets(this, m_dialog->stackedWidget, 
+
+    setControlWidgets(this, m_dialog->stackedWidget,
                       m_dialog->nextButton,
                       m_dialog->finishButton,
                       m_dialog->backButton,
                       m_dialog->cancelButton,
                       m_dialog->titleLabel);
-    
+
     /*connect( m_dialog->nextButton, SIGNAL( clicked() ),
              this, SLOT( nextClicked() ));
     connect( m_dialog->backButton, SIGNAL( clicked() ),
@@ -88,8 +89,8 @@ newFirewallDialog::newFirewallDialog() : QDialog()
              this, SLOT( finishClicked() ));
     connect( m_dialog->cancelButton, SIGNAL( clicked() ),
              this, SLOT( cancelClicked() ));*/
-    
-    nfw = NULL; 
+
+    nfw = NULL;
     tmpldb = NULL;
     snmpPollCompleted = false;
     q = NULL;
@@ -117,7 +118,7 @@ newFirewallDialog::newFirewallDialog() : QDialog()
     m_dialog->iface_dyn->setToolTip(wordWrap(tr("Check option 'dynamic address' for the interface that gets its IP address dynamically via DHCP or PPP protocol.") ,80 ));
     m_dialog->iface_unnum->setToolTip(wordWrap(tr("Check option 'Unnumbered interface' for the interface that does not have an IP address. Examples of interfaces of this kind are those used to terminate PPPoE or VPN tunnels.") ,80 ));
     m_dialog->obj_name->setFocus();
-    
+
     showPage(0);
 }
 
@@ -198,7 +199,7 @@ void  newFirewallDialog::monitor()
     const map<int, Interface> &intf = q->getInterfaces();
     for(map<int, Interface>::const_iterator i=intf.begin();i!=intf.end(); ++i)
     {
-        if ( i->second.isUp() ) 
+        if ( i->second.isUp() )
         {
             InterfaceData idata( i->second );
 
@@ -210,7 +211,7 @@ void  newFirewallDialog::monitor()
             if (idata.isBridgePort) dn+="bridge";
 
             QStringList qsl;
-            qsl << idata.name.c_str() 
+            qsl << idata.name.c_str()
                 << idata.label.c_str()
                 << idata.address.c_str()
                 << idata.netmask.c_str()
@@ -244,10 +245,10 @@ void newFirewallDialog::getInterfacesViaSNMP()
 
     string rcomm=m_dialog->snmp_community->text().toLatin1().constData();
 
-    if ( rcomm.empty() ) 
+    if ( rcomm.empty() )
     {
         QMessageBox::warning(
-            this,"Firewall Builder", 
+            this,"Firewall Builder",
             tr("Missing SNMP community string."),
             "&Continue", QString::null, QString::null, 0, 1 );
         return ;
@@ -257,7 +258,7 @@ void newFirewallDialog::getInterfacesViaSNMP()
 
     IPAddress addr;
     QString name=m_dialog->obj_name->text().toLatin1().constData();
-    try 
+    try
     {
         QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
         QString a = getAddrByName(name);
@@ -266,7 +267,7 @@ void newFirewallDialog::getInterfacesViaSNMP()
     } catch (FWException &ex)
     {
         QMessageBox::warning(
-            this,"Firewall Builder", 
+            this,"Firewall Builder",
             tr("Address of %1 could not be obtained via DNS")
             .arg(m_dialog->obj_name->text()),
             "&Continue", QString::null, QString::null, 0, 1 );
@@ -283,7 +284,7 @@ void newFirewallDialog::getInterfacesViaSNMP()
 
     timer->setSingleShot(false);
     timer->start(0);
-    
+
     try
     {
         logger = q->start_operation();
@@ -336,7 +337,7 @@ void newFirewallDialog::backClicked()
 void newFirewallDialog::showPage(const int page)
 {
     FakeWizard::showPage(page);
-    
+
     int p = page;
 
 // p is a page number _after_ it changed
@@ -397,13 +398,13 @@ void newFirewallDialog::showPage(const int page)
         FWObject *tlib = mw->db()->getById(TEMPLATE_LIB);
         if (tlib==NULL)
         {
-            FWObject *cl = om->getCurrentLib();
+            FWObject *cl = mw->getCurrentLib();
             mw->loadLibrary(tempfname);
             unloadTemplatesLib = true;
-            om->loadObjects();
+            mw->loadObjects();
             tlib = mw->db()->getById(TEMPLATE_LIB);
 /* restore library that was opened prior loading templates */
-            om->openLib(cl);
+            mw->openLib(cl);
         }
 #endif
 
@@ -429,7 +430,7 @@ void newFirewallDialog::showPage(const int page)
             QListWidgetItem *twi = new QListWidgetItem;
             twi->setIcon( QIcon(pm) );
             twi->setText( QString(o->getName().c_str()) );
-            
+
             m_dialog->templateList->addItem( twi );
             templates[ m_dialog->templateList->item( m_dialog->templateList->count()-1 ) ]=o;
         }
@@ -444,7 +445,7 @@ void newFirewallDialog::fillInterfaceSLList()
 {
 
     QTreeWidgetItem *itm = m_dialog->iface_list->topLevelItem(0);// firstChild();
-    
+
     int itm_index = 0;
 
     m_dialog->iface_sl_list->clear();
@@ -464,7 +465,7 @@ void newFirewallDialog::fillInterfaceSLList()
         else
             idata.address  =  QObject::tr("dynamic").toLatin1().constData();
 
-        try 
+        try
         {
             idata.guessSecurityLevel( readPlatform(m_dialog->platform).toLatin1().constData() );
         }
@@ -473,7 +474,7 @@ void newFirewallDialog::fillInterfaceSLList()
             QMessageBox::warning(
                 this,"Firewall Builder", ex.toString().c_str(),
                 "&Continue", QString::null, QString::null, 0, 1 );
-            
+
             showPage( 2 );
             return;
         }
@@ -484,7 +485,7 @@ void newFirewallDialog::fillInterfaceSLList()
             << idata.address.c_str()
             << QString::number(idata.securityLevel);
         new QTreeWidgetItem(m_dialog->iface_sl_list, qsl);
-        
+
         itm_index++;
         itm=m_dialog->iface_list->topLevelItem(itm_index);
     }
@@ -597,7 +598,7 @@ void newFirewallDialog::addInterface()
         catch (FWException &ex)
         {
             QMessageBox::warning(
-                this,"Firewall Builder", 
+                this,"Firewall Builder",
                 tr("Illegal address '%1/%2'").arg(addr).arg(netm),
                 "&Continue", QString::null, QString::null, 0, 1 );
             return;
@@ -608,14 +609,14 @@ void newFirewallDialog::addInterface()
         << m_dialog->iface_label->text()
         << addr << netm << dn
         << m_dialog->iface_physaddr->text();
-            
+
     new QTreeWidgetItem(m_dialog->iface_list, qsl);
 }
 
 void newFirewallDialog::selectedInterface(QTreeWidgetItem*cur,QTreeWidgetItem*)
 {
     QTreeWidgetItem *itm = cur; //current item
-    
+
     m_dialog->iface_name->setText( itm->text(0) );
     m_dialog->iface_label->setText( itm->text(1) );
     m_dialog->iface_addr->setText( itm->text(2) );
@@ -649,7 +650,7 @@ void newFirewallDialog::deleteInterface()
 {
     QTreeWidgetItem *itm = m_dialog->iface_list->currentItem();
     if (itm==NULL) return;
-    m_dialog->iface_list->takeTopLevelItem( 
+    m_dialog->iface_list->takeTopLevelItem(
             m_dialog->iface_list->indexOfTopLevelItem(itm) );
 }
 
@@ -657,9 +658,9 @@ void newFirewallDialog::adjustSL(QTreeWidgetItem *itm1)
 {
 // interface 1 is above 2. Adjust their security levels accordingly
     int sl1 = itm1->text(3).toInt();
-    
+
     int index = itm1->treeWidget()->indexOfTopLevelItem(itm1);
-    
+
     QTreeWidgetItem *itm2 = itm1->treeWidget()->topLevelItem(index+1);
     QTreeWidgetItem *itm3 = itm1->treeWidget()->topLevelItem(index-1);
 
@@ -682,7 +683,7 @@ void newFirewallDialog::upInterface()
     QTreeWidgetItem *itm1 = m_dialog->iface_sl_list->currentItem();
     if (itm1==NULL) return;
     int index = m_dialog->iface_sl_list->indexOfTopLevelItem(itm1);
-    
+
     QTreeWidgetItem *itm2 = m_dialog->iface_sl_list->topLevelItem(index-1);
     if (itm2==NULL) return;
     m_dialog->iface_sl_list->takeTopLevelItem(index);
@@ -692,11 +693,11 @@ void newFirewallDialog::upInterface()
 
 void newFirewallDialog::downInterface()
 {
-    
+
     QTreeWidgetItem *itm1 = m_dialog->iface_sl_list->currentItem();
     if (itm1==NULL) return;
     int index = m_dialog->iface_sl_list->indexOfTopLevelItem(itm1);
-    
+
     QTreeWidgetItem *itm2 = m_dialog->iface_sl_list->topLevelItem(index+1);
     if (itm2==NULL) return;
     m_dialog->iface_sl_list->takeTopLevelItem(index);
@@ -712,7 +713,7 @@ void newFirewallDialog::cancelClicked()
 void newFirewallDialog::finishClicked()
 {
     int p = currentPage();
-    
+
     if (p==2)  fillInterfaceSLList();
 
     if (p==4)
@@ -721,7 +722,7 @@ void newFirewallDialog::finishClicked()
         FWObject *template_fw=templates[itm];
         assert (template_fw!=NULL);
 
-        FWObject *no = om->duplicateObject(om->getCurrentLib(),
+        FWObject *no = mw->duplicateObject(mw->getCurrentLib(),
                                            template_fw,
                                            m_dialog->obj_name->text(),
                                            false );  // do not ask to autorename
@@ -747,7 +748,7 @@ void newFirewallDialog::finishClicked()
     } else
     {
         FWObject *o;
-        o=om->createObject(Firewall::TYPENAME, m_dialog->obj_name->text() );
+        o=mw->createObject(Firewall::TYPENAME, m_dialog->obj_name->text() );
 
         if (o==NULL)
         {
@@ -792,7 +793,7 @@ void newFirewallDialog::finishClicked()
 
             int     sl = itm2->text(3).toInt();
 
-            Interface *oi = Interface::cast(om->createObject(nfw,Interface::TYPENAME,
+            Interface *oi = Interface::cast(mw->createObject(nfw,Interface::TYPENAME,
                                                              name));
 #ifdef USE_INTERFACE_POLICY
             oi->add(new InterfacePolicy());
@@ -807,13 +808,13 @@ void newFirewallDialog::finishClicked()
             if (!dyn && !unnum && !bridgeport)
             {
                 QString addrname=QString("%1:%2:ip").arg(m_dialog->obj_name->text()).arg(name);
-                IPv4 *oa = IPv4::cast(om->createObject(oi, IPv4::TYPENAME,addrname));
+                IPv4 *oa = IPv4::cast(mw->createObject(oi, IPv4::TYPENAME,addrname));
                 oa->setAddress( addr.toLatin1().constData()    );
                 oa->setNetmask( netmask.toLatin1().constData() );
             }
             // updateObjName has a side effect: it causes redraw of the ruleset
             // views in the main window
-            om->updateObjName(oi,"","",false);
+            mw->updateObjName(oi,"","",false);
 
             itm_index++;
             itm=m_dialog->iface_list->topLevelItem(itm_index);
@@ -827,7 +828,7 @@ void newFirewallDialog::finishClicked()
         string tlibID = tlib->getId();
         if (fwbdebug)
             qDebug("newFirewallDialog::accept  Delete template library");
-        om->delObj(tlib,false);
+        mw->delObj(tlib,false);
 
 /*
  * deleting an object places it in the "Deleted objects" library, so
@@ -840,7 +841,7 @@ void newFirewallDialog::finishClicked()
         if (delObjLib!=NULL && delObjLib->getById(tlibID)!=NULL)
         {
             if (fwbdebug) qDebug("newFirewallDialog::accept  Delete library of templates from 'Deleted objects'");
-            om->delObj(tlib,false);  // this time from deleted objects lib
+            mw->delObj(tlib,false);  // this time from deleted objects lib
         }
 #endif
 

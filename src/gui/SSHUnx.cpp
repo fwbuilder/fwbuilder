@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,13 +17,15 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -135,7 +137,7 @@ void SSHUnx::stateMachine()
              stdoutBuffer.lastIndexOf(passphrase_prompt,-1)!=-1 ||
 
              cmpPrompt(stdoutBuffer,sudo_pwd_prompt) ||
-             cmpPrompt(stderrBuffer,sudo_pwd_prompt) ) 
+             cmpPrompt(stderrBuffer,sudo_pwd_prompt) )
         {
             stdoutBuffer="";
             proc->write( pwd.toAscii() );
@@ -204,7 +206,7 @@ void SSHUnx::stateMachine()
     case PUSHING_CONFIG:
  push_files:
         if ( cmpPrompt(stdoutBuffer,sudo_pwd_prompt) ||
-             cmpPrompt(stderrBuffer,sudo_pwd_prompt) ) 
+             cmpPrompt(stderrBuffer,sudo_pwd_prompt) )
         {
             stdoutBuffer="";
             proc->write( pwd.toAscii() );
@@ -212,7 +214,7 @@ void SSHUnx::stateMachine()
             break;
         }
 /*
-        if (!quiet && !verbose) 
+        if (!quiet && !verbose)
         {
             emit printStdout_sign( stdoutBuffer );
         }

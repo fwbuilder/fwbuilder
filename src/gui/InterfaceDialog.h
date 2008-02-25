@@ -36,6 +36,7 @@
 #include <qmap.h>
 #include <qstring.h>
 
+class ProjectPanel;
 class InterfaceDialog : public QWidget
 {
     Q_OBJECT
@@ -46,9 +47,10 @@ class InterfaceDialog : public QWidget
     QMap<int,QString> netzoneObjectNos;
 
     Ui::InterfaceDialog_q *m_dialog;
+    ProjectPanel *m_project;
 
  public:
-    InterfaceDialog(QWidget *parent);
+    InterfaceDialog(ProjectPanel *project, QWidget *parent);
     ~InterfaceDialog();
     
     virtual void closeEvent(QCloseEvent *e);

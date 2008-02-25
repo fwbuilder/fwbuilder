@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -99,7 +101,7 @@ QAction* addPopupMenuItem(QObject *res,
 //        pm = QPixmap::fromMimeSource( icn.c_str() );
         if ( ! QPixmapCache::find( icn.c_str(), pm) )
         {
-            pm.load( (":/"+icn).c_str() );//fromMimeSource( icn.c_str() ); 
+            pm.load( (":/"+icn).c_str() );//fromMimeSource( icn.c_str() );
             QPixmapCache::insert( icn.c_str(), pm);
         }
         act = menu->addAction( pm, itemName , res , member, accel ); //insertItem
@@ -144,7 +146,7 @@ void fillLibraries(QComboBox *libs, libfwbuilder::FWObject *obj, bool rw)
         if (lib==QString((*i)->getName().c_str())) cn=n;
         QPixmap icon;
         icon.load( (libicn).c_str() );
-        
+
         libs->addItem(icon,
                       QString::fromUtf8((*i)->getName().c_str()) );
         n++;
@@ -187,14 +189,14 @@ void fillLibraries(QListWidget *libs, libfwbuilder::FWObject *obj, bool rw)
 
         if (rw && (*i)->isReadOnly()) continue;
         if (lib==QString((*i)->getName().c_str())) cn=n;
-        
+
         QPixmap icon;
         icon.load( (":/"+libicn).c_str() );
-        
+
         QListWidgetItem *item = new QListWidgetItem(icon, (*i)->getName().c_str());
-        
+
         libs->addItem(item);
-        
+
         n++;
     }
     libs->setCurrentRow(cn);
@@ -265,7 +267,7 @@ DWORD  bufCharCount = INFO_BUFFER_SIZE;
 #else
 
     char *lname = getenv("LOGNAME");
-    if (lname!=NULL) 
+    if (lname!=NULL)
         uname = QString(lname);
     else
     {
@@ -374,10 +376,10 @@ void setDisabledPalette(QWidget *w)
 
     pal.setCurrentColorGroup( QPalette::Active );
     pal.setColor( QPalette::Text, Qt::black );
-    
+
     pal.setCurrentColorGroup( QPalette::Inactive );
     pal.setColor( QPalette::Text, Qt::black );
-    
+
     pal.setCurrentColorGroup( QPalette::Disabled );
     pal.setColor( QPalette::Text, Qt::black );
 
@@ -387,17 +389,17 @@ void setDisabledPalette(QWidget *w)
 QString getAddrByName(const QString &name)
 {
     QHostInfo a = QHostInfo::fromName(name);
-    
+
     QList<QHostAddress> alist = a.addresses();
 
     /*while (a.isWorking())
     {
         app->processEvents(200);
     }
-    alist = a.addresses();*/ 
-    //we're using the blocking-type function 
+    alist = a.addresses();*/
+    //we're using the blocking-type function
     //"fromName" so we don't have to wait
-    
+
     if (alist.empty()) return "";
     return alist.front().toString();
 }
@@ -406,9 +408,9 @@ QString getNameByAddr(const QString &addr)
 {
     /*QHostAddress ha;
     ha.setAddress(addr);
-    
+
     Q3Dns qry( ha, Q3Dns::Ptr);
-    
+
     QStringList nlist = qry.hostNames();
 
     while (qry.isWorking())
@@ -417,10 +419,10 @@ QString getNameByAddr(const QString &addr)
     }
     nlist = qry.hostNames();
     if (nlist.empty()) return "";
-    
+
     return nlist.front();*/
     QHostInfo a = QHostInfo::fromName(addr);
-    
+
     return a.hostName();
 }
 
@@ -433,7 +435,7 @@ QString wordWrap(const QString& s, int maxchinline)
     /*unsigned*/ int pos=0;
     QString res="";
     QChar ch;
-    
+
     for ( ; pos < s.length(); pos++,chcount++)
     {
         ch = s.at(pos);
@@ -457,7 +459,7 @@ QString wordWrap(const QString& s, int maxchinline)
                     res.append(s.mid(linestart,lastwdpos-linestart));
                     linestart=lastwdpos;
                     pos=lastwdpos;
-                    
+
                 }else
                 {
                     res.append(s.mid(linestart,pos-linestart));
@@ -472,7 +474,7 @@ QString wordWrap(const QString& s, int maxchinline)
                 if (pos<s.length())
                 {
                     linestart=pos--;
-                    
+
                 }
                 else
                 {

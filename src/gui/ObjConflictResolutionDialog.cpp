@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,12 +17,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -59,7 +61,7 @@ ObjConflictResolutionDialog::ObjConflictResolutionDialog(QWidget *parent): QDial
     m_dialog = new Ui::ObjConflictResolutionDialog_q;
     m_dialog->setupUi(this);
     setObjectName("ObjConflictResolutionDialog");
-    
+
     alwaysCurrent=false;
     alwaysNew    =false;
     m_dialog->dlgIcon->setPixmap( QMessageBox::standardIcon( QMessageBox::Warning ) );
@@ -92,9 +94,9 @@ int ObjConflictResolutionDialog::run(    FWObject *o1,
     // checked checkbox that makes  decision without
     // them having to click a button. This is so that
     // classes that inherit from ObjConflictResolutionDialog
-    // can use data collected in this method. Particularly 
+    // can use data collected in this method. Particularly
     // CompareObjectsDialog::run needs it
-    
+
 
     QString leftBtnTxt, rightBtnTxt;
     bool    leftCB,  rightCB, leftBtn, rightBtn;
@@ -150,7 +152,7 @@ int ObjConflictResolutionDialog::run(    FWObject *o1,
                                                                    true,
                                                                    false,
                                                                    false);
-    
+
 
     m_dialog->useCurrentObj->setText(leftBtnTxt);
     m_dialog->useNewObj->setText(rightBtnTxt);
@@ -186,7 +188,7 @@ int ObjConflictResolutionDialog::run(    FWObject *o1,
 
     m_dialog->currentObjLbl->setText(f1);
     m_dialog->newObjLbl->setText(f2);
-    
+
     m_dialog->currentObj->clear();
     m_dialog->newObj->clear();
 
@@ -230,7 +232,7 @@ void ObjConflictResolutionDialog::saveGeometry()
  * geometry (it is bad to get geometry of the window when it is hidden
  * because at that time window manager decorations do not exist
  * anymore, so window's position on the screen is shiften up and to
- * the left). 
+ * the left).
  *
  * It seems under certain window manager (at this time it is unknown
  * which one) in Gnome "close event" is generated after the window is
@@ -379,7 +381,7 @@ int CompareObjectsDialog::run(FWObject *o1,FWObject *o2)
 
         QString k = (*i1).section(':',0,0).trimmed();
         QString v = (*i1).section(':',1).trimmed();
-        if (v=="") 
+        if (v=="")
         {
             v = k;
             k = tstr.str().c_str();
@@ -410,7 +412,7 @@ int CompareObjectsDialog::run(FWObject *o1,FWObject *o2)
         propdict2[k] = v;
     }
 
-    
+
     QStringList::Iterator i3 = report_attributes.begin();
     for ( ; i3!=report_attributes.end(); ++i3)
     {
@@ -471,7 +473,7 @@ int CompareObjectsDialog::run(FWObject *o1,FWObject *o2)
     }
 
     str << setw(78) << setfill('-') << '-' << endl;
-    
+
     report.push_back( QString(str.str().c_str()) );
 
     return res;

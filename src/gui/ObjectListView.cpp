@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,12 +17,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -76,12 +78,12 @@ bool ObjectListView::event ( QEvent * event )
         if (st->getObjTooltips())
         {
             int cx = pos.x(), cy = pos.y();
-    
+
             //viewportToContents(pos.x(),pos.y(),cx,cy);
-    
+
             FWObject  *obj=NULL;
             QRect      cr;
-    
+
             QTreeWidgetItem      *itm   = itemAt( QPoint(cx,cy - header()->height()) );
             if (itm==NULL) return false;
             ObjectListViewItem *oivi  = dynamic_cast<ObjectListViewItem*>(itm);
@@ -89,7 +91,7 @@ bool ObjectListView::event ( QEvent * event )
             obj     = oivi->getFWObject();
 
             if (obj==NULL) return false;
-        
+
             cr = visualItemRect(itm);
 
             QRect global = QRect(
@@ -97,16 +99,16 @@ bool ObjectListView::event ( QEvent * event )
 
             //finally stretch rect up to component's width and even more
             //(it fixes bug with horizontal scroll)
-            global.setWidth(width() + horizontalOffset()); 
+            global.setWidth(width() + horizontalOffset());
 
-            QToolTip::showText(mapToGlobal( he->pos() ), 
-                FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj,true,true), 
+            QToolTip::showText(mapToGlobal( he->pos() ),
+                FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj,true,true),
                 this, global);
         }
 
         return true;
     }
-    
+
     return QTreeWidget::event(event);
 }
 
@@ -132,7 +134,7 @@ QDrag* ObjectListView::dragObject()
         pm.load( icn );
         QPixmapCache::insert( icn, pm);
     }
-    
+
     drag->setPixmap( pm );
     drag->setHotSpot( QPoint( pm.rect().width() / 2,
                              pm.rect().height() / 2 ) );
@@ -159,7 +161,7 @@ void ObjectListView::dropEvent(QDropEvent *ev)
     if (fwbdebug)
         qDebug("ObjectListView::dropEvent");
     emit dropped(ev);
-} 
+}
 
 void ObjectListView::keyPressEvent( QKeyEvent* ev )
 {
@@ -182,10 +184,10 @@ void ObjectListView::mouseMoveEvent ( QMouseEvent * event )
     {
         QDrag *dr = dragObject();
         dr->start();
-        
+
         startingDrag = false;
     }
     QTreeWidget::mouseMoveEvent(event);
 }
 
-    
+

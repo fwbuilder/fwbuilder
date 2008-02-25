@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -29,7 +31,7 @@
 
 #include "ipfAdvancedDialog.h"
 #include "SimpleTextEditor.h"
-#include "ObjectManipulator.h"
+#include "FWWindow.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
@@ -58,7 +60,7 @@ ipfAdvancedDialog::ipfAdvancedDialog(QWidget *parent,FWObject *o)
 {
     m_dialog = new Ui::ipfAdvancedDialog_q;
     m_dialog->setupUi(this);
-    
+
     obj=o;
     QStringList slm;
 
@@ -114,7 +116,7 @@ ipfAdvancedDialog::ipfAdvancedDialog(QWidget *parent,FWObject *o)
 
     slm = getLogFacilities( obj->getStr("platform").c_str() );
     m_dialog->logFacility->clear();
-    m_dialog->logFacility->addItems( getScreenNames( slm ));    
+    m_dialog->logFacility->addItems( getScreenNames( slm ));
     data.registerOption( m_dialog->logFacility          , fwopt,  "ipf_log_facility", slm);
 
     data.registerOption( m_dialog->compiler             , fwopt,  "compiler" );
@@ -159,7 +161,7 @@ void ipfAdvancedDialog::accept()
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData() );
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData() );
 
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

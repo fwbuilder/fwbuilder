@@ -46,10 +46,10 @@ class FWBTree {
     
     FWBTree();
 
-    static bool isSystem(libfwbuilder::FWObject *obj);
-    static bool isStandardId(libfwbuilder::FWObject *obj);
+    bool isSystem(libfwbuilder::FWObject *obj);
+    bool isStandardId(libfwbuilder::FWObject *obj);
     
-    static bool validateForInsertion(libfwbuilder::FWObject *target,libfwbuilder::FWObject *obj);
+    bool validateForInsertion(libfwbuilder::FWObject *target,libfwbuilder::FWObject *obj);
 
     /**
      * returns boolean value that defines whether menu item "Copy"
@@ -57,39 +57,37 @@ class FWBTree {
      * in the tree. By default menu items are enabled, so this method
      * returns True if object path is unknown.
      */
-    static bool getCopyMenuState(const QString &objPath) {
-        if (standardObjectTreeFormat->copyMenuState.count(objPath)!=0)
-            return standardObjectTreeFormat->copyMenuState[objPath];
+    bool getCopyMenuState(const QString &objPath) {
+        if (copyMenuState.count(objPath)!=0)
+            return copyMenuState[objPath];
         else
             return true;
     }
-    static bool getCutMenuState(const QString &objPath) {
-        if (standardObjectTreeFormat->cutMenuState.count(objPath)!=0)
-            return standardObjectTreeFormat->cutMenuState[objPath];
+    bool getCutMenuState(const QString &objPath) {
+        if (cutMenuState.count(objPath)!=0)
+            return cutMenuState[objPath];
         else
             return true;
     }
-    static bool getPasteMenuState(const QString &objPath) {
-        if (standardObjectTreeFormat->pasteMenuState.count(objPath)!=0)
-            return standardObjectTreeFormat->pasteMenuState[objPath];
+    bool getPasteMenuState(const QString &objPath) {
+        if (pasteMenuState.count(objPath)!=0)
+            return pasteMenuState[objPath];
         else
             return true;
     }
-    static bool getDeleteMenuState(const QString &objPath) {
-        if (standardObjectTreeFormat->deleteMenuState.count(objPath)!=0)
-            return standardObjectTreeFormat->deleteMenuState[objPath];
+    bool getDeleteMenuState(const QString &objPath) {
+        if (deleteMenuState.count(objPath)!=0)
+            return deleteMenuState[objPath];
         else
             return true;
     }
     
-    static void getStandardSlotForObject(const QString &objType,
+    void getStandardSlotForObject(const QString &objType,
                                          QString &parentType,
                                          QString &parentName);
-    static libfwbuilder::FWObject* getStandardSlotForObject(libfwbuilder::FWObject* lib,
+    libfwbuilder::FWObject* getStandardSlotForObject(libfwbuilder::FWObject* lib,
                                                             const QString &objType);
-    static libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db);
-
-    static FWBTree *standardObjectTreeFormat;
+    libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db);
 
 };
 

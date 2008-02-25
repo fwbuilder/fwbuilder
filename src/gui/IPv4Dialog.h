@@ -35,6 +35,7 @@
 
 class QDns;
 
+class ProjectPanel;
 class IPv4Dialog : public QWidget
 {
     Q_OBJECT
@@ -45,9 +46,10 @@ class IPv4Dialog : public QWidget
     bool dnsBusy;
     //QDns                   *lookup;
     Ui::IPv4Dialog_q       *m_dialog;
+    ProjectPanel *m_project;
 
  public:
-    IPv4Dialog(QWidget *parent);
+    IPv4Dialog(ProjectPanel *project, QWidget *parent);
     ~IPv4Dialog();
     virtual void closeEvent(QCloseEvent *e);
     

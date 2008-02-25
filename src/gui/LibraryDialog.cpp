@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,20 +17,22 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
 
+#include "fwbuilder_ph.h"
+
 #include "config.h"
 #include "global.h"
 #include "utils.h"
+#include "ProjectPanel.h"
 
 #include "FWBTree.h"
 #include "LibraryDialog.h"
-#include "ObjectManipulator.h"
 
 #include "fwbuilder/Library.h"
 
@@ -44,18 +46,19 @@
 #include <qpainter.h>
 #include "FWBSettings.h"
 
+#include "FWWindow.h"
 using namespace std;
 using namespace libfwbuilder;
 
-LibraryDialog::LibraryDialog(QWidget *parent) : QWidget(parent)
+LibraryDialog::LibraryDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
 {
     m_dialog = new Ui::LibraryDialog_q;
     m_dialog->setupUi(this);
-    
+
     obj=NULL;
     setFont(st->getUiFont());
     //layout()->setSizeConstraint(QLayout::SetFixedSize);
-    
+
     Qt::WindowFlags flags = windowFlags();
     flags &= ~Qt::WindowMaximizeButtonHint;
     flags &= ~Qt::WindowMinimizeButtonHint;
@@ -79,7 +82,7 @@ void LibraryDialog::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setEnabled( obj->getId() != "syslib000" );
 //    apply->setEnabled( obj->getId() != "syslib000" );
-//    comment->setEnabled(  !FWBTree::isSystem(obj) );
+//    comment->setEnabled(  !m_project->isSystem(obj) );
 
     color=obj->getStr("color").c_str();
     if (color=="") color="#FFFFFF";   // white is the default
@@ -96,7 +99,7 @@ void LibraryDialog::loadFWObject(FWObject *o)
 
     init=false;
 }
-    
+
 void LibraryDialog::changed()
 {
     //apply->setEnabled( true );
@@ -105,9 +108,9 @@ void LibraryDialog::changed()
 
 void LibraryDialog::changeIds(FWObject *root)
 {
-    if (FWBTree::isStandardId(root))
+    if (m_project->isStandardId(root))
         root->setId(FWObjectDatabase::generateUniqueId());
-        
+
     for (FWObject::iterator i=root->begin(); i!=root->end(); i++)
         changeIds( *i );
 }
@@ -126,9 +129,9 @@ void LibraryDialog::applyChanges()
         obj->setName( oldname );
     }
 
-    om->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-    om->updateLibName(obj);
-    if (color!=oldcolor) om->updateLibColor(obj);
+    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    mw->updateLibName(obj);
+    if (color!=oldcolor) mw->updateLibColor(obj);
 
     //apply->setEnabled( false );
 }

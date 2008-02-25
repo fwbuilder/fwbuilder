@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,13 +17,15 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -41,13 +43,13 @@
 
 #include "DialogFactory.h"
 #include "FWBTree.h"
-#include "FWWindow.h"
+#include "ProjectPanel.h"
 #include "FWBSettings.h"
 #include "GroupObjectDialog.h"
 #include "ActionsDialog.h"
 #include "MetricEditorPanel.h"
 #include "CommentEditorPanel.h"
-
+#include "ObjectManipulator.h"
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Host.h"
@@ -84,11 +86,11 @@ using namespace libfwbuilder;
 
 
 
-ObjectEditor::ObjectEditor( QWidget *parent ): QObject(parent)
+ObjectEditor::ObjectEditor( QWidget *parent, ProjectPanel *project):
+  QObject(parent), opened(0), visible(-1),
+  parentWidget(dynamic_cast<QStackedWidget*>(parent)), closeButton(0), applyButton(0),
+    m_project(project), openedOpt(optNone)
 {
-    opened       = NULL;
-    openedOpt    = optNone;
-    visible      = -1;
 
 #if defined(Q_WS_X11)
 /* do something that makes sense only on X11 */
@@ -100,102 +102,101 @@ ObjectEditor::ObjectEditor( QWidget *parent ): QObject(parent)
 
 #endif
 
-    parentWidget=(QStackedWidget*)parent; 
     QWidget *w;
-    w= DialogFactory::createDialog(parent,Library::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,Library::TYPENAME);
     stackIds[Library::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[Library::TYPENAME]] = w;
-    
-    w= DialogFactory::createDialog(parent,IPv4::TYPENAME);
+
+    w= DialogFactory::createDialog(m_project, parent,IPv4::TYPENAME);
     stackIds[IPv4::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[IPv4::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,physAddress::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,physAddress::TYPENAME);
     stackIds[physAddress::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[physAddress::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,AddressRange::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,AddressRange::TYPENAME);
     stackIds[AddressRange::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[AddressRange::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,Firewall::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,Firewall::TYPENAME);
     stackIds[Firewall::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[Firewall::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,Host::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,Host::TYPENAME);
     stackIds[Host::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[Host::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,Interface::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,Interface::TYPENAME);
     stackIds[Interface::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[Interface::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,Network::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,Network::TYPENAME);
     stackIds[Network::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[Network::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,CustomService::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,CustomService::TYPENAME);
     stackIds[CustomService::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[CustomService::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,IPService::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,IPService::TYPENAME);
     stackIds[IPService::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[IPService::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,ICMPService::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,ICMPService::TYPENAME);
     stackIds[ICMPService::TYPENAME] = parentWidget->addWidget(w);
     dialogs[stackIds[ICMPService::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,TCPService::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,TCPService::TYPENAME);
     stackIds[TCPService::TYPENAME] = parentWidget->addWidget(w);
     dialogs[stackIds[TCPService::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,UDPService::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,UDPService::TYPENAME);
     stackIds[UDPService::TYPENAME] = parentWidget->addWidget(w);
     dialogs[stackIds[UDPService::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,ObjectGroup::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,ObjectGroup::TYPENAME);
     stackIds[ObjectGroup::TYPENAME] = parentWidget->addWidget(w);
     dialogs[stackIds[ObjectGroup::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,ServiceGroup::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,ServiceGroup::TYPENAME);
     stackIds[ServiceGroup::TYPENAME] = parentWidget->addWidget(w);
     dialogs[stackIds[ServiceGroup::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,IntervalGroup::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,IntervalGroup::TYPENAME);
     stackIds[IntervalGroup::TYPENAME] = parentWidget->addWidget(w);
     dialogs[stackIds[IntervalGroup::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,Interval::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,Interval::TYPENAME);
     stackIds[Interval::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[Interval::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,Rule::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,Rule::TYPENAME);
     stackIds[Rule::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[Rule::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,RoutingRule::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,RoutingRule::TYPENAME);
     stackIds[RoutingRule::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[RoutingRule::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,PolicyRule::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,PolicyRule::TYPENAME);
     stackIds[PolicyRule::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[PolicyRule::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,NATRule::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,NATRule::TYPENAME);
     stackIds[NATRule::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[NATRule::TYPENAME]] = w;
 
 
-    w= DialogFactory::createDialog(parent,DNSName::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,DNSName::TYPENAME);
     stackIds[DNSName::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[DNSName::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,AddressTable::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,AddressTable::TYPENAME);
     stackIds[AddressTable::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[AddressTable::TYPENAME]] = w;
 
-    w= DialogFactory::createDialog(parent,TagService::TYPENAME);
+    w= DialogFactory::createDialog(m_project, parent,TagService::TYPENAME);
     stackIds[TagService::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[TagService::TYPENAME]] = w;
 
@@ -229,7 +230,7 @@ void ObjectEditor::show()
     //    dialogs[ visible ]->move(st->getScreenPosition("Object Editor"));
     //dialogs[ visible ]->show();
     parentWidget->setCurrentIndex(visible);
-    mw->openEditorPanel();
+    m_project->openEditorPanel();
 }
 
 void ObjectEditor::hide()
@@ -251,7 +252,7 @@ void ObjectEditor::hide()
 //
 //       dialogs[ visible ]->hide();
 //    }
-    mw->closeEditorPanel();
+    m_project->closeEditorPanel();
     visible=-1;
 }
 
@@ -274,7 +275,7 @@ QString ObjectEditor::getOptDialogName(OptType t)
 void ObjectEditor::openOpt(FWObject *obj,OptType t)
 {
     if (Rule::cast(obj)==NULL) return;
-    
+
     disconnectSignals();
 
     int wid= stackIds[getOptDialogName(t)];
@@ -290,7 +291,7 @@ void ObjectEditor::openOpt(FWObject *obj,OptType t)
     connect(this, SIGNAL(validate_sign(bool*)),
             dialogs[ wid ],
             SLOT(validate(bool*)));
-            
+
     connect(this, SIGNAL(applyChanges_sign()),
             dialogs[ wid ],
             SLOT(applyChanges()));
@@ -307,11 +308,11 @@ void ObjectEditor::openOpt(FWObject *obj,OptType t)
             SLOT(changed()));
 
     emit loadObject_sign(obj);
-    
+
     opened = obj;
     openedOpt = t;
     applyButton->setEnabled(false);
-    
+
 }
 
 void ObjectEditor::open(FWObject *obj)
@@ -331,8 +332,8 @@ void ObjectEditor::open(FWObject *obj)
 //        disconnect( SIGNAL(close_sign(QCloseEvent*)) );
 
         //hide();
-        
-        
+
+
         visible=wid;
 
         show();
@@ -344,11 +345,11 @@ void ObjectEditor::open(FWObject *obj)
         connect(this, SIGNAL(validate_sign(bool*)),
                 dialogs[ wid ],
                 SLOT(validate(bool*)));
-                
+
         //connect(this, SIGNAL(isChanged_sign(bool*)),
         //        dialogs[ wid ],
         //        SLOT(isChanged(bool*)));
-                
+
         connect(this, SIGNAL(applyChanges_sign()),
                 dialogs[ wid ],
                 SLOT(applyChanges()));
@@ -403,7 +404,7 @@ void ObjectEditor::validateAndClose(QCloseEvent *e)
     {
         if (e) e->accept();
         //disconnectSignals();  // all signals will be disconnected
-                                // in next open(...)       
+                                // in next open(...)
         hide();
         return;
     }
@@ -417,9 +418,9 @@ bool ObjectEditor::validateAndSave()
     bool ischanged=false;
     ischanged = isModified();
     //emit isChanged_sign(&ischanged);
-    
+
 /* if nothing changed or tree is read-only, just close dialog */
-    if (!ischanged || !isTreeReadWrite(dialogs[ visible ],mw->db()))
+    if (!ischanged || !isTreeReadWrite(dialogs[ visible ],m_project->db()))
     {
         if (fwbdebug)
             qDebug("ObjectEditor::validateAndSave: no changes");
@@ -491,7 +492,7 @@ void ObjectEditor::setApplyButton(QPushButton * b)
     applyButton=b;
     applyButton->setEnabled(false);
     connect((QWidget*)applyButton,SIGNAL(clicked()),this,SLOT(apply()));
-    
+
 }
 
 void ObjectEditor::close()
@@ -509,9 +510,9 @@ void ObjectEditor::apply()
     {
         emit applyChanges_sign();
         applyButton->setEnabled(false);
-        mw->updateRuleSetView( );
+        m_project->updateRuleSetView( );
 
-        mw->updateTreeViewItemOrder();
+        m_project->updateTreeViewItemOrder();
     }
 }
 
@@ -552,7 +553,7 @@ void ObjectEditor::actionChanged(FWObject *o)
     }
     //if (opened==o) return;
     openOpt (o,ObjectEditor::optAction);
-    
+
     show();
 }
 

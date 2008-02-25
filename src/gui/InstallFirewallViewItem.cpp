@@ -1,4 +1,6 @@
 
+#include "fwbuilder_ph.h"
+
 #include "global.h"
 
 #include "InstallFirewallViewItem.h"
@@ -11,12 +13,12 @@ using namespace std;
 using namespace libfwbuilder;
 
 InstallFirewallViewItem::InstallFirewallViewItem(QTreeWidget* parent,
-    const QString & st, bool slt ): 
-    QTreeWidgetItem(parent,QStringList(st)) 
+    const QString & st, bool slt ):
+    QTreeWidgetItem(parent,QStringList(st))
 {
     showLastTimes=slt;
 }
-    
+
 QVariant InstallFirewallViewItem::data (int column, int role) const
 {
     /*int statCol=(showLastTimes)?4:1;
@@ -31,7 +33,7 @@ QVariant InstallFirewallViewItem::data (int column, int role) const
             return QVariant(usual);
         } else if (text(statCol)==QObject::tr("Failure"))
             return QVariant(usual);
-        
+
         if (column==statCol)
         {
             usual.setBold (true);
@@ -48,7 +50,7 @@ QVariant InstallFirewallViewItem::data (int column, int role) const
             usual.setColor(Qt::red);
             return QVariant(usual);
         }
-        
+
         if ((column==statCol) && (text(statCol)==QObject::tr("Success")))
         {
             usual.setColor(Qt::green);

@@ -1,4 +1,4 @@
-/* 
+/*
 
                  Copyright (C) 2005 Compal GmbH, Germany
 
@@ -24,13 +24,15 @@
 */
 
 
+#include "fwbuilder_ph.h"
+
 #include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "platforms.h"
+#include "ProjectPanel.h"
 
 #include "RoutingRuleOptionsDialog.h"
-#include "ObjectManipulator.h"
 #include "RuleSetView.h"
 #include "FWWindow.h"
 
@@ -58,7 +60,7 @@ RoutingRuleOptionsDialog::~RoutingRuleOptionsDialog()
     delete m_dialog;
 }
 
-RoutingRuleOptionsDialog::RoutingRuleOptionsDialog(QWidget *parent) : QWidget(parent) 
+RoutingRuleOptionsDialog::RoutingRuleOptionsDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
 {
     m_dialog = new Ui::RoutingRuleOptionsDialog_q;
     m_dialog->setupUi(this);
@@ -108,7 +110,7 @@ void RoutingRuleOptionsDialog::loadFWObject(FWObject *o)
     //apply->setEnabled( false );
     init=false;
 }
-    
+
 void RoutingRuleOptionsDialog::changed()
 {
     //apply->setEnabled( true );
@@ -141,7 +143,7 @@ void RoutingRuleOptionsDialog::applyChanges()
     mw->updateRuleOptions();
 
     //apply->setEnabled( false );
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
 }
 
 void RoutingRuleOptionsDialog::discardChanges()

@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,18 +17,19 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
 #include "platforms.h"
 
 #include "linux24AdvancedDialog.h"
-#include "ObjectManipulator.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
@@ -41,6 +42,7 @@
 #include <qstackedwidget.h>
 #include <qregexp.h>
 
+#include "FWWindow.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -77,25 +79,25 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
 
 
     data.registerOption( m_dialog->linux24_log_martians,
-                         fwopt, 
+                         fwopt,
                          "linux24_log_martians", threeStateMapping);
     data.registerOption( m_dialog->linux24_accept_redirects,
-                         fwopt, 
+                         fwopt,
                          "linux24_accept_redirects", threeStateMapping);
     data.registerOption( m_dialog->linux24_icmp_echo_ignore_all,
-                         fwopt, 
+                         fwopt,
                          "linux24_icmp_echo_ignore_all", threeStateMapping);
     data.registerOption( m_dialog->linux24_icmp_echo_ignore_broadcasts,
-                         fwopt, 
+                         fwopt,
                          "linux24_icmp_echo_ignore_broadcasts", threeStateMapping);
     data.registerOption( m_dialog->linux24_icmp_ignore_bogus_error_responses,
-                         fwopt, 
+                         fwopt,
                          "linux24_icmp_ignore_bogus_error_responses", threeStateMapping);
     data.registerOption( m_dialog->linux24_ip_dynaddr,
-                         fwopt, 
+                         fwopt,
                          "linux24_ip_dynaddr", threeStateMapping);
     data.registerOption( m_dialog->linux24_rp_filter,
-                         fwopt, 
+                         fwopt,
                          "linux24_rp_filter", threeStateMapping);
     data.registerOption( m_dialog->linux24_accept_source_route,
                          fwopt,
@@ -163,7 +165,7 @@ void linux24AdvancedDialog::accept()
 
     data.saveAll();
 
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

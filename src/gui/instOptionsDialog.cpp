@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -85,7 +87,7 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
     m_dialog->rollback->setChecked( cnf->rollback );
     m_dialog->rollbackTime->setValue( cnf->rollbackTime );
     m_dialog->cancelRollbackIfSuccess->setChecked( cnf->cancelRollbackIfSuccess );
-    
+
     if (platform=="pix" || platform=="fwsm" || platform=="iosacl")
     {
         m_dialog->copyFWB->hide();
@@ -137,7 +139,7 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
 
     //progressBar->hide();
     //dlg->hideOption( dlg->stripComments );
-    m_dialog->stripComments->hide(); 
+    m_dialog->stripComments->hide();
     //dlg->compressScript->hide();
 
     //if (platform=="pix" || platform=="fwsm")
@@ -178,7 +180,7 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
     }
 
     //resize( minimumSizeHint() );
-    
+
     //adjustSize();
 
     //dlg->setFixedHeight( dlg->minimumSizeHint().height() );

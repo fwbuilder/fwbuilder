@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+#include "fwbuilder_ph.h"
+
 #include "stdio.h"
 
 #include "config.h"
@@ -30,7 +32,7 @@
 
 #include "iptAdvancedDialog.h"
 #include "SimpleTextEditor.h"
-#include "ObjectManipulator.h"
+#include "FWWindow.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
@@ -59,7 +61,7 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
 {
     m_dialog = new Ui::iptAdvancedDialog_q;
     m_dialog->setupUi(this);
-    
+
     obj=o;
     QStringList slm;
 
@@ -79,7 +81,7 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
         m_dialog->ipt_fw_dir->setEnabled(false);
         fwoptions->setStr("firewall_dir","");
     }
-    
+
     data.registerOption(m_dialog->logTCPseq,    fwoptions, "log_tcp_seq"               );
     data.registerOption(m_dialog->logTCPopt,    fwoptions, "log_tcp_opt"               );
     data.registerOption(m_dialog->logIPopt,     fwoptions, "log_ip_opt"                );
@@ -88,19 +90,19 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
     slm = getLogLevels( obj->getStr("platform").c_str() );
     m_dialog->logLevel->clear();
     m_dialog->logLevel->addItems( getScreenNames(slm));
-    data.registerOption(m_dialog-> logLevel,   fwoptions,  "log_level", slm); 
-    
+    data.registerOption(m_dialog-> logLevel,   fwoptions,  "log_level", slm);
+
     data.registerOption(m_dialog->useULOG,    fwoptions, "use_ULOG"        );
     data.registerOption(m_dialog->cprange,    fwoptions, "ulog_cprange"    );
     data.registerOption(m_dialog->qthreshold, fwoptions, "ulog_qthreshold" );
     data.registerOption(m_dialog->nlgroup,    fwoptions, "ulog_nlgroup"    );
     data.registerOption(m_dialog->logprefix,  fwoptions, "log_prefix"      );
-    
+
     slm=getLimitSuffixes( obj->getStr("platform").c_str() );
     m_dialog->logLimitSuffix->clear();
     m_dialog->logLimitSuffix->addItems(getScreenNames(slm));
-    data.registerOption(m_dialog-> logLimitSuffix,   fwoptions,  "limit_suffix", slm); 
-    
+    data.registerOption(m_dialog-> logLimitSuffix,   fwoptions,  "limit_suffix", slm);
+
     data.registerOption(m_dialog->logLimitVal,          fwoptions, "limit_value");
     data.registerOption(m_dialog->logAll,               fwoptions, "log_all");
     data.registerOption(m_dialog->compiler,             fwoptions, "compiler");
@@ -126,8 +128,8 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
     m_dialog->actionOnReject->clear();
     m_dialog->actionOnReject->addItems(getScreenNames(slm));
     data.registerOption(m_dialog-> actionOnReject,
-                         fwoptions,"action_on_reject", slm); 
-    
+                         fwoptions,"action_on_reject", slm);
+
     data.registerOption(m_dialog->mgmt_ssh,             fwoptions, "mgmt_ssh"    );
     data.registerOption(m_dialog->mgmt_addr,            fwoptions, "mgmt_addr"    );
     data.registerOption(m_dialog->addVirtualsforNAT,
@@ -151,25 +153,25 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
     m_dialog->installScript->setText(     pis->getCommand().c_str() );
     m_dialog->installScriptArgs->setText( pis->getArguments().c_str() );
 
-    
+
     /* page "Prolog/Epilog" */
 
     data.registerOption(m_dialog->prolog_script    ,fwoptions, "prolog_script"    );
-    
+
     slm = getPrologPlaces( obj->getStr("platform").c_str() );
     m_dialog->prologPlace->clear();
     m_dialog->prologPlace->addItems(getScreenNames(slm));
-    data.registerOption(m_dialog-> prologPlace,   fwoptions,   "prolog_place", slm); 
-    
+    data.registerOption(m_dialog-> prologPlace,   fwoptions,   "prolog_place", slm);
+
     data.registerOption(m_dialog->epilog_script    ,fwoptions, "epilog_script"    );
-    
+
     data.loadAll();
     switchLOG_ULOG();
 
 #ifdef HAVE_LIBSSL
 
 //    int port=fwbdm->getPort();
-//    if (port==-1) 
+//    if (port==-1)
 //        port= Resources::global_res->getResourceInt("/FWBuilderResources/FWBD/port");
 //    mgmt_fwbd_port->set_value( port );
 //
@@ -206,18 +208,18 @@ void iptAdvancedDialog::accept()
 
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
     assert(mgmt!=NULL);
-    
+
     data.saveAll();
 
 /*********************  data for fwbd and install script **************/
     PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
 
     mgmt->setAddress( (Firewall::cast(obj))->getAddress() );
-    
+
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData() );
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData() );
-    
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

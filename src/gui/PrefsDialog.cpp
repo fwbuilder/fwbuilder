@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,12 +17,14 @@
   but WITHOUT ANY WARRANTY; without even the implied wdarranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -32,7 +34,6 @@
 #include "FWBSettings.h"
 #include "listOfLibraries.h"
 #include "FWWindow.h"
-#include "ObjectManipulator.h"
 
 #include <qlineedit.h>
 #include <qfiledialog.h>
@@ -88,7 +89,7 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
 {
     m_dialog = new Ui::prefsDialog_q;
     m_dialog->setupUi(this);
-    
+
     m_dialog->wDir->setText( st->getWDir() );
     int sa_itm = st->getStartupAction();
     if (sa_itm < 0 || sa_itm > 1) sa_itm = 0;
@@ -110,8 +111,8 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
 //    dontSaveStdLib->setChecked( st->getDontSaveStdLib() );
 
     m_dialog->sshPath->setText( st->getSSHPath() );
-
-    for (list<libData>::iterator i=addOnLibs->begin(); i!=addOnLibs->end(); ++i)
+    
+    for (list<libData>::iterator i=mw->getAddOnLibs()->begin(); i!=mw->getAddOnLibs()->end(); ++i)
     {
         QStringList qsl;
         qsl << i->name << "" << i->path; //fromUtf8
@@ -183,7 +184,7 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     else
         m_dialog->rb16->setChecked(true);
     changeShowIcons();
-    
+
     rulesFont = st->getRulesFont();
     treeFont = st->getTreeFont();
     uiFont = st->getUiFont();
@@ -300,8 +301,8 @@ void PrefsDialog::libClick(QTreeWidgetItem* itm, int col)
     {
         if (itm->text(0)=="Standard") return;
 
-        for (list<libData>::iterator i=addOnLibs->begin();
-             i!=addOnLibs->end(); ++i)
+        for (list<libData>::iterator i=mw->getAddOnLibs()->begin();
+             i!=mw->getAddOnLibs()->end(); ++i)
         {
             if (i->name == itm->text(0)) //fromUtf8
             {
@@ -326,7 +327,7 @@ void PrefsDialog::libClick(QTreeWidgetItem* itm, int col)
                 if (i->load)
                 {
                     mw->loadLibrary( i->path.latin1() );
-                    om->loadObjects();
+                    mw->loadObjects();
                 }
 #endif
                 break;
@@ -338,15 +339,15 @@ void PrefsDialog::libClick(QTreeWidgetItem* itm, int col)
 void PrefsDialog::addLibrary()
 {
     QString fp = QFileDialog::getOpenFileName(
-        this, 
+        this,
         tr("Find add-on library"),
         st->getWDir(),
         "Firewall Builder 2 files (*.fwl)");
 
     if (!fp.isEmpty())
     {
-        list<libData>::iterator i = addOnLibs->add( fp.toLatin1().constData(), true );
-        if (i==addOnLibs->end())
+        list<libData>::iterator i = mw->getAddOnLibs()->add( fp.toLatin1().constData(), true );
+        if (i==mw->getAddOnLibs()->end())
         {
             if (fwbdebug)
                 qDebug("PrefsDialog::addLibrary(): library addition failed");
@@ -369,7 +370,7 @@ void PrefsDialog::addLibrary()
         // commented out for bug #1620284
         //
         //mw->loadLibrary( i->path.latin1() );
-        //om->loadObjects();
+        //mw->loadObjects();
     }
 }
 
@@ -384,11 +385,11 @@ void PrefsDialog::remLibrary()
 
     if (itm->text(0)=="Standard") return;
 
-    for (list<libData>::iterator i=addOnLibs->begin(); i!=addOnLibs->end(); ++i)
+    for (list<libData>::iterator i=mw->getAddOnLibs()->begin(); i!=mw->getAddOnLibs()->end(); ++i)
     {
         if (i->name == itm->text(0)) //fromUtf8
         {
-            addOnLibs->erase(i);
+            mw->getAddOnLibs()->erase(i);
             delete itm;
             break;
         }
@@ -436,25 +437,25 @@ void PrefsDialog::accept()
     st->setLabelText (FWBSettings::BLUE,   m_dialog->blueText->text() );
     st->setLabelText (FWBSettings::PURPLE, m_dialog->purpleText->text() );
     st->setLabelText (FWBSettings::GRAY,   m_dialog->grayText->text() );
-    
+
     st->setShowIconsInRules(m_dialog->chShowIcons->isChecked());
-    FWBSettings::IconSize sz = m_dialog->rb25->isChecked() ? 
+    FWBSettings::IconSize sz = m_dialog->rb25->isChecked() ?
         FWBSettings::SIZE25X25 : FWBSettings::SIZE16X16;
     st->setIconsInRulesSize(sz);
-    
+
     st->setRulesFont(rulesFont);
     st->setTreeFont(treeFont);
     st->setUiFont(uiFont);
 
     st->setClipComment(m_dialog->chClipComment->isChecked());
-    
+
     st->setSSHPath( m_dialog->sshPath->text() );
-    
+
     QDir d;
     d.mkdir( wd );
 
     mw->setupAutoSave();
-    om->showDeletedObjects(st->getBool("UI/ShowDeletedObjects"));
+    mw->showDeletedObjects(st->getBool("UI/ShowDeletedObjects"));
 
     QDialog::accept();
 }

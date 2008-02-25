@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,19 +17,21 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+#include "fwbuilder_ph.h"
+
 #include "config.h"
 #include "global.h"
 #include "utils.h"
+#include "ProjectPanel.h"
 
 #include "FWBTree.h"
 #include "AddressRangeDialog.h"
-#include "ObjectManipulator.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/AddressRange.h"
@@ -44,18 +46,19 @@
 #include <qpushbutton.h>
 #include "FWBSettings.h"
 
+#include "FWWindow.h"
 using namespace std;
 using namespace libfwbuilder;
 
-AddressRangeDialog::AddressRangeDialog(QWidget *parent): 
-        QWidget(parent)
-{ 
+AddressRangeDialog::AddressRangeDialog(ProjectPanel *project, QWidget *parent):
+        QWidget(parent), m_project(project)
+{
     m_dialog = new Ui::AddressRangeDialog_q;
     m_dialog->setupUi(this);
     setFont(st->getUiFont());
-    
-    obj=NULL; 
-    
+
+    obj=NULL;
+
 }
 
 AddressRangeDialog::~AddressRangeDialog()
@@ -97,7 +100,7 @@ void AddressRangeDialog::loadFWObject(FWObject *o)
 
     init=false;
 }
-    
+
 void AddressRangeDialog::changed()
 {
     //apply->setEnabled( true );
@@ -164,18 +167,18 @@ void AddressRangeDialog::applyChanges()
     {
 
     }
-    om->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     init=true;
 
 /* move to another lib if we have to */
-    if (! FWBTree::isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        om->moveObject(m_dialog->libs->currentText(), obj);
+    if (! m_project->isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
+        mw->moveObject(m_dialog->libs->currentText(), obj);
 
     init=false;
 
     //apply->setEnabled( false );
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
 }
 
 void AddressRangeDialog::discardChanges()

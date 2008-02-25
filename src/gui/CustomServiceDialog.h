@@ -38,6 +38,7 @@ namespace libfwbuilder {
     class FWObject;
 };
 
+class ProjectPanel;
 class CustomServiceDialog : public QWidget
 {
     Q_OBJECT
@@ -48,9 +49,10 @@ class CustomServiceDialog : public QWidget
     QMap<QString, QString>     allCodes;
     QString                    showPlatform;
     Ui::CustomServiceDialog_q *m_dialog;
+    ProjectPanel *m_project;
     
  public:
-    CustomServiceDialog(QWidget *parent);
+    CustomServiceDialog(ProjectPanel *project, QWidget *parent);
     ~CustomServiceDialog();
     
 public slots:

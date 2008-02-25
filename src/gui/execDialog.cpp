@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -59,7 +61,7 @@ execDialog::execDialog(QWidget *parent,const QStringList &args, const QString &c
 {
     m_dialog = new Ui::execDialog_q;
     m_dialog->setupUi(this);
-    
+
     m_dialog->output->setWordWrapMode( QTextOption::NoWrap );
     res=-1;
 
@@ -104,20 +106,20 @@ int execDialog::run()
     m_dialog->output->append("\n");
 
     QStringList args = arguments;
-    
+
     assert(!args.empty());
     QString command = args[0];
     args.pop_front();
-    
+
     proc.start(command, args);
-    
+
     if ( !proc.waitForStarted() )
     {
         m_dialog->output->append( tr("Error: Failed to start program") );
         return exec();
     }
     m_dialog->saveLogButton->hide();
-    m_dialog->stopButton->show();    
+    m_dialog->stopButton->show();
     m_dialog->stopButton->setFocus();
     m_dialog->buttonOk->setEnabled( false );
     exec();
@@ -129,14 +131,14 @@ void execDialog::saveLog()
     dir=st->getWDir();
     if (dir.isEmpty())  dir=st->getOpenFileDir();
     if (dir.isEmpty())  dir="~";
-    
+
     QString s = QFileDialog::getSaveFileName(
                     this,
                     "Choose a file",
                     dir,
                     "Text file (*.txt)");
-    
-    
+
+
     if (!s.isEmpty())
     {
         if (!s.endsWith(".txt"))
@@ -149,5 +151,5 @@ void execDialog::saveLog()
             QTextStream (&f) << m_dialog->output->toPlainText();
             f.close();
         }
-    }    
+    }
 }

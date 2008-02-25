@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "../../config.h"
 #include "global.h"
@@ -67,7 +69,7 @@ using namespace libfwbuilder;
  *
  * So, installation data goes to HKLM Software\NetCitadel\FirewallBuilder
  * and settings to HKCU Software\NetCitadel\FirewallBuilder2
- * 
+ *
  * fwbuilder-lm determines folder path for the license file by
  * reading key Install_Dir under HKLM Software\NetCitadel\FirewallBuilder
  */
@@ -121,7 +123,7 @@ void FWBSettings::init()
 {
     bool ok=false;
 /*
-    QString defwd = 
+    QString defwd =
 #ifdef _WIN32
         QString(getenv("HOMEPATH"))+"/Firewalls";
 #else
@@ -197,7 +199,7 @@ void FWBSettings::init()
 
     ok = contains(uiFont);
     if (!ok) setUiFont(QFont("times", 11, QFont::Normal));
-    
+
     ok = contains(clipComment);
     if (!ok) setClipComment(true);
 
@@ -231,7 +233,7 @@ void    FWBSettings::setBool(const QString &attribute, bool val )
     setValue(path,val);
 }
 
-    
+
 int     FWBSettings::getInt(const QString &attribute)
 {
     QString path=SETTINGS_PATH_PREFIX "/"+attribute;
@@ -244,7 +246,7 @@ void    FWBSettings::setInt(const QString &attribute, int val )
     setValue(path,val);
 }
 
-    
+
 
 QString FWBSettings::getWDir() { return value(wdirSetpath).toString();}
 void    FWBSettings::setWDir( const QString &wd ) { setValue(wdirSetpath,wd);}
@@ -274,7 +276,7 @@ void    FWBSettings::setObjTooltips(bool f) {  setValue( objTooltips, f); }
 
 int     FWBSettings::getTooltipDelay() { return value( tooltipDelay ).toInt(); }
 void    FWBSettings::setTooltipDelay(int v) { setValue( tooltipDelay, v); }
-    
+
 
 QString FWBSettings::getLastEdited() { return value(lastEditedSetpath).toString();}
 void    FWBSettings::setLastEdited(const QString &file) { setValue(lastEditedSetpath,file);}
@@ -303,8 +305,6 @@ void    FWBSettings::setSaveFileDir( const QString &d )
 void    FWBSettings::save()
 {
     setLastEdited( mw->db()->getFileName().c_str() );
-
-    if (getInfoStyle()!=0) setInfoWindowHeight(oi->geometry().height());
 }
 
 bool    FWBSettings::getRCSLogState() { return value( emptyRCSLog ).toBool(); }
@@ -460,7 +460,7 @@ void    FWBSettings::saveGeometry(QWidget *w)
         .arg(p.y())
         .arg(s.width())
         .arg(s.height());
-    
+
     if (fwbdebug)
     {
 	qDebug("FWBSettings::saveGeometry  widget '%s' vis=%d val=%s",
@@ -473,7 +473,7 @@ void    FWBSettings::saveGeometry(QWidget *w)
 
 QString FWBSettings::getLabelColorStr(enum LabelColors c)
 {
-    switch (c) 
+    switch (c)
     {
     case RED:    return "red";
     case ORANGE: return "orange";
@@ -515,7 +515,7 @@ void FWBSettings::setSSHPath(const QString &path)
 {
     setValue(SSHPath,path);
 }
-    
+
 void    FWBSettings::getPrinterOptions(QPrinter *printer,int &pageWidth,int &pageHeight)
 {
     printer->setPrinterName(getStr("PrintSetup/printerName"));
@@ -549,7 +549,7 @@ void    FWBSettings::setPrinterOptions(QPrinter *printer,int pageWidth,int pageH
 //    setInt("PrintSetup/fromPage",printer->fromPage());
 //    setInt("PrintSetup/toPage",printer->toPage());
 //    setInt("PrintSetup/numCopies",printer->numCopies());
-    
+
     setInt("PrintSetup/pageWidth",pageWidth);
     setInt("PrintSetup/pageHeight",pageHeight);
 }

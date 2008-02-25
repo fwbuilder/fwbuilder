@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -65,7 +67,7 @@ FWObjectDropArea::FWObjectDropArea(QWidget*p, const char * n, Qt::WFlags f):
     setObjectName( QString(n) );
     setWindowFlags( f );
     m_objectDropArea = new Ui::FWObjectDropArea_q;
-    m_objectDropArea->setupUi(this); 
+    m_objectDropArea->setupUi(this);
     object=NULL;
 
 }
@@ -73,9 +75,9 @@ void FWObjectDropArea::paintEvent(QPaintEvent *ev)
 {
     int w=width();
     int h=height();
-        
+
     QPainter p(this);
-    
+
     QPixmap bufferpixmap;
     bufferpixmap = QPixmap( w , h );
     bufferpixmap.fill( Qt::white );
@@ -87,8 +89,8 @@ void FWObjectDropArea::paintEvent(QPaintEvent *ev)
     tp.drawLine(w-1,h-1,0,h-1);
     tp.drawLine(0,h-1,0,0);
     tp.fillRect(1, 1, w-2, h-2, Qt::white);
-    
-    if (object!=NULL) 
+
+    if (object!=NULL)
     {
 
         QPixmap pm;
@@ -101,21 +103,21 @@ void FWObjectDropArea::paintEvent(QPaintEvent *ev)
         }
 
         tp.drawPixmap( ((w-pm.width())/2), (h/2)-(2+pm.height()) , pm );
-        
+
         QString t=QString::fromUtf8(object->getName().c_str());
-        
+
         int t_x=2;
         int t_y=2+h/2;
         int t_w=w-4;
         int t_h=h/2-4;
-        
+
         tp.drawText( t_x, t_y , t_w, t_h ,
                      Qt::AlignHCenter|Qt::AlignTop|Qt::TextWordWrap, t );
     }
     else
     {
         QString t=tr("Drop object here.");
-        
+
         int t_x=2;
         int t_y=2;
         int t_w=w-4;
@@ -124,11 +126,11 @@ void FWObjectDropArea::paintEvent(QPaintEvent *ev)
         tp.drawText( t_x, t_y , t_w, t_h ,
                      Qt::AlignHCenter|Qt::AlignVCenter|Qt::TextWordWrap, t );
 
-        
+
     }
     tp.end();
     p.drawPixmap( 0, 0, bufferpixmap );
-    
+
 }
 void FWObjectDropArea::insertObject(libfwbuilder::FWObject *o)
 {
@@ -150,15 +152,15 @@ void FWObjectDropArea::deleteObject()
 void FWObjectDropArea::contextMenuEvent (QContextMenuEvent * e)
 {
     QMenu *popup;
-    
+
     popup=new QMenu(this);
     QAction *psAct = popup->addAction( tr("Paste") ,    this , SLOT( pasteObject( )) );
     popup->addSeparator();
     QAction *dlAct = popup->addAction( tr("Delete") ,   this , SLOT( deleteObject( )) );
-    
+
     dlAct->setEnabled(object!=NULL);
     psAct->setEnabled(FWObjectClipboard::obj_clipboard->size()>0);
-    
+
     popup->exec(e->globalPos ());
     delete popup;
 }
@@ -170,7 +172,7 @@ void FWObjectDropArea::dropEvent( QDropEvent *ev)
         qDebug("FWObjectDropArea::dropEvent  drop event mode=%d", ev->dropAction());
         qDebug("                        src widget = %p", ev->source());
     }
-    
+
     list<FWObject*> dragol;
     if (FWObjectDrag::decode(ev, dragol))
     {
@@ -195,5 +197,5 @@ void FWObjectDropArea::pasteObject()
         FWObject *co= mw->db()->findInIndex(*i);
         insertObject(co);
     }
-    
+
 }

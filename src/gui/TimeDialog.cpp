@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,12 +17,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -30,7 +32,9 @@
 
 #include "FWBTree.h"
 #include "TimeDialog.h"
-#include "ObjectManipulator.h"
+#include "ProjectPanel.h"
+
+#include "FWWindow.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Interval.h"
@@ -50,12 +54,12 @@
 using namespace libfwbuilder;
 using namespace std;
 
-TimeDialog::TimeDialog(QWidget *parent) : QWidget(parent) 
-{ 
+TimeDialog::TimeDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+{
     m_dialog = new Ui::TimeDialog_q;
     m_dialog->setupUi(this);
     setFont(st->getUiFont());
-    
+
     obj=NULL;
 }
 
@@ -113,7 +117,7 @@ void TimeDialog::loadFWObject(FWObject *o)
     m_dialog->startDate->setDate( (using_start_date)?QDate( y, m, d ):QDate() );
     m_dialog->useStartDate->setChecked(using_start_date);
 
-    // from_weekday is -1 for "All days" 
+    // from_weekday is -1 for "All days"
     m_dialog->startDOW->setCurrentIndex( obj->getInt("from_weekday") + 1 );
 
     int toH = obj->getInt("to_hour");
@@ -129,7 +133,7 @@ void TimeDialog::loadFWObject(FWObject *o)
     m_dialog->endDate->setDate( (using_end_date)?QDate( y, m, d ):QDate() );
     m_dialog->useEndDate->setChecked(using_end_date);
 
-    // to_weekday is -1 for "All days" 
+    // to_weekday is -1 for "All days"
     m_dialog->endDOW->setCurrentIndex( obj->getInt("to_weekday") + 1 );
 
 
@@ -169,7 +173,7 @@ void TimeDialog::enableAllWidgets()
     m_dialog->endDate->setEnabled(!obj->isReadOnly() && m_dialog->useEndDate->isChecked());
     m_dialog->endDOW->setEnabled(!obj->isReadOnly() && !m_dialog->useEndDate->isChecked());
 }
-    
+
 void TimeDialog::changed()
 {
     //apply->setEnabled( true );
@@ -204,7 +208,7 @@ void TimeDialog::applyChanges()
     string oldname=obj->getName();
     obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
-    
+
     if (m_dialog->useStartDate->isChecked())
     {
         obj->setInt( "from_day"   ,      m_dialog->startDate->date().day()   );
@@ -236,18 +240,18 @@ void TimeDialog::applyChanges()
     obj->setInt( "to_hour"  ,        m_dialog->endTime->time().hour()    );
     obj->setInt( "to_weekday" ,      m_dialog->endDOW->currentIndex() - 1 );
 
-    om->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     init=true;
 
 /* move to another lib if we have to */
-    if (! FWBTree::isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        om->moveObject(m_dialog->libs->currentText(), obj);
+    if (! m_project->isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
+        mw->moveObject(m_dialog->libs->currentText(), obj);
 
     init=false;
 
     //apply->setEnabled( false );
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
 }
 
 void TimeDialog::discardChanges()

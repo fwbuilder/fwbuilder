@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,19 +17,21 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
 #include "utils.h"
 
 #include "IPv4Dialog.h"
-#include "ObjectManipulator.h"
 
+#include "ProjectPanel.h"
 #include "fwbuilder/Library.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/Interface.h"
@@ -50,15 +52,17 @@
 
 #include <iostream>
 
+#include "FWWindow.h"
+
 using namespace std;
 using namespace libfwbuilder;
 
-IPv4Dialog::IPv4Dialog(QWidget *parent) : QWidget(parent) 
-{ 
+IPv4Dialog::IPv4Dialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+{
     m_dialog = new Ui::IPv4Dialog_q;
     m_dialog->setupUi(this);
     setFont(st->getUiFont());
-    obj=NULL; 
+    obj=NULL;
 }
 
 IPv4Dialog::~IPv4Dialog()
@@ -71,7 +75,7 @@ void IPv4Dialog::loadFWObject(FWObject *o)
     obj=o;
     IPv4 *s = dynamic_cast<IPv4*>(obj);
     assert(s!=NULL);
-    
+
     dnsBusy=false;
     init=true;
 
@@ -133,7 +137,7 @@ void IPv4Dialog::loadFWObject(FWObject *o)
 
     init=false;
 }
-    
+
 void IPv4Dialog::changed()
 {
     //apply->setEnabled( true );
@@ -180,7 +184,7 @@ void IPv4Dialog::validate(bool *res)
 void IPv4Dialog::isChanged(bool *res)
 {
     //*res=(!init && apply->isEnabled());
-    
+
 }
 
 void IPv4Dialog::libChanged()
@@ -211,19 +215,19 @@ void IPv4Dialog::applyChanges()
     } else
         s->setNetmask( "255.255.255.255" );
 
-    om->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     init=true;
 
 /* move to another lib if we have to */
     if ( ! Interface::isA( obj->getParent() ) &&
            m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        om->moveObject(m_dialog->libs->currentText(), obj);
+        mw->moveObject(m_dialog->libs->currentText(), obj);
 
     init=false;
 
     //apply->setEnabled( false );
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
 }
 
 void IPv4Dialog::discardChanges()
@@ -273,14 +277,14 @@ void IPv4Dialog::DNSlookup()
                 return;
             }
             QMessageBox::warning(
-                this,"Firewall Builder", 
+                this,"Firewall Builder",
                 tr("DNS lookup failed for both names of the address object '%1' and the name of the host '%2'.")
                 .arg(m_dialog->obj_name->text()).arg(name),
                 "&Continue", QString::null,QString::null, 0, 1 );
             return;
-        } 
+        }
         QMessageBox::warning(
-            this,"Firewall Builder", 
+            this,"Firewall Builder",
             tr("DNS lookup failed for name of the address object '%1'.")
             .arg(name),
             "&Continue", QString::null,QString::null, 0, 1 );

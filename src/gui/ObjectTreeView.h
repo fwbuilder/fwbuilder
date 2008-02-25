@@ -45,6 +45,8 @@ namespace libfwbuilder {
     class FWObject;
 };
 
+class ProjectPanel;
+
 class ObjectTreeView : public QTreeWidget {
 
      Q_OBJECT
@@ -66,7 +68,7 @@ class ObjectTreeView : public QTreeWidget {
     bool             process_mouse_release_event;
 
     std::vector<libfwbuilder::FWObject*>          selectedObjects;
-        
+    ProjectPanel* m_project;
  protected:
 
     bool event( QEvent *event );
@@ -91,7 +93,7 @@ class ObjectTreeView : public QTreeWidget {
     
  public:
 
-    ObjectTreeView(QWidget* parent = 0, const char * name = 0, Qt::WFlags f = 0);
+    ObjectTreeView(ProjectPanel* project, QWidget* parent = 0, const char * name = 0, Qt::WFlags f = 0);
 
     void freezeSelection(bool f) { selectionFrozen=f; }
 

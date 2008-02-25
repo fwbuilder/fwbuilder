@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -18,12 +18,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "InterfaceData.h"
 
@@ -41,7 +43,7 @@ void InterfaceData::guessLabel(const string &platform)
  *  automatically.
  *
  *  in PIX interfaces have names like "PIX Firewall 'inside' interface"
- * 
+ *
  */
     string pat1="PIX Firewall '";
     string pat2="' interface";
@@ -87,8 +89,8 @@ void InterfaceData::guessSecurityLevel(const string &platform)
          llbl=="internal_net" ||
          llbl=="internal net" )      securityLevel=100;
 
-    if ( address=="127.0.0.1") securityLevel=100; 
-    if ( name=="Null0" )       securityLevel=100; 
+    if ( address=="127.0.0.1") securityLevel=100;
+    if ( name=="Null0" )       securityLevel=100;
 
     if (securityLevel==-1 && !isDyn && !isUnnumbered && !isBridgePort)
     {
@@ -103,14 +105,14 @@ void InterfaceData::guessSecurityLevel(const string &platform)
 }
 
 
-class sort_order_func_adaptor 
+class sort_order_func_adaptor
 {
     public:
-    
+
     explicit sort_order_func_adaptor() {}
-    
-    bool operator()(const InterfaceData &a, const InterfaceData &b) 
-    { 
+
+    bool operator()(const InterfaceData &a, const InterfaceData &b)
+    {
         if (a.label=="outside") return true;
         if (b.label=="inside")  return true;
         return (a.securityLevel<b.securityLevel || a.label<b.label || a.name<b.name);
@@ -120,7 +122,7 @@ class sort_order_func_adaptor
 
 
 
-void  InterfaceData::guessSecurityLevel(const string &platform, 
+void  InterfaceData::guessSecurityLevel(const string &platform,
                                         list<InterfaceData> &ifaces)
 {
 // first pass - try to find internal and external interfaces and
@@ -139,13 +141,13 @@ void  InterfaceData::guessSecurityLevel(const string &platform,
 
     if (ifaces.size()==2)
     {
-        if (ifaces.front().address=="127.0.0.1") 
+        if (ifaces.front().address=="127.0.0.1")
         {
             ifaces.front().securityLevel=100;
             ifaces.back().securityLevel=0;
-        } else 
+        } else
         {
-            if (ifaces.back().address=="127.0.0.1") 
+            if (ifaces.back().address=="127.0.0.1")
             {
                 ifaces.front().securityLevel=0;
                 ifaces.back().securityLevel=100;
@@ -158,7 +160,7 @@ void  InterfaceData::guessSecurityLevel(const string &platform,
         ifaces.sort(sort_order_func_adaptor());
         return;
     }
-    else 
+    else
     {
         for (list<InterfaceData>::iterator i=ifaces.begin(); i!=ifaces.end(); i++)
         {

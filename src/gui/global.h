@@ -30,26 +30,16 @@
 
 class  QApplication;
 class  FWWindow;
-class  ObjectManipulator;
-class  ObjectEditor;
-class  ObjectInfo;
-class  QTextEdit;
 class  FWBSettings;
-class  findDialog;
 class  listOfLibraries;
-class  ActionsDialog;
+//class  ActionsDialog;
 
 extern QApplication      *app;
 extern FWWindow          *mw;
-extern ObjectManipulator *om;
-extern ObjectEditor      *oe;
-extern ActionsDialog     *ap;
-extern QTextEdit         *oi;
+//extern ActionsDialog     *ap;
 extern FWBSettings       *st;
-extern findDialog        *fd;
-    
-extern listOfLibraries   *addOnLibs;
 
+//extern listOfLibraries   *addOnLibs;
 
 extern std::string     appRootDir;
 extern std::string     userDataDir;

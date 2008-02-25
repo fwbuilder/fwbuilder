@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -31,7 +33,6 @@
 #include "definitions.h"
 
 #include "FindWhereUsedWidget.h"
-#include "ObjectManipulator.h"
 #include "FWWindow.h"
 #include "FWObjectDropArea.h"
 #include "ObjectManipulator.h"
@@ -76,14 +77,14 @@ using namespace std;
 using namespace libfwbuilder;
 
 
-FindWhereUsedWidget::FindWhereUsedWidget(QWidget*p, const char * n, Qt::WindowFlags f, bool f_mini) : QWidget(p) 
+FindWhereUsedWidget::FindWhereUsedWidget(QWidget*p, const char * n, Qt::WindowFlags f, bool f_mini) : QWidget(p)
 {
     m_widget = new Ui::findWhereUsedWidget_q;
     m_widget->setupUi(this);
-    
+
     setObjectName(n);
     setWindowFlags(f);
-            
+
     flShowObject=true;
     if (f_mini)
     {
@@ -111,7 +112,7 @@ void FindWhereUsedWidget::itemActivated(QTreeWidgetItem* item)
 {
     FWObject *o;
     o=mapping[item];
-    
+
     if (flShowObject && o!=NULL)
     {
         showObject(o);
@@ -135,8 +136,8 @@ void FindWhereUsedWidget::_find(FWObject *obj)
     m_widget->resListView->clear();
     mapping.clear();
     resset.clear();
-    
-    
+
+
     mw->db()->findWhereUsed(obj,mw->db(),resset);
 
     set<FWObject*>::iterator i=resset.begin();
@@ -153,28 +154,28 @@ void FindWhereUsedWidget::_find(FWObject *obj)
         fw=NULL;
         r=NULL;
         rs=NULL;
-            
+
         if (findRef(object,o)==NULL) continue;
-        if (RuleElement::cast(o)!=NULL)            
+        if (RuleElement::cast(o)!=NULL)
         {
             fw=o->getParent();
-            
-            while (fw!=NULL && !Firewall::isA(fw)) 
+
+            while (fw!=NULL && !Firewall::isA(fw))
             {
                 if (Rule::cast(fw))
                 {
-                    r=Rule::cast(fw); 
+                    r=Rule::cast(fw);
                 } else if (RuleSet::cast(fw))
                 {
                     rs=RuleSet::cast(fw);
                 }
-                        
+
                 fw=fw->getParent();
             }
             if (fw==NULL || r==NULL || rs==NULL) continue;
-            
+
             c1=QString::fromUtf8(fw->getName().c_str());
-            
+
             if (NAT::isA(rs))
             {
                 c2=tr("NAT");
@@ -189,11 +190,11 @@ void FindWhereUsedWidget::_find(FWObject *obj)
                 c2=tr("Unknown rule set");
             }
             c2+=tr("/Rule%1").arg(r->getPosition());
-            
+
         } else if (
-                FWBTree::isSystem(o) ||
-                Rule::cast(o) || 
-                RuleSet::cast(o) || 
+                mw->isSystem(o) ||
+                Rule::cast(o) ||
+                RuleSet::cast(o) ||
                 Firewall::cast(o) ||
                 Library::cast(o))
         {
@@ -215,7 +216,7 @@ void FindWhereUsedWidget::_find(FWObject *obj)
             pm.load( icn_file );
             QPixmapCache::insert( icn_file, pm);
         }
-        
+
         QStringList qsl;
         qsl << c1 << c2;
         item=new QTreeWidgetItem(m_widget->resListView, qsl);
@@ -231,7 +232,7 @@ void FindWhereUsedWidget::init()
     m_widget->resListView->clear();
     mapping.clear();
     resset.clear();
-    
+
 }
 
 void FindWhereUsedWidget::findFromDrop()
@@ -242,23 +243,23 @@ void FindWhereUsedWidget::findFromDrop()
 void FindWhereUsedWidget::showObject(FWObject* o)
 {
     if (fwbdebug) qDebug("FindWhereUsedWidget::showObject");
-    
+
     if (object==NULL || o==NULL) return;
-    
+
     FWReference* ref=NULL;
-    
-            
+
+
     if (RuleElement::cast(o)!=NULL)
     {
         ref=findRef(object,o);
         if (ref==NULL) return;
-        
-        om->clearFocus();
+
+        mw->clearManipulatorFocus();
         mw->ensureObjectVisibleInRules( ref );
         mw->selectRules();
-        if (oe->isVisible())
+        if (mw->isEditorVisible())
         {
-            om->editObject( object );
+            mw->editObject( object );
         }
         return;
     }
@@ -267,18 +268,17 @@ void FindWhereUsedWidget::showObject(FWObject* o)
     if (Group::cast(o)!=NULL)
     {
 
-        om->openObject( o );
+        mw->openObject( o );
         mw->unselectRules();
-        
-        if (oe->isVisible())
+
+        if (mw->isEditorVisible())
         {
-            om->editObject( o );
-            oe->selectObject( object);
+            mw->editObject( o );
+            mw->selectObjectInEditor( object);
         }
         return;
     }
 
-    //oe->close();
-    //om->openObject( o );
-    //om->select();  // selects an item in the tree and assigns kbd focus to it
+    //mw->closeEditor();
+    //mw->openObject( o );
 }

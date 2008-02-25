@@ -35,6 +35,7 @@
 #include "fwbuilder/FWObject.h"
 
 
+class ProjectPanel;
 class IPServiceDialog : public QWidget
 {
     Q_OBJECT
@@ -43,8 +44,9 @@ class IPServiceDialog : public QWidget
     bool init;
     Ui::IPServiceDialog_q *m_dialog;
 
+    ProjectPanel *m_project;
  public:
-    IPServiceDialog(QWidget *parent);
+    IPServiceDialog(ProjectPanel *project, QWidget *parent);
     ~IPServiceDialog();
     
 public slots:

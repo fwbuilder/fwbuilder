@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,18 +17,20 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
 #include "utils.h"
 
 #include "InterfaceDialog.h"
-#include "ObjectManipulator.h"
+#include "ProjectPanel.h"
 #include "FWWindow.h"
 
 #include "fwbuilder/Library.h"
@@ -57,8 +59,8 @@
 using namespace std;
 using namespace libfwbuilder;
 
-InterfaceDialog::InterfaceDialog(QWidget *parent) :
-        QWidget(parent)
+InterfaceDialog::InterfaceDialog(ProjectPanel *project, QWidget *parent) :
+        QWidget(parent), m_project(project)
 {
     m_dialog = new Ui::InterfaceDialog_q;
     m_dialog->setupUi(this);
@@ -222,7 +224,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
                 }
             }
 
-            m_dialog->netzone->clear();            
+            m_dialog->netzone->clear();
             m_dialog->netzone->addItems( netzoneObjectNames );
 
             QString id=obj->getStr("network_zone").c_str();
@@ -280,7 +282,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
     init=false;
 }
-    
+
 void InterfaceDialog::changed()
 {
     if (fwbdebug)
@@ -355,12 +357,12 @@ void InterfaceDialog::applyChanges()
 
     }
 
-    om->updateObjName(obj,
+    mw->updateObjName(obj,
                       QString::fromUtf8(oldname.c_str()),
                       QString::fromUtf8(oldlabel.c_str()));
 
     //apply->setEnabled( false );
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
 }
 
 void InterfaceDialog::discardChanges()

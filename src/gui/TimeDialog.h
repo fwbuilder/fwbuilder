@@ -33,6 +33,7 @@
 
 #include "fwbuilder/FWObject.h"
 
+class ProjectPanel;
 
 class TimeDialog : public QWidget
 {
@@ -44,8 +45,9 @@ class TimeDialog : public QWidget
 
     void enableAllWidgets();
     
+    ProjectPanel *m_project;
  public:
-    TimeDialog(QWidget *parent);
+    TimeDialog(ProjectPanel *project, QWidget *parent);
     ~TimeDialog();
     
 public slots:

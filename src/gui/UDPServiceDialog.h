@@ -34,6 +34,7 @@
 #include "fwbuilder/FWObject.h"
 
 
+class ProjectPanel;
 class UDPServiceDialog : public QWidget
 {
     Q_OBJECT
@@ -41,9 +42,10 @@ class UDPServiceDialog : public QWidget
     libfwbuilder::FWObject *obj;
     bool init;
     Ui::UDPServiceDialog_q *m_dialog;
+    ProjectPanel *m_project;
 
  public:
-    UDPServiceDialog(QWidget *parent);
+    UDPServiceDialog(ProjectPanel *project, QWidget *parent);
     ~UDPServiceDialog();
     
 public slots:

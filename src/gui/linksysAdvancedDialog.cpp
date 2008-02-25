@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,18 +17,20 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
 #include "platforms.h"
 
 #include "linksysAdvancedDialog.h"
-#include "ObjectManipulator.h"
+#include "FWWindow.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
@@ -49,13 +51,13 @@ linksysAdvancedDialog::~linksysAdvancedDialog()
 {
     delete m_dialog;
 }
-    
+
 linksysAdvancedDialog::linksysAdvancedDialog(QWidget *parent,FWObject *o)
     : QDialog(parent)
 {
     m_dialog = new Ui::linksysAdvancedDialog_q;
     m_dialog->setupUi(this);
-    
+
     obj=o;
 
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
@@ -81,14 +83,14 @@ linksysAdvancedDialog::linksysAdvancedDialog(QWidget *parent,FWObject *o)
     threeStateMapping.push_back("0");
 
 /* set default prompts */
-    if (fwopt->getStr("prompt1").empty()) 
+    if (fwopt->getStr("prompt1").empty())
         Resources::os_res["linksys"]->Resources::setDefaultOption(fwopt,
                            "/FWBuilderResources/Target/options/default/prompt1");
 
-    if (fwopt->getStr("prompt2").empty()) 
+    if (fwopt->getStr("prompt2").empty())
         Resources::os_res["linksys"]->Resources::setDefaultOption(fwopt,
                            "/FWBuilderResources/Target/options/default/prompt2");
-            
+
     data.registerOption( m_dialog->linksys_prompt1,
                          fwopt,
                          "prompt1" );
@@ -129,7 +131,7 @@ void linksysAdvancedDialog::accept()
 
     data.saveAll();
 
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 
@@ -142,9 +144,9 @@ void linksysAdvancedDialog::setDefaultPrompts()
 {
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
     assert(fwopt!=NULL);
-    m_dialog->linksys_prompt1->setText( 
+    m_dialog->linksys_prompt1->setText(
         Resources::getTargetOptionStr("linksys","default/prompt1").c_str() );
-    m_dialog->linksys_prompt2->setText( 
+    m_dialog->linksys_prompt2->setText(
         Resources::getTargetOptionStr("linksys","default/prompt2").c_str() );
 }
 

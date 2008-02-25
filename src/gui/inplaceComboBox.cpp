@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "inplaceComboBox.h"
 
@@ -33,12 +35,12 @@
 inplaceComboBox::inplaceComboBox( QWidget* parent, const char* name, Qt::WindowFlags fl )
     : QFrame( parent, fl )
 {
-    
-    if ( !name )  
+
+    if ( !name )
         setObjectName( "inplaceComboBox" );
     else
         setObjectName(name);
-    
+
 //    setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
     setFocusPolicy( Qt::StrongFocus );
     qLayout = new QGridLayout( this );
@@ -49,21 +51,21 @@ inplaceComboBox::inplaceComboBox( QWidget* parent, const char* name, Qt::WindowF
     layout1 = new QVBoxLayout( 0 );
     layout1->setMargin( 0 );
     layout1->setSpacing( 0 );
-    layout1->setObjectName( "layout1" ); 
+    layout1->setObjectName( "layout1" );
 
     comboBox = new QComboBox( this );
     comboBox->setEditable( FALSE );
     comboBox->setObjectName( "comboBox" );
-    
+
     QSizePolicy p = QSizePolicy( QSizePolicy::Preferred, QSizePolicy::Preferred ); //5, 5
     p.setHorizontalStretch(0);
     p.setVerticalStretch(0);
-    p.setHeightForWidth(comboBox->sizePolicy().hasHeightForWidth()); 
-    
+    p.setHeightForWidth(comboBox->sizePolicy().hasHeightForWidth());
+
     comboBox->setSizePolicy( p );
-    
+
     comboBox->setFocusPolicy( Qt::WheelFocus );
-    
+
     layout1->addWidget( comboBox );
     QSpacerItem* spacer = new QSpacerItem( 20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding );
     layout1->addItem( spacer );
@@ -79,7 +81,7 @@ void inplaceComboBox::insertItem( const QPixmap &pm, const QString &txt, int ind
         comboBox->insertItem(index, QIcon(pm), txt);
     else
         comboBox->addItem(QIcon(pm), txt);
-    
+
     comboBox->setFixedHeight(pm.height()+4);
 }
 

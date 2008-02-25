@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,12 +17,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -47,7 +49,7 @@ ColorLabelMenuItem::ColorLabelMenuItem(QWidget *parent) :
 {
     m_widget = new Ui::colorLabelMenuItem_q;
     m_widget->setupUi(this);
-    
+
     setup( m_widget->noneBtn,   "#FFFFFF", tr("no color") );
     setup( m_widget->redBtn,
            st->getLabelColor(FWBSettings::RED   ),

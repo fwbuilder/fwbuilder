@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,12 +17,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -62,7 +64,7 @@ void PrototypeDialog::loadFWObject(FWObject *o)
     apply->setEnabled( false );
     init=false;
 }
-    
+
 void PrototypeDialog::changed()
 {
     apply->setEnabled( true );
@@ -92,13 +94,13 @@ void PrototypeDialog::applyChanges()
     obj->setComment( string(comment->text().utf8()) );
 
 
-    om->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     init=true;
 
 /* move to another lib if we have to */
-    if (! FWBTree::isSystem(obj) && libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        om->moveObject(libs->currentText(), obj);
+    if (! m_project->isSystem(obj) && libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
+        mw->moveObject(libs->currentText(), obj);
 
     init=false;
 

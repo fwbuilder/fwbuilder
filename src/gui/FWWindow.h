@@ -30,13 +30,8 @@
 #include <ui_FWBMainWindow_q.h>
 #include "RCS.h"
 #include "ObjectEditor.h"
-#include "FindObjectWidget.h"
-#include "FindWhereUsedWidget.h"
-
-#include "fwbuilder/FWObject.h"
 
 #include <qstring.h>
-#include <QCloseEvent>
 #include <QShowEvent>
 #include <QHideEvent>
 
@@ -48,36 +43,26 @@ namespace libfwbuilder {
     class Firewall;
     class PolicyRule;
     class RuleSet;
+    class FWObject;
+
 };
 
 class QTabWidget;
 class RuleSetView;
 class QTimer;
 class QPrinter;
+class QTextEdit;
+class ObjectTreeView;
+class ObjectManipulator;
+class findDialog;
+class ProjectPanel;
+class QMdiArea;
 
 class FWWindow : public QMainWindow {
 
     Q_OBJECT
 
-    RCS                                    *rcs; 
-    bool                                    systemFile;
-    bool                                    editingStandardLib;
-    bool                                    editingTemplateLib;
-    bool                                    changingTabs;
-    bool                                    safeMode;
-    bool                                    ruleSetRedrawPending;
-
-    QString                                 startupFileName;
-
-    std::vector<libfwbuilder::FWObject*>    firewalls;
-    std::map<libfwbuilder::FWObject*, RuleSetView*> ruleSetViews;
-    int                                     ruleSetTabIndex;
-
-    libfwbuilder::FWObject                 *visibleFirewall;
-    libfwbuilder::FWObjectDatabase         *objdb;
-    libfwbuilder::FWObject                 *shownInInfo;
-
-    QWidget                                *editorOwner;
+    QMdiArea                               *m_space;
     QWidget                                *instd;
     
     QTimer                                 *autosaveTimer;
@@ -86,10 +71,11 @@ class FWWindow : public QMainWindow {
     QPrinter                               *printer;
     libfwbuilder::FWObject                 *searchObject;
     libfwbuilder::FWObject                 *replaceObject;
-    int                                    lastFirewallIdx;
-
-    void clearFirewallTabs();
+    //int                                    lastFirewallIdx;
     
+    void clearFirewallTabs();
+    ProjectPanel* activeProject();
+    ProjectPanel *newProjectPanel();
  public slots:
 
      virtual void search();
@@ -161,26 +147,17 @@ class FWWindow : public QMainWindow {
      virtual void closeEditorPanel();
      virtual void openEditorPanel();
 
-     virtual void rollBackSelectionSameWidget();
-     virtual void rollBackSelectionDifferentWidget();
-
      virtual void killInstDialog();
-
- signals:
-     void restoreSelection_sign(bool same_widget);
 
  public:
      Ui::FWBMainWindow_q *m_mainWindow;
      
-    FindObjectWidget *findObjectWidget;
-    FindWhereUsedWidget *findWhereUsedWidget;  
-    
     FWWindow();
     ~FWWindow();
 
-    virtual void closeEvent( QCloseEvent * );
     RCS * getRCS(); 
-        
+    
+    libfwbuilder::FWObject* getVisibleFirewalls();
     void load(QWidget *dialogs_parent,RCS *rcs);
     void load(QWidget *dialogs_parent);
     void loadLibrary(const std::string &libfpath);
@@ -219,20 +196,19 @@ class FWWindow : public QMainWindow {
      * selects whatever is current in rules
      */
     void selectRules();
+    void disableActions(bool havePolicies);
+    void setActionsEnabled(bool en);
+    void setEnabledAfterRF();
 
-    libfwbuilder::FWObjectDatabase* db() { return objdb; }
-
-    libfwbuilder::FWObject* getVisibleFirewall() { return visibleFirewall; }
     QString getCurrentFileName();
     
     void info(libfwbuilder::FWObject *o, bool forced = false);
 
     void setupAutoSave();
     void findObject(libfwbuilder::FWObject *);
-    void findWhereUsed(libfwbuilder::FWObject *);
-    RuleSetView* getRuleSetViews(libfwbuilder::FWObject *o) 
-    {return ruleSetViews[o];};
 
+    void findWhereUsed(libfwbuilder::FWObject *);
+    
     void addPolicyBranchTab(libfwbuilder::RuleSet *subset);
     void removePolicyBranchTab(libfwbuilder::RuleSet *subset);
     void setPolicyBranchTabName(libfwbuilder::RuleSet *subset);
@@ -246,8 +222,6 @@ class FWWindow : public QMainWindow {
                                 libfwbuilder::FWObject *o,
                                 ObjectEditor::OptType   otype,
                                 bool validate = true);
-    void releaseEditor();
-    void connectEditor(QWidget *w);
     bool exportLibraryTest(std::list<libfwbuilder::FWObject*> &selectedLibs);
     void exportLibraryTo(QString fname,std::list<libfwbuilder::FWObject*> &selectedLibs, bool rof);
 
@@ -255,8 +229,8 @@ class FWWindow : public QMainWindow {
                        libfwbuilder::FWObject *root,
                        std::list<libfwbuilder::FWReference*> &extRefs);
     
-    void setSafeMode(bool f) { safeMode=f; }
-    void setStartupFileName(const QString &fn) { startupFileName = fn; }
+    void setSafeMode(bool f);
+    void setStartupFileName(const QString &fn);
 
     void scheduleRuleSetRedraw();
 
@@ -270,7 +244,107 @@ class FWWindow : public QMainWindow {
     // is returned (however on windows and mac userDataDir is returned)
 
     QString getDestDir(const QString &filename);
+    
+    //wrapers for some ObjectManipulator functions
+    libfwbuilder::FWObject* getOpened();
+    
+    libfwbuilder::FWObject*  getCurrentLib();
 
+    libfwbuilder::FWObject* createObject(const QString &objType,
+                                          const QString &objName,
+                                          libfwbuilder::FWObject *copyFrom=NULL);
+
+    libfwbuilder::FWObject* createObject(libfwbuilder::FWObject *parent,
+                                          const QString &objType,
+                                          const QString &objName,
+                                          libfwbuilder::FWObject *copyFrom=NULL);
+
+    void moveObject(libfwbuilder::FWObject *target,
+                    libfwbuilder::FWObject *obj);
+
+    void moveObject(const QString &targetLibName,
+                    libfwbuilder::FWObject *obj);
+
+    void autorename(libfwbuilder::FWObject *obj,
+                    const std::string &objtype,
+                    const std::string &namesuffix);
+
+    void updateLibColor(libfwbuilder::FWObject *lib);
+    void updateLibName(libfwbuilder::FWObject *lib);
+
+    void updateObjName(libfwbuilder::FWObject *obj,
+                       const QString &oldName,
+                       bool  askForAutorename=true);
+    void updateObjName(libfwbuilder::FWObject *obj,
+                       const QString &oldName,
+                       const QString &oldLabel,
+                       bool  askForAutorename=true);
+
+    void updateLastModifiedTimestampForOneFirewall(libfwbuilder::FWObject *o);
+    void updateLastModifiedTimestampForAllFirewalls(libfwbuilder::FWObject *o);   
+    void updateLastInstalledTimestamp(libfwbuilder::FWObject *o);
+    void updateLastCompiledTimestamp(libfwbuilder::FWObject *o);
+       
+    void loadDataFromFw(libfwbuilder::Firewall *fw);
+
+    libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
+                                    libfwbuilder::FWObject *obj,
+                                    bool openobj=true,
+                                    bool validateOnly=false);
+    void delObj(libfwbuilder::FWObject *obj,bool openobj=true);
+    ObjectTreeView* getCurrentObjectTree();
+    void openObject(QTreeWidgetItem *otvi);
+    void openObject(libfwbuilder::FWObject *obj);
+    bool editObject(libfwbuilder::FWObject *obj);
+    void findAllFirewalls (std::list<libfwbuilder::Firewall *> &fws);
+
+    libfwbuilder::FWObject* duplicateObject(libfwbuilder::FWObject *target,
+                                            libfwbuilder::FWObject *obj,
+                                            const QString &name = QString::null,
+                                            bool  askForAutorename=true);
+    void showDeletedObjects(bool f);
+    void select();
+    void unselect();
+    void info();
+
+    
+    void setManipulatorFocus();
+    void clearManipulatorFocus();
+    
+    //wrapers for some Object Editor functions
+    bool isEditorVisible();
+    bool isEditorModified();
+    
+    void showEditor();
+    void hideEditor();
+    void closeEditor();
+    
+    void openEditor(libfwbuilder::FWObject *o);
+    void openOptEditor(libfwbuilder::FWObject *, ObjectEditor::OptType t);
+    void blankEditor();
+    
+    libfwbuilder::FWObject* getOpenedEditor();
+    ObjectEditor::OptType getOpenedOptEditor();
+    
+    void selectObjectInEditor(libfwbuilder::FWObject *o);
+    
+    void actionChangedEditor(libfwbuilder::FWObject *o);
+    bool validateAndSaveEditor();
+    //find dialog functions wrapers
+    void setFDObject(libfwbuilder::FWObject *o);
+    
+    void addToRCSActionSetEn(bool en);
+    void fileDiscardActionSetEn(bool en);
+    void fileCommitActionSetEn(bool en);
+    void fileSaveActionSetEn(bool en);
+    QPrinter* getPrinter();
+    libfwbuilder::FWObjectDatabase* db();
+    QString printHeader();
+    listOfLibraries *getAddOnLibs();
+    libfwbuilder::FWObject* getStandardSlotForObject(libfwbuilder::FWObject* lib,
+                                                            const QString &objType);
+
+    bool isSystem(libfwbuilder::FWObject *obj);
  protected:
 
     virtual void showEvent( QShowEvent *ev);

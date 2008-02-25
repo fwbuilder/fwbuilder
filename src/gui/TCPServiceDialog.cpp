@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,12 +17,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -30,8 +32,8 @@
 
 #include "FWBTree.h"
 #include "TCPServiceDialog.h"
-#include "ObjectManipulator.h"
 
+#include "ProjectPanel.h"
 #include "fwbuilder/Library.h"
 #include "fwbuilder/TCPService.h"
 
@@ -45,16 +47,17 @@
 #include <qlabel.h>
 #include "FWBSettings.h"
 
+#include "FWWindow.h"
 using namespace std;
 using namespace libfwbuilder;
 
-TCPServiceDialog::TCPServiceDialog(QWidget *parent) : QWidget(parent) 
-{ 
+TCPServiceDialog::TCPServiceDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+{
     m_dialog = new Ui::TCPServiceDialog_q;
     m_dialog->setupUi(this);
     setFont(st->getUiFont());
-        
-    obj=NULL; 
+
+    obj=NULL;
 }
 
 TCPServiceDialog::~TCPServiceDialog()
@@ -163,7 +166,7 @@ void TCPServiceDialog::loadFWObject(FWObject *o)
 
     init=false;
 }
-    
+
 void TCPServiceDialog::changed()
 {
     //apply->setEnabled( true );
@@ -243,18 +246,18 @@ void TCPServiceDialog::applyChanges()
 
     obj->setBool("established",  m_dialog->established->isChecked());
 
-    om->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     init=true;
 
 /* move to another lib if we have to */
-    if (! FWBTree::isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        om->moveObject(m_dialog->libs->currentText(), obj);
+    if (! m_project->isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
+        mw->moveObject(m_dialog->libs->currentText(), obj);
 
     init=false;
 
     //apply->setEnabled( false );
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
 }
 
 void TCPServiceDialog::discardChanges()
@@ -283,7 +286,7 @@ void TCPServiceDialog::toggleEstablished()
     m_dialog->rst_m->setEnabled( !using_established );
     m_dialog->syn_m->setEnabled( !using_established );
     m_dialog->fin_m->setEnabled( !using_established );
-         
+
     m_dialog->urg_s->setEnabled( !using_established );
     m_dialog->ack_s->setEnabled( !using_established );
     m_dialog->psh_s->setEnabled( !using_established );

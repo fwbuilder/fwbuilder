@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,16 +17,19 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
 
+#include "fwbuilder_ph.h"
+
 #include "config.h"
 #include "global.h"
 #include "utils.h"
+#include "ProjectPanel.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "FWWindow.h"
@@ -36,7 +39,6 @@
 #include "GroupObjectDialog.h"
 #include "ObjectListViewItem.h"
 #include "ObjectIconViewItem.h"
-#include "ObjectManipulator.h"
 #include "FWObjectDrag.h"
 #include "FWObjectClipboard.h"
 #include "ObjectTreeView.h"
@@ -73,13 +75,13 @@ enum GroupObjectDialog::viewType GroupObjectDialog::vt = GroupObjectDialog::Icon
 #define ICON_VIEW_MODE "icon"
 
 
-GroupObjectDialog::GroupObjectDialog(QWidget *parent) : 
-        QWidget(parent)
+GroupObjectDialog::GroupObjectDialog(ProjectPanel *project, QWidget *parent) :
+        QWidget(parent), m_project(project)
 {
     m_dialog = new Ui::GroupObjectDialog_q;
     m_dialog->setupUi(this);
     setFont(st->getUiFont());
-    
+
     obj=NULL;
     selectedObject=NULL;
 
@@ -98,20 +100,20 @@ GroupObjectDialog::GroupObjectDialog(QWidget *parent) :
     m_dialog->objectViewsStack->addWidget(listView);
     m_dialog->objectViewsStack->setCurrentWidget(iconView);
 
-    
+
     setTabOrder( m_dialog->obj_name, iconView );
     setTabOrder( iconView, listView );
     setTabOrder( listView, m_dialog->comment );
 
     listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     iconView->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    
+
     m_dialog->iconViewBtn->setCheckable(true);
     m_dialog->listViewBtn->setCheckable(true);
-    
+
     //listView->hide();
     //iconView->show();
-    
+
 
     m_dialog->iconViewBtn->setAutoRaise(false);
     m_dialog->listViewBtn->setAutoRaise(false);
@@ -125,7 +127,7 @@ GroupObjectDialog::GroupObjectDialog(QWidget *parent) :
              this,     SLOT( iconViewCurrentChanged(QListWidgetItem*) ) );
 
     connect( iconView, SIGNAL (itemSelectionChanged()),
-            this,      SLOT (iconViewSelectionChanged())); 
+            this,      SLOT (iconViewSelectionChanged()));
 
     connect( iconView, SIGNAL( dropped(QDropEvent*) ),
              this,     SLOT( dropped(QDropEvent*) ) );
@@ -142,7 +144,7 @@ GroupObjectDialog::GroupObjectDialog(QWidget *parent) :
     connect( listView, SIGNAL( currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*) ),
              this,     SLOT( listViewCurrentChanged(QTreeWidgetItem*) ) );
     connect( listView, SIGNAL (itemSelectionChanged()),
-            this,      SLOT (listViewSelectionChanged())); 
+            this,      SLOT (listViewSelectionChanged()));
 
     connect( listView, SIGNAL( dropped(QDropEvent*) ),
              this,     SLOT( dropped(QDropEvent*) ) );
@@ -157,7 +159,7 @@ GroupObjectDialog::GroupObjectDialog(QWidget *parent) :
 
     if (col0 == 0)
         col0 = listView->width()/2;
-    
+
     listView->setColumnWidth(0,col0);
     listView->setColumnWidth(1,col1);
 
@@ -186,15 +188,15 @@ void GroupObjectDialog::iconViewSelectionChanged()
             if (o!=NULL)
                 selectedObjects.push_back(o);
         }
-        
+
     }
-        
+
 }
 void GroupObjectDialog::listViewSelectionChanged()
 {
     selectedObjects.clear();
     //QTreeWidgetItemIterator it(listView);
-    
+
     for ( int i = 0; i < listView->topLevelItemCount(); i++)
     {
         QTreeWidgetItem *itm= listView->topLevelItem(i);
@@ -272,9 +274,9 @@ void GroupObjectDialog::insertObject(FWObject *o)
 	if(go==cp_id) return;
     }
 
-    addIcon(o, ! FWBTree::isSystem(obj) );
+    addIcon(o, ! m_project->isSystem(obj) );
 
-    
+
     changed();
 }
 
@@ -298,7 +300,7 @@ void GroupObjectDialog::addIcon(FWObject *o,bool ref)
             o->getTypeName() + "/hidden") ) return;
 
     QString obj_name=QString::fromUtf8(o->getName().c_str());
-    
+
     QString icn_filename =
             (":/Icons/"+o->getTypeName()+((ref)?"/icon-ref":"/icon")).c_str();
 
@@ -346,9 +348,9 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
     m_dialog->obj_name->setText( QString::fromUtf8(g->getName().c_str()) );
     m_dialog->comment->setText( QString::fromUtf8(g->getComment().c_str()) );
 
-    m_dialog->obj_name->setEnabled( !FWBTree::isSystem(obj) );
-    m_dialog->libs->setEnabled(     !FWBTree::isSystem(obj) );
-    m_dialog->comment->setEnabled(  !FWBTree::isSystem(obj) );
+    m_dialog->obj_name->setEnabled( !m_project->isSystem(obj) );
+    m_dialog->libs->setEnabled(     !m_project->isSystem(obj) );
+    m_dialog->comment->setEnabled(  !m_project->isSystem(obj) );
 
     listView->clear();
 
@@ -373,16 +375,16 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
     for (FWObject::iterator i=g->begin(); i!=g->end(); i++)
         addIcon( *i );
 
-    
+
     //apply->setEnabled( false );
 
-    m_dialog->obj_name->setEnabled(!o->isReadOnly() && !FWBTree::isSystem(o));
+    m_dialog->obj_name->setEnabled(!o->isReadOnly() && !m_project->isSystem(o));
     setDisabledPalette(m_dialog->obj_name);
 
-    m_dialog->comment->setEnabled(!o->isReadOnly() && !FWBTree::isSystem(o));
+    m_dialog->comment->setEnabled(!o->isReadOnly() && !m_project->isSystem(o));
     setDisabledPalette(m_dialog->comment);
 
-    m_dialog->libs->setEnabled(!o->isReadOnly() && !FWBTree::isSystem(o));
+    m_dialog->libs->setEnabled(!o->isReadOnly() && !m_project->isSystem(o));
     setDisabledPalette(m_dialog->libs);
 
 //    listView->setEnabled(!o->isReadOnly());
@@ -394,7 +396,7 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
 
     init=false;
 }
-    
+
 void GroupObjectDialog::changed()
 {
     //if (!init) apply->setEnabled( true );
@@ -448,20 +450,20 @@ void GroupObjectDialog::applyChanges()
 
     set<FWObject*> diff;
     set_difference( oldobj.begin(), oldobj.end(),
-                    newobj.begin(), newobj.end(), 
+                    newobj.begin(), newobj.end(),
                     inserter(diff,diff.begin()));
 /* diff contains objects present in oldobj but not in newobj - these objects
    were deleted from the group */
 
     for (set<FWObject*>::iterator k=diff.begin(); k!=diff.end(); ++k)
     {
-        if (FWBTree::isSystem(obj)) om->delObj(*k, false);
+        if (m_project->isSystem(obj)) mw->delObj(*k, false);
         else               obj->removeRef( *k );
     }
 
     diff.clear();
 
-    set_difference( newobj.begin(), newobj.end(), 
+    set_difference( newobj.begin(), newobj.end(),
                     oldobj.begin(), oldobj.end(),
                     inserter(diff,diff.begin()));
 /* diff contains objects present in newobj but not in oldobj - these objects
@@ -469,22 +471,22 @@ void GroupObjectDialog::applyChanges()
 
     for (set<FWObject*>::iterator k1=diff.begin(); k1!=diff.end(); ++k1)
     {
-        if (FWBTree::isSystem(obj))  om->pasteTo(obj,*k1, false);
+        if (m_project->isSystem(obj))  mw->pasteTo(obj,*k1, false);
         else                obj->addRef( *k1);
     }
 
-    om->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     init=true;
 
 /* move to another lib if we have to */
-    if (! FWBTree::isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        om->moveObject(m_dialog->libs->currentText(), obj);
+    if (! m_project->isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
+        mw->moveObject(m_dialog->libs->currentText(), obj);
 
     init=false;
 
     //apply->setEnabled( false );
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
 
     if (fwbdebug)
         qDebug("GroupObjectDialog::applyChanges done");
@@ -523,8 +525,8 @@ void GroupObjectDialog::openObject()
 {
     if (selectedObject!=NULL)
     {
-        om->openObject( selectedObject );
-        om->editObject( selectedObject );
+        mw->openObject( selectedObject );
+        mw->editObject( selectedObject );
     }
 }
 
@@ -536,8 +538,8 @@ void GroupObjectDialog::openObject(QTreeWidgetItem *itm)
     FWObject *o = otvi->getFWObject();
     if (o!=NULL)
     {
-        om->openObject( o );
-        om->editObject( o );
+        mw->openObject( o );
+        mw->editObject( o );
     }
 }
 
@@ -549,8 +551,8 @@ void GroupObjectDialog::openObject(QListWidgetItem *itm)
     FWObject *o = oivi->getFWObject();
     if (o!=NULL)
     {
-        om->openObject( o );
-        om->editObject( o );
+        mw->openObject( o );
+        mw->editObject( o );
     }
 }
 
@@ -569,7 +571,7 @@ void GroupObjectDialog::dropped(QDropEvent *ev)
 
         // see comment in ObjectTreeView.cpp explaining the purpose of
         // flag process_mouse_release_event
-        ObjectTreeView *otv = om->getCurrentObjectTree();
+        ObjectTreeView *otv = mw->getCurrentObjectTree();
         otv->ignoreNextMouseReleaseEvent();
 
     }
@@ -617,14 +619,14 @@ void GroupObjectDialog::setupPopupMenu(const QPoint &pos)
     QAction *delID  =popup->addAction( tr("Delete") ,this , SLOT( deleteObj()) );
 
     copyID->setEnabled(selectedObject!=NULL &&
-                          ! FWBTree::isSystem(selectedObject) );
-    cutID->setEnabled(selectedObject!=NULL && 
-                          ! FWBTree::isSystem(obj) &&
+                          ! m_project->isSystem(selectedObject) );
+    cutID->setEnabled(selectedObject!=NULL &&
+                          ! m_project->isSystem(obj) &&
                           ! obj->isReadOnly() );
-    pasteID->setEnabled(! FWBTree::isSystem(obj) &&
+    pasteID->setEnabled(! m_project->isSystem(obj) &&
                           ! obj->isReadOnly() );
     delID->setEnabled(selectedObject!=NULL &&
-                          ! FWBTree::isSystem(obj) &&
+                          ! m_project->isSystem(obj) &&
                           ! obj->isReadOnly() );
 
     popup->exec( pos );
@@ -637,17 +639,17 @@ void GroupObjectDialog::copyObj()
             it!=selectedObjects.end(); ++it)
     {
         FWObject* selectedObject=*it;
-        
-        if (selectedObject!=NULL && ! FWBTree::isSystem(selectedObject) ) 
+
+        if (selectedObject!=NULL && ! m_project->isSystem(selectedObject) )
         {
             FWObject *o=selectedObject;
             if (FWReference::cast(o)!=NULL)
                 o=FWReference::cast(o)->getPointer();
-            
+
 
             FWObjectClipboard::obj_clipboard->add( o );
         }
-        
+
     }
 }
 
@@ -660,7 +662,7 @@ void GroupObjectDialog::cutObj()
 void GroupObjectDialog::pasteObj()
 {
     vector<string>::iterator i;
-    
+
     for (i= FWObjectClipboard::obj_clipboard->begin();
          i!=FWObjectClipboard::obj_clipboard->end(); ++i)
     {
@@ -676,13 +678,13 @@ void GroupObjectDialog::deleteObj()
     vector<FWObject*> tv;
     FWObject* selectedObject;
     copy (selectedObjects.begin(),selectedObjects.end(),inserter(tv,tv.begin()));
-    
+
     for(vector<FWObject*>::iterator it=tv.begin();
             it!=tv.end(); ++it)
     {
         selectedObject=(*it);
-        
-        if (selectedObject!=NULL &&  ! FWBTree::isSystem(obj) )
+
+        if (selectedObject!=NULL &&  ! m_project->isSystem(obj) )
         {
             Group *g = dynamic_cast<Group*>(obj);
             assert(g!=NULL);
@@ -703,7 +705,7 @@ void GroupObjectDialog::deleteObj()
             assert(allIconViewItems[o->getId()]!=NULL);
             delete allIconViewItems[o->getId()];
             allIconViewItems.erase(o->getId());
-            
+
         }
     }
     changed();

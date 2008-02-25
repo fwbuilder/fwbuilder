@@ -33,6 +33,7 @@
 
 #include "fwbuilder/FWObject.h"
 
+class ProjectPanel;
 
 class DNSNameDialog : public QWidget
 {
@@ -41,9 +42,10 @@ class DNSNameDialog : public QWidget
     libfwbuilder::FWObject *obj;
     bool init;
     Ui::DNSNameDialog_q *m_dialog;
+    ProjectPanel *m_project;
 
  public:
-     DNSNameDialog(QWidget *parent);
+     DNSNameDialog(ProjectPanel *project, QWidget *parent);
      ~DNSNameDialog();
     virtual void closeEvent(QCloseEvent *e);
     

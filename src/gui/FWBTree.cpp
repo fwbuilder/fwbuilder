@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -59,8 +61,6 @@
 using namespace std;
 using namespace libfwbuilder;
 
-FWBTree *FWBTree::standardObjectTreeFormat=NULL;
-
 const char* systemObjects[] = {
     "Objects",
     "Objects/Addresses",
@@ -91,9 +91,6 @@ map<string,bool> standardIDs;
 
 FWBTree::FWBTree()
 {
-    assert(standardObjectTreeFormat==NULL);
-    standardObjectTreeFormat=this;
-
     systemGroupPaths[Library::TYPENAME]       = "";
 
     systemGroupPaths[IPv4::TYPENAME]          = "Objects/Addresses";
@@ -218,7 +215,7 @@ FWBTree::FWBTree()
     standardIDs["stdid18_1"]=true;
     standardIDs["stdid19"]  =true;
     standardIDs["stdid19_1"]=true;
-    
+
 
     copyMenuState[""] = false;
     copyMenuState["Firewalls"] = false;
@@ -298,7 +295,7 @@ FWBTree::FWBTree()
     deleteMenuState["Services/TCP"] = false;
     deleteMenuState["Services/UDP"] = false;
     deleteMenuState["Services/TagServices"] = false;
-    deleteMenuState["Time"] = false;    
+    deleteMenuState["Time"] = false;
 }
 
 /**
@@ -341,8 +338,8 @@ bool FWBTree::validateForInsertion(FWObject *target,FWObject *obj)
     if (Interface::isA(target) && IPv4::isA(obj))        return true;
     if (Interface::isA(target) && physAddress::isA(obj)) return true;
 
-    QString parentType = standardObjectTreeFormat->systemGroupTypes[obj->getTypeName().c_str()];
-    QString parentName = standardObjectTreeFormat->systemGroupNames[obj->getTypeName().c_str()];
+    QString parentType = systemGroupTypes[obj->getTypeName().c_str()];
+    QString parentName = systemGroupNames[obj->getTypeName().c_str()];
 
 /* parentType or/and parentName are going to be empty if information
  * about object obj is missing in systemGroupTypes/Names tables
@@ -360,8 +357,8 @@ void FWBTree::getStandardSlotForObject(const QString &objType,
                                        QString &parentType,
                                        QString &parentName)
 {
-    parentType = standardObjectTreeFormat->systemGroupTypes[objType];
-    parentName = standardObjectTreeFormat->systemGroupNames[objType];
+    parentType = systemGroupTypes[objType];
+    parentName = systemGroupNames[objType];
 }
 
 /**
@@ -371,7 +368,7 @@ void FWBTree::getStandardSlotForObject(const QString &objType,
  */
 FWObject* FWBTree::getStandardSlotForObject(FWObject* lib,const QString &objType)
 {
-    QString path = standardObjectTreeFormat->systemGroupPaths[objType];
+    QString path = systemGroupPaths[objType];
 
     if (path.isEmpty()) return lib;
 
@@ -408,11 +405,11 @@ FWObject* FWBTree::createNewLibrary(FWObjectDatabase *db)
     o2 = db->create(ObjectGroup::TYPENAME);
     o2->setName("DNS Names");
     o1->add(o2);
-    
+
     o2 = db->create(ObjectGroup::TYPENAME);
     o2->setName("Address Tables");
     o1->add(o2);
-    
+
     o2 = db->create(ObjectGroup::TYPENAME);
     o2->setName("Groups");
     o1->add(o2);

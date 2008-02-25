@@ -1,3 +1,5 @@
+#include "fwbuilder_ph.h"
+
 #include "fakeWizard.h"
 
 FakeWizard::FakeWizard()
@@ -9,7 +11,7 @@ FakeWizard::~FakeWizard()
 }
 
 void FakeWizard::setControlWidgets(QWidget *_mainWidget,
-                       QStackedWidget *_stackedWidget, 
+                       QStackedWidget *_stackedWidget,
                        QPushButton    *_nextButton,
                        QPushButton    *_finishButton,
                        QPushButton    *_backButton,
@@ -25,7 +27,7 @@ void FakeWizard::setControlWidgets(QWidget *_mainWidget,
     cancelButton = _cancelButton;
 
     m_pageCount = stackedWidget->count();
-    
+
     QObject::connect( nextButton, SIGNAL( clicked() ),
              mainWidget, SLOT( nextClicked() ));
     QObject::connect( backButton, SIGNAL( clicked() ),
@@ -103,7 +105,7 @@ int FakeWizard::previousRelevant(const int page) const
     for (int i = page-1; i >= 0; i--)
         if (appropriates[i] && appropriate(i))
             return i;
-    
+
     return -1;
 }
 
@@ -112,24 +114,24 @@ int FakeWizard::nextRelevant(const int page) const
     for (int i = page+1; i < m_pageCount; i++)
         if (appropriates[i] && appropriate(i))
             return i;
-    
+
     return -1;
 }
 
 void FakeWizard::showPage(const int page)
 {
     if (page >= m_pageCount) return;
-    
+
     if (finishEnabled[page])
         finishButton->show();
     else
         finishButton->hide();
-    
+
     nextButton->setEnabled( nextEnabled[page] &&
                            (nextRelevant(page) > -1) );
     backButton->setEnabled( backEnabled[page] &&
                            (previousRelevant(page) > -1) );
-    
+
     if (titleLabel)
         if (!pageTitles[page].isEmpty())
         {
@@ -140,7 +142,7 @@ void FakeWizard::showPage(const int page)
             titleLabel->hide();
 
     setCurrentPage(page);
-    
+
     stackedWidget->setCurrentIndex(page);
 }
 

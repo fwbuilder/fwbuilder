@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,12 +17,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -77,12 +79,12 @@ bool ObjectIconView::event ( QEvent * event )
         if (st->getObjTooltips())
         {
             int cx = pos.x(), cy = pos.y();
-    
+
             //viewportToContents(pos.x(),pos.y(),cx,cy);
-    
+
             FWObject  *obj=NULL;
             QRect      cr;
-    
+
             QListWidgetItem      *itm   = itemAt( QPoint(cx,cy) );
             QModelIndex ind = indexAt( QPoint(cx,cy) );
             if (itm==NULL) return false;
@@ -91,7 +93,7 @@ bool ObjectIconView::event ( QEvent * event )
             obj     = oivi->getFWObject();
 
             if (obj==NULL) return false;
-        
+
             cr = rectForIndex(ind);
             cr = QRect(
                 cr.left() - horizontalOffset(),
@@ -101,16 +103,16 @@ bool ObjectIconView::event ( QEvent * event )
 
             QRect global = QRect(
                 viewport()->mapToGlobal(cr.topLeft()), viewport()->mapToGlobal(cr.bottomRight()));
-    
-    
-            QToolTip::showText(mapToGlobal( he->pos() ), 
-                FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj,true,true), 
+
+
+            QToolTip::showText(mapToGlobal( he->pos() ),
+                FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj,true,true),
                 this, global);
         }
 
         return true;
     }
-    
+
     return QListWidget::event(event);
 }
 
@@ -179,7 +181,7 @@ void ObjectIconView::mousePressEvent ( QMouseEvent * event )
 {
     if (fwbdebug)
         qDebug("ObjectIconView::mousePressEvent");
-    
+
     startingDrag = true;
     QListWidget::mousePressEvent(event);
 }
@@ -190,11 +192,11 @@ void ObjectIconView::mouseMoveEvent ( QMouseEvent * event )
     {
         startingDrag = false;
         QDrag *dr = dragObject();
-        
+
         if (dr)
             dr->start();
     }
     QListWidget::mouseMoveEvent(event);
 }
 
-    
+

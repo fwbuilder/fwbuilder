@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "../../config.h"
 #include "global.h"
@@ -54,14 +56,14 @@ StartWizard::StartWizard()
 {
     m_dialog = new Ui::startWizard_q;
     m_dialog->setupUi(this);
-    
-    setControlWidgets(this, m_dialog->stackedWidget, 
+
+    setControlWidgets(this, m_dialog->stackedWidget,
                       m_dialog->nextButton,
                       m_dialog->finishButton,
                       m_dialog->backButton,
                       m_dialog->cancelButton,
                       m_dialog->titleLabel);
-    
+
     /*connect( m_dialog->nextButton, SIGNAL( clicked() ),
              this, SLOT( nextClicked() ));
     connect( m_dialog->backButton, SIGNAL( clicked() ),
@@ -70,7 +72,7 @@ StartWizard::StartWizard()
              this, SLOT( finishClicked() ));
     connect( m_dialog->cancelButton, SIGNAL( clicked() ),
              this, SLOT( cancelClicked() ));*/
-    
+
     wantRCS=false;
     oldfile=false;
     newfile=false;
@@ -124,7 +126,7 @@ void StartWizard::newFile()
     if (QFileInfo(fname).exists() && ! QFileInfo(fname).isWritable() )
     {
         QMessageBox::warning(
-            this,"Firewall Builder", 
+            this,"Firewall Builder",
             tr("File %1 is read-only, you can not save changes to it.")
             .arg(fname),
             "&Continue", QString::null, QString::null,
@@ -175,12 +177,12 @@ void StartWizard::finishClicked()
             catch (FWException &ex)
             {
                 QMessageBox::warning(
-                    this,"Firewall Builder", 
+                    this,"Firewall Builder",
                     tr("Error adding file to RCS:\n%1").arg(ex.toString().c_str()),
                     "&Continue", QString::null,QString::null,
                     0, 1 );
             }
-        } 
+        }
         try
         {
             rcs->co();
@@ -189,7 +191,7 @@ void StartWizard::finishClicked()
         catch (FWException &ex)
         {
             QMessageBox::warning(
-                this,"Firewall Builder", 
+                this,"Firewall Builder",
                 tr("Error opening file:\n%1").arg(ex.toString().c_str()),
                 "&Continue", QString::null,QString::null,
                 0, 1 );

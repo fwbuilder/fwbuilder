@@ -42,6 +42,7 @@ class ObjectTreeViewItem;
 class QComboBox;
 class QMenu;
 class QStackedWidget;
+class ProjectPanel;
 
 class ObjectEditor : public QObject {
 
@@ -55,6 +56,7 @@ class ObjectEditor : public QObject {
     QStackedWidget *parentWidget;
     QPushButton *closeButton;
     QPushButton *applyButton;
+    ProjectPanel *m_project;
 
     void disconnectSignals();
     
@@ -62,11 +64,10 @@ public:
     enum OptType{optAction,optComment,optMetric,optNone};
 private: 
    OptType  openedOpt;
-    
 
 public:
    
-    ObjectEditor( QWidget *parent );
+    ObjectEditor( QWidget *parent, ProjectPanel *project);
     virtual ~ObjectEditor() {}
     
 

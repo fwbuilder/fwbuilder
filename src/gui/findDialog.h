@@ -31,7 +31,7 @@
 #include <ui_finddialog_q.h>
 
 #include "fwbuilder/FWObject.h"
-
+class ProjectPanel;
 
 class findDialog : public QDialog
 {
@@ -44,10 +44,10 @@ class findDialog : public QDialog
 
     bool matchName(const QString &name);
     bool matchAttr(libfwbuilder::FWObject* obj);
-    
+    ProjectPanel *m_project;
  public:
     Ui::findDialog_q *m_dialog;
-    findDialog(QWidget *p);
+    findDialog(QWidget *p, ProjectPanel *project);
 
     void setObject(libfwbuilder::FWObject *o); 
     ~findDialog() { delete m_dialog; };

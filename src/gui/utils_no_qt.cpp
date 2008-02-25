@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,13 +17,15 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
 //#include "config.h" <- TAPIR: wasn't commented
+#include "fwbuilder_ph.h"
+
 #include "global.h"
 #include "utils_no_qt.h"
 
@@ -82,7 +84,7 @@ void findByObjectType(FWObject *o,
         if (o->getId()==DELETED_LIB) return;
         if (o->getId()==TEMPLATE_LIB) return;
     }
-    
+
     for (list<FWObject*>::iterator m=o->begin(); m!=o->end(); m++)
     {
         FWObject *o1=*m;
@@ -95,7 +97,7 @@ void findByObjectType(FWObject *o,
 
 FWReference* findRef(FWObject *o,FWObject *p)
 {
-    
+
     FWReference* ref=NULL;
     FWObject::iterator i=p->begin();
     for(;i!=p->end();++i)
@@ -107,7 +109,7 @@ FWReference* findRef(FWObject *o,FWObject *p)
         }
         ref=NULL;
     }
-    return ref; 
+    return ref;
 }
 
 string strip(const string &s)

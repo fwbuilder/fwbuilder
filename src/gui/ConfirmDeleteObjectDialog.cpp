@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -53,9 +55,9 @@
 #include "fwbuilder/Library.h"
 
 
-//#include <qhbox.h> 
-#include <qlayout.h> 
-#include <qlistwidget.h> 
+//#include <qhbox.h>
+#include <qlayout.h>
+#include <qlistwidget.h>
 #include <qpixmapcache.h>
 
 #include <vector>
@@ -63,14 +65,14 @@
 using namespace std;
 using namespace libfwbuilder;
 
-ConfirmDeleteObjectDialog::ConfirmDeleteObjectDialog(QWidget*p) : QDialog(p) 
+ConfirmDeleteObjectDialog::ConfirmDeleteObjectDialog(QWidget*p) : QDialog(p)
 {
     m_dialog = new Ui::ConfirmDeleteObjectDialog_q;
     m_dialog->setupUi(this);
     //QVBoxLayout *b=new QVBoxLayout((QWidget*)FrameForList);
     //fwu = new FindWhereUsedWidget((QWidget*)FrameForList,0,0,  true);
     //b->addWidget(fwu);
-    
+
     //connect(objectsList, SIGNAL(selectionChanged(QListBoxItem *)), this, SLOT(listItemSelected(QListBoxItem *)));
 }
 
@@ -82,7 +84,7 @@ ConfirmDeleteObjectDialog::~ConfirmDeleteObjectDialog()
 void ConfirmDeleteObjectDialog::load(vector<FWObject *> objs)
 {
     if (objs.size()==0) return;
-    
+
     vector<FWObject*>::iterator i;
     for( i=objs.begin(); i!=objs.end(); ++i)
     {
@@ -96,7 +98,7 @@ void ConfirmDeleteObjectDialog::findForObject(FWObject *obj)
     //objectsView->clear();
     //mapping.clear();
     //resset.clear();
-    
+
     QPixmap pm0;
     QString icn_file = (":/Icons/" + obj->getTypeName() + "/icon-tree").c_str();
 
@@ -132,29 +134,29 @@ void ConfirmDeleteObjectDialog::findForObject(FWObject *obj)
         fw=NULL;
         r=NULL;
         rs=NULL;
-            
+
         if (findRef(obj,o)==NULL) continue;
 
-        if (RuleElement::cast(o)!=NULL)            
+        if (RuleElement::cast(o)!=NULL)
         {
             fw=o->getParent();
-            
-            while (fw!=NULL && !Firewall::isA(fw)) 
+
+            while (fw!=NULL && !Firewall::isA(fw))
             {
                 if (Rule::cast(fw))
                 {
-                    r=Rule::cast(fw); 
+                    r=Rule::cast(fw);
                 } else if (RuleSet::cast(fw))
                 {
                     rs=RuleSet::cast(fw);
                 }
-                        
+
                 fw=fw->getParent();
             }
             if (fw==NULL || r==NULL || rs==NULL) continue;
-            
+
             c1=QString::fromUtf8(fw->getName().c_str());
-            
+
             if (NAT::isA(rs))
             {
                 c2=tr("NAT");
@@ -169,11 +171,11 @@ void ConfirmDeleteObjectDialog::findForObject(FWObject *obj)
                 c2=tr("Unknown rule set");
             }
             c2+=tr("/Rule%1").arg(r->getPosition());
-            
+
         } else if (
-                FWBTree::isSystem(o) ||
-                Rule::cast(o) || 
-                RuleSet::cast(o) || 
+                mw->isSystem(o) ||
+                Rule::cast(o) ||
+                RuleSet::cast(o) ||
                 Firewall::cast(o) ||
                 Library::cast(o))
         {
@@ -187,9 +189,9 @@ void ConfirmDeleteObjectDialog::findForObject(FWObject *obj)
 
         string icn="icon-tree";
 //        FWObject *pixobj=(fw==NULL)?o:fw;
-//        QPixmap pm = QPixmap::fromMimeSource( 
+//        QPixmap pm = QPixmap::fromMimeSource(
 //            Resources::global_res->getObjResourceStr(pixobj, icn).c_str() );
-        
+
         QStringList qsl;
         qsl << QString::fromUtf8( obj->getName().c_str()) << c1 << c2;
         item = new QTreeWidgetItem(m_dialog->objectsView, qsl);
@@ -201,7 +203,7 @@ void ConfirmDeleteObjectDialog::findForObject(FWObject *obj)
     if (itemCounter==0)
     {
         QStringList qsl;
-        qsl << QString::fromUtf8( obj->getName().c_str()) 
+        qsl << QString::fromUtf8( obj->getName().c_str())
             << tr("Not used anywhere") << "";
         item = new QTreeWidgetItem(m_dialog->objectsView, qsl);
         item->setIcon(0,QIcon(pm0));

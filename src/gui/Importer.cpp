@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -52,7 +54,7 @@
 #include "fwbuilder/NAT.h"
 #include "fwbuilder/RuleElement.h"
 
-#include "FWBTree.h"
+#include "FWWindow.h"
 
 using namespace libfwbuilder;
 
@@ -60,7 +62,7 @@ FWObject* Importer::createObject(const std::string &objType,
                                  const std::string &objName)
 {
     assert(library!=NULL);
-    FWObject *slot = FWBTree::getStandardSlotForObject(library,
+    FWObject *slot = mw->getStandardSlotForObject(library,
                                                        objType.c_str());
     return createObject(slot, objType, objName);
 }
@@ -73,7 +75,7 @@ FWObject* Importer::createObject(FWObject *parent,
     FWObject*  o = library->getRoot()->create(objType);
     if (parent != NULL)
     {
-        parent->add(o);    
+        parent->add(o);
     }
     o->setName(objName);
     return o;
@@ -124,22 +126,22 @@ Importer::Importer(FWObject *_lib,
     current_ruleset = NULL;
     current_rule = NULL;
 
-    tcp_flag_names[libfwbuilder::TCPService::URG]="u"; 
-    tcp_flag_names[libfwbuilder::TCPService::ACK]="a"; 
-    tcp_flag_names[libfwbuilder::TCPService::PSH]="p"; 
-    tcp_flag_names[libfwbuilder::TCPService::RST]="r"; 
-    tcp_flag_names[libfwbuilder::TCPService::SYN]="s"; 
-    tcp_flag_names[libfwbuilder::TCPService::FIN]="f"; 
+    tcp_flag_names[libfwbuilder::TCPService::URG]="u";
+    tcp_flag_names[libfwbuilder::TCPService::ACK]="a";
+    tcp_flag_names[libfwbuilder::TCPService::PSH]="p";
+    tcp_flag_names[libfwbuilder::TCPService::RST]="r";
+    tcp_flag_names[libfwbuilder::TCPService::SYN]="s";
+    tcp_flag_names[libfwbuilder::TCPService::FIN]="f";
     tcp_flag_names[98]="N";   // NONE
     tcp_flag_names[99]="A";   // ALL
-    
+
 }
 
 void Importer::run()
 {
     // create and run parsers in derived classes
 }
-    
+
 
 Importer::~Importer()
 {
@@ -448,7 +450,7 @@ void Importer::addSrv()
     FWObject *s = makeSrvObj();
     if (s) srv->addRef( s );
 }
-    
+
 void Importer::addOSrc()
 {
     NATRule *rule = NATRule::cast(current_rule);
@@ -475,7 +477,7 @@ void Importer::addOSrv()
     FWObject *s= makeSrvObj();
     if (s) srv->addRef( s );
 }
-    
+
 Firewall* Importer::finalize()
 {
     return fw;
@@ -499,7 +501,7 @@ FWObject* Importer::getIPService(int proto)
 
     if ( proto==0 && !fragments)
         return NULL;  // any
-    
+
     IPService *s = IPService::cast(createObject(IPService::TYPENAME, nstr.str()));
     s->setInt("protocol_num", proto);
     s->setBool("fragm", fragments);
@@ -640,7 +642,7 @@ FWObject* Importer::getUDPService(int srs, int sre, int drs, int dre)
          << srs << "-" << sre << ":" << drs << "-" << dre;
 
     std::ostringstream nstr;
-    nstr << "udp " 
+    nstr << "udp "
          << srs << "-" << sre << ":" << drs << "-" << dre;
 
     UDPService* s = UDPService::cast(createObject(UDPService::TYPENAME, nstr.str()));
@@ -691,7 +693,7 @@ FWObject* Importer::createICMPService()
             s1 >> type;
         } catch (std::exception& e)
         {
-            // could not convert 
+            // could not convert
             type = -1;
             markCurrentRuleBad(std::string("ICMP type '") + icmp_type + "' unknown");
         }
@@ -705,7 +707,7 @@ FWObject* Importer::createICMPService()
             s2 >> code;
         } catch (std::exception& e)
         {
-            // could not convert 
+            // could not convert
             code = -1;
             markCurrentRuleBad(std::string("ICMP code '") + icmp_code + "' unknown");
         }
@@ -858,7 +860,7 @@ FWObject* Importer::createAddress(const std::string &addr,
                 str.exceptions(std::ios::failbit);
                 int nm_len;
                 try
-                { 
+                {
                     str >> nm_len;
                     net->setNetmask( Netmask(nm_len) );
                 } catch (std::exception& e)
@@ -936,4 +938,4 @@ void Importer::markCurrentRuleBad(const std::string &comment)
     error_counter++;
 }
 
-    
+

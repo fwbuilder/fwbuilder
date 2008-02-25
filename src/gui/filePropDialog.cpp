@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,12 +17,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -58,21 +60,21 @@ filePropDialog::~filePropDialog()
 }
 
 filePropDialog::filePropDialog(QWidget *parent, RCS *rcs) :
-    QDialog(parent) 
+    QDialog(parent)
 {
     m_dialog = new Ui::filePropDialog_q;
     m_dialog->setupUi(this);
-    
+
     // we have to get a reference to the printer
     // or we can create a new one ...
-    
+
     m_dialog->fileLocation->setText( rcs->getFileName() );
     if (rcs->isRO()) m_dialog->fileRO->setText( tr("Opened read-only") );
     else             m_dialog->fileRO->setText("");
 
     time_t lm = mw->db()->getTimeLastModified();
     QString s = ctime( &lm );
-    s.truncate( s.length()-1 );   // chop newline 
+    s.truncate( s.length()-1 );   // chop newline
 
     m_dialog->lastModified->setText( QString("%1 (%2)").arg(s).arg(lm) );
 
@@ -96,23 +98,23 @@ filePropDialog::filePropDialog(QWidget *parent, RCS *rcs) :
         m_dialog->fileLockedBy->setText("");
         m_dialog->fileRevHistory->setText("");
     }
-    
+
 }
 void filePropDialog::setPrinter(QPrinter *p)
 {
     printer=p;
 }
-    
+
 void filePropDialog::printRevHistory()
 {
     // Revision history printing:
     //
     // 1. setup printer properties
     // 2. create a stream
-    // 3. split text from the QTextBrowser (fileRevHistory) into the lines 
+    // 3. split text from the QTextBrowser (fileRevHistory) into the lines
     // 4. send lines to the stream
     //
-	
+
     //int pageWidth = 0;
     //int pageHeight = 0;
     bool  fullPage = false;
@@ -129,9 +131,9 @@ void filePropDialog::printRevHistory()
     //bool  printObjects = true;
     //bool  newPageForSection = false;
     //int   tableResolution = 2;   // 50%, 75%, 100%, 150%, 200%, default 100%
-    
+
     QPrintDialog printDialog(printer, this);
-    
+
 #if (QT_VERSION > 0x030200)
     printDialog.addEnabledOption(QAbstractPrintDialog::PrintPageRange);
     printDialog.setPrintRange(QAbstractPrintDialog::AllPages);
@@ -140,17 +142,17 @@ void filePropDialog::printRevHistory()
 
     printer->setResolution(resolution);
     printer->setFullPage(fullPage);
-    
-    if (printDialog.exec() == QDialog::Accepted) 
+
+    if (printDialog.exec() == QDialog::Accepted)
     {
 	int fromPage = printer->fromPage();
 	int toPage = printer->toPage();
 	if (fromPage==0) fromPage=1;
 	if (toPage==0) toPage=9999;
-    
+
 	PrintingProgressDialog *ppd = new PrintingProgressDialog(this,printer,0,false);
 	QString headerText = "Revision History:";
-	
+
 #if defined(Q_OS_MACX)
 	printerStream pr(printer,margin,printHeader,headerText,NULL);
 #else
@@ -171,7 +173,7 @@ void filePropDialog::printRevHistory()
 	QStringList sl;
         sl=m_dialog->fileRevHistory->toPlainText().split('\n');
 
-	for ( QStringList::Iterator it = sl.begin(); it != sl.end(); ++it ) 
+	for ( QStringList::Iterator it = sl.begin(); it != sl.end(); ++it )
 	{
 	    pr.printText(*it);
 	}
@@ -181,6 +183,6 @@ void filePropDialog::printRevHistory()
 
 	pr.end();
 
-	
-    }	
+
+    }
 }

@@ -34,6 +34,7 @@
 #include "fwbuilder/FWObject.h"
 
 
+class ProjectPanel;
 class NetworkDialog : public QWidget
 {
     Q_OBJECT
@@ -41,9 +42,10 @@ class NetworkDialog : public QWidget
     libfwbuilder::FWObject *obj;
     Ui::NetworkDialog_q *m_dialog;
     bool init;
+    ProjectPanel *m_project;
 
  public:
-    NetworkDialog(QWidget *parent);
+    NetworkDialog(ProjectPanel *project, QWidget *parent);
     ~NetworkDialog();
     
 public slots:

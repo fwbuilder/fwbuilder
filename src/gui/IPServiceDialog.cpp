@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,12 +17,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -30,7 +32,7 @@
 
 #include "FWBTree.h"
 #include "IPServiceDialog.h"
-#include "ObjectManipulator.h"
+#include "ProjectPanel.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/IPService.h"
@@ -46,15 +48,16 @@
 #include <iostream>
 #include "FWBSettings.h"
 
+#include "FWWindow.h"
 using namespace libfwbuilder;
 using namespace std;
 
-IPServiceDialog::IPServiceDialog(QWidget *parent) : QWidget(parent) 
-{ 
+IPServiceDialog::IPServiceDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+{
     m_dialog = new Ui::IPServiceDialog_q;
     m_dialog->setupUi(this);
     setFont(st->getUiFont());
-    obj=NULL; 
+    obj=NULL;
 }
 
 IPServiceDialog::~IPServiceDialog()
@@ -118,7 +121,7 @@ void IPServiceDialog::loadFWObject(FWObject *o)
 
     init=false;
 }
-    
+
 void IPServiceDialog::changed()
 {
     //apply->setEnabled( true );
@@ -156,18 +159,18 @@ void IPServiceDialog::applyChanges()
     obj->setBool("fragm", m_dialog->all_fragments->isChecked() );
     obj->setBool("short_fragm", m_dialog->short_fragments->isChecked() );
 
-    om->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     init=true;
 
 /* move to another lib if we have to */
-    if (! FWBTree::isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        om->moveObject(m_dialog->libs->currentText(), obj);
+    if (! m_project->isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
+        mw->moveObject(m_dialog->libs->currentText(), obj);
 
     init=false;
 
     //apply->setEnabled( false );
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
 }
 
 void IPServiceDialog::discardChanges()

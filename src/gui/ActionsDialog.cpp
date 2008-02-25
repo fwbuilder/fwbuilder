@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -30,7 +32,6 @@
 #include "definitions.h"
 
 #include "ActionsDialog.h"
-#include "ObjectManipulator.h"
 #include "FWWindow.h"
 
 #include "fwbuilder/Library.h"
@@ -61,10 +62,10 @@ using namespace libfwbuilder;
 
 void ActionsDialog::loadFWObject(FWObject *o)
 {
-    setRule(PolicyRule::cast(o));    
+    setRule(PolicyRule::cast(o));
 
 }
-    
+
 void ActionsDialog::changed()
 {
     //apply->setEnabled( true );
@@ -118,7 +119,7 @@ void ActionsDialog::applyChanges()
         if (rn.contains(QRegExp("[^a-zA-Z0-9_]"))!=0)
         {
             QMessageBox::information(
-                this,"Firewall Builder", 
+                this,"Firewall Builder",
                 tr("Rule name for accounting is converted to the iptables\nchain name and therefore may not contain white space\nand special characters."),
                 tr("&Continue"), QString::null,QString::null,
                 0, 1 );
@@ -127,9 +128,9 @@ void ActionsDialog::applyChanges()
         }
     }
 
-    
+
     data.saveAll();
-    
+
     FWOptions *ropt = rule->getOptionsObject();
 
     if (editor=="BranchChain" || editor=="BranchAnchor")
@@ -144,7 +145,7 @@ void ActionsDialog::applyChanges()
 
 
 
-    om->updateLastModifiedTimestampForAllFirewalls(rule);
+    mw->updateLastModifiedTimestampForAllFirewalls(rule);
 }
 
 void ActionsDialog::discardChanges()
@@ -177,19 +178,19 @@ void ActionsDialog::setRule(PolicyRule *r )
     assert(o!=NULL);
 
     FWOptions *ropt = rule->getOptionsObject();
-    
+
     Firewall *f=Firewall::cast(o);
     firewall=f;
-    
+
     platform=f->getStr("platform");
     QString title=QString("%1 / %2 (%3)")
         .arg(QString::fromUtf8(f->getName().c_str()))
         .arg(rule->getPosition())
         .arg(rule->getActionAsString().c_str());
     m_dialog->action->setText(title);
-    
+
     string act=rule->getActionAsString();
-    
+
     QStringList actionsOnReject=getActionsOnReject( platform.c_str() );
     m_dialog->rejectvalue->clear();
     m_dialog->rejectvalue->addItems( getScreenNames( actionsOnReject ) );
@@ -265,16 +266,16 @@ void ActionsDialog::setRule(PolicyRule *r )
     data.registerOption ( m_dialog->ipf_route_opt_addr  , ropt , "ipf_route_opt_addr");
 
     // pf
-    data.registerOption ( m_dialog->pf_fastroute        , ropt , "pf_fastroute"     ); 
+    data.registerOption ( m_dialog->pf_fastroute        , ropt , "pf_fastroute"     );
     data.registerOption( m_dialog->pf_route_load_option , ropt , "pf_route_load_option", route_load_options );
     data.registerOption ( m_dialog->pf_route_option     , ropt , "pf_route_option",
-                          route_options); 
-    data.registerOption ( m_dialog->pf_route_opt_if     , ropt , "pf_route_opt_if"  ); 
-    data.registerOption ( m_dialog->pf_route_opt_addr   , ropt , "pf_route_opt_addr"); 
+                          route_options);
+    data.registerOption ( m_dialog->pf_route_opt_if     , ropt , "pf_route_opt_if"  );
+    data.registerOption ( m_dialog->pf_route_opt_addr   , ropt , "pf_route_opt_addr");
 
     // REJECT action:
-    data.registerOption ( m_dialog->rejectvalue         , ropt , "action_on_reject"); 
-    
+    data.registerOption ( m_dialog->rejectvalue         , ropt , "action_on_reject");
+
     QWidget *w=m_dialog->NonePage;
     if (editor=="Reject")
     {
@@ -333,10 +334,10 @@ void ActionsDialog::setRule(PolicyRule *r )
     {
         w=m_dialog->RoutePFPage;
     }
-    
+
     m_dialog->widgetStack->setCurrentWidget ( w );
-    
-    //rejectvalue->setCurrentText( ropt->getStr("action_on_reject") ); 
+
+    //rejectvalue->setCurrentText( ropt->getStr("action_on_reject") );
     data.loadAll();
 
     iptRouteContinueToggled();
@@ -346,13 +347,13 @@ void ActionsDialog::fillInterfaces(QComboBox* cb)
 {
     cb->clear();
     cb->addItem("");
-    
+
     FWObjectTypedChildIterator j=firewall->findByType(Interface::TYPENAME);
     for ( ; j!=j.end(); ++j )
     {
         cb->addItem(QString::fromUtf8( (*j)->getName().c_str()) );
     }
-    
+
 }
 
 void ActionsDialog::closeEvent(QCloseEvent *e)

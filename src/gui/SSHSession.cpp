@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,13 +17,15 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -113,7 +115,7 @@ QString SSHSession::findKeyFingerprint(QString &buffer)
     int n1,n2;
 
     if ( (n1=buffer.indexOf(fp))==-1)
-    {        
+    {
         fp = fingerprintPrompt2;
         if ( (n1=buffer.indexOf(fp))==-1)
             return QString("");
@@ -143,7 +145,7 @@ void SSHSession::startSession()
             this,  SLOT(finished( int ) ) );
 
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("latin1"));
-    
+
     assert(args.size() > 0);
 
     QStringList arguments;
@@ -186,7 +188,7 @@ void SSHSession::startSession()
 //    emit printStdout_sign( tr("Running command %1\n").arg(cmd) );
 
     proc->setEnvironment(env);
-    
+
     if (fwbdebug)
     {
         qDebug("Launch external ssh client %s", program.toAscii().constData());
@@ -197,7 +199,7 @@ void SSHSession::startSession()
     }
 
     proc->start(program, arguments);
-    
+
     if ( !proc->waitForStarted() )
     {
         emit printStdout_sign( tr("Failed to start ssh") + "\n" );
@@ -272,7 +274,7 @@ void SSHSession::terminate()
             QString s=QString(proc->readAllStandardOutput());
             if (!quiet)
             {
-                s.replace('\r',"");    
+                s.replace('\r',"");
                 emit printStdout_sign(s);
             }
             proc->kill();
@@ -342,7 +344,7 @@ void SSHSession::sendLine()
         n++;
     }
     emit updateProgressBar_sign(input.size(),false);
-        
+
     if (input.size()==0)
     {
         if (fwbdebug) qDebug("SSHUnx::sendLine - entire file sent, closeStdin=%d",
@@ -385,7 +387,7 @@ void SSHSession::heartBeat()
     if (fwbdebug) qDebug("SSHSession::heartBeat");
     readFromStderr();
     readFromStdout();
-    if (endOfCopy && closeStdin) 
+    if (endOfCopy && closeStdin)
     {
         allDataSent();
         endOfCopy = false;
@@ -453,7 +455,7 @@ void SSHSession::readFromStdout()
             QString s = pendingLogLine + *i + "\n";
             if (!quiet)
             {
-                s.replace('\r',"");    
+                s.replace('\r',"");
                 emit printStdout_sign(s);
             }
             pendingLogLine = "";
@@ -517,7 +519,7 @@ void SSHSession::finished(int retcode)
     proc=NULL;
 
     QString exitStatus = (retcode)?QObject::tr("ERROR"):QObject::tr("OK");
-    
+
     emit printStdout_sign(tr("SSH session terminated, exit status: %1").arg(retcode) + "\n");
     sessionComplete( retcode!=0 );
 //    if (retcode) error=true;

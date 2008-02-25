@@ -33,6 +33,7 @@
 
 #include "fwbuilder/FWObject.h"
 
+class ProjectPanel;
 
 class HostDialog : public QWidget
 {
@@ -41,9 +42,10 @@ class HostDialog : public QWidget
     libfwbuilder::FWObject *obj;
     bool init;
     Ui::HostDialog_q *m_dialog;
+    ProjectPanel *m_project;
 
  public:
-    HostDialog(QWidget *parent);
+    HostDialog(ProjectPanel *project, QWidget *parent);
     ~HostDialog();
     
 public slots:

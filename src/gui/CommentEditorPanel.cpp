@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,13 +17,15 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -54,7 +56,7 @@ CommentEditorPanel::CommentEditorPanel(QWidget *p,
 {
     m_widget = new Ui::CommentEditorPanel_q;
     m_widget->setupUi(this);
-    
+
     if (enableLoadFromFile) m_widget->inputFromFileButton->show();
     else                    m_widget->inputFromFileButton->hide();
 
@@ -79,11 +81,11 @@ void CommentEditorPanel::setTitle(QString s)
 void CommentEditorPanel::loadFromFile()
 {
     if ( QMessageBox::warning(
-       this,"Firewall Builder", 
+       this,"Firewall Builder",
        tr("Warning: loading from file discards current contents of the script."),
        "&Load", "&Cancel", QString::null, 0, 1 )==0)
     {
-        QString filename = QFileDialog::getOpenFileName( 
+        QString filename = QFileDialog::getOpenFileName(
                 this, tr("Choose file that contains PIX commands"), st->getWDir());
         if (filename!="")
         {
@@ -91,7 +93,7 @@ void CommentEditorPanel::loadFromFile()
            if (!ifile)
            {
                QMessageBox::warning(
-                   this,"Firewall Builder", 
+                   this,"Firewall Builder",
                    tr("Could not open file %1").arg(filename),
                    "&Continue", QString::null, QString::null, 0, 1 );
                return;
@@ -111,16 +113,16 @@ void CommentEditorPanel::changed()
 }
 void CommentEditorPanel::applyChanges()
 {
-    om->updateLastModifiedTimestampForAllFirewalls(rule);
+    mw->updateLastModifiedTimestampForAllFirewalls(rule);
     rule->setComment( string(m_widget->editor->toPlainText().toUtf8().constData()) );
-    
+
 }
 void CommentEditorPanel::loadFWObject(FWObject *obj)
 {
     Rule *r=Rule::cast(obj);
 
     rule=r;
-    
+
     FWObject *o = r;
     while (o!=NULL && Firewall::cast(o)==NULL) o=o->getParent();
     assert(o!=NULL);
@@ -141,7 +143,7 @@ void CommentEditorPanel::validate(bool* b)
 }
 void CommentEditorPanel::isChanged(bool*)
 {
-    
+
 }
 void CommentEditorPanel::closeEvent(QCloseEvent *e)
 {

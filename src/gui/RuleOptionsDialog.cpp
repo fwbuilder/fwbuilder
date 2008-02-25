@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,20 +17,22 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
 
+#include "fwbuilder_ph.h"
+
 #include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "platforms.h"
+#include "ProjectPanel.h"
 
 #include "RuleOptionsDialog.h"
-#include "ObjectManipulator.h"
 #include "RuleSetView.h"
 #include "FWWindow.h"
 
@@ -61,12 +63,12 @@ RuleOptionsDialog::~RuleOptionsDialog()
     delete m_dialog;
 }
 
-RuleOptionsDialog::RuleOptionsDialog(QWidget *parent) : QWidget(parent)
+RuleOptionsDialog::RuleOptionsDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
 {
     m_dialog = new Ui::RuleOptionsDialog_q;
     m_dialog->setupUi(this);
     setFont(st->getUiFont());
-    
+
     init=false;
 }
 
@@ -79,10 +81,10 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
     while ( !Firewall::isA(p) ) p=p->getParent();
     platform=p->getStr("platform").c_str();
 
-    
+
     Rule      *rule = dynamic_cast<Rule*>(o);
     FWOptions *ropt = rule->getOptionsObject();
-    
+
     m_dialog->editorTitle->setText(QString("%1 / %2 / %3 ")
             .arg(QString::fromUtf8(p->getName().c_str()))
             .arg(rule->getTypeName().c_str())
@@ -109,14 +111,14 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
 
     QStringList  logFacilities=getLogFacilities( obj->getStr("platform").c_str() );
     m_dialog->ipf_logFacility->clear();
-    m_dialog->ipf_logFacility->addItems(getScreenNames(logFacilities));    
+    m_dialog->ipf_logFacility->addItems(getScreenNames(logFacilities));
     QStringList limitSuffixes=getLimitSuffixes( obj->getStr("platform").c_str() );
     m_dialog->ipt_limitSuffix->clear();
     m_dialog->ipt_limitSuffix->addItems(getScreenNames(limitSuffixes));
-    
-    
+
+
     data.clear();
-    
+
     if (platform=="iptables")
     {
         data.registerOption( m_dialog->ipt_logPrefix            , ropt,  "log_prefix" );
@@ -214,7 +216,7 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
     //apply->setEnabled( false );
     init=false;
 }
-    
+
 void RuleOptionsDialog::changed()
 {
     //apply->setEnabled( true );
@@ -259,7 +261,7 @@ void RuleOptionsDialog::applyChanges()
     mw->updateRuleOptions();
 
     //apply->setEnabled( false );
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
 }
 
 void RuleOptionsDialog::cancelChanges()

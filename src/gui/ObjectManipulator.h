@@ -48,6 +48,8 @@ class ObjectTreeView;
 class ObjectTreeViewItem;
 class QComboBox;
 class QMenu;
+class ProjectPanel;
+
 namespace libfwbuilder 
 {
     class Firewall;
@@ -123,6 +125,7 @@ class ObjectManipulator : public QWidget/*ObjectManipulator_q*/ {
             libfwbuilder::ObjectGroup *gr,
             std::set<libfwbuilder::Firewall*> &fo);
 
+    ProjectPanel *m_project;
 public slots:
      virtual void libChanged(int l);
      virtual void switchingTrees(QWidget* w);
@@ -219,7 +222,7 @@ public slots:
                     const std::string &objtype,
                     const std::string &namesuffix);
     
-    ObjectManipulator( QWidget *parent );
+    ObjectManipulator( QWidget *parent);
     ~ObjectManipulator();
     void loadObjects();
     void loadObjects(libfwbuilder::FWObjectDatabase *db);

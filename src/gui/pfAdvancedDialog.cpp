@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -29,7 +31,7 @@
 
 #include "pfAdvancedDialog.h"
 #include "SimpleTextEditor.h"
-#include "ObjectManipulator.h"
+#include "FWWindow.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
@@ -106,8 +108,8 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
     slm.push_back("Normal");
     m_dialog->pf_optimization->clear();
     m_dialog->pf_optimization->addItems(getScreenNames(slm));
-    data.registerOption( m_dialog->pf_optimization,   fwopt,      "pf_optimization", slm); 
-    
+    data.registerOption( m_dialog->pf_optimization,   fwopt,      "pf_optimization", slm);
+
     data.registerOption( m_dialog->pf_check_shadowing     ,fwopt, "check_shading"       );
     data.registerOption( m_dialog->pf_pass_all_out        ,fwopt, "pass_all_out"        );
     data.registerOption( m_dialog->pf_in_out_code         ,fwopt, "in_out_code"         );
@@ -190,7 +192,7 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
     slm = getPrologPlaces( obj->getStr("platform").c_str() );
     m_dialog->prologPlace->clear();
     m_dialog->prologPlace->addItems(getScreenNames(slm));
-    data.registerOption( m_dialog->prologPlace,       fwopt,   "prolog_place", slm); 
+    data.registerOption( m_dialog->prologPlace,       fwopt,   "prolog_place", slm);
 
     data.registerOption( m_dialog->prolog_script    , fwopt,   "prolog_script"  );
     data.registerOption( m_dialog->epilog_script    , fwopt,   "epilog_script"  );
@@ -232,23 +234,23 @@ void pfAdvancedDialog::ltToggled()
     m_dialog->pf_timeout_interval->setEnabled( m_dialog->pf_do_timeout_interval->isChecked() );
     m_dialog->pf_timeout_frag->setEnabled( m_dialog->pf_do_timeout_frag->isChecked() );
 
-    m_dialog->pf_tcp_first->setEnabled( m_dialog->pf_set_tcp_first->isChecked() );       
-    m_dialog->pf_tcp_opening->setEnabled( m_dialog->pf_set_tcp_opening->isChecked() );     
-    m_dialog->pf_tcp_established->setEnabled( m_dialog->pf_set_tcp_established->isChecked() ); 
-    m_dialog->pf_tcp_closing->setEnabled( m_dialog->pf_set_tcp_closing->isChecked() );     
-    m_dialog->pf_tcp_finwait->setEnabled( m_dialog->pf_set_tcp_finwait->isChecked() );     
-    m_dialog->pf_tcp_closed->setEnabled( m_dialog->pf_set_tcp_closed->isChecked() );      
-    m_dialog->pf_udp_first->setEnabled( m_dialog->pf_set_udp_first->isChecked() );       
-    m_dialog->pf_udp_single->setEnabled( m_dialog->pf_set_udp_single->isChecked() );      
-    m_dialog->pf_udp_multiple->setEnabled( m_dialog->pf_set_udp_multiple->isChecked() );    
-    m_dialog->pf_icmp_first->setEnabled( m_dialog->pf_set_icmp_first->isChecked() );      
-    m_dialog->pf_icmp_error->setEnabled( m_dialog->pf_set_icmp_error->isChecked() );      
-    m_dialog->pf_other_first->setEnabled( m_dialog->pf_set_other_first->isChecked() );     
-    m_dialog->pf_other_single->setEnabled( m_dialog->pf_set_other_single->isChecked() );    
-    m_dialog->pf_other_multiple->setEnabled( m_dialog->pf_set_other_multiple->isChecked() );  
+    m_dialog->pf_tcp_first->setEnabled( m_dialog->pf_set_tcp_first->isChecked() );
+    m_dialog->pf_tcp_opening->setEnabled( m_dialog->pf_set_tcp_opening->isChecked() );
+    m_dialog->pf_tcp_established->setEnabled( m_dialog->pf_set_tcp_established->isChecked() );
+    m_dialog->pf_tcp_closing->setEnabled( m_dialog->pf_set_tcp_closing->isChecked() );
+    m_dialog->pf_tcp_finwait->setEnabled( m_dialog->pf_set_tcp_finwait->isChecked() );
+    m_dialog->pf_tcp_closed->setEnabled( m_dialog->pf_set_tcp_closed->isChecked() );
+    m_dialog->pf_udp_first->setEnabled( m_dialog->pf_set_udp_first->isChecked() );
+    m_dialog->pf_udp_single->setEnabled( m_dialog->pf_set_udp_single->isChecked() );
+    m_dialog->pf_udp_multiple->setEnabled( m_dialog->pf_set_udp_multiple->isChecked() );
+    m_dialog->pf_icmp_first->setEnabled( m_dialog->pf_set_icmp_first->isChecked() );
+    m_dialog->pf_icmp_error->setEnabled( m_dialog->pf_set_icmp_error->isChecked() );
+    m_dialog->pf_other_first->setEnabled( m_dialog->pf_set_other_first->isChecked() );
+    m_dialog->pf_other_single->setEnabled( m_dialog->pf_set_other_single->isChecked() );
+    m_dialog->pf_other_multiple->setEnabled( m_dialog->pf_set_other_multiple->isChecked() );
 
-    m_dialog->pf_adaptive_start->setEnabled( m_dialog->pf_set_adaptive->isChecked() );       
-    m_dialog->pf_adaptive_end->setEnabled( m_dialog->pf_set_adaptive->isChecked() );       
+    m_dialog->pf_adaptive_start->setEnabled( m_dialog->pf_set_adaptive->isChecked() );
+    m_dialog->pf_adaptive_end->setEnabled( m_dialog->pf_set_adaptive->isChecked() );
 }
 
 /*
@@ -268,7 +270,7 @@ void pfAdvancedDialog::accept()
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData() );
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData() );
 
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

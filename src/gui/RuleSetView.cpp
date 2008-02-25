@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,19 +17,20 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
 
+#include "fwbuilder_ph.h"
+
 #include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "FWWindow.h"
 #include "RuleSetView.h"
-#include "ObjectManipulator.h"
 #include "ObjectEditor.h"
 #include "platforms.h"
 #include "FWObjectDrag.h"
@@ -78,6 +79,7 @@
 #include <qstyle.h>
 #include <qtimer.h>
 #include <qpixmapcache.h>
+#include "ProjectPanel.h"
 
 using namespace libfwbuilder;
 using namespace std;
@@ -98,12 +100,12 @@ RuleTableModel::RuleTableModel(const int rows, const int columns, RuleSetView *r
         ruleSetView(ruleView)
 {};
 RuleTableModel::~RuleTableModel() {};
-    
+
 int RuleTableModel::rowCount ( const QModelIndex & ) const
 {
     return m_rowCount;
 }
-    
+
 int RuleTableModel::columnCount ( const QModelIndex & ) const
 {
     return m_columnCount;
@@ -122,12 +124,12 @@ void RuleTableModel::setRowCount ( const int &value )
     reset();
     //need to reset model for RuleSetView::iinit (two is)
 }
-    
+
 QVariant RuleTableModel::data ( const QModelIndex &, int role) const
 {
     return QVariant();
 }
-    
+
 QVariant RuleTableModel::headerData(int section, Qt::Orientation orientation, int role ) const
 {
     if (orientation == Qt::Horizontal)
@@ -137,7 +139,7 @@ QVariant RuleTableModel::headerData(int section, Qt::Orientation orientation, in
         if (role == Qt::DisplayRole)
             return QString(header.value(section));
     }
-    
+
     if (orientation == Qt::Vertical)
     {
         if (role == Qt::SizeHintRole)
@@ -148,7 +150,7 @@ QVariant RuleTableModel::headerData(int section, Qt::Orientation orientation, in
         {
             //QFont f = QAbstractTableModel::headerData(section, orientation, role ).value<QFont>();
             QFont f = st->getRulesFont();
-            
+
             if ((section >= ruleSetView->firstSelectedRule) && (section <= ruleSetView->lastSelectedRule))
                 f.setBold(true);
 
@@ -194,11 +196,11 @@ void RuleTableModel::insertRow( const int before_pos )
     if (before_pos > 0)
     for (int i = before_pos-1; i < m_rowCount; i++)
         //step back a little because of another QTableView bug
-        ruleSetView->verticalHeader()->resizeSection(i, 
+        ruleSetView->verticalHeader()->resizeSection(i,
             ruleSetView->rowHeights[i]);
     else
     for (int i = before_pos; i < m_rowCount; i++)
-        ruleSetView->verticalHeader()->resizeSection(i, 
+        ruleSetView->verticalHeader()->resizeSection(i,
             ruleSetView->rowHeights[i]);
 
     ruleSetView->unfreezeRowSizing();
@@ -219,9 +221,9 @@ void RuleTableModel::removeRows ( const int row1, const int row2 )
 {
     //(row2-row1)+1  rows deleted
     m_rowCount -= (row2-row1)+1;
-    
+
     ruleSetView->freezeRowSizing();
-    
+
     for (int i = row1; i < static_cast<int>(ruleSetView->rowHeights.size())-((row2-row1)+1); i++)
         ruleSetView->rowHeights[i] = ruleSetView->rowHeights[i+1+(row2-row1)];
     for (int i = row1; i <= row2; i++)
@@ -230,11 +232,11 @@ void RuleTableModel::removeRows ( const int row1, const int row2 )
     QAbstractTableModel::beginRemoveRows( QModelIndex(), row1, row2 );
     QAbstractTableModel::removeRows(row1, (row2-row1)+1);
     QAbstractTableModel::endRemoveRows();
-    
+
     for (int i = row1; i < m_rowCount; i++)
-        ruleSetView->verticalHeader()->resizeSection(i, 
+        ruleSetView->verticalHeader()->resizeSection(i,
         ruleSetView->rowHeights[i]);
-    
+
     ruleSetView->unfreezeRowSizing();
 }
 
@@ -263,7 +265,7 @@ QRect RuleDelegate::cellGeometry(const int row, const int col) const
         left += ruleSetView->getColumnWidth(i);
     cr.setLeft(left);
     cr.setWidth(ruleSetView->getColumnWidth(col));
-    
+
     return cr;
 }
 
@@ -336,7 +338,7 @@ class mouseEventFilter : public QObject
                 cerr << "event type=" << event->type() << endl;
                 return true;
             }
-            else 
+            else
                 return false;
         }
 };
@@ -348,18 +350,18 @@ bool headerMouseEventInterceptor::eventFilter( QObject *, QEvent *event)
     if (event->type() == QEvent::ContextMenu )
     {
         QContextMenuEvent *e = (QContextMenuEvent*)(event);
-        
+
         int row = rsv->rowAt( e->pos().y() );
 
-        rsv->contextMenu(row, -1, e->globalPos()); 
+        rsv->contextMenu(row, -1, e->globalPos());
     }
-    
+
     return false;
 }
 
 void RuleSetView::freezeRowSizing()
 {
-    rowSizingFrozen = true; 
+    rowSizingFrozen = true;
 }
 
 void RuleSetView::unfreezeRowSizing()
@@ -397,52 +399,40 @@ QPixmap LoadPixmap(const QString path)
     return p;
 }
 
-
-
-
-
-
-RuleSetView::RuleSetView( int r, int c, QWidget *parent ) : QTableView( /*r, c,*/ parent ), hme(this)
+RuleSetView::RuleSetView(ProjectPanel *project, int r, int c, QWidget *parent): 
+              QTableView( /*r, c,*/ parent ), hme(this),
+        ncols(c), RuleElementSpacing(4), selectedObject(0), 
+        selectedObjectCol(0), prevSelectedObject(0),
+        kbdGoingUp(false), changingSelection(false), changingRules(false),
+        firstSelectedRule(-1), lastSelectedRule(-1), ruleModel(new RuleTableModel(r, c, this)), 
+        ruleDelegate(new RuleDelegate(this)), m_project(project)
 {
-    firstSelectedRule = -1;
-    lastSelectedRule = -1;
     setFont(st->getRulesFont());
     rowSizingFrozen = false;
-    
-    ruleModel = new RuleTableModel(r, c, this);
+
     setModel(ruleModel);
-
-    ruleDelegate = new RuleDelegate(this);
     setItemDelegate(ruleDelegate);
-    
-    setCurrentCell(0,0);
 
-    kbdGoingUp = false;
-    RuleElementSpacing=4;
-    changingSelection = false;
-    changingRules = false;
+    setCurrentCell(0,0);
 
     setDragEnabled(true);
     setAcceptDrops(true);
-
-    ncols=c;
-    selectedObject = NULL;
 
     setFocusPolicy( Qt::StrongFocus );
 
     setSelectionMode( QAbstractItemView::ContiguousSelection );
     setSelectionBehavior( QAbstractItemView::SelectRows );
-    
+
     int lm, tm, rm, bm;
     getContentsMargins(&lm, &tm, &rm, &bm);
     setContentsMargins(fontMetrics().width( "W999W" ), tm, rm, bm);
-    
+
     horizontalHeader()->setResizeMode(QHeaderView::Interactive);
     verticalHeader()->setResizeMode(QHeaderView::Fixed);
 
     horizontalHeader()->setClickable(false);
     verticalHeader()->setClickable(true);
-    
+
     horizontalHeader()->setMovable(false);
 
     setContextMenuPolicy( Qt::CustomContextMenu );
@@ -457,10 +447,10 @@ RuleSetView::RuleSetView( int r, int c, QWidget *parent ) : QTableView( /*r, c,*
 
     connect( horizontalHeader(), SIGNAL( sectionResized ( int, int, int ) ),
              this, SLOT( horzSectionResized ( int, int, int ) ) );
-    
+
     connect( verticalHeader(),   SIGNAL( sectionResized ( int, int, int ) ),
              this, SLOT( vertSectionResized ( int, int, int ) ) );
-        
+
     connect( this, SIGNAL( customContextMenuRequested(const QPoint&) ),
              this, SLOT( contextMenuRequested(const QPoint&) ) );
 
@@ -481,11 +471,11 @@ bool RuleSetView::showCommentTip(QPoint pos, QHelpEvent *he)
         return false;
     int col = columnAt(pos.x() - verticalHeader()->width());
     if((pos.y() >= horizontalHeader()->height()) && RuleSetView::Comment == getColType(col))
-    {            
-        
+    {
+
         QString t="";
         int row = rowAt(pos.y() - horizontalHeader()->height());
-          
+
         QRect   cr;
 
         cr=ruleDelegate->cellGeometry(row,col);
@@ -499,7 +489,7 @@ bool RuleSetView::showCommentTip(QPoint pos, QHelpEvent *he)
                 cr.left() - horizontalOffset() - 2,
                 cr.top() - verticalOffset() - 2,
                 cr.width() + 4,
-                cr.height() + 4); 
+                cr.height() + 4);
 
         QRect global = QRect(
             viewport()->mapToGlobal(cr.topLeft()), viewport()->mapToGlobal(cr.bottomRight()));
@@ -508,7 +498,7 @@ bool RuleSetView::showCommentTip(QPoint pos, QHelpEvent *he)
     }
     return false;
 }
-      
+
 bool RuleSetView::event ( QEvent * event )
 {
     if (event->type() == QEvent::ToolTip)
@@ -520,7 +510,7 @@ bool RuleSetView::event ( QEvent * event )
         if ((st->getObjTooltips()) && (pos.y() >= horizontalHeader()->height()))
         {
             int col = columnAt(pos.x() - verticalHeader()->width());
-            int row = rowAt(pos.y() - horizontalHeader()->height());            
+            int row = rowAt(pos.y() - horizontalHeader()->height());
 
             if ((row < 0) || (col < 0)) return true;
 
@@ -561,7 +551,7 @@ bool RuleSetView::event ( QEvent * event )
             else
             {
                 FWObject *obj = getObj(row,col,contentsMouse.y(),&cr);
-                if (obj==NULL)  
+                if (obj==NULL)
                     return true;
                 t=FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj,true,true);
             }
@@ -570,7 +560,7 @@ bool RuleSetView::event ( QEvent * event )
                 cr.left() - horizontalOffset() - 2,
                 cr.top() - verticalOffset() - 2,
                 cr.width() + 4,
-                cr.height() + 4); 
+                cr.height() + 4);
 
             QRect global = QRect(
                 viewport()->mapToGlobal(cr.topLeft()), viewport()->mapToGlobal(cr.bottomRight()));
@@ -580,7 +570,7 @@ bool RuleSetView::event ( QEvent * event )
 
         return true;
     }
-    
+
     return QTableView::event(event);
 }
 
@@ -595,7 +585,7 @@ void RuleSetView::currentChanged( const QModelIndex &current )
 {
     if (fwbdebug)
         qDebug("RuleSetView::currentChanged to row %d, col %d",current.row(),current.column());
-    changeCurrentCell(current.row(), current.column()); 
+    changeCurrentCell(current.row(), current.column());
 }
 
 void RuleSetView::updateCell( const int row, const int col )
@@ -627,7 +617,7 @@ int RuleSetView::currentColumn() const
 {
     return m_currentColumn;
 }
-     
+
 void RuleSetView::setCurrentRow(const int value)
 {
     m_currentRow = value;
@@ -658,12 +648,12 @@ void RuleSetView::changeCurrentCell(const int row, const int col, bool fullrefre
     if (fullrefresh)
         setCurrentIndex(ruleModel->index(row,col));
 }
-     
+
 void RuleSetView::unselect()
 {
     clearSelection();
     selectedObject=NULL;
-    
+
     updateCell(currentRow(),currentColumn());
 }
 
@@ -680,18 +670,18 @@ void RuleSetView::hideEvent(QHideEvent *)
     QString k = settingsKey();
     QString v;
 
-    for (int col=0; col<ncols; col++)  
+    for (int col=0; col<ncols; col++)
         v = v + QString("%1 ").arg( columnWidth(col) );
 /* disabled because we need to remember the width for columns in
     * association with their names, not just sequentially. Since
     * different firewall types have different number of columns, doing it
     * just by numbers causes the last column to disappear when user
-    * switches from a firewall with 6 columns to firewall with 7 columns 
+    * switches from a firewall with 6 columns to firewall with 7 columns
     * (e.g. from pf to iptables)
  */
 //    st->setStr(k,v);
 
-    mw->unselectRules();
+    m_project->unselectRules();
 }
 
 QString RuleSetView::settingsKey()
@@ -750,14 +740,14 @@ void RuleSetView::init()
     if (!v.isEmpty())
     {
         userColWidth=true;
-        for (int col=0; col<ncols; col++)  
+        for (int col=0; col<ncols; col++)
             colW[col]=v.section(' ',col,col).toInt();
     } else
     {
         for (int col=0; col<ncols; col++)
         {
             QString lbl = ruleModel->headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();//horzHeaderLabels->stringList()[col];
-            
+
 
             QRect br=p.boundingRect(QRect(0,0,1000,1000),
                                     Qt::AlignLeft|Qt::AlignVCenter,
@@ -783,12 +773,12 @@ void RuleSetView::init()
             QRect cr = calculateCellSize(row,col);
             h = QMAX(h, cr.height());
             if (!userColWidth)
-                colW[col]=QMAX(colW[col],cr.width()); 
+                colW[col]=QMAX(colW[col],cr.width());
         }
         adjustRow_int(row,h);
     }
 
-    for (int col=0; col<ncols; col++) 
+    for (int col=0; col<ncols; col++)
     {
 //        ruleDelegate->setColumnWidth(col,colW[col]);
         horizontalHeader()->resizeSection(col, colW[col]);
@@ -810,16 +800,16 @@ QSize RuleSetView::getPMSize()
     QString icn="icon-ref";
     if (FWBSettings::SIZE16X16 == st->getIconsInRulesSize())
         icn="icon-tree";
-//    return QPixmap::fromMimeSource( 
+//    return QPixmap::fromMimeSource(
 //        Resources::global_res->getObjResourceStr(obj, icn).c_str() );
 
     QString icn_file = QString(":/Icons/AddressTable/")+icn;
-    
+
     if (fwbdebug)
         qDebug("RuleSetView::getPMSize()   icn=%s",icn.toAscii().constData());
     QPixmap pm;
     LoadPixmap(icn_file, pm);
-    
+
     pixmap_h    = pm.height();
     pixmap_w    = pm.width();
     return pm.size();
@@ -856,7 +846,7 @@ void RuleSetView::iinit()
                 Resources::getTargetCapabilityBool(f->getStr("platform"),
                 "supports_time");
     } catch (FWException &ex)    {    }
-    
+
     update();
 
     return;
@@ -897,7 +887,7 @@ QRect RuleSetView::calculateCellSize( int row, int col )
             if (re==NULL)
             {
                 /* broken rule element, fix it */
-                FWObject *nre=mw->db()->create("When");
+                FWObject *nre=m_project->db()->create("When");
                 assert(nre!=NULL);
                 rule->add(nre);
             }
@@ -924,7 +914,7 @@ QRect RuleSetView::calculateCellSize( int row, int col )
                                         Qt::AlignLeft|Qt::AlignVCenter,
                                         ot);
                 hc += item_h;
-                int itmW = RuleElementSpacing/2 + pixmap_w + 
+                int itmW = RuleElementSpacing/2 + pixmap_w +
                         RuleElementSpacing + br.width();
                 wc  = QMAX(wc, itmW);
             }
@@ -972,8 +962,8 @@ QRect RuleSetView::calculateCellSize( int row, int col )
             QRect br=p.boundingRect(QRect(0,0,1000,1000),
                                     Qt::AlignLeft|Qt::AlignVCenter,
                                     QString::fromUtf8(rule->getComment().c_str()) );
-            
-            hc = st->getClipComment() ? item_h : (br.height() + RuleElementSpacing/2); 
+
+            hc = st->getClipComment() ? item_h : (br.height() + RuleElementSpacing/2);
             wc = RuleElementSpacing/2 + br.width();
             break;
         }
@@ -994,7 +984,7 @@ QRect RuleSetView::calculateCellSize( int row, int col )
 
     h = QMAX(h, hc);
     h = QMAX(h, pixmap_h+RuleElementSpacing);
-    
+
     wc = QMAX(wc, QApplication::globalStrut().width());
     wc += RuleElementSpacing/2;  // some padding
 
@@ -1039,7 +1029,7 @@ QPixmap RuleSetView::getPixmap(FWObject *obj, PixmapAttr pmattr) const
     if (pmattr == Ref)  icn="icon-ref";
     if (pmattr == Tree) icn="icon-tree";
 
-//    return QPixmap::fromMimeSource( 
+//    return QPixmap::fromMimeSource(
 //        Resources::global_res->getObjResourceStr(obj, icn).c_str() );
 
     QString icn_file = (":/Icons/"+obj->getTypeName()+"/"+icn).c_str();// = Resources::global_res->getObjResourceStr(obj, icn).c_str();
@@ -1073,11 +1063,11 @@ void RuleSetView::paintCell(QPainter *pntr,
         qDebug("Draw cell: row=%d col=%d  current palette=%d",
                row,col,palette().serialNumber());*/
     if (ruleIndex.count(row)==0) return;
-    
+
     QString     rclr;
     Rule *rule = Rule::cast( ruleIndex[row] );
     if (rule==NULL) return;
-    
+
     FWOptions  *ropt = rule->getOptionsObject();
     assert(ropt!=NULL);
     rclr = ropt->getStr("color").c_str();
@@ -1132,7 +1122,7 @@ void RuleSetView::paintCell(QPainter *pntr,
         RuleElement *re = getRE(row,col);
         if (re==NULL) return;
         re_size = re->size();
-        
+
         for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
         {
             FWObject *o1= *i;
@@ -1157,17 +1147,17 @@ void RuleSetView::paintCell(QPainter *pntr,
             x = r.left()+1;
 
             QSize sz = drawIconInRule(p, x, y, re, o1);
-        
+
             x += sz.width()+1;
-            
-            
+
+
             p.drawText( x, y + RuleElementSpacing/2,
                         cr.width()-sz.width()-1, item_h,
                         Qt::AlignLeft|Qt::AlignVCenter, objectText(re,o1) );
-            
+
             FWObject *mwSelObj = selectedObject;
             std::vector<libfwbuilder::FWObject*> om_selected_objects =
-                    om->getCurrentObjectTree()->getSelectedObjects();
+                    m_project->getCurrentObjectTree()->getSelectedObjects();
 
             if (mwSelObj==NULL && om_selected_objects.size()!=0)
                 mwSelObj = om_selected_objects.front();
@@ -1186,7 +1176,7 @@ void RuleSetView::paintCell(QPainter *pntr,
                 p.drawLine( 1, y+item_h-3, cr.width()-3, y+item_h-3 );
                 p.drawLine( 1, y+1, 1, y+item_h-3 );
 
-            } 
+            }
 
             y += item_h;
         }
@@ -1217,7 +1207,7 @@ void RuleSetView::paintCell(QPainter *pntr,
                 if (rule==NULL) return;
 
                 QString platform=getPlatform();
-                string act = rule->getActionAsString(); 
+                string act = rule->getActionAsString();
 
                 QString icn = chooseIcon((":/Icons/" + act).c_str()); //for example :/Icons/Continue
                 QString res="";
@@ -1243,7 +1233,7 @@ void RuleSetView::paintCell(QPainter *pntr,
                 string dir = rule->getDirectionAsString();
                 if (dir.empty()) dir = "Both";
                 QString icn = chooseIcon((":/Icons/" + dir).c_str());
-                
+
                 QPixmap pm;
                 LoadPixmap(icn, pm);
 
@@ -1310,11 +1300,11 @@ void RuleSetView::paintCell(QPainter *pntr,
                 break;
         }  // switch
     }
-    
+
     p.end();
-    
+
     pntr->drawPixmap( cr.left() - horizontalOffset(), cr.top() - verticalOffset(), bufferpixmap );
-    
+
     return;
 }
 
@@ -1370,24 +1360,24 @@ QSize RuleSetView::drawIconInRule(QPainter &p, int x, int y, RuleElement *re, FW
 
     if (!st->getShowIconsInRules())
         return QSize();
-    QPixmap pm; 
-    if (FWBSettings::SIZE16X16 == st->getIconsInRulesSize())  
+    QPixmap pm;
+    if (FWBSettings::SIZE16X16 == st->getIconsInRulesSize())
         pm = getPixmap(o1, Tree);
-    
-    if (FWBSettings::SIZE25X25 == st->getIconsInRulesSize())  
+
+    if (FWBSettings::SIZE25X25 == st->getIconsInRulesSize())
         pm = getPixmap(o1, Normal);
     if (!re->isAny())
         p.drawPixmap( x, y + RuleElementSpacing/2, pm );
 
     return pm.size();
 }
-        
+
 QString RuleSetView::getPlatform()
 {
     return  getFirewall()->getStr("platform").c_str();
 }
 
-    
+
 libfwbuilder::PolicyRule* RuleSetView::getRule(int row)
 {
     return PolicyRule::cast( ruleIndex[row] );
@@ -1395,7 +1385,7 @@ libfwbuilder::PolicyRule* RuleSetView::getRule(int row)
 
 void RuleSetView::selectRE( int row, int col)
 {
-    mw->selectRules();
+    m_project->selectRules();
 
     if (row!=currentRow() || col!=currentColumn())
     {
@@ -1406,7 +1396,7 @@ void RuleSetView::selectRE( int row, int col)
 
 void RuleSetView::selectRE(libfwbuilder::FWReference *ref)
 {
-    mw->selectRules();
+    m_project->selectRules();
 
     setSelectedObject( ref->getPointer() );
 
@@ -1446,8 +1436,8 @@ void RuleSetView::selectionChanged(const QItemSelection &, const QItemSelection 
         //unselect();
         setCurrentIndex(QModelIndex());
 
-        mw->unselectRules();
-        
+        m_project->unselectRules();
+
         return;
     }
 
@@ -1457,7 +1447,7 @@ void RuleSetView::selectionChanged(const QItemSelection &, const QItemSelection 
     lastSelectedRule=itemSelectionRange.bottom();
 
     if (fwbdebug) qDebug("RuleSetView::selectionChanged New selection rows: %d - %d", firstSelectedRule, lastSelectedRule);
-        
+
     if (lastSelectedRule < firstSelectedRule)
     {
         int i = lastSelectedRule;
@@ -1477,27 +1467,27 @@ void RuleSetView::selectionChanged(const QItemSelection &, const QItemSelection 
     mw->m_mainWindow->pasteRuleAboveAction->setEnabled( selectionSize==1 );
     mw->m_mainWindow->pasteRuleBelowAction->setEnabled( selectionSize==1 );
 
-    mw->selectRules();
+    m_project->selectRules();
 }
 
 void RuleSetView::adjustColumn( int col )
 {
     QString lbl = ruleModel->headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();
-    
+
     QFontMetrics p(st->getRulesFont());//(this);
     QRect br=p.boundingRect(QRect(0, 0, 1000, 1000),
                             Qt::AlignLeft|Qt::AlignVCenter,
                             lbl );
 
     int     w = br.width() + 10;
-    
+
     int row=0;
     for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++,row++)
     {
         QRect cr = calculateCellSize(row,col);
         w=QMAX(w,cr.width());
     }
-    
+
     horizontalHeader()->resizeSection(col, w);
 }
 
@@ -1529,7 +1519,7 @@ void RuleSetView::adjustRow( int row )
         h = QMAX(h, cr.height());
         int w = cr.width();
 
-        if (columnWidth(col)<w) 
+        if (columnWidth(col)<w)
             horizontalHeader()->resizeSection(col, w);
 
     }
@@ -1539,11 +1529,11 @@ void RuleSetView::adjustRow( int row )
 
 Rule* RuleSetView::insertRule(int pos, FWObject *r)
 {
-    if (r!=NULL && 
-        ruleset->getTypeName()==Policy::TYPENAME && 
+    if (r!=NULL &&
+        ruleset->getTypeName()==Policy::TYPENAME &&
         r->getTypeName()!=PolicyRule::TYPENAME)  return NULL;
-    if (r!=NULL && 
-        ruleset->getTypeName()==NAT::TYPENAME    && 
+    if (r!=NULL &&
+        ruleset->getTypeName()==NAT::TYPENAME    &&
         r->getTypeName()!=NATRule::TYPENAME   )  return NULL;
 
     if (pos<0) pos=0;
@@ -1601,7 +1591,7 @@ Rule* RuleSetView::insertRule(int pos, FWObject *r)
     setCurrentCell( pos, currentColumn() );
     updateCell(pos,currentColumn());
 
-    if (fwbdebug) qDebug("Firewall changed: insertRule"); 
+    if (fwbdebug) qDebug("Firewall changed: insertRule");
 
     return newrule;
 }
@@ -1621,7 +1611,7 @@ void RuleSetView::insertRule()
         insertRule(0,NULL);
 
     changingRules = false;
-    om->updateLastModifiedTimestampForOneFirewall(getFirewall());
+    mw->updateLastModifiedTimestampForOneFirewall(getFirewall());
 }
 
 FWObject* RuleSetView::getSelectedObject()
@@ -1631,7 +1621,7 @@ FWObject* RuleSetView::getSelectedObject()
 
 void RuleSetView::addRuleBranch(PolicyRule *rule)
 {
-    if (fwbdebug) qDebug("RuleSetView::addRuleBranch"); 
+    if (fwbdebug) qDebug("RuleSetView::addRuleBranch");
 
     FWOptions *ropt = rule->getOptionsObject();
     QString branchName = ropt->getStr("branch_name").c_str();
@@ -1674,7 +1664,7 @@ void RuleSetView::copyRuleContent(Rule *dst, Rule *src)
     {
         string    dtype= (*j)->getTypeName();
         FWObject *selem= src->getFirstByType(dtype);
-        if (selem!=NULL) 
+        if (selem!=NULL)
             (*j)->duplicate(selem);
     }
 
@@ -1750,7 +1740,7 @@ void RuleSetView::mousePressEvent( QMouseEvent* ev )
     int row=rowAt(ev->y());
     int col=columnAt(ev->x());
 
-    FWObject *obj=getObj(row,col,ev->y()+verticalOffset()); 
+    FWObject *obj=getObj(row,col,ev->y()+verticalOffset());
     bool needUpdate= (row==currentRow() && col==currentColumn() && selectedObject!=obj);
 
     if (fwbdebug)
@@ -1780,18 +1770,18 @@ void RuleSetView::mousePressEvent( QMouseEvent* ev )
 
     changeCurrentCell(row, col, true); //forget old selection by setting View's current cell
     setSelectedObject(obj);
-    
+
     //verticalHeader()->update();
 }
 
 void RuleSetView::mouseReleaseEvent( QMouseEvent* ev )
 {
-    QTableView::mouseReleaseEvent(ev); 
-    
+    QTableView::mouseReleaseEvent(ev);
+
     if (fwbdebug)
         qDebug("RuleSetView::contentsMouseReleaseEvent");
-    
-    if (oe->isVisible() && !switchObjectInEditor( columnAt(ev->x()) ))
+
+    if (mw->isEditorVisible() && !switchObjectInEditor( columnAt(ev->x()) ))
     {
         ev->accept();
     };
@@ -1820,9 +1810,9 @@ void RuleSetView::openObjectInTree(FWObject *obj)
 {
     if (fwbdebug)
         qDebug("RuleSetView::openObjectInTree happens");
-    
+
     if (gui_experiment1) return;
-    
+
     FWObject *oo = obj;
     if (obj==NULL || Rule::cast(obj)!=NULL)
         oo = getFirewall();
@@ -1831,9 +1821,9 @@ void RuleSetView::openObjectInTree(FWObject *obj)
 
     setUpdatesEnabled(false);
     //bool f = hasFocus();
-    om->setFocus();
-    om->openObject(oo);
-    om->clearFocus();
+    mw->setManipulatorFocus();
+    mw->openObject(oo);
+    mw->clearManipulatorFocus();
     setFocus();
     setUpdatesEnabled(true);
     update();
@@ -1844,7 +1834,7 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
     if (fwbdebug)
         qDebug("RuleSetView::contextMenu() at row=%d, col=%d", row, col);
 
-    if (fwbdebug) 
+    if (fwbdebug)
         qDebug("RuleSetView::contextMenu() selected rows: %d - %d", firstSelectedRule, lastSelectedRule);
 
     if (col > 0)
@@ -1863,10 +1853,10 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
     if (row<0 && ruleset->size()==0)
     {
         QMenu *popup=new QMenu(this);
-        
+
         popup->addAction( tr("Insert Rule"), this, SLOT( insertRule() ));
         popup->addAction( tr("Paste Rule"), this, SLOT( pasteRuleAbove() ));
-        
+
         popup->exec( pos );
         delete popup;
         return;
@@ -1880,7 +1870,7 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
 
         QMenu *popup=new QMenu(this);
         popup->addAction( tr("Paste Rule"), this, SLOT( pasteRuleBelow() ));
-        
+
         popup->exec( pos );
         delete popup;
         return;
@@ -1888,7 +1878,7 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
 
 //    QPoint   rp = mapFromGlobal( pos);
 //    QHeader *hh = horizontalHeader();
-//    QHeader *vh = verticalHeader();    
+//    QHeader *vh = verticalHeader();
 //    int nx = rp.x()-vh->width()-1;
 //    int ny = rp.y()-hh->height()-1;
 //    objectClicked(row,col,0,QPoint(nx,ny));
@@ -1902,91 +1892,91 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
         case Action:
         {
             Firewall *f = getFirewall();
-            string platform=f->getStr("platform"); 
+            string platform=f->getStr("platform");
             QString action_name;
-       
+
             if (Resources::isTargetActionSupported(platform,"Accept"))
             {
                 action_name = getActionNameForPlatform(PolicyRule::Accept,
                         platform.c_str());
-                popup->addAction( QIcon(LoadPixmap(":/Icons/Accept")), 
+                popup->addAction( QIcon(LoadPixmap(":/Icons/Accept")),
                                   action_name, this, SLOT( changeActionToAccept() ));
-            }        
+            }
             if (Resources::isTargetActionSupported(platform,"Deny"))
             {
                 action_name = getActionNameForPlatform(PolicyRule::Deny,
                         platform.c_str());
-                popup->addAction( QIcon(LoadPixmap(":/Icons/Deny")), 
+                popup->addAction( QIcon(LoadPixmap(":/Icons/Deny")),
                                   action_name, this, SLOT( changeActionToDeny() ));
             }
             if (Resources::isTargetActionSupported(platform,"Reject"))
             {
                 action_name = getActionNameForPlatform(PolicyRule::Reject,
                         platform.c_str());
-                popup->addAction( QIcon(LoadPixmap(":/Icons/Reject")), 
+                popup->addAction( QIcon(LoadPixmap(":/Icons/Reject")),
                                   action_name, this, SLOT( changeActionToReject() ));
             }
             if (Resources::isTargetActionSupported(platform,"Accounting"))
             {
                 action_name = getActionNameForPlatform(PolicyRule::Accounting,
                         platform.c_str());
-                popup->addAction( QIcon(LoadPixmap(":/Icons/Accounting")), 
+                popup->addAction( QIcon(LoadPixmap(":/Icons/Accounting")),
                                   action_name, this, SLOT( changeActionToAccounting() ));
             }
             if (Resources::isTargetActionSupported(platform,"Pipe"))
             {
                 action_name = getActionNameForPlatform(PolicyRule::Pipe,
                         platform.c_str());
-                popup->addAction( QIcon(LoadPixmap(":/Icons/Pipe")), 
+                popup->addAction( QIcon(LoadPixmap(":/Icons/Pipe")),
                                   action_name, this, SLOT( changeActionToPipe() ));
             }
             if (Resources::isTargetActionSupported(platform,"Tag"))
             {
                 action_name = getActionNameForPlatform(PolicyRule::Tag,
                         platform.c_str());
-                popup->addAction( QIcon(LoadPixmap(":/Icons/Tag")), 
+                popup->addAction( QIcon(LoadPixmap(":/Icons/Tag")),
                                   action_name, this, SLOT( changeActionToTag() ));
             }
             if (Resources::isTargetActionSupported(platform,"Classify"))
             {
                 action_name = getActionNameForPlatform(PolicyRule::Classify,
                         platform.c_str());
-                popup->addAction( QIcon(LoadPixmap(":/Icons/Classify")), 
+                popup->addAction( QIcon(LoadPixmap(":/Icons/Classify")),
                                   action_name, this, SLOT( changeActionToClassify() ));
             }
             if (Resources::isTargetActionSupported(platform,"Custom"))
             {
                 action_name = getActionNameForPlatform(PolicyRule::Custom,
                         platform.c_str());
-                popup->addAction( QIcon(LoadPixmap(":/Icons/Custom")), 
+                popup->addAction( QIcon(LoadPixmap(":/Icons/Custom")),
                                   action_name, this, SLOT( changeActionToCustom() ));
             }
             if (Resources::isTargetActionSupported(platform,"Branch"))
             {
                 action_name = getActionNameForPlatform(PolicyRule::Branch,
                         platform.c_str());
-                popup->addAction( QIcon(LoadPixmap(":/Icons/Branch")), 
+                popup->addAction( QIcon(LoadPixmap(":/Icons/Branch")),
                                   action_name, this, SLOT( changeActionToBranch() ));
             }
             if (Resources::isTargetActionSupported(platform,"Route"))
             {
                 action_name = getActionNameForPlatform(PolicyRule::Route,
                         platform.c_str());
-                popup->addAction( QIcon(LoadPixmap(":/Icons/Route")), 
+                popup->addAction( QIcon(LoadPixmap(":/Icons/Route")),
                                   action_name, this, SLOT( changeActionToRoute() ));
             }
             if (Resources::isTargetActionSupported(platform,"Continue"))
             {
                 action_name = getActionNameForPlatform(PolicyRule::Continue,
                         platform.c_str());
-                popup->addAction( QIcon(LoadPixmap(":/Icons/Continue")), 
+                popup->addAction( QIcon(LoadPixmap(":/Icons/Continue")),
                                   action_name, this, SLOT( changeActionToContinue() ));
             }
-        
+
             popup->addSeparator ();
             QAction *paramID;
             paramID = popup->addAction( tr("Parameters"), this, SLOT( editSelected() ));
-        
+
             PolicyRule *rule = PolicyRule::cast( ruleIndex[row] );
             if (rule!=NULL)
             {
@@ -1999,26 +1989,26 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
         }
         case Direction:
         {
-            popup->addAction( QIcon(LoadPixmap(":/Icons/Inbound")), 
+            popup->addAction( QIcon(LoadPixmap(":/Icons/Inbound")),
                               tr("Inbound"), this, SLOT( changeDirectionToIn() ));
-            popup->addAction( QIcon(LoadPixmap(":/Icons/Outbound")), 
+            popup->addAction( QIcon(LoadPixmap(":/Icons/Outbound")),
                               tr("Outbound"), this, SLOT( changeDirectionToOut() ));
-            popup->addAction( QIcon(LoadPixmap(":/Icons/Both")), 
+            popup->addAction( QIcon(LoadPixmap(":/Icons/Both")),
                               tr("Both"), this, SLOT( changeDirectionToBoth() ));
 
             break;
         }
         case Options:
         {
-            popup->addAction( QIcon(LoadPixmap(":/Icons/Options")), 
+            popup->addAction( QIcon(LoadPixmap(":/Icons/Options")),
                               tr("Rule Options"), this, SLOT( editSelected() ));
 
             if (fwbdebug) qDebug(ruleset->getTypeName().c_str());
             if (ruleset->getTypeName() == Policy::TYPENAME) {
-        
-                popup->addAction( QIcon(LoadPixmap(":/Icons/Log")), 
+
+                popup->addAction( QIcon(LoadPixmap(":/Icons/Log")),
                                   tr("Logging On"), this, SLOT( changeLogToOn() ));
-                popup->addAction( QIcon(LoadPixmap(":/Icons/Blank")), 
+                popup->addAction( QIcon(LoadPixmap(":/Icons/Blank")),
                                   tr("Logging Off"), this, SLOT( changeLogToOff() ));
             }
             break;
@@ -2099,31 +2089,31 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
                 else
                 popup->addAction( tr("Rule %1").
                     arg(firstSelectedRule) )->setEnabled(false);
-                
+
                 QMenu *subcolor = popup->addMenu( tr("Change color") );
-                
+
                 QPixmap pcolor(16,16);
                 pcolor.fill(QColor(255,255,255));
                 subcolor->addAction( QIcon(pcolor), tr("No color"), this, SLOT ( setColorEmpty() ));
-                
+
                 pcolor.fill(st->getLabelColor(FWBSettings::RED));
                 subcolor->addAction( QIcon(pcolor), tr("Red"), this, SLOT ( setColorRed() ));
-                
+
                 pcolor.fill(st->getLabelColor(FWBSettings::ORANGE));
                 subcolor->addAction( QIcon(pcolor), tr("Orange"), this, SLOT ( setColorOrange() ));
-                
+
                 pcolor.fill(st->getLabelColor(FWBSettings::YELLOW));
                 subcolor->addAction( QIcon(pcolor), tr("Yellow"), this, SLOT ( setColorYellow() ));
-                
+
                 pcolor.fill(st->getLabelColor(FWBSettings::GREEN));
                 subcolor->addAction( QIcon(pcolor), tr("Green"), this, SLOT ( setColorGreen() ));
-                
+
                 pcolor.fill(st->getLabelColor(FWBSettings::BLUE));
                 subcolor->addAction( QIcon(pcolor), tr("Blue"), this, SLOT ( setColorBlue() ));
-                
+
                 pcolor.fill(st->getLabelColor(FWBSettings::PURPLE));
                 subcolor->addAction( QIcon(pcolor), tr("Purple"), this, SLOT ( setColorPurple() ));
-                
+
                 pcolor.fill(st->getLabelColor(FWBSettings::GRAY));
                 subcolor->addAction( QIcon(pcolor), tr("Gray"), this, SLOT ( setColorGray() ));
 
@@ -2184,10 +2174,10 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
 
         default:
             popup->addAction( tr("Edit")   , this , SLOT( editRE() ) );
-            break;  
+            break;
     }
 
-    
+
 
     popup->exec( pos );
 
@@ -2197,7 +2187,7 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
 void RuleSetView::revealObjectInTree()
 {
     if ( selectedObject!=NULL)
-        om->openObject(selectedObject);
+        mw->openObject(selectedObject);
 }
 
 void RuleSetView::findWhereUsedSlot()
@@ -2283,12 +2273,12 @@ void RuleSetView::changeAction(PolicyRule::Action act)
 
             rule->setAction( act );
             if (!changingRules)
-                om->updateLastModifiedTimestampForOneFirewall(getFirewall());
+                mw->updateLastModifiedTimestampForOneFirewall(getFirewall());
         }
 
         ruleopt->setBool("stateless", getStatelessFlagForAction(rule));
 
-        oe->actionChanged(rule);    
+        mw->actionChangedEditor(rule);
     }
 }
 
@@ -2296,7 +2286,7 @@ void RuleSetView::changeActionToAccept()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall action: changeActionToAccept"); 
+    if (fwbdebug) qDebug("Firewall action: changeActionToAccept");
     changeAction( PolicyRule::Accept );
 }
 
@@ -2304,7 +2294,7 @@ void RuleSetView::changeActionToDeny()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToDeny"); 
+    if (fwbdebug) qDebug("Firewall changed: changeActionToDeny");
     changeAction( PolicyRule::Deny );
 }
 
@@ -2312,7 +2302,7 @@ void RuleSetView::changeActionToReject()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToReject"); 
+    if (fwbdebug) qDebug("Firewall changed: changeActionToReject");
     changeAction( PolicyRule::Reject );
 }
 
@@ -2320,7 +2310,7 @@ void RuleSetView::changeActionToAccounting()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToAccounting"); 
+    if (fwbdebug) qDebug("Firewall changed: changeActionToAccounting");
     changeAction( PolicyRule::Accounting );
 }
 
@@ -2328,7 +2318,7 @@ void RuleSetView::changeActionToPipe()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToPipe"); 
+    if (fwbdebug) qDebug("Firewall changed: changeActionToPipe");
     changeAction( PolicyRule::Pipe );
 }
 
@@ -2336,7 +2326,7 @@ void RuleSetView::changeActionToTag()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToTag"); 
+    if (fwbdebug) qDebug("Firewall changed: changeActionToTag");
     changeAction( PolicyRule::Tag );
 }
 
@@ -2344,7 +2334,7 @@ void RuleSetView::changeActionToClassify()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToClassify"); 
+    if (fwbdebug) qDebug("Firewall changed: changeActionToClassify");
     changeAction( PolicyRule::Classify );
 }
 
@@ -2352,7 +2342,7 @@ void RuleSetView::changeActionToCustom()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToCustom"); 
+    if (fwbdebug) qDebug("Firewall changed: changeActionToCustom");
     changeAction( PolicyRule::Custom );
 }
 
@@ -2360,7 +2350,7 @@ void RuleSetView::changeActionToRoute()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToRoute"); 
+    if (fwbdebug) qDebug("Firewall changed: changeActionToRoute");
     changeAction( PolicyRule::Route );
 }
 
@@ -2368,7 +2358,7 @@ void RuleSetView::changeActionToContinue()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToContinue"); 
+    if (fwbdebug) qDebug("Firewall changed: changeActionToContinue");
     changeAction( PolicyRule::Continue );
 }
 
@@ -2378,7 +2368,7 @@ void RuleSetView::changeActionToBranch()
 
     if ( currentRow()!=-1 && currentColumn()!=-1 )
     {
-        if (fwbdebug) qDebug("Firewall action: changeActionToBranch"); 
+        if (fwbdebug) qDebug("Firewall action: changeActionToBranch");
         changeAction( PolicyRule::Branch );
 
         addRuleBranch( PolicyRule::cast( ruleIndex[currentRow()] ) );
@@ -2396,7 +2386,7 @@ void RuleSetView::changeDitection(PolicyRule::Direction dir)
         if (dir!=old_dir)
         {
             if (!changingRules)
-                om->updateLastModifiedTimestampForOneFirewall(getFirewall());
+                mw->updateLastModifiedTimestampForOneFirewall(getFirewall());
             rule->setDirection( dir );
         }
     }
@@ -2404,19 +2394,19 @@ void RuleSetView::changeDitection(PolicyRule::Direction dir)
 
 void RuleSetView::changeDirectionToIn()
 {
-    if (fwbdebug) qDebug("Firewall changed: changeDirectionToIn"); 
+    if (fwbdebug) qDebug("Firewall changed: changeDirectionToIn");
     changeDitection( PolicyRule::Inbound );
 }
 
 void RuleSetView::changeDirectionToOut()
 {
-    if (fwbdebug) qDebug("Firewall changed: changeDirectionToOut"); 
+    if (fwbdebug) qDebug("Firewall changed: changeDirectionToOut");
     changeDitection( PolicyRule::Outbound );
 }
 
 void RuleSetView::changeDirectionToBoth()
 {
-    if (fwbdebug) qDebug("Firewall changed: changeDirectionToBoth"); 
+    if (fwbdebug) qDebug("Firewall changed: changeDirectionToBoth");
     changeDitection( PolicyRule::Both );
 }
 
@@ -2427,9 +2417,9 @@ void RuleSetView::changeLogToOn()
     if ( currentRow()!=-1 && currentColumn()!=-1 )
     {
         PolicyRule *rule = PolicyRule::cast( ruleIndex[currentRow()] );
-        if (fwbdebug) qDebug("Firewall changed: changeLogToOn"); 
+        if (fwbdebug) qDebug("Firewall changed: changeLogToOn");
         if (!changingRules)
-            om->updateLastModifiedTimestampForOneFirewall(getFirewall());
+            mw->updateLastModifiedTimestampForOneFirewall(getFirewall());
         rule->setLogging( true );
     }
 }
@@ -2441,9 +2431,9 @@ void RuleSetView::changeLogToOff()
     if ( currentRow()!=-1 && currentColumn()!=-1 )
     {
         PolicyRule *rule = PolicyRule::cast( ruleIndex[currentRow()] );
-        if (fwbdebug) qDebug("Firewall changed: changeLogToOff"); 
+        if (fwbdebug) qDebug("Firewall changed: changeLogToOff");
         if (!changingRules)
-            om->updateLastModifiedTimestampForOneFirewall(getFirewall());
+            mw->updateLastModifiedTimestampForOneFirewall(getFirewall());
         rule->setLogging( false );
     }
 }
@@ -2489,22 +2479,22 @@ void RuleSetView::deleteObject(int row, int col, FWObject *obj)
     if (fwbdebug)
     {
         qDebug("RuleSetView::deleteObject row=%d col=%d id=%s",
-               row,col,id.c_str()); 
+               row,col,id.c_str());
         qDebug("obj = %p",re->getRoot()->findInIndex(id));
         int rc = obj->ref()-1;  obj->unref();
         qDebug("obj->ref_counter=%d",rc);
     }
 
     if (!changingRules)
-        om->updateLastModifiedTimestampForOneFirewall(getFirewall());
-    
+        mw->updateLastModifiedTimestampForOneFirewall(getFirewall());
+
     re->removeRef(obj);
 
     if (re->isAny()) re->setNeg(false);
 
     if (fwbdebug)
     {
-        qDebug("RuleSetView::deleteObject re->size()=%d",re->size()); 
+        qDebug("RuleSetView::deleteObject re->size()=%d",re->size());
         qDebug("obj = %p",re->getRoot()->findInIndex(id));
         int rc = obj->ref()-1;  obj->unref();
         qDebug("obj->ref_counter=%d",rc);
@@ -2513,7 +2503,7 @@ void RuleSetView::deleteObject(int row, int col, FWObject *obj)
     adjustColumn(col);
     adjustRow(row);
     updateCell(row,col);
-    mw->findObjectWidget->reset();
+    m_project->findObjectWidget->reset();
 }
 
 bool RuleSetView::insertObject(int row, int col, FWObject *obj)
@@ -2536,19 +2526,19 @@ bool RuleSetView::insertObject(int row, int col, FWObject *obj)
     {
         if (fwbdebug)
             qDebug("RuleSetView::insertObject  -- validation failed");
-    
-        if (RuleElementRItf::cast(re)) 
-            
+
+        if (RuleElementRItf::cast(re))
+
             QMessageBox::information( NULL , "Firewall Builder",
                                       "A single interface belonging to this firewall is expected in this field.",
                                       QString::null,QString::null);
-        
+
         else if (RuleElementRGtw::cast(re))
-            
+
             QMessageBox::information( NULL , "Firewall Builder",
                                       "A single ip adress is expected here. You may also insert a host or a network adapter leading to a single ip adress.",
                                       QString::null,QString::null);
-        
+
         return false;
     }
 
@@ -2562,7 +2552,7 @@ bool RuleSetView::insertObject(int row, int col, FWObject *obj)
         /* avoid duplicates */
         string cp_id=obj->getId();
         list<FWObject*>::iterator j;
-        for(j=re->begin(); j!=re->end(); ++j)     
+        for(j=re->begin(); j!=re->end(); ++j)
         {
             FWObject *o=*j;
             if(cp_id==o->getId()) return false;
@@ -2585,9 +2575,9 @@ bool RuleSetView::insertObject(int row, int col, FWObject *obj)
     adjustRow(row);
     updateCell(row, col);
 
-    if (fwbdebug) qDebug("Firewall changed: insertObject"); 
+    if (fwbdebug) qDebug("Firewall changed: insertObject");
     if (!changingRules)
-        om->updateLastModifiedTimestampForOneFirewall(getFirewall());
+        m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
     return true;
 }
 
@@ -2599,7 +2589,7 @@ void RuleSetView::pasteObject()
     for (i= FWObjectClipboard::obj_clipboard->begin();
          i!=FWObjectClipboard::obj_clipboard->end(); ++i)
     {
-        FWObject *co= mw->db()->findInIndex(*i);
+        FWObject *co= m_project->db()->findInIndex(*i);
         if (Rule::cast(co)!=NULL)  pasteRuleAbove();
         else
         {
@@ -2623,10 +2613,10 @@ void RuleSetView::negateRE()
     {
         RuleElement *re = getRE(currentRow(),currentColumn());
         if (re==NULL) return;
-        if (fwbdebug) qDebug("Firewall changed: negateRE"); 
+        if (fwbdebug) qDebug("Firewall changed: negateRE");
         re->toggleNeg();
         if (!changingRules)
-            om->updateLastModifiedTimestampForOneFirewall(getFirewall());
+            m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
 
         updateCell(currentRow(),currentColumn());
     }
@@ -2644,10 +2634,10 @@ void RuleSetView::editRE()
 
 void RuleSetView::keyPressEvent( QKeyEvent* ev )
 {
-    mw->selectRules();
+    m_project->selectRules();
 
     RuleElement *re;
-    
+
     int oldRow = currentRow();
     int oldColumn = currentColumn();
 
@@ -2675,15 +2665,15 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         re = getRE(currentRow(),currentColumn() + shift);
         if (re==NULL)
         {
-            if (oe->isVisible() && !switchObjectInEditor(currentColumn() + shift))
+            if (m_project->isEditorVisible() && !switchObjectInEditor(currentColumn() + shift))
             {
                 ev->accept();
-            } else   
+            } else
                 //QTableView::keyPressEvent(ev);
                 changeCurrentCell(currentRow(), currentColumn()+shift);
-                
+
             openObjectInTree(getFirewall());
-            
+
             return;
         }
 
@@ -2710,16 +2700,16 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
 
         changeCurrentCell(currentRow(),currentColumn() + shift);
 
-        if (oe->isVisible() && !switchObjectInEditor(currentColumn()))
+        if (m_project->isEditorVisible() && !switchObjectInEditor(currentColumn()))
         {
             ev->accept();
-        } /*else 
+        } /*else
             QTableView::keyPressEvent(ev);*/
         return;
     }
 
-    if (ev->key()==Qt::Key_Down || ev->key()==Qt::Key_Up || 
-        ev->key()==Qt::Key_PageDown || ev->key()==Qt::Key_PageUp || 
+    if (ev->key()==Qt::Key_Down || ev->key()==Qt::Key_Up ||
+        ev->key()==Qt::Key_PageDown || ev->key()==Qt::Key_PageUp ||
         ev->key()==Qt::Key_End || ev->key()==Qt::Key_Home)
     {
         re = getRE(currentRow(),currentColumn());
@@ -2756,7 +2746,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         if ((newrow < 0) || (newrow >= ruleModel->rowCount()))
             return;
 
-        if (ev->key()==Qt::Key_PageDown || ev->key()==Qt::Key_PageUp || 
+        if (ev->key()==Qt::Key_PageDown || ev->key()==Qt::Key_PageUp ||
             ev->key()==Qt::Key_End || ev->key()==Qt::Key_Home)
         {
             re = getRE(newrow,currentColumn());
@@ -2765,11 +2755,11 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
                 o1=re->front();
                 if (FWReference::cast(o1)!=NULL) o1=FWReference::cast(o1)->getPointer();
                 setSelectedObject(o1);
-                if (oe->isVisible() && !switchObjectInEditor(currentColumn()))
+                if (m_project->isEditorVisible() && !switchObjectInEditor(currentColumn()))
                 {
                     ev->accept();
                     return;
-                } 
+                }
             }
             changeCurrentCell(newrow, currentColumn());
             return;
@@ -2790,10 +2780,10 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
             /* going up and down in a column that does not contain objects (action/direction etc) */
             //QTableView::keyPressEvent(ev);  // to make new row current
             changeCurrentCell(newrow, currentColumn());
-            if (oe->isVisible() && !switchObjectInEditor(currentColumn()))
+            if (m_project->isEditorVisible() && !switchObjectInEditor(currentColumn()))
             {
                 ev->accept();
-            } 
+            }
             openObjectInTree(getFirewall());
             return;
         }
@@ -2812,11 +2802,11 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
                 o1=re->back();
                 if (FWReference::cast(o1)!=NULL) o1=FWReference::cast(o1)->getPointer();
                 setSelectedObject(o1);
-                if (oe->isVisible() && !switchObjectInEditor(currentColumn()))
+                if (m_project->isEditorVisible() && !switchObjectInEditor(currentColumn()))
                 {
                     ev->accept();
                     return;
-                } 
+                }
             }
             changeCurrentCell(newrow, currentColumn());
             //QTableView::keyPressEvent(ev);
@@ -2837,7 +2827,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
                 o1=re->front();
                 if (FWReference::cast(o1)!=NULL) o1=FWReference::cast(o1)->getPointer();
                 setSelectedObject(o1);
-                if (oe->isVisible() && !switchObjectInEditor(currentColumn()))
+                if (m_project->isEditorVisible() && !switchObjectInEditor(currentColumn()))
                 {
                     ev->accept();
                     return;
@@ -2849,7 +2839,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         }
         /* switching to another object in the same cell */
         setSelectedObject((ev->key()==Qt::Key_Up) ? prev : o1);
-        if (oe->isVisible() && !switchObjectInEditor(currentColumn()))
+        if (m_project->isEditorVisible() && !switchObjectInEditor(currentColumn()))
         {
             ev->accept();
             return;
@@ -2865,10 +2855,10 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
     {
         deleteSelectedObject();
     }
-    
+
     updateCell(currentRow(),currentColumn());
     updateCell(oldRow,oldColumn);
-    
+
     QTableView::keyPressEvent(ev);
 }
 
@@ -2893,17 +2883,17 @@ QDrag* RuleSetView::dragObject()
 
 void RuleSetView::dragEnterEvent( QDragEnterEvent *ev)
 {
-    if (fwbdebug) 
+    if (fwbdebug)
         qDebug("RuleSetView::dragEnterEvent");
     ev->setAccepted( ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) );
 }
 
 void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
 {
-    if (fwbdebug) 
+    if (fwbdebug)
         qDebug("RuleSetView::dragMoveEvent");
     QWidget *fromWidget = ev->source();
-    
+
     // The source of DnD object must be the same instance of fwbuilder
     if (fromWidget)
     {
@@ -2913,7 +2903,7 @@ void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
                 ev->setDropAction(Qt::CopyAction);
             else
                 ev->setDropAction(Qt::MoveAction);
-            
+
             int  row = rowAt( ev->pos().y() );
             int  col = columnAt( ev->pos().x() );
 
@@ -2968,14 +2958,14 @@ void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
             }
         }
     }
-    
+
     ev->setAccepted(false);
 }
 
 
 void RuleSetView::dropEvent( QDropEvent *ev)
 {
-    if (fwbdebug) 
+    if (fwbdebug)
         qDebug("RuleSetView::dropEvent");
     if (!isTreeReadWrite(this,ruleset)) return;
 
@@ -2989,7 +2979,7 @@ void RuleSetView::dropEvent( QDropEvent *ev)
 /* without this check the user can drag and drop an object inside the
     * same rule element. This is bad because it is considered a change,
     * even though nothing really changes. With this check, we can not
-    * drag and drop an object from the tree into a selected cell... 
+    * drag and drop an object from the tree into a selected cell...
 
     if (row==currentRow() && col==currentColumn()) return;
  */
@@ -3024,7 +3014,7 @@ void RuleSetView::dropEvent( QDropEvent *ev)
             }
             else //move
             {
-                if (insertObject(row,col,dragobj) ) 
+                if (insertObject(row,col,dragobj) )
                 {
                     deleteObject(oldRow,oldCol,dragobj);
 
@@ -3046,18 +3036,19 @@ void RuleSetView::removeRule()
  */
     changingRules = true;
 
-    mw->findObjectWidget->reset();
-    
+    m_project->findObjectWidget->reset();
+
     /* remove rules firstSelectedRule through lastSelectedRule */
 
     if ( firstSelectedRule!=-1 )
     {
-        if (fwbdebug) qDebug("Firewall changed: removeRule"); 
+        if (fwbdebug) qDebug("Firewall changed: removeRule");
 
         setUpdatesEnabled(false);
         for (int rn=lastSelectedRule; rn>=firstSelectedRule; --rn)
         {
-            if (oe->isVisible() && oe->getOpened()==ruleIndex[rn]) oe->close();
+            if (m_project->isEditorVisible() && m_project->getOpenedEditor()==ruleIndex[rn]) 
+                m_project->closeEditor();
 
             bool delete_branch_tab = false;
             PolicyRule *r = PolicyRule::cast( ruleIndex[rn] );
@@ -3086,18 +3077,18 @@ void RuleSetView::removeRule()
 
             }
         }
-        
+
         ruleModel->removeRows( firstSelectedRule, lastSelectedRule );
-        
+
         setUpdatesEnabled(true);
-        
+
         clearSelection();
 
         setCurrentCell( firstSelectedRule, currentColumn() );
         update();
 
         changingRules = false;
-        om->updateLastModifiedTimestampForOneFirewall(getFirewall());
+        m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
     }
 }
 
@@ -3109,7 +3100,7 @@ void RuleSetView::addRuleAfterCurrent()
     changingRules = true;
     insertRule(lastSelectedRule+1,NULL);
     changingRules = false;
-    om->updateLastModifiedTimestampForOneFirewall(getFirewall());
+    m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
 }
 
 void RuleSetView::moveRule()
@@ -3122,12 +3113,12 @@ void RuleSetView::moveRule()
     int minRN=0;
     int maxRN=ruleset->size()-selectionSize;
 
-    Ui::askRuleNumberDialog_q d; 
+    Ui::askRuleNumberDialog_q d;
     QDialog ddialog;
     d.setupUi(&ddialog);
     d.newRuleNum->setMinimum(minRN);
     d.newRuleNum->setMaximum(maxRN);
-    
+
     if (ddialog.exec()==QDialog::Accepted)
     {
         int newN = d.newRuleNum->value();
@@ -3164,7 +3155,7 @@ void RuleSetView::moveRule()
                 }
                 nn++;
             }
-        } else 
+        } else
         {   // moving block of rules down
             for (int i=lastSelectedRule; i>=firstSelectedRule; i--)
             {
@@ -3179,7 +3170,7 @@ void RuleSetView::moveRule()
 
                     //swapping row sizes j+1 and j
                     int t = verticalHeader()->sectionSize(j+1);
-                    verticalHeader()->resizeSection(j+1, 
+                    verticalHeader()->resizeSection(j+1,
                         verticalHeader()->sectionSize(j));
                     verticalHeader()->resizeSection(j, t);
 
@@ -3200,7 +3191,7 @@ void RuleSetView::moveRule()
         changeCurrentCell( newN, currentColumn(), true );
 
         changingRules = false;
-        om->updateLastModifiedTimestampForOneFirewall(getFirewall());
+        m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
     }
 }
 
@@ -3222,7 +3213,7 @@ void RuleSetView::moveRuleUp()
 
         setCurrentCell( rn-1, currentColumn() );
         selectRE( rn-1 , currentColumn() );
-        
+
         update();
     }
 }
@@ -3245,7 +3236,7 @@ void RuleSetView::moveRuleDown()
 
         setCurrentCell( rn+1, currentColumn() );
         selectRE( rn+1 , currentColumn() );
-        
+
         update();
     }
 }
@@ -3303,25 +3294,25 @@ void RuleSetView::pasteRuleAbove()
 
     changingRules = true;
 
-    if (fwbdebug) qDebug("Firewall: pasteRuleAbove"); 
-    
+    if (fwbdebug) qDebug("Firewall: pasteRuleAbove");
+
     /* pick rules in reverse order */
     vector<string>::reverse_iterator i;
     for (i= FWObjectClipboard::obj_clipboard->rbegin();
          i!=FWObjectClipboard::obj_clipboard->rend(); ++i)
     {
-        FWObject *co= mw->db()->findInIndex(*i);
+        FWObject *co= m_project->db()->findInIndex(*i);
         if (!Rule::cast(co)) continue;
         insertRule( firstSelectedRule, co);
     }
 
     changingRules = false;
-    om->updateLastModifiedTimestampForOneFirewall(getFirewall());
+    m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
 }
-    
+
 
 void RuleSetView::pasteRuleBelow()
-{    
+{
     if (!isTreeReadWrite(this,ruleset)) return;
 
     /*int firstSelectedRule=-1;
@@ -3341,7 +3332,7 @@ void RuleSetView::pasteRuleBelow()
         firstSelectedRule=currentRow();
         lastSelectedRule=currentRow();
     }*/
-    
+
     int position;
     if (lastSelectedRule != -1)
         position = lastSelectedRule;
@@ -3353,13 +3344,13 @@ void RuleSetView::pasteRuleBelow()
     for (i= FWObjectClipboard::obj_clipboard->begin();
          i!=FWObjectClipboard::obj_clipboard->end(); ++i,++n)
     {
-        FWObject *co= mw->db()->findInIndex(*i);
+        FWObject *co= m_project->db()->findInIndex(*i);
         if (!Rule::cast(co)) continue;
         insertRule( position+1+n, co);
     }
 
     changingRules = false;
-    om->updateLastModifiedTimestampForOneFirewall(getFirewall());
+    m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
 
 //    if (FWObjectClipboard::obj_clipboard->getObject()!=NULL)
 //        insertRule( rn+1, Rule::cast(FWObjectClipboard::obj_clipboard->getObject()) );
@@ -3374,14 +3365,14 @@ void RuleSetView::enableRule()
         for (int rn=lastSelectedRule; rn>=firstSelectedRule; --rn)
         {
             Rule *r = Rule::cast( ruleIndex[rn] );
-            if (fwbdebug) qDebug("Firewall changed: enableRule"); 
+            if (fwbdebug) qDebug("Firewall changed: enableRule");
             r->enable();
             setRuleNumber(rn,r);
         }
     }
 
     //changingRules = false;
-    om->updateLastModifiedTimestampForOneFirewall(getFirewall());
+    m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
 }
 
 void RuleSetView::disableRule()
@@ -3394,20 +3385,20 @@ void RuleSetView::disableRule()
         for (int rn=lastSelectedRule; rn>=firstSelectedRule; --rn)
         {
             Rule *r = Rule::cast( ruleIndex[rn] );
-            if (fwbdebug) qDebug("Firewall changed: disableRule"); 
+            if (fwbdebug) qDebug("Firewall changed: disableRule");
             r->disable();
             setRuleNumber(rn,r);
         }
     }
 
     //changingRules = false;
-    om->updateLastModifiedTimestampForOneFirewall(getFirewall());
+    m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
 }
 
 void RuleSetView::editSelected()
 {
-    if (!oe->isVisible()) oe->show();
-    switchObjectInEditor(currentColumn()); 
+    if (!m_project->isEditorVisible()) m_project->showEditor();
+    switchObjectInEditor(currentColumn());
 }
 
 bool RuleSetView::switchObjectInEditor(int col,bool validate)
@@ -3415,24 +3406,24 @@ bool RuleSetView::switchObjectInEditor(int col,bool validate)
     if (fwbdebug)
         qDebug("RuleSetView::switchObjectInEditor  col=%d  validate=%d",col,validate);
 
-        
+
     if (!isTreeReadWrite(this,ruleset)) return false;
     if ( currentRow()==-1 || currentColumn()==-1 ) return false;
-   
+
     FWObject *Object=NULL;
     ObjectEditor::OptType Operation=ObjectEditor::optNone;
 
     /*
     *  We need to know WHAT we are going to edit
-    
+
     1. Object
     2. OptType
-    
+
     * Object == null, OptType = optNone => blank
     * Object == Rule, OptType = optNone => Rule Options
     * Object == Rule, OptType != optNone => Virtual Object (Action, Comment ...)
     * Object != Rule, OptType = optNone => Regular Object Editor
-    
+
     Then we compare our object 'obj' and OptType with what we already
     have in ObjectEditor/ If they are the same, then we do nothing,
     otherwise we open obj in the  Object Editor
@@ -3482,13 +3473,13 @@ bool RuleSetView::switchObjectInEditor(int col,bool validate)
         }
     }
 
-    if (!mw->requestEditorOwnership(this,Object,Operation,validate))
+    if (!m_project->requestEditorOwnership(this,Object,Operation,validate))
         return false;
 
     if (fwbdebug)
         qDebug("RuleSetView::switchObjectInEditor  editor ownership granted");
 
-    if (Object==oe->getOpened() && Operation==oe->getOpenedOpt())
+    if (Object==m_project->getOpenedEditor() && Operation==m_project->getOpenedOptEditor())
     {
         if (fwbdebug)
             qDebug("RuleSetView::switchObjectInEditor  same object is already opened in the editor");
@@ -3497,16 +3488,16 @@ bool RuleSetView::switchObjectInEditor(int col,bool validate)
 
     if (fwbdebug)
         qDebug("RuleSetView::switchObjectInEditor  opening object in the editor");
-    
+
     if (Object == NULL)
     {
-        oe->blank();
+        m_project->blankEditor();
     } else if (Operation==ObjectEditor::optNone)
     {
-        oe->open(Object);
+        m_project->openEditor(Object);
     } else if(Rule::cast(Object)!=NULL)
     {
-        oe->openOpt(Object,Operation);
+        m_project->openOptEditor(Object,Operation);
     }
 
     return true;
@@ -3524,8 +3515,8 @@ void RuleSetView::restoreSelection(bool same_widget)
                    prevSelectedObjectCol);
         else
             qDebug("RuleSetView::restoreSelection()  prevSelectedObject==NULL");
-        FWObject *o = oe->getOpened();
-        qDebug("RuleSetView::restoreSelection() oe->getOpened=%s",
+        FWObject *o = m_project->getOpenedEditor();
+        qDebug("RuleSetView::restoreSelection() m_project->getOpenedEditor=%s",
                (o)?o->getName().c_str():"NULL");
     }
 
@@ -3566,7 +3557,8 @@ void RuleSetView::updateCurrentCell()
 
 
 
-PolicyView::PolicyView(Policy *p, QWidget *parent) : RuleSetView(1, 7, parent)
+PolicyView::PolicyView(ProjectPanel *project, Policy *p, QWidget *parent) : 
+      RuleSetView(project, 1, 7, parent)
 {
     setName("PolicyView");
     ruleset=p;
@@ -3577,7 +3569,7 @@ PolicyView::PolicyView(Policy *p, QWidget *parent) : RuleSetView(1, 7, parent)
 void PolicyView::init()
 {
     ncols=7 +
-        ((supports_time)?1:0) + 
+        ((supports_time)?1:0) +
         ((supports_logging && supports_rule_options)?1:0);
 
     ruleModel->setColumnCount(ncols);
@@ -3586,7 +3578,7 @@ void PolicyView::init()
 
     int col=0;
     QStringList qsl;
-    
+
     qsl << "Source";      // 0
     colTypes[col++]=Object;
 
@@ -3619,9 +3611,9 @@ void PolicyView::init()
 
     qsl << "Comment";
     colTypes[col]=Comment;
-    
+
     ruleModel->setHeader(qsl);
-    
+
     /*horizontalHeader()->setModel(static_cast<QAbstractItemModel*>(horzHeaderLabels));
     verticalHeader()->setModel(static_cast<QAbstractItemModel*>(vertHeaderLabels));*/
 //    setColumnStretchable(col, true);
@@ -3629,7 +3621,7 @@ void PolicyView::init()
     RuleSetView::init();
 }
 
-RuleElement* PolicyView::getRE( int row, int col ) 
+RuleElement* PolicyView::getRE( int row, int col )
 {
     if (row<0) return NULL;
 
@@ -3639,7 +3631,7 @@ RuleElement* PolicyView::getRE( int row, int col )
     return getRE(r, col);
 }
 
-RuleElement* PolicyView::getRE( Rule* r, int col ) 
+RuleElement* PolicyView::getRE( Rule* r, int col )
 {
     string ret;
 
@@ -3662,8 +3654,8 @@ RuleElement* PolicyView::getRE( Rule* r, int col )
     return RuleElement::cast( r->getFirstByType(ret) );
 }
 
-InterfacePolicyView::InterfacePolicyView(InterfacePolicy *p, QWidget *parent) :
-    RuleSetView(1,7,parent)
+InterfacePolicyView::InterfacePolicyView(ProjectPanel *project, InterfacePolicy *p, QWidget *parent) :
+    RuleSetView(project, 1,7,parent)
 {
     setName("InterfacePolicyView");
     ruleset=p;
@@ -3674,7 +3666,7 @@ InterfacePolicyView::InterfacePolicyView(InterfacePolicy *p, QWidget *parent) :
 void InterfacePolicyView::init()
 {
     ncols=6 +
-        ((supports_time)?1:0) + 
+        ((supports_time)?1:0) +
         ((supports_logging && supports_rule_options)?1:0);
 
     ruleModel->setColumnCount(ncols);
@@ -3712,7 +3704,7 @@ void InterfacePolicyView::init()
 
     qsl << "Comment";
     colTypes[col]=Comment;
-    
+
     ruleModel->setHeader(qsl);
 //    setColumnStretchable(col, true);
 
@@ -3721,7 +3713,7 @@ void InterfacePolicyView::init()
     RuleSetView::init();
 }
 
-RuleElement* InterfacePolicyView::getRE( int row, int col ) 
+RuleElement* InterfacePolicyView::getRE( int row, int col )
 {
     if (row<0) return NULL;
     PolicyRule *r = PolicyRule::cast( ruleIndex[row] );
@@ -3729,7 +3721,7 @@ RuleElement* InterfacePolicyView::getRE( int row, int col )
     return getRE(r,col);
 }
 
-RuleElement* InterfacePolicyView::getRE( Rule *r, int col ) 
+RuleElement* InterfacePolicyView::getRE( Rule *r, int col )
 {
     string ret;
 
@@ -3754,7 +3746,8 @@ RuleElement* InterfacePolicyView::getRE( Rule *r, int col )
 
 
 
-NATView::NATView(NAT *p, QWidget *parent) : RuleSetView(1,8,parent)
+NATView::NATView(ProjectPanel *project, NAT *p, QWidget *parent) : 
+      RuleSetView(project, 1,8,parent)
 {
     setName("NATView");
     ruleset=p;
@@ -3794,7 +3787,7 @@ void NATView::init()
 
     qsl << "Comment";
     colTypes[col]=Comment;
-    
+
     ruleModel->setHeader(qsl);
 //    setColumnStretchable(col, true);
 
@@ -3803,7 +3796,7 @@ void NATView::init()
     RuleSetView::init();
 }
 
-RuleElement* NATView::getRE( int row, int col ) 
+RuleElement* NATView::getRE( int row, int col )
 {
     if (row<0) return NULL;
     NATRule *r = NATRule::cast( ruleIndex[row] );
@@ -3811,7 +3804,7 @@ RuleElement* NATView::getRE( int row, int col )
     return getRE(r,col);
 }
 
-RuleElement* NATView::getRE( Rule *r, int col ) 
+RuleElement* NATView::getRE( Rule *r, int col )
 {
     string ret;
 
@@ -3834,9 +3827,8 @@ RuleElement* NATView::getRE( Rule *r, int col )
     return RuleElement::cast( r->getFirstByType(ret) );
 }
 
-
-
-RoutingView::RoutingView(Routing *p, QWidget *parent) : RuleSetView(1,5,parent)
+RoutingView::RoutingView(ProjectPanel *project, Routing *p, QWidget *parent) : 
+      RuleSetView(project, 1,5,parent)
 {
     setName("RoutingView");
     ruleset=p;
@@ -3851,7 +3843,7 @@ void RoutingView::init()
     ruleModel->setColumnCount(ncols);
 
     int col=0;
-    
+
     QStringList qsl;
     qsl << "Destination";
     colTypes[col++]=Object;
@@ -3879,7 +3871,7 @@ void RoutingView::init()
     RuleSetView::init();
 }
 
-RuleElement* RoutingView::getRE( int row, int col ) 
+RuleElement* RoutingView::getRE( int row, int col )
 {
     if (row<0) return NULL;
     RoutingRule *r = RoutingRule::cast( ruleIndex[row] );
@@ -3887,7 +3879,7 @@ RuleElement* RoutingView::getRE( int row, int col )
     return getRE(r,col);
 }
 
-RuleElement* RoutingView::getRE( Rule *r, int col ) 
+RuleElement* RoutingView::getRE( Rule *r, int col )
 {
     string ret;
 

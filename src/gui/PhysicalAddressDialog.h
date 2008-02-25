@@ -33,6 +33,7 @@
 
 #include "fwbuilder/FWObject.h"
 
+class ProjectPanel;
 
 class PhysicalAddressDialog : public QWidget
 {
@@ -42,9 +43,10 @@ class PhysicalAddressDialog : public QWidget
     bool init;
     bool showNetmask;
     Ui::PhysAddressDialog_q *m_dialog;
+    ProjectPanel *m_project;
     
  public:
-     PhysicalAddressDialog(QWidget *parent);
+     PhysicalAddressDialog(ProjectPanel *project, QWidget *parent);
      ~PhysicalAddressDialog();
     
 public slots:

@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -71,7 +73,7 @@ RCSFilePreview::RCSFilePreview(QWidget *parent): QDialog(parent)
 
     m_widget = new Ui::RCSFilePreview_q;
     m_widget->setupUi(this);
-    
+
 
     connect( m_widget->cancelButton, SIGNAL( clicked() ),
              this, SLOT( reject() ) );
@@ -192,7 +194,7 @@ bool RCSFilePreview::showFileRLog( const QString &filename )
     m_widget->RCSTreeView->sortByColumn(0, Qt::AscendingOrder);
     m_widget->RCSTreeView->resizeColumnToContents ( 0 );
     m_widget->RCSTreeView->resizeColumnToContents ( 1 );
-    
+
 
     lastItem->setSelected( true );
     m_widget->RCSTreeView->setCurrentItem( lastItem );

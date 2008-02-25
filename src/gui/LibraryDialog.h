@@ -34,6 +34,7 @@
 #include "fwbuilder/FWObject.h"
 
 
+class ProjectPanel;
 class LibraryDialog : public QWidget
 {
     Q_OBJECT
@@ -44,11 +45,12 @@ class LibraryDialog : public QWidget
     
     void fillColor();
     void changeIds(libfwbuilder::FWObject *root);
+    ProjectPanel *m_project;
     
  public:
     Ui::LibraryDialog_q *m_dialog;
      
-    LibraryDialog(QWidget *parent);
+    LibraryDialog(ProjectPanel *project, QWidget *parent);
     ~LibraryDialog();
     
 public slots:

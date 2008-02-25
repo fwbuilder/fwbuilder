@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,13 +17,15 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -94,57 +96,58 @@
 #include "fwbuilder/TagService.h"
 
 #include <iostream>
+#include "ProjectPanel.h"
 
 using namespace std;
 using namespace libfwbuilder;
 
-QWidget *DialogFactory::createDialog(QWidget *parent,const QString &objType)
+QWidget *DialogFactory::createDialog(ProjectPanel *project, QWidget *parent,const QString &objType)
 {
 
-    if (objType==Library::TYPENAME)       return new LibraryDialog(parent);
+    if (objType==Library::TYPENAME)       return new LibraryDialog(project, parent);
 
-    if (objType==IPv4::TYPENAME)          return new IPv4Dialog(parent);
+    if (objType==IPv4::TYPENAME)          return new IPv4Dialog(project, parent);
 
-    if (objType==physAddress::TYPENAME)   return new PhysicalAddressDialog(parent);
+    if (objType==physAddress::TYPENAME)   return new PhysicalAddressDialog(project, parent);
 
-    if (objType==DNSName::TYPENAME)       return new DNSNameDialog(parent);
+    if (objType==DNSName::TYPENAME)       return new DNSNameDialog(project, parent);
 
-    if (objType==AddressTable::TYPENAME)  return new AddressTableDialog(parent);
+    if (objType==AddressTable::TYPENAME)  return new AddressTableDialog(project, parent);
 
-    if (objType==AddressRange::TYPENAME)  return new AddressRangeDialog(parent);
+    if (objType==AddressRange::TYPENAME)  return new AddressRangeDialog(project, parent);
 
-    if (objType==Firewall::TYPENAME)      return new FirewallDialog(parent);
+    if (objType==Firewall::TYPENAME)      return new FirewallDialog(project, parent);
 
-    if (objType==Host::TYPENAME)          return new HostDialog(parent);
+    if (objType==Host::TYPENAME)          return new HostDialog(project, parent);
 
-    if (objType==Interface::TYPENAME)     return new InterfaceDialog(parent);
+    if (objType==Interface::TYPENAME)     return new InterfaceDialog(project, parent);
 
-    if (objType==Network::TYPENAME)       return new NetworkDialog(parent);
+    if (objType==Network::TYPENAME)       return new NetworkDialog(project, parent);
 
-    if (objType==CustomService::TYPENAME) return new CustomServiceDialog(parent);
+    if (objType==CustomService::TYPENAME) return new CustomServiceDialog(project, parent);
 
-    if (objType==IPService::TYPENAME)     return new IPServiceDialog(parent);
+    if (objType==IPService::TYPENAME)     return new IPServiceDialog(project, parent);
 
-    if (objType==ICMPService::TYPENAME)   return new ICMPServiceDialog(parent);
+    if (objType==ICMPService::TYPENAME)   return new ICMPServiceDialog(project, parent);
 
-    if (objType==TCPService::TYPENAME)    return new TCPServiceDialog(parent);
+    if (objType==TCPService::TYPENAME)    return new TCPServiceDialog(project, parent);
 
-    if (objType==UDPService::TYPENAME)    return new UDPServiceDialog(parent);
+    if (objType==UDPService::TYPENAME)    return new UDPServiceDialog(project, parent);
 
-    if (objType==ObjectGroup::TYPENAME)   return new GroupObjectDialog(parent);
+    if (objType==ObjectGroup::TYPENAME)   return new GroupObjectDialog(project, parent);
 
-    if (objType==ServiceGroup::TYPENAME)  return new GroupObjectDialog(parent);
-    
-    if (objType==TagService::TYPENAME)          return new TagServiceDialog(parent);
+    if (objType==ServiceGroup::TYPENAME)  return new GroupObjectDialog(project, parent);
 
-    if (objType==IntervalGroup::TYPENAME) return new GroupObjectDialog(parent);
+    if (objType==TagService::TYPENAME)          return new TagServiceDialog(project, parent);
 
-    if (objType==Interval::TYPENAME)      return new TimeDialog(parent);
+    if (objType==IntervalGroup::TYPENAME) return new GroupObjectDialog(project, parent);
 
-    if (objType==RoutingRule::TYPENAME)   return new RoutingRuleOptionsDialog(parent);
-    if (objType==Rule::TYPENAME)          return new RuleOptionsDialog(parent);
-    if (objType==PolicyRule::TYPENAME)    return new RuleOptionsDialog(parent);
-    if (objType==NATRule::TYPENAME)       return new NATRuleOptionsDialog(parent);
+    if (objType==Interval::TYPENAME)      return new TimeDialog(project, parent);
+
+    if (objType==RoutingRule::TYPENAME)   return new RoutingRuleOptionsDialog(project, parent);
+    if (objType==Rule::TYPENAME)          return new RuleOptionsDialog(project, parent);
+    if (objType==PolicyRule::TYPENAME)    return new RuleOptionsDialog(project, parent);
+    if (objType==NATRule::TYPENAME)       return new NATRuleOptionsDialog(project, parent);
 
     return NULL;
 }

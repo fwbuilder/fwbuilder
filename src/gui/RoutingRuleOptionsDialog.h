@@ -36,6 +36,7 @@
 #include "fwbuilder/FWObject.h"
 
 class RuleSetView;
+class ProjectPanel;
 
 class RoutingRuleOptionsDialog : public QWidget
 {
@@ -48,9 +49,10 @@ class RoutingRuleOptionsDialog : public QWidget
     Ui::RoutingRuleOptionsDialog_q *m_dialog;
     
     bool init;
+    ProjectPanel *m_project;
 
  public:
-    RoutingRuleOptionsDialog(QWidget *parent);
+    RoutingRuleOptionsDialog(ProjectPanel *project, QWidget *parent);
     ~RoutingRuleOptionsDialog();
     
 public slots:

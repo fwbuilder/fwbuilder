@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,18 +17,21 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
 #include "utils.h"
 
 #include "TagServiceDialog.h"
-#include "ObjectManipulator.h"
+#include "ProjectPanel.h"
+#include "FWWindow.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/TagService.h"
@@ -58,12 +61,12 @@ TagServiceDialog::~TagServiceDialog()
     delete m_dialog;
 }
 
-TagServiceDialog::TagServiceDialog(QWidget *parent) : QWidget(parent) 
-{ 
+TagServiceDialog::TagServiceDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+{
     m_dialog = new Ui::TagServiceDialog_q;
     m_dialog->setupUi(this);
     setFont(st->getUiFont());
-    obj=NULL; 
+    obj=NULL;
 }
 
 void TagServiceDialog::loadFWObject(FWObject *o)
@@ -71,8 +74,8 @@ void TagServiceDialog::loadFWObject(FWObject *o)
     obj=o;
     TagService *s = dynamic_cast<TagService*>(obj);
     assert(s!=NULL);
-    
-    
+
+
     init=true;
 
     fillLibraries(m_dialog->libs,obj);
@@ -81,7 +84,7 @@ void TagServiceDialog::loadFWObject(FWObject *o)
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
 
     m_dialog->tagcode->setText( s->getCode().c_str() );
-    
+
     //apply->setEnabled( false );
 
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
@@ -100,7 +103,7 @@ void TagServiceDialog::loadFWObject(FWObject *o)
 
     init=false;
 }
-    
+
 void TagServiceDialog::changed()
 {
     //apply->setEnabled( true );
@@ -138,19 +141,19 @@ void TagServiceDialog::applyChanges()
 
     s->setCode( m_dialog->tagcode->text().toLatin1().constData() );
 
-    om->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     init=true;
 
 /* move to another lib if we have to */
     if ( ! Interface::isA( obj->getParent() ) &&
          m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        om->moveObject(m_dialog->libs->currentText(), obj);
+        mw->moveObject(m_dialog->libs->currentText(), obj);
 
     init=false;
 
     //apply->setEnabled( false );
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
 }
 
 void TagServiceDialog::discardChanges()

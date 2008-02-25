@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -29,7 +31,7 @@
 
 #include "FWBTree.h"
 #include "PhysicalAddressDialog.h"
-#include "ObjectManipulator.h"
+#include "ProjectPanel.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/physAddress.h"
@@ -48,15 +50,16 @@
 
 #include <iostream>
 
+#include "FWWindow.h"
 using namespace std;
 using namespace libfwbuilder;
 
-PhysicalAddressDialog::PhysicalAddressDialog(QWidget *parent) : QWidget(parent)
-{ 
+PhysicalAddressDialog::PhysicalAddressDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+{
     m_dialog = new Ui::PhysAddressDialog_q;
     m_dialog->setupUi(this);
     setFont(st->getUiFont());
-    obj=NULL; 
+    obj=NULL;
 }
 
 PhysicalAddressDialog::~PhysicalAddressDialog()
@@ -97,7 +100,7 @@ void PhysicalAddressDialog::loadFWObject(FWObject *o)
 
     init=false;
 }
-    
+
 void PhysicalAddressDialog::changed()
 {
     //apply->setEnabled( true );
@@ -132,18 +135,18 @@ void PhysicalAddressDialog::applyChanges()
     obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     s->setPhysAddress( m_dialog->pAddress->text().toLatin1().constData() );
 
-    om->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     init=true;
 
 /* move to another lib if we have to */
-    if (! FWBTree::isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        om->moveObject(m_dialog->libs->currentText(), obj);
+    if (! m_project->isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
+        mw->moveObject(m_dialog->libs->currentText(), obj);
 
     init=false;
 
     //apply->setEnabled( false );
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
 }
 
 void PhysicalAddressDialog::discardChanges()

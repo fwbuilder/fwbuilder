@@ -33,6 +33,7 @@
 
 #include "fwbuilder/FWObject.h"
 
+class ProjectPanel;
 
 class TCPServiceDialog : public QWidget
 {
@@ -41,9 +42,10 @@ class TCPServiceDialog : public QWidget
     libfwbuilder::FWObject *obj;
     Ui::TCPServiceDialog_q *m_dialog;
     bool init;
+    ProjectPanel *m_project;
 
  public:
-    TCPServiceDialog(QWidget *parent);
+    TCPServiceDialog(ProjectPanel *project, QWidget *parent);
     ~TCPServiceDialog();
     
 public slots:

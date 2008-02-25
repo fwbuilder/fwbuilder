@@ -34,6 +34,7 @@
 #include "fwbuilder/FWObject.h"
 
 
+class ProjectPanel;
 class ICMPServiceDialog : public QWidget
 {
     Q_OBJECT
@@ -42,8 +43,9 @@ class ICMPServiceDialog : public QWidget
     bool init;
     Ui::ICMPServiceDialog_q *m_dialog;
     
+    ProjectPanel *m_project;
  public:
-     ICMPServiceDialog(QWidget *parent);
+     ICMPServiceDialog(ProjectPanel *project, QWidget *parent);
      ~ICMPServiceDialog();
     
 public slots:

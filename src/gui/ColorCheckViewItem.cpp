@@ -1,4 +1,6 @@
 
+#include "fwbuilder_ph.h"
+
 #include "global.h"
 
 #include "ColorCheckViewItem.h"

@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -263,7 +265,7 @@ int IOSImporter::convertPort(const std::string &port_str,
             str1 >> port;
         } catch (const std::exception &ex) {
             // could not convert port_spec to an integer
-            markCurrentRuleBad(std::string("Port spec '") + port_str + 
+            markCurrentRuleBad(std::string("Port spec '") + port_str +
                                "' unknown. Error " + ex.what());
         }
     }
@@ -299,7 +301,7 @@ std::pair<int,int> IOSImporter::convertPortSpec(const std::string &port_op,
     range_start = convertPort(s1, port_map);
     range_end   = convertPort(s2, port_map);
 
-    if (portop=="lt")  range_start = 0; 
+    if (portop=="lt")  range_start = 0;
     if (portop=="gt")  range_end = 65535;
     if (portop=="eq")
     {
@@ -452,7 +454,7 @@ Firewall* IOSImporter::finalize()
                     {
                         og = createGroupOfInterfaces(irs->name, all_in);
                         std::for_each(irs->ruleset->begin(),
-                                      irs->ruleset->end(), 
+                                      irs->ruleset->end(),
                                       merge_rule(irs->name,
                                                  og,
                                                  PolicyRule::Inbound,
@@ -464,7 +466,7 @@ Firewall* IOSImporter::finalize()
                     {
                         og = createGroupOfInterfaces(irs->name, all_out);
                         std::for_each(irs->ruleset->begin(),
-                                      irs->ruleset->end(), 
+                                      irs->ruleset->end(),
                                       merge_rule(irs->name,
                                                  og,
                                                  PolicyRule::Outbound,
@@ -476,7 +478,7 @@ Firewall* IOSImporter::finalize()
                     {
                         og = createGroupOfInterfaces(irs->name, all_both);
                         std::for_each(irs->ruleset->begin(),
-                                      irs->ruleset->end(), 
+                                      irs->ruleset->end(),
                                       merge_rule(irs->name,
                                                  og,
                                                  PolicyRule::Both,
@@ -485,7 +487,7 @@ Firewall* IOSImporter::finalize()
                     }
 
                 }
-                else 
+                else
                 {
                     std::map<std::string,std::string>::iterator j;
                     for (j=irs->intf_dir.begin(); j!=irs->intf_dir.end(); ++j)
@@ -503,7 +505,7 @@ Firewall* IOSImporter::finalize()
                                 qDebug(QString("    interface=%1").
                                        arg(intf->getName().c_str()).toAscii().constData());
                             std::for_each(irs->ruleset->begin(),
-                                          irs->ruleset->end(), 
+                                          irs->ruleset->end(),
                                           merge_rule(irs->name,
                                                      intf,
                                                      direction,

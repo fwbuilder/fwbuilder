@@ -33,6 +33,7 @@
 
 #include "fwbuilder/FWObject.h"
 
+class ProjectPanel;
 
 class TagServiceDialog : public QWidget
 {
@@ -41,10 +42,11 @@ class TagServiceDialog : public QWidget
     libfwbuilder::FWObject *obj;
     Ui::TagServiceDialog_q *m_dialog;
     bool init;
+    ProjectPanel *m_project;
 
  public:
     ~TagServiceDialog();
-    TagServiceDialog(QWidget *parent);
+    TagServiceDialog(ProjectPanel *project, QWidget *parent);
     virtual void closeEvent(QCloseEvent *e);
     
 public slots:

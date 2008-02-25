@@ -34,6 +34,7 @@
 #include "fwbuilder/FWObject.h"
 
 
+class ProjectPanel;
 class FirewallDialog : public QWidget
 {
     Q_OBJECT
@@ -44,10 +45,11 @@ class FirewallDialog : public QWidget
 
     void fillVersion();
     void saveVersion();
+    ProjectPanel *m_project;
 
     
  public:
-     FirewallDialog(QWidget *parent);
+     FirewallDialog(ProjectPanel *project, QWidget *parent);
      ~FirewallDialog();
      
 public slots:

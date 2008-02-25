@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,11 +17,13 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -257,7 +259,7 @@ int IPTImporter::convertPort(const std::string &port_spec,
         str1 >> port;
     } catch (const std::exception &ex) {
         // could not convert port_spec to an integer
-        markCurrentRuleBad(std::string("Port spec '") + port_spec + 
+        markCurrentRuleBad(std::string("Port spec '") + port_spec +
                            "' unknown. Error " + ex.what());
     }
     return port;
@@ -383,7 +385,7 @@ void IPTImporter::addSrv()
     RuleElementSrv* srv = rule->getSrv();
     assert(srv!=NULL);
 
-    if (match_mark.empty()) 
+    if (match_mark.empty())
     {
         Importer::addSrv();
         return;
@@ -391,7 +393,7 @@ void IPTImporter::addSrv()
 
     srv->addRef( getTagService(match_mark) );
 }
-    
+
 void IPTImporter::pushRule()
 {
     assert(current_ruleset!=NULL);
@@ -532,10 +534,10 @@ void IPTImporter::pushPolicyRule()
         ropt->setStr("branch_name", branch_ruleset_name);
         getFirewallObject()->remove(rs->ruleset, false);
         branch_rulesets[branch_ruleset_name] = rs;
-        
+
         if (duplicate_branch)
             markCurrentRuleBad(
-                std::string("Rule passes control to branch ") + target + 
+                std::string("Rule passes control to branch ") + target +
                 std::string(
                     " which \n"
                     "is already used by some rule prior to this one. \n"
@@ -603,7 +605,7 @@ void IPTImporter::pushPolicyRule()
             << "\n";
     }
 
-    if (target=="CONNMARK" && 
+    if (target=="CONNMARK" &&
         last_mark_rule != NULL &&
         !action_params["connmark_save_mark"].empty())
     {
@@ -617,7 +619,7 @@ void IPTImporter::pushPolicyRule()
             << "\n";
     }
 
-    if (target=="CONNMARK" && 
+    if (target=="CONNMARK" &&
         !action_params["connmark_restore_mark"].empty())
     {
         // this rule is added automatically in
@@ -693,7 +695,7 @@ void IPTImporter::pushPolicyRule()
         }
 
         current_rule->setComment(rule_comment);
-      
+
     }
 
 //     *Importer::logger << "Rule: " << rule->getActionAsString() << " "

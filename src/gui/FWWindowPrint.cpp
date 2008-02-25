@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,12 +17,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -85,6 +87,9 @@
 #include "fwbuilder/RuleElement.h"
 
 #include <algorithm>
+#include "ProjectPanel.h"
+#include <QMdiArea>
+#include <QMdiSubWindow>
 
 using namespace libfwbuilder;
 using namespace std;
@@ -127,7 +132,7 @@ list<FWObject*> findAllUsedByType(list<FWObject*> &result,FWObject *obj,const st
 {
     if (RuleElement::cast(obj)!=NULL)
     {
-        for (list<FWObject*>::iterator m=obj->begin(); m!=obj->end(); m++) 
+        for (list<FWObject*>::iterator m=obj->begin(); m!=obj->end(); m++)
         {
             FWObject *o=*m;
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
@@ -138,11 +143,11 @@ list<FWObject*> findAllUsedByType(list<FWObject*> &result,FWObject *obj,const st
 
     if (RuleSet::cast(obj)!=NULL)
     {
-        for (list<FWObject*>::iterator m=obj->begin(); m!=obj->end(); m++) 
+        for (list<FWObject*>::iterator m=obj->begin(); m!=obj->end(); m++)
         {
             if (Rule::cast(*m)!=NULL)
             {
-                for (list<FWObject*>::iterator n=(*m)->begin(); n!=(*m)->end(); n++) 
+                for (list<FWObject*>::iterator n=(*m)->begin(); n!=(*m)->end(); n++)
                 {
                     if (RuleElement::cast(*n)!=NULL)
                     {
@@ -228,7 +233,7 @@ int addObjectsToTable(list<FWObject*> &objects,
         //comment.replace("\n", "");
         //comment.replace("&#10;", "\n");
 
-        
+
         tbl->setItem(row,col+1, new QTableWidgetItem(descr));
         tbl->setItem(row,col+2, new QTableWidgetItem(comment));
 
@@ -266,7 +271,8 @@ void findAllGroups(list<FWObject*> &objects,list<FWObject*> &groups)
 void printFirewall(FWObject *fw,
                    printerStream &pr,
                    PrintingProgressDialog *ppd,
-                   bool newPageForSection)
+                   bool newPageForSection,
+                   ProjectPanel *project)
 {
 
     list<pixmapOrText> listPT;
@@ -291,7 +297,7 @@ void printFirewall(FWObject *fw,
 
     pr.printText(QObject::tr("Global Policy"));
 
-    RuleSetView *ruleView=new PolicyView(
+    RuleSetView *ruleView=new PolicyView(project,
         Policy::cast(fw->getFirstByType(Policy::TYPENAME)),NULL);
     ruleView->setSizePolicy( QSizePolicy( (QSizePolicy::Policy)7,
                                           (QSizePolicy::Policy)7) );
@@ -342,7 +348,7 @@ void printFirewall(FWObject *fw,
 
           pr.printText(QObject::tr("Interface %1").arg(tabName));
 
-          ruleView=new InterfacePolicyView(ip,NULL);
+          ruleView=new InterfacePolicyView(project, ip,NULL);
           ruleView->setSizePolicy( QSizePolicy( (QSizePolicy::Policy)7,
                                                 (QSizePolicy::Policy)7) );
           ruleView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -370,7 +376,7 @@ void printFirewall(FWObject *fw,
 
         pr.printText(QObject::tr("NAT"));
 
-        ruleView=new NATView(nat,NULL);
+        ruleView=new NATView(project, nat,NULL);
 
         ruleView->setSizePolicy( QSizePolicy( (QSizePolicy::Policy)7,
                                               (QSizePolicy::Policy)7) );
@@ -397,7 +403,7 @@ void printFirewall(FWObject *fw,
 
         pr.printText(QObject::tr("Routing"));
 
-        ruleView=new RoutingView(routing,NULL);
+        ruleView=new RoutingView(project, routing,NULL);
 
         ruleView->setSizePolicy( QSizePolicy( (QSizePolicy::Policy)7,
                                               (QSizePolicy::Policy)7) );
@@ -414,6 +420,12 @@ void printFirewall(FWObject *fw,
 
 void FWWindow::filePrint()
 {
+    if (!activeProject())
+    {
+        if (fwbdebug) 
+            qDebug("There isn't any selected subwindow");
+        return;
+    }
     int pageWidth = 0;
     int pageHeight = 0;
     bool  fullPage = false;
@@ -448,7 +460,7 @@ void FWWindow::filePrint()
 
     Ui::pageSetupDialog_q psd;
     QDialog dlg;
-    
+
     psd.setupUi(&dlg);
 
     psd.newPageForSection->setChecked(newPageForSection);
@@ -486,11 +498,11 @@ void FWWindow::filePrint()
         printer->setFullPage(fullPage);
 
         QPrintDialog pdialog(printer, this);
-        
+
         pdialog.addEnabledOption(QAbstractPrintDialog::PrintPageRange);
         pdialog.setMinMax(1,9999);
         pdialog.setPrintRange(QAbstractPrintDialog::AllPages);
-        
+
         if (pdialog.exec())
         {
             int fromPage = printer->fromPage();
@@ -502,8 +514,7 @@ void FWWindow::filePrint()
 
             PrintingProgressDialog *ppd = new PrintingProgressDialog(this,printer,0,false);
 
-            QString headerText = rcs->getFileName().section("/",-1,-1);
-            if (rcs->isInRCS()) headerText = headerText + ", rev " + rcs->getSelectedRev();
+            QString headerText = mw->printHeader();
 
 #if defined(Q_OS_MACX)
             printerStream pr(printer,margin,printHeader,headerText,NULL);
@@ -522,16 +533,16 @@ void FWWindow::filePrint()
 
             int leftMargin = printer->paperRect().left() - printer->pageRect().left();
             int topMargin = printer->paperRect().top() - printer->pageRect().top();
-        
+
             if (fwbdebug)
             {
                 qDebug("Margins: %d,%d",leftMargin,topMargin);
             }
 
 //            int ppdCounter = 1;
+            printFirewall(activeProject()->getVisibleFirewall(),pr,ppd,
+                  newPageForSection, activeProject());
 
-            printFirewall(visibleFirewall,pr,ppd,newPageForSection);
-    
             if (printLegend)
             {
                 if (fwbdebug) qDebug("******** Legend");
@@ -553,15 +564,15 @@ void FWWindow::filePrint()
                                                       (QSizePolicy::Policy)7) );
                 legendTbl.setShowGrid(false);
                 legendTbl.setFrameStyle(QFrame::NoFrame | QFrame::Plain);
-                
+
                 legendTbl.horizontalHeader()->hide();
                 legendTbl.verticalHeader()->hide();
                 //legendTbl.setTopMargin(0);
                 //legendTbl.setLeftMargin(0);
-                
+
                 legendTbl.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
                 legendTbl.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-                
+
 
                 string icon_path="/FWBuilderResources/Type/";
                 int row=0;
@@ -602,7 +613,7 @@ void FWWindow::filePrint()
 
                     bfrp.fillRect(0,0,32,32,QColor(Qt::white));
                     bfrp.drawPixmap(4,4,pm);
-                    
+
                     QTableWidgetItem *itm = new QTableWidgetItem;
                     itm->setIcon(QIcon(bfr));
                     itm->setText(objName);
@@ -650,11 +661,11 @@ void FWWindow::filePrint()
                 //                                 (QSizePolicy::Policy)7) );
                 //fwObjTbl.setColumnStretchable(2, true);
                 fwObjTbl.setFrameStyle(QFrame::NoFrame | QFrame::Plain);
-                
+
                 fwObjTbl.horizontalHeader()->hide();
                 fwObjTbl.verticalHeader()->hide();
                 fwObjTbl.setContentsMargins(0,0,0,0);
-                
+
                 fwObjTbl.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
                 fwObjTbl.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
                 fwObjTbl.resize(pr.getWorkspaceWidth(),
@@ -668,14 +679,15 @@ void FWWindow::filePrint()
                 int added = 0;
 
                 objects.clear();
-                findAllUsedByType(objects,visibleFirewall,Firewall::TYPENAME);
+
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),Firewall::TYPENAME);
                 added = addObjectsToTable(objects, &fwObjTbl, row, col);
                 if (fwbdebug) qDebug("Objects table: added %d firewalls",added);
 
                 for (int i=0; i<fwObjTbl.columnCount(); ++i)
                     fwObjTbl.resizeColumnToContents(i);
                 for (int i=0; i<fwObjTbl.rowCount(); ++i)
-                    fwObjTbl.resizeRowToContents(i); 
+                    fwObjTbl.resizeRowToContents(i);
 
                 pr.printQTable(&fwObjTbl, false, false);
                 pr.printText(" ");
@@ -686,11 +698,11 @@ void FWWindow::filePrint()
                 objTbl.setSizePolicy( QSizePolicy( (QSizePolicy::Policy)7,
                                                    (QSizePolicy::Policy)7) );
                 objTbl.setFrameStyle(QFrame::NoFrame | QFrame::Plain);
-                
+
                 objTbl.horizontalHeader()->hide();
                 objTbl.verticalHeader()->hide();
                 setContentsMargins ( 0,0,0,0 );
-                
+
                 objTbl.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
                 objTbl.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -699,7 +711,7 @@ void FWWindow::filePrint()
                 added = 0;
 
                 objects.clear();
-                findAllUsedByType(objects,visibleFirewall,Host::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),Host::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
                 if (fwbdebug) qDebug("Objects table: added %d hosts",added);
                 if (added)
@@ -712,7 +724,7 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,visibleFirewall,Network::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),Network::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
                 if (fwbdebug) qDebug("Objects table: added %d networks",added);
                 if (added)
@@ -725,7 +737,7 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,visibleFirewall,IPv4::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),IPv4::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
                 if (fwbdebug) qDebug("Objects table: added %d addresses",added);
                 if (added)
@@ -738,7 +750,7 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,visibleFirewall,AddressRange::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),AddressRange::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
                 if (fwbdebug) qDebug("Objects table: added %d address ranges",added);
                 if (added)
@@ -751,7 +763,7 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,visibleFirewall,ObjectGroup::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),ObjectGroup::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
                 if (fwbdebug) qDebug("Objects table: added %d obj groups",added);
                 if (added)
@@ -765,7 +777,7 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,visibleFirewall,IPService::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),IPService::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
                 if (fwbdebug) qDebug("Objects table: added %d ip services",added);
                 if (added)
@@ -778,7 +790,7 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,visibleFirewall,ICMPService::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),ICMPService::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
                 if (fwbdebug) qDebug("Objects table: added %d icmp services",added);
                 if (added)
@@ -791,7 +803,7 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,visibleFirewall,TCPService::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),TCPService::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
                 if (fwbdebug) qDebug("Objects table: added %d tcp services",added);
                 if (added)
@@ -804,7 +816,7 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,visibleFirewall,UDPService::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),UDPService::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
                 if (fwbdebug) qDebug("Objects table: added %d udp services",added);
                 if (added)
@@ -817,7 +829,7 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,visibleFirewall,CustomService::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),CustomService::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
                 if (fwbdebug) qDebug("Objects table: added %d custom services",added);
                 if (added)
@@ -830,7 +842,7 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,visibleFirewall,ServiceGroup::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),ServiceGroup::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
                 if (fwbdebug) qDebug("Objects table: added %d srv groups",added);
                 if (added)
@@ -844,7 +856,7 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,visibleFirewall,Interval::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),Interval::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
                 if (fwbdebug) qDebug("Objects table: added %d time intervals",added);
                 if (added)
@@ -873,11 +885,11 @@ void FWWindow::filePrint()
                     list<FWObject*> groups;
 
                     objects.clear();
-                    findAllUsedByType(objects,visibleFirewall,ObjectGroup::TYPENAME);
+                    findAllUsedByType(objects,activeProject()->getVisibleFirewall(),ObjectGroup::TYPENAME);
                     findAllGroups(objects,groups);
 
                     objects.clear();
-                    findAllUsedByType(objects,visibleFirewall,ServiceGroup::TYPENAME);
+                    findAllUsedByType(objects,activeProject()->getVisibleFirewall(),ServiceGroup::TYPENAME);
                     findAllGroups(objects,groups);
 
                     for (FWObject::iterator obj=groups.begin(); obj!=groups.end(); ++obj)
@@ -886,14 +898,14 @@ void FWWindow::filePrint()
                         objTbl.setSizePolicy( QSizePolicy( (QSizePolicy::Policy)7,
                                                            (QSizePolicy::Policy)7) );
                         objTbl.setFrameStyle(QFrame::NoFrame | QFrame::Plain);
-                        
+
                         objTbl.setContentsMargins(0,0,0,0);
                         objTbl.horizontalHeader()->hide();
                         objTbl.verticalHeader()->hide();
-                        
+
                         objTbl.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
                         objTbl.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-                        
+
                         row = 0;
                         col = 0;
                         list<FWObject*> groupMembers;
@@ -919,7 +931,7 @@ void FWWindow::filePrint()
                         for (int i=0; i<objTbl.columnCount(); ++i)
                             objTbl.resizeColumnToContents(i);
                         for (int i=0; i<objTbl.rowCount(); ++i)
-                            objTbl.resizeRowToContents(i); 
+                            objTbl.resizeRowToContents(i);
 
                         pr.printText((*obj)->getName().c_str());
                         pr.printQTable(&objTbl, false, false);
@@ -937,7 +949,7 @@ void FWWindow::filePrint()
             {
                 statusBar()->showMessage( tr("Printing aborted"), 2000 );
                 QMessageBox::information(
-                    this,"Firewall Builder", 
+                    this,"Firewall Builder",
                     tr("Printing aborted"),
                     tr("&Continue"), QString::null,QString::null,
                     0, 1 );
@@ -954,4 +966,4 @@ void FWWindow::filePrint()
 
 }
 
-    
+

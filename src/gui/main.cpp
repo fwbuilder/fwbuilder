@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -18,12 +18,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -59,9 +61,8 @@
 */
 
 #include "FWBSettings.h"
-#include "RCS.h" 
+#include "RCS.h"
 #include "FWWindow.h"
-#include "ObjectManipulator.h"
 #include "FWObjectClipboard.h"
 #include "FWBTree.h"
 #include "platforms.h"
@@ -130,18 +131,11 @@ static QString    objid;
 
 QApplication      *app        = NULL;
 FWWindow          *mw         = NULL;
-ObjectManipulator *om         = NULL; 
-ObjectEditor      *oe         = NULL;
-QTextEdit         *oi         = NULL;
 FWBSettings       *st         = NULL;
-findDialog        *fd         = NULL;
-int                fwbdebug   = 0;
+int                fwbdebug   = 1;
 bool               safemode   = false;
 bool               registered = false;
 bool               gui_experiment1 = false;
-
-listOfLibraries  *addOnLibs;
-
 
 #ifndef _WIN32
 
@@ -158,83 +152,83 @@ static inline void cfmakeraw(struct termios *termios_p)
 
 #ifndef HAVE_FORKPTY
 
-#include <unistd.h> 
-#include <stdlib.h> 
-#include <sys/ioctl.h> 
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/ioctl.h>
 //#include <sys/stream.h>
-#include <sys/stropts.h> 
+#include <sys/stropts.h>
 
-/* fork_pty() remplacement for Solaris. 
-* ignore the last two arguments 
-* for the moment 
-*/ 
+/* fork_pty() remplacement for Solaris.
+* ignore the last two arguments
+* for the moment
+*/
 int forkpty (int *amaster, char *name, void *unused1, void *unused2)
 {
-    int master, slave; 
-    char *slave_name; 
-    pid_t pid; 
+    int master, slave;
+    char *slave_name;
+    pid_t pid;
 
-    master = open("/dev/ptmx", O_RDWR); 
-    if (master < 0) 
-        return -1; 
+    master = open("/dev/ptmx", O_RDWR);
+    if (master < 0)
+        return -1;
 
-    if (grantpt (master) < 0) 
-    { 
-        close (master); 
-        return -1; 
-    } 
+    if (grantpt (master) < 0)
+    {
+        close (master);
+        return -1;
+    }
 
-    if (unlockpt (master) < 0) 
-    { 
-        close (master); 
-        return -1; 
-    } 
+    if (unlockpt (master) < 0)
+    {
+        close (master);
+        return -1;
+    }
 
-    slave_name = ptsname (master); 
-    if (slave_name == NULL) 
-    { 
-        close (master); 
-        return -1; 
-    } 
+    slave_name = ptsname (master);
+    if (slave_name == NULL)
+    {
+        close (master);
+        return -1;
+    }
 
-    slave = open (slave_name, O_RDWR); 
-    if (slave < 0) 
-    { 
-        close (master); 
-        return -1; 
-    } 
+    slave = open (slave_name, O_RDWR);
+    if (slave < 0)
+    {
+        close (master);
+        return -1;
+    }
 
-    if (ioctl (slave, I_PUSH, "ptem") < 0 
-        || ioctl (slave, I_PUSH, "ldterm") < 0) 
-    { 
-        close (slave); 
-        close (master); 
-        return -1; 
-    } 
+    if (ioctl (slave, I_PUSH, "ptem") < 0
+        || ioctl (slave, I_PUSH, "ldterm") < 0)
+    {
+        close (slave);
+        close (master);
+        return -1;
+    }
 
-    if (amaster) 
-        *amaster = master; 
+    if (amaster)
+        *amaster = master;
 
-    if (name) 
-        strcpy (name, slave_name); 
+    if (name)
+        strcpy (name, slave_name);
 
-    pid = fork (); 
-    switch (pid) 
-    { 
-    case -1: /* Error */ 
-        return -1; 
-    case 0: /* Child */ 
-        close (master); 
-        dup2 (slave, STDIN_FILENO); 
-        dup2 (slave, STDOUT_FILENO); 
-        dup2 (slave, STDERR_FILENO); 
-        return 0; 
-    default: /* Parent */ 
-        close (slave); 
-        return pid; 
-    } 
+    pid = fork ();
+    switch (pid)
+    {
+    case -1: /* Error */
+        return -1;
+    case 0: /* Child */
+        close (master);
+        dup2 (slave, STDIN_FILENO);
+        dup2 (slave, STDOUT_FILENO);
+        dup2 (slave, STDERR_FILENO);
+        return 0;
+    default: /* Parent */
+        close (slave);
+        return pid;
+    }
 
-    return -1; 
+    return -1;
 }
 
 #endif
@@ -340,17 +334,19 @@ void usage()
 
 int main( int argc, char ** argv )
 {
-    
-    
+
+
     bool        ssh_wrapper=false;
     const char *arg[64];
     int         i, j;
 
     filename="";
     objid="";
-    fwbdebug=0;
+    fwbdebug=1;
     safemode=false;
 
+    if(fwbdebug)
+        qDebug("main()");
 /*
  * I am using njamd a lot, but gtkmm and probably some other libs
  * generate trap in their global static initialization code. Therefore
@@ -399,11 +395,11 @@ int main( int argc, char ** argv )
  *
  * So, installation data goes to HKLM Software\NetCitadel\FirewallBuilder
  * and settings to HKCU Software\NetCitadel\FirewallBuilder2
- * 
+ *
  * fwbuilder-lm determines folder path for the license file by
  * reading key Install_Dir under HKLM Software\NetCitadel\FirewallBuilder
  */
-        st = new FWBSettings(); 
+        st = new FWBSettings();
 
 /* initialize preferences */
         st->init();
@@ -412,7 +408,7 @@ int main( int argc, char ** argv )
         QString sshcmd=st->getSSHPath();
 
         if (sshcmd.isEmpty()) sshcmd="ssh";
-        
+
         arg[0]=strdup( sshcmd.toLatin1().constData() );
 
         if (fwbdebug)
@@ -576,7 +572,7 @@ int main( int argc, char ** argv )
         case 's':
             safemode = true;
             break;
-            
+
         case 'g':
             gui_experiment1 = true;
             break;
@@ -589,13 +585,13 @@ int main( int argc, char ** argv )
     {
 
         if (fwbdebug) qDebug("initializing ...");
-    
+
 /* need to initialize in order to be able to use FWBSettings */
         init(argv);
         init_platforms();
 
         if (fwbdebug) qDebug("creating app ...");
-    
+
         //QApplication::setDesktopSettingsAware(desktopaware);
         app = new QApplication( argc, argv );
         app->setOrganizationName(QLatin1String("NetCitadel LLC"));
@@ -605,7 +601,7 @@ int main( int argc, char ** argv )
 
         if (fwbdebug) qDebug("reading settings ...");
 
-        st = new FWBSettings(); 
+        st = new FWBSettings();
 
         if (fwbdebug) qDebug("creating pixmap factory ...");
 
@@ -645,7 +641,6 @@ int main( int argc, char ** argv )
 
         if (fwbdebug) qDebug("creating widgets ...");
 
-        new FWBTree();
         new FWObjectDatabase();
         new FWObjectClipboard();
 
@@ -653,7 +648,7 @@ int main( int argc, char ** argv )
 
         QString local = QLocale::system().name();
         QTranslator translator(0);
-        translator.load(QLatin1String("fwbuilder_") + 
+        translator.load(QLatin1String("fwbuilder_") +
                         QString(local), localepath.c_str());
         app->installTranslator (&translator);
 
@@ -672,17 +667,7 @@ int main( int argc, char ** argv )
 
         if (fwbdebug) qDebug("loading libraries ...");
 
-        addOnLibs = new listOfLibraries(); 
-
         mw  = new FWWindow();
-        oe  = new ObjectEditor((QWidget*)mw->m_mainWindow->objectEditorStack);
-//        oe->open(mw->db());
-        oe->setCloseButton(mw->m_mainWindow->closeObjectEditorButton);
-        oe->setApplyButton(mw->m_mainWindow->applyObjectEditorButton);
-        oe->hide();
-        fd  = new findDialog(mw);
-        fd->hide(); 
-
         mw->setSafeMode(safemode);
         mw->setStartupFileName(filename);
 
@@ -698,23 +683,20 @@ int main( int argc, char ** argv )
 
         app->exec();
 
-        
-        oe->hide();
-        fd->hide();
         mw->hide();  // must do this before settings object is destroyed
 
-        addOnLibs->save();  // ditto 
+        mw->getAddOnLibs()->save();  // ditto
 
         if ( st->getStartupAction()==1 )
         {
 /* save the state of the GUI (opened firewall, opened object tree page, etc */
-            FWObject *o=mw->getVisibleFirewall();
+            FWObject *o=mw->getVisibleFirewalls();
             if (fwbdebug)
                 qDebug("Main: closing. VisibleFirewall = %p",o);
 
             if (o) st->setStr("UI/visibleFirewall", o->getId().c_str() );
 
-            o=om->getOpened();
+            o=mw->getOpened();
             if (o) st->setStr("UI/visibleObject",   o->getId().c_str() );
         }
 

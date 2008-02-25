@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,12 +17,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -33,7 +35,6 @@
 #include "ObjectTreeViewItem.h"
 #include "ObjectManipulator.h"
 #include "FWObjectDrag.h"
-#include "FWWindow.h"
 #include "FWBSettings.h"
 
 #include "FWObjectPropertiesFactory.h"
@@ -59,6 +60,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include "ProjectPanel.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -74,9 +76,9 @@ ObjectTreeView* ObjectTreeViewItem::getTree()
  *
  ****************************************************************************/
 
-ObjectTreeView::ObjectTreeView(QWidget* parent, const char * name, Qt::WFlags f) :
-    QTreeWidget(parent),
-    singleClickTimer(this)
+ObjectTreeView::ObjectTreeView(ProjectPanel* project, QWidget* parent, const char * name, Qt::WFlags f) :
+    QTreeWidget(parent), 
+    singleClickTimer(this), m_project(project)
 {
     setObjectName(name);
     this->setParent(parent, f);
@@ -124,10 +126,10 @@ ObjectTreeView::ObjectTreeView(QWidget* parent, const char * name, Qt::WFlags f)
              this, SLOT( resetSelection() ) );
 
     connect( this, SIGNAL( itemActivated(QTreeWidgetItem *, int)),
-             this, SLOT( itemOpened() )); 
+             this, SLOT( itemOpened() ));
 
     setColumnCount(1);
-    
+
     QStringList qsl;
     qsl.push_back(tr("Object"));
     setHeaderLabels(qsl);
@@ -137,7 +139,7 @@ ObjectTreeView::ObjectTreeView(QWidget* parent, const char * name, Qt::WFlags f)
     setMinimumSize( QSize( 100, 0 ) );
 
 //    QFont objTreeView_font(  font() );
-//    setFont( objTreeView_font ); 
+//    setFont( objTreeView_font );
 //    setCursor( QCursor( 0 ) );
 
 //  setColumnWidthMode(0, QTreeWidget::Maximum);
@@ -161,10 +163,10 @@ bool ObjectTreeView::event( QEvent *event )
         if (st->getObjTooltips())
         {
             int cx = pos.x(), cy = pos.y();
-    
+
             FWObject  *obj=NULL;
             QRect      cr;
-    
+
             QTreeWidgetItem      *itm   = itemAt( QPoint(cx,cy - header()->height()) );
             if (itm==NULL) return false;
             ObjectTreeViewItem *oivi  = dynamic_cast<ObjectTreeViewItem*>(itm);
@@ -172,7 +174,7 @@ bool ObjectTreeView::event( QEvent *event )
             obj     = oivi->getFWObject();
 
             if (obj==NULL) return false;
-        
+
             cr = visualItemRect(itm);
 
             QRect global = QRect(
@@ -180,16 +182,16 @@ bool ObjectTreeView::event( QEvent *event )
 
             //finally stretch rect up to component's width and even more
             //(it fixes bug with horizontal scroll)
-            global.setWidth(width() + horizontalOffset()); 
+            global.setWidth(width() + horizontalOffset());
 
-            QToolTip::showText(mapToGlobal( he->pos() ), 
-                FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj,true,true), 
+            QToolTip::showText(mapToGlobal( he->pos() ),
+                FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj,true,true),
                 this, global);
         }
 
         return true;
     }
-    
+
     return QTreeWidget::event(event);
 }
 
@@ -293,18 +295,18 @@ void ObjectTreeView::updateTreeItems()
         pm_lock.load( ":/Icons/lock.png" );
         QPixmapCache::insert( ":/Icons/lock.png", pm_lock);
     }
-    
-    while ( *it ) 
+
+    while ( *it )
     {
         itm= *it;
         otvi=dynamic_cast<ObjectTreeViewItem*>(itm);
         obj=otvi->getFWObject();
-        
-        if (FWBTree::isSystem(obj))
+
+        if (m_project->isSystem(obj))
             icn=":/Icons/folder1.png";
         else
             icn=(":/Icons/"+obj->getTypeName()+"/icon-tree").c_str();
-        
+
         QPixmap pm_obj;
         if ( ! QPixmapCache::find( icn, pm_obj) )
         {
@@ -314,7 +316,7 @@ void ObjectTreeView::updateTreeItems()
 
         if (obj->getBool("ro"))  itm->setIcon(0, pm_lock);//setPixmap(0, pm_lock );
         else                     itm->setIcon(0, pm_obj );
-        
+
         Firewall *fw=Firewall::cast(obj);
         if (fw!=NULL)
         {
@@ -322,7 +324,7 @@ void ObjectTreeView::updateTreeItems()
                     QString::fromUtf8(fw->getName().c_str())+" *":
                     QString::fromUtf8(fw->getName().c_str()));
         }
-        
+
         ++it;
     }
 
@@ -339,7 +341,7 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
 
     FWObject *current_obj = getCurrentObject();
 
-/* can't drag system folders 
+/* can't drag system folders
 
     in fact, I have to allow to drag system folders because otherwise
     QListView triggers highlighting of objects in the tree when user
@@ -348,7 +350,7 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
     the end of void QListView::mouseMoveEvent( QMouseEvent * e)
     (See code after they decided that they do not need to call startDrag())
 
-    if (FWBTree::isSystem(obj)) return NULL;
+    if (m_project->isSystem(obj)) return NULL;
 */
     QString icn = (":/Icons/"+current_obj->getTypeName()+"/icon-ref").c_str();
 
@@ -413,14 +415,14 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
  * changes the object opened in the editor panel. To make things
  * worse, this event is only delivered to the tree object on Mac OS X.
  *
- * 
+ *
  */
     if (fwbdebug) qDebug("ObjectTreeView::dragObject()  this=%p visible=%d",
                          this,visible);
 
-    FWObject *edit_obj = oe->getOpened();
+    FWObject *edit_obj = m_project->getOpenedEditor();
 
-    if (oe->isVisible() && 
+    if (m_project->isEditorVisible() &&
         dragobj.size()==1 &&
         edit_obj!=NULL &&
         current_obj->getLibrary()==edit_obj->getLibrary() )
@@ -428,7 +430,7 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
         if (fwbdebug) qDebug("ObjectTreeView::dragObject() reset selection");
         otvi->setSelected(false);
         resetSelection();
-    } 
+    }
 
 #if 0
     /*
@@ -438,7 +440,7 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
      * we are dragging one object, and
      * object opened in editor is not the same as the one we are dragging
      */
-    if (oe->isVisible() && dragobj.size()==1 && oe->getOpened()!=obj)
+    if (m_project->isEditorVisible() && dragobj.size()==1 && m_project->getOpenedEditor()!=obj)
     {
         setSelected(otvi,false);
         resetSelection();
@@ -458,10 +460,10 @@ void ObjectTreeView::dragEnterEvent( QDragEnterEvent *ev)
 void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
 {
     bool    acceptE = false;
-    
+
     if (ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE))
     {
-        
+
         int hy;
 
 //        hy=header()->height();    // if header is shown
@@ -471,7 +473,7 @@ void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
 
         ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(ovi);
         if (otvi==NULL)
-        {   
+        {
             ev->setAccepted(acceptE);
             return;
         }
@@ -481,8 +483,8 @@ void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
 /* the tree can accept drop only if it goes into a group and if that group
  * validates the object and tree is not read-only
  */
-        if (Group::cast(trobj)!=NULL  && 
-            !FWBTree::isSystem(trobj) &&
+        if (Group::cast(trobj)!=NULL  &&
+            !m_project->isSystem(trobj) &&
             !trobj->isReadOnly()
         )
         {
@@ -498,7 +500,7 @@ void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
                     FWObject *dragobj = *i;
                     assert(dragobj!=NULL);
 
-                    if (FWBTree::isSystem(dragobj))
+                    if (m_project->isSystem(dragobj))
                     {
 /* can not drop system folder anywhere */
                         acceptE = false;
@@ -534,8 +536,8 @@ void ObjectTreeView::dropEvent(QDropEvent *ev)
 /* the tree can accept drop only if it goes into a group and if that group
  * validates the object and the tree is not read-only
  */
-    if (Group::cast(trobj)!=NULL  && 
-        !FWBTree::isSystem(trobj) &&
+    if (Group::cast(trobj)!=NULL  &&
+        !m_project->isSystem(trobj) &&
         !trobj->isReadOnly()
     )
     {
@@ -555,7 +557,7 @@ void ObjectTreeView::dropEvent(QDropEvent *ev)
 /* check for duplicates */
                 string cp_id=dragobj->getId();
                 list<FWObject*>::iterator j;
-                for(j=g->begin(); j!=g->end(); ++j)     
+                for(j=g->begin(); j!=g->end(); ++j)
                 {
                     FWObject *o1=*j;
                     if(cp_id==o1->getId()) continue;
@@ -593,7 +595,7 @@ void ObjectTreeView::mouseMoveEvent( QMouseEvent * e )
     }
     else*/
     QTreeWidget::mouseMoveEvent(e);
-    
+
     if (e==NULL)  return;
 }
 
@@ -618,12 +620,12 @@ void ObjectTreeView::mousePressEvent( QMouseEvent *e )
     lastSelected = currentItem();
 
     QTreeWidget::mousePressEvent(e);
-    
+
     if (e->button() == Qt::LeftButton)
     {
         startingDrag = true;
     }
-    
+
     if (e->button() == Qt::RightButton)
         emit contextMenuRequested_sign(e->pos());
 }
@@ -677,7 +679,7 @@ void ObjectTreeView::mouseReleaseEvent( QMouseEvent *e )
                selectedObjects.size(),
                getCurrentObject(),
                (getCurrentObject()!=NULL)?getCurrentObject()->getName().c_str():"nil");
-    
+
     if (expandOrCollapse) return;  // user expanded or collapsed subtree,
                                    // no need to change object in the editor
 
@@ -687,11 +689,11 @@ void ObjectTreeView::mouseReleaseEvent( QMouseEvent *e )
     {
         // user selected multiple objects
         // do not let them if editor has unsaved changes
-        // 
-        if (oe->isVisible() && oe->isModified())
+        //
+        if (m_project->isEditorVisible() && m_project->isEditorModified())
             emit switchObjectInEditor_sign( getCurrentObject() );
         else
-            oe->blank();
+            m_project->blankEditor();
     }
 }
 
@@ -722,9 +724,9 @@ void ObjectTreeView::mouseDoubleClickEvent( QMouseEvent *e )
     FWObject *obj = getCurrentObject();
 
 /* system folders open on doubleclick, while for regular objects it
- * opens an editor 
+ * opens an editor
  */
-    if (FWBTree::isSystem(obj))
+    if (m_project->isSystem(obj))
         QTreeWidget::mouseDoubleClickEvent(e);
     else
         editCurrentObject();
@@ -745,7 +747,7 @@ void ObjectTreeView::keyPressEvent( QKeyEvent* ev )
         emit deleteObject_sign(obj);
         ev->accept();
         return;
-    }    
+    }
     QTreeWidget::keyPressEvent(ev);
 }
 
@@ -762,11 +764,11 @@ void ObjectTreeView::keyReleaseEvent( QKeyEvent* ev )
     {
         // user selected multiple objects
         // do not let them if editor has unsaved changes
-        // 
-        if (oe->isVisible() && oe->isModified())
+        //
+        if (m_project->isEditorVisible() && m_project->isEditorModified())
             emit switchObjectInEditor_sign( getCurrentObject() );
         else
-            oe->blank();
+            m_project->blankEditor();
     }
 }
 

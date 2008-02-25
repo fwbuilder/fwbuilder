@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,13 +17,15 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
 
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -47,7 +49,7 @@ SimpleTextEditor::SimpleTextEditor(QWidget *parent,
 {
     m_dialog = new Ui::SimpleTextEditor_q;
     m_dialog->setupUi(static_cast<QDialog*>(this));
-    
+
     if (enableLoadFromFile) m_dialog->inputFromFileButton->show();
     else                    m_dialog->inputFromFileButton->hide();
 
@@ -70,7 +72,7 @@ QString SimpleTextEditor::text()
 void SimpleTextEditor::loadFromFile()
 {
     if ( QMessageBox::warning(
-       this,"Firewall Builder", 
+       this,"Firewall Builder",
        tr("Warning: loading from file discards current contents of the script."),
        "&Load", "&Cancel", QString::null, 0, 1 )==0)
     {
@@ -83,7 +85,7 @@ void SimpleTextEditor::loadFromFile()
            if (!ifile)
            {
                QMessageBox::warning(
-                   this,"Firewall Builder", 
+                   this,"Firewall Builder",
                    tr("Could not open file %1").arg(filename),
                    "&Continue", QString::null, QString::null, 0, 1 );
                return;

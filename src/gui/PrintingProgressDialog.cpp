@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,12 +17,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+
+#include "fwbuilder_ph.h"
 
 #include "PrintingProgressDialog.h"
 
@@ -41,9 +43,9 @@ PrintingProgressDialog::PrintingProgressDialog(QWidget *parent,QPrinter *p,int n
 
     connect( m_dialog->Cancel, SIGNAL( clicked() ),
              this,             SLOT( abortPrinting() ) );
-    
+
     printer=p;
-    
+
     setNPages(nPages);
     m_dialog->text->setText("");
     if (disableCancel) m_dialog->Cancel->hide();

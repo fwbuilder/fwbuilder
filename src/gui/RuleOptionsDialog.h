@@ -36,6 +36,7 @@
 #include "fwbuilder/FWObject.h"
 
 class RuleSetView;
+class ProjectPanel;
 
 class RuleOptionsDialog : public QWidget
 {
@@ -49,8 +50,9 @@ class RuleOptionsDialog : public QWidget
     
     bool init;
 
+    ProjectPanel *m_project;
  public:
-    RuleOptionsDialog(QWidget *parent);
+    RuleOptionsDialog(ProjectPanel *project, QWidget *parent);
     ~RuleOptionsDialog();
     
 public slots:

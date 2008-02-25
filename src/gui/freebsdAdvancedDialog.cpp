@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,18 +17,19 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
+#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
 #include "platforms.h"
 
 #include "freebsdAdvancedDialog.h"
-#include "ObjectManipulator.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
@@ -40,6 +41,7 @@
 #include <qlineedit.h>
 #include <qregexp.h>
 
+#include "FWWindow.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -54,7 +56,7 @@ freebsdAdvancedDialog::freebsdAdvancedDialog(QWidget *parent,FWObject *o)
 {
     m_dialog = new Ui::freebsdAdvancedDialog_q;
     m_dialog->setupUi(this);
-    
+
     obj=o;
 
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
@@ -107,7 +109,7 @@ void freebsdAdvancedDialog::accept()
     assert(mgmt!=NULL);
 
     data.saveAll();
-    om->updateLastModifiedTimestampForAllFirewalls(obj);
+    mw->updateLastModifiedTimestampForAllFirewalls(obj);
 
     QDialog::accept();
 }
