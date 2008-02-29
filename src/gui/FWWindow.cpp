@@ -877,6 +877,12 @@ void FWWindow::hideEvent( QHideEvent *ev)
     QMainWindow::hideEvent(ev);
 }
 
+void FWWindow::back()
+{
+    if (activeProject())
+        activeProject()->back();
+}
+
 void FWWindow::newObject()
 {
     if (activeProject())

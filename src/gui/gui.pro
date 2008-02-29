@@ -118,8 +118,9 @@ HEADERS += ../../config.h \
 	FindWhereUsedWidget.h \
 	ConfirmDeleteObjectDialog.h \
 	FakeWizard.h \
+	AskLibForCopyDialog.h \
 	FWBAboutDialog.h \
-        fwbuilder_ph.h
+	fwbuilder_ph.h 
 
 SOURCES += ProjectPanel.cpp \
     FWWindow.cpp \
@@ -223,8 +224,9 @@ SOURCES += ProjectPanel.cpp \
 	MetricEditorPanel.cpp \
 	FindWhereUsedWidget.cpp \
 	ConfirmDeleteObjectDialog.cpp \
-	FakeWizard.cpp 
-
+	FakeWizard.cpp \
+    AskLibForCopyDialog.cpp
+       
 FORMS = FWBMainWindow_q.ui \
 	execdialog_q.ui \
 	customservicedialog_q.ui \
@@ -294,7 +296,8 @@ FORMS = FWBMainWindow_q.ui \
 	metriceditorpanel_q.ui \
 	findwhereusedwidget_q.ui \
 	confirmdeleteobjectdialog_q.ui\
-        projectpanel_q.ui
+    projectpanel_q.ui\
+    asklibforcopydialog_q.ui
 
 contains( HAVE_ANTLR_RUNTIME, 1 ){
     INCLUDEPATH += $$ANTLR_INCLUDEPATH

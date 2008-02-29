@@ -114,6 +114,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include "AskLibForCopyDialog.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -2413,7 +2414,7 @@ FWObject* ObjectManipulator::createObject(FWObject *parent,
             lib->getId()==DELETED_LIB  ||
             lib->isReadOnly() )
     {
-        if (i>=m_objectManipulator->libs->count())
+        if (i >= m_objectManipulator->libs->count())
         {
             lib=getCurrentLib();
             break;
@@ -2425,6 +2426,19 @@ FWObject* ObjectManipulator::createObject(FWObject *parent,
     if (parent==NULL) parent=lib;
 
     return actuallyCreateObject(parent,objType,objName,copyFrom);
+}
+
+
+FWObject* ObjectManipulator::copyObj2Tree(const QString &objType, const QString &objName,
+         libfwbuilder::FWObject *copyFrom)
+{
+    if (!validateDialog()) return NULL;
+
+    FWObject *lib  = AskLibForCopyDialog::askLibForCopyDialog(m_project, m_project->db());;
+    if (!lib)
+        return 0;
+    FWObject *parent=m_project->getStandardSlotForObject(lib, objType);
+    return actuallyCreateObject(parent, objType, objName, copyFrom);
 }
 
 FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
@@ -2445,6 +2459,7 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
     parent->add(nobj);
     insertSubtree(allItems[parent], nobj);
 
+    m_project->db()->setDirty(true);
     return nobj;
 }
 

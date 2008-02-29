@@ -1226,6 +1226,13 @@ libfwbuilder::FWObject* ProjectPanel::createObject(libfwbuilder::FWObject *paren
     return m_panel->om->createObject(parent, objType, objName, copyFrom);
 }
 
+
+FWObject* ProjectPanel::copyObj2Tree(const QString &objType, const QString &objName,
+         FWObject *copyFrom)
+{
+    return m_panel->om->copyObj2Tree(objType, objName, copyFrom);
+}
+
 void ProjectPanel::moveObject(libfwbuilder::FWObject *target,
                     libfwbuilder::FWObject *obj)
 {

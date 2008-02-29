@@ -132,7 +132,7 @@ static QString    objid;
 QApplication      *app        = NULL;
 FWWindow          *mw         = NULL;
 FWBSettings       *st         = NULL;
-int                fwbdebug   = 1;
+int                fwbdebug   = 0;
 bool               safemode   = false;
 bool               registered = false;
 bool               gui_experiment1 = false;
@@ -342,7 +342,7 @@ int main( int argc, char ** argv )
 
     filename="";
     objid="";
-    fwbdebug=1;
+    fwbdebug=0;
     safemode=false;
 
     if(fwbdebug)
@@ -646,7 +646,7 @@ int main( int argc, char ** argv )
 
         if (fwbdebug) qDebug("loading translation for the current locale ...");
 
-        QString local = QLocale::system().name();
+        QString local = "en_US";//QLocale::system().name();
         QTranslator translator(0);
         translator.load(QLatin1String("fwbuilder_") +
                         QString(local), localepath.c_str());

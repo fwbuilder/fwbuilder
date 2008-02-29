@@ -138,6 +138,7 @@ class FWWindow : public QMainWindow {
      virtual void pasteRuleAbove();
      virtual void pasteRuleBelow();
 
+     virtual void back();
      virtual void newObject();
      virtual void lockObject();
      virtual void unlockObject();

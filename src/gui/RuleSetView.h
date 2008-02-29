@@ -144,7 +144,7 @@ class RuleSetView : public QTableView
     friend class RuleDelegate;
     
     Q_OBJECT
-
+    
  public slots:
     void selectionChanged(const QItemSelection&, const QItemSelection&);
     void restoreSelection(bool same_widget);
@@ -431,6 +431,7 @@ private:
     QString chooseIcon(QString icn);
     bool showCommentTip(QPoint pos, QHelpEvent *he);
     void drawComment(QPainter &p, int row, int col, const QRect &cr);
+    bool insertObjectFromOther(int row, int col, libfwbuilder::FWObject *obj);
 };
 
 

@@ -101,6 +101,7 @@ public:
     void loadObjects(libfwbuilder::FWObjectDatabase *db);
     void clearObjects();
     libfwbuilder::FWObjectDatabase* db() { return objdb; }
+    bool hasObject(libfwbuilder::FWObject* obj) { return objdb->findInIndex(obj->getId()); };
     //wrapers for some ObjectManipulator functions
     libfwbuilder::FWObject* getOpened();
     
@@ -115,6 +116,10 @@ public:
                                           const QString &objName,
                                           libfwbuilder::FWObject *copyFrom=NULL);
 
+    libfwbuilder::FWObject* copyObj2Tree(const QString &objType,
+                                         const QString &objName,
+                                         libfwbuilder::FWObject *copyFrom=NULL);
+         
     void moveObject(libfwbuilder::FWObject *target,
                     libfwbuilder::FWObject *obj);
 

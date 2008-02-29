@@ -2506,12 +2506,23 @@ void RuleSetView::deleteObject(int row, int col, FWObject *obj)
     m_project->findObjectWidget->reset();
 }
 
+bool RuleSetView::insertObjectFromOther(int row, int col, FWObject *obj)
+{
+    QString n=QString::fromUtf8(obj->getName().c_str());
+    if (!m_project->hasObject(obj))
+    {
+        obj = m_project->copyObj2Tree(obj->getTypeName().c_str(), n, obj);
+        if (!obj) return false;
+    }
+    return insertObject(row, col, obj);
+}
+
 bool RuleSetView::insertObject(int row, int col, FWObject *obj)
 {
     if (fwbdebug)
         qDebug("RuleSetView::insertObject  -- insert object %s",
                obj->getName().c_str());
-
+    
     if (!isTreeReadWrite(this,ruleset)) return false;
 
     if (getColType(col)!=Object && getColType(col)!=Time) return false;
@@ -3002,15 +3013,14 @@ void RuleSetView::dropEvent( QDropEvent *ev)
 
         if (ev->source()!=this)
         {
-            insertObject(row,col,dragobj);
+            insertObjectFromOther(row, col, dragobj);
         } else
         {
             clearSelection();
             if (ev->keyboardModifiers() & Qt::ControlModifier)
             {
-                insertObject(row,col,dragobj); //copy
-
-                changeCurrentCell(row, col, true);
+                if (insertObject(row,col,dragobj)) //copy
+                    changeCurrentCell(row, col, true);
             }
             else //move
             {

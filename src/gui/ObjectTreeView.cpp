@@ -334,7 +334,7 @@ void ObjectTreeView::updateTreeItems()
 
 void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
 {
-    if (fwbdebug) qDebug("ObjectTreeView::dragObject");
+    qDebug("ObjectTreeView::dragObject"); // !!!!!
 
     QTreeWidgetItem *ovi = currentItem();
     ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(ovi);
@@ -453,17 +453,15 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
 
 void ObjectTreeView::dragEnterEvent( QDragEnterEvent *ev)
 {
-    ev->setAccepted( ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) );
+    ev->setAccepted(ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) );
     ev->setDropAction(Qt::MoveAction);
 }
 
 void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
 {
     bool    acceptE = false;
-
     if (ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE))
-    {
-
+    {    
         int hy;
 
 //        hy=header()->height();    // if header is shown
@@ -474,12 +472,16 @@ void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
         ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(ovi);
         if (otvi==NULL)
         {
+        qDebug("dragMoveEvent %d", acceptE);// !!!!!
             ev->setAccepted(acceptE);
             return;
         }
 
         FWObject *trobj = otvi->getFWObject();
 
+        qDebug("Group::cast(trobj)!=NULL %d", Group::cast(trobj)!=NULL);// !!!!!
+        qDebug("!m_project->isSystem(trobj) %d", !m_project->isSystem(trobj));// !!!!!
+        qDebug("!trobj->isReadOnly() %d", !trobj->isReadOnly());// !!!!!
 /* the tree can accept drop only if it goes into a group and if that group
  * validates the object and tree is not read-only
  */
@@ -489,6 +491,7 @@ void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
         )
         {
             acceptE = true;
+        qDebug("dragMoveEvent %d", acceptE);// !!!!!
 
             Group    *g     = Group::cast(trobj);
             list<FWObject*> dragol;
@@ -542,10 +545,9 @@ void ObjectTreeView::dropEvent(QDropEvent *ev)
     )
     {
         Group *g=Group::cast(trobj);
-
         item_before_drag_started=NULL;
-
         list<FWObject*> dragol;
+
         if (FWObjectDrag::decode(ev, dragol))
         {
             for (list<FWObject*>::iterator i=dragol.begin();
@@ -555,7 +557,8 @@ void ObjectTreeView::dropEvent(QDropEvent *ev)
                 assert(dragobj!=NULL);
 
 /* check for duplicates */
-                string cp_id=dragobj->getId();
+                const string cp_id=dragobj->getId();
+                qDebug("dropEvent allowed %s", cp_id.c_str());// !!!!!
                 list<FWObject*>::iterator j;
                 for(j=g->begin(); j!=g->end(); ++j)
                 {
@@ -567,7 +570,9 @@ void ObjectTreeView::dropEvent(QDropEvent *ev)
                         cp_id==ref->getPointerId()) return;
                 }
 
-                g->addRef(dragobj);
+                QString n=QString::fromUtf8(dragobj->getName().c_str());
+                m_project->copyObj2Tree(dragobj->getTypeName().c_str(), n, dragobj);
+                //g->addRef(dragobj);
             }
 
             clearSelection();

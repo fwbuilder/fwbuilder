@@ -55,6 +55,7 @@ namespace libfwbuilder
     class Firewall;
     class Library;
 }
+
 class HistoryItem {
     ObjectTreeViewItem *itm;
     QString         objId;
@@ -161,6 +162,8 @@ public slots:
                                           const QString &objType,
                                           const QString &objName,
                                           libfwbuilder::FWObject *copyFrom=NULL);
+     libfwbuilder::FWObject * copyObj2Tree(const QString &objType, const QString &objName,
+         libfwbuilder::FWObject *copyFrom);
      
      void newLibrary();
      void newObject();
