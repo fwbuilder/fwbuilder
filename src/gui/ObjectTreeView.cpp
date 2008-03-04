@@ -462,9 +462,10 @@ bool ObjectTreeView::isCurrReadOnly(QDragMoveEvent *ev)
     QTreeWidgetItem *ovi = itemAt(ev->pos());
 
     ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(ovi);
-    FWObject *trobj = otvi->getFWObject();
-
-    return (trobj->isReadOnly()); //m_project->isSystem(trobj) || 
+    FWObject *trobj;
+    if (otvi && (trobj = otvi->getFWObject()))
+        return trobj->isReadOnly();
+    return false;
 }
 
 void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
