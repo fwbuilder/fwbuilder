@@ -118,7 +118,8 @@ public:
 
     libfwbuilder::FWObject* copyObj2Tree(const QString &objType,
                                          const QString &objName,
-                                         libfwbuilder::FWObject *copyFrom=NULL);
+                                         libfwbuilder::FWObject *copyFrom=NULL,
+                                         bool ask4Lib = true);
          
     void moveObject(libfwbuilder::FWObject *target,
                     libfwbuilder::FWObject *obj);

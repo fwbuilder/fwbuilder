@@ -334,8 +334,6 @@ void ObjectTreeView::updateTreeItems()
 
 void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
 {
-    qDebug("ObjectTreeView::dragObject"); // !!!!!
-
     QTreeWidgetItem *ovi = currentItem();
     ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(ovi);
 
@@ -457,129 +455,58 @@ void ObjectTreeView::dragEnterEvent( QDragEnterEvent *ev)
     ev->setDropAction(Qt::MoveAction);
 }
 
+bool ObjectTreeView::isCurrReadOnly(QDragMoveEvent *ev)
+{
+// the tree can accept drop only if it goes into a group and if that group
+//  validates the object and tree is not read-only
+    QTreeWidgetItem *ovi = itemAt(ev->pos());
+
+    ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(ovi);
+    FWObject *trobj = otvi->getFWObject();
+
+    return (trobj->isReadOnly()); //m_project->isSystem(trobj) || 
+}
+
 void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
 {
-    bool    acceptE = false;
-    if (ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE))
-    {    
-        int hy;
+    if (isCurrReadOnly(ev) ||
+          !ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE))
+    {
+        qDebug("ObjectTreeView::itemOpened");
+        ev->setAccepted(false);
+        return;
+    }
+    list<FWObject*> dragol;
+    if (!FWObjectDrag::decode(ev, dragol))
+       ev->setAccepted(false);
+    for (list<FWObject*>::iterator i=dragol.begin();i!=dragol.end(); ++i)
+    {
+        FWObject *dragobj = *i;
+        assert(dragobj!=NULL);
 
-//        hy=header()->height();    // if header is shown
-        hy=0;
-
-        QTreeWidgetItem *ovi = itemAt( ev->pos() );
-
-        ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(ovi);
-        if (otvi==NULL)
+        if (m_project->isSystem(dragobj))
         {
-        qDebug("dragMoveEvent %d", acceptE);// !!!!!
-            ev->setAccepted(acceptE);
+// can not drop system folder anywhere 
+            ev->setAccepted(false);
             return;
         }
-
-        FWObject *trobj = otvi->getFWObject();
-
-        qDebug("Group::cast(trobj)!=NULL %d", Group::cast(trobj)!=NULL);// !!!!!
-        qDebug("!m_project->isSystem(trobj) %d", !m_project->isSystem(trobj));// !!!!!
-        qDebug("!trobj->isReadOnly() %d", !trobj->isReadOnly());// !!!!!
-/* the tree can accept drop only if it goes into a group and if that group
- * validates the object and tree is not read-only
- */
-        if (Group::cast(trobj)!=NULL  &&
-            !m_project->isSystem(trobj) &&
-            !trobj->isReadOnly()
-        )
-        {
-            acceptE = true;
-        qDebug("dragMoveEvent %d", acceptE);// !!!!!
-
-            Group    *g     = Group::cast(trobj);
-            list<FWObject*> dragol;
-            if (FWObjectDrag::decode(ev, dragol))
-            {
-                for (list<FWObject*>::iterator i=dragol.begin();
-                     i!=dragol.end(); ++i)
-                {
-                    FWObject *dragobj = *i;
-                    assert(dragobj!=NULL);
-
-                    if (m_project->isSystem(dragobj))
-                    {
-/* can not drop system folder anywhere */
-                        acceptE = false;
-                        break;
-                    }
-
-                    bool t= g->validateChild(dragobj);
-                    if (!t)
-                    {
-                        acceptE = false;
-                        break;
-                    }
-
-                    if (g->getPath(true) == "Services/Groups" && t)
-                        ovi->setExpanded(true);
-
-                    if (g->getPath(true) == "Objects/Groups" && t)
-                        ovi->setExpanded(true);
-                }
-            }
-        }
     }
-    ev->setAccepted(acceptE);
+    ev->setAccepted(true);
 }
 
 void ObjectTreeView::dropEvent(QDropEvent *ev)
 {
-    QTreeWidgetItem *ovi = itemAt( ev->pos() );
-    ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(ovi);
-    if (otvi==NULL) return;
-    FWObject *trobj = otvi->getFWObject();
-
-/* the tree can accept drop only if it goes into a group and if that group
- * validates the object and the tree is not read-only
- */
-    if (Group::cast(trobj)!=NULL  &&
-        !m_project->isSystem(trobj) &&
-        !trobj->isReadOnly()
-    )
+    list<FWObject*> dragol;
+    if (FWObjectDrag::decode(ev, dragol))
     {
-        Group *g=Group::cast(trobj);
-        item_before_drag_started=NULL;
-        list<FWObject*> dragol;
-
-        if (FWObjectDrag::decode(ev, dragol))
+        for (list<FWObject*>::iterator i=dragol.begin();
+         i!=dragol.end(); ++i)
         {
-            for (list<FWObject*>::iterator i=dragol.begin();
-                 i!=dragol.end(); ++i)
-            {
-                FWObject *dragobj = *i;
-                assert(dragobj!=NULL);
+            FWObject *dragobj = *i;
+            assert(dragobj);
 
-/* check for duplicates */
-                const string cp_id=dragobj->getId();
-                qDebug("dropEvent allowed %s", cp_id.c_str());// !!!!!
-                list<FWObject*>::iterator j;
-                for(j=g->begin(); j!=g->end(); ++j)
-                {
-                    FWObject *o1=*j;
-                    if(cp_id==o1->getId()) continue;
-
-                    FWReference *ref;
-                    if( (ref=FWReference::cast(o1))!=NULL &&
-                        cp_id==ref->getPointerId()) return;
-                }
-
-                QString n=QString::fromUtf8(dragobj->getName().c_str());
-                m_project->copyObj2Tree(dragobj->getTypeName().c_str(), n, dragobj);
-                //g->addRef(dragobj);
-            }
-
-            clearSelection();
-            setCurrentItem(ovi);
-            ovi->setSelected(true);
-
-//            emit objectDropped_sign(g);
+            QString n=QString::fromUtf8(dragobj->getName().c_str());
+            m_project->copyObj2Tree(dragobj->getTypeName().c_str(), n, dragobj, false);
         }
     }
 }

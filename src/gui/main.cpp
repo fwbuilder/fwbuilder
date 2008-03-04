@@ -646,7 +646,7 @@ int main( int argc, char ** argv )
 
         if (fwbdebug) qDebug("loading translation for the current locale ...");
 
-        QString local = "en_US";//QLocale::system().name();
+        QString local = QLocale::system().name();//"en_US";//
         QTranslator translator(0);
         translator.load(QLatin1String("fwbuilder_") +
                         QString(local), localepath.c_str());

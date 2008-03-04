@@ -46,13 +46,13 @@ private:
     libfwbuilder::FWObject *m_curr;
     Ui::asklibforcopydialog_q *m_dialog;
    
+    AskLibForCopyDialog( QWidget *parent, libfwbuilder::FWObjectDatabase *db, 
+        libfwbuilder::FWObject *curr = 0);
     int getIdxForLib(libfwbuilder::FWObject* lib);
     void loadObjects();
     int addLib( libfwbuilder::FWObject *lib);
     libfwbuilder::FWObject *getChoosenLib();
 public:
-    AskLibForCopyDialog( QWidget *parent, libfwbuilder::FWObjectDatabase *db, 
-        libfwbuilder::FWObject *curr = 0);
     ~AskLibForCopyDialog();
     static libfwbuilder::FWObject *askLibForCopyDialog( QWidget *parent, 
         libfwbuilder::FWObjectDatabase *db, libfwbuilder::FWObject *curr = 0);

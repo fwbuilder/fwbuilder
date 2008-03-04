@@ -69,6 +69,7 @@ class ObjectTreeView : public QTreeWidget {
 
     std::vector<libfwbuilder::FWObject*>          selectedObjects;
     ProjectPanel* m_project;
+    bool isCurrReadOnly(QDragMoveEvent *ev);
  protected:
 
     bool event( QEvent *event );

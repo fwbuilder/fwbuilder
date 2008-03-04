@@ -56,9 +56,7 @@ AskLibForCopyDialog::AskLibForCopyDialog( QWidget *parent, FWObjectDatabase *db,
 
 void AskLibForCopyDialog::loadObjects()
 {
-    FWObject *firstUserLib=NULL;
     list<FWObject*> ll = m_db->getByType( Library::TYPENAME );
-    int ind = 0;
     for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
     {
         FWObject *lib = (*i);
@@ -100,7 +98,7 @@ int AskLibForCopyDialog::addLib( FWObject *lib)
     m_dialog->libs->setCurrentIndex(idx);
 
     idxToLibs.insert(i1,lib);
-
+    return idx;
 }
 
 FWObject *AskLibForCopyDialog::getChoosenLib()
