@@ -2441,7 +2441,13 @@ FWObject* ObjectManipulator::copyObj2Tree(const QString &objType, const QString 
         return 0;
     if (!parent)
         parent=m_project->getStandardSlotForObject(lib, objType);
-    return pasteTo (parent, copyFrom); 
+    FWObject *nobj = pasteTo (parent, copyFrom); 
+    if (nobj && Firewall::isA(nobj))
+    {
+        m_project->addFirewallToList(nobj);
+        m_project->showFirewall(nobj);
+    }
+    return nobj;
 }
 
 FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
