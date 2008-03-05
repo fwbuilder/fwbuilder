@@ -163,7 +163,7 @@ public slots:
                                           const QString &objName,
                                           libfwbuilder::FWObject *copyFrom=NULL);
      libfwbuilder::FWObject * copyObj2Tree(const QString &objType, const QString &objName,
-         libfwbuilder::FWObject *copyFrom, bool ask4Lib=true);
+         libfwbuilder::FWObject *copyFrom, libfwbuilder::FWObject *parent=NULL, bool ask4Lib=true);
      
      void newLibrary();
      void newObject();

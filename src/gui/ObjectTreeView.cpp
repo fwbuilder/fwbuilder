@@ -171,7 +171,7 @@ bool ObjectTreeView::event( QEvent *event )
             if (itm==NULL) return false;
             ObjectTreeViewItem *oivi  = dynamic_cast<ObjectTreeViewItem*>(itm);
             assert(oivi!=NULL);
-            obj     = oivi->getFWObject();
+            obj = oivi->getFWObject();
 
             if (obj==NULL) return false;
 
@@ -507,9 +507,23 @@ void ObjectTreeView::dropEvent(QDropEvent *ev)
             assert(dragobj);
 
             QString n=QString::fromUtf8(dragobj->getName().c_str());
-            m_project->copyObj2Tree(dragobj->getTypeName().c_str(), n, dragobj, false);
+            m_project->copyObj2Tree(dragobj->getTypeName().c_str(), n, dragobj, 
+              getDropTarget(ev, dragobj), false);
         }
     }
+}
+
+FWObject *ObjectTreeView::getDropTarget(QDropEvent *ev, FWObject* dragobj)
+{//If dag object is an interface or IPv4 object it should be paste to node on which it is dropped
+    QTreeWidgetItem *ovi = itemAt(ev->pos());
+
+    ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(ovi);
+    FWObject *trobj;
+    if (otvi && (trobj = otvi->getFWObject()) && !trobj->isReadOnly() &&
+      ((Interface::isA(dragobj)) //Firewall::isA(trobj) && 
+          || (Interface::isA(trobj) && IPv4::isA(dragobj))))
+        return trobj;
+    return 0;
 }
 
 void ObjectTreeView::dragLeaveEvent( QDragLeaveEvent *ev)

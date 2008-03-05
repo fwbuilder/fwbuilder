@@ -2430,7 +2430,7 @@ FWObject* ObjectManipulator::createObject(FWObject *parent,
 
 
 FWObject* ObjectManipulator::copyObj2Tree(const QString &objType, const QString &objName,
-         libfwbuilder::FWObject *copyFrom, bool askLib)
+         libfwbuilder::FWObject *copyFrom, FWObject *parent, bool askLib)
 {
     if (!validateDialog()) return NULL;
 
@@ -2439,8 +2439,9 @@ FWObject* ObjectManipulator::copyObj2Tree(const QString &objType, const QString 
         lib = AskLibForCopyDialog::askLibForCopyDialog(m_project, m_project->db(), lib);
     if (!lib)
         return 0;
-    FWObject *parent=m_project->getStandardSlotForObject(lib, objType);
-    return actuallyCreateObject(parent, objType, objName, copyFrom);
+    if (!parent)
+        parent=m_project->getStandardSlotForObject(lib, objType);
+    return pasteTo (parent, copyFrom); 
 }
 
 FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
