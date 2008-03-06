@@ -932,7 +932,7 @@ void ProjectPanel::fileNew()
     mainW->fileSaveActionSetEn( !rcs->isRO() && !rcs->isTemp() );
 }
 
-void ProjectPanel::fileOpen()
+bool ProjectPanel::fileOpen()
 {
     if (fwbdebug) qDebug("ProjectPanel::fileOpen(): start");
 
@@ -940,13 +940,13 @@ void ProjectPanel::fileOpen()
     RCSFilePreview  fp(this);
 
     if ( fd.exec() != QDialog::Accepted )
-        return;
+        return false;
 
     bool hasRCS = fp.showFileRLog( fd.selectedFiles()[0] );
 
     if ( (!hasRCS) || (fp.exec() == QDialog::Accepted) )
     {
-        if (!saveIfModified() || !checkin(true)) return;
+        if (!saveIfModified() || !checkin(true)) return false;
         if (!systemFile && rcs!=NULL) fileClose();
 
         //try to get simple rcs instance from RCS preview
@@ -959,7 +959,7 @@ void ProjectPanel::fileOpen()
 
         //if RCS isn't still formed, it's an error
         if (rcs==NULL)
-            return;
+            return false;
 
 /***********************************************************************
  * TODO : add an option "RCS support"
@@ -975,7 +975,7 @@ void ProjectPanel::fileOpen()
         {
 /* if there was an exception, abort operation. E.g. RCS::co may throw
  * exception */
-            return;
+            return false;
         }
 /***********************************************************************/
 
@@ -983,7 +983,9 @@ void ProjectPanel::fileOpen()
         showFirewalls( true );
 
         if (rcs->isTemp()) unlink(rcs->getFileName().toLatin1().constData());
+        return true;
     }
+    return false;
 }
 
 void ProjectPanel::fileClose()

@@ -172,7 +172,8 @@ FWWindow::FWWindow(): m_space(0),
 
     m_space = new QMdiArea(this);
     setCentralWidget(m_space);
-    newProjectPanel();
+    ProjectPanel *proj = newProjectPanel();
+    showSub(proj);
     
     setSafeMode(false);
     setStartupFileName("");
@@ -209,19 +210,23 @@ FWWindow::~FWWindow()
 
 ProjectPanel *FWWindow::newProjectPanel()
 {
-    QMdiSubWindow *sub = new QMdiSubWindow;
     ProjectPanel *projectW = new ProjectPanel(m_space);
     projectW->initMain(this);
     
+    return projectW;
+}
+
+void FWWindow::showSub(ProjectPanel *projectW)
+{
+    QMdiSubWindow *sub = new QMdiSubWindow;
     sub->setWidget(projectW);
     sub->setAttribute(Qt::WA_DeleteOnClose);
     m_space->addSubWindow(sub);
     sub->showMaximized();
     QIcon p(":Icons/Firewall/icon-tree");
     sub->setWindowIcon(p);
-    return projectW;
 }
-    
+
 ProjectPanel* FWWindow::activeProject()
 {
     QMdiSubWindow *w = m_space->currentSubWindow();
@@ -304,6 +309,7 @@ void FWWindow::fileNew()
 {
     ProjectPanel *proj = newProjectPanel();
     proj->fileNew();
+    showSub(proj);
 }
 
 void FWWindow::addToRCSActionSetEn(bool en)
@@ -329,7 +335,8 @@ void FWWindow::fileSaveActionSetEn(bool en)
 void FWWindow::fileOpen()
 {
     ProjectPanel *proj = newProjectPanel();
-    proj->fileOpen();
+    if (proj->fileOpen())
+        showSub(proj);
 }
 
 void FWWindow::fileClose()

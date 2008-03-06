@@ -76,6 +76,7 @@ class FWWindow : public QMainWindow {
     void clearFirewallTabs();
     ProjectPanel* activeProject();
     ProjectPanel *newProjectPanel();
+    void showSub(ProjectPanel *projectW);
  public slots:
 
      virtual void search();

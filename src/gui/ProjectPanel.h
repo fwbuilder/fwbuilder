@@ -274,7 +274,7 @@ public:
 
     virtual void fileProp();
     virtual void fileNew();
-    virtual void fileOpen();
+    virtual bool fileOpen();
 
     virtual void fileClose();
     virtual void fileSave();
