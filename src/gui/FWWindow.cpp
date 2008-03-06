@@ -217,6 +217,8 @@ ProjectPanel *FWWindow::newProjectPanel()
     sub->setAttribute(Qt::WA_DeleteOnClose);
     m_space->addSubWindow(sub);
     sub->showMaximized();
+    QIcon p(":Icons/Firewall/icon-tree");
+    sub->setWindowIcon(p);
     return projectW;
 }
     

@@ -34,9 +34,6 @@
   <property name="windowTitle" >
    <string>Firewall Builder</string>
   </property>
-  <property name="windowIcon" >
-   <iconset/>
-  </property>
   <widget class="QWidget" name="widget" >
    <layout class="QGridLayout" >
     <property name="leftMargin" >

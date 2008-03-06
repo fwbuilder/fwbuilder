@@ -520,7 +520,7 @@ FWObject *ObjectTreeView::getDropTarget(QDropEvent *ev, FWObject* dragobj)
     ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(ovi);
     FWObject *trobj;
     if (otvi && (trobj = otvi->getFWObject()) && !trobj->isReadOnly() &&
-      ((Interface::isA(dragobj)) //Firewall::isA(trobj) && 
+      (Interface::isA(dragobj) //Firewall::isA(trobj) && 
           || (Interface::isA(trobj) && IPv4::isA(dragobj))))
         return trobj;
     return 0;
