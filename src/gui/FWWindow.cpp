@@ -105,6 +105,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <time.h>
+#include <memory.h>
 
 #include <algorithm>
 
@@ -334,9 +335,9 @@ void FWWindow::fileSaveActionSetEn(bool en)
 
 void FWWindow::fileOpen()
 {
-    ProjectPanel *proj = newProjectPanel();
+    std::auto_ptr<ProjectPanel> proj(newProjectPanel());
     if (proj->fileOpen())
-        showSub(proj);
+        showSub(proj.release());
 }
 
 void FWWindow::fileClose()
