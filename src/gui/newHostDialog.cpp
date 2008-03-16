@@ -483,8 +483,8 @@ void newHostDialog::fillInterfaceData(Interface *intf, QTextBrowser *qte)
 void newHostDialog::addInterface()
 {
     QString dn = "";
-    if (m_dialog->iface_dyn->isChecked())   dn+="Dyn";
-    if (m_dialog->iface_unnum->isChecked()) dn+="Unn";
+    if (m_dialog->iface_dyn->isChecked())   dn += "Dyn";
+    if (m_dialog->iface_unnum->isChecked()) dn += "Unn";
 
     QString addr;
     QString netm;
@@ -516,6 +516,7 @@ void newHostDialog::addInterface()
        << m_dialog->iface_label->text()
        << addr
        << netm
+       << dn
        << m_dialog->iface_physaddr->text();
 
     new QTreeWidgetItem(m_dialog->iface_list, sl);
