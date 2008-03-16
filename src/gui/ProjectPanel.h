@@ -88,6 +88,24 @@ class ProjectPanel: public QWidget {
     void initFD();
         
     QString                                 noFirewalls;
+    
+    libfwbuilder::RuleElement* getRE(libfwbuilder::Rule* r, int col );
+    void checkRERefs(libfwbuilder::RuleElement *re, 
+       std::list<libfwbuilder::FWObject*> &extRefs);
+    void checkPolicy4ExtRefs(libfwbuilder::Firewall *fw, 
+       std::list<libfwbuilder::FWObject*> &extRefs);
+    void findIntersectRefs(libfwbuilder::FWObject *lib, libfwbuilder::FWObject *root,
+                           std::list<libfwbuilder::FWObject*> &extRefs,
+                           const std::list<libfwbuilder::FWObject*> &objList);
+
+    void restorePolicyRefs(libfwbuilder::Policy *pol, libfwbuilder::Policy *pol_old, 
+        const std::map<const std::string, libfwbuilder::FWObject *> &objByIds);
+    void restorePolicyRuleRefs(libfwbuilder::PolicyRule *rule, 
+        libfwbuilder::PolicyRule *rule_old, 
+        const std::map<const std::string, libfwbuilder::FWObject *> &objByIds);
+    void restoreRERefs(libfwbuilder::RuleElement *re_new, 
+          libfwbuilder::RuleElement *re_old,
+          const std::map<const std::string, libfwbuilder::FWObject *> &objByIds);
 public:  
     Ui::ProjectPanel_q *m_panel;
     FindObjectWidget *findObjectWidget;
@@ -243,7 +261,11 @@ public:
     QString getDestDir(const QString &fname);
     QString chooseNewFileName(const QString &fname, bool checkPresence,const QString &title);
     void setFileName(const QString &fname);
-
+    void check4Depends(libfwbuilder::FWObject *obj, 
+       std::list<libfwbuilder::FWObject*> & objList, 
+       libfwbuilder::FWObject *lib);
+    void restoreDepends(libfwbuilder::FWObject *obj_old, libfwbuilder::FWObject *nobj, 
+       const std::map<const std::string, libfwbuilder::FWObject *> &objByIds);
  public slots:
     void newObject();
     void info();

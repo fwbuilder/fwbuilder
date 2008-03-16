@@ -2441,7 +2441,20 @@ FWObject* ObjectManipulator::copyObj2Tree(const QString &objType, const QString 
         return 0;
     if (!parent)
         parent=m_project->getStandardSlotForObject(lib, objType);
+    list<FWObject*> refs;
+    map<const std::string, FWObject*> objByIds;
+    m_project->check4Depends(copyFrom, refs, lib);
+    for(list<FWObject*>::iterator i=refs.begin(); i!=refs.end(); ++i)
+    {
+        FWObject *o = (*i);
+        FWObject *par = m_project->getStandardSlotForObject(lib, o->getTypeName().c_str());
+        FWObject *no  = pasteTo (par, o);
+        //qDebug("i->first.c_str() = (%s)", no->getId()); // !!!!!
+        objByIds[no->getId()] = no;
+        
+    }
     FWObject *nobj = pasteTo (parent, copyFrom); 
+    m_project->restoreDepends(copyFrom, nobj, objByIds);
     if (nobj && Firewall::isA(nobj))
     {
         m_project->addFirewallToList(nobj);

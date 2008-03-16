@@ -127,7 +127,7 @@
 #include <qmenu.h>
 #include <qtoolbutton.h>
 
-#include <qlayout.h>
+#include <qlayout.h> 
 #include <qcursor.h>
 #include <qsplitter.h>
 #include <qtimer.h>
@@ -223,6 +223,169 @@ void ProjectPanel::info(libfwbuilder::FWObject *obj, bool forced)
     }
 
 //    unselectRules();
+}
+
+RuleElement* ProjectPanel::getRE( Rule* r, int col )
+{
+    string ret;
+    switch (col)
+    {
+        case 0: ret=RuleElementSrc::TYPENAME; break;//Object
+        case 1: ret=RuleElementDst::TYPENAME; break;//Object
+        case 2: ret=RuleElementSrv::TYPENAME; break;//Object
+        case 3: ret=RuleElementItf::TYPENAME; break;//Object
+        case 4: ret=RuleElementInterval::TYPENAME; break;//Time
+        default: return NULL;
+    }
+
+    return RuleElement::cast( r->getFirstByType(ret) );
+}
+
+void ProjectPanel::checkRERefs(RuleElement *re, list<FWObject*> &extRefs)
+{
+    for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
+    {
+        FWObject *o1= *i;
+        if (FWReference::cast(o1))
+            o1=FWReference::cast(o1)->getPointer();
+        extRefs.push_back(o1);
+            //objectText(re,o1) );
+    }
+}
+
+void ProjectPanel::checkPolicy4ExtRefs(Firewall *fw, list<FWObject*> &extRefs)
+{
+    Policy *pol=Policy::cast(fw->getFirstByType(Policy::TYPENAME));
+    if (!pol)
+        return;
+    for (libfwbuilder::FWObject::iterator i=pol->begin(); i!=pol->end(); i++)
+    {
+        PolicyRule *rule = PolicyRule::cast(*i);
+        if (!rule)
+            continue;
+        //FWOptions  *ropt = rule->getOptionsObject();
+        //if (ropt)
+        //    extRefs.push_back(ropt);
+        for (int col =0; col < 5; col++)
+        {
+            RuleElement *re = getRE(rule, col);
+            if (!re) continue;
+            checkRERefs(re, extRefs);
+        } 
+    }
+}
+
+void ProjectPanel::check4Depends(FWObject *obj, list<FWObject*>& objList, FWObject *lib)
+//objList - это куда объекты для копирвания складывать
+{
+    Firewall *fw = Firewall::cast(obj);
+    if(!fw)
+      return;
+    list<FWObject*> externalRefs;
+    checkPolicy4ExtRefs(fw, externalRefs);//ищем ссылки правил фаервола на объекты, записываем в extRefs
+    findIntersectRefs(lib, fw, objList, externalRefs);
+
+}
+
+void ProjectPanel::findIntersectRefs(FWObject *lib,
+                                       FWObject *root,
+                                       list<FWObject*> &extRefs,
+                                       const list<FWObject*> &objList)
+{
+    FWReference *ref=FWReference::cast(root);
+    if (ref!=NULL)
+    {
+        FWObject *plib = ref->getPointer()->getLibrary();
+        if ( plib->getId()!=STANDARD_LIB &&
+             plib->getId()!=DELETED_LIB  &&
+             plib!=lib )
+        {
+            for (list<FWObject*>::const_iterator i=objList.begin();i!=objList.end();i++)
+            {
+                //qDebug("push_back (%s, %s)", (*i)->getId().c_str(), ref->getId().c_str());
+                if ((*i)->getId() != root->getId())
+                {
+                    //qDebug("HERE");// !!!!!
+                    extRefs.push_back(*i);
+                }
+             }
+        }
+        return;
+    } else
+    {
+        for (FWObject::iterator i=root->begin(); i!=root->end(); i++)
+            findIntersectRefs(lib, *i, extRefs, objList);
+
+    }
+}
+
+
+void ProjectPanel::restoreDepends(FWObject *obj_old, FWObject *obj, 
+          const std::map<const std::string, FWObject *> &objByIds)
+{
+    Firewall *fw = Firewall::cast(obj);
+    Firewall *fw_old = Firewall::cast(obj_old);
+    if(!fw || !fw_old)
+      return;
+    
+    Policy *pol=Policy::cast(fw->getFirstByType(Policy::TYPENAME));
+    Policy *pol_old=Policy::cast(fw_old->getFirstByType(Policy::TYPENAME));
+    restorePolicyRefs(pol, pol_old, objByIds);
+}
+
+void ProjectPanel::restorePolicyRefs(Policy *pol, Policy *pol_old, 
+        const std::map<const std::string, FWObject *> &objByIds)
+{
+    if (!pol || !pol_old)
+        return;
+    for (libfwbuilder::FWObject::iterator i=pol->begin(),
+         j=pol_old->begin(); 
+         i!=pol->end(); i++, j++)
+    {
+        PolicyRule *rule = PolicyRule::cast(*i);
+        PolicyRule *rule_old = PolicyRule::cast(*j);
+        restorePolicyRuleRefs(rule, rule_old, objByIds);
+    }
+}
+    
+void ProjectPanel::restorePolicyRuleRefs(PolicyRule *rule, PolicyRule *rule_old, 
+          const std::map<const std::string, FWObject *> &objByIds)
+{
+    if (!rule || !rule_old) return; 
+    for (int col =0; col < 5; col++)
+    {
+        RuleElement *re = getRE(rule, col);
+        RuleElement *re_old = getRE(rule_old, col);
+        
+        restoreRERefs(re_old, re, objByIds);
+    }
+}
+
+void ProjectPanel::restoreRERefs(RuleElement *re_new, RuleElement *re_old, 
+          const std::map<const std::string, FWObject *> &objByIds)
+{
+    if (!re_new || ! re_old) return;
+    while((re_new->begin() != re_new->end()) && 
+      (re_new->getAnyElementId() != (*re_new->begin())->getId()))
+    { 
+        FWObject *o = *re_new->begin();
+        re_new->removeRef(o);
+        re_new->erase(re_new->begin());
+    }
+    for (FWObject::iterator i=re_old->begin(); i!=re_old->end(); i++)
+    {
+        FWObject *o_old = *i;
+        //qDebug("o_old->getId() = (%s)", o_old->getId().c_str());//).toAscii().constData());// !!!!!
+        //for (std::map<const std::string, FWObject *>::const_iterator i = objByIds.begin(); i != objByIds.end(); i++)
+            //qDebug("i->first.c_str() = (%s)", i->first.c_str());// !!!!!
+        std::map<const std::string, FWObject *>::const_iterator it = objByIds.find(o_old->getId());
+        if (objByIds.end() != it)
+        {
+            FWObject *o = it->second;
+            if (o)
+                re_new->addRef(o);
+        }
+    }
 }
 
 void ProjectPanel::prefsEdited()

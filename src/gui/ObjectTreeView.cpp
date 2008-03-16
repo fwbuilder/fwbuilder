@@ -356,9 +356,11 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
 
     list<FWObject*> dragobj;
     for (vector<FWObject*>::iterator v=so.begin(); v!=so.end(); v++)
+    {   
+        //m_project->check4Depends(*v, dragobj);
         dragobj.push_back( *v );
-
-    FWObjectDrag    *drag = new FWObjectDrag(dragobj, this);
+    }
+    FWObjectDrag *drag = new FWObjectDrag(dragobj, this);
 
     QPixmap pm;
     if ( ! QPixmapCache::find( icn, pm) )
