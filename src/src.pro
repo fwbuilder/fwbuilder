@@ -18,5 +18,5 @@ contains( HAVE_ANTLR_RUNTIME, 1 ) {
   }
 }
 
-SUBDIRS += gui ipt pflib pf ipf ipfw
+SUBDIRS += gui ipt pflib pf ipf ipfw cisco_lib iosacl pix
 

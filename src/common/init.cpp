@@ -117,12 +117,6 @@ void init(char * const *argv)
     if (n0!=string::npos)    appRootDir=argv0.substr(0,n0) + FS_SEPARATOR;
     else                     appRootDir="";
 
-    if (fwbdebug)
-    {
-      qDebug(QString("argv0=%1").arg(argv0.c_str()).toAscii().constData());
-      qDebug(QString("appRootDir=%1").arg(appRootDir.c_str()).toAscii().constData());
-    }
-
     libfwbuilder::init();
 
 #if defined(Q_OS_WIN32) || defined(Q_OS_MACX)

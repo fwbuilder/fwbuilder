@@ -1,0 +1,15 @@
+#!/bin/sh
+
+N=$1
+
+if which opendiff > /dev/null; then
+  TOOL="opendiff"
+elif which tkdiff > /dev/null; then
+  TOOL="tkdiff  "
+else
+  TOOL="diff -u -b -B"
+fi
+
+$TOOL firewall${N}.fw.orig firewall${N}.fw 
+
+

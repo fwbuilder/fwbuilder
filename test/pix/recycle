@@ -1,0 +1,8 @@
+#!/bin/sh
+
+for f in *.fw; do
+  j=${f}.orig
+  mv $f $j
+done
+
+

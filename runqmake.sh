@@ -25,6 +25,9 @@ for d in src/ \
     src/pf/ \
     src/ipf/ \
     src/ipfw/ \
+    src/cisco_lib \
+    src/iosacl \
+    src/pix \
     src/parsers/
 do
   (cd $d; ${QMAKE} $C)
