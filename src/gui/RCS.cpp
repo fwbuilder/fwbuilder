@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland vadim@fwbuilder.org
 
-  $Id: RCS.cpp,v 1.63 2008/02/07 05:20:59 vkurland Exp $
+  $Id: RCS.cpp,v 1.64 2008/03/10 03:42:20 vkurland Exp $
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -221,8 +221,10 @@ RCSEnvFix::RCSEnvFix()
 
     env.push_back( QString("USER=")+uname);
     env.push_back( QString("LOGNAME=")+uname);
-    env.push_back( QString("TMP=") + getenv("TMP"));
-    env.push_back( QString("TEMP=") + getenv("TEMP"));
+    if (getenv("TMP")!=NULL)
+        env.push_back( QString("TMP=") + getenv("TMP"));
+    if (getenv("TEMP")!=NULL)
+        env.push_back( QString("TEMP=") + getenv("TEMP"));
 }
 
 QStringList* RCSEnvFix::getEnv()

@@ -1,3 +1,23 @@
+2008-03-09  vadim  <vadim@vk.crocodile.org>
+
+	* pf.cpp: fixed bug #1899914: "Script to apply the new rules."  It
+	is enough to execute "pfctl -f file.conf" to load PF policy. There
+	is no need to purge filter and nat rules first, then reload it.
+
+	* RCS.cpp (RCSEnvFix::RCSEnvFix): fixed bug #1908351: "rcs does
+	not save log message and file remains locked"
+
+	* Compiler.cpp (emptyGroupsInRE::countChildren): (libfwbuilder)
+	fixed bug #1905718: "Group of DNS Name objects considered empty"
+	
+2008-03-05  vadim  <vadim@vk.crocodile.org>
+
+	* VERSION: started v2.1.18
+
+	* src/cisco_lib, src/iosacl, src/pix: Code for policy compilers
+	for Cisco IOS ACL and PIX  has been released under 
+	GPL and merged into the main fwbuilder tree.
+
 2008-02-18  vadim  <vadim@vk.crocodile.org>
 
 	* CircularQueue.hpp (antlr): fixed crash of the policy importer on

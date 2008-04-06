@@ -2244,8 +2244,9 @@ bool ProjectPanel::checkin(bool unlock)
     if (systemFile || rcs==NULL || !rcs->isCheckedOut() || rcs->isTemp())
         return true;
 
-    if (rcs->isDiff()) // if the file hasn't changed, do not need to ask for the comment
+    if (rcs->isDiff())
     {
+        // if the file hasn't changed, do not need to ask for the comment
         if ( ! st->getRCSLogState())
         {
             RCSFileSaveDialog_q fsd;

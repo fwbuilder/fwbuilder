@@ -794,16 +794,6 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
 	fw_file << endl;
 
-
-
-
-        fw_file << endl 
-                << "$PFCTL -d " << endl
-                << "$PFCTL -F nat" << endl
-                << "$PFCTL -F rules" << endl
-                << "$PFCTL -F Sources" << endl
-                << "$PFCTL -F Tables" << endl;
-
         if (prolog_place == "fw_file")
             printProlog(fw_file, pre_hook);
 
@@ -823,10 +813,6 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     << " || exit 1"
                     << endl;
 
-	fw_file << "$PFCTL -e"
-                << " || exit 1"
-                << endl;
-        
         fw_file << endl;
         fw_file << "#" << endl;
         fw_file << "# Epilog script" << endl;
