@@ -22,7 +22,8 @@
         <file>Icons/blank_2x16.png</file>
         <file>Icons/books1.png</file>
         <file alias="Icons/Both">Icons/both.png</file>
-        <file alias="Icons/Branch">Icons/branch_25.png</file>
+        <file alias="Icons/Both-tree">Icons/both_16.png</file>
+	<file alias="Icons/Branch">Icons/branch_25.png</file>
         <file>Icons/cancel.png</file>
         <file>Icons/cert_druid_logo.png</file>
         <file>Icons/check.png</file>
@@ -63,7 +64,8 @@
         <file>Icons/host_64.png</file>
         <file>Icons/host_64.xpm</file>
         <file alias="Icons/Inbound">Icons/inbound.png</file>
-        <file>Icons/info_25.png</file>
+        <file alias="Icons/Inbound-tree">Icons/inbound_16.png</file>
+	<file>Icons/info_25.png</file>
         <file>Icons/install_25.png</file>
         <file alias="Icons/Interface/icon-neg">Icons/interface-neg_25.png</file>
         <file alias="Icons/Interface/icon-ref">Icons/interface-ref_25.png</file>
@@ -93,7 +95,8 @@
         <file>Icons/openfile_25.png</file>
         <file alias="Icons/Options">Icons/options_25.png</file>
         <file alias="Icons/Outbound">Icons/outbound.png</file>
-        <file>Icons/physaddress-neg_25.png</file>
+        <file alias="Icons/Outbound-tree">Icons/outbound_16.png</file>
+	<file>Icons/physaddress-neg_25.png</file>
         <file>Icons/physaddress-ref_25.png</file>
         <file>Icons/physaddress_16.png</file>
         <file>Icons/physaddress_25.png</file>

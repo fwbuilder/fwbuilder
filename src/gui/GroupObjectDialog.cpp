@@ -647,7 +647,7 @@ void GroupObjectDialog::copyObj()
                 o=FWReference::cast(o)->getPointer();
 
 
-            FWObjectClipboard::obj_clipboard->add( o );
+            FWObjectClipboard::obj_clipboard->add( o,this->m_project );
         }
 
     }

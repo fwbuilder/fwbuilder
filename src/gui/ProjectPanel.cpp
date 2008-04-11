@@ -1048,6 +1048,18 @@ QString ProjectPanel::chooseNewFileName(const QString &fname,
     return "";
 }
 
+QString ProjectPanel::getFileName ()
+{
+    if (rcs!=NULL)
+	{
+    	return rcs->getFileName();
+	}
+	else
+	{
+		return QString ();
+	}
+}
+
 void ProjectPanel::setFileName(const QString &fname)
 {
     systemFile=false;
@@ -1070,15 +1082,17 @@ void ProjectPanel::fileProp()
     }
 }
 
-void ProjectPanel::fileNew()
+bool ProjectPanel::fileNew()
 {
     QString nfn=chooseNewFileName(st->getWDir(),true,
                                   tr("Choose name and location for the new file"));
     if ( !nfn.isEmpty() )
     {
         //if (!saveIfModified() || !checkin(true)) return;
-        if (!systemFile && rcs!=NULL) fileClose();       // fileClose calls load(this)
-        else  load(this);
+        if (!systemFile && rcs!=NULL) 
+			fileClose();       // fileClose calls load(this)
+        else  
+			load(this);
 
         visibleFirewall = NULL;
         showFirewalls( false );
@@ -1089,10 +1103,19 @@ void ProjectPanel::fileNew()
         save();
         setupAutoSave();
     }
-    mainW->addToRCSActionSetEn( !rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
-    mainW->fileDiscardActionSetEn( rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
-    mainW->fileCommitActionSetEn( rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
-    mainW->fileSaveActionSetEn( !rcs->isRO() && !rcs->isTemp() );
+	if (rcs!=NULL)
+	{
+    	mainW->addToRCSActionSetEn( !rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
+    	mainW->fileDiscardActionSetEn( rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
+    	mainW->fileCommitActionSetEn( rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
+    	mainW->fileSaveActionSetEn( !rcs->isRO() && !rcs->isTemp() );
+		return true ;
+	}
+	else
+	{
+		return false ;
+	}
+
 }
 
 bool ProjectPanel::fileOpen()

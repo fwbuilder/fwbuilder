@@ -35,7 +35,7 @@
 
 #include "FWObjectClipboard.h"
 #include "FWWindow.h"
-
+#include "ProjectPanel.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -62,9 +62,10 @@ void FWObjectClipboard::clear()
         if (obj) obj->unref();
     }
     ids.clear();
+	windows.clear();
 }
 
-void FWObjectClipboard::add(FWObject *_obj)
+void FWObjectClipboard::add(FWObject *_obj, ProjectPanel * fww)
 {
     if (fwbdebug)
     {
@@ -73,7 +74,12 @@ void FWObjectClipboard::add(FWObject *_obj)
     }
 
     _obj->ref();
+	
     ids.push_back(_obj->getId());
+	if (fww==NULL)
+		windows.push_back (NULL);
+	else
+		windows.push_back (fww);
 }
 
 FWObject* FWObjectClipboard::getObject()
@@ -84,3 +90,20 @@ FWObject* FWObjectClipboard::getObject()
         return NULL;
 }
 
+	size_t FWObjectClipboard::windowsCount (){return windows.size();}
+	ProjectPanel * FWObjectClipboard::getWindowByIdx (int idx)
+	{
+		if (idx<windowsCount ())
+		{
+			return windows[idx];
+		}
+		return NULL;
+	}
+libfwbuilder::FWObject* FWObjectClipboard::getObjectByIdx (int idx)
+{
+	std::string s1 = ids[idx];
+	ProjectPanel * w1 = windows[idx];
+	FWObject *co= w1->db()->findInIndex(s1);
+	return co;
+	//w1->db()->FWObject *co= win->db()->findInIndex(*i);
+}

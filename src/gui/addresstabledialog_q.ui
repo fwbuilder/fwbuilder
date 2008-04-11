@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>765</width>
-    <height>200</height>
+    <height>296</height>
    </rect>
   </property>
   <property name="baseSize" >
@@ -158,7 +158,7 @@
         <property name="verticalSpacing" >
          <number>2</number>
         </property>
-        <item row="0" column="2" >
+        <item row="0" column="1" >
          <widget class="QLabel" name="textLabel2" >
           <property name="text" >
            <string>Comment:</string>
@@ -177,56 +177,6 @@
            <enum>QFrame::Sunken</enum>
           </property>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>2</number>
-           </property>
-           <property name="topMargin" >
-            <number>2</number>
-           </property>
-           <property name="rightMargin" >
-            <number>2</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>2</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
-            <number>2</number>
-           </property>
-           <item row="2" column="1" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::MinimumExpanding</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>20</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="1" column="0" >
-            <widget class="QLabel" name="textLabel1_2" >
-             <property name="frameShape" >
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="frameShadow" >
-              <enum>QFrame::Plain</enum>
-             </property>
-             <property name="text" >
-              <string>Library:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
              <property name="text" >
@@ -247,6 +197,22 @@
              </property>
             </widget>
            </item>
+           <item row="1" column="0" >
+            <widget class="QLabel" name="textLabel1_2" >
+             <property name="frameShape" >
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow" >
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="text" >
+              <string>Library:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="1" >
             <widget class="QComboBox" name="libs" >
              <property name="sizePolicy" >
@@ -257,34 +223,7 @@
              </property>
             </widget>
            </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="1" column="1" >
-         <widget class="QGroupBox" name="buttonGroup1" >
-          <property name="title" >
-           <string/>
-          </property>
-          <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>2</number>
-           </property>
-           <property name="topMargin" >
-            <number>2</number>
-           </property>
-           <property name="rightMargin" >
-            <number>2</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>2</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
-            <number>2</number>
-           </property>
-           <item row="0" column="0" >
+           <item row="2" column="0" colspan="2" >
             <widget class="QRadioButton" name="r_compiletime" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
@@ -297,7 +236,7 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="0" >
+           <item row="3" column="0" colspan="2" >
             <widget class="QRadioButton" name="r_runtime" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
@@ -310,23 +249,7 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="0" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::MinimumExpanding</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>20</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="2" column="0" >
+           <item row="4" column="0" colspan="2" >
             <widget class="QLabel" name="textLabel2_2" >
              <property name="text" >
               <string>File name:</string>
@@ -336,7 +259,23 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="0" >
+           <item row="5" column="0" colspan="2" >
+            <widget class="QLineEdit" name="filename" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>250</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0" colspan="2" >
             <layout class="QHBoxLayout" >
              <property name="spacing" >
               <number>6</number>
@@ -394,26 +333,26 @@
              </item>
             </layout>
            </item>
-           <item row="3" column="0" >
-            <widget class="QLineEdit" name="filename" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
+           <item row="7" column="1" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
              </property>
-             <property name="minimumSize" >
+             <property name="sizeType" >
+              <enum>QSizePolicy::MinimumExpanding</enum>
+             </property>
+             <property name="sizeHint" >
               <size>
-               <width>250</width>
-               <height>0</height>
+               <width>307</width>
+               <height>16</height>
               </size>
              </property>
-            </widget>
+            </spacer>
            </item>
           </layout>
          </widget>
         </item>
-        <item row="1" column="2" >
+        <item row="1" column="1" >
          <widget class="QTextEdit" name="comment" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >

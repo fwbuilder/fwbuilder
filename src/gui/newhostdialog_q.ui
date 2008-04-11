@@ -1103,7 +1103,7 @@
    <sender>templateList</sender>
    <signal>currentItemChanged(QListWidgetItem*,QListWidgetItem*)</signal>
    <receiver>newHostDialog_q</receiver>
-   <slot>templateSelected(QListWidgetItem*,QListWidgetItem*)</slot>
+   <slot>templateSelected(QListWidgetItem*)</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>20</x>

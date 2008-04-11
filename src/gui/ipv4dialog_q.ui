@@ -66,10 +66,10 @@
         </size>
        </property>
        <property name="frameShape" >
-        <enum>QFrame::NoFrame</enum>
+        <enum>QFrame::Box</enum>
        </property>
        <property name="frameShadow" >
-        <enum>QFrame::Plain</enum>
+        <enum>QFrame::Sunken</enum>
        </property>
        <layout class="QGridLayout" >
         <property name="leftMargin" >
@@ -103,6 +103,15 @@
             <weight>75</weight>
             <bold>true</bold>
            </font>
+          </property>
+          <property name="frameShape" >
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="lineWidth" >
+           <number>1</number>
+          </property>
+          <property name="midLineWidth" >
+           <number>0</number>
           </property>
           <property name="text" >
            <string>Address</string>
@@ -143,10 +152,10 @@
         </sizepolicy>
        </property>
        <property name="frameShape" >
-        <enum>QFrame::NoFrame</enum>
+        <enum>QFrame::Box</enum>
        </property>
        <property name="frameShadow" >
-        <enum>QFrame::Plain</enum>
+        <enum>QFrame::Sunken</enum>
        </property>
        <layout class="QGridLayout" >
         <property name="leftMargin" >

@@ -400,10 +400,10 @@ void newHostDialog::showPage(const int page)
     }
     }
 }
-
-void newHostDialog::templateSelected(QListWidgetItem *cur)
+void newHostDialog::templateSelected(QListWidgetItem *itm)
+//void newHostDialog::templateSelected(QListWidgetItem *cur)
 {
-    QListWidgetItem *itm = cur;
+    //QListWidgetItem *itm = cur;
     if (fwbdebug) qDebug("newHostDialog::templateSelected ");
 
     FWObject *o=templates[itm];
@@ -521,8 +521,8 @@ void newHostDialog::addInterface()
 
     new QTreeWidgetItem(m_dialog->iface_list, sl);
 }
-
-void newHostDialog::selectedInterface(QTreeWidgetItem *cur)
+void newHostDialog::selectedInterface(QTreeWidgetItem*cur,QTreeWidgetItem*)
+//void newHostDialog::selectedInterface(QTreeWidgetItem *cur)
 {
     QTreeWidgetItem *itm = cur;
     m_dialog->iface_name->setText( itm->text(0) );

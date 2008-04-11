@@ -139,7 +139,7 @@ public:
                                          libfwbuilder::FWObject *copyFrom=NULL,
                                          libfwbuilder::FWObject *parent=NULL,
                                          bool ask4Lib = true);
-         
+    FWWindow* getWindow (){ return mainW;}     
     void moveObject(libfwbuilder::FWObject *target,
                     libfwbuilder::FWObject *obj);
 
@@ -261,6 +261,7 @@ public:
     QString getDestDir(const QString &fname);
     QString chooseNewFileName(const QString &fname, bool checkPresence,const QString &title);
     void setFileName(const QString &fname);
+    QString getFileName ();
     void check4Depends(libfwbuilder::FWObject *obj, 
        std::list<libfwbuilder::FWObject*> & objList, 
        libfwbuilder::FWObject *lib);
@@ -295,7 +296,7 @@ public:
     virtual void restoreRuleSetTab();
 
     virtual void fileProp();
-    virtual void fileNew();
+    virtual bool fileNew();
     virtual bool fileOpen();
 
     virtual void fileClose();

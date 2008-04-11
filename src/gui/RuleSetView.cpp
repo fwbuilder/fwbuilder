@@ -1231,7 +1231,11 @@ void RuleSetView::paintCell(QPainter *pntr,
                 if (rule==NULL) return;
 
                 string dir = rule->getDirectionAsString();
-                if (dir.empty()) dir = "Both";
+		QString dir_ = rule->getDirectionAsString().c_str();
+                if (dir.empty()) 
+			dir = "Both";
+		//dir="Both-tree";
+		
                 QString icn = chooseIcon((":/Icons/" + dir).c_str());
 
                 QPixmap pm;
@@ -1350,6 +1354,13 @@ QString RuleSetView::chooseIcon(QString icn)
             return icn.replace("-ref", "-tree");
         if (icn.contains("-neg"))
             return icn.replace("-neg", "-tree");
+	if (icn.contains("Both"))
+	    return icn+="-tree";
+	if (icn.contains("Inbound"))
+	    return icn+="-tree";
+	if (icn.contains("Outbound"))
+	    return icn+="-tree";
+
         return QString();
     }
     return icn;
@@ -2454,7 +2465,7 @@ void RuleSetView::cutSelectedObject()
     if ( selectedObject!=NULL)
     {
         FWObjectClipboard::obj_clipboard->clear();
-        FWObjectClipboard::obj_clipboard->add( selectedObject );
+        FWObjectClipboard::obj_clipboard->add( selectedObject, m_project );
         deleteSelectedObject();
     }
 }
@@ -3284,7 +3295,7 @@ void RuleSetView::copyRule()
                         .arg(PolicyRule::cast(rule)->getDirectionAsString().c_str())
                         .toAscii().constData());
 
-            FWObjectClipboard::obj_clipboard->add( rule );
+            FWObjectClipboard::obj_clipboard->add( rule, m_project );
         }
     }
 }

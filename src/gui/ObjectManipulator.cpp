@@ -914,8 +914,9 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
     duptargets->addAction(tr("place here"), this, SLOT( duplicateObjUnderSameParent()));
 
-    QAction *dupID = duptargets->addAction( tr("Duplicate ...") );
-    QAction *movID;
+    //QAction *dupID = duptargets->addAction( tr("Duplicate ...") ); // BUGFIX-2346
+QAction *dupID = popup->addAction( tr("Duplicate ...") ,this, SLOT (duplicateObjUnderSameParent()));//popup->    
+QAction *movID;
 
     if (moveTargets!=0)
     {
@@ -1155,6 +1156,12 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
                  i!=FWObjectClipboard::obj_clipboard->end(); ++i)
             {
                 FWObject *co= m_project->db()->findInIndex(*i);
+				if (co==NULL)
+				{
+					continue ;
+					//QString s2 = obj->getTypeName().c_str();
+				}
+QString s3 = obj->getTypeName().c_str();
                 FWObject *nobj=pasteTo( obj , co , false, true);
                 pasteMenuItem = pasteMenuItem && (nobj!=NULL);
             }
@@ -1549,7 +1556,7 @@ void ObjectManipulator::copyObj()
     {
         obj= *i;
         if ( ! m_project->isSystem(obj) )
-            FWObjectClipboard::obj_clipboard->add( obj );
+            FWObjectClipboard::obj_clipboard->add( obj,m_project );
     }
 }
 
@@ -1564,12 +1571,11 @@ void ObjectManipulator::pasteObj()
     if (getCurrentObjectTree()->getNumSelected()==0) return;
     FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
     if (obj==NULL) return;
-
     vector<string>::iterator i;
-    for (i= FWObjectClipboard::obj_clipboard->begin();
-         i!=FWObjectClipboard::obj_clipboard->end(); ++i)
+	int idx = 0;
+    for (i= FWObjectClipboard::obj_clipboard->begin(); i!=FWObjectClipboard::obj_clipboard->end(); ++i)
     {
-        FWObject *co= m_project->db()->findInIndex(*i);
+		FWObject *co= FWObjectClipboard::obj_clipboard->getObjectByIdx(idx); //win->db()->findInIndex(*i);
         FWObject *nobj=pasteTo( obj , co );
         if (nobj!=NULL)
         {

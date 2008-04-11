@@ -81,10 +81,15 @@ public slots:
     virtual void updateInterface();
     virtual void deleteInterface();
     virtual void changed();
-    virtual void selectedInterface(QTreeWidgetItem *cur);
+//    virtual void selectedInterface(QTreeWidgetItem *cur);
     virtual void getInterfacesViaSNMP();    
     virtual void monitor();
-    virtual void templateSelected(QListWidgetItem *cur);
+//    virtual void templateSelected(QListWidgetItem *cur);
+
+    virtual void selectedInterface(QTreeWidgetItem*,QTreeWidgetItem*);
+    virtual void templateSelected(QListWidgetItem *itm);
+
+
     
  protected slots:
     virtual void finishClicked();
