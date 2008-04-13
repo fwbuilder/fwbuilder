@@ -24,7 +24,22 @@
 
 */
 
+/*
+  Class IPv4 serves two purposes:
+
+   - it is used to describe configuration of an interface which consists
+     of an address and netmask
+
+   - it is used to describe a single standalone address object (in the tree,
+     under Objects/Addresses)
+
+  Even though class Network also has address and netmask, IPv4 objects are
+  recognized by compilers as single addresses.
+
+ */
+
 #include <assert.h>
+#include <iostream>
 
 #include <fwbuilder/libfwbuilder-config.h>
 
@@ -37,30 +52,11 @@ using namespace libfwbuilder;
 
 const char *IPv4::TYPENAME={"IPv4"};
 
-IPv4::IPv4(const IPv4 &i):Address()
-{
-    FWObject::operator=(i);
-}
+IPv4::IPv4() : Address()
+{}
 
-IPv4::IPv4():Address()
-{
-    setName("address");
-    setAddress("0.0.0.0");
-    setNetmask("0.0.0.0");
-}
-
-IPv4::IPv4(const FWObject *root,bool prepopulate) : Address(root,prepopulate)
-{
-    setName("address");
-    setAddress("0.0.0.0");
-    setNetmask("0.0.0.0");
-}
-
-IPv4::IPv4(const string& a,const string& nm):Address()
-{
-    setAddress(a);
-    setNetmask(nm);
-} 
+IPv4::IPv4(const FWObject *root, bool prepopulate) : Address(root, prepopulate)
+{}
 
 IPv4::~IPv4() {}
 
@@ -75,26 +71,28 @@ void IPv4::fromXML(xmlNodePtr root) throw(FWException)
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
     assert(n!=NULL);
-    setStr("address", n);
+    setAddress(InetAddr(n));
     FREEXMLBUFF(n);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("netmask")));
     assert(n!=NULL);
-    setStr("netmask", n);
+    if (strlen(n)) setNetmask(InetNetmask(n));
+    else           setNetmask(InetNetmask(0));
     FREEXMLBUFF(n);
-
 }
 
-IPNetwork IPv4::getIPNetwork() const throw(FWException)
+xmlNodePtr IPv4::toXML(xmlNodePtr xml_parent_node) throw(FWException)
 {
-    return IPNetwork(IPAddress(getStr("address")), Netmask(getStr("netmask")) );
+    xmlNodePtr me = FWObject::toXML(xml_parent_node);
+    
+    xmlNewProp(me, 
+               TOXMLCAST("address"),
+               STRTOXMLCAST(getAddress().toString()));
+    
+    xmlNewProp(me, 
+               TOXMLCAST("netmask"),
+               STRTOXMLCAST(getNetmask().toString()));
+    
+    return me;
 }
-
-void      IPv4::setAddress(const std::string &a) { setStr("address",a);}
-void      IPv4::setAddress(const IPAddress &a)   { setStr("address" , a.toString()  );}
-void      IPv4::setNetmask(const std::string &nm){ setStr("netmask" , nm  );}
-void      IPv4::setNetmask(const Netmask &nm)    { setStr("netmask" , nm.toString()  );}
-IPAddress IPv4::getAddress() const{    return IPAddress( getStr("address") );}
-Netmask   IPv4::getNetmask() const{    return Netmask( getStr("netmask") );}
-guint32   IPv4::dimension()  const{    return 1;}
 

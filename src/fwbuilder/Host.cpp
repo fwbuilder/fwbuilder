@@ -25,6 +25,7 @@
 */
 
 #include <assert.h>
+#include <iostream>
 
 #include <fwbuilder/libfwbuilder-config.h>
 
@@ -117,44 +118,50 @@ FWOptions* Host::getOptionsObject()
     return FWOptions::cast( getFirstByType(HostOptions::TYPENAME) );
 }
 
-IPAddress Host::getAddress() const
+const InetAddr& Host::getAddress() const
 {
     Interface *iface=NULL;
-    for(FWObjectTypedChildIterator j=findByType(Interface::TYPENAME); j!=j.end(); ++j)
+    for(FWObjectTypedChildIterator j = findByType(Interface::TYPENAME);
+        j!=j.end(); ++j)
     {
-        iface=Interface::cast(*j);
+        iface = Interface::cast(*j);
         if (iface->isLoopback()) continue;
         if (iface->isManagement()) return iface->getAddress();
     }
     if (iface!=NULL) return iface->getAddress();
-    return IPAddress("0.0.0.0"); 
+    return InetAddrMask::getAddress();
 }
 
-Netmask   Host::getNetmask() const
+const InetAddr* Host::getAddressPtr() const
+{
+    Interface *iface=NULL;
+    for(FWObjectTypedChildIterator j=findByType(Interface::TYPENAME); j!=j.end(); ++j)
+    {
+        iface = Interface::cast(*j);
+        if (iface->isLoopback()) continue;
+        if (iface->isManagement()) return iface->getAddressPtr();
+    }
+    if (iface!=NULL) return iface->getAddressPtr();
+    return InetAddrMask::getAddressPtr();
+}
+
+const InetNetmask& Host::getNetmask() const
 {
     Interface *iface=Interface::cast( getFirstByType(Interface::TYPENAME));
     if (iface!=NULL) return iface->getNetmask();
-    return Netmask("0.0.0.0");
+    return InetAddrMask::getNetmask();
 }
 
-void Host::setAddress(const IPAddress &a)  { setAddress(a.toString()); }
-void Host::setNetmask(const Netmask&) {}
-
-void Host::setAddress(const std::string &a)  
-{ 
+void Host::setAddress(const InetAddr &a)
+{
     Interface *iface=Interface::cast( getFirstByType(Interface::TYPENAME));
     if (iface!=NULL) iface->setAddress(a); 
 }
 
-void Host::setNetmask(const std::string &nm)
-{ 
+void Host::setNetmask(const InetNetmask &nm)
+{
     Interface *iface=Interface::cast( getFirstByType(Interface::TYPENAME));
     if (iface!=NULL) iface->setNetmask(nm); 
-}
-
-guint32   Host::dimension()  const
-{
-    return 1;
 }
 
 Management *Host::getManagementObject()
@@ -172,7 +179,7 @@ Management *Host::getManagementObject()
  * address to be found, returns "0.0.0.0". May throw exception if
  * interface has invalid address.
  */
-IPAddress Host::getManagementAddress() throw(FWException)
+InetAddr Host::getManagementAddress() throw(FWException)
 {
     Management *mgmt=getManagementObject();
 
@@ -185,5 +192,5 @@ IPAddress Host::getManagementAddress() throw(FWException)
             return iface->getAddress();
         }
     }    
-    return IPAddress("0.0.0.0");
+    return InetAddr();
 }

@@ -4,7 +4,10 @@ include(../../qmake.inc)
 #
 VERSION = $$SO_VERSION
 #
-SOURCES  = 	Address.cpp \
+SOURCES  = 	InetAddr.cpp \
+			InetAddrMask.cpp \
+			IPRoute.cpp \
+			Address.cpp \
 			AddressRange.cpp \
 			BackgroundOp.cpp \
 			Constants.cpp \
@@ -28,7 +31,6 @@ SOURCES  = 	Address.cpp \
 			InterfacePolicy.cpp \
 			Interval.cpp \
 			IntervalGroup.cpp \
-			IPAddress.cpp \
 			IPService.cpp \
 			IPv4.cpp \
 			Library.cpp \
@@ -58,7 +60,10 @@ SOURCES  = 	Address.cpp \
 			XMLTools.cpp 
 
 
-HEADERS  = 	Address.h \
+HEADERS  = 	InetAddr.h \
+			InetAddrMask.h \
+			IPRoute.h \
+			Address.h \
 			AddressRange.h \
 			BackgroundOp.h \
 			Constants.h \
@@ -82,7 +87,6 @@ HEADERS  = 	Address.h \
 			InterfacePolicy.h \
 			IntervalGroup.h \
 			Interval.h \
-			IPAddress.h \
 			IPService.h \
 			IPv4.h \
 			libfwbuilder-config.h \

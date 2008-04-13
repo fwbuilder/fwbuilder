@@ -62,18 +62,6 @@ void physAddress::fromXML(xmlNodePtr root) throw(FWException)
 }
 
 
-IPAddress physAddress::getAddress() const
-{
-//    std::cerr << "physAddress::getAddress() method called" << endl;
-    return IPAddress();
-}
-
-void physAddress::setAddress(const std::string &s)
-{
-    std::cerr << "physAddress::setAddress() method called" << endl;
-}
-
-
 std::string physAddress::getPhysAddress() const
 {
     return getStr("address");

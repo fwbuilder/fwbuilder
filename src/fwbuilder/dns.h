@@ -52,7 +52,7 @@
 
 #endif // _WIN32
 
-#include <fwbuilder/IPAddress.h>
+#include <fwbuilder/InetAddr.h>
 #include <fwbuilder/FWException.h>
 #include <fwbuilder/BackgroundOp.h>
 #include <fwbuilder/ThreadTools.h>
@@ -99,37 +99,37 @@ class DNS : public BackgroundOp
      * This operation does not run in backgound.
      * Returned list is sorted.
      */
-    static std::list<IPAddress> getHostByName(const std::string &name) throw(FWException);
+    static std::list<InetAddr> getHostByName(const std::string &name) throw(FWException);
 
     /**
      * Find all host names of host with given IP.
      * This operation does not run in backgound.
      */
-    static HostEnt getHostByAddr(const IPAddress &addr) throw(FWException);
+    static HostEnt getHostByAddr(const InetAddr &addr) throw(FWException);
 
     /**
      * Return name of host with given IP.
      */
-    static HostEnt getHostByAddr(const IPAddress &addr, int retries_, int timeout_) throw(FWException);
+    static HostEnt getHostByAddr(const InetAddr &addr, int retries_, int timeout_) throw(FWException);
 
     /**
      * Finds NS records for given domain
      */
-    std::multimap<std::string, IPAddress> getNS(const std::string &domain, Logger *logger,SyncFlag *stop_program, int retries_=RES_DFLRETRY, int timeout_=RES_TIMEOUT) throw(FWException);
+    std::multimap<std::string, InetAddr> getNS(const std::string &domain, Logger *logger,SyncFlag *stop_program, int retries_=RES_DFLRETRY, int timeout_=RES_TIMEOUT) throw(FWException);
 
     /**
      * Attempts to fetch zone for given domain for
      * it's name server. If succeeded, finds all 'A'
-     * records in it and returs hostname/IPAddress pairs.
+     * records in it and returs hostname/InetAddr pairs.
      */
-    std::map<std::string, std::set<IPAddress> > findA(const std::string &domain, Logger *logger,SyncFlag *stop_program,  int retries_=RES_DFLRETRY, int timeout_=RES_TIMEOUT) throw(FWException);
+    std::map<std::string, std::set<InetAddr> > findA(const std::string &domain, Logger *logger,SyncFlag *stop_program,  int retries_=RES_DFLRETRY, int timeout_=RES_TIMEOUT) throw(FWException);
 
     /**
      * Attempts to fetch zone for given domain for
      * specific server. If succeeded, finds all 'A'
-     * records in it and returs hostname/IPAddress pairs.
+     * records in it and returs hostname/InetAddr pairs.
      */
-    std::map<std::string, std::set<IPAddress> > findA(const std::string &domain, const IPAddress &ns, Logger *logger,SyncFlag *stop_program,  int retries_=RES_DFLRETRY, int timeout_=RES_TIMEOUT) throw(FWException);
+    std::map<std::string, std::set<InetAddr> > findA(const std::string &domain, const InetAddr &ns, Logger *logger,SyncFlag *stop_program,  int retries_=RES_DFLRETRY, int timeout_=RES_TIMEOUT) throw(FWException);
 
     protected:
 
@@ -149,21 +149,21 @@ class DNS_findA_query : public DNS
 
     explicit DNS_findA_query();
 
-    DNS_findA_query(const std::string &domain_, const IPAddress &ns_, int retries_=RES_DFLRETRY, int timeout_=RES_TIMEOUT);
+    DNS_findA_query(const std::string &domain_, const InetAddr &ns_, int retries_=RES_DFLRETRY, int timeout_=RES_TIMEOUT);
 
-    void init(const std::string &domain_, const IPAddress &ns_, int retries_=RES_DFLRETRY, int timeout_=RES_TIMEOUT);
+    void init(const std::string &domain_, const InetAddr &ns_, int retries_=RES_DFLRETRY, int timeout_=RES_TIMEOUT);
     
     virtual void run_impl(Logger *logger,SyncFlag *stop_program) throw(FWException);
     
-    std::map<std::string, std::set<IPAddress> > getResult() { return result; }
+    std::map<std::string, std::set<InetAddr> > getResult() { return result; }
 
     private:
 
-    std::map<std::string, std::set<IPAddress> > result;    
+    std::map<std::string, std::set<InetAddr> > result;    
     std::string domain;
     int retries;
     int timeout;
-    IPAddress ns;
+    InetAddr ns;
 };
 
 class DNS_getNS_query : public DNS
@@ -174,11 +174,11 @@ class DNS_getNS_query : public DNS
     
     virtual void run_impl(Logger *logger,SyncFlag *stop_program) throw(FWException);
     
-    std::multimap<std::string, IPAddress> getResult() { return result; }
+    std::multimap<std::string, InetAddr> getResult() { return result; }
     
     private:
     
-    std::multimap<std::string, IPAddress> result;    
+    std::multimap<std::string, InetAddr> result;    
     std::string domain;
     int retries;
     int timeout;
@@ -190,7 +190,7 @@ class DNS_bulkBackResolve_query : public DNS
 
     public:
     
-    DNS_bulkBackResolve_query(std::set<IPAddress>, unsigned int nthreads,  
+    DNS_bulkBackResolve_query(std::set<InetAddr>, unsigned int nthreads,  
 			      int retries_=RES_DFLRETRY,
 			      int timeout_=RES_TIMEOUT);
     virtual ~DNS_bulkBackResolve_query();
@@ -203,19 +203,19 @@ class DNS_bulkBackResolve_query : public DNS
      */
     virtual void run_impl(Logger *logger,SyncFlag *stop_program) throw(FWException);
     
-    std::map<IPAddress, HostEnt> getResult() { return result; }
-    std::set<IPAddress> getFailed() { return failed; }
+    std::map<InetAddr, HostEnt> getResult() { return result; }
+    std::set<InetAddr> getFailed() { return failed; }
     pthread_attr_t tattr;
     
     protected:
     
-    std::map<IPAddress, HostEnt> result;
+    std::map<InetAddr, HostEnt> result;
     Mutex failed_mutex;
     
-    std::set<IPAddress> failed;
+    std::set<InetAddr> failed;
     Mutex result_mutex;
     
-    std::queue<IPAddress> ips;
+    std::queue<InetAddr> ips;
     Mutex queue_mutex;
 
     int retries;

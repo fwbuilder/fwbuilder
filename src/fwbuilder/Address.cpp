@@ -32,19 +32,50 @@
 #include <fwbuilder/FWObjectDatabase.h>
 
 using namespace libfwbuilder;
+using namespace std;
 
 const char *Address::TYPENAME={"Address"};
 
-Address::Address(const FWObject *root,bool prepopulate) : FWObject(root,prepopulate) {}
+Address::Address() :
+    FWObject(),
+    InetAddrMask(InetAddr(), InetNetmask(InetAddr::getAllOnes()))
+{
+    setName("address");
+}
 
-IPAddress Address::getAddress() const { return IPAddress(); }
-Netmask   Address::getNetmask() const { return Netmask(); }
-guint32   Address::dimension()  const { return 0; }
+Address::Address(const FWObject *root,bool prepopulate) :
+    FWObject(root, prepopulate),
+    InetAddrMask(InetAddr(), InetNetmask(InetAddr::getAllOnes()))
+{
+    setName("address");
+}
 
-void Address::setAddress(const IPAddress &a)    {}
-void Address::setNetmask(const Netmask   &nm)   {}
-void Address::setAddress(const std::string &a)  {}
-void Address::setNetmask(const std::string &nm) {}
+Address::Address(const Address& other) :
+    FWObject(other),
+    InetAddrMask(other)
+{
+}
+
+Address::Address(const string& a, const string& nm) : 
+    FWObject(),
+    InetAddrMask(InetAddr(a), InetNetmask(nm))
+{
+} 
+
+Address::Address(const std::string &s) throw(FWException) :
+    FWObject(),
+    InetAddrMask(s)
+{
+}
+
+FWObject& Address::shallowDuplicate(const FWObject *other,
+                                    bool preserve_id) throw(FWException)
+{
+    const Address* a_other = Address::constcast(other);
+    setAddress(a_other->getAddress());
+    setNetmask(a_other->getNetmask());
+    return FWObject::shallowDuplicate(other, preserve_id);
+}
 
 FWReference* Address::createRef()
 {
@@ -59,3 +90,5 @@ bool Address::isAny() const
 { 
     return getId()==FWObjectDatabase::getAnyNetworkId();
 }
+
+

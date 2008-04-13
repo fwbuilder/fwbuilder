@@ -46,9 +46,6 @@ class physAddress : public Address
     physAddress() {}
     physAddress(const FWObject *root,bool prepopulate);
 
-    virtual IPAddress getAddress() const;
-    virtual void setAddress(const std::string &s);
-
     std::string getPhysAddress() const;
     void setPhysAddress(const std::string &s);
 

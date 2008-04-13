@@ -452,11 +452,11 @@ void Compiler::_expandAddressRanges(Rule *rule,FWObject *s)
 	if (AddressRange::cast(o)==NULL) cl.push_back(o);
 	else
         {
-	    IPAddress a1=AddressRange::cast(o)->getRangeStart();
-	    IPAddress a2=AddressRange::cast(o)->getRangeEnd();
-            vector<IPNetwork> vn=libfwbuilder::convertAddressRange(a1,a2);
+	    InetAddr a1=AddressRange::cast(o)->getRangeStart();
+	    InetAddr a2=AddressRange::cast(o)->getRangeEnd();
+            vector<InetAddrMask> vn = libfwbuilder::convertAddressRange(a1,a2);
 
-            for (vector<IPNetwork>::iterator i=vn.begin(); i!=vn.end(); i++)
+            for (vector<InetAddrMask>::iterator i=vn.begin(); i!=vn.end(); i++)
             {
                 Network *h;
                 h= Network::cast(dbcopy->create(Network::TYPENAME) );
@@ -493,7 +493,7 @@ bool Compiler::_complexMatchWithInterface(Address   *obj1,
                                           Interface *iface,
                                           bool recognize_broadcasts)
 {
-    IPAddress obj1_addr=obj1->getAddress();
+    const InetAddr& obj1_addr = obj1->getAddress();
 
     if ( physAddress::isA(obj1))
     {
@@ -512,7 +512,7 @@ bool Compiler::_complexMatchWithInterface(Address   *obj1,
                     
             if ( ipv4->getAddress()==obj1_addr ) return true;
 
-            IPNetwork n( ipv4->getAddress() , ipv4->getNetmask() );
+            InetAddrMask n( ipv4->getAddress() , ipv4->getNetmask() );
 /*
  * bug #1040773: need to match network address as well as
  * broadcast. Packets sent to the network address (192.168.1.0 for net
@@ -562,7 +562,7 @@ bool Compiler::complexMatch(Address *obj1,
          * ranges, and some often used ranges trigger that (like
          * "255.255.255.255-255.255.255.255" or "0.0.0.0-0.0.0.0")
          */
-        if (nobj1->getNetmask().toString()!="255.255.255.255")
+        if (!nobj1->getNetmask().isHostMask())
             return false;
     }
 /*
@@ -596,8 +596,8 @@ bool Compiler::complexMatch(Address *obj1,
 
     if ((obj1->getByType(IPv4::TYPENAME)).size()>1) return false;
 
-    IPAddress obj1_addr=obj1->getAddress();
-    if (obj1_addr!=IPAddress("0.0.0.0") && 
+    const InetAddr& obj1_addr = obj1->getAddress();
+    if (!obj1_addr.isAny() && 
         ( (recognize_broadcasts && obj1_addr.isBroadcast()) || 
           (recognize_multicasts && obj1_addr.isMulticast()) )
     ) return true;
@@ -648,12 +648,13 @@ Interface* Compiler::findInterfaceFor(const Address *obj1, const Address *obj2)
 
                 if (Network::constcast(obj1)!=NULL) 
                 {
-                    IPNetwork n1( obj1->getAddress() , Network::constcast(obj1)->getNetmask() );
+                    InetAddrMask n1( obj1->getAddress() ,
+                                  obj1->getNetmask() );
                     if (n1.belongs( addr->getAddress() ) ) return iface; 
                 }
 
 /* n2 is the network interface is sitting on */
-                IPNetwork n2( addr->getAddress() , addr->getNetmask() );
+                InetAddrMask n2( addr->getAddress() , addr->getNetmask() );
                 if ( n2.belongs( obj1->getAddress() ) )      return iface;
             }
         }
@@ -684,12 +685,13 @@ Address* Compiler::findAddressFor(const Address *obj1,const Address *obj2)
 
                 if (Network::constcast(obj1)!=NULL) 
                 {
-                    IPNetwork n1( obj1->getAddress() , Network::constcast(obj1)->getNetmask() );
+                    InetAddrMask n1( obj1->getAddress(),
+                                  obj1->getNetmask() );
                     if (n1.belongs( addr->getAddress() ) ) return addr; 
                 }
 
 /* n2 is the network interface is sitting on */
-                IPNetwork n2( addr->getAddress() , addr->getNetmask() );
+                InetAddrMask n2( addr->getAddress() , addr->getNetmask() );
                 if ( n2.belongs( obj1->getAddress() ) )      return addr;
             }
         }
@@ -893,7 +895,7 @@ bool Compiler::splitIfRuleElementMatchesFW::processNext()
         Address *a=Address::cast(obj);
         assert(a!=NULL);
 
-//        IPAddress obj_addr=a->getAddress();
+//        InetAddr obj_addr=a->getAddress();
 
         if (compiler->complexMatch(a,compiler->fw))
         {

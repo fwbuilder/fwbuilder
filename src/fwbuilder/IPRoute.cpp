@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: Library.cpp 975 2006-09-10 22:40:37Z vkurland $
+  $Id: InetAddr.cpp 1034 2007-08-02 05:19:28Z vkurland $
 
 
   This program is free software which we release under the GNU General Public
@@ -26,38 +26,49 @@
 
 #include <fwbuilder/libfwbuilder-config.h>
 
-#include <fwbuilder/FWObject.h>
-#include <fwbuilder/Library.h>
-#include <fwbuilder/XMLTools.h>
+#include <fwbuilder/InetAddr.h>
+#include <fwbuilder/IPRoute.h>
+#include <fwbuilder/Interface.h>
 
-using namespace libfwbuilder;
+#include <stdio.h>
+#include <iostream>
 
-const char *Library::TYPENAME={"Library"};
+#ifndef _WIN32
+#  include <sys/types.h>
+#  include <netinet/in.h>
+#else
+#  include <winsock2.h>
+#endif
 
-Library::Library()  {}
-Library::Library(const FWObject *root,bool prepopulate) :
-    FWObject(root,prepopulate) {}
+using namespace std;
 
-Library::~Library() 
+
+namespace libfwbuilder
 {
-}
 
-bool  Library::validateChild(FWObject*)
-{ 
-    return true;   // anything goes
-}
-
-void Library::fromXML(xmlNodePtr root) throw(FWException)
+IPRoute::IPRoute(const IPRoute &o)
 {
-    const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("color")));
-    if(n!=NULL)  // color is not a mandatory attribute
-    {
-        setStr("color", n);
-        FREEXMLBUFF(n);
-    }
-    FWObject::fromXML(root);
+    nm     = o.nm     ;
+    dst    = o.dst    ;
+    gw     = o.gw     ;
+    intf   = o.intf?new Interface(*o.intf):NULL ;
+    direct = o.direct ;
 }
 
+IPRoute::~IPRoute()
+{
+    delete intf;
+}
 
+IPRoute::IPRoute(const InetAddr &_dst, const InetNetmask &_nm, const InetAddr &_gw, const Interface *_intf,  bool _direct)
+{
+    nm     = _nm     ;
+    dst    = _dst    ;
+    gw     = _gw     ;
+    intf   = _intf?new Interface(*_intf):NULL ;
+    direct = _direct ;
+}
 
+}
 
+    

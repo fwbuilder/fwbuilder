@@ -41,6 +41,8 @@
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Rule.h"
 
+#include <iostream>
+
 using namespace fwcompiler;
 using namespace libfwbuilder;
 using namespace std;
@@ -54,25 +56,27 @@ using namespace std;
  */
 vector<FWObject*> fwcompiler::_find_obj_intersection(Address *op1, Address *op2)
 {
-    const IPNetwork n1( op1->getAddress() , 
-       	(Interface::cast(op1))?Netmask("255.255.255.255"):op1->getNetmask() );
-    const IPNetwork n2( op2->getAddress() , 
-	(Interface::cast(op2))?Netmask("255.255.255.255"):op2->getNetmask() );
+    const InetAddrMask n1( op1->getAddress() , 
+       	(Interface::cast(op1)) ? InetNetmask(InetAddr::getAllOnes()) : op1->getNetmask() );
+    const InetAddrMask n2( op2->getAddress() , 
+	(Interface::cast(op2)) ? InetNetmask(InetAddr::getAllOnes()) : op2->getNetmask() );
 
-    vector<IPNetwork> intersection= libfwbuilder::getOverlap(n1,n2);
+    vector<InetAddrMask> intersection = libfwbuilder::getOverlap(n1,n2);
 
     vector<FWObject*>  res;
 
-    for (vector<IPNetwork>::iterator i=intersection.begin(); i!=intersection.end(); i++) {
-	IPNetwork *n= &(*i);
-	if (n->getNetmask()==Netmask("255.255.255.255")) {
-            IPv4 *h=new IPv4();
+    for (vector<InetAddrMask>::iterator i=intersection.begin(); i!=intersection.end(); i++)
+    {
+	InetAddrMask *n= &(*i);
+	if (n->getNetmask().isHostMask())
+        {
+            IPv4 *h = new IPv4();
             h->setAddress(n->getAddress());
 	    h->setName("h-"+n->getAddress().toString());
             op1->getRoot()->add(h,false);
 	    res.push_back(h);
 	} else {
-	    Network *net=new Network();
+	    Network *net = new Network();
 	    net->setAddress(n->getAddress());
 	    net->setNetmask(n->getNetmask());
 	    net->setName("n-"+n->getAddress().toString());
@@ -280,57 +284,63 @@ bool fwcompiler::checkForShadowing(const Address &o1,const Address &o2)
         return o1_pa->getPhysAddress()==o2_pa->getPhysAddress();
     }
     
-    IPAddress o1b;
-    IPAddress o1e;
-    IPAddress o2b;
-    IPAddress o2e;
+    const InetAddr *o1b;
+    const InetAddr *o1e;
+    const InetAddr *o2b;
+    const InetAddr *o2e;
 
     if (AddressRange::isA(&o1))
     {
-        o1b=AddressRange::constcast(&o1)->getRangeStart();  
-        o1e=AddressRange::constcast(&o1)->getRangeEnd();
+        o1b = &(AddressRange::constcast(&o1)->getRangeStart());
+        o1e = &(AddressRange::constcast(&o1)->getRangeEnd());
     } else
     {
         if (Network::isA(&o1))
         {
-            o1b=o1.getAddress();
-            o1e=IPNetwork(o1.getAddress(),o1.getNetmask()).getBroadcastAddress();
+            o1b = o1.getAddressPtr();
+            o1e = o1.getBroadcastAddressPtr();
         } else
         {
-            o1b=o1.getAddress();
-            o1e=o1.getAddress();
+            o1b = o1.getAddressPtr();
+            o1e = o1.getAddressPtr();
         }
     }
 
     if (AddressRange::isA(&o2))
     {
-        o2b=AddressRange::constcast(&o2)->getRangeStart();  
-        o2e=AddressRange::constcast(&o2)->getRangeEnd();
+        o2b = &(AddressRange::constcast(&o2)->getRangeStart());
+        o2e = &(AddressRange::constcast(&o2)->getRangeEnd());
     } else
     {
         if (Network::isA(&o2))
         {
-            o2b=o2.getAddress();
-            o2e=IPNetwork(o2.getAddress(),o2.getNetmask()).getBroadcastAddress();
+            o2b = o2.getAddressPtr();
+            o2e = o2.getBroadcastAddressPtr();
         } else
         {
-            o2b=o2.getAddress();
-            o2e=o2.getAddress();
+            o2b = o2.getAddressPtr();
+            o2e = o2.getAddressPtr();
         }
     }
-/*
-    cerr << "# o1=" << o1.getName() << " "
-         << o1b.toString() << "-" << o1e.toString() << "(" << o1.dimension() << ")"
-         << " o2=" << o2.getName()  << " "
-         << o2b.toString() << "-" << o2e.toString() << "(" << o2.dimension() << ")"
-         << " " << int( (o1b>o2b || o1b==o2b) && (o1e<o2e || o1e==o2e) )
+
+#if 0
+    cerr << "# o1=" << o1.getName() << " [" << o1.toString() << "] "
+         << o1b->toString() << "-" << o1e->toString()
+         << "(" << o1.dimension() << ")"
+         << " o2=" << o2.getName() << " [" << o2.toString() << "] "
+         << o2b->toString() << "-" << o2e->toString()
+         << "(" << o2.dimension() << ")"
+         << " " << int( ((*o1b)>(*o2b) || (*o1b)==(*o2b)) &&
+                        ((*o1e)<(*o2e) || (*o1e)==(*o2e)) )
          << endl;
-*/
+#endif
+
     if (o1.isAny() && o2.isAny())  return true;
     if (o1.isAny() && !o2.isAny()) return false;
     if (!o1.isAny() && o2.isAny()) return true;
 
-    return ( (o2b<o1b || o1b==o2b) && (o1e<o2e || o1e==o2e) );
+    return ( ((*o2b) < (*o1b) || (*o1b) == (*o2b)) &&
+             ((*o1e) < (*o2e) || (*o1e) == (*o2e)) );
 }
 
 /*************************************************************************/
@@ -398,10 +408,10 @@ bool fwcompiler::operator==(const Address &o1,const Address &o2)
 {
     if (o1.getId()==o2.getId()) return true;
 
-    IPAddress o1b;
-    IPAddress o1e;
-    IPAddress o2b;
-    IPAddress o2e;
+    const InetAddr* o1b;
+    const InetAddr* o1e;
+    const InetAddr* o2b;
+    const InetAddr* o2e;
 
     if (Interface::isA(&o1) && Interface::isA(&o2))
     {
@@ -422,35 +432,35 @@ bool fwcompiler::operator==(const Address &o1,const Address &o2)
     
     if (AddressRange::isA(&o1))
     {
-        o1b=AddressRange::constcast(&o1)->getRangeStart();  
-        o1e=AddressRange::constcast(&o1)->getRangeEnd();
+        o1b = &(AddressRange::constcast(&o1)->getRangeStart());  
+        o1e = &(AddressRange::constcast(&o1)->getRangeEnd());
     } else
         if (Network::isA(&o1))
         {
-            o1b=o1.getAddress();
-            o1e=IPNetwork(o1.getAddress(),o1.getNetmask()).getBroadcastAddress();
+            o1b = o1.getAddressPtr();
+            o1e = o1.getBroadcastAddressPtr();
         } else
         {
-            o1b=o1.getAddress();
-            o1e=o1.getAddress();
+            o1b = o1.getAddressPtr();
+            o1e = o1.getAddressPtr();
         }
 
     if (AddressRange::isA(&o2))
     {
-        o2b=AddressRange::constcast(&o2)->getRangeStart();  
-        o2e=AddressRange::constcast(&o2)->getRangeEnd();
+        o2b = &(AddressRange::constcast(&o2)->getRangeStart());  
+        o2e = &(AddressRange::constcast(&o2)->getRangeEnd());
     } else
         if (Network::isA(&o2))
         {
-            o2b=o2.getAddress();
-            o2e=IPNetwork(o2.getAddress(),o2.getNetmask()).getBroadcastAddress();
+            o2b = o2.getAddressPtr();
+            o2e = o2.getBroadcastAddressPtr();
         } else
         {
-            o2b=o2.getAddress();
-            o2e=o2.getAddress();
+            o2b = o2.getAddressPtr();
+            o2e = o2.getAddressPtr();
         }
 
-    return (o1b==o2b && o1e==o2e);
+    return ((*o1b) == (*o2b) && (*o1e) == (*o2e));
 }
 
 bool fwcompiler::operator==(const Interval  &o1,const Interval  &o2)

@@ -42,7 +42,7 @@ namespace libfwbuilder {
     class FWObject;
     class FWOptions;
     class FWObjectDatabase;
-    class IPAddress;
+    class InetAddr;
     class Address;
     class Service;
     class Interval;

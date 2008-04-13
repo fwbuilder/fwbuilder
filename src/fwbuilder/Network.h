@@ -28,18 +28,14 @@
 #define __NETWORK_HH_FLAG__
 
 #include <fwbuilder/Address.h>
-#include <fwbuilder/IPAddress.h>
+#include <fwbuilder/InetAddr.h>
+#include <fwbuilder/InetAddrMask.h>
 
 namespace libfwbuilder
 {
 
 class Network : public Address
 {
-    private:
-    
-    IPAddress address;
-    Netmask   netmask;
-    
     public:
     
     Network();
@@ -47,25 +43,16 @@ class Network : public Address
     Network(Network &);
     Network(const std::string &);
 
-    virtual IPAddress getAddress() const { return address; }
-    virtual Netmask   getNetmask() const { return netmask; }
-    virtual guint32   dimension()  const;
-
-    virtual void setAddress(const IPAddress &a)    { address=a;  }
-    virtual void setNetmask(const Netmask   &nm)   { netmask=nm; }
-    virtual void setAddress(const std::string &a)  { address=IPAddress(a); }
-    virtual void setNetmask(const std::string &nm) { netmask=Netmask(nm);  }
-
     bool isValidRoutingNet() const;
 
-
-    void setData(IPNetwork &n) { address=n.getAddress(); netmask=n.getNetmask(); }
-    
-    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+    void setData(InetAddrMask &n)
+    {
+        setAddress(n.getAddress());
+        setNetmask(n.getNetmask());
+    }
     
     virtual void       fromXML (xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML   (xmlNodePtr xml_parent_node) throw(FWException);
-    Network& operator=(const std::string &s) throw(FWException);
     
     DECLARE_FWOBJECT_SUBTYPE(Network);
     

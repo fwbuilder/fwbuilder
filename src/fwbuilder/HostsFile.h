@@ -28,7 +28,7 @@
 #define __HOSTS_FILE_HH_FLAG__
 
 #include <fwbuilder/FWException.h>
-#include <fwbuilder/IPAddress.h>
+#include <fwbuilder/InetAddr.h>
 
 #include <iostream>
 #include <string>
@@ -50,11 +50,11 @@ class HostsFile
     void parse(std::istream &from) throw(FWException);
     
     // Returns all hosts found
-    std::map<IPAddress, std::vector<std::string> > getAll() { return data; }
+    std::map<InetAddr, std::vector<std::string> > getAll() { return data; }
 
     private:
     
-    std::map<IPAddress, std::vector<std::string> > data;
+    std::map<InetAddr, std::vector<std::string> > data;
 };
 
 }

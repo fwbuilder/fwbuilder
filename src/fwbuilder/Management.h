@@ -28,7 +28,7 @@
 #ifndef __MANAGEMENT_HH_FLAG__
 #define __MANAGEMENT_HH_FLAG__
 
-#include <fwbuilder/IPAddress.h>
+#include <fwbuilder/InetAddr.h>
 #include <fwbuilder/FWObject.h>
 
 namespace libfwbuilder
@@ -142,8 +142,8 @@ namespace libfwbuilder
         virtual bool  cmp(const FWObject *obj) throw(FWException);
 	virtual bool  validateChild(FWObject *o);
 
-        const IPAddress& getAddress() const;
-        void             setAddress(const IPAddress&);
+        const InetAddr& getAddress() const { return addr; }
+        void setAddress(const InetAddr& a) { addr = a; }
 
         PolicyInstallScript *getPolicyInstallScript();
         SNMPManagement      *getSNMPManagement();
@@ -153,7 +153,7 @@ namespace libfwbuilder
 
         private:
 
-        IPAddress addr;
+        InetAddr addr;
     };
 }
 

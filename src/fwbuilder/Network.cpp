@@ -40,38 +40,28 @@ using namespace std;
 
 const char *Network::TYPENAME={"Network"};
 
-Network::Network() : Address() , 
-		     address("0.0.0.0") , 
-		     netmask("0.0.0.0")
+Network::Network() : Address()
 {
+    setNetmask(InetNetmask(0));
 }
 
-Network::Network(const FWObject *root,bool prepopulate) : Address(root,prepopulate),
-                                                          address("0.0.0.0") , 
-                                                          netmask("0.0.0.0")
+Network::Network(const FWObject *root,bool prepopulate) :
+    Address(root, prepopulate)
 {
+    setNetmask(InetNetmask(0));
 }
 
-Network::Network(Network &o) : Address() , 
-			       address(o.getAddress()) , 
-			       netmask(o.getNetmask())
+Network::Network(Network &o) : Address(o)
 {
     FWObject::operator=(o);
+    setAddress(o.getAddress());
+    setNetmask(o.getNetmask());
 }
 
-Network::Network (const string &s) : Address()
+Network::Network (const string &s) : Address(s)
 {
-    *this=s;
 }
                                      
-
-FWObject& Network::shallowDuplicate(const FWObject *o, bool preserve_id) throw(FWException)
-{
-    const Network *n=dynamic_cast<const Network *>(o);
-    address = n->getAddress();
-    netmask = n->getNetmask();
-    return FWObject::shallowDuplicate(o, preserve_id);
-}
 
 void Network::fromXML(xmlNodePtr root) throw(FWException)
 {
@@ -79,12 +69,12 @@ void Network::fromXML(xmlNodePtr root) throw(FWException)
     
     const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
     assert(n!=NULL);
-    address = n;
+    setAddress(InetAddr(n));
     FREEXMLBUFF(n);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("netmask")));
     assert(n!=NULL);
-    netmask = n;
+    setNetmask(InetNetmask(n));
     FREEXMLBUFF(n);
 }
 
@@ -94,69 +84,18 @@ xmlNodePtr Network::toXML(xmlNodePtr xml_parent_node) throw(FWException)
     
     xmlNewProp(me, 
                TOXMLCAST("address"),
-               STRTOXMLCAST(address.toString()));
+               STRTOXMLCAST(getAddress().toString()));
     
     xmlNewProp(me, 
                TOXMLCAST("netmask"),
-               STRTOXMLCAST(netmask.toString()));
+               STRTOXMLCAST(getNetmask().toString()));
     
     return me;
-}
-
-guint32   Network::dimension()  const
-{
-/* 
- * TODO: this code not portable 'cause it implies specific to IPv4
- * maximum length of netmask  
- */
-    int masklength=netmask.getLength();
-
-    if (masklength==0) return 0;
-
-    guint32  u=1;
-    for (int i=0; i<32-masklength; ++i) u<<=1;
-
-    return u;
 }
 
 /* check if host address bits are cleared */
 bool Network::isValidRoutingNet() const
 {
-    for(unsigned i=0;i<4;i++) 
-        if ( ( address[i] & netmask[i] ) != address[i] )
-            return false;
-
-    return true;
+    return (getAddress() == (getAddress() & getNetmask()));
 }
 
-Network& Network::operator=(const string &s) throw(FWException)
-{
-    if(s.find_first_not_of(".1234567890/")!=string::npos)
-    {
-        throw FWException(string("Invalid IP address: '")+s+"'");
-    }
-    
-    size_type pos=s.find("/");
-    
-    if (pos==string::npos)
-    {
-        setAddress(s);
-        setNetmask("255.255.255.255");
-    }
-    else
-    {
-        setAddress(s.substr(0,pos));
-        string netm=s.substr(pos+1);
-        
-        if (netm.find(".")==string::npos)
-        {
-            int d=atoi(netm.c_str());
-            netmask=Netmask(d);
-        }
-        else
-        {
-            setNetmask(netm);
-        }
-    }
-   return *this; 
-}

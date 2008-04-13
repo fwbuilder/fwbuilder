@@ -61,7 +61,7 @@ void HostsFile::parse(istream &from) throw(FWException)
 
     state = s_iws;
     
-    IPAddress      ip    ;
+    InetAddr      ip    ;
     string         name  ;
     vector<string> names ;
 
@@ -92,7 +92,7 @@ void HostsFile::parse(istream &from) throw(FWException)
                 // throw exception here.
                 try
                 {
-                    ip = IPAddress(name);
+                    ip = InetAddr(name);
                     names.clear();
                     name="";
                     state=s_ws;

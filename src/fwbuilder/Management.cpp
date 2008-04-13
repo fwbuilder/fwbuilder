@@ -70,7 +70,7 @@ void Management::fromXML(xmlNodePtr root) throw(FWException)
         throw FWException("Missing required address attributre in Management element");
     try
     {
-        addr = n;
+        addr = InetAddr(n);
     } catch(FWNotSupportedException ex)
     {
         throw FWException(string("Invalid address attributre in Management element: ")+ex.toString());
@@ -137,17 +137,7 @@ bool Management::isEmpty() const
 	(!pi || pi->isEmpty()) && 
 	(!sm || sm->isEmpty()) && 
 	(!fm || fm->isEmpty()) &&  
-	addr.to32BitInt()==0;
-}
-
-const IPAddress& Management::getAddress() const
-{
-    return addr;
-}
-
-void Management::setAddress(const IPAddress &a)
-{
-    addr = a;
+	addr.isAny();
 }
 
 PolicyInstallScript *Management::getPolicyInstallScript()

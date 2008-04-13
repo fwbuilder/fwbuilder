@@ -269,7 +269,7 @@ void SNMPQuery::fetchArpTable(Logger *logger,SyncFlag *stop_program, SNMPConnect
                     SNMP_AT_TABLE_NET << "' table. Skipping it.\n";
                     continue;
                 }
-                IPAddress ip = dynamic_cast<SNMPVariable_IPaddr*>((*j).second)->getIPAddressValue();
+                InetAddr ip = dynamic_cast<SNMPVariable_IPaddr*>((*j).second)->getInetAddrValue();
 
                 str << "Learned: " << ip.toString();
 
@@ -371,7 +371,7 @@ void SNMPQuery::fetchRoutingTable(Logger *logger,SyncFlag *stop_program, SNMPCon
                     
                     continue;
                 }
-                IPAddress dst = dynamic_cast<SNMPVariable_IPaddr*>((*j).second)->getIPAddressValue();
+                InetAddr dst = dynamic_cast<SNMPVariable_IPaddr*>((*j).second)->getInetAddrValue();
                 string rname=(*j).first.substr(strlen(SNMP_ROUTE_DST_TABLE)+1);
 
                 v=c->get(string(SNMP_ROUTE_NM_TABLE)+"."+rname);
@@ -384,7 +384,7 @@ void SNMPQuery::fetchRoutingTable(Logger *logger,SyncFlag *stop_program, SNMPCon
                     SNMPVariable::freeVarList(v);
                     continue;
                 }
-                Netmask nm = dynamic_cast<SNMPVariable_IPaddr*>(v[0])->getNetmaskValue();
+                InetNetmask nm = dynamic_cast<SNMPVariable_IPaddr*>(v[0])->getNetmaskValue();
                 SNMPVariable::freeVarList(v);
 
                 v=c->get(string(SNMP_ROUTE_TYPE_TABLE)+"."+rname);
@@ -401,7 +401,7 @@ void SNMPQuery::fetchRoutingTable(Logger *logger,SyncFlag *stop_program, SNMPCon
                     SNMPVariable::freeVarList(v);
                     continue;
                 }
-                IPAddress gw = dynamic_cast<SNMPVariable_IPaddr*>(v[0])->getIPAddressValue();
+                InetAddr gw = dynamic_cast<SNMPVariable_IPaddr*>(v[0])->getInetAddrValue();
                 SNMPVariable::freeVarList(v);
 
                 v=c->get(string(SNMP_ROUTE_IF_TABLE)+"."+rname);
@@ -433,7 +433,7 @@ void SNMPQuery::fetchRoutingTable(Logger *logger,SyncFlag *stop_program, SNMPCon
                     route_intf=&(*ici).second;
                 }
                 bool isdef= type!=SNMP_DIRECT_ROUTE &&
-                    nm.getLength() == 0 && dst == IPAddress("0.0.0.0");
+                    nm.getLength() == 0 && dst == InetAddr("0.0.0.0");
 
 		if (isdef && route_intf) route_intf->setExt(true);
 
@@ -480,7 +480,7 @@ bool SNMPQuery::isDefault(const IPRoute &r) const
 {
     return !r.isDirect() &&
     r.getNetmask().getLength() == 0 &&
-    r.getDestination() == IPAddress("0.0.0.0");
+    r.getDestination() == InetAddr("0.0.0.0");
 }
 
 void SNMPQuery::fetchInterfaces(Logger *logger,SyncFlag *stop_program, SNMPConnection *connection) throw(FWException)
@@ -674,7 +674,7 @@ void SNMPQuery::fetchInterfaces(Logger *logger,SyncFlag *stop_program, SNMPConne
                     throw FWException("Can't get IP address");
                 if(v[0]->type!=SNMPVariable::snmp_ipaddr)
                     throw FWException("Wrong return type for IP address");
-                string ad = dynamic_cast<SNMPVariable_IPaddr*>(v[0])->getIPAddressValue().toString();
+                string ad = dynamic_cast<SNMPVariable_IPaddr*>(v[0])->getInetAddrValue().toString();
                 SNMPVariable::freeVarList(v);
 
                 v=c->get(string(SNMP_BCAST_TABLE)+"."+aprefix);
@@ -684,8 +684,8 @@ void SNMPQuery::fetchInterfaces(Logger *logger,SyncFlag *stop_program, SNMPConne
                 SNMPVariable::freeVarList(v);
 
                 IPv4 *ipaddr=interfaces[ifindex].addIPv4();
-                ipaddr->setAddress(ad);
-                ipaddr->setNetmask(nm);
+                ipaddr->setAddress(InetAddr(ad));
+                ipaddr->setNetmask(InetNetmask(nm));
 
                 str << "Adding interface #" << ifindex 
                     << ": " << ad << "/" << nm
@@ -799,7 +799,7 @@ const vector<IPRoute> &SNMPQuery::getRoutes()
     return routes;
 }
 
-const map<IPAddress, string> &SNMPQuery::getArtpTable()
+const map<InetAddr, string> &SNMPQuery::getArtpTable()
 {
     return arptable;
 }
@@ -1081,7 +1081,7 @@ string SNMPVariable_Bits::toString()
 
 string SNMPVariable_IPaddr::toString()
 {
-    string res="SNMP IPAddress/Netmask[";
+    string res="SNMP InetAddr/Netmask[";
     for(size_t i=0;i<len;i++)
     {
         if(i) 
@@ -1094,14 +1094,27 @@ string SNMPVariable_IPaddr::toString()
     return res;
 }
 
-IPAddress SNMPVariable_IPaddr::getIPAddressValue() throw(FWException)
+InetAddr SNMPVariable_IPaddr::getInetAddrValue() throw(FWException)
 {
-    return IPAddress(value, len);
+    // value comes from ASN1-encoded snmp reply. I am not sure 100% but
+    // I'll assume it consists of 4 bytes that represent ip address in
+    // network order.
+    union {
+        struct in_addr ipaddr;
+        char addr_bytes[4];
+    } addr_conversion;
+    memcpy((void*)(&addr_conversion), value, len);
+    return InetAddr(&addr_conversion.ipaddr);
 }
 
-Netmask SNMPVariable_IPaddr::getNetmaskValue() throw(FWException)
+InetNetmask SNMPVariable_IPaddr::getNetmaskValue() throw(FWException)
 {
-    return Netmask(value, len);
+    union {
+        struct in_addr ipaddr;
+        char addr_bytes[4];
+    } addr_conversion;
+    memcpy((void*)(&addr_conversion), value, len);
+    return InetNetmask(&addr_conversion.ipaddr);
 }
 
 string SNMPVariable_String::toString()
@@ -1175,7 +1188,7 @@ long SNMPVariable::varList2Int(vector<SNMPVariable*> &v) throw(FWException)
 SNMPCrawler::SNMPCrawler()
 {}
 
-SNMPCrawler::SNMPCrawler(const IPAddress &_seed, 
+SNMPCrawler::SNMPCrawler(const InetAddr &_seed, 
                          const string &_community,
                          bool _recursive,
                          bool _skip_virtual,
@@ -1186,7 +1199,7 @@ SNMPCrawler::SNMPCrawler(const IPAddress &_seed,
                          long _snmp_timeout,
 			 int  _dns_retries,
 			 int  _dns_timeout,
-                         const vector<IPNetwork> *_include)
+                         const vector<InetAddrMask> *_include)
 {
     init(_seed, _community, _recursive, _skip_virtual, 
          _do_dns, _follow_ptp, _dns_threads, 
@@ -1198,7 +1211,7 @@ SNMPCrawler::~SNMPCrawler()
 {
 }
 
-void SNMPCrawler::init(const IPAddress &_seed, 
+void SNMPCrawler::init(const InetAddr &_seed, 
 		       const string &_community,
 		       bool _recursive,
                        bool _skip_virtual,
@@ -1209,7 +1222,7 @@ void SNMPCrawler::init(const IPAddress &_seed,
 		       long _snmp_timeout,
 		       int  _dns_retries,
 		       int  _dns_timeout,
-		       const vector<IPNetwork> *_include)
+		       const vector<InetAddrMask> *_include)
 {
     include      = _include      ;
     community    = _community    ;
@@ -1238,25 +1251,27 @@ set<Interface> SNMPCrawler::guessInterface(const IPRoute &r, const map<int, Inte
 {
     set<Interface> res;
     for(map<int, Interface>::const_iterator i=intf.begin(); i!=intf.end(); ++i)
-        if((*i).second.getIPNetwork().belongs(r.getGateway()))
+    {
+        InetAddrMask iface_net((*i).second.getAddress(), (*i).second.getNetmask());
+        if (iface_net.belongs(r.getGateway()))
             res.insert((*i).second);
-    
+    }
     return res;
 }
 
-bool SNMPCrawler::included(const IPAddress &a) const
+bool SNMPCrawler::included(const InetAddr &a) const
 {
     if(!include)
         return true; // no include list provided. All hosts are OK.
     
-    for(vector<IPNetwork>::const_iterator i=include->begin(); i!=include->end(); ++i) {
+    for(vector<InetAddrMask>::const_iterator i=include->begin(); i!=include->end(); ++i) {
         if((*i).belongs(a)) 
             return true;
     }
     return false;
 }
 
-bool SNMPCrawler::alreadyseen(const IPAddress &a) const
+bool SNMPCrawler::alreadyseen(const InetAddr &a) const
 {
     return found.find(a) != found.end();
 }
@@ -1264,16 +1279,17 @@ bool SNMPCrawler::alreadyseen(const IPAddress &a) const
 /**
  * loopback  :  All addresses on the net  127.0.0.0/255.0.0.0
  */
-const IPNetwork SNMPCrawler::LOOPBACK_NET(IPAddress("127.0.0.0"),Netmask("255.0.0.0"));
-const Netmask   SNMPCrawler::PTP_NETMASK("255.255.255.255");
-const IPAddress SNMPCrawler::ZERO_IP("0.0.0.0");
+const InetAddrMask SNMPCrawler::LOOPBACK_NET(InetAddr::getLoopbackAddr(),
+                                          InetNetmask("255.0.0.0"));
+const InetNetmask SNMPCrawler::PTP_NETMASK(InetAddr::getAllOnes());
+const InetAddr SNMPCrawler::ZERO_IP("0.0.0.0");
 
-bool SNMPCrawler::isvirtual(const IPAddress &addr, const string &pa) const 
+bool SNMPCrawler::isvirtual(const InetAddr &addr, const string &pa) const 
 {
     if(!pa.length())
         return false;
 
-    for(map<IPAddress, CrawlerFind>::const_iterator i=found.begin(); i!=found.end(); ++i)
+    for(map<InetAddr, CrawlerFind>::const_iterator i=found.begin(); i!=found.end(); ++i)
     {
         const CrawlerFind &c = (*i).second ;
         
@@ -1281,8 +1297,10 @@ bool SNMPCrawler::isvirtual(const IPAddress &addr, const string &pa) const
         {
             try
             {
-                physAddress *paddr=(*j).second.getPhysicalAddress();
-                if(paddr!=NULL && pa == paddr->getPhysAddress() && addr != (*j).second.getIPAddress())
+                physAddress *paddr = (*j).second.getPhysicalAddress();
+                if (paddr!=NULL &&
+                    pa == paddr->getPhysAddress() &&
+                    addr != (*j).second.getAddress())
                     return true;
             } catch(FWException &ex)
             {
@@ -1295,7 +1313,7 @@ bool SNMPCrawler::isvirtual(const IPAddress &addr, const string &pa) const
     return false;
 }
 
-bool SNMPCrawler::point2point(const IPNetwork &n, const Interface *intf) const
+bool SNMPCrawler::point2point(const InetAddrMask &n, const Interface *intf) const
 {
     return n.getNetmask()==PTP_NETMASK || point2point(intf);
 }
@@ -1321,14 +1339,17 @@ bool SNMPCrawler::point2point(const Interface *intf) const
  * This include hosts on loopback, special addresses
  * as "0.0.0.0".
  */
-bool SNMPCrawler::special(const IPAddress &a) const 
+bool SNMPCrawler::special(const InetAddr &a) const 
 {
     return LOOPBACK_NET.belongs(a) || ZERO_IP==a;
 }
 
-bool SNMPCrawler::special(const IPNetwork &n) const
+bool SNMPCrawler::special(const InetAddrMask &n) const
 {
-    return n==LOOPBACK_NET || n.isBroadcast() || n.isMulticast() || n.getAddress()==ZERO_IP;
+    return n==LOOPBACK_NET ||
+        n.getAddress().isBroadcast() ||
+        n.getAddress().isMulticast() ||
+        n.getAddress().isAny();
 }
 
 //TODO: multiple threads (via pool).
@@ -1346,12 +1367,12 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
     do {
         CHECK_STOP_AND_RETURN
 
-        map<IPAddress,string>::iterator i=queue.begin();
+        map<InetAddr,string>::iterator i=queue.begin();
         if(i==queue.end())
         {
             break;
         }
-        IPAddress task           = (*i).first  ;
+        InetAddr task           = (*i).first  ;
         string task_phys_address = (*i).second ;
         queue.erase(i);
         
@@ -1361,7 +1382,7 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
 
         // Now in task we have element to probe
         
-        q.init(string(task), // fake host make - IP in dotted notation
+        q.init(task.toString(), // fake host - IP in dotted notation
                community,
                snmp_retries,  
                snmp_timeout
@@ -1392,17 +1413,17 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
             continue;
         }
 
-        map<IPAddress, string> at=q.getArtpTable();    
+        map<InetAddr, string> at=q.getArtpTable();    
         str << "Got " << long(at.size()) << " entries\n";
         *logger << str;
         
 
         int qplus=0, rplus=0, dplus=0;
-        for(map<IPAddress, string>::iterator j=at.begin();j!=at.end();++j)
+        for(map<InetAddr, string>::iterator j=at.begin();j!=at.end();++j)
         {
             CHECK_STOP_AND_RETURN
 
-            IPAddress  c = (*j).first;
+            InetAddr  c = (*j).first;
             string    pa = (*j).second;
             if(included(c) && !alreadyseen(c) && !isvirtual(c,pa) && !special(c))
             {
@@ -1438,7 +1459,7 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
             
         }
 
-        set<IPAddress> interface_broadcasts;
+        set<InetAddr> interface_broadcasts;
 
         try
         {
@@ -1452,12 +1473,14 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
                 if(!(*j).second.isUp())
                     continue;
 
-                IPNetwork net=(*j).second.getIPNetwork();
+                //InetAddrMask net=(*j).second.getInetAddrMask();
+                InetAddrMask net((*j).second.getAddress(),
+                              (*j).second.getNetmask());
                 interface_broadcasts.insert(net.getBroadcastAddress());
 
                 if(!special(net) && included(net.getAddress()) && !point2point(net, NULL))
                 {
-                    str << "Network " << string(net) << " found.\n";
+                    str << "Network " << net.toString() << " found.\n";
                     *logger << str;
                     
                     networks.insert(net);
@@ -1515,7 +1538,7 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
                     have_intf = false;
                 }
                 
-                IPNetwork net((*j).getDestination(), (*j).getNetmask());
+                InetAddrMask net((*j).getDestination(), (*j).getNetmask());
                 
                 if(!have_intf)
                 {
@@ -1561,7 +1584,7 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
                             break;
                     }
                     if(have_intf)
-                        str << "Guessed that network " << string(net)
+                        str << "Guessed that network " << net.toString()
                             << " is using interface " << intf.getName() << "\n";
                     *logger << str;
                     
@@ -1571,7 +1594,7 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
                 // ignore it.
                 if(have_intf && !intf.isUp())
                 {
-                    str << "Skipping route for network " << string(net)
+                    str << "Skipping route for network " << net.toString()
                         << " which is associated with interface which is currently down.\n";
                     *logger << str;
                     
@@ -1582,7 +1605,7 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
                 {
                     if(point2point(net, NULL))
                     {
-                        IPAddress c=net.getAddress();
+                        InetAddr c=net.getAddress();
 
                         // For all addresses found in the routing table
                         // we must check if they are broadcast addresses
@@ -1608,7 +1631,7 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
                         }
                     } else
                     {
-                        str << "Network " << string(net)
+                        str << "Network " << net.toString()
                             << " found (via "
                             << string(((*j).isDirect())?"direct":"indirect") 
                             << " route).\n";
@@ -1620,7 +1643,7 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
                     }
                 }
 
-                IPAddress gw((*j).getGateway());
+                InetAddr gw((*j).getGateway());
                 if(included(gw) && !alreadyseen(gw) && !isvirtual(gw, "") && !special(gw) && !interface_broadcasts.count(gw))
                 {
                     bool isptp=point2point(net, &intf);
@@ -1697,7 +1720,7 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
 void SNMPCrawler::remove_virtual(Logger *logger,SyncFlag *stop_program) throw(FWException)
 {
     *logger << "Removing virtual IPs.\n";
-    for(map<IPAddress, CrawlerFind>::iterator j=found.begin(); j!=found.end(); ++j)
+    for(map<InetAddr, CrawlerFind>::iterator j=found.begin(); j!=found.end(); ++j)
         if(isvirtual((*j).first, (*j).second.found_phys_addr))
             found.erase(j);
 }
@@ -1706,8 +1729,8 @@ void SNMPCrawler::bacresolve_results(Logger *logger,SyncFlag *stop_program) thro
 {
     *logger << "Resolving names\n";
         
-    set<IPAddress> resolv_set;
-    for(map<IPAddress, CrawlerFind>::iterator j=found.begin(); j!=found.end(); ++j)
+    set<InetAddr> resolv_set;
+    for(map<InetAddr, CrawlerFind>::iterator j=found.begin(); j!=found.end(); ++j)
         resolv_set.insert((*j).first);
     DNS_bulkBackResolve_query backresq(resolv_set, dns_threads,
 				       dns_retries,dns_timeout );
@@ -1722,8 +1745,8 @@ void SNMPCrawler::bacresolve_results(Logger *logger,SyncFlag *stop_program) thro
     }
     *logger << "Finished.\n";
 
-    map<IPAddress, HostEnt> resolv_res=backresq.getResult();
-    for(map<IPAddress, HostEnt>::iterator j=resolv_res.begin(); j!=resolv_res.end(); ++j)
+    map<InetAddr, HostEnt> resolv_res=backresq.getResult();
+    for(map<InetAddr, HostEnt>::iterator j=resolv_res.begin(); j!=resolv_res.end(); ++j)
     {
         found[(*j).first].dns_ok  = true;
         found[(*j).first].name    = (*j).second.name;
@@ -1732,12 +1755,12 @@ void SNMPCrawler::bacresolve_results(Logger *logger,SyncFlag *stop_program) thro
 }
 
 
-set<IPNetwork> SNMPCrawler::getNetworks()
+set<InetAddrMask> SNMPCrawler::getNetworks()
 {
     return networks;
 }
 
-map<IPAddress, CrawlerFind> SNMPCrawler::getAllIPs()
+map<InetAddr, CrawlerFind> SNMPCrawler::getAllIPs()
 {
     return found;
 }

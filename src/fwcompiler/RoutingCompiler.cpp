@@ -41,7 +41,8 @@
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/RuleSet.h"
-#include "fwbuilder/IPAddress.h"
+#include "fwbuilder/InetAddr.h"
+#include "fwbuilder/IPRoute.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -361,30 +362,26 @@ bool RoutingCompiler::contradictionRGtwAndRItf::processNext()
     
     if( Host::cast(oRGtw) != NULL || Interface::cast(oRGtw) != NULL || IPv4::cast(oRGtw) != NULL) {
 
-        IPAddress ip_interface;
+        const InetAddr* ip_interface;
 
         if ( Host::cast(oRGtw) != NULL) {
             Host *host=Host::cast(oRGtw);
-            ip_interface= host->getAddress();
+            ip_interface = host->getAddressPtr();
         } else if (Interface::cast(oRGtw) != NULL) {
             Interface *intf=Interface::cast(oRGtw);
-            ip_interface= intf->getAddress();
+            ip_interface = intf->getAddressPtr();
         } else if (IPv4::cast(oRGtw) != NULL) {
             IPv4 *ipv4=IPv4::cast(oRGtw);
-            ip_interface= ipv4->getAddress();
+            ip_interface = ipv4->getAddressPtr();
         }
 
         
         list<FWObject*> obj_list = oRItf->getByType("IPv4");
         for (list<FWObject*>::iterator i=obj_list.begin(); i!=obj_list.end(); ++i) 
         {
-            IPv4 *firewall=IPv4::cast(*i); 
-            Netmask n_firewall = firewall->getNetmask();
-            IPAddress ip_firewall = firewall->getAddress();
-             
-            if ((n_firewall.to32BitInt() & ip_firewall.to32BitInt()) == (n_firewall.to32BitInt() & ip_interface.to32BitInt())) {
+            IPv4 *firewall_addr = IPv4::cast(*i); 
+            if (firewall_addr->belongs(*ip_interface))
                 return true;
-            }
         }
 
         string msg;

@@ -74,7 +74,7 @@ Logger& NullLogger::operator<< (const char*)   { return *this;}
 Logger& NullLogger::operator<< (const string&) { return *this;}
 Logger& NullLogger::operator<< (int)           { return *this;}
 Logger& NullLogger::operator<< (long)          { return *this;}
-Logger& NullLogger::operator<< (std::ostringstream &sstr) { return *this;}
+Logger& NullLogger::operator<< (std::ostringstream&) { return *this;}
 
 
 

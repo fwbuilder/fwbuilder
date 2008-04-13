@@ -37,30 +37,21 @@ namespace libfwbuilder
 
 class IPv4 : public Address
 {
-    public:
+private:
+    
+public:
     
     IPv4();
     IPv4(const FWObject *root,bool prepopulate);
-    IPv4(const IPv4 &i);
-    IPv4(const std::string& addr,const std::string& mask);
 
     virtual ~IPv4();
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
 
+    virtual unsigned int dimension()  const { return 1; }
+    
     DECLARE_FWOBJECT_SUBTYPE(IPv4);
-
-    IPNetwork getIPNetwork() const throw(FWException);
-
-    void    setAddress(const std::string &a);
-    void    setNetmask(const std::string &nm);
-
-    virtual IPAddress getAddress() const;
-    virtual Netmask   getNetmask() const;
-    virtual guint32   dimension()  const;
-
-    virtual void setAddress(const IPAddress &a);
-    virtual void setNetmask(const Netmask   &nm);
 
 };
 

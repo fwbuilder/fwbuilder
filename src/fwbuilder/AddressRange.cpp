@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2000 NetCitadel, LLC
+                 Copyright (C) 2006 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
@@ -24,6 +24,7 @@
 */
 
 #include <assert.h>
+#include <iostream>
 
 #include <fwbuilder/libfwbuilder-config.h>
 
@@ -34,44 +35,52 @@ using namespace libfwbuilder;
 
 const char *AddressRange::TYPENAME={"AddressRange"};
 
-AddressRange::AddressRange() : Address() , 
-                               start_address("0.0.0.0") , 
-                               end_address("0.0.0.0")
+AddressRange::AddressRange() : Address(), start_address(), end_address()
 {
 }
 
-AddressRange::AddressRange(const FWObject *root,bool prepopulate) :
-    Address(root,prepopulate) , start_address("0.0.0.0") , end_address("0.0.0.0")
+AddressRange::AddressRange(const FWObject *root, bool prepopulate) :
+    Address(root, prepopulate), start_address(), end_address()
 {
 }
 
 AddressRange::AddressRange(AddressRange &o) : Address() , 
-                                              start_address(o.getRangeStart()) , 
+                                              start_address(o.getRangeStart()), 
                                               end_address(o.getRangeEnd()) 
 {
     FWObject::operator=(o);
 }
 
-IPAddress AddressRange::getAddress() const { return getRangeStart(); }
-Netmask   AddressRange::getNetmask() const { return Netmask("255.255.255.255"); }
-guint32   AddressRange::dimension()  const
+const InetAddr& AddressRange::getAddress() const
 {
-    guint32 a1=ntohl( start_address.to32BitInt() );
-    guint32 a2=ntohl( end_address.to32BitInt()   );
-    return a2-a1+1;
+    return start_address;
 }
 
-void AddressRange::setAddress(const IPAddress &a)  { setRangeStart(a); setRangeEnd(a); }
-void AddressRange::setNetmask(const Netmask   &nm) {}
+const InetAddr* AddressRange::getAddressPtr() const
+{
+    return &start_address;
+}
 
-void AddressRange::setAddress(const std::string &a)  { setRangeStart(IPAddress(a)); setRangeEnd(IPAddress(a)); }
-void AddressRange::setNetmask(const std::string &nm) {}
+unsigned int AddressRange::dimension()  const
+{
+    return start_address.distance(end_address);
+}
 
+void AddressRange::setAddress(const InetAddr &a)  
+{
+    setRangeStart(a);
+    setRangeEnd(a);
+}
 
-FWObject& AddressRange::shallowDuplicate(const FWObject *o, bool preserve_id) throw(FWException)
+void AddressRange::setNetmask(const InetNetmask& ) {}
+
+FWObject& AddressRange::shallowDuplicate(const FWObject *o, bool preserve_id)
+    throw(FWException)
 {
     const AddressRange *n = dynamic_cast<const AddressRange *>(o);
-    if (n==NULL) throw(FWException("Attempt to copy incompatible object to AddressRange: objectID="+o->getId()));
+    if (n==NULL)
+        throw(FWException(
+"Attempt to copy incompatible object to AddressRange: objectID="+o->getId()));
 
     start_address = n->getRangeStart();
     end_address   = n->getRangeEnd();
@@ -84,16 +93,16 @@ bool AddressRange::cmp(const FWObject *obj) throw(FWException)
     if (AddressRange::constcast(obj)==NULL) return false;
     if (!FWObject::cmp(obj)) return false;
 
-    IPAddress o1b;
-    IPAddress o1e;
-    IPAddress o2b;
-    IPAddress o2e;
+    InetAddr o1b;
+    InetAddr o1e;
+    InetAddr o2b;
+    InetAddr o2e;
 
-    o1b=getRangeStart();  
-    o1e=getRangeEnd();
+    o1b = getRangeStart();  
+    o1e = getRangeEnd();
 
-    o2b=AddressRange::constcast(obj)->getRangeStart();  
-    o2e=AddressRange::constcast(obj)->getRangeEnd();
+    o2b = AddressRange::constcast(obj)->getRangeStart();  
+    o2e = AddressRange::constcast(obj)->getRangeEnd();
 
     return (o1b==o2b && o1e==o2e);
 }
@@ -104,12 +113,12 @@ void AddressRange::fromXML(xmlNodePtr root) throw(FWException)
     
     const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("start_address")));
     assert(n!=NULL);
-    start_address = n;
+    start_address = InetAddr(n);
     FREEXMLBUFF(n);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("end_address")));
     assert(n!=NULL);
-    end_address = n;
+    end_address = InetAddr(n);
     FREEXMLBUFF(n);
 }
 

@@ -31,7 +31,7 @@
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWOptions.h"
-#include "fwbuilder/IPAddress.h"
+#include "fwbuilder/InetAddr.h"
 
 #include <fstream>
 #include <sstream>

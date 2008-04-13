@@ -31,7 +31,7 @@
 #include <fwbuilder/FWException.h>
 #include <fwbuilder/FWObjectReference.h>
 #include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/IPAddress.h>
+#include <fwbuilder/InetAddr.h>
 #include <fwbuilder/IPv4.h>
 #include <fwbuilder/dns.h>
 
@@ -62,11 +62,11 @@ void DNSName::loadFromSource() throw(FWException)
 {
     try
     {
-        list<IPAddress> v = DNS::getHostByName(getSourceName() );
-        for (list<IPAddress>::iterator i=v.begin(); i!=v.end(); ++i)
+        list<InetAddr> v = DNS::getHostByName(getSourceName() );
+        for (list<InetAddr>::iterator i=v.begin(); i!=v.end(); ++i)
         {
             IPv4 *a = IPv4::cast(getRoot()->create(IPv4::TYPENAME));
-            a->setAddress( i->toString() );
+            a->setAddress( *i );
             addRef(a);
         }
     } catch (const FWException &ex)

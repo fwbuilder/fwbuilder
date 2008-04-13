@@ -33,7 +33,7 @@
 #include "fwbuilder/InterfacePolicy.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/RuleSet.h"
-#include "fwbuilder/IPAddress.h"
+#include "fwbuilder/InetAddr.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/FWObjectDatabase.h"

@@ -175,14 +175,18 @@ xmlNodePtr Interface::toXML(xmlNodePtr parent) throw(FWException)
     xmlNodePtr me = FWObject::toXML(parent, false);
     FWObject *o;
 
-    for(FWObjectTypedChildIterator j1=findByType(IPv4::TYPENAME); j1!=j1.end(); ++j1)
+    for(FWObjectTypedChildIterator j1=findByType(IPv4::TYPENAME);
+        j1!=j1.end(); ++j1)
+    {
         if((o=(*j1))!=NULL )
             o->toXML(me);
-    
-    for(FWObjectTypedChildIterator j2=findByType(physAddress::TYPENAME); j2!=j2.end(); ++j2)
+    }
+    for(FWObjectTypedChildIterator j2=findByType(physAddress::TYPENAME);
+        j2!=j2.end(); ++j2)
+    {
         if((o=(*j2))!=NULL )
             o->toXML(me);
-    
+    }
     o=getFirstByType( InterfacePolicy::TYPENAME );
     if (o) o->toXML(me);
 
@@ -240,12 +244,13 @@ void Interface::setBroadcastBits(int _val) { bcast_bits=_val; }
 bool  Interface::validateChild(FWObject *o)
 {
     string otype=o->getTypeName();
-    return (otype==IPv4::TYPENAME || otype==physAddress::TYPENAME || otype==InterfacePolicy::TYPENAME );
+    return (otype==IPv4::TYPENAME || otype==physAddress::TYPENAME ||
+            otype==InterfacePolicy::TYPENAME );
 }
 
 bool Interface::isLoopback() const
 {
-    return (getAddress()==IPAddress("127.0.0.1"));
+    return (getAddress() == InetAddr::getLoopbackAddr());
 }
 
 physAddress*  Interface::getPhysicalAddress () const
@@ -270,42 +275,52 @@ void  Interface::setPhysicalAddress(const std::string &paddr)
     }
 }
 
-const string &Interface::getLabel() const
+const string& Interface::getLabel() const
 {
     return getStr("label");
 }
 
-void          Interface::setLabel(const string& n)
+void Interface::setLabel(const string& n)
 {
     setStr("label",n);
 }
     
-const IPAddress Interface::getIPAddress() const throw(FWException)
+/*
+ * if this interface has child IPv4 object, return its address. Otherwise
+ * return its own member 'address' (this is possible because Interface
+ * inherits Address which has this member variable). Note that constructor of
+ * Address initializes address as 0.0.0.0
+ * 
+ */
+const InetAddr& Interface::getAddress() const
 {
     IPv4 *ipv4=IPv4::cast( getFirstByType( IPv4::TYPENAME ) );
     if (ipv4!=NULL) return ipv4->getAddress();
-    else return IPAddress();
+    else
+        return InetAddrMask::getAddress();
 }
 
-IPNetwork Interface::getIPNetwork() const throw(FWException)
-{
-    IPv4 *ipv4=IPv4::cast( getFirstByType(IPv4::TYPENAME) );
-    if (ipv4!=NULL) return ipv4->getIPNetwork();
-    else  return IPNetwork( IPAddress() , Netmask() );
-}
-
-IPAddress Interface::getAddress() const
+const InetAddr* Interface::getAddressPtr() const
 {
     IPv4 *ipv4=IPv4::cast( getFirstByType( IPv4::TYPENAME ) );
-    if (ipv4!=NULL) return ipv4->getAddress();
-    else return IPAddress();
+    if (ipv4!=NULL) return ipv4->getAddressPtr();
+    else
+        return InetAddrMask::getAddressPtr();
 }
 
-Netmask   Interface::getNetmask() const
+/*
+ * if this interface has child IPv4 object, return its net mask. Otherwise
+ * return its own member 'netmask' (this is possible because Interface
+ * inherits Address which has this member variable). Note that constructor of
+ * Address initializes netmask as all ones
+ * 
+ */
+const InetNetmask& Interface::getNetmask() const
 {
     IPv4 *ipv4=IPv4::cast( getFirstByType( IPv4::TYPENAME ) );
     if (ipv4!=NULL) return ipv4->getNetmask();
-    else return Netmask();
+    else
+        return InetAddrMask::getNetmask();
 }
 
 IPv4*  Interface::addIPv4()
@@ -315,34 +330,20 @@ IPv4*  Interface::addIPv4()
     return ipv4;
 }
 
-void Interface::setAddress(const IPAddress &a)  
+void Interface::setAddress(const InetAddr &a)  
 { 
     IPv4 *ipv4=IPv4::cast( getFirstByType( IPv4::TYPENAME ) );
     if (ipv4==NULL)   ipv4=addIPv4();
     ipv4->setAddress(a);
 }
 
-void Interface::setNetmask(const Netmask   &nm) 
+void Interface::setNetmask(const InetNetmask &nm) 
 { 
     IPv4 *ipv4=IPv4::cast( getFirstByType( IPv4::TYPENAME ) );
     if (ipv4==NULL)   ipv4=addIPv4();
     ipv4->setNetmask(nm);
 }
 
-void Interface::setAddress(const std::string &a)  
-{
-    setAddress(IPAddress(a));
-}
-
-void Interface::setNetmask(const std::string &nm) 
-{
-    setNetmask(Netmask(nm));
-}
-
-guint32   Interface::dimension()  const
-{
-    return 1;
-}
 
 
 

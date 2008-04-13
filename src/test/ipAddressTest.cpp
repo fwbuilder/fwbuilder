@@ -115,9 +115,9 @@ void IPAddressTest(FWObjectDatabase *objdb)
          << " (" << size << " addresses) "
          << " to networks" << endl;
 
-    vector<IPNetwork> vn=libfwbuilder::convertAddressRange(*a1,*a2);
+    vector<InetAddrMask> vn=libfwbuilder::convertAddressRange(*a1,*a2);
 
-    for (vector<IPNetwork>::iterator i=vn.begin(); i!=vn.end(); i++)
+    for (vector<InetAddrMask>::iterator i=vn.begin(); i!=vn.end(); i++)
     {
         IPAddress bcast=i->getBroadcastAddress();
 

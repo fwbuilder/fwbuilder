@@ -42,7 +42,7 @@
 #include "fwbuilder/InterfacePolicy.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/RuleSet.h"
-#include "fwbuilder/IPAddress.h"
+#include "fwbuilder/InetAddr.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -664,11 +664,11 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
             continue;
 
         if ( ! addr->isAny() 
-             && addr->getAddress()==IPAddress("0.0.0.0")
-             && addr->getNetmask()==Netmask("0.0.0.0")
+             && addr->getAddress().isAny()
+             && addr->getNetmask().isAny()
         ) 
         {
-            a=addr;
+            a = addr;
             break;
         }
     }

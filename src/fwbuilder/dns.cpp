@@ -116,7 +116,7 @@ void* DNS_bulkBackResolve_Thread(void *args)
                 p->queue_mutex.unlock();
                 break;
             }
-            IPAddress j=p->ips.front();
+            InetAddr j=p->ips.front();
             p->ips.pop();
             p->queue_mutex.unlock();
         
@@ -214,7 +214,7 @@ string DNS::getErrorMessage(int rcode)
 #endif
 }
 
-HostEnt DNS::getHostByAddr(const IPAddress &addr, int retries_, int timeout_) throw(FWException)
+HostEnt DNS::getHostByAddr(const InetAddr &addr, int retries_, int timeout_) throw(FWException)
 {
 #if !defined(HAVE_GOODLIBRESOLV)
 #ifndef _WIN32
@@ -290,7 +290,7 @@ HostEnt DNS::getHostByAddr(const IPAddress &addr, int retries_, int timeout_) th
 }
 
 
-HostEnt DNS::getHostByAddr(const IPAddress &addr) throw(FWException)
+HostEnt DNS::getHostByAddr(const InetAddr &addr) throw(FWException)
 {
     struct hostent hostbuf;
     struct hostent *hp;
@@ -300,7 +300,8 @@ HostEnt DNS::getHostByAddr(const IPAddress &addr) throw(FWException)
     char *tmphstbuf = (char *)malloc(hstbuflen);
 
     struct in_addr naddr;
-    naddr.s_addr=addr.to32BitInt();
+    inet_aton(addr.toString().c_str(), &naddr);
+
 
 #ifdef HAVE_LWRES_GETIPNODE
     struct hostent *res;
@@ -360,7 +361,7 @@ HostEnt DNS::getHostByAddr(const IPAddress &addr) throw(FWException)
 #endif
         free(tmphstbuf);
 
-        throw FWException(string("Hostname of address: '")+IPAddress(&naddr).toString()+"' not found");
+        throw FWException(string("Hostname of address: '")+InetAddr(&naddr).toString()+"' not found");
     } 
     
     HostEnt v;
@@ -376,7 +377,7 @@ HostEnt DNS::getHostByAddr(const IPAddress &addr) throw(FWException)
     return v;
 }
 
-list<IPAddress> DNS::getHostByName(const string &name) throw(FWException)
+list<InetAddr> DNS::getHostByName(const string &name) throw(FWException)
 {
     struct hostent hostbuf;
     struct hostent *hp=NULL;
@@ -448,11 +449,11 @@ list<IPAddress> DNS::getHostByName(const string &name) throw(FWException)
 
 #endif
     
-    list<IPAddress> v;
+    list<InetAddr> v;
     try
     {
         for(char **p = hp->h_addr_list; *p != 0; p++) 
-            v.push_back(IPAddress((struct in_addr *)(*p)));
+            v.push_back(InetAddr((struct in_addr *)(*p)));
     } catch(const FWException &e)
     {
         if(tmphstbuf)
@@ -481,7 +482,7 @@ list<IPAddress> DNS::getHostByName(const string &name) throw(FWException)
     return v;
 }
 
-multimap<string, IPAddress> DNS::getNS(const string &domain, Logger *logger,SyncFlag *stop_program, int retries_, int timeout_) throw(FWException)
+multimap<string, InetAddr> DNS::getNS(const string &domain, Logger *logger,SyncFlag *stop_program, int retries_, int timeout_) throw(FWException)
 {
     std::ostringstream str;
 
@@ -516,7 +517,7 @@ multimap<string, IPAddress> DNS::getNS(const string &domain, Logger *logger,Sync
         throw FWException("Error returned while quering domain NS records");
 
     // Rsp. buffer
-    multimap<string, IPAddress> v;
+    multimap<string, InetAddr> v;
 
     ns_msg handle;
     
@@ -552,10 +553,10 @@ multimap<string, IPAddress> DNS::getNS(const string &domain, Logger *logger,Sync
             if(dn_expand(answer.get(), answer.get() + len, ns_rr_rdata(rr), dn, sizeof(dn))<0)
                 throw FWException("A record parse error in parserr");
             CHECK_STOP_AND_THROW_EXCEPTION
-            list<IPAddress> a=DNS::getHostByName(dn);
+            list<InetAddr> a=DNS::getHostByName(dn);
             CHECK_STOP_AND_THROW_EXCEPTION
-            for(list<IPAddress>::iterator i=a.begin();i!=a.end();++i)
-                v.insert(pair<string, IPAddress>(string(dn), (*i)));
+            for(list<InetAddr>::iterator i=a.begin();i!=a.end();++i)
+                v.insert(pair<string, InetAddr>(string(dn), (*i)));
         } 
     }
     
@@ -571,7 +572,7 @@ multimap<string, IPAddress> DNS::getNS(const string &domain, Logger *logger,Sync
  * TCP connection to transfer zone established and attempted 
  * only once.
  */
-map<string, set<IPAddress> > DNS::findA(const string &domain, Logger *logger,SyncFlag *stop_program, int retries_, int timeout_) throw(FWException)
+map<string, set<InetAddr> > DNS::findA(const string &domain, Logger *logger,SyncFlag *stop_program, int retries_, int timeout_) throw(FWException)
 {
     std::ostringstream str;
 #if !defined(HAVE_GOODLIBRESOLV)
@@ -581,7 +582,7 @@ map<string, set<IPAddress> > DNS::findA(const string &domain, Logger *logger,Syn
 
     *logger << "Looking for authoritative servers" << '\n';
     
-    multimap<string, IPAddress> ns=DNS::getNS(domain, logger,stop_program);
+    multimap<string, InetAddr> ns=DNS::getNS(domain, logger,stop_program);
     if(!ns.size())
         throw FWException("No NS records found");
 
@@ -589,7 +590,7 @@ map<string, set<IPAddress> > DNS::findA(const string &domain, Logger *logger,Syn
     timeout.check();
 
     FWException *last_err=NULL; // to avoid compiler warning
-    for(multimap<string, IPAddress>::iterator nsi=ns.begin(); nsi!=ns.end(); ++nsi)
+    for(multimap<string, InetAddr>::iterator nsi=ns.begin(); nsi!=ns.end(); ++nsi)
     {
         try
         {
@@ -620,7 +621,7 @@ map<string, set<IPAddress> > DNS::findA(const string &domain, Logger *logger,Syn
  * TCP connection to transfer zone established and attempted 
  * only once.
  */
-map<string, set<IPAddress> > DNS::findA(const string &domain, const IPAddress &ns, Logger *logger,SyncFlag *stop_program, int retries_, int timeout_) throw(FWException)
+map<string, set<InetAddr> > DNS::findA(const string &domain, const InetAddr &ns, Logger *logger,SyncFlag *stop_program, int retries_, int timeout_) throw(FWException)
 {
     std::ostringstream str;
 #if !defined(HAVE_GOODLIBRESOLV)
@@ -681,7 +682,7 @@ map<string, set<IPAddress> > DNS::findA(const string &domain, const IPAddress &n
     u_char tmp[NS_INT16SZ];
     ns_put16(msglen, tmp);
     
-    map<string, set<IPAddress> > v;
+    map<string, set<InetAddr> > v;
             
     try
     {
@@ -796,9 +797,9 @@ map<string, set<IPAddress> > DNS::findA(const string &domain, const IPAddress &n
                         throw FWException("Invalid address length in A record");
                     
                     if(v.find(ns_rr_name(rr))==v.end())
-                        v[ns_rr_name(rr)]=set<IPAddress>();
+                        v[ns_rr_name(rr)]=set<InetAddr>();
                     
-                    v[ns_rr_name(rr)].insert(IPAddress((const struct in_addr *)ns_rr_rdata(rr)));
+                    v[ns_rr_name(rr)].insert(InetAddr((const struct in_addr *)ns_rr_rdata(rr)));
                     
                 } else if(ns_rr_type(rr)==ns_t_soa)
                 {
@@ -851,7 +852,7 @@ DNS_findA_query::DNS_findA_query()
 {
 }
 
-DNS_findA_query::DNS_findA_query(const string &domain_, const IPAddress &ns_, int retries_, int timeout_)
+DNS_findA_query::DNS_findA_query(const string &domain_, const InetAddr &ns_, int retries_, int timeout_)
 {
         domain  = domain_  ;
         retries = retries_ ;
@@ -859,7 +860,7 @@ DNS_findA_query::DNS_findA_query(const string &domain_, const IPAddress &ns_, in
         ns      = ns_      ;
 }
 
-void DNS_findA_query::init(const string &domain_, const IPAddress &ns_, int retries_, int timeout_)
+void DNS_findA_query::init(const string &domain_, const InetAddr &ns_, int retries_, int timeout_)
 {
         domain  = domain_  ;
         retries = retries_ ;
@@ -877,12 +878,12 @@ void DNS_findA_query::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWEx
     }
 }
 
-DNS_bulkBackResolve_query::DNS_bulkBackResolve_query(set<IPAddress> _ips, 
+DNS_bulkBackResolve_query::DNS_bulkBackResolve_query(set<InetAddr> _ips, 
                                                      unsigned int _nthreads,
 						     int _retries,
                                                      int _timeout)
 {
-    for(set<IPAddress>::iterator j = _ips.begin(); j!=_ips.end(); ++j)
+    for(set<InetAddr>::iterator j = _ips.begin(); j!=_ips.end(); ++j)
         ips.push(*j);
 
     retries  = _retries  ;

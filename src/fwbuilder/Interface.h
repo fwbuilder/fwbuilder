@@ -146,30 +146,25 @@ class Interface : public Address
      */
     bool isLoopback() const;
 
-    const IPAddress  getIPAddress       () const throw(FWException);
-
     IPv4*  addIPv4();
 
     physAddress*  getPhysicalAddress () const;
     void  setPhysicalAddress(const std::string &pa);
 
 
-    IPNetwork getIPNetwork() const throw(FWException);
-    
     virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
     virtual FWObject& duplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
 
     const std::string &getLabel() const;
     void          setLabel(const std::string& n);
     
-    virtual IPAddress getAddress() const;
-    virtual Netmask   getNetmask() const;
-    virtual guint32   dimension()  const;
+    virtual const InetAddr& getAddress() const;
+    virtual const InetAddr* getAddressPtr() const;
+    virtual const InetNetmask& getNetmask() const;
+    virtual unsigned int dimension()  const { return 1; }
 
-    virtual void setAddress(const IPAddress &a);
-    virtual void setNetmask(const Netmask   &nm);
-    virtual void setAddress(const std::string &a);
-    virtual void setNetmask(const std::string &nm);
+    virtual void setAddress(const InetAddr &a);
+    virtual void setNetmask(const InetNetmask &nm);
 
 };
 

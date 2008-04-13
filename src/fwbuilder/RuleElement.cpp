@@ -483,53 +483,51 @@ bool RuleElementRGtw::checkSingleIPAdress(FWObject *o) {
 }
 
 // the IP address of the gateway has to be in a local network of the firewall
-bool RuleElementRGtw::checkReachableIPAdress(FWObject *o) {
-
+bool RuleElementRGtw::checkReachableIPAdress(FWObject *o)
+{
     FWObject* o_tmp = this;
     while( Firewall::cast(o_tmp) == NULL) o_tmp = o_tmp->getParent();
     // let's walk over all interfaces of this firewall
     FWObjectTypedChildIterator j=o_tmp->findByType(Interface::TYPENAME);
 
 
-    if( Host::cast(o) != NULL) {
-
+    if( Host::cast(o) != NULL)
+    {
         Host *host=Host::cast(o);
-        IPAddress ip_host = host->getAddress();
-
-        for ( ; j!=j.end(); ++j ) {
+        InetAddr ip_host = host->getAddress();
+        for ( ; j!=j.end(); ++j )
+        {
             Interface *i_firewall=Interface::cast(*j);
             for(FWObjectTypedChildIterator fw_ips=i_firewall->findByType(IPv4::TYPENAME); fw_ips!=fw_ips.end(); ++fw_ips) {
                 IPv4 *ipv4_obj_firewall = IPv4::cast(*fw_ips);
 
-                Netmask n_firewall = ipv4_obj_firewall->getNetmask();
-                IPAddress ip_firewall = ipv4_obj_firewall->getAddress();
-
-                if ((n_firewall.to32BitInt() & ip_firewall.to32BitInt()) == (n_firewall.to32BitInt() & ip_host.to32BitInt())) {
+                InetAddrMask fw_net(ipv4_obj_firewall->getAddress(),
+                                 ipv4_obj_firewall->getNetmask());
+                if (fw_net.belongs(ip_host))
                     return true;
-                }
             }
         }
         return false;
 
-    } else if( Interface::cast(o) != NULL) {
-
+    } else if( Interface::cast(o) != NULL)
+    {
         Interface *gw_interface=Interface::cast(o);
-        IPAddress ip_gateway = gw_interface->getAddress();
+        InetAddr ip_gateway = gw_interface->getAddress();
 
         // walk over all interfaces of this firewall
-        for ( ; j!=j.end(); ++j ) {
+        for ( ; j!=j.end(); ++j )
+        {
             Interface *if_firewall=Interface::cast(*j);
             FWObjectTypedChildIterator addresses=if_firewall->findByType(IPv4::TYPENAME);
 
             // check all IPv4 addresses of this firewall interface
             for ( ; addresses!=addresses.end(); ++addresses ) {
                 IPv4 *ipv4_obj_firewall = IPv4::cast(*addresses);
-                Netmask n_firewall = ipv4_obj_firewall->getNetmask();
-                IPAddress ip_firewall = ipv4_obj_firewall->getAddress();
-
-                if ((n_firewall.to32BitInt() & ip_firewall.to32BitInt()) == (n_firewall.to32BitInt() & ip_gateway.to32BitInt())) {
+                InetAddrMask fw_net(ipv4_obj_firewall->getAddress(),
+                                 ipv4_obj_firewall->getNetmask());
+                if (fw_net.belongs(ip_gateway))
                     return true;
-                }
+
             }
         }
         return false;
@@ -537,7 +535,7 @@ bool RuleElementRGtw::checkReachableIPAdress(FWObject *o) {
     } else if( IPv4::cast(o) != NULL) {
 
         IPv4 *ipv4=IPv4::cast(o);
-        IPAddress ip_ipv4 = ipv4->getAddress();
+        InetAddr ip_ipv4 = ipv4->getAddress();
 
         for ( ; j!=j.end(); ++j ) {
             Interface *if_firewall=Interface::cast(*j);
@@ -547,12 +545,10 @@ bool RuleElementRGtw::checkReachableIPAdress(FWObject *o) {
             for ( ; addresses!=addresses.end(); ++addresses ) {
                 IPv4 *ipv4_obj_firewall = IPv4::cast(*addresses);
                 
-                Netmask n_firewall = ipv4_obj_firewall->getNetmask();
-                IPAddress ip_firewall = ipv4_obj_firewall->getAddress();
-                
-                if ((n_firewall.to32BitInt() & ip_firewall.to32BitInt()) == (n_firewall.to32BitInt() & ip_ipv4.to32BitInt())) {
+                InetAddrMask fw_net(ipv4_obj_firewall->getAddress(),
+                                 ipv4_obj_firewall->getNetmask());
+                if (fw_net.belongs(ip_ipv4))
                     return true;
-                } 
             }
         } return false;
 

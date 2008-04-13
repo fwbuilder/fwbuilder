@@ -38,7 +38,8 @@
 #include <fwbuilder/Interface.h>
 #include <fwbuilder/BackgroundOp.h>
 #include <fwbuilder/FWException.h>
-#include <fwbuilder/IPAddress.h>
+#include <fwbuilder/InetAddr.h>
+#include <fwbuilder/IPRoute.h>
 #include <fwbuilder/dns.h>
 
 #ifdef UCD_SNMP
@@ -139,7 +140,7 @@ class SNMPVariable_Bits : public SNMPVariable
 };
 
 /**
- * Unfortunately SNMP does not distinguish Netmask and IPAddress
+ * Unfortunately SNMP does not distinguish Netmask and InetAddr
  * types. On our framework they are different, and thus
  * we have to do late type conversion.
  * (lord)
@@ -152,8 +153,8 @@ class SNMPVariable_IPaddr  : public SNMPVariable
     
     virtual std::string toString();
 
-    virtual IPAddress    getIPAddressValue() throw(FWException);
-    virtual Netmask      getNetmaskValue  () throw(FWException);
+    virtual InetAddr    getInetAddrValue() throw(FWException);
+    virtual InetNetmask getNetmaskValue  () throw(FWException);
 
     protected:
     
@@ -306,7 +307,7 @@ class SNMPQuery : public BackgroundOp
     std::string  hostname, community;
     std::string  descr, contact, location, sysname;
     std::map<int, Interface> interfaces;
-    std::map<IPAddress, std::string> arptable;
+    std::map<InetAddr, std::string> arptable;
     std::vector<IPRoute> routes;
     int  retries;
     long timeout;
@@ -334,7 +335,7 @@ class SNMPQuery : public BackgroundOp
     void fetchRoutingTable (Logger *,SyncFlag *stop_program, SNMPConnection *connection=NULL) throw(FWException);
     
     const std::map<int, Interface>    &getInterfaces() ;
-    const std::map<IPAddress, std::string> &getArtpTable()  ;
+    const std::map<InetAddr, std::string> &getArtpTable()  ;
     const std::vector<IPRoute>        &getRoutes()     ;
 
     const std::string& getSysname  ();
@@ -432,14 +433,14 @@ class SNMPCrawler : public BackgroundOp
 {
     private:
 
-    const std::vector<IPNetwork> *include    ;
-    static const IPAddress ZERO_IP      ;
-    static const IPNetwork LOOPBACK_NET ;
-    static const Netmask   PTP_NETMASK  ;
+    const std::vector<InetAddrMask> *include    ;
+    static const InetAddr ZERO_IP      ;
+    static const InetAddrMask LOOPBACK_NET ;
+    static const InetNetmask PTP_NETMASK  ;
 
-    std::map<IPAddress, std::string>       queue        ;
-    std::map<IPAddress, CrawlerFind>  found        ;
-    std::set<IPNetwork>               networks     ;
+    std::map<InetAddr, std::string>       queue        ;
+    std::map<InetAddr, CrawlerFind>  found        ;
+    std::set<InetAddrMask>               networks     ;
     std::string                       community    ;
     int                          snmp_retries ;
     long                         snmp_timeout ;
@@ -455,20 +456,20 @@ class SNMPCrawler : public BackgroundOp
 
     protected:
 
-    bool included    (const IPAddress &) const ;
-    bool alreadyseen (const IPAddress &) const ;
-    bool special     (const IPNetwork &) const ;
-    bool special     (const IPAddress &) const ;
-    bool point2point (const IPNetwork &, const Interface *) const ;
+    bool included    (const InetAddr &) const ;
+    bool alreadyseen (const InetAddr &) const ;
+    bool special     (const InetAddrMask &) const ;
+    bool special     (const InetAddr &) const ;
+    bool point2point (const InetAddrMask &, const Interface *) const ;
     bool point2point (const Interface *) const ;
-    bool isvirtual   (const IPAddress &, const std::string &) const ;
+    bool isvirtual   (const InetAddr &, const std::string &) const ;
 
     std::set<Interface> guessInterface(const IPRoute &r, const std::map<int, Interface> &intf) const;
 
     public:
 
     SNMPCrawler();
-    SNMPCrawler(const IPAddress &seed, 
+    SNMPCrawler(const InetAddr &seed, 
                 const std::string &_community,
                 bool _recursive=true,
                 bool _skip_virtual=true,
@@ -479,10 +480,10 @@ class SNMPCrawler : public BackgroundOp
                 long _timeout=SNMP_DEFAULT_TIMEOUT,
 		int  _dns_retries=RES_DFLRETRY,
 		int  _dns_timeout=RES_TIMEOUT,
-                const std::vector<IPNetwork> *include=NULL);
+                const std::vector<InetAddrMask> *include=NULL);
     virtual ~SNMPCrawler();
 
-    void init(const IPAddress &seed, 
+    void init(const InetAddr &seed, 
 	      const std::string &_community,
 	      bool _recursive=true,
               bool _skip_virtual=true,
@@ -493,10 +494,10 @@ class SNMPCrawler : public BackgroundOp
 	      long _snmp_timeout=SNMP_DEFAULT_TIMEOUT,
 	      int  _dns_retries=RES_DFLRETRY,
 	      int  _dns_timeout=RES_TIMEOUT,
-	      const std::vector<IPNetwork> *include=NULL);
+	      const std::vector<InetAddrMask> *include=NULL);
 
-    std::map<IPAddress, CrawlerFind>  getAllIPs();
-    std::set<IPNetwork> getNetworks();
+    std::map<InetAddr, CrawlerFind>  getAllIPs();
+    std::set<InetAddrMask> getNetworks();
         
     virtual void run_impl(Logger *logger,SyncFlag *stop_program) throw(FWException);
     void remove_virtual(Logger *logger,SyncFlag *stop_program) throw(FWException);

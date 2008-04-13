@@ -28,7 +28,8 @@
 #define __GEN_ADDRESS_HH_FLAG__
 
 #include <fwbuilder/FWObject.h>
-#include <fwbuilder/IPAddress.h>
+#include <fwbuilder/InetAddr.h>
+#include <fwbuilder/InetAddrMask.h>
 
 namespace libfwbuilder
 {
@@ -42,26 +43,22 @@ namespace libfwbuilder
  * TODO: we might need to derive ObjectGroup and AddressRange from Address,
  * but this requires lot more testing
  */
-class Address : public FWObject 
+class Address : public FWObject , public InetAddrMask
 {
-    private:
-    
     public:
 
     DECLARE_FWOBJECT_SUBTYPE(Address);
 
-    Address() {}
+    Address();
     Address(const FWObject *root,bool prepopulate);
+    Address(const Address&);
+    Address(const std::string& addr,const std::string& mask);
+    Address(const std::string &s) throw(FWException);
 
-    virtual IPAddress getAddress() const;
-    virtual Netmask   getNetmask() const;
-    virtual guint32   dimension()  const;
-
-    virtual void setAddress(const IPAddress &a);
-    virtual void setNetmask(const Netmask   &nm);
-    virtual void setAddress(const std::string &a);
-    virtual void setNetmask(const std::string &nm);
-
+    virtual FWObject& shallowDuplicate(const FWObject *obj,
+                                       bool preserve_id = true)
+        throw(FWException);
+ 
     virtual FWReference* createRef();
 
     bool isAny() const;

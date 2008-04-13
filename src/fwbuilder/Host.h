@@ -63,16 +63,16 @@ class Host : public Address
     void addInterface(Interface *i);
     void removeInterface(Interface *i);
 
-    IPAddress getManagementAddress()  throw(FWException);
+    InetAddr getManagementAddress()  throw(FWException);
 
-    virtual IPAddress getAddress() const;
-    virtual Netmask   getNetmask() const;
-    virtual guint32   dimension()  const;
+    virtual const InetAddr& getAddress() const;
+    virtual const InetAddr* getAddressPtr() const;
 
-    virtual void setAddress(const IPAddress &a);
-    virtual void setNetmask(const Netmask   &nm);
-    virtual void setAddress(const std::string &a);
-    virtual void setNetmask(const std::string &nm);
+    virtual const InetNetmask& getNetmask() const;
+    virtual unsigned int dimension()  const { return 1; }
+
+    virtual void setAddress(const InetAddr &a);
+    virtual void setNetmask(const InetNetmask &nm);
 
     /**
      *  This method returns reference to the object representing

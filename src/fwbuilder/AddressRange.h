@@ -28,7 +28,7 @@
 #define __ADDRESSRANGE_HH_FLAG__
 
 #include <fwbuilder/Address.h>
-#include <fwbuilder/IPAddress.h>
+#include <fwbuilder/InetAddr.h>
 
 namespace libfwbuilder
 {
@@ -37,8 +37,8 @@ class AddressRange : public Address
 {
     private:
     
-    IPAddress start_address;
-    IPAddress end_address;
+    InetAddr start_address;
+    InetAddr end_address;
     
     public:
     
@@ -46,26 +46,25 @@ class AddressRange : public Address
     AddressRange(const FWObject *root,bool prepopulate);
     AddressRange(AddressRange &);
 
-    const IPAddress &getRangeStart() const { return start_address; }
-    const IPAddress &getRangeEnd() const   { return end_address;   }
+    const InetAddr &getRangeStart() const { return start_address; }
+    const InetAddr &getRangeEnd() const   { return end_address;   }
 
-    void setRangeStart(const IPAddress &o) { start_address=o; }
-    void setRangeEnd(const IPAddress &o)   { end_address=o;   }
+    void setRangeStart(const InetAddr &o) { start_address = o; }
+    void setRangeEnd(const InetAddr &o)   { end_address = o;   }
 
     /**
      * virtual methods inherited from Address
      */
-    virtual IPAddress getAddress() const;
-    virtual Netmask   getNetmask() const;
-    virtual guint32   dimension()  const;
+    virtual const InetAddr& getAddress() const;
+    virtual const InetAddr* getAddressPtr() const;
+    virtual unsigned int dimension()  const;
 
-    virtual void setAddress(const IPAddress &a);
-    virtual void setNetmask(const Netmask   &nm);
-    virtual void setAddress(const std::string &a);
-    virtual void setNetmask(const std::string &nm);
+    virtual void setAddress(const InetAddr &a);
+    virtual void setNetmask(const InetNetmask &nm);
 
     
-    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id) throw(FWException);
+    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id)
+        throw(FWException);
     virtual bool cmp(const FWObject *obj) throw(FWException);
    
     virtual void       fromXML (xmlNodePtr parent) throw(FWException);
