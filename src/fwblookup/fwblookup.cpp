@@ -316,9 +316,12 @@ int main(int argc, char * const *argv)
             {
                 if (Host::isA(obj) || Firewall::isA(obj))
                 {
-                    IPAddress ma=Host::cast(obj)->getManagementAddress();
-                    if (ma!=IPAddress("0.0.0.0")) cout << ma.toString() << endl;
-                    else {
+                    InetAddr ma = Host::cast(obj)->getManagementAddress();
+                    if (ma != InetAddr::getAny())
+                    {
+                        cout << ma.toString() << endl;
+                    } else
+                    {
                         SNPRINTF(errstr,sizeof(errstr),
                             _("Object %s (ID='%s') does not have management interface"),
                              obj->getName().c_str(),

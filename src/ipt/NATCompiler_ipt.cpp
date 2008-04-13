@@ -221,21 +221,21 @@ bool NATCompiler_ipt::ConvertLoadBalancingRules::processNext()
     {
         RuleElementTDst  *tdst=rule->getTDst();  assert(tdst);
 
-        list<IPAddress> al;
+        list<const InetAddr*> al;
         for(list<FWObject*>::iterator i=tdst->begin(); i!=tdst->end(); i++) 
         {
             FWObject *o= *i;
             FWObject *obj = NULL;
             if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-            Address *a=Address::cast(obj);
+            Address *a = Address::cast(obj);
 
-            al.push_back( a->getAddress() );
+            al.push_back( a->getAddressPtr() );
         }
 
         al.sort();
 
-        IPAddress a1=al.front();
-        list<IPAddress>::iterator j=al.begin();
+        const InetAddr* a1 = al.front();
+        list<const InetAddr*>::iterator j=al.begin();
         j++;
 
         for ( ; j!=al.end(); j++)
@@ -244,21 +244,23 @@ bool NATCompiler_ipt::ConvertLoadBalancingRules::processNext()
  * big endian/little endian conversion for me 
  */
             AddressRange tar;
-            tar.setRangeStart( a1 );
-            tar.setRangeEnd( *j );
+            tar.setRangeStart( *a1 );
+            tar.setRangeEnd( *(*j) );
             if ( tar.dimension() != 2 )
             {
                 compiler->abort(
                     string( _("Non-contiguous address range in Translated Destination in load balancing NAT rule ") )+
                     rule->getLabel());
             }
-            a1= *j;
+            a1 = *j;
         }
 
-        AddressRange *ar= AddressRange::cast(compiler->dbcopy->create(AddressRange::TYPENAME) );
-        ar->setRangeStart( al.front() );
-        ar->setRangeEnd( al.back() );
-        ar->setName(string("%")+al.front().toString()+"-"+al.back().toString()+"%" );
+        AddressRange *ar = AddressRange::cast(
+            compiler->dbcopy->create(AddressRange::TYPENAME) );
+        ar->setRangeStart( *(al.front()) );
+        ar->setRangeEnd( *(al.back()) );
+        ar->setName(string("%")+al.front()->toString()
+                    +"-"+al.back()->toString()+"%" );
         compiler->cacheObj(ar); // to keep cache consistent
         compiler->dbcopy->add(ar,false);
         tdst->clearChildren();
@@ -2023,7 +2025,6 @@ bool NATCompiler_ipt::processMultiAddressObjectsInRE::processNext()
         dynamic_cast<OSConfigurator_linux24*>(compiler->osconfigurator);
 
     RuleElement *re=RuleElement::cast( rule->getFirstByType(re_type) );
-    bool neg = re->getNeg();
 
     if (re->size()==1) 
     {

@@ -90,7 +90,7 @@ int NATCompiler_pf::prolog()
 /* pseudo-host with ip address 127.0.0.1  We'll use it for redirection NAT rules */
     //FWObject    *grp;
     loopback_address=IPv4::cast(dbcopy->create(IPv4::TYPENAME) );
-    loopback_address->setAddress("127.0.0.1");
+    loopback_address->setAddress(InetAddr::getLoopbackAddr());
     loopback_address->setName("__loopback_address__");
     loopback_address->setId("__loopback_address_id__");
     dbcopy->add(loopback_address,false);

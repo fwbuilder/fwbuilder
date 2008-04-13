@@ -766,7 +766,8 @@ bool instDialog::doInstallPage(Firewall* f)
             .arg(cnf.fwobj->getName().c_str()).toLatin1().constData() );
         return false;
     }
-    if ((cnf.maddr == "" || cnf.maddr == "0.0.0.0"))
+    if (cnf.maddr == "" ||
+        cnf.maddr == QString(InetAddr::getAny().toString().c_str()))
     {
         addToLog(
             QObject::tr("Management interface does not have IP address, can not communicate with the firewall.") );

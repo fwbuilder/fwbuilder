@@ -453,37 +453,39 @@ string NATCompiler_ipt::PrintRule::_printAddr(Address  *o,bool print_mask,bool p
         assert(atrt==NULL);
     }
 
-    IPAddress addr=o->getAddress();
-    Netmask   mask=o->getNetmask();
-    Interface *iface;
-    if ( (iface=Interface::cast(o))!=NULL ) 
+    if (print_range && AddressRange::cast(o)!=NULL)
     {
-        if (iface->isDyn() && iface->getBool("use_var_address"))
-        {
-            ostr << "$" << ipt_comp->getInterfaceVarName(iface) << " ";
-            return ostr.str();
-        }
-//        if (Interface::cast(o)->isDyn()) return;
-	mask=Netmask("255.255.255.255");
-    }
-
-    if (IPv4::cast(o)!=NULL) 
-    {
-	mask=Netmask("255.255.255.255");
-    }
-
-    if (print_range && AddressRange::cast(o)!=NULL) {
-	IPAddress a1=AddressRange::cast(o)->getRangeStart();
-	IPAddress a2=AddressRange::cast(o)->getRangeEnd();
+	InetAddr a1 = AddressRange::cast(o)->getRangeStart();
+	InetAddr a2 = AddressRange::cast(o)->getRangeEnd();
 	ostr << a1.toString() << "-" << a2.toString();
-    } else {
-	if (addr.toString()=="0.0.0.0" && mask.toString()=="0.0.0.0") {
+    } else
+    {
+        const InetAddr& addr=o->getAddress();
+        const InetNetmask&  mask=o->getNetmask();
+
+	if (addr == InetAddr::getAny() && mask == InetAddr::getAny())
+        {
 	    ostr << "0/0";
-	} else {	
+	} else
+        {	
+            Interface *iface;
+            if ( (iface=Interface::cast(o))!=NULL ) 
+            {
+                if (iface->isDyn() && iface->getBool("use_var_address"))
+                {
+                    ostr << "$" << ipt_comp->getInterfaceVarName(iface) << " ";
+                    return ostr.str();
+                }
+                ostr << addr.toString();
+                return ostr.str();
+            }
+
 	    ostr << addr.toString();
-	    if (print_mask && mask.toString()!="255.255.255.255") {
-		ostr << "/" << mask.getLength();
-	    }
+
+            if (print_mask && IPv4::cast(o)==NULL && !mask.isHostMask())
+            {
+                ostr << "/" << mask.getLength();
+            }
 	}
     }
     return ostr.str();
@@ -571,7 +573,7 @@ bool NATCompiler_ipt::PrintRule::processNext()
  * fool-proof: this is last resort check for situation when user created IPv4 object
  * for the interface but left it with empty address ( 0.0.0.0 ). 
  */
-        if ( ! physaddress.empty() && osrc->getAddress()==IPAddress("0.0.0.0"))
+        if ( ! physaddress.empty() && osrc->getAddress()==InetAddr())
         {
             ;
         } else

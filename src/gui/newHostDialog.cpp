@@ -248,14 +248,14 @@ void newHostDialog::getInterfacesViaSNMP()
 
     getInterfacesBusy = true;
 
-    IPAddress addr;
+    InetAddr addr;
     QString name=m_dialog->obj_name->text().toLatin1().constData();
     try
     {
         QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
         QString a = getAddrByName(name);
         QApplication::restoreOverrideCursor();
-        addr = a.toAscii().constData();
+        addr = InetAddr(a.toAscii().constData());
     } catch (FWException &ex)
     {
         QMessageBox::warning(
@@ -489,18 +489,21 @@ void newHostDialog::addInterface()
     QString addr;
     QString netm;
 
-    if (!m_dialog->iface_dyn->isChecked() && !m_dialog->iface_unnum->isChecked())
+    if (!m_dialog->iface_dyn->isChecked() &&
+        !m_dialog->iface_unnum->isChecked())
     {
         addr = m_dialog->iface_addr->text();
         netm = m_dialog->iface_netmask->text();
 
-        if (addr.isEmpty()) addr="0.0.0.0";
-        if (netm.isEmpty()) netm="0.0.0.0";
+        if (addr.isEmpty()) 
+            addr = QString(InetAddr::getAny().toString().c_str());
+        if (netm.isEmpty())
+            netm = QString(InetAddr::getAny().toString().c_str());
 
         try
         {
-            IPAddress(addr.toLatin1().constData());
-            Netmask(netm.toLatin1().constData());
+            InetAddr(addr.toLatin1().constData());
+            InetNetmask(netm.toLatin1().constData());
         }
         catch (FWException &ex)
         {
@@ -628,8 +631,8 @@ void newHostDialog::finishClicked()
                 IPv4 *oa = IPv4::cast(
                     mw->createObject(oi, IPv4::TYPENAME,addrname)
                 );
-                oa->setAddress( addr.toLatin1().constData()    );
-                oa->setNetmask( netmask.toLatin1().constData() );
+                oa->setAddress( InetAddr(addr.toLatin1().constData()) );
+                oa->setNetmask( InetNetmask(netmask.toLatin1().constData()) );
             }
 
             mw->updateObjName(oi,"","",false);

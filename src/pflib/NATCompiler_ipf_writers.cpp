@@ -73,8 +73,8 @@ void NATCompiler_ipf::PrintRule::_printAddr_L(Address  *o, bool print_netmask)
 {
     FWOptions* options=compiler->fw->getOptionsObject();
 
-    IPAddress addr=o->getAddress();
-    Netmask   mask=o->getNetmask();
+    InetAddr addr=o->getAddress();
+    InetNetmask   mask=o->getNetmask();
 
     if (Interface::cast(o)!=NULL && Interface::cast(o)->isDyn()) 
     {
@@ -87,12 +87,13 @@ void NATCompiler_ipf::PrintRule::_printAddr_L(Address  *o, bool print_netmask)
     }
 
     if (Interface::cast(o)!=NULL && ! Interface::cast(o)->isDyn()) 
-	mask=Netmask("255.255.255.255");
+	mask = InetNetmask(InetAddr::getAllOnes());
 
     if (IPv4::cast(o)!=NULL)
-	mask=Netmask("255.255.255.255");
+	mask = InetNetmask(InetAddr::getAllOnes());
 
-    if (addr.toString()=="0.0.0.0" && mask.toString()=="0.0.0.0") {
+    if (addr.isAny() && mask.isAny())
+    {
         compiler->output << "any ";
     } else {
 
@@ -105,18 +106,19 @@ void NATCompiler_ipf::PrintRule::_printAddr_L(Address  *o, bool print_netmask)
 
 void NATCompiler_ipf::PrintRule::_printAddr_R(Address  *o, bool print_netmask)
 {
-    IPAddress addr=o->getAddress();
-    Netmask   mask=o->getNetmask();
+    InetAddr addr = o->getAddress();
+    InetNetmask mask = o->getNetmask();
 
-    if (Interface::cast(o)!=NULL)
-	mask=Netmask("255.255.255.255");
+    if (Interface::cast(o) != NULL)
+	mask = InetNetmask(InetAddr::getAllOnes());
 
     if (IPv4::cast(o)!=NULL)
-	mask=Netmask("255.255.255.255");
+	mask = InetNetmask(InetAddr::getAllOnes());
 
-    if (addr.toString()=="0.0.0.0" && print_netmask && mask.toString()=="255.255.255.255")
+    if (addr.isAny() && print_netmask &&  mask.isHostMask())
+    {
         compiler->output  << "0/32 ";
-    else
+    } else
     {
         compiler->output << addr.toString();
         if (print_netmask)
@@ -137,7 +139,7 @@ void NATCompiler_ipf::PrintRule::_printAddr_R_LB(RuleElementTDst *tdst)
 
         Address *a=Address::cast(obj);
 
-        IPAddress addr=a->getAddress();
+        InetAddr addr=a->getAddress();
         
         if (!first) compiler->output << ",";
         compiler->output << addr.toString();

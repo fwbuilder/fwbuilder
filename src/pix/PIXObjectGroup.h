@@ -50,7 +50,7 @@ class PIXGroup : public libfwbuilder::Group {
     virtual ~PIXGroup() {};
     DECLARE_FWOBJECT_SUBTYPE(PIXGroup);
 
-    virtual bool  validateChild(FWObject *o) { return true; }
+    virtual bool  validateChild(FWObject*) { return true; }
 
     void setPIXGroupType(pix_group_type _gt) { gt=_gt; }
     pix_group_type getPIXGroupType() { return gt; }

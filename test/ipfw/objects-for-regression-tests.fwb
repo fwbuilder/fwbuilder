@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="2.1.15" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="4" id="root">
   <Library color="#FFFFFF" comment="" id="id40D07E7A" name="LAX" ro="False">
     <ObjectGroup id="id40D07E7B" name="Objects">
       <ObjectGroup id="id40D07E7B_og_ats_1" name="Address Tables"/>

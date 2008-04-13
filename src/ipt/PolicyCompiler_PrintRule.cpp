@@ -906,40 +906,18 @@ string PolicyCompiler_ipt::PrintRule::_printAddr(Address  *o)
         return ostr.str();
     }
 
-    IPAddress addr;
-    Netmask   mask;
-    try {
-        addr=o->getAddress();
+    const InetAddr& addr = o->getAddress();
+    const InetNetmask& mask = o->getNetmask();
 
-        if (Interface::cast(o)!=NULL || IPv4::cast(o)!=NULL) mask=Netmask("255.255.255.255");
-        else            mask=o->getNetmask();
-    }
-    catch (FWException ex)  
-    {
-        FWObject *obj=o;
-/*
- * check if this is object of class Address. since we want to
- * distinguish between Host, Interface and Address, and both Host and
- * Interface are inherited from Address, we can't use cast. Use isA
- * instead
- */
-        while (obj!=NULL && 
-               !Host::isA(obj) && 
-               !Firewall::isA(obj)  && 
-               !Network::isA(obj))  obj=obj->getParent();
-
-        compiler->error(_("Problem with address or netmask in the object or one of its interfaces: '")+obj->getName()+"'");
-        throw;
-    }
-
-
-    if (addr.toString()=="0.0.0.0" && mask.toString()=="0.0.0.0") 
+    if (addr.isAny() && mask.isAny())
     {
         ostr << "0/0 ";
     } else 
     {
         ostr << addr.toString();
-        if (mask.toString()!="255.255.255.255") 
+
+        if (Interface::cast(o)==NULL && IPv4::cast(o)==NULL &&
+            !mask.isHostMask())
         {
             ostr << "/" << mask.getLength();
         }
@@ -1080,7 +1058,6 @@ PolicyCompiler_ipt::PrintRule::PrintRule(const std::string &name) : PolicyRulePr
 
 bool  PolicyCompiler_ipt::PrintRule::processNext()
 {
-    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule         *rule    =getNext(); 
     if (rule==NULL) return false;
 
@@ -1147,7 +1124,7 @@ string PolicyCompiler_ipt::PrintRule::PolicyRuleToString(PolicyRule *rule)
  * fool-proof: this is last resort check for situation when user created IPv4 object
  * for the interface but left it with empty address ( 0.0.0.0 ). 
  */
-        if ( ! physaddress.empty() && src->getAddress()==IPAddress("0.0.0.0"))
+        if ( ! physaddress.empty() && src->getAddress()==InetAddr())
         {
             ;
         } else
@@ -1202,7 +1179,7 @@ string PolicyCompiler_ipt::PrintRule::_declareTable()
 
 string PolicyCompiler_ipt::PrintRule::_flushAndSetDefaultPolicy()
 {
-    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+//  PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     FWOptions *fwopt = compiler->getCachedFwOpt();
     ostringstream res;
 

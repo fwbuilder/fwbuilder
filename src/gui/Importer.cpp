@@ -246,8 +246,8 @@ void Importer::addInterfaceAddress(const std::string &a,
                                       IPv4::TYPENAME,
                                       aname);
         current_interface->setUnnumbered(false);
-        IPv4::cast(nobj)->setAddress( a );
-        IPv4::cast(nobj)->setNetmask( nm );
+        IPv4::cast(nobj)->setAddress( InetAddr(a) );
+        IPv4::cast(nobj)->setNetmask( InetNetmask(nm) );
 
         *logger << "Interface address: " << a << "/" << nm << "\n";
     }
@@ -395,17 +395,21 @@ void Importer::pushRule()
 
 FWObject* Importer::makeSrcObj()
 {
-    if ( (src_a=="" && src_nm=="") || (src_a=="0.0.0.0" && src_nm=="0.0.0.0"))
+    if ( (src_a=="" && src_nm=="") || 
+         (src_a==InetAddr::getAny().toString() &&
+          src_nm==InetAddr::getAny().toString()))
         return NULL;  // this is 'any'
-    if (src_nm=="") src_nm="255.255.255.255";
+    if (src_nm=="") src_nm=InetAddr::getAllOnes().toString();
     return createAddress(src_a, src_nm);
 }
 
 FWObject* Importer::makeDstObj()
 {
-    if ( (dst_a=="" && dst_nm=="") || (dst_a=="0.0.0.0" && dst_nm=="0.0.0.0"))
+    if ( (dst_a=="" && dst_nm=="") || 
+         (dst_a==InetAddr::getAny().toString() &&
+          dst_nm==InetAddr::getAny().toString()))
         return NULL;  // this is 'any'
-    if (dst_nm=="") dst_nm="255.255.255.255";
+    if (dst_nm=="") dst_nm=InetAddr::getAllOnes().toString();
     return createAddress(dst_a, dst_nm);
 }
 
@@ -816,13 +820,13 @@ FWObject* Importer::createAddress(const std::string &addr,
     std::string sig = std::string("addr-") + addr + "/" + netmask;
     if (all_objects.count(sig)!=0) return all_objects[sig];
 
-    if ( netmask == "255.255.255.255" )
+    if ( netmask == InetAddr::getAllOnes().toString() )
     {
         Address *a;
         std::string name = std::string("h-") + addr;
         a = Address::cast(createObject(IPv4::TYPENAME, name));
-        a->setAddress( addr );
-        a->setNetmask( "255.255.255.255" );
+        a->setAddress(InetAddr(addr));
+        a->setNetmask(InetNetmask(InetAddr::getAllOnes()));
         a->setComment(comment);
         all_objects[sig] = a;
         *logger << "Address object: " << name << "\n";
@@ -834,7 +838,7 @@ FWObject* Importer::createAddress(const std::string &addr,
         net = Network::cast(createObject(Network::TYPENAME, name));
         try
         {
-            net->setAddress( addr );
+            net->setAddress( InetAddr(addr) );
         } catch (FWException &ex)
         {
             markCurrentRuleBad(
@@ -843,7 +847,7 @@ FWObject* Importer::createAddress(const std::string &addr,
 
         try
         {
-            net->setNetmask( netmask );
+            net->setNetmask( InetNetmask(netmask) );
         } catch (FWException &ex)
         {
             if (netmask.find('.')!=std::string::npos)
@@ -862,7 +866,7 @@ FWObject* Importer::createAddress(const std::string &addr,
                 try
                 {
                     str >> nm_len;
-                    net->setNetmask( Netmask(nm_len) );
+                    net->setNetmask( InetNetmask(nm_len) );
                 } catch (std::exception& e)
                 {
                     // could not convert netmask as simple integer
@@ -894,7 +898,7 @@ FWObject* Importer::createAddressRange(const std::string &addr1,
 
     try
     {
-        ar->setRangeStart( IPAddress(addr1) );
+        ar->setRangeStart( InetAddr(addr1) );
     } catch (FWException &ex)
     {
         markCurrentRuleBad(
@@ -903,7 +907,7 @@ FWObject* Importer::createAddressRange(const std::string &addr1,
 
     try
     {
-        ar->setRangeEnd( IPAddress(addr2) );
+        ar->setRangeEnd( InetAddr(addr2) );
     } catch (FWException &ex)
     {
         markCurrentRuleBad(

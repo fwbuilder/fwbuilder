@@ -64,7 +64,8 @@
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Network.h"
-#include "fwbuilder/IPAddress.h"
+#include "fwbuilder/InetAddr.h"
+#include "fwbuilder/InetAddrMask.h"
 #include "fwbuilder/Firewall.h"
 
 #include "fwbuilder/dns.h"
@@ -620,7 +621,7 @@ void DiscoveryDruid::updatePrg()
 
 void DiscoveryDruid::getNameServers()
 {
-    multimap<string,libfwbuilder::IPAddress> ns_records;
+    multimap<string,libfwbuilder::InetAddr> ns_records;
 
     string domain_name=m_dialog->domainname->text().toLatin1().constData();
     DNS_getNS_query *dns=new DNS_getNS_query(domain_name);
@@ -642,7 +643,7 @@ void DiscoveryDruid::getNameServers()
         m_dialog->dnscustom->setChecked(true);
         return ;
     }
-    multimap<string,IPAddress>::iterator i;
+    multimap<string,InetAddr>::iterator i;
     m_dialog->nameserverlist->clear();
     NameServers.clear();
 
@@ -653,7 +654,7 @@ void DiscoveryDruid::getNameServers()
         QString qs = s.c_str();
         m_dialog->nameserverlist->addItem(qs);
 
-        IPAddress *na=new IPAddress( (*i).second );
+        InetAddr *na=new InetAddr( (*i).second );
         NameServers[qs] = *na;
     }
 }
@@ -835,7 +836,7 @@ void DiscoveryDruid::startConfigImport()
     }
 }
 
-IPAddress DiscoveryDruid::getNS()
+InetAddr DiscoveryDruid::getNS()
 {
     string ns;
     if (m_dialog->dnscustom->isChecked())
@@ -844,17 +845,17 @@ IPAddress DiscoveryDruid::getNS()
 
         try
         {
-            return IPAddress(ns);
+            return InetAddr(ns);
         } catch (FWException &ex)
         {
         /* perhaps not address but host name */
-            list<IPAddress> addr;
+            list<InetAddr> addr;
             try
             {
                 addr=DNS::getHostByName(ns);
             } catch (FWException &ex)
             {
-                return IPAddress();
+                return InetAddr();
             }
 
             return addr.front();
@@ -866,7 +867,7 @@ IPAddress DiscoveryDruid::getNS()
 
 void DiscoveryDruid::startDNSScan()
 {
-    IPAddress ns=getNS();
+    InetAddr ns=getNS(); 
     string domain_name=m_dialog->domainname->text().toLatin1().constData();
 
     DNS_findA_query *q=new DNS_findA_query();
@@ -893,14 +894,14 @@ void DiscoveryDruid::startDNSScan()
     }
 }
 
-IPAddress DiscoveryDruid::getSeedHostAddress()
+InetAddr DiscoveryDruid::getSeedHostAddress()
 {
-    libfwbuilder::IPAddress   seed_host_addr;
+    libfwbuilder::InetAddr   seed_host_addr;
     if (!m_dialog->seedhostname->text().isEmpty())
     {
         try
         {
-            seed_host_addr=IPAddress(m_dialog->seedhostname->text().toLatin1().constData());
+            seed_host_addr=InetAddr(m_dialog->seedhostname->text().toLatin1().constData());
             return seed_host_addr;
         } catch(const FWException &ex)
         {
@@ -909,9 +910,9 @@ IPAddress DiscoveryDruid::getSeedHostAddress()
         try
         {
             QString a = getAddrByName( m_dialog->seedhostname->text() );
-            return IPAddress( a.toLatin1().constData() );
+            return InetAddr( a.toLatin1().constData() );
 #if 0
-            list<IPAddress> v=DNS::getHostByName( m_dialog->seedhostname->text().toLatin1().constData() );
+            list<InetAddr> v=DNS::getHostByName( m_dialog->seedhostname->text().toLatin1().constData() );
             seed_host_addr = v.front();
             return seed_host_addr;
 #endif
@@ -932,10 +933,10 @@ void DiscoveryDruid::startSNMPScan()
     {
         try
         {
-            IPNetwork in(
-                 IPAddress(m_dialog->snmpinaddr->text().toLatin1().constData()),
-                 Netmask(m_dialog->snmpinmask->text().toLatin1().constData())
-                 );
+            InetAddrMask in(
+                InetAddr(m_dialog->snmpinaddr->text().toLatin1().constData()),
+                InetNetmask(m_dialog->snmpinmask->text().toLatin1().constData()) 
+            );
             include_networks.push_back(in);
         }
         catch (const FWException &ex)
@@ -1013,12 +1014,12 @@ void DiscoveryDruid::changedNameServer()
             return;
         }
 
-        if(isIPAddress(s))
+        if(isInetAddr(s))
         {
             timer->stop();
             m_dialog->DNSprogress_2->hide();
 
-            QString rs=testIPAddress(s);
+            QString rs=testInetAddr(s);
             if (rs.isEmpty())
             {
                 m_dialog->nameserver_error->setText(" ");
@@ -1070,13 +1071,13 @@ void DiscoveryDruid::typedCustomNS()
     }
 }
 
-bool DiscoveryDruid::isIPAddress(const QString s)
+bool DiscoveryDruid::isInetAddr(const QString s)
 {
     QRegExp r=QRegExp("^(\\d|\\.)+$",Qt::CaseInsensitive); //non wildcard
     return r.exactMatch(s);
 }
 
-QString DiscoveryDruid::testIPAddress(const QString s)
+QString DiscoveryDruid::testInetAddr(const QString s)
 {
     QString res;
     QRegExp r=QRegExp("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$",Qt::CaseInsensitive); //non wildcard
@@ -1084,7 +1085,7 @@ QString DiscoveryDruid::testIPAddress(const QString s)
     {
         try
         {
-            IPAddress(s.toLatin1().constData());
+            InetAddr(s.toLatin1().constData());
         } catch(const FWException &ex)
         {
             res=ex.toString().c_str();
@@ -1388,9 +1389,9 @@ void DiscoveryDruid::loadDataFromDNS()
     DNS_findA_query *q=(DNS_findA_query*)bop;
     Objects.clear();
 
-    map<string,set<IPAddress> > t = q->getResult();
+    map<string,set<InetAddr> > t = q->getResult();
 
-    for(map<string,set<IPAddress> >::iterator j = t.begin(); j!=t.end(); ++j)
+    for(map<string,set<InetAddr> >::iterator j = t.begin(); j!=t.end(); ++j)
     {
         ObjectDescriptor od;
         od.addr     = *((*j).second.begin());
@@ -1476,8 +1477,8 @@ void DiscoveryDruid::loadDataFromCrawler()
     Objects.clear();
     Networks.clear();
 
-    set<IPNetwork>::iterator m;
-    set<IPNetwork> s = q->getNetworks();
+    set<InetAddrMask>::iterator m;
+    set<InetAddrMask> s = q->getNetworks();
 
     if (fwbdebug)
         qDebug(QString("got %1 networks").arg(s.size()).toAscii().constData());
@@ -1486,16 +1487,16 @@ void DiscoveryDruid::loadDataFromCrawler()
     {
         ObjectDescriptor od;
 
-        od.sysname=(string)*m;
-        od.addr=m->getAddress();
-        od.netmask=m->getNetmask();
-        od.type=Network::TYPENAME;
-        od.isSelected=false;
+        od.sysname = m->toString();
+        od.addr = m->getAddress();
+        od.netmask = m->getNetmask();
+        od.type = Network::TYPENAME;
+        od.isSelected = false;
 
         Networks[od.sysname.c_str()]= od ;
     }
 
-    map<IPAddress, CrawlerFind>  t = q->getAllIPs();
+    map<InetAddr, CrawlerFind>  t = q->getAllIPs();
 
     if (fwbdebug)
         qDebug(QString("got %1 addresses").arg(t.size()).toAscii().constData());
@@ -1504,7 +1505,7 @@ void DiscoveryDruid::loadDataFromCrawler()
     m_dialog->discoveryprogress->setValue(0);
 
     int cntr = 0;
-    map<IPAddress, CrawlerFind>::iterator j;
+    map<InetAddr, CrawlerFind>::iterator j;
     for(j = t.begin(); j!=t.end(); ++j,++cntr)
     {
         m_dialog->discoveryprogress->setValue( cntr );
@@ -1823,7 +1824,7 @@ void DiscoveryDruid::changedSeedHost()
     }
     else
     {
-        if(isIPAddress(HostName))
+        if(isInetAddr(HostName))
         { // seems to be an IP Address
             m_dialog->DNSprogress->hide();
             timer->stop();
@@ -1832,7 +1833,7 @@ void DiscoveryDruid::changedSeedHost()
             {
                 try
                 {
-                    IPAddress(HostName.toLatin1().constData());
+                    InetAddr(HostName.toLatin1().constData());
 
                     QPalette palette = m_dialog->seedhosterror_message->palette();
                     palette.setColor(m_dialog->seedhosterror_message->foregroundRole(), Qt::darkGreen);
@@ -1894,9 +1895,9 @@ void DiscoveryDruid::changedInclNet()
         try
         {
 
-            IPAddress a(m_dialog->snmpinaddr->text().toLatin1().constData());
-            Netmask n(m_dialog->snmpinmask->text().toLatin1().constData());
-            IPNetwork(a,n);
+            InetAddr a(m_dialog->snmpinaddr->text().toLatin1().constData());
+            InetNetmask n(m_dialog->snmpinmask->text().toLatin1().constData());
+            InetAddrMask(a,n);
 
             m_dialog->confineerror_message->setText(" ");
             isSNMPInclNetOK=true;
@@ -2079,8 +2080,8 @@ void DiscoveryDruid::createRealObjects()
             );
             assert(net!=NULL);
             net->setName(name);
-            net->setAddress(IPAddress(a));
-            net->setNetmask(Netmask(IPAddress(a)));
+            net->setAddress(InetAddr(a));
+            net->setNetmask(InetNetmask(InetAddr(a)));
             mw->moveObject(m_dialog->libs->currentText(), net);
         }
     }
@@ -2114,8 +2115,8 @@ void DiscoveryDruid::createRealObjects()
                     );
 
 
-                    ipv4->setAddress(a);
-                    ipv4->setNetmask("255.255.255.255");
+                    ipv4->setAddress(InetAddr(a));
+                    ipv4->setNetmask(InetNetmask());
                 } else
                 {
                     map<int,Interface>::const_iterator i;
@@ -2162,8 +2163,8 @@ void DiscoveryDruid::createRealObjects()
                 );
                 assert(net!=NULL);
                 net->setName(name);
-                net->setAddress(IPAddress(a));
-                net->setNetmask(Netmask(IPAddress(a)));
+                net->setAddress(InetAddr(a));
+                net->setNetmask(InetNetmask(InetAddr(a)));
                 mw->moveObject(m_dialog->libs->currentText(), net);
             }else if (type==IPv4::TYPENAME)
             {
@@ -2172,8 +2173,8 @@ void DiscoveryDruid::createRealObjects()
                 );
                 assert(obj!=NULL);
                 obj->setName(name);
-                obj->setAddress(IPAddress(a));
-                obj->setNetmask("255.255.255.255");
+                obj->setAddress(InetAddr(a));
+                obj->setNetmask(InetNetmask(InetAddr::getAllOnes()));
                 mw->moveObject(m_dialog->libs->currentText(), obj);
             }
         }
@@ -2343,7 +2344,7 @@ void HostsFileImport::run()
     *Log << "Discovery method:"
          << "Read file in hosts format. \n";
 
-    map<IPAddress, vector<string> > reverse_hosts;
+    map<InetAddr, vector<string> > reverse_hosts;
     HostsFile *hf;
 /*
  *    read hosts file here
@@ -2377,7 +2378,7 @@ void HostsFileImport::run()
     */
         hosts.clear();
 
-        map<IPAddress,vector<string> >::iterator i;
+        map<InetAddr,vector<string> >::iterator i;
         int count=reverse_hosts.size();
         int t=0;
         for (i=reverse_hosts.begin(); i!=reverse_hosts.end(); ++i)

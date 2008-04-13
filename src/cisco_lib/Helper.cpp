@@ -28,7 +28,7 @@
 
 #include <fwbuilder/Interface.h>
 #include <fwbuilder/ObjectGroup.h>
-#include <fwbuilder/IPAddress.h>
+#include <fwbuilder/InetAddr.h>
 #include <fwbuilder/FWObjectDatabase.h>
 #include <fwbuilder/RuleElement.h>
 #include <fwbuilder/Rule.h>
@@ -40,21 +40,6 @@
 using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
-
-bool Helper::belongsTo(Address *obj, const IPAddress &a)
-{
-    const IPNetwork n1( obj->getAddress() , 
-       (Interface::cast(obj))?Netmask("255.255.255.255"):obj->getNetmask() );
-
-    return n1.belongs(a);
-}
-
-
-bool Helper::belongsTo(Address *obj, Address *addr)
-{
-    return belongsTo(obj,addr->getAddress());
-}
-
 
 static unsigned long calculateDimension(FWObject* obj)
 {
@@ -118,14 +103,13 @@ string  Helper::findInterfaceByAddress(libfwbuilder::Address *obj)
     return findInterfaceByAddress(obj->getAddress());
 }
 
-string  Helper::findInterfaceByAddress(const libfwbuilder::IPAddress &addr)
+string  Helper::findInterfaceByAddress(const libfwbuilder::InetAddr &addr)
 {
     Firewall *fw=compiler->fw;
     list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
     for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) {
 	Interface *iface=Interface::cast(*i);
-	IPNetwork n( iface->getAddress() , iface->getNetmask() );
-	if ( n.belongs( addr ) ) return iface->getId();
+	if ( iface->belongs( addr ) ) return iface->getId();
     }
     return "";
 }
@@ -135,7 +119,7 @@ string  Helper::findInterfaceByNetzone(Address *obj)
     return findInterfaceByNetzone(obj->getAddress());
 }
 
-string  Helper::findInterfaceByNetzone(const IPAddress &addr) throw(string)
+string  Helper::findInterfaceByNetzone(const InetAddr &addr) throw(string)
 {
     Firewall *fw=compiler->fw;
     map<string,FWObject*> zones;
@@ -150,7 +134,7 @@ string  Helper::findInterfaceByNetzone(const IPAddress &addr) throw(string)
                  j!=netzone->end(); ++j)
             {
                 assert(Address::cast(*j)!=NULL);
-                if ( belongsTo( Address::cast(*j) , addr ) )
+                if (Address::cast(*j)->belongs(addr))
                     zones[(*i)->getId()]=netzone;
             }
         }
@@ -249,7 +233,7 @@ list<string>  Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
 
 string triplet::hash()
 {
-    return string(src->getAddress()) + "." +
-        string(dst->getAddress()) + "." +
+    return src->getAddress().toString() + "." +
+        dst->getAddress().toString() + "." +
         srv->getId();
 }

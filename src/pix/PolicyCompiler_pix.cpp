@@ -123,14 +123,14 @@ int PolicyCompiler_pix::prolog()
             {
                 if (netmask.find(".")!=string::npos)
                 {
-                    Netmask nm(netmask);
-                    nm.to32BitInt(); // to avoid warning abt unused var
+                    InetNetmask nm(netmask);
+                    nm.isAny(); // to avoid warning abt unused var
                 } else
                 {
                     int nm_length;
                     istringstream  str(netmask);
                     str >> nm_length;
-                    Netmask nm(nm_length);
+                    InetNetmask nm(nm_length);
                     netmask = nm.toString();
                 }
             } catch(FWException &ex)
@@ -141,8 +141,7 @@ int PolicyCompiler_pix::prolog()
 
         try
         {
-            IPAddress a(addr);
-            a.to32BitInt();
+            InetAddr(addr);
         } catch(FWException &ex)
         {
             abort("Invalid address for management subnet: '"+addr+"'");

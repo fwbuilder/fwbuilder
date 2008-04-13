@@ -340,8 +340,8 @@ int PolicyCompiler_ipt::prolog()
     bcast255=Address::cast(dbcopy->create(IPv4::TYPENAME) );
     bcast255->setId(BCAST_255_OBJ_ID);
     bcast255->setName("Broadcast_addr");
-    bcast255->setAddress("255.255.255.255");
-    bcast255->setNetmask("255.255.255.255");
+    bcast255->setAddress(InetAddr::getAllOnes());
+    bcast255->setNetmask(InetNetmask(InetAddr::getAllOnes()));
     dbcopy->add(bcast255);
     cacheObj(bcast255);
 
@@ -1707,23 +1707,25 @@ bool PolicyCompiler_ipt::splitIfIfaceAndDirectionBoth::processNext()
     return true;
 }
 
-bool PolicyCompiler_ipt::bridgingFw::checkForMatchingBroadcastAndMulticast(Address *addr)
+bool PolicyCompiler_ipt::bridgingFw::checkForMatchingBroadcastAndMulticast(
+    Address *addr)
 {
 
-    IPAddress obj1_addr=addr->getAddress();
-    if (obj1_addr!=IPAddress("0.0.0.0") && 
+    const InetAddr& obj1_addr = addr->getAddress();
+    if (!obj1_addr.isAny() &&
         (obj1_addr.isBroadcast() || obj1_addr.isMulticast())
     ) return true;
 
-    FWObjectTypedChildIterator j=compiler->fw->findByType(Interface::TYPENAME);
-    for ( ; j!=j.end(); ++j ) 
+    FWObjectTypedChildIterator j= compiler->fw->findByType(Interface::TYPENAME);
+    for ( ; j!=j.end(); ++j )
     {
-        Interface *iface=Interface::cast(*j);
+        Interface *iface = Interface::cast(*j);
         if ( iface->isRegular() )
         {
-            FWObjectTypedChildIterator k=iface->findByType(IPv4::TYPENAME);
-            for ( ; k!=k.end(); ++k ) {
-                IPv4 *ipv4=IPv4::cast(*k);
+            FWObjectTypedChildIterator k = iface->findByType(IPv4::TYPENAME);
+            for ( ; k!=k.end(); ++k )
+            {
+                IPv4 *ipv4 = IPv4::cast(*k);
 
 /*
  * bug #780345: if interface has netmask 255.255.255.255, its own
@@ -1736,7 +1738,8 @@ bool PolicyCompiler_ipt::bridgingFw::checkForMatchingBroadcastAndMulticast(Addre
  * interface, and the netmask is 255.255.255.255, then we get positive
  * match because this routine interprets this address as a broadcast.
  */
-                if (ipv4->getNetmask()==Netmask("255.255.255.255")) continue;
+                if (ipv4->getNetmask().isHostMask())
+                    continue;
 /*
  * commented out to fix bug #637694 - "bridge enbaled / management"
  * Rule where firewall was in destination, and bridging option was on,
@@ -1745,9 +1748,8 @@ bool PolicyCompiler_ipt::bridgingFw::checkForMatchingBroadcastAndMulticast(Addre
    if ( ipv4->getAddress()==obj1_addr ) return true;
 
  */
-                IPNetwork n( ipv4->getAddress() , ipv4->getNetmask() );
-                if (n.getAddress()==obj1_addr)  return true; 
-                if (n.getBroadcastAddress()==obj1_addr)  return true;
+                if (ipv4->getNetworkAddress() == obj1_addr)  return true; 
+                if (ipv4->getBroadcastAddress() == obj1_addr)  return true;
            }
         }
     }
@@ -3467,7 +3469,6 @@ bool PolicyCompiler_ipt::processMultiAddressObjectsInRE::processNext()
         dynamic_cast<OSConfigurator_linux24*>(compiler->osconfigurator);
 
     RuleElement *re=RuleElement::cast( rule->getFirstByType(re_type) );
-    bool neg = re->getNeg();
 
     if (re->size()==1) 
     {

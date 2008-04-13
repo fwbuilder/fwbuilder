@@ -290,20 +290,21 @@ void PolicyCompiler_ipfw::PrintRule::_printAddr(Address  *o,bool neg)
         assert(atrt==NULL);
     }
 
-    IPAddress addr=o->getAddress();
-    Netmask   mask=o->getNetmask();
+    InetAddr addr=o->getAddress();
+    InetNetmask   mask=o->getNetmask();
 
-    if (Interface::cast(o)!=NULL)  mask=Netmask("255.255.255.255");
-    if (IPv4::cast(o)!=NULL)       mask=Netmask("255.255.255.255");
+    if (Interface::cast(o)!=NULL)  mask = InetNetmask(InetAddr::getAllOnes());
+    if (IPv4::cast(o)!=NULL)       mask = InetNetmask(InetAddr::getAllOnes());
 
-    if (addr.toString()=="0.0.0.0" && mask.toString()=="0.0.0.0") 
+    if (addr.isAny() && mask.isAny()) 
     {
 	compiler->output << "any ";
     } else 
     {
 	if (neg) compiler->output << "not ";
 	compiler->output << addr.toString();
-	if (mask.toString()!="255.255.255.255") {
+	if (!mask.isHostMask())
+        {
 	    compiler->output << "/" << mask.getLength();
 	}
 	compiler->output << " ";

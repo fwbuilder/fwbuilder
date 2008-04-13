@@ -361,12 +361,15 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 for (list<FWObject*>::iterator j=la.begin(); j!=la.end(); ++j) 
                 {
                     IPv4 *ipv4 = IPv4::cast(*j);
-                    if ( ipv4->getAddress().toString()=="0.0.0.0")
+
+                    if ( ipv4->getAddress().isAny())
                     {
                         char errstr[256];
                         sprintf(errstr,
-                      _("Interface %s has IP address \"0.0.0.0\".\n"),
-                                iface->getName().c_str() );
+                                "Interface %s (id=%s) has IP address %s.\n",
+                                iface->getName().c_str(),
+                                iface->getId().c_str(),
+                                ipv4->getAddress().toString().c_str());
                         throw FWException(errstr);
                     }
                 }

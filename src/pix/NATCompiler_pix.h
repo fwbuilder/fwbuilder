@@ -373,7 +373,7 @@ namespace fwcompiler {
         {
             protected:
             bool checkOverlapping(const libfwbuilder::Address   &a1,
-                                  const libfwbuilder::IPAddress &a2);
+                                  const libfwbuilder::InetAddr &a2);
             std::string printGlobalPoolAddress(const libfwbuilder::Address &pool);
             public:
             DetectOverlap(const std::string &n) : NATRuleProcessor(n){}
@@ -419,8 +419,8 @@ namespace fwcompiler {
             protected:
             typedef struct {
                 std::string             iface1, iface2;
-                libfwbuilder::IPAddress addr;
-                libfwbuilder::Netmask   mask;
+                libfwbuilder::InetAddr addr;
+                libfwbuilder::InetNetmask   mask;
             } nonat_static_parameters;
             std::deque<nonat_static_parameters> all_nonat_statics;
             public:

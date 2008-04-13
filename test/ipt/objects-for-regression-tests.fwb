@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="2.1.15" lastModified="1196093903" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="4" lastModified="1206322269" id="root">
   <Library color="#d2ffd0" comment="User defined objects" id="syslib001" name="User">
     <ObjectGroup id="stdid01_1" name="Objects">
       <ObjectGroup id="stdid01_1_og_ats_1" name="Address Tables">
-        <AddressTable comment="" filename="/home/vadim/Projects/fwb2.1/fwb2/fwbuilder2/test/ipt/addr-table-1.tbl" id="id4385C1081434" name="addrtbl 1" run_time="False"/>
+        <AddressTable comment="" filename="addr-table-1.tbl" id="id4385C1081434" name="addrtbl 1" run_time="False"/>
         <AddressTable comment="" filename="addr-table-1.tbl" id="id4389EE9018346" name="addr-table-1" run_time="False"/>
         <AddressTable comment="this is run-time table" filename="block-hosts.tbl" id="id4389EE9118346" name="block these" run_time="True"/>
         <AddressTable comment="the name contains character that is special to shell" filename="/home/vadim/tmp/bug-1544488/addr-table-1.tbl" id="id44F7056328576" name="atbl.1" run_time="True"/>
-        <AddressTable comment="" filename="/home/vadim/Projects/fwb2.1/fwb2/fwbuilder2/test/ipt/emtpy-table.tbl" id="id459673BE7794" name="empty table" run_time="False"/>
+        <AddressTable comment="" filename="emtpy-table.tbl" id="id459673BE7794" name="empty table" run_time="False"/>
       </ObjectGroup>
       <ObjectGroup id="stdid01_1_og_dnsn_1" name="DNS Names">
         <DNSName comment="" dnsrec="www.cnn.com" id="id43869E8C18346" name="cnn (ct)" run_time="False"/>
@@ -20,11 +20,11 @@
         <DNSName comment="" dnsrec="www.heise.de" id="id44EC181D8791" name="heise" run_time="True"/>
       </ObjectGroup>
       <ObjectGroup id="stdid16_1" name="Addresses">
-        <IPv4 address="192.168.1.0" comment="" id="id417B3641" name="net_address" netmask="255.255.255.255"/>
-        <IPv4 address="61.150.47.112" comment="" id="id4388C37D674" name="sapmhost1" netmask="255.255.255.255"/>
-        <IPv4 address="0.0.0.0" comment="" id="id44C0695713221" name="this_host" netmask="255.255.255.255"/>
-        <IPv4 address="1.1.1.1" comment="" id="id44F7082928576" name="some address" netmask="255.255.255.255"/>
-        <IPv4 address="224.0.0.18" comment="" id="id45D61A0923626" name="VRRP" netmask="255.255.255.255"/>
+        <IPv4 comment="" id="id417B3641" name="net_address" address="192.168.1.0" netmask="255.255.255.255"/>
+        <IPv4 comment="" id="id4388C37D674" name="sapmhost1" address="61.150.47.112" netmask="255.255.255.255"/>
+        <IPv4 comment="" id="id44C0695713221" name="this_host" address="0.0.0.0" netmask="255.255.255.255"/>
+        <IPv4 comment="" id="id44F7082928576" name="some address" address="1.1.1.1" netmask="255.255.255.255"/>
+        <IPv4 comment="" id="id45D61A0923626" name="VRRP" address="224.0.0.18" netmask="255.255.255.255"/>
       </ObjectGroup>
       <ObjectGroup id="stdid04_1" name="Groups">
         <ObjectGroup id="id3B4572AF" name="group1">
@@ -103,11 +103,15 @@
           <ObjectRef ref="id3AFB6706"/>
           <ObjectRef ref="id3AFB68D2"/>
         </ObjectGroup>
+        <ObjectGroup comment="a group of run-time dns objects" id="id47CBF5D129252" name="DNS objects">
+          <ObjectRef ref="id43869E8D18346"/>
+          <ObjectRef ref="id4387287A18346"/>
+        </ObjectGroup>
       </ObjectGroup>
       <ObjectGroup id="stdid02_1" name="Hosts">
         <Host comment="multicast address which is _not_ local link multicast&#10;" id="id3A84EECE" name="DHCP-Servers (multicast)">
           <Interface bridgeport="False" dyn="False" id="id3D84EED2" name="interface1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="224.0.1.141" id="id3D84EEDA" name="DHCP-Servers (multicast)" netmask="255.255.255.0"/>
+            <IPv4 id="id3D84EEDA" name="DHCP-Servers (multicast)" address="224.0.1.141" netmask="255.255.255.0"/>
           </Interface>
           <Management address="224.0.1.141">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -124,7 +128,7 @@
         </Host>
         <Host comment="" id="id3CFBE20C" name="broadcast">
           <Interface bridgeport="False" dyn="False" id="id3CFBE20C-i" name="interface-1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="255.255.255.255" comment="" id="id3CFBE20C-i-1-addr" name="broadcast:address" netmask="255.255.255.255"/>
+            <IPv4 comment="" id="id3CFBE20C-i-1-addr" name="broadcast:address" address="255.255.255.255" netmask="255.255.255.255"/>
           </Interface>
           <Management address="255.255.255.255">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -141,7 +145,7 @@
         </Host>
         <Host comment="" id="id3D151943" name="dmzhost1">
           <Interface bridgeport="False" dyn="False" id="id3D151943-i" name="interface-1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="192.168.2.10" id="id3D151943-i-1-addr" name="address" netmask="255.255.255.255"/>
+            <IPv4 id="id3D151943-i-1-addr" name="address" address="192.168.2.10" netmask="255.255.255.255"/>
           </Interface>
           <Management address="192.168.2.10">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -158,7 +162,7 @@
         </Host>
         <Host comment="" id="id3D151947" name="dmzhost2">
           <Interface bridgeport="False" dyn="False" id="id3D151947-i" name="interface-1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="192.168.2.11" id="id3D151947-i-1-addr" name="address" netmask="255.255.255.255"/>
+            <IPv4 id="id3D151947-i-1-addr" name="address" address="192.168.2.11" netmask="255.255.255.255"/>
           </Interface>
           <Management address="192.168.2.11">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -175,7 +179,7 @@
         </Host>
         <Host comment="this host is used in firewall14" id="id3DE7223E" name="h-fw14-eth1-1">
           <Interface bridgeport="False" dyn="False" id="id3DE72244" name="interface1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="22.22.23.22" comment="" id="id3DE72245" name="h-fw14-eth1-1" netmask="255.255.255.255"/>
+            <IPv4 comment="" id="id3DE72245" name="h-fw14-eth1-1" address="22.22.23.22" netmask="255.255.255.255"/>
           </Interface>
           <Management address="22.22.23.160">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -192,7 +196,7 @@
         </Host>
         <Host comment="this host is used in firewall14" id="id3DE72236" name="h-fw14-eth1-2">
           <Interface bridgeport="False" dyn="False" id="id3DE7223A" name="interface1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="22.22.23.160" comment="" id="id3DE7223B" name="h-fw14-eth1-2" netmask="255.255.255.255"/>
+            <IPv4 comment="" id="id3DE7223B" name="h-fw14-eth1-2" address="22.22.23.160" netmask="255.255.255.255"/>
           </Interface>
           <Management address="22.22.23.160">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -209,7 +213,7 @@
         </Host>
         <Host comment="this host is used in firewall14" id="id3DE722F1" name="h-fw14-eth1-N">
           <Interface bridgeport="False" dyn="False" id="id3DE722F7" name="interface1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="22.22.23.40" comment="" id="id3DE722F8" name="h-fw14-eth1-1" netmask="255.255.255.255"/>
+            <IPv4 comment="" id="id3DE722F8" name="h-fw14-eth1-1" address="22.22.23.40" netmask="255.255.255.255"/>
           </Interface>
           <Management address="22.22.23.22">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -226,7 +230,7 @@
         </Host>
         <Host comment="this host has the same IP address as firewall1 and firewall2" id="id3AFC0F70" name="host-fw2">
           <Interface bridgeport="False" dyn="False" id="id3AFC0F70-i" name="unknown" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="22.22.22.22" id="id3AFC0F70-i-ipv4" name="address" netmask="255.255.255.255"/>
+            <IPv4 id="id3AFC0F70-i-ipv4" name="address" address="22.22.22.22" netmask="255.255.255.255"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -239,7 +243,7 @@
         </Host>
         <Host comment="" id="id3BF1B3E1" name="host-with-mac-1">
           <Interface bridgeport="False" comment="" dyn="False" id="id3BF1B3E2" label="" mgmt="False" name="host-with-mac-1:1" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.10" comment="" id="id3BF1B3E2-ipv4" name="host-with-mac-1/addr" netmask="255.255.255.0"/>
+            <IPv4 comment="" id="id3BF1B3E2-ipv4" name="host-with-mac-1/addr" address="192.168.1.10" netmask="255.255.255.0"/>
             <physAddress address="00:10:4b:de:e9:6f" id="id3BF1B3E2-pa" name="host-with-mac-1:1-pa"/>
           </Interface>
           <Management address="192.168.1.10">
@@ -304,7 +308,7 @@
         </Host>
         <Host comment="this host has an interface with both IP address and MAC address chld objects,&#10;but option &quot;turn on MAC address matching&quot; is NOT activated" id="id3E0F3FC8" name="host-with-mac-5">
           <Interface bridgeport="False" comment="" dyn="False" id="id3E0F3FC9" label="" mgmt="False" name="host-with-mac-5:1" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.15" comment="" id="id3E0F3FCA" name="host-with-mac-5/addr" netmask="255.255.255.0"/>
+            <IPv4 comment="" id="id3E0F3FCA" name="host-with-mac-5/addr" address="192.168.1.15" netmask="255.255.255.0"/>
             <physAddress address="aa:bb:cc:dd:ee:ff" comment="" id="id3E0F3FCB" name="host-with-mac-5:1-pa"/>
           </Interface>
           <Management address="192.168.1.15">
@@ -321,7 +325,7 @@
         </Host>
         <Host comment="" id="host-hostA" name="hostA">
           <Interface bridgeport="False" dyn="False" id="host-hostA-i" name="unknown" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.10" id="host-hostA-i-ipv4" name="address" netmask="255.255.255.255"/>
+            <IPv4 id="host-hostA-i-ipv4" name="address" address="192.168.1.10" netmask="255.255.255.255"/>
           </Interface>
           <Management address="192.168.1.10">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -334,7 +338,7 @@
         </Host>
         <Host comment="translated address for hostA" id="id3AFADBF9" name="hostA-NAT">
           <Interface bridgeport="False" dyn="False" id="id3AFADBF9-i" name="unknown" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="22.22.22.23" id="id3AFADBF9-i-ipv4" name="address" netmask="255.255.255.255"/>
+            <IPv4 id="id3AFADBF9-i-ipv4" name="address" address="22.22.22.23" netmask="255.255.255.255"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -347,7 +351,7 @@
         </Host>
         <Host comment="" id="host-hostB" name="hostB">
           <Interface bridgeport="False" dyn="False" id="host-hostB-i" name="unknown" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.20" id="host-hostB-i-ipv4" name="address" netmask="255.255.255.255"/>
+            <IPv4 id="host-hostB-i-ipv4" name="address" address="192.168.1.20" netmask="255.255.255.255"/>
           </Interface>
           <Management address="192.168.1.20">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -360,7 +364,7 @@
         </Host>
         <Host comment="" id="id3BD6736B" name="hostB-NAT">
           <Interface bridgeport="False" dyn="False" id="id3BD6736B-i" name="unknown" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="22.22.23.24" id="id3BD6736B-i-ipv4" name="address" netmask="255.255.255.255"/>
+            <IPv4 id="id3BD6736B-i-ipv4" name="address" address="22.22.23.24" netmask="255.255.255.255"/>
           </Interface>
           <HostOptions>
             <Option name="use_mac_addr_filter">false</Option>
@@ -368,7 +372,7 @@
         </Host>
         <Host comment="the same address as internal iface of firewall1" id="id3AFC191C" name="hostF-int">
           <Interface bridgeport="False" dyn="False" id="id3AFC191C-i" name="unknown" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.1" id="id3AFC191C-i-ipv4" name="address" netmask="255.255.255.255"/>
+            <IPv4 id="id3AFC191C-i-ipv4" name="address" address="192.168.1.1" netmask="255.255.255.255"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -381,8 +385,8 @@
         </Host>
         <Host comment="this host has multiple interfaces" id="id3DECF4EB" name="hostM-outside">
           <Interface bridgeport="False" comment="" dyn="False" id="id3DECF4EC" label="" mgmt="False" name="hostM-iface" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="222.222.222.40" comment="" id="id3DECF4ED" name="address" netmask="255.255.255.0"/>
-            <IPv4 address="222.222.222.41" comment="" id="id3DECF62C" name="hostM-outside" netmask="255.255.255.0"/>
+            <IPv4 comment="" id="id3DECF4ED" name="address" address="222.222.222.40" netmask="255.255.255.0"/>
+            <IPv4 comment="" id="id3DECF62C" name="hostM-outside" address="222.222.222.41" netmask="255.255.255.0"/>
           </Interface>
           <Management address="22.22.22.23">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -398,10 +402,10 @@
         </Host>
         <Host comment="this host has multiple interfaces" id="id3DECF622" name="hostN-outside">
           <Interface bridgeport="False" dyn="False" id="id3DECF623" name="unknown" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="222.222.222.40" comment="" id="id3DECF624" name="address" netmask="255.255.255.0"/>
+            <IPv4 comment="" id="id3DECF624" name="address" address="222.222.222.40" netmask="255.255.255.0"/>
           </Interface>
           <Interface bridgeport="False" dyn="False" id="id3DECF62A" name="unknown" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="222.222.222.41" comment="" id="id3DECF62B" name="hostM-outside" netmask="255.255.255.0"/>
+            <IPv4 comment="" id="id3DECF62B" name="hostM-outside" address="222.222.222.41" netmask="255.255.255.0"/>
           </Interface>
           <Management address="222.222.222.41">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -417,13 +421,13 @@
         </Host>
         <Host comment="host on subnet 22.22.22.0 with several addresses" id="id3DE47B6C" name="hostZ-outside">
           <Interface bridgeport="False" comment="" dyn="False" id="id3DE47B6D" label="" mgmt="False" name="eth0" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="22.22.22.23" comment="" id="id3DE47B6E" name="hZ-eth0" netmask="255.255.255.255"/>
+            <IPv4 comment="" id="id3DE47B6E" name="hZ-eth0" address="22.22.22.23" netmask="255.255.255.255"/>
           </Interface>
           <Interface bridgeport="False" comment="" dyn="False" id="id3DE47B76" label="" mgmt="False" name="eth1" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="22.22.22.24" comment="" id="id3DE47B77" name="hZ-eth1" netmask="255.255.255.255"/>
+            <IPv4 comment="" id="id3DE47B77" name="hZ-eth1" address="22.22.22.24" netmask="255.255.255.255"/>
           </Interface>
           <Interface bridgeport="False" comment="" dyn="False" id="id3DE47B78" label="" mgmt="False" name="eth2" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="22.22.22.25" comment="" id="id3DE47B79" name="hZ-eth2" netmask="255.255.255.255"/>
+            <IPv4 comment="" id="id3DE47B79" name="hZ-eth2" address="22.22.22.25" netmask="255.255.255.255"/>
           </Interface>
           <Management address="22.22.22.23">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -439,7 +443,7 @@
         </Host>
         <Host comment="broadcast on internal subnet" id="id3B64FFAC" name="local-bcast">
           <Interface bridgeport="False" dyn="False" id="id3B64FFAC-i" name="unknown" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.255" comment="" id="id3B64FFAC-i-ipv4" name="local-bcast:addess" netmask="255.255.255.255"/>
+            <IPv4 comment="" id="id3B64FFAC-i-ipv4" name="local-bcast:addess" address="192.168.1.255" netmask="255.255.255.255"/>
           </Interface>
           <Management address="192.168.1.255">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -455,7 +459,7 @@
         </Host>
         <Host comment="" id="id3CD87A53" name="h192.168.1.11">
           <Interface bridgeport="False" dyn="False" id="id3CD87A53-i" name="interface-1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.11" id="id3CD87A53-i-1-addr" name="address" netmask="255.255.255.255"/>
+            <IPv4 id="id3CD87A53-i-1-addr" name="address" address="192.168.1.11" netmask="255.255.255.255"/>
           </Interface>
           <Management address="192.168.1.11">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -472,7 +476,7 @@
         </Host>
         <Host comment="" id="id3CD87A5E" name="h192.168.1.12">
           <Interface bridgeport="False" dyn="False" id="id3CD87A5E-i" name="interface-1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.12" id="id3CD87A5E-i-1-addr" name="address" netmask="255.255.255.255"/>
+            <IPv4 id="id3CD87A5E-i-1-addr" name="address" address="192.168.1.12" netmask="255.255.255.255"/>
           </Interface>
           <Management address="192.168.1.12">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -489,7 +493,7 @@
         </Host>
         <Host comment="" id="id3CD87A6D" name="h192.168.1.13">
           <Interface bridgeport="False" dyn="False" id="id3CD87A6D-i" name="interface-1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.13" id="id3CD87A6D-i-1-addr" name="address" netmask="255.255.255.255"/>
+            <IPv4 id="id3CD87A6D-i-1-addr" name="address" address="192.168.1.13" netmask="255.255.255.255"/>
           </Interface>
           <Management address="192.168.1.13">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -506,7 +510,7 @@
         </Host>
         <Host comment="" id="id3CD87A7C" name="h192.168.1.14">
           <Interface bridgeport="False" dyn="False" id="id3CD87A7C-i" name="interface-1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.14" id="id3CD87A7C-i-1-addr" name="address" netmask="255.255.255.255"/>
+            <IPv4 id="id3CD87A7C-i-1-addr" name="address" address="192.168.1.14" netmask="255.255.255.255"/>
           </Interface>
           <Management address="192.168.1.14">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -523,7 +527,7 @@
         </Host>
         <Host comment="" id="id3CD87A8B" name="h192.168.1.15">
           <Interface bridgeport="False" dyn="False" id="id3CD87A8B-i" name="interface-1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.15" id="id3CD87A8B-i-1-addr" name="address" netmask="255.255.255.255"/>
+            <IPv4 id="id3CD87A8B-i-1-addr" name="address" address="192.168.1.15" netmask="255.255.255.255"/>
           </Interface>
           <Management address="192.168.1.15">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -540,7 +544,7 @@
         </Host>
         <Host comment="local link multicast address" id="id3D84EEC8" name="ospf routers (multicast)">
           <Interface bridgeport="False" dyn="False" id="id3D84EECC" name="interface1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="224.0.0.5" id="id3D84EECD" name="ospf routers (multicast)" netmask="255.255.255.0"/>
+            <IPv4 id="id3D84EECD" name="ospf routers (multicast)" address="224.0.0.5" netmask="255.255.255.0"/>
           </Interface>
           <Management address="224.0.0.5">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -557,7 +561,7 @@
         </Host>
         <Host comment="some host outside our network" id="id3B19C5EB" name="outside-host">
           <Interface bridgeport="False" dyn="False" id="id3B19C5EB-i" name="unknown" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="200.200.200.200" id="id3B19C5EB-i-ipv4" name="address" netmask="255.255.255.255"/>
+            <IPv4 id="id3B19C5EB-i-ipv4" name="address" address="200.200.200.200" netmask="255.255.255.255"/>
           </Interface>
           <HostOptions>
             <Option name="use_mac_addr_filter">false</Option>
@@ -565,7 +569,7 @@
         </Host>
         <Host comment="" id="host-secondary1-com" name="secondary1.com">
           <Interface bridgeport="False" dyn="False" id="host-secondary1-com-i" name="unknown" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="211.11.11.11" id="host-secondary1-com-i-ipv4" name="address" netmask="255.255.255.255"/>
+            <IPv4 id="host-secondary1-com-i-ipv4" name="address" address="211.11.11.11" netmask="255.255.255.255"/>
           </Interface>
           <Management address="211.11.11.11">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -578,7 +582,7 @@
         </Host>
         <Host comment="" id="host-secondary2-com" name="secondary2.com">
           <Interface bridgeport="False" dyn="False" id="host-secondary2-com-i" name="unknown" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="211.22.22.22" id="host-secondary2-com-i-ipv4" name="address" netmask="255.255.255.255"/>
+            <IPv4 id="host-secondary2-com-i-ipv4" name="address" address="211.22.22.22" netmask="255.255.255.255"/>
           </Interface>
           <Management address="211.22.22.22">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -591,7 +595,7 @@
         </Host>
         <Host comment="" id="id3BF23930" name="z-host">
           <Interface bridgeport="False" dyn="False" id="id3BF23931" name="unknown" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="0.0.0.0" id="id3BF23931-ipv4" name="address" netmask=""/>
+            <IPv4 id="id3BF23931-ipv4" name="address" address="0.0.0.0" netmask="0.0.0.0"/>
             <physAddress address="00:a0:24:53:06:8c" id="id3BF23931-pa" name="unknown-pa"/>
           </Interface>
           <Management address="0.0.0.0">
@@ -605,7 +609,7 @@
         </Host>
         <Host comment="" id="id3D84F6D7" name="zero address">
           <Interface bridgeport="False" dyn="False" id="id3D84F6DB" name="interface1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="0.0.0.0" comment="" id="id3D84F6DC" name="zero addr(ip)" netmask="0.0.0.0"/>
+            <IPv4 comment="" id="id3D84F6DC" name="zero addr(ip)" address="0.0.0.0" netmask="0.0.0.0"/>
             <physAddress address="00:00:00:00:00:00" comment="" id="id3E192A36" name="zero addr(MAC)"/>
           </Interface>
           <Management address="0.0.0.0">
@@ -623,10 +627,10 @@
         </Host>
         <Host id="id3E9870D1" name="like fw5">
           <Interface bridgeport="False" dyn="False" id="id3E9870D7" name="eth0" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.1" id="id3E9870D8" name="like fw5:eth0(ip)" netmask="255.255.255.0"/>
+            <IPv4 id="id3E9870D8" name="like fw5:eth0(ip)" address="192.168.1.1" netmask="255.255.255.0"/>
           </Interface>
           <Interface bridgeport="False" dyn="False" id="id3E9870D9" name="eth1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="192.168.2.1" id="id3E9870DA" name="like fw5:eth1(ip)" netmask="255.255.255.0"/>
+            <IPv4 id="id3E9870DA" name="like fw5:eth1(ip)" address="192.168.2.1" netmask="255.255.255.0"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -639,7 +643,7 @@
         </Host>
         <Host id="id3E9BC536" name="squid-box">
           <Interface bridgeport="False" dyn="False" id="id3E9BC538" name="interface1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.100" id="id3E9BC539" name="squid-box:interface1(ip)" netmask="255.255.255.255"/>
+            <IPv4 id="id3E9BC539" name="squid-box:interface1(ip)" address="192.168.1.100" netmask="255.255.255.255"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -652,7 +656,7 @@
         </Host>
         <Host id="id3EE4CC6E" name="like fw18(eth1)">
           <Interface bridgeport="False" dyn="False" id="id3EE4CC70" name="interface1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="66.66.66.130" id="id3EE4CC71" name="like fw18(eth1):interface1(ip)" netmask="255.255.255.255"/>
+            <IPv4 id="id3EE4CC71" name="like fw18(eth1):interface1(ip)" address="66.66.66.130" netmask="255.255.255.255"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -665,7 +669,7 @@
         </Host>
         <Host comment="this host has the same IP address as firewall 'firewall', plus it has MAC address.&#10;Testing for a combination of &quot;--mac --source-mac&quot; in the OUTPUT chain.&#10;" id="id3F14DFB8" name="fw-with-mac-1">
           <Interface bridgeport="False" comment="" dyn="False" id="id3F14DFB9" label="" mgmt="False" name="host-with-mac-1:1" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.1" comment="" id="id3F14DFBA" name="host-with-mac-1/addr" netmask="255.255.255.0"/>
+            <IPv4 comment="" id="id3F14DFBA" name="host-with-mac-1/addr" address="192.168.1.1" netmask="255.255.255.0"/>
             <physAddress address="00:10:4b:de:e9:6f" id="id3F14DFBB" name="host-with-mac-1:1-pa"/>
           </Interface>
           <Management address="192.168.1.10">
@@ -682,7 +686,7 @@
         </Host>
         <Host comment="this host has the same IP address as firewall 'firewall', plus it has MAC address.&#10;Testing for a combination of &quot;--mac --source-mac&quot; in the OUTPUT chain.&#10;" id="id3F14E244" name="fw-with-mac-2">
           <Interface bridgeport="False" comment="" dyn="False" id="id3F14E245" label="" mgmt="False" name="host-with-mac-1:1" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.1" comment="" id="id3F14E246" name="host-with-mac-1/addr" netmask="255.255.255.0"/>
+            <IPv4 comment="" id="id3F14E246" name="host-with-mac-1/addr" address="192.168.1.1" netmask="255.255.255.0"/>
             <physAddress address="00:10:4b:de:e9:6f" id="id3F14E247" name="host-with-mac-1:1-pa"/>
           </Interface>
           <Management address="192.168.1.1">
@@ -699,7 +703,7 @@
         </Host>
         <Host comment="usef in fw7&#10;" id="id40236C4D" name="dhcpserver">
           <Interface bridgeport="False" dyn="False" id="id40236C4F" name="interface1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="192.168.2.10" id="id40236C50" name="dhcpserver:interface1(ip)" netmask="255.255.255.255"/>
+            <IPv4 id="id40236C50" name="dhcpserver:interface1(ip)" address="192.168.2.10" netmask="255.255.255.255"/>
           </Interface>
           <Management address="192.168.2.10">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -716,7 +720,7 @@
         </Host>
         <Host id="id40236C9A" name="unknown">
           <Interface bridgeport="False" dyn="False" id="id40236C9C" name="interface1" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="0.0.0.0" id="id40236C9D" name="unknown:interface1(ip)" netmask="255.255.255.255"/>
+            <IPv4 id="id40236C9D" name="unknown:interface1(ip)" address="0.0.0.0" netmask="255.255.255.255"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -729,7 +733,7 @@
         </Host>
         <Host id="id40F195D2" name="hostC">
           <Interface bridgeport="False" dyn="False" id="id40F195D4" label="" name="eth0" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.50" id="id40F195D6" name="hostC:eth0:ip" netmask="255.255.255.0"/>
+            <IPv4 id="id40F195D6" name="hostC:eth0:ip" address="192.168.1.50" netmask="255.255.255.0"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -740,7 +744,7 @@
         </Host>
         <Host comment="" id="id43913DCB25682" name="hostAt">
           <Interface bridgeport="False" dyn="False" id="id43913DCD25682" label="" name="hostA_eth0" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="192.168.1.10" id="id43913DCE25682" name="hostAt:hostA_eth0:ip" netmask="255.255.255.255"/>
+            <IPv4 id="id43913DCE25682" name="hostAt:hostA_eth0:ip" address="192.168.1.10" netmask="255.255.255.255"/>
           </Interface>
           <Management address="192.168.1.10">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -755,8 +759,8 @@
           </HostOptions>
         </Host>
         <Host comment="This object represents a PC with a single network interface" id="id445F59D831658" name="exthost223">
-          <Interface bridgeport="False" dyn="False" id="id445F59DA31658" label="" name="eth0" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="223.223.223.223" comment="" id="id445F59DB31658" name="exthost223:eth0:ip" netmask="255.255.255.0"/>
+          <Interface bridgeport="False" comment="" dyn="False" id="id445F59DA31658" label="" name="eth0" security_level="0" unnum="False" unprotected="False">
+            <IPv4 comment="" id="id445F59DB31658" name="exthost223:eth0:ip" address="223.223.223.223" netmask="255.255.255.0"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -764,6 +768,26 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
+            <Option name="use_mac_addr_filter">False</Option>
+          </HostOptions>
+        </Host>
+        <Host comment="" id="id47CD183A7550" name="host with multiple interfaces">
+          <Interface bridgeport="False" dyn="False" id="id47CD183C7550" name="eth0" security_level="0" unnum="False" unprotected="False">
+            <IPv4 id="id47CD183D7550" name="host with multiple interfaces:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
+          </Interface>
+          <Interface bridgeport="False" dyn="False" id="id47CD183E7550" name="eth1" security_level="0" unnum="False" unprotected="False">
+            <IPv4 id="id47CD183F7550" name="host with multiple interfaces:eth1:ip" address="192.168.2.1" netmask="255.255.255.0"/>
+          </Interface>
+          <Interface bridgeport="False" comment="" dyn="False" id="id47CD49057550" label="" name="eth2" security_level="0" unnum="False" unprotected="False">
+            <IPv4 comment="" id="id47CD49067550" name="host with multiple interfaces:eth2:ip" address="77.77.77.77" netmask="255.255.255.0"/>
+          </Interface>
+          <Management address="0.0.0.0">
+            <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+            <FWBDManagement enabled="False" identity="" port="-1"/>
+            <PolicyInstallScript arguments="" command="" enabled="False"/>
+          </Management>
+          <HostOptions>
+            <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
@@ -964,7 +988,7 @@
       </ServiceGroup>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls">
-      <Firewall comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" host_OS="linux24" id="fw-firewall2" inactive="False" lastCompiled="1188096924" lastInstalled="1142003872" lastModified="1184809081" name="firewall" platform="iptables" ro="False" version="">
+      <Firewall comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule&#10;" host_OS="linux24" id="fw-firewall2" inactive="False" lastCompiled="1188096924" lastInstalled="1142003872" lastModified="1206322269" name="firewall" platform="iptables" ro="False" version="">
         <NAT id="nat-firewall2">
           <NATRule comment="" disabled="False" id="nat-firewall2-0" position="0">
             <OSrc neg="False">
@@ -2615,10 +2639,10 @@
         </Policy>
         <Routing id="fw-firewall2-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="if-FW-firewall2-eth1" label="" mgmt="False" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="222.222.222.222" id="if-FW-firewall2-eth1-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="if-FW-firewall2-eth1-ipv4" name="address" address="222.222.222.222" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="if-FW-firewall2-eth0" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="if-FW-firewall2-eth0-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="if-FW-firewall2-eth0-ipv4" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -3989,19 +4013,19 @@
         </Policy>
         <Routing id="id3AF5AA0A-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id3AF5AA96" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id3AF5AA96-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3AF5AA96-ipv4" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3AF5AA99" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" id="id3AF5AA99-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3AF5AA99-ipv4" name="address" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3B0B4BC8" name="eth2" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" id="id3B0B4BC8-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3B0B4BC8-ipv4" name="address" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3B0B4D35" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id3B0B4D35-ipv4" name="address" netmask="255.0.0.0"/>
+          <IPv4 id="id3B0B4D35-ipv4" name="address" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3B11F434" name="eth3" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.23.23" id="id3B11F434-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3B11F434-ipv4" name="address" address="22.22.23.23" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -4093,7 +4117,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " host_OS="linux24" id="id3AFB66C6" inactive="False" lastCompiled="1188315148" lastInstalled="1142003872" lastModified="1188315856" name="firewall2" platform="iptables" ro="False" version="">
+      <Firewall comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " host_OS="linux24" id="id3AFB66C6" inactive="False" lastCompiled="1188315148" lastInstalled="1142003872" lastModified="1197388709" name="firewall2" platform="iptables" ro="False" version="">
         <NAT id="id3AFB66C7">
           <NATRule disabled="False" id="id3AFB66C8" position="0">
             <OSrc neg="False">
@@ -5554,21 +5578,21 @@
         </Policy>
         <Routing id="id3AFB66C6-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id3AFB6703" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" comment="" id="id3AFB6703-ipv4" name="fw2:eth0:ip - internal" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3AFB6703-ipv4" name="fw2:eth0:ip - internal" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3AFB6706" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" comment="" id="id3AFB6706-ipv4" name="fw2:eth1:ip - external" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3AFB6706-ipv4" name="fw2:eth1:ip - external" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id3AFB68D2" label="" mgmt="False" name="eth3" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.23.23" comment="" id="id3AFB68D2-ipv4" name="fw2:eth3:0" netmask="255.255.255.0"/>
-          <IPv4 address="22.22.25.50" comment="" id="id3D5DEADC" name="fw2:eth3:1" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3AFB68D2-ipv4" name="fw2:eth3:0" address="22.22.23.23" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3D5DEADC" name="fw2:eth3:1" address="22.22.25.50" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3B0221F1" name="eth2" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" comment="" id="id3B0221F1-ipv4" name="fw2:eth2:1" netmask="255.255.255.0"/>
-          <IPv4 address="192.168.2.40" comment="" id="id3DD1E161" name="fw2:eth2:2" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3B0221F1-ipv4" name="fw2:eth2:1" address="192.168.2.1" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3DD1E161" name="fw2:eth2:2" address="192.168.2.40" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3CD2449F" label="" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id3CD2449F-ipv4" name="address" netmask="255.0.0.0"/>
+          <IPv4 id="id3CD2449F-ipv4" name="address" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -5585,6 +5609,7 @@
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">True</Option>
+          <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
@@ -5640,6 +5665,7 @@
           <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="no_iochains_for_any">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
           <Option name="no_optimisation">False</Option>
           <Option name="output_file"></Option>
           <Option name="platform">iptables</Option>
@@ -5655,7 +5681,7 @@
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
           <Option name="useULOG">False</Option>
-          <Option name="use_ULOG">False</Option>
+          <Option name="use_ULOG">True</Option>
           <Option name="use_ip_tool">True</Option>
           <Option name="use_iptables_restore">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
@@ -6214,16 +6240,16 @@
         </Policy>
         <Routing id="id3B0226B6-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id3B02270A" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id3B02270A-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3B02270A-ipv4" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3B02270C" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" id="id3B02270C-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3B02270C-ipv4" name="address" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3B0B57D2" name="eth2" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" id="id3B0B57D2-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3B0B57D2-ipv4" name="address" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id465D5AF12072" label="" mgmt="False" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" comment="" id="id465D89B62072" name="firewall3:lo:ip" netmask="255.0.0.0"/>
+          <IPv4 comment="" id="id465D89B62072" name="firewall3:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -6996,19 +7022,19 @@
         </Policy>
         <Routing id="id3B0C6380-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id3B0C63DF" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id3B0C63DF-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3B0C63DF-ipv4" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="True" id="id3B0C63E1" label="" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="0.0.0.0" id="id3B0C63E1-ipv4" name="address" netmask="0.0.0.0"/>
+          <IPv4 id="id3B0C63E1-ipv4" name="address" address="0.0.0.0" netmask="0.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3B0C63F3" name="eth2" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" id="id3B0C63F3-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3B0C63F3-ipv4" name="address" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3B0C63F5" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id3B0C63F5-ipv4" name="address" netmask="255.0.0.0"/>
+          <IPv4 id="id3B0C63F5-ipv4" name="address" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3CD88A77" label="" name="eth3" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="222.222.222.222" id="id3CD88A77-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3CD88A77-ipv4" name="address" address="222.222.222.222" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -7102,7 +7128,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface&#10;has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it&#10;(interface used to be static and had an address, then got&#10;converted to dynamic but address object is still there). Compiler&#10;should ignore this address object and issue a warning.&#10;" host_OS="linux24" id="id3B19BEE6" lastCompiled="1188097203" lastInstalled="1142003872" lastModified="1142003913" name="firewall5" platform="iptables" ro="False">
+      <Firewall comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface&#10;has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it&#10;(interface used to be static and had an address, then got&#10;converted to dynamic but address object is still there). Compiler&#10;should ignore this address object and issue a warning.&#10;" host_OS="linux24" id="id3B19BEE6" lastCompiled="1204560061" lastInstalled="1142003872" lastModified="1204560033" name="firewall5" platform="iptables" ro="False">
         <NAT id="id3B19BEE7">
           <NATRule disabled="False" id="id3CFD9EE2" position="0">
             <OSrc neg="False">
@@ -7146,7 +7172,28 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule comment="" disabled="False" id="id3CF5B9DB" position="2">
+          <NATRule comment="" disabled="False" id="id47CC86147550" position="2">
+            <OSrc neg="False">
+              <ObjectRef ref="id47CD183A7550"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule comment="" disabled="False" id="id3CF5B9DB" position="3">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -7309,7 +7356,7 @@
               <ObjectRef ref="sysid0"/>
             </Src>
             <Dst neg="False">
-              <ObjectRef ref="id3E9870D1"/>
+              <ObjectRef ref="id47CD183A7550"/>
             </Dst>
             <Srv neg="False">
               <ServiceRef ref="tcp-SSH"/>
@@ -7328,7 +7375,7 @@
               <ObjectRef ref="sysid0"/>
             </Src>
             <Dst neg="False">
-              <ObjectRef ref="id3E9870D1"/>
+              <ObjectRef ref="id47CD183A7550"/>
             </Dst>
             <Srv neg="False">
               <ServiceRef ref="tcp-SSH"/>
@@ -7443,13 +7490,13 @@
         </Policy>
         <Routing id="id3B19BEE6-routing"/>
         <Interface bridgeport="False" comment="" dyn="True" id="id3B19BF3A" label="" mgmt="False" name="ppp0" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" comment="" id="id3EF959F7" name="firewall5:ppp0(ip)" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3EF959F7" name="firewall5:ppp0(ip)" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id3B19BF58" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id3B19BF58-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3B19BF58-ipv4" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3B19C51D" name="eth2" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" id="id3B19C51D-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3B19C51D-ipv4" name="address" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="True" id="id3E8F5B6F" label="" mgmt="False" name="ppp1" security_level="0" unnum="False" unprotected="False"/>
         <Management address="192.168.1.1">
@@ -7711,10 +7758,10 @@
         </Policy>
         <Routing id="id3AF5A2BA-routing"/>
         <Interface bridgeport="False" dyn="False" id="id3AF5A2CB" name="eth0" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" id="id3AF5A2CB-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3AF5A2CB-ipv4" name="address" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3AFB7090" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id3AFB7090-ipv4" name="address" netmask="255.0.0.0"/>
+          <IPv4 id="id3AFB7090-ipv4" name="address" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Management address="127.0.0.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -8087,19 +8134,19 @@
         </Policy>
         <Routing id="id3C698F1D-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id3C699013" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id3C699013-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3C699013-ipv4" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3C69901D" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" id="id3C69901D-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3C69901D-ipv4" name="address" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3C699030" name="eth2" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" comment="" id="id3C699030-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3C699030-ipv4" name="address" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3C699032" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id3C699032-ipv4" name="address" netmask="255.0.0.0"/>
+          <IPv4 id="id3C699032-ipv4" name="address" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3C699034" name="eth3" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.23.23" id="id3C699034-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3C699034-ipv4" name="address" address="22.22.23.23" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -8497,19 +8544,19 @@
         </Policy>
         <Routing id="id3C69BD4F-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id3C69BD5C" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id3C69BD5C-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3C69BD5C-ipv4" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3C69BD5E" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" id="id3C69BD5E-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3C69BD5E-ipv4" name="address" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3C69BD68" name="eth2" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" id="id3C69BD68-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3C69BD68-ipv4" name="address" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3C69BD6A" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id3C69BD6A-ipv4" name="address" netmask="255.0.0.0"/>
+          <IPv4 id="id3C69BD6A-ipv4" name="address" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3C69BD6C" name="eth3" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.23.23" id="id3C69BD6C-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3C69BD6C-ipv4" name="address" address="22.22.23.23" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -8592,13 +8639,13 @@
         <Policy id="id3D0C1E71"/>
         <Routing id="id3D0C1E6E-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id3D0C1E77" label="fw8:eth0" mgmt="False" name="eth0" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="33.33.33.33" id="id3D0C1E77-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3D0C1E77-ipv4" name="address" address="33.33.33.33" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id3D0C1E7A" label="fw8:eth1" mgmt="False" name="eth1" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="172.16.1.1" id="id3D0C1E7A-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3D0C1E7A-ipv4" name="address" address="172.16.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id3D0C1E7D" label="fw8:eth2" mgmt="True" name="eth2" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.100.1" id="id3D0C1E7D-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3D0C1E7D-ipv4" name="address" address="192.168.100.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="True" id="id3EE24D62" label="fw8:ppp0" mgmt="False" name="ppp0" security_level="0" unnum="False" unprotected="False"/>
         <Management address="192.168.100.1">
@@ -8990,13 +9037,13 @@
         </Policy>
         <Routing id="id3D4DF34B-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id3D4DF3B2" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id3D4DF3B2-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3D4DF3B2-ipv4" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3D4DF3C8" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" id="id3D4DF3C8-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3D4DF3C8-ipv4" name="address" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3D4DF3CC" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id3D4DF3CC-ipv4" name="address" netmask="255.0.0.0"/>
+          <IPv4 id="id3D4DF3CC-ipv4" name="address" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -9282,13 +9329,13 @@
         </Policy>
         <Routing id="id3D4F0A55-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id3D4F0AA8" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id3D4F0AA8-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3D4F0AA8-ipv4" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3D4F0AAA" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" id="id3D4F0AAA-ipv4" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3D4F0AAA-ipv4" name="address" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3D4F0AAC" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id3D4F0AAC-ipv4" name="address" netmask="255.0.0.0"/>
+          <IPv4 id="id3D4F0AAC-ipv4" name="address" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -9803,11 +9850,11 @@
         <Interface bridgeport="False" comment="this interface is part of the bridge" dyn="False" id="id3D94D531" label="" mgmt="False" name="eth0" security_level="100" unnum="True" unprotected="False"/>
         <Interface bridgeport="False" comment="" dyn="True" id="id3D94D552" label="" mgmt="False" name="eth2" security_level="0" unnum="False" unprotected="False"/>
         <Interface bridgeport="False" dyn="False" id="id3D94D558" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id3D94D559" name="address" netmask="255.0.0.0"/>
+          <IPv4 id="id3D94D559" name="address" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="True" id="id3E21FC66" label="" mgmt="False" name="br0" security_level="100" unnum="False" unprotected="False"/>
         <Interface bridgeport="False" comment="this interface has netmask 255.255.255.255, which is an error&#10;but compiler should handle it properly anyway.&#10;One typical mistake is to put rules that have fw or its interface&#10;in DST into FORWARD chain (shouldbe INPUT chain)&#10;&#10;This is the management interface of the bridging fw. This interface is connected to&#10;the protected subnet. There may be another interface connected to the same&#10;subnet, but that interface would be a bridging interface and have no address.&#10;" dyn="False" id="id3F28B886" label="" mgmt="True" name="eth3" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="10.1.1.1" comment="" id="id3F28B88A" name="firewall11:eth3(ip)" netmask="255.255.255.255"/>
+          <IPv4 comment="" id="id3F28B88A" name="firewall11:eth3(ip)" address="10.1.1.1" netmask="255.255.255.255"/>
         </Interface>
         <Interface bridgeport="False" comment="this interface is also a part of the bridge" dyn="False" id="id3F77AFD4" label="" mgmt="False" name="eth1" security_level="100" unnum="True" unprotected="False"/>
         <Management address="10.1.1.1">
@@ -10155,10 +10202,10 @@
         </Policy>
         <Routing id="id3DDDE6C3-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id3DDDE6CE" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" id="id3DDDE6D0" name="firewall12" netmask="255.255.255.0"/>
+          <IPv4 id="id3DDDE6D0" name="firewall12" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id3DDDE6D1" label="" mgmt="False" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.23.22" id="id3DDDE6D3" name="firewall12" netmask="255.255.255.0"/>
+          <IPv4 id="id3DDDE6D3" name="firewall12" address="22.22.23.22" netmask="255.255.255.0"/>
         </Interface>
         <Management address="22.22.22.22">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -10329,10 +10376,10 @@
         </Policy>
         <Routing id="id3DE68A18-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id3DE68A83" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" id="id3DE68A84" name="firewall12" netmask="255.255.255.0"/>
+          <IPv4 id="id3DE68A84" name="firewall12" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id3DE68A86" label="" mgmt="False" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.23.22" id="id3DE68A87" name="firewall12" netmask="255.255.255.0"/>
+          <IPv4 id="id3DE68A87" name="firewall12" address="22.22.23.22" netmask="255.255.255.0"/>
         </Interface>
         <Management address="22.22.22.22">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -10551,14 +10598,14 @@
         <Policy id="id3DE71233"/>
         <Routing id="id3DE71215-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id3DE71252" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.22" comment="" id="id3DE71253" name="fe14:eth0" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3DE71253" name="fe14:eth0" address="192.168.1.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id3DE71255" label="eth1(outside)" mgmt="False" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.23.22" comment="" id="id3DE71256" name="fw14:eth1:1" netmask="255.255.255.0"/>
-          <IPv4 address="22.22.23.160" comment="this address belongs to subnets of both interfaces - eth1 and eth2" id="id3DE71282" name="fw14:eth1:2" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3DE71256" name="fw14:eth1:1" address="22.22.23.22" netmask="255.255.255.0"/>
+          <IPv4 comment="this address belongs to subnets of both interfaces - eth1 and eth2" id="id3DE71282" name="fw14:eth1:2" address="22.22.23.160" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id3DE7127D" label="eth2(dmz)" mgmt="False" name="eth2" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.23.132" comment="this interface is on the subnet that overlaps with eth1" id="id3DE7127F" name="fw14:eth2" netmask="255.255.255.128"/>
+          <IPv4 comment="this interface is on the subnet that overlaps with eth1" id="id3DE7127F" name="fw14:eth2" address="22.22.23.132" netmask="255.255.255.128"/>
         </Interface>
         <Management address="192.168.1.22">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -10668,13 +10715,13 @@
         </Policy>
         <Routing id="id3DE9128A-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id3DE912F5" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" id="id3DE912F6" name="firewall12" netmask="255.255.255.0"/>
+          <IPv4 id="id3DE912F6" name="firewall12" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id3DE912F8" label="" mgmt="False" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.23.22" id="id3DE912F9" name="firewall12" netmask="255.255.255.0"/>
+          <IPv4 id="id3DE912F9" name="firewall12" address="22.22.23.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id3E587D10" label="" mgmt="False" name="lo" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" comment="" id="id3E587D14" name="firewall15:lo(ip)" netmask="255.0.0.0"/>
+          <IPv4 comment="" id="id3E587D14" name="firewall15:lo(ip)" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Management address="22.22.22.22">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -11082,13 +11129,13 @@
         </Policy>
         <Routing id="id3E189481-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id3E1894E6" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.22" comment="" id="id3E1894E7" name="firewall16:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3E1894E7" name="firewall16:eth0:ip" address="192.168.1.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id3E1894E9" label="eth1(outside)" mgmt="False" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.23.22" comment="" id="id3E1894EA" name="firewall16:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3E1894EA" name="firewall16:eth1:ip" address="22.22.23.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id3E1894ED" label="eth2(dmz)" mgmt="False" name="eth2" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" comment="this interface is on the subnet that overlaps with eth1" id="id3E1894EE" name="firewall16:eth2:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="this interface is on the subnet that overlaps with eth1" id="id3E1894EE" name="firewall16:eth2:ip" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.22">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -11382,21 +11429,21 @@
         </Policy>
         <Routing id="id3E1C6B9C-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id3E1C6BDD" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id3E1C6BDE" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3E1C6BDE" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3E1C6BE0" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" id="id3E1C6BE1" name="address" netmask="255.255.255.0"/>
-          <IPv4 address="33.33.33.33" comment="" id="id3E1C6BFB" name="firewall17:eth1(ip)" netmask="255.255.255.0"/>
+          <IPv4 id="id3E1C6BE1" name="address" address="22.22.22.22" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3E1C6BFB" name="firewall17:eth1(ip)" address="33.33.33.33" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3E1C6BEB" name="eth2" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" comment="" id="id3E1C6BEC" name="address" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3E1C6BEC" name="address" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3E1C6BEE" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id3E1C6BEF" name="address" netmask="255.0.0.0"/>
+          <IPv4 id="id3E1C6BEF" name="address" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3E1C6BF1" name="eth3" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.23.23" id="id3E1C6BF2" name="address" netmask="255.255.255.0"/>
-          <IPv4 address="44.44.44.44" comment="" id="id3E1C6BFC" name="firewall17:eth3(ip)" netmask="255.255.255.0"/>
+          <IPv4 id="id3E1C6BF2" name="address" address="22.22.23.23" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3E1C6BFC" name="firewall17:eth3(ip)" address="44.44.44.44" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -11724,16 +11771,16 @@
         </Policy>
         <Routing id="id3EE4CB81-routing"/>
         <Interface bridgeport="False" dyn="False" id="id3EE4CB88" label="" name="eth2" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="66.66.66.1" comment="" id="id3EE4CB8A" name="firewall18:eth2(ip)" netmask="255.255.255.128"/>
+          <IPv4 comment="" id="id3EE4CB8A" name="firewall18:eth2(ip)" address="66.66.66.1" netmask="255.255.255.128"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3EE4CB8B" label="" name="eth0" security_level="33" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id3EE4CB8D" name="firewall18:eth0(ip)" netmask="255.255.255.0"/>
+          <IPv4 id="id3EE4CB8D" name="firewall18:eth0(ip)" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3EE4CB8E" label="" name="eth1" security_level="66" unnum="False" unprotected="False">
-          <IPv4 address="66.66.66.130" comment="" id="id3EE4CB90" name="firewall18:eth1(ip)" netmask="255.255.255.128"/>
+          <IPv4 comment="" id="id3EE4CB90" name="firewall18:eth1(ip)" address="66.66.66.130" netmask="255.255.255.128"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3EE4CB91" label="" name="lo" security_level="99" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id3EE4CB93" name="firewall18:lo(ip)" netmask="255.0.0.0"/>
+          <IPv4 id="id3EE4CB93" name="firewall18:lo(ip)" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="True" id="id3EE4CD4C" label="" mgmt="False" name="ppp0" security_level="0" unnum="False" unprotected="False"/>
         <Management address="0.0.0.0">
@@ -12102,16 +12149,16 @@
         </Policy>
         <Routing id="id3EF7F809-routing"/>
         <Interface bridgeport="False" dyn="False" id="id3EF7F86E" label="" name="eth2" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="66.66.66.1" comment="" id="id3EF7F86F" name="firewall18:eth2(ip)" netmask="255.255.255.128"/>
+          <IPv4 comment="" id="id3EF7F86F" name="firewall18:eth2(ip)" address="66.66.66.1" netmask="255.255.255.128"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3EF7F871" label="" name="eth0" security_level="33" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id3EF7F872" name="firewall18:eth0(ip)" netmask="255.255.255.0"/>
+          <IPv4 id="id3EF7F872" name="firewall18:eth0(ip)" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3EF7F87E" label="" name="eth1" security_level="66" unnum="False" unprotected="False">
-          <IPv4 address="66.66.66.130" comment="" id="id3EF7F87F" name="firewall18:eth1(ip)" netmask="255.255.255.128"/>
+          <IPv4 comment="" id="id3EF7F87F" name="firewall18:eth1(ip)" address="66.66.66.130" netmask="255.255.255.128"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3EF7F881" label="" name="lo" security_level="99" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id3EF7F882" name="firewall18:lo(ip)" netmask="255.0.0.0"/>
+          <IPv4 id="id3EF7F882" name="firewall18:lo(ip)" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="True" id="id3EF7F8B0" label="" mgmt="False" name="ppp0" security_level="0" unnum="False" unprotected="False"/>
         <Management address="0.0.0.0">
@@ -12636,13 +12683,13 @@
         </Policy>
         <Routing id="id3EFBC648-routing"/>
         <Interface bridgeport="False" comment="" dyn="True" id="id3EFBC6F1" label="" mgmt="False" name="ppp*" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" comment="" id="id3EFBC6F2" name="firewall5:ppp0(ip)" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3EFBC6F2" name="firewall5:ppp0(ip)" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id3EFBC6FF" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id3EFBC700" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3EFBC700" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id3EFBC702" name="eth2" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" id="id3EFBC703" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3EFBC703" name="address" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -12825,10 +12872,10 @@
         <Interface bridgeport="False" comment="" dyn="True" id="id3F29FAF4" label="" mgmt="False" name="eth0" security_level="0" unnum="False" unprotected="False"/>
         <Interface bridgeport="False" comment="" dyn="True" id="id3F29FAF7" label="" mgmt="False" name="eth1" security_level="0" unnum="False" unprotected="False"/>
         <Interface bridgeport="False" dyn="False" id="id3F29FB06" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id3F29FB07" name="address" netmask="255.0.0.0"/>
+          <IPv4 id="id3F29FB07" name="address" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id3F29FB90" label="" mgmt="True" name="eth2" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.100" comment="" id="id3F29FB92" name="firewall21:eth2(ip)" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3F29FB92" name="firewall21:eth2(ip)" address="192.168.1.100" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.100">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -13024,10 +13071,10 @@
         </Policy>
         <Routing id="id3FADB89A-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id3FADB988" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id3FADB989" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3FADB989" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id3FADB98B" label="" mgmt="False" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" id="id3FADB98C" name="address" netmask="255.255.255.0"/>
+          <IPv4 id="id3FADB98C" name="address" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -13419,10 +13466,10 @@
         <Routing id="id3FB32E8E-routing"/>
         <Interface bridgeport="False" comment="this interface is part of the bridge" dyn="False" id="id3FB32F13" label="" mgmt="False" name="eth*" security_level="100" unnum="True" unprotected="False"/>
         <Interface bridgeport="False" dyn="False" id="id3FB32F49" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id3FB32F4A" name="address" netmask="255.0.0.0"/>
+          <IPv4 id="id3FB32F4A" name="address" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" comment="c" dyn="False" id="id3FB32F4C" label="" mgmt="False" name="br0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" comment="" id="id3FB331CD" name="firewall23:br0(ip)" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id3FB331CD" name="firewall23:br0(ip)" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -13889,10 +13936,10 @@
         <Routing id="id402B23A8-routing"/>
         <Interface bridgeport="False" comment="this interface is part of the bridge" dyn="False" id="id402B2411" label="" mgmt="False" name="tun*" security_level="100" unnum="True" unprotected="False"/>
         <Interface bridgeport="False" dyn="False" id="id402B2459" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id402B245A" name="address" netmask="255.0.0.0"/>
+          <IPv4 id="id402B245A" name="address" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id402B245C" label="" mgmt="False" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" comment="" id="id402B245D" name="firewall23:eth0(ip)" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id402B245D" name="firewall23:eth0(ip)" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -14072,10 +14119,10 @@
         </Policy>
         <Routing id="id41528C2C-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id41528C53" label="outside" mgmt="True" name="eth0" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="10.3.14.58" comment="" id="id41528C88" name="rh90:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id41528C88" name="rh90:eth0:ip" address="10.3.14.58" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id41528C6A" label="loopback" mgmt="False" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" comment="" id="id41528C82" name="rh90:lo:ip" netmask="255.0.0.0"/>
+          <IPv4 comment="" id="id41528C82" name="rh90:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Management address="0.0.0.0">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -14094,10 +14141,10 @@ cat &gt; %FWDIR%/%FWSCRIPT%;
 
               
                 
-echo '%FWBPROMPT%'; chmod +x %FWDIR%/%FWSCRIPT%; sudo -S %FWDIR%/%FWSCRIPT%; sudo -S ps ax|awk '/shutdown/ {printf &quot;kill %d\n&quot;,$1;}'|sh
+echo '%FWBPROMPT%'; chmod +x %FWDIR%/%FWSCRIPT%; sudo -S %FWDIR%/%FWSCRIPT%; sudo -S ps ax|awk '/shutdown/ {printf "kill %d\n",$1;}'|sh
                 
                 
-echo '%FWBPROMPT%'; chmod +x %FWDIR%/%FWSCRIPT%; sudo -S %FWDIR%/%FWSCRIPT%; sudo -S ps ax|awk '/shutdown/ {printf &quot;kill %d\n&quot;,$1;}'|sh
+echo '%FWBPROMPT%'; chmod +x %FWDIR%/%FWSCRIPT%; sudo -S %FWDIR%/%FWSCRIPT%; sudo -S ps ax|awk '/shutdown/ {printf "kill %d\n",$1;}'|sh
                 
               
 
@@ -14119,10 +14166,10 @@ cat &gt; %FWDIR%/%FWSCRIPT%;
 
               
                 
-echo '%FWBPROMPT%'; sh %FWDIR%/%FWSCRIPT%; ps ax|awk '/shutdown/ {printf &quot;kill %d\n&quot;,$1;}'|sh
+echo '%FWBPROMPT%'; sh %FWDIR%/%FWSCRIPT%; ps ax|awk '/shutdown/ {printf "kill %d\n",$1;}'|sh
                 
                 
-echo '%FWBPROMPT%'; sh %FWDIR%/%FWSCRIPT%; ps ax|awk '/shutdown/ {printf &quot;kill %d\n&quot;,$1;}'|sh
+echo '%FWBPROMPT%'; sh %FWDIR%/%FWSCRIPT%; ps ax|awk '/shutdown/ {printf "kill %d\n",$1;}'|sh
                 
               
 
@@ -14622,13 +14669,13 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         </Policy>
         <Routing id="id417C680B-routing"/>
         <Interface bridgeport="False" comment="" dyn="True" id="id417C68C6" label="" mgmt="False" name="ppp*" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" comment="" id="id417C6932" name="firewall25:ppp*:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id417C6932" name="firewall25:ppp*:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id417C6933" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id417C6937" name="firewall25:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id417C6937" name="firewall25:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id417C6938" name="eth2" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" id="id417C6950" name="firewall25:eth2:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id417C6950" name="firewall25:eth2:ip" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -15156,10 +15203,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <Routing id="id418C4609-routing"/>
         <Interface bridgeport="False" comment="" dyn="True" id="id418C46C4" label="" mgmt="False" name="ppp" security_level="0" unnum="False" unprotected="False"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id418C4731" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id418C4735" name="firewall26:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id418C4735" name="firewall26:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id418C4736" name="eth2" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" id="id418C474E" name="firewall26:eth2:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id418C474E" name="firewall26:eth2:ip" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -15246,7 +15293,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="this firewall uses iptables-restore format&#10;all interfaces have static addresses, script pipes iptables commands straight to iptables-restore" host_OS="linux24" id="id4183D041" lastCompiled="1188097071" lastInstalled="1142003872" lastModified="1142003913" name="firewall27" platform="iptables" ro="False" version="">
+      <Firewall comment="this firewall uses iptables-restore format&#10;all interfaces have static addresses, script pipes iptables commands straight to iptables-restore" host_OS="linux24" id="id4183D041" inactive="False" lastCompiled="1197477543" lastInstalled="1142003872" lastModified="1197477519" name="firewall27" platform="iptables" ro="False" version="">
         <NAT id="id4183D0C3">
           <NATRule disabled="False" id="id4183D0C4" position="0">
             <OSrc neg="False">
@@ -15686,13 +15733,13 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         </Policy>
         <Routing id="id4183D041-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id4183D0FC" label="" mgmt="False" name="ppp" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.0.2.1" comment="" id="id4183D18A" name="firewall27:ppp:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id4183D18A" name="firewall27:ppp:ip" address="192.0.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id4183D167" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id4183D16B" name="firewall27:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id4183D16B" name="firewall27:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id4183D16C" name="eth2" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" id="id4183D184" name="firewall27:eth2:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id4183D184" name="firewall27:eth2:ip" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -15883,10 +15930,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         </Policy>
         <Routing id="id419DC88E-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id419DC8CF" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.0" comment="" id="id419DC8D3" name="firewall28:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id419DC8D3" name="firewall28:eth0:ip" address="192.168.1.0" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id419DC8D4" label="" mgmt="False" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.23.22" id="id419DC8D8" name="firewall28:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id419DC8D8" name="firewall28:eth1:ip" address="22.22.23.22" netmask="255.255.255.0"/>
         </Interface>
         <Management address="22.22.22.22">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -16073,10 +16120,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <Interface bridgeport="False" comment="VLAN interface" dyn="True" id="id41D29492" label="" mgmt="False" name="eth0.200" security_level="0" unnum="False" unprotected="False"/>
         <Interface bridgeport="False" comment="VLAN interface" dyn="True" id="id41D294A9" label="" mgmt="False" name="eth0.100" security_level="0" unnum="False" unprotected="False"/>
         <Interface bridgeport="False" dyn="False" id="id41D294AC" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id41D294B0" name="firewall29:lo:ip" netmask="255.0.0.0"/>
+          <IPv4 id="id41D294B0" name="firewall29:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id41D294B1" label="" mgmt="True" name="eth1" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.100" comment="" id="id41D294B5" name="firewall29:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id41D294B5" name="firewall29:eth1:ip" address="192.168.1.100" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.100">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -16216,13 +16263,13 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         </Policy>
         <Routing id="id41F62B80-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id41F62C34" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id41F62C38" name="firewall30:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id41F62C38" name="firewall30:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id41F62C39" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" id="id41F62C51" name="firewall30:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id41F62C51" name="firewall30:eth1:ip" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id41F62C57" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id41F62C5B" name="firewall30:lo:ip" netmask="255.0.0.0"/>
+          <IPv4 id="id41F62C5B" name="firewall30:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -16437,10 +16484,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         </Policy>
         <Routing id="id429910D5-routing"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id429910DC" label="" mgmt="False" name="eth0" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="33.33.33.33" id="id429910E0" name="firewall31:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id429910E0" name="firewall31:eth0:ip" address="33.33.33.33" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id429910E1" label="" mgmt="False" name="eth1" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" comment="" id="id429910E5" name="firewall31:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id429910E5" name="firewall31:eth1:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="True" id="id429910EB" label="" mgmt="False" name="ppp0" security_level="0" unnum="False" unprotected="False"/>
         <Management address="0.0.0.0">
@@ -16523,7 +16570,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="testing AddressTable" host_OS="linux24" id="id43868A331434" lastCompiled="1188097112" lastInstalled="1142003872" lastModified="0" name="firewall32" platform="iptables" ro="False" version="">
+      <Firewall comment="testing AddressTable" host_OS="linux24" id="id43868A331434" lastCompiled="1188097112" lastInstalled="1142003872" lastModified="1205611789" name="firewall32" platform="iptables" ro="False" version="">
         <NAT id="id43868A6D1434">
           <NATRule disabled="False" id="id43868A6E1434" position="0">
             <OSrc neg="False">
@@ -16629,10 +16676,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <Routing id="id43868A7D1434"/>
         <Interface bridgeport="False" comment="VLAN interface" dyn="True" id="id43868A7F1434" label="" mgmt="False" name="eth0.100" security_level="0" unnum="False" unprotected="False"/>
         <Interface bridgeport="False" dyn="False" id="id43868A801434" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id43868A821434" name="firewall32:lo:ip" netmask="255.0.0.0"/>
+          <IPv4 id="id43868A821434" name="firewall32:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id43868A831434" label="" mgmt="True" name="eth1" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.100" comment="" id="id43868A851434" name="firewall32:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id43868A851434" name="firewall32:eth1:ip" address="192.168.1.100" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.100">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -16724,7 +16771,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="testing DNSName object" host_OS="linux24" id="id43867C1018346" lastCompiled="1188097121" lastInstalled="1142003872" lastModified="0" name="firewall33" platform="iptables" ro="False" version="">
+      <Firewall comment="testing DNSName object" host_OS="linux24" id="id43867C1018346" lastCompiled="1188097121" lastInstalled="1142003872" lastModified="1205119254" name="firewall33" platform="iptables" ro="False" version="">
         <NAT id="id43867C4818346">
           <NATRule disabled="False" id="id43867C4918346" position="0">
             <OSrc neg="False">
@@ -17061,7 +17108,28 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule action="Deny" direction="Both" disabled="False" id="id43867C3C18346" log="True" position="12">
+          <PolicyRule action="Accept" comment="test for bug #1905718&#10;Group of DNS Name objects considered empty&#10;" direction="Both" disabled="False" id="id47CBF5D429252" log="False" position="12">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id47CBF5D129252"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Deny" direction="Both" disabled="False" id="id43867C3C18346" log="True" position="13">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -17085,10 +17153,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <Routing id="id43867C5718346"/>
         <Interface bridgeport="False" comment="VLAN interface" dyn="True" id="id43867C5818346" label="" mgmt="False" name="eth0.100" security_level="0" unnum="False" unprotected="False"/>
         <Interface bridgeport="False" dyn="False" id="id43867C5918346" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id43867C5B18346" name="firewall33:lo:ip" netmask="255.0.0.0"/>
+          <IPv4 id="id43867C5B18346" name="firewall33:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id43867C5C18346" label="" mgmt="True" name="eth1" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.100" comment="" id="id43867C5E18346" name="firewall33:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id43867C5E18346" name="firewall33:eth1:ip" address="192.168.1.100" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.100">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -17180,7 +17248,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="testing AddressTable object" host_OS="linux24" id="id4389EDAE18346" inactive="False" lastCompiled="1188097128" lastInstalled="1142003872" lastModified="1167289689" name="firewall34" platform="iptables" ro="False" version="">
+      <Firewall comment="testing AddressTable object" host_OS="linux24" id="id4389EDAE18346" inactive="False" lastCompiled="1188097128" lastInstalled="1142003872" lastModified="1205611807" name="firewall34" platform="iptables" ro="False" version="">
         <NAT id="id4389EE4818346">
           <NATRule disabled="False" id="id4389EEB018346" position="0">
             <OSrc neg="True">
@@ -17555,10 +17623,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <Routing id="id4389EE8318346"/>
         <Interface bridgeport="False" comment="VLAN interface" dyn="True" id="id4389EE8418346" label="" mgmt="False" name="eth0.100" security_level="0" unnum="False" unprotected="False"/>
         <Interface bridgeport="False" dyn="False" id="id4389EE8518346" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id4389EE8718346" name="firewall34:lo:ip" netmask="255.0.0.0"/>
+          <IPv4 id="id4389EE8718346" name="firewall34:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id4389EE8818346" label="" mgmt="True" name="eth1" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.100" comment="" id="id4389EE8A18346" name="firewall34:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id4389EE8A18346" name="firewall34:eth1:ip" address="192.168.1.100" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.100">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -17935,10 +18003,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <Routing id="id439255AB25682"/>
         <Interface bridgeport="False" comment="VLAN interface" dyn="True" id="id439255AC25682" label="" mgmt="False" name="eth0.100" security_level="0" unnum="False" unprotected="False"/>
         <Interface bridgeport="False" dyn="False" id="id439255AD25682" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id439255AF25682" name="firewall35:lo:ip" netmask="255.0.0.0"/>
+          <IPv4 id="id439255AF25682" name="firewall35:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id439255B025682" label="" mgmt="True" name="eth1" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.100" comment="" id="id439255B225682" name="firewall35:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id439255B225682" name="firewall35:eth1:ip" address="192.168.1.100" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.100">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -18331,16 +18399,16 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           </RoutingRule>
         </Routing>
         <Interface bridgeport="False" comment="" dyn="False" id="id43A2C03B16451" label="" mgmt="False" name="eth0" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.0.2.1" comment="This is a test address, change it to your real one" id="id43A2C03D16451" name="firewall36:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="This is a test address, change it to your real one" id="id43A2C03D16451" name="firewall36:eth0:ip" address="192.0.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id43A2C03E16451" label="" mgmt="True" name="eth1" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" comment="" id="id43A2C04016451" name="firewall36:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id43A2C04016451" name="firewall36:eth1:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id43A2C04116451" label="loopback" mgmt="False" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" comment="" id="id43A2C04316451" name="firewall36:lo:ip" netmask="255.0.0.0"/>
+          <IPv4 comment="" id="id43A2C04316451" name="firewall36:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id43A2C04416451" label="" mgmt="False" name="eth2" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.0.100.1" comment="" id="id43A2C04616451" name="firewall36:eth2:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id43A2C04616451" name="firewall36:eth2:ip" address="192.0.100.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -19299,13 +19367,13 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         </Policy>
         <Routing id="id43BB81789745"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id43BB81799745" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.22" comment="" id="id43BB817B9745" name="firewall37:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id43BB817B9745" name="firewall37:eth0:ip" address="192.168.1.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id43BB817C9745" label="eth1(outside)" mgmt="False" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.23.22" comment="" id="id43BB817E9745" name="firewall37:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id43BB817E9745" name="firewall37:eth1:ip" address="22.22.23.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id43BB817F9745" label="eth2(dmz)" mgmt="False" name="eth2" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" comment="this interface is on the subnet that overlaps with eth1" id="id43BB81819745" name="firewall37:eth2:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="this interface is on the subnet that overlaps with eth1" id="id43BB81819745" name="firewall37:eth2:ip" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.22">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -19859,13 +19927,13 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         </Policy>
         <Routing id="id43BBF1F99745"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id43BBF1FA9745" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.22" comment="" id="id43BBF1FC9745" name="firewall38:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id43BBF1FC9745" name="firewall38:eth0:ip" address="192.168.1.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id43BBF1FD9745" label="eth1(outside)" mgmt="False" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.23.22" comment="" id="id43BBF1FF9745" name="firewall38:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id43BBF1FF9745" name="firewall38:eth1:ip" address="22.22.23.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id43BBF2009745" label="eth2(dmz)" mgmt="False" name="eth2" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" comment="this interface is on the subnet that overlaps with eth1" id="id43BBF2029745" name="firewall38:eth2:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="this interface is on the subnet that overlaps with eth1" id="id43BBF2029745" name="firewall38:eth2:ip" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.22">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -20412,10 +20480,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <Routing id="id440C062C14846"/>
         <Interface bridgeport="True" comment="this interface is part of the bridge" dyn="False" id="id440C062D14846" label="" mgmt="False" name="eth2" security_level="100" unnum="False" unprotected="False"/>
         <Interface bridgeport="False" dyn="False" id="id440C062E14846" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id440C063014846" name="firewall23-1:lo:ip" netmask="255.0.0.0"/>
+          <IPv4 id="id440C063014846" name="firewall23-1:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id440C063114846" label="" mgmt="False" name="br0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" comment="" id="id440C063314846" name="firewall23-1:br0:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id440C063314846" name="firewall23-1:br0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="True" comment="" dyn="False" id="id440C063914846" label="" mgmt="False" name="eth3" security_level="100" unnum="False" unprotected="False"/>
         <Management address="192.168.1.1">
@@ -21494,13 +21562,13 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         </Policy>
         <Routing id="id445DA36A30753"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id445DA36B30753" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.22" comment="" id="id445DA36D30753" name="firewall39:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id445DA36D30753" name="firewall39:eth0:ip" address="192.168.1.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id445DA36E30753" label="eth1(outside)" mgmt="False" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.23.22" comment="" id="id445DA37030753" name="firewall39:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id445DA37030753" name="firewall39:eth1:ip" address="22.22.23.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id445DA37130753" label="eth2(dmz)" mgmt="False" name="eth2" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" comment="this interface is on the subnet that overlaps with eth1" id="id445DA37330753" name="firewall39:eth2:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="this interface is on the subnet that overlaps with eth1" id="id445DA37330753" name="firewall39:eth2:ip" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.22">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -21813,16 +21881,16 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         </Policy>
         <Routing id="id4492FF3D24380"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id4492FF4E24380" label="" mgmt="False" name="eth0" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.0.2.1" comment="This is a test address, change it to your real one" id="id4492FF5024380" name="firewall40:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="This is a test address, change it to your real one" id="id4492FF5024380" name="firewall40:eth0:ip" address="192.0.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id4492FF5424380" label="loopback" mgmt="False" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" comment="" id="id4492FF5624380" name="firewall40:lo:ip" netmask="255.0.0.0"/>
+          <IPv4 comment="" id="id4492FF5624380" name="firewall40:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id4492FF5724380" label="" mgmt="False" name="eth2" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.0.100.1" comment="" id="id4492FF5924380" name="firewall40:eth2:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id4492FF5924380" name="firewall40:eth2:ip" address="192.0.100.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id4492FF6024380" label="" mgmt="True" name="eth1" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" comment="" id="id4492FF6124380" name="firewall40:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id4492FF6124380" name="firewall40:eth1:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -21963,10 +22031,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         </Policy>
         <Routing id="id44EC18178791"/>
         <Interface bridgeport="False" dyn="False" id="id44EC18188791" label="ext" name="eth0" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="1.1.1.1" id="id44EC18198791" name="firewall41:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id44EC18198791" name="firewall41:eth0:ip" address="1.1.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id44EC181A8791" label="int" name="eth1" security_level="50" unnum="False" unprotected="False">
-          <IPv4 address="2.2.2.2" id="id44EC181B8791" name="firewall41:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id44EC181B8791" name="firewall41:eth1:ip" address="2.2.2.2" netmask="255.255.255.0"/>
         </Interface>
         <Management address="0.0.0.0">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -22214,13 +22282,13 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         </Policy>
         <Routing id="id4513DEAB2143"/>
         <Interface bridgeport="False" dyn="False" id="id4513DEAC2143" label="" name="eth0" security_level="50" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" id="id4513DEAD2143" name="test-shadowing-1:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id4513DEAD2143" name="test-shadowing-1:eth0:ip" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id4513DEAE2143" label="" name="eth1" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id4513DEAF2143" name="test-shadowing-1:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id4513DEAF2143" name="test-shadowing-1:eth1:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id4513DEB02143" label="" name="eth2" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" id="id4513DEB12143" name="test-shadowing-1:eth2:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id4513DEB12143" name="test-shadowing-1:eth2:ip" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.2.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -22457,13 +22525,13 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         </Policy>
         <Routing id="id451489082143"/>
         <Interface bridgeport="False" dyn="False" id="id451489092143" label="" name="eth0" security_level="50" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" id="id4514890B2143" name="test-shadowing-2:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id4514890B2143" name="test-shadowing-2:eth0:ip" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id4514890C2143" label="" name="eth1" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" id="id4514890E2143" name="test-shadowing-2:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id4514890E2143" name="test-shadowing-2:eth1:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id4514890F2143" label="" name="eth2" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" id="id451489112143" name="test-shadowing-2:eth2:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id451489112143" name="test-shadowing-2:eth2:ip" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.2.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -23678,13 +23746,13 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         </Policy>
         <Routing id="id45AB5C6225451"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id45AB5C6325451" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.22" comment="" id="id45AB5C6525451" name="firewall37-1:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id45AB5C6525451" name="firewall37-1:eth0:ip" address="192.168.1.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id45AB5C6625451" label="eth1(outside)" mgmt="False" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.23.22" comment="" id="id45AB5C6825451" name="firewall37-1:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id45AB5C6825451" name="firewall37-1:eth1:ip" address="22.22.23.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id45AB5C6925451" label="eth2(dmz)" mgmt="False" name="eth2" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.168.2.1" comment="this interface is on the subnet that overlaps with eth1" id="id45AB5C6B25451" name="firewall37-1:eth2:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="this interface is on the subnet that overlaps with eth1" id="id45AB5C6B25451" name="firewall37-1:eth2:ip" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="192.168.1.22">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -23862,11 +23930,11 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <Routing id="id46EFBE4631183"/>
         <Interface bridgeport="False" comment="" dyn="True" id="id46EFBE4731183" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False"/>
         <Interface bridgeport="False" dyn="False" id="id46EFBE4A31183" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" id="id46EFBE4C31183" name="firewall42:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id46EFBE4C31183" name="firewall42:eth1:ip" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id46EFBE5031183" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id46EFBE5231183" name="firewall42:lo:ip" netmask="255.0.0.0"/>
-          <IPv4 address="192.168.1.1" comment="" id="id46EFBE5B31183" name="firewall42:lo:ip-1" netmask="255.255.255.0"/>
+          <IPv4 id="id46EFBE5231183" name="firewall42:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
+          <IPv4 comment="" id="id46EFBE5B31183" name="firewall42:lo:ip-1" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="0.0.0.0">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -24095,14 +24163,14 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         </Policy>
         <Routing id="id47339EDD19714"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id47339EDE19714" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="192.168.1.1" comment="" id="id47339EF819714" name="firewall50:eth0:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id47339EF819714" name="firewall50:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id47339EDF19714" name="eth1" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="22.22.22.22" id="id47339EE119714" name="firewall50:eth1:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id47339EE119714" name="firewall50:eth1:ip" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" dyn="False" id="id47339EE219714" name="lo" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="127.0.0.1" id="id47339EE519714" name="firewall50:lo:ip1" netmask="255.0.0.0"/>
-          <IPv4 address="192.168.1.1" comment="" id="id47339EE619714" name="firewall50:lo:ip2" netmask="255.255.255.0"/>
+          <IPv4 id="id47339EE519714" name="firewall50:lo:ip1" address="127.0.0.1" netmask="255.0.0.0"/>
+          <IPv4 comment="" id="id47339EE619714" name="firewall50:lo:ip2" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="0.0.0.0">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -24204,7 +24272,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
   </Library>
   <Library id="sysid99" name="Deleted Objects" ro="False">
     <ObjectRef ref="sysid0"/>
-    <IPv4 address="192.168.1.1" comment="" id="id41D295E2" name="firewall30:ppp.200*:ip" netmask="255.255.255.0"/>
+    <IPv4 comment="" id="id41D295E2" name="firewall30:ppp.200*:ip" address="192.168.1.1" netmask="255.255.255.0"/>
     <Firewall comment="dynamic wildcard interface with a dot in the name" host_OS="linux24" id="id41D294BB" lastCompiled="0" lastInstalled="0" lastModified="0" name="firewall30" platform="iptables" ro="False" version="">
       <NAT id="id41D2953D">
         <NATRule disabled="False" id="id41D2953E" position="0">
@@ -24646,10 +24714,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
       <Routing id="id41D294BB-routing"/>
       <Interface bridgeport="False" comment="" dyn="True" id="id41D29576" label="" mgmt="False" name="ppp.200*" security_level="0" unnum="False" unprotected="False"/>
       <Interface bridgeport="False" comment="" dyn="False" id="id41D295E3" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
-        <IPv4 address="192.168.1.1" id="id41D295E7" name="firewall30:eth0:ip" netmask="255.255.255.0"/>
+        <IPv4 id="id41D295E7" name="firewall30:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
       </Interface>
       <Interface bridgeport="False" dyn="False" id="id41D295E8" name="eth2" security_level="0" unnum="False" unprotected="False">
-        <IPv4 address="192.168.2.1" id="id41D29600" name="firewall30:eth2:ip" netmask="255.255.255.0"/>
+        <IPv4 id="id41D29600" name="firewall30:eth2:ip" address="192.168.2.1" netmask="255.255.255.0"/>
       </Interface>
       <Management address="192.168.1.1">
         <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -24738,19 +24806,19 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
       </FirewallOptions>
     </Firewall>
     <Interface bridgeport="False" dyn="False" id="id41F62C5C" name="eth3" security_level="0" unnum="False" unprotected="False">
-      <IPv4 address="22.22.23.23" id="id41F62C60" name="firewall30:eth3:ip" netmask="255.255.255.0"/>
+      <IPv4 id="id41F62C60" name="firewall30:eth3:ip" address="22.22.23.23" netmask="255.255.255.0"/>
     </Interface>
     <Interface bridgeport="False" dyn="False" id="id41F62C52" name="eth2" security_level="100" unnum="False" unprotected="False">
-      <IPv4 address="192.168.2.1" comment="" id="id41F62C56" name="firewall30:eth2:ip" netmask="255.255.255.0"/>
+      <IPv4 comment="" id="id41F62C56" name="firewall30:eth2:ip" address="192.168.2.1" netmask="255.255.255.0"/>
     </Interface>
     <Interface bridgeport="False" comment="" dyn="False" id="id429910E6" label="fw8:eth2" mgmt="True" name="eth2" security_level="100" unnum="False" unprotected="False">
-      <IPv4 address="192.168.100.1" id="id429910EA" name="firewall31:eth2:ip" netmask="255.255.255.0"/>
+      <IPv4 id="id429910EA" name="firewall31:eth2:ip" address="192.168.100.1" netmask="255.255.255.0"/>
     </Interface>
     <Interface bridgeport="False" comment="VLAN interface" dyn="True" id="id43868A7E1434" label="" mgmt="False" name="eth0.200" security_level="0" unnum="False" unprotected="False"/>
     <Interface bridgeport="False" comment="" dyn="False" id="id4492FF5124380" label="" mgmt="True" name="eth1" security_level="100" unnum="False" unprotected="False">
-      <IPv4 address="192.168.1.1" comment="" id="id4492FF5324380" name="firewall40:eth1:ip" netmask="255.255.255.0"/>
+      <IPv4 comment="" id="id4492FF5324380" name="firewall40:eth1:ip" address="192.168.1.1" netmask="255.255.255.0"/>
     </Interface>
-    <IPv4 address="0.0.0.0" id="id4492FF5F24380" name="firewall40:eth0:ip-1" netmask="0.0.0.0"/>
+    <IPv4 id="id4492FF5F24380" name="firewall40:eth0:ip-1" address="0.0.0.0" netmask="0.0.0.0"/>
     <Library color="#d2ffd0" comment="" id="id44EC13FB8791" name="tmp" ro="False">
       <ObjectGroup id="id44EC13FC8791" name="Objects">
         <ObjectGroup id="id44EC13FD8791" name="Addresses"/>
@@ -24774,12 +24842,12 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
       <IntervalGroup id="id44EC140D8791" name="Time"/>
     </Library>
     <Interface bridgeport="False" dyn="False" id="id46EFBE4D31183" name="eth2" security_level="100" unnum="False" unprotected="False">
-      <IPv4 address="192.168.2.1" id="id46EFBE4F31183" name="firewall42:eth2:ip" netmask="255.255.255.0"/>
+      <IPv4 id="id46EFBE4F31183" name="firewall42:eth2:ip" address="192.168.2.1" netmask="255.255.255.0"/>
     </Interface>
     <Interface bridgeport="False" dyn="False" id="id46EFBE5331183" name="eth3" security_level="0" unnum="False" unprotected="False">
-      <IPv4 address="22.22.23.23" id="id46EFBE5531183" name="firewall42:eth3:ip" netmask="255.255.255.0"/>
+      <IPv4 id="id46EFBE5531183" name="firewall42:eth3:ip" address="22.22.23.23" netmask="255.255.255.0"/>
     </Interface>
-    <IPv4 address="192.168.1.1" id="id46EFBE4931183" name="firewall42:eth0:ip" netmask="255.255.255.0"/>
+    <IPv4 id="id46EFBE4931183" name="firewall42:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
   </Library>
   <Library color="#FFFFFF" comment="" id="id4387B43718346" name="transfer" ro="False">
     <ObjectGroup id="id4387B43818346" name="Objects">

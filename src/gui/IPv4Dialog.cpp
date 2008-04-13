@@ -155,7 +155,7 @@ void IPv4Dialog::validate(bool *res)
     assert(s!=NULL);
     try
     {
-        IPAddress( m_dialog->address->text().toLatin1().constData() );
+        InetAddr( m_dialog->address->text().toLatin1().constData() );
     } catch (FWException &ex)
     {
         *res=false;
@@ -169,7 +169,7 @@ void IPv4Dialog::validate(bool *res)
     {
         try
         {
-            Netmask( m_dialog->netmask->text().toLatin1().constData() );
+            InetNetmask( m_dialog->netmask->text().toLatin1().constData() );
         } catch (FWException &ex)
         {
             *res=false;
@@ -203,17 +203,19 @@ void IPv4Dialog::applyChanges()
 
     try
     {
-        s->setAddress( m_dialog->address->text().toLatin1().constData() );
+        s->setAddress(
+            InetAddr(m_dialog->address->text().toLatin1().constData()) );
     } catch (FWException &ex) { }
 
     if ( showNetmask )
     {
         try
         {
-            s->setNetmask( m_dialog->netmask->text().toLatin1().constData() );
+            s->setNetmask(
+                InetNetmask(m_dialog->netmask->text().toLatin1().constData()) );
         } catch (FWException &ex) { }
     } else
-        s->setNetmask( "255.255.255.255" );
+        s->setNetmask(InetNetmask());
 
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 

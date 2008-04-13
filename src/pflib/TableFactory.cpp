@@ -212,15 +212,16 @@ string TableFactory::PrintTables()
                     if (A==NULL)
                         throw(FWException("table object must be an address: '"+o->getTypeName()+"'"));
 
-                    IPAddress addr=A->getAddress();
-                    Netmask   mask=A->getNetmask();
+                    InetAddr addr=A->getAddress();
+                    InetNetmask   mask=A->getNetmask();
 
                     if (IPv4::cast(A)!=NULL) {
-                        mask=Netmask("255.255.255.255");
+                        mask = InetNetmask(InetAddr::getAllOnes());
                     }
 
                     output << addr.toString();
-                    if (mask.toString()!="255.255.255.255") {
+                    if (!mask.isHostMask())
+                    {
                         output << "/" << mask.getLength();
                     }
                 }

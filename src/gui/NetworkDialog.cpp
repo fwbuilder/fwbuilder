@@ -114,7 +114,7 @@ void NetworkDialog::validate(bool *res)
     assert(s!=NULL);
     try
     {
-        IPAddress( m_dialog->address->text().toLatin1().constData() );
+        InetAddr( m_dialog->address->text().toLatin1().constData() );
     } catch (FWException &ex)
     {
         *res=false;
@@ -125,7 +125,7 @@ void NetworkDialog::validate(bool *res)
     }
     try
     {
-        Netmask( m_dialog->netmask->text().toLatin1().constData() );
+        InetNetmask( m_dialog->netmask->text().toLatin1().constData() );
     } catch (FWException &ex)
     {
         *res=false;
@@ -156,8 +156,10 @@ void NetworkDialog::applyChanges()
     obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     try
     {
-        s->setAddress( m_dialog->address->text().toLatin1().constData() );
-        s->setNetmask( m_dialog->netmask->text().toLatin1().constData() );
+        s->setAddress(
+            InetAddr(m_dialog->address->text().toLatin1().constData()) );
+        s->setNetmask(
+            InetNetmask(m_dialog->netmask->text().toLatin1().constData()) );
     } catch (FWException &ex)
     {
 /* exception thrown if user types illegal m_dialog->address or m_dialog->netmask */

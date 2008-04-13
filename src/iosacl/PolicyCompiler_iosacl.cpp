@@ -109,14 +109,14 @@ int PolicyCompiler_iosacl::prolog()
             {
                 if (netmask.find(".")!=string::npos)
                 {
-                    Netmask nm(netmask);
-                    nm.to32BitInt(); // to avoid warning abt unused var
+                    InetNetmask nm(netmask);
+                    nm.getLength(); // to avoid warning abt unused var
                 } else
                 {
                     int nm_length;
                     istringstream  str(netmask);
                     str >> nm_length;
-                    Netmask nm(nm_length);
+                    InetNetmask nm(nm_length);
                     netmask = nm.toString();
                 }
             } catch(FWException &ex)
@@ -127,8 +127,8 @@ int PolicyCompiler_iosacl::prolog()
 
         try
         {
-            IPAddress a(addr);
-            a.to32BitInt();
+            InetAddr a(addr);
+            a.isAny();
         } catch(FWException &ex)
         {
             abort("Invalid address for management subnet: '"+addr+"'");
@@ -143,10 +143,10 @@ int PolicyCompiler_iosacl::prolog()
 
         // cisco uses "wildcards" instead of netmasks
 
-        long nm = Netmask(netmask).to32BitInt();
-        struct in_addr na;
-        na.s_addr = ~nm;
-        IPAddress nnm(&na);
+        //long nm = InetNetmask(netmask).to32BitInt();
+        //struct in_addr na;
+        //na.s_addr = ~nm;
+        InetAddr nnm( ~(InetNetmask(netmask)) );
 
         output << clearACLcmd << " " << temp_acl << endl;
         output << "ip access-list extended " << temp_acl << endl;

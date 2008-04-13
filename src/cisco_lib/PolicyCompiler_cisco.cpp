@@ -409,7 +409,7 @@ bool PolicyCompiler_cisco::splitIfRuleElementMatchesFW::processNext()
         Address *a=Address::cast(obj);
         assert(a!=NULL);
 
-//        IPAddress obj_addr=a->getAddress();
+//        InetAddr obj_addr=a->getAddress();
 
         if (cisco_comp->complexMatch(a,cisco_comp->fw)) {
 
@@ -697,7 +697,7 @@ bool PolicyCompiler_cisco::splitByNetworkZonesForRE::processNext()
         Address *a=Address::cast(obj);
         assert(a!=NULL);
 
-//        IPAddress obj_addr=a->getAddress();
+//        InetAddr obj_addr=a->getAddress();
 
         try
         {

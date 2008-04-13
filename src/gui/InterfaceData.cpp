@@ -30,7 +30,7 @@
 #include "InterfaceData.h"
 
 #include "fwbuilder/Resources.h"
-#include "fwbuilder/IPAddress.h"
+#include "fwbuilder/InetAddr.h"
 
 using namespace libfwbuilder;
 using namespace std;
@@ -54,16 +54,17 @@ void InterfaceData::guessLabel(const string &platform)
     if (!isDyn &&
         !isUnnumbered &&
         !isBridgePort &&
-        address=="127.0.0.1") label="loopback";
+        address == InetAddr::getLoopbackAddr().toString())
+        label="loopback";
 }
 
 
 
 void InterfaceData::guessSecurityLevel(const string &platform)
 {
-    IPNetwork n10(IPAddress("10.0.0.0"),Netmask("255.0.0.0"));
-    IPNetwork n172(IPAddress("172.16.0.0"),Netmask("255.240.0.0"));
-    IPNetwork n192(IPAddress("192.168.0.0"),Netmask("255.255.0.0"));
+    InetAddrMask n10(InetAddr("10.0.0.0"), InetNetmask("255.0.0.0"));
+    InetAddrMask n172(InetAddr("172.16.0.0"), InetNetmask("255.240.0.0"));
+    InetAddrMask n192(InetAddr("192.168.0.0"), InetNetmask("255.255.0.0"));
 
     securityLevel=-1;
 
@@ -89,14 +90,14 @@ void InterfaceData::guessSecurityLevel(const string &platform)
          llbl=="internal_net" ||
          llbl=="internal net" )      securityLevel=100;
 
-    if ( address=="127.0.0.1") securityLevel=100;
-    if ( name=="Null0" )       securityLevel=100;
+    if ( address==InetAddr::getLoopbackAddr().toString()) securityLevel=100; 
+    if ( name=="Null0" )       securityLevel=100; 
 
     if (securityLevel==-1 && !isDyn && !isUnnumbered && !isBridgePort)
     {
-        if (n10.belongs(  IPAddress( address ) )) securityLevel=100;
-        if (n172.belongs( IPAddress( address ) )) securityLevel=100;
-        if (n192.belongs( IPAddress( address ) )) securityLevel=100;
+        if (n10.belongs(  InetAddr( address ) )) securityLevel=100;
+        if (n172.belongs( InetAddr( address ) )) securityLevel=100;
+        if (n192.belongs( InetAddr( address ) )) securityLevel=100;
     }
 
     if (isDyn || isUnnumbered || isBridgePort) securityLevel=0;
@@ -141,13 +142,13 @@ void  InterfaceData::guessSecurityLevel(const string &platform,
 
     if (ifaces.size()==2)
     {
-        if (ifaces.front().address=="127.0.0.1")
+        if (ifaces.front().address==InetAddr::getLoopbackAddr().toString()) 
         {
             ifaces.front().securityLevel=100;
             ifaces.back().securityLevel=0;
         } else
         {
-            if (ifaces.back().address=="127.0.0.1")
+            if (ifaces.back().address==InetAddr::getLoopbackAddr().toString()) 
             {
                 ifaces.front().securityLevel=0;
                 ifaces.back().securityLevel=100;

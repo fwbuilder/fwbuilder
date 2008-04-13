@@ -42,9 +42,9 @@ namespace fwcompiler {
     class OSConfigurator_linux24 : public OSConfigurator {
 
         OSData   os_data;
-        std::map<std::string,std::string>    address_table_objects;
-	std::vector<libfwbuilder::IPAddress> virtual_addresses;
-        std::list<std::string>               commands_to_add_virtual_addresses;
+        std::map<std::string,std::string>   address_table_objects;
+	std::vector<libfwbuilder::InetAddr> virtual_addresses;
+        std::list<std::string>              commands_to_add_virtual_addresses;
 
         std::string getInterfaceVarName(libfwbuilder::FWObject *iface);
         

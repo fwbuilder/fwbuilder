@@ -325,8 +325,8 @@ void NATCompiler_pf::PrintRule::_printAddr(FWObject *o)
     }
 
     Address *a = Address::cast(o);
-    IPAddress addr=a->getAddress();
-    Netmask   mask=a->getNetmask();
+    InetAddr addr=a->getAddress();
+    InetNetmask   mask=a->getNetmask();
 
     if (Interface::cast(o)!=NULL)
     {
@@ -337,18 +337,20 @@ void NATCompiler_pf::PrintRule::_printAddr(FWObject *o)
             return;
         }
 
-        mask=Netmask("255.255.255.255");
+        mask = InetNetmask(InetAddr::getAllOnes());
     }
 
     if (IPv4::cast(o)!=NULL) {
-        mask=Netmask("255.255.255.255");
+        mask = InetNetmask(InetAddr::getAllOnes());
     }
 
-    if (addr.toString()=="0.0.0.0" && mask.toString()=="0.0.0.0") {
+    if (addr.isAny() && mask.isAny())
+    {
         compiler->output << "any ";
     } else {
         compiler->output << addr.toString();
-        if (mask.toString()!="255.255.255.255") {
+        if (!mask.isHostMask())
+        {
             compiler->output << "/" << mask.getLength();
         }
         compiler->output  << " ";

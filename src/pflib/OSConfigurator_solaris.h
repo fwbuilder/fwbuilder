@@ -29,7 +29,7 @@
 #include "config.h"
 
 #include "fwcompiler/OSConfigurator.h"
-#include "fwbuilder/IPAddress.h"
+#include "fwbuilder/InetAddr.h"
 
 #include <vector>
 
@@ -41,7 +41,7 @@ namespace fwcompiler {
 
         OSData   os_data;
 
-	std::vector<libfwbuilder::IPAddress> virtual_addresses;
+	std::vector<libfwbuilder::InetAddr> virtual_addresses;
 
 	public:
 

@@ -28,6 +28,8 @@
 
 #include "OSConfigurator_linux24.h"
 
+#include "fwbuilder/InetAddr.h"
+
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/FWOptions.h"
 #include "fwbuilder/Interface.h"
@@ -199,29 +201,25 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Network *nw)
     if ( options->getBool("manage_virtual_addr") ) 
     {
         if (virtual_addresses.empty() || 
-            find(virtual_addresses.begin(),virtual_addresses.end(),nw->getAddress())==virtual_addresses.end()) 
+            find(virtual_addresses.begin(),virtual_addresses.end(),
+                 nw->getAddress())==virtual_addresses.end()) 
         {
             Interface *iface=findInterfaceFor( nw, fw );
             if (iface!=NULL)
             {
-                IPNetwork n( nw->getAddress() , nw->getNetmask() );
-
-                IPAddress a;
+                const InetAddr& a = nw->getAddress();
                 string str, subnet, first, last;
 
-                a=nw->getAddress() +1;
-                first  = a.toString();
-                        
-                a      = n.getBroadcastAddress() -1;
-                last   = a.toString();
+                first  = (a + 1).toString();
+                last   = (nw->getBroadcastAddress() -1).toString();
 
                 ostr                                       << endl;
 
                 ostr << "a=\"" << first << "\""            << endl;
                 ostr << "while test \"$a\" != \"" << last << "\"; do" << endl;
 
-                ostr << "  add_addr ${a} " << nw->getNetmask().getLength() << " "
-                       << iface->getName() << endl;
+                ostr << "  add_addr ${a} " << nw->getNetmask().getLength()
+                     << " " << iface->getName() << endl;
 
                 ostr                                       << endl;
                 ostr << "  OIFS=$IFS"                      << endl;
@@ -254,7 +252,8 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Address *addr)
     if ( options->getBool("manage_virtual_addr") ) 
     {
         if (virtual_addresses.empty() || 
-            find(virtual_addresses.begin(),virtual_addresses.end(),addr->getAddress())==virtual_addresses.end()) 
+            find(virtual_addresses.begin(),virtual_addresses.end(),
+                 addr->getAddress())==virtual_addresses.end()) 
         {
             IPv4 *iaddr=IPv4::cast( findAddressFor(addr, fw ) );
             if (iaddr!=NULL)
@@ -269,7 +268,8 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Address *addr)
                 virtual_addresses.push_back(addr->getAddress());
                 registerVirtualAddressForNat();
             } else
-                warning(_("Can not add virtual address ") + addr->getAddress().toString() +
+                warning(_("Can not add virtual address ") + 
+                        addr->getAddress().toString() +
                         _(" (object ") + addr->getName() + ")" );
         }
         commands_to_add_virtual_addresses.push_back(ostr.str());

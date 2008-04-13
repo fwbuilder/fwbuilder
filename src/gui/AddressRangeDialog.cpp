@@ -118,7 +118,7 @@ void AddressRangeDialog::validate(bool *res)
     assert(s!=NULL);
     try
     {
-        IPAddress(m_dialog->rangeStart->text().toLatin1().constData());
+        InetAddr(m_dialog->rangeStart->text().toLatin1().constData());
     } catch (FWException &ex)
     {
         *res=false;
@@ -129,7 +129,7 @@ void AddressRangeDialog::validate(bool *res)
     }
     try
     {
-        IPAddress(m_dialog->rangeEnd->text().toLatin1().constData());
+        InetAddr(m_dialog->rangeEnd->text().toLatin1().constData());
     } catch (FWException &ex)
     {
         *res=false;
@@ -161,8 +161,8 @@ void AddressRangeDialog::applyChanges()
     obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     try
     {
-        s->setRangeStart( IPAddress(m_dialog->rangeStart->text().toLatin1().constData()) );
-        s->setRangeEnd( IPAddress(m_dialog->rangeEnd->text().toLatin1().constData()) );
+        s->setRangeStart( InetAddr(m_dialog->rangeStart->text().toLatin1().constData()) );
+        s->setRangeEnd( InetAddr(m_dialog->rangeEnd->text().toLatin1().constData()) );
     } catch (FWException &ex)
     {
 

@@ -48,7 +48,7 @@
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Address.h"
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/IPAddress.h"
+#include "fwbuilder/InetAddr.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/TCPService.h"
@@ -727,9 +727,9 @@ void IPTImporter::pushNATRule()
     addODst();
     addOSrv();
 
-    if (src_nm.empty()) src_nm = "255.255.255.255";
-    if (dst_nm.empty()) dst_nm = "255.255.255.255";
-    if (nat_nm.empty()) nat_nm = "255.255.255.255";
+    if (src_nm.empty()) src_nm = InetAddr::getAllOnes().toString();
+    if (dst_nm.empty()) dst_nm = InetAddr::getAllOnes().toString();
+    if (nat_nm.empty()) nat_nm = InetAddr::getAllOnes().toString();
 
     if (target=="ACCEPT")
     {

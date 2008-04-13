@@ -101,7 +101,6 @@ string PolicyCompiler_ipt::PrintRuleIptRstEcho::_declareTable()
 
 string PolicyCompiler_ipt::PrintRuleIptRstEcho::_flushAndSetDefaultPolicy()
 {
-    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     ostringstream res;
 
     res << "echo :INPUT DROP [0:0]" << endl;

@@ -161,10 +161,10 @@ bool PolicyCompiler_pix::PrintObjectGroupsAndClearCommands::processNext()
             {
                 Address *a=Address::cast(obj);
                 assert(a!=NULL);
-                IPAddress addr=a->getAddress();
+                InetAddr addr=a->getAddress();
                 pix_comp->output << " network-object ";
                 if (Network::cast(obj)!=NULL) {
-                    Netmask   mask=a->getNetmask();
+                    InetNetmask   mask=a->getNetmask();
                     pix_comp->output << addr.toString() << " ";
                     pix_comp->output << mask.toString() << " ";
                 } else {
@@ -352,8 +352,8 @@ string PolicyCompiler_pix::PrintRule::_printAddr(libfwbuilder::Address  *o)
 {
     ostringstream  str;
 
-    IPAddress srcaddr=o->getAddress();
-    Netmask   srcmask=o->getNetmask();
+    InetAddr srcaddr=o->getAddress();
+    InetNetmask   srcmask=o->getNetmask();
 
     if (Interface::cast(o)!=NULL)
     {
@@ -363,18 +363,18 @@ string PolicyCompiler_pix::PrintRule::_printAddr(libfwbuilder::Address  *o)
 	    return string("interface ") + interface_->getLabel() + " ";
 	}
 
-	srcmask=Netmask("255.255.255.255");
+	srcmask=InetNetmask(InetAddr::getAllOnes());
     }
 
     if (IPv4::cast(o)!=NULL) 
-	srcmask=Netmask("255.255.255.255");
+	srcmask=InetNetmask(InetAddr::getAllOnes());
 
 
-    if (srcaddr.toString()=="0.0.0.0" && srcmask.toString()=="0.0.0.0")
+    if (srcaddr.isAny() && srcmask.isAny())
     {
 	str << "any ";
     } else {
-	if (srcmask.toString()=="255.255.255.255")
+	if (srcmask.isHostMask())
         {
 	    str << "host " << srcaddr.toString() << " ";
 	} else

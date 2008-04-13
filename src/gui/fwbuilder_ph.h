@@ -2,6 +2,8 @@
 #include "utils.h"
 #include "config.h"
 #include <iostream>
+#include "fwbuilder/InetAddr.h"
+#include "fwbuilder/InetAddrMask.h"
 #include "fwbuilder/Firewall.h"
 #include <qcheckbox.h>
 #include <qcombobox.h>
@@ -104,7 +106,6 @@
 #include <functional>
 #include <qprinter.h>
 #include <qrect.h>
-#include "fwbuilder/IPAddress.h"
 #include <ios>
 #include <qwidget.h>
 #include <qtablewidget.h>

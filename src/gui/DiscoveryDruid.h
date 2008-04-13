@@ -38,7 +38,7 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/dns.h"
 #include "fwbuilder/snmp.h"
-#include "fwbuilder/IPAddress.h"
+#include "fwbuilder/InetAddr.h"
 #include "fwbuilder/Logger.h"
 
 #include "FilterDialog.h"
@@ -69,8 +69,8 @@ class ObjectDescriptor
 
     string                          MAC_addr ;
     libfwbuilder::HostEnt           dns_info ;
-    libfwbuilder::IPAddress         addr     ;
-    libfwbuilder::Netmask           netmask  ;
+    libfwbuilder::InetAddr          addr     ;
+    libfwbuilder::InetNetmask       netmask  ;
 
     
     ObjectDescriptor();
@@ -194,8 +194,8 @@ private:
     int FromPage;
     QMap<QString,ObjectDescriptor> Objects;
     QMap<QString,ObjectDescriptor> Networks;
-    QMap<QString,IPAddress> NameServers;
-    vector<libfwbuilder::IPNetwork>  include_networks;
+    QMap<QString,InetAddr> NameServers;
+    vector<libfwbuilder::InetAddrMask>  include_networks;
 
     QTimer* timer;
     QTimer* prg_timer;
@@ -232,10 +232,10 @@ public:
     void createRealObjects();
 //    void stripObjects();
     void getNameServers();
-    IPAddress getNS();
-    IPAddress getSeedHostAddress();
-    bool isIPAddress(const QString s);
-    QString testIPAddress(const QString s);
+    InetAddr getNS();
+    InetAddr getSeedHostAddress();
+    bool isInetAddr(const QString s);
+    QString testInetAddr(const QString s);
 
     virtual void customEvent(QEvent *event);
     

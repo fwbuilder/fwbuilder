@@ -193,7 +193,7 @@ string OSConfigurator_pix_os::_printLogging()
 
     if ( ! syslog_host.empty() )
     {
-        string iface_id=helper.findInterfaceByNetzone(IPAddress(syslog_host));
+        string iface_id=helper.findInterfaceByNetzone(InetAddr(syslog_host));
         if (iface_id.empty()) abort("Log server "+syslog_host+" does not belong to any known network zone");
         Interface  *syslog_iface = getCachedFwInterface(iface_id);
 
@@ -257,7 +257,7 @@ string  OSConfigurator_pix_os::_printSNMPServer(const std::string &srv,int poll_
 
     ostringstream  str;
 
-    string iface_id=helper.findInterfaceByNetzone( IPAddress(srv) );
+    string iface_id=helper.findInterfaceByNetzone( InetAddr(srv) );
     if (iface_id.empty())
         abort(string("SNMP server ")+srv+" does not belong to any known network zone");
     Interface  *snmp_iface = getCachedFwInterface(iface_id);
@@ -335,7 +335,7 @@ string  OSConfigurator_pix_os::_printNTPServer(const std::string &srv,bool pref)
 
     ostringstream  str;
 
-    string iface_id=helper.findInterfaceByNetzone( IPAddress(srv) );
+    string iface_id=helper.findInterfaceByNetzone( InetAddr(srv) );
     if (iface_id.empty()) abort("NTP server "+srv+" does not belong to any known network zone");
     Interface  *ntp_iface = getCachedFwInterface(iface_id);
     str << "ntp server " << srv << " source " << ntp_iface->getLabel();

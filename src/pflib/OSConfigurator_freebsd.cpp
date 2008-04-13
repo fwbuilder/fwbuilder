@@ -116,9 +116,8 @@ void OSConfigurator_freebsd::addVirtualAddressForNAT(const Address *addr)
 	    for ( ; j!=j.end(); ++j ) 
             {
 		IPv4 *iaddr=IPv4::cast(*j);
-
-                IPNetwork n( iaddr->getAddress() , iaddr->getNetmask() );
-                if ( n.belongs( addr->getAddress() ) ) {
+                if ( ipv4->belongs( addr->getAddress() ) )
+                {
                     output << "ifconfig " 
                            << iface->getName() << " "
                            << addr->getAddress().toString() << " alias" << endl;

@@ -449,9 +449,9 @@ bool NATCompiler_pix::PrintRule::processNext()
     {
         StaticCmd *scmd=pix_comp->static_commands[ rule->getInt("sc_cmd") ];
 
-        IPAddress outa=scmd->oaddr->getAddress();
-        Netmask   outm=scmd->oaddr->getNetmask();
-        IPAddress insa=scmd->iaddr->getAddress();
+        InetAddr outa=scmd->oaddr->getAddress();
+        InetNetmask outm=scmd->oaddr->getNetmask();
+        InetAddr insa=scmd->iaddr->getAddress();
 /*
  * we verify that odst and tdst have the same size in verifyRuleElements,
  * so we can rely on that now.

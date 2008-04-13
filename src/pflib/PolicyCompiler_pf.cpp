@@ -388,24 +388,24 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
         cacheObj(ssh); // to keep cache consistent
 
         string mgmt_addr = getCachedFwOpt()->getStr("mgmt_addr");
-        IPAddress  addr;
-        Netmask netmask(32);
+        InetAddr  addr;
+        InetNetmask netmask(InetAddr::getAllOnes());
         try
         {
-            addr = IPAddress(mgmt_addr);
+            addr = InetAddr(mgmt_addr);
             string::size_type sep = mgmt_addr.find("/");
             if (sep != string::npos)
             {
-                addr = IPAddress(mgmt_addr.substr(0,sep));
+                addr = InetAddr(mgmt_addr.substr(0,sep));
                 string nm = mgmt_addr.substr(sep+1);
                 int o1,o2,o3,o4;
                 if(sscanf(nm.c_str(), "%3u.%3u.%3u.%3u", &o1, &o2, &o3, &o4)==4)
                 {
-                    netmask = Netmask(nm);
+                    netmask = InetNetmask(nm);
                 } else
                 {
                     sscanf(nm.c_str(),"%u",&o1);
-                    netmask = Netmask(o1);
+                    netmask = InetNetmask(o1);
                 }
             }
         } catch(FWException &ex)

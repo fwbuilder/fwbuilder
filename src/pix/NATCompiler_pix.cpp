@@ -36,7 +36,7 @@
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
-#include "fwbuilder/IPAddress.h"
+#include "fwbuilder/InetAddr.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/AddressTable.h"
@@ -421,8 +421,8 @@ bool NATCompiler_pix::verifyRuleElements::processNext()
 
 	if (Network::isA(odst) && Network::isA(tdst))
         {
-            Netmask n1=(Interface::cast(odst))?Netmask("255.255.255.255"):odst->getNetmask();
-            Netmask n2=(Interface::cast(tdst))?Netmask("255.255.255.255"):tdst->getNetmask();
+            InetNetmask n1=(Interface::cast(odst))?InetNetmask(InetAddr::getAllOnes()):odst->getNetmask();
+            InetNetmask n2=(Interface::cast(tdst))?InetNetmask(InetAddr::getAllOnes()):tdst->getNetmask();
 
             if ( !(n1==n2) )
                 compiler->abort(
@@ -883,8 +883,8 @@ bool NATCompiler_pix::mergeNATCmd::processNext()
  */
                 if (natcmd==nc) break;
 
-                IPAddress  a1=natcmd->t_addr->getAddress();
-                IPAddress  a2=nc->t_addr->getAddress();
+                InetAddr  a1=natcmd->t_addr->getAddress();
+                InetAddr  a2=nc->t_addr->getAddress();
 
                 Interface *int1=natcmd->t_iface;
                 Interface *int2=nc->t_iface;
@@ -1136,17 +1136,16 @@ NATCompiler_pix::DetectOverlap::~DetectOverlap() {};
 
 bool NATCompiler_pix::DetectOverlap::checkOverlapping(
     const libfwbuilder::Address   &addr1,
-    const libfwbuilder::IPAddress &addr2)
+    const libfwbuilder::InetAddr &addr2)
 {
     if (AddressRange::isA(&addr1))
     {
-        const IPAddress a1=AddressRange::constcast(&addr1)->getRangeStart();
-        const IPAddress a2=AddressRange::constcast(&addr1)->getRangeEnd();
+        const InetAddr a1=AddressRange::constcast(&addr1)->getRangeStart();
+        const InetAddr a2=AddressRange::constcast(&addr1)->getRangeEnd();
         return (addr2==a1 || addr2==a2 || (addr2>a1 && addr2<a2));
     } else
     {
-        return addr1.getAddress() == addr2 || 
-            IPNetwork(addr1.getAddress(),addr1.getNetmask()).belongs(addr2);
+        return addr1.getAddress() == addr2 || addr1.belongs(addr2);
     }
 }
 
@@ -1154,8 +1153,8 @@ string NATCompiler_pix::DetectOverlap::printGlobalPoolAddress(const Address &poo
 {
     if (AddressRange::isA(&pool))
     {
-        const IPAddress a1=AddressRange::constcast(&pool)->getRangeStart();
-        const IPAddress a2=AddressRange::constcast(&pool)->getRangeEnd();
+        const InetAddr a1=AddressRange::constcast(&pool)->getRangeStart();
+        const InetAddr a2=AddressRange::constcast(&pool)->getRangeEnd();
         return a1.toString()+"-"+a2.toString();
     } else
     {
@@ -1183,14 +1182,11 @@ bool  NATCompiler_pix::DetectGlobalPoolProblems::processNext()
                                 +printGlobalPoolAddress(*(natcmd->t_addr)) 
                                 +" overlaps with interface address. Rule "
                                 +rule->getLabel());
-            
-            IPNetwork iface_net(natcmd->t_iface->getAddress(),
-                                natcmd->t_iface->getNetmask());
 
             if (checkOverlapping(*(natcmd->t_addr),
-                                 iface_net.getBroadcastAddress()) ||
+                                 natcmd->t_iface->getBroadcastAddress()) ||
                 checkOverlapping(*(natcmd->t_addr),
-                                 iface_net.getAddress()) )
+                                 natcmd->t_iface->getAddress()) )
                 compiler->warning("Global pool "
                                   +printGlobalPoolAddress(*(natcmd->t_addr)) 
                                   +" overlaps with broadcast address. Rule "
@@ -1273,7 +1269,7 @@ bool  NATCompiler_pix::DetectOverlappingGlobalPoolsAndStaticRules::processNext()
 
             if (natcmd->type== INTERFACE) 
             {
-                addr.setNetmask("255.255.255.255");
+                addr.setNetmask(InetNetmask(InetAddr::getAllOnes()));
             }
 
             if ( checkOverlapping(  addr, outa->getAddress()) ||
@@ -1314,11 +1310,11 @@ bool  NATCompiler_pix::DetectDuplicateNAT::processNext()
             Interface *int1=natcmd->t_iface;
             Interface *int2=nc->t_iface;
 
-//            IPAddress a1=natcmd->o_addr->getAddress();
-//            IPAddress a2=nc->o_addr->getAddress();
+//            InetAddr a1=natcmd->o_addr->getAddress();
+//            InetAddr a2=nc->o_addr->getAddress();
 //
-//            Netmask   m1=natcmd->o_addr->getNetmask();
-//            Netmask   m2=nc->o_addr->getNetmask();
+//            InetNetmask   m1=natcmd->o_addr->getInetNetmask();
+//            InetNetmask   m2=nc->o_addr->getNetmask();
 
             if ( int1->getId()==int2->getId() &&
                  natcmd->o_src==nc->o_src &&
@@ -1357,9 +1353,6 @@ bool  NATCompiler_pix::DetectOverlappingStatics::processNext()
     {
         StaticCmd *scmd=pix_comp->static_commands[ rule->getInt("sc_cmd") ];
 
-        IPNetwork nn1( scmd->iaddr->getAddress(), scmd->iaddr->getNetmask() );
-        IPNetwork nn2( scmd->oaddr->getAddress(), scmd->oaddr->getNetmask() );
-
         for (map<int,StaticCmd*>::iterator i1=pix_comp->static_commands.begin();
              i1!=pix_comp->static_commands.end();  i1++ )
         {
@@ -1374,32 +1367,30 @@ bool  NATCompiler_pix::DetectOverlappingStatics::processNext()
                      *(sc->tsrv) == *(scmd->tsrv) && 
                      *(sc->osrc) == *(scmd->osrc) &&
                      sc->oaddr->getId() == scmd->oaddr->getId())
-                    compiler->abort("Static NAT rules overlap or are redundant : rules "+
-                                    sc->rule+" and "+scmd->rule+" : "+
-                                    "outside address: "+
-                                    "interface "+Interface::cast(scmd->oaddr)->getLabel()+
-                                    " inside address: "+
-                                    scmd->iaddr->getAddress().toString()+"/"+
-                                    scmd->iaddr->getNetmask().toString());
-
-
+                    compiler->abort(
+                        "Static NAT rules overlap or are redundant : rules "+
+                        sc->rule+" and "+scmd->rule+" : "+
+                        "outside address: "+
+                        "interface "+Interface::cast(scmd->oaddr)->getLabel()+
+                        " inside address: "+
+                        scmd->iaddr->getAddress().toString()+"/"+
+                        scmd->iaddr->getNetmask().toString());
             } else
             {
-                IPNetwork n1( sc->iaddr->getAddress(), sc->iaddr->getNetmask() );
-                IPNetwork n2( sc->oaddr->getAddress(), sc->oaddr->getNetmask() );
-
                 if ( *(sc->osrv) == *(scmd->osrv) && 
                      *(sc->tsrv) == *(scmd->tsrv) && 
                      *(sc->osrc) == *(scmd->osrc) &&
-                     ( ! getOverlap(nn1,n1).empty() || ! getOverlap(nn2,n2).empty() ) )
-                    compiler->abort("Static NAT rules overlap or are redundant : rules "+
-                                    sc->rule+" and "+scmd->rule+" : "+
-                                    "outside address: "+
-                                    scmd->oaddr->getAddress().toString()+"/"+
-                                    scmd->oaddr->getNetmask().toString()+
-                                    " inside address: "+
-                                    scmd->iaddr->getAddress().toString()+"/"+
-                                    scmd->iaddr->getNetmask().toString());
+                     ( ! getOverlap(*(scmd->iaddr), *(sc->iaddr)).empty() ||
+                       ! getOverlap(*(scmd->oaddr), *(sc->oaddr)).empty() ) )
+                    compiler->abort(
+                        "Static NAT rules overlap or are redundant : rules "+
+                        sc->rule+" and "+scmd->rule+" : "+
+                        "outside address: "+
+                        scmd->oaddr->getAddress().toString()+"/"+
+                        scmd->oaddr->getNetmask().toString()+
+                        " inside address: "+
+                        scmd->iaddr->getAddress().toString()+"/"+
+                        scmd->iaddr->getNetmask().toString());
             }
         }
     }

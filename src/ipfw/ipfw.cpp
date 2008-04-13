@@ -286,7 +286,7 @@ int main(int argc, char * const *argv)
                 for (list<FWObject*>::iterator j=la.begin(); j!=la.end(); ++j) 
                 {
                     IPv4 *ipv4 = IPv4::cast(*j);
-                    if ( ipv4->getAddress().toString()=="0.0.0.0")
+                    if ( ipv4->getAddress() == InetAddr::getAny())
                     {
                         char errstr[256];
                         sprintf(errstr,

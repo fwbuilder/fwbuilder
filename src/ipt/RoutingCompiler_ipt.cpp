@@ -56,8 +56,6 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
-static int chain_no=0;
-
 static std::map<std::string,int> tmp_chain_no;
 
 string RoutingCompiler_ipt::myPlatformName() { return "iptables"; }

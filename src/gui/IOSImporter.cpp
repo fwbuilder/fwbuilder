@@ -40,7 +40,7 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Address.h"
-#include "fwbuilder/IPAddress.h"
+#include "fwbuilder/InetAddr.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/TCPService.h"
@@ -195,17 +195,14 @@ FWObject* IOSImporter::createAddress(const std::string &addr,
     // invert netmask (this is IOS)
     try
     {
-        IPAddress orig_nm(netmask);
-        long nm = orig_nm.to32BitInt();
-        struct in_addr na;
-        na.s_addr = ~nm;
-        correct_nm = IPAddress(&na).toString();
+        InetAddr orig_nm(netmask);
+        correct_nm = (~orig_nm).toString();
         return Importer::createAddress(addr, correct_nm);
     } catch (FWException &ex)
     {
         markCurrentRuleBad(
             std::string("Error converting netmask '") + netmask + "' (address " + addr + ")");
-        return Importer::createAddress(addr, "255.255.255.255");
+        return Importer::createAddress(addr, InetAddr::getAllOnes().toString());
     }
 
 }

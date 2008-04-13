@@ -251,7 +251,7 @@ bool testIPv4(string s)
     bool res=false;
     try
     {
-        IPAddress( s.c_str() );
+        InetAddr( s.c_str() );
         res=true;
     } catch (FWException &ex)
     {    }
@@ -682,7 +682,7 @@ int main(int argc, char * const *argv)
                 {
                     IPv4 *o=IPv4::cast(nobj);
                     o->setName(name);
-                    o->setAddress(addr1);
+                    o->setAddress(InetAddr(addr1));
                 }
                 
             }
@@ -705,8 +705,8 @@ int main(int argc, char * const *argv)
                  FWObject *nobj=createObject(objtype,"/"+lib+"/"+systemGroupPaths[objtype]);
                  AddressRange *o=AddressRange::cast(nobj);
                  o->setName(name);
-                 o->setRangeStart(IPAddress(addr1));
-                 o->setRangeEnd(IPAddress(addr2));
+                 o->setRangeStart(InetAddr(addr1));
+                 o->setRangeEnd(InetAddr(addr2));
 
             }
             else if (objtype==ObjectGroup::TYPENAME)
@@ -723,8 +723,8 @@ int main(int argc, char * const *argv)
                  FWObject *nobj=createObject(objtype,"/"+lib+"/"+systemGroupPaths[objtype]);
                  Network *o=Network::cast(nobj);
                  o->setName(name);
-                 o->setAddress(addr1);
-                 o->setNetmask(addr2);
+                 o->setAddress(InetAddr(addr1));
+                 o->setNetmask(InetNetmask(addr2));
             }
             else if (objtype==Firewall::TYPENAME)
             {
