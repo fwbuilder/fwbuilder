@@ -189,7 +189,7 @@ void NATCompiler_ipt::_expandInterface(Interface *iface,
     {
         if (physAddress::cast(*j)!=NULL) continue;
 
-        IPv4 *ipv4=IPv4::cast(*j);
+        InetAddrMask *ipv4 = dynamic_cast<InetAddrMask*>(*j);
         if (ipv4!=NULL && use_mac && pa!=NULL)
         {
             combinedAddress *ca=new combinedAddress(dbcopy,true);
@@ -207,6 +207,12 @@ void NATCompiler_ipt::_expandInterface(Interface *iface,
     ol.clear();
     ol=nol;
 }
+
+bool compare_addresses_ptr(const InetAddr* a1, const InetAddr* a2)
+{
+    return (*a1 < *a2);
+}
+
 
 /*
  * call this processor after classifyNATRules
@@ -226,13 +232,13 @@ bool NATCompiler_ipt::ConvertLoadBalancingRules::processNext()
         {
             FWObject *o= *i;
             FWObject *obj = NULL;
-            if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-            Address *a = Address::cast(obj);
-
+            if (FWReference::cast(o)!=NULL)
+                obj=FWReference::cast(o)->getPointer();
+            InetAddrMask *a = dynamic_cast<InetAddrMask*>(obj);
             al.push_back( a->getAddressPtr() );
         }
 
-        al.sort();
+        al.sort(compare_addresses_ptr);
 
         const InetAddr* a1 = al.front();
         list<const InetAddr*>::iterator j=al.begin();

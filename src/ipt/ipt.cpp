@@ -102,7 +102,7 @@ FWObjectDatabase       *objdb = NULL;
 class UpgradePredicate: public XMLTools::UpgradePredicate
 {
     public:
-    virtual bool operator()(const string &msg) const 
+    virtual bool operator()(const string&) const 
     { 
 	cout << _("Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it.") << endl;
 	return false;
@@ -360,7 +360,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
                 for (list<FWObject*>::iterator j=la.begin(); j!=la.end(); ++j) 
                 {
-                    IPv4 *ipv4 = IPv4::cast(*j);
+                    InetAddrMask *ipv4 = dynamic_cast<InetAddrMask*>(*j);
 
                     if ( ipv4->getAddress().isAny())
                     {

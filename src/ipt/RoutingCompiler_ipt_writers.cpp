@@ -82,11 +82,7 @@ string RoutingCompiler_ipt::PrintRule::_printAddr(Address  *o)
     InetNetmask   mask;
     try {
         addr=o->getAddress();
-
-        if (Interface::cast(o)!=NULL || IPv4::cast(o)!=NULL)
-            mask = InetNetmask(InetAddr::getAllOnes());
-        else
-            mask = o->getNetmask();
+        mask = o->getNetmask();
     }
     catch (FWException ex)  
     {
@@ -107,13 +103,16 @@ string RoutingCompiler_ipt::PrintRule::_printAddr(Address  *o)
     }
 
 
-    if (addr == InetAddr::getAny() && mask == InetAddr::getAny()) 
+    if (addr.isAny() && mask.isAny()) 
     {
         ostr << "default ";
     } else 
     {
         ostr << addr.toString();
-        if (!mask.isHostMask())
+
+        if (Interface::cast(o)==NULL &&
+            dynamic_cast<InetAddrMask*>(o)->dimension() > 1 &&
+            !mask.isHostMask())
         {
             ostr << "/" << mask.getLength();
         }

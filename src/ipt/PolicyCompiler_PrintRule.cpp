@@ -916,7 +916,8 @@ string PolicyCompiler_ipt::PrintRule::_printAddr(Address  *o)
     {
         ostr << addr.toString();
 
-        if (Interface::cast(o)==NULL && IPv4::cast(o)==NULL &&
+        if (Interface::cast(o)==NULL &&
+            dynamic_cast<InetAddrMask*>(o)->dimension() > 1 &&
             !mask.isHostMask())
         {
             ostr << "/" << mask.getLength();

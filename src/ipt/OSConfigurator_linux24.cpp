@@ -255,14 +255,17 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Address *addr)
             find(virtual_addresses.begin(),virtual_addresses.end(),
                  addr->getAddress())==virtual_addresses.end()) 
         {
-            IPv4 *iaddr=IPv4::cast( findAddressFor(addr, fw ) );
-            if (iaddr!=NULL)
+            FWObject *vaddr = findAddressFor(addr, fw );
+            if (vaddr!=NULL)
             {
-                Interface *iface=Interface::cast(iaddr->getParent());
+                Interface *iface = Interface::cast(vaddr->getParent());
                 assert(iface!=NULL);
 
+                InetAddrMask *vaddr_addr = dynamic_cast<InetAddrMask*>(vaddr);
+                assert(vaddr_addr!=NULL);
+
                 ostr << "add_addr " << addr->getAddress().toString() << " "
-                       << iaddr->getNetmask().getLength() <<  " "
+                       << vaddr_addr->getNetmask().getLength() <<  " "
                        << iface->getName() << endl;
         
                 virtual_addresses.push_back(addr->getAddress());
@@ -358,7 +361,7 @@ void OSConfigurator_linux24::configureInterfaces()
             FWObjectTypedChildIterator j=iface->findByType(IPv4::TYPENAME);
             for ( ; j!=j.end(); ++j ) 
             {
-                IPv4 *iaddr=IPv4::cast(*j);
+                InetAddrMask *iaddr = dynamic_cast<InetAddrMask*>(*j);
 
                 output << "add_addr " << iaddr->getAddress().toString() << " "
                        << iaddr->getNetmask().getLength() << " "

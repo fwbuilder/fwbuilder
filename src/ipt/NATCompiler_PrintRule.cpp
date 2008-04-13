@@ -482,7 +482,9 @@ string NATCompiler_ipt::PrintRule::_printAddr(Address  *o,bool print_mask,bool p
 
 	    ostr << addr.toString();
 
-            if (print_mask && IPv4::cast(o)==NULL && !mask.isHostMask())
+            if (print_mask &&
+                dynamic_cast<InetAddrMask*>(o)->dimension()!=1 &&
+                !mask.isHostMask())
             {
                 ostr << "/" << mask.getLength();
             }

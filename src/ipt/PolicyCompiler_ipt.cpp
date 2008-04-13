@@ -167,27 +167,23 @@ void PolicyCompiler_ipt::_expandInterface(Interface *iface,
 {
     std::list<FWObject*>    ol1;
 
-    std::list<FWObject*>    lipv4;
+    std::list<FWObject*>    lipaddr;
     std::list<FWObject*>    lother;
     physAddress            *pa=NULL;
 
     Compiler::_expandInterface(iface,ol1);
-/*
-    cerr << "PolicyCompiler_ipt::_expandInterface";
-    cerr << "  iface->name=" << iface->getName();
-    cerr << "  iface->id=" << iface->getId();
-    cerr << "  ol1.size=" << ol1.size() << endl;
-*/
     for (std::list<FWObject*>::iterator j=ol1.begin(); j!=ol1.end(); j++)
     {
-/*
-        cerr << "  (*j)->name=" << (*j)->getName();
-        cerr << "  (*j)->parent->name=" << (*j)->getParent()->getName();
-        cerr << "  (*j)->parent->id=" << (*j)->getParent()->getId();
-        cerr << endl;
-*/
-        if (IPv4::cast(*j)!=NULL)        { lipv4.push_back(*j);      continue; }
-        if (physAddress::cast(*j)!=NULL) { pa=physAddress::cast(*j); continue; }
+        if ((*j)->getTypeName() == IPv4::TYPENAME)
+        {
+            lipaddr.push_back(*j);
+            continue;
+        }
+        if (physAddress::cast(*j)!=NULL)
+        {
+            pa=physAddress::cast(*j);
+            continue;
+        }
         lother.push_back(*j);
     }
 
@@ -227,12 +223,13 @@ void PolicyCompiler_ipt::_expandInterface(Interface *iface,
 
 
 
-    if (lipv4.empty())    ol.push_back(pa);
+    if (lipaddr.empty())    ol.push_back(pa);
     else
     {
-        for (std::list<FWObject*>::iterator j=lipv4.begin(); j!=lipv4.end(); j++)
+        std::list<FWObject*>::iterator j=lipaddr.begin();
+        for ( ; j!=lipaddr.end(); j++)
         {
-            IPv4 *ipv4=IPv4::cast(*j);
+            InetAddrMask *ipv4 = dynamic_cast<InetAddrMask*>(*j);
             if (use_mac)
             {
                 combinedAddress *ca=new combinedAddress();
@@ -244,7 +241,7 @@ void PolicyCompiler_ipt::_expandInterface(Interface *iface,
                 ca->setPhysAddress( pa->getPhysAddress() );
                 ol.push_back(ca);
             } else
-                ol.push_back(ipv4);
+                ol.push_back(*j);
         }
     }
     ol.insert(ol.end(),lother.begin(),lother.end());
@@ -1725,7 +1722,7 @@ bool PolicyCompiler_ipt::bridgingFw::checkForMatchingBroadcastAndMulticast(
             FWObjectTypedChildIterator k = iface->findByType(IPv4::TYPENAME);
             for ( ; k!=k.end(); ++k )
             {
-                IPv4 *ipv4 = IPv4::cast(*k);
+                InetAddrMask *ipv4 = dynamic_cast<InetAddrMask*>(*k);
 
 /*
  * bug #780345: if interface has netmask 255.255.255.255, its own

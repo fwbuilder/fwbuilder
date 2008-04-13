@@ -1,13 +1,30 @@
+2008-04-13  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* NATCompiler_PrintRule.cpp (PrintRule::_printAddr): fixed bug (no
+	#): compiler fwb_ipt used to treat host objects as networks in
+	TDst and generate iptables output with /netmask of the interface.
+
+	* (various places in src/ipt): PREPARATION FOR IPV6: Changing
+	IPv4::cast to dynamic_cast<InetAddrMask*> everywhere.  In loops
+	that walk child objects of interfaces, cast child objects to
+	InetAddrMask* or to FWObject* instead of IPv4*. This is to
+	facilitate support for ipv6 in the future. In all these places we
+	need to use two aspects of the child objects: either their
+	position in the tree, in which case FWObject* is sufficient, or
+	their address/netmask, in which case we should use InetAddrMask.
+
 2008-03-09  vadim  <vadim@vk.crocodile.org>
 
-	* pf.cpp: fixed bug #1899914: "Script to apply the new rules."  It
-	is enough to execute "pfctl -f file.conf" to load PF policy. There
-	is no need to purge filter and nat rules first, then reload it.
+	* (from 2.1) pf.cpp: fixed bug #1899914: "Script to apply the new
+	rules."  It is enough to execute "pfctl -f file.conf" to load PF
+	policy. There is no need to purge filter and nat rules first, then
+	reload it.
 
-	* RCS.cpp (RCSEnvFix::RCSEnvFix): fixed bug #1908351: "rcs does
-	not save log message and file remains locked"
+	* (from 2.1) RCS.cpp (RCSEnvFix::RCSEnvFix): fixed bug #1908351:
+	"rcs does not save log message and file remains locked"
 
-	* Compiler.cpp (emptyGroupsInRE::countChildren): (libfwbuilder)
+	* (from 2.1)
+	Compiler.cpp (emptyGroupsInRE::countChildren): (libfwbuilder)
 	fixed bug #1905718: "Group of DNS Name objects considered empty"
 	
 2008-03-05  vadim  <vadim@vk.crocodile.org>
