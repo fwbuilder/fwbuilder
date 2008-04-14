@@ -89,15 +89,17 @@ void NATCompiler_ipf::PrintRule::_printAddr_L(Address  *o, bool print_netmask)
     if (Interface::cast(o)!=NULL && ! Interface::cast(o)->isDyn()) 
 	mask = InetNetmask(InetAddr::getAllOnes());
 
-    if (IPv4::cast(o)!=NULL)
+    if (dynamic_cast<InetAddrMask*>(o)->dimension()==1)
 	mask = InetNetmask(InetAddr::getAllOnes());
 
     if (addr.isAny() && mask.isAny())
     {
         compiler->output << "any ";
-    } else {
+    } else
+    {
 
       compiler->output << addr.toString();
+
       if (print_netmask)
          compiler->output << "/" << mask.getLength();
       compiler->output  << " ";
@@ -112,7 +114,7 @@ void NATCompiler_ipf::PrintRule::_printAddr_R(Address  *o, bool print_netmask)
     if (Interface::cast(o) != NULL)
 	mask = InetNetmask(InetAddr::getAllOnes());
 
-    if (IPv4::cast(o)!=NULL)
+    if (dynamic_cast<InetAddrMask*>(o)->dimension()==1)
 	mask = InetNetmask(InetAddr::getAllOnes());
 
     if (addr.isAny() && print_netmask &&  mask.isHostMask())

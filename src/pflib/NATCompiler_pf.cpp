@@ -84,15 +84,22 @@ int NATCompiler_pf::prolog()
 	}
 
 	if (!found_ext)
-	    throw FWException(_("At least one interface should be marked as external, can not configure NAT"));
+	    throw FWException(
+                "At least one interface should be marked as external, "
+                "can not configure NAT");
     }
 
-/* pseudo-host with ip address 127.0.0.1  We'll use it for redirection NAT rules */
+/* pseudo-host with ip address 127.0.0.1  We'll use it for redirection
+ * NAT rules
+ */
     //FWObject    *grp;
-    loopback_address=IPv4::cast(dbcopy->create(IPv4::TYPENAME) );
-    loopback_address->setAddress(InetAddr::getLoopbackAddr());
+    loopback_address = dbcopy->create(IPv4::TYPENAME);
     loopback_address->setName("__loopback_address__");
     loopback_address->setId("__loopback_address_id__");
+
+    dynamic_cast<InetAddrMask*>(loopback_address)->setAddress(
+        InetAddr::getLoopbackAddr());
+
     dbcopy->add(loopback_address,false);
     cacheObj(loopback_address);
 
@@ -650,7 +657,7 @@ bool NATCompiler_pf::ReplaceObjectsTDst::processNext()
         RuleElementTDst *rel=rule->getTDst();          assert(rel);
         Address         *otdst=compiler->getFirstTDst(rule);
         Interface       *loopback=NULL;
-        IPv4            *loopback_address=NULL;
+        FWObject        *loopback_address=NULL;
 
 /* if firewall is used in TDst in redirection rule, replace it with
  * its loopback interface
@@ -661,12 +668,12 @@ bool NATCompiler_pf::ReplaceObjectsTDst::processNext()
             for (std::list<FWObject*>::iterator i=l2.begin();
                  i!=l2.end(); ++i) 
             {
-                Interface *iface=dynamic_cast<Interface*>(*i);
+                Interface *iface = dynamic_cast<Interface*>(*i);
                 assert(iface);
                 if (iface->isLoopback()) 
                 {
-                    loopback=iface;
-                    loopback_address=IPv4::cast(loopback->getFirstByType(IPv4::TYPENAME));
+                    loopback = iface;
+                    loopback_address = loopback->getFirstByType(IPv4::TYPENAME);
                 }
             }
 

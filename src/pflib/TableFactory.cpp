@@ -215,7 +215,8 @@ string TableFactory::PrintTables()
                     InetAddr addr=A->getAddress();
                     InetNetmask   mask=A->getNetmask();
 
-                    if (IPv4::cast(A)!=NULL) {
+                    if (dynamic_cast<InetAddrMask*>(A)->dimension()==1)
+                    {
                         mask = InetNetmask(InetAddr::getAllOnes());
                     }
 

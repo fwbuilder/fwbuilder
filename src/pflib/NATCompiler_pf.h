@@ -59,12 +59,12 @@ namespace fwcompiler {
 
         struct redirectRuleInfo {
             std::string            natrule_label;
-            libfwbuilder::Address *old_tdst;
-            libfwbuilder::Address *new_tdst;
+            libfwbuilder::FWObject *old_tdst;
+            libfwbuilder::FWObject *new_tdst;
             libfwbuilder::Service *tsrv;
             redirectRuleInfo(const std::string &rl,
-                             libfwbuilder::Address *oa,
-                             libfwbuilder::Address *na,
+                             libfwbuilder::FWObject *oa,
+                             libfwbuilder::FWObject *na,
                              libfwbuilder::Service *s) 
             {  natrule_label=rl; old_tdst=oa; new_tdst=na; tsrv=s; }
         };
@@ -72,7 +72,7 @@ namespace fwcompiler {
 
 	protected:
 
-	libfwbuilder::IPv4  *loopback_address;
+	libfwbuilder::FWObject *loopback_address;
         TableFactory   *tables;
 
 

@@ -2190,9 +2190,10 @@ bool PolicyCompiler_ipt::splitIfSrcFWNetwork::processNext()
         {
             FWObject *o   = *i1;
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-            Address *a=Address::cast(o);
-            Address *na;
-            if ( Network::isA(a) && (na=compiler->findAddressFor( a , compiler->fw ))!=NULL )
+            Address *a = Address::cast(o);
+            FWObject *na;
+            if (Network::isA(a) &&
+                (na=compiler->findAddressFor(a, compiler->fw ))!=NULL)
             {
                 obj_subst[a]=na;
             }
@@ -2261,9 +2262,10 @@ bool PolicyCompiler_ipt::splitIfDstFWNetwork::processNext()
         {
             FWObject *o   = *i1;
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-            Address *a=Address::cast(o);
-            Address *na;
-            if ( Network::isA(a) && (na=compiler->findAddressFor( a , compiler->fw ))!=NULL )
+            Address *a = Address::cast(o);
+            FWObject *na;
+            if (Network::isA(a) &&
+                (na=compiler->findAddressFor(a, compiler->fw))!=NULL)
             {
                 obj_subst[a]=na;
             }

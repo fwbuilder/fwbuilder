@@ -13,6 +13,9 @@
 	position in the tree, in which case FWObject* is sufficient, or
 	their address/netmask, in which case we should use InetAddrMask.
 
+	* (various places in src/pflib): PREPARATION FOR IPV6: Changing
+	IPv4::cast to dynamic_cast<InetAddrMask*> everywhere.
+
 2008-03-09  vadim  <vadim@vk.crocodile.org>
 
 	* (from 2.1) pf.cpp: fixed bug #1899914: "Script to apply the new

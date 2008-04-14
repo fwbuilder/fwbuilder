@@ -282,7 +282,8 @@ void PolicyCompiler_ipf::PrintRule::_printAddr(Address  *o,bool neg)
 	mask = InetNetmask(InetAddr::getAllOnes());
     }
 
-    if (IPv4::cast(o)!=NULL) {
+    if (dynamic_cast<InetAddrMask*>(o)->dimension()==1)
+    {
 	mask = InetNetmask(InetAddr::getAllOnes());
     }
 

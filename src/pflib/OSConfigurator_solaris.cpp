@@ -98,14 +98,16 @@ void OSConfigurator_solaris::addVirtualAddressForNAT(const Address *addr)
     if (virtual_addresses.empty() || 
 	find(virtual_addresses.begin(),virtual_addresses.end(),addr->getAddress())==virtual_addresses.end()) 
     {
-        IPv4 *iaddr=IPv4::cast( findAddressFor(addr, fw ) );
+        FWObject *iaddr = findAddressFor(addr, fw );
         if (iaddr!=NULL)
         {
+            InetAddrMask *iaddr_addr = dynamic_cast<InetAddrMask*>(iaddr);
+            assert(iaddr_addr!=NULL);
             Interface *iface=Interface::cast(iaddr->getParent());
             assert(iface!=NULL);
 
             output << "add_addr " << addr->getAddress().toString() << " "
-                   << iaddr->getNetmask().toString() <<  " "
+                   << iaddr_addr->getNetmask().toString() <<  " "
                    << iface->getName() << endl;
         
             virtual_addresses.push_back(addr->getAddress());
@@ -114,35 +116,6 @@ void OSConfigurator_solaris::addVirtualAddressForNAT(const Address *addr)
     }
 }
 
-#if 0
-    if (virtual_addresses.empty() || 
-	find(virtual_addresses.begin(),virtual_addresses.end(),addr->getAddress())==virtual_addresses.end()) {
-
-        FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
-        for ( ; i!=i.end(); ++i ) 
-        {
-	    Interface *iface=dynamic_cast<Interface*>(*i);
-	    assert(iface);
-
-	    FWObjectTypedChildIterator j=iface->findByType(IPv4::TYPENAME);
-	    for ( ; j!=j.end(); ++j ) 
-            {
-		IPv4 *iaddr=IPv4::cast(*j);
-                if ( ipv4->belongs( addr->getAddress() ) )
-                {
-                    output << "ifconfig " 
-                           << iface->getName() << " "
-                           << addr->getAddress().toString() << " alias" << endl;
-                    virtual_addresses.push_back(addr->getAddress());
-                    return;
-                }
-            }
-	}
-	warning(_("Can not add virtual address ") + addr->getAddress().toString() );
-    }
-} 
-#endif
-   
 int OSConfigurator_solaris::prolog()
 {
     printPathForAllTools("solaris");
@@ -219,8 +192,7 @@ void  OSConfigurator_solaris::configureInterfaces()
             FWObjectTypedChildIterator j=iface->findByType(IPv4::TYPENAME);
             for ( ; j!=j.end(); ++j ) 
             {
-                IPv4 *iaddr=IPv4::cast(*j);
-
+                InetAddrMask *iaddr = dynamic_cast<InetAddrMask*>(*j);
                 output << "add_addr " << iaddr->getAddress().toString() << " "
                        << iaddr->getNetmask().toString() << " "
                        << iface->getName() << endl;

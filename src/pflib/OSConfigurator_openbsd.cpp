@@ -89,14 +89,16 @@ void OSConfigurator_openbsd::addVirtualAddressForNAT(const Address *addr)
     if (virtual_addresses.empty() || 
 	find(virtual_addresses.begin(),virtual_addresses.end(),addr->getAddress())==virtual_addresses.end()) 
     {
-        IPv4 *iaddr=IPv4::cast( findAddressFor(addr, fw ) );
+        FWObject *iaddr = findAddressFor(addr, fw );
         if (iaddr!=NULL)
         {
-            Interface *iface=Interface::cast(iaddr->getParent());
+            InetAddrMask *iaddr_addr = dynamic_cast<InetAddrMask*>(iaddr);
+            assert(iaddr_addr!=NULL);
+            Interface *iface = Interface::cast(iaddr->getParent());
             assert(iface!=NULL);
 
             output << "add_addr " << addr->getAddress().toString() << " "
-                   << iaddr->getNetmask().toString() <<  " "
+                   << iaddr_addr->getNetmask().toString() <<  " "
                    << iface->getName() << endl;
         
             virtual_addresses.push_back(addr->getAddress());
@@ -115,8 +117,9 @@ void OSConfigurator_openbsd::addVirtualAddressForNAT(const Address *addr)
 	    assert(iface);
 
 	    FWObjectTypedChildIterator j=iface->findByType(IPv4::TYPENAME);
-	    for ( ; j!=j.end(); ++j ) {
-		IPv4 *iaddr=IPv4::cast(*j);
+	    for ( ; j!=j.end(); ++j )
+            {
+                InetAddrMask *iaddr = dynamic_cast<InetAddrMask*>(*j);
                 if ( ipv4->belongs( addr->getAddress() ) )
                 {
                     output << "ifconfig " 
@@ -210,8 +213,7 @@ void  OSConfigurator_openbsd::configureInterfaces()
             FWObjectTypedChildIterator j=iface->findByType(IPv4::TYPENAME);
             for ( ; j!=j.end(); ++j ) 
             {
-                IPv4 *iaddr=IPv4::cast(*j);
-
+                InetAddrMask *iaddr = dynamic_cast<InetAddrMask*>(*j);
                 output << "add_addr " << iaddr->getAddress().toString() << " "
                        << iaddr->getNetmask().toString() << " "
                        << iface->getName() << endl;

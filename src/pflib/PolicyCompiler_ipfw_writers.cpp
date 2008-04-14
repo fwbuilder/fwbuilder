@@ -293,8 +293,11 @@ void PolicyCompiler_ipfw::PrintRule::_printAddr(Address  *o,bool neg)
     InetAddr addr=o->getAddress();
     InetNetmask   mask=o->getNetmask();
 
-    if (Interface::cast(o)!=NULL)  mask = InetNetmask(InetAddr::getAllOnes());
-    if (IPv4::cast(o)!=NULL)       mask = InetNetmask(InetAddr::getAllOnes());
+    if (Interface::cast(o)!=NULL)
+        mask = InetNetmask(InetAddr::getAllOnes());
+
+    if (dynamic_cast<InetAddrMask*>(o)->dimension()==1)
+        mask = InetNetmask(InetAddr::getAllOnes());
 
     if (addr.isAny() && mask.isAny()) 
     {
