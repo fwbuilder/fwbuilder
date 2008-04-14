@@ -507,8 +507,8 @@ namespace fwcompiler {
          * If obj1 is an Interface object, then corresponding Interface
          * object belonging to the firewall is returned (if found).
          */
-        libfwbuilder::Address* findAddressFor(const libfwbuilder::Address *obj1,
-                                              const libfwbuilder::Address *obj2);
+        libfwbuilder::FWObject* findAddressFor(const libfwbuilder::Address *o1,
+                                               const libfwbuilder::Address *o2);
         
 
         /**

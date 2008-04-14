@@ -360,27 +360,33 @@ bool RoutingCompiler::contradictionRGtwAndRItf::processNext()
     if (oRItf->getStr("name") == "Any") { return true; }
     
     
-    if( Host::cast(oRGtw) != NULL || Interface::cast(oRGtw) != NULL || IPv4::cast(oRGtw) != NULL) {
+    if (Host::cast(oRGtw) != NULL ||
+        Interface::cast(oRGtw) != NULL ||
+        dynamic_cast<InetAddrMask*>(oRGtw)->dimension()==1)
+    {
 
         const InetAddr* ip_interface;
 
-        if ( Host::cast(oRGtw) != NULL) {
+        if ( Host::cast(oRGtw) != NULL)
+        {
             Host *host=Host::cast(oRGtw);
             ip_interface = host->getAddressPtr();
-        } else if (Interface::cast(oRGtw) != NULL) {
+        } else if (Interface::cast(oRGtw) != NULL)
+        {
             Interface *intf=Interface::cast(oRGtw);
             ip_interface = intf->getAddressPtr();
-        } else if (IPv4::cast(oRGtw) != NULL) {
-            IPv4 *ipv4=IPv4::cast(oRGtw);
+        } else if (dynamic_cast<InetAddrMask*>(oRGtw)->dimension()==1)
+        {
+            InetAddrMask *ipv4 = dynamic_cast<InetAddrMask*>(oRGtw);
             ip_interface = ipv4->getAddressPtr();
         }
 
         
-        list<FWObject*> obj_list = oRItf->getByType("IPv4");
+        list<FWObject*> obj_list = oRItf->getByType(IPv4::TYPENAME);
         for (list<FWObject*>::iterator i=obj_list.begin(); i!=obj_list.end(); ++i) 
         {
-            IPv4 *firewall_addr = IPv4::cast(*i); 
-            if (firewall_addr->belongs(*ip_interface))
+            InetAddrMask *addr = dynamic_cast<InetAddrMask*>(*i);
+            if (addr->belongs(*ip_interface))
                 return true;
         }
 

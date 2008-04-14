@@ -505,14 +505,14 @@ bool Compiler::_complexMatchWithInterface(Address   *obj1,
 
     if ( iface->isRegular() )
     {
-        FWObjectTypedChildIterator k=iface->findByType(IPv4::TYPENAME);
+        FWObjectTypedChildIterator k = iface->findByType(IPv4::TYPENAME);
         for ( ; k!=k.end(); ++k ) 
         {
-            IPv4 *ipv4=IPv4::cast(*k);
+            InetAddrMask *ipv4 = dynamic_cast<InetAddrMask*>(*k);
                     
             if ( ipv4->getAddress()==obj1_addr ) return true;
 
-            InetAddrMask n( ipv4->getAddress() , ipv4->getNetmask() );
+            InetAddrMask n(ipv4->getAddress() , ipv4->getNetmask());
 /*
  * bug #1040773: need to match network address as well as
  * broadcast. Packets sent to the network address (192.168.1.0 for net
@@ -640,29 +640,23 @@ Interface* Compiler::findInterfaceFor(const Address *obj1, const Address *obj2)
             FWObjectTypedChildIterator k=iface->findByType(IPv4::TYPENAME);
             for ( ; k!=k.end(); ++k ) 
             {
-                IPv4 *addr=IPv4::cast(*k);
+                InetAddrMask *addr = dynamic_cast<InetAddrMask*>(*k);
                 assert(addr);
 
-                if (addr->getId() == obj1->getId() ) return iface;
+                if ((*k)->getId() == obj1->getId() ) return iface;
                 if (addr->getAddress() == obj1->getAddress() ) return iface;
 
-                if (Network::constcast(obj1)!=NULL) 
-                {
-                    InetAddrMask n1( obj1->getAddress() ,
-                                  obj1->getNetmask() );
-                    if (n1.belongs( addr->getAddress() ) ) return iface; 
-                }
+                if (Network::constcast(obj1)!=NULL && 
+                    obj1->belongs( addr->getAddress())) return iface; 
 
-/* n2 is the network interface is sitting on */
-                InetAddrMask n2( addr->getAddress() , addr->getNetmask() );
-                if ( n2.belongs( obj1->getAddress() ) )      return iface;
+                if ( addr->belongs( obj1->getAddress() ) ) return iface;
             }
         }
     }
     return NULL;
 }
 
-Address* Compiler::findAddressFor(const Address *obj1,const Address *obj2)
+FWObject* Compiler::findAddressFor(const Address *obj1,const Address *obj2)
 {
     FWObjectTypedChildIterator j=obj2->findByType(Interface::TYPENAME);
     for ( ; j!=j.end(); ++j ) 
@@ -677,22 +671,17 @@ Address* Compiler::findAddressFor(const Address *obj1,const Address *obj2)
             FWObjectTypedChildIterator k=iface->findByType(IPv4::TYPENAME);
             for ( ; k!=k.end(); ++k ) 
             {
-                IPv4 *addr=IPv4::cast(*k);
+                InetAddrMask *addr = dynamic_cast<InetAddrMask*>(*k);
                 assert(addr);
 
-                if (addr->getId() == obj1->getId() ) return addr;
-                if (addr->getAddress() == obj1->getAddress() ) return addr;
+                if ((*k)->getId() == obj1->getId()) return (*k);
 
-                if (Network::constcast(obj1)!=NULL) 
-                {
-                    InetAddrMask n1( obj1->getAddress(),
-                                  obj1->getNetmask() );
-                    if (n1.belongs( addr->getAddress() ) ) return addr; 
-                }
+                if (addr->getAddress() == obj1->getAddress() ) return (*k);
 
-/* n2 is the network interface is sitting on */
-                InetAddrMask n2( addr->getAddress() , addr->getNetmask() );
-                if ( n2.belongs( obj1->getAddress() ) )      return addr;
+                if (Network::constcast(obj1)!=NULL &&
+                    obj1->belongs( addr->getAddress())) return (*k);
+
+                if (addr->belongs( obj1->getAddress())) return (*k);
             }
         }
     }

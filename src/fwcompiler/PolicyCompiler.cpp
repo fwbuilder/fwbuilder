@@ -707,19 +707,22 @@ bool PolicyCompiler::checkForZeroAddr::processNext()
 
     Address *a=NULL;
 
-    a=findHostWithNoInterfaces( rule->getSrc() );
-    if (a==NULL) a=findHostWithNoInterfaces( rule->getDst() );
+    a = findHostWithNoInterfaces( rule->getSrc() );
+    if (a==NULL) a = findHostWithNoInterfaces( rule->getDst() );
 
     if (a!=NULL)
-        compiler->abort("Object '"+a->getName()+"' has no interfaces, therefore it does not have an address and can not be used in the rule."+" Rule "+rule->getLabel());
+        compiler->abort("Object '"+a->getName()+
+                        "' has no interfaces, therefore it does not have "
+                        "address and can not be used in the rule."+
+                        " Rule "+rule->getLabel());
 
-    a=findZeroAddress( rule->getSrc() );
-    if (a==NULL) a=findZeroAddress( rule->getDst() );
+    a = findZeroAddress( rule->getSrc() );
+    if (a==NULL) a = findZeroAddress( rule->getDst() );
 
     if (a!=NULL)
     {
         string err="Object '"+a->getName()+"'";
-        if (IPv4::cast(a)!=NULL)
+        if (IPv4::cast(a)!=NULL) // || IPv6::cast(a)!=NULL
         {
             FWObject *p=a->getParent();
             Interface *iface=Interface::cast(p);
@@ -731,7 +734,8 @@ bool PolicyCompiler::checkForZeroAddr::processNext()
                 err+=" )";
             }
         }
-        err+=" has address 0.0.0.0, which is equivalent to 'any'. This is most likely an error. Rule "+rule->getLabel();
+        err += " has address 0.0.0.0, which is equivalent to 'any'. "
+            "This is most likely an error. Rule " + rule->getLabel();
 
         compiler->abort(err);
     }
