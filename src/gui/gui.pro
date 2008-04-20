@@ -296,6 +296,7 @@ FORMS = FWBMainWindow_q.ui \
 	metriceditorpanel_q.ui \
 	findwhereusedwidget_q.ui \
 	confirmdeleteobjectdialog_q.ui\
+	rulegrouppanel.ui\
     projectpanel_q.ui\
     asklibforcopydialog_q.ui
 

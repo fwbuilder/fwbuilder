@@ -24,6 +24,7 @@
 */
 
 #include "fwbuilder/Rule.h"
+#include <ui_rulegrouppanel.h>
 
 #include <vector>
 #include <QPalette>
@@ -106,6 +107,35 @@ private:
     RuleSetView *ruleSetView;
 };
 
+class RuleRowInfo 
+{
+public:
+    RuleRowInfo (RuleRowInfo & r)
+    {
+        this->operator =(r);
+    }
+    RuleRowInfo (QString groupName, bool begin,bool hide)
+    {
+        isBeginRow = begin ;
+        this->groupName=groupName;
+        index=NULL;
+        isHide = hide ;
+    }
+    QString groupName ;
+    bool isBeginRow;
+    bool isHide ; 
+    QModelIndex * index ;
+    RuleRowInfo & operator = (RuleRowInfo & r)
+    {
+        this->isBeginRow = r.isBeginRow;
+        this->groupName = r.groupName;
+        this->index = r.index;
+        this->isHide = r.isHide ;
+        return *this;
+    }
+
+};
+
 class RuleTableModel : public QAbstractTableModel
 {
     friend class RuleSetView;
@@ -137,6 +167,20 @@ protected:
     RuleSetView *ruleSetView;
 };
 
+class RuleGroupPanel : public QFrame, public Ui_RuleGroupPanel
+{
+    Q_OBJECT 
+
+public:
+
+    int row  ;
+    RuleSetView * rsv ;
+    RuleGroupPanel (QWidget * parent,RuleSetView * rsv, int row) ;
+public slots:
+    void showHideRuleGroup();
+
+};
+
 class RuleSetView : public QTableView
 {
     friend class headerMouseEventInterceptor;
@@ -146,6 +190,7 @@ class RuleSetView : public QTableView
     Q_OBJECT
     
  public slots:
+    
     void selectionChanged(const QItemSelection&, const QItemSelection&);
     void restoreSelection(bool same_widget);
     void currentChanged( const QModelIndex &current );
@@ -153,6 +198,13 @@ class RuleSetView : public QTableView
     void itemDoubleClicked(const QModelIndex & index);
     void contextMenu(int row, int col, const QPoint &pos);
     void contextMenuRequested ( const QPoint &p );
+    
+    void newGroup();
+    void addToUpGroup ();
+    void addToBottomGroup();
+    void removeFromGroup();
+    
+    void showHideRuleGroup (RuleGroupPanel * rgp);
 
     void editSelected();
     void copySelectedObject();
@@ -289,7 +341,28 @@ class RuleSetView : public QTableView
  * adding and removal (because I need to manually shift elements in a
  * loop).
  */
-    std::map<int,libfwbuilder::FWObject*> ruleIndex;
+    //std::map<int,libfwbuilder::FWObject*> ruleIndex;
+    QMap<int,libfwbuilder::FWObject*> ruleIndex;
+
+    void addRuleGroupPanel (int row);
+    void deleteRuleGroupPanel (int row);
+    void insertRuleIndex (int idx);
+    void removeRuleIndex (int idx);
+    void updateGroups ();
+    void refreshGroups ();
+
+    int getUpNullRuleIndex (int idx);
+    int getDownNullRuleIndex (int idx);
+
+    QVector <RuleRowInfo*> rowsInfo ;
+    RuleRowInfo* getRuleRowInfoByGroupName (QString name);
+    int getRuleRowInfoIndexByGroupName (QString name);
+
+    void createGroup (int row, int count, QString groupName);
+    void removeFromGroup (int row,int count);
+    void addToUpGroup (int row);
+    void addToDownGroup (int row);
+    
     int                                   ncols;
 
     //this bool var is needed for starting drag when user moves the mouse

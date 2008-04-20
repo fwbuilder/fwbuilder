@@ -261,7 +261,6 @@ public:
     QString getDestDir(const QString &fname);
     QString chooseNewFileName(const QString &fname, bool checkPresence,const QString &title);
     void setFileName(const QString &fname);
-    QString getFileName ();
     void check4Depends(libfwbuilder::FWObject *obj, 
        std::list<libfwbuilder::FWObject*> & objList, 
        libfwbuilder::FWObject *lib);

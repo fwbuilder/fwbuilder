@@ -1048,18 +1048,6 @@ QString ProjectPanel::chooseNewFileName(const QString &fname,
     return "";
 }
 
-QString ProjectPanel::getFileName ()
-{
-    if (rcs!=NULL)
-	{
-    	return rcs->getFileName();
-	}
-	else
-	{
-		return QString ();
-	}
-}
-
 void ProjectPanel::setFileName(const QString &fname)
 {
     systemFile=false;

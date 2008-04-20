@@ -79,6 +79,9 @@
 #include <qstyle.h>
 #include <qtimer.h>
 #include <qpixmapcache.h>
+#include <qpushbutton.h>
+#include <qlabel.h>
+#include <qinputdialog.h>
 #include "ProjectPanel.h"
 
 using namespace libfwbuilder;
@@ -145,7 +148,20 @@ QVariant RuleTableModel::headerData(int section, Qt::Orientation orientation, in
         if (role == Qt::SizeHintRole)
             return QSize(45, ruleSetView->getRowHeight(section));
         if (role == Qt::DisplayRole)
-            return QString::number(section);
+        {
+            Rule * rule = Rule::cast (ruleSetView->ruleIndex[section]);
+            if (rule==NULL)
+            {
+                return QString ("");
+            }
+            int counter =0;
+            for (int i = section; i>=0; i--)
+            {
+                if (ruleSetView->ruleIndex[i]==NULL)
+                    counter++;
+            }
+            return QString::number(section-counter);
+        }
         if (role == Qt::FontRole)
         {
             //QFont f = QAbstractTableModel::headerData(section, orientation, role ).value<QFont>();
@@ -723,6 +739,29 @@ void RuleSetView::fixRulePosition(Rule *rule, FWObject *parent, int pos)
         rule->setPosition(pos);
 }
 
+RuleRowInfo* RuleSetView::getRuleRowInfoByGroupName (QString name)
+{
+    if (name=="")
+        name="New Group";
+    for (int i = 0 ; i < rowsInfo.size(); i++)
+    {
+        if (rowsInfo[i]->groupName==name)
+            return rowsInfo[i];
+    }
+    return NULL;
+}
+
+int RuleSetView::getRuleRowInfoIndexByGroupName (QString name)
+{
+    for (int i = 0 ; i < rowsInfo.size(); i++)
+    {
+        if (rowsInfo[i]->groupName==name)
+            return i;
+    }
+    return -1;
+
+}
+
 void RuleSetView::init()
 {
     QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
@@ -755,15 +794,150 @@ void RuleSetView::init()
             colW[col]=br.width() + 10;
         }
     }
+//    QStringList groups ;
+/*
+    for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++)
+    {
+        Rule *r = Rule::cast(*i);  
+        if (r->getRuleGroupName()=="")
+        {
+            r->setRuleGroupName("New group");
+        }
+        else
+        {
+        }
+        
+        QString group = r->getRuleGroupName().c_str();
+        
+        if (!groups.contains(group))
+        {
+            groups << group ;
+            RuleRowInfo * info = new RuleRowInfo;
+            info->groupName = group;
+            
+            info->rules.push_back(r);
+            rowsInfo.push_back (info);
+            
+        }
+        else
+        {
+            RuleRowInfo * info = getRuleRowInfoByGroupName(group);
+            
+            info->rules.push_back(r);
+        }
 
+ 
+    }
+
+    for (int i = 0 ; i < rowsInfo.size(); i++)
+    {
+        RuleRowInfo * info = rowsInfo[i];
+        if (i==0)
+        {
+            info->row=0;
+        }
+        else
+        {
+            info->row=rowsInfo[i-1]->rules.size()+1;
+        
+        }
+    }
+    */
+    row=0;
+ /*   for (int i = 0 ; i < rowsInfo.size(); i++)
+    {
+        RuleRowInfo * info = rowsInfo[i];
+        ruleIndex[row] = NULL;
+        //setSpan (row,0,0,8);
+        //QFrame * frame = new QFrame ();
+        
+        //setIndexWidget (model()->index(row,0),new QPushButton(info->groupName));
+        row++;
+        for (int o = 0 ; o < info->rules.size(); o++)
+        {
+              
+            ruleIndex[row] = info->rules[o];
+            setRuleNumber(row, Rule::cast( info->rules[o] ));
+            if (Rule::cast( info->rules[o] )->getPosition()!=row)
+            {
+                fixRulePosition(Rule::cast( info->rules[o] ), NULL, row);
+            }
+    //        adjustRow(row);
+    
+            int h=16;
+            for (int col=0; col<ncols; col++)
+            {
+                QRect cr = calculateCellSize(row,col);
+                h = QMAX(h, cr.height());
+                if (!userColWidth)
+                    colW[col]=QMAX(colW[col],cr.width());
+            }
+            adjustRow_int(row,h);
+            row++;  
+        }
+    }*/
+    QString memberRow ;
+
+    bool beginGroup = false ;
+//    rowsInfo.clear();
     for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++,row++)
     {
-        ruleIndex[row] = *i;
+    Rule * r = Rule::cast( *i );
+        //setSpan (row,0,0,1);
+       /* 
+        QString group = r->getRuleGroupName().c_str();
+        if (group!=memberRow)
+        {
+           // if (!beginGroup)
+           // {
+                ruleIndex[row] = NULL ;
+                beginGroup = true ;
+                memberRow = group;
+                rowsInfo.push_back (new RuleRowInfo(memberRow,true));
+                //QPanel * p = new QPanel(this);
+                addRuleGroupPanel(row);
+                deleteRuleGroupPanel(row);
+                addRuleGroupPanel(row);
+                deleteRuleGroupPanel(row);
+                addRuleGroupPanel(row);
+                deleteRuleGroupPanel(row);
+                addRuleGroupPanel(row);
+                deleteRuleGroupPanel(row);
+                addRuleGroupPanel(row);
+                deleteRuleGroupPanel(row);
+ //               addRuleGroupPanel(row);
 
-        setRuleNumber(row, Rule::cast( *i ));
+ //               row++;
+            }
+            else
+            {
+                ruleIndex[row] = NULL ;
+                beginGroup = false ;
+                setSpan (row,0,0,8);
+                setIndexWidget (model()->index(row,0),new QFrame());
+                memberRow = group;
+                rowsInfo.push_back (new RuleRowInfo(memberRow,false));
+                row++;
+                if (memberRow!="")
+                {
+                    ruleIndex[row] = NULL ;
+                    beginGroup = true ;
+                    memberRow = group;
+                    rowsInfo.push_back (new RuleRowInfo(memberRow,true));
+                    setSpan (row,0,0,8);
+                    setIndexWidget (model()->index(row,0),new QPushButton(memberRow));
+                    row++;
+                }
+            }
+            
+        }*/
+       
+        ruleIndex[row] = *i;
+        rowsInfo.push_back (NULL);
+        setRuleNumber(row, r);
         if (Rule::cast( *i )->getPosition()!=row)
         {
-            fixRulePosition(Rule::cast( *i ), NULL, row);
+            fixRulePosition(r, NULL, row);
         }
 //        adjustRow(row);
 
@@ -785,9 +959,166 @@ void RuleSetView::init()
     }
 
     //updateContents();
+    updateGroups();
     update();
 
     QApplication::restoreOverrideCursor();
+}
+
+void RuleSetView::addRuleGroupPanel (int row)
+{
+    RuleRowInfo * rri = rowsInfo[row];
+    if (rri==NULL)
+        return ;
+    setSpan (row,0,0,9);
+ //   rri->index = &model()->index(row,0);
+    if (rri->isBeginRow)
+    {
+        bool hide = isRowHidden(row+1);
+        RuleGroupPanel * grouppanel = new RuleGroupPanel(NULL,this,row); 
+        grouppanel->ruleGroupName->setText(rri->groupName);
+        if (!hide)
+        {
+            grouppanel->showHideRuleGroupButton->setText ("Collapse Group");
+        }
+        else
+        {
+            grouppanel->showHideRuleGroupButton->setText ("Expand Group");
+        }
+        setIndexWidget (model()->index(row,0),grouppanel);
+    }
+    else
+    {
+        setIndexWidget (model()->index(row,0),new QFrame());
+    }
+}
+
+void RuleSetView::refreshGroups ()
+{
+  /*  reset ();
+    for (int i = 0 ; i < rowsInfo.size(); i++)
+    {
+
+        Rule * r = Rule::cast(ruleIndex[i]);
+        bool hiden = this->isRowHidden(i);
+        QString group = r->getRuleGroupName().c_str();
+        if (group!=memberRow)
+        {
+            ruleModel->insertRow(i);
+            if (!beginGroup)
+            {
+                insertRuleIndex(i);
+                ruleIndex[i] = NULL ;
+                beginGroup = true ;
+                memberRow = group;
+                RuleRowInfo * rri = new RuleRowInfo(memberRow,true,hiden);
+                rowsInfo.insert (i,rri);
+                //QPanel * p = new QPanel(this);
+                addRuleGroupPanel(i);
+            }
+            else
+            {
+                insertRuleIndex(i);
+                ruleIndex[i] = NULL ;
+                beginGroup = false ;
+                //setSpan (row,0,0,8);
+                //setIndexWidget (model()->index(row,0),new QFrame());
+                rowsInfo.insert (i,new RuleRowInfo(memberRow,false,hiden));
+                memberRow = group;
+                addRuleGroupPanel(i);
+            
+            }
+            i++;
+        }
+
+    }*/
+}
+
+void RuleSetView::updateGroups ()
+{
+    reset ();
+    for (int i = 0 ; i < rowsInfo.size(); i++)
+    {
+        setSpan (i,0,0,1);
+        if (ruleIndex[i]==NULL)
+        {        
+            removeRuleIndex(i);
+            rowsInfo.remove (i);
+            ruleModel->removeRows(i,i);
+            i--;
+        }
+    }
+    
+        QString memberRow ;
+
+    bool beginGroup = false ;
+
+    for (int i = 0 ; i < rowsInfo.size(); i++)
+    {
+        Rule * r = Rule::cast(ruleIndex[i]);
+        bool hiden = this->isRowHidden(i);
+        QString group = r->getRuleGroupName().c_str();
+        if (group!=memberRow)
+        {
+            ruleModel->insertRow(i);
+            if (!beginGroup)
+            {
+                insertRuleIndex(i);
+                ruleIndex[i] = NULL ;
+                beginGroup = true ;
+                memberRow = group;
+                RuleRowInfo * rri = new RuleRowInfo(memberRow,true,false);
+                rowsInfo.insert (i,rri);
+                //QPanel * p = new QPanel(this);
+                addRuleGroupPanel(i);
+            }
+            else
+            {
+                insertRuleIndex(i);
+                ruleIndex[i] = NULL ;
+                beginGroup = false ;
+                //setSpan (row,0,0,8);
+                //setIndexWidget (model()->index(row,0),new QFrame());
+                rowsInfo.insert (i,new RuleRowInfo(memberRow,false,false));
+                memberRow = group;
+                addRuleGroupPanel(i);
+            
+            }
+            i++;
+        }
+
+    }
+
+ /*   removeRuleIndex(top);
+    rowsInfo.remove (top);
+    deleteRuleGroupPanel(top);
+    ruleModel->removeRows(top,top);
+
+    rowsInfo.insert (top,NULL);
+    ruleIndex[top]=r;
+    ruleModel->insertRow(top);
+
+    rowsInfo.insert (top+1,ru);
+    ruleIndex[top+1]=NULL;
+    ruleModel->insertRow(top+1);
+    addRuleGroupPanel(top+1);*/
+        
+//    }
+}
+
+void RuleSetView::deleteRuleGroupPanel (int row)
+{
+ //   RuleRowInfo * rri = rowsInfo[row];
+    
+    /*QWidget * w = indexWidget(*rri->index);
+    if (w!=NULL)
+    {
+        delete w ;
+    }*/
+    setIndexWidget (model()->index(row,0),NULL);
+
+    //setSpan (row,0,0,1);
+    //rowSpan(row,8);
 }
 
 QSize RuleSetView::getPMSize()
@@ -1580,7 +1911,15 @@ Rule* RuleSetView::insertRule(int pos, FWObject *r)
 
     if (r!=NULL)  copyRuleContent(newrule,Rule::cast(r));
 
-    for (int i=ruleIndex.size(); i>pos; --i)  ruleIndex[i]=ruleIndex[i-1];
+    Rule * oldr = Rule::cast(ruleIndex[pos]);
+    for (int i=ruleIndex.size(); i>pos; --i)  
+        ruleIndex[i]=ruleIndex[i-1];
+    //RuleRowInfo * info = getRuleRowInfoByGroupName(newrule->getRuleGroupName().c_str());
+    //if (info!=NULL)
+    //{
+    //    info->rules.push_back (newrule);
+    //}
+    newrule->setRuleGroupName (oldr->getRuleGroupName());
     ruleIndex[pos] = newrule;
 
     if (fwbdebug && PolicyRule::cast(r)!=NULL)
@@ -1817,6 +2156,53 @@ void RuleSetView::setSelectedObject(FWObject* obj)
     openObjectInTree(selectedObject);
 }
 
+void RuleSetView::insertRuleIndex (int idx)
+{
+   for ( int i=ruleIndex.size(); i>idx; --i) 
+    { 
+        ruleIndex[i]=ruleIndex[i-1];
+    }
+ 
+}
+void RuleSetView::removeRuleIndex (int idx)
+{
+    
+   for ( int i=idx; i<ruleIndex.size()-1; ++i) 
+    { 
+        ruleIndex[i]=ruleIndex[i+1];
+    }
+ //   ruleIndex.remove (ruleIndex.size());
+}
+
+int RuleSetView::getUpNullRuleIndex (int idx)
+{
+    for (int i=idx; i>=0; --i) 
+    { 
+        if (ruleIndex[i]==NULL)
+        {
+            return i;
+            
+        }
+    }
+    return -1 ;
+
+}
+
+int RuleSetView::getDownNullRuleIndex (int idx)
+{
+
+    for ( int i=idx; i<ruleIndex.size(); ++i) 
+    { 
+        if (ruleIndex[i]==NULL)
+        {
+            return i;
+            
+        }
+    }
+    return -1;
+}
+
+
 void RuleSetView::openObjectInTree(FWObject *obj)
 {
     if (fwbdebug)
@@ -1839,6 +2225,328 @@ void RuleSetView::openObjectInTree(FWObject *obj)
     setUpdatesEnabled(true);
     update();
 }
+
+void RuleSetView::newGroup()
+{
+    bool ok = false ;
+    QString text = QInputDialog::getText(this, tr(""),
+                                          tr("Enter group name:"), QLineEdit::Normal,
+                                          "New Group", &ok);
+     if (ok && !text.isEmpty())
+    {
+    int row = firstSelectedRule;
+    int count = lastSelectedRule - firstSelectedRule +1;
+    createGroup(row,count,text);   
+
+    }
+
+//    SimpleTextEditor * ste = new SimpleTextEditor(this, "New Group", false, "New Group2");
+//    ste->setModal (true);
+//    ste->show();
+//    QString text = ste->text(); 
+}
+
+void RuleSetView::addToUpGroup ()
+{
+
+    int row = firstSelectedRule;
+    int count = lastSelectedRule - firstSelectedRule +1;
+    int top = getUpNullRuleIndex(row);
+    RuleRowInfo * ru = rowsInfo[top];
+    for (int i = 0; i< count ; i++)
+    {
+        Rule * r = Rule::cast(ruleIndex[row+i]);
+        r->setRuleGroupName (ru->groupName.toAscii().data());
+        ruleIndex[row+i] =r ;
+    }
+    updateGroups();
+/*
+    int row = currentRow();
+    int top = getUpNullRuleIndex(row);
+
+    RuleRowInfo * ru = rowsInfo[top];
+    Rule * r = Rule::cast(ruleIndex[row]);
+    r->setRuleGroupName (ru->groupName.toAscii().data());
+
+    removeRuleIndex(row);
+    rowsInfo.remove (row);
+    ruleModel->removeRows(row,row);
+
+    removeRuleIndex(top);
+    rowsInfo.remove (top);
+    deleteRuleGroupPanel(top);
+    ruleModel->removeRows(top,top);
+
+    rowsInfo.insert (top,NULL);
+    ruleIndex[top]=r;
+    ruleModel->insertRow(top);
+
+    rowsInfo.insert (top+1,ru);
+    ruleIndex[top+1]=NULL;
+    ruleModel->insertRow(top+1);
+    addRuleGroupPanel(top+1);
+    reset();
+
+
+  /*  insertRuleIndex(top-1);
+    
+    removeRuleIndex(top);
+    rowsInfo.remove (top);
+    ruleModel->removeRows(top,top);
+
+    rowsInfo.insert (top,NULL);
+    ruleIndex[top]=ruleIndex[row-1];
+    ruleModel->insertRow(top);
+*/
+//    ;
+//    removeRuleIndex(row+1);
+//    rowsInfo.remove (row+1);
+//    ruleModel->removeRows(row+1,row+1);
+}
+
+void RuleSetView::addToBottomGroup()
+{
+//    int row = currentRow();
+    int row = firstSelectedRule;
+    int bottom = getDownNullRuleIndex(row);
+    RuleRowInfo * ru = rowsInfo[bottom];
+    int count = lastSelectedRule - firstSelectedRule +1;
+    for (int i = 0; i< count ; i++)
+    {
+        Rule * r = Rule::cast(ruleIndex[row+i]);
+        r->setRuleGroupName (ru->groupName.toAscii().data());
+        ruleIndex[row+i] =r ;
+    }
+    updateGroups();
+/*    Rule * r = Rule::cast(ruleIndex[row]);
+    r->setRuleGroupName (ru->groupName.toAscii().data());
+
+//    removeRuleIndex(bottom);
+//    rowsInfo.remove (bottom);
+//    deleteRuleGroupPanel(bottom);
+//    ruleModel->removeRows(bottom,bottom);
+    
+    
+    removeRuleIndex(row);
+    rowsInfo.remove (row);
+    ruleModel->removeRows(row,row);
+
+    rowsInfo.insert (row+1,NULL);
+    insertRuleIndex(row+1);
+    ruleIndex[row+1]=r;
+    ruleModel->insertRow(row+1);
+    init ();
+     //dataChanged();
+    //reset();
+//    rowsInfo.insert (row,ru);
+//    insertRuleIndex(row);
+//    ruleIndex[row]=NULL;
+//    ruleModel->insertRow(row);
+//    addRuleGroupPanel(row);
+//    update();
+
+//    QApplication::restoreOverrideCursor();
+*/
+}
+
+    RuleGroupPanel::RuleGroupPanel (QWidget * parent,RuleSetView * rsv, int row) : QFrame(parent)
+    {
+        this->row= row;
+        this->rsv = rsv;
+        this->setupUi(this);
+        setContentsMargins (0,0,0,0);
+        showHideRuleGroupButton->setText("Collapse Group");
+        connect (showHideRuleGroupButton, SIGNAL(pressed()),this,SLOT(showHideRuleGroup()));
+    }
+
+void RuleGroupPanel::showHideRuleGroup()
+{
+    rsv->showHideRuleGroup(this);
+}
+
+void RuleSetView::showHideRuleGroup(RuleGroupPanel * rgp)
+{
+    QString act = rgp->showHideRuleGroupButton->text();
+    int row = rgp->row ;
+    RuleRowInfo * rrf = rowsInfo[row];
+    int bottom = getDownNullRuleIndex(row+1);
+    int count = bottom-row-1;
+    if (act=="Collapse Group")
+    {
+        for (int i = row+1; i< row+1+count;i++)
+        {
+            hideRow(i);
+        }
+        rrf->isHide=true;
+        //rgp->showHideRuleGroupButton->setText("Expand Group");
+    }
+
+    if (act=="Expand Group")
+    {
+        for (int i = row+1; i< row+1+count;i++)
+        {
+            showRow(i);
+            adjustRow(i);
+            //setRowHeight(i,rowHeights[i]);
+            dataChanged (model()->index(i,0),model()->index(i,8));
+        }
+        rrf->isHide=false;
+        //rgp->showHideRuleGroupButton->setText("Collapse Group");
+    }
+ //   refreshGroups();
+    updateGroups();   
+}
+
+void RuleSetView::removeFromGroup()
+{
+    int row = lastSelectedRule;
+    int count = lastSelectedRule - firstSelectedRule+1;
+
+    removeFromGroup(row,count);
+}
+
+void RuleSetView::createGroup (int row, int count, QString groupName)
+{
+//    insertRuleIndex(row);
+//    insertRuleIndex(row+count+1);
+    for (int i =0 ; i<count; i++)
+        Rule::cast(ruleIndex[row+i])->setRuleGroupName (groupName.toAscii().data());
+    //ruleIndex[row] = NULL ;
+    //ruleIndex[row+count+1] = NULL ;
+    //rowsInfo.insert(row,new RuleRowInfo(groupName,true));
+    //rowsInfo.insert(row+count+1,new RuleRowInfo(groupName,false));
+    //ruleModel->insertRow(row);
+    //ruleModel->insertRow(row+count+1);
+    //addRuleGroupPanel(row);
+    //addRuleGroupPanel(row+count+1);
+    updateGroups();
+}
+
+void RuleSetView::removeFromGroup (int row, int count)
+{
+    for (int i = row ; i < row+count ; i++)
+    {
+        Rule * r = Rule::cast(ruleIndex[row]);
+        r->setRuleGroupName("");
+        ruleIndex[row]=r;
+
+    }
+    updateGroups();
+/*    int beginRow = getUpNullRuleIndex(row) ;
+    int endRow = getDownNullRuleIndex(row) ;
+    if (beginRow==endRow-2)
+    {
+        Rule * r = Rule::cast(ruleIndex[row]);
+        r->setRuleGroupName("");
+        ruleIndex[row]=r;
+        removeRuleIndex(endRow);
+        rowsInfo.remove(endRow);        
+        deleteRuleGroupPanel(endRow);
+        ruleModel->removeRows(endRow,endRow);
+
+        removeRuleIndex(beginRow);
+        rowsInfo.remove(beginRow);        
+        deleteRuleGroupPanel(beginRow);
+        ruleModel->removeRows(beginRow,beginRow);
+        reset ();
+        return ;
+    }
+
+    if (beginRow == row-1)
+    {
+        Rule * r = Rule::cast(ruleIndex[row]);
+        RuleRowInfo * ri = rowsInfo[beginRow];
+
+        removeRuleIndex(row);
+        rowsInfo.remove(row);        
+        ruleModel->removeRows(row,row);
+
+//        removeRuleIndex(beginRow);
+ //       rowsInfo.remove(beginRow);
+ //       deleteRuleGroupPanel(beginRow);        
+ //       ruleModel->removeRows(beginRow,beginRow);
+
+ //       insertRuleIndex(beginRow);
+ //       ruleIndex[beginRow]=NULL;
+ //       rowsInfo.insert(beginRow,ri);
+ //       addRuleGroupPanel(beginRow);
+ //       ruleModel->insertRow(beginRow);        
+
+        insertRuleIndex(beginRow-1);
+        r->setRuleGroupName("");
+        ruleIndex[beginRow-1]=r;
+        rowsInfo.insert(beginRow-1,NULL);
+        ruleModel->insertRow(beginRow-1); 
+        // dataChanged();       
+        //reset ();
+        init() ;
+        return ;
+    }
+
+
+    if (endRow == row+1)
+    {
+        Rule * r = Rule::cast(ruleIndex[row]);
+        RuleRowInfo * ri = rowsInfo[endRow];
+
+
+//        removeRuleIndex(endRow);
+//        rowsInfo.remove(endRow);        
+//        deleteRuleGroupPanel(endRow);        
+//        ruleModel->removeRows(endRow,endRow);
+
+        removeRuleIndex(row);
+        rowsInfo.remove(row);        
+        ruleModel->removeRows(row,row);
+
+        insertRuleIndex(row);
+        r->setRuleGroupName("");
+        ruleIndex[row]=r;
+        rowsInfo.insert(row,NULL);
+        ruleModel->insertRow(row);  
+
+//        insertRuleIndex(row);
+//        ruleIndex[row]=NULL;
+//        rowsInfo.insert(row,ri);
+//        addRuleGroupPanel(row);
+//        ruleModel->insertRow(row);        
+        
+
+      
+        reset ();
+        return ;
+    }
+
+    RuleRowInfo * begin =  new RuleRowInfo("",false);
+    begin->operator =(*(rowsInfo[beginRow]));
+    RuleRowInfo * end =  new RuleRowInfo("",false);
+    end->operator =(*(rowsInfo[endRow]));
+    Rule * r = Rule::cast(ruleIndex[row]);
+    r->setRuleGroupName ("");   
+    
+    insertRuleIndex(row+1);
+    ruleIndex[row+1]=NULL;
+    rowsInfo.insert(row+1,begin);
+    ruleModel->insertRow(row+1);    
+
+    insertRuleIndex(row);
+    ruleIndex[row]=NULL;
+    rowsInfo.insert(row,end);
+    ruleModel->insertRow(row);    
+    init ();
+*/
+}
+
+void RuleSetView::addToUpGroup (int )
+{
+
+}
+
+void RuleSetView::addToDownGroup (int )
+{
+
+}
+
 
 void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
 {
@@ -1897,6 +2605,42 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
     lastPopupMenuAction=None;
 
     QMenu *popup=new QMenu(this);
+    Rule *r = Rule::cast(ruleIndex[row]);
+    if (r!=NULL)
+    {
+        if (r->getRuleGroupName()=="")
+        {
+            qDebug ((QString("").setNum(firstSelectedRule)).toAscii().data());
+            qDebug ((QString("").setNum(lastSelectedRule)).toAscii().data());
+
+            popup->addAction( tr("New group"), this, SLOT( newGroup() ));
+            int top = getUpNullRuleIndex(row);
+            if (top==row-1)
+            {
+                RuleRowInfo * ri= rowsInfo[top];
+                QString label = tr("Add to the group ");
+                label += ri->groupName;
+                 popup->addAction( label, this, SLOT( addToUpGroup() ));
+            }
+            int bottom = getDownNullRuleIndex(row);
+            if (bottom==row+1)
+            {
+
+                 RuleRowInfo * ri= rowsInfo[bottom];
+                QString label = tr("Add to the group ");
+                label += ri->groupName;
+                 popup->addAction( label, this, SLOT( addToBottomGroup() ));
+          
+            }
+        }
+        else
+        {
+            popup->addAction( tr("Remove from the group"), this, SLOT( removeFromGroup() ));
+        }
+        popup->addSeparator ();
+    }
+        
+
 
     switch (getColType(col))
     {
@@ -1905,7 +2649,7 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
             Firewall *f = getFirewall();
             string platform=f->getStr("platform");
             QString action_name;
-
+            
             if (Resources::isTargetActionSupported(platform,"Accept"))
             {
                 action_name = getActionNameForPlatform(PolicyRule::Accept,
@@ -2088,7 +2832,7 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
             Rule *rule = Rule::cast(ruleIndex[row]);
             if (rule==NULL)
             {
-                popup->addAction( tr("Insert Rule"), this, SLOT( insertRule() ) );
+                //popup->addAction( tr("Insert Rule"), this, SLOT( insertRule() ) );
             } else
             {
                 //int rn = rule->getPosition();
@@ -3089,7 +3833,7 @@ void RuleSetView::removeRule()
                     mw->removePolicyBranchTab( subset );
 
                 int lastN=ruleIndex.size()-1;
-                ruleIndex.erase(rn);
+                ruleIndex.remove (rn);//erase(rn);
 
                 for (int i=rn; i<lastN; ++i)   ruleIndex[i]=ruleIndex[i+1];
 
@@ -3122,6 +3866,7 @@ void RuleSetView::addRuleAfterCurrent()
     insertRule(lastSelectedRule+1,NULL);
     changingRules = false;
     m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
+    updateGroups();
 }
 
 void RuleSetView::moveRule()
@@ -3329,6 +4074,7 @@ void RuleSetView::pasteRuleAbove()
 
     changingRules = false;
     m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
+    updateGroups();
 }
 
 
@@ -3372,7 +4118,7 @@ void RuleSetView::pasteRuleBelow()
 
     changingRules = false;
     m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
-
+    updateGroups();
 //    if (FWObjectClipboard::obj_clipboard->getObject()!=NULL)
 //        insertRule( rn+1, Rule::cast(FWObjectClipboard::obj_clipboard->getObject()) );
 }

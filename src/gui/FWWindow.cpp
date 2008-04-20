@@ -309,9 +309,14 @@ void FWWindow::fileProp()
 void FWWindow::fileNew()
 {
     ProjectPanel *proj = newProjectPanel();
-    if (proj->fileNew()){
+    if (proj->fileNew())
+    {
     	showSub(proj);
-	} // Memory leak ?
+	}
+    else
+    {
+        delete proj ;  
+    }
 }
 
 void FWWindow::addToRCSActionSetEn(bool en)
@@ -336,15 +341,12 @@ void FWWindow::fileSaveActionSetEn(bool en)
 
 void FWWindow::fileOpen()
 {
-
     std::auto_ptr<ProjectPanel> proj(newProjectPanel());
     if (proj->fileOpen())
 	{
-		if (activeProject()->getFileName()=="")
+		if (activeProject()->getRCS()==NULL)
 		{
-			//m_space->currentSubWindow()->
 			m_space->currentSubWindow()->hide();
-			//activeProject()->closeAuxiliaryPanel();
 		}
         showSub(proj.release());
 	}
