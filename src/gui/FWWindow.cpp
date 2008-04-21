@@ -343,13 +343,23 @@ void FWWindow::fileOpen()
 {
     std::auto_ptr<ProjectPanel> proj(newProjectPanel());
     if (proj->fileOpen())
-	{
-		if (activeProject()->getRCS()==NULL)
-		{
-			m_space->currentSubWindow()->hide();
-		}
+    {
+        if (activeProject()->getRCS()!=NULL)
+        {
+            if (activeProject()->getRCS()->getFileName()=="")
+            {
+                m_space->currentSubWindow()->hide();                            
+            }
+			
+        }
+        else
+        {
+            m_space->currentSubWindow()->hide();
+        }
         showSub(proj.release());
-	}
+        
+    }
+    
 }
 
 void FWWindow::fileClose()
