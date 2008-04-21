@@ -24,7 +24,6 @@
 */
 
 #include "fwbuilder/Rule.h"
-#include <ui_rulegrouppanel.h>
 
 #include <vector>
 #include <QPalette>
@@ -64,8 +63,10 @@ namespace libfwbuilder {
     class RoutingRule;
 };
 
+class RuleRowInfo;
 class RuleSetView;
 class ProjectPanel;
+class RuleGroupPanel;
 /**
  * this class is used to intercept mouse clicks on the vertical header
  * of the table so we could open a context menu
@@ -107,35 +108,6 @@ private:
     RuleSetView *ruleSetView;
 };
 
-class RuleRowInfo 
-{
-public:
-    RuleRowInfo (RuleRowInfo & r)
-    {
-        this->operator =(r);
-    }
-    RuleRowInfo (QString groupName, bool begin,bool hide)
-    {
-        isBeginRow = begin ;
-        this->groupName=groupName;
-        index=NULL;
-        isHide = hide ;
-    }
-    QString groupName ;
-    bool isBeginRow;
-    bool isHide ; 
-    QModelIndex * index ;
-    RuleRowInfo & operator = (RuleRowInfo & r)
-    {
-        this->isBeginRow = r.isBeginRow;
-        this->groupName = r.groupName;
-        this->index = r.index;
-        this->isHide = r.isHide ;
-        return *this;
-    }
-
-};
-
 class RuleTableModel : public QAbstractTableModel
 {
     friend class RuleSetView;
@@ -167,20 +139,6 @@ protected:
     RuleSetView *ruleSetView;
 };
 
-class RuleGroupPanel : public QFrame, public Ui_RuleGroupPanel
-{
-    Q_OBJECT 
-
-public:
-
-    int row  ;
-    RuleSetView * rsv ;
-    RuleGroupPanel (QWidget * parent,RuleSetView * rsv, int row) ;
-public slots:
-    void showHideRuleGroup();
-
-};
-
 class RuleSetView : public QTableView
 {
     friend class headerMouseEventInterceptor;
@@ -200,8 +158,8 @@ class RuleSetView : public QTableView
     void contextMenuRequested ( const QPoint &p );
     
     void newGroup();
-    void addToUpGroup ();
-    void addToBottomGroup();
+    void addToGroupAbove ();
+    void addToGroupBelow();
     void removeFromGroup();
     
     void showHideRuleGroup (RuleGroupPanel * rgp);

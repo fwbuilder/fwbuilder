@@ -120,7 +120,9 @@ HEADERS += ../../config.h \
 	FakeWizard.h \
 	AskLibForCopyDialog.h \
 	FWBAboutDialog.h \
-	fwbuilder_ph.h 
+	fwbuilder_ph.h \
+	RuleGroupPanel.h \
+	RuleRowInfo.h
 
 SOURCES += ProjectPanel.cpp \
     FWWindow.cpp \
@@ -225,7 +227,8 @@ SOURCES += ProjectPanel.cpp \
 	FindWhereUsedWidget.cpp \
 	ConfirmDeleteObjectDialog.cpp \
 	FakeWizard.cpp \
-    AskLibForCopyDialog.cpp
+    AskLibForCopyDialog.cpp \
+	RuleGroupPanel.cpp 
        
 FORMS = FWBMainWindow_q.ui \
 	execdialog_q.ui \
