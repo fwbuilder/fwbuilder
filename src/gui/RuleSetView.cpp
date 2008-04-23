@@ -1117,14 +1117,18 @@ QRect RuleSetView::calculateCellSize( int row, int col )
                     o1ref = FWReference::cast(o1)->getPointerId();
                     o2=FWReference::cast(o1)->getPointer();
                 }
+                if (o2!=NULL)
+                {
                 QString ot = objectText(re,o2);
                 QRect br=p.boundingRect(QRect(0, 0, 1000, 1000),
                                         Qt::AlignLeft|Qt::AlignVCenter,
                                         ot);
+                
                 hc += item_h;
                 int itmW = RuleElementSpacing/2 + pixmap_w +
                         RuleElementSpacing + br.width();
                 wc  = QMAX(wc, itmW);
+                }
             }
             break;
         }
@@ -1455,6 +1459,8 @@ void RuleSetView::paintCell(QPainter *pntr,
             FWObject *o1= *i;
             if (FWReference::cast(o1)!=NULL)
                 o1=FWReference::cast(o1)->getPointer();
+            if (o1==NULL)
+                continue ;
             QRect rect(0, y, cr.width()-1, item_h-1 );
             if (sel && o1==selectedObject)
             {

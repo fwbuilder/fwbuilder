@@ -39,6 +39,7 @@ namespace libfwbuilder {
 };
 
 class QWidget;
+class QMdiSubWindow;
 class QTextEdit;
 class ObjectTreeView;
 class ObjectManipulator;
@@ -54,7 +55,7 @@ class FWBTree;
 
 class ProjectPanel: public QWidget {
     Q_OBJECT
-    
+
     FWWindow                               *mainW;
     RCS                                    *rcs;
     listOfLibraries                        *addOnLibs;
@@ -107,10 +108,11 @@ class ProjectPanel: public QWidget {
           libfwbuilder::RuleElement *re_old,
           const std::map<const std::string, libfwbuilder::FWObject *> &objByIds);
 public:  
+    QMdiSubWindow *mdiWindow;
     Ui::ProjectPanel_q *m_panel;
     FindObjectWidget *findObjectWidget;
     FindWhereUsedWidget *findWhereUsedWidget;
-    
+    QSet<QString> copySet;
     ProjectPanel(QWidget *parent);
 
     ~ProjectPanel();

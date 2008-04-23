@@ -144,9 +144,10 @@
 #include "FWWindow.h"
 #include "RCS.h"
 #include <QCloseEvent>
-
+#include <QMdiSubWindow>
 #include "FindObjectWidget.h"
 #include "FindWhereUsedWidget.h"
+#include <QSet>
 using namespace Ui;
 
 void ProjectPanel::initMain(FWWindow *main)
@@ -278,6 +279,7 @@ void ProjectPanel::checkPolicy4ExtRefs(Firewall *fw, list<FWObject*> &extRefs)
 void ProjectPanel::check4Depends(FWObject *obj, list<FWObject*>& objList, FWObject *lib)
 //objList - это куда объекты для копирвания складывать
 {
+    copySet.clear();
     Firewall *fw = Firewall::cast(obj);
     if(!fw)
       return;
@@ -292,6 +294,7 @@ void ProjectPanel::findIntersectRefs(FWObject *lib,
                                        list<FWObject*> &extRefs,
                                        const list<FWObject*> &objList)
 {
+    
     FWReference *ref=FWReference::cast(root);
     if (ref!=NULL)
     {
@@ -300,19 +303,34 @@ void ProjectPanel::findIntersectRefs(FWObject *lib,
              plib->getId()!=DELETED_LIB  &&
              plib!=lib )
         {
+            
+            
             for (list<FWObject*>::const_iterator i=objList.begin();i!=objList.end();i++)
             {
-                //qDebug("push_back (%s, %s)", (*i)->getId().c_str(), ref->getId().c_str());
-                if ((*i)->getId() != root->getId())
+                qDebug("push_back (%s, %s)", (*i)->getId().c_str(), ref->getId().c_str());
+                FWObject * obj = *i;
+                
+                QString name = obj->getName().c_str();
+                if ((obj)->getId() != root->getId())
                 {
+                    //FWObject *nobj= db()->create(obj->getTypeName());
+                    //nobj->ref();
+                    //nobj->duplicate(obj,true);   //if renew_id == true creates new object ID
+                    //if (!obj->isReadOnly())
+                    //    obj->setId(nobj->getId());
+                    
                     //qDebug("HERE");// !!!!!
-                    extRefs.push_back(*i);
+                    if (!copySet.contains (name)){
+                        copySet.insert(name);
+                        extRefs.push_back(obj);
+                    }
                 }
              }
         }
         return;
     } else
     {
+        //;
         for (FWObject::iterator i=root->begin(); i!=root->end(); i++)
             findIntersectRefs(lib, *i, extRefs, objList);
 
@@ -3169,6 +3187,19 @@ void ProjectPanel::showEvent( QShowEvent *ev)
         if (w1 || w2)
             m_panel->objInfoSplitter->setSizes( sl );
     }
+/*    if (rcs!=NULL)
+    {
+        QString FileName = rcs->getFileName();
+        int x = st->getInt("Window/"+FileName+"/x");
+        int y = st->getInt("Window/"+FileName+"/y");
+        int width = st->getInt("Window/"+FileName+"/width");
+        int height = st->getInt("Window/"+FileName+"/height");
+        
+        mdiWindow->resize(width,height);
+        //this->;    
+    }
+*/    
+
     QWidget::showEvent(ev);
 }
 
@@ -3192,6 +3223,15 @@ void ProjectPanel::hideEvent( QHideEvent *ev)
 
 void ProjectPanel::closeEvent( QCloseEvent * ev)
 {
+/*    if (rcs!=NULL)
+    {
+        QString FileName = rcs->getFileName();
+        st->setInt("Window/"+FileName+"/x",mdiWindow->x());
+        st->setInt("Window/"+FileName+"/y",mdiWindow->y());
+        st->setInt("Window/"+FileName+"/width",mdiWindow->width ());
+        st->setInt("Window/"+FileName+"/height",mdiWindow->height ());
+    }
+*/
     if (saveIfModified() && checkin(true))
     {
         if (rcs)

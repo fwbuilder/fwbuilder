@@ -1585,8 +1585,10 @@ void ObjectManipulator::pasteObj()
     }
 }
 
+
+
 FWObject*  ObjectManipulator::pasteTo(FWObject *target,FWObject *obj,
-                                      bool openobj,bool validateOnly)
+                                      bool openobj,bool validateOnly, bool renew_id)
 {
     FWObject *ta=target;
     if (IPv4::isA(ta)) ta=ta->getParent();
@@ -1630,7 +1632,7 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target,FWObject *obj,
                 m_project->db()->create(obj->getTypeName());
             assert (nobj!=NULL);
             nobj->ref();
-            nobj->duplicate(obj,true);   // creates new object ID
+            nobj->duplicate(obj,renew_id);   //if renew_id == true creates new object ID
 
             makeNameUnique(ta,nobj);
             ta->add( nobj );
@@ -1678,6 +1680,8 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target,FWObject *obj,
     if (validateOnly) return NULL;
     return obj;
 }
+
+
 
 void ObjectManipulator::lockObject()
 {
@@ -2440,6 +2444,14 @@ FWObject* ObjectManipulator::copyObj2Tree(const QString &objType, const QString 
 {
     if (!validateDialog()) return NULL;
 
+     FWObject * nobj_ = copyFrom ; 
+   // Firewall * nobj_ = new Firewall();
+    
+    // FWObject *nobj_= m_project->db()->create(copyFrom->getTypeName());
+    //                nobj_->ref();
+    //                nobj_->duplicate(copyFrom,false);   //if renew_id == true creates new object ID
+    //                nobj_->setReadOnly(false);
+
     FWObject *lib  = getCurrentLib();
     if (askLib)
         lib = AskLibForCopyDialog::askLibForCopyDialog(m_project, m_project->db(), lib);
@@ -2449,18 +2461,20 @@ FWObject* ObjectManipulator::copyObj2Tree(const QString &objType, const QString 
         parent=m_project->getStandardSlotForObject(lib, objType);
     list<FWObject*> refs;
     map<const std::string, FWObject*> objByIds;
-    m_project->check4Depends(copyFrom, refs, lib);
+    m_project->check4Depends(nobj_, refs, lib);
     for(list<FWObject*>::iterator i=refs.begin(); i!=refs.end(); ++i)
     {
         FWObject *o = (*i);
+        if (o && Firewall::isA(o))
+        {
+            continue ;
+        }
         FWObject *par = m_project->getStandardSlotForObject(lib, o->getTypeName().c_str());
-        FWObject *no  = pasteTo (par, o);
-        //qDebug("i->first.c_str() = (%s)", no->getId()); // !!!!!
+        FWObject *no  = pasteTo (par, o, true, false, false);
         objByIds[no->getId()] = no;
         
     }
-    FWObject *nobj = pasteTo (parent, copyFrom); 
-    m_project->restoreDepends(copyFrom, nobj, objByIds);
+    FWObject *nobj = pasteTo (parent, nobj_, true, false, false); 
     if (nobj && Firewall::isA(nobj))
     {
         m_project->addFirewallToList(nobj);

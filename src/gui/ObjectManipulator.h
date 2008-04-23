@@ -27,6 +27,7 @@
 #ifndef  __OBJECTMANIPULATOR_H_
 #define  __OBJECTMANIPULATOR_H_
 
+
 #include "config.h"
 #include "global.h"
 
@@ -285,7 +286,9 @@ public slots:
     libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
                                     libfwbuilder::FWObject *obj,
                                     bool openobj=true,
-                                    bool validateOnly=false);
+                                    bool validateOnly=false, bool renew_id=true);
+
+
     void delObj(libfwbuilder::FWObject *obj,bool openobj=true);
 
     /**

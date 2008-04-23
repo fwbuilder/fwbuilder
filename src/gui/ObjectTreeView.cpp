@@ -507,7 +507,19 @@ void ObjectTreeView::dropEvent(QDropEvent *ev)
         {
             FWObject *dragobj = *i;
             assert(dragobj);
-
+            ObjectTreeView * otvsource = dynamic_cast<ObjectTreeView *>(ev->source());
+            if (otvsource!=NULL)
+            {
+                FWObjectDatabase* root = otvsource->getCurrentObject()->getRoot();
+                QString id = dragobj->getId().c_str();
+                FWObject * item = root->getById(id.toAscii().data(),true);
+                qDebug(item->getId().c_str());
+                qDebug(item->getTypeName().c_str());
+                qDebug(dragobj->getId().c_str());
+                qDebug(dragobj->getTypeName().c_str());
+                
+                //ProjectPanel * ppsource =  otvsource->m_project ;
+            }
             QString n=QString::fromUtf8(dragobj->getName().c_str());
             m_project->copyObj2Tree(dragobj->getTypeName().c_str(), n, dragobj, 
               getDropTarget(ev, dragobj), false);

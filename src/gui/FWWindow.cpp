@@ -220,6 +220,7 @@ ProjectPanel *FWWindow::newProjectPanel()
 void FWWindow::showSub(ProjectPanel *projectW)
 {
     QMdiSubWindow *sub = new QMdiSubWindow;
+    projectW->mdiWindow=sub;
     sub->setWidget(projectW);
     sub->setAttribute(Qt::WA_DeleteOnClose);
     m_space->addSubWindow(sub);
