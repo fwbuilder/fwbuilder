@@ -162,7 +162,7 @@ ObjectManipulator::ObjectManipulator( QWidget *parent):
     newObjectPopup->addAction(QIcon(icon_path+Firewall::TYPENAME+"/icon-tree"), tr( "New &Firewall" ), this, SLOT( newFirewall() ));
     newObjectPopup->addAction(QIcon(icon_path+Host::TYPENAME+"/icon-tree"), tr( "New &Host" ), this, SLOT( newHost() ));
     newObjectPopup->addAction(QIcon(icon_path+Interface::TYPENAME+"/icon-tree"), tr( "New &Interface" ), this, SLOT( newInterface() ));
-    newObjectPopup->addAction(QIcon(icon_path+Network::TYPENAME+"/icon-tree"), tr( "New &Host" ), this, SLOT( newNetwork() ));
+    newObjectPopup->addAction(QIcon(icon_path+Network::TYPENAME+"/icon-tree"), tr( "New &Network" ), this, SLOT( newNetwork() ));
     newObjectPopup->addAction(QIcon(icon_path+IPv4::TYPENAME+"/icon-tree"), tr( "New &Address" ), this, SLOT( newAddress() ));
     newObjectPopup->addAction(QIcon(icon_path+DNSName::TYPENAME+"/icon-tree"), tr( "New &DNS Name" ), this, SLOT( newDNSName() ));
     newObjectPopup->addAction(QIcon(icon_path+AddressTable::TYPENAME+"/icon-tree"), tr( "New A&ddress Table" ), this, SLOT( newAddressTable() ));
@@ -2444,7 +2444,7 @@ FWObject* ObjectManipulator::copyObj2Tree(const QString &objType, const QString 
 {
     if (!validateDialog()) return NULL;
 
-     FWObject * nobj_ = copyFrom ; 
+
    // Firewall * nobj_ = new Firewall();
     
     // FWObject *nobj_= m_project->db()->create(copyFrom->getTypeName());
@@ -2459,27 +2459,46 @@ FWObject* ObjectManipulator::copyObj2Tree(const QString &objType, const QString 
         return 0;
     if (!parent)
         parent=m_project->getStandardSlotForObject(lib, objType);
+
+
+    FWObject *nobj = pasteTo (parent, copyFrom, true, false, false); 
+    FWObject * nobj_ = nobj ; 
+   // nobj_->setReadOnly(false);
+   // nobj_->setRoot(copyFrom->getRoot());
     list<FWObject*> refs;
     map<const std::string, FWObject*> objByIds;
-    m_project->check4Depends(nobj_, refs, lib);
+    list<FWReference*> refLinfs ;
+    m_project->check4Depends(copyFrom, refs,refLinfs, lib);
+    list<FWReference*>::iterator k = refLinfs.begin();
     for(list<FWObject*>::iterator i=refs.begin(); i!=refs.end(); ++i)
     {
         FWObject *o = (*i);
+        FWReference * ref = (*k);
+        ++k;
         if (o && Firewall::isA(o))
         {
             continue ;
         }
         FWObject *par = m_project->getStandardSlotForObject(lib, o->getTypeName().c_str());
+        FWObject * newobj = nobj_->getById(o->getId());
         FWObject *no  = pasteTo (par, o, true, false, false);
+        //ref->setPointerId(no->getId());
+        //o->setReadOnly(false);
+        //o->setId(no->getId());
+        //if (newobj!=NULL)
+        //{
+        //    newobj->setReadOnly(false);
+        //    newobj->setId(no->getId());
+        //}
         objByIds[no->getId()] = no;
         
     }
-    FWObject *nobj = pasteTo (parent, nobj_, true, false, false); 
     if (nobj && Firewall::isA(nobj))
     {
         m_project->addFirewallToList(nobj);
         m_project->showFirewall(nobj);
     }
+
     return nobj;
 }
 
