@@ -1,6 +1,7 @@
 <RCC>
     <qresource>
         <file alias="Icons/Accept">Icons/accept_25.png</file>
+        <file alias="Icons/Accept-tree">Icons/accept_16.png</file>        
         <file alias="Icons/Accounting">Icons/accounting_25.png</file>
         <file alias="Icons/IPv4/icon-neg">Icons/address-neg_25.png</file>
         <file alias="Icons/IPv4/icon-ref">Icons/address-ref_25.png</file>
@@ -41,6 +42,7 @@
         <file alias="Icons/Continue">Icons/continue_25.png</file>
         <file alias="Icons/Custom">Icons/custom_25.png</file>
         <file alias="Icons/Deny">Icons/deny_25.png</file>
+        <file alias="Icons/Deny-tree">Icons/deny_16.png</file>        
         <file alias="Icons/DNSName/icon-neg">Icons/domainname-neg_25.png</file>
         <file alias="Icons/DNSName/icon-ref">Icons/domainname-ref_25.png</file>
         <file alias="Icons/DNSName/icon-tree">Icons/domainname_16.png</file>
@@ -94,6 +96,7 @@
         <file>Icons/ok.png</file>
         <file>Icons/openfile_25.png</file>
         <file alias="Icons/Options">Icons/options_25.png</file>
+        <file alias="Icons/Options-tree">Icons/options_16.png</file>        
         <file alias="Icons/Outbound">Icons/outbound.png</file>
         <file alias="Icons/Outbound-tree">Icons/outbound_16.png</file>
 	<file>Icons/physaddress-neg_25.png</file>

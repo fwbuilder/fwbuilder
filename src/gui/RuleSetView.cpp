@@ -1708,17 +1708,17 @@ QString RuleSetView::chooseIcon(QString icn)
     if (FWBSettings::SIZE16X16 == st->getIconsInRulesSize())
     {
         if (icn.contains("-ref"))
-            return icn.replace("-ref", "-tree");
+            return icn.replace("-ref", "-ref-tree");
         if (icn.contains("-neg"))
-            return icn.replace("-neg", "-tree");
-	if (icn.contains("Both"))
+            return icn.replace("-neg", "-neg-tree");
+/*	if (icn.contains("Both"))
 	    return icn+="-tree";
 	if (icn.contains("Inbound"))
 	    return icn+="-tree";
 	if (icn.contains("Outbound"))
-	    return icn+="-tree";
+	    return icn+="-tree";*/
 
-        return QString();
+        return icn+"-tree";
     }
     return icn;
 }
@@ -1730,10 +1730,22 @@ QSize RuleSetView::drawIconInRule(QPainter &p, int x, int y, RuleElement *re, FW
         return QSize();
     QPixmap pm;
     if (FWBSettings::SIZE16X16 == st->getIconsInRulesSize())
+    {
         pm = getPixmap(o1, Tree);
-
+    }
     if (FWBSettings::SIZE25X25 == st->getIconsInRulesSize())
-        pm = getPixmap(o1, Normal);
+    {
+        if (!re->getNeg())
+        {
+            pm = getPixmap(o1, Normal);
+        }
+        else
+        {
+            pm = getPixmap(o1, Neg);
+        }
+    }
+
+    
     if (!re->isAny())
         p.drawPixmap( x, y + RuleElementSpacing/2, pm );
 
