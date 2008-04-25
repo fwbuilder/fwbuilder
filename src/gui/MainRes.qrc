@@ -4,10 +4,12 @@
         <file alias="Icons/Accept-tree">Icons/accept_16.png</file>        
         <file alias="Icons/Accounting">Icons/accounting_25.png</file>
         <file alias="Icons/IPv4/icon-neg">Icons/address-neg_25.png</file>
-        <file alias="Icons/IPv4/icon-ref">Icons/address-ref_25.png</file>
+        <file alias="Icons/IPv4/icon-neg-tree">Icons/address-neg_16.png</file>
+	<file alias="Icons/IPv4/icon-ref">Icons/address-ref_25.png</file>
         <file alias="Icons/IPv4/icon-tree">Icons/address_16.png</file>
         <file alias="Icons/IPv4/icon">Icons/address_25.png</file>
         <file alias="Icons/AddressTable/icon-neg">Icons/addresstable-neg_25.png</file>
+	<file alias="Icons/AddressTable/icon-neg-tree">Icons/addresstable-neg_16.png</file>
         <file alias="Icons/AddressTable/icon-ref">Icons/addresstable-ref_25.png</file>
         <file alias="Icons/AddressTable/icon-tree">Icons/addresstable_16.png</file>
         <file alias="Icons/AddressTable/icon">Icons/addresstable_25.png</file>
@@ -30,6 +32,7 @@
         <file>Icons/check.png</file>
         <file alias="Icons/Classify">Icons/classify_25.png</file>
         <file alias="Icons/Interval/icon-neg">Icons/clock-group-neg_25.png</file>
+	<file alias="Icons/Interval/icon-neg-tree">Icons/clock-group-neg_16.png</file>
         <file alias="Icons/Interval/icon-ref">Icons/clock-group-ref_25.png</file>
         <file alias="Icons/Interval/icon-tree">Icons/clock-group_16.png</file>
         <file alias="Icons/Interval/icon">Icons/clock-group_25.png</file>
@@ -51,7 +54,8 @@
         <file>Icons/drag_object.png</file>
         <file>Icons/error.png</file>
         <file alias="Icons/Firewall/icon-neg">Icons/firewall-neg_25.png</file>
-        <file alias="Icons/Firewall/icon-ref">Icons/firewall-ref_25.png</file>
+	<file alias="Icons/Firewall/icon-neg-tree">Icons/firewall-neg_16.png</file>        
+	<file alias="Icons/Firewall/icon-ref">Icons/firewall-ref_25.png</file>
         <file alias="Icons/Firewall/icon-tree">Icons/firewall_16.png</file>
         <file alias="Icons/Firewall/icon">Icons/firewall_25.png</file>
         <file>Icons/firewall_64.png</file>
@@ -60,6 +64,7 @@
         <file>Icons/folder1.png</file>
         <file>Icons/generic.png</file>
         <file alias="Icons/Host/icon-neg">Icons/host-neg_25.png</file>
+	<file alias="Icons/Host/icon-neg-tree">Icons/host-neg_16.png</file>
         <file alias="Icons/Host/icon-ref">Icons/host-ref_25.png</file>
         <file alias="Icons/Host/icon-tree">Icons/host_16.png</file>
         <file alias="Icons/Host/icon">Icons/host_25.png</file>
@@ -70,6 +75,7 @@
 	<file>Icons/info_25.png</file>
         <file>Icons/install_25.png</file>
         <file alias="Icons/Interface/icon-neg">Icons/interface-neg_25.png</file>
+        <file alias="Icons/Interface/icon-neg-tree">Icons/interface-neg_16.png</file>
         <file alias="Icons/Interface/icon-ref">Icons/interface-ref_25.png</file>
         <file alias="Icons/Interface/icon-tree">Icons/interface_16.png</file>
         <file alias="Icons/Interface/icon">Icons/interface_25.png</file>
@@ -82,6 +88,7 @@
         <file>Icons/log_25.png</file>
         <file alias="Icons/neg">Icons/neg.png</file>
         <file alias="Icons/Network/icon-neg">Icons/network-neg_25.png</file>
+	<file alias="Icons/Network/icon-neg-tree">Icons/network-neg_16.png</file>
         <file alias="Icons/Network/icon-ref">Icons/network-ref_25.png</file>
         <file alias="Icons/Network/icon-tree">Icons/network_16.png</file>
         <file alias="Icons/Network/icon">Icons/network_25.png</file>
@@ -90,6 +97,7 @@
         <file>Icons/newobject_32.png</file>
         <file>Icons/no.png</file>
         <file alias="Icons/ObjectGroup/icon-neg">Icons/object-group-neg_25.png</file>
+        <file alias="Icons/ObjectGroup/icon-neg-tree">Icons/object-group-neg_16.png</file>
         <file alias="Icons/ObjectGroup/icon-ref">Icons/object-group-ref_25.png</file>
         <file alias="Icons/ObjectGroup/icon-tree">Icons/object-group_16.png</file>
         <file alias="Icons/ObjectGroup/icon">Icons/object-group_25.png</file>
@@ -109,6 +117,7 @@
         <file>Icons/protect_net_and_dmz.png</file>
         <file>Icons/question.png</file>
         <file alias="Icons/AddressRange/icon-neg">Icons/rangeaddress-neg_25.png</file>
+        <file alias="Icons/AddressRange/icon-neg-tree">Icons/rangeaddress-neg_16.png</file>
         <file alias="Icons/AddressRange/icon-ref">Icons/rangeaddress-ref_25.png</file>
         <file alias="Icons/AddressRange/icon-tree">Icons/rangeaddress_16.png</file>
         <file alias="Icons/AddressRange/icon">Icons/rangeaddress_25.png</file>
@@ -121,6 +130,7 @@
         <file>Icons/save_25.png</file>
         <file>Icons/search_25.png</file>
         <file alias="Icons/CustomService/icon-neg">Icons/service-custom-neg_25.png</file>
+        <file alias="Icons/CustomService/icon-neg-tree">Icons/service-custom-neg_16.png</file>
         <file alias="Icons/CustomService/icon-ref">Icons/service-custom-ref_25.png</file>
         <file alias="Icons/CustomService/icon-tree">Icons/service-custom_16.png</file>
         <file alias="Icons/CustomService/icon">Icons/service-custom_25.png</file>
@@ -129,22 +139,27 @@
         <file alias="Icons/ServiceGroup/icon-tree">Icons/service-group_16.png</file>
         <file alias="Icons/ServiceGroup/icon">Icons/service-group_25.png</file>
         <file alias="Icons/ICMPService/icon-neg">Icons/service-icmp-neg_25.png</file>
+        <file alias="Icons/ICMPService/icon-neg-tree">Icons/service-icmp-neg_16.png</file>
         <file alias="Icons/ICMPService/icon-ref">Icons/service-icmp-ref_25.png</file>
         <file alias="Icons/ICMPService/icon-tree">Icons/service-icmp_16.png</file>
         <file alias="Icons/ICMPService/icon">Icons/service-icmp_25.png</file>
         <file alias="Icons/IPService/icon-neg">Icons/service-ip-neg_25.png</file>
         <file alias="Icons/IPService/icon-ref">Icons/service-ip-ref_25.png</file>
+        <file alias="Icons/IPService/icon-neg-tree">Icons/service-ip-neg_16.png</file>
         <file alias="Icons/IPService/icon-tree">Icons/service-ip_16.png</file>
         <file alias="Icons/IPService/icon">Icons/service-ip_25.png</file>
         <file alias="Icons/TagService/icon-neg">Icons/service-tag-neg_25.png</file>
+        <file alias="Icons/TagService/icon-neg-tree">Icons/service-tag-neg_16.png</file>
         <file alias="Icons/TagService/icon-ref">Icons/service-tag-ref_25.png</file>
         <file alias="Icons/TagService/icon-tree">Icons/service-tag_16.png</file>
         <file alias="Icons/TagService/icon">Icons/service-tag_25.png</file>
         <file alias="Icons/TCPService/icon-neg">Icons/service-tcp-neg_25.png</file>
+        <file alias="Icons/TCPService/icon-neg-tree">Icons/service-tcp-neg_16.png</file>
         <file alias="Icons/TCPService/icon-ref">Icons/service-tcp-ref_25.png</file>
         <file alias="Icons/TCPService/icon-tree">Icons/service-tcp_16.png</file>
         <file alias="Icons/TCPService/icon">Icons/service-tcp_25.png</file>
         <file alias="Icons/UDPService/icon-neg">Icons/service-udp-neg_25.png</file>
+        <file alias="Icons/UDPService/icon-neg-tree">Icons/service-udp-neg_16.png</file>
         <file alias="Icons/UDPService/icon-ref">Icons/service-udp-ref_25.png</file>
         <file alias="Icons/UDPService/icon-tree">Icons/service-udp_16.png</file>
         <file alias="Icons/UDPService/icon">Icons/service-udp_25.png</file>

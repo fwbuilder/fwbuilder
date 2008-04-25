@@ -284,7 +284,7 @@ class RuleSetView : public QTableView
      
     int m_currentRow, m_currentColumn;
 
-    enum PixmapAttr      { Normal,  Neg,     Ref,       Tree };
+    enum PixmapAttr      { Normal,  Neg,     Ref,       Tree, NegTree };
     enum PopupMenuAction { None,    EditObj, EditRE,    NegateRE };
 
     headerMouseEventInterceptor           hme;

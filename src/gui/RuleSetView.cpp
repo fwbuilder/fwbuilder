@@ -1246,7 +1246,7 @@ QPixmap RuleSetView::getPixmap(FWObject *obj, PixmapAttr pmattr) const
     if (pmattr == Neg)  icn="icon-neg";
     if (pmattr == Ref)  icn="icon-ref";
     if (pmattr == Tree) icn="icon-tree";
-
+    if (pmattr == NegTree) icn="icon-neg-tree";
 //    return QPixmap::fromMimeSource(
 //        Resources::global_res->getObjResourceStr(obj, icn).c_str() );
 
@@ -1731,7 +1731,14 @@ QSize RuleSetView::drawIconInRule(QPainter &p, int x, int y, RuleElement *re, FW
     QPixmap pm;
     if (FWBSettings::SIZE16X16 == st->getIconsInRulesSize())
     {
-        pm = getPixmap(o1, Tree);
+        if (!re->getNeg())
+        {
+            pm = getPixmap(o1, Tree);
+        }
+        else
+        {
+            pm = getPixmap(o1, NegTree);
+        }
     }
     if (FWBSettings::SIZE25X25 == st->getIconsInRulesSize())
     {
