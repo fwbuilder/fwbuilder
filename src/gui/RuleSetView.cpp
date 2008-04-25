@@ -296,12 +296,12 @@ QRect RuleDelegate::cellRect(const int row, const int col) const
 void RuleDelegate::paint(QPainter *painter, const QStyleOptionViewItem &,
                const QModelIndex &index) const
 {
-    if (ruleSetView->ruleIndex[index.row()]==0&&index.column()>0)
+    if (ruleSetView->ruleIndex[index.row()]==NULL&&index.column()==1)
     {
         QRect size = cellGeometry(index.row(), index.column());
         int w = 0 ;
 
-        for (int i = 1; i < ruleSetView->ruleModel->columnCount(); i++)
+        for (int i = 1; i < ruleSetView->ruleModel->columnCount(index); i++)
         {
             w += ruleSetView->getColumnWidth(i);
         }
@@ -803,7 +803,7 @@ void RuleSetView::init()
     int          row=0;
     map<int,int> colW;
     bool         userColWidth=false;
-
+    rowsInfo.clear();
     QFontMetrics p(st->getRulesFont());
 
     QString k = settingsKey();
@@ -879,7 +879,7 @@ void RuleSetView::addRuleGroupPanel (int row)
     RuleRowInfo * rri = rowsInfo[row];
     if (rri==NULL)
         return ;
-    setSpan (row,1,0,9);
+    setSpan (row,1,0,ruleModel->columnCount(this->model()->index(row,0))-1);
  //   rri->index = &model()->index(row,0);
     if (rri->isBeginRow)
     {
@@ -922,6 +922,8 @@ void RuleSetView::updateGroups ()
         {        
             removeRuleIndex(i);
             rowsInfo.remove (i);
+            //qDebug(QString().setNum(i).toAscii().data());
+            // qDebug(QString().setNum(i).toAscii().data());
             ruleModel->removeRows(i,i);
             i--;
         }
@@ -930,12 +932,15 @@ void RuleSetView::updateGroups ()
         QString memberRow ;
 
     bool beginGroup = false ;
-
+    QString group;
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
-        Rule * r = Rule::cast(ruleIndex[i]);
+        Rule * r ;
 //        bool hiden = this->isRowHidden(i);
-        QString group = r->getRuleGroupName().c_str();
+        
+      
+            r = Rule::cast(ruleIndex[i]);
+            group = r->getRuleGroupName().c_str();
         if (group!=memberRow)
         {
             ruleModel->insertRow(i);
@@ -967,21 +972,18 @@ void RuleSetView::updateGroups ()
 
     }
 
- /*   removeRuleIndex(top);
-    rowsInfo.remove (top);
-    deleteRuleGroupPanel(top);
-    ruleModel->removeRows(top,top);
+    if (group!="")
+    {
+                ruleModel->insertRow(rowsInfo.size());
+                //insertRuleIndex(rowsInfo.size());
+                ruleIndex[rowsInfo.size()] = NULL ;
+                beginGroup = false ;
+                rowsInfo.push_back (new RuleRowInfo(memberRow,false,false));
+                memberRow = group;
+                addRuleGroupPanel(rowsInfo.size()-1);
+    }
 
-    rowsInfo.insert (top,NULL);
-    ruleIndex[top]=r;
-    ruleModel->insertRow(top);
 
-    rowsInfo.insert (top+1,ru);
-    ruleIndex[top+1]=NULL;
-    ruleModel->insertRow(top+1);
-    addRuleGroupPanel(top+1);*/
-        
-//    }
 }
 
 void RuleSetView::deleteRuleGroupPanel (int row)
@@ -1423,15 +1425,15 @@ void RuleSetView::paintCell(QPainter *pntr,
         }
         else
         {
-        p.setPen(Qt::green);
+            p.setPen(Qt::green);
     
             if (col==1)
             {
                 p.drawLine( 1, 0, 1, cr.height() );
             }
-            if (col==ruleModel->columnCount()-1)
+            if (col==ncols-1)
             {
-            p.drawLine( cr.width()-3, 0, cr.width()-3, cr.height() );
+                p.drawLine( cr.width()-3, 0, cr.width()-3, cr.height() );
     
             }
 
@@ -2205,7 +2207,7 @@ int RuleSetView::getUpNullRuleIndex (int idx)
 {
     for (int i=idx; i>=0; --i) 
     { 
-        if (ruleIndex[i]==NULL)
+        if (rowsInfo[i]!=NULL)
         {
             return i;
             
@@ -2218,9 +2220,9 @@ int RuleSetView::getUpNullRuleIndex (int idx)
 int RuleSetView::getDownNullRuleIndex (int idx)
 {
 
-    for ( int i=idx; i<ruleIndex.size(); ++i) 
+    for ( int i=idx; i<rowsInfo.size(); ++i) 
     { 
-        if (ruleIndex[i]==NULL)
+        if (rowsInfo[i]!=NULL)
         {
             return i;
             
@@ -2352,7 +2354,7 @@ void RuleSetView::showHideRuleGroup(RuleGroupPanel * rgp)
 
 void RuleSetView::removeFromGroup()
 {
-    int row = lastSelectedRule;
+    int row = firstSelectedRule;
     int count = lastSelectedRule - firstSelectedRule+1;
 
     removeFromGroup(row,count);
@@ -2369,11 +2371,11 @@ void RuleSetView::removeFromGroup (int row, int count)
 {
     for (int i = row ; i < row+count ; i++)
     {
-        Rule * r = Rule::cast(ruleIndex[row]);
+        Rule * r = Rule::cast(ruleIndex[i]);
         if (r!=NULL)
         {
             r->setRuleGroupName("");
-            ruleIndex[row]=r;
+            ruleIndex[i]=r;
         }
     }
     updateGroups();
@@ -2442,26 +2444,25 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
     {
         if (r->getRuleGroupName()=="")
         {
-            qDebug ((QString("").setNum(firstSelectedRule)).toAscii().data());
-            qDebug ((QString("").setNum(lastSelectedRule)).toAscii().data());
+            //qDebug ((QString("").setNum(firstSelectedRule)).toAscii().data());
+            //qDebug ((QString("").setNum(lastSelectedRule)).toAscii().data());
 
             popup->addAction( tr("New group"), this, SLOT( newGroup() ));
-            int top = getUpNullRuleIndex(row);
-            if (top!=-1&&top==row-1)
+            int top = getUpNullRuleIndex(firstSelectedRule);
+            if (top!=-1&&top==firstSelectedRule-1)
             {
                 RuleRowInfo * ri= rowsInfo[top];
                 QString label = tr("Add to the group ");
                 label += ri->groupName;
                  popup->addAction( label, this, SLOT( addToGroupAbove() ));
             }
-            int bottom = getDownNullRuleIndex(row);
-            if (bottom!=-1&&bottom==row+1)
+            int bottom = getDownNullRuleIndex(lastSelectedRule);
+            if (bottom!=-1&&bottom==lastSelectedRule+1)
             {
-
-                 RuleRowInfo * ri= rowsInfo[bottom];
+                RuleRowInfo * ri= rowsInfo[bottom];
                 QString label = tr("Add to the group ");
                 label += ri->groupName;
-                 popup->addAction( label, this, SLOT( addToGroupBelow() ));
+                popup->addAction( label, this, SLOT( addToGroupBelow() ));
           
             }
         }
@@ -4143,6 +4144,7 @@ void RuleSetView::updateAll()
         //dirtyRows[r] = 1;
 
     repaint();
+//    updateGroups();
 //    update();
 }
 
@@ -4223,7 +4225,8 @@ void PolicyView::init()
 RuleElement* PolicyView::getRE( int row, int col )
 {
     if (row<0) return NULL;
-
+    if (ruleIndex[row]==NULL)
+        return NULL;
     if (ruleIndex.count(row)==0) return NULL;
     PolicyRule *r = PolicyRule::cast( ruleIndex[row] );
     if(r==NULL) return NULL;
@@ -4233,7 +4236,8 @@ RuleElement* PolicyView::getRE( int row, int col )
 RuleElement* PolicyView::getRE( Rule* r, int col )
 {
     string ret;
-
+    if (col==0)
+        return NULL;
     switch (getColType(col))
     {
     case Object:
@@ -4278,6 +4282,9 @@ void InterfacePolicyView::init()
 
     int col=0;
     QStringList qsl;
+    qsl << "";      // -1
+    colTypes[col++]=Object;    
+
     qsl << "Source";      // 0
     colTypes[col++]=Object;
 
@@ -4319,6 +4326,8 @@ void InterfacePolicyView::init()
 RuleElement* InterfacePolicyView::getRE( int row, int col )
 {
     if (row<0) return NULL;
+    if (ruleIndex[row]==NULL)
+        return NULL;
     PolicyRule *r = PolicyRule::cast( ruleIndex[row] );
     assert(r!=NULL);
     return getRE(r,col);
@@ -4327,15 +4336,16 @@ RuleElement* InterfacePolicyView::getRE( int row, int col )
 RuleElement* InterfacePolicyView::getRE( Rule *r, int col )
 {
     string ret;
-
+    if (col==0)
+        return NULL;
     switch (getColType(col))
     {
     case Object:
         switch (col)
         {
-        case 0: ret=RuleElementSrc::TYPENAME; break;
-        case 1: ret=RuleElementDst::TYPENAME; break;
-        case 2: ret=RuleElementSrv::TYPENAME; break;
+        case 1: ret=RuleElementSrc::TYPENAME; break;
+        case 2: ret=RuleElementDst::TYPENAME; break;
+        case 3: ret=RuleElementSrv::TYPENAME; break;
         }
         break;
     case Time:
@@ -4367,6 +4377,9 @@ void NATView::init()
 
     int col=0;
     QStringList qsl;
+    qsl << "";      // -1
+    colTypes[col++]=Object;
+
     qsl << "Original Src";
     colTypes[col++]=Object;
 
@@ -4402,6 +4415,8 @@ void NATView::init()
 RuleElement* NATView::getRE( int row, int col )
 {
     if (row<0) return NULL;
+    if (ruleIndex[row]==NULL)
+        return NULL;
     NATRule *r = NATRule::cast( ruleIndex[row] );
     assert(r!=NULL);
     return getRE(r,col);
@@ -4410,18 +4425,19 @@ RuleElement* NATView::getRE( int row, int col )
 RuleElement* NATView::getRE( Rule *r, int col )
 {
     string ret;
-
+    if (col==0)
+        return NULL;
     switch (getColType(col))
     {
         case Object:
             switch (col)
             {
-                case 0: ret=RuleElementOSrc::TYPENAME; break;
-                case 1: ret=RuleElementODst::TYPENAME; break;
-                case 2: ret=RuleElementOSrv::TYPENAME; break;
-                case 3: ret=RuleElementTSrc::TYPENAME; break;
-                case 4: ret=RuleElementTDst::TYPENAME; break;
-                case 5: ret=RuleElementTSrv::TYPENAME; break;
+                case 1: ret=RuleElementOSrc::TYPENAME; break;
+                case 2: ret=RuleElementODst::TYPENAME; break;
+                case 3: ret=RuleElementOSrv::TYPENAME; break;
+                case 4: ret=RuleElementTSrc::TYPENAME; break;
+                case 5: ret=RuleElementTDst::TYPENAME; break;
+                case 6: ret=RuleElementTSrv::TYPENAME; break;
             }
             break;
             default: return NULL;
@@ -4448,6 +4464,9 @@ void RoutingView::init()
     int col=0;
 
     QStringList qsl;
+    qsl << "";
+    colTypes[col++]=Object;
+
     qsl << "Destination";
     colTypes[col++]=Object;
 
@@ -4477,6 +4496,8 @@ void RoutingView::init()
 RuleElement* RoutingView::getRE( int row, int col )
 {
     if (row<0) return NULL;
+    if (ruleIndex[row]==NULL)
+        return NULL;
     RoutingRule *r = RoutingRule::cast( ruleIndex[row] );
     assert(r!=NULL);
     return getRE(r,col);
@@ -4485,15 +4506,16 @@ RuleElement* RoutingView::getRE( int row, int col )
 RuleElement* RoutingView::getRE( Rule *r, int col )
 {
     string ret;
-
+    if (col==0)
+        return NULL;
     switch (getColType(col))
     {
         case Object:
             switch (col)
             {
-                case 0: ret=RuleElementRDst::TYPENAME; break;
-                case 1: ret=RuleElementRGtw::TYPENAME; break;
-                case 2: ret=RuleElementRItf::TYPENAME; break;
+                case 1: ret=RuleElementRDst::TYPENAME; break;
+                case 2: ret=RuleElementRGtw::TYPENAME; break;
+                case 3: ret=RuleElementRItf::TYPENAME; break;
             }
             break;
             default: return NULL;
