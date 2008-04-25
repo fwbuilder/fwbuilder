@@ -83,7 +83,7 @@ class ObjectManipulator : public QWidget/*ObjectManipulator_q*/ {
 
     std::vector<libfwbuilder::FWObject*>          idxToLibs;
     std::vector<QTreeWidget*>                       idxToTrees;
-    
+    QSet <QString> ids ;     
     std::stack<HistoryItem>                       history;
     int cacheHits;
 
@@ -165,7 +165,10 @@ public slots:
                                           libfwbuilder::FWObject *copyFrom=NULL);
      libfwbuilder::FWObject * copyObj2Tree(const QString &objType, const QString &objName,
          libfwbuilder::FWObject *copyFrom, libfwbuilder::FWObject *parent=NULL, bool ask4Lib=true);
+
+     libfwbuilder::FWObject * copyObjWithDeep(libfwbuilder::FWObject *copyFrom);
      
+
      void newLibrary();
      void newObject();
      void newFirewall();

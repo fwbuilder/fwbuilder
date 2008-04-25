@@ -65,6 +65,7 @@ class ProjectPanel: public QWidget {
     bool                                    editingStandardLib;
     bool                                    editingTemplateLib;
     bool                                    ruleSetRedrawPending;
+    bool                                    firstResize;
     QString                                 startupFileName;
     
     libfwbuilder::FWObjectDatabase         *objdb;
@@ -90,14 +91,13 @@ class ProjectPanel: public QWidget {
         
     QString                                 noFirewalls;
     
-    libfwbuilder::RuleElement* getRE(libfwbuilder::Rule* r, int col );
     void checkRERefs(libfwbuilder::RuleElement *re, 
        std::list<libfwbuilder::FWObject*> &extRefs);
     void checkPolicy4ExtRefs(libfwbuilder::Firewall *fw, 
        std::list<libfwbuilder::FWObject*> &extRefs);
     void findIntersectRefs(libfwbuilder::FWObject *lib, libfwbuilder::FWObject *root,
                            std::list<libfwbuilder::FWObject*> &extRefs,
-                           const std::list<libfwbuilder::FWObject*> &objList);
+                           const std::list<libfwbuilder::FWObject*> &objList,std::list<libfwbuilder::FWReference*> & refLinfs);
 
     void restorePolicyRefs(libfwbuilder::Policy *pol, libfwbuilder::Policy *pol_old, 
         const std::map<const std::string, libfwbuilder::FWObject *> &objByIds);
@@ -122,6 +122,8 @@ public:
     void clearObjects();
     libfwbuilder::FWObjectDatabase* db() { return objdb; }
     bool hasObject(libfwbuilder::FWObject* obj) { return objdb->findInIndex(obj->getId()); };
+    libfwbuilder::RuleElement* getRE(libfwbuilder::Rule* r, int col );
+
     //wrapers for some ObjectManipulator functions
     libfwbuilder::FWObject* getOpened();
     
@@ -264,7 +266,7 @@ public:
     QString chooseNewFileName(const QString &fname, bool checkPresence,const QString &title);
     void setFileName(const QString &fname);
     void check4Depends(libfwbuilder::FWObject *obj, 
-       std::list<libfwbuilder::FWObject*> & objList, 
+       std::list<libfwbuilder::FWObject*> & objList, std::list<libfwbuilder::FWReference*> & refLinfs,
        libfwbuilder::FWObject *lib);
     void restoreDepends(libfwbuilder::FWObject *obj_old, libfwbuilder::FWObject *nobj, 
        const std::map<const std::string, libfwbuilder::FWObject *> &objByIds);

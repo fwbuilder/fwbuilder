@@ -203,6 +203,8 @@ ProjectPanel::~ProjectPanel()
 
 void ProjectPanel::info(libfwbuilder::FWObject *obj, bool forced)
 {
+    if (obj==NULL)
+        return ;
     if (st->getInfoStyle()!=0 && (shownInInfo!=obj || forced))
     {
         m_panel->oi->clear();
@@ -276,7 +278,7 @@ void ProjectPanel::checkPolicy4ExtRefs(Firewall *fw, list<FWObject*> &extRefs)
     }
 }
 
-void ProjectPanel::check4Depends(FWObject *obj, list<FWObject*>& objList, FWObject *lib)
+void ProjectPanel::check4Depends(FWObject *obj, list<FWObject*>& objList,list<FWReference*> & refLinfs, FWObject *lib)
 //objList - это куда объекты для копирвания складывать
 {
     copySet.clear();
@@ -285,14 +287,14 @@ void ProjectPanel::check4Depends(FWObject *obj, list<FWObject*>& objList, FWObje
       return;
     list<FWObject*> externalRefs;
     checkPolicy4ExtRefs(fw, externalRefs);//ищем ссылки правил фаервола на объекты, записываем в extRefs
-    findIntersectRefs(lib, fw, objList, externalRefs);
+    findIntersectRefs(lib, fw, objList, externalRefs,refLinfs);
 
 }
 
 void ProjectPanel::findIntersectRefs(FWObject *lib,
                                        FWObject *root,
                                        list<FWObject*> &extRefs,
-                                       const list<FWObject*> &objList)
+                                       const list<FWObject*> &objList, list<FWReference*> & refLinfs)
 {
     
     FWReference *ref=FWReference::cast(root);
@@ -303,19 +305,33 @@ void ProjectPanel::findIntersectRefs(FWObject *lib,
              plib->getId()!=DELETED_LIB  &&
              plib!=lib )
         {
-            
-            
-            for (list<FWObject*>::const_iterator i=objList.begin();i!=objList.end();i++)
+                FWObject* ptr=ref->getPointer();
+
+    cout << string(0,' ') << "Pointer: " << ptr << endl;
+    cout << string(0,' ') << "Name: " << ref->getName() << endl;
+    if (ptr) {
+        cout<< string(0,' ') << "Ptr.name: " << ptr->getName() <<endl;
+        cout<< string(0,' ') << "Ptr.id: "   << ptr->getId() <<endl;
+    }
+            //qDebug (ref->getTypeName().c_str());
+            //qDebug (ref->getPointer()->getTypeName().c_str());
+            //qDebug (QString().setNum(objList.size()).toAscii().data());
+            int counter = 0 ;
+            for (list<FWObject*>::const_iterator i=ptr->begin();i!=ptr->end();i++)
             {
-                qDebug("push_back (%s, %s)", (*i)->getId().c_str(), ref->getId().c_str());
-                FWObject * obj = *i;
+                counter++;
+                //qDebug("push_back (%s, %s)", (*i)->getId().c_str(), ref->getId().c_str());
+                //FWObject * obj = *i;
+                FWObject * obj = *i;//ptr;
                 
                 QString name = obj->getName().c_str();
                 if ((obj)->getId() != root->getId())
                 {
                     //FWObject *nobj= db()->create(obj->getTypeName());
                     //nobj->ref();
-                    //nobj->duplicate(obj,true);   //if renew_id == true creates new object ID
+                    //nobj->duplicate(obj,false);   //if renew_id == true creates new object ID
+                    //obj->setReadOnly(false);
+                    //ref->setPointerId(nobj->getId());
                     //if (!obj->isReadOnly())
                     //    obj->setId(nobj->getId());
                     
@@ -323,16 +339,42 @@ void ProjectPanel::findIntersectRefs(FWObject *lib,
                     if (!copySet.contains (name)){
                         copySet.insert(name);
                         extRefs.push_back(obj);
+                        refLinfs.push_back (ref);
                     }
                 }
              }
+            if (counter==0)
+            {
+               FWObject * obj = ptr;
+                
+                QString name = obj->getName().c_str();
+                if ((obj)->getId() != root->getId())
+                {
+                    //FWObject *nobj= db()->create(obj->getTypeName());
+                    //nobj->ref();
+                    //nobj->duplicate(obj,false);   //if renew_id == true creates new object ID
+                    //obj->setReadOnly(false);
+                    //ref->setPointerId(nobj->getId());
+                    //if (!obj->isReadOnly())
+                    //    obj->setId(nobj->getId());
+                    
+                    //qDebug("HERE");// !!!!!
+                    if (!copySet.contains (name)){
+                        copySet.insert(name);
+                        extRefs.push_back(obj);
+                        refLinfs.push_back (ref);
+                    }
+                }
+ 
+            }
+            qDebug (QString().setNum(counter).toAscii().data());
         }
         return;
     } else
     {
         //;
         for (FWObject::iterator i=root->begin(); i!=root->end(); i++)
-            findIntersectRefs(lib, *i, extRefs, objList);
+            findIntersectRefs(lib, *i, extRefs, objList,refLinfs);
 
     }
 }
@@ -3187,18 +3229,22 @@ void ProjectPanel::showEvent( QShowEvent *ev)
         if (w1 || w2)
             m_panel->objInfoSplitter->setSizes( sl );
     }
-/*    if (rcs!=NULL)
+/*    if (rcs!=NULL&&firstResize==false)
     {
+//        QMdiArea * par = (QMdiArea *)mdiWindow->getParent();
         QString FileName = rcs->getFileName();
         int x = st->getInt("Window/"+FileName+"/x");
         int y = st->getInt("Window/"+FileName+"/y");
         int width = st->getInt("Window/"+FileName+"/width");
         int height = st->getInt("Window/"+FileName+"/height");
-        
-        mdiWindow->resize(width,height);
+        firstResize=true ;
+        mdiWindow->showMinimized();
+        mdiWindow->move(x,y);
+        mdiWindow->showMaximized();
+  //      par->addSubWindow(mdiWindow);
         //this->;    
-    }
-*/    
+    }*/
+    
 
     QWidget::showEvent(ev);
 }
@@ -3222,16 +3268,15 @@ void ProjectPanel::hideEvent( QHideEvent *ev)
 
 
 void ProjectPanel::closeEvent( QCloseEvent * ev)
-{
-/*    if (rcs!=NULL)
+{   
+ /*   if (rcs!=NULL)
     {
         QString FileName = rcs->getFileName();
         st->setInt("Window/"+FileName+"/x",mdiWindow->x());
         st->setInt("Window/"+FileName+"/y",mdiWindow->y());
         st->setInt("Window/"+FileName+"/width",mdiWindow->width ());
         st->setInt("Window/"+FileName+"/height",mdiWindow->height ());
-    }
-*/
+    }*/
     if (saveIfModified() && checkin(true))
     {
         if (rcs)
