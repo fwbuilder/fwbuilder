@@ -1576,12 +1576,13 @@ void ObjectManipulator::pasteObj()
     for (i= FWObjectClipboard::obj_clipboard->begin(); i!=FWObjectClipboard::obj_clipboard->end(); ++i)
     {
 		FWObject *co= FWObjectClipboard::obj_clipboard->getObjectByIdx(idx); //win->db()->findInIndex(*i);
-        FWObject *nobj=pasteTo( obj , co );
+        copyObjWithDeep(co);
+        /*FWObject *nobj=pasteTo( obj , co );
         if (nobj!=NULL)
         {
             if (Firewall::isA(nobj)) m_project->addFirewallToList(nobj);
             if (Firewall::isA(obj))  m_project->showFirewall(obj);
-        }
+        }*/
     }
 }
 
@@ -2513,15 +2514,23 @@ libfwbuilder::FWObject * ObjectManipulator::copyObjWithDeep(libfwbuilder::FWObje
     
     if (copyFrom==NULL)
         return NULL;
+    qDebug("===================");
+    qDebug((copyFrom)->getTypeName().c_str());
+    qDebug((copyFrom)->getName().c_str());
+    qDebug((copyFrom)->getId().c_str());
+    
     FWObject *nobj= copyFrom;//m_project->db()->create(copyFrom->getTypeName());
-    if (ids.contains(nobj->getId().c_str()))
+    if (nobj->getId()!="")
     {
-        
-        return nobj;
-    }
-    else
-    {
-        ids.insert(nobj->getId().c_str());
+        if (ids.contains(nobj->getId().c_str()))
+        {
+            
+            return nobj;
+        }
+        else
+        {
+            ids.insert(nobj->getId().c_str());
+        }
     }
     //nobj->duplicate(copyFrom,false); 
     FWReference * ref = FWReference::cast(nobj);
@@ -2534,11 +2543,14 @@ libfwbuilder::FWObject * ObjectManipulator::copyObjWithDeep(libfwbuilder::FWObje
     Group * group = Group::cast(nobj);
     if (group!=NULL)
     {
+        
         for (list<FWObject*>::iterator i=nobj->begin() ; i!=nobj->end(); ++i)
         {
+        //    qDebug((*i)->getTypeName().c_str());
+        //    qDebug((*i)->getName().c_str());
             copyObjWithDeep(*i);
         }
-        return group;
+       
         //return group;
     }
     Firewall * fw = Firewall::cast(nobj);
