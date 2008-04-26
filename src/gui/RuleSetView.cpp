@@ -1215,7 +1215,7 @@ QRect RuleSetView::calculateCellSize( int row, int col )
     }
     wc = QMAX(wc, QApplication::globalStrut().width());
     wc += RuleElementSpacing/2;  // some padding
-
+    
     return QRect(0,0,wc,h);
 }
 
@@ -4340,7 +4340,7 @@ InterfacePolicyView::InterfacePolicyView(ProjectPanel *project, InterfacePolicy 
 
 void InterfacePolicyView::init()
 {
-    ncols=6 +
+    ncols=7 +
         ((supports_time)?1:0) +
         ((supports_logging && supports_rule_options)?1:0);
 
@@ -4440,8 +4440,8 @@ void NATView::init()
 {
     colTypes[-1]=RuleOp;
 
-    ncols=8;
-    ruleModel->setColumnCount(8);
+    ncols=9;
+    ruleModel->setColumnCount(9);
 
     int col=0;
     QStringList qsl;
@@ -4470,7 +4470,7 @@ void NATView::init()
     colTypes[col++]=Options;
 
     qsl << "Comment";
-    colTypes[col]=Comment;
+    colTypes[col++]=Comment;
 
     ruleModel->setHeader(qsl);
 //    setColumnStretchable(col, true);
@@ -4526,7 +4526,7 @@ RoutingView::RoutingView(ProjectPanel *project, Routing *p, QWidget *parent) :
 void RoutingView::init()
 {
     colTypes[-1]=RuleOp;
-    ncols=6;
+    ncols=7;
     ruleModel->setColumnCount(ncols);
 
     int col=0;
