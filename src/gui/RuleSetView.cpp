@@ -909,7 +909,10 @@ void RuleSetView::refreshGroups ()
 
 void RuleSetView::updateGroups ()
 {
-
+    for (int i = 0 ; i < rowsInfo.size(); i++)
+    {
+        setSpan (i,1,0,1);
+    }
     reset ();
     setColumnWidth(0,10);
     horizontalHeader()->setResizeMode (0, QHeaderView::Fixed);
@@ -928,11 +931,14 @@ void RuleSetView::updateGroups ()
             i--;
         }
     }
+
+
     
         QString memberRow ;
 
     bool beginGroup = false ;
     QString group;
+    qDebug("=================");
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
         Rule * r ;
@@ -941,6 +947,7 @@ void RuleSetView::updateGroups ()
       
             r = Rule::cast(ruleIndex[i]);
             group = r->getRuleGroupName().c_str();
+            qDebug(group.toAscii().data());
         if (group!=memberRow)
         {
             ruleModel->insertRow(i);
@@ -954,6 +961,7 @@ void RuleSetView::updateGroups ()
                 rowsInfo.insert (i,rri);
                 //QPanel * p = new QPanel(this);
                 addRuleGroupPanel(i);
+
             }
             else
             {
@@ -963,9 +971,9 @@ void RuleSetView::updateGroups ()
                 //setSpan (row,0,0,8);
                 //setIndexWidget (model()->index(row,0),new QFrame());
                 rowsInfo.insert (i,new RuleRowInfo(memberRow,false,false));
-                memberRow = group;
-                addRuleGroupPanel(i);
-            
+                memberRow = "";
+                addRuleGroupPanel(i);  
+                i--;              
             }
             i++;
         }
@@ -3716,6 +3724,7 @@ void RuleSetView::addRuleAfterCurrent()
 
     changingRules = true;
     insertRule(lastSelectedRule+1,NULL);
+    rowsInfo.insert (lastSelectedRule+1,NULL);
     changingRules = false;
     m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
     updateGroups();
