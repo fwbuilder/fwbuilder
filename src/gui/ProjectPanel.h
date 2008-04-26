@@ -381,10 +381,11 @@ public:
 
 
 protected:
-
+    int oldState ;
     virtual void showEvent( QShowEvent *ev);
     virtual void hideEvent( QHideEvent *ev);
     virtual void closeEvent( QCloseEvent * );
+    virtual void resizeEvent ( QResizeEvent * event );
 };
 
 #endif
