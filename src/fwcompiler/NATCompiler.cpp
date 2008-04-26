@@ -125,7 +125,7 @@ bool NATCompiler::checkForShadowing(const NATRule &r1,const NATRule &r2)
 /*
  * TODO: implement this
  */
-bool NATCompiler::cmpRules(const NATRule &r1,const NATRule &r2)
+bool NATCompiler::cmpRules(const NATRule&, const NATRule&)
 {
     return false;
 }

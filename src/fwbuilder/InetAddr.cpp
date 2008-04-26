@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: InetAddr.cpp 1034 2007-08-02 05:19:28Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -70,25 +70,8 @@ InetAddr::InetAddr(const struct in_addr *na) throw(FWException)
     ipv4.s_addr = na->s_addr;
 }
 
-/*****************************************************************
- *
- *   InetNetmask
- */
-
-InetNetmask::InetNetmask() : InetAddr() {}
-
-InetNetmask::InetNetmask(const InetAddr& a) : InetAddr(a) {}
-
-InetNetmask::InetNetmask(const char *data) throw(FWException) : InetAddr(data) 
-{
-}
-
-InetNetmask::InetNetmask(const string &s) throw(FWException) : InetAddr(s)
-{
-}
-
 // Set netmask to 'n' bits
-InetNetmask::InetNetmask(int n)  throw(FWException)
+InetAddr::InetAddr(int n)  throw(FWException)
 {
     if (n<0 || n>32) throw FWException(string("Invalid netmask length"));
     unsigned long nm_bits = 0;
@@ -102,11 +85,7 @@ InetNetmask::InetNetmask(int n)  throw(FWException)
     ipv4.s_addr = htonl(nm_bits);
 }
 
-InetNetmask::~InetNetmask()
-{
-}
-
-int InetNetmask::getLength() const
+int InetAddr::getLength() const
 {
     if (ipv4.s_addr == INADDR_BROADCAST) return 32;
     if (ipv4.s_addr == 0) return 0;

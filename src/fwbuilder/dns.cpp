@@ -6,7 +6,7 @@
 
   Author:  Vadim Zaliva lord@crocodile.org
 
-  $Id: dns.cpp 1034 2007-08-02 05:19:28Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public

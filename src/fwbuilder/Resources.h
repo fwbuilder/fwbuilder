@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: Resources.h 905 2005-12-07 07:26:08Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public

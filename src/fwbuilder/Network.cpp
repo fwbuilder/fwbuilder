@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: Network.cpp 975 2006-09-10 22:40:37Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -42,13 +42,13 @@ const char *Network::TYPENAME={"Network"};
 
 Network::Network() : Address()
 {
-    setNetmask(InetNetmask(0));
+    setNetmask(InetAddr(0));
 }
 
 Network::Network(const FWObject *root,bool prepopulate) :
     Address(root, prepopulate)
 {
-    setNetmask(InetNetmask(0));
+    setNetmask(InetAddr(0));
 }
 
 Network::Network(Network &o) : Address(o)
@@ -58,10 +58,12 @@ Network::Network(Network &o) : Address(o)
     setNetmask(o.getNetmask());
 }
 
-Network::Network (const string &s) : Address(s)
+Network::Network (const string &s) : Address()
 {
+    setAddressNetmask(s);
 }
                                      
+Network::~Network() {}
 
 void Network::fromXML(xmlNodePtr root) throw(FWException)
 {
@@ -74,7 +76,7 @@ void Network::fromXML(xmlNodePtr root) throw(FWException)
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("netmask")));
     assert(n!=NULL);
-    setNetmask(InetNetmask(n));
+    setNetmask(InetAddr(n));
     FREEXMLBUFF(n);
 }
 
@@ -97,5 +99,21 @@ xmlNodePtr Network::toXML(xmlNodePtr xml_parent_node) throw(FWException)
 bool Network::isValidRoutingNet() const
 {
     return (getAddress() == (getAddress() & getNetmask()));
+}
+
+void Network::setAddress(const InetAddr &a, bool)
+{
+    inet_addr_mask->setAddress(a);
+}
+
+void Network::setNetmask(const InetAddr &nm, bool)
+{
+    inet_addr_mask->setNetmask(nm);
+}
+
+void Network::setAddressNetmask(const std::string& s)
+{
+    delete inet_addr_mask;
+    inet_addr_mask = new InetAddrMask(s);
 }
 

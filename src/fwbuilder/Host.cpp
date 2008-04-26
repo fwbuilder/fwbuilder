@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: Host.cpp 1045 2007-08-30 04:47:19Z vk $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -56,12 +56,6 @@ Host::~Host()  {}
 
 void Host::fromXML(xmlNodePtr root) throw(FWException)
 {
-//    const char *n;
-//    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
-//    assert(n!=NULL);
-//    setStr("address", n);
-//    FREEXMLBUFF(n);
-
     FWObject::fromXML(root);
 }
 
@@ -118,55 +112,10 @@ FWOptions* Host::getOptionsObject()
     return FWOptions::cast( getFirstByType(HostOptions::TYPENAME) );
 }
 
-const InetAddr& Host::getAddress() const
-{
-    Interface *iface=NULL;
-    for(FWObjectTypedChildIterator j = findByType(Interface::TYPENAME);
-        j!=j.end(); ++j)
-    {
-        iface = Interface::cast(*j);
-        if (iface->isLoopback()) continue;
-        if (iface->isManagement()) return iface->getAddress();
-    }
-    if (iface!=NULL) return iface->getAddress();
-    return InetAddrMask::getAddress();
-}
-
-const InetAddr* Host::getAddressPtr() const
-{
-    Interface *iface=NULL;
-    for(FWObjectTypedChildIterator j=findByType(Interface::TYPENAME); j!=j.end(); ++j)
-    {
-        iface = Interface::cast(*j);
-        if (iface->isLoopback()) continue;
-        if (iface->isManagement()) return iface->getAddressPtr();
-    }
-    if (iface!=NULL) return iface->getAddressPtr();
-    return InetAddrMask::getAddressPtr();
-}
-
-const InetNetmask& Host::getNetmask() const
-{
-    Interface *iface=Interface::cast( getFirstByType(Interface::TYPENAME));
-    if (iface!=NULL) return iface->getNetmask();
-    return InetAddrMask::getNetmask();
-}
-
-void Host::setAddress(const InetAddr &a)
-{
-    Interface *iface=Interface::cast( getFirstByType(Interface::TYPENAME));
-    if (iface!=NULL) iface->setAddress(a); 
-}
-
-void Host::setNetmask(const InetNetmask &nm)
-{
-    Interface *iface=Interface::cast( getFirstByType(Interface::TYPENAME));
-    if (iface!=NULL) iface->setNetmask(nm); 
-}
-
 Management *Host::getManagementObject()
 {
-    Management *res = dynamic_cast<Management *>(getFirstByType(Management::TYPENAME));
+    Management *res = dynamic_cast<Management *>(
+        getFirstByType(Management::TYPENAME));
     if(!res)
         add( res = Management::cast(getRoot()->create(Management::TYPENAME)) );
 //        add(res = new Management());
@@ -182,15 +131,29 @@ Management *Host::getManagementObject()
 InetAddr Host::getManagementAddress() throw(FWException)
 {
     Management *mgmt=getManagementObject();
-
-    for(FWObjectTypedChildIterator j=findByType(Interface::TYPENAME); j!=j.end(); ++j)
+    FWObjectTypedChildIterator j = findByType(Interface::TYPENAME);
+    for( ; j!=j.end(); ++j)
     {
-        Interface *iface=Interface::cast(*j);
+        Interface *iface = Interface::cast(*j);
         if (iface->isManagement())
         {
-            mgmt->setAddress( iface->getAddress() );
-            return iface->getAddress();
+            FWObjectTypedChildIterator k = iface->findByType(IPv4::TYPENAME);
+            if (k != k.end())
+            {
+                InetAddrMask *addr = dynamic_cast<InetAddrMask*>(*k);
+                assert(addr);
+                mgmt->setAddress( addr->getAddress() );
+                return addr->getAddress();
+            }
         }
     }    
     return InetAddr();
 }
+
+const Address* Host::getAddressObject(bool ipv6) const
+{
+    FWObjectTypedChildIterator j = findByType(Interface::TYPENAME);
+    if (j == j.end()) return NULL;
+    return Interface::cast(*j)->getAddressObject(ipv6);
+}
+

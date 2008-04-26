@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland <vadim@vk.crocodile.org>
 
-  $Id: Address.h 975 2006-09-10 22:40:37Z vkurland $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -43,22 +43,48 @@ namespace libfwbuilder
  * TODO: we might need to derive ObjectGroup and AddressRange from Address,
  * but this requires lot more testing
  */
-class Address : public FWObject , public InetAddrMask
+class Address : public FWObject
 {
-    public:
+protected:
+    InetAddrMask*  inet_addr_mask;
+
+public:
 
     DECLARE_FWOBJECT_SUBTYPE(Address);
 
     Address();
     Address(const FWObject *root,bool prepopulate);
     Address(const Address&);
-    Address(const std::string& addr,const std::string& mask);
-    Address(const std::string &s) throw(FWException);
+    virtual ~Address();
+
+//    Address(const std::string& addr,const std::string& mask);
+//    Address(const std::string &s) throw(FWException);
 
     virtual FWObject& shallowDuplicate(const FWObject *obj,
                                        bool preserve_id = true)
         throw(FWException);
- 
+
+    virtual const bool hasInetAddress(bool ipv6=false) const;
+
+    virtual const InetAddr& getAddress(bool ipv6=false) const;
+    virtual const InetAddr* getAddressPtr(bool ipv6=false) const;
+    virtual const InetAddr& getNetmask(bool ipv6=false) const;
+    virtual const InetAddr* getNetmaskPtr(bool ipv6=false) const;
+
+    virtual const InetAddr& getNetworkAddress(bool ipv6=false) const;
+    virtual const InetAddr& getBroadcastAddress(bool ipv6=false) const;
+    virtual const InetAddr* getBroadcastAddressPtr(bool ipv6=false) const;
+
+    virtual void setAddress(const InetAddr &a, bool ipv6=false);
+    virtual void setNetmask(const InetAddr &nm, bool ipv6=false);
+    virtual void setAddressNetmask(const std::string& s);
+
+    const InetAddrMask* getAddressObjectInetAddrMask(bool ipv6=false) const;
+
+    virtual const Address* getAddressObject(bool ipv6=false) const;
+    virtual unsigned int dimension()  const;
+    bool belongs(const InetAddr &) const;
+    
     virtual FWReference* createRef();
 
     bool isAny() const;

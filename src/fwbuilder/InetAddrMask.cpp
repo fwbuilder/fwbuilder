@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: InetAddr.cpp 1034 2007-08-02 05:19:28Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -26,8 +26,7 @@
 
 #include <fwbuilder/libfwbuilder-config.h>
 
-#include <fwbuilder/InetAddr.h>
-#include <fwbuilder/Interface.h>
+#include <fwbuilder/InetAddrMask.h>
 
 #include <stdio.h>
 #include <iostream>
@@ -49,18 +48,26 @@ void InetAddrMask::setNetworkAndBroadcastAddress()
     *broadcast_address = *address | (~(*netmask));
 }
 
+InetAddrMask::InetAddrMask(bool)
+{
+    // this constructor does not create address, netmask and other
+    // variables. This constructor should only be used by classes that
+    // inherit InetAddrMask and create address, netmask themselves,
+    // such as Inet6AddrMask
+}
+
 InetAddrMask::InetAddrMask()
 {
     address = new InetAddr();
-    netmask = new InetNetmask();
+    netmask = new InetAddr();
     broadcast_address = new InetAddr();
     network_address = new InetAddr();
 }
 
-InetAddrMask::InetAddrMask(const InetAddr &a, const InetNetmask &n)
+InetAddrMask::InetAddrMask(const InetAddr &a, const InetAddr &n)
 {    
     address = new InetAddr(a & n);
-    netmask = new InetNetmask(n);
+    netmask = new InetAddr(n);
     broadcast_address = new InetAddr();
     network_address = new InetAddr();
     setNetworkAndBroadcastAddress();
@@ -69,7 +76,7 @@ InetAddrMask::InetAddrMask(const InetAddr &a, const InetNetmask &n)
 InetAddrMask::InetAddrMask(const InetAddrMask& other)
 {
     address = new InetAddr(*(other.address));
-    netmask = new InetNetmask(*(other.netmask));
+    netmask = new InetAddr(*(other.netmask));
     broadcast_address = new InetAddr();
     network_address = new InetAddr();
     setNetworkAndBroadcastAddress();
@@ -78,7 +85,7 @@ InetAddrMask::InetAddrMask(const InetAddrMask& other)
 InetAddrMask::InetAddrMask(const string &s) throw(FWException)
 {
     address = new InetAddr();
-    netmask = new InetNetmask();
+    netmask = new InetAddr();
     broadcast_address = new InetAddr();
     network_address = new InetAddr();
 
@@ -92,7 +99,7 @@ InetAddrMask::InetAddrMask(const string &s) throw(FWException)
     if (pos==string::npos)
     {
         setAddress(InetAddr(s));
-        setNetmask(InetNetmask(InetAddr::getAllOnes()));
+        setNetmask(InetAddr(InetAddr::getAllOnes()));
     }
     else
     {
@@ -103,11 +110,11 @@ InetAddrMask::InetAddrMask(const string &s) throw(FWException)
         {
             // netmask is represented as /NN (length in bits)
             int d = atoi(netm.c_str());
-            *netmask = InetNetmask(d);
+            *netmask = InetAddr(d);
         }
         else
         {
-            setNetmask(InetNetmask(netm));
+            setNetmask(InetAddr(netm));
         }
     }
     setNetworkAndBroadcastAddress();
@@ -127,7 +134,7 @@ void InetAddrMask::setAddress(const InetAddr &a)
     setNetworkAndBroadcastAddress();
 }
 
-void InetAddrMask::setNetmask(const InetNetmask &nm)
+void InetAddrMask::setNetmask(const InetAddr &nm)
 {
     *netmask = nm;
     setNetworkAndBroadcastAddress();
@@ -192,7 +199,7 @@ bool libfwbuilder::_convert_range_to_networks(const InetAddr &start,
     if (end < start) return false;
     if (start == end)
     {
-	res.push_back(InetAddrMask(start, InetNetmask(InetAddr::getAllOnes())));
+	res.push_back(InetAddrMask(start, InetAddr(InetAddr::getAllOnes())));
 	return false;
     }
 
@@ -206,8 +213,8 @@ bool libfwbuilder::_convert_range_to_networks(const InetAddr &start,
 
     if (size==2)
     {
-	res.push_back(InetAddrMask(start, InetNetmask(InetAddr::getAllOnes())));
-	res.push_back(InetAddrMask(end, InetNetmask(InetAddr::getAllOnes())));
+	res.push_back(InetAddrMask(start, InetAddr(InetAddr::getAllOnes())));
+	res.push_back(InetAddrMask(end, InetAddr(InetAddr::getAllOnes())));
 	return false;
     }
 
@@ -221,12 +228,12 @@ bool libfwbuilder::_convert_range_to_networks(const InetAddr &start,
 /* mask_bits  represents number of '1'in the netmask for the new subnet */
 
 /* test start address to see if it is a good network address for netmask */
-    InetNetmask   nm1(mask_bits);  // new netmask
+    InetAddr   nm1(mask_bits);  // new netmask
     InetAddrMask tn1(start, nm1);
 
     InetAddr nstart;
     InetAddr nend;
-    InetNetmask   nnm;
+    InetAddr   nnm;
 
     nstart = start;
 
@@ -241,7 +248,7 @@ bool libfwbuilder::_convert_range_to_networks(const InetAddr &start,
         do
         {
             mask_bits++;
-            nnm = InetNetmask(mask_bits);
+            nnm = InetAddr(mask_bits);
             tn1 = InetAddrMask(nstart, nnm);
         } while (start!=tn1.getAddress() and mask_bits>0);
         nend = nstart;
@@ -257,7 +264,7 @@ bool libfwbuilder::_convert_range_to_networks(const InetAddr &start,
         do 
         {
             mask_bits++;
-            nnm = InetNetmask(mask_bits);  // new netmask
+            nnm = InetAddr(mask_bits);  // new netmask
             nend = start;
             nend = nend  | (~nnm);
         } while (nend > end);
@@ -287,8 +294,8 @@ vector<InetAddrMask> libfwbuilder::getOverlap(const InetAddrMask &n1,
     const InetAddr& s1 = n1.getAddress();
     const InetAddr& s2 = n2.getAddress();
 
-    const InetNetmask&   m1 = n1.getNetmask();
-    const InetNetmask&   m2 = n2.getNetmask();
+    const InetAddr&   m1 = n1.getNetmask();
+    const InetAddr&   m2 = n2.getNetmask();
 
     InetAddr e1 = s1 | (~m1);
     InetAddr e2 = s2 | (~m2);
@@ -333,8 +340,8 @@ vector<InetAddrMask> libfwbuilder::substract(const InetAddrMask &n1,
     InetAddr n1s = n1.getAddress();
     InetAddr n2s = n2.getAddress();
 
-    InetNetmask   n1m = n1.getNetmask();
-    InetNetmask   n2m = n2.getNetmask();
+    InetAddr   n1m = n1.getNetmask();
+    InetAddr   n2m = n2.getNetmask();
 
     InetAddr n1e = n1s; n1e = n1e | (~n1m);
     InetAddr n2e = n2s; n2e = n2e | (~n2m);

@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: Network.h 975 2006-09-10 22:40:37Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -28,34 +28,46 @@
 #define __NETWORK_HH_FLAG__
 
 #include <fwbuilder/Address.h>
+#include <fwbuilder/InetAddrMask.h>
 #include <fwbuilder/InetAddr.h>
 #include <fwbuilder/InetAddrMask.h>
 
 namespace libfwbuilder
 {
 
-class Network : public Address
+    class Network : public Address
 {
-    public:
+public:
     
     Network();
     Network(const FWObject *root,bool prepopulate);
     Network(Network &);
     Network(const std::string &);
+    virtual ~Network();
 
     bool isValidRoutingNet() const;
 
-    void setData(InetAddrMask &n)
-    {
-        setAddress(n.getAddress());
-        setNetmask(n.getNetmask());
-    }
-    
     virtual void       fromXML (xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML   (xmlNodePtr xml_parent_node) throw(FWException);
     
     DECLARE_FWOBJECT_SUBTYPE(Network);
-    
+
+    virtual const bool hasInetAddress(bool ipv6=false) const
+    {
+        if (ipv6) return false;
+        return true;
+    }
+
+    virtual Address* getAddressObject(bool ipv6=false)
+    {
+        if (ipv6) return NULL;
+        return this;
+    }
+
+    virtual void setAddress(const InetAddr &a, bool ipv6=false);
+    virtual void setNetmask(const InetAddr &nm, bool ipv6=false);
+    virtual void setAddressNetmask(const std::string& s);
+
 };
 
 }

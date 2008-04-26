@@ -6,7 +6,7 @@
 
   Author:  Illiya Yalovoy <yalovoy@gmail.com>
 
-  $Id: DNSName.cpp 987 2006-11-06 06:20:40Z vkurland $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -44,17 +44,59 @@ const char *DNSName::TYPENAME={"DNSName"};
 
 DNSName::DNSName() : MultiAddress() 
 {
-    registerSourceAttributeName("dnsrec");
-    setSourceName("localhost");
     setRunTime(false);
 }
 
 DNSName::DNSName(const FWObject *root,bool prepopulate) :
     MultiAddress(root,prepopulate) 
 {
-    registerSourceAttributeName("dnsrec");
-    setSourceName("localhost");
     setRunTime(false);
+}
+
+string DNSName::getSourceName()
+{
+    return getStr("dnsrec");
+}
+
+void DNSName::setSourceName(const std::string& source_name)
+{
+    setStr("dnsrec", source_name);
+}
+
+string DNSName::getDNSRecordType()
+{
+    return getStr("dnsrec");
+}
+
+void DNSName::setDNSRecordType(const string& rectype)
+{
+    setStr("dnsrec", rectype);
+}
+
+void DNSName::fromXML(xmlNodePtr root) throw(FWException)
+{
+    FWObject::fromXML(root);
+    const char *n;
+    
+    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dnsrec")));
+    assert(n!=NULL);
+    setStr("dnsrec", n);
+    FREEXMLBUFF(n);
+
+    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dnsrectype")));
+    if (n!=NULL)
+    {
+        setStr("dnsrectype", n);
+        FREEXMLBUFF(n);
+    } else
+    {
+        setStr("dnsrectype", "A");
+    }
+
+    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("run_time")));
+    assert(n!=NULL);
+    setStr("run_time", n);
+    FREEXMLBUFF(n);
 }
 
 
@@ -62,7 +104,7 @@ void DNSName::loadFromSource() throw(FWException)
 {
     try
     {
-        list<InetAddr> v = DNS::getHostByName(getSourceName() );
+        list<InetAddr> v = DNS::getHostByName(getSourceName());
         for (list<InetAddr>::iterator i=v.begin(); i!=v.end(); ++i)
         {
             IPv4 *a = IPv4::cast(getRoot()->create(IPv4::TYPENAME));
@@ -71,7 +113,7 @@ void DNSName::loadFromSource() throw(FWException)
         }
     } catch (const FWException &ex)
     {
-        cerr << "Error resolving dns name " << getSourceName() << ": '"
+        cerr << "Error resolving dns name " << getStr("dnsrec") << ": '"
              << ex.toString() << "'" << endl;
     }
 }

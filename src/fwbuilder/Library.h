@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: Library.h 975 2006-09-10 22:40:37Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -25,7 +25,7 @@
 */
 
 /*
- * $Id: Library.h 975 2006-09-10 22:40:37Z vkurland $
+ * $Id$
  */
 
 #ifndef __LIBRARY_HH_FLAG__

@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland <vadim@fwbuilder.org>
 
-  $Id: MultiAddress.cpp 975 2006-09-10 22:40:37Z vkurland $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -45,55 +45,26 @@ const char *MultiAddress::TYPENAME={"MultiAddress"};
 
 MultiAddress::MultiAddress() : FWObject() 
 {
-    source_attribute_name = "";
-    setSourceName("");
     setRunTime(false);
 }
 
 MultiAddress::MultiAddress(const FWObject *root,bool prepopulate) :
     FWObject(root,prepopulate) 
 {
-    source_attribute_name = "";
-    setSourceName("");
     setRunTime(false);
 }
 
-void MultiAddress::fromXML(xmlNodePtr root) throw(FWException)
+MultiAddress::~MultiAddress()
 {
-    FWObject::fromXML(root);
-    const char *n;
-    
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST(source_attribute_name.c_str())));
-    assert(n!=NULL);
-    setStr(source_attribute_name, n);
-    FREEXMLBUFF(n);
-
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("run_time")));
-    assert(n!=NULL);
-    setStr("run_time", n);
-    FREEXMLBUFF(n);
 }
 
-xmlNodePtr MultiAddress::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+string MultiAddress::getSourceName()
 {
-    xmlNodePtr me = FWObject::toXML(xml_parent_node,false);
-    
-    return me;
+    return "";
 }
 
-void MultiAddress::registerSourceAttributeName(const std::string &an)
+void MultiAddress::setSourceName(const std::string& source_name)
 {
-    source_attribute_name = an;
-}
-
-std::string MultiAddress::getSourceName() const
-{
-   return getStr(source_attribute_name);
-}
-
-void MultiAddress::setSourceName(const std::string &s)
-{
-    if (!source_attribute_name.empty()) setStr(source_attribute_name,s);
 }
 
 bool MultiAddress::isCompileTime() const

@@ -6,7 +6,7 @@
 
   Author:  Vadim Zaliva lord@crocodile.org
 
-  $Id: FWObjectDatabase.h 1045 2007-08-30 04:47:19Z vk $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms

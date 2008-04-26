@@ -1,3 +1,20 @@
+2008-04-21  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* DNSName.cpp (DNSName::fromXML): added support for attribute
+	dnsrectype in DNSName object. If this attribute is missing in XML
+	file, it is assumed to be "A" and will be inserted when object is
+	saved back to XML
+
+	* fwbuilder.dtd.in: changes for ipv6: added elements IPV6 and
+	NetworkIPv6, new attribute dnsrectype for element DNSName
+
+	* NetworkIPv6.cpp: class to represent ipv6 network
+
+	* IPv6.cpp: class to represent IPv6 address
+
+	* AddressTable.cpp (AddressTable::loadFromSource): preparing for
+	ipv6: AddressTable object can read ipv6 addresses from file.
+
 2007-09-02  vadim  <vadim@vk.crocodile.org>
 
 	* 2.1.14 release

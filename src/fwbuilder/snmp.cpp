@@ -6,7 +6,7 @@
 
   Author:  Vadim Zaliva lord@crocodile.org
 
-  $Id: snmp.cpp 1034 2007-08-02 05:19:28Z vkurland $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -384,7 +384,7 @@ void SNMPQuery::fetchRoutingTable(Logger *logger,SyncFlag *stop_program, SNMPCon
                     SNMPVariable::freeVarList(v);
                     continue;
                 }
-                InetNetmask nm = dynamic_cast<SNMPVariable_IPaddr*>(v[0])->getNetmaskValue();
+                InetAddr nm = dynamic_cast<SNMPVariable_IPaddr*>(v[0])->getNetmaskValue();
                 SNMPVariable::freeVarList(v);
 
                 v=c->get(string(SNMP_ROUTE_TYPE_TABLE)+"."+rname);
@@ -685,7 +685,7 @@ void SNMPQuery::fetchInterfaces(Logger *logger,SyncFlag *stop_program, SNMPConne
 
                 IPv4 *ipaddr=interfaces[ifindex].addIPv4();
                 ipaddr->setAddress(InetAddr(ad));
-                ipaddr->setNetmask(InetNetmask(nm));
+                ipaddr->setNetmask(InetAddr(nm));
 
                 str << "Adding interface #" << ifindex 
                     << ": " << ad << "/" << nm
@@ -1107,14 +1107,14 @@ InetAddr SNMPVariable_IPaddr::getInetAddrValue() throw(FWException)
     return InetAddr(&addr_conversion.ipaddr);
 }
 
-InetNetmask SNMPVariable_IPaddr::getNetmaskValue() throw(FWException)
+InetAddr SNMPVariable_IPaddr::getNetmaskValue() throw(FWException)
 {
     union {
         struct in_addr ipaddr;
         char addr_bytes[4];
     } addr_conversion;
     memcpy((void*)(&addr_conversion), value, len);
-    return InetNetmask(&addr_conversion.ipaddr);
+    return InetAddr(&addr_conversion.ipaddr);
 }
 
 string SNMPVariable_String::toString()
@@ -1280,8 +1280,8 @@ bool SNMPCrawler::alreadyseen(const InetAddr &a) const
  * loopback  :  All addresses on the net  127.0.0.0/255.0.0.0
  */
 const InetAddrMask SNMPCrawler::LOOPBACK_NET(InetAddr::getLoopbackAddr(),
-                                          InetNetmask("255.0.0.0"));
-const InetNetmask SNMPCrawler::PTP_NETMASK(InetAddr::getAllOnes());
+                                          InetAddr("255.0.0.0"));
+const InetAddr SNMPCrawler::PTP_NETMASK(InetAddr::getAllOnes());
 const InetAddr SNMPCrawler::ZERO_IP("0.0.0.0");
 
 bool SNMPCrawler::isvirtual(const InetAddr &addr, const string &pa) const 

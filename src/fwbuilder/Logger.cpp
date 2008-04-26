@@ -7,7 +7,7 @@
   Author:  Vadim Kurland     vadim@vk.crocodile.org
            Vadim Zaliva      lord@crocodile.org
 
-  $Id: Logger.cpp 1045 2007-08-30 04:47:19Z vk $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public

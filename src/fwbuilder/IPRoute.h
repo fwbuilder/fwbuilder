@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: IPRoute.h 966 2006-08-18 03:59:32Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -51,12 +51,12 @@ class IPRoute
     public:
 
     IPRoute(const IPRoute &);
-    IPRoute(const InetAddr &_dst, const InetNetmask &_nm, const InetAddr &_gw,
+    IPRoute(const InetAddr &_dst, const InetAddr &_nm, const InetAddr &_gw,
             const Interface *_intf,  bool _direct);
     virtual ~IPRoute();
 
     bool isDirect() const { return direct;}
-    const InetNetmask   &getNetmask    () const { return nm;   }
+    const InetAddr &getNetmask    () const { return nm;   }
     const InetAddr &getDestination() const { return dst;  }
     const InetAddr &getGateway    () const { return gw;   }
 
@@ -68,7 +68,7 @@ class IPRoute
     
     private:
     
-    InetNetmask  nm     ;
+    InetAddr nm     ;
     InetAddr dst    ;
     InetAddr gw     ;
     const Interface  *intf;

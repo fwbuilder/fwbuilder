@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: XMLTools.cpp 969 2006-08-22 04:12:49Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public

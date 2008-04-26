@@ -73,161 +73,109 @@
 using namespace libfwbuilder;
 using namespace std;
 
-typedef enum { NONE, TEST} command;
-typedef deque<string> operands;
-typedef multimap <string,string> MM;
-typedef multimap <string,string>::iterator MMI;
-
-MM ta;
-
-string objtype;
 
 FWObjectDatabase       *objdb = NULL;
 
 
-
-bool testDNS(const string &s,const string &a)
+bool testDNSNameObject(FWObjectDatabase *objdb, FWObject *root,
+                       const string &dnsrec,
+                       char* results[])
 {
-    
-    pair<MMI,MMI> b=ta.equal_range(s);
-    for(MMI i=b.first; i!=b.second;++i)
+    list<std::string> expected_results;
+    for (char** cptr=results; *cptr!=NULL; ++cptr)
+        expected_results.push_back(*cptr);
+
+    FWObject *nobj = objdb->create(DNSName::TYPENAME);
+    if (root != NULL)
     {
-        if ((*i).second == a) return true;
+        root->add(nobj);    
     }
-    return false;
+    DNSName* dnsnameobj = DNSName::cast(nobj);
+            
+    dnsnameobj->setName(dnsrec);
+    dnsnameobj->setStr("dnsrec", dnsrec);
+    dnsnameobj->setRunTime(false);
+
+    bool passed = true;
+    try
+    {
+        cout << endl << dnsnameobj->getName()
+             << " ( " << dnsnameobj->getId() <<  " ) " << endl;
+
+        dnsnameobj->loadFromSource();
+
+        for (FWObject::iterator j=dnsnameobj->begin();
+             j!=dnsnameobj->end(); ++j)
+        {
+            Address* addr = Address::cast(FWReference::cast(*j)->getPointer());
+            const InetAddr* inet_addr = addr->getAddressPtr();
+
+            cout << inet_addr->toString() << " : "; 
+
+            list<std::string>::const_iterator res;
+
+            res = std::find(expected_results.begin(),
+                            expected_results.end(),
+                            inet_addr->toString());
+
+            if ( res != expected_results.end())
+            {
+                cout << "Passed." << endl;
+            }
+            else
+            {
+                cout << "Failed." << endl;
+                passed = false;
+            }
+        }
+    }catch(FWException &ex)  
+    {
+        cerr << ex.toString() << endl;
+    }
+    return passed;
 }
 
-int main(int argc, char * const *argv)
+int main(int, char * const *)
 {   
-    operands ops;
-
-#ifdef ENABLE_NLS
-    setlocale (LC_ALL, "");
-
-    bindtextdomain (PACKAGE, LOCALEDIR);
-    textdomain (PACKAGE);
-#else
-#  ifdef HAVE_SETLOCALE
-    setlocale (LC_ALL, "");
-#  endif
-#endif
-
-
-    int passed = 0;
-    int failed = 0;
 
     try 
     {
+        libfwbuilder::init();
+
         objdb = new FWObjectDatabase();
 
     
 
-        FWObject *nlib = objdb->create(Library::TYPENAME,true);
+        FWObject *nlib = objdb->create(Library::TYPENAME);
         objdb->add(nlib);
         nlib->setName( "Library" );
 
-        FWObject *o1 = objdb->create(ObjectGroup::TYPENAME,true);
+        FWObject *o1 = objdb->create(ObjectGroup::TYPENAME);
         o1->setName("Objects");
         nlib->add(o1);
             
-        FWObject *root = objdb->create(ObjectGroup::TYPENAME,true);
+        FWObject *root = objdb->create(ObjectGroup::TYPENAME);
         root->setName("DNS Names");
         o1->add(root);
             
-        DNSName *dname;
-        IPAddress addr;
+        InetAddr addr;
             
         cout << "Start test for DNS Names :" << endl;
 
+        char* test1[] = {"localhost", "127.0.0.1", NULL};
+        testDNSNameObject(objdb, root, test1[0], &(test1[1]));
 
-        ta.insert(make_pair("localhost","127.0.0.1"));
+        char* test2[] = {"www.fwbuilder.org","69.56.183.146", NULL};
+        testDNSNameObject(objdb, root, test2[0], &(test2[1]));
         
-        ta.insert(make_pair("www.rebol.com","216.193.197.238"));
-        
-        ta.insert(make_pair("www.microsoft.com","207.46.20.60"));
-        ta.insert(make_pair("www.microsoft.com","207.46.198.30"));
-        ta.insert(make_pair("www.microsoft.com","207.46.198.60"));
-        ta.insert(make_pair("www.microsoft.com","207.46.199.30"));
-        ta.insert(make_pair("www.microsoft.com","207.46.225.60"));
-        ta.insert(make_pair("www.microsoft.com","207.46.19.60"));
+        char* test3[] = {"www.microsoft.com",
+                         "207.46.19.254",
+                         "207.46.192.254",
+                         "207.46.193.254",
+                         NULL};
+        testDNSNameObject(objdb, root, test3[0], &(test3[1]));
        
-        ta.insert(make_pair("www.cnn.com","64.236.16.20"));
-        ta.insert(make_pair("www.cnn.com","64.236.16.52"));
-        ta.insert(make_pair("www.cnn.com","64.236.16.84"));
-        ta.insert(make_pair("www.cnn.com","64.236.16.116"));
-        ta.insert(make_pair("www.cnn.com","64.236.24.4"));
-        ta.insert(make_pair("www.cnn.com","64.236.24.12"));
-        ta.insert(make_pair("www.cnn.com","64.236.24.20"));
-        ta.insert(make_pair("www.cnn.com","64.236.24.28"));
 
-        ta.insert(make_pair("www.google.com","66.249.85.99"));
-        ta.insert(make_pair("www.google.com","66.249.85.104"));
-        ta.insert(make_pair("www.google.com","66.249.85.147"));
-        ta.insert(make_pair("www.google.com","66.249.93.99"));
-        ta.insert(make_pair("www.google.com","66.249.93.104"));
-        ta.insert(make_pair("www.google.com","66.249.93.147"));
-        ta.insert(make_pair("www.google.com","66.102.7.99"));
-        ta.insert(make_pair("www.google.com","66.102.7.104"));
-        ta.insert(make_pair("www.google.com","66.102.7.147"));
-
-        
-        DNSName *o;
-        FWObject* nobj;
-        objtype=DNSName::TYPENAME;
-        
-        for (MM::iterator i = ta.begin();
-                i != ta.end();
-                i=ta.upper_bound((*i).first))
-        {
-
-            nobj=objdb->create(objtype,true);
-            if (root != NULL)
-            {
-                root->add(nobj);    
-            
-                o=DNSName::cast(nobj);
-            
-                o->setName((*i).first);
-                o->setDNSRec((*i).first);
-                o->setRunTime(false);
-
-            }
-            
-        }
-
-        
-        for(FWObject::iterator i=root->begin(); 
-                     i!=root->end();
-                     ++i)
-        {
-            try
-            {
-               cout << endl << (*i)->getName() << " ( " << (*i)->getId() <<  " ) " << endl;
-               dname=DNSName::cast(*i);
-               dname->resolve();
-               addr=dname->getAddress();
-               
-               cout << addr.toString() << " :"; 
-
-               if ( testDNS((*i)->getName(), addr))
-               {
-                   cout << "Passed." << endl;
-                   passed++;
-                   
-               }
-               else
-               {
-                   cout << "Failed." << endl;
-                   failed++;
-               }
-            }catch(FWException &ex)  
-            {
-                cerr << ex.toString() << endl;
-                failed++;
-            }
- 
-           
-        } 
 
     } catch(FWException &ex)  {
     cerr << ex.toString() << endl;
@@ -243,10 +191,5 @@ int main(int argc, char * const *argv)
         exit(1);
     }
 
-    cout << endl <<"Test statistics:" << endl;
-    cout   <<"Passed : "<< passed << endl;
-    cout   <<"Failed : "<< failed << endl;
-
-    return((failed>0)?0:1);
 }
 

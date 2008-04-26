@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: InetAddrMask.h 966 2006-08-18 03:59:32Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -67,27 +67,28 @@ namespace libfwbuilder
 
 class InetAddrMask
 {
-private:
+protected:
     
     InetAddr* address;
-    InetNetmask* netmask;
+    InetAddr* netmask;
     InetAddr* broadcast_address;
     InetAddr* network_address;
 
+    explicit InetAddrMask(bool no_address);
     void setNetworkAndBroadcastAddress();
 
 public:
 
     InetAddrMask();
-    InetAddrMask(const InetAddr&, const InetNetmask&);
+    InetAddrMask(const InetAddr&, const InetAddr&);
     InetAddrMask(const std::string &s) throw(FWException);
     InetAddrMask(const InetAddrMask&);
     virtual ~InetAddrMask();
 
     virtual const InetAddr& getAddress() const { return *address; }
     virtual const InetAddr* getAddressPtr() const { return address; }
-    virtual const InetNetmask& getNetmask() const { return *netmask; }
-    virtual const InetNetmask* getNetmaskPtr() const { return netmask; }
+    virtual const InetAddr& getNetmask() const { return *netmask; }
+    virtual const InetAddr* getNetmaskPtr() const { return netmask; }
 
     virtual const InetAddr& getNetworkAddress() const {
         return *network_address; }
@@ -97,7 +98,7 @@ public:
         return broadcast_address; }
 
     virtual void setAddress(const InetAddr &a);
-    virtual void setNetmask(const InetNetmask &nm);
+    virtual void setNetmask(const InetAddr &nm);
 
     virtual unsigned int dimension()  const;
 

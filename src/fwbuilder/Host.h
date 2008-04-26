@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: Host.h 975 2006-09-10 22:40:37Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -28,8 +28,10 @@
 #define __HOST_HH_FLAG__
 
 #include <vector>
+#include <list>
 
 #include <fwbuilder/Address.h>
+#include <fwbuilder/IPv4.h>
 #include <fwbuilder/FWOptions.h>
 
 namespace libfwbuilder
@@ -65,15 +67,6 @@ class Host : public Address
 
     InetAddr getManagementAddress()  throw(FWException);
 
-    virtual const InetAddr& getAddress() const;
-    virtual const InetAddr* getAddressPtr() const;
-
-    virtual const InetNetmask& getNetmask() const;
-    virtual unsigned int dimension()  const { return 1; }
-
-    virtual void setAddress(const InetAddr &a);
-    virtual void setNetmask(const InetNetmask &nm);
-
     /**
      *  This method returns reference to the object representing
      *  host's platform-specific options (class HostOptions)
@@ -85,6 +78,9 @@ class Host : public Address
      * If none is present, new one will be created;
      */
     Management *getManagementObject();
+
+    virtual const Address* getAddressObject(bool ipv6=false) const;
+    virtual unsigned int dimension()  const { return 1; }
     
     protected:
     

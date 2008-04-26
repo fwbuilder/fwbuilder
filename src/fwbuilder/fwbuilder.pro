@@ -5,13 +5,14 @@ include(../../qmake.inc)
 VERSION = $$SO_VERSION
 #
 SOURCES  = 	InetAddr.cpp \
+			Inet6Addr.cpp \
 			InetAddrMask.cpp \
+			Inet6AddrMask.cpp \
 			IPRoute.cpp \
 			Address.cpp \
 			AddressRange.cpp \
 			BackgroundOp.cpp \
 			Constants.cpp \
-			crypto.cpp \
 			CustomService.cpp \
 			dns.cpp \
 			Firewall.cpp \
@@ -33,12 +34,14 @@ SOURCES  = 	InetAddr.cpp \
 			IntervalGroup.cpp \
 			IPService.cpp \
 			IPv4.cpp \
+			IPv6.cpp \
 			Library.cpp \
 			Logger.cpp \
 			Management.cpp \
 			MultiAddress.cpp \
 			NAT.cpp \
 			Network.cpp \
+			NetworkIPv6.cpp \
 			ObjectGroup.cpp \
 			physAddress.cpp \
             DNSName.cpp\
@@ -61,13 +64,14 @@ SOURCES  = 	InetAddr.cpp \
 
 
 HEADERS  = 	InetAddr.h \
+			Inet6Addr.h \
 			InetAddrMask.h \
+			Inet6AddrMask.h \
 			IPRoute.h \
 			Address.h \
 			AddressRange.h \
 			BackgroundOp.h \
 			Constants.h \
-			crypto.h \
 			CustomService.h \
 			dns.h \
 			Firewall.h \
@@ -89,6 +93,7 @@ HEADERS  = 	InetAddr.h \
 			Interval.h \
 			IPService.h \
 			IPv4.h \
+			IPv6.h \
 			libfwbuilder-config.h \
 			libfwbuilder-version.h \
 			Library.h \
@@ -97,6 +102,7 @@ HEADERS  = 	InetAddr.h \
 			MultiAddress.h \
 			NAT.h \
 			Network.h \
+			NetworkIPv6.h \
 			ObjectGroup.h \
 			physAddress.h \
             DNSName.h\

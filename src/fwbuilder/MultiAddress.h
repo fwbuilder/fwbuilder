@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland <vadim@fwbuilder.org>
 
-  $Id: MultiAddress.h 975 2006-09-10 22:40:37Z vkurland $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -40,23 +40,17 @@ namespace libfwbuilder
 class MultiAddress : public ObjectGroup
 {
     private:
-    // the name of the source XML attribute
-    // (e.g. 'file' for address tables and 'dnsrec' for DNSName)
-    std::string source_attribute_name;
-
       
     public:
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
 
     DECLARE_FWOBJECT_SUBTYPE(MultiAddress);
 
     MultiAddress();
     MultiAddress(const FWObject *root,bool prepopulate);
-    void registerSourceAttributeName(const std::string &an);
+    virtual ~MultiAddress();
 
-    std::string getSourceName() const;
-    void setSourceName(const std::string &s);
-
+    virtual std::string getSourceName();
+    virtual void setSourceName(const std::string& source_name);
     virtual void loadFromSource() throw(FWException);
 
     bool isCompileTime() const;
@@ -65,9 +59,6 @@ class MultiAddress : public ObjectGroup
     void setRunTime(const bool b); 
 
     virtual bool validateChild(FWObject *o);
-
-    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
-
 };
 
 /*

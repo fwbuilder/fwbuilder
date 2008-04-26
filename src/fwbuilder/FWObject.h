@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: FWObject.h 977 2006-09-15 05:30:33Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -343,8 +343,8 @@ public:
 
     int getChildrenCount();
 
-    virtual void dump(bool recursive,bool brief,int offset=0);
-    virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0);
+    virtual void dump(bool recursive,bool brief,int offset=0) const;
+    virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0) const;
 
     /**
      * returns true if this is either direct child of obj, or a child

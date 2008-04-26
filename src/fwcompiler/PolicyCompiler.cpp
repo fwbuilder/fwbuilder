@@ -655,21 +655,24 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
         MultiAddress *maddr = MultiAddress::cast(o);
         if (maddr && maddr->isRunTime()) continue;
 
-        Address *addr=Address::cast(o);
+        Address *addr = Address::cast(o);
 
-        if (Interface::cast(o)!=NULL && 
-            (Interface::cast(o)->isDyn() ||
-             Interface::cast(o)->isUnnumbered() ||
-             Interface::cast(o)->isBridgePort()))
-            continue;
-
-        if ( ! addr->isAny() 
-             && addr->getAddress().isAny()
-             && addr->getNetmask().isAny()
-        ) 
+        if (addr->hasInetAddress())
         {
-            a = addr;
-            break;
+            if (Interface::cast(o)!=NULL && 
+                (Interface::cast(o)->isDyn() ||
+                 Interface::cast(o)->isUnnumbered() ||
+                 Interface::cast(o)->isBridgePort()))
+                continue;
+
+            if ( ! addr->isAny() 
+                 && addr->getAddress().isAny()
+                 && addr->getNetmask().isAny()
+            ) 
+            {
+                a = addr;
+                break;
+            }
         }
     }
 
@@ -725,7 +728,7 @@ bool PolicyCompiler::checkForZeroAddr::processNext()
         if (IPv4::cast(a)!=NULL) // || IPv6::cast(a)!=NULL
         {
             FWObject *p=a->getParent();
-            Interface *iface=Interface::cast(p);
+            Interface *iface = Interface::cast(p);
             if (iface!=NULL) 
             {
                 err+=" (an address of interface ";

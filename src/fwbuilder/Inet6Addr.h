@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: InetAddr.h 966 2006-08-18 03:59:32Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -48,7 +48,7 @@ namespace libfwbuilder
  * Class Inet6Addr is a wrapper for struct in6_addr
  *
  */
-    class Inet6Addr : public InetAddr
+class Inet6Addr : public InetAddr
 {
     protected:
 
@@ -57,9 +57,23 @@ namespace libfwbuilder
     // Address in network order
     struct in6_addr ipv6;
 
+    // copy in6_addr from sa to da
+    static inline void _copy_in6_addr(struct in6_addr* da,
+                                      const struct in6_addr* sa)
+    {
+        for (int i=0; i<4; ++i)
+            ((uint32_t*)(da))[i] = ((uint32_t*)(sa))[i];
+    }
+
     public:
     
-    explicit Inet6Addr() { ipv6 = IN6ADDR_ANY_INIT; }
+    explicit Inet6Addr()
+    {
+        ((uint32_t *) (&ipv6))[0] = 0;
+        ((uint32_t *) (&ipv6))[1] = 0;
+        ((uint32_t *) (&ipv6))[2] = 0;
+        ((uint32_t *) (&ipv6))[3] = 0;
+    }
         
     virtual ~Inet6Addr() {}
 
@@ -68,6 +82,10 @@ namespace libfwbuilder
     explicit Inet6Addr(const std::string&)
         throw(FWException, FWNotSupportedException);
     Inet6Addr(const Inet6Addr &);
+    Inet6Addr(int n) throw(FWException);  // creates netmask 'n' bits long
+    
+    virtual bool isV4() { return false; }
+    virtual bool isV6() { return true; }
     
     static inline Inet6Addr getAny()
     {
@@ -76,19 +94,22 @@ namespace libfwbuilder
 
     static inline Inet6Addr getAllOnes()
     {
-        struct in6_addr allones;
-        allones.s_addr32[0] = 0xffffffff;
-        allones.s_addr32[1] = 0xffffffff;
-        allones.s_addr32[2] = 0xffffffff;
-        allones.s_addr32[3] = 0xffffffff;
-        return Inet6Addr(&allones);
+        struct in6_addr a;
+        ((uint32_t *) (&a))[0] = 0xffffffff;
+        ((uint32_t *) (&a))[1] = 0xffffffff;
+        ((uint32_t *) (&a))[2] = 0xffffffff;
+        ((uint32_t *) (&a))[3] = 0xffffffff;
+        return Inet6Addr(&a);
     }
 
     static inline Inet6Addr getLoopbackAddr()
     {
-        struct in6_addr loopback;
-        loopback = htonl(IN6ADDR_LOOPBACK_INIT);
-        return Inet6Addr(&loopback);
+        struct in6_addr a;
+        ((uint32_t *) (&a))[0] = 0;
+        ((uint32_t *) (&a))[1] = 0;
+        ((uint32_t *) (&a))[2] = 0;
+        ((uint32_t *) (&a))[3] = htonl (1);
+        return Inet6Addr(&a);
     }
 
     inline virtual std::string toString() const
@@ -107,7 +128,7 @@ namespace libfwbuilder
      */
     inline virtual bool isBroadcast() const
     {
-        return IN6_IS_ADDR_MC_LINKLOCAL(ipv6);
+        return IN6_IS_ADDR_MC_LINKLOCAL(&ipv6);
     }
 
     /**
@@ -115,7 +136,7 @@ namespace libfwbuilder
      */
     inline virtual bool isMulticast() const
     {
-        return IN6_IS_ADDR_MULTICAST(ntohl(ipv6));
+        return IN6_IS_ADDR_MULTICAST(&ipv6);
     }
 
     /**
@@ -123,103 +144,21 @@ namespace libfwbuilder
      */
     inline virtual bool isAny() const
     {
-        return (IN6_IS_ADDR_UNSPECIFIED(ipv6));
+        return (IN6_IS_ADDR_UNSPECIFIED(&ipv6));
     }
 
     /**
      * calculate distance between _this_ address and address a2 and return
      * it as int.
-     * This method is limited, it only calculates distance between two
-     * ipv6 addresses 
+     * This method is limited, it only calculates distance that fit in 32 bit
+     * number
      */
     inline virtual int distance(const Inet6Addr &a2)
     {
-        return a2.to32BitInt() - to32BitInt() + 1;
+        uint32_t *d1 = (uint32_t *)(&ipv6);
+        uint32_t *d2 = (uint32_t *)(&(a2.ipv6));
+        return *d2 - *d1 + 1;
     }
-
-    /*****************************************************************/
-
-    inline friend Inet6Addr operator&(const Inet6Addr &addr,
-                                     const Inet6Addr &mask)
-    {
-        struct in6_addr res;
-        for (int i=0; i<4; ++i)
-            res.s_addr32[i] =
-                htonl(ntohl(addr.ipv6.s_addr32[i]) & ntohl(mask.ipv6.s_addr32[i]));
-        return Inet6Addr(&res);
-    }
-
-    inline friend Inet6Addr operator|(const Inet6Addr &addr,
-                                     const Inet6Addr &mask)
-    {
-        struct in6_addr res;
-        for (int i=0; i<4; ++i)
-            res.s_addr32[i] =
-                htonl(ntohl(addr.ipv6.s_addr32[i]) | ntohl(mask.ipv6.s_addr32[i]));
-        return Inet6Addr(&res);
-    }
-
-    inline friend Inet6Addr operator+(const Inet6Addr &addr, int increment)
-    {
-        struct in6_addr res;
-        res.s_addr = htonl(ntohl(addr.ipv6.s_addr32[3]) + increment);
-        return Inet6Addr(&res);
-    }
-
-    inline friend Inet6Addr operator-(const Inet6Addr &addr,int decrement)
-    {
-        struct in6_addr res;
-        res.s_addr = htonl(ntohl(addr.ipv6.s_addr32[3]) - decrement);
-        return Inet6Addr(&res);
-    }
-
-    inline Inet6Addr& operator=(const Inet6Addr &addr)
-    {
-        for (int i=0; i<4; ++i)
-            ipv6.s_addr32[i] = addr.ipv6.s_addr32[i];
-        return *this;
-    }
-
-    inline friend bool operator<(const Inet6Addr &a, const Inet6Addr &b)
-    {
-        return (ntohl(a.ipv6.s_addr32[3] ) < ntohl( b.ipv6.s_addr32[3]));
-    }
-
-    inline friend bool operator>(const Inet6Addr &a, const Inet6Addr &b)
-    {
-        return (ntohl(a.ipv6.s_addr32[3] ) > ntohl( b.ipv6.s_addr32[3]));
-    }
-
-    inline friend bool operator==(const Inet6Addr &a, const Inet6Addr &b)
-    {
-        return (IN6_ARE_ADDR_EQUAL(a.ipv6, b.ipv6));
-    }
-
-    inline friend bool operator!=(const Inet6Addr &a, const Inet6Addr &b)
-    {
-        return (!(IN6_ARE_ADDR_EQUAL(a.ipv6, b.ipv6)));
-    }
-    
-};
-
-/*
- * class Inet6Netmask represents netmask. The only difference between it
- * and its base class InetAddr is that its constructor can accept
- * an integer that defines netmask length. Correspondingly, this class
- * has a method that returns the length of the netmask.
- */
-class Inet6Netmask: public Inet6Addr
-{
-    public:
-
-    explicit Inet6Netmask();
-    explicit Inet6Netmask(const std::string &) throw(FWException);
-    Inet6Netmask(const char *data) throw(FWException);
-    Inet6Netmask(int n) throw(FWException);  // creates netmask 'n' bits long
-
-    explicit Inet6Netmask(const Inet6Addr &);
-
-    virtual ~Inet6Netmask();
 
     /**
      * returns the "length" of the netmask, that is number of bits set to '1'
@@ -232,11 +171,82 @@ class Inet6Netmask: public Inet6Addr
      */
     inline bool isHostMask() const
     {
-        return (ipv6.s_addr32[0] == 0xffffffff &&
-                ipv6.s_addr32[1] == 0xffffffff &&
-                ipv6.s_addr32[2] == 0xffffffff &&
-                ipv6.s_addr32[3] == 0xffffffff);
+        return (((uint32_t*)(&ipv6))[0] == 0xffffffff &&
+                ((uint32_t*)(&ipv6))[1] == 0xffffffff &&
+                ((uint32_t*)(&ipv6))[2] == 0xffffffff &&
+                ((uint32_t*)(&ipv6))[3] == 0xffffffff);
     }
+
+    /*****************************************************************/
+
+    inline friend Inet6Addr operator&(const Inet6Addr &addr,
+                                     const Inet6Addr &mask)
+    {
+        struct in6_addr res;
+        for (int i=0; i<4; ++i)
+            ((uint32_t*)(&res))[i] = 
+                htonl(ntohl(((uint32_t*)(&(addr.ipv6)))[i]) &
+                      ntohl(((uint32_t*)(&(mask.ipv6)))[i]));
+        return Inet6Addr(&res);
+    }
+
+    inline friend Inet6Addr operator|(const Inet6Addr &addr,
+                                     const Inet6Addr &mask)
+    {
+        struct in6_addr res;
+        for (int i=0; i<4; ++i)
+            ((uint32_t*)(&res))[i] = 
+                htonl(ntohl(((uint32_t*)(&(addr.ipv6)))[i]) |
+                      ntohl(((uint32_t*)(&(mask.ipv6)))[i]));
+        return Inet6Addr(&res);
+    }
+
+    inline friend Inet6Addr operator+(const Inet6Addr &addr, int increment)
+    {
+        struct in6_addr res;
+        Inet6Addr::_copy_in6_addr(&res, &(addr.ipv6) );
+        ((uint32_t*)(&res))[3] =
+            htonl(ntohl( ((uint32_t*)(&(addr.ipv6)))[3] + increment));
+        return Inet6Addr(&res);
+    }
+
+    inline friend Inet6Addr operator-(const Inet6Addr &addr,int decrement)
+    {
+        struct in6_addr res;
+        Inet6Addr::_copy_in6_addr(&res, &(addr.ipv6) );
+        ((uint32_t*)(&res))[3] =
+            htonl(ntohl( ((uint32_t*)(&(addr.ipv6)))[3] - decrement));
+        return Inet6Addr(&res);
+    }
+
+    inline Inet6Addr& operator=(const Inet6Addr &addr)
+    {
+        Inet6Addr::_copy_in6_addr(&ipv6, &(addr.ipv6) );
+        return *this;
+    }
+
+    inline friend bool operator<(const Inet6Addr &a, const Inet6Addr &b)
+    {
+        return (ntohl(((uint32_t*)(&(a.ipv6)))[3]) <
+                ntohl(((uint32_t*)(&(b.ipv6)))[3]));
+    }
+
+    inline friend bool operator>(const Inet6Addr &a, const Inet6Addr &b)
+    {
+        return (ntohl(((uint32_t*)(&(a.ipv6)))[3]) >
+                ntohl(((uint32_t*)(&(b.ipv6)))[3]));
+    }
+
+    inline friend bool operator==(const Inet6Addr &a, const Inet6Addr &b)
+    {
+        return (IN6_ARE_ADDR_EQUAL(&(a.ipv6), &(b.ipv6)));
+    }
+
+    inline friend bool operator!=(const Inet6Addr &a, const Inet6Addr &b)
+    {
+        return (!(IN6_ARE_ADDR_EQUAL(&(a.ipv6), &(b.ipv6))));
+    }
+    
 };
 
 }

@@ -7,7 +7,7 @@
 
   Author:  Illiya Yalovoy <yalovoy@gmail.com>
 
-  $Id: TagService.h 975 2006-09-10 22:40:37Z vkurland $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms

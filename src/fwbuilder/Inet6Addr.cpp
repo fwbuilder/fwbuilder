@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: Inet6Addr.cpp 1034 2007-08-02 05:19:28Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -52,12 +52,12 @@ Inet6Addr::Inet6Addr(const string &s)
         throw FWException(string("Invalid IPv6 address: '")+s+"'");
 }
 
-Inet6Addr::Inet6Addr(const Inet6Addr &o)
+Inet6Addr::Inet6Addr(const Inet6Addr &o) : InetAddr()
 {
     *this = o;
 }
 
-Inet6Addr::Inet6Addr(const char *data) throw(FWException)
+Inet6Addr::Inet6Addr(const char *data) throw(FWException) : InetAddr()
 {
     if(!data)
         throw FWException("NULL IP address data..");
@@ -65,35 +65,13 @@ Inet6Addr::Inet6Addr(const char *data) throw(FWException)
         throw FWException(string("Invalid IP address: '")+string(data)+"'");
 }
 
-Inet6Addr::Inet6Addr(const struct in6_addr *na) throw(FWException)
+Inet6Addr::Inet6Addr(const struct in6_addr *na) throw(FWException) : InetAddr()
 {
-    if (int i=0; i<4; ++i)
-        ipv6.s_addr32[i] = na->s_addr32[i];
-}
-
-/*****************************************************************
- *
- *   Inet6Netmask
- */
-
-Inet6Netmask::Inet6Netmask() : Inet6Addr() {}
-
-Inet6Netmask::Inet6Netmask(const Inet6Addr& nm)
-{
-    if (int i=0; i<4; ++i)
-        ipv6.s_addr32[i] = nm.s_addr32[i];
-}
-
-Inet6Netmask::Inet6Netmask(const char *data) throw(FWException) : Inet6Addr(data) 
-{
-}
-
-Inet6Netmask::Inet6Netmask(const string &s) throw(FWException) : Inet6Addr(s)
-{
+    _copy_in6_addr(&ipv6, na);
 }
 
 // Set netmask to 'n' bits
-Inet6Netmask::Inet6Netmask(int n)  throw(FWException)
+Inet6Addr::Inet6Addr(int n)  throw(FWException)
 {
     if (n<0 || n>32) throw FWException(string("Invalid netmask length"));
     unsigned long nm_bits = 0;
@@ -107,25 +85,28 @@ Inet6Netmask::Inet6Netmask(int n)  throw(FWException)
     ipv4.s_addr = htonl(nm_bits);
 }
 
-Inet6Netmask::~Inet6Netmask()
+int Inet6Addr::getLength() const
 {
-}
+    if (isHostMask()) return 128;
+    if (isAny()) return 0;
 
-int Inet6Netmask::getLength() const
-{
-    if (ipv4.s_addr == INADDR_BROADCAST) return 32;
-    if (ipv4.s_addr == 0) return 0;
-
-    unsigned int n = ntohl(ipv4.s_addr);
-
-    int   i=0;
-    while (n)
+    int res = 0;
+    for (int i=0; i<4; ++i)
     {
-	n=n<<1;
-	i++;
+        unsigned int n = ntohl(((uint32_t*)(&ipv6))[i]);
+        if (n == 0xffffffff)
+        {
+            res += 32;
+            continue;
+        }
+        while (n)
+        {
+            n = n << 1;
+            res++;
+        }
+        break;
     }
-
-    return i;
+    return res;
 }
 
 }

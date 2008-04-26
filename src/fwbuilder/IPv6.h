@@ -24,8 +24,8 @@
 
 */
 
-#ifndef __IPV4_HH_FLAG__
-#define __IPV4_HH_FLAG__
+#ifndef __IPV6_HH_FLAG__
+#define __IPV6_HH_FLAG__
 
 #include <string>
 
@@ -36,32 +36,32 @@
 namespace libfwbuilder
 {
 
-class IPv4 : public Address
+class IPv6 : public Address
 {
 public:
     
-    IPv4();
-    IPv4(const FWObject *root, bool prepopulate);
+    IPv6();
+    IPv6(const FWObject *root, bool prepopulate);
 
-    virtual ~IPv4();
+    virtual ~IPv6();
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
 
     virtual unsigned int dimension()  const { return 1; }
     
-    DECLARE_FWOBJECT_SUBTYPE(IPv4);
+    DECLARE_FWOBJECT_SUBTYPE(IPv6);
 
     virtual const bool hasInetAddress(bool ipv6=false) const
     {
-        if (ipv6) return false;
-        return true;
+        if (ipv6) return true;
+        return false;
     }
 
     virtual const Address* getAddressObject(bool ipv6=false) const
     {
-        if (ipv6) return NULL;
-        return this;
+        if (ipv6) return this;
+        return NULL;
     }
 
     virtual void setAddress(const InetAddr &a, bool ipv6=false);

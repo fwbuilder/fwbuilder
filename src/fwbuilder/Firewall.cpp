@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: Firewall.cpp 1029 2007-07-07 05:36:22Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -220,7 +220,8 @@ FWObject& Firewall::duplicate(const FWObject *obj, bool preserve_id) throw(FWExc
     checkReadOnly();
     bool xro=obj->getBool("ro"); 
 
-    shallowDuplicate(obj,preserve_id);
+    //shallowDuplicate(obj, preserve_id);
+    FWObject::shallowDuplicate(obj, preserve_id);
 
     setReadOnly(false);
 
@@ -246,17 +247,6 @@ FWObject& Firewall::duplicate(const FWObject *obj, bool preserve_id) throw(FWExc
         replaceRef(pol, o->getId(),   o1->getId()   );
         replaceRef(nat, o->getId(),   o1->getId()   );
         o1->destroyChildren();
-
-#ifdef USING_INTERFACE_POLICY
-	FWObject  *ipolicy  = o->getFirstByType(InterfacePolicy::TYPENAME);
-        FWObject  *ipolicy1 = NULL;
-        if (ipolicy)
-        {
-            ipolicy1=o1->addCopyOf(ipolicy,preserve_id);
-            replaceRef(ipolicy1, obj->getId(), getId()       );
-            replaceRef(ipolicy1, o->getId(),   o1->getId()   );
-        }
-#endif
 
         FWObjectTypedChildIterator k=o->findByType(IPv4::TYPENAME);
         for ( ; k!=k.end(); ++k ) 

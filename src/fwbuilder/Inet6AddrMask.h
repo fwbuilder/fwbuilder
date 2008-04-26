@@ -24,34 +24,50 @@
 
 */
 
+/*
+ * This class is a holder of a pair address / netmask.
+ * It can act both as a container for the address/netmask configuration
+ * data (such as for an interface) or as a network.
+ *
+ * TODO(vadim): need better name. InetNetwork ? InetAddrMaskPair ?
+ */
 
-#ifndef  __FWINTERVALREF_HH_FLAG__
-#define  __FWINTERVALREF_HH_FLAG__
+#ifndef __INET6ADDRMASK_HH_FLAG__
+#define __INET6ADDRMASK_HH_FLAG__
 
-#include <fwbuilder/FWReference.h>
-#include <fwbuilder/Interval.h>
-#include <fwbuilder/IntervalGroup.h>
+#include <string>
+#include <vector>
+
+#ifndef _WIN32
+#  include <sys/types.h>
+#  include <sys/socket.h>
+#  include <netinet/in.h>
+#  include <arpa/inet.h>
+#else
+#  include <winsock2.h>
+#endif
+
+#include <fwbuilder/FWException.h>
+#include <fwbuilder/InetAddrMask.h>
+#include <fwbuilder/Inet6Addr.h>
 
 namespace libfwbuilder
 {
 
-/**
- * This class represents object reference.
- */
-class FWIntervalReference : public FWReference
+class Inet6AddrMask : public InetAddrMask
 {
-    public:
 
-    DECLARE_FWOBJECT_SUBTYPE(FWIntervalReference);
+public:
 
-    FWIntervalReference();
-    FWIntervalReference(const FWObject *root,bool prepopulate);
-
-    void setPointer(Interval *o);
-    void setPointer(IntervalGroup *o);
+    Inet6AddrMask();
+    Inet6AddrMask(const Inet6Addr&, const Inet6Addr&);
+    Inet6AddrMask(const std::string &s) throw(FWException);
+    Inet6AddrMask(const Inet6AddrMask&);
+    virtual ~Inet6AddrMask();
 
 };
 
 }
 
-#endif // _FWOBJECT_HH
+#endif
+

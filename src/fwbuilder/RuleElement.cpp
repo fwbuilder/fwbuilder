@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: RuleElement.cpp 1024 2007-05-22 20:27:42Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public

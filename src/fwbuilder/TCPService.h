@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: TCPService.h 1020 2007-05-08 01:26:21Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public

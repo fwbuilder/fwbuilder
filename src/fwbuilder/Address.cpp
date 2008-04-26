@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland <vadim@vk.crocodile.org>
 
-  $Id: Address.cpp 975 2006-09-10 22:40:37Z vkurland $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -24,9 +24,12 @@
 */
 
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include <assert.h>
+#include <iostream>
 
+#include <fwbuilder/libfwbuilder-config.h>
 #include <fwbuilder/Address.h>
+#include <fwbuilder/Interface.h>
 #include <fwbuilder/FWException.h>
 #include <fwbuilder/FWObjectReference.h>
 #include <fwbuilder/FWObjectDatabase.h>
@@ -36,50 +39,40 @@ using namespace std;
 
 const char *Address::TYPENAME={"Address"};
 
-Address::Address() :
-    FWObject(),
-    InetAddrMask(InetAddr(), InetNetmask(InetAddr::getAllOnes()))
+Address::Address() : FWObject()
 {
+    inet_addr_mask = new InetAddrMask();
     setName("address");
 }
 
-Address::Address(const FWObject *root,bool prepopulate) :
-    FWObject(root, prepopulate),
-    InetAddrMask(InetAddr(), InetNetmask(InetAddr::getAllOnes()))
+Address::Address(const FWObject *root, bool prepopulate) :
+    FWObject(root, prepopulate)
 {
+    inet_addr_mask = new InetAddrMask();
     setName("address");
 }
 
-Address::Address(const Address& other) :
-    FWObject(other),
-    InetAddrMask(other)
+Address::Address(const Address& other) : FWObject(other)
 {
+    inet_addr_mask = new InetAddrMask(*(other.inet_addr_mask));
 }
 
-Address::Address(const string& a, const string& nm) : 
-    FWObject(),
-    InetAddrMask(InetAddr(a), InetNetmask(nm))
+Address::~Address()
 {
-} 
-
-Address::Address(const std::string &s) throw(FWException) :
-    FWObject(),
-    InetAddrMask(s)
-{
+    delete inet_addr_mask;
 }
 
 FWObject& Address::shallowDuplicate(const FWObject *other,
                                     bool preserve_id) throw(FWException)
 {
     const Address* a_other = Address::constcast(other);
-    setAddress(a_other->getAddress());
-    setNetmask(a_other->getNetmask());
+    delete inet_addr_mask;
+    inet_addr_mask = new InetAddrMask(*(a_other->inet_addr_mask));
     return FWObject::shallowDuplicate(other, preserve_id);
 }
 
 FWReference* Address::createRef()
 {
-//    FWObjectReference *ref=new FWObjectReference();
     FWObjectReference *ref =
         FWObjectReference::cast(getRoot()->create(FWObjectReference::TYPENAME));
     ref->setPointer(this);
@@ -91,4 +84,89 @@ bool Address::isAny() const
     return getId()==FWObjectDatabase::getAnyNetworkId();
 }
 
+const Address* Address::getAddressObject(bool) const
+{
+    return NULL;
+}
+
+const InetAddrMask* Address::getAddressObjectInetAddrMask(bool ipv6) const
+{
+    const Address *addr_obj = getAddressObject(ipv6);
+    if (addr_obj) return addr_obj->inet_addr_mask;
+    return inet_addr_mask;
+}
+
+const bool Address::hasInetAddress(bool ipv6) const
+{
+    const Address *addr_obj = getAddressObject(ipv6);
+    if (addr_obj) return addr_obj->hasInetAddress(ipv6);
+    return false;
+}
+
+const InetAddr& Address::getAddress(bool ipv6) const
+{
+    return getAddressObjectInetAddrMask(ipv6)->getAddress();
+}
+
+const InetAddr* Address::getAddressPtr(bool ipv6) const
+{
+    return getAddressObjectInetAddrMask(ipv6)->getAddressPtr();
+}
+
+const InetAddr& Address::getNetmask(bool ipv6) const
+{
+    return getAddressObjectInetAddrMask(ipv6)->getNetmask();
+}
+
+const InetAddr* Address::getNetmaskPtr(bool ipv6) const
+{
+    return getAddressObjectInetAddrMask(ipv6)->getNetmaskPtr();
+}
+
+const InetAddr& Address::getNetworkAddress(bool ipv6) const
+{
+    return getAddressObjectInetAddrMask(ipv6)->getNetworkAddress();
+}
+
+const InetAddr& Address::getBroadcastAddress(bool ipv6) const
+{
+    return getAddressObjectInetAddrMask(ipv6)->getBroadcastAddress();
+}
+
+const InetAddr* Address::getBroadcastAddressPtr(bool ipv6) const
+{
+    return getAddressObjectInetAddrMask(ipv6)->getBroadcastAddressPtr();
+}
+
+void Address::setAddress(const InetAddr&, bool)
+{
+    assert(false);
+}
+
+void Address::setNetmask(const InetAddr&, bool)
+{
+    assert(false);
+}
+
+void Address::setAddressNetmask(const std::string&)
+{
+}
+
+/* By default dimension is 1. Compilers may rely on this behavior
+ * assuming that every Address object represents single address unless
+ * specific netmask is given.
+ */
+unsigned int Address::dimension()  const
+{
+    const InetAddrMask *addr_obj = getAddressObjectInetAddrMask();
+    if (addr_obj!=NULL) return addr_obj->dimension();
+    return 1;
+}
+
+bool Address::belongs(const InetAddr &other) const
+{
+    const InetAddrMask *addr_obj = getAddressObjectInetAddrMask();
+    if (addr_obj!=NULL) return addr_obj->belongs(other);
+    return false;
+}
 

@@ -6,7 +6,7 @@
 
   Author:  Vadim Zaliva lord@crocodile.org
 
-  $Id: snmp.h 955 2006-05-17 04:16:34Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -154,7 +154,7 @@ class SNMPVariable_IPaddr  : public SNMPVariable
     virtual std::string toString();
 
     virtual InetAddr    getInetAddrValue() throw(FWException);
-    virtual InetNetmask getNetmaskValue  () throw(FWException);
+    virtual InetAddr getNetmaskValue  () throw(FWException);
 
     protected:
     
@@ -436,7 +436,7 @@ class SNMPCrawler : public BackgroundOp
     const std::vector<InetAddrMask> *include    ;
     static const InetAddr ZERO_IP      ;
     static const InetAddrMask LOOPBACK_NET ;
-    static const InetNetmask PTP_NETMASK  ;
+    static const InetAddr PTP_NETMASK  ;
 
     std::map<InetAddr, std::string>       queue        ;
     std::map<InetAddr, CrawlerFind>  found        ;

@@ -61,6 +61,8 @@ TODO:
 <!ENTITY % DIRECTION "(Inbound|Outbound|Both)">
 <!ENTITY % IPADDRESS "CDATA">
 <!ENTITY % NETMASK   "CDATA">
+<!ENTITY % IP6ADDRESS "CDATA">
+<!ENTITY % IP6NETMASK "CDATA">
 
 <!-- Standard attributes presented in all nodes -->
 <!ENTITY % STD_ATTRIBUTES '
@@ -86,7 +88,7 @@ TODO:
  id           ID        #REQUIRED
 >
 
-<!ELEMENT Library ((AnyNetwork|AnyIPService|AnyInterval|ObjectGroup|Host|Firewall|Network|IPv4|DNSName|AddressTable|physAddress|AddressRange|ObjectRef|ServiceGroup|IPService|ICMPService|TCPService|UDPService|CustomService|ServiceRef|IntervalGroup|Interval|IntervalRef|Interface|Policy|NAT|PolicyRule|NATRule|Library|TagService)*)>
+<!ELEMENT Library ((AnyNetwork|AnyIPService|AnyInterval|ObjectGroup|Host|Firewall|Network|NetworkIPv6|IPv4|IPv6|DNSName|AddressTable|physAddress|AddressRange|ObjectRef|ServiceGroup|IPService|ICMPService|TCPService|UDPService|CustomService|ServiceRef|IntervalGroup|Interval|IntervalRef|Interface|Policy|NAT|PolicyRule|NATRule|Library|TagService)*)>
 <!ATTLIST Library
  %STD_ATTRIBUTES;
  color   %STRING;  #IMPLIED
@@ -125,7 +127,7 @@ TODO:
        ref IDREF #REQUIRED
 >
 
-<!ELEMENT ObjectGroup ((ObjectGroup|Host|Firewall|Network|IPv4|DNSName|AddressTable|AddressRange|ObjectRef)*)>
+<!ELEMENT ObjectGroup ((ObjectGroup|Host|Firewall|Network|NetworkIPv6|IPv4|IPv6|DNSName|AddressTable|AddressRange|ObjectRef)*)>
 <!ATTLIST ObjectGroup
  %STD_ATTRIBUTES;
 >
@@ -282,14 +284,22 @@ own compiler) we do not define content model for this element.
  netmask %NETMASK;   #REQUIRED
 >
 
+<!ELEMENT IPv6 EMPTY>
+<!ATTLIST IPv6
+ %STD_ATTRIBUTES;
+ address %IP6ADDRESS; #REQUIRED
+ netmask %IP6NETMASK; #REQUIRED
+>
+
 <!ELEMENT DNSName EMPTY>
 <!ATTLIST DNSName
  %STD_ATTRIBUTES;
  dnsrec         %STRING;    #REQUIRED
+ dnsrectype     %STRING;    #IMPLIED
  run_time       %BOOLEAN;   #REQUIRED
 >
 
-<!ELEMENT AddressTable ((IPv4|ObjectRef)*)>
+<!ELEMENT AddressTable ((IPv4|IPv6|ObjectRef)*)>
 <!ATTLIST AddressTable
  %STD_ATTRIBUTES;
  filename       %STRING;    #REQUIRED
@@ -314,7 +324,7 @@ Interface can have the following attributes:
    - label          human-readable label of this interface
 
 -->
-<!ELEMENT Interface (IPv4*, physAddress?)>
+<!ELEMENT Interface (IPv4*, IPv6*, physAddress?)>
 <!ATTLIST Interface
  %STD_ATTRIBUTES;
  dyn            %BOOLEAN;   #REQUIRED
@@ -377,6 +387,13 @@ Interface can have the following attributes:
 
 <!ELEMENT Network EMPTY>
 <!ATTLIST Network
+ %STD_ATTRIBUTES;
+ address %IPADDRESS; #REQUIRED
+ netmask %NETMASK;   #REQUIRED
+>
+
+<!ELEMENT NetworkIPv6 EMPTY>
+<!ATTLIST NetworkIPv6
  %STD_ATTRIBUTES;
  address %IPADDRESS; #REQUIRED
  netmask %NETMASK;   #REQUIRED

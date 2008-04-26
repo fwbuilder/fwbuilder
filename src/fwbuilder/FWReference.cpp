@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: FWReference.cpp 975 2006-09-10 22:40:37Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -100,7 +100,7 @@ FWObject *FWReference::getPointer()
     return getRoot()->findInIndex( getPointerId() );
 }
 
-const string& FWReference::getPointerId()
+const string& FWReference::getPointerId() const
 {
     return getStr("ref");
 }

@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: Interface.cpp 1022 2007-05-10 00:53:45Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -25,6 +25,7 @@
 */
 
 #include <assert.h>
+#include <iostream>
 
 #include <fwbuilder/libfwbuilder-config.h>
 
@@ -62,7 +63,8 @@ Interface::Interface():Address()
     snmp_type        = -1   ;     
 }
 
-Interface::Interface(const FWObject *root,bool prepopulate) : Address(root,prepopulate)
+Interface::Interface(const FWObject *root,bool prepopulate) :
+    Address(root,prepopulate)
 {
     setName("unknown");
     setBool("dyn",false);
@@ -78,7 +80,8 @@ Interface::Interface(const FWObject *root,bool prepopulate) : Address(root,prepo
 
 Interface::~Interface() {}
 
-FWObject& Interface::shallowDuplicate(const FWObject *o, bool preserve_id) throw(FWException)
+FWObject& Interface::shallowDuplicate(const FWObject *o, bool preserve_id)
+    throw(FWException)
 {
     FWObject::shallowDuplicate(o,preserve_id);
 
@@ -91,7 +94,8 @@ FWObject& Interface::shallowDuplicate(const FWObject *o, bool preserve_id) throw
     return *this;
 }
 
-FWObject& Interface::duplicate(const FWObject *x, bool preserve_id) throw(FWException)
+FWObject& Interface::duplicate(const FWObject *x, bool preserve_id)
+    throw(FWException)
 {
     FWObject::duplicate(x,preserve_id);
 
@@ -250,7 +254,11 @@ bool  Interface::validateChild(FWObject *o)
 
 bool Interface::isLoopback() const
 {
-    return (getAddress() == InetAddr::getLoopbackAddr());
+    // TODO: also check if interface has ipv6 loopback address
+    Address *iaddr = getAddressObject();
+    if (iaddr && iaddr->getAddress() == InetAddr::getLoopbackAddr()) return true;
+
+    return false;
 }
 
 physAddress*  Interface::getPhysicalAddress () const
@@ -284,64 +292,18 @@ void Interface::setLabel(const string& n)
 {
     setStr("label",n);
 }
-    
-/*
- * if this interface has child IPv4 object, return its address. Otherwise
- * return its own member 'address' (this is possible because Interface
- * inherits Address which has this member variable). Note that constructor of
- * Address initializes address as 0.0.0.0
- * 
- */
-const InetAddr& Interface::getAddress() const
-{
-    IPv4 *ipv4=IPv4::cast( getFirstByType( IPv4::TYPENAME ) );
-    if (ipv4!=NULL) return ipv4->getAddress();
-    else
-        return InetAddrMask::getAddress();
-}
 
-const InetAddr* Interface::getAddressPtr() const
+Address* Interface::getAddressObject(bool ipv6) const
 {
-    IPv4 *ipv4=IPv4::cast( getFirstByType( IPv4::TYPENAME ) );
-    if (ipv4!=NULL) return ipv4->getAddressPtr();
-    else
-        return InetAddrMask::getAddressPtr();
-}
-
-/*
- * if this interface has child IPv4 object, return its net mask. Otherwise
- * return its own member 'netmask' (this is possible because Interface
- * inherits Address which has this member variable). Note that constructor of
- * Address initializes netmask as all ones
- * 
- */
-const InetNetmask& Interface::getNetmask() const
-{
-    IPv4 *ipv4=IPv4::cast( getFirstByType( IPv4::TYPENAME ) );
-    if (ipv4!=NULL) return ipv4->getNetmask();
-    else
-        return InetAddrMask::getNetmask();
+    string type_name = IPv4::TYPENAME;
+    return Address::cast(getFirstByType(type_name));
 }
 
 IPv4*  Interface::addIPv4()
 {
-    IPv4* ipv4=IPv4::cast( getRoot()->create(IPv4::TYPENAME) );
+    IPv4* ipv4 = IPv4::cast( getRoot()->create(IPv4::TYPENAME) );
     add(ipv4);
     return ipv4;
-}
-
-void Interface::setAddress(const InetAddr &a)  
-{ 
-    IPv4 *ipv4=IPv4::cast( getFirstByType( IPv4::TYPENAME ) );
-    if (ipv4==NULL)   ipv4=addIPv4();
-    ipv4->setAddress(a);
-}
-
-void Interface::setNetmask(const InetNetmask &nm) 
-{ 
-    IPv4 *ipv4=IPv4::cast( getFirstByType( IPv4::TYPENAME ) );
-    if (ipv4==NULL)   ipv4=addIPv4();
-    ipv4->setNetmask(nm);
 }
 
 

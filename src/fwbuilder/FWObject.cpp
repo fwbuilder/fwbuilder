@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: FWObject.cpp 1045 2007-08-30 04:47:19Z vk $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -540,17 +540,18 @@ void FWObject::Hide()
 
 
 
-void FWObject::dump(bool recursive,bool brief,int offset)
+void FWObject::dump(bool recursive,bool brief,int offset) const
 {
     dump(cerr,recursive,brief,offset);
 }
 
-void FWObject::dump(std::ostream &f,bool recursive,bool brief,int offset)
+void FWObject::dump(std::ostream &f,bool recursive,bool brief,int offset) const
 {
     FWObject *o;
     string    n;
 
-    if (brief) {
+    if (brief)
+    {
 	f << string(offset,' ');
 	f << " Obj=" << this;
 	f << " ID="  << getId();
@@ -561,21 +562,19 @@ void FWObject::dump(std::ostream &f,bool recursive,bool brief,int offset)
 	f << " Root=" << getRoot();
         f << " ref_counter=" << ref_counter;
 
-	if (FWReference::cast(this)!=0) {
-	    f << " Ref=" << FWReference::cast(this)->getPointer();
-	    f << " RefID=" << FWReference::cast(this)->getPointerId();
-	}
+	if (FWReference::constcast(this)!=0)
+	    f << " RefID=" << FWReference::constcast(this)->getPointerId();
 
 	f << endl;
 
 	if (recursive) {
-	    list<FWObject*>::iterator m;
+	    list<FWObject*>::const_iterator m;
 	    for (m=begin(); m!=end(); ++m) {
 		if (  (o=(*m))!=NULL)  o->dump(f,recursive,brief,offset+2);
 	    }
 	}
-    } else {
-
+    } else
+    {
 	f << string(offset,' ') << string(16,'-') << endl;
 	f << string(offset,' ') << "Obj:    " << this << endl;
 	f << string(offset,' ') << "ID:     " << getId() << endl;
@@ -589,16 +588,19 @@ void FWObject::dump(std::ostream &f,bool recursive,bool brief,int offset)
 	  << "  name=" << n << endl;
 	f << string(offset,' ') << "Root:   " << getRoot() << endl;
 
-	map<string, string>::iterator d;
-	for (d=data.begin(); d!=data.end(); ++d) {
+	map<string, string>::const_iterator d;
+	for (d=data.begin(); d!=data.end(); ++d)
+        {
 	    if((*d).first=="name") 
                 continue;
 	    f << string(offset,' ');
 	    f << (*d).first << ": " << (*d).second << endl;
 	}
-	if (recursive) {
-	    list<FWObject*>::iterator m;
-	    for (m=begin(); m!=end(); ++m) {
+	if (recursive)
+        {
+	    list<FWObject*>::const_iterator m;
+	    for (m=begin(); m!=end(); ++m)
+            {
 		if (  (o=(*m))!=NULL)  o->dump(f,recursive,brief,offset+2);
 	    }
 	}

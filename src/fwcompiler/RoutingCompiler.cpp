@@ -106,8 +106,6 @@ string RoutingCompiler::debugPrintRule(Rule *r)
 {
     RoutingRule *rule=RoutingRule::cast(r);
 
-    FWOptions *ruleopt =rule->getOptionsObject();
-
     RuleElementRDst *dstrel=rule->getRDst();
     RuleElementRItf *itfrel=rule->getRItf();
     RuleElementRGtw *gtwrel=rule->getRGtw();
@@ -362,10 +360,10 @@ bool RoutingCompiler::contradictionRGtwAndRItf::processNext()
     
     if (Host::cast(oRGtw) != NULL ||
         Interface::cast(oRGtw) != NULL ||
-        dynamic_cast<InetAddrMask*>(oRGtw)->dimension()==1)
+        Address::cast(oRGtw)->dimension()==1)
     {
 
-        const InetAddr* ip_interface;
+        const InetAddr* ip_interface = NULL;
 
         if ( Host::cast(oRGtw) != NULL)
         {
@@ -375,19 +373,22 @@ bool RoutingCompiler::contradictionRGtwAndRItf::processNext()
         {
             Interface *intf=Interface::cast(oRGtw);
             ip_interface = intf->getAddressPtr();
-        } else if (dynamic_cast<InetAddrMask*>(oRGtw)->dimension()==1)
+        } else if (Address::cast(oRGtw)->dimension()==1)
         {
-            InetAddrMask *ipv4 = dynamic_cast<InetAddrMask*>(oRGtw);
+            Address *ipv4 = Address::cast(oRGtw);
             ip_interface = ipv4->getAddressPtr();
         }
 
-        
-        list<FWObject*> obj_list = oRItf->getByType(IPv4::TYPENAME);
-        for (list<FWObject*>::iterator i=obj_list.begin(); i!=obj_list.end(); ++i) 
+        if (ip_interface)
         {
-            InetAddrMask *addr = dynamic_cast<InetAddrMask*>(*i);
-            if (addr->belongs(*ip_interface))
-                return true;
+            list<FWObject*> obj_list = oRItf->getByType(IPv4::TYPENAME);
+            for (list<FWObject*>::iterator i=obj_list.begin();
+                 i!=obj_list.end(); ++i) 
+            {
+                Address *addr = Address::cast(*i);
+                if (addr->belongs(*ip_interface))
+                    return true;
+            }
         }
 
         string msg;
@@ -434,8 +435,6 @@ bool RoutingCompiler::competingRules::processNext()
     RuleElementRGtw *gtwrel=rule->getRGtw();
     FWObject *gtw = FWReference::cast(gtwrel->front())->getPointer();
      
-    RuleElementRDst *dstrel=rule->getRDst();
-    
     string metric = rule->getMetricAsString();
     string label  = rule->getSortedDstIds();
     string combiId = gtw->getStr("id") + itf->getStr("id");
@@ -547,8 +546,6 @@ bool RoutingCompiler::classifyRoutingRules::processNext()
         
         RuleElementRGtw *gtwrel=rule->getRGtw();
         FWObject *gtw = FWReference::cast(gtwrel->front())->getPointer();
-        
-        RuleElementRDst *dstrel=rule->getRDst();
         
         string metric  = rule->getMetricAsString();
         string label   = rule->getSortedDstIds();

@@ -25,7 +25,7 @@
 */
 
 /*
-  Class IPv4 serves two purposes:
+  Class IPv6 serves two purposes:
 
    - it is used to describe configuration of an interface which consists
      of an address and netmask
@@ -33,7 +33,7 @@
    - it is used to describe a single standalone address object (in the tree,
      under Objects/Addresses)
 
-  Even though class Network also has address and netmask, IPv4 objects are
+  Even though class Network also has address and netmask, IPv6 objects are
   recognized by compilers as single addresses.
 
  */
@@ -42,29 +42,34 @@
 #include <iostream>
 
 #include <fwbuilder/libfwbuilder-config.h>
+#include <fwbuilder/Inet6AddrMask.h>
 
-#include <fwbuilder/IPv4.h>
+#include <fwbuilder/IPv6.h>
 #include <fwbuilder/InterfacePolicy.h>
 #include <fwbuilder/XMLTools.h>
 
 using namespace std;
 using namespace libfwbuilder;
 
-const char *IPv4::TYPENAME={"IPv4"};
+const char *IPv6::TYPENAME={"IPv6"};
 
-IPv4::IPv4() : Address()
+IPv6::IPv6() : Address()
+{
+    delete inet_addr_mask;
+    inet_addr_mask = new Inet6AddrMask();
+}
+
+IPv6::IPv6(const FWObject *root, bool prepopulate) : Address(root, prepopulate)
+{
+    delete inet_addr_mask;
+    inet_addr_mask = new Inet6AddrMask();
+}
+
+IPv6::~IPv6()
 {
 }
 
-IPv4::IPv4(const FWObject *root, bool prepopulate) : Address(root, prepopulate)
-{
-}
-
-IPv4::~IPv4()
-{
-}
-
-void IPv4::fromXML(xmlNodePtr root) throw(FWException)
+void IPv6::fromXML(xmlNodePtr root) throw(FWException)
 {
     FWObject::fromXML(root);
 
@@ -75,17 +80,17 @@ void IPv4::fromXML(xmlNodePtr root) throw(FWException)
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
     assert(n!=NULL);
-    setAddress(InetAddr(n));
+    setAddress(Inet6Addr(n));
     FREEXMLBUFF(n);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("netmask")));
     assert(n!=NULL);
-    if (strlen(n)) setNetmask(InetAddr(n));
-    else           setNetmask(InetAddr(0));
+    if (strlen(n)) setNetmask(Inet6Addr(n));
+    else           setNetmask(Inet6Addr(0));
     FREEXMLBUFF(n);
 }
 
-xmlNodePtr IPv4::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+xmlNodePtr IPv6::toXML(xmlNodePtr xml_parent_node) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(xml_parent_node);
     
@@ -100,23 +105,23 @@ xmlNodePtr IPv4::toXML(xmlNodePtr xml_parent_node) throw(FWException)
     return me;
 }
 
-void IPv4::setAddress(const InetAddr &a, bool)
+void IPv6::setAddress(const InetAddr &a, bool)
 {
     inet_addr_mask->setAddress(a);
 }
 
-void IPv4::setNetmask(const InetAddr &nm, bool)
+void IPv6::setNetmask(const InetAddr &nm, bool)
 {
     inet_addr_mask->setNetmask(nm);
 }
 
-void IPv4::setAddressNetmask(const std::string& s)
+void IPv6::setAddressNetmask(const std::string& s)
 {
     delete inet_addr_mask;
-    inet_addr_mask = new InetAddrMask(s);
+    inet_addr_mask = new Inet6AddrMask(s);
 }
 
-void IPv4::dump(std::ostream &f,bool recursive,bool brief,int offset) const
+void IPv6::dump(std::ostream &f,bool recursive,bool brief,int offset) const
 {
     FWObject::dump(f, recursive, brief, offset);
     f << inet_addr_mask->getAddress().toString() << endl;

@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: AddressRange.h 975 2006-09-10 22:40:37Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -60,7 +60,7 @@ class AddressRange : public Address
     virtual unsigned int dimension()  const;
 
     virtual void setAddress(const InetAddr &a);
-    virtual void setNetmask(const InetNetmask &nm);
+    virtual void setNetmask(const InetAddr &nm);
 
     
     virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id)

@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: Tools.cpp 1046 2007-10-21 20:27:01Z vk $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public

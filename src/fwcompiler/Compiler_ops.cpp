@@ -57,9 +57,9 @@ using namespace std;
 vector<FWObject*> fwcompiler::_find_obj_intersection(Address *op1, Address *op2)
 {
     const InetAddrMask n1( op1->getAddress() , 
-       	(Interface::cast(op1)) ? InetNetmask(InetAddr::getAllOnes()) : op1->getNetmask() );
+       	(Interface::cast(op1)) ? InetAddr(InetAddr::getAllOnes()) : op1->getNetmask() );
     const InetAddrMask n2( op2->getAddress() , 
-	(Interface::cast(op2)) ? InetNetmask(InetAddr::getAllOnes()) : op2->getNetmask() );
+	(Interface::cast(op2)) ? InetAddr(InetAddr::getAllOnes()) : op2->getNetmask() );
 
     vector<InetAddrMask> intersection = libfwbuilder::getOverlap(n1,n2);
 

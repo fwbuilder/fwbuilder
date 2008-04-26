@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: InetAddr.cpp 1034 2007-08-02 05:19:28Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -60,7 +60,7 @@ IPRoute::~IPRoute()
     delete intf;
 }
 
-IPRoute::IPRoute(const InetAddr &_dst, const InetNetmask &_nm, const InetAddr &_gw, const Interface *_intf,  bool _direct)
+IPRoute::IPRoute(const InetAddr &_dst, const InetAddr &_nm, const InetAddr &_gw, const Interface *_intf,  bool _direct)
 {
     nm     = _nm     ;
     dst    = _dst    ;

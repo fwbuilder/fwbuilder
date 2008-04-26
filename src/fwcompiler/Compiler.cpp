@@ -185,7 +185,7 @@ Compiler::Compiler(FWObjectDatabase *_db,
 }
 
 // this constructor is used by class Preprocessor, it does not call _init
-Compiler::Compiler(FWObjectDatabase *_db)
+Compiler::Compiler(FWObjectDatabase*)
 {
     source_ruleset = NULL;
     ruleSetName = "";
@@ -440,7 +440,7 @@ void Compiler::_expandAddr(Rule *rule,FWObject *s)
     }
 }
 
-void Compiler::_expandAddressRanges(Rule *rule,FWObject *s) 
+void Compiler::_expandAddressRanges(Rule*, FWObject *s)
 {
     list<FWObject*> cl;
     for (FWObject::iterator i1=s->begin(); i1!=s->end(); ++i1) 
@@ -452,15 +452,15 @@ void Compiler::_expandAddressRanges(Rule *rule,FWObject *s)
 	if (AddressRange::cast(o)==NULL) cl.push_back(o);
 	else
         {
-	    InetAddr a1=AddressRange::cast(o)->getRangeStart();
-	    InetAddr a2=AddressRange::cast(o)->getRangeEnd();
+	    InetAddr a1 = AddressRange::cast(o)->getRangeStart();
+	    InetAddr a2 = AddressRange::cast(o)->getRangeEnd();
             vector<InetAddrMask> vn = libfwbuilder::convertAddressRange(a1,a2);
 
             for (vector<InetAddrMask>::iterator i=vn.begin(); i!=vn.end(); i++)
             {
                 Network *h;
                 h= Network::cast(dbcopy->create(Network::TYPENAME) );
-                h->setName(string("%n-")+a1.toString()+string("%") );
+                h->setName(string("%n-")+(*i).toString()+string("%") );
                 h->setNetmask(i->getNetmask());
                 h->setAddress(i->getAddress());
                 cacheObj(h); // to keep cache consistent
@@ -508,7 +508,7 @@ bool Compiler::_complexMatchWithInterface(Address   *obj1,
         FWObjectTypedChildIterator k = iface->findByType(IPv4::TYPENAME);
         for ( ; k!=k.end(); ++k ) 
         {
-            InetAddrMask *ipv4 = dynamic_cast<InetAddrMask*>(*k);
+            Address *ipv4 = Address::cast(*k);
                     
             if ( ipv4->getAddress()==obj1_addr ) return true;
 
@@ -640,14 +640,15 @@ Interface* Compiler::findInterfaceFor(const Address *obj1, const Address *obj2)
             FWObjectTypedChildIterator k=iface->findByType(IPv4::TYPENAME);
             for ( ; k!=k.end(); ++k ) 
             {
-                InetAddrMask *addr = dynamic_cast<InetAddrMask*>(*k);
+                Address *addr = Address::cast(*k);
                 assert(addr);
 
                 if ((*k)->getId() == obj1->getId() ) return iface;
                 if (addr->getAddress() == obj1->getAddress() ) return iface;
 
                 if (Network::constcast(obj1)!=NULL && 
-                    obj1->belongs( addr->getAddress())) return iface; 
+                    obj1->getAddressObjectInetAddrMask()->belongs(
+                        addr->getAddress())) return iface; 
 
                 if ( addr->belongs( obj1->getAddress() ) ) return iface;
             }
@@ -671,7 +672,7 @@ FWObject* Compiler::findAddressFor(const Address *obj1,const Address *obj2)
             FWObjectTypedChildIterator k=iface->findByType(IPv4::TYPENAME);
             for ( ; k!=k.end(); ++k ) 
             {
-                InetAddrMask *addr = dynamic_cast<InetAddrMask*>(*k);
+                Address *addr = Address::cast(*k);
                 assert(addr);
 
                 if ((*k)->getId() == obj1->getId()) return (*k);
@@ -679,7 +680,8 @@ FWObject* Compiler::findAddressFor(const Address *obj1,const Address *obj2)
                 if (addr->getAddress() == obj1->getAddress() ) return (*k);
 
                 if (Network::constcast(obj1)!=NULL &&
-                    obj1->belongs( addr->getAddress())) return (*k);
+                    obj1->getAddressObjectInetAddrMask()->belongs(
+                        addr->getAddress())) return (*k);
 
                 if (addr->belongs( obj1->getAddress())) return (*k);
             }

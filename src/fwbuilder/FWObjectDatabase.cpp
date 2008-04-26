@@ -6,7 +6,7 @@
 
   Author:  Vadim Zaliva lord@crocodile.org
 
-  $Id: FWObjectDatabase.cpp 980 2006-10-15 21:43:55Z vkurland $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -52,6 +52,7 @@
 #include <fwbuilder/Host.h>
 #include <fwbuilder/Interface.h>
 #include <fwbuilder/IPv4.h>
+#include <fwbuilder/IPv6.h>
 #include <fwbuilder/physAddress.h>
 #include <fwbuilder/DNSName.h>
 #include <fwbuilder/AddressTable.h>
@@ -69,6 +70,7 @@
 #include <fwbuilder/ServiceGroup.h>
 #include <fwbuilder/IntervalGroup.h>
 #include <fwbuilder/Network.h>
+#include <fwbuilder/NetworkIPv6.h>
 #include <fwbuilder/AddressRange.h>
 #include <fwbuilder/Management.h>
 #include <fwbuilder/XMLTools.h>
@@ -531,8 +533,10 @@ FWObject *FWObjectDatabase::create(const string &type_name,
     CREATE_OBJ(FWBDManagement      ,n, id, prepopulate);
     CREATE_OBJ(Firewall            ,n, id, prepopulate);
     CREATE_OBJ(Network             ,n, id, prepopulate);
+    CREATE_OBJ(NetworkIPv6         ,n, id, prepopulate);
     CREATE_OBJ(Interface           ,n, id, prepopulate);
     CREATE_OBJ(IPv4                ,n, id, prepopulate);
+    CREATE_OBJ(IPv6                ,n, id, prepopulate);
     CREATE_OBJ(physAddress         ,n, id, prepopulate);
     CREATE_OBJ(DNSName             ,n, id, prepopulate);
     CREATE_OBJ(AddressTable        ,n, id, prepopulate);

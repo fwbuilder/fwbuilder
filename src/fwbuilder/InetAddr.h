@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: InetAddr.h 966 2006-08-18 03:59:32Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -69,6 +69,12 @@ class InetAddr
         throw(FWException, FWNotSupportedException);
     InetAddr(const InetAddr &);
 
+    // creates netmask 'n' bits long
+    explicit InetAddr(int n) throw(FWException);
+
+    virtual bool isV4() { return true; }
+    virtual bool isV6() { return false; }
+    
     static inline InetAddr getAny()
     {
         return InetAddr();
@@ -124,6 +130,20 @@ class InetAddr
     inline virtual int distance(const InetAddr &a2) const
     {
         return ntohl(a2.ipv4.s_addr) - ntohl(ipv4.s_addr) + 1;
+    }
+
+    /**
+     * returns the "length" of the netmask, that is number of bits set to '1'
+     * counting from left to right
+     */ 
+    int getLength() const;
+
+    /**
+     * for netmasks: return true if this is host mask, i.e. all '1'
+     */
+    inline bool isHostMask() const
+    {
+        return ipv4.s_addr == INADDR_BROADCAST;
     }
 
     /*****************************************************************/
@@ -189,41 +209,6 @@ class InetAddr
         struct in_addr res;
         res.s_addr = htonl(~(ntohl(a.ipv4.s_addr)));
         return InetAddr(&res);
-    }
-
-};
-
-/*
- * class InetNetmask represents netmask. The only difference between it
- * and its base class InetAddr is that its constructor can accept
- * an integer that defines netmask length. Correspondingly, this class
- * has a method that returns the length of the netmask.
- */
-class InetNetmask: public InetAddr
-{
-    public:
-
-    explicit InetNetmask();
-    explicit InetNetmask(const std::string &) throw(FWException);
-    InetNetmask(const char *data) throw(FWException);
-    InetNetmask(int n) throw(FWException);  // creates netmask 'n' bits long
-
-    explicit InetNetmask(const InetAddr &);
-
-    virtual ~InetNetmask();
-
-    /**
-     * returns the "length" of the netmask, that is number of bits set to '1'
-     * counting from left to right
-     */ 
-    int getLength() const;
-
-    /**
-     * for netmasks: return true if this is host mask, i.e. all '1'
-     */
-    inline bool isHostMask() const
-    {
-        return ipv4.s_addr == INADDR_BROADCAST;
     }
 
 };

@@ -6,7 +6,7 @@
 
   Author:  Illiya Yalovoy <yalovoy@gmail.com>
 
-  $Id: DNSName.h 975 2006-09-10 22:40:37Z vkurland $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -44,6 +44,14 @@ class DNSName : public MultiAddress
     DNSName();
     DNSName(const FWObject *root,bool prepopulate);
 
+    virtual void fromXML(xmlNodePtr parent) throw(FWException);
+    
+    virtual std::string getSourceName();
+    virtual void setSourceName(const std::string& source_name);
+
+    std::string getDNSRecordType();
+    void setDNSRecordType(const std::string& rectype);
+    
     virtual void loadFromSource() throw(FWException);
 };
 

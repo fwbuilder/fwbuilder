@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: FWReference.h 975 2006-09-10 22:40:37Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -56,7 +56,7 @@ class FWReference : public FWObject
     virtual void add(FWObject *obj);
 
     virtual FWObject *getPointer();
-    virtual const std::string& getPointerId();
+    virtual const std::string& getPointerId() const;
 
     void setPointer(FWObject *o);
     void setPointerId(const std::string& ref_id);

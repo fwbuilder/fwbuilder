@@ -6,7 +6,7 @@
 
   Author:  Vadim Zaliva lord@crocodile.org
 
-  $Id: HostsFile.cpp 808 2004-09-08 05:34:53Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public

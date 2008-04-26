@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: BackgroundOp.h 965 2006-06-25 04:31:26Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public

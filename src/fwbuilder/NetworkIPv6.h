@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id$
+  $Id: NetworkIPv6.h 975 2006-09-10 22:40:37Z vkurland $
 
 
   This program is free software which we release under the GNU General Public
@@ -24,55 +24,56 @@
 
 */
 
-#ifndef __IPV4_HH_FLAG__
-#define __IPV4_HH_FLAG__
+#ifndef __NETWORKIPV6_HH_FLAG__
+#define __NETWORKIPV6_HH_FLAG__
 
-#include <string>
-
-#include <fwbuilder/InetAddrMask.h>
 #include <fwbuilder/Address.h>
-#include <fwbuilder/FWException.h>
+#include <fwbuilder/InetAddrMask.h>
+#include <fwbuilder/InetAddr.h>
+#include <fwbuilder/InetAddrMask.h>
 
 namespace libfwbuilder
 {
 
-class IPv4 : public Address
+    class NetworkIPv6 : public Address
 {
 public:
     
-    IPv4();
-    IPv4(const FWObject *root, bool prepopulate);
+    NetworkIPv6();
+    NetworkIPv6(const FWObject *root,bool prepopulate);
+    NetworkIPv6(NetworkIPv6 &);
+    NetworkIPv6(const std::string &);
+    virtual ~NetworkIPv6();
 
-    virtual ~IPv4();
+    bool isValidRoutingNet() const;
 
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
-
-    virtual unsigned int dimension()  const { return 1; }
+    virtual void       fromXML (xmlNodePtr parent) throw(FWException);
+    virtual xmlNodePtr toXML   (xmlNodePtr xml_parent_node) throw(FWException);
     
-    DECLARE_FWOBJECT_SUBTYPE(IPv4);
+    DECLARE_FWOBJECT_SUBTYPE(NetworkIPv6);
 
     virtual const bool hasInetAddress(bool ipv6=false) const
     {
-        if (ipv6) return false;
-        return true;
+        if (ipv6) return true;
+        return false;
     }
 
-    virtual const Address* getAddressObject(bool ipv6=false) const
+    virtual Address* getAddressObject(bool ipv6=false)
     {
-        if (ipv6) return NULL;
-        return this;
+        if (ipv6) return this;
+        return NULL;
     }
 
     virtual void setAddress(const InetAddr &a, bool ipv6=false);
     virtual void setNetmask(const InetAddr &nm, bool ipv6=false);
     virtual void setAddressNetmask(const std::string& s);
 
-    virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0) const;
 };
 
 }
 
-#endif
+#endif // __NETWORK_HH_FLAG__
+
+
 
 

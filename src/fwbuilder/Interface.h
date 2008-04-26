@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: Interface.h 1022 2007-05-10 00:53:45Z vkurland $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
@@ -157,14 +157,9 @@ class Interface : public Address
 
     const std::string &getLabel() const;
     void          setLabel(const std::string& n);
-    
-    virtual const InetAddr& getAddress() const;
-    virtual const InetAddr* getAddressPtr() const;
-    virtual const InetNetmask& getNetmask() const;
-    virtual unsigned int dimension()  const { return 1; }
 
-    virtual void setAddress(const InetAddr &a);
-    virtual void setNetmask(const InetNetmask &nm);
+    virtual Address* getAddressObject(bool ipv6=false) const;
+    virtual unsigned int dimension()  const { return 1; }
 
 };
 
