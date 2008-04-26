@@ -247,7 +247,7 @@ void Importer::addInterfaceAddress(const std::string &a,
                                       aname);
         current_interface->setUnnumbered(false);
         IPv4::cast(nobj)->setAddress( InetAddr(a) );
-        IPv4::cast(nobj)->setNetmask( InetNetmask(nm) );
+        IPv4::cast(nobj)->setNetmask( InetAddr(nm) );
 
         *logger << "Interface address: " << a << "/" << nm << "\n";
     }
@@ -826,7 +826,7 @@ FWObject* Importer::createAddress(const std::string &addr,
         std::string name = std::string("h-") + addr;
         a = Address::cast(createObject(IPv4::TYPENAME, name));
         a->setAddress(InetAddr(addr));
-        a->setNetmask(InetNetmask(InetAddr::getAllOnes()));
+        a->setNetmask(InetAddr(InetAddr::getAllOnes()));
         a->setComment(comment);
         all_objects[sig] = a;
         *logger << "Address object: " << name << "\n";
@@ -847,7 +847,7 @@ FWObject* Importer::createAddress(const std::string &addr,
 
         try
         {
-            net->setNetmask( InetNetmask(netmask) );
+            net->setNetmask( InetAddr(netmask) );
         } catch (FWException &ex)
         {
             if (netmask.find('.')!=std::string::npos)
@@ -866,7 +866,7 @@ FWObject* Importer::createAddress(const std::string &addr,
                 try
                 {
                     str >> nm_len;
-                    net->setNetmask( InetNetmask(nm_len) );
+                    net->setNetmask( InetAddr(nm_len) );
                 } catch (std::exception& e)
                 {
                     // could not convert netmask as simple integer

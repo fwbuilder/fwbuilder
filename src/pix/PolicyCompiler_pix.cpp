@@ -123,14 +123,14 @@ int PolicyCompiler_pix::prolog()
             {
                 if (netmask.find(".")!=string::npos)
                 {
-                    InetNetmask nm(netmask);
+                    InetAddr nm(netmask);
                     nm.isAny(); // to avoid warning abt unused var
                 } else
                 {
                     int nm_length;
                     istringstream  str(netmask);
                     str >> nm_length;
-                    InetNetmask nm(nm_length);
+                    InetAddr nm(nm_length);
                     netmask = nm.toString();
                 }
             } catch(FWException &ex)

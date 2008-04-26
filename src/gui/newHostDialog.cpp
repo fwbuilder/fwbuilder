@@ -503,7 +503,7 @@ void newHostDialog::addInterface()
         try
         {
             InetAddr(addr.toLatin1().constData());
-            InetNetmask(netm.toLatin1().constData());
+            InetAddr(netm.toLatin1().constData());
         }
         catch (FWException &ex)
         {
@@ -632,7 +632,7 @@ void newHostDialog::finishClicked()
                     mw->createObject(oi, IPv4::TYPENAME,addrname)
                 );
                 oa->setAddress( InetAddr(addr.toLatin1().constData()) );
-                oa->setNetmask( InetNetmask(netmask.toLatin1().constData()) );
+                oa->setNetmask( InetAddr(netmask.toLatin1().constData()) );
             }
 
             mw->updateObjName(oi,"","",false);

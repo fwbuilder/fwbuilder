@@ -87,12 +87,14 @@ void OSConfigurator_openbsd::addVirtualAddressForNAT(const Network *nw)
 void OSConfigurator_openbsd::addVirtualAddressForNAT(const Address *addr)
 {
     if (virtual_addresses.empty() || 
-	find(virtual_addresses.begin(),virtual_addresses.end(),addr->getAddress())==virtual_addresses.end()) 
+	find(virtual_addresses.begin(),
+             virtual_addresses.end(),
+             addr->getAddress()) == virtual_addresses.end())
     {
         FWObject *iaddr = findAddressFor(addr, fw );
         if (iaddr!=NULL)
         {
-            InetAddrMask *iaddr_addr = dynamic_cast<InetAddrMask*>(iaddr);
+            Address *iaddr_addr = Address::cast(iaddr);
             assert(iaddr_addr!=NULL);
             Interface *iface = Interface::cast(iaddr->getParent());
             assert(iface!=NULL);
@@ -103,7 +105,8 @@ void OSConfigurator_openbsd::addVirtualAddressForNAT(const Address *addr)
         
             virtual_addresses.push_back(addr->getAddress());
         } else
-            warning(_("Can not add virtual address ") + addr->getAddress().toString() );
+            warning(_("Can not add virtual address ") +
+                    addr->getAddress().toString() );
     }
 }
 
@@ -119,7 +122,7 @@ void OSConfigurator_openbsd::addVirtualAddressForNAT(const Address *addr)
 	    FWObjectTypedChildIterator j=iface->findByType(IPv4::TYPENAME);
 	    for ( ; j!=j.end(); ++j )
             {
-                InetAddrMask *iaddr = dynamic_cast<InetAddrMask*>(*j);
+                Address *iaddr = Address::cast(*j);
                 if ( ipv4->belongs( addr->getAddress() ) )
                 {
                     output << "ifconfig " 
@@ -213,7 +216,7 @@ void  OSConfigurator_openbsd::configureInterfaces()
             FWObjectTypedChildIterator j=iface->findByType(IPv4::TYPENAME);
             for ( ; j!=j.end(); ++j ) 
             {
-                InetAddrMask *iaddr = dynamic_cast<InetAddrMask*>(*j);
+                Address *iaddr = Address::cast(*j);
                 output << "add_addr " << iaddr->getAddress().toString() << " "
                        << iaddr->getNetmask().toString() << " "
                        << iface->getName() << endl;

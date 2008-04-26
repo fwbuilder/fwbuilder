@@ -169,7 +169,7 @@ void IPv4Dialog::validate(bool *res)
     {
         try
         {
-            InetNetmask( m_dialog->netmask->text().toLatin1().constData() );
+            InetAddr( m_dialog->netmask->text().toLatin1().constData() );
         } catch (FWException &ex)
         {
             *res=false;
@@ -212,10 +212,10 @@ void IPv4Dialog::applyChanges()
         try
         {
             s->setNetmask(
-                InetNetmask(m_dialog->netmask->text().toLatin1().constData()) );
+                InetAddr(m_dialog->netmask->text().toLatin1().constData()) );
         } catch (FWException &ex) { }
     } else
-        s->setNetmask(InetNetmask());
+        s->setNetmask(InetAddr());
 
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 

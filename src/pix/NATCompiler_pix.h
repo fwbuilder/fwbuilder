@@ -420,7 +420,7 @@ namespace fwcompiler {
             typedef struct {
                 std::string             iface1, iface2;
                 libfwbuilder::InetAddr addr;
-                libfwbuilder::InetNetmask   mask;
+                libfwbuilder::InetAddr mask;
             } nonat_static_parameters;
             std::deque<nonat_static_parameters> all_nonat_statics;
             public:

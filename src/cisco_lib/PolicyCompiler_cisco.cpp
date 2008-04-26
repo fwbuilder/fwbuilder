@@ -112,9 +112,12 @@ void PolicyCompiler_cisco::addDefaultPolicyRule()
         dbcopy->add(ssh,false);
         cacheObj(ssh); // to keep cache consistent
 
-        Network *mgmt_workstation = Network::cast(dbcopy->create(Network::TYPENAME));
-        *mgmt_workstation = getCachedFwOpt()->getStr("mgmt_addr");
-        dbcopy->add(mgmt_workstation,false);
+        Network *mgmt_workstation = Network::cast(
+            dbcopy->create(Network::TYPENAME));
+        mgmt_workstation->setAddressNetmask(
+            getCachedFwOpt()->getStr("mgmt_addr"));
+
+        dbcopy->add(mgmt_workstation, false);
         cacheObj(mgmt_workstation); // to keep cache consistent
 
         r= PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );

@@ -349,7 +349,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             } else
             {
 
-                list<FWObject*> la=iface->getByType(IPv4::TYPENAME);
+                list<FWObject*> la = iface->getByType(IPv4::TYPENAME);
                 if ( iface->isRegular() && la.empty() )
                 {
                     char errstr[256];
@@ -360,7 +360,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
                 for (list<FWObject*>::iterator j=la.begin(); j!=la.end(); ++j) 
                 {
-                    InetAddrMask *ipv4 = dynamic_cast<InetAddrMask*>(*j);
+                    const InetAddrMask *ipv4 = IPv4::cast(*j)->getAddressObjectInetAddrMask();
 
                     if ( ipv4->getAddress().isAny())
                     {

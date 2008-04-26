@@ -79,7 +79,7 @@ string RoutingCompiler_ipt::PrintRule::_printAddr(Address  *o)
     }
 
     InetAddr addr;
-    InetNetmask   mask;
+    InetAddr mask;
     try {
         addr=o->getAddress();
         mask = o->getNetmask();
@@ -111,7 +111,7 @@ string RoutingCompiler_ipt::PrintRule::_printAddr(Address  *o)
         ostr << addr.toString();
 
         if (Interface::cast(o)==NULL &&
-            dynamic_cast<InetAddrMask*>(o)->dimension() > 1 &&
+            Address::cast(o)->dimension() > 1 &&
             !mask.isHostMask())
         {
             ostr << "/" << mask.getLength();

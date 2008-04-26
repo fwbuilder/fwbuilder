@@ -189,7 +189,7 @@ void NATCompiler_ipt::_expandInterface(Interface *iface,
     {
         if (physAddress::cast(*j)!=NULL) continue;
 
-        InetAddrMask *ipv4 = dynamic_cast<InetAddrMask*>(*j);
+        const InetAddrMask *ipv4 = Address::cast(*j)->getAddressObjectInetAddrMask();
         if (ipv4!=NULL && use_mac && pa!=NULL)
         {
             combinedAddress *ca=new combinedAddress(dbcopy,true);
@@ -234,7 +234,7 @@ bool NATCompiler_ipt::ConvertLoadBalancingRules::processNext()
             FWObject *obj = NULL;
             if (FWReference::cast(o)!=NULL)
                 obj=FWReference::cast(o)->getPointer();
-            InetAddrMask *a = dynamic_cast<InetAddrMask*>(obj);
+            const InetAddrMask *a = Address::cast(obj)->getAddressObjectInetAddrMask();
             al.push_back( a->getAddressPtr() );
         }
 

@@ -326,7 +326,7 @@ void NATCompiler_pf::PrintRule::_printAddr(FWObject *o)
 
     Address *a = Address::cast(o);
     InetAddr addr=a->getAddress();
-    InetNetmask  mask=a->getNetmask();
+    InetAddr  mask=a->getNetmask();
 
     if (Interface::cast(o)!=NULL)
     {
@@ -337,12 +337,12 @@ void NATCompiler_pf::PrintRule::_printAddr(FWObject *o)
             return;
         }
 
-        mask = InetNetmask(InetAddr::getAllOnes());
+        mask = InetAddr(InetAddr::getAllOnes());
     }
 
-    if (dynamic_cast<InetAddrMask*>(o)->dimension()==1)
+    if (Address::cast(o)->dimension()==1)
     {
-        mask = InetNetmask(InetAddr::getAllOnes());
+        mask = InetAddr(InetAddr::getAllOnes());
     }
 
     if (addr.isAny() && mask.isAny())

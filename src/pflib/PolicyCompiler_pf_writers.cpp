@@ -195,14 +195,14 @@ void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
                             }
                             try
                             {
-                                InetNetmask roaddr_netmask;
+                                InetAddr roaddr_netmask;
                                 string n = roaddr.substr(sp+1);
                                 if (n.find('.')!=std::string::npos)
                                 {
-                                    roaddr_netmask = InetNetmask(n);
+                                    roaddr_netmask = InetAddr(n);
                                 } else
                                 {
-                                    roaddr_netmask = InetNetmask(
+                                    roaddr_netmask = InetAddr(
                                         atoi(n.c_str()));
                                 }
                                 if (roaddr_netmask.getLength()==32)
@@ -597,7 +597,7 @@ void PolicyCompiler_pf::PrintRule::_printAddr(Address  *o,bool neg)
     }
 
     InetAddr addr=o->getAddress();
-    InetNetmask   mask=o->getNetmask();
+    InetAddr   mask=o->getNetmask();
 
     if (Interface::cast(o)!=NULL)
     {
@@ -608,12 +608,12 @@ void PolicyCompiler_pf::PrintRule::_printAddr(Address  *o,bool neg)
 	    return;
 	}
 
-	mask = InetNetmask(InetAddr::getAllOnes());
+	mask = InetAddr(InetAddr::getAllOnes());
     }
 
-    if (dynamic_cast<InetAddrMask*>(o)->dimension()==1) 
+    if (o->dimension()==1) 
     {
-	mask = InetNetmask(InetAddr::getAllOnes());
+	mask = InetAddr(InetAddr::getAllOnes());
     }
 
     if (addr.isAny() && mask.isAny()) 

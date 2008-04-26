@@ -38,6 +38,7 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/DNSName.h"
 
 
 #include <iostream>
@@ -73,8 +74,24 @@ void NATCompiler_ipf::PrintRule::_printAddr_L(Address  *o, bool print_netmask)
 {
     FWOptions* options=compiler->fw->getOptionsObject();
 
+    MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
+    if (atrt!=NULL)
+    {
+        if (atrt->getSubstitutionTypeName()==DNSName::TYPENAME)
+        {
+            compiler->output <<  atrt->getSourceName() << " ";
+            return;
+        }
+        // at this time we only support two types of MultiAddress
+        // objects: AddressTable and DNSName. Both should be converted
+        // to MultiAddressRunTime at this point. If we get some other
+        // kind of MultiAddressRunTime object, we do not know what to do
+        // with it so we stop.
+        assert(atrt==NULL);
+    }
+
     InetAddr addr=o->getAddress();
-    InetNetmask   mask=o->getNetmask();
+    InetAddr   mask=o->getNetmask();
 
     if (Interface::cast(o)!=NULL && Interface::cast(o)->isDyn()) 
     {
@@ -87,10 +104,10 @@ void NATCompiler_ipf::PrintRule::_printAddr_L(Address  *o, bool print_netmask)
     }
 
     if (Interface::cast(o)!=NULL && ! Interface::cast(o)->isDyn()) 
-	mask = InetNetmask(InetAddr::getAllOnes());
+	mask = InetAddr(InetAddr::getAllOnes());
 
-    if (dynamic_cast<InetAddrMask*>(o)->dimension()==1)
-	mask = InetNetmask(InetAddr::getAllOnes());
+    if (o->dimension()==1)
+	mask = InetAddr(InetAddr::getAllOnes());
 
     if (addr.isAny() && mask.isAny())
     {
@@ -109,13 +126,13 @@ void NATCompiler_ipf::PrintRule::_printAddr_L(Address  *o, bool print_netmask)
 void NATCompiler_ipf::PrintRule::_printAddr_R(Address  *o, bool print_netmask)
 {
     InetAddr addr = o->getAddress();
-    InetNetmask mask = o->getNetmask();
+    InetAddr mask = o->getNetmask();
 
     if (Interface::cast(o) != NULL)
-	mask = InetNetmask(InetAddr::getAllOnes());
+	mask = InetAddr(InetAddr::getAllOnes());
 
-    if (dynamic_cast<InetAddrMask*>(o)->dimension()==1)
-	mask = InetNetmask(InetAddr::getAllOnes());
+    if (o->dimension()==1)
+	mask = InetAddr(InetAddr::getAllOnes());
 
     if (addr.isAny() && print_netmask &&  mask.isHostMask())
     {

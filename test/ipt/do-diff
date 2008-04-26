@@ -7,7 +7,7 @@ if which opendiff > /dev/null 2>&1; then
 elif which tkdiff > /dev/null 2>&1; then
   TOOL="tkdiff -b -B "
 else
-  TOOL="diff -b -B "
+  TOOL="diff -U 8 -b -B "
 fi
 
 ${TOOL} firewall${N}.fw.orig firewall${N}.fw 

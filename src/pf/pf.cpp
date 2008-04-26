@@ -313,20 +313,26 @@ int main(int argc, char * const *argv)
                 if (l3.size()>0)
                 {
                     char errstr[256];
-                    for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) 
+                    for (list<FWObject*>::iterator j=l3.begin();
+                         j!=l3.end(); ++j)
+                    { 
                         if ( objdb->findAllReferences(*j).size()!=0 )
                         {
                             sprintf(errstr,
-_("Dynamic interface %s has an IP address that is used in the firewall policy rule.\n"),
+                                    "Dynamic interface %s has an IP address that"
+                                    "is used in the firewall policy rule.\n",
                                     iface->getName().c_str() );
                             throw FWException(errstr);
                         }
-
+                    }
                     sprintf(errstr,
-_("Dynamic interface %s should not have an IP address object attached to it. This IP address object will be ignored.\n"),
+                            "Dynamic interface %s should not have an IP address"
+                            " object attached to it. This IP address object "
+                            "will be ignored.\n",
                             iface->getName().c_str() );
                     cerr << errstr;
-                    for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) 
+                    for (list<FWObject*>::iterator j=l3.begin();
+                         j!=l3.end(); ++j) 
                         iface->remove(*j);
                 }
             } else
@@ -357,47 +363,49 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
         }
 
-
-
-
-	FWOptions* options=fw->getOptionsObject();
+	FWOptions* options = fw->getOptionsObject();
 	string s;
 
-	string firewall_dir=options->getStr("firewall_dir");
+	string firewall_dir = options->getStr("firewall_dir");
 	if (firewall_dir=="") firewall_dir="/etc/fw";
 
 	string prolog_place = options->getStr("prolog_place");
         if (prolog_place.empty()) prolog_place = "fw_file";  // old default
-        string pre_hook= fw->getOptionsObject()->getStr("prolog_script");
+        string pre_hook = fw->getOptionsObject()->getStr("prolog_script");
 
-	bool debug=options->getBool("debug");
-	string shell_dbg=(debug)?"-x":"" ;
-	string pfctl_dbg=(debug)?"-v ":"";
+	bool debug = options->getBool("debug");
+	string shell_dbg = (debug)?"-x":"" ;
+	string pfctl_dbg = (debug)?"-v ":"";
 
-        string pfctl_f_option="-f ";
+        string pfctl_f_option = "-f ";
 //        if (fw->getStr("version")=="obsd_3.2")    pfctl_f_option="-f ";
         if (fw->getStr("version")=="obsd_lt_3.2") pfctl_f_option="-R ";
         
-        Preprocessor_pf* prep=new Preprocessor_pf(objdb , fwobjectname);
+        Preprocessor_pf* prep = new Preprocessor_pf(objdb , fwobjectname);
         prep->compile();
 
 /*
  * Process firewall options, build OS network configuration script
  */
 	OSConfigurator *oscnf=NULL;
-        string family=Resources::os_res[fw->getStr("host_OS")]->Resources::getResourceStr("/FWBuilderResources/Target/family");
+        string family = Resources::os_res[fw->getStr("host_OS")
+          ]->Resources::getResourceStr("/FWBuilderResources/Target/family");
 
 	if (family=="solaris")
             oscnf=new OSConfigurator_solaris(objdb , fwobjectname);
 
 	if (family=="openbsd")
+        {
+            cerr << "Calling OSConfigurator_openbsd" << endl;
             oscnf=new OSConfigurator_openbsd(objdb , fwobjectname);
+        }
 
 	if (family=="freebsd")
             oscnf=new OSConfigurator_freebsd(objdb , fwobjectname);
 
 	if (oscnf==NULL)
-	    throw FWException(_("Unrecognized host OS ")+fw->getStr("host_OS")+"  (family "+family+")");
+	    throw FWException(_("Unrecognized host OS ") + 
+                              fw->getStr("host_OS")+"  (family "+family+")");
 
 	oscnf->prolog();
 

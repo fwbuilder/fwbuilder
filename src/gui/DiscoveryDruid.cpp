@@ -1,4 +1,4 @@
-/*
+/* 
 
                           Firewall Builder
 
@@ -18,13 +18,11 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-
+ 
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-
-#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -51,7 +49,7 @@
 #include <qhostaddress.h>
 #include <qhostinfo.h>
 #include <qgroupbox.h>
-#include <qmessagebox.h>
+#include <qmessagebox.h> 
 
 #include "DiscoveryDruid.h"
 
@@ -86,14 +84,14 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
 {
     m_dialog = new Ui::DiscoveryDruid_q;
     m_dialog->setupUi(this);
-
-    setControlWidgets(this, m_dialog->stackedWidget,
+    
+    setControlWidgets(this, m_dialog->stackedWidget, 
                       m_dialog->nextButton,
                       m_dialog->finishButton,
                       m_dialog->backButton,
                       m_dialog->cancelButton,
                       m_dialog->titleLabel);
-
+    
     dm_method = new QButtonGroup;
     dm_method->addButton(m_dialog->dm_fromfile,0);
     dm_method->addButton(m_dialog->dm_importdns,1);
@@ -105,26 +103,26 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
     connect(m_dialog->dnscustom, SIGNAL( clicked(bool) ), this, SLOT( changedNameServer() ) );
     connect(m_dialog->nameserverlist, SIGNAL( editTextChanged(QString) ), this, SLOT( changedNameServer() ) );
     connect(m_dialog->nameserverline, SIGNAL( textChanged(QString) ), this, SLOT( changedNameServer() ) );
-
+    
     thread=NULL;
-
+    
     timer=new QTimer(this);
     prg_timer=new QTimer(this);
     unBar=NULL;
     unProg=0;
-
+    
     connect(prg_timer,SIGNAL(timeout()),this,SLOT(updatePrg()));
-
+    
     setDiscoveryMethod_file();
-
+    
     flt_obj     = new Filter();
     flt_obj_d   = new FilterDialog(this);
     flt_obj_d->setFilter(flt_obj);
-
+     
     flt_last    = new Filter();
     flt_last_d  = new FilterDialog(this);
     flt_last_d->setFilter(flt_last);
-
+    
     flt_net     = new Filter();
     flt_net_d   = new FilterDialog(this);
     flt_net_d->setFilter(flt_net);
@@ -140,7 +138,7 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
     m_dialog->dm_importdns->hide();
     m_dialog->snmpdnsparameters->hide();
 #endif
-
+    
 #ifndef HAVE_LIBSNMP
     m_dialog->dm_usesnmp->setEnabled(false);
 #endif
@@ -195,14 +193,14 @@ void DiscoveryDruid::cancelClicked()
 DiscoveryDruid::~DiscoveryDruid()
 {
     save();
-
+    
     delete flt_obj;
     delete flt_last;
     delete flt_net;
     delete flt_obj_d;
     delete flt_last_d;
     delete flt_net_d;
-
+    
     delete m_dialog;
     delete dm_method;
 }
@@ -355,7 +353,7 @@ void DiscoveryDruid::dnsFinish(QHostInfo host)
     QList<QHostAddress> list = host.addresses();
 
     unBar->hide();
-
+    
     if (userIsTyping)
     {
         //abandon the test result
@@ -376,7 +374,7 @@ void DiscoveryDruid::dnsFinish(QHostInfo host)
             QPalette palette = errMessage->palette();
             palette.setColor(errMessage->foregroundRole(), Qt::darkRed);
             errMessage->setPalette(palette);
-
+            
             errMessage->setText( "host name not found");
             isSeedHostOK=false;
         }
@@ -385,22 +383,22 @@ void DiscoveryDruid::dnsFinish(QHostInfo host)
             QPalette palette = errMessage->palette();
             palette.setColor(errMessage->foregroundRole(), Qt::darkGreen);
             errMessage->setPalette(palette);
-
+            
             errMessage->setText( "host name verified");
             isSeedHostOK=true;
-
+            
         }
-        nextButton->setEnabled(isSNMPInclNetOK && isSeedHostOK);
+        nextButton->setEnabled(isSNMPInclNetOK && isSeedHostOK); 
     }
-
+    
 }
 
 void DiscoveryDruid::changedSelected( const int &page )
 {
     switch (page)
     {
-
-    case 1: // Reading file in hosts format
+    
+    case 1: // Reading file in hosts format 
     {
         setNextEnabled(page,false);
         changedHostsFileName();
@@ -444,7 +442,7 @@ void DiscoveryDruid::changedSelected( const int &page )
 
         isSeedHostOK=false;
         isSNMPInclNetOK=false;
-
+            
         changedSeedHost();
         changedInclNet();
         m_dialog->seedhostname->setFocus();
@@ -499,7 +497,7 @@ void DiscoveryDruid::changedSelected( const int &page )
     {
         if (Networks.size()==0)
             setBackEnabled(page,false);
-
+            
         fillListOfObjects();
         fillObjects();
         nextButton->setEnabled(m_dialog->objectlist->count ()>0 || m_dialog->networklist->count()>0);
@@ -527,9 +525,9 @@ void DiscoveryDruid::changedSelected( const int &page )
         finishButton->setFocus();
         break;
     }
-
+        
     default : {}
-
+    
     }
     FromPage=page;
 }
@@ -576,18 +574,18 @@ void DiscoveryDruid::browseHostsFile()
     dir=st->getWDir();
     if (dir.isEmpty())  dir=st->getOpenFileDir();
     if (dir.isEmpty())  dir="~";
-
+    
     QString s = QFileDialog::getOpenFileName(
                     this,
                     "Choose a file",
                     dir,
                     "All files (*.*)");
-
+    
     if (!s.isEmpty())
     {
         m_dialog->filename->setText(s);
     }
-
+    
 }
 
 void DiscoveryDruid::browseForImport()
@@ -596,18 +594,18 @@ void DiscoveryDruid::browseForImport()
     dir=st->getWDir();
     if (dir.isEmpty())  dir=st->getOpenFileDir();
     if (dir.isEmpty())  dir="~";
-
+    
     QString s = QFileDialog::getOpenFileName(
                     this,
                     "Choose a file",
                     dir,
                     "All files (*.*)");
-
+    
     if (!s.isEmpty())
     {
         m_dialog->import_filename->setText(s);
     }
-
+    
 }
 
 void DiscoveryDruid::updatePrg()
@@ -616,7 +614,7 @@ void DiscoveryDruid::updatePrg()
     {
         unBar->setValue(unProg++);
     }
-
+    
 }
 
 void DiscoveryDruid::getNameServers()
@@ -626,14 +624,14 @@ void DiscoveryDruid::getNameServers()
     string domain_name=m_dialog->domainname->text().toLatin1().constData();
     DNS_getNS_query *dns=new DNS_getNS_query(domain_name);
     int              n;
-    try
+    try 
     {
         NullLogger nl;
         SyncFlag   stop_program(false);
         ns_records=dns->getNS(domain_name, &nl, &stop_program);
         m_dialog->dnsfromlist->setChecked(true);
 
-    } catch (FWException &ex)
+    } catch (FWException &ex) 
     {
         //string(_("Could not find name servers for the domain: '"))+
         //domain_name+"'  ", ex.toString(), this);
@@ -646,14 +644,14 @@ void DiscoveryDruid::getNameServers()
     multimap<string,InetAddr>::iterator i;
     m_dialog->nameserverlist->clear();
     NameServers.clear();
-
-    for (n=0,i=ns_records.begin(); i!=ns_records.end(); ++n,++i)
+    
+    for (n=0,i=ns_records.begin(); i!=ns_records.end(); ++n,++i) 
     {
 
         string s = (*i).first + "  (" + ((*i).second).toString() + ")";
         QString qs = s.c_str();
         m_dialog->nameserverlist->addItem(qs);
-
+    
         InetAddr *na=new InetAddr( (*i).second );
         NameServers[qs] = *na;
     }
@@ -686,7 +684,7 @@ void DiscoveryDruid::setDiscoveryMethod_SNMP()
     for (int i=0;i<WIZARD_PAGES;i++)
     {
         setAppropriate( i, WIZARD_SNMP_PAGES[i]);
-    }
+    }    
 }
 
 void DiscoveryDruid::setDiscoveryMethod_Import()
@@ -696,7 +694,7 @@ void DiscoveryDruid::setDiscoveryMethod_Import()
     for (int i=0;i<WIZARD_PAGES;i++)
     {
         setAppropriate( i, WIZARD_IMPORT_PAGES[i]);
-    }
+    }    
 }
 
 
@@ -707,17 +705,17 @@ void DiscoveryDruid::changedDiscoveryMethod(int c)
 
     switch (c)
     {
-    case 0:
+    case 0: 
     {
         setDiscoveryMethod_file();
         break;
     }
-    case 1:
+    case 1: 
     {
         setDiscoveryMethod_DNS();
         break;
     }
-    case 2:
+    case 2: 
     {
         setDiscoveryMethod_SNMP();
         break;
@@ -738,14 +736,14 @@ void DiscoveryDruid::saveScanLog()
     dir=st->getWDir();
     if (dir.isEmpty())  dir=st->getOpenFileDir();
     if (dir.isEmpty())  dir="~";
-
+    
     QString s = QFileDialog::getSaveFileName(
                     this,
                     "Choose a file",
                     dir,
                     "Text file (*.txt)");
-
-
+    
+    
     if (!s.isEmpty())
     {
         if (s.endsWith(".txt"))
@@ -769,16 +767,16 @@ void DiscoveryDruid::saveScanLog()
                 qDebug("--------------------------------");
             f.close();
         }
-    }
+    }    
 }
-
+    
 void DiscoveryDruid::startHostsScan()
 {
     if (thread!=NULL)
     {
         delete thread;
     }
-
+    
     thread = new HostsFileImport(m_dialog->filename->text());
     thread->setTargetWidget(this);
     thread->start();
@@ -813,7 +811,7 @@ void DiscoveryDruid::startConfigImport()
         m_dialog->discoveryprogress->setMaximum(line_count);
 
         // need to pick right platform string based on
-        // m_dialog->import_platform->currentItem()
+        // m_dialog->import_platform->currentItem() 
         string platform = "";
         switch (m_dialog->import_platform->currentIndex())
         {
@@ -839,21 +837,21 @@ void DiscoveryDruid::startConfigImport()
 InetAddr DiscoveryDruid::getNS()
 {
     string ns;
-    if (m_dialog->dnscustom->isChecked())
+    if (m_dialog->dnscustom->isChecked()) 
     {
-        ns=m_dialog->nameserverline->text().toLatin1().constData();
+        ns=m_dialog->nameserverline->text().toLatin1().constData();  
 
-        try
+        try 
         {
             return InetAddr(ns);
-        } catch (FWException &ex)
+        } catch (FWException &ex) 
         {
         /* perhaps not address but host name */
             list<InetAddr> addr;
-            try
+            try 
             {
                 addr=DNS::getHostByName(ns);
-            } catch (FWException &ex)
+            } catch (FWException &ex) 
             {
                 return InetAddr();
             }
@@ -869,7 +867,7 @@ void DiscoveryDruid::startDNSScan()
 {
     InetAddr ns=getNS(); 
     string domain_name=m_dialog->domainname->text().toLatin1().constData();
-
+    
     DNS_findA_query *q=new DNS_findA_query();
     q->init(
             domain_name, ns,
@@ -877,13 +875,13 @@ void DiscoveryDruid::startDNSScan()
             m_dialog->dnstimeout->value()
             );
     bop=q;
-
+    
     m_dialog->discoveryprogress->setMaximum(0);
     unBar=m_dialog->discoveryprogress;
     try
     {
         logger=bop->start_operation();
-
+    
         m_dialog->discoverylog->append("Reading DNS zone ...");
 
     } catch(const FWException &ex)
@@ -903,11 +901,11 @@ InetAddr DiscoveryDruid::getSeedHostAddress()
         {
             seed_host_addr=InetAddr(m_dialog->seedhostname->text().toLatin1().constData());
             return seed_host_addr;
-        } catch(const FWException &ex)
+        } catch(const FWException &ex) 
         {
-        }
-
-        try
+        }        
+        
+        try 
         {
             QString a = getAddrByName( m_dialog->seedhostname->text() );
             return InetAddr( a.toLatin1().constData() );
@@ -916,16 +914,16 @@ InetAddr DiscoveryDruid::getSeedHostAddress()
             seed_host_addr = v.front();
             return seed_host_addr;
 #endif
-        } catch(const FWException &ex)
+        } catch(const FWException &ex) 
         {
-        }
+        }        
     }
     return seed_host_addr;
 }
 
 void DiscoveryDruid::startSNMPScan()
 {
-#ifdef HAVE_LIBSNMP
+#ifdef HAVE_LIBSNMP   
 
 
     bool use_incl=!m_dialog->snmpinaddr->text().isEmpty() && !m_dialog->snmpinmask->text().isEmpty();
@@ -934,9 +932,9 @@ void DiscoveryDruid::startSNMPScan()
         try
         {
             InetAddrMask in(
-                InetAddr(m_dialog->snmpinaddr->text().toLatin1().constData()),
-                InetNetmask(m_dialog->snmpinmask->text().toLatin1().constData()) 
-            );
+                 InetAddr(m_dialog->snmpinaddr->text().toLatin1().constData()),
+                 InetAddr(m_dialog->snmpinmask->text().toLatin1().constData()) 
+                 );
             include_networks.push_back(in);
         }
         catch (const FWException &ex)
@@ -957,26 +955,26 @@ void DiscoveryDruid::startSNMPScan()
             0,
             0,
             (use_incl) ? &include_networks : NULL);
-
+    
     m_dialog->discoveryprogress->setMaximum(0);
     unBar=m_dialog->discoveryprogress;
-
+    
     bop=q;
     try
     {
         logger=bop->start_operation();
         m_dialog->discoverylog->append("Collecting data ...");
-
+        
     } catch(const FWException &ex)
     {
         delete q;
         q=NULL;
     }
-
-
+            
+    
 #endif
 }
-
+    
 void DiscoveryDruid::changedDomainName()
 {
     if (m_dialog->domainname->text().isEmpty())
@@ -999,26 +997,26 @@ void DiscoveryDruid::changedNameServer()
         nextButton->setEnabled(false);
         QString s=m_dialog->nameserverline->text();
         HostName=s;
-
+        
         if (s.isEmpty())
         {
             timer->stop();
             m_dialog->DNSprogress_2->hide();
-
+            
             QPalette palette = m_dialog->nameserver_error->palette();
             palette.setColor(m_dialog->nameserver_error->foregroundRole(), Qt::darkRed);
             m_dialog->nameserver_error->setPalette(palette);
-
+            
             m_dialog->nameserver_error->setText("Enter valid host name or address.");
             nextButton->setEnabled(false);
             return;
         }
-
+        
         if(isInetAddr(s))
         {
             timer->stop();
             m_dialog->DNSprogress_2->hide();
-
+            
             QString rs=testInetAddr(s);
             if (rs.isEmpty())
             {
@@ -1044,13 +1042,13 @@ void DiscoveryDruid::changedNameServer()
             timer->start(1000);
             errMessage=m_dialog->nameserver_error;
             userIsTyping=false;
-
+            
             QPalette palette = errMessage->palette();
             palette.setColor(errMessage->foregroundRole(), Qt::black);
             errMessage->setPalette(palette);
-
+            
             errMessage->setText("DNS resolution in progress...");
-
+        
             unProg = 0;
         }
     }
@@ -1086,7 +1084,7 @@ QString DiscoveryDruid::testInetAddr(const QString s)
         try
         {
             InetAddr(s.toLatin1().constData());
-        } catch(const FWException &ex)
+        } catch(const FWException &ex) 
         {
             res=ex.toString().c_str();
         }
@@ -1111,12 +1109,12 @@ void DiscoveryDruid::changedHostsFileName()
         setNextEnabled(currentPage(),false);
     }
 }
-
+    
 void DiscoveryDruid::changedSNMPOptions()
 {
 
 }
-
+    
 void DiscoveryDruid::stopBackgroundProcess()
 {
     if (fwbdebug)
@@ -1126,16 +1124,16 @@ void DiscoveryDruid::stopBackgroundProcess()
     if (bop!=NULL && bop->isRunning())
     {
         m_dialog->discoverylog->append("Terminating task. Please wait...");
-
+        
         bop->stop_operation();
         m_dialog->discoveryStopButton->setEnabled(false);
     }
 }
-
+    
 void DiscoveryDruid::addNetwork()
 {
-
-
+    
+   
     int count = m_dialog->networkresultlist->count();
     int upd_max=(count > 10)?count/10:1;
     int updc=upd_max;
@@ -1144,23 +1142,23 @@ void DiscoveryDruid::addNetwork()
 
     QListWidgetItem* item=(QListWidgetItem*)m_dialog->networkresultlist->item(0);
     int i = 0;
-
+    
     while (item)
     {
 
         if (item->isSelected())
         {
             QString k=item->text();
-            if (!Networks[k].isSelected)
+            if (!Networks[k].isSelected) 
             {
                 Networks[k].isSelected=true;
                 m_dialog->networklist->addItem(item->text());
             }
         }
-
+        
         i++;
         item=(QListWidgetItem*)m_dialog->networkresultlist->item(i);
-
+        
         if (updc--<=0)
         {
             pd.setValue(t);
@@ -1168,7 +1166,7 @@ void DiscoveryDruid::addNetwork()
 
             if (pd.wasCanceled())
             {
-                break;
+                break;   
             }
             updc=upd_max;
         }
@@ -1177,12 +1175,12 @@ void DiscoveryDruid::addNetwork()
     nextButton->setEnabled(m_dialog->networklist->count ()>0 || Objects.size()>0);
 
 }
-
+    
 void DiscoveryDruid::removeNetwork()
 {
     QListWidgetItem* item1=m_dialog->networklist->item(0);
     QListWidgetItem* item2;
-
+    
     while (item1!=0)
     {
         item2=m_dialog->networklist->item(
@@ -1196,19 +1194,19 @@ void DiscoveryDruid::removeNetwork()
     }
     nextButton->setEnabled(m_dialog->networklist->count ()>0 || Objects.size()>0);
 }
-
+    
 void DiscoveryDruid::setNetworkFilter()
 {
-    flt_net_d->exec();
+    flt_net_d->exec(); 
     fillListOfNetworks();
 }
-
+    
 void DiscoveryDruid::removeNetworkFilter()
 {
-    flt_net->clear();
+    flt_net->clear(); 
     fillListOfNetworks();
 }
-
+    
 void DiscoveryDruid::addObject()
 {
     int count = m_dialog->objectresultlist->count();
@@ -1220,7 +1218,7 @@ void DiscoveryDruid::addObject()
 
     QListWidgetItem* item=(QListWidgetItem*)m_dialog->objectresultlist->item(0);
     int i = 0;
-
+    
     while (item)
     {
         if (item->isSelected())
@@ -1232,7 +1230,7 @@ void DiscoveryDruid::addObject()
                 m_dialog->objectlist->addItem(item->text());
             }
         }
-
+        
         i++;
         item=(QListWidgetItem*)m_dialog->objectresultlist->item(i);
 
@@ -1243,7 +1241,7 @@ void DiscoveryDruid::addObject()
 
             if (pd.wasCanceled())
             {
-                break;
+                break;   
             }
             updc=upd_max;
         }
@@ -1251,7 +1249,7 @@ void DiscoveryDruid::addObject()
     }
     nextButton->setEnabled(m_dialog->objectlist->count ()>0 || m_dialog->networklist->count()>0);
 }
-
+    
 void DiscoveryDruid::removeObject()
 {
     QListWidgetItem* item1=m_dialog->objectlist->item(0);
@@ -1270,19 +1268,19 @@ void DiscoveryDruid::removeObject()
     }
     nextButton->setEnabled(m_dialog->objectlist->count ()>0 || m_dialog->networklist->count()>0);
 }
-
+    
 void DiscoveryDruid::setLastFilter()
 {
-    flt_last_d->exec();
+    flt_last_d->exec(); 
     fillTypeChangingList();
 }
 
 void DiscoveryDruid::setObjectFilter()
 {
-    flt_obj_d->exec();
+    flt_obj_d->exec(); 
     fillListOfObjects();
 }
-
+    
 void DiscoveryDruid::removeLastFilter()
 {
     flt_last->clear();
@@ -1291,7 +1289,7 @@ void DiscoveryDruid::removeLastFilter()
 
 void DiscoveryDruid::removeObjectFilter()
 {
-    flt_obj->clear();
+    flt_obj->clear(); 
     fillListOfObjects();
 }
 
@@ -1341,7 +1339,7 @@ void DiscoveryDruid::fillObjects()
     ObjectDescriptor buf;
 
     m_dialog->objectlist->clear();
-    bool f=false;
+    bool f=false; 
     QMap<QString,ObjectDescriptor >::iterator i;
     for(i=Objects.begin(); i!=Objects.end(); ++i)
     {
@@ -1357,11 +1355,11 @@ void DiscoveryDruid::fillObjects()
 
 void DiscoveryDruid::fillTypeChangingList()
 {
-
+    
     ObjectDescriptor buf;
 
     m_dialog->typeChangingList->clear();
-
+    
     QMap<QString,ObjectDescriptor >::iterator i;
     for(i=Objects.begin(); i!=Objects.end(); ++i)
     {
@@ -1390,7 +1388,7 @@ void DiscoveryDruid::loadDataFromDNS()
     Objects.clear();
 
     map<string,set<InetAddr> > t = q->getResult();
-
+    
     for(map<string,set<InetAddr> >::iterator j = t.begin(); j!=t.end(); ++j)
     {
         ObjectDescriptor od;
@@ -1406,12 +1404,12 @@ void DiscoveryDruid::loadDataFromDNS()
         }
         od.type =IPv4::TYPENAME;
         od.isSelected=false;
-
+        
         if (od.sysname.empty())
         {
             od.sysname=string("h-") + od.addr.toString();
         }
-
+        
         Objects[od.toString().c_str()]=od;
     }
 }
@@ -1426,11 +1424,11 @@ void DiscoveryDruid::loadDataFromFile()
     if (count > 0)
     {
         int upd_max=(count > 10)?count/10:1;
-
+        
         int updc=upd_max;
-
+     
         QProgressDialog pd(tr("Prepare objects ..."), tr("Cancel"), 0, count,this);
-
+        
         vector<ObjectDescriptor>::iterator i;
         for(i = himport->hosts.begin(); i != himport->hosts.end(); ++i)
         {
@@ -1439,7 +1437,7 @@ void DiscoveryDruid::loadDataFromFile()
                 i->type=IPv4::TYPENAME;
             }
             i->isSelected=false;
-
+                
             Objects[i->toString().c_str()] = *i;
             if (updc--<=0)
             {
@@ -1448,7 +1446,7 @@ void DiscoveryDruid::loadDataFromFile()
 
                 if (pd.wasCanceled())
                 {
-                    break;
+                    break;   
                 }
                 updc=upd_max;
             }
@@ -1476,7 +1474,7 @@ void DiscoveryDruid::loadDataFromCrawler()
     SNMPCrawler *q=(SNMPCrawler*)bop;
     Objects.clear();
     Networks.clear();
-
+    
     set<InetAddrMask>::iterator m;
     set<InetAddrMask> s = q->getNetworks();
 
@@ -1486,13 +1484,13 @@ void DiscoveryDruid::loadDataFromCrawler()
     for (m=s.begin(); m!=s.end(); ++m)
     {
         ObjectDescriptor od;
-
+        
         od.sysname = m->toString();
         od.addr = m->getAddress();
         od.netmask = m->getNetmask();
         od.type = Network::TYPENAME;
         od.isSelected = false;
-
+        
         Networks[od.sysname.c_str()]= od ;
     }
 
@@ -1506,7 +1504,7 @@ void DiscoveryDruid::loadDataFromCrawler()
 
     int cntr = 0;
     map<InetAddr, CrawlerFind>::iterator j;
-    for(j = t.begin(); j!=t.end(); ++j,++cntr)
+    for(j = t.begin(); j!=t.end(); ++j,++cntr) 
     {
         m_dialog->discoveryprogress->setValue( cntr );
 
@@ -1535,7 +1533,7 @@ void DiscoveryDruid::loadDataFromCrawler()
         }
 
         Objects[od.toString().c_str()]=od;
-
+        
         set<string>::iterator si;
         for(si=od.dns_info.aliases.begin();
                 si!=od.dns_info.aliases.end();
@@ -1547,9 +1545,9 @@ void DiscoveryDruid::loadDataFromCrawler()
     }
 #endif
 /*
-    (arg==0) ?
-    _("Network scan completed, click 'Next' to continue") :
-    _("There has been an error running the network scan. You can continue but data gathered by the scanner may be incomplete")
+    (arg==0) ? 
+    _("Network scan completed, click 'Next' to continue") : 
+    _("There has been an error running the network scan. You can continue but data gathered by the scanner may be incomplete") 
 */
 }
 
@@ -1563,29 +1561,29 @@ void DiscoveryDruid::fillListOfNetworks()
     if (count > 0)
     {
         int upd_max=(count > 10)?count/10:1;
-
+        
         int updc=upd_max;
-
+     
         QProgressDialog pd(tr("Copying results ..."), tr("Cancel"), 0, count,this);
-
+        
         QMap<QString, ObjectDescriptor>::iterator i;
         for(i=Networks.begin();
             i!=Networks.end();
             ++i)
         {
-
+            
             if ( flt_net->test(i.value()) )
             {
-
+            
                 m_dialog->networkresultlist->addItem(new QListWidgetItem(i.key()));
                 if (updc--<=0)
                 {
                     pd.setValue(t);
                     qApp->processEvents();
-
+    
                     if (pd.wasCanceled())
                     {
-                        break;
+                        break;   
                     }
                     updc=upd_max;
                 }
@@ -1597,34 +1595,34 @@ void DiscoveryDruid::fillListOfNetworks()
 
 void DiscoveryDruid::fillListOfObjects()
 {
-
+    
     m_dialog->objectresultlist->clear();
     int t=0;
     int count = Objects.size();
     if (count > 0)
     {
         int upd_max=(count > 10)?count/10:1;
-
+        
         int updc=upd_max;
-
+     
         QProgressDialog pd(tr("Copying results ..."),
                            tr("Cancel"), 0,count,this);
-
+        
         QMap<QString,ObjectDescriptor >::iterator i;
         for(i=Objects.begin(); i!=Objects.end(); ++i)
         {
             if ( flt_obj->test(i.value()) )
             {
-
+            
                 m_dialog->objectresultlist->addItem(new QListWidgetItem(i.key()));
                 if (updc--<=0)
                 {
                     pd.setValue(t);
                     qApp->processEvents();
-
+    
                     if (pd.wasCanceled())
                     {
-                        break;
+                        break;   
                     }
                     updc=upd_max;
                 }
@@ -1633,7 +1631,7 @@ void DiscoveryDruid::fillListOfObjects()
         }
     }
 }
-
+    
 void DiscoveryDruid::customEvent(QEvent *event)
 {
     int evtype=(int)event->type();
@@ -1644,10 +1642,10 @@ void DiscoveryDruid::customEvent(QEvent *event)
     } else if (evtype == DoneEv)
     {
         cancelButton->show();
-
+        
         timer->stop();
         disconnect(timer,SIGNAL(timeout()),0,0);
-
+        
         updateLog();
         m_dialog->logSaveButton->setEnabled(true);
 
@@ -1668,7 +1666,7 @@ void DiscoveryDruid::customEvent(QEvent *event)
         QString er = thread->getError();
         delete thread;
         thread=NULL;
-
+        
         switch (current_task)
         {
         case BT_HOSTS:
@@ -1682,7 +1680,7 @@ void DiscoveryDruid::customEvent(QEvent *event)
             else
             {
                 backButton->setEnabled(true);
-                nextButton->setEnabled(false);
+                nextButton->setEnabled(false); 
             }
             break;
         case BT_IMPORT:
@@ -1714,7 +1712,7 @@ void DiscoveryDruid::updateLog()
     {
        if (monitorOperation() > 0)
        {
-
+           
            //m_dialog->discoveryprogress->setValue(prg++);
        }
        else
@@ -1725,18 +1723,18 @@ void DiscoveryDruid::updateLog()
             if (fwbdebug) qDebug("Crawler finished");
 
             loadDataFromCrawler();
-
+            
             cancelButton->show();
-
+            
             FWException * ex=bop->get_latest_error();
             if (ex!=NULL)
             {
                 QMessageBox::critical(this,tr("Discovery error"), ex->toString().c_str());
-                //m_dialog->discoverylog->append(QString("\nLast exception: ")+ex->toString().c_str()+"\n");
+                //m_dialog->discoverylog->append(QString("\nLast exception: ")+ex->toString().c_str()+"\n");    
             }
             if (Objects.size()>0 || Networks.size()>0)
             {
-                if (Networks.size()==0)
+                if (Networks.size()==0) 
                     setAppropriate( 8,0);
                 nextButton->setEnabled(true);
                 nextButton->setDefault(true);
@@ -1748,7 +1746,7 @@ void DiscoveryDruid::updateLog()
                 nextButton->setEnabled(false);
                 backButton->setEnabled(true);
             }
-
+            
             m_dialog->logSaveButton->setEnabled(true);
 
             delete bop;
@@ -1771,15 +1769,15 @@ void DiscoveryDruid::updateLog()
        {
             timer->stop();
             disconnect(timer,SIGNAL(timeout()),0,0);
-
+           
             loadDataFromDNS();
-
+            
             cancelButton->show();
             FWException * ex=bop->get_latest_error();
             if (ex!=NULL)
-            {
+            {    
                 QMessageBox::critical(this,tr("Discovery error"), ex->toString().c_str());
-                //m_dialog->discoverylog->append(QString("\nLast exception: ")+ex->toString().c_str()+"\n");
+                //m_dialog->discoverylog->append(QString("\nLast exception: ")+ex->toString().c_str()+"\n");    
             }
             if (Objects.size()>0)
             {
@@ -1810,7 +1808,7 @@ void DiscoveryDruid::changedSeedHost()
     userIsTyping=true;
     errMessage=m_dialog->seedhosterror_message;
     HostName=m_dialog->seedhostname->text();
-
+    
     if (HostName.isEmpty())
     {
         timer->stop();
@@ -1834,19 +1832,19 @@ void DiscoveryDruid::changedSeedHost()
                 try
                 {
                     InetAddr(HostName.toLatin1().constData());
-
+                    
                     QPalette palette = m_dialog->seedhosterror_message->palette();
                     palette.setColor(m_dialog->seedhosterror_message->foregroundRole(), Qt::darkGreen);
                     m_dialog->seedhosterror_message->setPalette(palette);
 
                     m_dialog->seedhosterror_message->setText("Address verified");
                     isSeedHostOK=true;
-                } catch(const FWException &ex)
+                } catch(const FWException &ex) 
                 {
                     QPalette palette = m_dialog->seedhosterror_message->palette();
                     palette.setColor(m_dialog->seedhosterror_message->foregroundRole(), Qt::darkRed);
                     m_dialog->seedhosterror_message->setPalette(palette);
-
+                    
                     m_dialog->seedhosterror_message->setText(ex.toString().c_str());
                     // need to return focus to the input field in case of error
                     //m_dialog->seedhostname->setFocus();
@@ -1858,10 +1856,10 @@ void DiscoveryDruid::changedSeedHost()
                 QPalette palette = m_dialog->seedhosterror_message->palette();
                 palette.setColor(m_dialog->seedhosterror_message->foregroundRole(), Qt::darkRed);
                 m_dialog->seedhosterror_message->setPalette(palette);
-
+                
                 m_dialog->seedhosterror_message->setText("Wrong IPv4 format");
                 isSeedHostOK=false;
-
+                
             }
         }
         else
@@ -1882,7 +1880,7 @@ void DiscoveryDruid::changedSeedHost()
             timer->start(1000);
         }
     }
-    nextButton->setEnabled(isSNMPInclNetOK && isSeedHostOK);
+    nextButton->setEnabled(isSNMPInclNetOK && isSeedHostOK); 
 }
 
 void DiscoveryDruid::changedInclNet()
@@ -1894,9 +1892,9 @@ void DiscoveryDruid::changedInclNet()
     {
         try
         {
-
+            
             InetAddr a(m_dialog->snmpinaddr->text().toLatin1().constData());
-            InetNetmask n(m_dialog->snmpinmask->text().toLatin1().constData());
+            InetAddr n(m_dialog->snmpinmask->text().toLatin1().constData());
             InetAddrMask(a,n);
 
             m_dialog->confineerror_message->setText(" ");
@@ -1906,7 +1904,7 @@ void DiscoveryDruid::changedInclNet()
             isSNMPInclNetOK=false;
             m_dialog->confineerror_message->setText(ex.toString().c_str());
         }
-
+         
     }
     else
     {
@@ -1918,23 +1916,23 @@ void DiscoveryDruid::changedInclNet()
         else
         {
             m_dialog->confineerror_message->setText(" ");
-            isSNMPInclNetOK=true;
+            isSNMPInclNetOK=true;            
         }
     }
-    nextButton->setEnabled(isSNMPInclNetOK && isSeedHostOK);
+    nextButton->setEnabled(isSNMPInclNetOK && isSeedHostOK); 
 }
 
 int DiscoveryDruid::monitorOperation()
 {
     QString buf;
     bool fl;
-
+    
     if (fwbdebug) qDebug("monitorOperation  bop=%p  isRunning=%d",
                          bop,(bop!=NULL)?bop->isRunning():-1);
 
-
+    
     fl=false;
-    while( logger->ready() )
+    while( logger->ready() ) 
     {
         buf= logger->getLine().c_str();
         if (buf.endsWith('\n'))
@@ -1958,15 +1956,15 @@ int DiscoveryDruid::monitorOperation()
         return 0; // BackgroundOp has been disconnected
     }
 
-    if (bop->isRunning())
+    if (bop->isRunning()) 
     {
         return 1;
     }
     // send signal "completed", argument is 0 if ok and -1 if error
 
-
+    
     FWException *ex=bop->get_latest_error();
-    if (ex)
+    if (ex) 
     {
         buf= ex->toString().c_str();
         if (buf.endsWith('\n'))
@@ -2013,7 +2011,7 @@ void DiscoveryDruid::checkSNMPCommunity()
 
 void DiscoveryDruid::changeTargetObject(const QString &buf)
 {
-
+    
     QTreeWidgetItem* item=m_dialog->typeChangingList->topLevelItem(0);
 
     while (item!=0)
@@ -2055,14 +2053,14 @@ void DiscoveryDruid::typeFirewall()
 
 void DiscoveryDruid::createRealObjects()
 {
-
+    
     ObjectDescriptor od;
     string type,name,a;
-
+    
     int t=0;
     m_dialog->lastprogress->setValue(0);
     m_dialog->lastprogress->setMaximum( Objects.size());
-
+    
     QMap<QString,ObjectDescriptor >::iterator i;
     for(i=Networks.begin();
         i!=Networks.end();
@@ -2074,38 +2072,38 @@ void DiscoveryDruid::createRealObjects()
             type = od.type;
             name=od.sysname;
             a = od.addr.toString().c_str();
-
+            
             Network *net=dynamic_cast<Network*>(
                 mw->createObject(type.c_str(),name.c_str())
             );
             assert(net!=NULL);
             net->setName(name);
             net->setAddress(InetAddr(a));
-            net->setNetmask(InetNetmask(InetAddr(a)));
+            net->setNetmask(InetAddr(InetAddr(a)));
             mw->moveObject(m_dialog->libs->currentText(), net);
         }
     }
-
+    
     for(i=Objects.begin();
         i!=Objects.end();
         ++i)
     {
         od=i.value();
         type=od.type;
-
+        
         name=od.sysname;
         a=od.addr.toString();
 
         if(od.isSelected)
         {
-            if (type==Host::TYPENAME || type==Firewall::TYPENAME)
+            if (type==Host::TYPENAME || type==Firewall::TYPENAME) 
             {
                 FWObject *o=NULL;
 
                 o=mw->createObject(type.c_str(),name.c_str());
                 o->setName(name);
 
-                if (od.interfaces.size()==0)
+                if (od.interfaces.size()==0) 
                 {
                     Interface *itf= Interface::cast(
                         mw->createObject(o,Interface::TYPENAME,"nic1")
@@ -2113,10 +2111,10 @@ void DiscoveryDruid::createRealObjects()
                     IPv4 *ipv4= IPv4::cast(
                         mw->createObject(itf,IPv4::TYPENAME,a.c_str())
                     );
-
-
+                    
+                    
                     ipv4->setAddress(InetAddr(a));
-                    ipv4->setNetmask(InetNetmask());
+                    ipv4->setNetmask(InetAddr());
                 } else
                 {
                     map<int,Interface>::const_iterator i;
@@ -2164,7 +2162,7 @@ void DiscoveryDruid::createRealObjects()
                 assert(net!=NULL);
                 net->setName(name);
                 net->setAddress(InetAddr(a));
-                net->setNetmask(InetNetmask(InetAddr(a)));
+                net->setNetmask(InetAddr(InetAddr(a)));
                 mw->moveObject(m_dialog->libs->currentText(), net);
             }else if (type==IPv4::TYPENAME)
             {
@@ -2174,7 +2172,7 @@ void DiscoveryDruid::createRealObjects()
                 assert(obj!=NULL);
                 obj->setName(name);
                 obj->setAddress(InetAddr(a));
-                obj->setNetmask(InetNetmask(InetAddr::getAllOnes()));
+                obj->setNetmask(InetAddr(InetAddr::getAllOnes()));
                 mw->moveObject(m_dialog->libs->currentText(), obj);
             }
         }
@@ -2290,7 +2288,7 @@ ObjectDescriptor& ObjectDescriptor::operator=(const ObjectDescriptor& od) {
     type             = od.type;
     isSelected       = od.isSelected;
     netmask          = od.netmask;
-
+    
     return *this;
 }
 
@@ -2310,14 +2308,14 @@ void WorkerThread::setProgress(int p)
 {
    ProgressEvent *event=new ProgressEvent();
    event->value=p;
-
+   
    QApplication::postEvent(Widget,event);
-}
+} 
 
 void WorkerThread::done()
 {
    DoneEvent *event=new DoneEvent();
-
+   
    QApplication::postEvent(Widget,event);
 }
 
@@ -2333,7 +2331,7 @@ void WorkerThread::run()
 
 // ================================================================
 
-HostsFileImport::HostsFileImport(const QString &f) :
+HostsFileImport::HostsFileImport(const QString &f) : 
     WorkerThread()
 {
     file_name = f;
@@ -2343,53 +2341,53 @@ void HostsFileImport::run()
 {
     *Log << "Discovery method:"
          << "Read file in hosts format. \n";
-
+    
     map<InetAddr, vector<string> > reverse_hosts;
     HostsFile *hf;
 /*
- *    read hosts file here
+ *    read hosts file here 
  */
     hf=new HostsFile();
     last_error="";
     setProgress(10);
-
+    
     *Log << "Parsing file: " << file_name.toLatin1().constData() << "\n";
     if (!file_name.isEmpty())
     {
-        try
+        try 
         {
             hf->parse( file_name.toAscii().constData() );
-        } catch ( FWException &ex )
+        } catch ( FWException &ex ) 
         {
             last_error = ex.toString().c_str();
             *Log << "Exception: " << last_error.toAscii().constData() << "\n";
-
+            
             delete hf;
             done();
             return;
         }
         reverse_hosts=hf->getAll();
         delete hf;
-
+    
         setProgress(50);
         *Log << "Loading the list ...\n";
     /*
     *    convert map format
     */
         hosts.clear();
-
+    
         map<InetAddr,vector<string> >::iterator i;
         int count=reverse_hosts.size();
         int t=0;
-        for (i=reverse_hosts.begin(); i!=reverse_hosts.end(); ++i)
+        for (i=reverse_hosts.begin(); i!=reverse_hosts.end(); ++i) 
         {
-
+    
             ObjectDescriptor od;
             od.addr    = (*i).first;
             od.sysname = ((*i).second).front();
-
+            
             hosts.push_back( od );
-
+    
             setProgress(50+(t++)*50/count);
         }
     }
@@ -2445,6 +2443,6 @@ void ConfigImport::run()
     {
         *Log << "Can not import configuration for choosen platform\n";
     }
-
+    
     done();
 }

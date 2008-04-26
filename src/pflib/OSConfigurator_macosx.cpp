@@ -84,7 +84,7 @@ void OSConfigurator_macosx::addVirtualAddressForNAT(const Address *addr)
         FWObject *iaddr = findAddressFor(addr, fw );
         if (iaddr!=NULL)
         {
-            InetAddrMask *iaddr_addr = dynamic_cast<InetAddrMask*>(iaddr);
+            Address *iaddr_addr = Address::cast(iaddr);
             assert(iaddr_addr!=NULL);
             Interface *iface = Interface::cast(iaddr->getParent());
             assert(iface!=NULL);
@@ -176,7 +176,7 @@ void  OSConfigurator_macosx::configureInterfaces()
             FWObjectTypedChildIterator j=iface->findByType(IPv4::TYPENAME);
             for ( ; j!=j.end(); ++j ) 
             {
-                InetAddrMask *iaddr = dynamic_cast<InetAddrMask*>(*j);
+                Address *iaddr = Address::cast(*j);
                 output << "add_addr " << iaddr->getAddress().toString() << " "
                        << iaddr->getNetmask().toString() << " "
                        << iface->getName() << endl;

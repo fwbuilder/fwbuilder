@@ -23,6 +23,9 @@
 
 */
 
+#include <assert.h>
+#include <iostream>
+
 #include <fwbuilder/libfwbuilder-config.h>
 
 #include <combinedAddress.h>
@@ -46,11 +49,18 @@ std::string combinedAddress::getPhysAddress() const
 
 void combinedAddress::setPhysAddress(const std::string &s)
 {
-    physAddress=s;
+    physAddress = s;
 }
 
 bool combinedAddress::isAny() const
 {
     return (IPv4::isAny() && physAddress=="");
+}
+
+FWObject& combinedAddress::shallowDuplicate(const FWObject *other,
+                                            bool preserve_id) throw(FWException)
+{
+    physAddress = dynamic_cast<const combinedAddress*>(other)->physAddress;
+    return IPv4::shallowDuplicate(other, preserve_id);
 }
 

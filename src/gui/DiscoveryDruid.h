@@ -67,10 +67,10 @@ class ObjectDescriptor
 
     map<int, libfwbuilder::Interface> interfaces ;
 
-    string                          MAC_addr ;
-    libfwbuilder::HostEnt           dns_info ;
-    libfwbuilder::InetAddr          addr     ;
-    libfwbuilder::InetNetmask       netmask  ;
+    string                   MAC_addr ;
+    libfwbuilder::HostEnt    dns_info ;
+    libfwbuilder::InetAddr   addr     ;
+    libfwbuilder::InetAddr   netmask  ;
 
     
     ObjectDescriptor();

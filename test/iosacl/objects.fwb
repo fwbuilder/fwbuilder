@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="4" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="4" lastModified="1208635848" id="root">
   <Library color="#d2ffd0" id="id4511636323682" name="User">
     <ObjectGroup id="id4511636423682" name="Objects">
       <ObjectGroup id="id4511636523682" name="Addresses">
-        <IPv4 address="10.3.14.10" id="id451164E423682" name="baby.vk.crocodile.org" netmask="255.255.255.255"/>
-        <IPv4 address="10.3.14.102" id="id451164F923682" name="h-10.3.14.102" netmask="255.255.255.255"/>
-        <IPv4 address="10.3.14.255" id="id451164FA23682" name="h-10.3.14.255" netmask="255.255.255.255"/>
-        <IPv4 address="10.3.14.53" id="id451164FB23682" name="h-10.3.14.53" netmask="255.255.255.255"/>
-        <IPv4 address="10.3.14.65" id="id451164FC23682" name="h-10.3.14.65" netmask="255.255.255.255"/>
-        <IPv4 address="10.3.14.43" id="id451164FD23682" name="neo.vk.crocodile.org" netmask="255.255.255.255"/>
-        <IPv4 address="10.3.14.30" id="id4511653423682" name="tower.vk.crocodile.org" netmask="255.255.255.255"/>
-        <IPv4 address="10.3.14.41" id="id4511653523682" name="x1.vk.crocodile.org" netmask="255.255.255.255"/>
+        <IPv4 id="id451164E423682" name="baby.vk.crocodile.org" address="10.3.14.10" netmask="255.255.255.255"/>
+        <IPv4 id="id451164F923682" name="h-10.3.14.102" address="10.3.14.102" netmask="255.255.255.255"/>
+        <IPv4 id="id451164FA23682" name="h-10.3.14.255" address="10.3.14.255" netmask="255.255.255.255"/>
+        <IPv4 id="id451164FB23682" name="h-10.3.14.53" address="10.3.14.53" netmask="255.255.255.255"/>
+        <IPv4 id="id451164FC23682" name="h-10.3.14.65" address="10.3.14.65" netmask="255.255.255.255"/>
+        <IPv4 id="id451164FD23682" name="neo.vk.crocodile.org" address="10.3.14.43" netmask="255.255.255.255"/>
+        <IPv4 id="id4511653423682" name="tower.vk.crocodile.org" address="10.3.14.30" netmask="255.255.255.255"/>
+        <IPv4 id="id4511653523682" name="x1.vk.crocodile.org" address="10.3.14.41" netmask="255.255.255.255"/>
       </ObjectGroup>
       <ObjectGroup id="id4511636623682" name="DNS Names"/>
       <ObjectGroup id="id4511636723682" name="Address Tables"/>
@@ -30,11 +30,11 @@
       <ObjectGroup id="id4511636923682" name="Hosts">
         <Host id="id451164EB23682" name="beaver">
           <Interface bridgeport="False" dyn="False" id="id451164EF23682" name="lo" security_level="100" unnum="False" unprotected="False">
-            <IPv4 address="127.0.0.1" id="id451164F023682" name="beaver:lo:ip" netmask="255.0.0.0"/>
+            <IPv4 id="id451164F023682" name="beaver:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
           </Interface>
           <Interface bridgeport="False" dyn="False" id="id451164F523682" name="eth0" security_level="0" unnum="False" unprotected="False">
-            <IPv4 address="10.3.14.40" id="id451164F723682" name="beaver:eth0:ip1" netmask="255.255.255.0"/>
-            <IPv4 address="192.168.123.123" id="id451164F823682" name="beaver:eth0:ip2" netmask="255.255.255.0"/>
+            <IPv4 id="id451164F723682" name="beaver:eth0:ip1" address="10.3.14.40" netmask="255.255.255.0"/>
+            <IPv4 id="id451164F823682" name="beaver:eth0:ip2" address="192.168.123.123" netmask="255.255.255.0"/>
             <physAddress address="00:30:48:20:16:10" id="id451164F623682" name="beaver:eth0:mac"/>
           </Interface>
           <HostOptions>
@@ -97,7 +97,7 @@
       <ServiceGroup id="id4511637323682" name="TagServices"/>
     </ServiceGroup>
     <ObjectGroup id="id4511637423682" name="Firewalls">
-      <Firewall comment="" host_OS="ios" id="id46412B5226577" inactive="False" lastCompiled="1185060662" lastInstalled="0" lastModified="1178760458" name="testios1" platform="iosacl" ro="False" version="12.x">
+      <Firewall comment="" host_OS="ios" id="id46412B5226577" inactive="False" lastCompiled="1185060662" lastInstalled="0" lastModified="1208635848" name="testios1" platform="iosacl" ro="False" version="12.x">
         <NAT id="id46412B5626577"/>
         <Policy id="id46412B5526577">
           <PolicyRule action="Deny" comment="anti-spoofing" direction="Inbound" disabled="False" id="id464154BB29061" log="True" position="0">
@@ -351,7 +351,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="" direction="Both" disabled="False" id="id464147C929061" log="False" position="12">
+          <PolicyRule action="Accept" comment="interface ethernet1 has address on network 10.10.10.0/24,&#10;therefore net-10.10.10 is behind the router and we do&#10;not need to put rules 12-18 in outbound acl of eth0" direction="Both" disabled="False" id="id464147C929061" log="False" position="12">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -521,13 +521,13 @@
         </Policy>
         <Routing id="id46412B5726577"/>
         <Interface bridgeport="False" dyn="False" id="id46412B5826577" label="" name="ethernet0" security_level="50" unnum="False" unprotected="False">
-          <IPv4 address="1.1.1.1" id="id46412B5926577" name="testios1:ethernet0:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id46412B5926577" name="testios1:ethernet0:ip" address="1.1.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id46412B5A26577" label="" mgmt="False" name="ethernet1" security_level="100" unnum="False" unprotected="True">
-          <IPv4 address="10.10.10.1" id="id46412B5B26577" name="testios1:ethernet1:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id46412B5B26577" name="testios1:ethernet1:ip" address="10.10.10.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id4642828219184" label="" mgmt="False" name="ethernet2" security_level="100" unnum="False" unprotected="True">
-          <IPv4 address="3.3.3.3" comment="" id="id4642828319184" name="testios1:ethernet2:ip" netmask="255.255.255.0"/>
+          <IPv4 comment="" id="id4642828319184" name="testios1:ethernet2:ip" address="3.3.3.3" netmask="255.255.255.0"/>
         </Interface>
         <Management address="10.10.10.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -538,9 +538,10 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
@@ -553,21 +554,21 @@
           <Option name="iosacl_acl_basic">True</Option>
           <Option name="iosacl_acl_no_clear">False</Option>
           <Option name="iosacl_acl_substitution">False</Option>
-          <Option name="iosacl_acl_temp_addr"/>
+          <Option name="iosacl_acl_temp_addr"></Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
-          <Option name="iosacl_logging_buffered_level"/>
+          <Option name="iosacl_logging_buffered_level"></Option>
           <Option name="iosacl_logging_console">False</Option>
-          <Option name="iosacl_logging_console_level"/>
+          <Option name="iosacl_logging_console_level"></Option>
           <Option name="iosacl_logging_timestamp">False</Option>
-          <Option name="iosacl_logging_trap_level"/>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_logging_trap_level"></Option>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">true</Option>
@@ -577,10 +578,10 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">true</Option>
-          <Option name="mgmt_addr"/>
+          <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -602,7 +603,7 @@
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
@@ -759,10 +760,10 @@
         </Policy>
         <Routing id="id4641321026611"/>
         <Interface bridgeport="False" dyn="False" id="id4641321126611" label="" name="ethernet0" security_level="50" unnum="False" unprotected="False">
-          <IPv4 address="1.1.1.1" id="id4641321326611" name="testios20:ethernet0:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id4641321326611" name="testios20:ethernet0:ip" address="1.1.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id4641321426611" label="" mgmt="False" name="ethernet1" network_zone="sysid0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="10.10.10.1" id="id4641321626611" name="testios20:ethernet1:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id4641321626611" name="testios20:ethernet1:ip" address="10.10.10.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="10.10.10.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -773,10 +774,10 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
@@ -789,21 +790,21 @@
           <Option name="iosacl_acl_basic">True</Option>
           <Option name="iosacl_acl_no_clear">False</Option>
           <Option name="iosacl_acl_substitution">False</Option>
-          <Option name="iosacl_acl_temp_addr"/>
+          <Option name="iosacl_acl_temp_addr"></Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
-          <Option name="iosacl_logging_buffered_level"/>
+          <Option name="iosacl_logging_buffered_level"></Option>
           <Option name="iosacl_logging_console">False</Option>
-          <Option name="iosacl_logging_console_level"/>
+          <Option name="iosacl_logging_console_level"></Option>
           <Option name="iosacl_logging_timestamp">False</Option>
-          <Option name="iosacl_logging_trap_level"/>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_logging_trap_level"></Option>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">true</Option>
@@ -813,10 +814,10 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">true</Option>
-          <Option name="mgmt_addr"/>
+          <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -838,7 +839,7 @@
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
@@ -1267,10 +1268,10 @@
         </Policy>
         <Routing id="id464265C512807"/>
         <Interface bridgeport="False" dyn="False" id="id464265C612807" label="" name="ethernet0" security_level="50" unnum="False" unprotected="False">
-          <IPv4 address="1.1.1.1" id="id464265C812807" name="testios2:ethernet0:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id464265C812807" name="testios2:ethernet0:ip" address="1.1.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id464265C912807" label="" mgmt="True" name="ethernet1" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="10.10.10.1" id="id464265CB12807" name="testios2:ethernet1:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id464265CB12807" name="testios2:ethernet1:ip" address="10.10.10.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="10.10.10.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1281,8 +1282,8 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -1299,18 +1300,18 @@
           <Option name="iosacl_acl_temp_addr">10.10.10.0/24</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
-          <Option name="iosacl_logging_buffered_level"/>
+          <Option name="iosacl_logging_buffered_level"></Option>
           <Option name="iosacl_logging_console">False</Option>
-          <Option name="iosacl_logging_console_level"/>
+          <Option name="iosacl_logging_console_level"></Option>
           <Option name="iosacl_logging_timestamp">False</Option>
-          <Option name="iosacl_logging_trap_level"/>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_logging_trap_level"></Option>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">true</Option>
@@ -1320,10 +1321,10 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">true</Option>
-          <Option name="mgmt_addr"/>
+          <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -1345,7 +1346,7 @@
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
@@ -1516,19 +1517,19 @@
         </Policy>
         <Routing id="id46435A0316989"/>
         <Interface bridgeport="False" comment="" dyn="False" id="id46435A0416989" label="" mgmt="False" name="Ethernet1/0" security_level="0" unnum="False" unprotected="False">
-          <IPv4 address="192.168.171.2" id="id46435A0516989" name="c3620:Ethernet1/0:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id46435A0516989" name="c3620:Ethernet1/0:ip" address="192.168.171.2" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id46435A0616989" label="" mgmt="False" name="Ethernet1/1" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="0.0.0.0" id="id46435A0716989" name="c3620:Ethernet1/1:ip" netmask="255.255.255.255"/>
+          <IPv4 id="id46435A0716989" name="c3620:Ethernet1/1:ip" address="0.0.0.0" netmask="255.255.255.255"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id46435A0816989" label="" mgmt="True" name="FastEthernet0/0" security_level="100" unnum="False" unprotected="False">
-          <IPv4 address="10.3.14.201" id="id46435A0916989" name="c3620:FastEthernet0/0:ip" netmask="255.255.255.0"/>
+          <IPv4 id="id46435A0916989" name="c3620:FastEthernet0/0:ip" address="10.3.14.201" netmask="255.255.255.0"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id46435A0A16989" label="" mgmt="False" name="Null0" security_level="100" unnum="False" unprotected="True">
-          <IPv4 address="0.0.0.0" id="id46435A0B16989" name="c3620:Null0:ip" netmask="255.255.255.255"/>
+          <IPv4 id="id46435A0B16989" name="c3620:Null0:ip" address="0.0.0.0" netmask="255.255.255.255"/>
         </Interface>
         <Interface bridgeport="False" comment="" dyn="False" id="id46435A0C16989" label="" mgmt="False" name="Serial1/0" security_level="100" unnum="False" unprotected="True">
-          <IPv4 address="0.0.0.0" id="id46435A0D16989" name="c3620:Serial1/0:ip" netmask="255.255.255.255"/>
+          <IPv4 id="id46435A0D16989" name="c3620:Serial1/0:ip" address="0.0.0.0" netmask="255.255.255.255"/>
         </Interface>
         <Management address="10.3.14.201">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1539,8 +1540,8 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -1552,21 +1553,21 @@
           <Option name="iosacl_acl_basic">True</Option>
           <Option name="iosacl_acl_no_clear">False</Option>
           <Option name="iosacl_acl_substitution">False</Option>
-          <Option name="iosacl_acl_temp_addr"/>
+          <Option name="iosacl_acl_temp_addr"></Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
-          <Option name="iosacl_logging_buffered_level"/>
+          <Option name="iosacl_logging_buffered_level"></Option>
           <Option name="iosacl_logging_console">False</Option>
-          <Option name="iosacl_logging_console_level"/>
+          <Option name="iosacl_logging_console_level"></Option>
           <Option name="iosacl_logging_timestamp">False</Option>
-          <Option name="iosacl_logging_trap_level"/>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_logging_trap_level"></Option>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">true</Option>
@@ -1579,7 +1580,7 @@
           <Option name="mgmt_addr">10.3.14.40</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -1601,7 +1602,7 @@
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
@@ -1611,7 +1612,7 @@
   </Library>
   <Library id="sysid99" name="Deleted Objects" ro="False">
     <ObjectRef ref="sysid0"/>
-    <IPv4 address="10.10.10.1" comment="" id="id463FF31019380" name="test-ipt:eth0:ip" netmask="255.255.255.0"/>
+    <IPv4 comment="" id="id463FF31019380" name="test-ipt:eth0:ip" address="10.10.10.1" netmask="255.255.255.0"/>
     <Interface bridgeport="False" comment="" dyn="False" id="id4511651D23682" label="" mgmt="False" name="imq1" security_level="100" unnum="True" unprotected="False"/>
     <Firewall comment="Similar to fw 1, but the firewall is used as DHCP and DNS server for internal network.&#10;This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall can send DNS queries to servers out on the Internet. Another rule permits DNS queries from internal network to the firewall. Special rules permit DHCP requests from internal network and replies sent by the firewall." host_OS="freebsd" id="id453D8A6D12118" lastCompiled="0" lastInstalled="0" lastModified="1178678949" name="ipf" platform="ipf" ro="False" version="">
       <NAT id="id453D8AE412118">
@@ -1694,27 +1695,27 @@
             <IntervalRef ref="sysid2"/>
           </When>
           <PolicyRuleOptions>
-            <Option name="action_on_reject"/>
-            <Option name="classify_str"/>
-            <Option name="custom_str"/>
-            <Option name="ipf_route_opt_addr"/>
+            <Option name="action_on_reject"></Option>
+            <Option name="classify_str"></Option>
+            <Option name="custom_str"></Option>
+            <Option name="ipf_route_opt_addr"></Option>
             <Option name="ipf_route_opt_if">le1</Option>
             <Option name="ipf_route_option">route_through</Option>
             <Option name="ipfw_classify_method">2</Option>
             <Option name="ipfw_pipe_port_num">0</Option>
             <Option name="ipfw_pipe_queue_num">0</Option>
             <Option name="ipt_continue">False</Option>
-            <Option name="ipt_gw"/>
-            <Option name="ipt_iif"/>
+            <Option name="ipt_gw"></Option>
+            <Option name="ipt_iif"></Option>
             <Option name="ipt_mark_connections">False</Option>
             <Option name="ipt_mark_prerouting">False</Option>
-            <Option name="ipt_oif"/>
+            <Option name="ipt_oif"></Option>
             <Option name="ipt_tee">False</Option>
             <Option name="pf_fastroute">False</Option>
-            <Option name="pf_route_opt_addr"/>
-            <Option name="pf_route_opt_if"/>
+            <Option name="pf_route_opt_addr"></Option>
+            <Option name="pf_route_opt_if"></Option>
             <Option name="pf_route_option">route_through</Option>
-            <Option name="rule_name_accounting"/>
+            <Option name="rule_name_accounting"></Option>
             <Option name="stateless">True</Option>
           </PolicyRuleOptions>
         </PolicyRule>
@@ -1835,10 +1836,10 @@
       <Routing id="id453D8AF312118"/>
       <Interface bridgeport="False" comment="" dyn="True" id="id453D8AF412118" label="" mgmt="False" name="le0" security_level="0" unnum="False" unprotected="False"/>
       <Interface bridgeport="False" comment="" dyn="False" id="id453D8AF512118" label="" mgmt="True" name="le1" security_level="100" unnum="False" unprotected="False">
-        <IPv4 address="192.168.1.1" comment="" id="id453D8AF712118" name="ipf:le1:ip" netmask="255.255.255.0"/>
+        <IPv4 comment="" id="id453D8AF712118" name="ipf:le1:ip" address="192.168.1.1" netmask="255.255.255.0"/>
       </Interface>
       <Interface bridgeport="False" comment="" dyn="False" id="id453D8AF812118" label="loopback" mgmt="False" name="lo" security_level="100" unnum="False" unprotected="False">
-        <IPv4 address="127.0.0.1" comment="" id="id453D8AFA12118" name="ipf:lo:ip" netmask="255.0.0.0"/>
+        <IPv4 comment="" id="id453D8AFA12118" name="ipf:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
       </Interface>
       <Management address="0.0.0.0">
         <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1929,27 +1930,27 @@
             <IntervalRef ref="sysid2"/>
           </When>
           <PolicyRuleOptions>
-            <Option name="action_on_reject"/>
-            <Option name="classify_str"/>
-            <Option name="custom_str"/>
-            <Option name="ipf_route_opt_addr"/>
-            <Option name="ipf_route_opt_if"/>
+            <Option name="action_on_reject"></Option>
+            <Option name="classify_str"></Option>
+            <Option name="custom_str"></Option>
+            <Option name="ipf_route_opt_addr"></Option>
+            <Option name="ipf_route_opt_if"></Option>
             <Option name="ipf_route_option">Route through</Option>
             <Option name="ipfw_classify_method">2</Option>
             <Option name="ipfw_pipe_port_num">0</Option>
             <Option name="ipfw_pipe_queue_num">0</Option>
             <Option name="ipt_continue">False</Option>
-            <Option name="ipt_gw"/>
-            <Option name="ipt_iif"/>
+            <Option name="ipt_gw"></Option>
+            <Option name="ipt_iif"></Option>
             <Option name="ipt_mark_connections">False</Option>
             <Option name="ipt_mark_prerouting">False</Option>
             <Option name="ipt_oif">vlan1</Option>
             <Option name="ipt_tee">False</Option>
             <Option name="pf_fastroute">False</Option>
-            <Option name="pf_route_opt_addr"/>
-            <Option name="pf_route_opt_if"/>
+            <Option name="pf_route_opt_addr"></Option>
+            <Option name="pf_route_opt_if"></Option>
             <Option name="pf_route_option">Route through</Option>
-            <Option name="rule_name_accounting"/>
+            <Option name="rule_name_accounting"></Option>
             <Option name="stateless">True</Option>
           </PolicyRuleOptions>
         </PolicyRule>
@@ -1970,27 +1971,27 @@
             <IntervalRef ref="sysid2"/>
           </When>
           <PolicyRuleOptions>
-            <Option name="action_on_reject"/>
-            <Option name="classify_str"/>
-            <Option name="custom_str"/>
-            <Option name="ipf_route_opt_addr"/>
-            <Option name="ipf_route_opt_if"/>
+            <Option name="action_on_reject"></Option>
+            <Option name="classify_str"></Option>
+            <Option name="custom_str"></Option>
+            <Option name="ipf_route_opt_addr"></Option>
+            <Option name="ipf_route_opt_if"></Option>
             <Option name="ipf_route_option">Route through</Option>
             <Option name="ipfw_classify_method">2</Option>
             <Option name="ipfw_pipe_port_num">0</Option>
             <Option name="ipfw_pipe_queue_num">0</Option>
             <Option name="ipt_continue">False</Option>
-            <Option name="ipt_gw"/>
-            <Option name="ipt_iif"/>
+            <Option name="ipt_gw"></Option>
+            <Option name="ipt_iif"></Option>
             <Option name="ipt_mark_connections">False</Option>
             <Option name="ipt_mark_prerouting">False</Option>
             <Option name="ipt_oif">eth1</Option>
             <Option name="ipt_tee">False</Option>
             <Option name="pf_fastroute">False</Option>
-            <Option name="pf_route_opt_addr"/>
-            <Option name="pf_route_opt_if"/>
+            <Option name="pf_route_opt_addr"></Option>
+            <Option name="pf_route_opt_if"></Option>
             <Option name="pf_route_option">Route through</Option>
-            <Option name="rule_name_accounting"/>
+            <Option name="rule_name_accounting"></Option>
             <Option name="stateless">True</Option>
           </PolicyRuleOptions>
         </PolicyRule>
@@ -2037,11 +2038,11 @@
       </Policy>
       <Routing id="id4511651323682"/>
       <Interface bridgeport="False" dyn="False" id="id4511651623682" name="lo" security_level="100" unnum="False" unprotected="False">
-        <IPv4 address="127.0.0.1" id="id4511651723682" name="test-ipt:lo:ip" netmask="255.0.0.0"/>
+        <IPv4 id="id4511651723682" name="test-ipt:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
       </Interface>
       <Interface bridgeport="False" comment="" dyn="False" id="id4511651923682" label="" mgmt="False" name="teql0" security_level="100" unnum="True" unprotected="False"/>
       <Interface bridgeport="False" comment="" dyn="False" id="id4511651B23682" label="" mgmt="False" name="imq0" security_level="100" unnum="False" unprotected="False">
-        <IPv4 address="192.168.1.1" comment="" id="id463FFA2619380" name="test-ipt:imq0:ip" netmask="255.255.255.0"/>
+        <IPv4 comment="" id="id463FFA2619380" name="test-ipt:imq0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
       </Interface>
       <Interface bridgeport="False" comment="" dyn="True" id="id4511652023682" label="" mgmt="False" name="eth0" security_level="100" unnum="False" unprotected="False">
         <physAddress address="00:12:17:03:B9:81" id="id4511652123682" name="test-ipt:eth0:mac"/>
@@ -2053,11 +2054,11 @@
         <physAddress address="00:12:17:03:B9:81" id="id4511652923682" name="test-ipt:vlan0:mac"/>
       </Interface>
       <Interface bridgeport="False" dyn="False" id="id4511652D23682" name="vlan1" security_level="0" unnum="False" unprotected="False">
-        <IPv4 address="24.6.139.57" id="id4511652F23682" name="test-ipt:vlan1:ip" netmask="255.255.248.0"/>
+        <IPv4 id="id4511652F23682" name="test-ipt:vlan1:ip" address="24.6.139.57" netmask="255.255.248.0"/>
         <physAddress address="00:E0:18:A8:80:1E" id="id4511652E23682" name="test-ipt:vlan1:mac"/>
       </Interface>
       <Interface bridgeport="False" dyn="False" id="id4511653223682" name="br0" security_level="100" unnum="False" unprotected="False">
-        <IPv4 address="10.10.10.2" comment="" id="id463FF31119380" name="test-ipt:br0:ip" netmask="255.255.255.0"/>
+        <IPv4 comment="" id="id463FF31119380" name="test-ipt:br0:ip" address="10.10.10.2" netmask="255.255.255.0"/>
         <physAddress address="00:12:17:03:B9:81" id="id4511653323682" name="test-ipt:br0:mac"/>
       </Interface>
       <Management address="10.10.10.2">
@@ -2068,27 +2069,27 @@
       <FirewallOptions>
         <Option name="accept_established">True</Option>
         <Option name="accept_new_tcp_with_no_syn">True</Option>
-        <Option name="action_on_reject"/>
-        <Option name="activationCmd"/>
-        <Option name="admUser"/>
-        <Option name="altAddress"/>
+        <Option name="action_on_reject"></Option>
+        <Option name="activationCmd"></Option>
+        <Option name="admUser"></Option>
+        <Option name="altAddress"></Option>
         <Option name="bridging_fw">False</Option>
         <Option name="check_shading">False</Option>
         <Option name="clamp_mss_to_mtu">False</Option>
         <Option name="classify_mark_terminating">False</Option>
-        <Option name="cmdline"/>
-        <Option name="compiler"/>
+        <Option name="cmdline"></Option>
+        <Option name="compiler"></Option>
         <Option name="configure_interfaces">True</Option>
         <Option name="debug">False</Option>
         <Option name="drop_invalid">False</Option>
         <Option name="eliminate_duplicates">true</Option>
-        <Option name="epilog_script"/>
+        <Option name="epilog_script"></Option>
         <Option name="firewall_dir">/etc</Option>
         <Option name="firewall_is_part_of_any_and_networks">True</Option>
         <Option name="freebsd_ip_forward">1</Option>
         <Option name="ignore_empty_groups">False</Option>
         <Option name="in_out_code">true</Option>
-        <Option name="limit_suffix"/>
+        <Option name="limit_suffix"></Option>
         <Option name="limit_value">0</Option>
         <Option name="linux24_ip_forward">1</Option>
         <Option name="load_modules">True</Option>
@@ -2103,10 +2104,10 @@
         <Option name="loopback_interface">lo0</Option>
         <Option name="macosx_ip_forward">1</Option>
         <Option name="manage_virtual_addr">True</Option>
-        <Option name="mgmt_addr"/>
+        <Option name="mgmt_addr"></Option>
         <Option name="mgmt_ssh">False</Option>
         <Option name="openbsd_ip_forward">1</Option>
-        <Option name="output_file"/>
+        <Option name="output_file"></Option>
         <Option name="pass_all_out">false</Option>
         <Option name="pf_limit_frags">5000</Option>
         <Option name="pf_limit_states">10000</Option>
@@ -2126,14 +2127,14 @@
         <Option name="pix_syslog_device_id_supported">false</Option>
         <Option name="pix_use_acl_remarks">true</Option>
         <Option name="prolog_place">top</Option>
-        <Option name="prolog_script"/>
+        <Option name="prolog_script"></Option>
         <Option name="prompt1">$ </Option>
         <Option name="prompt2"> # </Option>
         <Option name="snmp_contact">root</Option>
         <Option name="snmp_description">Linux SVEASOFT 2.4.20 #2 Wed Nov 17 11:49:43 CET 2004 mips</Option>
         <Option name="snmp_location">Unknown</Option>
         <Option name="solaris_ip_forward">1</Option>
-        <Option name="sshArgs"/>
+        <Option name="sshArgs"></Option>
         <Option name="ulog_cprange">0</Option>
         <Option name="ulog_nlgroup">1</Option>
         <Option name="ulog_qthreshold">1</Option>

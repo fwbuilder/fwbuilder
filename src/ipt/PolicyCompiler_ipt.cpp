@@ -181,7 +181,7 @@ void PolicyCompiler_ipt::_expandInterface(Interface *iface,
         }
         if (physAddress::cast(*j)!=NULL)
         {
-            pa=physAddress::cast(*j);
+            pa = physAddress::cast(*j);
             continue;
         }
         lother.push_back(*j);
@@ -229,16 +229,17 @@ void PolicyCompiler_ipt::_expandInterface(Interface *iface,
         std::list<FWObject*>::iterator j=lipaddr.begin();
         for ( ; j!=lipaddr.end(); j++)
         {
-            InetAddrMask *ipv4 = dynamic_cast<InetAddrMask*>(*j);
+            const InetAddrMask *ipv4 = Address::cast(*j)->getAddressObjectInetAddrMask();
             if (use_mac)
             {
-                combinedAddress *ca=new combinedAddress();
+                combinedAddress *ca = new combinedAddress();
                 dbcopy->add(ca);
                 cacheObj(ca);
                 ca->setName( "CA("+iface->getName()+")" );
                 ca->setAddress( ipv4->getAddress() );
                 ca->setNetmask( ipv4->getNetmask() );
                 ca->setPhysAddress( pa->getPhysAddress() );
+
                 ol.push_back(ca);
             } else
                 ol.push_back(*j);
@@ -338,7 +339,7 @@ int PolicyCompiler_ipt::prolog()
     bcast255->setId(BCAST_255_OBJ_ID);
     bcast255->setName("Broadcast_addr");
     bcast255->setAddress(InetAddr::getAllOnes());
-    bcast255->setNetmask(InetNetmask(InetAddr::getAllOnes()));
+    bcast255->setNetmask(InetAddr(InetAddr::getAllOnes()));
     dbcopy->add(bcast255);
     cacheObj(bcast255);
 
@@ -1722,7 +1723,7 @@ bool PolicyCompiler_ipt::bridgingFw::checkForMatchingBroadcastAndMulticast(
             FWObjectTypedChildIterator k = iface->findByType(IPv4::TYPENAME);
             for ( ; k!=k.end(); ++k )
             {
-                InetAddrMask *ipv4 = dynamic_cast<InetAddrMask*>(*k);
+                const InetAddrMask *ipv4 = Address::cast(*k)->getAddressObjectInetAddrMask();
 
 /*
  * bug #780345: if interface has netmask 255.255.255.255, its own
@@ -2999,10 +3000,16 @@ bool PolicyCompiler_ipt::checkMACinOUTPUTChain::processNext()
         Address        *src   =compiler->getFirstSrc(rule);  assert(src);
 
         if (physAddress::isA(src))
-            compiler->abort(_("Can not match on MAC address of the firewall in rule ")+rule->getLabel());
+            compiler->abort("Can not match on MAC address of the firewall "
+                            "in rule " + rule->getLabel());
 
         if (combinedAddress::isA(src))
+        {
+            compiler->warning("Can not match on MAC address of the firewall "
+                              "(chain OUTPUT) "
+                              "in rule " + rule->getLabel());
             combinedAddress::cast(src)->setPhysAddress("");
+        }
     }
 
     return true;

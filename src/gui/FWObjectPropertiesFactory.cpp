@@ -1,4 +1,4 @@
-/*
+/* 
 
                           Firewall Builder
 
@@ -17,13 +17,11 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-
+ 
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-
-#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -88,13 +86,13 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
     QString res;
     QTextStream str(&res, QIODevice::WriteOnly);
 
-    try {
-
+    try
+    {
         if (IPv4::isA(obj))
         {
-            str <<  Address::cast(obj)->getAddress().toString().c_str();
+            str <<  IPv4::cast(obj)->getAddress().toString().c_str();
             str << "/";
-            str << Address::cast(obj)->getNetmask().toString().c_str();
+            str << IPv4::cast(obj)->getNetmask().toString().c_str();
 
         } else if (physAddress::isA(obj))
         {
@@ -103,7 +101,7 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
         {
             str << QObject::tr("DNS record: ")
                 << DNSName::cast(obj)->getSourceName().c_str();
-        } else if (AddressTable::isA(obj))
+        } else if (AddressTable::isA(obj))  
         {
             str << QObject::tr("Address Table: ")
                 << AddressTable::cast(obj)->getSourceName().c_str();
@@ -122,16 +120,16 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
 
             QDateTime dt;
             time_t t;
-
+            
             t=obj->getInt("lastModified");dt.setTime_t(t);
             QString t_modified  = (t)? dt.toString():"-";
-
+            
             t=obj->getInt("lastCompiled");dt.setTime_t(t);
             QString t_compiled  = (t)? dt.toString():"-";
-
+            
             t=obj->getInt("lastInstalled");dt.setTime_t(t);
             QString t_installed = (t)? dt.toString():"-";
-
+            
             str <<  platform << "(" << readableVersion << ") / " << hostOS;
 
         } else if (Host::isA(obj))
@@ -139,10 +137,10 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
             str <<  Address::cast(obj)->getAddress().toString().c_str();
 
             FWObject *co=obj->getFirstByType("Interface");
-            if (co!=NULL)
+            if (co!=NULL) 
             {
                 physAddress *paddr=(Interface::cast(co))->getPhysicalAddress();
-                if (paddr!=NULL)
+                if (paddr!=NULL) 
                     str << "    " <<  paddr->getPhysAddress().c_str();
             }
 
@@ -163,12 +161,18 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
 
         } else if (Interface::isA(obj))
         {
-            physAddress *paddr=(Interface::cast(obj))->getPhysicalAddress();
-            if (paddr!=NULL)
+            Interface *intf = Interface::cast(obj);
+            FWObjectTypedChildIterator j = obj->findByType(IPv4::TYPENAME);
+            for ( ; j!=j.end(); ++j)
             {
-                str << "    ";
-                str <<  paddr->getPhysAddress().c_str();
+                IPv4 *intf = IPv4::cast(*j);
+                str << getObjectProperties(*j);
+                str << "<br>";
             }
+            str << " MAC: ";
+            physAddress *paddr = intf->getPhysicalAddress();
+            if (paddr!=NULL) 
+                str <<  paddr->getPhysAddress().c_str();
 
         } else if (IPService::isA(obj))
         {
@@ -191,7 +195,7 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
 
             str << sps << ":" << spe << " / ";
             str << dps << ":" << dpe;
-        } else if (TagService::isA(obj))
+        } else if (TagService::isA(obj)) 
         {
             str << "Pattern: \"" << obj->getStr("tagcode").c_str() << "\"" ;
         } else if (Interval::isA(obj))
@@ -257,14 +261,14 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
     if (accentName) str += "</font>";
     str += "<br>\n";
 
-    try {
-
+    try
+    {
         if (IPv4::isA(obj))
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
-            str +=  Address::cast(obj)->getAddress().toString().c_str();
+            str +=  IPv4::cast(obj)->getAddress().toString().c_str();
             str += "/";
-            str += Address::cast(obj)->getNetmask().toString().c_str();
+            str += IPv4::cast(obj)->getNetmask().toString().c_str();
 
         } else if (physAddress::isA(obj))
         {
@@ -285,7 +289,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             str += MultiAddress::cast(obj)->getSourceName().c_str();
             str += "<br>\n";
             str += (MultiAddress::cast(obj)->isRunTime())?QObject::tr("Run-time"):QObject::tr("Compile-time");
-
+            
         } else if (AddressRange::isA(obj))
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
@@ -297,16 +301,16 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
 
-            str +=  Address::cast(obj)->getAddress().toString().c_str() ;
-
-            FWObject *co=obj->getFirstByType("Interface");
-            if (co!=NULL)
+            FWObjectTypedChildIterator j = obj->findByType(
+                Interface::TYPENAME);
+            for ( ; j!=j.end(); ++j)
             {
-                physAddress *paddr=(Interface::cast(co))->getPhysicalAddress();
-                if (paddr!=NULL)
-                    str += QString("    ") +  paddr->getPhysAddress().c_str() ;
+                Interface *intf = Interface::cast(*j);
+                str += (*j)->getName().c_str();
+                str += ": ";
+                str += getObjectProperties(*j);
+                str += "<br>";
             }
-
         } else if (Network::isA(obj))
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
@@ -330,7 +334,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
                 {
                     str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;.&nbsp;.&nbsp;";
                     break;
-                } else
+                } else 
                 {
                     FWObject *o1=*i;
                     if (FWReference::cast(o1)!=NULL)
@@ -345,25 +349,25 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             QString version  = obj->getStr("version").c_str();
             QString readableVersion = getVersionString(platform,version);
             QString hostOS = obj->getStr("host_OS").c_str();
-
+            
             QDateTime dt;
             time_t lm=obj->getInt("lastModified");
             time_t lc=obj->getInt("lastCompiled");
             time_t li=obj->getInt("lastInstalled");
-
+            
             dt.setTime_t(lm);
             QString t_modified  = (lm)? dt.toString():"-";
             if (lm>lc && lm>li) t_modified=QString("<b>")+t_modified+"</b>";
-
+                    
             dt.setTime_t(lc);
             QString t_compiled  = (lc)? dt.toString():"-";
             if (lc>lm && lc>li) t_compiled=QString("<b>")+t_compiled+"</b>";
-
+            
             dt.setTime_t(li);
             QString t_installed = (li)? dt.toString():"-";
             if (li>lc && li>lm) t_installed=QString("<b>")+t_installed+"</b>";
-
-
+            
+               
 
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
             str += "<table cellspacing=\"0\" cellpadding=\"0\">";
@@ -373,23 +377,39 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
                 readableVersion + "</td></tr>\n";
             str += QString("<tr><td>Host OS:</td><td>")  +
                 hostOS + "</td></tr>\n";
-
+            
             str += QString("<tr><td>Modified:</td><td>")  +
                 t_modified + "</td></tr>\n";
             str += QString("<tr><td>Compiled:</td><td>")  +
                 t_compiled + "</td></tr>\n";
             str += QString("<tr><td>Installed:</td><td>")  +
                 t_installed + "</td></tr>\n";
-
+            
             str += "</table>";
         } else if (Interface::isA(obj))
         {
-            str+=QObject::tr("<b>Path:</b> ")+ path +"<br>\n";
+            str += QObject::tr("<b>Path:</b> ")+ path +"<br>\n";
+
+            FWObjectTypedChildIterator j = obj->findByType(IPv4::TYPENAME);
+            for ( ; j!=j.end(); ++j)
+            {
+                IPv4 *intf = IPv4::cast(*j);
+                str += getObjectProperties(*j);
+                str += "<br>";
+            }
+            physAddress *paddr=(Interface::cast(obj))->getPhysicalAddress();
+            if (paddr!=NULL) 
+            {
+                str += "MAC: ";
+                str +=  paddr->getPhysAddress().c_str() ;
+                str += "<br>";
+            }
+
             QString q;
             if (Interface::constcast(obj)->isDyn())        q=" dyn";
             if (Interface::constcast(obj)->isUnnumbered()) q=" unnum";
             if (Interface::constcast(obj)->isBridgePort()) q=" bridge port";
-
+            
             FWObject *p=obj;
             while (p!=NULL && !Firewall::isA(p)) p=p->getParent();
             if (p!=NULL && (p->getStr("platform")=="pix" || p->getStr("platform")=="fwsm"))
@@ -402,18 +422,10 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             }
 
             if (Interface::constcast(obj)->isUnprotected())    q=q+" unp";
-
+            
             if (q!="") str += " (" + q + ")";
             str += "<br>\n";
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
-
-            physAddress *paddr=(Interface::cast(obj))->getPhysicalAddress();
-            if (paddr!=NULL)
-            {
-                str += "    ";
-                str +=  paddr->getPhysAddress().c_str() ;
-            }
-
 
         } else if (CustomService::isA(obj))
         {
@@ -468,7 +480,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             str += QString("<tr><td>destination port range</td><td>%1:%2</td></tr>\n")
                 .arg(dps).arg(dpe);
             str += "</table>";
-        } else if (TagService::isA(obj))
+        } else if (TagService::isA(obj)) 
         {
             str += QObject::tr("Pattern: \"%1\"").arg(obj->getStr("tagcode").c_str());
         } else if (Interval::isA(obj))
@@ -496,13 +508,13 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(PolicyRule *rule)
     if (rule!=NULL)
     {
         string act = rule->getActionAsString();
-
+        
         FWObject *o = rule;
         while (o!=NULL && Firewall::cast(o)==NULL) o=o->getParent();
         assert(o!=NULL);
         Firewall *f=Firewall::cast(o);
         string platform=f->getStr("platform");
-
+        
         FWOptions *ropt = rule->getOptionsObject();
         string editor=Resources::getActionEditor(platform,act);
 
@@ -543,7 +555,7 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(PolicyRule *rule)
             case PolicyRule::Pipe :
                 if (platform=="ipfw")
                 {
-                    par = QString("divert ") +
+                    par = QString("divert ") + 
                         ropt->getStr("ipfw_pipe_port_num").c_str();
                 }
                 break;
@@ -564,7 +576,7 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(PolicyRule *rule)
                     a = ropt->getStr("ipf_route_option");
                     if (!a.empty())
                     {
-                        par = par + " "+
+                        par = par + " "+ 
                             getScreenName(a.c_str(),
                                           getRouteOptions_pf_ipf( platform.c_str() ));
                     }
@@ -589,9 +601,9 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(PolicyRule *rule)
             default : {}
             }
         }
-
+        
     }
-
+    
     return par;
 }
 
@@ -600,7 +612,7 @@ QString FWObjectPropertiesFactory::getRuleActionPropertiesRich(PolicyRule *rule)
     FWObject *p=rule;
     while (p!=NULL && !Firewall::isA(p)) p=p->getParent();
     assert(p!=NULL);
-    string platform=p->getStr("platform");
+    string platform=p->getStr("platform"); 
     QString act = getActionNameForPlatform(rule->getAction(),platform.c_str());
 
     QString par = getRuleActionProperties(rule);
@@ -615,7 +627,7 @@ QString FWObjectPropertiesFactory::getRuleActionPropertiesRich(PolicyRule *rule)
 QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
 {
     QString res;
-
+    
     if (rule!=NULL)
     {
         res="";
@@ -625,7 +637,7 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
         Firewall *f=Firewall::cast(o);
         string platform=f->getStr("platform");
         FWOptions *ropt = rule->getOptionsObject();
-
+        
         if (platform=="iptables")
         {
             if (!ropt->getStr("log_prefix").empty())
@@ -646,26 +658,26 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
                 res+=QObject::tr("<b>Netlink group :</b> ");
                 res+=QString(ropt->getStr("ulog_nlgroup").c_str())+"<br>\n";
             }
-
+            
             if (ropt->getInt("limit_value")>0)
             {
                 res+=QObject::tr("<b>Limit Value   :</b> ");
                 res+=QString(ropt->getStr("limit_value").c_str())+"<br>\n";
             }
-
+            
             if (!ropt->getStr("limit_suffix").empty())
             {
                 res+=QObject::tr("<b>Limit suffix  :</b> ");
                 res+=getScreenName(ropt->getStr("limit_suffix").c_str(),
                         getLimitSuffixes(platform.c_str()))+"<br>\n";
             }
-
+            
             if (ropt->getInt("limit_burst")>0)
             {
                 res+=QObject::tr("<b>Limit burst   :</b> ");
                 res+=QString(ropt->getStr("limit_burst").c_str())+"<br>\n";
             }
-
+            
             res+="<ul>";
             if (ropt->getBool("firewall_is_part_of_any_and_networks"))
             {
@@ -679,8 +691,8 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
                 res+="<br>\n";
             }
             res+="</ul>";
-
-        }else if (platform=="ipf")
+            
+        }else if (platform=="ipf") 
         {
             if (!ropt->getStr("ipf_log_facility").empty())
             {
@@ -688,14 +700,14 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
                 res+=getScreenName(ropt->getStr("ipf_log_facility").c_str(),
                     getLogFacilities(platform.c_str()))+"<br>\n";
             }
-
+            
             if (!ropt->getStr("log_level").empty())
             {
                 res+=QObject::tr("<b>Log level   :</b> ");
                 res+=getScreenName(ropt->getStr("log_level").c_str(),
                     getLogLevels(platform.c_str()))+"<br>\n";
             }
-
+            
             res+="<ul>";
             if (ropt->getBool("ipf_return_icmp_as_dest"))
             {
@@ -715,43 +727,43 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
                 res+="<br>\n";
             }
             res+="</ul>";
-
+            
         }else if (platform=="pf")
         {
-
+            
             if (!ropt->getStr("log_prefix").empty())
             {
                 res+=QObject::tr("<b>Log prefix :</b> ");
                 res+=QString(ropt->getStr("log_prefix").c_str())+"<br>\n";
             }
-
+            
             if (ropt->getInt("pf_rule_max_state")>0)
             {
                 res+=QObject::tr("<b>Max state  :</b> ");
                 res+=QString(ropt->getStr("pf_rule_max_state").c_str())+"<br>\n";
             }
-
+            
             res+="<ul>";
             if (ropt->getBool("stateless"))
             {
                 res+=QObject::tr("<li><b>Stateless</b></li> ");
                 res+="<br>\n";
             }
-
+            
             if (ropt->getBool("pf_source_tracking"))
             {
                 res+=QObject::tr("<li><b>Source tracking</b></li> ");
                 res+="<br>\n";
-
+                
                 res+=QObject::tr("<b>Max src nodes :</b> ");
                 res+=QString(ropt->getStr("pf_max_src_nodes").c_str())+"<br>\n";
-
+                
                 res+=QObject::tr("<b>Max src states:</b> ");
                 res+=QString(ropt->getStr("pf_max_src_states").c_str())+"<br>\n";
-
+                
             }
             res+="</ul>";
-
+            
         }else if (platform=="ipfw")
         {
             res+="<ul>";
@@ -761,17 +773,17 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
                 res+="<br>\n";
             }
             res+="</ul>";
-
+            
         }else if (platform=="pix" || platform=="fwsm")
         {
             string vers="version_"+f->getStr("version");
-
+            
             res+=QObject::tr("<u><b>Ver:%1</b></u><br>\n").arg(vers.c_str());
-
+            
             if ( Resources::platform_res[platform]->getResourceBool(
                   "/FWBuilderResources/Target/options/"+vers+"/pix_rule_syslog_settings"))
             {
-
+                
                 if (!ropt->getStr("log_level").empty())
                 {
                     res+=QObject::tr("<b>Log level   :</b> ");
@@ -783,7 +795,7 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
                     res+=QObject::tr("<b>Log interval  :</b> ");
                     res+=QString(ropt->getStr("log_interval").c_str())+"<br>\n";
                 }
-
+                
                 res+="<ul>";
                 if (ropt->getBool("disable_logging_for_this_rule"))
                 {
@@ -791,19 +803,19 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
                     res+="<br>\n";
                 }
                 res+="</ul>";
-
-            }
+                
+            } 
         }
-
+        
     }
-
+    
     return res;
 }
 
 QString FWObjectPropertiesFactory::getNATRuleOptions(Rule *rule)
 {
     QString res;
-
+    
     if (rule!=NULL)
     {
         res="";
@@ -816,7 +828,7 @@ QString FWObjectPropertiesFactory::getNATRuleOptions(Rule *rule)
 
         if (fwbdebug)
             qDebug(QString("getNATRuleOptions: platform: %2").arg(platform.c_str()).toAscii().constData());
-
+            
         if (platform=="pf")
         {
             if (ropt->getBool("pf_bitmask"))      res+=QObject::tr("bitmask");
@@ -827,7 +839,7 @@ QString FWObjectPropertiesFactory::getNATRuleOptions(Rule *rule)
             if (ropt->getBool("pf_static_port"))  res+=QObject::tr("static-port");
         }
     }
-
+    
     return res;
 }
 

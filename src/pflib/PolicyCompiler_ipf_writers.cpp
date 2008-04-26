@@ -268,7 +268,7 @@ void PolicyCompiler_ipf::PrintRule::_printAddr(Address  *o,bool neg)
     }
 
     InetAddr addr=o->getAddress();
-    InetNetmask  mask=o->getNetmask();
+    InetAddr  mask=o->getNetmask();
 
     if (options->getBool("dynAddr") &&
         Interface::cast(o)!=NULL && Interface::cast(o)->isDyn()) 
@@ -279,12 +279,12 @@ void PolicyCompiler_ipf::PrintRule::_printAddr(Address  *o,bool neg)
     }
 
     if (Interface::cast(o)!=NULL) {
-	mask = InetNetmask(InetAddr::getAllOnes());
+	mask = InetAddr(InetAddr::getAllOnes());
     }
 
-    if (dynamic_cast<InetAddrMask*>(o)->dimension()==1)
+    if (o->dimension()==1)
     {
-	mask = InetNetmask(InetAddr::getAllOnes());
+	mask = InetAddr(InetAddr::getAllOnes());
     }
 
     if (addr.isAny() && mask.isAny())

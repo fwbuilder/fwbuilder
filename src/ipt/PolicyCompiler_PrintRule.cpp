@@ -907,7 +907,7 @@ string PolicyCompiler_ipt::PrintRule::_printAddr(Address  *o)
     }
 
     const InetAddr& addr = o->getAddress();
-    const InetNetmask& mask = o->getNetmask();
+    const InetAddr& mask = o->getNetmask();
 
     if (addr.isAny() && mask.isAny())
     {
@@ -917,7 +917,7 @@ string PolicyCompiler_ipt::PrintRule::_printAddr(Address  *o)
         ostr << addr.toString();
 
         if (Interface::cast(o)==NULL &&
-            dynamic_cast<InetAddrMask*>(o)->dimension() > 1 &&
+            Address::cast(o)->dimension() > 1 &&
             !mask.isHostMask())
         {
             ostr << "/" << mask.getLength();
@@ -1108,26 +1108,51 @@ string PolicyCompiler_ipt::PrintRule::PolicyRuleToString(PolicyRule *rule)
 
     if (!src->isAny()) 
     {
-        string physaddress="";
-
-        if (physAddress::isA(src))
-            physaddress= physAddress::cast(src)->getPhysAddress();
-
-        if (combinedAddress::isA(src))
-            physaddress= combinedAddress::cast(src)->getPhysAddress();
-
-        if ( ! physaddress.empty())
+        if (physAddress::isA(src) || combinedAddress::isA(src))
         {
-	    command_line << " -m mac --mac-source " << _printSingleObjectNegation(srcrel);
-            command_line << physaddress;
-        }
-/*
- * fool-proof: this is last resort check for situation when user created IPv4 object
- * for the interface but left it with empty address ( 0.0.0.0 ). 
+            string physaddress = "";
+
+            if (physAddress::isA(src))
+            {
+                physaddress = physAddress::cast(src)->getPhysAddress();
+                if (physaddress.empty())
+                {
+                    compiler->warning("Empty MAC address in rule " +
+                                      rule->getLabel());
+                    physaddress = "00:00:00:00:00:00";
+                }
+            }
+
+            if (combinedAddress::isA(src))
+                physaddress = combinedAddress::cast(src)->getPhysAddress();
+
+/* physAddress component of combinedAddress can be empty.  For example
+ * this happens when an object with both IP and MAC addresses is found
+ * in "source" and rule is determined to go into OUTPUT chain. On the
+ * other hand, if physAddress object has no MAC address, it is always
+ * an error.
  */
-        if ( ! physaddress.empty() && src->getAddress()==InetAddr())
-        {
-            ;
+            if (!physaddress.empty())
+            {
+                command_line << " -m mac --mac-source "
+                             << _printSingleObjectNegation(srcrel);
+                command_line << physaddress;
+            }
+
+/*
+ * fool-proof: this is last resort check for situation when user
+ * created IPv4 object for the interface but left it with empty
+ * address ( 0.0.0.0 ).
+ *
+ * note that combinedAddress inherits IPv4 and therefore
+ * combinedAddress::hasInetAddress returns true;
+ *
+ */
+            if (src->hasInetAddress() && !src->getAddress().isAny())
+            {
+                command_line << " -s " << _printSingleObjectNegation(srcrel);
+                command_line << _printAddr(src);
+            }
         } else
         {
             command_line << " -s " << _printSingleObjectNegation(srcrel);

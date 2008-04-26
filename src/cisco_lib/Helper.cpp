@@ -167,7 +167,9 @@ string  Helper::findInterfaceByNetzone(const InetAddr &addr) throw(string)
         res_id=findInterfaceByAddress( addr );
 
     if (res_id.empty())
-        throw( string("Can not find interface with network zone that includes address ") + addr.toString());
+        throw(
+            string("Can not find interface with network zone that includes "
+                   "address ") + addr.toString());
     return res_id;
 }
 
@@ -201,7 +203,11 @@ list<string>  Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
         if (a==NULL)
         {
             Rule *rule = Rule::cast(re->getParent());
-            compiler->abort(string("findInterfaceByNetzoneOrAll failed to retrieve first object from the rule element; is argument not of the type RuleElementSrc or RuleElementDst ? Rule ") + rule->getLabel());
+            compiler->abort(
+                string("findInterfaceByNetzoneOrAll failed to retrieve first "
+                       "object from the rule element; is argument not of "
+                       "the type RuleElementSrc or RuleElementDst ? Rule ") +
+                rule->getLabel());
         }
         try
         {
@@ -220,7 +226,8 @@ list<string>  Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
 
             if (supports_network_zones) compiler->warning(err);
 
-            FWObjectTypedChildIterator i = compiler->fw->findByType(Interface::TYPENAME);
+            FWObjectTypedChildIterator i = compiler->fw->findByType(
+                Interface::TYPENAME);
             for ( ; i!=i.end(); ++i)
             {
                 Interface  *ifs = Interface::cast(*i);

@@ -595,7 +595,7 @@ void newFirewallDialog::addInterface()
         try
         {
             InetAddr(addr.toLatin1().constData());
-            InetNetmask(netm.toLatin1().constData());
+            InetAddr(netm.toLatin1().constData());
         }
         catch (FWException &ex)
         {
@@ -812,7 +812,7 @@ void newFirewallDialog::finishClicked()
                 QString addrname=QString("%1:%2:ip").arg(m_dialog->obj_name->text()).arg(name);
                 IPv4 *oa = IPv4::cast(mw->createObject(oi, IPv4::TYPENAME,addrname));
                 oa->setAddress( InetAddr(addr.toLatin1().constData()) );
-                oa->setNetmask( InetNetmask(netmask.toLatin1().constData()) );
+                oa->setNetmask( InetAddr(netmask.toLatin1().constData()) );
             }
             // updateObjName has a side effect: it causes redraw of the ruleset
             // views in the main window

@@ -460,30 +460,30 @@ string NATCompiler_ipt::PrintRule::_printAddr(Address  *o,bool print_mask,bool p
 	ostr << a1.toString() << "-" << a2.toString();
     } else
     {
-        const InetAddr& addr=o->getAddress();
-        const InetNetmask&  mask=o->getNetmask();
+        const InetAddr& addr = o->getAddress();
+        const InetAddr& mask = o->getNetmask();
+
+        Interface *iface = Interface::cast(o);
+        if (iface!=NULL)
+        {
+            if (iface->isDyn() && iface->getBool("use_var_address"))
+            {
+                ostr << "$" << ipt_comp->getInterfaceVarName(iface) << " ";
+                return ostr.str();
+            }
+            ostr << addr.toString();
+            return ostr.str();
+        }
 
 	if (addr == InetAddr::getAny() && mask == InetAddr::getAny())
         {
 	    ostr << "0/0";
 	} else
         {	
-            Interface *iface;
-            if ( (iface=Interface::cast(o))!=NULL ) 
-            {
-                if (iface->isDyn() && iface->getBool("use_var_address"))
-                {
-                    ostr << "$" << ipt_comp->getInterfaceVarName(iface) << " ";
-                    return ostr.str();
-                }
-                ostr << addr.toString();
-                return ostr.str();
-            }
-
 	    ostr << addr.toString();
 
             if (print_mask &&
-                dynamic_cast<InetAddrMask*>(o)->dimension()!=1 &&
+                Address::cast(o)->dimension()!=1 &&
                 !mask.isHostMask())
             {
                 ostr << "/" << mask.getLength();

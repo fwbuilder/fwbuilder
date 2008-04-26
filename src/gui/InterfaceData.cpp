@@ -62,9 +62,9 @@ void InterfaceData::guessLabel(const string &platform)
 
 void InterfaceData::guessSecurityLevel(const string &platform)
 {
-    InetAddrMask n10(InetAddr("10.0.0.0"), InetNetmask("255.0.0.0"));
-    InetAddrMask n172(InetAddr("172.16.0.0"), InetNetmask("255.240.0.0"));
-    InetAddrMask n192(InetAddr("192.168.0.0"), InetNetmask("255.255.0.0"));
+    InetAddrMask n10(InetAddr("10.0.0.0"), InetAddr("255.0.0.0"));
+    InetAddrMask n172(InetAddr("172.16.0.0"), InetAddr("255.240.0.0"));
+    InetAddrMask n192(InetAddr("192.168.0.0"), InetAddr("255.255.0.0"));
 
     securityLevel=-1;
 

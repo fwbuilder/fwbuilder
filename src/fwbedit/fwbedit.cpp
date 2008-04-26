@@ -724,7 +724,7 @@ int main(int argc, char * const *argv)
                  Network *o=Network::cast(nobj);
                  o->setName(name);
                  o->setAddress(InetAddr(addr1));
-                 o->setNetmask(InetNetmask(addr2));
+                 o->setNetmask(InetAddr(addr2));
             }
             else if (objtype==Firewall::TYPENAME)
             {

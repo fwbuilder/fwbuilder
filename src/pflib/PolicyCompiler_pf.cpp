@@ -389,7 +389,7 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
 
         string mgmt_addr = getCachedFwOpt()->getStr("mgmt_addr");
         InetAddr  addr;
-        InetNetmask netmask(InetAddr::getAllOnes());
+        InetAddr netmask(InetAddr::getAllOnes());
         try
         {
             addr = InetAddr(mgmt_addr);
@@ -401,11 +401,11 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
                 int o1,o2,o3,o4;
                 if(sscanf(nm.c_str(), "%3u.%3u.%3u.%3u", &o1, &o2, &o3, &o4)==4)
                 {
-                    netmask = InetNetmask(nm);
+                    netmask = InetAddr(nm);
                 } else
                 {
                     sscanf(nm.c_str(),"%u",&o1);
-                    netmask = InetNetmask(o1);
+                    netmask = InetAddr(o1);
                 }
             }
         } catch(FWException &ex)

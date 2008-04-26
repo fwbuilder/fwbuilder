@@ -213,11 +213,11 @@ string TableFactory::PrintTables()
                         throw(FWException("table object must be an address: '"+o->getTypeName()+"'"));
 
                     InetAddr addr=A->getAddress();
-                    InetNetmask   mask=A->getNetmask();
+                    InetAddr   mask=A->getNetmask();
 
-                    if (dynamic_cast<InetAddrMask*>(A)->dimension()==1)
+                    if (A->dimension()==1)
                     {
-                        mask = InetNetmask(InetAddr::getAllOnes());
+                        mask = InetAddr(InetAddr::getAllOnes());
                     }
 
                     output << addr.toString();

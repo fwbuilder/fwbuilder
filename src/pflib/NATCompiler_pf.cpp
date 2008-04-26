@@ -97,8 +97,7 @@ int NATCompiler_pf::prolog()
     loopback_address->setName("__loopback_address__");
     loopback_address->setId("__loopback_address_id__");
 
-    dynamic_cast<InetAddrMask*>(loopback_address)->setAddress(
-        InetAddr::getLoopbackAddr());
+    IPv4::cast(loopback_address)->setAddress(InetAddr::getLoopbackAddr());
 
     dbcopy->add(loopback_address,false);
     cacheObj(loopback_address);
@@ -390,8 +389,8 @@ bool NATCompiler_pf::addVirtualAddress::processNext()
 	else  return true;
     assert(a!=NULL);
 
-    if ( ! a->isAny() && a->getId()!=compiler->getFwId() ) {
-
+    if ( ! a->isAny() && a->getId()!=compiler->getFwId() )
+    {
 	list<FWObject*> l2=compiler->fw->getByType(Interface::TYPENAME);
 	for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
         {
@@ -973,11 +972,11 @@ void NATCompiler_pf::compile()
                  "replace references to the firewall in TSrc" ) );
         add( new ReplaceObjectsTDst( "replace objects in TDst" ) );
 
-	if ( manage_virtual_addr ) {
-            add( new addVirtualAddress("add virtual addresses for NAT rules"));
-	}
-
         add( new ExpandMultipleAddresses( "expand multiple addresses" ) );
+
+	if ( manage_virtual_addr )
+            add( new addVirtualAddress("add virtual addresses for NAT rules"));
+
         add( new checkForUnnumbered("check for unnumbered interfaces" ) );
         add( new checkForDynamicInterfacesOfOtherObjects(
                  "check for dynamic interfaces of other hosts and firewalls"));

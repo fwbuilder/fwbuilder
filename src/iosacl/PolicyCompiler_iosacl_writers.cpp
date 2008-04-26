@@ -372,7 +372,7 @@ string PolicyCompiler_iosacl::PrintRule::_printAddr(libfwbuilder::Address  *o)
     ostringstream  str;
 
     InetAddr srcaddr=o->getAddress();
-    InetNetmask   srcmask=o->getNetmask();
+    InetAddr srcmask=o->getNetmask();
 
     if (Interface::cast(o)!=NULL)
     {
@@ -382,11 +382,11 @@ string PolicyCompiler_iosacl::PrintRule::_printAddr(libfwbuilder::Address  *o)
 	    return string("interface ") + interface_->getLabel() + " ";
 	}
 
-	srcmask=InetNetmask(InetAddr::getAllOnes());
+	srcmask=InetAddr(InetAddr::getAllOnes());
     }
 
     if (IPv4::cast(o)!=NULL) 
-	srcmask=InetNetmask(InetAddr::getAllOnes());
+	srcmask=InetAddr(InetAddr::getAllOnes());
 
 
     if (srcaddr.isAny() && srcmask.isAny())
