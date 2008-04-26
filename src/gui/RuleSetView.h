@@ -158,6 +158,7 @@ class RuleSetView : public QTableView
     void contextMenuRequested ( const QPoint &p );
     
     void newGroup();
+    void renameGroup();
     void addToGroupAbove ();
     void addToGroupBelow();
     void removeFromGroup();

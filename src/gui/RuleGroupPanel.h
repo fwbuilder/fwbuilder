@@ -38,5 +38,6 @@ public:
     RuleGroupPanel (QWidget * parent,RuleSetView * rsv, int row) ;
 public slots:
     void showHideRuleGroup();
-
+public:
+    virtual void mousePressEvent ( QMouseEvent * event );
 };

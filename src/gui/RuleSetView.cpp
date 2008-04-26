@@ -888,10 +888,12 @@ void RuleSetView::addRuleGroupPanel (int row)
         grouppanel->ruleGroupName->setText(rri->groupName);
         if (!hide)
         {
+            grouppanel->showHideRuleGroupButton->setCheckState(Qt::Unchecked);
             grouppanel->showHideRuleGroupButton->setText ("Collapse Group");
         }
         else
         {
+            grouppanel->showHideRuleGroupButton->setCheckState(Qt::Checked);
             grouppanel->showHideRuleGroupButton->setText ("Expand Group");
         }
         setIndexWidget (model()->index(row,1),grouppanel);
@@ -2307,14 +2309,43 @@ void RuleSetView::newGroup()
         int row = firstSelectedRule;
         int count = lastSelectedRule - firstSelectedRule +1;
         createGroup(row,count,text+postfix);   
-
-    }
-
-//    SimpleTextEditor * ste = new SimpleTextEditor(this, "New Group", false, "New Group2");
-//    ste->setModal (true);
-//    ste->show();
-//    QString text = ste->text(); 
+    } 
 }
+
+void RuleSetView::renameGroup()
+{
+    bool ok = false ;
+    QString oldGroup = "";
+    if (rowsInfo[ firstSelectedRule ] != NULL)
+    {
+        oldGroup = rowsInfo[ firstSelectedRule  ]->groupName;
+    }
+    
+    QString text = QInputDialog::getText(this, "Rename group",
+                                          tr("Enter group name:"), QLineEdit::Normal,
+                                          oldGroup, &ok);
+     if (ok && !text.isEmpty())
+    {
+        if (oldGroup==""||text=="")
+            return ;
+        QString postfix = "";
+        int counter = 0 ;
+        for (int i =0 ; i < rowsInfo.size(); i++)
+        {
+            Rule * r = Rule::cast(ruleIndex[i]);
+            if (r!=NULL)
+            {
+                if (r->getRuleGroupName ().c_str() ==  oldGroup)
+                {
+                    r->setRuleGroupName (text.toAscii().data());
+                }
+            }
+        }
+        updateGroups();
+   
+    } 
+}
+
 
 void RuleSetView::addToGroupAbove ()
 {
@@ -2498,6 +2529,15 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
             popup->addAction( tr("Remove from the group"), this, SLOT( removeFromGroup() ));
         }
         popup->addSeparator ();
+    }
+    else
+    {
+            popup->addAction( tr("Rename group"), this, SLOT( renameGroup() ));
+                popup->exec( pos );
+    
+                delete popup;
+            return ;
+
     }
         
 

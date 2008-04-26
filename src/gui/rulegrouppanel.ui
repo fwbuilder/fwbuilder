@@ -26,18 +26,11 @@
     <number>2</number>
    </property>
    <property name="horizontalSpacing" >
-    <number>2</number>
+    <number>20</number>
    </property>
    <property name="verticalSpacing" >
     <number>2</number>
    </property>
-   <item row="0" column="0" >
-    <widget class="QPushButton" name="showHideRuleGroupButton" >
-     <property name="text" >
-      <string>PushButton</string>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="2" >
     <widget class="QLabel" name="ruleGroupName" >
      <property name="text" >
@@ -57,6 +50,13 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="0" column="0" >
+    <widget class="QCheckBox" name="showHideRuleGroupButton" >
+     <property name="text" >
+      <string/>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
