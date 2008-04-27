@@ -1184,6 +1184,12 @@ QRect RuleSetView::calculateCellSize( int row, int col )
 
         case Comment:
         {
+            if (rule==NULL)
+            {
+                hc = item_h;
+                wc = RuleElementSpacing/2;
+                break ;
+            }
             QRect br=p.boundingRect(QRect(0,0,1000,1000),
                                     Qt::AlignLeft|Qt::AlignVCenter,
                                     QString::fromUtf8(rule->getComment().c_str()) );
@@ -1195,6 +1201,12 @@ QRect RuleSetView::calculateCellSize( int row, int col )
 
         case Metric:
         {
+            if (rule==NULL)
+            {
+                hc = item_h;
+                wc = RuleElementSpacing/2;
+                break ;
+            }
             QRect br=p.boundingRect(QRect(0, 0, 1000, 1000),
                                     Qt::AlignLeft|Qt::AlignVCenter,
                                     QString::fromUtf8(RoutingRule::cast(rule)->getMetricAsString().c_str()) );
@@ -4212,7 +4224,7 @@ void RuleSetView::updateAll()
         //dirtyRows[r] = 1;
 
     repaint();
-//    updateGroups();
+    updateGroups();
 //    update();
 }
 
@@ -4305,6 +4317,8 @@ RuleElement* PolicyView::getRE( Rule* r, int col )
 {
     string ret;
     if (col==0)
+        return NULL;
+    if (r==NULL)
         return NULL;
     switch (getColType(col))
     {
@@ -4406,6 +4420,8 @@ RuleElement* InterfacePolicyView::getRE( Rule *r, int col )
     string ret;
     if (col==0)
         return NULL;
+    if (r==NULL)
+        return NULL;
     switch (getColType(col))
     {
     case Object:
@@ -4495,6 +4511,8 @@ RuleElement* NATView::getRE( Rule *r, int col )
     string ret;
     if (col==0)
         return NULL;
+    if (r==NULL)
+        return NULL;
     switch (getColType(col))
     {
         case Object:
@@ -4575,6 +4593,8 @@ RuleElement* RoutingView::getRE( Rule *r, int col )
 {
     string ret;
     if (col==0)
+        return NULL;
+    if (r==NULL)
         return NULL;
     switch (getColType(col))
     {
