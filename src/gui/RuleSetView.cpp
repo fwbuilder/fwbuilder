@@ -336,14 +336,14 @@ void RuleSetView::setColumnWidth( const int col, const int width )
 {
     if (col < 0)
         return;
-    if (col == 0)
+/*    if (col == 0)
     {
     while (static_cast<unsigned int>(col+1) > columnWidths.size())
         columnWidths.push_back(30);
     columnWidths[col] = 10;
 
         return ;
-    }
+    }*/
     while (static_cast<unsigned int>(col+1) > columnWidths.size())
         columnWidths.push_back(30);
     columnWidths[col] = width;
@@ -823,6 +823,11 @@ void RuleSetView::init()
             QRect br=p.boundingRect(QRect(0,0,1000,1000),
                                     Qt::AlignLeft|Qt::AlignVCenter,
                                     lbl );
+            if (col==0)
+            {
+                colW[0]=20;
+                continue ;
+            }
             colW[col]=br.width() + 10;
         }
     }
@@ -860,8 +865,8 @@ void RuleSetView::init()
         if (col==0)
         {
             horizontalHeader()->setResizeMode (0, QHeaderView::Fixed);
-            horizontalHeader()->resizeSection(0, 10);
-            colW[0]=10;
+            horizontalHeader()->resizeSection(0, 20);
+            colW[0]=20;
             continue ;
         }
         horizontalHeader()->resizeSection(col, colW[col]);
@@ -915,10 +920,15 @@ void RuleSetView::updateGroups ()
     {
         setSpan (i,1,0,1);
     }
+
     reset ();
-    setColumnWidth(0,10);
+    for (int i = 0 ; i < ruleModel->columnCount(this->model()->index(1,0)); i++)
+    { 
+        adjustColumn (i);
+    }
+    setColumnWidth(0,20);
     horizontalHeader()->setResizeMode (0, QHeaderView::Fixed);
-    horizontalHeader()->resizeSection(0, 10);
+    horizontalHeader()->resizeSection(0, 20);
 
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
@@ -940,16 +950,11 @@ void RuleSetView::updateGroups ()
 
     bool beginGroup = false ;
     QString group;
-    qDebug("=================");
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
         Rule * r ;
-//        bool hiden = this->isRowHidden(i);
-        
-      
             r = Rule::cast(ruleIndex[i]);
             group = r->getRuleGroupName().c_str();
-            qDebug(group.toAscii().data());
         if (group!=memberRow)
         {
             ruleModel->insertRow(i);
@@ -1140,9 +1145,30 @@ QRect RuleSetView::calculateCellSize( int row, int col )
                 hc += item_h;
                 int itmW = RuleElementSpacing/2 + pixmap_w +
                         RuleElementSpacing + br.width();
+                if (col==3)
+                {
+                    QString a("#Cell col=3, row=");
+                    a+=QString().setNum(row); 
+                    QString b("|---pixmap_w=");
+                    b+= QString ().setNum(pixmap_w);
+                    QString c("|---br.width()=");
+                    c+= QString ().setNum(br.width());
+                    QString d("|---itmW=");
+                    d+= QString ().setNum(itmW);
+                    QString e("|---wc=");
+                    e+= QString ().setNum(wc);
+                    qDebug (a.toAscii().data());
+                    qDebug (b.toAscii().data());
+                    qDebug (c.toAscii().data());
+                    qDebug (d.toAscii().data());
+                    qDebug (e.toAscii().data());
+                    
+                }
                 wc  = QMAX(wc, itmW);
+
                 }
             }
+            
             break;
         }
 
