@@ -31,6 +31,7 @@ RuleGroupPanel::RuleGroupPanel (QWidget * parent,RuleSetView * rsv, int row) : Q
     this->rsv = rsv;
     this->setupUi(this);
     setContentsMargins (3,3,3,3);
+    showHideRuleGroupButton->hide();
     //showHideRuleGroupButton->setText("Collapse Group");
     connect (showHideRuleGroupButton, SIGNAL(pressed()),this,SLOT(showHideRuleGroup()));
 }

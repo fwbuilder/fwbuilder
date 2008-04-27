@@ -1362,12 +1362,22 @@ void RuleSetView::paintCell(QPainter *pntr,
         if (rule==NULL)
         {
                 RuleRowInfo * rri = rowsInfo[row];
-                if (!isRowHidden(row+1))
-                {
-                    p.drawLine( (cr.width()-1)/2, (cr.height()-1)/2, cr.width()-1, (cr.height()-1)/2 );
+                    
                     if (rri->isBeginRow)
-                        p.drawLine( (cr.width()-1)/2, (cr.height()-1)/2, (cr.width()-1)/2, cr.height()-1 );
-                }
+                    {
+                        p.drawRect((cr.width()-1)/2-4,(cr.height()-1)/2-4,8,8);
+                        p.drawLine( (cr.width()-1)/2+7, (cr.height()-1)/2, cr.width()-1, (cr.height()-1)/2 );    
+                        p.drawLine( (cr.width()-1)/2-2, (cr.height()-1)/2,(cr.width()-1)/2+2, (cr.height()-1)/2);
+                        if (!isRowHidden(row+1))
+                        {
+    
+                            //if (!isRowHidden(row))
+                                p.drawLine( (cr.width()-1)/2, (cr.height()-1)/2+7, (cr.width()-1)/2, cr.height()-1 );
+                                p.drawLine( (cr.width()-1)/2, (cr.height()-1)/2-2,(cr.width()-1)/2, (cr.height()-1)/2+2);
+                        }
+
+                    }
+                
         }
         else
         {
@@ -1473,8 +1483,13 @@ void RuleSetView::paintCell(QPainter *pntr,
             {
                 p.drawLine( 1, 0, 1, cr.height()-1 );
             }
-            p.drawLine( 1, cr.height()-3,  cr.width() , cr.height()-3);
-            //p.drawLine( cr.width()-3, 0, cr.width()-3, cr.height()-1 );
+            p.drawLine( 1, cr.height()-3,  cr.width()-3 , cr.height()-3);
+            if (col==ncols-1)
+            {
+                p.drawLine( cr.width()-3, 0, cr.width()-3, cr.height()-3 );
+    
+            }            
+    //p.drawLine( cr.width()-3, 0, cr.width()-3, cr.height()-1 );
         }
         else
         {
@@ -1482,11 +1497,11 @@ void RuleSetView::paintCell(QPainter *pntr,
     
             if (col==1)
             {
-                p.drawLine( 1, 0, 1, cr.height() );
+                p.drawLine( 1, 0, 1, cr.height()-3 );
             }
             if (col==ncols-1)
             {
-                p.drawLine( cr.width()-3, 0, cr.width()-3, cr.height() );
+                p.drawLine( cr.width()-3, 0, cr.width()-3, cr.height()-3 );
     
             }
 
@@ -2190,6 +2205,20 @@ void RuleSetView::mousePressEvent( QMouseEvent* ev )
 
     int row=rowAt(ev->y());
     int col=columnAt(ev->x());
+
+    if (col==0)
+    {
+        if (rowsInfo[row]!=NULL)
+        {
+            QWidget * wgt = indexWidget(model()->index(row,1));
+            RuleGroupPanel * rfp = dynamic_cast<RuleGroupPanel *>(wgt);
+            if (rfp!=NULL)
+            {
+                showHideRuleGroup(rfp);
+            }
+        }
+    }
+
 
     FWObject *obj=getObj(row,col,ev->y()+verticalOffset());
     bool needUpdate= (row==currentRow() && col==currentColumn() && selectedObject!=obj);
