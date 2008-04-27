@@ -338,6 +338,8 @@ public:
     void load(QWidget *dialogs_parent,RCS *rcs);
     void load(QWidget *dialogs_parent);
     void save();
+    void saveState ();
+    void loadState ();
     bool checkin(bool unlock);
     void loadLibrary(const std::string &libfpath);
     

@@ -351,6 +351,7 @@ class FWWindow : public QMainWindow {
 
     virtual void showEvent( QShowEvent *ev);
     virtual void hideEvent( QHideEvent *ev);
+    virtual void closeEvent( QCloseEvent * );
     
 };
 

@@ -1396,3 +1396,17 @@ bool FWWindow::isSystem(libfwbuilder::FWObject *obj)
         return activeProject()->isSystem(obj);
     return false;
 }
+
+
+void FWWindow::closeEvent( QCloseEvent * ev)
+{   
+    QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
+    for (int i = 0 ; i < subWindowList.size();i++)
+    {
+        ProjectPanel * pp = dynamic_cast<ProjectPanel *>(subWindowList[i]->widget());
+        if (pp!=NULL)
+        {
+            pp->saveState();
+        }
+    }
+}

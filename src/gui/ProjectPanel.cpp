@@ -3255,14 +3255,7 @@ void ProjectPanel::hideEvent( QHideEvent *ev)
 
 void ProjectPanel::closeEvent( QCloseEvent * ev)
 {   
-    if (rcs!=NULL)
-    {
-        QString FileName = rcs->getFileName();
-        st->setInt("Window/"+FileName+"/x",mdiWindow->x());
-        st->setInt("Window/"+FileName+"/y",mdiWindow->y());
-        st->setInt("Window/"+FileName+"/width",mdiWindow->width ());
-        st->setInt("Window/"+FileName+"/height",mdiWindow->height ());
-    }
+    saveState();
     if (saveIfModified() && checkin(true))
     {
         if (rcs)
@@ -3279,6 +3272,56 @@ void ProjectPanel::closeEvent( QCloseEvent * ev)
 //    emit closed();
 }
 
+void ProjectPanel::saveState ()
+{
+    if (rcs!=NULL)
+    {
+        QString FileName = rcs->getFileName();
+        st->setInt("Window/"+FileName+"/x",mdiWindow->x());
+        st->setInt("Window/"+FileName+"/y",mdiWindow->y());
+        st->setInt("Window/"+FileName+"/width",mdiWindow->width ());
+        st->setInt("Window/"+FileName+"/height",mdiWindow->height ());
+    }
+}
+
+void ProjectPanel::loadState ()
+{
+    QString FileName = rcs->getFileName();
+    if (FileName!="")
+    {
+        if (!mdiWindow->isMaximized ())
+        {
+        int x = st->getInt("Window/"+FileName+"/x");
+        int y = st->getInt("Window/"+FileName+"/y");
+        int width = st->getInt("Window/"+FileName+"/width");
+        int height = st->getInt("Window/"+FileName+"/height");
+        if (width==0||height==0)
+        {
+            x = 10;
+            y = 10;
+            width = 600;
+            height= 600;
+        }
+        firstResize=true ;
+        mdiWindow->setGeometry (x,y,width,height);
+        }
+    }
+    
+    if (FileName=="")
+    {
+        if (!mdiWindow->isMaximized ())
+        {
+        int y = st->getInt("Window/"+FileName+"/y");
+        int y2 = st->getInt("Window/"+FileName+"/y");
+        firstResize=true ;
+        //mdiWindow->resize (600,400);
+        //mdiWindow->resize (600,400);
+        mdiWindow->setGeometry (10,10,600,600);
+        //mdiWindow->resize (600,800);      
+        }
+    }
+
+}
 
 void ProjectPanel::resizeEvent ( QResizeEvent * event )
 {
@@ -3288,45 +3331,8 @@ void ProjectPanel::resizeEvent ( QResizeEvent * event )
             oldState=0;
         return ;
     }
-        if (!firstResize&&rcs!=NULL)
-        {
-        //    if (!isMaximized ())
-         //   {
-                   QString FileName = rcs->getFileName();
-                    if (FileName!="")
-                    {
-                        if (!mdiWindow->isMaximized ())
-                        {
-                        int x = st->getInt("Window/"+FileName+"/x");
-                        int y = st->getInt("Window/"+FileName+"/y");
-                        int width = st->getInt("Window/"+FileName+"/width");
-                        int height = st->getInt("Window/"+FileName+"/height");
-                        if (width==0||height==0)
-                        {
-                            x = 10;
-                            y = 10;
-                            width = 600;
-                            height= 600;
-                        }
-                        firstResize=true ;
-                        mdiWindow->setGeometry (x,y,width,height);
-                        }
-                    }
-                    
-                    if (FileName=="")
-                    {
-                        if (!mdiWindow->isMaximized ())
-                        {
-                        int y = st->getInt("Window/"+FileName+"/y");
-                        int y2 = st->getInt("Window/"+FileName+"/y");
-                        firstResize=true ;
-                        //mdiWindow->resize (600,400);
-                        //mdiWindow->resize (600,400);
-                        mdiWindow->setGeometry (10,10,600,600);
-                        //mdiWindow->resize (600,800);      
-                        }
-                    }
-          }
-
-    
+    if (!firstResize&&rcs!=NULL)
+    {
+        loadState();
+    }    
 }
