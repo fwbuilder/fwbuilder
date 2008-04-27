@@ -2444,69 +2444,8 @@ FWObject* ObjectManipulator::copyObj2Tree(const QString &objType, const QString 
          libfwbuilder::FWObject *copyFrom, FWObject *parent, bool askLib)
 {
     if (!validateDialog()) return NULL;
-
-
-   // Firewall * nobj_ = new Firewall();
-    
-    // FWObject *nobj_= m_project->db()->create(copyFrom->getTypeName());
-    //                nobj_->ref();
-    //                nobj_->duplicate(copyFrom,false);   //if renew_id == true creates new object ID
-    //                nobj_->setReadOnly(false);
-
-    FWObject *lib  = getCurrentLib();
-    if (askLib)
-        lib = AskLibForCopyDialog::askLibForCopyDialog(m_project, m_project->db(), lib);
-    if (!lib)
-        return 0;
-    if (!parent)
-        parent=m_project->getStandardSlotForObject(lib, objType);
     ids.clear();
     return copyObjWithDeep(copyFrom);
-/*
-
-    FWObject *nobj = pasteTo (parent, copyFrom, true, false, false); 
-    FWObject * nobj_ = nobj ; 
-   // nobj_->setReadOnly(false);
-   // nobj_->setRoot(copyFrom->getRoot());
-    list<FWObject*> refs;
-    map<const std::string, FWObject*> objByIds;
-    list<FWReference*> refLinfs ;
-    m_project->check4Depends(copyFrom, refs,refLinfs, lib);
-    list<FWReference*>::iterator k = refLinfs.begin();
-    for(list<FWObject*>::iterator i=refs.begin(); i!=refs.end(); ++i)
-    {
-        FWObject *o = (*i);
-        FWReference * ref = (*k);
-        ++k;
-        if (o && Firewall::isA(o))
-        {
-            continue ;
-        }
-        if (m_project->db()->getRoot()->getById(o->getId())==NULL)
-        {
-        FWObject * lib2 = idxToLibs[1];
-        FWObject *par = m_project->getStandardSlotForObject(lib2, o->getTypeName().c_str());
-        FWObject * newobj = nobj_->getById(o->getId());
-        FWObject *no  = pasteTo (par, o, true, false, false);
-        //ref->setPointerId(no->getId());
-        //o->setReadOnly(false);
-        //o->setId(no->getId());
-        //if (newobj!=NULL)
-        //{
-        //    newobj->setReadOnly(false);
-        //    newobj->setId(no->getId());
-        //}
-        objByIds[no->getId()] = no;
-        }
-        
-    }
-    if (nobj && Firewall::isA(nobj))
-    {
-        m_project->addFirewallToList(nobj);
-        m_project->showFirewall(nobj);
-    }
-*/
-//    return nobj;
 }
 
 libfwbuilder::FWObject * ObjectManipulator::copyObjWithDeep(libfwbuilder::FWObject *copyFrom)
@@ -2514,12 +2453,7 @@ libfwbuilder::FWObject * ObjectManipulator::copyObjWithDeep(libfwbuilder::FWObje
     
     if (copyFrom==NULL)
         return NULL;
-    qDebug("===================");
-    qDebug((copyFrom)->getTypeName().c_str());
-    qDebug((copyFrom)->getName().c_str());
-    qDebug((copyFrom)->getId().c_str());
-    
-    FWObject *nobj= copyFrom;//m_project->db()->create(copyFrom->getTypeName());
+    FWObject *nobj= copyFrom;
     if (nobj->getId()!="")
     {
         if (ids.contains(nobj->getId().c_str()))
@@ -2593,13 +2527,13 @@ libfwbuilder::FWObject * ObjectManipulator::copyObjWithDeep(libfwbuilder::FWObje
 
     if (lib->getRoot()->getById(nobj->getId(),true)==NULL)
     {
-    FWObject *par = m_project->getStandardSlotForObject(lib, nobj->getTypeName().c_str());
-    FWObject *no  = pasteTo (par, nobj, true, false, false);
-    if (no && Firewall::isA(no))
-    {
-        m_project->addFirewallToList(no);
-        m_project->showFirewall(no);
-    }
+        FWObject *par = m_project->getStandardSlotForObject(lib, nobj->getTypeName().c_str());
+        FWObject *no  = pasteTo (par, nobj, false, false, false);
+        if (no && Firewall::isA(no))
+        {
+            m_project->addFirewallToList(no);
+            m_project->showFirewall(no);
+        }
 
     }
 
