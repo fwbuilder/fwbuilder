@@ -1367,14 +1367,16 @@ void RuleSetView::paintCell(QPainter *pntr,
                     {
                         p.drawRect((cr.width()-1)/2-4,(cr.height()-1)/2-4,8,8);
                         p.drawLine( (cr.width()-1)/2+7, (cr.height()-1)/2, cr.width()-1, (cr.height()-1)/2 );    
-                        p.drawLine( (cr.width()-1)/2-2, (cr.height()-1)/2,(cr.width()-1)/2+2, (cr.height()-1)/2);
                         if (!isRowHidden(row+1))
                         {
-    
-                            //if (!isRowHidden(row))
                                 p.drawLine( (cr.width()-1)/2, (cr.height()-1)/2+7, (cr.width()-1)/2, cr.height()-1 );
-                                p.drawLine( (cr.width()-1)/2, (cr.height()-1)/2-2,(cr.width()-1)/2, (cr.height()-1)/2+2);
+                                p.drawLine( (cr.width()-1)/2-2, (cr.height()-1)/2,(cr.width()-1)/2+2, (cr.height()-1)/2);
                         }
+                        else
+                        {
+                                p.drawLine( (cr.width()-1)/2-2, (cr.height()-1)/2,(cr.width()-1)/2+2, (cr.height()-1)/2);
+                                p.drawLine( (cr.width()-1)/2, (cr.height()-1)/2-2,(cr.width()-1)/2, (cr.height()-1)/2+2);
+                        }    
 
                     }
                 
