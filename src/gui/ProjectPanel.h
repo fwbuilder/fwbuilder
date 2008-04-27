@@ -333,12 +333,14 @@ public:
  signals:
      void restoreSelection_sign(bool same_widget);
 public:
+    QString getFileName();
     bool editingLibrary();
     void createRCS( const QString &filename);
     void load(QWidget *dialogs_parent,RCS *rcs);
     void load(QWidget *dialogs_parent);
     void save();
     void saveState ();
+    bool firstLoad ;
     void loadState ();
     bool checkin(bool unlock);
     void loadLibrary(const std::string &libfpath);

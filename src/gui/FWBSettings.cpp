@@ -304,7 +304,8 @@ void    FWBSettings::setSaveFileDir( const QString &d )
 
 void    FWBSettings::save()
 {
-    setLastEdited( mw->db()->getFileName().c_str() );
+    if (mw->db()!=NULL)
+        setLastEdited( mw->db()->getFileName().c_str() );
 }
 
 bool    FWBSettings::getRCSLogState() { return value( emptyRCSLog ).toBool(); }

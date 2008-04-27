@@ -1110,12 +1110,17 @@ QRect RuleSetView::calculateCellSize( int row, int col )
         case Time:
         {
             RuleElement *re = getRE(rule,col);
+            if (rule==NULL)
+            {   
+                break ;
+            }
             if (re==NULL)
             {
                 /* broken rule element, fix it */
                 FWObject *nre=m_project->db()->create("When");
                 assert(nre!=NULL);
                 rule->add(nre);
+                break ;
             }
         }
         /* continue in Object */

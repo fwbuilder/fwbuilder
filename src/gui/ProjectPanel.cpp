@@ -154,6 +154,7 @@ void ProjectPanel::initMain(FWWindow *main)
 {
     mainW = main;
     firstResize = false ;
+    firstLoad = false;
     oldState=-1;
     if (st->getInfoStyle()!=0) m_panel->oi->show();
     else m_panel->oi->hide();
@@ -3205,7 +3206,10 @@ void ProjectPanel::findWhereUsed(FWObject * obj)
 
 void ProjectPanel::showEvent( QShowEvent *ev)
 {
-    QString val = st->getStr("Layout/MainWindowSplitter");
+    if (!firstLoad)
+    {
+    firstLoad=true ;
+    QString val = st->getStr("Layout/MainWindowSplitter"+getFileName());
     if (!val.isEmpty())
     {
         int  w1 = val.section(',',0,0).toInt();
@@ -3218,7 +3222,7 @@ void ProjectPanel::showEvent( QShowEvent *ev)
             m_panel->mainSplitter->setSizes( sl );
     }
 
-    val = st->getStr("Layout/ObjInfoSplitter");
+    val = st->getStr("Layout/ObjInfoSplitter"+getFileName());
     if (!val.isEmpty())
     {
         int  w1 = val.section(',',0,0).toInt();
@@ -3231,24 +3235,12 @@ void ProjectPanel::showEvent( QShowEvent *ev)
             m_panel->objInfoSplitter->setSizes( sl );
     }
     
-
+    }
     QWidget::showEvent(ev);
 }
 
 void ProjectPanel::hideEvent( QHideEvent *ev)
 {
-    oe->hide();
-    fd->hide();
-    st->saveGeometry(this);
-    QList<int> sl = m_panel->mainSplitter->sizes();
-    QString arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
-    if (sl[0] || sl[1])
-        st->setStr("Layout/MainWindowSplitter", arg );
-
-    sl = m_panel->objInfoSplitter->sizes();
-    arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
-    if (sl[0] || sl[1])
-        st->setStr("Layout/ObjInfoSplitter", arg );
     QWidget::hideEvent(ev);
 }
 
@@ -3272,6 +3264,18 @@ void ProjectPanel::closeEvent( QCloseEvent * ev)
 //    emit closed();
 }
 
+QString ProjectPanel::getFileName()
+{
+    if (rcs!=NULL)
+    {
+        QString FileName = rcs->getFileName();
+        return FileName;
+    }
+    else
+        return "";
+}
+
+
 void ProjectPanel::saveState ()
 {
     if (rcs!=NULL)
@@ -3282,6 +3286,20 @@ void ProjectPanel::saveState ()
         st->setInt("Window/"+FileName+"/width",mdiWindow->width ());
         st->setInt("Window/"+FileName+"/height",mdiWindow->height ());
     }
+
+    oe->hide();
+    fd->hide();
+    st->saveGeometry(this);
+    QList<int> sl = m_panel->mainSplitter->sizes();
+    QString arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
+    if (sl[0] || sl[1])
+        st->setStr("Layout/MainWindowSplitter"+getFileName(), arg );
+
+    sl = m_panel->objInfoSplitter->sizes();
+    arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
+    if (sl[0] || sl[1])
+        st->setStr("Layout/ObjInfoSplitter"+getFileName(), arg );
+
 }
 
 void ProjectPanel::loadState ()

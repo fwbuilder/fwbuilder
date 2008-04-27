@@ -386,6 +386,8 @@ void FWWindow::fileExit()
 {
     if (activeProject())
         activeProject()->fileExit();
+    else
+        qApp->quit();
 }
 
 void FWWindow::fileCommit()
