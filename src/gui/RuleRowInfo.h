@@ -39,6 +39,7 @@ public:
         isHide = hide ;
     }
     QString groupName ;
+    QString color ;
     bool isBeginRow;
     bool isHide ; 
     QModelIndex * index ;

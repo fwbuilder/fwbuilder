@@ -929,13 +929,15 @@ void RuleSetView::updateGroups ()
     setColumnWidth(0,20);
     horizontalHeader()->setResizeMode (0, QHeaderView::Fixed);
     horizontalHeader()->resizeSection(0, 20);
-
+    QMap <QString, QString> groupColors ;
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
         setSpan (i,1,0,1);
         if (ruleIndex[i]==NULL)
         {        
             removeRuleIndex(i);
+            if (rowsInfo[i]->isBeginRow)
+                groupColors[rowsInfo[i]->groupName]=rowsInfo[i]->color ;
             rowsInfo.remove (i);
             //qDebug(QString().setNum(i).toAscii().data());
             // qDebug(QString().setNum(i).toAscii().data());
@@ -953,8 +955,16 @@ void RuleSetView::updateGroups ()
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
         Rule * r ;
-            r = Rule::cast(ruleIndex[i]);
-            group = r->getRuleGroupName().c_str();
+        r = Rule::cast(ruleIndex[i]);
+        group = r->getRuleGroupName().c_str();
+        QString color = groupColors[group];
+        if (color!="")
+        {
+
+                FWOptions *ropt = r->getOptionsObject();
+                ropt->setStr("color",color.toLatin1().constData());
+    
+        }    
         if (group!=memberRow)
         {
             ruleModel->insertRow(i);
@@ -965,6 +975,7 @@ void RuleSetView::updateGroups ()
                 beginGroup = true ;
                 memberRow = group;
                 RuleRowInfo * rri = new RuleRowInfo(memberRow,true,false);
+                rri->color = groupColors[memberRow];
                 rowsInfo.insert (i,rri);
                 //QPanel * p = new QPanel(this);
                 addRuleGroupPanel(i);
@@ -989,13 +1000,13 @@ void RuleSetView::updateGroups ()
 
     if (group!="")
     {
-                ruleModel->insertRow(rowsInfo.size());
-                //insertRuleIndex(rowsInfo.size());
-                ruleIndex[rowsInfo.size()] = NULL ;
-                beginGroup = false ;
-                rowsInfo.push_back (new RuleRowInfo(memberRow,false,false));
-                memberRow = group;
-                addRuleGroupPanel(rowsInfo.size()-1);
+        ruleModel->insertRow(rowsInfo.size());
+        //insertRuleIndex(rowsInfo.size());
+        ruleIndex[rowsInfo.size()] = NULL ;
+        beginGroup = false ;
+        rowsInfo.push_back (new RuleRowInfo(memberRow,false,false));
+        memberRow = group;
+        addRuleGroupPanel(rowsInfo.size()-1);
     }
 
 
@@ -1406,6 +1417,8 @@ void RuleSetView::paintCell(QPainter *pntr,
     if (rule==NULL) 
     {
 
+        RuleRowInfo * rri = rowsInfo[row];
+
         QPixmap bufferpixmap;
         QString bpmname = QString("rulesetcell_%1_%2").arg(cr.width()).arg(cr.height());
         if ( ! QPixmapCache::find( bpmname, bufferpixmap) )
@@ -1419,9 +1432,12 @@ void RuleSetView::paintCell(QPainter *pntr,
         QPainter p( &bufferpixmap );
         QFont font = st->getRulesFont();
         p.setFont(font);
+        if (!rri->color.isEmpty())
+        {
+            QRect rect(0, 0, cr.width(), cr.height() );
+            p.fillRect(rect, QColor(rri->color));
+        }
 
-
-        RuleRowInfo * rri = rowsInfo[row];
         p.setPen(Qt::green);
 
         if (rri->isBeginRow)
@@ -1475,42 +1491,6 @@ void RuleSetView::paintCell(QPainter *pntr,
     p.setFont(font);
 
 
-    QString group = rule->getRuleGroupName ().c_str();
-    if (group!= "")
-    {
-        if (groupEnd!=-1&&groupEnd==row+1)
-        {
-            p.setPen(Qt::green);
-            if (col==1)
-            {
-                p.drawLine( 1, 0, 1, cr.height()-1 );
-            }
-            p.drawLine( 1, cr.height()-3,  cr.width()-3 , cr.height()-3);
-            if (col==ncols-1)
-            {
-                p.drawLine( cr.width()-3, 0, cr.width()-3, cr.height()-3 );
-    
-            }            
-    //p.drawLine( cr.width()-3, 0, cr.width()-3, cr.height()-1 );
-        }
-        else
-        {
-            p.setPen(Qt::green);
-    
-            if (col==1)
-            {
-                p.drawLine( 1, 0, 1, cr.height()-3 );
-            }
-            if (col==ncols-1)
-            {
-                p.drawLine( cr.width()-3, 0, cr.width()-3, cr.height()-3 );
-    
-            }
-
-        } 
-        
-
-    }
 
     QRect r = ruleDelegate->cellRect(row,col);
 
@@ -1731,6 +1711,47 @@ void RuleSetView::paintCell(QPainter *pntr,
                 break;
         }  // switch
     }
+
+
+
+    QString group = rule->getRuleGroupName ().c_str();
+    if (group!= "")
+    {
+        if (groupEnd!=-1&&groupEnd==row+1)
+        {
+            p.setPen(Qt::green);
+            if (col==1)
+            {
+                p.drawLine( 1, 0, 1, cr.height()-1 );
+            }
+            p.drawLine( 1, cr.height()-3,  cr.width()-3 , cr.height()-3);
+            if (col==ncols-1)
+            {
+                p.drawLine( cr.width()-3, 0, cr.width()-3, cr.height()-3 );
+    
+            }            
+    //p.drawLine( cr.width()-3, 0, cr.width()-3, cr.height()-1 );
+        }
+        else
+        {
+            p.setPen(Qt::green);
+    
+            if (col==1)
+            {
+                p.drawLine( 1, 0, 1, cr.height()-3 );
+            }
+            if (col==ncols-1)
+            {
+                p.drawLine( cr.width()-3, 0, cr.width()-3, cr.height()-3 );
+    
+            }
+
+        } 
+        
+
+    }
+
+
 
     p.end();
 
@@ -2507,6 +2528,9 @@ void RuleSetView::removeFromGroup (int row, int count)
         if (r!=NULL)
         {
             r->setRuleGroupName("");
+            FWOptions *ropt = r->getOptionsObject();
+            ropt->setStr("color","");
+    
             ruleIndex[i]=r;
         }
     }
@@ -2607,6 +2631,38 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
     else
     {
             popup->addAction( tr("Rename group"), this, SLOT( renameGroup() ));
+                popup->addSeparator();
+
+                QMenu *subcolor = popup->addMenu( tr("Change color") );
+
+                QPixmap pcolor(16,16);
+                pcolor.fill(QColor(255,255,255));
+                subcolor->addAction( QIcon(pcolor), tr("No color"), this, SLOT ( setColorEmpty() ));
+
+                pcolor.fill(st->getLabelColor(FWBSettings::RED));
+                subcolor->addAction( QIcon(pcolor), tr("Red"), this, SLOT ( setColorRed() ));
+
+                pcolor.fill(st->getLabelColor(FWBSettings::ORANGE));
+                subcolor->addAction( QIcon(pcolor), tr("Orange"), this, SLOT ( setColorOrange() ));
+
+                pcolor.fill(st->getLabelColor(FWBSettings::YELLOW));
+                subcolor->addAction( QIcon(pcolor), tr("Yellow"), this, SLOT ( setColorYellow() ));
+
+                pcolor.fill(st->getLabelColor(FWBSettings::GREEN));
+                subcolor->addAction( QIcon(pcolor), tr("Green"), this, SLOT ( setColorGreen() ));
+
+                pcolor.fill(st->getLabelColor(FWBSettings::BLUE));
+                subcolor->addAction( QIcon(pcolor), tr("Blue"), this, SLOT ( setColorBlue() ));
+
+                pcolor.fill(st->getLabelColor(FWBSettings::PURPLE));
+                subcolor->addAction( QIcon(pcolor), tr("Purple"), this, SLOT ( setColorPurple() ));
+
+                pcolor.fill(st->getLabelColor(FWBSettings::GRAY));
+                subcolor->addAction( QIcon(pcolor), tr("Gray"), this, SLOT ( setColorGray() ));
+
+
+
+
                 popup->exec( pos );
     
                 delete popup;
@@ -2969,15 +3025,26 @@ void RuleSetView::setRuleColor(const QString &c)
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
+    if (ruleIndex[firstSelectedRule]==NULL)
+    {
+        RuleRowInfo * rri = rowsInfo[firstSelectedRule];
+        rri->color =c;
+        updateGroups();
+        return ;
+    }
+
     if ( firstSelectedRule!=-1 )
     {
         for (int i=firstSelectedRule; i<=lastSelectedRule; ++i)
         {
             Rule *rule = Rule::cast( ruleIndex[i] );
-            FWOptions *ropt = rule->getOptionsObject();
-            ropt->setStr("color",c.toLatin1().constData());
-
-            adjustRow(i);   // this causes repaint
+            if (rule!=NULL)
+            {
+                FWOptions *ropt = rule->getOptionsObject();
+                ropt->setStr("color",c.toLatin1().constData());
+    
+                adjustRow(i);   // this causes repaint
+            }
         }
     }
 }
