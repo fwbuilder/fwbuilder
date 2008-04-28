@@ -1217,9 +1217,15 @@ QRect RuleSetView::calculateCellSize( int row, int col )
             "Accept", "Deny", "Reject", "Accounting", "Tag",
             "Pipe", "Classify", "Custom", "Continue"
 */
-            QString ac =
-                    FWObjectPropertiesFactory::getRuleActionProperties(
-                    PolicyRule::cast(rule));
+            PolicyRule *ruleP = PolicyRule::cast( rule );
+            if (ruleP==NULL)
+                break ;
+            QString ac = ruleP->getActionAsString().c_str();
+             
+
+ 
+                    //FWObjectPropertiesFactory::getRuleActionProperties(
+                    //PolicyRule::cast(rule));
             QRect br=p.boundingRect(QRect(0, 0, 1000, 1000),
                                     Qt::AlignLeft|Qt::AlignVCenter, ac );
             hc = item_h;
@@ -1229,8 +1235,17 @@ QRect RuleSetView::calculateCellSize( int row, int col )
 
         case Direction:
         {
+            PolicyRule *ruleP = PolicyRule::cast( rule );
+            if (ruleP==NULL)
+                break ;
+            QString ac = ruleP->getDirectionAsString().c_str();
+                   // FWObjectPropertiesFactory::getRuleActionProperties(
+                   // PolicyRule::cast(rule));
+            QRect br=p.boundingRect(QRect(0, 0, 1000, 1000),
+                                    Qt::AlignLeft|Qt::AlignVCenter, ac );
+
             hc = item_h;
-            wc = RuleElementSpacing/2 + pixmap_w + RuleElementSpacing;
+            wc = RuleElementSpacing/2 + pixmap_w + RuleElementSpacing + br.width();
             break;
 #if 0
             /* possible directions: "Inbound", "Outbound" , "Both" */
@@ -1645,13 +1660,19 @@ void RuleSetView::paintCell(QPainter *pntr,
                 res = FWObjectPropertiesFactory::getRuleActionProperties(rule);
                 QPixmap pm;
                 LoadPixmap(icn, pm);
-
+                int height = pm.height(); 
                 p.drawPixmap( x,y + RuleElementSpacing/2, pm );
                 x += pm.width()+1;
+                if (st->getShowDirectionText())
+                {
+                    res = act.c_str() ;
+                }
                 QRect br=p.boundingRect(QRect(x, y, 1000, 1000),
                                         Qt::AlignLeft|Qt::AlignVCenter,
                                         res.toAscii().constData() );
-                p.drawText( x, y, br.width(), pm.height(),
+                if (br.height()>height)
+                    height=br.height();
+                p.drawText( x, y+ RuleElementSpacing/2, br.width(), height,
                             Qt::AlignLeft|Qt::AlignVCenter, res.toAscii().constData() );
                 break;
             }
@@ -1661,18 +1682,32 @@ void RuleSetView::paintCell(QPainter *pntr,
                 if (rule==NULL) return;
 
                 string dir = rule->getDirectionAsString();
-		QString dir_ = rule->getDirectionAsString().c_str();
+		        QString dir_ = rule->getDirectionAsString().c_str();
                 if (dir.empty()) 
-			dir = "Both";
+			        dir = "Both";
 		//dir="Both-tree";
-		
+		         
                 QString icn = chooseIcon((":/Icons/" + dir).c_str());
-
+                QString res ="";
+                
                 QPixmap pm;
                 LoadPixmap(icn, pm);
+                int height = pm.height(); 
+                if (st->getShowDirectionText())
+                {
+                    res = dir.c_str() ;
+                }
 
                 p.drawPixmap( x,y + RuleElementSpacing/2, pm );
                 x += pm.width()+1;
+
+                QRect br=p.boundingRect(QRect(x, y, 1000, 1000),
+                                        Qt::AlignLeft|Qt::AlignVCenter,
+                                        res.toAscii().constData() );
+                if (br.height()>height)
+                    height=br.height();
+                p.drawText( x, y+ RuleElementSpacing/2, br.width(), height,
+                            Qt::AlignLeft|Qt::AlignVCenter, res.toAscii().constData() );
 
                 break;
             }

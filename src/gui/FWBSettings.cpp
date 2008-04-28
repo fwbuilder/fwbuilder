@@ -99,6 +99,7 @@ const char* screenPositionSetpath= SETTINGS_PATH_PREFIX "/ScreenPos/";
 
 const char* SSHPath              = SETTINGS_PATH_PREFIX "/SSH/SSHPath";
 const char* showIconsInRules     = SETTINGS_PATH_PREFIX "/UI/Icons/ShowIconsInRules";
+const char* showDirectionText    = SETTINGS_PATH_PREFIX "/UI/Icons/ShowDirectionTextInRules";
 const char* iconsInRulesSize     = SETTINGS_PATH_PREFIX "/UI/Icons/IconsInRulesSize";
 const char* rulesFont            = SETTINGS_PATH_PREFIX "/UI/Fonts/RulesFont";
 const char* treeFont             = SETTINGS_PATH_PREFIX "/UI/Fonts/TreeFont";
@@ -580,6 +581,17 @@ void FWBSettings::setShowIconsInRules(bool showIcons)
 {
     setValue(showIconsInRules, showIcons);
 }
+
+bool FWBSettings::getShowDirectionText()
+{
+    return value(showDirectionText).toBool();
+}
+
+void FWBSettings::setShowDirectionText(bool showText)
+{
+    setValue(showDirectionText, showText);
+}
+
 
 QFont FWBSettings::getRulesFont()
 {

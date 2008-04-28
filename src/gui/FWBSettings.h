@@ -143,6 +143,9 @@ class FWBSettings : public QSettings {
     bool getShowIconsInRules();
     void setShowIconsInRules(bool showIcons);
 
+    bool getShowDirectionText();
+    void setShowDirectionText(bool showText);
+
     QFont getRulesFont();
     void setRulesFont(const QFont &font);
 

@@ -178,7 +178,7 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->grayText->setText(t);
 
     m_dialog->chShowIcons->setChecked(st->getShowIconsInRules() );
-
+    m_dialog->showDirectionText->setChecked(st->getShowDirectionText());
     if (FWBSettings::SIZE25X25 == st->getIconsInRulesSize())
         m_dialog->rb25->setChecked(true);
     else
@@ -439,6 +439,7 @@ void PrefsDialog::accept()
     st->setLabelText (FWBSettings::GRAY,   m_dialog->grayText->text() );
 
     st->setShowIconsInRules(m_dialog->chShowIcons->isChecked());
+    st->setShowDirectionText(m_dialog->showDirectionText->isChecked());
     FWBSettings::IconSize sz = m_dialog->rb25->isChecked() ?
         FWBSettings::SIZE25X25 : FWBSettings::SIZE16X16;
     st->setIconsInRulesSize(sz);

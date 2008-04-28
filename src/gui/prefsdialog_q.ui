@@ -865,8 +865,8 @@
       <attribute name="toolTip" >
        <string>Icons settings</string>
       </attribute>
-      <layout class="QVBoxLayout" >
-       <item>
+      <layout class="QGridLayout" >
+       <item row="0" column="0" >
         <widget class="QCheckBox" name="chShowIcons" >
          <property name="text" >
           <string>Show icons in rules</string>
@@ -876,7 +876,14 @@
          </property>
         </widget>
        </item>
-       <item>
+       <item row="1" column="0" >
+        <widget class="QCheckBox" name="showDirectionText" >
+         <property name="text" >
+          <string>Show text descriptions in columns "Direction", "Action"</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
         <widget class="QGroupBox" name="groupBox" >
          <property name="title" >
           <string>Icon size:</string>
@@ -905,7 +912,7 @@
          </layout>
         </widget>
        </item>
-       <item>
+       <item row="3" column="0" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
