@@ -891,6 +891,7 @@ void RuleSetView::addRuleGroupPanel (int row)
         bool hide = isRowHidden(row+1);
         RuleGroupPanel * grouppanel = new RuleGroupPanel(NULL,this,row); 
         grouppanel->ruleGroupName->setText(rri->groupName);
+        rri->isHide=hide;
         if (!hide)
         {
             grouppanel->showHideRuleGroupButton->setCheckState(Qt::Unchecked);
@@ -944,6 +945,7 @@ void RuleSetView::updateGroups ()
                     QString color = r->getOptionsObject()->getStr("color").c_str();
                     if (color!="")
                     {
+                        if (color=="#FFFFFF") color = "";
                         groupColors[rowsInfo[i]->groupName]=color;
                     }
                 }
@@ -981,6 +983,7 @@ void RuleSetView::updateGroups ()
                     color = r->getOptionsObject()->getStr("color").c_str();
                     if (color!="")
                     {
+                        if (color=="#FFFFFF") color="";
                         groupColors[group]=color;
                     }
                 }
@@ -2468,11 +2471,18 @@ void RuleSetView::addToGroupAbove ()
     int count = lastSelectedRule - firstSelectedRule +1;
     int top = getUpNullRuleIndex(row);
     RuleRowInfo * ru = rowsInfo[top];
+    if (!ru->isBeginRow)
+    {
+        top = getUpNullRuleIndex(top-1);
+        ru = rowsInfo[top];
+    }
     for (int i = 0; i< count ; i++)
     {
         Rule * r = Rule::cast(ruleIndex[row+i]);
         r->setRuleGroupName (ru->groupName.toAscii().data());
         ruleIndex[row+i] =r ;
+        if (ru->isHide)
+            showHideRuleGroup(dynamic_cast<RuleGroupPanel*>(indexWidget(model()->index(top,1))));
     }
     updateGroups();
 }
@@ -2488,12 +2498,16 @@ void RuleSetView::addToGroupBelow()
         Rule * r = Rule::cast(ruleIndex[row+i]);
         r->setRuleGroupName (ru->groupName.toAscii().data());
         ruleIndex[row+i] =r ;
+        if (ru->isHide)
+            showHideRuleGroup(dynamic_cast<RuleGroupPanel*>(indexWidget(model()->index(bottom,1))));
     }
     updateGroups();
 }
 
 void RuleSetView::showHideRuleGroup(RuleGroupPanel * rgp)
 {
+    if (rgp==NULL)
+        return ;
     QString act = rgp->showHideRuleGroupButton->text();
     int row = rgp->row ;
     RuleRowInfo * rrf = rowsInfo[row];
@@ -3049,6 +3063,8 @@ void RuleSetView::setRuleColor(const QString &c)
     {
         RuleRowInfo * rri = rowsInfo[firstSelectedRule];
         rri->color =c;
+        if (rri->color=="")
+            rri->color="#FFFFFF";
         updateGroups();
         return ;
     }
