@@ -2132,9 +2132,10 @@ Rule* RuleSetView::insertRule(int pos, FWObject *r)
         addRuleBranch( newrule_as_policy_rule );
 
     ruleModel->insertRow(pos);
+    rowsInfo.insert(pos,NULL);
     adjustRow(pos);
     update();
-
+    updateGroups();
     setCurrentCell( pos, currentColumn() );
     updateCell(pos,currentColumn());
 
@@ -2286,18 +2287,21 @@ void RuleSetView::mousePressEvent( QMouseEvent* ev )
 
     int row=rowAt(ev->y());
     int col=columnAt(ev->x());
-
+    
     if (col==0)
     {
-        if (rowsInfo[row]!=NULL)
+        if (row<rowsInfo.size()&&row>=0)
         {
-            QWidget * wgt = indexWidget(model()->index(row,1));
-            RuleGroupPanel * rfp = dynamic_cast<RuleGroupPanel *>(wgt);
-            if (rfp!=NULL)
+            if (rowsInfo[row]!=NULL)
             {
-                showHideRuleGroup(rfp);
+                QWidget * wgt = indexWidget(model()->index(row,1));
+                RuleGroupPanel * rfp = dynamic_cast<RuleGroupPanel *>(wgt);
+                if (rfp!=NULL)
+                {
+                    showHideRuleGroup(rfp);
+                }
             }
-        }
+       }
     }
 
 
@@ -3946,7 +3950,7 @@ void RuleSetView::removeRule()
 
                 int lastN=ruleIndex.size()-1;
                 ruleIndex.remove (rn);//erase(rn);
-
+                rowsInfo.remove(rn);
                 for (int i=rn; i<lastN; ++i)   ruleIndex[i]=ruleIndex[i+1];
 
                 for (int row=rn; row<lastN; ++row)
@@ -3956,14 +3960,14 @@ void RuleSetView::removeRule()
         }
 
         ruleModel->removeRows( firstSelectedRule, lastSelectedRule );
-
+        
         setUpdatesEnabled(true);
 
         clearSelection();
 
         setCurrentCell( firstSelectedRule, currentColumn() );
         update();
-
+        updateGroups();
         changingRules = false;
         m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
     }
@@ -4068,7 +4072,7 @@ void RuleSetView::moveRule()
 
         selectRE( newN , currentColumn() );
         changeCurrentCell( newN, currentColumn(), true );
-
+        updateGroups();
         changingRules = false;
         m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
     }
@@ -4117,6 +4121,7 @@ void RuleSetView::moveRuleDown()
         selectRE( rn+1 , currentColumn() );
 
         update();
+        updateGroups();
     }
 }
 
@@ -4156,6 +4161,7 @@ void RuleSetView::copyRule()
             FWObjectClipboard::obj_clipboard->add( rule, m_project );
         }
     }
+    updateGroups();
 }
 
 void RuleSetView::cutRule()
