@@ -937,7 +937,18 @@ void RuleSetView::updateGroups ()
         {        
             removeRuleIndex(i);
             if (rowsInfo[i]->isBeginRow)
+            {
                 groupColors[rowsInfo[i]->groupName]=rowsInfo[i]->color ;
+                if (groupColors[rowsInfo[i]->groupName]=="")
+                {
+                    Rule * r = Rule::cast(ruleIndex[i+1]);
+                    QString color = r->getOptionsObject()->getStr("color").c_str();
+                    if (color!="")
+                    {
+                        groupColors[rowsInfo[i]->groupName]=color;
+                    }
+                }
+            }
             rowsInfo.remove (i);
             //qDebug(QString().setNum(i).toAscii().data());
             // qDebug(QString().setNum(i).toAscii().data());
@@ -964,6 +975,17 @@ void RuleSetView::updateGroups ()
                 FWOptions *ropt = r->getOptionsObject();
                 ropt->setStr("color",color.toLatin1().constData());
     
+        }
+        else
+        {
+                if (group!="")
+                {
+                    color = r->getOptionsObject()->getStr("color").c_str();
+                    if (color!="")
+                    {
+                        groupColors[group]=color;
+                    }
+                }
         }    
         if (group!=memberRow)
         {
