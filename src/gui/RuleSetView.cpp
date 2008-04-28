@@ -935,7 +935,6 @@ void RuleSetView::updateGroups ()
         setSpan (i,1,0,1);
         if (ruleIndex[i]==NULL)
         {        
-            removeRuleIndex(i);
             if (rowsInfo[i]->isBeginRow)
             {
                 groupColors[rowsInfo[i]->groupName]=rowsInfo[i]->color ;
@@ -949,9 +948,8 @@ void RuleSetView::updateGroups ()
                     }
                 }
             }
+            removeRuleIndex(i);
             rowsInfo.remove (i);
-            //qDebug(QString().setNum(i).toAscii().data());
-            // qDebug(QString().setNum(i).toAscii().data());
             ruleModel->removeRows(i,i);
             i--;
         }
