@@ -82,6 +82,9 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
         fwoptions->setStr("firewall_dir","");
     }
 
+    //QString s = fwoptions->getStr("ipv4_6_order")
+    data.registerOption(m_dialog->ipv4before,    fwoptions, "ipv4_6_order", QStringList() <<  "IPv4 before IPv6" <<"ipv4_first" << "IPv6 before IPv4" << "ipv6_first"      );
+    data.registerOption(m_dialog->ipv6,    fwoptions, "enable_ipv6"        );
     data.registerOption(m_dialog->logTCPseq,    fwoptions, "log_tcp_seq"               );
     data.registerOption(m_dialog->logTCPopt,    fwoptions, "log_tcp_opt"               );
     data.registerOption(m_dialog->logIPopt,     fwoptions, "log_ip_opt"                );

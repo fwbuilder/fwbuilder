@@ -2373,6 +2373,67 @@ with this address:</string>
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tab" >
+      <attribute name="title" >
+       <string>IPv6</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <item row="0" column="0" >
+        <widget class="QCheckBox" name="ipv6" >
+         <property name="text" >
+          <string>Enable IPv6 support</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QLabel" name="label" >
+         <property name="text" >
+          <string>The order in which ipv4 and ipv6 rules should be generated:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="2" column="0" >
+        <widget class="QComboBox" name="ipv4before" >
+         <item>
+          <property name="text" >
+           <string>IPv4 before IPv6</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>IPv6 before IPv4</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="3" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>
@@ -2467,7 +2528,6 @@ with this address:</string>
   <tabstop>pf_configure_interfaces</tabstop>
   <tabstop>pf_manage_virtual_addr</tabstop>
  </tabstops>
- <includes/>
  <resources/>
  <connections>
   <connection>

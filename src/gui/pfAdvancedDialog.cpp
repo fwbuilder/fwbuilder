@@ -74,7 +74,8 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
         m_dialog->pf_fw_dir->setEnabled(false);
         fwopt->setStr("firewall_dir","");
     }
-
+    data.registerOption(m_dialog->ipv4before,    fwopt, "ipv4_6_order", QStringList() <<  "IPv4 before IPv6" <<"ipv4_first" << "IPv6 before IPv4" << "ipv6_first"      );
+    data.registerOption(m_dialog->ipv6,    fwopt, "enable_ipv6"        );
     data.registerOption( m_dialog->pf_log_prefix       ,fwopt, "log_prefix"          );
     data.registerOption( m_dialog->pf_fallback_log     ,fwopt, "fallback_log"        );
     data.registerOption( m_dialog->pf_do_timeout_interval,fwopt,"pf_do_timeout_interval");
