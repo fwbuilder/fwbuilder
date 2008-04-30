@@ -1,8 +1,31 @@
 <RCC>
     <qresource>
         <file alias="Icons/Accept">Icons/accept_25.png</file>
-        <file alias="Icons/Accept-tree">Icons/accept_16.png</file>        
         <file alias="Icons/Accounting">Icons/accounting_25.png</file>
+        <file alias="Icons/Continue">Icons/continue_25.png</file>
+        <file alias="Icons/Classify">Icons/classify_25.png</file>
+        <file alias="Icons/Custom">Icons/custom_25.png</file>
+	<file alias="Icons/Branch">Icons/branch_25.png</file>
+        <file alias="Icons/Deny">Icons/deny_25.png</file>
+        <file alias="Icons/Pipe">Icons/pipe_25.png</file>
+        <file alias="Icons/Reject">Icons/reject_25.png</file>
+        <file alias="Icons/Route">Icons/route_25.png</file>
+        <file alias="Icons/Tag">Icons/tag_25.png</file>
+        <file alias="Icons/Options">Icons/options_25.png</file>
+
+        <file alias="Icons/Options-tree">Icons/options_16.png</file>        
+        <file alias="Icons/Tag-tree">Icons/tag_16.png</file>
+        <file alias="Icons/Route-tree">Icons/route_16.png</file>
+        <file alias="Icons/Reject-tree">Icons/reject_16.png</file>
+        <file alias="Icons/Pipe-tree">Icons/pipe_16.png</file>
+        <file alias="Icons/Deny-tree">Icons/deny_16.png</file>        
+	<file alias="Icons/Branch-tree">Icons/branch_16.png</file>
+	<file alias="Icons/Custom-tree">Icons/custom_16.png</file>
+        <file alias="Icons/Classify-tree">Icons/classify_16.png</file>
+        <file alias="Icons/Continue-tree">Icons/continue_16.png</file>
+        <file alias="Icons/Accounting-tree">Icons/accounting_16.png</file>
+        <file alias="Icons/Accept-tree">Icons/accept_16.png</file>        
+
         <file alias="Icons/IPv4/icon-neg">Icons/address-neg_25.png</file>
         <file alias="Icons/IPv4/icon-neg-tree">Icons/address-neg_16.png</file>
 	<file alias="Icons/IPv4/icon-ref">Icons/address-ref_25.png</file>
@@ -26,11 +49,10 @@
         <file>Icons/books1.png</file>
         <file alias="Icons/Both">Icons/both.png</file>
         <file alias="Icons/Both-tree">Icons/both_16.png</file>
-	<file alias="Icons/Branch">Icons/branch_25.png</file>
         <file>Icons/cancel.png</file>
         <file>Icons/cert_druid_logo.png</file>
         <file>Icons/check.png</file>
-        <file alias="Icons/Classify">Icons/classify_25.png</file>
+
         <file alias="Icons/Interval/icon-neg">Icons/clock-group-neg_25.png</file>
 	<file alias="Icons/Interval/icon-neg-tree">Icons/clock-group-neg_16.png</file>
         <file alias="Icons/Interval/icon-ref">Icons/clock-group-ref_25.png</file>
@@ -42,10 +64,7 @@
         <file>Icons/clock_25.png</file>
         <file>Icons/close.png</file>
         <file>Icons/compile_25.png</file>
-        <file alias="Icons/Continue">Icons/continue_25.png</file>
-        <file alias="Icons/Custom">Icons/custom_25.png</file>
-        <file alias="Icons/Deny">Icons/deny_25.png</file>
-        <file alias="Icons/Deny-tree">Icons/deny_16.png</file>        
+
         <file alias="Icons/DNSName/icon-neg">Icons/domainname-neg_25.png</file>
         <file alias="Icons/DNSName/icon-ref">Icons/domainname-ref_25.png</file>
         <file alias="Icons/DNSName/icon-tree">Icons/domainname_16.png</file>
@@ -103,15 +122,13 @@
         <file alias="Icons/ObjectGroup/icon">Icons/object-group_25.png</file>
         <file>Icons/ok.png</file>
         <file>Icons/openfile_25.png</file>
-        <file alias="Icons/Options">Icons/options_25.png</file>
-        <file alias="Icons/Options-tree">Icons/options_16.png</file>        
         <file alias="Icons/Outbound">Icons/outbound.png</file>
         <file alias="Icons/Outbound-tree">Icons/outbound_16.png</file>
 	<file>Icons/physaddress-neg_25.png</file>
         <file>Icons/physaddress-ref_25.png</file>
         <file>Icons/physaddress_16.png</file>
         <file>Icons/physaddress_25.png</file>
-        <file alias="Icons/Pipe">Icons/pipe_25.png</file>
+
         <file>Icons/protect_host.png</file>
         <file>Icons/protect_net.png</file>
         <file>Icons/protect_net_and_dmz.png</file>
@@ -123,9 +140,10 @@
         <file alias="Icons/AddressRange/icon">Icons/rangeaddress_25.png</file>
         <file>Icons/redo.png</file>
         <file>Icons/ref.png</file>
-        <file alias="Icons/Reject">Icons/reject_25.png</file>
+
+
         <file>Icons/right-arrow.png</file>
-        <file alias="Icons/Route">Icons/route_25.png</file>
+
         <file>Icons/rules_druid_logo.png</file>
         <file>Icons/save_25.png</file>
         <file>Icons/search_25.png</file>
@@ -164,13 +182,11 @@
         <file alias="Icons/UDPService/icon-tree">Icons/service-udp_16.png</file>
         <file alias="Icons/UDPService/icon">Icons/service-udp_25.png</file>
         <file>Icons/stop.png</file>
-        <file alias="Icons/Tag">Icons/tag_25.png</file>
         <file>Icons/uncheck.png</file>
         <file>Icons/undo.png</file>
         <file>Icons/up-arrow.png</file>
         <file>Icons/warning.png</file>
         <file>Icons/yes.png</file>
-        
         <file>Images/designer_dataview.png</file>
         <file>Images/designer_searchfind.png</file>
         <file>Images/editcopy</file>
