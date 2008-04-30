@@ -229,7 +229,7 @@ void FWWindow::showSub(ProjectPanel *projectW)
     if (projectW->getRCS()!=NULL)
     {
         QString FileName = projectW->getRCS()->getFileName();
-        if (st->getInt("Window/"+FileName+"/maximized")==0)
+        if (st->getInt("Window/maximized")==0)
         {
             sub->showMaximized();
         }
