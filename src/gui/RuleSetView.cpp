@@ -861,7 +861,6 @@ void RuleSetView::init()
 
     for (int col=0; col<ncols; col++)
     {
-//        ruleDelegate->setColumnWidth(col,colW[col]);
         if (col==0)
         {
             horizontalHeader()->setResizeMode (0, QHeaderView::Fixed);
@@ -869,6 +868,7 @@ void RuleSetView::init()
             colW[0]=20;
             continue ;
         }
+        setColumnWidth(col,colW[col]);
         horizontalHeader()->resizeSection(col, colW[col]);
     }
 
@@ -917,6 +917,10 @@ void RuleSetView::refreshGroups ()
 
 void RuleSetView::updateGroups ()
 {
+ //   for (int col=1; col<ncols; col++)
+ //  {
+ //   }
+
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
         setSpan (i,1,0,1);
@@ -1368,7 +1372,7 @@ void RuleSetView::paintCell(QPainter *pntr,
                             bool,
                             const QPalette &cg)
 {
-    if (col==3||col==4)
+    if ((col==3||col==4)&&(row==1))
     {
     QString a("$CELL sizes in paintCell col: %1, row: %2");
     a = a.arg(QString().setNum(col)).arg(QString().setNum(row));
@@ -1378,11 +1382,15 @@ void RuleSetView::paintCell(QPainter *pntr,
     c = c.arg(QString().setNum(cr.width()));
     QString d("|- header:%1");
     d = d.arg(QString().setNum(horizontalHeader()->sectionSize(col)));
+    QString e("|- columCount:%1");
+    e = e.arg(QString().setNum(columnWidths.size()));
+
 
     qDebug (a.toAscii().data());
     qDebug (b.toAscii().data());
     qDebug (c.toAscii().data());
     qDebug (d.toAscii().data());
+    qDebug (e.toAscii().data());
     }
 
     int re_size;
