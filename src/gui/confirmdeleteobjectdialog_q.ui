@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>599</width>
-    <height>1510</height>
+    <height>484</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -152,7 +152,6 @@
   <tabstop>pushButton1</tabstop>
   <tabstop>pushButton2</tabstop>
  </tabstops>
- <includes/>
  <resources/>
  <connections>
   <connection>
