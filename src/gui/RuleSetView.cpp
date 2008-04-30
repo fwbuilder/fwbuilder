@@ -923,10 +923,6 @@ void RuleSetView::updateGroups ()
     }
 
     reset ();
-    for (int i = 0 ; i < ruleModel->columnCount(this->model()->index(1,0)); i++)
-    { 
-        adjustColumn (i);
-    }
     setColumnWidth(0,20);
     horizontalHeader()->setResizeMode (0, QHeaderView::Fixed);
     horizontalHeader()->resizeSection(0, 20);
@@ -1372,6 +1368,23 @@ void RuleSetView::paintCell(QPainter *pntr,
                             bool,
                             const QPalette &cg)
 {
+    if (col==3||col==4)
+    {
+    QString a("$CELL sizes in paintCell col: %1, row: %2");
+    a = a.arg(QString().setNum(col)).arg(QString().setNum(row));
+    QString b("|- left:%1");
+    b = b.arg(QString().setNum(cr.left()));
+    QString c("|- width:%1");
+    c = c.arg(QString().setNum(cr.width()));
+    QString d("|- header:%1");
+    d = d.arg(QString().setNum(horizontalHeader()->sectionSize(col)));
+
+    qDebug (a.toAscii().data());
+    qDebug (b.toAscii().data());
+    qDebug (c.toAscii().data());
+    qDebug (d.toAscii().data());
+    }
+
     int re_size;
 
 /* row may point at an empty row where there is no rule yet. This
