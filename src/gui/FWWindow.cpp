@@ -224,9 +224,26 @@ void FWWindow::showSub(ProjectPanel *projectW)
     sub->setWidget(projectW);
     sub->setAttribute(Qt::WA_DeleteOnClose);
     m_space->addSubWindow(sub);
-    sub->showMaximized();
     QIcon p(":Icons/Firewall/icon-tree");
-    sub->setWindowIcon(p);
+    sub->setWindowIcon(p); 
+    if (projectW->getRCS()!=NULL)
+    {
+        QString FileName = projectW->getRCS()->getFileName();
+        if (st->getInt("Window/"+FileName+"/maximized")==0)
+        {
+            sub->showMaximized();
+        }
+        else
+        {
+            sub->show();
+            projectW->loadState();
+        }
+    }
+    else
+    {
+        sub->showMaximized();
+    }
+ 
 }
 
 ProjectPanel* FWWindow::activeProject()

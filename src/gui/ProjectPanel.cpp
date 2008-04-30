@@ -3285,6 +3285,14 @@ void ProjectPanel::saveState ()
         st->setInt("Window/"+FileName+"/y",mdiWindow->y());
         st->setInt("Window/"+FileName+"/width",mdiWindow->width ());
         st->setInt("Window/"+FileName+"/height",mdiWindow->height ());
+        if (isMaximized ())
+        {
+            st->setInt("Window/"+FileName+"/maximized",0);
+        }
+        else
+        {
+            st->setInt("Window/"+FileName+"/maximized",1);
+        }
     }
 
     oe->hide();
