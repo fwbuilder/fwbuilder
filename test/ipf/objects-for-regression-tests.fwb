@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="4" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="5" id="root">
   <Library color="#FFFFFF" comment="" id="id40D07E7A" name="LAX" ro="True">
     <ObjectGroup id="id40D07E7B" name="Objects">
       <ObjectGroup id="id40D07E7B_og_ats_1" name="Address Tables"/>
@@ -669,7 +669,7 @@
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls">
       <Firewall comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" host_OS="freebsd" id="fw-firewall2" inactive="False" lastCompiled="1172982686" lastInstalled="0" lastModified="1156049375" name="firewall" platform="ipf" ro="False" version="">
-        <NAT id="nat-firewall2">
+        <NAT id="nat-firewall2" name="NAT">
           <NATRule comment="" disabled="False" id="nat-firewall2-0" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -690,8 +690,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="nat-firewall2-1" position="1">
+          </NATRule><NATRule comment="" disabled="False" id="nat-firewall2-1" position="1">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -711,8 +710,7 @@
               <ServiceRef ref="tcp-SMTP"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3CDB43B8" position="2">
+          </NATRule><NATRule disabled="False" id="id3CDB43B8" position="2">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -732,8 +730,7 @@
               <ServiceRef ref="id3B4FF09A"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3D7581A7" position="3">
+          </NATRule><NATRule disabled="False" id="id3D7581A7" position="3">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -754,8 +751,7 @@
               <ServiceRef ref="id3B4FF09A"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3D75843D" position="4">
+          </NATRule><NATRule comment="" disabled="False" id="id3D75843D" position="4">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -776,20 +772,16 @@
               <ServiceRef ref="id3B4FF09A"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-        </NAT>
-        <Policy id="pol-firewall2">
+          </NATRule></NAT>
+          <Policy id="pol-firewall2" name="Policy">
           <PolicyRule action="Deny" direction="Inbound" disabled="False" id="id3B09D29D" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="fw-firewall2"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="ip-IP_Fragments"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="if-FW-firewall2-eth1"/>
             </Itf>
             <PolicyRuleOptions>
@@ -799,17 +791,13 @@
           <PolicyRule action="Deny" comment="Automatically generated rule blocking short fragments" direction="Inbound" disabled="False" id="pol-firewall2-0" log="True" position="1">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="ip-IP_Fragments"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="if-FW-firewall2-eth1"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -820,17 +808,13 @@
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="fw-firewall2"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="if-FW-firewall2-eth1"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -840,17 +824,13 @@
           <PolicyRule action="Accept" direction="Inbound" disabled="False" id="id3EDC2CC7" log="False" position="3">
             <Src neg="False">
               <ObjectRef ref="id3EDC2CF8"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="if-FW-firewall2-eth1"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -858,14 +838,11 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id3B92DFC5" log="False" position="4">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="fw-firewall2"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="udp-DNS"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="if-FW-firewall2-eth0"/>
             </Itf>
             <PolicyRuleOptions/>
@@ -873,14 +850,11 @@
           <PolicyRule action="Deny" comment="" direction="Inbound" disabled="False" id="id3C4E4C38" log="True" position="5">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3B64FFAC"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="udp-DNS"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="if-FW-firewall2-eth0"/>
             </Itf>
             <PolicyRuleOptions>
@@ -890,19 +864,15 @@
           <PolicyRule action="Deny" direction="Both" disabled="False" id="id3B58E39D" log="True" position="6">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-TCP-SYN"/>
               <ServiceRef ref="id3B58E3F1"/>
               <ServiceRef ref="id3C1A5D46"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -916,19 +886,15 @@
           <PolicyRule action="Reject" direction="Both" disabled="False" id="id3B6659FC" log="True" position="7">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="ip-RR"/>
               <ServiceRef ref="ip-SRR"/>
               <ServiceRef ref="id3B6659A5"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -941,17 +907,13 @@
           <PolicyRule action="Reject" direction="Both" disabled="False" id="id3CE74D81" log="False" position="8">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="fw-firewall2"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="ip-IPSEC"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -961,17 +923,13 @@
           <PolicyRule action="Accept" direction="Both" disabled="True" id="id3BF1B45E" log="False" position="9">
             <Src neg="False">
               <ObjectRef ref="id3BF1B3E1"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="host-hostA"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -984,17 +942,13 @@
           <PolicyRule action="Accept" direction="Both" disabled="True" id="id3BF1B44E" log="False" position="10">
             <Src neg="False">
               <ObjectRef ref="id3BF1B3E7"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="host-hostA"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1008,17 +962,13 @@
             <Src neg="False">
               <ObjectRef ref="host-secondary1-com"/>
               <ObjectRef ref="host-secondary2-com"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="host-hostA"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-DNS_zone_transf"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="int-afterhours"/>
               <IntervalRef ref="id3C63479C"/>
               <IntervalRef ref="id3C63479E"/>
@@ -1033,17 +983,13 @@
           <PolicyRule action="Accept" comment="" direction="Both" disabled="False" id="pol-firewall2-2" log="False" position="12">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="host-hostA"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="id3C1A66C9"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1056,18 +1002,14 @@
           <PolicyRule action="Accept" comment="" direction="Both" disabled="False" id="pol-firewall2-4" log="False" position="13">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="net-Internal_net"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sg-Useful_ICMP"/>
               <ServiceRef ref="id3B5009F7"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1080,18 +1022,14 @@
           <PolicyRule action="Accept" comment="" direction="Both" disabled="False" id="id3CD8770E" log="False" position="14">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3CD8769F"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="id3CD878C8"/>
               <ServiceRef ref="id3B5009F7"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1104,18 +1042,14 @@
           <PolicyRule action="Accept" comment="" direction="Both" disabled="False" id="id3D98E652" log="False" position="15">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3D98E5AD"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="id3CD878C8"/>
               <ServiceRef ref="id3B5009F7"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1128,18 +1062,14 @@
           <PolicyRule action="Accept" comment="" direction="Both" disabled="False" id="id3CD87B1E" log="False" position="16">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3CD87A9A"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="id3CD878C8"/>
               <ServiceRef ref="id3B5009F7"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1152,17 +1082,13 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id3B58E180" log="True" position="17">
             <Src neg="False">
               <ObjectRef ref="fw-firewall2"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="fw-firewall2"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -1171,18 +1097,14 @@
             <Src neg="False">
               <ObjectRef ref="fw-firewall2"/>
               <ObjectRef ref="id3D582236"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="fw-firewall2"/>
               <ObjectRef ref="id3D582236"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -1192,19 +1114,15 @@
               <ObjectRef ref="fw-firewall2"/>
               <ObjectRef ref="id3D58223F"/>
               <ObjectRef ref="id3D582242"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="fw-firewall2"/>
               <ObjectRef ref="id3D58223F"/>
               <ObjectRef ref="id3D582242"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -1213,17 +1131,13 @@
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="fw-firewall2"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1236,17 +1150,13 @@
           <PolicyRule action="Deny" comment="Automatically generated 'catch all' rule" direction="Both" disabled="False" id="pol-firewall2-7" log="True" position="21">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1262,23 +1172,23 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-        </Policy>
-        <Routing id="fw-firewall2-routing"/>
-        <Interface bridgeport="False" dyn="False" id="if-FW-firewall2-eth1" name="eth1" security_level="0" unnum="False" unprotected="False">
+          </Policy>
+          
+          <Routing id="fw-firewall2-routing" name="Routing">
+          </Routing>
+          <Interface bridgeport="False" dyn="False" id="if-FW-firewall2-eth1" name="eth1" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="222.222.222.222" id="if-FW-firewall2-eth1-ipv4" name="address" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="if-FW-firewall2-eth0" name="eth0" security_level="100" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="if-FW-firewall2-eth0" name="eth0" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="192.168.1.1" comment="" id="if-FW-firewall2-eth0-ipv4" name="firewall" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" comment="" dyn="False" id="id3E5F1D8E" label="" mgmt="False" name="lo" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" comment="" dyn="False" id="id3E5F1D8E" label="" mgmt="False" name="lo" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="127.0.0.1" comment="" id="id3E5F1DDA" name="firewall:lo(ip)" netmask="255.0.0.0"/>
         </Interface>
-        <Management address="127.0.0.1">
+          <Management address="127.0.0.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
           <FWBDManagement enabled="True" identity="" port="9999"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
-        <FirewallOptions>
+          <FirewallOptions>
           <Option name="accept_established">False</Option>
           <Option name="accept_new_tcp_with_no_syn">False</Option>
           <Option name="action_on_reject">ICMP port unreachable</Option>
@@ -1347,9 +1257,9 @@
           <Option name="snmp_location"/>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
-      </Firewall>
+          </Firewall>
       <Firewall comment="this object is used to test all kinds of negation in policy rules&#10;&#10;Currently negation in NAT is not supported for ipf, therefore all rules in NAT with&#10;negation are disabled&#10;" host_OS="freebsd" id="id3AF5AA0A" inactive="False" lastCompiled="1157929195" lastInstalled="0" lastModified="1156049383" name="firewall1" platform="ipf" ro="False" version="">
-        <NAT id="id3AF5AA0D">
+        <NAT id="id3AF5AA0D" name="NAT">
           <NATRule disabled="True" id="id3C98491C" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -1370,8 +1280,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3AFADC09" position="1">
+          </NATRule><NATRule disabled="False" id="id3AFADC09" position="1">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -1391,8 +1300,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="True" id="id3CD23959" position="2">
+          </NATRule><NATRule disabled="True" id="id3CD23959" position="2">
             <OSrc neg="True">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1412,8 +1320,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3B1328FB" position="3">
+          </NATRule><NATRule disabled="False" id="id3B1328FB" position="3">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1433,8 +1340,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3E7ABF0A" position="4">
+          </NATRule><NATRule comment="" disabled="False" id="id3E7ABF0A" position="4">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1455,8 +1361,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="True" id="id3AF5AAD3" position="5">
+          </NATRule><NATRule disabled="True" id="id3AF5AAD3" position="5">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1476,8 +1381,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="True" id="id3CCA1B57" position="6">
+          </NATRule><NATRule comment="" disabled="True" id="id3CCA1B57" position="6">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1497,8 +1401,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="True" id="id3B50F7CB" position="7">
+          </NATRule><NATRule disabled="True" id="id3B50F7CB" position="7">
             <OSrc neg="True">
               <ObjectRef ref="id3B022266"/>
             </OSrc>
@@ -1518,8 +1421,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="True" id="id3BD8D94B" position="8">
+          </NATRule><NATRule disabled="True" id="id3BD8D94B" position="8">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1539,8 +1441,7 @@
               <ServiceRef ref="id3B5009F7"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="True" id="id3BD8D9DD" position="9">
+          </NATRule><NATRule disabled="True" id="id3BD8D9DD" position="9">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1560,8 +1461,7 @@
               <ServiceRef ref="id3B5009F7"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="True" id="id3BBC0EA4" position="10">
+          </NATRule><NATRule disabled="True" id="id3BBC0EA4" position="10">
             <OSrc neg="False">
               <ObjectRef ref="id3B4572AF"/>
             </OSrc>
@@ -1581,8 +1481,7 @@
               <ServiceRef ref="id3B5009F7"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="True" id="id3BBC0F93" position="11">
+          </NATRule><NATRule disabled="True" id="id3BBC0F93" position="11">
             <OSrc neg="True">
               <ObjectRef ref="id3B4572AF"/>
             </OSrc>
@@ -1602,8 +1501,7 @@
               <ServiceRef ref="id3B5009F7"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="True" id="id3BC6BCE5" position="12">
+          </NATRule><NATRule disabled="True" id="id3BC6BCE5" position="12">
             <OSrc neg="True">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -1623,20 +1521,16 @@
               <ServiceRef ref="id3B5009F7"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-        </NAT>
-        <Policy id="id3AF5AA0C">
+          </NATRule></NAT>
+          <Policy id="id3AF5AA0C" name="Policy">
           <PolicyRule action="Deny" direction="Both" disabled="False" id="id3C5987DC" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="id3B4572B5"/>
-            </Src>
-            <Dst neg="True">
+            </Src><Dst neg="True">
               <ObjectRef ref="id3B4572B5"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="id3B457567"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3AF5AA96"/>
             </Itf>
             <PolicyRuleOptions>
@@ -1646,17 +1540,13 @@
           <PolicyRule action="Deny" direction="Both" disabled="False" id="id3CD34BEF" log="False" position="1">
             <Src neg="False">
               <ObjectRef ref="id3B4572AF"/>
-            </Src>
-            <Dst neg="True">
+            </Src><Dst neg="True">
               <ObjectRef ref="id3B4572AF"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="id3B457567"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3AF5AA96"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1667,14 +1557,11 @@
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3AF5AA0A"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3AF5AA99"/>
             </Itf>
             <PolicyRuleOptions>
@@ -1684,14 +1571,11 @@
           <PolicyRule action="Deny" comment="Anti-spoofing rule" direction="Outbound" disabled="False" id="id3AF5AAAB" log="True" position="3">
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3AF5AA99"/>
             </Itf>
             <PolicyRuleOptions>
@@ -1701,17 +1585,13 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id3CDDF2FA" log="False" position="4">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3B0B4D35"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -1719,17 +1599,13 @@
           <PolicyRule action="Deny" comment="" direction="Both" disabled="False" id="id3CCA26E4" log="True" position="5">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-TCP-SYN"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1739,17 +1615,13 @@
           <PolicyRule action="Deny" direction="Both" disabled="True" id="id3B9AB902" log="True" position="6">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="True">
+            </Dst><Srv neg="True">
               <ServiceRef ref="tcp-TCP-SYN"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1759,17 +1631,13 @@
           <PolicyRule action="Accept" comment="hostF has the same IP address as firewal." direction="Both" disabled="False" id="id3AFC0F90" log="True" position="7">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3AFC191C"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="icmp-ping_request"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -1778,17 +1646,13 @@
             <Src neg="True">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="icmp-Unreachables"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1803,17 +1667,13 @@
             <Src neg="True">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3AF5AA0A"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="icmp-Unreachables"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1824,17 +1684,13 @@
             <Src neg="True">
               <ObjectRef ref="id3B022266"/>
               <ObjectRef ref="id3AF5AA0A"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="net-Internal_net"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1845,18 +1701,14 @@
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B022266"/>
-            </Src>
-            <Dst neg="True">
+            </Src><Dst neg="True">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1866,17 +1718,13 @@
           <PolicyRule action="Deny" comment="" direction="Both" disabled="False" id="id3CDDF0AA" log="False" position="12">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="True">
+            </Src><Dst neg="True">
               <ObjectRef ref="id3AF5AA0A"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1886,19 +1734,15 @@
           <PolicyRule action="Deny" comment="testing negation in service field" direction="Both" disabled="True" id="id3B021E6F" log="True" position="13">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
-            </Dst>
-            <Srv neg="True">
+            </Dst><Srv neg="True">
               <ServiceRef ref="tcp-SMTP"/>
               <ServiceRef ref="tcp-SSH"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1908,19 +1752,15 @@
           <PolicyRule action="Accept" comment="testing negation in service field" direction="Both" disabled="True" id="id3CCA2CF4" log="True" position="14">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
-            </Dst>
-            <Srv neg="True">
+            </Dst><Srv neg="True">
               <ServiceRef ref="tcp-SMTP"/>
               <ServiceRef ref="tcp-SSH"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -1928,17 +1768,13 @@
           <PolicyRule action="Deny" direction="Both" disabled="False" id="id3B45739A" log="True" position="15">
             <Src neg="False">
               <ObjectRef ref="id3B4572B5"/>
-            </Src>
-            <Dst neg="True">
+            </Src><Dst neg="True">
               <ObjectRef ref="id3B4572B5"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="id3B457567"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -1948,17 +1784,13 @@
           <PolicyRule action="Accept" comment="'masquerading' rule" direction="Both" disabled="False" id="id3AF5AAC8" log="False" position="16">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -1966,46 +1798,40 @@
           <PolicyRule action="Deny" comment="'catch all' rule" direction="Both" disabled="False" id="id3AF5AAE3" log="True" position="17">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-        </Policy>
-        <Routing id="id3AF5AA0A-routing"/>
-        <Interface bridgeport="False" dyn="False" id="id3AF5AA96" name="eth0" security_level="100" unnum="False" unprotected="False">
+          </Policy>
+          
+          <Routing id="id3AF5AA0A-routing" name="Routing">
+          </Routing>
+          <Interface bridgeport="False" dyn="False" id="id3AF5AA96" name="eth0" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="192.168.1.1" id="id3AF5AA96-ipv4" name="address" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3AF5AA99" name="eth1" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3AF5AA99" name="eth1" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="22.22.22.22" id="id3AF5AA99-ipv4" name="address" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3B0B4BC8" name="eth2" security_level="100" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3B0B4BC8" name="eth2" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="192.168.2.1" id="id3B0B4BC8-ipv4" name="address" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3B0B4D35" name="lo" security_level="100" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3B0B4D35" name="lo" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="127.0.0.1" id="id3B0B4D35-ipv4" name="address" netmask="255.0.0.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3B11F434" name="eth3" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3B11F434" name="eth3" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="22.22.23.23" id="id3B11F434-ipv4" name="address" netmask="255.255.255.0"/>
         </Interface>
-        <Management address="22.22.23.23">
+          <Management address="22.22.23.23">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
           <FWBDManagement enabled="True" identity="" port="9999"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
-        <FirewallOptions>
+          <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
@@ -2062,9 +1888,9 @@
           <Option name="use_ip_tool">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
-      </Firewall>
+          </Firewall>
       <Firewall comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " host_OS="freebsd" id="id3AFB66C6" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1188008480" name="firewall2" platform="ipf" ro="False" version="">
-        <NAT id="id3AFB66C7">
+        <NAT id="id3AFB66C7" name="NAT">
           <NATRule disabled="False" id="id3AFB66C8" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -2087,8 +1913,7 @@
             <NATRuleOptions>
               <Option name="id"/>
             </NATRuleOptions>
-          </NATRule>
-          <NATRule disabled="False" id="id3AFB66D6" position="1">
+          </NATRule><NATRule disabled="False" id="id3AFB66D6" position="1">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="id3B4572AF"/>
@@ -2111,8 +1936,7 @@
             <NATRuleOptions>
               <Option name="id"/>
             </NATRuleOptions>
-          </NATRule>
-          <NATRule disabled="False" id="id3DE9CA86" position="2">
+          </NATRule><NATRule disabled="False" id="id3DE9CA86" position="2">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2133,8 +1957,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3DE9CD88" position="3">
+          </NATRule><NATRule comment="" disabled="False" id="id3DE9CD88" position="3">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2154,8 +1977,7 @@
               <ServiceRef ref="tcp-SSH"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3DEA6375" position="4">
+          </NATRule><NATRule comment="" disabled="False" id="id3DEA6375" position="4">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2175,8 +1997,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3CABE6DF" position="5">
+          </NATRule><NATRule disabled="False" id="id3CABE6DF" position="5">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2197,8 +2018,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="True" id="id3E894DE7" position="6">
+          </NATRule><NATRule disabled="True" id="id3E894DE7" position="6">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2218,8 +2038,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3AFB69BD" position="7">
+          </NATRule><NATRule disabled="False" id="id3AFB69BD" position="7">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2240,8 +2059,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="load balancing rule" disabled="False" id="id3DEA6769" position="8">
+          </NATRule><NATRule comment="load balancing rule" disabled="False" id="id3DEA6769" position="8">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2263,8 +2081,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="load balancing rule" disabled="False" id="id3DEA8105" position="9">
+          </NATRule><NATRule comment="load balancing rule" disabled="False" id="id3DEA8105" position="9">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2284,8 +2101,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3D265545" position="10">
+          </NATRule><NATRule disabled="False" id="id3D265545" position="10">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2305,8 +2121,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3D265556" position="11">
+          </NATRule><NATRule disabled="False" id="id3D265556" position="11">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2326,8 +2141,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3BEEF6D2" position="12">
+          </NATRule><NATRule disabled="False" id="id3BEEF6D2" position="12">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2347,8 +2161,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3BD67563" position="13">
+          </NATRule><NATRule disabled="False" id="id3BD67563" position="13">
             <OSrc neg="False">
               <ObjectRef ref="host-hostB"/>
             </OSrc>
@@ -2370,8 +2183,7 @@
             <NATRuleOptions>
               <Option name="id"/>
             </NATRuleOptions>
-          </NATRule>
-          <NATRule disabled="True" id="id3BD6757E" position="14">
+          </NATRule><NATRule disabled="True" id="id3BD6757E" position="14">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2391,8 +2203,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="NETMAP " disabled="False" id="id3B66568B" position="15">
+          </NATRule><NATRule comment="NETMAP " disabled="False" id="id3B66568B" position="15">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2412,8 +2223,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="NETMAP" disabled="True" id="id3B6656EF" position="16">
+          </NATRule><NATRule comment="NETMAP" disabled="True" id="id3B6656EF" position="16">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2433,8 +2243,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3AFB69F7" position="17">
+          </NATRule><NATRule disabled="False" id="id3AFB69F7" position="17">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2454,8 +2263,7 @@
               <ServiceRef ref="id3B20468D"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3B7313C4" position="18">
+          </NATRule><NATRule disabled="False" id="id3B7313C4" position="18">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2475,8 +2283,7 @@
               <ServiceRef ref="tcp-SMTP"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3DF6D103" position="19">
+          </NATRule><NATRule disabled="False" id="id3DF6D103" position="19">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2496,8 +2303,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3DF6D242" position="20">
+          </NATRule><NATRule comment="" disabled="False" id="id3DF6D242" position="20">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2518,8 +2324,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3F2E9A08" position="21">
+          </NATRule><NATRule comment="" disabled="False" id="id3F2E9A08" position="21">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2539,8 +2344,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3F2E9B78" position="22">
+          </NATRule><NATRule comment="" disabled="False" id="id3F2E9B78" position="22">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2560,8 +2364,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3F2E9CF2" position="23">
+          </NATRule><NATRule comment="" disabled="False" id="id3F2E9CF2" position="23">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2581,21 +2384,17 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-        </NAT>
-        <Policy id="id3AFB66E4">
+          </NATRule></NAT>
+          <Policy id="id3AFB66E4" name="Policy">
           <PolicyRule action="Deny" comment="Anti-spoofing rule" direction="Inbound" disabled="False" id="id3AFB6708" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3AFB66C6"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3AFB6706"/>
             </Itf>
             <PolicyRuleOptions>
@@ -2610,14 +2409,11 @@
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3AFB66C6"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3AFB6706"/>
             </Itf>
             <PolicyRuleOptions>
@@ -2631,17 +2427,13 @@
           <PolicyRule action="Deny" comment="block fragments" direction="Both" disabled="False" id="id3AFB66E5" log="True" position="2">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="ip-IP_Fragments"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -2652,17 +2444,13 @@
           <PolicyRule action="Reject" comment="sends TCP RST and makes custom record in the log" direction="Both" disabled="False" id="id3B0C6FD2" log="True" position="3">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-Auth"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -2678,17 +2466,13 @@
           <PolicyRule action="Reject" comment="sends TCP RST and makes custom record in the log" direction="Both" disabled="False" id="id3D333A66" log="True" position="4">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="udp-SNMP"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -2705,17 +2489,13 @@
             <Src neg="False">
               <ObjectRef ref="id3B4572AF"/>
               <ObjectRef ref="id3D8FF5EC"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3B19C5EB"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -2723,18 +2503,14 @@
           <PolicyRule action="Accept" comment="" direction="Both" disabled="False" id="id3D8FF660" log="False" position="6">
             <Src neg="False">
               <ObjectRef ref="id3B19C5EB"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3B4572AF"/>
               <ObjectRef ref="id3D8FF5EC"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -2742,17 +2518,13 @@
           <PolicyRule action="Accept" comment="'masquerading' rule" direction="Both" disabled="False" id="id3AFB66EF" log="False" position="7">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -2762,17 +2534,13 @@
           <PolicyRule action="Accept" comment="host-fw2 has the same address as &#10;        one of the firewall's interfaces" direction="Both" disabled="False" id="id3C447B8D" log="True" position="8">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3AFC0F70"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-FTP"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -2780,17 +2548,13 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id3C447BCB" log="True" position="9">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3AFB66C6"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-FTP"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -2798,17 +2562,13 @@
           <PolicyRule action="Deny" comment="'catch all' rule" direction="Both" disabled="False" id="id3AFB66F9" log="True" position="10">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -2816,29 +2576,27 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-        </Policy>
-        <Routing id="id3AFB66C6-routing"/>
-        <Interface bridgeport="False" dyn="False" id="id3AFB6703" name="eth0" security_level="100" unnum="False" unprotected="False">
+          </Policy>
+          
+          <Routing id="id3AFB66C6-routing" name="Routing">
+          </Routing>
+          <Interface bridgeport="False" dyn="False" id="id3AFB6703" name="eth0" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="192.168.1.1" id="id3AFB6703-ipv4" name="address" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3AFB6706" name="eth1" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3AFB6706" name="eth1" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="22.22.22.22" id="id3AFB6706-ipv4" name="address" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3AFB68D2" name="eth3" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3AFB68D2" name="eth3" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="22.22.23.23" id="id3AFB68D2-ipv4" name="address" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3B0221F1" name="eth2" security_level="100" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3B0221F1" name="eth2" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="192.168.2.1" id="id3B0221F1-ipv4" name="address" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3CD2449F" label="" name="lo" security_level="100" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3CD2449F" label="" name="lo" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="127.0.0.1" id="id3CD2449F-ipv4" name="address" netmask="255.0.0.0"/>
         </Interface>
-        <Management address="127.0.0.1">
+          <Management address="127.0.0.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
           <FWBDManagement enabled="True" identity="" port="9999"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
-        <FirewallOptions>
+          <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
@@ -2906,9 +2664,9 @@
           <Option name="use_ip_tool">True</Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
-      </Firewall>
+          </Firewall>
       <Firewall comment="this object is used to test a configuration where firewall has dynamic address " host_OS="freebsd" id="id3B0C6380" inactive="False" lastCompiled="1157929207" lastInstalled="0" lastModified="1188008818" name="firewall4" platform="ipf" ro="False" version="">
-        <NAT id="id3B0C6381">
+        <NAT id="id3B0C6381" name="NAT">
           <NATRule disabled="False" id="id3B0C6382" position="0">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
@@ -2931,8 +2689,7 @@
             <NATRuleOptions>
               <Option name="id"/>
             </NATRuleOptions>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3D758531" position="1">
+          </NATRule><NATRule comment="" disabled="False" id="id3D758531" position="1">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -2954,8 +2711,7 @@
             <NATRuleOptions>
               <Option name="id"/>
             </NATRuleOptions>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3D75869D" position="2">
+          </NATRule><NATRule comment="" disabled="False" id="id3D75869D" position="2">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -2977,8 +2733,7 @@
             <NATRuleOptions>
               <Option name="id"/>
             </NATRuleOptions>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3D7586D1" position="3">
+          </NATRule><NATRule comment="" disabled="False" id="id3D7586D1" position="3">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -3000,8 +2755,7 @@
             <NATRuleOptions>
               <Option name="id"/>
             </NATRuleOptions>
-          </NATRule>
-          <NATRule comment="negation in NAT is not supported&#10;in ipf yet" disabled="True" id="id3B0C6390" position="4">
+          </NATRule><NATRule comment="negation in NAT is not supported&#10;in ipf yet" disabled="True" id="id3B0C6390" position="4">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3023,8 +2777,7 @@
             <NATRuleOptions>
               <Option name="id"/>
             </NATRuleOptions>
-          </NATRule>
-          <NATRule disabled="False" id="id3B202AFF" position="5">
+          </NATRule><NATRule disabled="False" id="id3B202AFF" position="5">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3044,8 +2797,7 @@
               <ServiceRef ref="tcp-SSH"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3D757CC5" position="6">
+          </NATRule><NATRule comment="" disabled="False" id="id3D757CC5" position="6">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3066,8 +2818,7 @@
               <ServiceRef ref="id3B4FF09A"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3D757E01" position="7">
+          </NATRule><NATRule comment="" disabled="False" id="id3D757E01" position="7">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3088,8 +2839,7 @@
               <ServiceRef ref="id3B4FF09A"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3D757F29" position="8">
+          </NATRule><NATRule comment="" disabled="False" id="id3D757F29" position="8">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3110,8 +2860,7 @@
               <ServiceRef ref="id3B4FF09A"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="True" id="id3E798041" position="9">
+          </NATRule><NATRule disabled="True" id="id3E798041" position="9">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3131,8 +2880,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id46CFC34328618" position="10">
+          </NATRule><NATRule comment="" disabled="False" id="id46CFC34328618" position="10">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3152,21 +2900,17 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-        </NAT>
-        <Policy id="id3B0C639E">
+          </NATRule></NAT>
+          <Policy id="id3B0C639E" name="Policy">
           <PolicyRule action="Deny" comment="Anti-spoofing rule" direction="Inbound" disabled="False" id="id3B0C63E3" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B0C6380"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3B0C63E1"/>
             </Itf>
             <PolicyRuleOptions>
@@ -3177,14 +2921,11 @@
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B0C6380"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3B0C63E1"/>
             </Itf>
             <PolicyRuleOptions>
@@ -3194,14 +2935,11 @@
           <PolicyRule action="Deny" direction="Both" disabled="False" id="id3B54C977" log="True" position="2">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="icmp-ping_request"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3B0C63E1"/>
             </Itf>
             <PolicyRuleOptions>
@@ -3211,14 +2949,11 @@
           <PolicyRule action="Deny" direction="Both" disabled="False" id="id3B54F071" log="True" position="3">
             <Src neg="True">
               <ObjectRef ref="id3B022266"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="icmp-ping_request"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3B0C63E1"/>
             </Itf>
             <PolicyRuleOptions>
@@ -3228,17 +2963,13 @@
           <PolicyRule action="Accept" comment="hostF has the same IP address as firewal." disabled="False" id="id3B0C639F" log="True" position="4">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3AFC191C"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="icmp-ping_request"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -3249,17 +2980,13 @@
             <Src neg="True">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="icmp-Unreachables"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -3271,17 +2998,13 @@
             <Src neg="True">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3B0C6380"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="icmp-Unreachables"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -3292,19 +3015,15 @@
           <PolicyRule action="Deny" comment="testing negation in service field" disabled="True" id="id3B0C63BF" log="True" position="7">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
-            </Dst>
-            <Srv neg="True">
+            </Dst><Srv neg="True">
               <ServiceRef ref="tcp-SMTP"/>
               <ServiceRef ref="tcp-SSH"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -3315,17 +3034,13 @@
           <PolicyRule action="Accept" comment="'masquerading' rule" disabled="False" id="id3B0C63CB" log="False" position="8">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -3335,18 +3050,14 @@
           <PolicyRule action="Accept" disabled="True" id="id3D85069A" log="True" position="9">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3D850651"/>
               <ObjectRef ref="id3D58227E"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -3354,17 +3065,13 @@
           <PolicyRule action="Deny" comment="'catch all' rule" disabled="False" id="id3B0C63D5" log="True" position="10">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -3372,29 +3079,27 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-        </Policy>
-        <Routing id="id3B0C6380-routing"/>
-        <Interface bridgeport="False" dyn="False" id="id3B0C63DF" name="eth0" security_level="100" unnum="False" unprotected="False">
+          </Policy>
+          
+          <Routing id="id3B0C6380-routing" name="Routing">
+          </Routing>
+          <Interface bridgeport="False" dyn="False" id="id3B0C63DF" name="eth0" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="192.168.1.1" id="id3B0C63DF-ipv4" name="address" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="True" id="id3B0C63E1" label="" name="eth1" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="True" id="id3B0C63E1" label="" name="eth1" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="0.0.0.0" comment="" id="id3B0C63E1-ipv4" name="firewall4:eth1" netmask="0.0.0.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3B0C63F3" name="eth2" security_level="100" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3B0C63F3" name="eth2" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="192.168.2.1" comment="" id="id3B0C63F3-ipv4" name="firewall4:eth2" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3B0C63F5" name="lo" security_level="100" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3B0C63F5" name="lo" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="127.0.0.1" id="id3B0C63F5-ipv4" name="address" netmask="255.0.0.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3CD88A77" label="" name="eth3" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3CD88A77" label="" name="eth3" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="222.222.222.222" comment="" id="id3CD88A77-ipv4" name="firewall4:eth3" netmask="255.255.255.0"/>
         </Interface>
-        <Management address="222.222.222.222">
+          <Management address="222.222.222.222">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
           <FWBDManagement enabled="True" identity="" port="9999"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
-        <FirewallOptions>
+          <FirewallOptions>
           <Option name="accept_established">False</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
@@ -3468,24 +3173,21 @@
           <Option name="sshArgs"/>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
-      </Firewall>
+          </Firewall>
       <Firewall comment="testing rules with broadcasts" host_OS="freebsd" id="id3C69BD4F" lastCompiled="1157929210" lastInstalled="0" lastModified="0" name="firewall7" platform="ipf" ro="False">
-        <NAT id="id3C69BD50"/>
-        <Policy id="id3C69BD51">
+        <NAT id="id3C69BD50" name="NAT">
+          </NAT>
+          <Policy id="id3C69BD51" name="Policy">
           <PolicyRule action="Deny" direction="Inbound" disabled="False" id="id3C69BDE1" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3B64FFAC"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3C69BD5C"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -3495,17 +3197,13 @@
           <PolicyRule action="Deny" direction="Inbound" disabled="False" id="id3CF5B373" log="True" position="1">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3C69BD4F"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3C69BD5E"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -3515,44 +3213,38 @@
           <PolicyRule action="Accept" comment="" disabled="False" id="id3C69BF13" log="False" position="2">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3B64FFAC"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="udp-bootpc"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-        </Policy>
-        <Routing id="id3C69BD4F-routing"/>
-        <Interface bridgeport="False" dyn="False" id="id3C69BD5C" name="eth0" security_level="100" unnum="False" unprotected="False">
+          </Policy>
+          
+          <Routing id="id3C69BD4F-routing" name="Routing">
+          </Routing>
+          <Interface bridgeport="False" dyn="False" id="id3C69BD5C" name="eth0" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="192.168.1.1" id="id3C69BD5C-ipv4" name="address" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3C69BD5E" name="eth1" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3C69BD5E" name="eth1" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="22.22.22.22" id="id3C69BD5E-ipv4" name="address" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3C69BD68" name="eth2" security_level="100" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3C69BD68" name="eth2" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="192.168.2.1" id="id3C69BD68-ipv4" name="address" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3C69BD6A" name="lo" security_level="100" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3C69BD6A" name="lo" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="127.0.0.1" id="id3C69BD6A-ipv4" name="address" netmask="255.0.0.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3C69BD6C" name="eth3" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3C69BD6C" name="eth3" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="22.22.23.23" id="id3C69BD6C-ipv4" name="address" netmask="255.255.255.0"/>
         </Interface>
-        <Management address="22.22.23.23">
+          <Management address="22.22.23.23">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
           <FWBDManagement enabled="True" identity="" port="9999"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
-        <FirewallOptions>
+          <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
@@ -3609,21 +3301,19 @@
           <Option name="use_ip_tool">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
-      </Firewall>
+          </Firewall>
       <Firewall comment="firewall protects host it is running on" host_OS="freebsd" id="id3AF5A2BA" lastCompiled="1157929215" lastInstalled="0" lastModified="0" name="host" platform="ipf" ro="False">
-        <NAT id="id3AF5A2BD"/>
-        <Policy id="id3AF5A2BC">
+        <NAT id="id3AF5A2BD" name="NAT">
+          </NAT>
+          <Policy id="id3AF5A2BC" name="Policy">
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id3BD8ECD0" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="id3AF5A2BA"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3AF5A2BA"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3AF5A2CB"/>
             </Itf>
             <PolicyRuleOptions/>
@@ -3631,14 +3321,11 @@
           <PolicyRule action="Accept" comment="allow everything on loopback" direction="Inbound" disabled="False" id="id3AFB70C7" log="False" position="1">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3AF5A2BA"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3AFB7090"/>
             </Itf>
             <PolicyRuleOptions/>
@@ -3646,14 +3333,11 @@
           <PolicyRule action="Accept" comment="allow everything on loopback" direction="Outbound" disabled="False" id="id3AFB70CF" log="False" position="2">
             <Src neg="False">
               <ObjectRef ref="id3AF5A2BA"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3AFB7090"/>
             </Itf>
             <PolicyRuleOptions/>
@@ -3661,14 +3345,11 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id3BD8ECC6" log="True" position="3">
             <Src neg="False">
               <ObjectRef ref="id3AF5A2BA"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3AF5A2BA"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3AFB7090"/>
             </Itf>
             <PolicyRuleOptions/>
@@ -3676,17 +3357,13 @@
           <PolicyRule action="Deny" comment="block fragments" direction="Both" disabled="False" id="id3AF5A74B" log="True" position="4">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3AF5A2BA"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="ip-IP_Fragments"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -3696,22 +3373,18 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id3AF5A73A" log="False" position="5">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3AF5A2BA"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-SMTP"/>
               <ServiceRef ref="tcp-HTTP"/>
               <ServiceRef ref="tcp-SSH"/>
               <ServiceRef ref="tcp-FTP"/>
               <ServiceRef ref="tcp-Telnet"/>
               <ServiceRef ref="icmp-Unreachables"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -3719,17 +3392,13 @@
           <PolicyRule action="Accept" comment="allow all outgoing connections" direction="Both" disabled="False" id="id3AF5A757" log="False" position="6">
             <Src neg="False">
               <ObjectRef ref="id3AF5A2BA"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -3737,37 +3406,34 @@
           <PolicyRule action="Deny" comment="'catch all' rule" direction="Both" disabled="False" id="id3AF5A762" log="True" position="7">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-        </Policy>
-        <Routing id="id3AF5A2BA-routing"/>
-        <Interface bridgeport="False" dyn="False" id="id3AF5A2CB" name="eth0" security_level="0" unnum="False" unprotected="False">
+          </Policy>
+          
+          <Routing id="id3AF5A2BA-routing" name="Routing">
+          </Routing>
+          <Interface bridgeport="False" dyn="False" id="id3AF5A2CB" name="eth0" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="22.22.22.22" id="id3AF5A2CB-ipv4" name="address" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3AFB7090" name="lo" security_level="100" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3AFB7090" name="lo" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="127.0.0.1" id="id3AFB7090-ipv4" name="address" netmask="255.0.0.0"/>
         </Interface>
-        <Management address="127.0.0.1">
+          <Management address="127.0.0.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
           <FWBDManagement enabled="True" identity="" port="9999"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
-        <FirewallOptions>
+          <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP host prohibited</Option>
@@ -3822,9 +3488,9 @@
           <Option name="use_ip_tool">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
-      </Firewall>
+          </Firewall>
       <Firewall comment="" host_OS="freebsd" id="id3D582236" lastCompiled="1157929212" lastInstalled="0" lastModified="0" name="firewall8" platform="ipf" ro="False">
-        <NAT id="id3D58223A">
+        <NAT id="id3D58223A" name="NAT">
           <NATRule disabled="False" id="id3D58237B" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -3845,8 +3511,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3D5823A5" position="1">
+          </NATRule><NATRule comment="" disabled="False" id="id3D5823A5" position="1">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3866,8 +3531,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3D5823B9" position="2">
+          </NATRule><NATRule comment="" disabled="False" id="id3D5823B9" position="2">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3887,8 +3551,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3D58245E" position="3">
+          </NATRule><NATRule disabled="False" id="id3D58245E" position="3">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3908,8 +3571,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3D58236D" position="4">
+          </NATRule><NATRule disabled="False" id="id3D58236D" position="4">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3929,8 +3591,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3D58235F" position="5">
+          </NATRule><NATRule disabled="False" id="id3D58235F" position="5">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3950,8 +3611,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3D582472" position="6">
+          </NATRule><NATRule disabled="False" id="id3D582472" position="6">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3971,8 +3631,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3D58249D" position="7">
+          </NATRule><NATRule comment="" disabled="False" id="id3D58249D" position="7">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3992,8 +3651,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3D5825CC" position="8">
+          </NATRule><NATRule comment="" disabled="False" id="id3D5825CC" position="8">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4013,23 +3671,18 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-        </NAT>
-        <Policy id="id3D582239">
+          </NATRule></NAT>
+          <Policy id="id3D582239" name="Policy">
           <PolicyRule action="Accept" disabled="False" id="id3D5822AA" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3D582236"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-SSH"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -4037,17 +3690,13 @@
           <PolicyRule action="Accept" disabled="False" id="id3D5822B5" log="False" position="1">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3D582242"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-SSH"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -4055,17 +3704,13 @@
           <PolicyRule action="Accept" disabled="False" id="id3D582294" log="False" position="2">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3D582244"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-SSH"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -4073,17 +3718,13 @@
           <PolicyRule action="Accept" disabled="False" id="id3D58228A" log="False" position="3">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3D582245"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-SSH"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -4091,42 +3732,37 @@
           <PolicyRule action="Deny" disabled="False" id="id3D5822A0" log="True" position="4">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-        </Policy>
-        <Routing id="id3D582236-routing"/>
-        <Interface bridgeport="False" comment="" dyn="False" id="id3D58223F" label="" name="eth0" security_level="100" unnum="False" unprotected="False">
+          </Policy>
+          
+          <Routing id="id3D582236-routing" name="Routing">
+          </Routing>
+          <Interface bridgeport="False" comment="" dyn="False" id="id3D58223F" label="" name="eth0" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="192.168.1.1" comment="" id="id3D582241" name="firewall8:eth0" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" comment="" dyn="False" id="id3D582242" label="" name="eth1" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" comment="" dyn="False" id="id3D582242" label="" name="eth1" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="33.33.33.33" comment="" id="id3D582244" name="firewall8:eth1:0" netmask="255.255.255.0"/>
           <IPv4 address="33.33.33.34" comment="" id="id3D582245" name="firewall8:eth1:1" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" comment="" dyn="False" id="id3E5F1E5D" label="" mgmt="False" name="lo" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" comment="" dyn="False" id="id3E5F1E5D" label="" mgmt="False" name="lo" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="127.0.0.1" comment="" id="id3E5F1E5F" name="firewall8:lo(ip)" netmask="255.0.0.0"/>
-        </Interface>
-        <Interface bridgeport="False" comment="" dyn="True" id="id3EE260BD" label="" mgmt="False" name="ppp0" security_level="0" unnum="False" unprotected="False"/>
-        <Management address="33.33.33.33">
+        </Interface><Interface bridgeport="False" comment="" dyn="True" id="id3EE260BD" label="" mgmt="False" name="ppp0" security_level="0" unnum="False" unprotected="False"/>
+          <Management address="33.33.33.33">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
           <FWBDManagement enabled="True" identity="" port="9999"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
-        <FirewallOptions>
+          <FirewallOptions>
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="check_shading">False</Option>
           <Option name="cmdline"/>
@@ -4154,9 +3790,9 @@
           <Option name="snmp_description"/>
           <Option name="snmp_location"/>
         </FirewallOptions>
-      </Firewall>
+          </Firewall>
       <Firewall comment="" host_OS="freebsd" id="id3DF3D0AD" lastCompiled="1157929213" lastInstalled="0" lastModified="0" name="firewall9" platform="ipf" ro="False">
-        <NAT id="id3DF3D0AE">
+        <NAT id="id3DF3D0AE" name="NAT">
           <NATRule disabled="False" id="id3DF3D0AF" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -4177,8 +3813,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3DF3D0BD" position="1">
+          </NATRule><NATRule comment="" disabled="False" id="id3DF3D0BD" position="1">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -4198,8 +3833,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3DF3D0CB" position="2">
+          </NATRule><NATRule comment="" disabled="False" id="id3DF3D0CB" position="2">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -4219,8 +3853,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3DF3D0D9" position="3">
+          </NATRule><NATRule disabled="False" id="id3DF3D0D9" position="3">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4240,8 +3873,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3DF3D0E7" position="4">
+          </NATRule><NATRule disabled="False" id="id3DF3D0E7" position="4">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4261,8 +3893,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3DF3D0F5" position="5">
+          </NATRule><NATRule disabled="False" id="id3DF3D0F5" position="5">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4282,8 +3913,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id3DF3D103" position="6">
+          </NATRule><NATRule disabled="False" id="id3DF3D103" position="6">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4303,8 +3933,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3DF3D111" position="7">
+          </NATRule><NATRule comment="" disabled="False" id="id3DF3D111" position="7">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4324,8 +3953,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3E65B753" position="8">
+          </NATRule><NATRule comment="" disabled="False" id="id3E65B753" position="8">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4345,8 +3973,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id3DF3D11F" position="9">
+          </NATRule><NATRule comment="" disabled="False" id="id3DF3D11F" position="9">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4366,23 +3993,18 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-        </NAT>
-        <Policy id="id3DF3D12D">
+          </NATRule></NAT>
+          <Policy id="id3DF3D12D" name="Policy">
           <PolicyRule action="Deny" direction="Inbound" disabled="False" id="id3DF3DFB0" log="True" position="0">
             <Src neg="True">
               <ObjectRef ref="id3B665643"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3DF3D163"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -4392,18 +4014,14 @@
           <PolicyRule action="Accept" direction="Inbound" disabled="False" id="id3DF3E09E" log="False" position="1">
             <Src neg="False">
               <ObjectRef ref="id3B665643"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="host-hostA"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-SSH"/>
               <ServiceRef ref="sg-Useful_ICMP"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3DF3D163"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -4412,17 +4030,13 @@
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3DF3D0AD"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3DF3D163"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -4430,17 +4044,13 @@
           <PolicyRule action="Accounting" direction="Both" disabled="False" id="id3E5F1BBD" log="False" position="3">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -4450,17 +4060,13 @@
           <PolicyRule action="Accounting" direction="Both" disabled="False" id="id3E5F1BB3" log="True" position="4">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -4470,17 +4076,13 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id3DF3D12E" log="False" position="5">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3DF3D0AD"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-SSH"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -4488,17 +4090,13 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id3DF3D563" log="False" position="6">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -4506,40 +4104,36 @@
           <PolicyRule action="Deny" direction="Both" disabled="False" id="id3DF3D156" log="True" position="7">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-        </Policy>
-        <Routing id="id3DF3D0AD-routing"/>
-        <Interface bridgeport="False" comment="" dyn="False" id="id3DF3D160" label="" mgmt="False" name="le0" security_level="100" unnum="False" unprotected="False">
+          </Policy>
+          
+          <Routing id="id3DF3D0AD-routing" name="Routing">
+          </Routing>
+          <Interface bridgeport="False" comment="" dyn="False" id="id3DF3D160" label="" mgmt="False" name="le0" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="192.168.1.1" comment="" id="id3DF3D161" name="firewall9:le0:ip" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" comment="" dyn="False" id="id3DF3D163" label="" mgmt="False" name="le1" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" comment="" dyn="False" id="id3DF3D163" label="" mgmt="False" name="le1" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="22.22.22.22" comment="" id="id3DF3D164" name="firewall9:le1:ip" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" comment="" dyn="False" id="id3E5F2278" label="" mgmt="False" name="lo0" security_level="100" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" comment="" dyn="False" id="id3E5F2278" label="" mgmt="False" name="lo0" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="127.0.0.1" comment="" id="id3E5F227A" name="firewall9:lo(ip)" netmask="255.0.0.0"/>
         </Interface>
-        <Management address="22.22.22.22">
+          <Management address="22.22.22.22">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
           <FWBDManagement enabled="True" identity="" port="9999"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
-        <FirewallOptions>
+          <FirewallOptions>
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="check_shading">False</Option>
           <Option name="cmdline"/>
@@ -4569,24 +4163,21 @@
           <Option name="snmp_description"/>
           <Option name="snmp_location"/>
         </FirewallOptions>
-      </Firewall>
+          </Firewall>
       <Firewall comment="" host_OS="freebsd" id="id3FCA516A" inactive="False" lastCompiled="1157929196" lastInstalled="0" lastModified="1156049389" name="firewall10" platform="ipf" ro="False" version="">
-        <NAT id="id3FCA516B"/>
-        <Policy id="id3FCA51F8">
+        <NAT id="id3FCA516B" name="NAT">
+          </NAT>
+          <Policy id="id3FCA51F8" name="Policy">
           <PolicyRule action="Accounting" disabled="False" id="id3FCA51F9" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -4600,23 +4191,19 @@
               <ObjectRef ref="id3D58227A"/>
               <ObjectRef ref="id3FCA52D5"/>
               <ObjectRef ref="id3FCA52DB"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3FCA558D"/>
               <ObjectRef ref="id3FCA5593"/>
               <ObjectRef ref="id3FCA534B"/>
               <ObjectRef ref="id3FCA5351"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
               <ServiceRef ref="tcp-FTP"/>
               <ServiceRef ref="tcp-SMTP"/>
               <ServiceRef ref="tcp-NNTP"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -4624,18 +4211,14 @@
           <PolicyRule action="Accept" disabled="False" id="id3FCC3AD6" log="False" position="2">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3FCA516A"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sg-Useful_ICMP"/>
               <ServiceRef ref="tcp-SSH"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -4647,23 +4230,19 @@
               <ObjectRef ref="id3D58227A"/>
               <ObjectRef ref="id3FCA52D5"/>
               <ObjectRef ref="id3FCA52DB"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3FCA558D"/>
               <ObjectRef ref="id3FCA5593"/>
               <ObjectRef ref="id3FCA534B"/>
               <ObjectRef ref="id3FCA5351"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
               <ServiceRef ref="tcp-FTP"/>
               <ServiceRef ref="tcp-SMTP"/>
               <ServiceRef ref="tcp-NNTP"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -4673,23 +4252,19 @@
           <PolicyRule action="Deny" comment="" disabled="False" id="id3FCC1E1A" log="False" position="4">
             <Src neg="False">
               <ObjectRef ref="host-hostA"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3FCA558D"/>
               <ObjectRef ref="id3FCA5593"/>
               <ObjectRef ref="id3FCA534B"/>
               <ObjectRef ref="id3FCA5351"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
               <ServiceRef ref="tcp-FTP"/>
               <ServiceRef ref="tcp-SMTP"/>
               <ServiceRef ref="tcp-NNTP"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -4703,20 +4278,16 @@
               <ObjectRef ref="id3D58227A"/>
               <ObjectRef ref="id3FCA52D5"/>
               <ObjectRef ref="id3FCA52DB"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3FCA558D"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
               <ServiceRef ref="tcp-FTP"/>
               <ServiceRef ref="tcp-SMTP"/>
               <ServiceRef ref="tcp-NNTP"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -4730,20 +4301,16 @@
               <ObjectRef ref="id3D58227A"/>
               <ObjectRef ref="id3FCA52D5"/>
               <ObjectRef ref="id3FCA52DB"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3FCA558D"/>
               <ObjectRef ref="id3FCA5593"/>
               <ObjectRef ref="id3FCA534B"/>
               <ObjectRef ref="id3FCA5351"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -4753,43 +4320,38 @@
           <PolicyRule action="Deny" disabled="False" id="id3FCA5221" log="True" position="7">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-        </Policy>
-        <Routing id="id3FCA516A-routing"/>
-        <Interface bridgeport="False" comment="" dyn="False" id="id3FCA522B" label="fw10:fxp0" mgmt="False" name="fxp0" security_level="100" unnum="False" unprotected="False">
+          </Policy>
+          
+          <Routing id="id3FCA516A-routing" name="Routing">
+          </Routing>
+          <Interface bridgeport="False" comment="" dyn="False" id="id3FCA522B" label="fw10:fxp0" mgmt="False" name="fxp0" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="192.168.1.1" comment="" id="id3FCA522C" name="firewall9:eth0" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" comment="" dyn="False" id="id3FCA522E" label="fw10:fxp1" mgmt="False" name="fxp1" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" comment="" dyn="False" id="id3FCA522E" label="fw10:fxp1" mgmt="False" name="fxp1" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="22.22.22.22" comment="" id="id3FCA522F" name="firewall9:eth1:0" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" comment="" dyn="False" id="id3FCA5251" label="" mgmt="False" name="lo0" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" comment="" dyn="False" id="id3FCA5251" label="" mgmt="False" name="lo0" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="127.0.0.1" comment="" id="id3FCA5252" name="firewall9:lo(ip)" netmask="255.0.0.0"/>
-        </Interface>
-        <Interface bridgeport="False" comment="" dyn="False" id="id3FCA5535" label="fw10:fxp2" mgmt="False" name="fxp2" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" comment="" dyn="False" id="id3FCA5535" label="fw10:fxp2" mgmt="False" name="fxp2" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="192.168.2.0" comment="" id="id3FCA5537" name="firewall10:fw10:fxp2(ip)" netmask="255.255.255.0"/>
         </Interface>
-        <Management address="192.168.2.0">
+          <Management address="192.168.2.0">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
           <FWBDManagement enabled="True" identity="" port="9999"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
-        <FirewallOptions>
+          <FirewallOptions>
           <Option name="accept_new_tcp_with_no_syn">False</Option>
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="check_shading">False</Option>
@@ -4822,9 +4384,9 @@
           <Option name="snmp_description"/>
           <Option name="snmp_location"/>
         </FirewallOptions>
-      </Firewall>
+          </Firewall>
       <Firewall comment="" host_OS="freebsd" id="id3FF5DC0E" lastCompiled="1172425374" lastInstalled="0" lastModified="0" name="firewall11" platform="ipf" ro="False">
-        <NAT id="id3FF5DC12">
+        <NAT id="id3FF5DC12" name="NAT">
           <NATRule disabled="False" id="id3FF5DC26" position="0">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
@@ -4845,23 +4407,18 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-        </NAT>
-        <Policy id="id3FF5DC11">
+          </NATRule></NAT>
+          <Policy id="id3FF5DC11" name="Policy">
           <PolicyRule action="Accept" direction="Inbound" disabled="False" id="id3FF5DC82" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3FF5DC19"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id3FF5DC19"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -4869,17 +4426,13 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id3FF5DC56" log="False" position="1">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3FF5DC0E"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -4887,38 +4440,32 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id3FF5DC61" log="False" position="2">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id3FF5DC19"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-        </Policy>
-        <Routing id="id3FF5DC0E-routing"/>
-        <Interface bridgeport="False" comment="" dyn="False" id="id3FF5DC15" label="" mgmt="False" name="fxp1" network_zone="sysid0" security_level="100" unnum="True" unprotected="False"/>
-        <Interface bridgeport="False" comment="" dyn="True" id="id3FF5DC17" label="" mgmt="False" name="ng1" network_zone="sysid0" security_level="100" unnum="False" unprotected="False"/>
-        <Interface bridgeport="False" comment="" dyn="True" id="id3FF5DC19" label="" mgmt="False" name="ng0" network_zone="sysid0" security_level="0" unnum="False" unprotected="False"/>
-        <Interface bridgeport="False" comment="" dyn="False" id="id3FF5DC1B" label="" mgmt="False" name="fxp0" network_zone="sysid0" security_level="100" unnum="False" unprotected="False">
+          </Policy>
+          
+          <Routing id="id3FF5DC0E-routing" name="Routing">
+          </Routing>
+          <Interface bridgeport="False" comment="" dyn="False" id="id3FF5DC15" label="" mgmt="False" name="fxp1" network_zone="sysid0" security_level="100" unnum="True" unprotected="False"/><Interface bridgeport="False" comment="" dyn="True" id="id3FF5DC17" label="" mgmt="False" name="ng1" network_zone="sysid0" security_level="100" unnum="False" unprotected="False"/><Interface bridgeport="False" comment="" dyn="True" id="id3FF5DC19" label="" mgmt="False" name="ng0" network_zone="sysid0" security_level="0" unnum="False" unprotected="False"/><Interface bridgeport="False" comment="" dyn="False" id="id3FF5DC1B" label="" mgmt="False" name="fxp0" network_zone="sysid0" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="10.0.0.1" id="id3FF5DC1D" name="firewall11:fxp0(ip)" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" dyn="False" id="id3FF5DC1E" label="" name="lo0" network_zone="sysid0" security_level="100" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" dyn="False" id="id3FF5DC1E" label="" name="lo0" network_zone="sysid0" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="127.0.0.1" id="id3FF5DC20" name="firewall11:lo0(ip)" netmask="255.0.0.0"/>
         </Interface>
-        <Management address="127.0.0.1">
+          <Management address="127.0.0.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
           <FWBDManagement enabled="True" identity="" port="9999"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
-        <FirewallOptions>
+          <FirewallOptions>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="check_shading">False</Option>
@@ -4953,9 +4500,9 @@
           <Option name="snmp_description"/>
           <Option name="snmp_location"/>
         </FirewallOptions>
-      </Firewall>
+          </Firewall>
       <Firewall comment="Dynamic interface ppp0" host_OS="freebsd" id="id424A636E" lastCompiled="1157929209" lastInstalled="0" lastModified="0" name="firewall5" platform="ipf" ro="False" version="">
-        <NAT id="id424A63A6">
+        <NAT id="id424A63A6" name="NAT">
           <NATRule disabled="False" id="id424A63A7" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -4976,8 +4523,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id424A63B5" position="1">
+          </NATRule><NATRule comment="" disabled="False" id="id424A63B5" position="1">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -4997,8 +4543,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id424A63C3" position="2">
+          </NATRule><NATRule comment="" disabled="False" id="id424A63C3" position="2">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -5018,8 +4563,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id424A63D1" position="3">
+          </NATRule><NATRule disabled="False" id="id424A63D1" position="3">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5039,8 +4583,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id424A63DF" position="4">
+          </NATRule><NATRule disabled="False" id="id424A63DF" position="4">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5060,8 +4603,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id424A63ED" position="5">
+          </NATRule><NATRule disabled="False" id="id424A63ED" position="5">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5081,8 +4623,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id424A63FB" position="6">
+          </NATRule><NATRule disabled="False" id="id424A63FB" position="6">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5102,8 +4643,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id424A6409" position="7">
+          </NATRule><NATRule comment="" disabled="False" id="id424A6409" position="7">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5123,8 +4663,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id424A6417" position="8">
+          </NATRule><NATRule comment="" disabled="False" id="id424A6417" position="8">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5144,23 +4683,18 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-        </NAT>
-        <Policy id="id424A6373">
+          </NATRule></NAT>
+          <Policy id="id424A6373" name="Policy">
           <PolicyRule action="Accept" disabled="False" id="id424A6374" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id424A636E"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-SSH"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5168,17 +4702,13 @@
           <PolicyRule action="Accept" disabled="False" id="id424A96DA" log="False" position="1">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id424A6436"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-SSH"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5186,17 +4716,13 @@
           <PolicyRule action="Accept" disabled="False" id="id424A637E" log="False" position="2">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id424A642A"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-SSH"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5204,17 +4730,13 @@
           <PolicyRule action="Accept" disabled="False" id="id424A6388" log="False" position="3">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id424A642F"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-SSH"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5222,17 +4744,13 @@
           <PolicyRule action="Accept" disabled="False" id="id424A6392" log="False" position="4">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id424A6430"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-SSH"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5240,42 +4758,37 @@
           <PolicyRule action="Deny" disabled="False" id="id424A639C" log="True" position="5">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-        </Policy>
-        <Routing id="id424A636E-routing"/>
-        <Interface bridgeport="False" comment="" dyn="False" id="id424A6425" label="" name="eth0" security_level="100" unnum="False" unprotected="False">
+          </Policy>
+          
+          <Routing id="id424A636E-routing" name="Routing">
+          </Routing>
+          <Interface bridgeport="False" comment="" dyn="False" id="id424A6425" label="" name="eth0" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="192.168.1.1" comment="" id="id424A6429" name="firewall5:eth0:ip" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" comment="" dyn="False" id="id424A642A" label="" name="eth1" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" comment="" dyn="False" id="id424A642A" label="" name="eth1" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="33.33.33.33" comment="" id="id424A642F" name="firewall5:eth1:ip1" netmask="255.255.255.0"/>
           <IPv4 address="33.33.33.34" comment="" id="id424A6430" name="firewall5:eth1:ip2" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" comment="" dyn="False" id="id424A6431" label="" mgmt="False" name="lo" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" comment="" dyn="False" id="id424A6431" label="" mgmt="False" name="lo" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="127.0.0.1" comment="" id="id424A6435" name="firewall5:lo:ip" netmask="255.0.0.0"/>
-        </Interface>
-        <Interface bridgeport="False" comment="" dyn="True" id="id424A6436" label="" mgmt="False" name="ppp0" security_level="0" unnum="False" unprotected="False"/>
-        <Management address="33.33.33.33">
+        </Interface><Interface bridgeport="False" comment="" dyn="True" id="id424A6436" label="" mgmt="False" name="ppp0" security_level="0" unnum="False" unprotected="False"/>
+          <Management address="33.33.33.33">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
           <FWBDManagement enabled="True" identity="" port="9999"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
-        <FirewallOptions>
+          <FirewallOptions>
           <Option name="accept_new_tcp_with_no_syn">False</Option>
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="activationCmd"/>
@@ -5317,9 +4830,9 @@
           <Option name="snmp_description"/>
           <Option name="snmp_location"/>
         </FirewallOptions>
-      </Firewall>
+          </Firewall>
       <Firewall comment="testing DNSName object" host_OS="freebsd" id="id43867C1018346" lastCompiled="1157929202" lastInstalled="0" lastModified="0" name="firewall33" platform="ipf" ro="False" version="">
-        <NAT id="id43867C4818346">
+        <NAT id="id43867C4818346" name="NAT">
           <NATRule disabled="False" id="id43876E2618346" position="0">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
@@ -5340,8 +4853,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id43876E5218346" position="1">
+          </NATRule><NATRule comment="" disabled="False" id="id43876E5218346" position="1">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5361,8 +4873,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id43876E6918346" position="2">
+          </NATRule><NATRule disabled="False" id="id43876E6918346" position="2">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5383,8 +4894,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="True" id="id43876E7B18346" position="3">
+          </NATRule><NATRule disabled="True" id="id43876E7B18346" position="3">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5405,23 +4915,18 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-        </NAT>
-        <Policy id="id43867C1618346">
+          </NATRule></NAT>
+          <Policy id="id43867C1618346" name="Policy">
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id43867C2418346" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="id43869E8C18346"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5429,17 +4934,13 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id43869E9018346" log="False" position="1">
             <Src neg="False">
               <ObjectRef ref="id43869E8D18346"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5447,17 +4948,13 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id43869E9E18346" log="False" position="2">
             <Src neg="False">
               <ObjectRef ref="id43869E8E18346"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5465,17 +4962,13 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id43869EAA18346" log="False" position="3">
             <Src neg="False">
               <ObjectRef ref="id43869E8F18346"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5483,17 +4976,13 @@
           <PolicyRule action="Deny" direction="Both" disabled="False" id="id4386E38318346" log="False" position="4">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="True">
+            </Src><Dst neg="True">
               <ObjectRef ref="id43869E8C18346"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -5503,17 +4992,13 @@
           <PolicyRule action="Deny" direction="Both" disabled="False" id="id4386E37718346" log="False" position="5">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="True">
+            </Src><Dst neg="True">
               <ObjectRef ref="id43869E8D18346"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -5523,17 +5008,13 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id43867C3018346" log="False" position="6">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="True">
+            </Src><Dst neg="True">
               <ObjectRef ref="id43869E8E18346"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5541,17 +5022,13 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id4386C10D18346" log="False" position="7">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="True">
+            </Src><Dst neg="True">
               <ObjectRef ref="id43869E8F18346"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5559,18 +5036,14 @@
           <PolicyRule action="Accept" comment="" direction="Both" disabled="False" id="id438728A918346" log="False" position="8">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="True">
+            </Src><Dst neg="True">
               <ObjectRef ref="id43869E8C18346"/>
               <ObjectRef ref="id4387287918346"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5578,18 +5051,14 @@
           <PolicyRule action="Accept" comment="" direction="Both" disabled="False" id="id438728BA18346" log="False" position="9">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="True">
+            </Src><Dst neg="True">
               <ObjectRef ref="id43869E8D18346"/>
               <ObjectRef ref="id4387287A18346"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5597,18 +5066,14 @@
           <PolicyRule action="Accept" comment="" direction="Both" disabled="False" id="id438728CD18346" log="False" position="10">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="True">
+            </Src><Dst neg="True">
               <ObjectRef ref="id43869E8C18346"/>
               <ObjectRef ref="id4387287A18346"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5616,38 +5081,34 @@
           <PolicyRule action="Deny" direction="Both" disabled="False" id="id43867C3C18346" log="True" position="11">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-        </Policy>
-        <Routing id="id43867C5718346"/>
-        <Interface bridgeport="False" comment="VLAN interface" dyn="True" id="id43867C5818346" label="" mgmt="False" name="eth0.100" security_level="0" unnum="False" unprotected="False"/>
-        <Interface bridgeport="False" dyn="False" id="id43867C5918346" name="lo" security_level="100" unnum="False" unprotected="False">
+          </Policy>
+          
+          <Routing id="id43867C5718346" name="Routing">
+          </Routing>
+          <Interface bridgeport="False" comment="VLAN interface" dyn="True" id="id43867C5818346" label="" mgmt="False" name="eth0.100" security_level="0" unnum="False" unprotected="False"/><Interface bridgeport="False" dyn="False" id="id43867C5918346" name="lo" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="127.0.0.1" id="id43867C5B18346" name="firewall33:lo:ip" netmask="255.0.0.0"/>
-        </Interface>
-        <Interface bridgeport="False" comment="" dyn="False" id="id43867C5C18346" label="" mgmt="True" name="eth1" security_level="100" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" comment="" dyn="False" id="id43867C5C18346" label="" mgmt="True" name="eth1" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="192.168.1.100" comment="" id="id43867C5E18346" name="firewall33:eth1:ip" netmask="255.255.255.0"/>
         </Interface>
-        <Management address="192.168.1.100">
+          <Management address="192.168.1.100">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
           <FWBDManagement enabled="True" identity="" port="9999"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
-        <FirewallOptions>
+          <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
@@ -5731,9 +5192,9 @@
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
-      </Firewall>
+          </Firewall>
       <Firewall comment="testing AddressTable object" host_OS="freebsd" id="id4389EDAE18346" lastCompiled="1157929203" lastInstalled="0" lastModified="0" name="firewall34" platform="ipf" ro="False" version="">
-        <NAT id="id4389EE4818346">
+        <NAT id="id4389EE4818346" name="NAT">
           <NATRule disabled="True" id="id4389EEB018346" position="0">
             <OSrc neg="True">
               <ObjectRef ref="id4389EE9118346"/>
@@ -5754,8 +5215,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="True" id="id43891B6E674" position="1">
+          </NATRule><NATRule disabled="True" id="id43891B6E674" position="1">
             <OSrc neg="False">
               <ObjectRef ref="id43913DEA25682"/>
             </OSrc>
@@ -5775,23 +5235,18 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-        </NAT>
-        <Policy id="id4389EDB418346">
+          </NATRule></NAT>
+          <Policy id="id4389EDB418346" name="Policy">
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id4389EDB518346" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id4389EE9018346"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5799,17 +5254,13 @@
           <PolicyRule action="Deny" direction="Both" disabled="True" id="id4388CFEA674" log="True" position="1">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id4389EE9118346"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -5819,17 +5270,13 @@
           <PolicyRule action="Deny" direction="Both" disabled="True" id="id4390C25825682" log="True" position="2">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id4390C25525682"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -5839,18 +5286,14 @@
           <PolicyRule action="Deny" direction="Both" disabled="True" id="id4389EDC118346" log="False" position="3">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id4389EE9118346"/>
               <ObjectRef ref="id4388C37D674"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-SMTP"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -5860,17 +5303,13 @@
           <PolicyRule action="Deny" direction="Both" disabled="True" id="id4388CFF8674" log="True" position="4">
             <Src neg="False">
               <ObjectRef ref="id4389EE9118346"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -5881,17 +5320,13 @@
             <Src neg="False">
               <ObjectRef ref="id4389EE9118346"/>
               <ObjectRef ref="id4388C37D674"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -5902,17 +5337,13 @@
             <Src neg="True">
               <ObjectRef ref="id4389EE9118346"/>
               <ObjectRef ref="id4388C37D674"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5920,17 +5351,13 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id4389EEA118346" log="False" position="7">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="id43913DCB25682"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="tcp-SMTP"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5938,17 +5365,13 @@
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id4389EDCD18346" log="False" position="8">
             <Src neg="False">
               <ObjectRef ref="id43913DEA25682"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -5956,38 +5379,34 @@
           <PolicyRule action="Deny" direction="Both" disabled="False" id="id4389EE3C18346" log="True" position="9">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-        </Policy>
-        <Routing id="id4389EE8318346"/>
-        <Interface bridgeport="False" comment="VLAN interface" dyn="True" id="id4389EE8418346" label="" mgmt="False" name="eth0.100" security_level="0" unnum="False" unprotected="False"/>
-        <Interface bridgeport="False" dyn="False" id="id4389EE8518346" name="lo" security_level="100" unnum="False" unprotected="False">
+          </Policy>
+          
+          <Routing id="id4389EE8318346" name="Routing">
+          </Routing>
+          <Interface bridgeport="False" comment="VLAN interface" dyn="True" id="id4389EE8418346" label="" mgmt="False" name="eth0.100" security_level="0" unnum="False" unprotected="False"/><Interface bridgeport="False" dyn="False" id="id4389EE8518346" name="lo" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="127.0.0.1" id="id4389EE8718346" name="firewall34:lo:ip" netmask="255.0.0.0"/>
-        </Interface>
-        <Interface bridgeport="False" comment="" dyn="False" id="id4389EE8818346" label="" mgmt="True" name="eth1" security_level="100" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" comment="" dyn="False" id="id4389EE8818346" label="" mgmt="True" name="eth1" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="192.168.1.100" comment="" id="id4389EE8A18346" name="firewall34:eth1:ip" netmask="255.255.255.0"/>
         </Interface>
-        <Management address="192.168.1.100">
+          <Management address="192.168.1.100">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
           <FWBDManagement enabled="True" identity="" port="9999"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
-        <FirewallOptions>
+          <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
@@ -6071,9 +5490,9 @@
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
-      </Firewall>
+          </Firewall>
       <Firewall comment="Testing action Custom" host_OS="freebsd" id="id43F7C93131168" lastCompiled="1157929205" lastInstalled="0" lastModified="0" name="firewall35" platform="ipf" ro="False" version="">
-        <NAT id="id43F7C99A31168">
+        <NAT id="id43F7C99A31168" name="NAT">
           <NATRule disabled="False" id="id43F7C99B31168" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -6094,8 +5513,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id43F7C9A931168" position="1">
+          </NATRule><NATRule comment="" disabled="False" id="id43F7C9A931168" position="1">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -6115,8 +5533,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id43F7C9B731168" position="2">
+          </NATRule><NATRule comment="" disabled="False" id="id43F7C9B731168" position="2">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -6136,8 +5553,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id43F7C9C531168" position="3">
+          </NATRule><NATRule disabled="False" id="id43F7C9C531168" position="3">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6157,8 +5573,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id43F7C9D331168" position="4">
+          </NATRule><NATRule disabled="False" id="id43F7C9D331168" position="4">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6178,8 +5593,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id43F7C9E131168" position="5">
+          </NATRule><NATRule disabled="False" id="id43F7C9E131168" position="5">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6199,8 +5613,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule disabled="False" id="id43F7C9EF31168" position="6">
+          </NATRule><NATRule disabled="False" id="id43F7C9EF31168" position="6">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6220,8 +5633,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id43F7C9FD31168" position="7">
+          </NATRule><NATRule comment="" disabled="False" id="id43F7C9FD31168" position="7">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6241,8 +5653,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id43F7CA0B31168" position="8">
+          </NATRule><NATRule comment="" disabled="False" id="id43F7CA0B31168" position="8">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6262,8 +5673,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-          <NATRule comment="" disabled="False" id="id43F7CA1931168" position="9">
+          </NATRule><NATRule comment="" disabled="False" id="id43F7CA1931168" position="9">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6283,23 +5693,18 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
-          </NATRule>
-        </NAT>
-        <Policy id="id43F7C93731168">
+          </NATRule></NAT>
+          <Policy id="id43F7C93731168" name="Policy">
           <PolicyRule action="Custom" direction="Inbound" disabled="False" id="id43F7C93831168" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id43F7CA2B31168"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -6317,17 +5722,13 @@
           <PolicyRule action="Custom" comment="" direction="Inbound" disabled="False" id="id43F7D90631168" log="False" position="1">
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id43F7CA2B31168"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
@@ -6345,17 +5746,13 @@
           <PolicyRule action="Accept" comment="" direction="Inbound" disabled="False" id="id43F7D91731168" log="False" position="2">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="id43F7CA2B31168"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
@@ -6363,40 +5760,36 @@
           <PolicyRule action="Deny" direction="Both" disabled="False" id="id43F7C98E31168" log="True" position="3">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
+            </Src><Dst neg="False">
               <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
+            </Dst><Srv neg="False">
               <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
+            </Srv><Itf neg="False">
               <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
+            </Itf><When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-        </Policy>
-        <Routing id="id43F7CA2731168"/>
-        <Interface bridgeport="False" comment="" dyn="False" id="id43F7CA2831168" label="" mgmt="False" name="le0" security_level="100" unnum="False" unprotected="False">
+          </Policy>
+          
+          <Routing id="id43F7CA2731168" name="Routing">
+          </Routing>
+          <Interface bridgeport="False" comment="" dyn="False" id="id43F7CA2831168" label="" mgmt="False" name="le0" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="192.168.1.1" comment="" id="id43F7CA2A31168" name="firewall35:le0:ip" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" comment="" dyn="False" id="id43F7CA2B31168" label="" mgmt="False" name="le1" security_level="0" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" comment="" dyn="False" id="id43F7CA2B31168" label="" mgmt="False" name="le1" security_level="0" unnum="False" unprotected="False">
           <IPv4 address="22.22.22.22" comment="" id="id43F7CA2D31168" name="firewall35:le1:ip" netmask="255.255.255.0"/>
-        </Interface>
-        <Interface bridgeport="False" comment="" dyn="False" id="id43F7CA2E31168" label="" mgmt="False" name="lo0" security_level="100" unnum="False" unprotected="False">
+        </Interface><Interface bridgeport="False" comment="" dyn="False" id="id43F7CA2E31168" label="" mgmt="False" name="lo0" security_level="100" unnum="False" unprotected="False">
           <IPv4 address="127.0.0.1" comment="" id="id43F7CA3031168" name="firewall35:lo0:ip" netmask="255.0.0.0"/>
         </Interface>
-        <Management address="22.22.22.22">
+          <Management address="22.22.22.22">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
           <FWBDManagement enabled="True" identity="" port="9999"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
-        <FirewallOptions>
+          <FirewallOptions>
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="check_shading">False</Option>
           <Option name="cmdline"/>
@@ -6426,7 +5819,7 @@
           <Option name="snmp_description"/>
           <Option name="snmp_location"/>
         </FirewallOptions>
-      </Firewall>
+          </Firewall>
     </ObjectGroup>
     <IntervalGroup id="stdid11_1" name="Time"/>
   </Library>

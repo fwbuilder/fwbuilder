@@ -645,11 +645,9 @@ void ProjectPanel::updateTreeViewItemOrder()
 void ProjectPanel::setPolicyBranchTabName(libfwbuilder::RuleSet *subset)
 {
     assert(subset!=NULL);
-    PolicyRule *rule = PolicyRule::cast(subset->getParent());
     RuleSetView *rsv = ruleSetViews[subset];
     assert(rsv);
-    FWOptions *ropt = rule->getOptionsObject();
-    QString branchName = ropt->getStr("branch_name").c_str();
+    QString branchName = subset->getName().c_str();
     m_panel->ruleSets->setTabText(m_panel->ruleSets->indexOf(rsv),
                                        tr("%1").arg(branchName) );
 }
@@ -658,10 +656,7 @@ void ProjectPanel::addPolicyBranchTab(libfwbuilder::RuleSet *subset)
 {
     assert(subset!=NULL);
 
-    PolicyRule *rule = PolicyRule::cast(subset->getParent());
-    FWOptions *ropt = rule->getOptionsObject();
-    QString branchName = ropt->getStr("branch_name").c_str();
-
+    QString branchName = subset->getName().c_str();
     QStatusBar *sb = mainW->statusBar();
     sb->showMessage( tr("Building branch policy view '%1'...").arg(branchName) );
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,1000);
