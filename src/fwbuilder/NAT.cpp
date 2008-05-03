@@ -39,13 +39,13 @@ const char *NAT::TYPENAME={"NAT"};
  
 NAT::NAT() : RuleSet() 
 {
-    remStr("name");
+    setStr("name", "NAT");
     remStr("comment");
 }
 
 NAT::NAT(const FWObject *root,bool prepopulate) : RuleSet(root,prepopulate) 
 {
-    remStr("name");
+    setStr("name", "NAT");
     remStr("comment");
 }
 

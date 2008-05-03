@@ -44,11 +44,21 @@ class Policy : public RuleSet
     DECLARE_FWOBJECT_SUBTYPE(Policy);
 
 /* the following methods provide proper typization */
-    PolicyRule* getRuleByNum(int n) { return PolicyRule::cast(RuleSet::getRuleByNum(n)); }
-    PolicyRule* insertRuleAtTop() { return PolicyRule::cast(RuleSet::insertRuleAtTop()); }
-    PolicyRule* insertRuleBefore(int n){ return PolicyRule::cast(RuleSet::insertRuleBefore(n));}
-    PolicyRule* appendRuleAfter(int n){ return PolicyRule::cast(RuleSet::appendRuleAfter(n));}
-    PolicyRule* appendRuleAtBottom(){ return PolicyRule::cast(RuleSet::appendRuleAtBottom());}
+    PolicyRule* getRuleByNum(int n) {
+        return PolicyRule::cast(RuleSet::getRuleByNum(n));
+    }
+    PolicyRule* insertRuleAtTop() {
+        return PolicyRule::cast(RuleSet::insertRuleAtTop());
+    }
+    PolicyRule* insertRuleBefore(int n){
+        return PolicyRule::cast(RuleSet::insertRuleBefore(n));
+    }
+    PolicyRule* appendRuleAfter(int n){
+        return PolicyRule::cast(RuleSet::appendRuleAfter(n));
+    }
+    PolicyRule* appendRuleAtBottom(){
+        return PolicyRule::cast(RuleSet::appendRuleAtBottom());
+    }
     
     virtual Rule*   createRule();
 

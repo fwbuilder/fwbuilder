@@ -164,7 +164,7 @@ own compiler) we do not define content model for this element.
       **** Document structure, rest ****
 -->
 
-<!ELEMENT NATRule (OSrc,ODst,OSrv,TSrc,TDst,TSrv,When?, NATRuleOptions?, NAT?)>
+<!ELEMENT NATRule (OSrc,ODst,OSrv,TSrc,TDst,TSrv,When?, NATRuleOptions?)>
 <!ATTLIST NATRule
  id      ID       #REQUIRED
  disabled  %BOOLEAN;   "False"
@@ -235,7 +235,7 @@ own compiler) we do not define content model for this element.
 >
 
 
-<!ELEMENT PolicyRule (Src,Dst,Srv?,Itf?,When?,PolicyRuleOptions?,Policy?)>
+<!ELEMENT PolicyRule (Src,Dst,Srv?,Itf?,When?,PolicyRuleOptions?)>
 <!ATTLIST PolicyRule
  id       ID       #REQUIRED
  disabled  %BOOLEAN;   "False"
@@ -480,7 +480,7 @@ Interface can have the following attributes:
  host_OS              %STRING;    #IMPLIED
 >
 
-<!ELEMENT Firewall (NAT , Policy , Routing , Interface* , Management?, FirewallOptions?)>
+<!ELEMENT Firewall (NAT* , Policy* , Routing , Interface* , Management?, FirewallOptions?)>
 <!ATTLIST Firewall
  %STD_ATTRIBUTES;
  platform             %STRING;    #REQUIRED
@@ -494,17 +494,17 @@ Interface can have the following attributes:
 
 <!ELEMENT NAT (NATRule*)>
 <!ATTLIST NAT
- id       ID       #REQUIRED
+ %STD_ATTRIBUTES;
 >
 
 <!ELEMENT Policy (PolicyRule*)>
 <!ATTLIST Policy
- id       ID       #REQUIRED
+ %STD_ATTRIBUTES;
 >
 
 <!ELEMENT Routing (RoutingRule*)>
 <!ATTLIST Routing
- id       ID       #REQUIRED
+ %STD_ATTRIBUTES;
 >
 
 

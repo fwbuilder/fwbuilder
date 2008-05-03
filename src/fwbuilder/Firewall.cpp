@@ -140,18 +140,31 @@ xmlNodePtr Firewall::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
     FWObject *o;
-    o=getFirstByType( NAT::TYPENAME );
-    if (o) o->toXML(me);
+    for (FWObjectTypedChildIterator it = findByType(NAT::TYPENAME);
+         it != it.end(); ++it)
+    {
+        o = *it;
+        if (o) o->toXML(me);
+    }
+    for (FWObjectTypedChildIterator it = findByType(Policy::TYPENAME);
+         it != it.end(); ++it)
+    {
+        o = *it;
+        if (o) o->toXML(me);
+    }
+    for (FWObjectTypedChildIterator it = findByType(Routing::TYPENAME);
+         it != it.end(); ++it)
+    {
+        o = *it;
+        if (o) o->toXML(me);
+    }
 
-    o=getFirstByType( Policy::TYPENAME );
-    if (o) o->toXML(me);
-
-    o=getFirstByType( Routing::TYPENAME );
-    if (o) o->toXML(me);
-
-    for(FWObjectTypedChildIterator j=findByType(Interface::TYPENAME); j!=j.end(); ++j)
- 	if((o=(*j))!=NULL )
- 	    o->toXML(me);
+    for(FWObjectTypedChildIterator it = findByType(Interface::TYPENAME);
+        it != it.end(); ++it)
+    {
+ 	o = *it;
+        if (o) o->toXML(me);
+    }
 
     o=getFirstByType( Management::TYPENAME );
     if(o) o->toXML(me);
@@ -170,18 +183,18 @@ FWOptions* Firewall::getOptionsObject()
 
 Policy* Firewall::getPolicy() 
 { 
-    return(Policy::cast(getFirstByType(Policy::TYPENAME)));
+    return(Policy::cast(findObjectByName(Policy::TYPENAME, "Policy")));
 }
 
 NAT* Firewall::getNAT()    
 { 
-    return(NAT::cast(getFirstByType(NAT::TYPENAME)));
+    return(NAT::cast(findObjectByName(NAT::TYPENAME, "NAT")));
 }
 
 
 Routing* Firewall::getRouting()    
 {
-    return(Routing::cast(getFirstByType(Routing::TYPENAME)));
+    return(Routing::cast(findObjectByName(Routing::TYPENAME, "Routing")));
 }
 
 
@@ -198,6 +211,13 @@ bool  Firewall::validateChild(FWObject *o)
 	     otype==FirewallOptions::TYPENAME ));
 }
 
+/*
+ * find all references to object with id "old_id" in objects in rs
+ * (recursively) and replace them with references to object with id
+ * "new_id" Use this to find all references to old firewall with
+ * references to the new one when copying policy of the old one into
+ * the new one.
+ */
 void Firewall::replaceRef(FWObject *rs,
                           const string &old_id,const std::string &new_id)
 {
@@ -213,7 +233,8 @@ void Firewall::replaceRef(FWObject *rs,
     }
 }
 
-FWObject& Firewall::duplicate(const FWObject *obj, bool preserve_id) throw(FWException)
+FWObject& Firewall::duplicate(const FWObject *obj,
+                              bool preserve_id) throw(FWException)
 {
     string err="Error creating object with type: ";
 
@@ -227,25 +248,33 @@ FWObject& Firewall::duplicate(const FWObject *obj, bool preserve_id) throw(FWExc
 
     destroyChildren();
 
-    Policy   *op = Policy::cast(obj->getFirstByType(Policy::TYPENAME));
-    FWObject *pol = addCopyOf(op,preserve_id);
-    replaceRef(pol,obj->getId(), getId() );
+    for (FWObjectTypedChildIterator it = obj->findByType(Policy::TYPENAME);
+         it != it.end(); ++it)
+    {
+        addCopyOf(*it, preserve_id);
+    }
+    for (FWObjectTypedChildIterator it = obj->findByType(NAT::TYPENAME);
+         it != it.end(); ++it)
+    {
+        addCopyOf(*it, preserve_id);
+    }
+    for (FWObjectTypedChildIterator it = obj->findByType(Routing::TYPENAME);
+         it != it.end(); ++it)
+    {
+        addCopyOf(*it, preserve_id);
+    }
 
-    NAT      *on = NAT::cast(obj->getFirstByType(NAT::TYPENAME));
-    FWObject *nat = addCopyOf(on,preserve_id);
-    replaceRef(nat,obj->getId(), getId() );
+    replaceRef(this, obj->getId(), getId() );
 
-    Routing  *oroute = Routing::cast(obj->getFirstByType(Routing::TYPENAME));
-    FWObject *r = addCopyOf(oroute,preserve_id);
-    replaceRef(r,obj->getId(), getId() );  
-    
-    FWObjectTypedChildIterator m=obj->findByType(Interface::TYPENAME);
-    for ( ; m!=m.end(); ++m ) 
+    for (FWObjectTypedChildIterator m = obj->findByType(Interface::TYPENAME);
+         m!=m.end(); ++m ) 
     {
         FWObject *o   = *m;
         FWObject *o1  = addCopyOf(o,preserve_id);
-        replaceRef(pol, o->getId(),   o1->getId()   );
-        replaceRef(nat, o->getId(),   o1->getId()   );
+
+        replaceRef(this, o->getId(),   o1->getId()   );
+//        replaceRef(this, o->getId(),   o1->getId()   );
+
         o1->destroyChildren();
 
         FWObjectTypedChildIterator k=o->findByType(IPv4::TYPENAME);
@@ -256,9 +285,8 @@ FWObject& Firewall::duplicate(const FWObject *obj, bool preserve_id) throw(FWExc
 
             if (oa!=NULL && oa1!=NULL)
             {       
-                replaceRef(pol, oa->getId(),  oa1->getId() );
-                replaceRef(nat, oa->getId(),  oa1->getId() );
-//                if (ipolicy1) replaceRef(ipolicy1, oa->getId(),  oa1->getId() );
+                replaceRef(this, oa->getId(),  oa1->getId() );
+//                replaceRef(nat, oa->getId(),  oa1->getId() );
             }
         }
 
@@ -270,9 +298,8 @@ FWObject& Firewall::duplicate(const FWObject *obj, bool preserve_id) throw(FWExc
 
             if (opa!=NULL && opa1!=NULL)
             {       
-                replaceRef(pol, opa->getId(),  opa1->getId() );
-                replaceRef(nat, opa->getId(),  opa1->getId() );
-//                if (ipolicy1) replaceRef(ipolicy1, opa->getId(),  opa1->getId() );
+                replaceRef(this, opa->getId(),  opa1->getId() );
+//                replaceRef(nat, opa->getId(),  opa1->getId() );
             }
         }
     }

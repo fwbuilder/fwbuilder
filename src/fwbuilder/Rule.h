@@ -104,7 +104,9 @@ class Rule : public Group
 
     virtual bool isEmpty() const;
 
-    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+    virtual FWObject& shallowDuplicate(const FWObject *obj,
+                                       bool preserve_id = true)
+        throw(FWException);
 
     virtual FWOptions* getOptionsObject();
 

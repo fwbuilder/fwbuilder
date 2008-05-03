@@ -1,3 +1,17 @@
+2008-04-28  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* fwbuilder.dtd.in: Now there can be multiple child Policy and NAT
+	elements under Firewall element. Branch rule sets move from child
+	element under PolicyRule to under Firewall. Elements Policy and
+	NAT will now have the same set of "standard" attributes as other
+	objects, this includes name, comment, id and ro. Migration xslt
+	script adds attribute "name" with value "Policy" to all Policy
+	elements except branch rulesets. Branch rulesets are moved from
+	under PolicyRule to under Firewall and their name is taken from
+	the PolicyRuleOptions/Option with name "branch_name". NAT elements
+	get attribute "name" with value "NAT" (we never had NAT branches
+	so far).
+ 
 2008-04-21  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* DNSName.cpp (DNSName::fromXML): added support for attribute

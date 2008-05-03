@@ -31,6 +31,7 @@
 #include <fwbuilder/libfwbuilder-config.h>
 
 #include <fwbuilder/FWObjectDatabase.h>
+#include <fwbuilder/Firewall.h>
 #include <fwbuilder/Rule.h>
 #include <fwbuilder/RuleElement.h>
 #include <fwbuilder/Policy.h>
@@ -348,7 +349,16 @@ FWOptions* PolicyRule::getOptionsObject()
 
 RuleSet*   PolicyRule::getBranch()
 {
-    return RuleSet::cast( getFirstByType(Policy::TYPENAME) );
+    FWObject *fw = this;
+    while (fw && !Firewall::isA(fw)) fw = fw->getParent();
+    assert(fw!=NULL);
+    string branch_name = getOptionsObject()->getStr("branch_name");
+    if (!branch_name.empty())
+    {
+        return RuleSet::cast(
+            fw->findObjectByName(Policy::TYPENAME, branch_name));
+    } else
+        return NULL;
 }
 
 /***************************************************************************/
@@ -501,7 +511,14 @@ FWOptions* NATRule::getOptionsObject()
 
 RuleSet*   NATRule::getBranch()
 {
-    return RuleSet::cast( getFirstByType(NAT::TYPENAME) );
+    FWObject *fw = getParent()->getParent();
+    assert(fw!=NULL);
+    string branch_name = getOptionsObject()->getStr("branch_name");
+    if (!branch_name.empty())
+        return RuleSet::cast(fw->findObjectByName(NAT::TYPENAME,
+                                                  branch_name));
+    else
+        return NULL;
 }
 
 NATRule::NATRuleTypes NATRule::getRuleType() const
@@ -684,7 +701,14 @@ FWOptions* RoutingRule::getOptionsObject()
 
 RuleSet*   RoutingRule::getBranch()
 {
-    return RuleSet::cast( getFirstByType(Routing::TYPENAME) );
+    FWObject *fw = getParent()->getParent();
+    assert(fw!=NULL);
+    string branch_name = getOptionsObject()->getStr("branch_name");
+    if (!branch_name.empty())
+        return RuleSet::cast(fw->findObjectByName(Routing::TYPENAME,
+                                                  branch_name));
+    else
+        return NULL;
 }
 
 RoutingRule::RoutingRuleTypes RoutingRule::getRuleType() const
