@@ -8,6 +8,8 @@ exists(qmake.inc) {
   include( qmake.inc)
 }
 
+QT += network
+
 HEADERS +=  ../../../config.h \
 	    ../../gui/utils_no_qt.h \
 		../../gui/FWBTree.h \
@@ -33,7 +35,7 @@ contains( HAVE_ANTLR_RUNTIME, 1 ) {
 	DEFINES		 += $$ANTLR_DEFINES
 }
 
-INCLUDEPATH += ../../.. ../../gui/
+INCLUDEPATH += ../../.. ../../gui/ ../../gui/.ui
 
 QMAKE_COPY   = echo
 
