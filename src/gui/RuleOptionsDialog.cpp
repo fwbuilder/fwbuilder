@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id: RuleOptionsDialog.cpp,v 1.24 2007/07/14 21:08:42 vkurland Exp $
+  $Id: RuleOptionsDialog.cpp,v 1.26 2008/05/06 03:18:49 vkurland Exp $
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -116,6 +116,8 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
     m_dialog->ipt_limitSuffix->clear();
     m_dialog->ipt_limitSuffix->addItems(getScreenNames(limitSuffixes));
 
+    m_dialog->ipt_hashlimit_suffix->clear();
+    m_dialog->ipt_hashlimit_suffix->addItems(getScreenNames(limitSuffixes));
 
     data.clear();
 
@@ -167,17 +169,15 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
         data.registerOption( m_dialog->pf_max_src_states   , ropt,  "pf_max_src_states" );
 
         data.registerOption( m_dialog->pf_max_src_conn     , ropt,  "pf_max_src_conn" );
-        data.registerOption( m_dialog->pf_max_src_conn_overload_table     ,
-                             ropt,  "pf_max_src_conn_overload_table" );
-        data.registerOption( m_dialog->pf_max_src_conn_flush, ropt,  "pf_max_src_conn_flush" );
-        data.registerOption( m_dialog->pf_max_src_conn_global, ropt, "pf_max_src_conn_global" );
+        data.registerOption( m_dialog->pf_overload_table   , ropt,
+                             "pf_max_src_conn_overload_table" );
+        data.registerOption( m_dialog->pf_flush, ropt,  "pf_max_src_conn_flush" );
+        data.registerOption( m_dialog->pf_global, ropt, "pf_max_src_conn_global" );
 
-        data.registerOption( m_dialog->pf_max_src_conn_rate_num     , ropt,  "pf_max_src_conn_rate_num" );
-        data.registerOption( m_dialog->pf_max_src_conn_rate_seconds , ropt,  "pf_max_src_conn_rate_seconds" );
-        data.registerOption( m_dialog->pf_max_src_conn_rate_overload_table     ,
-                             ropt,  "pf_max_src_conn_rate_overload_table" );
-        data.registerOption( m_dialog->pf_max_src_conn_rate_flush, ropt,  "pf_max_src_conn_rate_flush" );
-        data.registerOption( m_dialog->pf_max_src_conn_rate_global, ropt, "pf_max_src_conn_rate_global" );
+        data.registerOption( m_dialog->pf_max_src_conn_rate_num     , ropt,
+                             "pf_max_src_conn_rate_num" );
+        data.registerOption( m_dialog->pf_max_src_conn_rate_seconds , ropt,
+                             "pf_max_src_conn_rate_seconds" );
     }
 
     if (platform=="ipfw")
@@ -221,16 +221,20 @@ void RuleOptionsDialog::changed()
 {
     //apply->setEnabled( true );
 
-    m_dialog->pf_max_src_nodes->setEnabled( m_dialog->pf_source_tracking->isChecked() );
-    m_dialog->pf_max_src_states->setEnabled( m_dialog->pf_source_tracking->isChecked() );
+    m_dialog->pf_max_src_nodes->setEnabled(
+        m_dialog->pf_source_tracking->isChecked() );
+    m_dialog->pf_max_src_states->setEnabled(
+        m_dialog->pf_source_tracking->isChecked() );
 
-    m_dialog->pf_max_src_conn_overload_table->setEnabled( m_dialog->pf_max_src_conn->value()>0 );
-    m_dialog->pf_max_src_conn_flush->setEnabled( m_dialog->pf_max_src_conn->value()>0 );
-    m_dialog->pf_max_src_conn_global->setEnabled( m_dialog->pf_max_src_conn->value()>0 );
+    bool enable_overload_options = (
+        m_dialog->pf_max_src_conn->value()>0 || (
+            m_dialog->pf_max_src_conn_rate_num->value()>0 &&
+            m_dialog->pf_max_src_conn_rate_seconds->value()>0)
+    );
 
-    m_dialog->pf_max_src_conn_rate_overload_table->setEnabled( m_dialog->pf_max_src_conn_rate_num->value()>0 && m_dialog->pf_max_src_conn_rate_seconds->value()>0);
-    m_dialog->pf_max_src_conn_rate_flush->setEnabled( m_dialog->pf_max_src_conn_rate_num->value()>0 && m_dialog->pf_max_src_conn_rate_seconds->value()>0 );
-    m_dialog->pf_max_src_conn_rate_global->setEnabled( m_dialog->pf_max_src_conn_rate_num->value()>0 && m_dialog->pf_max_src_conn_rate_seconds->value()>0 );
+    m_dialog->pf_overload_table->setEnabled(enable_overload_options);
+    m_dialog->pf_flush->setEnabled(enable_overload_options);
+    m_dialog->pf_global->setEnabled(enable_overload_options);
 
     emit changed_sign();
 }

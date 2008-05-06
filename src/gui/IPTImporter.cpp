@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id: IPTImporter.cpp,v 1.10 2008/02/11 01:30:39 vkurland Exp $
+  $Id: IPTImporter.cpp,v 1.11 2008/05/05 16:09:38 vkurland Exp $
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -460,7 +460,20 @@ void IPTImporter::pushPolicyRule()
     {
         action = PolicyRule::Tag;
         last_mark_rule = rule;
-        ropt->setStr("tagvalue", action_params["set_mark"]);
+        std::string mark_code = action_params["set_mark"];
+        std::istringstream str(mark_code);
+        int m_code = 0;
+
+        // check if the code is in hex
+        if (mark_code.find("0x")==0)
+        {
+            char c;
+            str >> c >> c >> std::hex >> m_code;
+        } else
+        {
+            str >> m_code;
+        }
+        ropt->setInt("tagvalue", m_code);
 //        if (current_chain=="PREROUTING")
 //            ropt->setBool("ipt_mark_prerouting",true);
     }

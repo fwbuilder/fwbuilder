@@ -118,6 +118,7 @@ string MangleTableCompiler_ipt::flushAndSetDefaultPolicy()
     PolicyCompiler_ipt::PrintRule *prp = createPrintRuleProcessor();
 
     res << prp->_declareTable();
+
     if (have_connmark)
     {
         res << prp->_startRuleLine()

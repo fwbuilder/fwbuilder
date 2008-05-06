@@ -425,7 +425,7 @@ target_options :
                 *dbg << " LOG LEVEL=" << LT(0)->getText();
             }
         |
-            SET_MARK INT_CONST
+            SET_MARK (INT_CONST | HEX_CONST)
             {
                 importer->action_params["set_mark"] = LT(0)->getText();
                 *dbg << " SET MARK=" << LT(0)->getText();
@@ -985,7 +985,7 @@ protected
 DIGIT : '0'..'9'  ;
 
 protected
-HEXDIGIT : '0'..'9' | 'A'..'F' ;
+HEXDIGIT : '0'..'9' | 'A'..'F' | 'a'..'f';
 
 NUMBER : 
 		(

@@ -1,3 +1,29 @@
+2008-05-05  vadim  <vadim@vk.crocodile.org>
+
+        * PolicyCompiler_pf_writers.cpp (PrintRule::processNext),
+	RuleOptionsDialog.cpp (RuleOptionsDialog::loadFWObject): (from
+	2.1) fixed bug #1821573: "Rule options limits allow for multiple
+	overload tables". PF allows only for one "overload" option per
+	rule.
+
+        * IPTImporter.cpp (IPTImporter::pushPolicyRule), (from 2.1)
+	iptables.g (target_options): fixed bug #1949438: "parser expects
+	decimal - hex is not accepted". Importer for iptables should be
+	able to process "--set-mark" with hex argument.
+
+        * fwbedit.1: (from 2.1) fixed bug #1949103: "manpage slightly
+	broken". Minor fixes in fwbedit.1 man page.
+
+        * PolicyCompiler_PrintRule.cpp (PrintRule::_printOptionalGlobalRules):
+        (from 2.1) fixed bug# 1940504: "Clamp MSS to MTU". Iptables
+	command that invokes "-j TCPMSS --clamp-mss-to-pmtu" in FORWARD
+	chain should go before the one that matches "--state
+	ESTABLISHED,RELATED" in order to work for the packets in these
+	states.
+
+        * RuleOptionsDialog.cpp (RuleOptionsDialog::loadFWObject): (from
+	2.1) fixed bug #1938985: Rate in hashlimit in local language
+
 2008-04-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* NATCompiler_PrintRule.cpp (PrintRule::_printAddr): fixed bug (no

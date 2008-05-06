@@ -1269,6 +1269,15 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
     string s=compiler->getCachedFwOpt()->getStr("linux24_ip_forward");
     ipforward= (s.empty() || s=="1" || s=="On" || s=="on");
 
+    if ( compiler->getCachedFwOpt()->getBool("clamp_mss_to_mtu") && ipforward)
+    {
+        res << _startRuleLine()
+            << "FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu"
+            << _endRuleLine();
+
+        res << endl;
+    }
+
     if ( compiler->getCachedFwOpt()->getBool("accept_established") &&
          ipt_comp->my_table=="filter") 
     {
@@ -1316,15 +1325,6 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
         res << _startRuleLine() << "OUTPUT  -p tcp -m tcp  -d "
             << addr
             << "  --sport 22  -m state --state ESTABLISHED,RELATED -j ACCEPT"
-            << _endRuleLine();
-
-        res << endl;
-    }
-
-    if ( compiler->getCachedFwOpt()->getBool("clamp_mss_to_mtu") && ipforward)
-    {
-        res << _startRuleLine()
-            << "FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu"
             << _endRuleLine();
 
         res << endl;

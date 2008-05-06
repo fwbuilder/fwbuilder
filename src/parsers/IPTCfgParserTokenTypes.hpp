@@ -1,7 +1,7 @@
 #ifndef INC_IPTCfgParserTokenTypes_hpp_
 #define INC_IPTCfgParserTokenTypes_hpp_
 
-/* $ANTLR 2.7.4: "iptables.g" -> "IPTCfgParserTokenTypes.hpp"$ */
+/* $ANTLR 2.7.6 (20070910): "iptables.g" -> "IPTCfgParserTokenTypes.hpp"$ */
 
 #ifndef CUSTOM_API
 # define CUSTOM_API
@@ -52,8 +52,8 @@ struct CUSTOM_API IPTCfgParserTokenTypes {
 		ULOG_PREFIX = 41,
 		LOG_LEVEL = 42,
 		SET_MARK = 43,
-		SET_TOS = 44,
-		HEX_CONST = 45,
+		HEX_CONST = 44,
+		SET_TOS = 45,
 		SAVE_MARK = 46,
 		RESTORE_MARK = 47,
 		CONTINUE = 48,

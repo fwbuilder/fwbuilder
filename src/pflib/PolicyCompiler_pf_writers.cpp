@@ -866,7 +866,6 @@ bool PolicyCompiler_pf::PrintRule::processNext()
         if (ruleopt->getInt("pf_max_src_conn")>0)          nopt++;
         if (ruleopt->getStr("pf_max_src_conn_overload_table")!="") nopt++;
         if (ruleopt->getInt("pf_max_src_conn_rate_num")>0) nopt++;
-        if (ruleopt->getStr("pf_max_src_conn_rate_overload_table")!="") nopt++;
 
         bool not_the_first = false;
         if (nopt)
@@ -895,20 +894,15 @@ bool PolicyCompiler_pf::PrintRule::processNext()
                 not_the_first = true;
             }
 
+            bool check_overload_opts = false;
             if (ruleopt->getInt("pf_max_src_conn")>0)
             {
                 if (not_the_first) compiler->output << ",";
 
                 compiler->output << " max-src-conn "
                                  << ruleopt->getInt("pf_max_src_conn");
-                if (ruleopt->getStr("pf_max_src_conn_overload_table")!="")
-                    compiler->output << ", overload <"
-                                     << ruleopt->getStr("pf_max_src_conn_overload_table") << ">";
-                if (ruleopt->getBool("pf_max_src_conn_flush"))
-                    compiler->output << " flush";
-                if (ruleopt->getBool("pf_max_src_conn_global"))
-                    compiler->output << " global";
                 not_the_first = true;
+                check_overload_opts = true;
             }
 
             if (ruleopt->getInt("pf_max_src_conn_rate_num")>0 && 
@@ -919,17 +913,22 @@ bool PolicyCompiler_pf::PrintRule::processNext()
                 compiler->output << " max-src-conn-rate "
                                  << ruleopt->getInt("pf_max_src_conn_rate_num")
                                  << "/"
-                                 << ruleopt->getInt("pf_max_src_conn_rate_seconds");
-
-                if (ruleopt->getStr("pf_max_src_conn_rate_overload_table")!="")
+                                 << ruleopt->getInt(
+                                     "pf_max_src_conn_rate_seconds");
+                check_overload_opts = true;
+            }
+            if (check_overload_opts)
+            {
+                if (ruleopt->getStr("pf_max_src_conn_overload_table")!="")
                     compiler->output << ", overload <"
-                                     << ruleopt->getStr("pf_max_src_conn_rate_overload_table") << ">";
-                if (ruleopt->getBool("pf_max_src_conn_rate_flush"))
+                                     << ruleopt->getStr(
+                                         "pf_max_src_conn_overload_table")
+                                     << ">";
+                if (ruleopt->getBool("pf_max_src_conn_flush"))
                     compiler->output << " flush";
-                if (ruleopt->getBool("pf_max_src_conn_rate_global"))
+                if (ruleopt->getBool("pf_max_src_conn_global"))
                     compiler->output << " global";
             }
-
             if (nopt>1) compiler->output << " ) ";
         }
     } else
