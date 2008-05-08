@@ -1,3 +1,18 @@
+2008-05-08  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler.cpp (PolicyCompiler::checkForShadowing): (from
+	2.1): partial fix for bugs #1789059 "shadow issue when using
+	action chain" and #1945149: "Shadowing test for rules with action
+	"chain". The mechanism for rule shadowing detection we have at
+	this time can only detect shadowing of one rule by another. In
+	case of branching it is a combination of the branching rule and
+	rules inside the branch that may shadow other rules.  I plan to
+	redesign this part of the code in the future, but it won't happen
+	in upcoming v3.
+
+	Meanwhile, I am fixing it in 2.1 by making compiler ignore rules
+	with action Branch.
+
 2008-05-05  vadim  <vadim@vk.crocodile.org>
 
         * PolicyCompiler_pf_writers.cpp (PrintRule::processNext),

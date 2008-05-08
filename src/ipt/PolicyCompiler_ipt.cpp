@@ -3629,11 +3629,13 @@ void PolicyCompiler_ipt::compile()
 
         if ( fw->getOptionsObject()->getBool ("check_shading") ) 
         {
-            add( new Begin("Detecting rule shadowing"                  ) );
+            add( new Begin("Detecting rule shadowing"));
+
+            add( new Branching("fold in branches"));
 
             addRuleFilter();
 
-            add( new printTotalNumberOfRules(                           ) );
+            add( new printTotalNumberOfRules());
 
             add( new ItfNegation(            "process negation in Itf"  ) );
             add( new InterfacePolicyRules(
