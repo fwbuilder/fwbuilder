@@ -181,6 +181,16 @@ bool PolicyCompiler::checkForShadowing(const PolicyRule &r1,const PolicyRule &r2
     if (r1.getAction()==PolicyRule::Route  ||
         r2.getAction()==PolicyRule::Route ) return false;
 
+    /*
+     * the problem with branching rules is that it is combination of
+     * the head rule and rules in the branch rather than a single rule
+     * that can shadow other rules below them. Our current mechanism for
+     * shadowing detection does not support this so all we can do is
+     * skip rules with action Branch.
+     */
+    if (r1.getAction()==PolicyRule::Branch  ||
+        r2.getAction()==PolicyRule::Branch ) return false;
+
 
     Address  *src1=getFirstSrc(&r1);
     Address  *dst1=getFirstDst(&r1);
