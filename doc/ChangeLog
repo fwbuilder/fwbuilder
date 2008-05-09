@@ -1,5 +1,10 @@
 2008-05-08  vadim  <vadim@vk.crocodile.org>
 
+	* FWWindowPrint.cpp (printFirewall): (from 2.1): fixed bug
+	#1562726: "policy print rule cut-off". Long rulesets would not
+	print correctly on Windows, the bottom of the ruleset table was
+	just printed solid grey with no rules visible.
+
 	* PolicyCompiler.cpp (PolicyCompiler::checkForShadowing): (from
 	2.1): partial fix for bugs #1789059 "shadow issue when using
 	action chain" and #1945149: "Shadowing test for rules with action

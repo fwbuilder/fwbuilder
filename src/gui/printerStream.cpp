@@ -42,18 +42,18 @@ printerStream::printerStream(QPrinter *p,
                              const QString &ht,
                              PrintingProgressDialog *pd) : pr()//,metrics(p)
 {
-    printer=p;
-    margin=m;
-    printHeader=h;
-    headerText=ht;
-    ppd=pd;
-    headerFont=QFont( "times", 10, QFont::Normal );
-    bodyFont=QFont( "times", 14, QFont::Normal );
-    headerHeight=1.5;  // 1.5 cm for header
-    pageNo=0;
-    active=false;
-    fromPage=1;
-    toPage=9999;
+    printer = p;
+    margin = m;
+    printHeader = h;
+    headerText = ht;
+    ppd = pd;
+    headerFont = QFont( "times", 10, QFont::Normal );
+    bodyFont = QFont( "times", 14, QFont::Normal );
+    headerHeight = 1.5;  // 1.5 cm for header
+    pageNo = 0;
+    active = false;
+    fromPage = 1;
+    toPage = 9999;
 
     headerTimeString = QDateTime::currentDateTime().toString();
 }
@@ -68,14 +68,19 @@ bool printerStream::begin()
     pageHeight = printer->height();
 
     if (fwbdebug)
+    {
         qDebug("printer dimensions: %dx%d",pageWidth,pageHeight);
+        qDebug("Margin: %.1f", margin);
+    }
 
     dpiy = printer->logicalDpiY();
     ymargin = (int) ( (margin/2.54)*dpiy );
 // assuming printer's resolutions by X and Y axes are the same
     xmargin = ymargin;
-    pageBody=QRect( xmargin, ymargin,
-                    printer->width() - 2*xmargin, printer->height() - 2*ymargin );
+    pageBody=QRect( xmargin,
+                    ymargin,
+                    printer->width() - 2*xmargin,
+                    printer->height() - 2*ymargin );
 
     yHeaderHeight = int((headerHeight/2.54)*dpiy);
     yHeaderLine = int(((headerHeight-0.5)/2.54)*dpiy);
@@ -84,21 +89,30 @@ bool printerStream::begin()
     QFontMetrics fm = pr.fontMetrics();
     QRect br = fm.boundingRect("Page 999");
 
-    headerTextBox=QRect(xmargin,ymargin+yHeaderLine-fm.lineSpacing()-1,
-                        printer->width()-2*xmargin,fm.lineSpacing()+1);
-    headerBox=QRect(xmargin,ymargin,printer->width()-2*xmargin,yHeaderHeight);
+    headerTextBox=QRect(xmargin,
+                        ymargin + yHeaderLine - fm.lineSpacing() - 1,
+                        printer->width() - 2 * xmargin,
+                        fm.lineSpacing() + 1);
+
+    headerBox=QRect(xmargin,
+                    ymargin,
+                    printer->width() - 2 * xmargin,
+                    yHeaderHeight);
 
     if (fwbdebug)
     {
-        qDebug("dpiy=%d",dpiy);
-        qDebug("yHeaderHeight=%d",yHeaderHeight);
-        qDebug("yHeaderLine=%d",yHeaderLine);
-        qDebug("bounding rect for the header text: %d,%d,%d,%d",
-               br.left(),br.top(),br.width(),br.height());
-        qDebug("headerBox: %d,%d,%d,%d",
-               headerBox.left(),headerBox.top(),headerBox.width(),headerBox.height());
-        qDebug("headerTextBox: %d,%d,%d,%d",
-               headerTextBox.left(),headerTextBox.top(),headerTextBox.width(),headerTextBox.height());
+        qDebug("dpiy=%d", dpiy);
+        qDebug("yHeaderHeight=%d", yHeaderHeight);
+        qDebug("yHeaderLine=%d", yHeaderLine);
+        qDebug("fm.lineSpacing()=%d", fm.lineSpacing());
+        qDebug("bounding rect for the header text: l=%d,t=%d,w=%d,h=%d",
+               br.left(), br.top(), br.width(), br.height());
+        qDebug("headerBox: l=%d,t=%d,w=%d,h=%d",
+               headerBox.left(), headerBox.top(),
+               headerBox.width(), headerBox.height());
+        qDebug("headerTextBox: l=%d,t=%d,w=%d,h=%d",
+               headerTextBox.left(), headerTextBox.top(),
+               headerTextBox.width(), headerTextBox.height());
     }
 
     yPos = 0;
@@ -129,7 +143,8 @@ void printerStream::beginPage()
 
     if (printHeader)
     {
-        if (fwbdebug) qDebug("Printing header for page %d (%d-%d)",pageNo,fromPage,toPage);
+        if (fwbdebug) qDebug("Printing header for page %d (%d-%d)",
+                             pageNo, fromPage, toPage);
 
         QString page = QObject::tr("Page %1").arg(pageNo);
         if (pageNo>=fromPage && pageNo<=toPage)
@@ -170,6 +185,13 @@ int printerStream::getTextHeight(const QString &txt)
 
 void printerStream::printText(const QString &txt, bool newLine)
 {
+    if (fwbdebug)
+    {       
+        qDebug("printText -------");
+        qDebug("pageBody.height(): %d", pageBody.height());
+        qDebug("yPos: %d", yPos);
+    }
+
     if (txt.isEmpty()) return;
     if (printer->printerState() == QPrinter::Aborted) return;
 
@@ -226,6 +248,9 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin, bool top_marg
                tbl->clipper()->width(),tbl->clipper()->height());*/
     }
 
+        qDebug("YSpace: %d", getYSpace());
+        qDebug("pageBody.height(): %d", pageBody.height());
+        qDebug("yPos: %d", yPos);
     int firstRow = 0;
     int lastRow = 1;
     int tblHeight = tbl->horizontalHeader()->height();
@@ -250,6 +275,7 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin, bool top_marg
             if ( nth==getYSpace() )  break;
             if ( nth>getYSpace() ) { row--; break; }
             tblHeight  = nth;
+
         }
         // if row < firstRow then even single row does not fit on the page
         if (row < firstRow)
@@ -258,18 +284,19 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin, bool top_marg
             tblHeight = tbl->rowHeight(firstRow);
         }
 
-
         if (row == rowCount) row--;
 
         lastRow = row;
+        if (fwbdebug)
+            qDebug("Page %d -- (%d-%d of %d rows) tblHeight: %d",
+                   pageNo, firstRow, lastRow, rowCount, tblHeight);
+
 
         int firstRowPos = tbl->verticalHeader()->sectionPosition(firstRow);
         int lastRowPos = tbl->verticalHeader()->sectionPosition(lastRow);
 
-        if (fwbdebug)
-            qDebug("Page %d -- %d rows (%d-%d) tblHeight: %d firstRowPos: %d lastRowPos: %d",
-                   pageNo, rowCount,
-                   firstRow, lastRow, tblHeight, firstRowPos, lastRowPos);
+        qDebug("    firstRowPos: %d lastRowPos: %d",
+               firstRowPos, lastRowPos);
 
         int left_hdr_w = 0;
         if (left_margin && tbl->verticalHeader() != NULL)
@@ -290,7 +317,7 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin, bool top_marg
 
         if (fwbdebug)
         {
-            qDebug("    After resize:");
+            qDebug("    ### After resize:");
             qDebug("    Size: %dx%d",tbl->width(),tbl->height());
             qDebug("    Visible: %dx%d",
                    tbl->contentsRect().width(),tbl->contentsRect().height());
@@ -310,7 +337,7 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin, bool top_marg
 
         if (fwbdebug)
         {
-            qDebug("    After scroll:");
+            qDebug("    ### After scroll:");
             /* qDebug("    contents X: %d  contents Y: %d",
                    tbl->horizontalOffset(),tbl->verticalOffset()); */
             int count = tbl->verticalHeader()->count();

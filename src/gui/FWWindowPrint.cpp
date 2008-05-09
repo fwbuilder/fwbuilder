@@ -252,7 +252,7 @@ int addObjectsToTable(list<FWObject*> &objects,
 
 void findAllGroups(list<FWObject*> &objects,list<FWObject*> &groups)
 {
-    if (fwbdebug) qDebug("findAllGroups: arg1 size %d",objects.size());
+    if (fwbdebug) qDebug("findAllGroups: arg1 size %d", int(objects.size()));
     for (FWObject::iterator obj=objects.begin(); obj!=objects.end(); ++obj)
     {
         if (fwbdebug) qDebug("   %s",(*obj)->getName().c_str());
@@ -303,6 +303,8 @@ void printFirewall(FWObject *fw,
                                           (QSizePolicy::Policy)7) );
     ruleView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ruleView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    ruleView->setMaximumHeight(pr.getPageHeight());
 
     /*if (fwbdebug) qDebug("Contents: %dx%d",
                          ruleView->contentsWidth(),ruleView->contentsHeight());
@@ -430,12 +432,7 @@ void FWWindow::filePrint()
     int pageHeight = 0;
     bool  fullPage = false;
 
-    float margin;
-#if defined(Q_OS_MACX) || defined(Q_OS_WIN32)
-    margin=1.5;
-#else
-    margin=0;
-#endif
+    float margin = 0;
     int   resolution = 150;
     bool  printHeader = true;
     bool  printLegend = true;
