@@ -1410,7 +1410,7 @@ void ObjectManipulator::moveObject(FWObject *targetLib, FWObject *obj)
     if (FWObjectDatabase::isA(targetLib))        grp = targetLib;
     else
     {
-        grp=m_project->getStandardSlotForObject(targetLib,
+        grp=m_project->getFWTree()->getStandardSlotForObject(targetLib,
                                               obj->getTypeName().c_str());
     }
 
@@ -2027,7 +2027,7 @@ void ObjectManipulator::groupObjects()
  * only with names of read-write libraries
  */
                 if (lib->isReadOnly()) return;
-                FWObject *parent = m_project->getStandardSlotForObject(lib,type);
+                FWObject *parent = m_project->getFWTree()->getStandardSlotForObject(lib,type);
                 if (parent==NULL)
                 {
                     if (fwbdebug)
@@ -2381,7 +2381,7 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
         i++;
     }
 
-    FWObject *parent=m_project->getStandardSlotForObject(lib, objType);
+    FWObject *parent=m_project->getFWTree()->getStandardSlotForObject(lib, objType);
     if (parent==NULL)
     {
 
@@ -2440,8 +2440,8 @@ FWObject* ObjectManipulator::createObject(FWObject *parent,
 }
 
 
-FWObject* ObjectManipulator::copyObj2Tree(const QString &objType, const QString &objName,
-         libfwbuilder::FWObject *copyFrom, FWObject *parent, bool askLib)
+FWObject* ObjectManipulator::copyObj2Tree(const QString &/*objType*/, const QString &/*objName*/,
+         libfwbuilder::FWObject *copyFrom, FWObject */*parent*/, bool /*askLib*/)
 {
     if (!validateDialog()) return NULL;
     ids.clear();
@@ -2470,7 +2470,7 @@ libfwbuilder::FWObject * ObjectManipulator::copyObjWithDeep(libfwbuilder::FWObje
     FWReference * ref = FWReference::cast(nobj);
     if (ref!=NULL)
     {
-        FWObject * obj = copyObjWithDeep(ref->getPointer());
+        copyObjWithDeep(ref->getPointer());
         return ref ;
     }
 
@@ -2527,7 +2527,7 @@ libfwbuilder::FWObject * ObjectManipulator::copyObjWithDeep(libfwbuilder::FWObje
 
     if (lib->getRoot()->getById(nobj->getId(),true)==NULL)
     {
-        FWObject *par = m_project->getStandardSlotForObject(lib, nobj->getTypeName().c_str());
+        FWObject *par = m_project->getFWTree()->getStandardSlotForObject(lib, nobj->getTypeName().c_str());
         FWObject *no  = pasteTo (par, nobj, false, false, false);
         if (no && Firewall::isA(no))
         {
@@ -2536,7 +2536,7 @@ libfwbuilder::FWObject * ObjectManipulator::copyObjWithDeep(libfwbuilder::FWObje
         }
 
     }
-
+    return nobj;
 
 }
 

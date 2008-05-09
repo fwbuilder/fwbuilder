@@ -3156,19 +3156,6 @@ bool ProjectPanel::getDeleteMenuState(const QString &objPath)
 {
     return objectTreeFormat->getDeleteMenuState(objPath);
 }
-    
-void ProjectPanel::getStandardSlotForObject(const QString &objType,
-                                         QString &parentType,
-                                         QString &parentName)
-{
-    return objectTreeFormat->getStandardSlotForObject(objType, parentType, parentName);
-}
-
-libfwbuilder::FWObject* ProjectPanel::getStandardSlotForObject(libfwbuilder::FWObject* lib,
-                                                            const QString &objType)
-{
-    return objectTreeFormat->getStandardSlotForObject(lib, objType);
-}
 
 libfwbuilder::FWObject* ProjectPanel::createNewLibrary(libfwbuilder::FWObjectDatabase *db)
 {

@@ -74,9 +74,11 @@ class FWWindow : public QMainWindow {
     //int                                    lastFirewallIdx;
     
     void clearFirewallTabs();
-    ProjectPanel* activeProject();
     ProjectPanel *newProjectPanel();
     void showSub(ProjectPanel *projectW);
+public:
+    ProjectPanel* activeProject();
+
  public slots:
 
      virtual void search();
@@ -343,8 +345,6 @@ class FWWindow : public QMainWindow {
     libfwbuilder::FWObjectDatabase* db();
     QString printHeader();
     listOfLibraries *getAddOnLibs();
-    libfwbuilder::FWObject* getStandardSlotForObject(libfwbuilder::FWObject* lib,
-                                                            const QString &objType);
 
     bool isSystem(libfwbuilder::FWObject *obj);
  protected:

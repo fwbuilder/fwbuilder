@@ -108,6 +108,8 @@ class ProjectPanel: public QWidget {
           libfwbuilder::RuleElement *re_old,
           const std::map<const std::string, libfwbuilder::FWObject *> &objByIds);
 public:  
+    FWBTree * getFWTree () {return objectTreeFormat;}
+
     QMdiSubWindow *mdiWindow;
     Ui::ProjectPanel_q *m_panel;
     FindObjectWidget *findObjectWidget;
@@ -376,11 +378,6 @@ public:
     bool getCutMenuState(const QString &objPath);
     bool getPasteMenuState(const QString &objPath);
     bool getDeleteMenuState(const QString &objPath);    
-    void getStandardSlotForObject(const QString &objType,
-                                         QString &parentType,
-                                         QString &parentName);
-    libfwbuilder::FWObject* getStandardSlotForObject(libfwbuilder::FWObject* lib,
-                                                            const QString &objType);
     libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db);
 
 

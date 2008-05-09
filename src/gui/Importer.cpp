@@ -55,6 +55,8 @@
 #include "fwbuilder/RuleElement.h"
 
 #include "FWWindow.h"
+#include "ProjectPanel.h"
+#include "FWBTree.h"
 
 using namespace libfwbuilder;
 
@@ -62,9 +64,15 @@ FWObject* Importer::createObject(const std::string &objType,
                                  const std::string &objName)
 {
     assert(library!=NULL);
-    FWObject *slot = mw->getStandardSlotForObject(library,
-                                                       objType.c_str());
+    if (mw->activeProject())
+    {
+    FWObject *slot = mw->activeProject()->getFWTree()->getStandardSlotForObject(library,objType.c_str());
     return createObject(slot, objType, objName);
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 FWObject* Importer::createObject(FWObject *parent,

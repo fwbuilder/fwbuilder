@@ -1399,14 +1399,6 @@ listOfLibraries *FWWindow::getAddOnLibs()
         return activeProject()->getAddOnLibs();
     return 0;
 }
-    
-libfwbuilder::FWObject* FWWindow::getStandardSlotForObject(libfwbuilder::FWObject* lib,
-                                                            const QString &objType)
-{
-    if (activeProject())
-        return activeProject()->getStandardSlotForObject(lib, objType);
-    return 0;
-}
 
 
 bool FWWindow::isSystem(libfwbuilder::FWObject *obj)
