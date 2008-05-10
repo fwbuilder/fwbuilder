@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2003 NetCitadel, LLC
+                 Copyright (C) 2008 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 

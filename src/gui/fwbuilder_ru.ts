@@ -11874,32 +11874,6 @@ Logged in
     </message>
 </context>
 <context>
-    <name>StartWizard</name>
-    <message>
-        <location filename="" line="1651992111"/>
-        <source>Choose name and location for the new file</source>
-        <translation type="obsolete">Выберите имя и каталог для нового файла</translation>
-    </message>
-    <message>
-        <location filename="" line="1651992111"/>
-        <source>File %1 is read-only, you can not save changes to it.</source>
-        <translation type="obsolete">Файл %1 доступен только для чтения, изменения не будут сохранены в нём.</translation>
-    </message>
-    <message>
-        <location filename="" line="1651992111"/>
-        <source>Error adding file to RCS:
-%1</source>
-        <translation type="obsolete">Ошибка при добавлении файла %1 в систему контроля версий</translation>
-    </message>
-    <message>
-        <location filename="" line="1651992111"/>
-        <source>Error opening file:
-%1</source>
-        <translation type="obsolete">Ошибка при открытии файла:
-%1</translation>
-    </message>
-</context>
-<context>
     <name>TCPServiceDialog_q</name>
     <message>
         <location filename="tcpservicedialog_q.ui" line="22"/>
@@ -17639,68 +17613,6 @@ First, create temporary access list to permit connections from the management su
         <location filename="solarisadvanceddialog_q.ui" line="379"/>
         <source>Specify directory path and a file name for the following utilities on the OS your firewall machine is running. Leave these empty if you want to use default values.</source>
         <translation>Укажите полный путь к перечисленным утилитам в операционной системе этого межсетевого экрана. Для незаполненных полей будут использованы значения по-умолчанию.</translation>
-    </message>
-</context>
-<context>
-    <name>startWizard_q</name>
-    <message>
-        <location filename="" line="1651992111"/>
-        <source>Welcome to Firewall Builder</source>
-        <translation type="obsolete">Добро пожаловать в программу Firewall Builder</translation>
-    </message>
-    <message>
-        <location filename="" line="1651992111"/>
-        <source>&lt;b&gt;Firewall Builder 2.0.3&lt;/b&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Firewall Builder 2.0.3&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <location filename="" line="1651992111"/>
-        <source>Do you want to open existing project file or create a new one?</source>
-        <translation type="obsolete">Хотите открыть существующий проект или создать новый?</translation>
-    </message>
-    <message>
-        <location filename="" line="1651992111"/>
-        <source>Create new project file</source>
-        <translation type="obsolete">Создать новый проект</translation>
-    </message>
-    <message>
-        <location filename="" line="1651992111"/>
-        <source>Open existing file</source>
-        <translation type="obsolete">Открыть существующий проект</translation>
-    </message>
-    <message>
-        <location filename="" line="1651992111"/>
-        <source>File name: %1</source>
-        <translation type="obsolete">Имя файла: %1</translation>
-    </message>
-    <message>
-        <location filename="" line="1651992111"/>
-        <source>Activate Revision Control System for this file
-(if you do not do this now, you can always activate it later)</source>
-        <translation type="obsolete">Активизировать систему контроля версий для этого файла
-(это всегда можно сделать позже)</translation>
-    </message>
-    <message>
-        <location filename="" line="1651992111"/>
-        <source>Let the program automatically open this file when I start it next time
-(you can activate this option later using Preferences dialog)</source>
-        <translation type="obsolete">Открывать этот файл при старте программы
-(это всегда можно сделать позже)</translation>
-    </message>
-    <message>
-        <location filename="" line="1651992111"/>
-        <source>&lt;b&gt;Firewall Builder 2.0.4&lt;/b&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Firewall Builder 2.0.4&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <location filename="" line="1651992111"/>
-        <source>&lt;b&gt;Firewall Builder 2.0.5&lt;/b&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Firewall Builder 2.0.5&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <location filename="" line="1651992111"/>
-        <source>&lt;b&gt;Firewall Builder N.N.N&lt;/b&gt;</source>
-        <translation type="obsolete">&lt;b&gt; Firewall Builder N.N.N&lt;/b&gt;</translation>
     </message>
 </context>
 </TS>

@@ -50,6 +50,13 @@
         * RuleOptionsDialog.cpp (RuleOptionsDialog::loadFWObject): (from
 	2.1) fixed bug #1938985: Rate in hashlimit in local language
 
+2008-04-28  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* v3 feature: rules can be grouped in Policy, NAT and
+	Routing. Group of rules can have a name and color and can be
+	collapsed or expanded. Collapsed rule groups take room equivalent
+	to one rule in the ruleset panel.
+
 2008-04-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* NATCompiler_PrintRule.cpp (PrintRule::_printAddr): fixed bug (no
@@ -82,6 +89,12 @@
 	Compiler.cpp (emptyGroupsInRE::countChildren): (libfwbuilder)
 	fixed bug #1905718: "Group of DNS Name objects considered empty"
 	
+2008-03-06  vadim  <vadim@vk.crocodile.org>
+
+	* v3 feature: Firewall Builder v3 GUI redesigned as MDI
+	interfaces. Several data files can be opened simultaneously and
+	objects dragged and dropped from one file to another.
+
 2008-03-05  vadim  <vadim@vk.crocodile.org>
 
 	* VERSION: started v2.1.18
