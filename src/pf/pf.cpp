@@ -519,6 +519,11 @@ int main(int argc, char * const *argv)
                              options->getStr("pf_limit_table_entries"));
 
         if (limits.size() > 0)
+
+        if ( ! options->getStr("pf_optimization").empty() )
+            pf_file << "set optimization "
+                    << options->getStr("pf_optimization") << endl;
+
         {
             pf_file << "set limit ";
             if (limits.size() > 1 ) pf_file << "{ ";
@@ -585,12 +590,6 @@ int main(int argc, char * const *argv)
         pf_file << printTimeout(options,
                                 "pf_set_adaptive","pf_adaptive_end",
                                 "adaptive.end");
-
-
-
-        if ( ! options->getStr("pf_optimization").empty() )
-            pf_file << "set optimization "
-                    << options->getStr("pf_optimization") << endl;
 
         // check if any interface is marked as 'unprotected'
         // and generate 'set skip on <ifspec>' commands

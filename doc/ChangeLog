@@ -1,3 +1,9 @@
+2008-05-10  vadim  <vadim@vk.crocodile.org>
+
+	* pf.cpp: (from 2.1) fixed bug #1961202: "Pf Timeouts overriden by
+	Optimization". Compiler should generate "set optimization" command
+	before "set timeout" commands.
+
 2008-05-08  vadim  <vadim@vk.crocodile.org>
 
 	* FWWindowPrint.cpp (printFirewall): (from 2.1): fixed bug

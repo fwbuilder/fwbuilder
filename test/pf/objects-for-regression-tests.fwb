@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="5" lastModified="1210047001" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="5" lastModified="1210452317" id="root">
   <Library color="#d2ffd0" comment="User defined objects" id="syslib001" name="User" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects">
       <ObjectGroup id="stdid01_1_og_ats_1" name="Address Tables">
@@ -2244,7 +2244,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " host_OS="openbsd" id="id3AFB66C6" inactive="False" lastCompiled="1157930805" lastInstalled="0" lastModified="1200415283" name="firewall2" platform="pf" ro="False" version="">
+      <Firewall comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " host_OS="openbsd" id="id3AFB66C6" inactive="False" lastCompiled="1157930805" lastInstalled="0" lastModified="1210452316" name="firewall2" platform="pf" ro="False" version="">
         <NAT id="id3AFB66C7" name="NAT">
           <NATRule disabled="False" id="id3AFB66C8" position="0">
             <OSrc neg="False">
@@ -3312,19 +3312,19 @@
           <Option name="pf_set_other_single">False</Option>
           <Option name="pf_set_tcp_closed">False</Option>
           <Option name="pf_set_tcp_closing">False</Option>
-          <Option name="pf_set_tcp_established">False</Option>
+          <Option name="pf_set_tcp_established">True</Option>
           <Option name="pf_set_tcp_finwait">False</Option>
-          <Option name="pf_set_tcp_first">False</Option>
-          <Option name="pf_set_tcp_opening">False</Option>
+          <Option name="pf_set_tcp_first">True</Option>
+          <Option name="pf_set_tcp_opening">True</Option>
           <Option name="pf_set_udp_first">False</Option>
           <Option name="pf_set_udp_multiple">False</Option>
           <Option name="pf_set_udp_single">False</Option>
           <Option name="pf_tcp_closed">0</Option>
           <Option name="pf_tcp_closing">0</Option>
-          <Option name="pf_tcp_established">0</Option>
+          <Option name="pf_tcp_established">10</Option>
           <Option name="pf_tcp_finwait">0</Option>
-          <Option name="pf_tcp_first">0</Option>
-          <Option name="pf_tcp_opening">0</Option>
+          <Option name="pf_tcp_first">5</Option>
+          <Option name="pf_tcp_opening">5</Option>
           <Option name="pf_timeout_frag">30</Option>
           <Option name="pf_timeout_interval">10</Option>
           <Option name="pf_udp_first">0</Option>
