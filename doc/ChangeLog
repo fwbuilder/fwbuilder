@@ -55,7 +55,8 @@
 	* v3 feature: rules can be grouped in Policy, NAT and
 	Routing. Group of rules can have a name and color and can be
 	collapsed or expanded. Collapsed rule groups take room equivalent
-	to one rule in the ruleset panel.
+	to one rule in the ruleset panel. This implements Feature Requests
+	#1961702, 1938992, 1751141, 1602294, 1372620, 1083981, 1017566
 
 2008-04-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
