@@ -112,7 +112,7 @@ TODO:
        ref IDREF #REQUIRED
 >
 
-<!ELEMENT ServiceGroup (( ServiceGroup | IPService | ICMPService  | TCPService | UDPService | CustomService | ServiceRef | TagService)*)>
+<!ELEMENT ServiceGroup (( ServiceGroup | IPService | ICMPService  | TCPService | UDPService | CustomService | ServiceRef | TagService | UserService)*)>
 <!ATTLIST ServiceGroup
  %STD_ATTRIBUTES;
 >

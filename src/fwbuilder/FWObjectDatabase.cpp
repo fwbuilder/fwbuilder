@@ -75,6 +75,7 @@
 #include <fwbuilder/Management.h>
 #include <fwbuilder/XMLTools.h>
 #include <fwbuilder/TagService.h>
+#include <fwbuilder/UserService.h>
 
 #include <iostream>
 
@@ -549,6 +550,7 @@ FWObject *FWObjectDatabase::create(const string &type_name,
     CREATE_OBJ(ICMPService         ,n, id, prepopulate);
     CREATE_OBJ(IPService           ,n, id, prepopulate);
     CREATE_OBJ(CustomService       ,n, id, prepopulate);
+    CREATE_OBJ(UserService         ,n, id, prepopulate);
     CREATE_OBJ(Interval            ,n, id, prepopulate);
     CREATE_OBJ(ObjectGroup         ,n, id, prepopulate);
     CREATE_OBJ(ServiceGroup        ,n, id, prepopulate);
