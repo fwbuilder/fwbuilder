@@ -220,7 +220,7 @@ bool    Resources::getResourceBool(const string& resource_path)
 }
 
 string  Resources::getObjResourceStr(const FWObject *obj,
-					  const string& resource_name)
+                                     const string& resource_name)
 {
     string objid   = obj->getId();
     string objtype = obj->getTypeName();
@@ -240,7 +240,8 @@ string  Resources::getObjResourceStr(const FWObject *obj,
 
     if (res.empty())
         cerr << "Failed to locate resource for object " << obj->getName() 
-             << " (" << obj->getId() << "), resource="
+             << " (type=" << objtype << "), "
+             << " (id=" << obj->getId() << "), resource name: "
              << resource_name << endl;
 
     return res;
