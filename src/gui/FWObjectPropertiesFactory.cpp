@@ -63,6 +63,7 @@
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/TagService.h"
+#include "fwbuilder/UserService.h"
 
 #include "fwbuilder/Interval.h"
 
@@ -198,6 +199,10 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
         } else if (TagService::isA(obj)) 
         {
             str << "Pattern: \"" << obj->getStr("tagcode").c_str() << "\"" ;
+        } else if (UserService::isA(obj)) 
+        {
+            const UserService* user_srv = UserService::constcast(obj);
+            str << "User id: \"" << user_srv->getUserId().c_str() << "\"" ;
         } else if (Interval::isA(obj))
         {
 
@@ -483,6 +488,10 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
         } else if (TagService::isA(obj)) 
         {
             str += QObject::tr("Pattern: \"%1\"").arg(obj->getStr("tagcode").c_str());
+        } else if (UserService::isA(obj)) 
+        {
+            const UserService* user_srv = UserService::constcast(obj);
+            str += QObject::tr("User id: \"%1\"").arg(user_srv->getUserId().c_str());
         } else if (Interval::isA(obj))
         {
 

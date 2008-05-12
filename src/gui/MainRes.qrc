@@ -181,6 +181,11 @@
         <file alias="Icons/UDPService/icon-ref">Icons/service-udp-ref_25.png</file>
         <file alias="Icons/UDPService/icon-tree">Icons/service-udp_16.png</file>
         <file alias="Icons/UDPService/icon">Icons/service-udp_25.png</file>
+        <file alias="Icons/UserService/icon-neg">Icons/user-neg_25.png</file>
+        <file alias="Icons/UserService/icon-neg-tree">Icons/user-neg_16.png</file>
+	<file alias="Icons/UserService/icon-ref">Icons/user-ref_25.png</file>
+        <file alias="Icons/UserService/icon-tree">Icons/user_16.png</file>
+        <file alias="Icons/UserService/icon">Icons/user_25.png</file>
         <file>Icons/stop.png</file>
         <file>Icons/uncheck.png</file>
         <file>Icons/undo.png</file>

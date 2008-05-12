@@ -79,6 +79,7 @@ const char* systemObjects[] = {
     "Services/TCP",
     "Services/UDP",
     "Services/TagServices",
+    "Services/User",
 
     "Firewalls",
 

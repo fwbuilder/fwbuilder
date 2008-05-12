@@ -359,6 +359,14 @@
       <icon-tree>service-custom_16.png</icon-tree>
     </CustomService>
 
+    <UserService>
+      <description>User</description>
+      <icon>user_25.png</icon>
+      <icon-neg>user-neg_25.png</icon-neg>
+      <icon-ref>user-ref_25.png</icon-ref>
+      <icon-tree>user_16.png</icon-tree>
+    </UserService>
+
     <NAT>
       <description>NAT</description>
       <icon-tree>blank_2x16.png</icon-tree>
