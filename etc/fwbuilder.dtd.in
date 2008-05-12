@@ -473,6 +473,12 @@ Interface can have the following attributes:
  %STD_ATTRIBUTES;
 >
 
+<!ELEMENT UserService EMPTY>
+<!ATTLIST UserService
+ %STD_ATTRIBUTES;
+ userid       %STRING;    #REQUIRED
+>
+
 <!ELEMENT Gateway (Interface* , Management?, GatewayOptions?)>
 <!ATTLIST Gateway
  %STD_ATTRIBUTES;

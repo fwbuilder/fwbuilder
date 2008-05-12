@@ -59,6 +59,7 @@ SOURCES  = 	InetAddr.cpp \
 			ThreadTools.cpp \
 			Tools.cpp \
 			UDPService.cpp \
+			UserService.cpp \
             TagService.cpp \
 			XMLTools.cpp 
 
@@ -122,6 +123,7 @@ HEADERS  = 	InetAddr.h \
 			ThreadTools.h \
 			Tools.h \
 			UDPService.h \
+			UserService.h \
             TagService.h \
 			XMLTools.h
 

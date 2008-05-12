@@ -1,3 +1,8 @@
+2008-05-11  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* UserService.cpp (UserService::UserService): Added class UserService
+	* fwbuilder.dtd.in: Added UserService XML element
+
 2008-05-08  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler.cpp (PolicyCompiler::checkForShadowing): partial
