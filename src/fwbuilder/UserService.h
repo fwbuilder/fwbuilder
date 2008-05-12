@@ -57,7 +57,7 @@ class UserService : public Service
     
     DECLARE_FWOBJECT_SUBTYPE(UserService);
 
-    const std::string& getUserId() { return userid; }
+    const std::string& getUserId() const { return userid; } 
     void setUserId(const std::string& uid) { userid = uid; }
 };
 
