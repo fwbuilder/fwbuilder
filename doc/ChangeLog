@@ -1,5 +1,11 @@
 2008-05-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWObjectDatabase_5.xslt: auto-upgrade transformation to set data
+	format version to 6 and add tree branch for UserService objects.
+
+	* VERSION (FWBUILDER_XML_VERSION): set current data format version
+	to 6
+
 	* UserService.cpp (UserService::UserService): Added class UserService
 	* fwbuilder.dtd.in: Added UserService XML element
 
