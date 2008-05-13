@@ -6,13 +6,13 @@ case $system in
     Linux)
         export LD_LIBRARY_PATH=../fwbuilder:../fwcompiler
 
-	./dns_test
+        find -type f -name '*_test' | sh
         ;;
 
     Darwin)
 	export DYLD_LIBRARY_PATH=../fwbuilder/:../fwcompiler
 
-	./dns_test.app/Contents/MacOS/dns_test
+        find -type f -name '*_test' | sh
         ;;
 esac
 
