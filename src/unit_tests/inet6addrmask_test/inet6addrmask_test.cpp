@@ -176,24 +176,20 @@ int main(int, char * const *)
 
         Inet6AddrMask *a5 = new Inet6AddrMask(*a3);
         sa = a5->getAddress().toString();
-        assert(sa=="1.1.1.1");
+        assert(sa=="fe80::21d:9ff:fe8b:8e94");
         sa = a5->getNetmask().toString();
-        assert(sa=="255.255.255.255");
+        assert(sa=="ffff:ffff:ffff:ffff::");
 //        assert(a5->dimension()==1);
 
-        a5->setAddress(Inet6Addr("2.2.2.2"));
+        cout << "Checking Inet6AddrMask::setAddress()" << endl;
+        a5->setAddress(Inet6Addr("3ffe:1200:2001:1:8000::1"));
         sa = a5->getAddress().toString();
-        assert(sa=="2.2.2.2");
+        cout << "a5.address=" << sa << endl;
+        assert(sa=="3ffe:1200:2001:1:8000::1");
         sa = a5->getNetmask().toString();
-        assert(sa=="255.255.255.255");
+        assert(sa=="ffff:ffff:ffff:ffff::");
 //        assert(a5->dimension()==1);
 
-        a5->setNetmask(Inet6Addr("255.255.0.0"));
-        sa = a5->getAddress().toString();
-        assert(sa=="2.2.2.2");
-        sa = a5->getNetmask().toString();
-        assert(sa=="255.255.0.0");
-//        assert(a5->dimension()==256*256);
 
         cout << "All tests passed" << endl;
 

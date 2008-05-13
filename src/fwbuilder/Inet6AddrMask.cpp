@@ -112,7 +112,8 @@ Inet6AddrMask::~Inet6AddrMask()
 void Inet6AddrMask::setAddress(const InetAddr &a)
 {
     assert(a.isV6());
-    *address = a;
+    delete address;
+    address = new Inet6Addr(dynamic_cast<const Inet6Addr&>(a));
     setNetworkAndBroadcastAddress();
 }
 
