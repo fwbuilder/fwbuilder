@@ -6,5 +6,5 @@ TEMPLATE= subdirs
 CONFIG  += ordered
 
 TARGET = unit_tests
-SUBDIRS = dns_test inetaddrmask_test
+SUBDIRS = dns_test inetaddrmask_test inet6addrmask_test
 

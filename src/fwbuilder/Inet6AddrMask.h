@@ -29,7 +29,6 @@
  * It can act both as a container for the address/netmask configuration
  * data (such as for an interface) or as a network.
  *
- * TODO(vadim): need better name. InetNetwork ? InetAddrMaskPair ?
  */
 
 #ifndef __INET6ADDRMASK_HH_FLAG__
@@ -65,6 +64,7 @@ public:
     Inet6AddrMask(const Inet6AddrMask&);
     virtual ~Inet6AddrMask();
 
+    virtual std::string toString() const;
 };
 
 }

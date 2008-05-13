@@ -108,7 +108,7 @@ public:
     friend bool operator==(const InetAddrMask &a, const InetAddrMask &b);
     friend bool operator<(const InetAddrMask &a, const InetAddrMask &b);
 
-    std::string toString() const
+    virtual std::string toString() const
     {
         return address->toString()+"/"+netmask->toString();
     }

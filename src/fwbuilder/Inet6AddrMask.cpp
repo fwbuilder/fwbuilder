@@ -29,9 +29,11 @@
 #include <fwbuilder/libfwbuilder-config.h>
 
 #include <fwbuilder/Inet6AddrMask.h>
+#include <fwbuilder/inet_net.h>
 
 #include <stdio.h>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #ifndef _WIN32
@@ -78,39 +80,16 @@ Inet6AddrMask::Inet6AddrMask(const Inet6AddrMask& other) : InetAddrMask(true)
 
 Inet6AddrMask::Inet6AddrMask(const string &s) throw(FWException) : InetAddrMask(true)
 {
-    address = new Inet6Addr();
-    netmask = new Inet6Addr();
+    struct in6_addr a_ipv6;
+    int nbits;
+    nbits = inet_net_pton(PGSQL_AF_INET6, s.c_str(), &a_ipv6, sizeof(a_ipv6));
+    if (nbits < 0)
+        throw FWException(string("Invalid IP address: '") + s + "'");
+
+    address = new Inet6Addr(&a_ipv6);
+    netmask = new Inet6Addr(nbits);
     broadcast_address = new Inet6Addr();
     network_address = new Inet6Addr();
-
-    if(s.find_first_not_of(":1234567890/")!=string::npos)
-    {
-        throw FWException(string("Invalid IP address: '")+s+"'");
-    }
-    
-    string::size_type pos=s.find("/");
-    
-    if (pos==string::npos)
-    {
-        setAddress(Inet6Addr(s));
-        setNetmask(Inet6Addr(Inet6Addr::getAllOnes()));
-    }
-    else
-    {
-        setAddress(Inet6Addr(s.substr(0,pos)));
-        string netm = s.substr(pos+1);
-        
-        if (netm.find(":")==string::npos)
-        {
-            // netmask is represented as /NN (length in bits)
-            int d = atoi(netm.c_str());
-            *netmask = Inet6Addr(d);
-        }
-        else
-        {
-            setNetmask(Inet6Addr(netm));
-        }
-    }
     setNetworkAndBroadcastAddress();
 }
 
@@ -118,5 +97,39 @@ Inet6AddrMask::~Inet6AddrMask()
 {
     // destructor of InetAddrMask deletes address, netmask
     // and other member variables
+}
+
+std::string Inet6AddrMask::toString() const
+{
+    char ntop_buf[sizeof "ffff:ffff:ffff:ffff:ffff:ffff:255.255.255.255/128"];
+    char *cp;
+    cp = inet_net_ntop(PGSQL_AF_INET6,
+                       (const void*)(&(dynamic_cast<Inet6Addr*>(address)->ipv6)),
+                       netmask->getLength(),
+                       ntop_buf, sizeof(ntop_buf));
+    if (cp==NULL)
+    {
+        ostringstream err;
+        switch (errno)
+        {
+        case EINVAL:
+            err << "Inet6AddrMask::toString() Invalid bit length 0";
+            throw FWException(err.str());
+            ;;
+        case EMSGSIZE:
+            err << "Inet6AddrMask::toString() EMSGSIZE error";
+            throw FWException(err.str());
+            ;;
+        case EAFNOSUPPORT:
+            err << "Inet6AddrMask::toString() EAFNOSUPPORT error";
+            throw FWException(err.str());
+            ;;
+        default:
+            err << "Inet6AddrMask::toString() other error: " << errno;
+            throw FWException(err.str());
+            ;;
+        }
+    }
+    return std::string(strdup(cp));
 }
 

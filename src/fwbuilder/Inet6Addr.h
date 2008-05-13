@@ -53,10 +53,11 @@ class Inet6Addr : public InetAddr
     protected:
 
     friend class IPv6Network;
-
+    friend class Inet6AddrMask;
+    
     // Address in network order
     struct in6_addr ipv6;
-
+    
     // copy in6_addr from sa to da
     static inline void _copy_in6_addr(struct in6_addr* da,
                                       const struct in6_addr* sa)
@@ -112,14 +113,6 @@ class Inet6Addr : public InetAddr
         return Inet6Addr(&a);
     }
 
-    inline virtual std::string toString() const
-    {
-        char ntop_buf[INET6_ADDRSTRLEN];
-        const char *cp;
-        cp = inet_ntop(AF_INET6, &ipv6, ntop_buf, sizeof(ntop_buf));
-        return std::string(strdup(cp));
-    }
-
     /**
      * Broadcast :  there are no broadcast addresses in ipv6
      * However some multicast addresses serve similar purpose. For example
@@ -160,11 +153,13 @@ class Inet6Addr : public InetAddr
         return *d2 - *d1 + 1;
     }
 
+    virtual std::string toString() const;
+
     /**
      * returns the "length" of the netmask, that is number of bits set to '1'
      * counting from left to right
      */ 
-    int getLength() const;
+    virtual int getLength() const;
 
     /**
      * for netmasks: return true if this is host mask, i.e. all '1'
@@ -219,7 +214,7 @@ class Inet6Addr : public InetAddr
         return Inet6Addr(&res);
     }
 
-    inline Inet6Addr& operator=(const Inet6Addr &addr)
+    inline virtual Inet6Addr& operator=(const Inet6Addr &addr)
     {
         Inet6Addr::_copy_in6_addr(&ipv6, &(addr.ipv6) );
         return *this;

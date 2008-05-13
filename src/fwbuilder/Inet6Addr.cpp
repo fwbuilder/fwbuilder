@@ -28,9 +28,11 @@
 
 #include <fwbuilder/Inet6Addr.h>
 #include <fwbuilder/Interface.h>
+#include <fwbuilder/inet_net.h>
 
 #include <stdio.h>
 #include <iostream>
+#include <sstream>
 
 #ifndef _WIN32
 #  include <sys/types.h>
@@ -48,7 +50,8 @@ namespace libfwbuilder
 Inet6Addr::Inet6Addr(const string &s)
     throw(FWException, FWNotSupportedException)
 {
-    if (inet_pton(AF_INET6, s.c_str(), &ipv4) == 0)
+
+    if (inet_net_pton(PGSQL_AF_INET6, s.c_str(), &ipv6, sizeof(ipv6)) < 0)
         throw FWException(string("Invalid IPv6 address: '")+s+"'");
 }
 
@@ -61,7 +64,7 @@ Inet6Addr::Inet6Addr(const char *data) throw(FWException) : InetAddr()
 {
     if(!data)
         throw FWException("NULL IP address data..");
-    if (inet_pton(AF_INET6, data, &ipv4) == 0)
+    if (inet_net_pton(PGSQL_AF_INET6, data, &ipv6, sizeof(ipv6)) < 0)
         throw FWException(string("Invalid IP address: '")+string(data)+"'");
 }
 
@@ -71,42 +74,88 @@ Inet6Addr::Inet6Addr(const struct in6_addr *na) throw(FWException) : InetAddr()
 }
 
 // Set netmask to 'n' bits
-Inet6Addr::Inet6Addr(int n)  throw(FWException)
+Inet6Addr::Inet6Addr(int len)  throw(FWException)
 {
-    if (n<0 || n>32) throw FWException(string("Invalid netmask length"));
-    unsigned long nm_bits = 0;
-    int i = n;
-    while (i>0)
+    if (len<0 || len>128) throw FWException(string("Invalid netmask length"));
+
+    ((uint32_t *) (&ipv6))[0] = 0xffffffff;
+    ((uint32_t *) (&ipv6))[1] = 0xffffffff;
+    ((uint32_t *) (&ipv6))[2] = 0xffffffff;
+    ((uint32_t *) (&ipv6))[3] = 0xffffffff;
+
+    // bits is number of zeros counting from the right end
+    int nbits = 128 - len;
+    for (int i=3; i>=0; --i)
     {
-        nm_bits >>= 1;
-        nm_bits |= 0x80000000;
-        i--;
+        if (nbits >= 32)
+        {
+            ((uint32_t*)(&ipv6))[i] = 0;
+            nbits -= 32;
+            continue;
+        }
+        uint32_t t = 0xffffffff;
+        for (int k = nbits % 32; k; --k)
+        {
+            t <<= 1;
+            t &= 0xfffffffe;
+        }
+        ((uint32_t*)(&ipv6))[i] = htonl(t);
+        break;
     }
-    ipv4.s_addr = htonl(nm_bits);
 }
+
+std::string Inet6Addr::toString() const
+{
+    char ntop_buf[sizeof "ffff:ffff:ffff:ffff:ffff:ffff:255.255.255.255/128"];
+    char *cp;
+    cp = inet_net_ntop(PGSQL_AF_INET6, (const void*)(&ipv6), -1, ntop_buf, sizeof(ntop_buf));
+    if (cp==NULL)
+    {
+        ostringstream err;
+        switch (errno)
+        {
+        case EINVAL:
+            err << "Inet6Addr::toString() Invalid bit length 0";
+            throw FWException(err.str());
+            ;;
+        case EMSGSIZE:
+            err << "Inet6Addr::toString() EMSGSIZE error";
+            throw FWException(err.str());
+            ;;
+        case EAFNOSUPPORT:
+            err << "Inet6Addr::toString() EAFNOSUPPORT error";
+            throw FWException(err.str());
+            ;;
+        default:
+            err << "Inet6Addr::toString() other error: " << errno;
+            throw FWException(err.str());
+            ;;
+        }
+    }
+    return std::string(strdup(cp));
+}
+
 
 int Inet6Addr::getLength() const
 {
-    if (isHostMask()) return 128;
-    if (isAny()) return 0;
-
-    int res = 0;
-    for (int i=0; i<4; ++i)
+    int bits = 0;
+    for (int i=3; i>=0; --i)
     {
-        unsigned int n = ntohl(((uint32_t*)(&ipv6))[i]);
-        if (n == 0xffffffff)
+        uint32_t n = ntohl(((uint32_t*)(&ipv6))[i]);
+        if (n==0)
         {
-            res += 32;
+            bits += 32;
             continue;
         }
-        while (n)
+        while ((n & 1) == 0)
         {
-            n = n << 1;
-            res++;
+            bits++;
+            n = n >> 1;
         }
+        bits = 128 - bits;
         break;
     }
-    return res;
+    return bits;
 }
 
 }

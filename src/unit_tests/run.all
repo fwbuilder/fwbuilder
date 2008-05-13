@@ -6,7 +6,12 @@ case $system in
     Linux)
         export LD_LIBRARY_PATH=../fwbuilder:../fwcompiler
 
-        find -type f -name '*_test' | sh
+        find -type f -name '*_test' | while read tf; do
+	  echo
+	  echo "================ $tf"
+	  ldd $tf
+	  $tf
+	done
         ;;
 
     Darwin)

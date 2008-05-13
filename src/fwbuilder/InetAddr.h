@@ -136,7 +136,7 @@ class InetAddr
      * returns the "length" of the netmask, that is number of bits set to '1'
      * counting from left to right
      */ 
-    int getLength() const;
+    virtual int getLength() const;
 
     /**
      * for netmasks: return true if this is host mask, i.e. all '1'
@@ -178,7 +178,7 @@ class InetAddr
         return InetAddr(&res);
     }
 
-    inline InetAddr& operator=(const InetAddr &addr)
+    inline virtual InetAddr& operator=(const InetAddr &addr)
     {
         ipv4.s_addr = addr.ipv4.s_addr;
         return *this;
