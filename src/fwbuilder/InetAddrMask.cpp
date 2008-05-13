@@ -130,12 +130,14 @@ InetAddrMask::~InetAddrMask()
 
 void InetAddrMask::setAddress(const InetAddr &a)
 {
+    assert(a.isV4());
     *address = a;
     setNetworkAndBroadcastAddress();
 }
 
 void InetAddrMask::setNetmask(const InetAddr &nm)
 {
+    assert(nm.isV4());
     *netmask = nm;
     setNetworkAndBroadcastAddress();
 }

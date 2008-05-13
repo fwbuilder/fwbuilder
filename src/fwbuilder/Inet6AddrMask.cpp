@@ -99,6 +99,21 @@ Inet6AddrMask::~Inet6AddrMask()
     // and other member variables
 }
 
+void Inet6AddrMask::setAddress(const InetAddr &a)
+{
+    assert(a.isV6());
+    *address = a;
+    setNetworkAndBroadcastAddress();
+}
+
+void Inet6AddrMask::setNetmask(const InetAddr &nm)
+{
+    assert(nm.isV6());
+    *netmask = nm;
+    setNetworkAndBroadcastAddress();
+}
+
+
 std::string Inet6AddrMask::toString() const
 {
     char ntop_buf[sizeof "ffff:ffff:ffff:ffff:ffff:ffff:255.255.255.255/128"];

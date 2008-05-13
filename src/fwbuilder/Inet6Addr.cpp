@@ -104,6 +104,15 @@ Inet6Addr::Inet6Addr(int len)  throw(FWException)
     }
 }
 
+Inet6Addr& Inet6Addr::operator=(const Inet6Addr &addr)
+{
+    cerr << "Inet6Addr::operator=" << endl;
+
+    Inet6Addr::_copy_in6_addr(&ipv6, &(addr.ipv6) );
+    return *this;
+}
+
+
 std::string Inet6Addr::toString() const
 {
     char ntop_buf[sizeof "ffff:ffff:ffff:ffff:ffff:ffff:255.255.255.255/128"];

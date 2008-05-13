@@ -64,6 +64,9 @@ public:
     Inet6AddrMask(const Inet6AddrMask&);
     virtual ~Inet6AddrMask();
 
+    virtual void setAddress(const InetAddr &a);
+    virtual void setNetmask(const InetAddr &nm);
+    
     virtual std::string toString() const;
 };
 

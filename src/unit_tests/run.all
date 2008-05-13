@@ -9,7 +9,7 @@ case $system in
         find -type f -name '*_test' | while read tf; do
 	  echo
 	  echo "================ $tf"
-	  ldd $tf
+	  ldd $tf | grep fwbuilder
 	  $tf
 	done
         ;;

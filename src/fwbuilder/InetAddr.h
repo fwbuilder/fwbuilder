@@ -72,8 +72,10 @@ class InetAddr
     // creates netmask 'n' bits long
     explicit InetAddr(int n) throw(FWException);
 
-    virtual bool isV4() { return true; }
-    virtual bool isV6() { return false; }
+    InetAddr& operator=(const InetAddr &addr);
+    
+    virtual bool isV4() const { return true; }
+    virtual bool isV6() const { return false; }
     
     static inline InetAddr getAny()
     {
@@ -176,12 +178,6 @@ class InetAddr
         struct in_addr res;
         res.s_addr = htonl(ntohl(addr.ipv4.s_addr) - decrement);
         return InetAddr(&res);
-    }
-
-    inline virtual InetAddr& operator=(const InetAddr &addr)
-    {
-        ipv4.s_addr = addr.ipv4.s_addr;
-        return *this;
     }
 
     inline friend bool operator<(const InetAddr &a, const InetAddr &b)

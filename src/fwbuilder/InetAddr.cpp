@@ -85,6 +85,14 @@ InetAddr::InetAddr(int n)  throw(FWException)
     ipv4.s_addr = htonl(nm_bits);
 }
 
+InetAddr& InetAddr::operator=(const InetAddr &addr)
+{
+    cerr << "InetAddr::operator=" << endl;
+
+    ipv4.s_addr = addr.ipv4.s_addr;
+    return *this;
+}
+
 int InetAddr::getLength() const
 {
     if (ipv4.s_addr == INADDR_BROADCAST) return 32;
