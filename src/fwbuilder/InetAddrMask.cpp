@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <assert.h>
 
 #ifndef _WIN32
 #  include <sys/types.h>
