@@ -240,6 +240,8 @@ class Inet6Addr : public InetAddr
         return (!(IN6_ARE_ADDR_EQUAL(&(a.ipv6), &(b.ipv6))));
     }
     
+    friend Inet6Addr operator~(const Inet6Addr &a);
+
 };
 
 }

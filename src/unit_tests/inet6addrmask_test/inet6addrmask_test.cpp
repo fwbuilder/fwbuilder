@@ -80,26 +80,37 @@ int main(int, char * const *)
         cout << endl;
         cout << "Start test for Inet6AddrMask" << endl;
 
-        Inet6Addr A1(0);
+        Inet6Addr x1(0);
         cout << "Inet6Addr::Inet6Addr(0) "
-             << A1.toString() << "  length=" << A1.getLength() << endl;
+             << x1.toString() << "  length=" << x1.getLength() << endl;
 
-        Inet6Addr A2(8);
+        Inet6Addr x2(8);
         cout << "Inet6Addr::Inet6Addr(8) "
-             << A2.toString() << "  length=" << A2.getLength() << endl;
+             << x2.toString() << "  length=" << x2.getLength() << endl;
 
-        Inet6Addr A3(16);
+        Inet6Addr x3(16);
         cout << "Inet6Addr::Inet6Addr(16) "
-             << A3.toString() << "  length=" << A3.getLength() << endl;
+             << x3.toString() << "  length=" << x3.getLength() << endl;
 
-        Inet6Addr A4(64);
+        Inet6Addr x4(64);
         cout << "Inet6Addr::Inet6Addr(64) "
-             << A4.toString() << "  length=" << A4.getLength() << endl;
+             << x4.toString() << "  length=" << x4.getLength() << endl;
 
-        Inet6Addr A5(128);
+        Inet6Addr x5(128);
         cout << "Inet6Addr::Inet6Addr(128) "
-             << A5.toString() << "  length=" << A5.getLength() << endl;
+             << x5.toString() << "  length=" << x5.getLength() << endl;
 
+
+        Inet6Addr x6("fe80::21d:9ff:fe8b:8e94");
+        Inet6Addr y6(64);
+        Inet6Addr z = x6 & y6;
+
+        cout << "z=" << z.toString() << endl;
+        assert(z.toString()=="fe80::");
+
+        cout << "y6=" << y6.toString() << endl;
+        cout << "~y6=" << (~y6).toString() << endl;
+        assert((~y6).toString()=="::ffff:ffff:ffff:ffff");
 
         cout << endl;
 
@@ -140,7 +151,8 @@ int main(int, char * const *)
         sa = a3->getNetmask().toString();
         cout << "a3.netmask=" << sa
              << " length=" << a3->getNetmask().getLength() << endl;
-        assert(sa=="64");
+        assert(sa=="ffff:ffff:ffff:ffff::");
+        assert(a3->getNetmask().getLength()==64);
 //        assert(a3->dimension()==18446744073709551616);
         assert(a3->toString()=="fe80::21d:9ff:fe8b:8e94/64");
 
@@ -154,11 +166,11 @@ int main(int, char * const *)
         assert(sa=="fe80::21d:9ff:fe8b:8e94");
         sa = a4->getNetmask().toString();
         cout << "a4.netmask=" << sa << endl;
-        assert(sa=="ffff:ffff:ffff:ffff:0000:0000:0000:0000");
+        assert(sa=="ffff:ffff:ffff:ffff::");
 //        assert(a4->dimension()==1);
 
-//        assert(a3->belongs(a2->getAddress()));
-
+        cout << "Checking Inet6AddrMask::belongs()" << endl;
+        assert(a4->belongs(a2->getAddress()));
 
         cout << endl;
 

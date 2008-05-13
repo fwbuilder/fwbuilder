@@ -55,6 +55,8 @@ namespace libfwbuilder
 
 class Inet6AddrMask : public InetAddrMask
 {
+private:
+    void setNetworkAndBroadcastAddress();
 
 public:
 

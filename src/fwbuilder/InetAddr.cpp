@@ -31,6 +31,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <assert.h>
 
 #ifndef _WIN32
 #  include <sys/types.h>
@@ -87,8 +88,6 @@ InetAddr::InetAddr(int n)  throw(FWException)
 
 InetAddr& InetAddr::operator=(const InetAddr &addr)
 {
-    cerr << "InetAddr::operator=" << endl;
-
     ipv4.s_addr = addr.ipv4.s_addr;
     return *this;
 }

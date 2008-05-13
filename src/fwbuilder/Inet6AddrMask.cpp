@@ -46,6 +46,16 @@
 using namespace std;
 using namespace libfwbuilder;
 
+void Inet6AddrMask::setNetworkAndBroadcastAddress()
+{
+    delete network_address;
+    network_address = new Inet6Addr(
+        dynamic_cast<const Inet6Addr&>(*address) & dynamic_cast<const Inet6Addr&>(*netmask));
+    delete broadcast_address;
+    broadcast_address = new Inet6Addr(
+        dynamic_cast<const Inet6Addr&>(*address) | (~(dynamic_cast<const Inet6Addr&>(*netmask))));
+}
+
 Inet6AddrMask::Inet6AddrMask() : InetAddrMask(true)
 {
     address = new Inet6Addr();
@@ -109,7 +119,8 @@ void Inet6AddrMask::setAddress(const InetAddr &a)
 void Inet6AddrMask::setNetmask(const InetAddr &nm)
 {
     assert(nm.isV6());
-    *netmask = nm;
+    delete netmask;
+    netmask = new Inet6Addr(dynamic_cast<const Inet6Addr&>(nm));
     setNetworkAndBroadcastAddress();
 }
 

@@ -106,8 +106,6 @@ Inet6Addr::Inet6Addr(int len)  throw(FWException)
 
 Inet6Addr& Inet6Addr::operator=(const Inet6Addr &addr)
 {
-    cerr << "Inet6Addr::operator=" << endl;
-
     Inet6Addr::_copy_in6_addr(&ipv6, &(addr.ipv6) );
     return *this;
 }
@@ -165,6 +163,16 @@ int Inet6Addr::getLength() const
         break;
     }
     return bits;
+}
+
+Inet6Addr operator~(const Inet6Addr &a)
+{
+    struct in6_addr res;
+    ((uint32_t *) (&res))[0] = htonl(~(ntohl(((uint32_t *) (&a.ipv6))[0])));
+    ((uint32_t *) (&res))[1] = htonl(~(ntohl(((uint32_t *) (&a.ipv6))[1])));
+    ((uint32_t *) (&res))[2] = htonl(~(ntohl(((uint32_t *) (&a.ipv6))[2])));
+    ((uint32_t *) (&res))[3] = htonl(~(ntohl(((uint32_t *) (&a.ipv6))[3])));
+    return Inet6Addr(&res);
 }
 
 }

@@ -67,6 +67,9 @@ namespace libfwbuilder
 
 class InetAddrMask
 {
+private:
+    void setNetworkAndBroadcastAddress();
+    
 protected:
     
     InetAddr* address;
@@ -75,7 +78,6 @@ protected:
     InetAddr* network_address;
 
     explicit InetAddrMask(bool no_address);
-    void setNetworkAndBroadcastAddress();
 
 public:
 
