@@ -52,6 +52,10 @@ public:
     
     DECLARE_FWOBJECT_SUBTYPE(IPv6);
 
+    virtual FWObject& shallowDuplicate(const FWObject *obj,
+                                       bool preserve_id = true)
+        throw(FWException);
+
     virtual const bool hasInetAddress(bool ipv6=false) const
     {
         if (ipv6) return true;

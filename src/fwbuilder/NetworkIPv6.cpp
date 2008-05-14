@@ -42,20 +42,27 @@ const char *NetworkIPv6::TYPENAME={"NetworkIPv6"};
 
 NetworkIPv6::NetworkIPv6() : Address()
 {
-    setNetmask(Inet6Addr(0));
+    delete inet_addr_mask;
+    inet_addr_mask = new Inet6AddrMask();
+//    setNetmask(Inet6Addr(0));
 }
 
 NetworkIPv6::NetworkIPv6(const FWObject *root,bool prepopulate) :
     Address(root, prepopulate)
 {
-    setNetmask(Inet6Addr(0));
+    delete inet_addr_mask;
+    inet_addr_mask = new Inet6AddrMask();
+//    setNetmask(Inet6Addr(0));
 }
 
-NetworkIPv6::NetworkIPv6(NetworkIPv6 &o) : Address(o)
+NetworkIPv6::NetworkIPv6(NetworkIPv6 &other) : Address(other)
 {
-    FWObject::operator=(o);
-    setAddress(o.getAddress());
-    setNetmask(o.getNetmask());
+    delete inet_addr_mask;
+    inet_addr_mask = new Inet6AddrMask(
+        *(dynamic_cast<Inet6AddrMask*>(other.inet_addr_mask)));
+    FWObject::operator=(other);
+//    setAddress(o.getAddress());
+//    setNetmask(o.getNetmask());
 }
 
 NetworkIPv6::NetworkIPv6 (const string &s) : Address()
@@ -64,6 +71,16 @@ NetworkIPv6::NetworkIPv6 (const string &s) : Address()
 }
                                      
 NetworkIPv6::~NetworkIPv6() {}
+
+FWObject& NetworkIPv6::shallowDuplicate(const FWObject *other,
+                                        bool preserve_id) throw(FWException)
+{
+    const NetworkIPv6* a_other = NetworkIPv6::constcast(other);
+    delete inet_addr_mask;
+    inet_addr_mask = new Inet6AddrMask(
+        *(dynamic_cast<Inet6AddrMask*>(a_other->inet_addr_mask)));
+    return FWObject::shallowDuplicate(other, preserve_id);
+}
 
 void NetworkIPv6::fromXML(xmlNodePtr root) throw(FWException)
 {

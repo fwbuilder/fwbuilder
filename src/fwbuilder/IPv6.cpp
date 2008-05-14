@@ -69,6 +69,16 @@ IPv6::~IPv6()
 {
 }
 
+FWObject& IPv6::shallowDuplicate(const FWObject *other,
+                                 bool preserve_id) throw(FWException)
+{
+    const IPv6* a_other = IPv6::constcast(other);
+    delete inet_addr_mask;
+    inet_addr_mask = new Inet6AddrMask(
+        *(dynamic_cast<Inet6AddrMask*>(a_other->inet_addr_mask)));
+    return FWObject::shallowDuplicate(other, preserve_id);
+}
+
 void IPv6::fromXML(xmlNodePtr root) throw(FWException)
 {
     FWObject::fromXML(root);
