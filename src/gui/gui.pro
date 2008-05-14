@@ -64,8 +64,10 @@ HEADERS += ../../config.h \
 	AddressRangeDialog.h \
 	AddressTableDialog.h \
 	IPv4Dialog.h \
+	IPv6Dialog.h \
 	PhysicalAddressDialog.h \
 	NetworkDialog.h \
+	NetworkDialogIPv6.h \
 	LibraryDialog.h \
 	CustomServiceDialog.h \
 	IPServiceDialog.h \
@@ -172,8 +174,10 @@ SOURCES += ProjectPanel.cpp \
 	AddressRangeDialog.cpp \
 	AddressTableDialog.cpp \
 	IPv4Dialog.cpp \
+	IPv6Dialog.cpp \
 	PhysicalAddressDialog.cpp \
 	NetworkDialog.cpp \
+	NetworkDialogIPv6.cpp \
 	LibraryDialog.cpp \
 	CustomServiceDialog.cpp \
 	IPServiceDialog.cpp \
@@ -240,9 +244,11 @@ FORMS = FWBMainWindow_q.ui \
 	groupobjectdialog_q.ui \
 	librarydialog_q.ui \
 	ipv4dialog_q.ui \
+	ipv6dialog_q.ui \
 	addressrangedialog_q.ui \
 	addresstabledialog_q.ui \
 	networkdialog_q.ui \
+	networkdialogipv6_q.ui \
 	hostdialog_q.ui \
 	firewalldialog_q.ui \
 	interfacedialog_q.ui \

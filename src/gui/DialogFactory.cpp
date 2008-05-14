@@ -36,10 +36,12 @@
 #include "LibraryDialog.h"
 #include "AddressRangeDialog.h"
 #include "IPv4Dialog.h"
+#include "IPv6Dialog.h"
 #include "PhysicalAddressDialog.h"
 #include "DNSNameDialog.h"
 #include "AddressTableDialog.h"
 #include "NetworkDialog.h"
+#include "NetworkDialogIPv6.h"
 #include "CustomServiceDialog.h"
 #include "ICMPServiceDialog.h"
 #include "IPServiceDialog.h"
@@ -77,7 +79,9 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AddressRange.h"
@@ -108,6 +112,8 @@ QWidget *DialogFactory::createDialog(ProjectPanel *project, QWidget *parent,cons
 
     if (objType==IPv4::TYPENAME)          return new IPv4Dialog(project, parent);
 
+    if (objType==IPv6::TYPENAME)          return new IPv6Dialog(project, parent);
+
     if (objType==physAddress::TYPENAME)   return new PhysicalAddressDialog(project, parent);
 
     if (objType==DNSName::TYPENAME)       return new DNSNameDialog(project, parent);
@@ -123,6 +129,8 @@ QWidget *DialogFactory::createDialog(ProjectPanel *project, QWidget *parent,cons
     if (objType==Interface::TYPENAME)     return new InterfaceDialog(project, parent);
 
     if (objType==Network::TYPENAME)       return new NetworkDialog(project, parent);
+
+    if (objType==NetworkIPv6::TYPENAME)   return new NetworkDialogIPv6(project, parent);
 
     if (objType==CustomService::TYPENAME) return new CustomServiceDialog(project, parent);
 

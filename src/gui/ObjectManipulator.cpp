@@ -84,7 +84,9 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AddressRange.h"
@@ -163,7 +165,9 @@ ObjectManipulator::ObjectManipulator( QWidget *parent):
     newObjectPopup->addAction(QIcon(icon_path+Host::TYPENAME+"/icon-tree"), tr( "New &Host" ), this, SLOT( newHost() ));
     newObjectPopup->addAction(QIcon(icon_path+Interface::TYPENAME+"/icon-tree"), tr( "New &Interface" ), this, SLOT( newInterface() ));
     newObjectPopup->addAction(QIcon(icon_path+Network::TYPENAME+"/icon-tree"), tr( "New &Network" ), this, SLOT( newNetwork() ));
+    newObjectPopup->addAction(QIcon(icon_path+NetworkIPv6::TYPENAME+"/icon-tree"), tr( "New Network IPv&6" ), this, SLOT( newNetworkIPv6() ));    
     newObjectPopup->addAction(QIcon(icon_path+IPv4::TYPENAME+"/icon-tree"), tr( "New &Address" ), this, SLOT( newAddress() ));
+    newObjectPopup->addAction(QIcon(icon_path+IPv6::TYPENAME+"/icon-tree"), tr( "New Address I&Pv6" ), this, SLOT( newAddressIPv6() ));
     newObjectPopup->addAction(QIcon(icon_path+DNSName::TYPENAME+"/icon-tree"), tr( "New &DNS Name" ), this, SLOT( newDNSName() ));
     newObjectPopup->addAction(QIcon(icon_path+AddressTable::TYPENAME+"/icon-tree"), tr( "New A&ddress Table" ), this, SLOT( newAddressTable() ));
     newObjectPopup->addAction(QIcon(icon_path+AddressRange::TYPENAME+"/icon-tree"), tr( "New Address &Range" ), this, SLOT( newAddressRange() ));
@@ -2645,6 +2649,15 @@ void ObjectManipulator::newNetwork()
         editObject(o);
     }
 }
+void ObjectManipulator::newNetworkIPv6()
+{
+    FWObject *o=createObject(NetworkIPv6::TYPENAME,tr("New Network IPv6"));
+    if (o!=NULL)
+    {
+        openObject(o);
+        editObject(o);
+    }
+}
 
 void ObjectManipulator::newAddress()
 {
@@ -2689,6 +2702,51 @@ void ObjectManipulator::newAddress()
         editObject(o);
     }
 }
+
+void ObjectManipulator::newAddressIPv6()
+{
+    if ( currentObj->isReadOnly() ) return;
+
+    FWObject *o;
+/*
+ * Oleg reports that his expectation was that "New Address" should
+ * always create an address object even if current selected object in
+ * the tree is an interface. I tend to agree with him, this was a
+ * usability issue because behavior of the program was different
+ * depending on which object was selected in the tree. I am changing
+ * it and will make it so "New Address" will always create a new
+ * Address object uner Objects/Addresses. Interface address can be
+ * created using context pop-up menu.
+ *                                         12/19/04 --vk
+ */
+    o=createObject(IPv6::TYPENAME,tr("New Address IPv6"));
+
+#if 0
+    if (Interface::isA(currentObj))
+    {
+        Interface *intf = Interface::cast(currentObj);
+        if (intf &&
+            (intf->isDyn() || intf->isUnnumbered() || intf->isBridgePort())
+        ) return;
+    QString iname=QString("%1:%2:ip")
+        .arg(QString::fromUtf8(currentObj->getParent()->getName().c_str()))
+        .arg(QString::fromUtf8(currentObj->getName().c_str()));
+        o=createObject(currentObj, IPv4::TYPENAME, iname);
+    }
+    else
+    {
+        o=createObject(IPv4::TYPENAME,tr("New Address"));
+    }
+#endif
+
+
+    if (o!=NULL)
+    {
+        openObject(o);
+        editObject(o);
+    }
+}
+
 
 void ObjectManipulator::newDNSName()
 {

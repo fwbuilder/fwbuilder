@@ -39,7 +39,9 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AddressRange.h"
@@ -79,7 +81,6 @@ const char* systemObjects[] = {
     "Services/TCP",
     "Services/UDP",
     "Services/TagServices",
-    "Services/User",
 
     "Firewalls",
 
@@ -95,12 +96,14 @@ FWBTree::FWBTree()
     systemGroupPaths[Library::TYPENAME]       = "";
 
     systemGroupPaths[IPv4::TYPENAME]          = "Objects/Addresses";
+    systemGroupPaths[IPv6::TYPENAME]          = "Objects/Addresses";
     systemGroupPaths[DNSName::TYPENAME]       = "Objects/DNS Names";
     systemGroupPaths[AddressTable::TYPENAME]  = "Objects/Address Tables";
     systemGroupPaths[AddressRange::TYPENAME]  = "Objects/Address Ranges";
     systemGroupPaths[ObjectGroup::TYPENAME]   = "Objects/Groups";
     systemGroupPaths[Host::TYPENAME]          = "Objects/Hosts";
     systemGroupPaths[Network::TYPENAME]       = "Objects/Networks";
+    systemGroupPaths[NetworkIPv6::TYPENAME]       = "Objects/Networks";
 
     systemGroupPaths[ServiceGroup::TYPENAME]  = "Services/Groups";
     systemGroupPaths[CustomService::TYPENAME] = "Services/Custom";
@@ -127,6 +130,9 @@ FWBTree::FWBTree()
 
     systemGroupTypes[IPv4::TYPENAME]=          ObjectGroup::TYPENAME;
     systemGroupNames[IPv4::TYPENAME]=          "Addresses"      ;
+
+    systemGroupTypes[IPv6::TYPENAME]=          ObjectGroup::TYPENAME;
+    systemGroupNames[IPv6::TYPENAME]=          "Addresses"      ;
 
     systemGroupTypes[DNSName::TYPENAME]=       ObjectGroup::TYPENAME;
     systemGroupNames[DNSName::TYPENAME]=       "DNS Names"      ;

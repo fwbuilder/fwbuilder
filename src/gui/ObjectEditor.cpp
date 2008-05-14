@@ -54,7 +54,9 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AddressRange.h"
@@ -111,6 +113,10 @@ ObjectEditor::ObjectEditor( QWidget *parent, ProjectPanel *project):
     stackIds[IPv4::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[IPv4::TYPENAME]] = w;
 
+    w= DialogFactory::createDialog(m_project, parent,IPv6::TYPENAME);
+    stackIds[IPv6::TYPENAME]  = parentWidget->addWidget(w);
+    dialogs[stackIds[IPv6::TYPENAME]] = w;
+
     w= DialogFactory::createDialog(m_project, parent,physAddress::TYPENAME);
     stackIds[physAddress::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[physAddress::TYPENAME]] = w;
@@ -134,6 +140,10 @@ ObjectEditor::ObjectEditor( QWidget *parent, ProjectPanel *project):
     w= DialogFactory::createDialog(m_project, parent,Network::TYPENAME);
     stackIds[Network::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[Network::TYPENAME]] = w;
+
+    w= DialogFactory::createDialog(m_project, parent,NetworkIPv6::TYPENAME);
+    stackIds[NetworkIPv6::TYPENAME]  = parentWidget->addWidget(w);
+    dialogs[stackIds[NetworkIPv6::TYPENAME]] = w;
 
     w= DialogFactory::createDialog(m_project, parent,CustomService::TYPENAME);
     stackIds[CustomService::TYPENAME]  = parentWidget->addWidget(w);
