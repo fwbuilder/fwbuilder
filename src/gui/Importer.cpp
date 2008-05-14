@@ -64,15 +64,9 @@ FWObject* Importer::createObject(const std::string &objType,
                                  const std::string &objName)
 {
     assert(library!=NULL);
-    if (mw->activeProject())
-    {
-    FWObject *slot = mw->activeProject()->getFWTree()->getStandardSlotForObject(library,objType.c_str());
+    FWBTree tree ;
+    FWObject *slot = tree.getStandardSlotForObject(library,objType.c_str());
     return createObject(slot, objType, objName);
-    }
-    else
-    {
-        return NULL;
-    }
 }
 
 FWObject* Importer::createObject(FWObject *parent,
