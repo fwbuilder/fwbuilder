@@ -31,10 +31,11 @@
 
 #include "FWBTree.h"
 #include "NetworkDialogIPv6.h"
-
+#include "fwbuilder/Inet6Addr.h"
 #include "ProjectPanel.h"
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/FWException.h"
 
@@ -64,7 +65,7 @@ NetworkDialogIPv6::~NetworkDialogIPv6() { delete m_dialog; }
 void NetworkDialogIPv6::loadFWObject(FWObject *o)
 {
     obj=o;
-    Network *s = dynamic_cast<Network*>(obj);
+    NetworkIPv6 *s = dynamic_cast<NetworkIPv6*>(obj);
     assert(s!=NULL);
 
     init=true;
@@ -110,11 +111,11 @@ void NetworkDialogIPv6::validate(bool *res)
     if (!isTreeReadWrite(this,obj)) { *res=false; return; }
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 
-    Network *s = dynamic_cast<Network*>(obj);
+    NetworkIPv6 *s = dynamic_cast<NetworkIPv6*>(obj);
     assert(s!=NULL);
     try
     {
-        InetAddr( m_dialog->address->text().toLatin1().constData() );
+        Inet6Addr( m_dialog->address->text().toLatin1().constData() );
     } catch (FWException &ex)
     {
         *res=false;
@@ -125,7 +126,7 @@ void NetworkDialogIPv6::validate(bool *res)
     }
     try
     {
-        InetAddr( m_dialog->netmask->text().toLatin1().constData() );
+        Inet6Addr( m_dialog->netmask->text().toLatin1().constData() );
     } catch (FWException &ex)
     {
         *res=false;
@@ -148,7 +149,7 @@ void NetworkDialogIPv6::libChanged()
 
 void NetworkDialogIPv6::applyChanges()
 {
-    Network *s = dynamic_cast<Network*>(obj);
+    NetworkIPv6 *s = dynamic_cast<NetworkIPv6*>(obj);
     assert(s!=NULL);
 
     string oldname=obj->getName();
@@ -157,9 +158,9 @@ void NetworkDialogIPv6::applyChanges()
     try
     {
         s->setAddress(
-            InetAddr(m_dialog->address->text().toLatin1().constData()) );
+            Inet6Addr(m_dialog->address->text().toLatin1().constData()) );
         s->setNetmask(
-            InetAddr(m_dialog->netmask->text().toLatin1().constData()) );
+            Inet6Addr(m_dialog->netmask->text().toLatin1().constData()) );
     } catch (FWException &ex)
     {
 /* exception thrown if user types illegal m_dialog->address or m_dialog->netmask */
