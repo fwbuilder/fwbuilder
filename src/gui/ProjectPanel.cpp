@@ -3336,14 +3336,18 @@ void ProjectPanel::loadState ()
 
 void ProjectPanel::resizeEvent ( QResizeEvent * event )
 {
-    if (oldState==-1)
+    /*if (oldState==-1)
     {
         if (isMaximized ())
             oldState=0;
         return ;
-    }
+    }*/
     if (!firstResize&&rcs!=NULL)
     {
         loadState();
-    }    
+    } 
+    if (firstResize&&rcs!=NULL)
+    {
+        saveState();
+    }   
 }
