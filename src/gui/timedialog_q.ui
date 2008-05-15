@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>679</width>
-    <height>200</height>
+    <width>714</width>
+    <height>238</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -147,270 +147,12 @@
          <number>2</number>
         </property>
         <property name="horizontalSpacing" >
-         <number>10</number>
+         <number>2</number>
         </property>
         <property name="verticalSpacing" >
-         <number>10</number>
+         <number>2</number>
         </property>
-        <item row="1" column="1" >
-         <widget class="QFrame" name="frame18" >
-          <property name="frameShape" >
-           <enum>QFrame::Box</enum>
-          </property>
-          <property name="frameShadow" >
-           <enum>QFrame::Sunken</enum>
-          </property>
-          <layout class="QVBoxLayout" >
-           <property name="spacing" >
-            <number>2</number>
-           </property>
-           <property name="leftMargin" >
-            <number>2</number>
-           </property>
-           <property name="topMargin" >
-            <number>2</number>
-           </property>
-           <property name="rightMargin" >
-            <number>2</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>2</number>
-           </property>
-           <item>
-            <widget class="QGroupBox" name="groupBox2" >
-             <property name="title" >
-              <string/>
-             </property>
-             <layout class="QGridLayout" >
-              <property name="leftMargin" >
-               <number>0</number>
-              </property>
-              <property name="topMargin" >
-               <number>0</number>
-              </property>
-              <property name="rightMargin" >
-               <number>0</number>
-              </property>
-              <property name="bottomMargin" >
-               <number>0</number>
-              </property>
-              <property name="horizontalSpacing" >
-               <number>2</number>
-              </property>
-              <property name="verticalSpacing" >
-               <number>2</number>
-              </property>
-              <item row="0" column="2" colspan="2" >
-               <widget class="QDateEdit" name="startDate" >
-                <property name="date" >
-                 <date>
-                  <year>2000</year>
-                  <month>1</month>
-                  <day>1</day>
-                 </date>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="3" >
-               <widget class="QTimeEdit" name="startTime" >
-                <property name="minimumSize" >
-                 <size>
-                  <width>0</width>
-                  <height>25</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="2" colspan="2" >
-               <widget class="QComboBox" name="startDOW" >
-                <item>
-                 <property name="text" >
-                  <string>Any</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text" >
-                  <string>Sunday</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text" >
-                  <string>Monday</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text" >
-                  <string>Tuesday</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text" >
-                  <string>Wednesday</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text" >
-                  <string>Thursday</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text" >
-                  <string>Friday</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text" >
-                  <string>Saturday</string>
-                 </property>
-                </item>
-               </widget>
-              </item>
-              <item row="2" column="0" colspan="2" >
-               <widget class="QLabel" name="textLabel3" >
-                <property name="text" >
-                 <string>Start day of week:</string>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0" colspan="3" >
-               <widget class="QLabel" name="textLabel1_3" >
-                <property name="text" >
-                 <string>Start time:</string>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0" >
-               <widget class="QCheckBox" name="useStartDate" >
-                <property name="text" >
-                 <string>Start date:</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="groupBox1" >
-             <property name="title" >
-              <string/>
-             </property>
-             <layout class="QGridLayout" >
-              <property name="leftMargin" >
-               <number>0</number>
-              </property>
-              <property name="topMargin" >
-               <number>0</number>
-              </property>
-              <property name="rightMargin" >
-               <number>0</number>
-              </property>
-              <property name="bottomMargin" >
-               <number>0</number>
-              </property>
-              <property name="horizontalSpacing" >
-               <number>2</number>
-              </property>
-              <property name="verticalSpacing" >
-               <number>2</number>
-              </property>
-              <item row="1" column="4" >
-               <widget class="QTimeEdit" name="endTime" />
-              </item>
-              <item row="0" column="2" colspan="3" >
-               <widget class="QDateEdit" name="endDate" >
-                <property name="date" >
-                 <date>
-                  <year>2000</year>
-                  <month>1</month>
-                  <day>1</day>
-                 </date>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0" >
-               <widget class="QCheckBox" name="useEndDate" >
-                <property name="text" >
-                 <string>End date:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0" colspan="4" >
-               <widget class="QLabel" name="textLabel1_3_2" >
-                <property name="text" >
-                 <string>End time:</string>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="3" colspan="2" >
-               <widget class="QComboBox" name="endDOW" >
-                <item>
-                 <property name="text" >
-                  <string>Any</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text" >
-                  <string>Sunday</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text" >
-                  <string>Monday</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text" >
-                  <string>Tuesday</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text" >
-                  <string>Wednesday</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text" >
-                  <string>Thursday</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text" >
-                  <string>Friday</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text" >
-                  <string>Saturday</string>
-                 </property>
-                </item>
-               </widget>
-              </item>
-              <item row="2" column="0" colspan="3" >
-               <widget class="QLabel" name="textLabel3_2" >
-                <property name="text" >
-                 <string>End day of week:</string>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="0" column="2" colspan="2" >
+        <item row="0" column="2" >
          <widget class="QLabel" name="textLabel2" >
           <property name="text" >
            <string>Comment:</string>
@@ -506,6 +248,320 @@
           </layout>
          </widget>
         </item>
+        <item row="1" column="1" >
+         <widget class="QFrame" name="frame18" >
+          <property name="minimumSize" >
+           <size>
+            <width>350</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="frameShape" >
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow" >
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <layout class="QVBoxLayout" >
+           <property name="spacing" >
+            <number>2</number>
+           </property>
+           <property name="leftMargin" >
+            <number>2</number>
+           </property>
+           <property name="topMargin" >
+            <number>2</number>
+           </property>
+           <property name="rightMargin" >
+            <number>2</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QGroupBox" name="groupBox2" >
+             <property name="title" >
+              <string/>
+             </property>
+             <layout class="QGridLayout" >
+              <property name="leftMargin" >
+               <number>2</number>
+              </property>
+              <property name="topMargin" >
+               <number>2</number>
+              </property>
+              <property name="rightMargin" >
+               <number>2</number>
+              </property>
+              <property name="bottomMargin" >
+               <number>2</number>
+              </property>
+              <property name="horizontalSpacing" >
+               <number>2</number>
+              </property>
+              <property name="verticalSpacing" >
+               <number>2</number>
+              </property>
+              <item row="0" column="0" >
+               <widget class="QCheckBox" name="useStartDate" >
+                <property name="text" >
+                 <string>Start date:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1" colspan="2" >
+               <widget class="QDateEdit" name="startDate" >
+                <property name="date" >
+                 <date>
+                  <year>2000</year>
+                  <month>1</month>
+                  <day>1</day>
+                 </date>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" colspan="2" >
+               <widget class="QLabel" name="textLabel1_3" >
+                <property name="text" >
+                 <string>Start time:</string>
+                </property>
+                <property name="wordWrap" >
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2" >
+               <widget class="QTimeEdit" name="startTime" >
+                <property name="minimumSize" >
+                 <size>
+                  <width>0</width>
+                  <height>25</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0" colspan="3" >
+               <widget class="QFrame" name="frame" >
+                <property name="frameShape" >
+                 <enum>QFrame::NoFrame</enum>
+                </property>
+                <property name="frameShadow" >
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QGridLayout" >
+                 <property name="leftMargin" >
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin" >
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin" >
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin" >
+                  <number>0</number>
+                 </property>
+                 <property name="horizontalSpacing" >
+                  <number>0</number>
+                 </property>
+                 <property name="verticalSpacing" >
+                  <number>0</number>
+                 </property>
+                 <item row="0" column="0" >
+                  <widget class="QCheckBox" name="cbStart1" >
+                   <property name="text" >
+                    <string>Mon</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1" >
+                  <widget class="QCheckBox" name="cbStart2" >
+                   <property name="text" >
+                    <string>Tue</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2" >
+                  <widget class="QCheckBox" name="cbStart3" >
+                   <property name="text" >
+                    <string>Wed</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="3" >
+                  <widget class="QCheckBox" name="cbStart4" >
+                   <property name="text" >
+                    <string>Thu</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="4" >
+                  <widget class="QCheckBox" name="cbStart5" >
+                   <property name="text" >
+                    <string>Fri</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="5" >
+                  <widget class="QCheckBox" name="cbStart6" >
+                   <property name="text" >
+                    <string>Sat</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="6" >
+                  <widget class="QCheckBox" name="cbStart7" >
+                   <property name="text" >
+                    <string>Sun</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox1" >
+             <property name="title" >
+              <string/>
+             </property>
+             <layout class="QGridLayout" >
+              <property name="leftMargin" >
+               <number>2</number>
+              </property>
+              <property name="topMargin" >
+               <number>2</number>
+              </property>
+              <property name="rightMargin" >
+               <number>2</number>
+              </property>
+              <property name="bottomMargin" >
+               <number>2</number>
+              </property>
+              <property name="horizontalSpacing" >
+               <number>2</number>
+              </property>
+              <property name="verticalSpacing" >
+               <number>2</number>
+              </property>
+              <item row="0" column="0" >
+               <widget class="QCheckBox" name="useEndDate" >
+                <property name="text" >
+                 <string>End date:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1" colspan="2" >
+               <widget class="QDateEdit" name="endDate" >
+                <property name="date" >
+                 <date>
+                  <year>2000</year>
+                  <month>1</month>
+                  <day>1</day>
+                 </date>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" colspan="2" >
+               <widget class="QLabel" name="textLabel1_3_2" >
+                <property name="text" >
+                 <string>End time:</string>
+                </property>
+                <property name="wordWrap" >
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2" >
+               <widget class="QTimeEdit" name="endTime" />
+              </item>
+              <item row="2" column="0" colspan="3" >
+               <widget class="QFrame" name="frame_2" >
+                <property name="frameShape" >
+                 <enum>QFrame::NoFrame</enum>
+                </property>
+                <property name="frameShadow" >
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QGridLayout" >
+                 <property name="leftMargin" >
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin" >
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin" >
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin" >
+                  <number>0</number>
+                 </property>
+                 <property name="horizontalSpacing" >
+                  <number>0</number>
+                 </property>
+                 <property name="verticalSpacing" >
+                  <number>0</number>
+                 </property>
+                 <item row="0" column="0" >
+                  <widget class="QCheckBox" name="cbStop1" >
+                   <property name="text" >
+                    <string>Mon</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1" >
+                  <widget class="QCheckBox" name="cbStop2" >
+                   <property name="text" >
+                    <string>Tue</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2" >
+                  <widget class="QCheckBox" name="cbStop3" >
+                   <property name="text" >
+                    <string>Wed</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="3" >
+                  <widget class="QCheckBox" name="cbStop4" >
+                   <property name="text" >
+                    <string>Thu</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="4" >
+                  <widget class="QCheckBox" name="cbStop5" >
+                   <property name="text" >
+                    <string>Fri</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="5" >
+                  <widget class="QCheckBox" name="cbStop6" >
+                   <property name="text" >
+                    <string>Sat</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="6" >
+                  <widget class="QCheckBox" name="cbStop7" >
+                   <property name="text" >
+                    <string>Sun</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
         <item row="1" column="2" >
          <widget class="QTextEdit" name="comment" >
           <property name="sizePolicy" >
@@ -516,7 +572,7 @@
           </property>
           <property name="minimumSize" >
            <size>
-            <width>200</width>
+            <width>50</width>
             <height>0</height>
            </size>
           </property>
@@ -551,8 +607,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>81</x>
+     <y>75</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -567,8 +623,8 @@
    <slot>libChanged()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>81</x>
+     <y>102</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -583,8 +639,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>568</x>
+     <y>71</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -599,8 +655,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>448</x>
+     <y>106</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -615,8 +671,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>336</x>
+     <y>79</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -631,8 +687,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>448</x>
+     <y>193</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -647,40 +703,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>startDOW</sender>
-   <signal>editTextChanged(QString)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>endDOW</sender>
-   <signal>editTextChanged(QString)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>336</x>
+     <y>166</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -695,8 +719,8 @@
    <slot>useStartOrEndDate()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>224</x>
+     <y>79</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -711,12 +735,236 @@
    <slot>useStartOrEndDate()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>224</x>
+     <y>166</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStart1</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>220</x>
+     <y>126</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>219</x>
+     <y>127</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStart2</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>282</x>
+     <y>125</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>259</x>
+     <y>116</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStart3</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>327</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>296</x>
+     <y>123</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStart4</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>372</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>502</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStart5</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>416</x>
+     <y>125</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>394</x>
+     <y>1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStart6</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>478</x>
+     <y>125</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>456</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStart7</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>517</x>
+     <y>118</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>598</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStop1</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>221</x>
+     <y>216</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>215</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStop2</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>279</x>
+     <y>213</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>262</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStop3</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>327</x>
+     <y>212</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>166</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStop4</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>378</x>
+     <y>204</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>676</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStop5</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>432</x>
+     <y>214</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>57</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStop6</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>462</x>
+     <y>212</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>86</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStop7</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>542</x>
+     <y>214</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>776</x>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
