@@ -33,6 +33,7 @@
 #include <fwbuilder/InterfacePolicy.h>
 #include <fwbuilder/XMLTools.h>
 #include <fwbuilder/IPv4.h>
+#include <fwbuilder/IPv6.h>
 #include <fwbuilder/FWObjectDatabase.h>
 
 using namespace std;
@@ -185,6 +186,12 @@ xmlNodePtr Interface::toXML(xmlNodePtr parent) throw(FWException)
         if((o=(*j1))!=NULL )
             o->toXML(me);
     }
+    for(FWObjectTypedChildIterator j1=findByType(IPv6::TYPENAME);
+        j1!=j1.end(); ++j1)
+    {
+        if((o=(*j1))!=NULL )
+            o->toXML(me);
+    }
     for(FWObjectTypedChildIterator j2=findByType(physAddress::TYPENAME);
         j2!=j2.end(); ++j2)
     {
@@ -248,14 +255,16 @@ void Interface::setBroadcastBits(int _val) { bcast_bits=_val; }
 bool  Interface::validateChild(FWObject *o)
 {
     string otype=o->getTypeName();
-    return (otype==IPv4::TYPENAME || otype==physAddress::TYPENAME ||
+    return (otype==IPv4::TYPENAME || otype==IPv6::TYPENAME || otype==physAddress::TYPENAME ||
             otype==InterfacePolicy::TYPENAME );
 }
 
 bool Interface::isLoopback() const
 {
-    // TODO: also check if interface has ipv6 loopback address
     Address *iaddr = getAddressObject();
+    if (iaddr && iaddr->getAddress() == InetAddr::getLoopbackAddr()) return true;
+
+    iaddr = getAddressObject(true);  // ipv6
     if (iaddr && iaddr->getAddress() == InetAddr::getLoopbackAddr()) return true;
 
     return false;
@@ -295,7 +304,7 @@ void Interface::setLabel(const string& n)
 
 Address* Interface::getAddressObject(bool ipv6) const
 {
-    string type_name = IPv4::TYPENAME;
+    string type_name = (ipv6) ? IPv6::TYPENAME : IPv4::TYPENAME;
     return Address::cast(getFirstByType(type_name));
 }
 
@@ -304,6 +313,13 @@ IPv4*  Interface::addIPv4()
     IPv4* ipv4 = IPv4::cast( getRoot()->create(IPv4::TYPENAME) );
     add(ipv4);
     return ipv4;
+}
+
+IPv6*  Interface::addIPv6()
+{
+    IPv6* ipv6 = IPv6::cast( getRoot()->create(IPv6::TYPENAME) );
+    add(ipv6);
+    return ipv6;
 }
 
 
