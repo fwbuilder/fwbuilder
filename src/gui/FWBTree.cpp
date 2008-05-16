@@ -343,6 +343,7 @@ bool FWBTree::validateForInsertion(FWObject *target,FWObject *obj)
     if (Host::isA(target)      && Interface::isA(obj))   return true;
     if (Firewall::isA(target)  && Interface::isA(obj))   return true;
     if (Interface::isA(target) && IPv4::isA(obj))        return true;
+    if (Interface::isA(target) && IPv6::isA(obj))        return true;
     if (Interface::isA(target) && physAddress::isA(obj)) return true;
 
     QString parentType = systemGroupTypes[obj->getTypeName().c_str()];

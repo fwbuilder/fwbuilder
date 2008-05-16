@@ -516,6 +516,7 @@ void ObjectManipulator::autorename(FWObject *obj,bool ask)
             for (list<FWObject*>::iterator i=il.begin(); i!=il.end(); ++i)
             {
                 autorename(*i,IPv4::TYPENAME,"ip");
+                autorename(*i,IPv6::TYPENAME,"ip6");
                 autorename(*i,physAddress::TYPENAME,"mac");
             }
         }
@@ -542,6 +543,7 @@ void ObjectManipulator::autorename(FWObject *obj,bool ask)
                 0, 1 )==0 )
         {
             autorename(obj,IPv4::TYPENAME,"ip");
+            autorename(obj,IPv6::TYPENAME,"ip6");
             autorename(obj,physAddress::TYPENAME,"mac");
         }
     }
@@ -1186,7 +1188,7 @@ QString s3 = obj->getTypeName().c_str();
             moveMenuItem = false;
 
 // can't move ip addresses if parent is interface
-        if (IPv4::isA(obj) && Interface::isA(obj->getParent()))
+        if (IPv4::isA(obj) && IPv6::isA(obj) && Interface::isA(obj->getParent()))
             moveMenuItem = false;
 
 // can't move physAddress objects
@@ -1596,7 +1598,7 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target,FWObject *obj,
                                       bool openobj,bool validateOnly, bool renew_id)
 {
     FWObject *ta=target;
-    if (IPv4::isA(ta)) ta=ta->getParent();
+    if (IPv4::isA(ta) || IPv6::isA(ta)) ta=ta->getParent();
     try
     {
 /* clipboard holds a copy of the object */
