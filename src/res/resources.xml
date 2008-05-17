@@ -201,6 +201,14 @@
       <icon-tree>network_16.png</icon-tree>
     </Network>
 
+    <NetworkIPv6>
+      <description>Network IPv6</description>
+      <icon>networkIPv6_25.png</icon>
+      <icon-neg>networkIPv6-neg_25.png</icon-neg>
+      <icon-ref>networkIPv6-ref_25.png</icon-ref>
+      <icon-tree>networkIPv6_16.png</icon-tree>
+    </NetworkIPv6>
+
     <AddressRange>
       <description>Address Range</description>
       <icon>rangeaddress_25.png</icon>
@@ -271,6 +279,15 @@
       <icon-tree>address_16.png</icon-tree>
       <hidden>false</hidden>
     </IPv4>
+    
+    <IPv6>
+      <description>IPv6 address</description>
+      <icon>addressIPv6_25.png</icon>
+      <icon-neg>addressIPv6-neg_25.png</icon-neg>
+      <icon-ref>addressIPv6-ref_25.png</icon-ref>
+      <icon-tree>addressIPv6_16.png</icon-tree>
+      <hidden>false</hidden>
+    </IPv6>
     
     <DNSName>
       <description>DNS Name</description>
