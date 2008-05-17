@@ -3187,7 +3187,7 @@ void ProjectPanel::findWhereUsed(FWObject * obj)
 }
 
 void ProjectPanel::showEvent( QShowEvent *ev)
-{
+{   if (rcs!=NULL)
     if (!firstLoad)
     {
     firstLoad=true ;
@@ -3260,6 +3260,16 @@ QString ProjectPanel::getFileName()
 
 void ProjectPanel::saveState ()
 {
+    if (isMaximized ())
+    {
+        st->setInt("Window/maximized",0);
+    }
+    else
+    {
+        st->setInt("Window/maximized",1);
+    }
+
+
     if (rcs!=NULL)
     {
         QString FileName = rcs->getFileName();
@@ -3270,15 +3280,8 @@ void ProjectPanel::saveState ()
             st->setInt("Window/"+FileName+"/width",mdiWindow->width ());
             st->setInt("Window/"+FileName+"/height",mdiWindow->height ());
         }
-        if (isMaximized ())
-        {
-            st->setInt("Window/maximized",0);
-        }
-        else
-        {
-            st->setInt("Window/maximized",1);
-        }
-    }
+
+
 
     oe->hide();
     fd->hide();
@@ -3292,12 +3295,15 @@ void ProjectPanel::saveState ()
     arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
     if (sl[0] || sl[1])
         st->setStr("Layout/ObjInfoSplitter"+getFileName(), arg );
-
+    
+    }
 }
 
 void ProjectPanel::loadState ()
 {
-    QString FileName = rcs->getFileName();
+    QString FileName ;
+    if (rcs!=NULL) 
+        FileName =rcs->getFileName();
     if (FileName!="")
     {
         if (!mdiWindow->isMaximized ())
@@ -3320,14 +3326,14 @@ void ProjectPanel::loadState ()
     
     if (FileName=="")
     {
-        if (!mdiWindow->isMaximized ())
+        if (st->getInt("Window/maximized")!=0)
         {
-        int y = st->getInt("Window/"+FileName+"/y");
-        int y2 = st->getInt("Window/"+FileName+"/y");
-        firstResize=true ;
+            int y = st->getInt("Window/"+FileName+"/y");
+            int y2 = st->getInt("Window/"+FileName+"/y");
+            firstResize=true ;
         //mdiWindow->resize (600,400);
         //mdiWindow->resize (600,400);
-        mdiWindow->setGeometry (10,10,600,600);
+            mdiWindow->setGeometry (10,10,600,600);
         //mdiWindow->resize (600,800);      
         }
     }
@@ -3346,7 +3352,7 @@ void ProjectPanel::resizeEvent ( QResizeEvent * event )
     {
         loadState();
     } 
-    if (firstResize&&rcs!=NULL)
+    if (firstResize)
     {
         saveState();
     }   

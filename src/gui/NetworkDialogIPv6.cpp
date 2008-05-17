@@ -124,10 +124,13 @@ void NetworkDialogIPv6::validate(bool *res)
                               tr("&Continue"), 0, 0,
                               0 );
     }
-    try
+    
+    bool ok = false;
+    int range =m_dialog->netmask->text().toInt(&ok); 
+    if (ok&&range>=0&&range<128)
     {
-        Inet6Addr( m_dialog->netmask->text().toLatin1().constData() );
-    } catch (FWException &ex)
+    }
+    else
     {
         *res=false;
         QMessageBox::critical(this, "Firewall Builder",
