@@ -1184,25 +1184,6 @@ QRect RuleSetView::calculateCellSize( int row, int col )
                 hc += item_h;
                 int itmW = RuleElementSpacing/2 + pixmap_w +
                         RuleElementSpacing + br.width();
-                if (col==3)
-                {
-                    QString a("#Cell col=3, row=");
-                    a+=QString().setNum(row); 
-                    QString b("|---pixmap_w=");
-                    b+= QString ().setNum(pixmap_w);
-                    QString c("|---br.width()=");
-                    c+= QString ().setNum(br.width());
-                    QString d("|---itmW=");
-                    d+= QString ().setNum(itmW);
-                    QString e("|---wc=");
-                    e+= QString ().setNum(wc);
-                    qDebug (a.toAscii().data());
-                    qDebug (b.toAscii().data());
-                    qDebug (c.toAscii().data());
-                    qDebug (d.toAscii().data());
-                    qDebug (e.toAscii().data());
-                    
-                }
                 wc  = QMAX(wc, itmW);
 
                 }
@@ -1372,27 +1353,6 @@ void RuleSetView::paintCell(QPainter *pntr,
                             bool,
                             const QPalette &cg)
 {
-    if ((col==3||col==4)&&(row==1))
-    {
-    QString a("$CELL sizes in paintCell col: %1, row: %2");
-    a = a.arg(QString().setNum(col)).arg(QString().setNum(row));
-    QString b("|- left:%1");
-    b = b.arg(QString().setNum(cr.left()));
-    QString c("|- width:%1");
-    c = c.arg(QString().setNum(cr.width()));
-    QString d("|- header:%1");
-    d = d.arg(QString().setNum(horizontalHeader()->sectionSize(col)));
-    QString e("|- columCount:%1");
-    e = e.arg(QString().setNum(columnWidths.size()));
-
-
-    qDebug (a.toAscii().data());
-    qDebug (b.toAscii().data());
-    qDebug (c.toAscii().data());
-    qDebug (d.toAscii().data());
-    qDebug (e.toAscii().data());
-    }
-
     int re_size;
 
 /* row may point at an empty row where there is no rule yet. This
@@ -4001,7 +3961,6 @@ void RuleSetView::addRuleAfterCurrent()
 
     changingRules = true;
     insertRule(lastSelectedRule+1,NULL);
-    rowsInfo.insert (lastSelectedRule+1,NULL);
     changingRules = false;
     m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
     updateGroups();
