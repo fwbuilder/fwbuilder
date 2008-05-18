@@ -4101,8 +4101,11 @@ string PolicyCompiler_ipt::flushAndSetDefaultPolicy()
     res += printRule->_declareTable();
     res += printRule->_flushAndSetDefaultPolicy();
     res += printRule->_printOptionalGlobalRules();
-    // same rules for ipv6
-    res += printRule->_printOptionalGlobalRules(true);
+    if (haveIPv6Rules())
+    {
+        // same rules for ipv6
+        res += printRule->_printOptionalGlobalRules(true);
+    }
 
     return res;
 }

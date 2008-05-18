@@ -2204,6 +2204,8 @@ void NATCompiler_ipt::compile()
 	add( new dynamicInterfaceInTSrc("set target if dynamic interface in TSrc" ) );
         add( new convertInterfaceIdToStr("prepare interface assignments") );
 
+        add( new CheckIfIPv6Rule("find ipv6 rules"));
+
         if (fwopt->getBool("use_iptables_restore"))
         {
             // bug #1812295: we should use PrintRuleIptRstEcho not only
