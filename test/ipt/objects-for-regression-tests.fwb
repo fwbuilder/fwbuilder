@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="5" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="6" id="root">
   <Library color="#d2ffd0" comment="User defined objects" id="syslib001" name="User">
     <ObjectGroup id="stdid01_1" name="Objects">
       <ObjectGroup id="stdid01_1_og_ats_1" name="Address Tables">
@@ -819,8 +819,7 @@
         <TagService comment="" id="id43EC877332486" name="tag16" tagcode="16"/>
         <TagService comment="" id="id449328D824380" name="Tag1" tagcode="1"/>
         <TagService comment="" id="id449328D924380" name="Tag2" tagcode="2"/>
-      </ServiceGroup>
-      <ServiceGroup id="stdid10_1" name="Groups">
+      </ServiceGroup><ServiceGroup id="stdid10_1" name="Groups">
         <ServiceGroup id="id3B457567" name="svcgroup1">
           <ServiceRef ref="id3B457561"/>
           <ServiceRef ref="ip-IPSEC"/>
@@ -910,17 +909,14 @@
           <ServiceRef ref="id3B4FEDA3"/>
           <ServiceRef ref="id3B4FED69"/>
         </ServiceGroup>
-      </ServiceGroup>
-      <ServiceGroup id="stdid07_1" name="ICMP">
+      </ServiceGroup><ServiceGroup id="stdid07_1" name="ICMP">
         <ICMPService code="-1" comment="" id="id3C1A5D46" name="any ICMP" type="-1"/>
-      </ServiceGroup>
-      <ServiceGroup id="stdid06_1" name="IP">
+      </ServiceGroup><ServiceGroup id="stdid06_1" name="IP">
         <IPService comment="" fragm="False" id="id3B457561" lsrr="False" name="ICMP" protocol_num="1" rr="False" short_fragm="False" ssrr="False" ts="False"/>
         <IPService comment="" fragm="False" id="id3B6659A5" lsrr="False" name="TS" protocol_num="0" rr="False" short_fragm="False" ssrr="False" ts="True"/>
         <IPService comment="" fragm="False" id="id3F3E9EFC" lsrr="False" name="EIGRP" protocol_num="88" rr="False" short_fragm="False" ssrr="False" ts="False"/>
         <IPService comment="" fragm="False" id="id419D6869" lsrr="False" name="any protocol" protocol_num="0" rr="False" short_fragm="False" ssrr="False" ts="False"/>
-      </ServiceGroup>
-      <ServiceGroup id="stdid09_1" name="TCP">
+      </ServiceGroup><ServiceGroup id="stdid09_1" name="TCP">
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="70" dst_range_start="70" fin_flag="False" fin_flag_mask="False" id="id3C1A66EF" name="gopher" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="6667" dst_range_start="6667" fin_flag="False" fin_flag_mask="False" id="tcp-IRC" name="irc" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="3128" dst_range_start="3128" fin_flag="False" fin_flag_mask="False" id="id3B5009F7" name="squid" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
@@ -936,12 +932,10 @@
         <TCPService ack_flag="False" ack_flag_mask="True" comment="" dst_range_end="0" dst_range_start="0" fin_flag="False" fin_flag_mask="True" id="id3E3747AF" name="TCP no flags" psh_flag="False" psh_flag_mask="True" rst_flag="False" rst_flag_mask="True" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="True" urg_flag="False" urg_flag_mask="True"/>
         <TCPService ack_flag="False" ack_flag_mask="True" comment="TCP packet with dest. port 5190 (AIM) and SYN flag set&#10;This is the opening of the new AIM session" dst_range_end="5190" dst_range_start="5190" fin_flag="False" fin_flag_mask="True" id="id40038E79" name="new AIM connection" psh_flag="False" psh_flag_mask="True" rst_flag="False" rst_flag_mask="True" src_range_end="0" src_range_start="0" syn_flag="True" syn_flag_mask="True" urg_flag="False" urg_flag_mask="True"/>
         <TCPService ack_flag="True" ack_flag_mask="True" comment="" dst_range_end="0" dst_range_start="0" fin_flag="False" fin_flag_mask="True" id="id459E36F110170" name="ack" psh_flag="False" psh_flag_mask="True" rst_flag="False" rst_flag_mask="True" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="True" urg_flag="False" urg_flag_mask="True"/>
-      </ServiceGroup>
-      <ServiceGroup id="stdid08_1" name="UDP">
+      </ServiceGroup><ServiceGroup id="stdid08_1" name="UDP">
         <UDPService comment="" dst_range_end="0" dst_range_start="0" id="id3ED59BF0" name="udp-src-6767" src_range_end="6767" src_range_start="6767"/>
         <UDPService comment="" dst_range_end="0" dst_range_start="0" id="id3ED59BF1" name="udp-src-67" src_range_end="67" src_range_start="67"/>
-      </ServiceGroup>
-      <ServiceGroup id="stdid13_1" name="Custom">
+      </ServiceGroup><ServiceGroup id="stdid13_1" name="Custom">
         <CustomService comment="Talk support" id="id3B64FE22" name="talk">
           <CustomServiceCommand platform="Undefined"/>
           <CustomServiceCommand platform="fwsm"/>
@@ -986,6 +980,7 @@
           <CustomServiceCommand platform="unknown"/>
         </CustomService>
       </ServiceGroup>
+      <ServiceGroup id="stdid05_1_userservices" name="User"/>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls">
       <Firewall comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule&#10;" host_OS="linux24" id="fw-firewall2" inactive="False" lastCompiled="1188096924" lastInstalled="1142003872" lastModified="1208501354" name="firewall" platform="iptables" ro="False" version="">
@@ -21981,14 +21976,9 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <ObjectGroup id="id44EC14038791" name="Address Ranges"/>
       </ObjectGroup>
       <ServiceGroup id="id44EC14048791" name="Services">
-        <ServiceGroup id="id44EC14058791" name="Groups"/>
-        <ServiceGroup id="id44EC14068791" name="ICMP"/>
-        <ServiceGroup id="id44EC14078791" name="IP"/>
-        <ServiceGroup id="id44EC14088791" name="TCP"/>
-        <ServiceGroup id="id44EC14098791" name="UDP"/>
-        <ServiceGroup id="id44EC140A8791" name="Custom"/>
-        <ServiceGroup id="id44EC140B8791" name="TagServices"/>
-      </ServiceGroup>
+      <ServiceGroup id="id44EC14058791" name="Groups"/><ServiceGroup id="id44EC14068791" name="ICMP"/><ServiceGroup id="id44EC14078791" name="IP"/><ServiceGroup id="id44EC14088791" name="TCP"/><ServiceGroup id="id44EC14098791" name="UDP"/><ServiceGroup id="id44EC140A8791" name="Custom"/><ServiceGroup id="id44EC140B8791" name="TagServices"/>
+      <ServiceGroup id="id44EC14048791_userservices" name="User"/>
+    </ServiceGroup>
       <ObjectGroup id="id44EC140C8791" name="Firewalls"/>
       <IntervalGroup id="id44EC140D8791" name="Time"/>
     </Library>
@@ -22011,13 +22001,8 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
       <ObjectGroup id="id4387B43F18346" name="Address Ranges"/>
     </ObjectGroup>
     <ServiceGroup id="id4387B44018346" name="Services">
-      <ServiceGroup id="id4387B44018346_og_tag_1" name="TagServices"/>
-      <ServiceGroup id="id4387B44118346" name="Groups"/>
-      <ServiceGroup id="id4387B44218346" name="ICMP"/>
-      <ServiceGroup id="id4387B44318346" name="IP"/>
-      <ServiceGroup id="id4387B44418346" name="TCP"/>
-      <ServiceGroup id="id4387B44518346" name="UDP"/>
-      <ServiceGroup id="id4387B44618346" name="Custom"/>
+      <ServiceGroup id="id4387B44018346_og_tag_1" name="TagServices"/><ServiceGroup id="id4387B44118346" name="Groups"/><ServiceGroup id="id4387B44218346" name="ICMP"/><ServiceGroup id="id4387B44318346" name="IP"/><ServiceGroup id="id4387B44418346" name="TCP"/><ServiceGroup id="id4387B44518346" name="UDP"/><ServiceGroup id="id4387B44618346" name="Custom"/>
+      <ServiceGroup id="id4387B44018346_userservices" name="User"/>
     </ServiceGroup>
     <ObjectGroup id="id4387B44718346" name="Firewalls"/>
     <IntervalGroup id="id4387B44818346" name="Time"/>
@@ -22030,8 +22015,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <IPService comment="Route recording packets" fragm="False" id="ip-RR" lsrr="False" name="RR" protocol_num="0" rr="True" short_fragm="False" ssrr="False" ts="False"/>
         <IPService comment="All sorts of Source Routing Packets" fragm="False" id="ip-SRR" lsrr="True" name="SRR" protocol_num="0" rr="False" short_fragm="False" ssrr="True" ts="False"/>
         <IPService comment="IPSEC Authentication Header Protocol" fragm="False" id="id3CB12797" lsrr="False" name="AH" protocol_num="51" rr="False" short_fragm="False" ssrr="False" ts="False"/>
-      </ServiceGroup>
-      <ServiceGroup id="stdid09" name="TCP">
+      </ServiceGroup><ServiceGroup id="stdid09" name="TCP">
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="113" dst_range_start="113" fin_flag="False" fin_flag_mask="False" id="tcp-Auth" name="auth" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="53" dst_range_start="53" fin_flag="False" fin_flag_mask="False" id="tcp-DNS_zone_transf" name="dns-tcp" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="21" dst_range_start="21" fin_flag="False" fin_flag_mask="False" id="tcp-FTP" name="ftp" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
@@ -22068,15 +22052,13 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <TCPService ack_flag="False" ack_flag_mask="True" comment="" dst_range_end="0" dst_range_start="0" fin_flag="False" fin_flag_mask="True" id="tcp-TCP-SYN" name="tcp-syn" psh_flag="False" psh_flag_mask="True" rst_flag="False" rst_flag_mask="True" src_range_end="0" src_range_start="0" syn_flag="True" syn_flag_mask="True" urg_flag="False" urg_flag_mask="True"/>
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="3128" dst_range_start="3128" fin_flag="False" fin_flag_mask="False" id="id3B4FF09A" name="squid" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="0" dst_range_start="0" fin_flag="False" fin_flag_mask="False" id="tcp-All_TCP" name="All TCP" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
-      </ServiceGroup>
-      <ServiceGroup id="stdid08" name="UDP">
+      </ServiceGroup><ServiceGroup id="stdid08" name="UDP">
         <UDPService comment="" dst_range_end="53" dst_range_start="53" id="udp-DNS" name="domain" src_range_end="0" src_range_start="0"/>
         <UDPService comment="" dst_range_end="161" dst_range_start="161" id="udp-SNMP" name="snmp" src_range_end="0" src_range_start="0"/>
         <UDPService comment="" dst_range_end="0" dst_range_start="0" id="udp-All_UDP" name="All UDP" src_range_end="0" src_range_start="0"/>
         <UDPService comment="" dst_range_end="67" dst_range_start="67" id="udp-bootps" name="bootps" src_range_end="0" src_range_start="0"/>
         <UDPService comment="" dst_range_end="68" dst_range_start="68" id="udp-bootpc" name="bootpc" src_range_end="0" src_range_start="0"/>
-      </ServiceGroup>
-      <ServiceGroup id="stdid10" name="Groups">
+      </ServiceGroup><ServiceGroup id="stdid10" name="Groups">
         <ServiceGroup comment="" id="sg-DHCP" name="DHCP">
           <ServiceRef ref="udp-bootpc"/>
           <ServiceRef ref="udp-bootps"/>
@@ -22091,8 +22073,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <ServiceRef ref="id3CB12797"/>
           <ServiceRef ref="ip-IPSEC"/>
         </ServiceGroup>
-      </ServiceGroup>
-      <ServiceGroup id="stdid07" name="ICMP">
+      </ServiceGroup><ServiceGroup id="stdid07" name="ICMP">
         <ICMPService code="0" comment="" id="icmp-ping_request" name="ping request" type="8"/>
         <ICMPService code="-1" comment="" id="icmp-Unreachables" name="all ICMP unreachables" type="3"/>
         <ICMPService code="-1" comment="" id="id3C20EEB5" name="any ICMP" type="-1"/>
@@ -22100,6 +22081,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <ICMPService code="1" comment="" id="icmp-Time_exceeded_in_transit" name="time exceeded in transit" type="11"/>
         <ICMPService code="0" comment="" id="icmp-ping_reply" name="ping reply" type="0"/>
       </ServiceGroup>
+      <ServiceGroup id="stdid05_userservices" name="User"/>
     </ServiceGroup>
     <AnyNetwork comment="Any Network" id="sysid0" name="Any" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyInterval comment="Any Interval" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" id="sysid2" name="Any" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1"/>

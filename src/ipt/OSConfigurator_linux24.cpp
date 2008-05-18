@@ -574,7 +574,8 @@ string  OSConfigurator_linux24::printPathForAllTools(const string &os)
 
     FWOptions* options=fw->getOptionsObject();
     
-    string s, path_lsmod, path_modprobe, path_iptables, path_iptables_restore, path_ip, path_logger;
+    string s, path_lsmod, path_modprobe, path_iptables, path_ip6tables;
+    string path_iptables_restore, path_ip, path_logger;
 
     s=options->getStr("linux24_path_lsmod");
     if (!s.empty()) path_lsmod=s;
@@ -587,6 +588,10 @@ string  OSConfigurator_linux24::printPathForAllTools(const string &os)
     s=options->getStr("linux24_path_iptables");
     if (!s.empty()) path_iptables=s;
     else            path_iptables=os_data.getPathForTool(os,OSData::IPTABLES);
+
+    s=options->getStr("linux24_path_ip6tables");
+    if (!s.empty()) path_ip6tables=s;
+    else            path_ip6tables=os_data.getPathForTool(os,OSData::IP6TABLES);
 
     s=options->getStr("linux24_path_iptables_restore");
     if (!s.empty()) path_iptables_restore=s;
@@ -604,6 +609,7 @@ string  OSConfigurator_linux24::printPathForAllTools(const string &os)
     res += "LSMOD=\""   +path_lsmod+"\"\n";
     res += "MODPROBE=\""+path_modprobe+"\"\n";
     res += "IPTABLES=\""+path_iptables+"\"\n";
+    res += "IP6TABLES=\""+path_ip6tables+"\"\n";
     res += "IPTABLES_RESTORE=\""+path_iptables_restore+"\"\n";
     res += "IP=\""      +path_ip+"\"\n";
     res += "LOGGER=\""  +path_logger+"\"\n";

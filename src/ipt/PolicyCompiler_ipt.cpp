@@ -3910,16 +3910,17 @@ void PolicyCompiler_ipt::compile()
         add( new ConvertToAtomicForAddresses(
                  "convert to atomic rules by address elements") );
 
-        add( new checkForZeroAddr(   "check for zero addresses"            ) );
-        add( new checkMACinOUTPUTChain("check for MAC in OUTPUT chain"     ) );
+        add( new checkForZeroAddr("check for zero addresses") );
+        add( new checkMACinOUTPUTChain("check for MAC in OUTPUT chain") );
 
         add( new ConvertToAtomicForIntervals(
                  "convert to atomic rules by interval element") );
 
         add( new SkipActionContinueWithNoLogging(
                  "drop rules with action Continue") );
-        add( new convertInterfaceIdToStr("prepare interface assignments"   ) );
-        add( new optimize3(                  "optimization 3"              ) );
+        add( new convertInterfaceIdToStr("prepare interface assignments") );
+        add( new optimize3("optimization 3") );
+        add( new CheckIfIPv6Rule("find ipv6 rules"));
 
         add( createPrintRuleProcessor() );
 
@@ -4100,6 +4101,8 @@ string PolicyCompiler_ipt::flushAndSetDefaultPolicy()
     res += printRule->_declareTable();
     res += printRule->_flushAndSetDefaultPolicy();
     res += printRule->_printOptionalGlobalRules();
+    // same rules for ipv6
+    res += printRule->_printOptionalGlobalRules(true);
 
     return res;
 }

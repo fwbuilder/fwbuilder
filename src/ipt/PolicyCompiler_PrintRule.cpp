@@ -46,6 +46,8 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/AddressTable.h"
 
+#include "fwbuilder/Inet6AddrMask.h"
+
 #include "combinedAddress.h"
 
 
@@ -77,14 +79,15 @@ using namespace std;
 /*
  *  check and create new chain if needed
  */
-string PolicyCompiler_ipt::PrintRule::_createChain(const string &chain)
+string PolicyCompiler_ipt::PrintRule::_createChain(const string &chain,
+                                                   bool ipv6)
 {
     string res;
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
 
     if ( ! chains[chain] )
     {
-	res = "$IPTABLES -N " + chain;
+	res = string((ipv6) ? "$IP6TABLES -N " : "$IPTABLES -N ") + chain;
         if (ipt_comp->my_table != "filter") res += " -t " + ipt_comp->my_table;
         res += "\n";
 	chains[chain]=true;
@@ -92,9 +95,9 @@ string PolicyCompiler_ipt::PrintRule::_createChain(const string &chain)
     return res;
 }
 
-string PolicyCompiler_ipt::PrintRule::_startRuleLine()
+string PolicyCompiler_ipt::PrintRule::_startRuleLine(bool ipv6)
 {            
-    string res = "$IPTABLES ";
+    string res = (ipv6) ? "$IP6TABLES " : "$IPTABLES ";
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
 
     if (ipt_comp->my_table != "filter") res += "-t " + ipt_comp->my_table + " ";
@@ -112,7 +115,9 @@ string PolicyCompiler_ipt::PrintRule::_printRuleLabel(PolicyRule *rule)
 {
     ostringstream res;
 
-    bool nocomm=Resources::os_res[compiler->fw->getStr("host_OS")]->Resources::getResourceBool("/FWBuilderResources/Target/options/suppress_comments");
+    bool nocomm = Resources::os_res[compiler->fw->getStr("host_OS")]->
+        Resources::getResourceBool(
+            "/FWBuilderResources/Target/options/suppress_comments");
 
     string rl=rule->getLabel();
     if (rl!=current_rule_label)
@@ -1075,8 +1080,10 @@ bool  PolicyCompiler_ipt::PrintRule::processNext()
 
 string PolicyCompiler_ipt::PrintRule::PolicyRuleToString(PolicyRule *rule)
 {
-    FWOptions *ruleopt =rule->getOptionsObject();
+    FWOptions *ruleopt = rule->getOptionsObject();
     FWObject    *ref;
+
+    bool isIPv6 = rule->getBool("ipv6_rule");
 
     RuleElementSrc *srcrel=rule->getSrc();
     ref=srcrel->front();
@@ -1099,7 +1106,7 @@ string PolicyCompiler_ipt::PrintRule::PolicyRuleToString(PolicyRule *rule)
 
     std::ostringstream  command_line;
 
-    command_line << _startRuleLine();
+    command_line << _startRuleLine(isIPv6);
 
     command_line << _printChain(rule);
     command_line << _printDirectionAndInterface(rule);
@@ -1215,27 +1222,10 @@ string PolicyCompiler_ipt::PrintRule::_flushAndSetDefaultPolicy()
         res << "$IPTABLES -P INPUT   DROP" << endl;
         res << "$IPTABLES -P FORWARD DROP" << endl;
 
-        if ( ! fwopt->getBool("no_ipv6_default_policy") )
-        {
-            /*
-             * test if ip6tables is installed and if it works. It may be installed
-             * on the system but fail because ipv6 is not compiled into the
-             * kernel.
-             */
-            res << "ip6tables -L -n > /dev/null 2>&1 && {"    << endl; 
-            res << "  ip6tables -P OUTPUT  DROP" << endl;
-            res << "  ip6tables -P INPUT   DROP" << endl;
-            res << "  ip6tables -P FORWARD DROP" << endl;
-            res << "  ip6tables -A INPUT  -i lo  -j ACCEPT " << endl;
-            res << "  ip6tables -A OUTPUT  -o lo  -j ACCEPT " << endl;
-            res << "}"                         << endl;
-            res << endl;
-        }
-/*
- * need to flush all tables and chains before setting up any rules
- */
+        /*
+         * need to flush all tables and chains before setting up any rules
+         */
         res << "\n\
-\n\
 cat /proc/net/ip_tables_names | while read table; do\n\
   $IPTABLES -t $table -L -n | while read c chain rest; do\n\
       if test \"X$c\" = \"XChain\" ; then\n\
@@ -1243,8 +1233,34 @@ cat /proc/net/ip_tables_names | while read table; do\n\
       fi\n\
   done\n\
   $IPTABLES -t $table -X\n\
-done\n\
+done\n";
+
+        res << endl;
+        res << endl;
+
+        /*
+         * test if ip6tables is installed and if it works. It may be installed
+         * on the system but fail because ipv6 is not compiled into the
+         * kernel.
+         */
+        res << "$IP6TABLES -L -n > /dev/null 2>&1 && {"    << endl; 
+        res << "  $IP6TABLES -P OUTPUT  DROP" << endl;
+        res << "  $IP6TABLES -P INPUT   DROP" << endl;
+        res << "  $IP6TABLES -P FORWARD DROP" << endl;
+
+        res << "\n\
+  cat /proc/net/ip6_tables_names | while read table; do\n\
+    $IP6TABLES -t $table -L -n | while read c chain rest; do\n\
+        if test \"X$c\" = \"XChain\" ; then\n\
+          $IP6TABLES -t $table -F $chain\n\
+        fi\n\
+    done\n\
+    $IP6TABLES -t $table -X\n\
+  done\n\
+\n\
 \n";
+        res << "}";
+        res << endl;
         res << endl;
 //    }
     return res.str();
@@ -1255,9 +1271,9 @@ string PolicyCompiler_ipt::PrintRule::_commit()
     return "";
 }
 
-string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
+string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules(bool isIPv6)
 {
-    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     ostringstream res;
 
 /*
@@ -1265,13 +1281,13 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
  * Need rules in FORWARD chain only if ip forwarding is on or set to
  * "no change"
  */
-    bool ipforward=false;
-    string s=compiler->getCachedFwOpt()->getStr("linux24_ip_forward");
+    bool ipforward = false;
+    string s = compiler->getCachedFwOpt()->getStr("linux24_ip_forward");
     ipforward= (s.empty() || s=="1" || s=="On" || s=="on");
 
     if ( compiler->getCachedFwOpt()->getBool("clamp_mss_to_mtu") && ipforward)
     {
-        res << _startRuleLine()
+        res << _startRuleLine(isIPv6)
             << "FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu"
             << _endRuleLine();
 
@@ -1281,16 +1297,16 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
     if ( compiler->getCachedFwOpt()->getBool("accept_established") &&
          ipt_comp->my_table=="filter") 
     {
-        res << _startRuleLine()
+        res << _startRuleLine(isIPv6)
             << "INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT"
             << _endRuleLine();
 
-        res << _startRuleLine()
+        res << _startRuleLine(isIPv6)
             << "OUTPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT"
             << _endRuleLine();
 
         if (ipforward)
-            res << _startRuleLine()
+            res << _startRuleLine(isIPv6)
                 << "FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT"
                 << _endRuleLine();
 
@@ -1310,24 +1326,50 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
     if ( compiler->getCachedFwOpt()->getBool("mgmt_ssh") &&
          ! compiler->getCachedFwOpt()->getStr("mgmt_addr").empty() )
     {
-        string addr = compiler->getCachedFwOpt()->getStr("mgmt_addr");
-        res << "# backup ssh access" << endl;
-        res << "#" << endl;
+        string addr_str = compiler->getCachedFwOpt()->getStr("mgmt_addr");
+        InetAddrMask *inet_addr;
+        bool addr_is_good = true;
+        if (isIPv6)
+        {
+            // check if given address is ipv6
+            try
+            {
+                inet_addr = new Inet6AddrMask(addr_str);
+            } catch(const FWException &ex)  {
+                // address does not parse as ipv6, skip this rule.
+                addr_is_good = false;
+            }
+        } else
+        {
+            // check if given address parses as ipv4
+            try
+            {
+                inet_addr = new InetAddrMask(addr_str);
+            } catch(const FWException &ex)  {
+                // address does not parse
+                addr_is_good = false;
+            }
+        }
+        if (addr_is_good)
+        {
+            res << "# backup ssh access" << endl;
+            res << "#" << endl;
 /* bug #1106701: 'backup ssh access' and statefulness interation
  * Need to add rules with ESTABLISHED and RELATED to make sure backup ssh access
  * works even when global rule that accepts ESTABLISHED and RELATED is disabled
  */
-        res << _startRuleLine() << "INPUT  -p tcp -m tcp  -s "
-            << addr
-            << "  --dport 22  -m state --state NEW,ESTABLISHED -j ACCEPT"
-            << _endRuleLine();
+            res << _startRuleLine(isIPv6) << "INPUT  -p tcp -m tcp  -s "
+                << inet_addr->toString()
+                << "  --dport 22  -m state --state NEW,ESTABLISHED -j ACCEPT"
+                << _endRuleLine();
 
-        res << _startRuleLine() << "OUTPUT  -p tcp -m tcp  -d "
-            << addr
-            << "  --sport 22  -m state --state ESTABLISHED,RELATED -j ACCEPT"
-            << _endRuleLine();
+            res << _startRuleLine(isIPv6) << "OUTPUT  -p tcp -m tcp  -d "
+                << inet_addr->toString()
+                << "  --sport 22  -m state --state ESTABLISHED,RELATED -j ACCEPT"
+                << _endRuleLine();
 
-        res << endl;
+            res << endl;
+        }
     }
 
     if ( ! compiler->getCachedFwOpt()->getBool("accept_new_tcp_with_no_syn") ) 
@@ -1337,16 +1379,16 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
 
         res << "#"    << endl;
 
-        res << _startRuleLine()
+        res << _startRuleLine(isIPv6)
             << "INPUT   -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP"
             << _endRuleLine();
 
-        res << _startRuleLine()
+        res << _startRuleLine(isIPv6)
             << "OUTPUT  -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP"
             << _endRuleLine();
 
         if (ipforward)
-            res << _startRuleLine()
+            res << _startRuleLine(isIPv6)
                 << "FORWARD -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP"
                 << _endRuleLine();
 
@@ -1361,37 +1403,37 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
 
         if ( !compiler->getCachedFwOpt()->getBool("log_invalid"))
         {
-            res << _startRuleLine()
+            res << _startRuleLine(isIPv6)
                 << "OUTPUT   -m state --state INVALID  -j DROP"
                 << _endRuleLine();
 
-            res << _startRuleLine()
+            res << _startRuleLine(isIPv6)
                 << "INPUT    -m state --state INVALID  -j DROP"
                 << _endRuleLine();
 
             if (ipforward)
-                res << _startRuleLine()
+                res << _startRuleLine(isIPv6)
                     << "FORWARD  -m state --state INVALID  -j DROP"
                     << _endRuleLine();
         } else
         {
-            res << _createChain("drop_invalid");
+            res << _createChain("drop_invalid", isIPv6);
 
-            res << _startRuleLine()
+            res << _startRuleLine(isIPv6)
                 << "OUTPUT   -m state --state INVALID  -j drop_invalid"
                 << _endRuleLine();
 
-            res << _startRuleLine()
+            res << _startRuleLine(isIPv6)
                 << "INPUT    -m state --state INVALID  -j drop_invalid"
                 << _endRuleLine();
 
             if (ipforward)
-                res << _startRuleLine()
+                res << _startRuleLine(isIPv6)
                     << "FORWARD  -m state --state INVALID  -j drop_invalid"
                     << _endRuleLine();
 
 
-            res << _startRuleLine();
+            res << _startRuleLine(isIPv6);
 
 
 	    if (compiler->getCachedFwOpt()->getBool("use_ULOG")) 
@@ -1423,7 +1465,7 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
 
 	    res << _printLogPrefix("-1", "DENY","global","drop_invalid","BLOCK INVALID",s)
 	        << _endRuleLine()
-                << _startRuleLine() << "drop_invalid  -j DROP" << _endRuleLine();
+                << _startRuleLine(isIPv6) << "drop_invalid  -j DROP" << _endRuleLine();
  
 	}
         res << endl;

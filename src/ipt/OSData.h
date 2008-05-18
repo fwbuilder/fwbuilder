@@ -40,7 +40,7 @@ class OSData {
 
     OSData(const std::string &ho) { host_os=ho; }
     
-    typedef enum { LSMOD, MODPROBE , IPTABLES , IPTABLES_RESTORE , IP , LOGGER } tools;
+    typedef enum { LSMOD, MODPROBE, IPTABLES, IP6TABLES, IPTABLES_RESTORE, IP, LOGGER } tools;
 
     std::string  getPathForTool(const std::string &distro,tools t);
 };

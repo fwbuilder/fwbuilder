@@ -118,6 +118,7 @@ sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
           <path_lsmod>/sbin/lsmod</path_lsmod>
           <path_modprobe>/sbin/modprobe</path_modprobe>
           <path_iptables>/sbin/iptables</path_iptables>
+          <path_ip6tables>/sbin/ip6tables</path_iptables>
           <path_iptables_restore>/sbin/iptables-restore</path_iptables_restore>
           <path_ip>/sbin/ip</path_ip>
           <path_logger>/usr/bin/logger</path_logger>
@@ -127,6 +128,7 @@ sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
           <path_lsmod>/sbin/lsmod</path_lsmod>
           <path_modprobe>/sbin/modprobe</path_modprobe>
           <path_iptables>/sbin/iptables</path_iptables>
+          <path_ip6tables>/sbin/ip6tables</path_iptables>
           <path_iptables_restore>/sbin/iptables-restore</path_iptables_restore>
           <path_ip>/sbin/ip</path_ip>
           <path_logger>/usr/bin/logger</path_logger>
@@ -136,6 +138,7 @@ sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
           <path_lsmod>/sbin/lsmod</path_lsmod>
           <path_modprobe>/sbin/modprobe</path_modprobe>
           <path_iptables>/usr/sbin/iptables</path_iptables>
+          <path_ip6tables>/usr/sbin/ip6tables</path_iptables>
           <path_iptables_restore>/usr/sbin/iptables-restore</path_iptables_restore>
           <path_ip>/sbin/ip</path_ip>
           <path_logger>/bin/logger</path_logger>
@@ -145,6 +148,7 @@ sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
           <path_lsmod>/sbin/lsmod</path_lsmod>
           <path_modprobe>/sbin/modprobe</path_modprobe>
           <path_iptables>/sbin/iptables</path_iptables>
+          <path_ip6tables>/sbin/ip6tables</path_iptables>
           <path_iptables_restore>/sbin/iptables-restore</path_iptables_restore>
           <path_ip>/sbin/ip</path_ip>
           <path_logger>/usr/bin/logger</path_logger>
@@ -154,6 +158,7 @@ sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
           <path_lsmod>lsmod</path_lsmod>
           <path_modprobe>modprobe</path_modprobe>
           <path_iptables>iptables</path_iptables>
+          <path_ip6tables>ip6tables</path_iptables>
           <path_iptables_restore>iptables-restore</path_iptables_restore>
           <path_ip>ip</path_ip>
           <path_logger>logger</path_logger>

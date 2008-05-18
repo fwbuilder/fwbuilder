@@ -57,7 +57,8 @@ using namespace std;
 /*
  *  check and create new chain if needed
  */
-string PolicyCompiler_ipt::PrintRuleIptRstEcho::_createChain(const string &chain)
+string PolicyCompiler_ipt::PrintRuleIptRstEcho::_createChain(
+    const string &chain, bool ipv6)
 {
     string res;
     if ( ! chains[chain] )
@@ -68,7 +69,7 @@ string PolicyCompiler_ipt::PrintRuleIptRstEcho::_createChain(const string &chain
     return res;
 }
 
-string PolicyCompiler_ipt::PrintRuleIptRstEcho::_startRuleLine()
+string PolicyCompiler_ipt::PrintRuleIptRstEcho::_startRuleLine(bool ipv6)
 {            
     return string("echo \"-A ");
 }
