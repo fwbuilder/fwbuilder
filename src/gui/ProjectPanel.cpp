@@ -3306,7 +3306,7 @@ void ProjectPanel::loadState ()
         FileName =rcs->getFileName();
     if (FileName!="")
     {
-        if (!mdiWindow->isMaximized ())
+        if (st->getInt("Window/maximized")!=0)
         {
         int x = st->getInt("Window/"+FileName+"/x");
         int y = st->getInt("Window/"+FileName+"/y");
