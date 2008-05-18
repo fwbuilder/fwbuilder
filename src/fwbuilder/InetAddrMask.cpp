@@ -55,6 +55,10 @@ InetAddrMask::InetAddrMask(bool)
     // variables. This constructor should only be used by classes that
     // inherit InetAddrMask and create address, netmask themselves,
     // such as Inet6AddrMask
+    address = NULL;
+    netmask = NULL;
+    broadcast_address = NULL;
+    network_address = NULL;
 }
 
 InetAddrMask::InetAddrMask()
@@ -123,10 +127,10 @@ InetAddrMask::InetAddrMask(const string &s) throw(FWException)
 
 InetAddrMask::~InetAddrMask()
 {
-    delete address;
-    delete netmask;
-    delete network_address;
-    delete broadcast_address;
+    if (address!=NULL) delete address;
+    if (netmask!=NULL) delete netmask;
+    if (network_address!=NULL) delete network_address;
+    if (broadcast_address!=NULL) delete broadcast_address;
 }
 
 void InetAddrMask::setAddress(const InetAddr &a)

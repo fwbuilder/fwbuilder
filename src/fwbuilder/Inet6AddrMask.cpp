@@ -98,6 +98,7 @@ Inet6AddrMask::Inet6AddrMask(const string &s) throw(FWException) : InetAddrMask(
 
     address = new Inet6Addr(&a_ipv6);
     netmask = new Inet6Addr(nbits);
+    
     broadcast_address = new Inet6Addr();
     network_address = new Inet6Addr();
     setNetworkAndBroadcastAddress();

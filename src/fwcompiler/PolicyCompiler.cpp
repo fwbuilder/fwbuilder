@@ -1065,7 +1065,33 @@ bool PolicyCompiler::CheckForTCPEstablished::processNext()
     return true;
 }
 
+bool PolicyCompiler::CheckIfIPv6Rule::CheckIfIPv6InRE(RuleElement *re)
+{
+    for (FWObject::iterator i=re->begin(); i!=re->end(); i++) 
+    {
+        FWObject *o= *i;
+        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        Address *addr = Address::cast(o);
+        assert(addr!=NULL);
+        const  InetAddr *inet_addr = addr->getAddressPtr(true);
+        if (inet_addr && inet_addr->isV6()) return true;
+    }
+    return false;
+}
 
+bool PolicyCompiler::CheckIfIPv6Rule::processNext()
+{
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    RuleElement *src=rule->getSrc();
+    RuleElement *dst=rule->getDst();
+
+    rule->setBool("ipv6_rule", false);
+    if (CheckIfIPv6InRE(src) || CheckIfIPv6InRE(dst))
+        rule->setBool("ipv6_rule", true);
+
+    tmp_queue.push_back(rule);
+    return true;
+}
 
 
 string PolicyCompiler::debugPrintRule(Rule *r)

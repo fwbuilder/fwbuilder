@@ -228,6 +228,18 @@ namespace fwcompiler {
         DECLARE_POLICY_RULE_PROCESSOR(CheckForTCPEstablished);
 
         /**
+         * If any address object in source or destination is ipv6 address,
+         * mark the rule as ipv6.
+         */
+        class CheckIfIPv6Rule : public PolicyRuleProcessor 
+        {
+            bool CheckIfIPv6InRE(libfwbuilder::RuleElement *re);
+            public:
+            CheckIfIPv6Rule(const std::string &n) : PolicyRuleProcessor(n) {}
+            virtual bool processNext();
+        };
+
+        /**
          *  deals with recursive groups in Src. See description for
          *  Compiler::recursiveGroupsInRE
          */
