@@ -667,6 +667,38 @@ bool NATCompiler::splitODstForSNAT::processNext()
     return true;
 }
 
+bool NATCompiler::CheckIfIPv6Rule::CheckIfIPv6InRE(RuleElement *re)
+{
+    for (FWObject::iterator i=re->begin(); i!=re->end(); i++) 
+    {
+        FWObject *o= *i;
+        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        Address *addr = Address::cast(o);
+        assert(addr!=NULL);
+        const  InetAddr *inet_addr = addr->getAddressPtr(true);
+        if (inet_addr && inet_addr->isV6()) return true;
+    }
+    return false;
+}
+
+bool NATCompiler::CheckIfIPv6Rule::processNext()
+{
+    NATRule *rule=getNext(); if (rule==NULL) return false;
+    RuleElementOSrc *osrc=rule->getOSrc();
+    RuleElementODst *odst=rule->getODst();
+    RuleElementTSrc *tsrc=rule->getTSrc();
+    RuleElementTDst *tdst=rule->getTDst();
+
+    rule->setBool("ipv6_rule", false);
+    if (CheckIfIPv6InRE(osrc) || CheckIfIPv6InRE(odst) ||
+        CheckIfIPv6InRE(tsrc) || CheckIfIPv6InRE(tdst))
+    {
+        rule->setBool("ipv6_rule", true);
+        compiler->registerIPv6Rule();
+    }
+    tmp_queue.push_back(rule);
+    return true;
+}
 
 string NATCompiler::debugPrintRule(libfwbuilder::Rule *r)
 {

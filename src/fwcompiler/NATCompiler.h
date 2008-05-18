@@ -171,6 +171,18 @@ namespace fwcompiler {
         DECLARE_NAT_RULE_PROCESSOR(ConvertToAtomic);
 
         /**
+         * If any address object in source or destination is ipv6 address,
+         * mark the rule as ipv6.
+         */
+        class CheckIfIPv6Rule : public NATRuleProcessor 
+        {
+            bool CheckIfIPv6InRE(libfwbuilder::RuleElement *re);
+            public:
+            CheckIfIPv6Rule(const std::string &n) : NATRuleProcessor(n) {}
+            virtual bool processNext();
+        };
+
+        /**
          *  deals with recursive groups in OSrc. See description for
          *  Compiler::recursiveGroupsInRE
          */

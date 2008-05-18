@@ -139,6 +139,7 @@ namespace fwcompiler {
 
         int  _cntr_;
         bool initialized;
+        int countIPv6Rules;
 
         std::list<BasicRuleProcessor*> rule_processors;
 
@@ -203,6 +204,9 @@ namespace fwcompiler {
 
 
 	public:
+
+        void registerIPv6Rule() { countIPv6Rules++; }
+        bool haveIPv6Rules() { return countIPv6Rules > 0; }
 
         /**
          * returns first object referenced by given rule

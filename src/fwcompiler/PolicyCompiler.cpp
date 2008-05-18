@@ -75,39 +75,6 @@ int PolicyCompiler::prolog()
 
     int global_num=0;
 
-#ifdef USE_INTERFACE_POLICY
-
-/*
- *  build combined policy by collapsing all the rules together.
- *  store ID of the interface in each rule of interface policy.
- *
- *  also calculate global numbers for all rules and store them, too.
- *  These are used to detect rule shadowing.
- */
-    list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
-    for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) 
-    {
-	Interface *iface=Interface::cast(*i);
-	assert(iface);
-
-	FWObject  *ipolicy=iface->getFirstByType(InterfacePolicy::TYPENAME);
-	if (ipolicy) 
-        { 	
-            list<FWObject*> l3=ipolicy->getByType(PolicyRule::TYPENAME);
-            for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) 
-            {
-                PolicyRule *r= PolicyRule::cast(*j);
-                if (r->isDisabled()) continue;
-                r->setInterfaceId(iface->getId());
-                r->setLabel( createRuleLabel(iface, r->getPosition()) );
-                r->setAbsRuleNumber(global_num); global_num++;
-                r->setUniqueId( r->getId() );
-                combined_ruleset->add( r );
-            }
-	}
-    }
-#endif
-
     FWObject *ruleset = source_ruleset;
     if (ruleset == NULL) ruleset = policy;
 
@@ -120,16 +87,15 @@ int PolicyCompiler::prolog()
 
         if (itfre->isAny())
         {
-//          r->setInterfaceId("");
             r->setLabel( createRuleLabel("global", r->getPosition()) );
         } else
         {
-//          r->setInterfaceId( itf->getId() );
             string interfaces = "";
             for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
             {
                 FWObject *o=*i;
-                if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+                if (FWReference::cast(o)!=NULL)
+                    o = FWReference::cast(o)->getPointer();
                 if (interfaces!="") interfaces += ",";
                 interfaces += o->getName();
             }
@@ -1087,8 +1053,10 @@ bool PolicyCompiler::CheckIfIPv6Rule::processNext()
 
     rule->setBool("ipv6_rule", false);
     if (CheckIfIPv6InRE(src) || CheckIfIPv6InRE(dst))
+    {
         rule->setBool("ipv6_rule", true);
-
+        compiler->registerIPv6Rule();
+    }
     tmp_queue.push_back(rule);
     return true;
 }

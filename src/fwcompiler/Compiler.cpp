@@ -170,6 +170,7 @@ Compiler::Compiler(FWObjectDatabase *_db,
     ruleSetName = "";
     test_mode = false;
     osconfigurator = NULL;
+    countIPv6Rules = 0;
     _init(_db,fwobjectname);
 }
 
@@ -181,6 +182,7 @@ Compiler::Compiler(FWObjectDatabase *_db,
     ruleSetName = "";
     test_mode = false;
     osconfigurator = _oscnf;
+    countIPv6Rules = 0;
     _init(_db,fwobjectname);
 }
 
@@ -191,6 +193,7 @@ Compiler::Compiler(FWObjectDatabase*)
     ruleSetName = "";
     test_mode = false;
     osconfigurator = NULL;
+    countIPv6Rules = 0;
     initialized = false;
     _cntr_ = 1; 
     fw = NULL; 
