@@ -115,7 +115,8 @@ void IPv6Dialog::loadFWObject(FWObject *o)
     try
     {
         if ( Interface::isA( obj->getParent() ) )
-            m_dialog->netmask->setText( s->getNetmaskPtr()->toString().c_str());
+            m_dialog->netmask->setText(
+                s->getNetmaskPtr(true)->toString().c_str());
     } catch (FWException &ex) {}
 
     //apply->setEnabled( false );

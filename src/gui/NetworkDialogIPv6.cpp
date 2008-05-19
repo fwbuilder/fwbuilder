@@ -127,7 +127,7 @@ void NetworkDialogIPv6::validate(bool *res)
     
     bool ok = false;
     int range =m_dialog->netmask->text().toInt(&ok); 
-    if (ok&&range>=0&&range<128)
+    if (ok && range >= 0 && range < 128)
     {
     }
     else
