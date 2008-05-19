@@ -186,11 +186,16 @@ bool FindObjectWidget::matchAttr(libfwbuilder::FWObject *obj)
         Address *a = Address::cast(obj);
         if (a!=NULL)
         {
-            QString addr = a->getAddressPtr()->toString().c_str();
+            const InetAddr *inet_addr = a->getAddressPtr();
+            if (inet_addr)
+            {
+                QString addr = inet_addr->toString().c_str();
 
-            if (m_widget->useRegexp->isChecked()) res= ( addr.indexOf( QRegExp(s) )!=-1 );
-            else                        res= ( addr == s );
-
+                if (m_widget->useRegexp->isChecked())
+                    res = ( addr.indexOf( QRegExp(s) )!=-1 );
+                else
+                    res= ( addr == s );
+            }
             //res= ( addr == s );
         }
         break;
