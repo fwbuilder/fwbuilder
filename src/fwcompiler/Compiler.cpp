@@ -649,9 +649,6 @@ bool Compiler::complexMatch(Address *obj1,
  */
 Interface* Compiler::findInterfaceFor(const Address *obj1, const Address *obj2)
 {
-    if (obj1->getAddressPtr() == NULL)
-        return NULL;
-
     FWObjectTypedChildIterator j=obj2->findByType(Interface::TYPENAME);
     for ( ; j!=j.end(); ++j ) 
     {
@@ -660,7 +657,7 @@ Interface* Compiler::findInterfaceFor(const Address *obj1, const Address *obj2)
 
         if (iface->getId()      == obj1->getId() )      return iface;
 
-        if ( iface->isRegular() )
+        if ( iface->isRegular() && obj1->getAddressPtr() != NULL)
         {
             FWObjectTypedChildIterator k=iface->findByType(IPv4::TYPENAME);
             for ( ; k!=k.end(); ++k ) 
@@ -669,6 +666,7 @@ Interface* Compiler::findInterfaceFor(const Address *obj1, const Address *obj2)
                 assert(addr);
 
                 if ((*k)->getId() == obj1->getId() ) return iface;
+
                 if (*(addr->getAddressPtr()) == *(obj1->getAddressPtr()) )
                     return iface;
 
