@@ -179,6 +179,7 @@ public slots:
      void newAddress();
      void newAddressIPv6();
      void newInterfaceAddress();
+     void newInterfaceAddressIPv6();
      void newPhysicalAddress();
      void newAddressRange();
      void newObjectGroup();

@@ -964,6 +964,8 @@ QAction *movID;
         {
             newID1=popup->addAction( tr("Add IP Address"),    this ,
                                SLOT( newInterfaceAddress() ) );
+            newID1=popup->addAction( tr("Add IPv6 Address"),    this ,
+                               SLOT( newInterfaceAddressIPv6() ) );
             newID2=popup->addAction( tr("Add MAC Address"),   this ,
                                SLOT( newPhysicalAddress() ) );
         }
@@ -2786,6 +2788,29 @@ void ObjectManipulator::newInterfaceAddress()
 	    .arg(QString::fromUtf8(currentObj->getParent()->getName().c_str()))
 	    .arg(QString::fromUtf8(currentObj->getName().c_str()));
         FWObject *o=createObject(currentObj, IPv4::TYPENAME, iname);
+        if (o!=NULL)
+        {
+            openObject(o);
+            editObject(o);
+            updateLastModifiedTimestampForAllFirewalls(o);
+        }
+    }
+}
+
+void ObjectManipulator::newInterfaceAddressIPv6()
+{
+    if ( currentObj->isReadOnly() ) return;
+
+    if (Interface::isA(currentObj))
+    {
+        Interface *intf = Interface::cast(currentObj);
+        if (intf &&
+            (intf->isDyn() || intf->isUnnumbered() || intf->isBridgePort())
+        ) return;
+    QString iname=QString("%1:%2:ipv6")
+        .arg(QString::fromUtf8(currentObj->getParent()->getName().c_str()))
+        .arg(QString::fromUtf8(currentObj->getName().c_str()));
+        FWObject *o=createObject(currentObj, IPv6::TYPENAME, iname);
         if (o!=NULL)
         {
             openObject(o);
