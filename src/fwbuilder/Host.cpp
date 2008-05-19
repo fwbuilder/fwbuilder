@@ -142,8 +142,8 @@ InetAddr Host::getManagementAddress() throw(FWException)
             {
                 InetAddrMask *addr = dynamic_cast<InetAddrMask*>(*k);
                 assert(addr);
-                mgmt->setAddress( addr->getAddress() );
-                return addr->getAddress();
+                mgmt->setAddress( *(addr->getAddressPtr()) );
+                return *(addr->getAddressPtr());
             }
         }
     }    

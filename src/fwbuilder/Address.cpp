@@ -93,7 +93,7 @@ const InetAddrMask* Address::getAddressObjectInetAddrMask(bool ipv6) const
 {
     const Address *addr_obj = getAddressObject(ipv6);
     if (addr_obj) return addr_obj->inet_addr_mask;
-    return inet_addr_mask;
+    return NULL;
 }
 
 const bool Address::hasInetAddress(bool ipv6) const
@@ -103,39 +103,32 @@ const bool Address::hasInetAddress(bool ipv6) const
     return false;
 }
 
-const InetAddr& Address::getAddress(bool ipv6) const
-{
-    return getAddressObjectInetAddrMask(ipv6)->getAddress();
-}
-
 const InetAddr* Address::getAddressPtr(bool ipv6) const
 {
-    return getAddressObjectInetAddrMask(ipv6)->getAddressPtr();
-}
-
-const InetAddr& Address::getNetmask(bool ipv6) const
-{
-    return getAddressObjectInetAddrMask(ipv6)->getNetmask();
+    const InetAddrMask *inet_addr_mask = getAddressObjectInetAddrMask(ipv6);
+    if (inet_addr_mask) return inet_addr_mask->getAddressPtr();
+    return NULL;
 }
 
 const InetAddr* Address::getNetmaskPtr(bool ipv6) const
 {
-    return getAddressObjectInetAddrMask(ipv6)->getNetmaskPtr();
+    const InetAddrMask *inet_addr_mask = getAddressObjectInetAddrMask(ipv6);
+    if (inet_addr_mask) return inet_addr_mask->getNetmaskPtr();
+    return NULL;
 }
 
-const InetAddr& Address::getNetworkAddress(bool ipv6) const
+const InetAddr* Address::getNetworkAddressPtr(bool ipv6) const
 {
-    return getAddressObjectInetAddrMask(ipv6)->getNetworkAddress();
-}
-
-const InetAddr& Address::getBroadcastAddress(bool ipv6) const
-{
-    return getAddressObjectInetAddrMask(ipv6)->getBroadcastAddress();
+    const InetAddrMask *inet_addr_mask = getAddressObjectInetAddrMask(ipv6);
+    if (inet_addr_mask) return inet_addr_mask->getNetworkAddressPtr();
+    return NULL;
 }
 
 const InetAddr* Address::getBroadcastAddressPtr(bool ipv6) const
 {
-    return getAddressObjectInetAddrMask(ipv6)->getBroadcastAddressPtr();
+    const InetAddrMask *inet_addr_mask = getAddressObjectInetAddrMask(ipv6);
+    if (inet_addr_mask) return inet_addr_mask->getBroadcastAddressPtr();
+    return NULL;
 }
 
 void Address::setAddress(const InetAddr&, bool)

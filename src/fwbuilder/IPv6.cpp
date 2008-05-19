@@ -107,11 +107,11 @@ xmlNodePtr IPv6::toXML(xmlNodePtr xml_parent_node) throw(FWException)
     
     xmlNewProp(me, 
                TOXMLCAST("address"),
-               STRTOXMLCAST(getAddress().toString()));
+               STRTOXMLCAST(getAddressPtr()->toString()));
     
     xmlNewProp(me, 
                TOXMLCAST("netmask"),
-               STRTOXMLCAST(getNetmask().toString()));
+               STRTOXMLCAST(getNetmaskPtr()->toString()));
     
     return me;
 }
@@ -135,5 +135,5 @@ void IPv6::setAddressNetmask(const std::string& s)
 void IPv6::dump(std::ostream &f,bool recursive,bool brief,int offset) const
 {
     FWObject::dump(f, recursive, brief, offset);
-    f << inet_addr_mask->getAddress().toString() << endl;
+    f << inet_addr_mask->getAddressPtr()->toString() << endl;
 }

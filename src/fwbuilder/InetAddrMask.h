@@ -87,15 +87,11 @@ public:
     InetAddrMask(const InetAddrMask&);
     virtual ~InetAddrMask();
 
-    virtual const InetAddr& getAddress() const { return *address; }
     virtual const InetAddr* getAddressPtr() const { return address; }
-    virtual const InetAddr& getNetmask() const { return *netmask; }
     virtual const InetAddr* getNetmaskPtr() const { return netmask; }
 
-    virtual const InetAddr& getNetworkAddress() const {
-        return *network_address; }
-    virtual const InetAddr& getBroadcastAddress() const {
-        return *broadcast_address; }
+    virtual const InetAddr* getNetworkAddressPtr() const {
+        return network_address; }
     virtual const InetAddr* getBroadcastAddressPtr() const {
         return broadcast_address; }
 

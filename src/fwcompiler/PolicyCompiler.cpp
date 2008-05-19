@@ -642,8 +642,8 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
                 continue;
 
             if ( ! addr->isAny() 
-                 && addr->getAddress().isAny()
-                 && addr->getNetmask().isAny()
+                 && addr->getAddressPtr()->isAny()
+                 && addr->getNetmaskPtr()->isAny()
             ) 
             {
                 a = addr;

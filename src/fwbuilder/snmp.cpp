@@ -1252,9 +1252,13 @@ set<Interface> SNMPCrawler::guessInterface(const IPRoute &r, const map<int, Inte
     set<Interface> res;
     for(map<int, Interface>::const_iterator i=intf.begin(); i!=intf.end(); ++i)
     {
-        InetAddrMask iface_net((*i).second.getAddress(), (*i).second.getNetmask());
-        if (iface_net.belongs(r.getGateway()))
-            res.insert((*i).second);
+        const InetAddr *addr = (*i).second.getAddressPtr();
+        const InetAddr *netm = (*i).second.getNetmaskPtr();
+        if (addr && netm)
+        {
+            InetAddrMask iface_net(*addr, *netm);
+            if (iface_net.belongs(r.getGateway())) res.insert((*i).second);
+        }
     }
     return res;
 }
@@ -1297,10 +1301,12 @@ bool SNMPCrawler::isvirtual(const InetAddr &addr, const string &pa) const
         {
             try
             {
+                const InetAddr *intf_addr = (*j).second.getAddressPtr();
+
                 physAddress *paddr = (*j).second.getPhysicalAddress();
                 if (paddr!=NULL &&
                     pa == paddr->getPhysAddress() &&
-                    addr != (*j).second.getAddress())
+                    intf_addr!=NULL && addr != *intf_addr)
                     return true;
             } catch(FWException &ex)
             {
@@ -1315,7 +1321,7 @@ bool SNMPCrawler::isvirtual(const InetAddr &addr, const string &pa) const
 
 bool SNMPCrawler::point2point(const InetAddrMask &n, const Interface *intf) const
 {
-    return n.getNetmask()==PTP_NETMASK || point2point(intf);
+    return *(n.getNetmaskPtr())==PTP_NETMASK || point2point(intf);
 }
 
 bool SNMPCrawler::point2point(const Interface *intf) const
@@ -1347,9 +1353,9 @@ bool SNMPCrawler::special(const InetAddr &a) const
 bool SNMPCrawler::special(const InetAddrMask &n) const
 {
     return n==LOOPBACK_NET ||
-        n.getAddress().isBroadcast() ||
-        n.getAddress().isMulticast() ||
-        n.getAddress().isAny();
+        n.getAddressPtr()->isBroadcast() ||
+        n.getAddressPtr()->isMulticast() ||
+        n.getAddressPtr()->isAny();
 }
 
 //TODO: multiple threads (via pool).
@@ -1473,12 +1479,15 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
                 if(!(*j).second.isUp())
                     continue;
 
-                //InetAddrMask net=(*j).second.getInetAddrMask();
-                InetAddrMask net((*j).second.getAddress(),
-                              (*j).second.getNetmask());
-                interface_broadcasts.insert(net.getBroadcastAddress());
+                const InetAddr *addr = (*j).second.getAddressPtr();
+                const InetAddr *netm = (*j).second.getNetmaskPtr();
+                if (addr==NULL) continue;
 
-                if(!special(net) && included(net.getAddress()) && !point2point(net, NULL))
+                InetAddrMask net(*addr, *netm);
+                interface_broadcasts.insert(*(net.getBroadcastAddressPtr()));
+
+                if(!special(net) && included(*(net.getAddressPtr())) &&
+                   !point2point(net, NULL))
                 {
                     str << "Network " << net.toString() << " found.\n";
                     *logger << str;
@@ -1538,7 +1547,8 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
                     have_intf = false;
                 }
                 
-                InetAddrMask net((*j).getDestination(), (*j).getNetmask());
+                InetAddrMask net((*j).getDestination(),
+                                 (*j).getNetmask());
                 
                 if(!have_intf)
                 {
@@ -1601,29 +1611,29 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
                     continue; 
                 }
 
-                if(!special(net) && included(net.getAddress()) )
+                if(!special(net) && included(*(net.getAddressPtr())) )
                 {
                     if(point2point(net, NULL))
                     {
-                        InetAddr c=net.getAddress();
+                        const InetAddr *c = net.getAddressPtr();
 
                         // For all addresses found in the routing table
                         // we must check if they are broadcast addresses
                         // for some of our interfaces, and if yes, ignore them.
                         // (see task #36520).
 
-                        if(included(c) && !alreadyseen(c) && 
-                           !isvirtual(c,"") && !special(c) && 
-                           !interface_broadcasts.count(c))
+                        if(included(*c) && !alreadyseen(*c) && 
+                           !isvirtual(*c,"") && !special(*c) && 
+                           !interface_broadcasts.count(*c))
                         {
                             if(recursive && follow_ptp)
                             {
                                 qplus++;
-                                queue[c]="";
+                                queue[*c]="";
                             } else
                             {
                                 rplus++;
-                                found[c]=CrawlerFind();
+                                found[*c]=CrawlerFind();
                             }
                         } else
                         {

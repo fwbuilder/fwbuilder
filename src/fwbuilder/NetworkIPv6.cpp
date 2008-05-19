@@ -44,7 +44,6 @@ NetworkIPv6::NetworkIPv6() : Address()
 {
     delete inet_addr_mask;
     inet_addr_mask = new Inet6AddrMask();
-//    setNetmask(Inet6Addr(0));
 }
 
 NetworkIPv6::NetworkIPv6(const FWObject *root,bool prepopulate) :
@@ -52,7 +51,6 @@ NetworkIPv6::NetworkIPv6(const FWObject *root,bool prepopulate) :
 {
     delete inet_addr_mask;
     inet_addr_mask = new Inet6AddrMask();
-//    setNetmask(Inet6Addr(0));
 }
 
 NetworkIPv6::NetworkIPv6(NetworkIPv6 &other) : Address(other)
@@ -61,8 +59,6 @@ NetworkIPv6::NetworkIPv6(NetworkIPv6 &other) : Address(other)
     inet_addr_mask = new Inet6AddrMask(
         *(dynamic_cast<Inet6AddrMask*>(other.inet_addr_mask)));
     FWObject::operator=(other);
-//    setAddress(o.getAddress());
-//    setNetmask(o.getNetmask());
 }
 
 NetworkIPv6::NetworkIPv6 (const string &s) : Address()
@@ -103,11 +99,11 @@ xmlNodePtr NetworkIPv6::toXML(xmlNodePtr xml_parent_node) throw(FWException)
     
     xmlNewProp(me, 
                TOXMLCAST("address"),
-               STRTOXMLCAST(getAddress().toString()));
+               STRTOXMLCAST(getAddressPtr()->toString()));
     
     xmlNewProp(me, 
                TOXMLCAST("netmask"),
-               STRTOXMLCAST(getNetmask().toString()));
+               STRTOXMLCAST(getNetmaskPtr()->toString()));
     
     return me;
 }
@@ -115,7 +111,7 @@ xmlNodePtr NetworkIPv6::toXML(xmlNodePtr xml_parent_node) throw(FWException)
 /* check if host address bits are cleared */
 bool NetworkIPv6::isValidRoutingNet() const
 {
-    return (getAddress() == (getAddress() & getNetmask()));
+    return (*(getAddressPtr()) == *(getNetworkAddressPtr()));
 }
 
 void NetworkIPv6::setAddress(const InetAddr &a, bool)

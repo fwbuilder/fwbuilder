@@ -494,17 +494,21 @@ bool RuleElementRGtw::checkReachableIPAdress(FWObject *o)
     if( Host::cast(o) != NULL)
     {
         Host *host=Host::cast(o);
-        InetAddr ip_host = host->getAddress();
+        const InetAddr *ip_host = host->getAddressPtr();
         for ( ; j!=j.end(); ++j )
         {
             Interface *i_firewall=Interface::cast(*j);
             for(FWObjectTypedChildIterator fw_ips=i_firewall->findByType(IPv4::TYPENAME); fw_ips!=fw_ips.end(); ++fw_ips) {
                 IPv4 *ipv4_obj_firewall = IPv4::cast(*fw_ips);
 
-                InetAddrMask fw_net(ipv4_obj_firewall->getAddress(),
-                                 ipv4_obj_firewall->getNetmask());
-                if (fw_net.belongs(ip_host))
-                    return true;
+                const InetAddr *addr = ipv4_obj_firewall->getAddressPtr();
+                const InetAddr *netm = ipv4_obj_firewall->getNetmaskPtr();
+                if (addr)
+                {
+                    InetAddrMask fw_net(*addr, *netm);
+                    if (fw_net.belongs(*ip_host))
+                        return true;
+                }
             }
         }
         return false;
@@ -512,22 +516,27 @@ bool RuleElementRGtw::checkReachableIPAdress(FWObject *o)
     } else if( Interface::cast(o) != NULL)
     {
         Interface *gw_interface=Interface::cast(o);
-        InetAddr ip_gateway = gw_interface->getAddress();
+        const InetAddr *ip_gateway = gw_interface->getAddressPtr();
 
         // walk over all interfaces of this firewall
         for ( ; j!=j.end(); ++j )
         {
             Interface *if_firewall=Interface::cast(*j);
-            FWObjectTypedChildIterator addresses=if_firewall->findByType(IPv4::TYPENAME);
+            FWObjectTypedChildIterator addresses =
+                if_firewall->findByType(IPv4::TYPENAME);
 
             // check all IPv4 addresses of this firewall interface
-            for ( ; addresses!=addresses.end(); ++addresses ) {
+            for ( ; addresses!=addresses.end(); ++addresses )
+            {
                 IPv4 *ipv4_obj_firewall = IPv4::cast(*addresses);
-                InetAddrMask fw_net(ipv4_obj_firewall->getAddress(),
-                                 ipv4_obj_firewall->getNetmask());
-                if (fw_net.belongs(ip_gateway))
-                    return true;
-
+                const InetAddr *addr = ipv4_obj_firewall->getAddressPtr();
+                const InetAddr *netm = ipv4_obj_firewall->getNetmaskPtr();
+                if (addr)
+                {
+                    InetAddrMask fw_net(*addr, *netm);
+                    if (fw_net.belongs(*ip_gateway))
+                        return true;
+                }
             }
         }
         return false;
@@ -535,20 +544,24 @@ bool RuleElementRGtw::checkReachableIPAdress(FWObject *o)
     } else if( IPv4::cast(o) != NULL) {
 
         IPv4 *ipv4=IPv4::cast(o);
-        InetAddr ip_ipv4 = ipv4->getAddress();
+        const InetAddr *ip_ipv4 = ipv4->getAddressPtr();
 
         for ( ; j!=j.end(); ++j ) {
             Interface *if_firewall=Interface::cast(*j);
-            FWObjectTypedChildIterator addresses=if_firewall->findByType(IPv4::TYPENAME);
+            FWObjectTypedChildIterator addresses =
+                if_firewall->findByType(IPv4::TYPENAME);
 
             // check all IPv4 addresses of this firewall interface
             for ( ; addresses!=addresses.end(); ++addresses ) {
                 IPv4 *ipv4_obj_firewall = IPv4::cast(*addresses);
-                
-                InetAddrMask fw_net(ipv4_obj_firewall->getAddress(),
-                                 ipv4_obj_firewall->getNetmask());
-                if (fw_net.belongs(ip_ipv4))
-                    return true;
+                const InetAddr *addr = ipv4_obj_firewall->getAddressPtr();
+                const InetAddr *netm = ipv4_obj_firewall->getNetmaskPtr();
+                if (addr)
+                {
+                    InetAddrMask fw_net(*addr, *netm);
+                    if (fw_net.belongs(*ip_ipv4))
+                        return true;
+                }
             }
         } return false;
 

@@ -54,8 +54,8 @@ Network::Network(const FWObject *root,bool prepopulate) :
 Network::Network(Network &o) : Address(o)
 {
     FWObject::operator=(o);
-    setAddress(o.getAddress());
-    setNetmask(o.getNetmask());
+    setAddress(*(o.getAddressPtr()));
+    setNetmask(*(o.getNetmaskPtr()));
 }
 
 Network::Network (const string &s) : Address()
@@ -86,11 +86,11 @@ xmlNodePtr Network::toXML(xmlNodePtr xml_parent_node) throw(FWException)
     
     xmlNewProp(me, 
                TOXMLCAST("address"),
-               STRTOXMLCAST(getAddress().toString()));
+               STRTOXMLCAST(getAddressPtr()->toString()));
     
     xmlNewProp(me, 
                TOXMLCAST("netmask"),
-               STRTOXMLCAST(getNetmask().toString()));
+               STRTOXMLCAST(getNetmaskPtr()->toString()));
     
     return me;
 }
@@ -98,7 +98,7 @@ xmlNodePtr Network::toXML(xmlNodePtr xml_parent_node) throw(FWException)
 /* check if host address bits are cleared */
 bool Network::isValidRoutingNet() const
 {
-    return (getAddress() == (getAddress() & getNetmask()));
+    return (*(getAddressPtr()) == *(getNetworkAddressPtr()));
 }
 
 void Network::setAddress(const InetAddr &a, bool)

@@ -155,14 +155,17 @@ public:
 
 
         virtual FWObject& shallowDuplicate(const FWObject *obj,
-                                           bool preserve_id = true) throw(FWException);
+                                           bool preserve_id = true)
+            throw(FWException);
         virtual FWObject& duplicate(const FWObject *obj,
-                                    bool preserve_id = true) throw(FWException);
+                                    bool preserve_id = true)
+            throw(FWException);
 
         const std::string &getLabel() const;
-        void          setLabel(const std::string& n);
+        void setLabel(const std::string& n);
 
-        virtual Address* getAddressObject(bool ipv6=false) const;
+        virtual const Address* getAddressObject(bool ipv6=false) const;
+        
         virtual unsigned int dimension()  const { return 1; }
 
     };

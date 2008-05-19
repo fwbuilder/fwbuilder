@@ -261,11 +261,13 @@ bool  Interface::validateChild(FWObject *o)
 
 bool Interface::isLoopback() const
 {
-    Address *iaddr = getAddressObject();
-    if (iaddr && iaddr->getAddress() == InetAddr::getLoopbackAddr()) return true;
+    const Address *iaddr = getAddressObject();
+    if (iaddr && *(iaddr->getAddressPtr()) == InetAddr::getLoopbackAddr())
+        return true;
 
     iaddr = getAddressObject(true);  // ipv6
-    if (iaddr && iaddr->getAddress() == InetAddr::getLoopbackAddr()) return true;
+    if (iaddr && *(iaddr->getAddressPtr()) == InetAddr::getLoopbackAddr())
+        return true;
 
     return false;
 }
@@ -302,7 +304,7 @@ void Interface::setLabel(const string& n)
     setStr("label",n);
 }
 
-Address* Interface::getAddressObject(bool ipv6) const
+const Address* Interface::getAddressObject(bool ipv6) const
 {
     string type_name = (ipv6) ? IPv6::TYPENAME : IPv4::TYPENAME;
     return Address::cast(getFirstByType(type_name));

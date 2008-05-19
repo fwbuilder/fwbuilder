@@ -56,30 +56,37 @@ using namespace std;
  */
 vector<FWObject*> fwcompiler::_find_obj_intersection(Address *op1, Address *op2)
 {
-    const InetAddrMask n1( op1->getAddress() , 
-       	(Interface::cast(op1)) ? InetAddr(InetAddr::getAllOnes()) : op1->getNetmask() );
-    const InetAddrMask n2( op2->getAddress() , 
-	(Interface::cast(op2)) ? InetAddr(InetAddr::getAllOnes()) : op2->getNetmask() );
+    vector<FWObject*>  res;
+
+    const InetAddr *addr1 = op1->getAddressPtr();
+    const InetAddr *netm1 = op1->getNetmaskPtr();
+    const InetAddr *addr2 = op2->getAddressPtr();
+    const InetAddr *netm2 = op2->getNetmaskPtr();
+
+    if (addr1==NULL || addr2==NULL) return res;
+
+    const InetAddrMask n1( *addr1,
+        (Interface::cast(op1)) ? InetAddr(InetAddr::getAllOnes()) : (*netm1) );
+    const InetAddrMask n2( *addr2,
+        (Interface::cast(op2)) ? InetAddr(InetAddr::getAllOnes()) : (*netm2) );
 
     vector<InetAddrMask> intersection = libfwbuilder::getOverlap(n1,n2);
-
-    vector<FWObject*>  res;
 
     for (vector<InetAddrMask>::iterator i=intersection.begin(); i!=intersection.end(); i++)
     {
 	InetAddrMask *n= &(*i);
-	if (n->getNetmask().isHostMask())
+	if (n->getNetmaskPtr()->isHostMask())
         {
             IPv4 *h = new IPv4();
-            h->setAddress(n->getAddress());
-	    h->setName("h-"+n->getAddress().toString());
+            h->setAddress(*(n->getAddressPtr()));
+	    h->setName("h-"+n->getAddressPtr()->toString());
             op1->getRoot()->add(h,false);
 	    res.push_back(h);
 	} else {
 	    Network *net = new Network();
-	    net->setAddress(n->getAddress());
-	    net->setNetmask(n->getNetmask());
-	    net->setName("n-"+n->getAddress().toString());
+	    net->setAddress(*(n->getAddressPtr()));
+	    net->setNetmask(*(n->getNetmaskPtr()));
+	    net->setName("n-"+n->getAddressPtr()->toString());
             op1->getRoot()->add(net,false);
 	    res.push_back(net);
 	}

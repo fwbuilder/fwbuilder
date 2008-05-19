@@ -464,8 +464,8 @@ void Compiler::_expandAddressRanges(Rule*, FWObject *s)
                 Network *h;
                 h= Network::cast(dbcopy->create(Network::TYPENAME) );
                 h->setName(string("%n-")+(*i).toString()+string("%") );
-                h->setNetmask(i->getNetmask());
-                h->setAddress(i->getAddress());
+                h->setNetmask(*(i->getNetmaskPtr()));
+                h->setAddress(*(i->getAddressPtr()));
                 cacheObj(h); // to keep cache consistent
                 dbcopy->add(h,false);
                 cl.push_back(h);
@@ -496,7 +496,7 @@ bool Compiler::_complexMatchWithInterface(Address   *obj1,
                                           Interface *iface,
                                           bool recognize_broadcasts)
 {
-    const InetAddr& obj1_addr = obj1->getAddress();
+    const InetAddr *obj1_addr = obj1->getAddressPtr();
 
     if ( physAddress::isA(obj1))
     {
@@ -513,9 +513,12 @@ bool Compiler::_complexMatchWithInterface(Address   *obj1,
         {
             Address *ipv4 = Address::cast(*k);
                     
-            if ( ipv4->getAddress()==obj1_addr ) return true;
-
-            InetAddrMask n(ipv4->getAddress() , ipv4->getNetmask());
+            if ( *(ipv4->getAddressPtr())==*(obj1_addr) ) return true;
+            const InetAddr *addr = ipv4->getAddressPtr();
+            const InetAddr *netm = ipv4->getNetmaskPtr();
+            if (addr)
+            {
+                InetAddrMask n(*addr, *netm);
 /*
  * bug #1040773: need to match network address as well as
  * broadcast. Packets sent to the network address (192.168.1.0 for net
@@ -523,11 +526,13 @@ bool Compiler::_complexMatchWithInterface(Address   *obj1,
  * broadcast packets (sent to 192.168.1.1255 for the same net)
  *
  */
-            if (recognize_broadcasts)
-            {
+                if (recognize_broadcasts)
+                {
 /* obj1 is an individual address - IPv4 or Address object */
-                if (n.getAddress()==obj1_addr || n.getBroadcastAddress()==obj1_addr)
-                    return true;
+                    if (*(n.getAddressPtr())==*(obj1_addr) ||
+                        *(n.getBroadcastAddressPtr())==*(obj1_addr))
+                        return true;
+                }
             }
         }
     }
@@ -555,18 +560,26 @@ bool Compiler::complexMatch(Address *obj1,
          * Need to check for multicast networks. We assume they always
          * match if obj2 is firewall
          */
-        Network *nobj1=Network::cast(obj1);
-        if (nobj1->getAddress().isMulticast() && Firewall::isA(obj2))
-            return true;
+        Network *nobj1 = Network::cast(obj1);
+        const InetAddr *inet_addr = nobj1->getAddressPtr();
+        if (inet_addr)
+        {
+            if (inet_addr->isMulticast() && Firewall::isA(obj2))
+                return true;
 
-        /*
-         * need to check for network object with mask 255.255.255.255
-         * Such objects are created by the method that expands address
-         * ranges, and some often used ranges trigger that (like
-         * "255.255.255.255-255.255.255.255" or "0.0.0.0-0.0.0.0")
-         */
-        if (!nobj1->getNetmask().isHostMask())
-            return false;
+            /*
+             * need to check for network object with mask 255.255.255.255
+             * Such objects are created by the method that expands address
+             * ranges, and some often used ranges trigger that (like
+             * "255.255.255.255-255.255.255.255" or "0.0.0.0-0.0.0.0")
+             */
+            if (!nobj1->getNetmaskPtr()->isHostMask())
+                return false;
+        } else
+            warning(string("Network object with no InetAddr: id=") +
+                    obj1->getId() +
+                    "  type=" + obj1->getTypeName() +
+                    "  name=" + obj1->getName());
     }
 /*
  * if we are matching two firewalls, the positive match is only if
@@ -599,27 +612,33 @@ bool Compiler::complexMatch(Address *obj1,
 
     if ((obj1->getByType(IPv4::TYPENAME)).size()>1) return false;
 
-    const InetAddr& obj1_addr = obj1->getAddress();
-    if (!obj1_addr.isAny() && 
-        ( (recognize_broadcasts && obj1_addr.isBroadcast()) || 
-          (recognize_multicasts && obj1_addr.isMulticast()) )
-    ) return true;
-
-    if (Interface::cast(obj1)!=NULL && !Interface::cast(obj1)->isRegular())
-        return false;
-
-    if (Interface::cast(obj2)!=NULL)
+    const InetAddr *obj1_addr = obj1->getAddressPtr();
+    // obj1_addr may be NULL if obj1 does not have any real address,
+    // one case when this happens is when obj1 is physAddress
+    if (obj1_addr)
     {
-        return _complexMatchWithInterface(obj1,Interface::cast(obj2));
-    }else
-    {
-        FWObjectTypedChildIterator j=obj2->findByType(Interface::TYPENAME);
-        for ( ; j!=j.end(); ++j ) 
+        if (!obj1_addr->isAny() && 
+            ( (recognize_broadcasts && obj1_addr->isBroadcast()) || 
+              (recognize_multicasts && obj1_addr->isMulticast()) )
+        ) return true;
+
+        if (Interface::cast(obj1)!=NULL && !Interface::cast(obj1)->isRegular())
+            return false;
+
+        if (Interface::cast(obj2)!=NULL)
         {
-            Interface *iface=Interface::cast(*j);
-            if (_complexMatchWithInterface(obj1,iface)) return true;
+            return _complexMatchWithInterface(obj1,Interface::cast(obj2));
+        }else
+        {
+            FWObjectTypedChildIterator j=obj2->findByType(Interface::TYPENAME);
+            for ( ; j!=j.end(); ++j ) 
+            {
+                Interface *iface=Interface::cast(*j);
+                if (_complexMatchWithInterface(obj1,iface)) return true;
+            }
         }
     }
+
     return false;
 }
 
@@ -630,6 +649,9 @@ bool Compiler::complexMatch(Address *obj1,
  */
 Interface* Compiler::findInterfaceFor(const Address *obj1, const Address *obj2)
 {
+    if (obj1->getAddressPtr() == NULL)
+        return NULL;
+
     FWObjectTypedChildIterator j=obj2->findByType(Interface::TYPENAME);
     for ( ; j!=j.end(); ++j ) 
     {
@@ -647,13 +669,14 @@ Interface* Compiler::findInterfaceFor(const Address *obj1, const Address *obj2)
                 assert(addr);
 
                 if ((*k)->getId() == obj1->getId() ) return iface;
-                if (addr->getAddress() == obj1->getAddress() ) return iface;
+                if (*(addr->getAddressPtr()) == *(obj1->getAddressPtr()) )
+                    return iface;
 
                 if (Network::constcast(obj1)!=NULL && 
                     obj1->getAddressObjectInetAddrMask()->belongs(
-                        addr->getAddress())) return iface; 
+                        *(addr->getAddressPtr()))) return iface; 
 
-                if ( addr->belongs( obj1->getAddress() ) ) return iface;
+                if ( addr->belongs( *(obj1->getAddressPtr()) ) ) return iface;
             }
         }
     }
@@ -680,13 +703,14 @@ FWObject* Compiler::findAddressFor(const Address *obj1,const Address *obj2)
 
                 if ((*k)->getId() == obj1->getId()) return (*k);
 
-                if (addr->getAddress() == obj1->getAddress() ) return (*k);
+                if (*(addr->getAddressPtr()) == *(obj1->getAddressPtr()) )
+                    return (*k);
 
                 if (Network::constcast(obj1)!=NULL &&
                     obj1->getAddressObjectInetAddrMask()->belongs(
-                        addr->getAddress())) return (*k);
+                        *(addr->getAddressPtr()))) return (*k);
 
-                if (addr->belongs( obj1->getAddress())) return (*k);
+                if (addr->belongs( *(obj1->getAddressPtr()))) return (*k);
             }
         }
     }

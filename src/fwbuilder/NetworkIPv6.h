@@ -62,7 +62,7 @@ public:
         return false;
     }
 
-    virtual Address* getAddressObject(bool ipv6=false)
+    virtual const Address* getAddressObject(bool ipv6=false) const
     {
         if (ipv6) return this;
         return NULL;

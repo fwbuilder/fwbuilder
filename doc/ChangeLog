@@ -1,3 +1,11 @@
+2008-05-18  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Address.h (libfwbuilder): removed methods Address::getAddress
+	and Address::getNetmask, will only use methods getAddressPtr() and
+	getNetmaskPtr() (this way I can distinguish situation when a high
+	level address object such as Interface does not have any child
+	address objects).
+
 2008-05-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWObjectDatabase_5.xslt: auto-upgrade transformation to set data

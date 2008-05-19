@@ -66,13 +66,19 @@ public:
 
     virtual const bool hasInetAddress(bool ipv6=false) const;
 
-    virtual const InetAddr& getAddress(bool ipv6=false) const;
+    /**
+     * returns const pointer to internal InetAddr object. Some objects
+     * that inherit this class may return NULL if they do not have
+     * their own IP address (examples: physAddress or Interface with
+     * no child IPv4 object). Using exclusively method that returns
+     * pointer rather than reference to the object allows us to
+     * distinguish between when an object has address 0.0.0.0 or has no
+     * address at all.
+     */
     virtual const InetAddr* getAddressPtr(bool ipv6=false) const;
-    virtual const InetAddr& getNetmask(bool ipv6=false) const;
     virtual const InetAddr* getNetmaskPtr(bool ipv6=false) const;
 
-    virtual const InetAddr& getNetworkAddress(bool ipv6=false) const;
-    virtual const InetAddr& getBroadcastAddress(bool ipv6=false) const;
+    virtual const InetAddr* getNetworkAddressPtr(bool ipv6=false) const;
     virtual const InetAddr* getBroadcastAddressPtr(bool ipv6=false) const;
 
     virtual void setAddress(const InetAddr &a, bool ipv6=false);

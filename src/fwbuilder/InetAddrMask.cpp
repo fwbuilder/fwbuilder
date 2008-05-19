@@ -180,12 +180,13 @@ InetAddrMask& InetAddrMask::operator=(const InetAddrMask &o)
 
 bool libfwbuilder::operator==(const InetAddrMask &a, const InetAddrMask &b)
 {
-    return a.getNetmask() == b.getNetmask() && a.getAddress() == b.getAddress();
+    return ( *(a.getNetmaskPtr()) == *(b.getNetmaskPtr()) &&
+             *(a.getAddressPtr()) == *(b.getAddressPtr()));
 }
 
 bool libfwbuilder::operator<(const InetAddrMask &a, const InetAddrMask &b)
 {
-    return a.getAddress() < b.getAddress();
+    return *(a.getAddressPtr()) < *(b.getAddressPtr());
 }
 
 /* this is just a better interface to _convert_range_to_networks */
@@ -244,7 +245,7 @@ bool libfwbuilder::_convert_range_to_networks(const InetAddr &start,
 
     nstart = start;
 
-    if (start!=tn1.getAddress())
+    if (start != *(tn1.getAddressPtr()))
     {
 /* we can not use start address for the network because it shifts
  * beginning of the range back after netmask is applied to it. Need to
@@ -257,7 +258,7 @@ bool libfwbuilder::_convert_range_to_networks(const InetAddr &start,
             mask_bits++;
             nnm = InetAddr(mask_bits);
             tn1 = InetAddrMask(nstart, nnm);
-        } while (start!=tn1.getAddress() and mask_bits>0);
+        } while (start != *(tn1.getAddressPtr()) and mask_bits>0);
         nend = nstart;
         nend = nend | (~nnm);
     } else 
@@ -298,11 +299,11 @@ bool libfwbuilder::_convert_range_to_networks(const InetAddr &start,
 vector<InetAddrMask> libfwbuilder::getOverlap(const InetAddrMask &n1,
                                               const InetAddrMask &n2)
 {
-    const InetAddr& s1 = n1.getAddress();
-    const InetAddr& s2 = n2.getAddress();
+    const InetAddr& s1 = *(n1.getAddressPtr());
+    const InetAddr& s2 = *(n2.getAddressPtr());
 
-    const InetAddr&   m1 = n1.getNetmask();
-    const InetAddr&   m2 = n2.getNetmask();
+    const InetAddr&   m1 = *(n1.getNetmaskPtr());
+    const InetAddr&   m2 = *(n2.getNetmaskPtr());
 
     InetAddr e1 = s1 | (~m1);
     InetAddr e2 = s2 | (~m2);
@@ -344,11 +345,11 @@ vector<InetAddrMask> libfwbuilder::getOverlap(const InetAddrMask &n1,
 vector<InetAddrMask> libfwbuilder::substract(const InetAddrMask &n1,
                                           const InetAddrMask &n2)
 {
-    InetAddr n1s = n1.getAddress();
-    InetAddr n2s = n2.getAddress();
+    const InetAddr n1s = *(n1.getAddressPtr());
+    const InetAddr n2s = *(n2.getAddressPtr());
 
-    InetAddr   n1m = n1.getNetmask();
-    InetAddr   n2m = n2.getNetmask();
+    const InetAddr n1m = *(n1.getNetmaskPtr());
+    const InetAddr n2m = *(n2.getNetmaskPtr());
 
     InetAddr n1e = n1s; n1e = n1e | (~n1m);
     InetAddr n2e = n2s; n2e = n2e | (~n2m);
