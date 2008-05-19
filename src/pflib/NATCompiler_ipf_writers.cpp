@@ -90,9 +90,6 @@ void NATCompiler_ipf::PrintRule::_printAddr_L(Address  *o, bool print_netmask)
         assert(atrt==NULL);
     }
 
-    const InetAddr *addr = o->getAddressPtr();
-    InetAddr mask = *(o->getNetmaskPtr());
-
     if (Interface::cast(o)!=NULL && Interface::cast(o)->isDyn()) 
     {
         if (options->getBool("dynAddr"))
@@ -103,49 +100,66 @@ void NATCompiler_ipf::PrintRule::_printAddr_L(Address  *o, bool print_netmask)
         return;
     }
 
-    if (Interface::cast(o)!=NULL && ! Interface::cast(o)->isDyn()) 
-	mask = InetAddr(InetAddr::getAllOnes());
-
-    if (o->dimension()==1)
-	mask = InetAddr(InetAddr::getAllOnes());
-
-    if (addr->isAny() && mask.isAny())
+    const InetAddr *addr = o->getAddressPtr();
+    if (addr)
     {
-        compiler->output << "any ";
-    } else
-    {
+        InetAddr mask = *(o->getNetmaskPtr());
 
-      compiler->output << addr->toString();
+        if (Interface::cast(o)!=NULL && ! Interface::cast(o)->isDyn()) 
+            mask = InetAddr(InetAddr::getAllOnes());
 
-      if (print_netmask)
-         compiler->output << "/" << mask.getLength();
-      compiler->output  << " ";
-   }
+        if (o->dimension()==1)
+            mask = InetAddr(InetAddr::getAllOnes());
+
+        if (addr->isAny() && mask.isAny())
+        {
+            compiler->output << "any ";
+        } else
+        {
+
+            compiler->output << addr->toString();
+
+            if (print_netmask)
+                compiler->output << "/" << mask.getLength();
+            compiler->output  << " ";
+        }
+    }
 }
 
 void NATCompiler_ipf::PrintRule::_printAddr_R(Address  *o, bool print_netmask)
 {
     const InetAddr *addr = o->getAddressPtr();
-    InetAddr mask = *(o->getNetmaskPtr)();
 
-    if (Interface::cast(o) != NULL)
-	mask = InetAddr(InetAddr::getAllOnes());
-
-    if (o->dimension()==1)
-	mask = InetAddr(InetAddr::getAllOnes());
-
-    if (addr->isAny() && print_netmask &&  mask.isHostMask())
+    // check for the case when dynamic interface is used in TSrc (or when
+    // interface in TSrc just has no IP address )
+    if (Interface::cast(o) != NULL && (addr==NULL || addr->isAny()))
     {
         compiler->output  << "0/32 ";
-    } else
+        return;
+    }
+
+    if (addr)
     {
-        compiler->output << addr->toString();
-        if (print_netmask)
-            compiler->output << "/" << mask.getLength();
-        compiler->output  << " ";
+        InetAddr mask = *(o->getNetmaskPtr)();
+
+        if (Interface::cast(o) != NULL)
+            mask = InetAddr(InetAddr::getAllOnes());
+
+        if (o->dimension()==1)
+            mask = InetAddr(InetAddr::getAllOnes());
+
+        if (addr->isAny() && print_netmask &&  mask.isHostMask())
+        {
+            compiler->output  << "0/32 ";
+        } else
+        {
+            compiler->output << addr->toString();
+            if (print_netmask)
+                compiler->output << "/" << mask.getLength();
+            compiler->output  << " ";
+        }
     }
 }
-
 
 void NATCompiler_ipf::PrintRule::_printAddr_R_LB(RuleElementTDst *tdst)
 {

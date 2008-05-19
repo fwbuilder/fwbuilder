@@ -267,9 +267,6 @@ void PolicyCompiler_ipf::PrintRule::_printAddr(Address  *o,bool neg)
         assert(atrt==NULL);
     }
 
-    const InetAddr *addr = o->getAddressPtr();
-    InetAddr mask = *(o->getNetmaskPtr());
-
     if (options->getBool("dynAddr") &&
         Interface::cast(o)!=NULL && Interface::cast(o)->isDyn()) 
     {
@@ -278,26 +275,36 @@ void PolicyCompiler_ipf::PrintRule::_printAddr(Address  *o,bool neg)
         return;
     }
 
-    if (Interface::cast(o)!=NULL) {
-	mask = InetAddr(InetAddr::getAllOnes());
-    }
-
-    if (o->dimension()==1)
+    const InetAddr *addr = o->getAddressPtr();
+    if (Interface::cast(o)!=NULL && addr==NULL)
     {
-	mask = InetAddr(InetAddr::getAllOnes());
+        compiler->output << "<thishost> ";
     }
-
-    if (addr->isAny() && mask.isAny())
+    if (addr)
     {
-	compiler->output << "any ";
-    } else {	
-	if (neg) compiler->output << "! ";
-	compiler->output << addr->toString();
-	if (!mask.isHostMask())
+        InetAddr mask = *(o->getNetmaskPtr());
+
+        if (Interface::cast(o)!=NULL) {
+            mask = InetAddr(InetAddr::getAllOnes());
+        }
+
+        if (o->dimension()==1)
         {
-	    compiler->output << "/" << mask.getLength();
-	}
-	compiler->output << " ";
+            mask = InetAddr(InetAddr::getAllOnes());
+        }
+
+        if (addr->isAny() && mask.isAny())
+        {
+            compiler->output << "any ";
+        } else {	
+            if (neg) compiler->output << "! ";
+            compiler->output << addr->toString();
+            if (!mask.isHostMask())
+            {
+                compiler->output << "/" << mask.getLength();
+            }
+            compiler->output << " ";
+        }
     }
 }
 
