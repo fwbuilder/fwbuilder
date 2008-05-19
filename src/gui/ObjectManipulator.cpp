@@ -1247,7 +1247,7 @@ void ObjectManipulator::dumpObj()
 
     FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
     if (obj==NULL) return;
-    obj->dump(false,false);
+    obj->dump(true,false);
 }
 
 void ObjectManipulator::compile()
