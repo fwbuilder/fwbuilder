@@ -291,26 +291,33 @@ void PolicyCompiler_ipfw::PrintRule::_printAddr(Address  *o,bool neg)
     }
 
     const InetAddr *addr = o->getAddressPtr();
-    InetAddr mask = *(o->getNetmaskPtr());
-
-    if (Interface::cast(o)!=NULL)
-        mask = InetAddr(InetAddr::getAllOnes());
-
-    if (o->dimension()==1)
-        mask = InetAddr(InetAddr::getAllOnes());
-
-    if (addr->isAny() && mask.isAny()) 
+    if (Interface::cast(o)!=NULL && addr==NULL)
     {
-	compiler->output << "any ";
-    } else 
+        compiler->output << "me ";
+    }
+    if (addr)
     {
-	if (neg) compiler->output << "not ";
-	compiler->output << addr->toString();
-	if (!mask.isHostMask())
+        InetAddr mask = *(o->getNetmaskPtr());
+
+        if (Interface::cast(o)!=NULL)
+            mask = InetAddr(InetAddr::getAllOnes());
+
+        if (o->dimension()==1)
+            mask = InetAddr(InetAddr::getAllOnes());
+
+        if (addr->isAny() && mask.isAny()) 
         {
-	    compiler->output << "/" << mask.getLength();
-	}
-	compiler->output << " ";
+            compiler->output << "any ";
+        } else 
+        {
+            if (neg) compiler->output << "not ";
+            compiler->output << addr->toString();
+            if (!mask.isHostMask())
+            {
+                compiler->output << "/" << mask.getLength();
+            }
+            compiler->output << " ";
+        }
     }
 }
 

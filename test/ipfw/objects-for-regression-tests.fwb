@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="5" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="6" id="root">
   <Library color="#FFFFFF" comment="" id="id40D07E7A" name="LAX" ro="False">
     <ObjectGroup id="id40D07E7B" name="Objects">
       <ObjectGroup id="id40D07E7B_og_ats_1" name="Address Tables"/>
@@ -17,13 +17,8 @@
       <ObjectGroup id="id40D07E80" name="Address Ranges"/>
     </ObjectGroup>
     <ServiceGroup id="id40D07E81" name="Services">
-      <ServiceGroup id="id40D07E81_og_tag_1" name="TagServices"/>
-      <ServiceGroup id="id40D07E82" name="Groups"/>
-      <ServiceGroup id="id40D07E83" name="ICMP"/>
-      <ServiceGroup id="id40D07E84" name="IP"/>
-      <ServiceGroup id="id40D07E85" name="TCP"/>
-      <ServiceGroup id="id40D07E86" name="UDP"/>
-      <ServiceGroup id="id40D07E87" name="Custom"/>
+      <ServiceGroup id="id40D07E81_og_tag_1" name="TagServices"/><ServiceGroup id="id40D07E82" name="Groups"/><ServiceGroup id="id40D07E83" name="ICMP"/><ServiceGroup id="id40D07E84" name="IP"/><ServiceGroup id="id40D07E85" name="TCP"/><ServiceGroup id="id40D07E86" name="UDP"/><ServiceGroup id="id40D07E87" name="Custom"/>
+      <ServiceGroup id="id40D07E81_userservices" name="User"/>
     </ServiceGroup>
     <ObjectGroup id="id40D07E88" name="Firewalls"/>
     <IntervalGroup id="id40D07E89" name="Time"/>
@@ -448,8 +443,7 @@
       </ObjectGroup>
     </ObjectGroup>
     <ServiceGroup id="stdid05_1" name="Services">
-      <ServiceGroup id="stdid05_1_og_tag_1" name="TagServices"/>
-      <ServiceGroup id="stdid10_1" name="Groups">
+      <ServiceGroup id="stdid05_1_og_tag_1" name="TagServices"/><ServiceGroup id="stdid10_1" name="Groups">
         <ServiceGroup id="id3B457567" name="svcgroup1">
           <ServiceRef ref="id3B457561"/>
           <ServiceRef ref="ip-IPSEC"/>
@@ -502,15 +496,12 @@
           <ServiceRef ref="id3B4FED69"/>
           <ServiceRef ref="id3AECF776"/>
         </ServiceGroup>
-      </ServiceGroup>
-      <ServiceGroup id="stdid07_1" name="ICMP">
+      </ServiceGroup><ServiceGroup id="stdid07_1" name="ICMP">
         <ICMPService code="-1" comment="" id="id3C1A5D46" name="any ICMP" type="-1"/>
-      </ServiceGroup>
-      <ServiceGroup id="stdid06_1" name="IP">
+      </ServiceGroup><ServiceGroup id="stdid06_1" name="IP">
         <IPService comment="" fragm="False" id="id3B457561" lsrr="False" name="ICMP" protocol_num="1" rr="False" short_fragm="False" ssrr="False" ts="False"/>
         <IPService comment="" fragm="False" id="id3B6659A5" lsrr="False" name="TS" protocol_num="0" rr="False" short_fragm="False" ssrr="False" ts="True"/>
-      </ServiceGroup>
-      <ServiceGroup id="stdid09_1" name="TCP">
+      </ServiceGroup><ServiceGroup id="stdid09_1" name="TCP">
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="70" dst_range_start="70" fin_flag="False" fin_flag_mask="False" id="id3C1A66EF" name="gopher" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="6667" dst_range_start="6667" fin_flag="False" fin_flag_mask="False" id="tcp-IRC" name="irc" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="3128" dst_range_start="3128" fin_flag="False" fin_flag_mask="False" id="id3B5009F7" name="squid" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
@@ -520,11 +511,9 @@
         <TCPService ack_flag="True" ack_flag_mask="True" comment="" dst_range_end="0" dst_range_start="0" fin_flag="True" fin_flag_mask="True" id="id3E51B0E3" name="bad tcp" psh_flag="True" psh_flag_mask="True" rst_flag="False" rst_flag_mask="True" src_range_end="0" src_range_start="0" syn_flag="True" syn_flag_mask="True" urg_flag="True" urg_flag_mask="True"/>
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="0" dst_range_start="0" established="True" fin_flag="False" fin_flag_mask="False" id="id463FF6C310755" name="tcp established" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="0" dst_range_start="0" established="True" fin_flag="False" fin_flag_mask="False" id="id4640031410755" name="http established" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="80" src_range_start="80" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
-      </ServiceGroup>
-      <ServiceGroup id="stdid08_1" name="UDP">
+      </ServiceGroup><ServiceGroup id="stdid08_1" name="UDP">
         <UDPService comment="" dst_range_end="500" dst_range_start="500" id="id3DEA6281" name="ISAKMP" src_range_end="0" src_range_start="0"/>
-      </ServiceGroup>
-      <ServiceGroup id="stdid13_1" name="Custom_Services">
+      </ServiceGroup><ServiceGroup id="stdid13_1" name="Custom_Services">
         <CustomService comment="Talk support" id="id3B64FE22" name="talk">
           <CustomServiceCommand platform="Undefined"/>
           <CustomServiceCommand platform="ipfilter"/>
@@ -540,6 +529,7 @@
           <CustomServiceCommand platform="unknown"/>
         </CustomService>
       </ServiceGroup>
+      <ServiceGroup id="stdid05_1_userservices" name="User"/>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls">
       <Firewall comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" host_OS="freebsd" id="fw-firewall2" lastCompiled="0" lastInstalled="0" lastModified="0" name="firewall" platform="ipfw" version="">
@@ -4876,14 +4866,9 @@
         <ObjectGroup id="id40E233F9" name="Address Ranges"/>
       </ObjectGroup>
       <ServiceGroup id="id40E233FA" name="Services">
-        <ServiceGroup id="id40E233FA_og_tag_1" name="TagServices"/>
-        <ServiceGroup id="id40E233FB" name="Groups"/>
-        <ServiceGroup id="id40E233FC" name="ICMP"/>
-        <ServiceGroup id="id40E233FD" name="IP"/>
-        <ServiceGroup id="id40E233FE" name="TCP"/>
-        <ServiceGroup id="id40E233FF" name="UDP"/>
-        <ServiceGroup id="id40E23400" name="Custom"/>
-      </ServiceGroup>
+      <ServiceGroup id="id40E233FA_og_tag_1" name="TagServices"/><ServiceGroup id="id40E233FB" name="Groups"/><ServiceGroup id="id40E233FC" name="ICMP"/><ServiceGroup id="id40E233FD" name="IP"/><ServiceGroup id="id40E233FE" name="TCP"/><ServiceGroup id="id40E233FF" name="UDP"/><ServiceGroup id="id40E23400" name="Custom"/>
+      <ServiceGroup id="id40E233FA_userservices" name="User"/>
+    </ServiceGroup>
       <ObjectGroup id="id40E23401" name="Firewalls"/>
       <IntervalGroup id="id40E23402" name="Time"/>
     </Library>
@@ -4912,13 +4897,8 @@
       <ObjectGroup id="id4387B43F18346" name="Address Ranges"/>
     </ObjectGroup>
     <ServiceGroup id="id4387B44018346" name="Services">
-      <ServiceGroup id="id4387B44018346_og_tag_1" name="TagServices"/>
-      <ServiceGroup id="id4387B44118346" name="Groups"/>
-      <ServiceGroup id="id4387B44218346" name="ICMP"/>
-      <ServiceGroup id="id4387B44318346" name="IP"/>
-      <ServiceGroup id="id4387B44418346" name="TCP"/>
-      <ServiceGroup id="id4387B44518346" name="UDP"/>
-      <ServiceGroup id="id4387B44618346" name="Custom"/>
+      <ServiceGroup id="id4387B44018346_og_tag_1" name="TagServices"/><ServiceGroup id="id4387B44118346" name="Groups"/><ServiceGroup id="id4387B44218346" name="ICMP"/><ServiceGroup id="id4387B44318346" name="IP"/><ServiceGroup id="id4387B44418346" name="TCP"/><ServiceGroup id="id4387B44518346" name="UDP"/><ServiceGroup id="id4387B44618346" name="Custom"/>
+      <ServiceGroup id="id4387B44018346_userservices" name="User"/>
     </ServiceGroup>
     <ObjectGroup id="id4387B44718346" name="Firewalls"/>
     <IntervalGroup id="id4387B44818346" name="Time"/>
@@ -4930,8 +4910,7 @@
         <IPService comment="'Short' fragments" fragm="False" id="ip-IP_Fragments" lsrr="False" name="ip_fragments" protocol_num="0" rr="False" short_fragm="True" ssrr="False" ts="False"/>
         <IPService comment="Route recording packets" fragm="False" id="ip-RR" lsrr="False" name="RR" protocol_num="0" rr="True" short_fragm="False" ssrr="False" ts="False"/>
         <IPService comment="All sorts of Source Routing Packets" fragm="False" id="ip-SRR" lsrr="True" name="SRR" protocol_num="0" rr="False" short_fragm="False" ssrr="True" ts="False"/>
-      </ServiceGroup>
-      <ServiceGroup id="stdid09" name="TCP">
+      </ServiceGroup><ServiceGroup id="stdid09" name="TCP">
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="113" dst_range_start="113" fin_flag="False" fin_flag_mask="False" id="tcp-Auth" name="auth" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="53" dst_range_start="53" fin_flag="False" fin_flag_mask="False" id="tcp-DNS_zone_transf" name="dns-tcp" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="21" dst_range_start="21" fin_flag="False" fin_flag_mask="False" id="tcp-FTP" name="ftp" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
@@ -4971,15 +4950,13 @@
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="3128" dst_range_start="3128" fin_flag="False" fin_flag_mask="False" id="id3B4FF09A" name="squid" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="1720" dst_range_start="1720" fin_flag="False" fin_flag_mask="False" id="id3AEDBEAC" name="H323" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="0" dst_range_start="0" fin_flag="False" fin_flag_mask="False" id="tcp-All_TCP" name="All TCP" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
-      </ServiceGroup>
-      <ServiceGroup id="stdid08" name="UDP">
+      </ServiceGroup><ServiceGroup id="stdid08" name="UDP">
         <UDPService comment="" dst_range_end="53" dst_range_start="53" id="udp-DNS" name="domain" src_range_end="0" src_range_start="0"/>
         <UDPService comment="" dst_range_end="161" dst_range_start="161" id="udp-SNMP" name="snmp" src_range_end="0" src_range_start="0"/>
         <UDPService comment="" dst_range_end="68" dst_range_start="68" id="udp-bootpc" name="bootpc" src_range_end="0" src_range_start="0"/>
         <UDPService comment="" dst_range_end="0" dst_range_start="0" id="udp-All_UDP" name="All UDP" src_range_end="0" src_range_start="0"/>
         <UDPService comment="" dst_range_end="67" dst_range_start="67" id="udp-bootps" name="bootps" src_range_end="0" src_range_start="0"/>
-      </ServiceGroup>
-      <ServiceGroup id="stdid10" name="Groups">
+      </ServiceGroup><ServiceGroup id="stdid10" name="Groups">
         <ServiceGroup comment="" id="sg-Useful_ICMP" name="Useful_ICMP">
           <ServiceRef ref="icmp-Time_exceeded"/>
           <ServiceRef ref="icmp-Time_exceeded_in_transit"/>
@@ -4990,15 +4967,13 @@
           <ServiceRef ref="udp-bootpc"/>
           <ServiceRef ref="udp-bootps"/>
         </ServiceGroup>
-      </ServiceGroup>
-      <ServiceGroup id="stdid07" name="ICMP">
+      </ServiceGroup><ServiceGroup id="stdid07" name="ICMP">
         <ICMPService code="0" comment="" id="icmp-ping_request" name="ping request" type="8"/>
         <ICMPService code="-1" comment="" id="icmp-Unreachables" name="all ICMP unreachables" type="3"/>
         <ICMPService code="0" comment="ICMP messages of this type are needed for traceroute" id="icmp-Time_exceeded" name="time exceeded" type="11"/>
         <ICMPService code="1" comment="" id="icmp-Time_exceeded_in_transit" name="time exceeded in transit" type="11"/>
         <ICMPService code="0" comment="" id="icmp-ping_reply" name="ping reply" type="0"/>
-      </ServiceGroup>
-      <CustomService comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." id="stdid14_1" name="ESTABLISHED">
+      </ServiceGroup><CustomService comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." id="stdid14_1" name="ESTABLISHED">
         <CustomServiceCommand platform="Undefined"/>
         <CustomServiceCommand platform="fwsm"/>
         <CustomServiceCommand platform="ipf"/>
@@ -5009,6 +4984,7 @@
         <CustomServiceCommand platform="pix"/>
         <CustomServiceCommand platform="unknown"/>
       </CustomService>
+      <ServiceGroup id="stdid05_userservices" name="User"/>
     </ServiceGroup>
     <AnyNetwork comment="Any Network" id="sysid0" name="Any" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyInterval comment="Any Interval" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" id="sysid2" name="Any" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1"/>
