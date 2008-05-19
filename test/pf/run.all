@@ -8,6 +8,8 @@ while (<>) {
   while ( $str=~ /<Firewall / ) {
     $str=~ /<Firewall [^>]+name="([^"]*).*$"/;
     $fw=$1;
+    printf "\n";
+    printf "echo '********* $fw'\n";
     printf "fwb_pf -v -f $XMLFILE $fw\n";
     $str=~ s/^.*<Firewall [^>]+name="$fw"[^>]+>//;
   }

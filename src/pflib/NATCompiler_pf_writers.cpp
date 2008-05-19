@@ -324,38 +324,39 @@ void NATCompiler_pf::PrintRule::_printAddr(FWObject *o)
         assert(atrt==NULL);
     }
 
-    Address *a = Address::cast(o);
-    const InetAddr *addr = a->getAddressPtr();
-    InetAddr mask = *(a->getNetmaskPtr());
-
     if (Interface::cast(o)!=NULL)
     {
-        Interface *interface_=Interface::cast(o);
-        if (interface_->isDyn())
+        Interface *iface=Interface::cast(o);
+        if (iface->isDyn())
         {
-            compiler->output << "(" << interface_->getName() << ") ";
+            compiler->output << "(" << iface->getName() << ") ";
             return;
         }
-
-        mask = InetAddr(InetAddr::getAllOnes());
     }
 
-    if (Address::cast(o)->dimension()==1)
+    Address *a = Address::cast(o);
+    const InetAddr *addr = a->getAddressPtr();
+    if (addr)
     {
-        mask = InetAddr(InetAddr::getAllOnes());
-    }
+        InetAddr mask = *(a->getNetmaskPtr());
 
-    if (addr->isAny() && mask.isAny())
-    {
-        compiler->output << "any ";
-    } else
-    {
-        compiler->output << addr->toString();
-        if (!mask.isHostMask())
+        if (Interface::cast(o)!=NULL || Address::cast(o)->dimension()==1)
         {
-            compiler->output << "/" << mask.getLength();
+            mask = InetAddr(InetAddr::getAllOnes());
         }
-        compiler->output  << " ";
+
+        if (addr->isAny() && mask.isAny())
+        {
+            compiler->output << "any ";
+        } else
+        {
+            compiler->output << addr->toString();
+            if (!mask.isHostMask())
+            {
+                compiler->output << "/" << mask.getLength();
+            }
+            compiler->output  << " ";
+        }
     }
 }
 

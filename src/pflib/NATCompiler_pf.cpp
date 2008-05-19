@@ -388,16 +388,17 @@ bool NATCompiler_pf::addVirtualAddress::processNext()
 	if (rule->getRuleType()==NATRule::DNAT) a=compiler->getFirstODst(rule);
 	else  return true;
     assert(a!=NULL);
+    const InetAddr *a_addr = a->getAddressPtr();
 
-    if ( ! a->isAny() && a->getId()!=compiler->getFwId() )
+    if ( ! a->isAny() && a->getId()!=compiler->getFwId() && a_addr)
     {
 	list<FWObject*> l2=compiler->fw->getByType(Interface::TYPENAME);
 	for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
         {
 	    Interface *iface=dynamic_cast<Interface*>(*i);
 	    assert(iface);
-
-	    if ( *(a->getAddressPtr()) == *(iface->getAddressPtr()) )
+            const InetAddr *iface_addr = iface->getAddressPtr();
+	    if (iface_addr && *a_addr == *iface_addr )
                 return true;
 	}
 	compiler->osconfigurator->addVirtualAddressForNAT( a );
@@ -418,7 +419,8 @@ bool NATCompiler_pf::splitForTSrc::processNext()
     {
         FWObject *o= *i;
         if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-        Interface *iface = compiler->findInterfaceFor(Address::cast(o),compiler->fw);
+        Interface *iface = compiler->findInterfaceFor(Address::cast(o),
+                                                      compiler->fw);
         if (iface!=NULL)
             interfaceGroups[iface->getId()].push_back(o);
     }
