@@ -342,6 +342,14 @@ bool fwcompiler::checkForShadowing(const Address &o1,const Address &o2)
          << endl;
 #endif
 
+    // if any of the objects has no ip address, then we can not
+    // check for shadowing and return false. examples of objects with
+    // no real ip address: physAddress, Interface with no child IPv4/IPv6
+    // object. High level compilers should make sure they process rules
+    // to the point where no such objects are left before they call
+    // this method.
+    if (o1b==NULL || o2b==NULL || o1e==NULL || o2e==NULL) return false;
+
     if (o1.isAny() && o2.isAny())  return true;
     if (o1.isAny() && !o2.isAny()) return false;
     if (!o1.isAny() && o2.isAny()) return true;
@@ -467,6 +475,7 @@ bool fwcompiler::operator==(const Address &o1,const Address &o2)
             o2e = o2.getAddressPtr();
         }
 
+    if (o1b==NULL || o2b==NULL || o1e==NULL || o2e==NULL) return false;
     return ((*o1b) == (*o2b) && (*o1e) == (*o2e));
 }
 
