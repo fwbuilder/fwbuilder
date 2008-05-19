@@ -217,7 +217,7 @@ void iptAdvancedDialog::accept()
 /*********************  data for fwbd and install script **************/
     PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
 
-    mgmt->setAddress( (Firewall::cast(obj))->getAddress() );
+    mgmt->setAddress( *((Firewall::cast(obj))->getAddressPtr()) );
 
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData() );
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData() );

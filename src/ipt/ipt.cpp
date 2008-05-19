@@ -362,14 +362,14 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 {
                     const InetAddrMask *ipv4 = IPv4::cast(*j)->getAddressObjectInetAddrMask();
 
-                    if ( ipv4->getAddress().isAny())
+                    if ( ipv4->getAddressPtr()->isAny())
                     {
                         char errstr[256];
                         sprintf(errstr,
                                 "Interface %s (id=%s) has IP address %s.\n",
                                 iface->getName().c_str(),
                                 iface->getId().c_str(),
-                                ipv4->getAddress().toString().c_str());
+                                ipv4->getAddressPtr()->toString().c_str());
                         throw FWException(errstr);
                     }
                 }

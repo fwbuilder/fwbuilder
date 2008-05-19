@@ -90,8 +90,8 @@ void NATCompiler_ipf::PrintRule::_printAddr_L(Address  *o, bool print_netmask)
         assert(atrt==NULL);
     }
 
-    InetAddr addr=o->getAddress();
-    InetAddr   mask=o->getNetmask();
+    const InetAddr *addr = o->getAddressPtr();
+    InetAddr mask = *(o->getNetmaskPtr());
 
     if (Interface::cast(o)!=NULL && Interface::cast(o)->isDyn()) 
     {
@@ -109,13 +109,13 @@ void NATCompiler_ipf::PrintRule::_printAddr_L(Address  *o, bool print_netmask)
     if (o->dimension()==1)
 	mask = InetAddr(InetAddr::getAllOnes());
 
-    if (addr.isAny() && mask.isAny())
+    if (addr->isAny() && mask.isAny())
     {
         compiler->output << "any ";
     } else
     {
 
-      compiler->output << addr.toString();
+      compiler->output << addr->toString();
 
       if (print_netmask)
          compiler->output << "/" << mask.getLength();
@@ -125,8 +125,8 @@ void NATCompiler_ipf::PrintRule::_printAddr_L(Address  *o, bool print_netmask)
 
 void NATCompiler_ipf::PrintRule::_printAddr_R(Address  *o, bool print_netmask)
 {
-    InetAddr addr = o->getAddress();
-    InetAddr mask = o->getNetmask();
+    const InetAddr *addr = o->getAddressPtr();
+    InetAddr mask = *(o->getNetmaskPtr)();
 
     if (Interface::cast(o) != NULL)
 	mask = InetAddr(InetAddr::getAllOnes());
@@ -134,12 +134,12 @@ void NATCompiler_ipf::PrintRule::_printAddr_R(Address  *o, bool print_netmask)
     if (o->dimension()==1)
 	mask = InetAddr(InetAddr::getAllOnes());
 
-    if (addr.isAny() && print_netmask &&  mask.isHostMask())
+    if (addr->isAny() && print_netmask &&  mask.isHostMask())
     {
         compiler->output  << "0/32 ";
     } else
     {
-        compiler->output << addr.toString();
+        compiler->output << addr->toString();
         if (print_netmask)
             compiler->output << "/" << mask.getLength();
         compiler->output  << " ";
@@ -158,10 +158,10 @@ void NATCompiler_ipf::PrintRule::_printAddr_R_LB(RuleElementTDst *tdst)
 
         Address *a=Address::cast(obj);
 
-        InetAddr addr=a->getAddress();
+        const InetAddr *addr = a->getAddressPtr();
         
         if (!first) compiler->output << ",";
-        compiler->output << addr.toString();
+        compiler->output << addr->toString();
         first=false;
     }
     compiler->output << " ";

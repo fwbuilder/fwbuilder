@@ -236,8 +236,8 @@ void PolicyCompiler_ipt::_expandInterface(Interface *iface,
                 dbcopy->add(ca);
                 cacheObj(ca);
                 ca->setName( "CA("+iface->getName()+")" );
-                ca->setAddress( ipv4->getAddress() );
-                ca->setNetmask( ipv4->getNetmask() );
+                ca->setAddress( *(ipv4->getAddressPtr()) );
+                ca->setNetmask( *(ipv4->getNetmaskPtr()) );
                 ca->setPhysAddress( pa->getPhysAddress() );
 
                 ol.push_back(ca);
@@ -1709,9 +1709,9 @@ bool PolicyCompiler_ipt::bridgingFw::checkForMatchingBroadcastAndMulticast(
     Address *addr)
 {
 
-    const InetAddr& obj1_addr = addr->getAddress();
-    if (!obj1_addr.isAny() &&
-        (obj1_addr.isBroadcast() || obj1_addr.isMulticast())
+    const InetAddr *obj1_addr = addr->getAddressPtr();
+    if (!obj1_addr->isAny() &&
+        (obj1_addr->isBroadcast() || obj1_addr->isMulticast())
     ) return true;
 
     FWObjectTypedChildIterator j= compiler->fw->findByType(Interface::TYPENAME);
@@ -1736,7 +1736,7 @@ bool PolicyCompiler_ipt::bridgingFw::checkForMatchingBroadcastAndMulticast(
  * interface, and the netmask is 255.255.255.255, then we get positive
  * match because this routine interprets this address as a broadcast.
  */
-                if (ipv4->getNetmask().isHostMask())
+                if (ipv4->getNetmaskPtr()->isHostMask())
                     continue;
 /*
  * commented out to fix bug #637694 - "bridge enbaled / management"
@@ -1746,8 +1746,10 @@ bool PolicyCompiler_ipt::bridgingFw::checkForMatchingBroadcastAndMulticast(
    if ( ipv4->getAddress()==obj1_addr ) return true;
 
  */
-                if (ipv4->getNetworkAddress() == obj1_addr)  return true; 
-                if (ipv4->getBroadcastAddress() == obj1_addr)  return true;
+                if (*(ipv4->getNetworkAddressPtr()) == *(obj1_addr))
+                    return true; 
+                if (*(ipv4->getBroadcastAddressPtr()) == *(obj1_addr))
+                    return true;
            }
         }
     }

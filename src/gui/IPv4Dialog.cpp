@@ -107,13 +107,13 @@ void IPv4Dialog::loadFWObject(FWObject *o)
  * still can show netmask */
     try
     {
-        m_dialog->address->setText( s->getAddress().toString().c_str() );
+        m_dialog->address->setText( s->getAddressPtr()->toString().c_str() );
     } catch (FWException &ex) {}
 
     try
     {
         if ( Interface::isA( obj->getParent() ) )
-            m_dialog->netmask->setText( s->getNetmask().toString().c_str() );
+            m_dialog->netmask->setText( s->getNetmaskPtr()->toString().c_str() );
     } catch (FWException &ex) {}
 
     //apply->setEnabled( false );

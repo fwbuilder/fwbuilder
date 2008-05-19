@@ -100,7 +100,7 @@ void Helper::expand_group_recursive(FWObject *o,list<FWObject*> &ol)
 
 string  Helper::findInterfaceByAddress(libfwbuilder::Address *obj)
 {
-    return findInterfaceByAddress(obj->getAddress());
+    return findInterfaceByAddress( *(obj->getAddressPtr()) );
 }
 
 string  Helper::findInterfaceByAddress(const libfwbuilder::InetAddr &addr)
@@ -116,7 +116,7 @@ string  Helper::findInterfaceByAddress(const libfwbuilder::InetAddr &addr)
 
 string  Helper::findInterfaceByNetzone(Address *obj)
 {
-    return findInterfaceByNetzone(obj->getAddress());
+    return findInterfaceByNetzone(*(obj->getAddressPtr()));
 }
 
 string  Helper::findInterfaceByNetzone(const InetAddr &addr) throw(string)
@@ -240,7 +240,7 @@ list<string>  Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
 
 string triplet::hash()
 {
-    return src->getAddress().toString() + "." +
-        dst->getAddress().toString() + "." +
+    return src->getAddressPtr()->toString() + "." +
+        dst->getAddressPtr()->toString() + "." +
         srv->getId();
 }

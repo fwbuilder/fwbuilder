@@ -202,23 +202,23 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Network *nw)
     {
         if (virtual_addresses.empty() || 
             find(virtual_addresses.begin(),virtual_addresses.end(),
-                 nw->getAddress())==virtual_addresses.end()) 
+                 *(nw->getAddressPtr())) == virtual_addresses.end())
         {
             Interface *iface=findInterfaceFor( nw, fw );
             if (iface!=NULL)
             {
-                const InetAddr& a = nw->getAddress();
+                const InetAddr *a = nw->getAddressPtr();
                 string str, subnet, first, last;
 
-                first  = (a + 1).toString();
-                last   = (nw->getBroadcastAddress() -1).toString();
+                first  = (*a + 1).toString();
+                last   = (*(nw->getBroadcastAddressPtr()) -1).toString();
 
                 ostr                                       << endl;
 
                 ostr << "a=\"" << first << "\""            << endl;
                 ostr << "while test \"$a\" != \"" << last << "\"; do" << endl;
 
-                ostr << "  add_addr ${a} " << nw->getNetmask().getLength()
+                ostr << "  add_addr ${a} " << nw->getNetmaskPtr()->getLength()
                      << " " << iface->getName() << endl;
 
                 ostr                                       << endl;
@@ -234,10 +234,11 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Network *nw)
                 ostr << "  a=$a4\".\"$a3\".\"$a2\".\"$a1"  << endl;
 
                 ostr << "done" << endl << endl;
-                virtual_addresses.push_back(nw->getAddress());
+                virtual_addresses.push_back( *(nw->getAddressPtr()) );
                 registerVirtualAddressForNat();
             } else
-                warning(_("Can not add virtual address ") + nw->getAddress().toString() +
+                warning(_("Can not add virtual address ") +
+                        nw->getAddressPtr()->toString() +
                         _(" (object ") + nw->getName() + ")" );
         }
         commands_to_add_virtual_addresses.push_back(ostr.str());
@@ -253,7 +254,7 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Address *addr)
     {
         if (virtual_addresses.empty() || 
             find(virtual_addresses.begin(),virtual_addresses.end(),
-                 addr->getAddress())==virtual_addresses.end()) 
+                 *(addr->getAddressPtr())) == virtual_addresses.end()) 
         {
             FWObject *vaddr = findAddressFor(addr, fw );
             if (vaddr!=NULL)
@@ -265,15 +266,15 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Address *addr)
                     vaddr)->getAddressObjectInetAddrMask();
                 assert(vaddr_addr!=NULL);
 
-                ostr << "add_addr " << addr->getAddress().toString() << " "
-                       << vaddr_addr->getNetmask().getLength() <<  " "
+                ostr << "add_addr " << addr->getAddressPtr()->toString() << " "
+                       << vaddr_addr->getNetmaskPtr()->getLength() <<  " "
                        << iface->getName() << endl;
         
-                virtual_addresses.push_back(addr->getAddress());
+                virtual_addresses.push_back(*(addr->getAddressPtr()));
                 registerVirtualAddressForNat();
             } else
                 warning(_("Can not add virtual address ") + 
-                        addr->getAddress().toString() +
+                        addr->getAddressPtr()->toString() +
                         _(" (object ") + addr->getName() + ")" );
         }
         commands_to_add_virtual_addresses.push_back(ostr.str());
@@ -364,12 +365,13 @@ void OSConfigurator_linux24::configureInterfaces()
             {
                 const InetAddrMask *iaddr = Address::cast(*j)->getAddressObjectInetAddrMask();
 
-                output << "add_addr " << iaddr->getAddress().toString() << " "
-                       << iaddr->getNetmask().getLength() << " "
+                output << "add_addr " << iaddr->getAddressPtr()->toString()
+                       << " "
+                       << iaddr->getNetmaskPtr()->getLength() << " "
                        << iface->getName() << endl;
 // add to the table of virtual addresses so we won't generate code to
 // configure the same address if it is needed for NAT
-                virtual_addresses.push_back(iaddr->getAddress());
+                virtual_addresses.push_back(*(iaddr->getAddressPtr()));
             }
             output << "$IP link set " << iface->getName() << " up" << endl;
         }

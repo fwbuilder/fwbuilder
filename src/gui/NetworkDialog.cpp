@@ -72,8 +72,8 @@ void NetworkDialog::loadFWObject(FWObject *o)
     fillLibraries(m_dialog->libs,obj);
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
-    m_dialog->address->setText( s->getAddress().toString().c_str() );
-    m_dialog->netmask->setText( s->getNetmask().toString().c_str() );
+    m_dialog->address->setText( s->getAddressPtr()->toString().c_str() );
+    m_dialog->netmask->setText( s->getNetmaskPtr()->toString().c_str() );
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
 
     //apply->setEnabled( false );

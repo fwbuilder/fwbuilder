@@ -109,13 +109,13 @@ void IPv6Dialog::loadFWObject(FWObject *o)
     try
     {
         m_dialog->address->setText( Inet6Addr().toString().c_str() );
-        m_dialog->address->setText( s->getAddress(true).toString().c_str() );
+        m_dialog->address->setText( s->getAddressPtr(true)->toString().c_str());
     } catch (FWException &ex) {}
 
     try
     {
         if ( Interface::isA( obj->getParent() ) )
-            m_dialog->netmask->setText( s->getNetmask().toString().c_str() );
+            m_dialog->netmask->setText( s->getNetmaskPtr()->toString().c_str());
     } catch (FWException &ex) {}
 
     //apply->setEnabled( false );

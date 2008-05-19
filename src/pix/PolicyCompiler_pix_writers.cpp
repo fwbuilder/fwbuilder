@@ -161,15 +161,16 @@ bool PolicyCompiler_pix::PrintObjectGroupsAndClearCommands::processNext()
             {
                 Address *a=Address::cast(obj);
                 assert(a!=NULL);
-                InetAddr addr=a->getAddress();
+                const InetAddr *addr = a->getAddressPtr();
                 pix_comp->output << " network-object ";
-                if (Network::cast(obj)!=NULL) {
-                    InetAddr   mask=a->getNetmask();
-                    pix_comp->output << addr.toString() << " ";
-                    pix_comp->output << mask.toString() << " ";
+                if (Network::cast(obj)!=NULL)
+                {
+                    const InetAddr *mask = a->getNetmaskPtr();
+                    pix_comp->output << addr->toString() << " ";
+                    pix_comp->output << mask->toString() << " ";
                 } else {
                     pix_comp->output << " host ";
-                    pix_comp->output << addr.toString() << " ";
+                    pix_comp->output << addr->toString() << " ";
                 }
                 pix_comp->output << endl;
                 break;
@@ -352,8 +353,8 @@ string PolicyCompiler_pix::PrintRule::_printAddr(libfwbuilder::Address  *o)
 {
     ostringstream  str;
 
-    InetAddr srcaddr=o->getAddress();
-    InetAddr   srcmask=o->getNetmask();
+    const InetAddr *srcaddr = o->getAddressPtr();
+    InetAddr srcmask = *(o->getNetmaskPtr());
 
     if (Interface::cast(o)!=NULL)
     {
@@ -363,23 +364,23 @@ string PolicyCompiler_pix::PrintRule::_printAddr(libfwbuilder::Address  *o)
 	    return string("interface ") + interface_->getLabel() + " ";
 	}
 
-	srcmask=InetAddr(InetAddr::getAllOnes());
+	srcmask = InetAddr(InetAddr::getAllOnes());
     }
 
     if (IPv4::cast(o)!=NULL) 
-	srcmask=InetAddr(InetAddr::getAllOnes());
+	srcmask = InetAddr(InetAddr::getAllOnes());
 
 
-    if (srcaddr.isAny() && srcmask.isAny())
+    if (srcaddr->isAny() && srcmask.isAny())
     {
 	str << "any ";
     } else {
 	if (srcmask.isHostMask())
         {
-	    str << "host " << srcaddr.toString() << " ";
+	    str << "host " << srcaddr->toString() << " ";
 	} else
         {
-	    str << srcaddr.toString() << " ";
+	    str << srcaddr->toString() << " ";
 	    str << srcmask.toString() << " ";
 	}
     }
@@ -500,15 +501,15 @@ string PolicyCompiler_pix::PrintRule::_printSingleSSHTelnetCommand(int port,
     if (port==23) 
     {
         res += "telnet ";
-        res += a->getAddress().toString() + " " 
-            + a->getNetmask().toString() + " "
+        res += a->getAddressPtr()->toString() + " " 
+            + a->getNetmaskPtr()->toString() + " "
             + interfaceLabel     + "\n";
     }
     if (port==22) 
     {
         res += "ssh    ";
-        res += a->getAddress().toString() + " " 
-            + a->getNetmask().toString() + " "
+        res += a->getAddressPtr()->toString() + " " 
+            + a->getNetmaskPtr()->toString() + " "
             + interfaceLabel     + "\n";
     }
     return res;

@@ -562,8 +562,8 @@ void newFirewallDialog::fillInterfaceData(Interface *intf, QTextBrowser *qte)
             if (intf->isBridgePort()) s +=  tr("Bridge port");
             else
                 s += QString("%1/%2")
-                    .arg(intf->getAddress().toString().c_str())
-                    .arg( intf->getNetmask().toString().c_str());
+                    .arg(intf->getAddressPtr()->toString().c_str())
+                    .arg(intf->getNetmaskPtr()->toString().c_str());
     s += "</td>";
     s += "</tr>";
     s += "</table>";

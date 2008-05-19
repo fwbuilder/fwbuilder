@@ -371,8 +371,8 @@ string PolicyCompiler_iosacl::PrintRule::_printAddr(libfwbuilder::Address  *o)
 {
     ostringstream  str;
 
-    InetAddr srcaddr=o->getAddress();
-    InetAddr srcmask=o->getNetmask();
+    const InetAddr *srcaddr = o->getAddressPtr();
+    InetAddr srcmask = *(o->getNetmaskPtr());
 
     if (Interface::cast(o)!=NULL)
     {
@@ -382,23 +382,23 @@ string PolicyCompiler_iosacl::PrintRule::_printAddr(libfwbuilder::Address  *o)
 	    return string("interface ") + interface_->getLabel() + " ";
 	}
 
-	srcmask=InetAddr(InetAddr::getAllOnes());
+	srcmask = InetAddr(InetAddr::getAllOnes());
     }
 
     if (IPv4::cast(o)!=NULL) 
-	srcmask=InetAddr(InetAddr::getAllOnes());
+	srcmask = InetAddr(InetAddr::getAllOnes());
 
 
-    if (srcaddr.isAny() && srcmask.isAny())
+    if (srcaddr->isAny() && srcmask.isAny())
     {
 	str << "any ";
     } else {
 	if (srcmask.isHostMask())
         {
-	    str << "host " << srcaddr.toString() << " ";
+	    str << "host " << srcaddr->toString() << " ";
 	} else
         {
-	    str << srcaddr.toString() << " ";
+	    str << srcaddr->toString() << " ";
 
             // cisco uses "wildcards" instead of netmasks
 

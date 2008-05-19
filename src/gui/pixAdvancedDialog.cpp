@@ -756,7 +756,7 @@ void pixAdvancedDialog::accept()
 //    pis->setCommand( installScript->text() );
 //    pis->setArguments( installScriptArgs->text() );
 
-    mgmt->setAddress( (Firewall::cast(obj))->getAddress() );
+    mgmt->setAddress( *((Firewall::cast(obj))->getAddressPtr()) );
 
 
     if (syslogDeviceIdSupported)

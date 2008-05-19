@@ -291,7 +291,8 @@ int main(int argc, char * const *argv)
             if ( print_addr ) 
             {
                 if (Address::cast(obj)!=NULL)
-                    cout << Address::cast(obj)->getAddress().toString() << endl;
+                    cout << Address::cast(obj)->getAddressPtr()->toString()
+                         << endl;
                 else {
                     SNPRINTF(errstr,sizeof(errstr),
                              _("Can not print address for %s (ID='%s'): objects of this type do not have address"),

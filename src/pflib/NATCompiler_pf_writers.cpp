@@ -291,7 +291,7 @@ void NATCompiler_pf::PrintRule::_printREAddr(RuleElement *rel)
 }
 
 
-void NATCompiler_pf::PrintRule::_printAddrList(FWObject  *grp,bool negflag)
+void NATCompiler_pf::PrintRule::_printAddrList(FWObject  *grp,bool )
 {
     compiler->output << "{ ";
     for (FWObject::iterator i=grp->begin(); i!=grp->end(); i++)
@@ -325,8 +325,8 @@ void NATCompiler_pf::PrintRule::_printAddr(FWObject *o)
     }
 
     Address *a = Address::cast(o);
-    InetAddr addr=a->getAddress();
-    InetAddr  mask=a->getNetmask();
+    const InetAddr *addr = a->getAddressPtr();
+    InetAddr mask = *(a->getNetmaskPtr());
 
     if (Interface::cast(o)!=NULL)
     {
@@ -345,12 +345,12 @@ void NATCompiler_pf::PrintRule::_printAddr(FWObject *o)
         mask = InetAddr(InetAddr::getAllOnes());
     }
 
-    if (addr.isAny() && mask.isAny())
+    if (addr->isAny() && mask.isAny())
     {
         compiler->output << "any ";
     } else
     {
-        compiler->output << addr.toString();
+        compiler->output << addr->toString();
         if (!mask.isHostMask())
         {
             compiler->output << "/" << mask.getLength();

@@ -427,7 +427,8 @@ string NATCompiler_ipt::PrintRule::_printDstService(RuleElementOSrv  *rel)
     return ostr.str();
 }
 
-string NATCompiler_ipt::PrintRule::_printAddr(Address  *o,bool print_mask,bool print_range)
+string NATCompiler_ipt::PrintRule::_printAddr(Address  *o,
+                                              bool print_mask, bool print_range)
 {
     NATCompiler_ipt *ipt_comp=dynamic_cast<NATCompiler_ipt*>(compiler);
     std::ostringstream  ostr;
@@ -460,35 +461,38 @@ string NATCompiler_ipt::PrintRule::_printAddr(Address  *o,bool print_mask,bool p
 	ostr << a1.toString() << "-" << a2.toString();
     } else
     {
-        const InetAddr& addr = o->getAddress();
-        const InetAddr& mask = o->getNetmask();
-
         Interface *iface = Interface::cast(o);
-        if (iface!=NULL)
+        if (iface!=NULL && iface->isDyn() && iface->getBool("use_var_address"))
         {
-            if (iface->isDyn() && iface->getBool("use_var_address"))
-            {
-                ostr << "$" << ipt_comp->getInterfaceVarName(iface) << " ";
-                return ostr.str();
-            }
-            ostr << addr.toString();
+            ostr << "$" << ipt_comp->getInterfaceVarName(iface) << " ";
             return ostr.str();
         }
 
-	if (addr == InetAddr::getAny() && mask == InetAddr::getAny())
+        const InetAddr* addr = o->getAddressPtr();
+        const InetAddr* mask = o->getNetmaskPtr();
+        if (addr && mask)
         {
-	    ostr << "0/0";
-	} else
-        {	
-	    ostr << addr.toString();
-
-            if (print_mask &&
-                Address::cast(o)->dimension()!=1 &&
-                !mask.isHostMask())
+            if (iface!=NULL)
             {
-                ostr << "/" << mask.getLength();
+                ostr << addr->toString();
+                return ostr.str();
             }
-	}
+
+            if (addr->isAny() && mask->isAny())
+            {
+                ostr << "0/0";
+            } else
+            {	
+                ostr << addr->toString();
+
+                if (print_mask &&
+                    Address::cast(o)->dimension()!=1 &&
+                    !mask->isHostMask())
+                {
+                    ostr << "/" << mask->getLength();
+                }
+            }
+        }
     }
     return ostr.str();
 }
@@ -571,17 +575,12 @@ bool NATCompiler_ipt::PrintRule::processNext()
 	    cmdout << " -m mac --mac-source "
                              << physaddress;
         }
-/*
- * fool-proof: this is last resort check for situation when user created IPv4 object
- * for the interface but left it with empty address ( 0.0.0.0 ). 
- */
-        if ( ! physaddress.empty() && osrc->getAddress()==InetAddr())
+
+        const InetAddr *osrc_addr = osrc->getAddressPtr();
+        if (osrc_addr==NULL || !osrc_addr->isAny())
         {
-            ;
-        } else
-        {
-            cmdout << " -s ";
-            cmdout << _printAddr(osrc);
+            string osrc_out = _printAddr(osrc);
+            if (!osrc_out.empty()) cmdout << " -s " << osrc_out;
         }
 
 //	cmdout << " -s ";

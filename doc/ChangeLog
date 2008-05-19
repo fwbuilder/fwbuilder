@@ -1,3 +1,10 @@
+2008-05-18  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* OSConfigurator_linux24.cpp: compiler for iptables converted to
+	use exclusively methods getAddressPtr and getNetmaskPtr. Checking
+	for when Address object has no IP address where
+	appropriate (getAddressPtr() returns NULL in this case).
+
 2008-05-10  vadim  <vadim@vk.crocodile.org>
 
 	* pf.cpp: (from 2.1) fixed bug #1961202: "Pf Timeouts overriden by

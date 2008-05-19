@@ -148,9 +148,9 @@ string OSConfigurator_ios::_printIPAddress()
             if ((n = setAddrCmd.find("%in"))!=string::npos)
                 setAddrCmd.replace(n,3,iface->getName());
             if ((n = setAddrCmd.find("%a"))!=string::npos)
-                setAddrCmd.replace(n,2,iface->getAddress().toString());
+                setAddrCmd.replace(n,2,iface->getAddressPtr()->toString());
             if ((n = setAddrCmd.find("%n"))!=string::npos)
-                setAddrCmd.replace(n,2,iface->getNetmask().toString());
+                setAddrCmd.replace(n,2,iface->getNetmaskPtr()->toString());
 
             res << setAddrCmd;
         }        

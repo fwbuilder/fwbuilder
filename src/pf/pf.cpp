@@ -108,7 +108,7 @@ FWObjectDatabase       *objdb = NULL;
 class UpgradePredicate: public XMLTools::UpgradePredicate
 {
     public:
-    virtual bool operator()(const string &msg) const 
+    virtual bool operator()(const string&) const 
     { 
 	cout << _("Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it.") << endl;
 	return false;
@@ -350,7 +350,7 @@ int main(int argc, char * const *argv)
                 for (list<FWObject*>::iterator j=la.begin(); j!=la.end(); ++j) 
                 {
                     IPv4 *ipv4 = IPv4::cast(*j);
-                    if ( ipv4->getAddress() == InetAddr::getAny())
+                    if (ipv4->getAddressPtr()->isAny())
                     {
                         char errstr[256];
                         sprintf(errstr,

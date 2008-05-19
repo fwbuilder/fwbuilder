@@ -1486,8 +1486,8 @@ void DiscoveryDruid::loadDataFromCrawler()
         ObjectDescriptor od;
         
         od.sysname = m->toString();
-        od.addr = m->getAddress();
-        od.netmask = m->getNetmask();
+        od.addr = *(m->getAddressPtr());
+        od.netmask = *(m->getNetmaskPtr());
         od.type = Network::TYPENAME;
         od.isSelected = false;
         

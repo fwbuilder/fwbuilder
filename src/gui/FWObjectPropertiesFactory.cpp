@@ -91,9 +91,9 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
     {
         if (IPv4::isA(obj))
         {
-            str <<  IPv4::cast(obj)->getAddress().toString().c_str();
+            str <<  IPv4::cast(obj)->getAddressPtr()->toString().c_str();
             str << "/";
-            str << IPv4::cast(obj)->getNetmask().toString().c_str();
+            str << IPv4::cast(obj)->getNetmaskPtr()->toString().c_str();
 
         } else if (physAddress::isA(obj))
         {
@@ -135,7 +135,7 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
 
         } else if (Host::isA(obj))
         {
-            str <<  Address::cast(obj)->getAddress().toString().c_str();
+            str <<  Address::cast(obj)->getAddressPtr()->toString().c_str();
 
             FWObject *co=obj->getFirstByType("Interface");
             if (co!=NULL) 
@@ -148,9 +148,9 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
         } else if (Network::isA(obj))
         {
             Network *n=Network::cast(obj);
-            str << n->getAddress().toString().c_str();
+            str << n->getAddressPtr()->toString().c_str();
             str << "/";
-            str << n->getNetmask().toString().c_str();
+            str << n->getNetmaskPtr()->toString().c_str();
 
         } else if (Group::cast(obj)!=NULL)   // just any group
         {
@@ -271,9 +271,9 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
         if (IPv4::isA(obj))
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
-            str +=  IPv4::cast(obj)->getAddress().toString().c_str();
+            str +=  IPv4::cast(obj)->getAddressPtr()->toString().c_str();
             str += "/";
-            str += IPv4::cast(obj)->getNetmask().toString().c_str();
+            str += IPv4::cast(obj)->getNetmaskPtr()->toString().c_str();
 
         } else if (physAddress::isA(obj))
         {
@@ -320,9 +320,9 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
             Network *n=Network::cast(obj);
-            str += n->getAddress().toString().c_str();
+            str += n->getAddressPtr()->toString().c_str();
             str += "/";
-            str += n->getNetmask().toString().c_str();
+            str += n->getNetmaskPtr()->toString().c_str();
 
         } else if (Group::cast(obj)!=NULL)   // just any group
         {

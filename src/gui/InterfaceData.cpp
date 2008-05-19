@@ -35,6 +35,34 @@
 using namespace libfwbuilder;
 using namespace std;
 
+InterfaceData::InterfaceData(const libfwbuilder::Interface &iface) 
+{
+    id = iface.getId();
+    name = iface.getName();
+
+    IPv4 *addr = IPv4::cast(iface.getFirstByType(IPv4::TYPENAME));
+    if (addr)
+    {
+        address = addr->getAddressPtr()->toString();
+        netmask = addr->getNetmaskPtr()->toString();
+    }
+    else
+    {
+        address = "";
+        netmask = "";
+    }
+
+    securityLevel = iface.getSecurityLevel();
+    isDyn = iface.isDyn();
+    isUnnumbered = iface.isUnnumbered();
+    isBridgePort = iface.isBridgePort();
+    libfwbuilder::physAddress *pa = iface.getPhysicalAddress();
+    if (pa!=NULL)
+        physicalAddress = pa->getPhysAddress();
+    label = iface.getLabel();
+    networkZone = iface.getStr("network_zone");
+}
+
 void InterfaceData::guessLabel(const string &platform)
 {
 /*

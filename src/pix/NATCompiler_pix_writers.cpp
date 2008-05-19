@@ -51,7 +51,6 @@ using namespace std;
 
 bool NATCompiler_pix::PrintClearCommands::processNext()
 {
-    NATCompiler_pix *pix_comp=dynamic_cast<NATCompiler_pix*>(compiler);
     string version = compiler->fw->getStr("version");
     string platform = compiler->fw->getStr("platform");
 
@@ -83,8 +82,8 @@ bool NATCompiler_pix::PrintClearCommands::processNext()
 
 string NATCompiler_pix::PrintRule::_printAddress(Address *a,bool print_netmask)
 {
-    string addr=a->getAddress().toString();
-    string mask=a->getNetmask().toString();
+    string addr = a->getAddressPtr()->toString();
+    string mask = a->getNetmaskPtr()->toString();
     if (addr=="0.0.0.0" && mask=="0.0.0.0") return "any";
 //    if (addr=="0.0.0.0") addr="0";
 //    if (mask=="0.0.0.0") mask="0";
@@ -174,9 +173,9 @@ void NATCompiler_pix::PrintRule::_printNONAT(NATRule *rule)
         Interface *osrc_iface=compiler->getCachedFwInterface( helper.findInterfaceByNetzone(osrc ) );
         Interface *odst_iface=compiler->getCachedFwInterface( helper.findInterfaceByNetzone(odst ) );
 
-        string addr=odst->getAddress().toString();
+        string addr=odst->getAddressPtr()->toString();
 	string mask;
-	if (Network::isA(odst)) mask=odst->getNetmask().toString();
+	if (Network::isA(odst)) mask=odst->getNetmaskPtr()->toString();
 	else mask="255.255.255.255";
 
         compiler->output << "static (" 
@@ -354,14 +353,14 @@ bool NATCompiler_pix::PrintRule::processNext()
                 break;
             case SINGLE_ADDRESS:
                 compiler->output << " " 
-                                 << natcmd->t_addr->getAddress().toString()
+                                 << natcmd->t_addr->getAddressPtr()->toString()
                                  << endl;
                 break;
             case NETWORK_ADDRESS:
                 compiler->output << " " 
-                                 << natcmd->t_addr->getAddress().toString() 
+                                 << natcmd->t_addr->getAddressPtr()->toString() 
                                  << " netmask "
-                                 << natcmd->t_addr->getNetmask().toString()
+                                 << natcmd->t_addr->getNetmaskPtr()->toString()
                                  << endl;
                 break;
             case ADDRESS_RANGE:
@@ -372,7 +371,7 @@ bool NATCompiler_pix::PrintRule::processNext()
                                  << "-"
                                  << ar->getRangeEnd().toString()
                                  << " netmask "
-                                 << natcmd->t_iface->getNetmask().toString()
+                                 << natcmd->t_iface->getNetmaskPtr()->toString()
                                  << endl;
             }
             break;
@@ -389,13 +388,16 @@ bool NATCompiler_pix::PrintRule::processNext()
                 libfwbuilder::XMLTools::version_compare(compiler->fw->getStr("version"),"6.3")<0)
             {
 /* old, < 6.3 */
-                compiler->output << "nat (" << natcmd->o_iface->getLabel() << ") "
-                                 << natcmd->nat_id
-                                 << " "
-                                 << natcmd->o_src->getAddress().toString()  << " "
-                                 << natcmd->o_src->getNetmask().toString();
-                if (natcmd->outside)  compiler->output << " outside";
-                else                  compiler->output << " " << _printConnOptions(rule);
+                compiler->output
+                    << "nat (" << natcmd->o_iface->getLabel() << ") "
+                    << natcmd->nat_id
+                    << " "
+                    << natcmd->o_src->getAddressPtr()->toString()  << " "
+                    << natcmd->o_src->getNetmaskPtr()->toString();
+                if (natcmd->outside)
+                    compiler->output << " outside";
+                else
+                    compiler->output << " " << _printConnOptions(rule);
                 compiler->output << endl;
             } else
             {
@@ -447,11 +449,11 @@ bool NATCompiler_pix::PrintRule::processNext()
 
     case NATRule::DNAT:
     {
-        StaticCmd *scmd=pix_comp->static_commands[ rule->getInt("sc_cmd") ];
+        StaticCmd *scmd = pix_comp->static_commands[ rule->getInt("sc_cmd") ];
 
-        InetAddr outa=scmd->oaddr->getAddress();
-        InetAddr outm=scmd->oaddr->getNetmask();
-        InetAddr insa=scmd->iaddr->getAddress();
+        const InetAddr *outa = scmd->oaddr->getAddressPtr();
+        const InetAddr *outm = scmd->oaddr->getNetmaskPtr();
+        const InetAddr *insa = scmd->iaddr->getAddressPtr();
 /*
  * we verify that odst and tdst have the same size in verifyRuleElements,
  * so we can rely on that now.
@@ -477,17 +479,17 @@ bool NATCompiler_pix::PrintRule::processNext()
                 compiler->output << "interface ";
                 if (use_ports)	_printPort(scmd->osrv);
 
-                compiler->output << insa.toString() << " ";
+                compiler->output << insa->toString() << " ";
                 if (use_ports)	_printPort(scmd->tsrv);
             } else
             {
-                compiler->output << outa.toString() << " ";
+                compiler->output << outa->toString() << " ";
                 if (use_ports)	_printPort(scmd->osrv);
 
-                compiler->output << insa.toString() << " ";
+                compiler->output << insa->toString() << " ";
                 if (use_ports)	_printPort(scmd->tsrv);
 
-                compiler->output << " netmask " << outm.toString();
+                compiler->output << " netmask " << outm->toString();
             }
             compiler->output << " " << _printConnOptions(rule) << endl;
         } else
@@ -540,8 +542,10 @@ bool NATCompiler_pix::PrintRule::processNext()
                 if (TCPService::cast(scmd->osrv)) { use_ports=true; compiler->output << "tcp "; }
                 if (UDPService::cast(scmd->osrv)) { use_ports=true; compiler->output << "udp "; }
 
-                if (Interface::cast(scmd->oaddr)!=NULL) compiler->output << "interface ";
-                else                                    compiler->output << outa.toString() << " ";
+                if (Interface::cast(scmd->oaddr)!=NULL)
+                    compiler->output << "interface ";
+                else
+                    compiler->output << outa->toString() << " ";
                 if (use_ports) _printPort(scmd->osrv);
                 compiler->output << " ";
 

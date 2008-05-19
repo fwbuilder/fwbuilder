@@ -78,13 +78,12 @@ string RoutingCompiler_ipt::PrintRule::_printAddr(Address  *o)
         return ostr.str();
     }
 
-    InetAddr addr;
-    InetAddr mask;
-    try {
-        addr=o->getAddress();
-        mask = o->getNetmask();
-    }
-    catch (FWException ex)  
+    const InetAddr *addr;
+    const InetAddr *mask;
+    addr = o->getAddressPtr();
+    mask = o->getNetmaskPtr();
+
+    if (addr==NULL)
     {
         FWObject *obj=o;
 /*
@@ -98,23 +97,22 @@ string RoutingCompiler_ipt::PrintRule::_printAddr(Address  *o)
                !Firewall::isA(obj)  && 
                !Network::isA(obj))  obj=obj->getParent();
 
-        compiler->error(_("Problem with address or netmask in the object or one of its interfaces: '")+obj->getName()+"'");
-        throw;
+        compiler->abort(_("Problem with address or netmask in the object or one of its interfaces: '")+obj->getName()+"'");
     }
 
 
-    if (addr.isAny() && mask.isAny()) 
+    if (addr->isAny() && mask->isAny()) 
     {
         ostr << "default ";
     } else 
     {
-        ostr << addr.toString();
+        ostr << addr->toString();
 
         if (Interface::cast(o)==NULL &&
             Address::cast(o)->dimension() > 1 &&
-            !mask.isHostMask())
+            !mask->isHostMask())
         {
-            ostr << "/" << mask.getLength();
+            ostr << "/" << mask->getLength();
         }
         ostr << " ";
     }

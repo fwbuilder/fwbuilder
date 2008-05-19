@@ -107,7 +107,7 @@ bool NATCompiler_ipf::VerifyRules::processNext()
         Network *a1=Network::cast(compiler->getFirstOSrc(rule));
         Network *a2=Network::cast(compiler->getFirstTSrc(rule));
         if ( a1==NULL || a2==NULL ||
-             a1->getNetmask().getLength()!=a2->getNetmask().getLength() )
+             a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
             throw FWException(_("Original and translated source should both be networks of the same size . Rule ")+rule->getLabel());
     }
 
@@ -115,7 +115,7 @@ bool NATCompiler_ipf::VerifyRules::processNext()
         Network *a1=Network::cast(compiler->getFirstODst(rule));
         Network *a2=Network::cast(compiler->getFirstTDst(rule));
         if ( a1==NULL || a2==NULL ||
-             a1->getNetmask().getLength()!=a2->getNetmask().getLength() )
+             a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
             throw FWException(_("Original and translated destination should both be networks of the same size . Rule ")+rule->getLabel());
     }
 

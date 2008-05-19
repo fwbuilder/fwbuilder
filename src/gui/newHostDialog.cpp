@@ -472,8 +472,8 @@ void newHostDialog::fillInterfaceData(Interface *intf, QTextBrowser *qte)
         if (intf->isUnnumbered()) s +=  tr("Unnumbered interface");
         else
             s += QString("%1/%2")
-                .arg(intf->getAddress().toString().c_str())
-                .arg( intf->getNetmask().toString().c_str());
+                .arg(intf->getAddressPtr()->toString().c_str())
+                .arg(intf->getNetmaskPtr()->toString().c_str());
     s += "</td>";
     s += "</tr>";
     s += "</table>";

@@ -186,7 +186,7 @@ bool FindObjectWidget::matchAttr(libfwbuilder::FWObject *obj)
         Address *a = Address::cast(obj);
         if (a!=NULL)
         {
-            QString addr = a->getAddress().toString().c_str();
+            QString addr = a->getAddressPtr()->toString().c_str();
 
             if (m_widget->useRegexp->isChecked()) res= ( addr.indexOf( QRegExp(s) )!=-1 );
             else                        res= ( addr == s );

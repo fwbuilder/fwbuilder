@@ -89,14 +89,15 @@ void OSConfigurator_solaris::processFirewallOptions()
 
 }
 
-void OSConfigurator_solaris::addVirtualAddressForNAT(const Network *nw)
+void OSConfigurator_solaris::addVirtualAddressForNAT(const Network*)
 {
 }
 
 void OSConfigurator_solaris::addVirtualAddressForNAT(const Address *addr)
 {
     if (virtual_addresses.empty() || 
-	find(virtual_addresses.begin(),virtual_addresses.end(),addr->getAddress())==virtual_addresses.end()) 
+	find(virtual_addresses.begin(),virtual_addresses.end(),
+             *(addr->getAddressPtr())) == virtual_addresses.end()) 
     {
         FWObject *iaddr = findAddressFor(addr, fw );
         if (iaddr!=NULL)
@@ -106,13 +107,14 @@ void OSConfigurator_solaris::addVirtualAddressForNAT(const Address *addr)
             Interface *iface=Interface::cast(iaddr->getParent());
             assert(iface!=NULL);
 
-            output << "add_addr " << addr->getAddress().toString() << " "
-                   << iaddr_addr->getNetmask().toString() <<  " "
+            output << "add_addr " << addr->getAddressPtr()->toString() << " "
+                   << iaddr_addr->getNetmaskPtr()->toString() <<  " "
                    << iface->getName() << endl;
         
-            virtual_addresses.push_back(addr->getAddress());
+            virtual_addresses.push_back(*(addr->getAddressPtr()));
         } else
-            warning(_("Can not add virtual address ") + addr->getAddress().toString() );
+            warning(_("Can not add virtual address ") +
+                    addr->getAddressPtr()->toString() );
     }
 }
 
@@ -193,11 +195,12 @@ void  OSConfigurator_solaris::configureInterfaces()
             for ( ; j!=j.end(); ++j ) 
             {
                 Address *iaddr = Address::cast(*j);
-                output << "add_addr " << iaddr->getAddress().toString() << " "
-                       << iaddr->getNetmask().toString() << " "
+                output << "add_addr "
+                       << iaddr->getAddressPtr()->toString() << " "
+                       << iaddr->getNetmaskPtr()->toString() << " "
                        << iface->getName() << endl;
         
-                virtual_addresses.push_back(iaddr->getAddress());
+                virtual_addresses.push_back(*(iaddr->getAddressPtr()));
             }
         }
         output << endl;

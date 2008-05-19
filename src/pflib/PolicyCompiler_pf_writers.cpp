@@ -180,7 +180,7 @@ void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
                         compiler->output << roif << " ";
                         compiler->output << roaddr << " ";
                         compiler->output << ") ";
-                        int sp = roaddr.find('/');
+                        std::string::size_type sp = roaddr.find('/');
                         if (sp!=std::string::npos) 
                         {
                             // roaddr is addr/netmask
@@ -578,7 +578,7 @@ string PolicyCompiler_pf::PrintRule::_printTCPFlags(libfwbuilder::TCPService *sr
     return str;
 }
 
-void PolicyCompiler_pf::PrintRule::_printAddr(Address  *o,bool neg)
+void PolicyCompiler_pf::PrintRule::_printAddr(Address  *o,bool )
 {
     MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
     if (atrt!=NULL)
@@ -596,8 +596,8 @@ void PolicyCompiler_pf::PrintRule::_printAddr(Address  *o,bool neg)
         assert(atrt==NULL);
     }
 
-    InetAddr addr=o->getAddress();
-    InetAddr   mask=o->getNetmask();
+    const InetAddr *addr = o->getAddressPtr();
+    InetAddr mask = *(o->getNetmaskPtr());
 
     if (Interface::cast(o)!=NULL)
     {
@@ -616,13 +616,13 @@ void PolicyCompiler_pf::PrintRule::_printAddr(Address  *o,bool neg)
 	mask = InetAddr(InetAddr::getAllOnes());
     }
 
-    if (addr.isAny() && mask.isAny()) 
+    if (addr->isAny() && mask.isAny()) 
     {
 	compiler->output << "any ";
     } else 
     {
 //	if (neg) compiler->output << "! ";
-	compiler->output << addr.toString();
+	compiler->output << addr->toString();
 	if (!mask.isHostMask())
         {
 	    compiler->output << "/" << mask.getLength();

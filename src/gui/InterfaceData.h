@@ -55,22 +55,7 @@ struct InterfaceData
         securityLevel = 0;
     }
 
-    InterfaceData(const libfwbuilder::Interface &iface) 
-    {
-        id = iface.getId();
-        name = iface.getName();
-        address = iface.getAddress().toString();
-        netmask = iface.getNetmask().toString();
-        securityLevel = iface.getSecurityLevel();
-        isDyn = iface.isDyn();
-        isUnnumbered = iface.isUnnumbered();
-        isBridgePort = iface.isBridgePort();
-        libfwbuilder::physAddress *pa = iface.getPhysicalAddress();
-        if (pa!=NULL)
-            physicalAddress = pa->getPhysAddress();
-        label = iface.getLabel();
-        networkZone = iface.getStr("network_zone");
-    }
+    InterfaceData(const libfwbuilder::Interface &iface);
 
 /**
  *  this method is a collection of heuristics that allow us to assign

@@ -57,7 +57,7 @@ ostream& fwcompiler::operator<<(ostream &s,const globalNATPool &pool)
         s << " interface" << endl;
         break;
     case globalNATPool::SINGLE_ADDRESS:
-        s << " " << pool.addr->getAddress().toString() << endl;
+        s << " " << pool.addr->getAddressPtr()->toString() << endl;
         break;
     case globalNATPool::ADDRESS_RANGE:
         AddressRange *ar=AddressRange::cast(pool.addr);

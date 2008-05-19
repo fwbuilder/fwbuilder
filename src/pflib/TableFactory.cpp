@@ -212,15 +212,15 @@ string TableFactory::PrintTables()
                     if (A==NULL)
                         throw(FWException("table object must be an address: '"+o->getTypeName()+"'"));
 
-                    InetAddr addr=A->getAddress();
-                    InetAddr   mask=A->getNetmask();
+                    const InetAddr *addr = A->getAddressPtr();
+                    InetAddr mask = *(A->getNetmaskPtr());
 
                     if (A->dimension()==1)
                     {
                         mask = InetAddr(InetAddr::getAllOnes());
                     }
 
-                    output << addr.toString();
+                    output << addr->toString();
                     if (!mask.isHostMask())
                     {
                         output << "/" << mask.getLength();

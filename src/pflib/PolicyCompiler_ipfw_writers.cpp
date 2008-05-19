@@ -110,7 +110,7 @@ void PolicyCompiler_ipfw::PrintRule::_printProtocol(Service *srv)
 
 
 
-string PolicyCompiler_ipfw::PrintRule::_printPort(int rs,int re,bool neg)
+string PolicyCompiler_ipfw::PrintRule::_printPort(int rs,int re,bool )
 {
     ostringstream  str;
 
@@ -290,8 +290,8 @@ void PolicyCompiler_ipfw::PrintRule::_printAddr(Address  *o,bool neg)
         assert(atrt==NULL);
     }
 
-    InetAddr addr=o->getAddress();
-    InetAddr   mask=o->getNetmask();
+    const InetAddr *addr = o->getAddressPtr();
+    InetAddr mask = *(o->getNetmaskPtr());
 
     if (Interface::cast(o)!=NULL)
         mask = InetAddr(InetAddr::getAllOnes());
@@ -299,13 +299,13 @@ void PolicyCompiler_ipfw::PrintRule::_printAddr(Address  *o,bool neg)
     if (o->dimension()==1)
         mask = InetAddr(InetAddr::getAllOnes());
 
-    if (addr.isAny() && mask.isAny()) 
+    if (addr->isAny() && mask.isAny()) 
     {
 	compiler->output << "any ";
     } else 
     {
 	if (neg) compiler->output << "not ";
-	compiler->output << addr.toString();
+	compiler->output << addr->toString();
 	if (!mask.isHostMask())
         {
 	    compiler->output << "/" << mask.getLength();

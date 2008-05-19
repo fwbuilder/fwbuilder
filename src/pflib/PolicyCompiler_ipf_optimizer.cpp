@@ -53,7 +53,6 @@ void PolicyCompiler_ipf::optimize1::optimizeForRuleElement(PolicyRule         *r
                                                            const std::string  &re_type)
 {
     RuleElement    *re=RuleElement::cast(rule->getFirstByType(re_type));
-    int nre=re->size();
 
     PolicyRule     *r;
 

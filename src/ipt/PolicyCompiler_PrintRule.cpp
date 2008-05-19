@@ -911,21 +911,21 @@ string PolicyCompiler_ipt::PrintRule::_printAddr(Address  *o)
         return ostr.str();
     }
 
-    const InetAddr& addr = o->getAddress();
-    const InetAddr& mask = o->getNetmask();
+    const InetAddr *addr = o->getAddressPtr();
+    const InetAddr *mask = o->getNetmaskPtr();
 
-    if (addr.isAny() && mask.isAny())
+    if (addr->isAny() && mask->isAny())
     {
         ostr << "0/0 ";
     } else 
     {
-        ostr << addr.toString();
+        ostr << addr->toString();
 
         if (Interface::cast(o)==NULL &&
             Address::cast(o)->dimension() > 1 &&
-            !mask.isHostMask())
+            !mask->isHostMask())
         {
-            ostr << "/" << mask.getLength();
+            ostr << "/" << mask->getLength();
         }
         ostr << " ";
     }
@@ -1155,7 +1155,7 @@ string PolicyCompiler_ipt::PrintRule::PolicyRuleToString(PolicyRule *rule)
  * combinedAddress::hasInetAddress returns true;
  *
  */
-            if (src->hasInetAddress() && !src->getAddress().isAny())
+            if (src->hasInetAddress() && !src->getAddressPtr()->isAny())
             {
                 command_line << " -s " << _printSingleObjectNegation(srcrel);
                 command_line << _printAddr(src);
