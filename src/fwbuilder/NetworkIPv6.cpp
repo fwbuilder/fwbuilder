@@ -99,11 +99,11 @@ xmlNodePtr NetworkIPv6::toXML(xmlNodePtr xml_parent_node) throw(FWException)
     
     xmlNewProp(me, 
                TOXMLCAST("address"),
-               STRTOXMLCAST(getAddressPtr()->toString()));
+               STRTOXMLCAST(inet_addr_mask->getAddressPtr()->toString()));
     
     xmlNewProp(me, 
                TOXMLCAST("netmask"),
-               STRTOXMLCAST(getNetmaskPtr()->toString()));
+               STRTOXMLCAST(inet_addr_mask->getNetmaskPtr()->toString()));
     
     return me;
 }
