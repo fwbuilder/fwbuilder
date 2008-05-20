@@ -2712,37 +2712,7 @@ void ObjectManipulator::newAddressIPv6()
     if ( currentObj->isReadOnly() ) return;
 
     FWObject *o;
-/*
- * Oleg reports that his expectation was that "New Address" should
- * always create an address object even if current selected object in
- * the tree is an interface. I tend to agree with him, this was a
- * usability issue because behavior of the program was different
- * depending on which object was selected in the tree. I am changing
- * it and will make it so "New Address" will always create a new
- * Address object uner Objects/Addresses. Interface address can be
- * created using context pop-up menu.
- *                                         12/19/04 --vk
- */
     o=createObject(IPv6::TYPENAME,tr("New Address IPv6"));
-
-#if 0
-    if (Interface::isA(currentObj))
-    {
-        Interface *intf = Interface::cast(currentObj);
-        if (intf &&
-            (intf->isDyn() || intf->isUnnumbered() || intf->isBridgePort())
-        ) return;
-    QString iname=QString("%1:%2:ip")
-        .arg(QString::fromUtf8(currentObj->getParent()->getName().c_str()))
-        .arg(QString::fromUtf8(currentObj->getName().c_str()));
-        o=createObject(currentObj, IPv4::TYPENAME, iname);
-    }
-    else
-    {
-        o=createObject(IPv4::TYPENAME,tr("New Address"));
-    }
-#endif
-
 
     if (o!=NULL)
     {

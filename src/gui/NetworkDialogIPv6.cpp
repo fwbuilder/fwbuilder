@@ -165,8 +165,10 @@ void NetworkDialogIPv6::applyChanges()
     {
         s->setAddress(
             Inet6Addr(m_dialog->address->text().toLatin1().constData()) );
+        bool ok = false;
         s->setNetmask(
-            Inet6Addr(m_dialog->netmask->text().toShort()) );
+            Inet6Addr(m_dialog->netmask->text().toInt(&ok)) );
+        if (!ok) throw FWException("");
     } catch (FWException &ex)
     {
 /* exception thrown if user types illegal m_dialog->address or

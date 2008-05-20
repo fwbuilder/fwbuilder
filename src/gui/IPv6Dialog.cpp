@@ -173,7 +173,9 @@ void IPv6Dialog::validate(bool *res)
     {
         try
         {
-            Inet6Addr( m_dialog->netmask->text().toLatin1().constData() );
+            bool ok = false;
+            Inet6Addr(m_dialog->netmask->text().toInt(&ok));
+            if (!ok) throw FWException("");
         } catch (FWException &ex)
         {
             *res=false;
@@ -215,7 +217,9 @@ void IPv6Dialog::applyChanges()
     {
         try
         {
-            s->setNetmask(Inet6Addr(m_dialog->netmask->text().toShort()) );
+            bool ok = false;
+            s->setNetmask(Inet6Addr(m_dialog->netmask->text().toInt(&ok)) );
+            if (!ok) throw FWException("");
         } catch (FWException &ex) { }
     } else
         s->setNetmask(Inet6Addr());
