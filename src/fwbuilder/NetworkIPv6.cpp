@@ -32,7 +32,7 @@
 #include <fwbuilder/XMLTools.h>
 
 #include <string>
-
+#include <sstream>
 
 using namespace libfwbuilder;
 using namespace std;
@@ -89,7 +89,19 @@ void NetworkIPv6::fromXML(xmlNodePtr root) throw(FWException)
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("netmask")));
     assert(n!=NULL);
-    setNetmask(Inet6Addr(n));
+    if (strlen(n))
+    {
+        if (string(n).find(":")!=string::npos)
+        {
+            setNetmask(Inet6Addr(n));
+        } else
+        {
+            istringstream str(n);
+            int netm;
+            str >> netm;
+            setNetmask(Inet6Addr(netm));
+        }
+    } else setNetmask(Inet6Addr(0));
     FREEXMLBUFF(n);
 }
 
@@ -101,10 +113,12 @@ xmlNodePtr NetworkIPv6::toXML(xmlNodePtr xml_parent_node) throw(FWException)
                TOXMLCAST("address"),
                STRTOXMLCAST(inet_addr_mask->getAddressPtr()->toString()));
     
-    xmlNewProp(me, 
-               TOXMLCAST("netmask"),
-               STRTOXMLCAST(inet_addr_mask->getNetmaskPtr()->toString()));
+    // Save netmask as bit length
+    ostringstream str;
+    str << inet_addr_mask->getNetmaskPtr()->getLength();
+    xmlNewProp(me, TOXMLCAST("netmask"), STRTOXMLCAST(str.str()));
     
+   
     return me;
 }
 
