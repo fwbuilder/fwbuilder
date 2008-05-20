@@ -169,6 +169,7 @@
         <file alias="Icons/CustomService/icon-tree">Icons/service-custom_16.png</file>
         <file alias="Icons/CustomService/icon">Icons/service-custom_25.png</file>
         <file alias="Icons/ServiceGroup/icon-neg">Icons/service-group-neg_25.png</file>
+        <file alias="Icons/ServiceGroup/icon-neg-tree">Icons/service-group-neg_16.png</file>        
         <file alias="Icons/ServiceGroup/icon-ref">Icons/service-group-ref_25.png</file>
         <file alias="Icons/ServiceGroup/icon-tree">Icons/service-group_16.png</file>
         <file alias="Icons/ServiceGroup/icon">Icons/service-group_25.png</file>

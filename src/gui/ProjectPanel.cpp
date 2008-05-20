@@ -1239,7 +1239,8 @@ void ProjectPanel::fileClose()
     clearFirewallTabs();
     clearObjects();
     FWObjectClipboard::obj_clipboard->clear();
-
+    mdiWindow->close();
+/*
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): loading standard objects");
 
     load(this);
@@ -1250,7 +1251,7 @@ void ProjectPanel::fileClose()
 
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): all done");
 
-    setupAutoSave();
+    setupAutoSave();*/
 }
 
 void ProjectPanel::fileSave()
@@ -3243,6 +3244,7 @@ void ProjectPanel::closeEvent( QCloseEvent * ev)
         return;
     }
     QWidget::closeEvent(ev);
+    mw->updateWindowTitle();
 //    emit closed();
 }
 

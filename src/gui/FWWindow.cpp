@@ -265,6 +265,18 @@ void FWWindow::killInstDialog()
     }
 }
 
+void FWWindow::updateWindowTitle ()
+{
+    if (activeProject())
+    {
+       setWindowTitle("Firewall Builder "+activeProject()->getFileName());
+    }
+    else
+    {
+        setWindowTitle("Firewall Builder");
+    }
+}
+
 void FWWindow::startupLoad()
 {
     if (activeProject())
@@ -369,12 +381,12 @@ void FWWindow::fileOpen()
             {
                 if (activeProject()->getRCS()->getFileName()=="")
                 {
-                    m_space->currentSubWindow()->hide();                            
+                    m_space->removeSubWindow(m_space->currentSubWindow());                            
                 }	
             }
             else
             {
-                m_space->currentSubWindow()->hide();
+                m_space->removeSubWindow(m_space->currentSubWindow());
             }
         }
         showSub(proj.release());

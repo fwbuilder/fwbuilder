@@ -78,7 +78,7 @@ class FWWindow : public QMainWindow {
     void showSub(ProjectPanel *projectW);
 public:
     ProjectPanel* activeProject();
-
+    void updateWindowTitle ();
  public slots:
 
      virtual void search();
