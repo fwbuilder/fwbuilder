@@ -136,7 +136,7 @@ void NetworkDialog::validate(bool *res)
     }
 }
 
-void NetworkDialog::isChanged(bool *res)
+void NetworkDialog::isChanged(bool*)
 {
     //*res=(!init && apply->isEnabled());
 }

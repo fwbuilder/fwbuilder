@@ -119,7 +119,7 @@ void NATRuleOptionsDialog::validate(bool *res)
     *res=true;
 }
 
-void NATRuleOptionsDialog::isChanged(bool *res)
+void NATRuleOptionsDialog::isChanged(bool*)
 {
     //*res=(!init && apply->isEnabled());
 }

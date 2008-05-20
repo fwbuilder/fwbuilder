@@ -148,7 +148,7 @@ void LibraryDialog::validate(bool *res)
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
-void LibraryDialog::isChanged(bool *res)
+void LibraryDialog::isChanged(bool*)
 {
     //*res=(!init && apply->isEnabled());
 }

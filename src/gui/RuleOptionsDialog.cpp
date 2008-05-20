@@ -244,7 +244,7 @@ void RuleOptionsDialog::validate(bool *res)
     *res=true;
 }
 
-void RuleOptionsDialog::isChanged(bool *res)
+void RuleOptionsDialog::isChanged(bool*)
 {
     //*res=(!init && apply->isEnabled());
 }

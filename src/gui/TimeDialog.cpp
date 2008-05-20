@@ -256,7 +256,7 @@ void TimeDialog::validate(bool *res)
     *res=true;
 }
 
-void TimeDialog::isChanged(bool *res)
+void TimeDialog::isChanged(bool*)
 {
     //*res=(!init && apply->isEnabled());
 }

@@ -74,7 +74,7 @@ LibExportDialog::~LibExportDialog()
     delete m_dialog;
 }
 
-LibExportDialog::LibExportDialog( QWidget* parent, const char* name, bool modal )
+LibExportDialog::LibExportDialog( QWidget* parent, const char* name, bool  )
     : QDialog(parent)
 {
     setWindowTitle(name);

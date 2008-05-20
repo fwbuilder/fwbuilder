@@ -74,7 +74,8 @@ void NetworkDialogIPv6::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->address->setText( s->getAddressPtr()->toString().c_str() );
-    m_dialog->netmask->setText( s->getNetmaskPtr()->toString().c_str() );
+    m_dialog->netmask->setText( QString("%1").arg(
+                                    s->getNetmaskPtr()->getLength()) );
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
 
     //apply->setEnabled( false );
@@ -120,7 +121,8 @@ void NetworkDialogIPv6::validate(bool *res)
     {
         *res=false;
         QMessageBox::critical(this, "Firewall Builder",
-                              tr("Illegal IP address '%1'").arg(m_dialog->address->text()),
+                              tr("Illegal IP address '%1'").arg(
+                                  m_dialog->address->text()),
                               tr("&Continue"), 0, 0,
                               0 );
     }
@@ -134,13 +136,14 @@ void NetworkDialogIPv6::validate(bool *res)
     {
         *res=false;
         QMessageBox::critical(this, "Firewall Builder",
-                              tr("Illegal netmask '%1'").arg( m_dialog->netmask->text() ),
+                              tr("Illegal netmask '%1'").arg(
+                                  m_dialog->netmask->text() ),
                               tr("&Continue"), 0, 0,
                               0 );
     }
 }
 
-void NetworkDialogIPv6::isChanged(bool *res)
+void NetworkDialogIPv6::isChanged(bool*)
 {
     //*res=(!init && apply->isEnabled());
 }
@@ -166,7 +169,9 @@ void NetworkDialogIPv6::applyChanges()
             Inet6Addr(m_dialog->netmask->text().toLatin1().constData()) );
     } catch (FWException &ex)
     {
-/* exception thrown if user types illegal m_dialog->address or m_dialog->netmask */
+/* exception thrown if user types illegal m_dialog->address or
+ * m_dialog->netmask
+ */
 
     }
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));

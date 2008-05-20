@@ -109,14 +109,14 @@ void IPv6Dialog::loadFWObject(FWObject *o)
     try
     {
         m_dialog->address->setText( Inet6Addr().toString().c_str() );
-        m_dialog->address->setText( s->getAddressPtr(true)->toString().c_str());
+        const InetAddr *inet_addr = s->getAddressPtr();
+        m_dialog->address->setText( inet_addr->toString().c_str());
     } catch (FWException &ex) {}
 
     try
     {
         if ( Interface::isA( obj->getParent() ) )
-            m_dialog->netmask->setText(
-                s->getNetmaskPtr(true)->toString().c_str());
+            m_dialog->netmask->setText(s->getNetmaskPtr()->toString().c_str());
     } catch (FWException &ex) {}
 
     //apply->setEnabled( false );
@@ -184,7 +184,7 @@ void IPv6Dialog::validate(bool *res)
     }
 }
 
-void IPv6Dialog::isChanged(bool *res)
+void IPv6Dialog::isChanged(bool*)
 {
     //*res=(!init && apply->isEnabled());
 

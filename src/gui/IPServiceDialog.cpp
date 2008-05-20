@@ -135,7 +135,7 @@ void IPServiceDialog::validate(bool *res)
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
-void IPServiceDialog::isChanged(bool *res)
+void IPServiceDialog::isChanged(bool*)
 {
     //*res=(!init && apply->isEnabled());
 }

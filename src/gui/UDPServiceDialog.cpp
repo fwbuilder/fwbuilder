@@ -148,7 +148,7 @@ void UDPServiceDialog::validate(bool *res)
     }
 }
 
-void UDPServiceDialog::isChanged(bool *res)
+void UDPServiceDialog::isChanged(bool*)
 {
     //*res=(!init && apply->isEnabled());
 }

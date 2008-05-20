@@ -102,7 +102,7 @@ void ActionsDialog::validate(bool *res)
     }
 }
 
-void ActionsDialog::isChanged(bool *res)
+void ActionsDialog::isChanged(bool*)
 {
     //*res=apply->isEnabled();
 }

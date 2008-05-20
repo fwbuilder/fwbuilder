@@ -2729,7 +2729,7 @@ bool ProjectPanel::exportLibraryTest(list<FWObject*> &selectedLibs)
     QApplication::restoreOverrideCursor();
 
     if (fwbdebug) qDebug("LibExportDialog::accept  externalRefs.size()=%d",
-                         externalRefs.size() );
+                         int(externalRefs.size()) );
 
 /*
  * if externalRefs.size()!=0, then there were some references pointing
@@ -3328,8 +3328,6 @@ void ProjectPanel::loadState ()
     {
         if (st->getInt("Window/maximized")!=0)
         {
-            int y = st->getInt("Window/"+FileName+"/y");
-            int y2 = st->getInt("Window/"+FileName+"/y");
             firstResize=true ;
         //mdiWindow->resize (600,400);
         //mdiWindow->resize (600,400);
@@ -3340,7 +3338,7 @@ void ProjectPanel::loadState ()
 
 }
 
-void ProjectPanel::resizeEvent ( QResizeEvent * event )
+void ProjectPanel::resizeEvent ( QResizeEvent* )
 {
     /*if (oldState==-1)
     {

@@ -65,7 +65,7 @@ using namespace std;
 using namespace libfwbuilder;
 
 
-pixAdvancedDialog::pixAdvancedDialog(QWidget *parent,FWObject *o)//(parent)
+pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
 {
     m_dialog = new Ui::pixAdvancedDialog_q;
     m_dialog->setupUi(static_cast<QDialog*>(this));

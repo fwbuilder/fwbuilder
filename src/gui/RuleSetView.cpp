@@ -2467,7 +2467,6 @@ void RuleSetView::renameGroup()
         if (oldGroup==""||text=="")
             return ;
         QString postfix = "";
-        int counter = 0 ;
         for (int i =0 ; i < rowsInfo.size(); i++)
         {
             Rule * r = Rule::cast(ruleIndex[i]);
@@ -3346,7 +3345,7 @@ void RuleSetView::deleteObject(int row, int col, FWObject *obj)
 
     if (fwbdebug)
     {
-        qDebug("RuleSetView::deleteObject re->size()=%d",re->size());
+        qDebug("RuleSetView::deleteObject re->size()=%d", int(re->size()));
         qDebug("obj = %p",re->getRoot()->findInIndex(id));
         int rc = obj->ref()-1;  obj->unref();
         qDebug("obj->ref_counter=%d",rc);

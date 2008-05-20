@@ -113,7 +113,7 @@ void ICMPServiceDialog::validate(bool *res)
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
-void ICMPServiceDialog::isChanged(bool *res)
+void ICMPServiceDialog::isChanged(bool*)
 {
     //*res=(!init && apply->isEnabled());
 }

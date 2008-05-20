@@ -137,7 +137,7 @@ class MessageBoxNeverUpgradePredicate: public libfwbuilder::XMLTools::UpgradePre
  public:
     MessageBoxNeverUpgradePredicate() {}
 
-    virtual bool operator()(const std::string &msg) const
+    virtual bool operator()(const std::string&) const
     {
         QMessageBox::information( NULL , "Firewall Builder",
                                   QObject::tr(

@@ -122,7 +122,7 @@ void RoutingRuleOptionsDialog::validate(bool *res)
     *res=true;
 }
 
-void RoutingRuleOptionsDialog::isChanged(bool *res)
+void RoutingRuleOptionsDialog::isChanged(bool*)
 {
     //*res=(!init && apply->isEnabled());
 }

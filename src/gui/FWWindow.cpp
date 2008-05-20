@@ -807,7 +807,7 @@ void FWWindow::compile()
 void FWWindow::compile(set<Firewall*> vf)
 {
     if (fwbdebug)
-        qDebug("FWWindow::compile preselected %d firewalls",vf.size());
+        qDebug("FWWindow::compile preselected %d firewalls", int(vf.size()));
 
 
     instDialog *id = new instDialog(NULL,BATCH_COMPILE,vf);
@@ -1410,7 +1410,7 @@ bool FWWindow::isSystem(libfwbuilder::FWObject *obj)
 }
 
 
-void FWWindow::closeEvent( QCloseEvent * ev)
+void FWWindow::closeEvent( QCloseEvent*)
 {   
     QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
     for (int i = 0 ; i < subWindowList.size();i++)

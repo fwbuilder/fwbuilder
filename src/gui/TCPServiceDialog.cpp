@@ -206,7 +206,7 @@ void TCPServiceDialog::validate(bool *res)
     }
 }
 
-void TCPServiceDialog::isChanged(bool *res)
+void TCPServiceDialog::isChanged(bool*)
 {
     //*res=(!init && apply->isEnabled());
 }

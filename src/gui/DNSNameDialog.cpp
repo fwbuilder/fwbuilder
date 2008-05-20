@@ -123,7 +123,7 @@ void DNSNameDialog::validate(bool *res)
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
-void DNSNameDialog::isChanged(bool *res)
+void DNSNameDialog::isChanged(bool*)
 {
    // *res=(!init && apply->isEnabled());
 }
