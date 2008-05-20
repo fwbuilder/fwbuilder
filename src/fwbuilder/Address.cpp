@@ -89,7 +89,7 @@ const Address* Address::getAddressObject(bool) const
     return NULL;
 }
 
-const InetAddrMask* Address::getAddressObjectInetAddrMask(bool ipv6) const
+const InetAddrMask* Address::getInetAddrMaskObjectPtr(bool ipv6) const
 {
     const Address *addr_obj = getAddressObject(ipv6);
     if (addr_obj) return addr_obj->inet_addr_mask;
@@ -105,28 +105,28 @@ const bool Address::hasInetAddress(bool ipv6) const
 
 const InetAddr* Address::getAddressPtr(bool ipv6) const
 {
-    const InetAddrMask *inet_addr_mask = getAddressObjectInetAddrMask(ipv6);
+    const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr(ipv6);
     if (inet_addr_mask) return inet_addr_mask->getAddressPtr();
     return NULL;
 }
 
 const InetAddr* Address::getNetmaskPtr(bool ipv6) const
 {
-    const InetAddrMask *inet_addr_mask = getAddressObjectInetAddrMask(ipv6);
+    const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr(ipv6);
     if (inet_addr_mask) return inet_addr_mask->getNetmaskPtr();
     return NULL;
 }
 
 const InetAddr* Address::getNetworkAddressPtr(bool ipv6) const
 {
-    const InetAddrMask *inet_addr_mask = getAddressObjectInetAddrMask(ipv6);
+    const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr(ipv6);
     if (inet_addr_mask) return inet_addr_mask->getNetworkAddressPtr();
     return NULL;
 }
 
 const InetAddr* Address::getBroadcastAddressPtr(bool ipv6) const
 {
-    const InetAddrMask *inet_addr_mask = getAddressObjectInetAddrMask(ipv6);
+    const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr(ipv6);
     if (inet_addr_mask) return inet_addr_mask->getBroadcastAddressPtr();
     return NULL;
 }
@@ -151,14 +151,14 @@ void Address::setAddressNetmask(const std::string&)
  */
 unsigned int Address::dimension()  const
 {
-    const InetAddrMask *addr_obj = getAddressObjectInetAddrMask();
+    const InetAddrMask *addr_obj = getInetAddrMaskObjectPtr();
     if (addr_obj!=NULL) return addr_obj->dimension();
     return 1;
 }
 
 bool Address::belongs(const InetAddr &other) const
 {
-    const InetAddrMask *addr_obj = getAddressObjectInetAddrMask();
+    const InetAddrMask *addr_obj = getInetAddrMaskObjectPtr();
     if (addr_obj!=NULL) return addr_obj->belongs(other);
     return false;
 }

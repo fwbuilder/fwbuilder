@@ -1031,16 +1031,20 @@ bool PolicyCompiler::CheckForTCPEstablished::processNext()
     return true;
 }
 
-bool PolicyCompiler::CheckIfIPv6Rule::CheckIfIPv6InRE(RuleElement *re)
+bool PolicyCompiler::CheckIfIPv6Rule::CheckIfIPv6InRE(FWObject *parent)
 {
-    for (FWObject::iterator i=re->begin(); i!=re->end(); i++) 
+    Address *addr = Address::cast(parent);
+    if (addr!=NULL)
+    {
+        const  InetAddr *inet_addr = addr->getAddressPtr();
+        return (inet_addr && inet_addr->isV6());
+    }
+
+    for (FWObject::iterator i=parent->begin(); i!=parent->end(); i++) 
     {
         FWObject *o= *i;
         if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-        Address *addr = Address::cast(o);
-        assert(addr!=NULL);
-        const  InetAddr *inet_addr = addr->getAddressPtr(true);
-        if (inet_addr && inet_addr->isV6()) return true;
+        if (CheckIfIPv6InRE(o)) return true;
     }
     return false;
 }

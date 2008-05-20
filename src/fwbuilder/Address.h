@@ -64,6 +64,8 @@ public:
                                        bool preserve_id = true)
         throw(FWException);
 
+    const InetAddrMask* getInetAddrMaskObjectPtr(bool ipv6=false) const;
+
     virtual const bool hasInetAddress(bool ipv6=false) const;
 
     /**
@@ -84,8 +86,6 @@ public:
     virtual void setAddress(const InetAddr &a, bool ipv6=false);
     virtual void setNetmask(const InetAddr &nm, bool ipv6=false);
     virtual void setAddressNetmask(const std::string& s);
-
-    const InetAddrMask* getAddressObjectInetAddrMask(bool ipv6=false) const;
 
     virtual const Address* getAddressObject(bool ipv6=false) const;
     virtual unsigned int dimension()  const;

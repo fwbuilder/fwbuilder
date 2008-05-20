@@ -671,8 +671,7 @@ Interface* Compiler::findInterfaceFor(const Address *obj1, const Address *obj2)
                     return iface;
 
                 if (Network::constcast(obj1)!=NULL && 
-                    obj1->getAddressObjectInetAddrMask()->belongs(
-                        *(addr->getAddressPtr()))) return iface; 
+                    obj1->belongs(*(addr->getAddressPtr()))) return iface; 
 
                 if ( addr->belongs( *(obj1->getAddressPtr()) ) ) return iface;
             }
@@ -705,8 +704,7 @@ FWObject* Compiler::findAddressFor(const Address *obj1,const Address *obj2)
                     return (*k);
 
                 if (Network::constcast(obj1)!=NULL &&
-                    obj1->getAddressObjectInetAddrMask()->belongs(
-                        *(addr->getAddressPtr()))) return (*k);
+                    obj1->belongs(*(addr->getAddressPtr()))) return (*k);
 
                 if (addr->belongs( *(obj1->getAddressPtr()))) return (*k);
             }

@@ -176,7 +176,7 @@ namespace fwcompiler {
          */
         class CheckIfIPv6Rule : public NATRuleProcessor 
         {
-            bool CheckIfIPv6InRE(libfwbuilder::RuleElement *re);
+            bool CheckIfIPv6InRE(libfwbuilder::FWObject *re);
             public:
             CheckIfIPv6Rule(const std::string &n) : NATRuleProcessor(n) {}
             virtual bool processNext();
