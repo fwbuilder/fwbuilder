@@ -351,11 +351,6 @@ string PolicyCompiler_pix::PrintRule::_printDstService(libfwbuilder::Service *sr
 
 string PolicyCompiler_pix::PrintRule::_printAddr(libfwbuilder::Address  *o)
 {
-    ostringstream  str;
-
-    const InetAddr *srcaddr = o->getAddressPtr();
-    InetAddr srcmask = *(o->getNetmaskPtr());
-
     if (Interface::cast(o)!=NULL)
     {
 	Interface *interface_=Interface::cast(o);
@@ -363,28 +358,43 @@ string PolicyCompiler_pix::PrintRule::_printAddr(libfwbuilder::Address  *o)
         {
 	    return string("interface ") + interface_->getLabel() + " ";
 	}
-
-	srcmask = InetAddr(InetAddr::getAllOnes());
     }
 
-    if (IPv4::cast(o)!=NULL) 
-	srcmask = InetAddr(InetAddr::getAllOnes());
+    ostringstream  str;
 
-
-    if (srcaddr->isAny() && srcmask.isAny())
+    const InetAddr *srcaddr = o->getAddressPtr();
+    if (srcaddr)
     {
-	str << "any ";
-    } else {
-	if (srcmask.isHostMask())
+        InetAddr srcmask = *(o->getNetmaskPtr());
+
+        if (Interface::cast(o)!=NULL)
+            srcmask = InetAddr(InetAddr::getAllOnes());
+
+        if (IPv4::cast(o)!=NULL) 
+            srcmask = InetAddr(InetAddr::getAllOnes());
+
+
+        if (srcaddr->isAny() && srcmask.isAny())
         {
-	    str << "host " << srcaddr->toString() << " ";
-	} else
-        {
-	    str << srcaddr->toString() << " ";
-	    str << srcmask.toString() << " ";
-	}
+            str << "any ";
+        } else {
+            if (srcmask.isHostMask())
+            {
+                str << "host " << srcaddr->toString() << " ";
+            } else
+            {
+                str << srcaddr->toString() << " ";
+                str << srcmask.toString() << " ";
+            }
+        }
+        return str.str();
+    } else
+    {
+        compiler->abort(string("Object ") + o->getName() +
+                        string(" (id=") + o->getId() + string(") ") +
+                        string(" has no ip address and can not be used ") +
+                        string("in the rule."));
     }
-    return str.str();
 }
 
 bool PolicyCompiler_pix::PrintRule::suppressDuplicateICMPCommands(const string &cmd)

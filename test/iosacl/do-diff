@@ -10,6 +10,6 @@ else
   TOOL="diff -u -b -B"
 fi
 
-$TOOL firewall${N}.fw.orig firewall${N}.fw 
+$TOOL ${N}.fw.orig ${N}.fw 
 
 

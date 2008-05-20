@@ -350,9 +350,13 @@ bool NATCompiler_pix::AssignInterface::processNext()
     rule->setStr("nat_iface_trn", helper.findInterfaceByNetzone(a2));
 
     if ( rule->getStr("nat_iface_orig")=="" ) 
-	compiler->abort("Object '"+a1->getName()+"' does not belong to any known network zone. Rule: "+rule->getLabel());
+	compiler->abort("Object '" + a1->getName() + 
+                        "' does not belong to any known network zone. Rule: " +
+                        rule->getLabel());
     if ( rule->getStr("nat_iface_trn")=="" ) 
-	compiler->abort("Object '"+a2->getName()+"' does not belong to any known network zone. Rule: "+rule->getLabel());
+	compiler->abort("Object '" + a2->getName() + 
+                        "' does not belong to any known network zone. Rule: " + 
+                        rule->getLabel());
 
 //    if ( rule->getStr("nat_iface_orig")==rule->getStr("nat_iface_trn"))
 //	compiler->abort("Objects '"+a1->getName()+"' and '"+a2->getName()+"' belong to the same network zone. Can not build NAT configuration. Rule: "+rule->getLabel());
@@ -368,13 +372,17 @@ bool NATCompiler_pix::verifyInterfaces::processNext()
 #ifdef WRONG_CHECK
     if ( rule->getStr("nat_iface_orig")!=rule->getStr("nat_iface_trn") )
     {
-	if (rule->getRuleType()==NATRule::SNAT) {
+	if (rule->getRuleType()==NATRule::SNAT)
+        {
 	    Interface *iface1=
-		Interface::cast( rule->getRoot()->findInIndex(rule->getStr("nat_iface_orig")) );
+		Interface::cast( rule->getRoot()->findInIndex(
+                                     rule->getStr("nat_iface_orig")) );
 	    Interface *iface2=
-		Interface::cast( rule->getRoot()->findInIndex(rule->getStr("nat_iface_trn")) );
+		Interface::cast( rule->getRoot()->findInIndex(
+                                     rule->getStr("nat_iface_trn")) );
 
-	    if ( iface1->getSecurityLevel() <= iface2->getSecurityLevel() ) {
+	    if ( iface1->getSecurityLevel() <= iface2->getSecurityLevel() )
+            {
 		char lvl1[32];
 		char lvl2[32];
 		sprintf(lvl1,"%d",iface1->getSecurityLevel());
@@ -405,19 +413,22 @@ bool NATCompiler_pix::verifyRuleElements::processNext()
     Address  *tdst=compiler->getFirstTDst(rule);  assert(tdst);
     Service  *tsrv=compiler->getFirstTSrv(rule);  assert(tsrv);
 
-    bool      version_lt_63=libfwbuilder::XMLTools::version_compare(compiler->fw->getStr("version"),"6.3")<0;
+    bool version_lt_63 = libfwbuilder::XMLTools::version_compare(
+        compiler->fw->getStr("version"),"6.3")<0;
 
     if (rule->getRuleType()==NATRule::SNAT)
     {
 	if ((! osrv->isAny() || ! tsrv->isAny()) && version_lt_63)
-	    compiler->abort("only PIX v6.3 recognizes services in global NAT. Rule: "+rule->getLabel() );
+	    compiler->abort("only PIX v6.3 recognizes services in global NAT. "
+                            "Rule: "+rule->getLabel() );
     }
 
     if (rule->getRuleType()==NATRule::DNAT)
     {
 	if (AddressRange::cast(odst) || AddressRange::cast(tdst)) 
 	    compiler->abort(
-		"Address ranges are not supported in original destination or translated destination in NAT rule "+rule->getLabel() );
+		"Address ranges are not supported in original destination or "
+                "translated destination in NAT rule "+rule->getLabel() );
 
 	if (Network::isA(odst) && Network::isA(tdst))
         {
@@ -428,15 +439,18 @@ bool NATCompiler_pix::verifyRuleElements::processNext()
 
             if ( !(n1==n2) )
                 compiler->abort(
-                    "Original and translated destination must be of the same size in the NAT rule "+rule->getLabel());
+                    "Original and translated destination must be of the same "
+                    "size in the NAT rule "+rule->getLabel());
         }
 
 
 	if (osrv->getTypeName()!=tsrv->getTypeName()) 
-	    compiler->abort("Original and translated services must be of the same type. Rule: "+rule->getLabel());
+	    compiler->abort("Original and translated services must be of "
+                            "the same type. Rule: "+rule->getLabel());
 
 	if (ICMPService::isA(osrv))
-	    compiler->abort("ICMP services are not supported in static NAT. Rule: "+rule->getLabel());
+	    compiler->abort("ICMP services are not supported in static NAT. "
+                            "Rule: "+rule->getLabel());
 
 	if (TCPService::isA(osrv) || UDPService::isA(osrv))
         {
@@ -444,7 +458,8 @@ bool NATCompiler_pix::verifyRuleElements::processNext()
 	    int dre=osrv->getInt("dst_range_end");
 
 	    if (drs!=dre)
-		compiler->abort("TCP or UDP service with a port range is not supported in NAT. Rule "+rule->getLabel());
+		compiler->abort("TCP or UDP service with a port range is not "
+                                "supported in NAT. Rule "+rule->getLabel());
 	}
 	if (TCPService::isA(tsrv) || UDPService::isA(tsrv))
         {
@@ -452,7 +467,8 @@ bool NATCompiler_pix::verifyRuleElements::processNext()
 	    int dre=tsrv->getInt("dst_range_end");
 
 	    if (drs!=dre)
-		compiler->abort("TCP or UDP service with a port range is not supported in NAT. Rule "+rule->getLabel());
+		compiler->abort("TCP or UDP service with a port range is not "
+                                "supported in NAT. Rule "+rule->getLabel());
 	}
     }
 
@@ -646,16 +662,19 @@ void NATCompiler_pix::UseFirewallInterfaces::scanInterfaces(RuleElement *rel)
                         " ( found object with type "+
                         string((o!=NULL)?o->getTypeName():"<NULL>") +
                         ")");
+    const InetAddr *obj_addr = obj->getAddressPtr();
+    if (obj_addr==NULL) return;
 
     list<FWObject*> l2=compiler->fw->getByType(Interface::TYPENAME);
     for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
     {
-        Interface *interface_=Interface::cast(*i);
-
-        if ((*interface_->getAddressPtr()) == *(obj->getAddressPtr())) 
+        Interface *iface=Interface::cast(*i);
+        const InetAddr *iface_addr = iface->getAddressPtr();
+        if (iface_addr == NULL) continue;
+        if (*iface_addr == *obj_addr)
         {
             rel->removeRef(obj);
-            rel->addRef(interface_);
+            rel->addRef(iface);
             return;
         }        
     }

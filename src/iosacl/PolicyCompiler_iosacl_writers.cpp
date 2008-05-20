@@ -369,11 +369,6 @@ string PolicyCompiler_iosacl::PrintRule::_printDstService(Service *srv)
 
 string PolicyCompiler_iosacl::PrintRule::_printAddr(libfwbuilder::Address  *o)
 {
-    ostringstream  str;
-
-    const InetAddr *srcaddr = o->getAddressPtr();
-    InetAddr srcmask = *(o->getNetmaskPtr());
-
     if (Interface::cast(o)!=NULL)
     {
 	Interface *interface_=Interface::cast(o);
@@ -381,36 +376,50 @@ string PolicyCompiler_iosacl::PrintRule::_printAddr(libfwbuilder::Address  *o)
         {
 	    return string("interface ") + interface_->getLabel() + " ";
 	}
-
-	srcmask = InetAddr(InetAddr::getAllOnes());
     }
 
-    if (IPv4::cast(o)!=NULL) 
-	srcmask = InetAddr(InetAddr::getAllOnes());
+    ostringstream  str;
 
-
-    if (srcaddr->isAny() && srcmask.isAny())
+    const InetAddr *srcaddr = o->getAddressPtr();
+    if (srcaddr)
     {
-	str << "any ";
-    } else {
-	if (srcmask.isHostMask())
+        InetAddr srcmask = *(o->getNetmaskPtr());
+
+        if (Interface::cast(o)!=NULL)
+            srcmask = InetAddr(InetAddr::getAllOnes());
+
+        if (IPv4::cast(o)!=NULL)
+            srcmask = InetAddr(InetAddr::getAllOnes());
+
+        if (srcaddr->isAny() && srcmask.isAny())
         {
-	    str << "host " << srcaddr->toString() << " ";
-	} else
-        {
-	    str << srcaddr->toString() << " ";
+            str << "any ";
+        } else {
+            if (srcmask.isHostMask())
+            {
+                str << "host " << srcaddr->toString() << " ";
+            } else
+            {
+                str << srcaddr->toString() << " ";
 
-            // cisco uses "wildcards" instead of netmasks
+                // cisco uses "wildcards" instead of netmasks
 
-            //long nm = srcmask.to32BitInt();
-            //struct in_addr na;
-            //na.s_addr = ~nm;
-            InetAddr nnm( ~srcmask );
+                //long nm = srcmask.to32BitInt();
+                //struct in_addr na;
+                //na.s_addr = ~nm;
+                InetAddr nnm( ~srcmask );
 
-	    str << nnm.toString() << " ";
-	}
+                str << nnm.toString() << " ";
+            }
+        }
+        return str.str();
+    } else
+    {
+        compiler->abort(string("Object ") + o->getName() +
+                        string(" (id=") + o->getId() + string(") ") +
+                        string(" has no ip address and can not be used ") +
+                        string("in the rule."));
     }
-    return str.str();
 }
 
 /*

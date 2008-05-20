@@ -49,14 +49,14 @@ namespace fwcompiler {
          * finds interface of the firewall to whose subnet object
          * 'obj' belongs to.  Returns interface ID
          */
-        std::string  findInterfaceByAddress(const libfwbuilder::InetAddr &a);
+        std::string  findInterfaceByAddress(const libfwbuilder::InetAddr *a);
         std::string  findInterfaceByAddress(libfwbuilder::Address *obj);
 
         /**
          * finds interface of the firewall associated with the netzone
          * that object 'obj' belongs to.  Returns interface ID
          */
-        std::string findInterfaceByNetzone(const libfwbuilder::InetAddr &a)
+        std::string findInterfaceByNetzone(const libfwbuilder::InetAddr *a)
             throw(std::string);
         std::string findInterfaceByNetzone(libfwbuilder::Address *obj);
         std::list<std::string> findInterfaceByNetzoneOrAll(

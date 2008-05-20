@@ -178,23 +178,28 @@ string OSConfigurator_pix_os::_printLogging()
     ostringstream  str;
     bool  logging_on=false;
 
-    string syslog_host    =  fw->getOptionsObject()->getStr("pix_syslog_host");
-    int    syslog_queue_size=fw->getOptionsObject()->getInt("pix_syslog_queue_size");
-    string syslog_facility=  fw->getOptionsObject()->getStr("pix_syslog_facility");
-    string trap_level=       fw->getOptionsObject()->getStr("pix_logging_trap_level");
-
-    bool   buffered=         fw->getOptionsObject()->getBool("pix_logging_buffered");
-    string buffered_level=   fw->getOptionsObject()->getStr("pix_logging_buffered_level");
-
-    bool   console=          fw->getOptionsObject()->getBool("pix_logging_console");
-    string console_level=    fw->getOptionsObject()->getStr("pix_logging_console_level");
-
-    bool   timestamp=        fw->getOptionsObject()->getBool("pix_logging_timestamp");
+    string syslog_host = fw->getOptionsObject()->getStr("pix_syslog_host");
+    int syslog_queue_size = fw->getOptionsObject()->getInt(
+        "pix_syslog_queue_size");
+    string syslog_facility = fw->getOptionsObject()->getStr(
+        "pix_syslog_facility");
+    string trap_level = fw->getOptionsObject()->getStr(
+        "pix_logging_trap_level");
+    bool buffered = fw->getOptionsObject()->getBool("pix_logging_buffered");
+    string buffered_level = fw->getOptionsObject()->getStr(
+        "pix_logging_buffered_level");
+    bool console = fw->getOptionsObject()->getBool("pix_logging_console");
+    string console_level = fw->getOptionsObject()->getStr(
+        "pix_logging_console_level");
+    bool timestamp = fw->getOptionsObject()->getBool("pix_logging_timestamp");
 
     if ( ! syslog_host.empty() )
     {
-        string iface_id=helper.findInterfaceByNetzone(InetAddr(syslog_host));
-        if (iface_id.empty()) abort("Log server "+syslog_host+" does not belong to any known network zone");
+        InetAddr syslog_addr(syslog_host);
+        string iface_id = helper.findInterfaceByNetzone(&syslog_addr);
+        if (iface_id.empty())
+            abort("Log server " + syslog_host +
+                  " does not belong to any known network zone");
         Interface  *syslog_iface = getCachedFwInterface(iface_id);
 
         str << endl;
@@ -251,18 +256,21 @@ string OSConfigurator_pix_os::_printLogging()
     return str.str();
 }
 
-string  OSConfigurator_pix_os::_printSNMPServer(const std::string &srv,int poll_trap)
+string  OSConfigurator_pix_os::_printSNMPServer(const std::string &srv,
+                                                int poll_trap)
 {
     Helper helper(this);
 
     ostringstream  str;
-
-    string iface_id=helper.findInterfaceByNetzone( InetAddr(srv) );
+    InetAddr srv_addr(srv);
+    string iface_id=helper.findInterfaceByNetzone(&srv_addr);
     if (iface_id.empty())
-        abort(string("SNMP server ")+srv+" does not belong to any known network zone");
+        abort(string("SNMP server ") + srv + 
+              " does not belong to any known network zone");
     Interface  *snmp_iface = getCachedFwInterface(iface_id);
     str << "snmp-server host " << snmp_iface->getLabel() << " " << srv;
-    switch (poll_trap) {
+    switch (poll_trap)
+    {
     case 1:  str << " poll" << endl; break;
     case 2:  str << " trap" << endl; break;
     default: str << endl; break;
@@ -276,9 +284,12 @@ string    OSConfigurator_pix_os::_printSNMP()
     string version = fw->getStr("version");
     string platform = fw->getStr("platform");
 
-    bool set_communities=fw->getOptionsObject()->getBool("pix_set_communities_from_object_data");
-    bool set_sysinfo=    fw->getOptionsObject()->getBool("pix_set_sysinfo_from_object_data" );   
-    bool enable_traps=   fw->getOptionsObject()->getBool("pix_enable_snmp_traps");
+    bool set_communities = fw->getOptionsObject()->getBool(
+        "pix_set_communities_from_object_data");
+    bool set_sysinfo = fw->getOptionsObject()->getBool(
+        "pix_set_sysinfo_from_object_data" );   
+    bool enable_traps = fw->getOptionsObject()->getBool(
+        "pix_enable_snmp_traps");
 
     string clearSNMPcmd = Resources::platform_res[platform]->getResourceStr(
         string("/FWBuilderResources/Target/options/version_")+
@@ -294,7 +305,8 @@ string    OSConfigurator_pix_os::_printSNMP()
     {
 
         if (set_communities) {
-            string read_c=fw->getManagementObject()->getSNMPManagement()->getReadCommunity();
+            string read_c = fw->getManagementObject()->
+                getSNMPManagement()->getReadCommunity();
             str << endl;
             str << "snmp-server community " << read_c << endl;
         }
@@ -303,8 +315,10 @@ string    OSConfigurator_pix_os::_printSNMP()
             string location=fw->getOptionsObject()->getStr("snmp_location");
             string contact =fw->getOptionsObject()->getStr("snmp_contact");
             str << endl;
-            if (!location.empty()) str << "snmp-server location " << location << endl;
-            if (!contact.empty())  str << "snmp-server contact  " << contact  << endl;
+            if (!location.empty())
+                str << "snmp-server location " << location << endl;
+            if (!contact.empty())
+                str << "snmp-server contact  " << contact  << endl;
         }
 
         if (enable_traps) {
@@ -315,10 +329,14 @@ string    OSConfigurator_pix_os::_printSNMP()
             str << "no snmp-server enable traps" << endl;
         }
 
-        string snmp_server_1=     fw->getOptionsObject()->getStr("pix_snmp_server1");
-        string snmp_server_2=     fw->getOptionsObject()->getStr("pix_snmp_server2");
-        int  snmp_poll_traps_1=   fw->getOptionsObject()->getInt("pix_snmp_poll_traps_1");
-        int  snmp_poll_traps_2=   fw->getOptionsObject()->getInt("pix_snmp_poll_traps_2");
+        string snmp_server_1 = fw->getOptionsObject()->getStr(
+            "pix_snmp_server1");
+        string snmp_server_2 = fw->getOptionsObject()->getStr(
+            "pix_snmp_server2");
+        int  snmp_poll_traps_1 = fw->getOptionsObject()->getInt(
+            "pix_snmp_poll_traps_1");
+        int  snmp_poll_traps_2 = fw->getOptionsObject()->getInt(
+            "pix_snmp_poll_traps_2");
 
         if (!snmp_server_1.empty()) 
             str << _printSNMPServer(snmp_server_1,snmp_poll_traps_1);
@@ -334,9 +352,10 @@ string  OSConfigurator_pix_os::_printNTPServer(const std::string &srv,bool pref)
     Helper helper(this);
 
     ostringstream  str;
-
-    string iface_id=helper.findInterfaceByNetzone( InetAddr(srv) );
-    if (iface_id.empty()) abort("NTP server "+srv+" does not belong to any known network zone");
+    InetAddr srv_addr(srv);
+    string iface_id=helper.findInterfaceByNetzone(&srv_addr);
+    if (iface_id.empty())
+        abort("NTP server "+srv+" does not belong to any known network zone");
     Interface  *ntp_iface = getCachedFwInterface(iface_id);
     str << "ntp server " << srv << " source " << ntp_iface->getLabel();
     if (pref) str << " prefer";
@@ -460,7 +479,8 @@ string    OSConfigurator_pix_os::_printSysopt()
     return res.str();
 }
 
-string    OSConfigurator_pix_os::_printServiceTimeout(const std::string &pix_service)
+string OSConfigurator_pix_os::_printServiceTimeout(
+    const std::string &pix_service)
 {
     ostringstream  res;
     string hh,mm,ss;

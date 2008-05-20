@@ -100,27 +100,31 @@ void Helper::expand_group_recursive(FWObject *o,list<FWObject*> &ol)
 
 string  Helper::findInterfaceByAddress(libfwbuilder::Address *obj)
 {
-    return findInterfaceByAddress( *(obj->getAddressPtr()) );
+    return findInterfaceByAddress( obj->getAddressPtr() );
 }
 
-string  Helper::findInterfaceByAddress(const libfwbuilder::InetAddr &addr)
+string  Helper::findInterfaceByAddress(const libfwbuilder::InetAddr *addr)
 {
+    if (addr==NULL) return "";
+
     Firewall *fw=compiler->fw;
     list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
     for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) {
 	Interface *iface=Interface::cast(*i);
-	if ( iface->belongs( addr ) ) return iface->getId();
+	if ( iface->belongs( *addr ) ) return iface->getId();
     }
     return "";
 }
 
 string  Helper::findInterfaceByNetzone(Address *obj)
 {
-    return findInterfaceByNetzone(*(obj->getAddressPtr()));
+    return findInterfaceByNetzone(obj->getAddressPtr());
 }
 
-string  Helper::findInterfaceByNetzone(const InetAddr &addr) throw(string)
+string  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
 {
+    if (addr==NULL) return "";
+
     Firewall *fw=compiler->fw;
     map<string,FWObject*> zones;
     FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
@@ -134,7 +138,7 @@ string  Helper::findInterfaceByNetzone(const InetAddr &addr) throw(string)
                  j!=netzone->end(); ++j)
             {
                 assert(Address::cast(*j)!=NULL);
-                if (Address::cast(*j)->belongs(addr))
+                if (Address::cast(*j)->belongs(*addr))
                     zones[(*i)->getId()]=netzone;
             }
         }
@@ -163,13 +167,11 @@ string  Helper::findInterfaceByNetzone(const InetAddr &addr) throw(string)
  * Subnets defined by addresses of interfaces are automatically part
  * of the corresponding network zones
  */
-    if (res_id.empty())
-        res_id=findInterfaceByAddress( addr );
+    if (res_id.empty()) res_id=findInterfaceByAddress( addr );
 
     if (res_id.empty())
-        throw(
-            string("Can not find interface with network zone that includes "
-                   "address ") + addr.toString());
+        throw(string("Can not find interface with network zone that includes "
+                     "address ") + addr->toString());
     return res_id;
 }
 
