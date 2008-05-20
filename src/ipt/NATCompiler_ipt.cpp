@@ -189,16 +189,20 @@ void NATCompiler_ipt::_expandInterface(Interface *iface,
     {
         if (physAddress::cast(*j)!=NULL) continue;
 
-        const InetAddrMask *ipv4 = Address::cast(*j)->getAddressObjectInetAddrMask();
-        if (ipv4!=NULL && use_mac && pa!=NULL)
+        //const InetAddrMask *ipv4 = Address::cast(*j)->getAddressObjectInetAddrMask();
+        const InetAddr *ip_addr = Address::cast(*j)->getAddressPtr();
+        const InetAddr *ip_netm = Address::cast(*j)->getNetmaskPtr();
+
+
+        if (ip_addr!=NULL && use_mac && pa!=NULL)
         {
-            combinedAddress *ca=new combinedAddress(dbcopy,true);
+            combinedAddress *ca = new combinedAddress(dbcopy,true);
             dbcopy->add(ca);
             dbcopy->addToIndex(ca);
             cacheObj(ca);
             ca->setName( "CA("+iface->getName()+")" );
-            ca->setAddress( *(ipv4->getAddressPtr()) );
-            ca->setNetmask( *(ipv4->getNetmaskPtr()) );
+            ca->setAddress( *ip_addr );
+            ca->setNetmask( *ip_netm );
             ca->setPhysAddress( pa->getPhysAddress() );
             nol.push_back(ca);
         } else
@@ -234,8 +238,9 @@ bool NATCompiler_ipt::ConvertLoadBalancingRules::processNext()
             FWObject *obj = NULL;
             if (FWReference::cast(o)!=NULL)
                 obj=FWReference::cast(o)->getPointer();
-            const InetAddrMask *a = Address::cast(obj)->getAddressObjectInetAddrMask();
-            al.push_back( a->getAddressPtr() );
+            //const InetAddrMask *a = Address::cast(obj)->getAddressObjectInetAddrMask();
+            const InetAddr *ip_addr = Address::cast(obj)->getAddressPtr();
+            al.push_back( ip_addr );
         }
 
         al.sort(compare_addresses_ptr);

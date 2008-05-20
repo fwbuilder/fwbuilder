@@ -360,16 +360,17 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
                 for (list<FWObject*>::iterator j=la.begin(); j!=la.end(); ++j) 
                 {
-                    const InetAddrMask *ipv4 = IPv4::cast(*j)->getAddressObjectInetAddrMask();
+                    //const InetAddrMask *ipv4 = IPv4::cast(*j)->getAddressObjectInetAddrMask();
+                    const InetAddr *ip_addr = IPv4::cast(*j)->getAddressPtr();
 
-                    if ( ipv4->getAddressPtr()->isAny())
+                    if ( ip_addr->isAny())
                     {
                         char errstr[256];
                         sprintf(errstr,
                                 "Interface %s (id=%s) has IP address %s.\n",
                                 iface->getName().c_str(),
                                 iface->getId().c_str(),
-                                ipv4->getAddressPtr()->toString().c_str());
+                                ip_addr->toString().c_str());
                         throw FWException(errstr);
                     }
                 }

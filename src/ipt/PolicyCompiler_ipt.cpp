@@ -229,15 +229,17 @@ void PolicyCompiler_ipt::_expandInterface(Interface *iface,
         std::list<FWObject*>::iterator j=lipaddr.begin();
         for ( ; j!=lipaddr.end(); j++)
         {
-            const InetAddrMask *ipv4 = Address::cast(*j)->getAddressObjectInetAddrMask();
+            //const InetAddrMask *ipv4 = Address::cast(*j)->getAddressObjectInetAddrMask();
+            const InetAddr *ip_addr = Address::cast(*j)->getAddressPtr();
+            const InetAddr *ip_netm = Address::cast(*j)->getNetmaskPtr();
             if (use_mac)
             {
                 combinedAddress *ca = new combinedAddress();
                 dbcopy->add(ca);
                 cacheObj(ca);
                 ca->setName( "CA("+iface->getName()+")" );
-                ca->setAddress( *(ipv4->getAddressPtr()) );
-                ca->setNetmask( *(ipv4->getNetmaskPtr()) );
+                ca->setAddress( *ip_addr );
+                ca->setNetmask( *ip_netm );
                 ca->setPhysAddress( pa->getPhysAddress() );
 
                 ol.push_back(ca);
@@ -1723,7 +1725,11 @@ bool PolicyCompiler_ipt::bridgingFw::checkForMatchingBroadcastAndMulticast(
             FWObjectTypedChildIterator k = iface->findByType(IPv4::TYPENAME);
             for ( ; k!=k.end(); ++k )
             {
-                const InetAddrMask *ipv4 = Address::cast(*k)->getAddressObjectInetAddrMask();
+                //const InetAddrMask *ipv4 = Address::cast(*k)->getAddressObjectInetAddrMask();
+                Address *addr = Address::cast(*k);
+                const InetAddr *ip_netm = addr->getNetmaskPtr();
+                const InetAddr *ip_net_addr = addr->getNetworkAddressPtr();
+                const InetAddr *ip_bcast_addr = addr->getBroadcastAddressPtr();
 
 /*
  * bug #780345: if interface has netmask 255.255.255.255, its own
@@ -1736,7 +1742,7 @@ bool PolicyCompiler_ipt::bridgingFw::checkForMatchingBroadcastAndMulticast(
  * interface, and the netmask is 255.255.255.255, then we get positive
  * match because this routine interprets this address as a broadcast.
  */
-                if (ipv4->getNetmaskPtr()->isHostMask())
+                if (ip_netm->isHostMask())
                     continue;
 /*
  * commented out to fix bug #637694 - "bridge enbaled / management"
@@ -1746,10 +1752,8 @@ bool PolicyCompiler_ipt::bridgingFw::checkForMatchingBroadcastAndMulticast(
    if ( ipv4->getAddress()==obj1_addr ) return true;
 
  */
-                if (*(ipv4->getNetworkAddressPtr()) == *(obj1_addr))
-                    return true; 
-                if (*(ipv4->getBroadcastAddressPtr()) == *(obj1_addr))
-                    return true;
+                if (*ip_net_addr == *obj1_addr) return true; 
+                if (*ip_bcast_addr == *obj1_addr) return true;
            }
         }
     }

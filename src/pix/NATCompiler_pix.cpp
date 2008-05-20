@@ -1405,14 +1405,14 @@ bool  NATCompiler_pix::DetectOverlappingStatics::processNext()
                      *(sc->osrc) == *(scmd->osrc))
                 {
                     const InetAddrMask *ia1 =
-                        scmd->iaddr->getAddressObjectInetAddrMask();
+                        scmd->iaddr->getInetAddrMaskObjectPtr();
                     const InetAddrMask *ia2 =
-                        sc->iaddr->getAddressObjectInetAddrMask();
+                        sc->iaddr->getInetAddrMaskObjectPtr();
 
                     const InetAddrMask *oa1 =
-                        scmd->oaddr->getAddressObjectInetAddrMask();
+                        scmd->oaddr->getInetAddrMaskObjectPtr();
                     const InetAddrMask *oa2 =
-                        sc->oaddr->getAddressObjectInetAddrMask();
+                        sc->oaddr->getInetAddrMaskObjectPtr();
 
                     if ( ! getOverlap(*(ia1), *(ia2)).empty() ||
                          ! getOverlap(*(oa1), *(oa2)).empty() )
