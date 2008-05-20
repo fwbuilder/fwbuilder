@@ -158,7 +158,7 @@ public:
      
     FWWindow();
     ~FWWindow();
-
+    QMdiArea* getMdiArea () {return m_space;}
     RCS * getRCS(); 
     
     libfwbuilder::FWObject* getVisibleFirewalls();

@@ -126,7 +126,7 @@
 #include <qstringlist.h>
 #include <qmenu.h>
 #include <qtoolbutton.h>
-
+#include <QMdiArea>
 #include <qlayout.h> 
 #include <qcursor.h>
 #include <qsplitter.h>
@@ -1210,6 +1210,17 @@ bool ProjectPanel::fileOpen()
         }
 /***********************************************************************/
 
+        QList<QMdiSubWindow *> subWindowList = mw->getMdiArea()->subWindowList();
+        QString fileName = rcs->getFileName();
+        for (int i = 0 ; i < subWindowList.size();i++)
+        {
+            ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
+            if (pp!=NULL)
+            {
+                if (pp->getFileName () == fileName)
+                    return false;
+            }
+        }
         load(this, rcs );
         showFirewalls( true );
 
