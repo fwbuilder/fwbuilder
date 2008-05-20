@@ -101,12 +101,12 @@ bool Network::isValidRoutingNet() const
     return (*(getAddressPtr()) == *(getNetworkAddressPtr()));
 }
 
-void Network::setAddress(const InetAddr &a, bool)
+void Network::setAddress(const InetAddr &a)
 {
     inet_addr_mask->setAddress(a);
 }
 
-void Network::setNetmask(const InetAddr &nm, bool)
+void Network::setNetmask(const InetAddr &nm)
 {
     inet_addr_mask->setNetmask(nm);
 }

@@ -100,12 +100,12 @@ xmlNodePtr IPv4::toXML(xmlNodePtr xml_parent_node) throw(FWException)
     return me;
 }
 
-void IPv4::setAddress(const InetAddr &a, bool)
+void IPv4::setAddress(const InetAddr &a)
 {
     inet_addr_mask->setAddress(a);
 }
 
-void IPv4::setNetmask(const InetAddr &nm, bool)
+void IPv4::setNetmask(const InetAddr &nm)
 {
     inet_addr_mask->setNetmask(nm);
 }

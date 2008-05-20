@@ -116,12 +116,12 @@ xmlNodePtr IPv6::toXML(xmlNodePtr xml_parent_node) throw(FWException)
     return me;
 }
 
-void IPv6::setAddress(const InetAddr &a, bool)
+void IPv6::setAddress(const InetAddr &a)
 {
     inet_addr_mask->setAddress(a);
 }
 
-void IPv6::setNetmask(const InetAddr &nm, bool)
+void IPv6::setNetmask(const InetAddr &nm)
 {
     inet_addr_mask->setNetmask(nm);
 }

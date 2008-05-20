@@ -164,7 +164,7 @@ public:
         const std::string &getLabel() const;
         void setLabel(const std::string& n);
 
-        virtual const Address* getAddressObject(bool ipv6=false) const;
+        virtual const Address* getAddressObject() const;
         
         virtual unsigned int dimension()  const { return 1; }
 

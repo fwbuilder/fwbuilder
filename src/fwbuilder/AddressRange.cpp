@@ -51,10 +51,9 @@ AddressRange::AddressRange(AddressRange &o) : Address() ,
     FWObject::operator=(o);
 }
 
-const InetAddr* AddressRange::getAddressPtr(bool ipv6) const
+const InetAddr* AddressRange::getAddressPtr() const
 {
-    if (!ipv6) return &start_address;
-    return NULL;
+    return &start_address;
 }
 
 unsigned int AddressRange::dimension()  const

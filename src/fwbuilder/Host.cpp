@@ -150,10 +150,10 @@ InetAddr Host::getManagementAddress() throw(FWException)
     return InetAddr();
 }
 
-const Address* Host::getAddressObject(bool ipv6) const
+const Address* Host::getAddressObject() const
 {
     FWObjectTypedChildIterator j = findByType(Interface::TYPENAME);
     if (j == j.end()) return NULL;
-    return Interface::cast(*j)->getAddressObject(ipv6);
+    return Interface::cast(*j)->getAddressObject();
 }
 

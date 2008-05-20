@@ -55,7 +55,7 @@ class AddressRange : public Address
     /**
      * virtual methods inherited from Address
      */
-    virtual const InetAddr* getAddressPtr(bool ipv6=false) const;
+    virtual const InetAddr* getAddressPtr() const;
     virtual unsigned int dimension()  const;
 
     virtual void setAddress(const InetAddr &a);

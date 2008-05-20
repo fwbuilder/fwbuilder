@@ -56,20 +56,12 @@ public:
                                        bool preserve_id = true)
         throw(FWException);
 
-    virtual const bool hasInetAddress(bool ipv6=false) const
-    {
-        if (ipv6) return true;
-        return false;
-    }
+    virtual const bool hasInetAddress() const { return true; }
 
-    virtual const Address* getAddressObject(bool ipv6=false) const
-    {
-        if (ipv6) return this;
-        return NULL;
-    }
+    virtual const Address* getAddressObject() const { return this; }
 
-    virtual void setAddress(const InetAddr &a, bool ipv6=false);
-    virtual void setNetmask(const InetAddr &nm, bool ipv6=false);
+    virtual void setAddress(const InetAddr &a);
+    virtual void setNetmask(const InetAddr &nm);
     virtual void setAddressNetmask(const std::string& s);
 
 };

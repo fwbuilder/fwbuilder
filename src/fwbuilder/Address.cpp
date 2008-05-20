@@ -84,59 +84,59 @@ bool Address::isAny() const
     return getId()==FWObjectDatabase::getAnyNetworkId();
 }
 
-const Address* Address::getAddressObject(bool) const
+const Address* Address::getAddressObject() const
 {
     return NULL;
 }
 
-const InetAddrMask* Address::getInetAddrMaskObjectPtr(bool ipv6) const
+const InetAddrMask* Address::getInetAddrMaskObjectPtr() const
 {
-    const Address *addr_obj = getAddressObject(ipv6);
+    const Address *addr_obj = getAddressObject();
     if (addr_obj) return addr_obj->inet_addr_mask;
     return NULL;
 }
 
-const bool Address::hasInetAddress(bool ipv6) const
+const bool Address::hasInetAddress() const
 {
-    const Address *addr_obj = getAddressObject(ipv6);
-    if (addr_obj) return addr_obj->hasInetAddress(ipv6);
+    const Address *addr_obj = getAddressObject();
+    if (addr_obj) return addr_obj->hasInetAddress();
     return false;
 }
 
-const InetAddr* Address::getAddressPtr(bool ipv6) const
+const InetAddr* Address::getAddressPtr() const
 {
-    const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr(ipv6);
+    const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr();
     if (inet_addr_mask) return inet_addr_mask->getAddressPtr();
     return NULL;
 }
 
-const InetAddr* Address::getNetmaskPtr(bool ipv6) const
+const InetAddr* Address::getNetmaskPtr() const
 {
-    const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr(ipv6);
+    const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr();
     if (inet_addr_mask) return inet_addr_mask->getNetmaskPtr();
     return NULL;
 }
 
-const InetAddr* Address::getNetworkAddressPtr(bool ipv6) const
+const InetAddr* Address::getNetworkAddressPtr() const
 {
-    const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr(ipv6);
+    const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr();
     if (inet_addr_mask) return inet_addr_mask->getNetworkAddressPtr();
     return NULL;
 }
 
-const InetAddr* Address::getBroadcastAddressPtr(bool ipv6) const
+const InetAddr* Address::getBroadcastAddressPtr() const
 {
-    const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr(ipv6);
+    const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr();
     if (inet_addr_mask) return inet_addr_mask->getBroadcastAddressPtr();
     return NULL;
 }
 
-void Address::setAddress(const InetAddr&, bool)
+void Address::setAddress(const InetAddr&)
 {
     assert(false);
 }
 
-void Address::setNetmask(const InetAddr&, bool)
+void Address::setNetmask(const InetAddr&)
 {
     assert(false);
 }

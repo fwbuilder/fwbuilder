@@ -262,14 +262,7 @@ bool  Interface::validateChild(FWObject *o)
 bool Interface::isLoopback() const
 {
     const Address *iaddr = getAddressObject();
-    if (iaddr && *(iaddr->getAddressPtr()) == InetAddr::getLoopbackAddr())
-        return true;
-
-    iaddr = getAddressObject(true);  // ipv6
-    if (iaddr && *(iaddr->getAddressPtr()) == InetAddr::getLoopbackAddr())
-        return true;
-
-    return false;
+    return (iaddr && *(iaddr->getAddressPtr()) == InetAddr::getLoopbackAddr());
 }
 
 physAddress*  Interface::getPhysicalAddress () const
@@ -304,10 +297,12 @@ void Interface::setLabel(const string& n)
     setStr("label",n);
 }
 
-const Address* Interface::getAddressObject(bool ipv6) const
+const Address* Interface::getAddressObject() const
 {
-    string type_name = (ipv6) ? IPv6::TYPENAME : IPv4::TYPENAME;
-    return Address::cast(getFirstByType(type_name));
+    Address *res = Address::cast(getFirstByType(IPv4::TYPENAME));
+    if (res==NULL)
+        res = Address::cast(getFirstByType(IPv6::TYPENAME));
+    return res;
 }
 
 IPv4*  Interface::addIPv4()

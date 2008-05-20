@@ -64,9 +64,9 @@ public:
                                        bool preserve_id = true)
         throw(FWException);
 
-    const InetAddrMask* getInetAddrMaskObjectPtr(bool ipv6=false) const;
+    const InetAddrMask* getInetAddrMaskObjectPtr() const;
 
-    virtual const bool hasInetAddress(bool ipv6=false) const;
+    virtual const bool hasInetAddress() const;
 
     /**
      * returns const pointer to internal InetAddr object. Some objects
@@ -77,17 +77,17 @@ public:
      * distinguish between when an object has address 0.0.0.0 or has no
      * address at all.
      */
-    virtual const InetAddr* getAddressPtr(bool ipv6=false) const;
-    virtual const InetAddr* getNetmaskPtr(bool ipv6=false) const;
+    virtual const InetAddr* getAddressPtr() const;
+    virtual const InetAddr* getNetmaskPtr() const;
 
-    virtual const InetAddr* getNetworkAddressPtr(bool ipv6=false) const;
-    virtual const InetAddr* getBroadcastAddressPtr(bool ipv6=false) const;
+    virtual const InetAddr* getNetworkAddressPtr() const;
+    virtual const InetAddr* getBroadcastAddressPtr() const;
 
-    virtual void setAddress(const InetAddr &a, bool ipv6=false);
-    virtual void setNetmask(const InetAddr &nm, bool ipv6=false);
+    virtual void setAddress(const InetAddr &a);
+    virtual void setNetmask(const InetAddr &nm);
     virtual void setAddressNetmask(const std::string& s);
 
-    virtual const Address* getAddressObject(bool ipv6=false) const;
+    virtual const Address* getAddressObject() const;
     virtual unsigned int dimension()  const;
     bool belongs(const InetAddr &) const;
     

@@ -79,7 +79,7 @@ class Host : public Address
      */
     Management *getManagementObject();
 
-    virtual const Address* getAddressObject(bool ipv6=false) const;
+    virtual const Address* getAddressObject() const;
     virtual unsigned int dimension()  const { return 1; }
     
     protected:

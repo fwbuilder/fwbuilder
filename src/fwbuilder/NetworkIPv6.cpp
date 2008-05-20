@@ -114,12 +114,12 @@ bool NetworkIPv6::isValidRoutingNet() const
     return (*(getAddressPtr()) == *(getNetworkAddressPtr()));
 }
 
-void NetworkIPv6::setAddress(const InetAddr &a, bool)
+void NetworkIPv6::setAddress(const InetAddr &a)
 {
     inet_addr_mask->setAddress(a);
 }
 
-void NetworkIPv6::setNetmask(const InetAddr &nm, bool)
+void NetworkIPv6::setNetmask(const InetAddr &nm)
 {
     inet_addr_mask->setNetmask(nm);
 }
