@@ -116,7 +116,8 @@ void IPv6Dialog::loadFWObject(FWObject *o)
     try
     {
         if ( Interface::isA( obj->getParent() ) )
-            m_dialog->netmask->setText(s->getNetmaskPtr()->toString().c_str());
+            m_dialog->netmask->setText( QString("%1").arg(
+                                            s->getNetmaskPtr()->getLength()) );
     } catch (FWException &ex) {}
 
     //apply->setEnabled( false );
@@ -214,8 +215,7 @@ void IPv6Dialog::applyChanges()
     {
         try
         {
-            s->setNetmask(
-                Inet6Addr(m_dialog->netmask->text().toLatin1().constData()) );
+            s->setNetmask(Inet6Addr(m_dialog->netmask->text().toShort()) );
         } catch (FWException &ex) { }
     } else
         s->setNetmask(Inet6Addr());
