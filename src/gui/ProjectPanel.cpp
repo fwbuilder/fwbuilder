@@ -1821,7 +1821,7 @@ void ProjectPanel::pasteRuleBelow()
 void ProjectPanel::startupLoad()
 {
     if (fwbdebug) qDebug("startup: load everything ...");
-
+    firstResize=false;
     int sa = st->getStartupAction();
 
     if (safeMode)  load(NULL);
@@ -1999,6 +1999,7 @@ void ProjectPanel::load(QWidget *dialogs_parent)
     if (fwbdebug) qDebug("ProjectPanel::load(): all done");
 
     setupAutoSave();
+
 }
 
 void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs)
@@ -3202,6 +3203,13 @@ void ProjectPanel::showEvent( QShowEvent *ev)
 {   if (rcs!=NULL)
     if (!firstLoad)
     {
+        loadSplitters();
+    }
+    QWidget::showEvent(ev);
+}
+
+void ProjectPanel::loadSplitters()
+{
     firstLoad=true ;
     QString val = st->getStr("Layout/MainWindowSplitter"+getFileName());
     if (!val.isEmpty())
@@ -3228,9 +3236,7 @@ void ProjectPanel::showEvent( QShowEvent *ev)
         if (w1 || w2)
             m_panel->objInfoSplitter->setSizes( sl );
     }
-    
-    }
-    QWidget::showEvent(ev);
+
 }
 
 void ProjectPanel::hideEvent( QHideEvent *ev)
@@ -3333,6 +3339,7 @@ void ProjectPanel::loadState ()
             height= 600;
         }
         firstResize=true ;
+        loadSplitters();
         mdiWindow->setGeometry (x,y,width,height);
         }
     }

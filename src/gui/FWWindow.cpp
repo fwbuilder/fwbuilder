@@ -280,7 +280,10 @@ void FWWindow::updateWindowTitle ()
 void FWWindow::startupLoad()
 {
     if (activeProject())
+    {
         activeProject()->startupLoad();
+        activeProject()->loadState();
+    }
 }
 
 void FWWindow::helpAbout()

@@ -669,8 +669,11 @@ int main( int argc, char ** argv )
 
         mw  = new FWWindow();
         mw->setSafeMode(safemode);
-        mw->setStartupFileName(filename);
-
+        if (filename!="")
+        {
+            QDir file (filename);
+            mw->setStartupFileName(file.canonicalPath ());
+        }
         //QToolTip::setWakeUpDelay( st->getTooltipDelay()*1000 );
 
         mw->show();

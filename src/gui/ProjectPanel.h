@@ -344,6 +344,7 @@ public:
     void saveState ();
     bool firstLoad ;
     void loadState ();
+    void loadSplitters();
     bool checkin(bool unlock);
     void loadLibrary(const std::string &libfpath);
     
