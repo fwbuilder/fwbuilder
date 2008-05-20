@@ -255,7 +255,9 @@ void Interface::setBroadcastBits(int _val) { bcast_bits=_val; }
 bool  Interface::validateChild(FWObject *o)
 {
     string otype=o->getTypeName();
-    return (otype==IPv4::TYPENAME || otype==IPv6::TYPENAME || otype==physAddress::TYPENAME ||
+    return (otype==IPv4::TYPENAME ||
+            otype==IPv6::TYPENAME ||
+            otype==physAddress::TYPENAME ||
             otype==InterfacePolicy::TYPENAME );
 }
 
@@ -318,7 +320,4 @@ IPv6*  Interface::addIPv6()
     add(ipv6);
     return ipv6;
 }
-
-
-
 
