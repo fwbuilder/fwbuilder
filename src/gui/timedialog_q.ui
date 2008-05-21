@@ -309,7 +309,20 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="1" colspan="2" >
+              <item row="0" column="1" >
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" >
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="0" column="2" >
                <widget class="QDateEdit" name="startDate" >
                 <property name="date" >
                  <date>
@@ -320,7 +333,7 @@
                 </property>
                </widget>
               </item>
-              <item row="1" column="0" colspan="2" >
+              <item row="1" column="0" >
                <widget class="QLabel" name="textLabel1_3" >
                 <property name="text" >
                  <string>Start time:</string>
@@ -329,6 +342,19 @@
                  <bool>false</bool>
                 </property>
                </widget>
+              </item>
+              <item row="1" column="1" >
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" >
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
               <item row="1" column="2" >
                <widget class="QTimeEdit" name="startTime" >
@@ -446,14 +472,27 @@
               <property name="verticalSpacing" >
                <number>2</number>
               </property>
-              <item row="0" column="0" >
+              <item row="0" column="0" colspan="2" >
                <widget class="QCheckBox" name="useEndDate" >
                 <property name="text" >
                  <string>End date:</string>
                 </property>
                </widget>
               </item>
-              <item row="0" column="1" colspan="2" >
+              <item row="0" column="2" >
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" >
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="0" column="3" >
                <widget class="QDateEdit" name="endDate" >
                 <property name="date" >
                  <date>
@@ -464,7 +503,7 @@
                 </property>
                </widget>
               </item>
-              <item row="1" column="0" colspan="2" >
+              <item row="1" column="0" >
                <widget class="QLabel" name="textLabel1_3_2" >
                 <property name="text" >
                  <string>End time:</string>
@@ -474,10 +513,23 @@
                 </property>
                </widget>
               </item>
-              <item row="1" column="2" >
+              <item row="1" column="1" colspan="2" >
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" >
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="1" column="3" >
                <widget class="QTimeEdit" name="endTime" />
               </item>
-              <item row="2" column="0" colspan="3" >
+              <item row="2" column="0" colspan="4" >
                <widget class="QFrame" name="frame_2" >
                 <property name="frameShape" >
                  <enum>QFrame::NoFrame</enum>
