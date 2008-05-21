@@ -142,8 +142,8 @@
         <file alias="Icons/Outbound-tree">Icons/outbound_16.png</file>
 	<file>Icons/physaddress-neg_25.png</file>
         <file>Icons/physaddress-ref_25.png</file>
-        <file>Icons/physaddress_16.png</file>
-        <file>Icons/physaddress_25.png</file>
+        <file alias="Icons/physAddress/icon-tree">Icons/physaddress_16.png</file>
+        <file alias="Icons/physAddress/icon">Icons/physaddress_25.png</file>
 
         <file>Icons/protect_host.png</file>
         <file>Icons/protect_net.png</file>
