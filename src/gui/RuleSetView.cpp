@@ -1705,7 +1705,7 @@ void RuleSetView::paintCell(QPainter *pntr,
 
                 if (policyRule && policyRule->getLogging())
                 {
-                    QString icn = Resources::global_res->getResourceStr("/FWBuilderResources/UI/Icons/Log" ).c_str();
+                    QString icn = chooseIcon(":/Icons/Log");//Resources::global_res->getResourceStr("/FWBuilderResources/UI/Icons/Log" ).c_str();
                     assert(icn!="");
 
                     QPixmap pm;

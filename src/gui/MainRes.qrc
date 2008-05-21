@@ -51,7 +51,7 @@
         <file>Icons/big-right-arrow.png</file>
         <file>Icons/big-up-arrow.png</file>
         <file>Icons/binoculars64.png</file>
-        <file>Icons/blank.png</file>
+        <file alias="Icons/Blank">Icons/blank.png</file>
         <file>Icons/blank_2x16.png</file>
         <file>Icons/books1.png</file>
         <file alias="Icons/Both">Icons/both.png</file>
@@ -111,7 +111,8 @@
         <file alias="Icons/Library/icon">Icons/library_25.png</file>
         <file>Icons/lock.png</file>
         <file>Icons/log.png</file>
-        <file>Icons/log_25.png</file>
+        <file alias="Icons/Log">Icons/log_25.png</file>
+        <file alias="Icons/Log-tree">Icons/log_16.png</file>        
         <file alias="Icons/neg">Icons/neg.png</file>
         
         <file alias="Icons/Network/icon-neg">Icons/network-neg_25.png</file>
