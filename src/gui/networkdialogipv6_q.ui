@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>561</width>
-    <height>175</height>
+    <width>620</width>
+    <height>208</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -319,30 +319,60 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="0" >
-            <widget class="QLabel" name="textLabel2_2_2" >
-             <property name="text" >
-              <string>Netmask:</string>
+           <item row="3" column="0" colspan="2" >
+            <widget class="QFrame" name="frame" >
+             <property name="frameShape" >
+              <enum>QFrame::NoFrame</enum>
              </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
+             <property name="frameShadow" >
+              <enum>QFrame::Raised</enum>
              </property>
-            </widget>
-           </item>
-           <item row="3" column="1" >
-            <widget class="QLineEdit" name="netmask" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize" >
-              <size>
-               <width>200</width>
-               <height>0</height>
-              </size>
-             </property>
+             <layout class="QGridLayout" >
+              <property name="leftMargin" >
+               <number>0</number>
+              </property>
+              <property name="topMargin" >
+               <number>0</number>
+              </property>
+              <property name="rightMargin" >
+               <number>0</number>
+              </property>
+              <property name="bottomMargin" >
+               <number>0</number>
+              </property>
+              <property name="horizontalSpacing" >
+               <number>0</number>
+              </property>
+              <property name="verticalSpacing" >
+               <number>0</number>
+              </property>
+              <item row="0" column="0" >
+               <widget class="QLabel" name="textLabel2_2_2" >
+                <property name="text" >
+                 <string>Network (bit length)</string>
+                </property>
+                <property name="wordWrap" >
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1" >
+               <widget class="QLineEdit" name="netmask" >
+                <property name="sizePolicy" >
+                 <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize" >
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
            <item row="4" column="1" >
@@ -352,8 +382,8 @@
              </property>
              <property name="sizeHint" >
               <size>
-               <width>20</width>
-               <height>40</height>
+               <width>200</width>
+               <height>20</height>
               </size>
              </property>
             </spacer>
@@ -373,7 +403,6 @@
   <tabstop>obj_name</tabstop>
   <tabstop>libs</tabstop>
   <tabstop>address</tabstop>
-  <tabstop>netmask</tabstop>
   <tabstop>comment</tabstop>
  </tabstops>
  <resources/>
@@ -395,39 +424,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>libs</sender>
-   <signal>activated(int)</signal>
-   <receiver>NetworkDialog_q</receiver>
-   <slot>libChanged()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>address</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>NetworkDialogIPv6_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>netmask</sender>
    <signal>textChanged(QString)</signal>
    <receiver>NetworkDialogIPv6_q</receiver>
    <slot>changed()</slot>
