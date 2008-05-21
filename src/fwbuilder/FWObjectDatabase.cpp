@@ -775,7 +775,7 @@ void FWObjectTreeScanner::scanAndAdd(FWObject *dst,FWObject *source)
 
 void FWObjectTreeScanner::merge(FWObject *dst,FWObject *src)
 {
-    string dobjId             = FWObjectDatabase::getDeletedObjectsId();
+    string dobjId = FWObjectDatabase::getDeletedObjectsId();
 
     if (dst==NULL)
     {
@@ -950,9 +950,9 @@ void FWObjectTreeScanner::merge(FWObject *dst,FWObject *src)
 
 FWObjectDatabase* FWObjectDatabase::exportSubtree( const list<FWObject*> &libs )
 {
-    FWObjectDatabase *ndb  = new FWObjectDatabase();
+    FWObjectDatabase *ndb = new FWObjectDatabase();
 
-    ndb->init=true;
+    ndb->init = true;
 
     for (list<FWObject*>::const_iterator i=libs.begin(); i!=libs.end(); i++)
     {
@@ -963,27 +963,27 @@ FWObjectDatabase* FWObjectDatabase::exportSubtree( const list<FWObject*> &libs )
     }
 
     FWObjectTreeScanner scanner(ndb);
-    scanner.scanAndAdd(NULL,this);
+    scanner.scanAndAdd(NULL, this);
 
-    ndb->init=false;
+    ndb->init = false;
 
     return ndb;
 }
 
 FWObjectDatabase* FWObjectDatabase::exportSubtree( FWObject *lib )
 {
-    FWObjectDatabase *ndb  = new FWObjectDatabase();
+    FWObjectDatabase *ndb = new FWObjectDatabase();
 
-    ndb->init=true;
+    ndb->init = true;
 
     FWObject *nlib = ndb->create(lib->getTypeName());
     ndb->add(nlib);
     *nlib = *lib;
 
     FWObjectTreeScanner scanner(ndb);
-    scanner.scanAndAdd(NULL,this);
+    scanner.scanAndAdd(NULL, this);
 
-    ndb->init=false;
+    ndb->init = false;
 
     return ndb;
 }
@@ -991,12 +991,12 @@ FWObjectDatabase* FWObjectDatabase::exportSubtree( FWObject *lib )
 void FWObjectDatabase::merge( FWObjectDatabase *ndb,
                               ConflictResolutionPredicate *crp)
 {
-    init=true;
+    init = true;
 
-    FWObjectTreeScanner scanner(this,crp);
-    scanner.merge(NULL,ndb);
+    FWObjectTreeScanner scanner(this, crp);
+    scanner.merge(NULL, ndb);
 
-    init=false;
+    init = false;
 }
 
 /*
@@ -1007,7 +1007,7 @@ void FWObjectDatabase::merge( FWObjectDatabase *ndb,
 void FWObjectDatabase::findObjectsInGroup(Group *g,set<FWObject *> &res)
 {
     searchId++;
-    _findObjectsInGroup(g,res);
+    _findObjectsInGroup(g, res);
 }
 
 void FWObjectDatabase::_findObjectsInGroup(Group *g,set<FWObject *> &res)

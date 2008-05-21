@@ -163,3 +163,13 @@ bool Address::belongs(const InetAddr &other) const
     return false;
 }
 
+bool Address::cmp(const FWObject *obj) throw(FWException)
+{
+    if (Address::constcast(obj)==NULL) return false;
+    if (!FWObject::cmp(obj)) return false;
+    if (hasInetAddress()!=Address::constcast(obj)->hasInetAddress()) return false;
+    if (!hasInetAddress()) return true;
+    // both this and obj are objects that own ip addresses
+    return (*inet_addr_mask == *(Address::constcast(obj)->inet_addr_mask));
+}
+

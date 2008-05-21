@@ -98,9 +98,9 @@ FWObject& Interface::shallowDuplicate(const FWObject *o, bool preserve_id)
 FWObject& Interface::duplicate(const FWObject *x, bool preserve_id)
     throw(FWException)
 {
-    FWObject::duplicate(x,preserve_id);
+    FWObject::duplicate(x, preserve_id);
 
-    const Interface *rx=Interface::constcast(x);
+    const Interface *rx = Interface::constcast(x);
     if (rx!=NULL)
     {
         bcast_bits = rx->bcast_bits;

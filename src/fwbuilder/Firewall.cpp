@@ -36,6 +36,8 @@
 #include <fwbuilder/FWOptions.h>
 #include <fwbuilder/Interface.h>
 #include <fwbuilder/Management.h>
+#include <fwbuilder/IPv4.h>
+#include <fwbuilder/IPv6.h>
 
 #include <fwbuilder/Policy.h>
 #include <fwbuilder/InterfacePolicy.h>
@@ -273,34 +275,37 @@ FWObject& Firewall::duplicate(const FWObject *obj,
         FWObject *o1  = addCopyOf(o,preserve_id);
 
         replaceRef(this, o->getId(),   o1->getId()   );
-//        replaceRef(this, o->getId(),   o1->getId()   );
 
         o1->destroyChildren();
 
-        FWObjectTypedChildIterator k=o->findByType(IPv4::TYPENAME);
-        for ( ; k!=k.end(); ++k ) 
+        for (FWObjectTypedChildIterator k=o->findByType(IPv4::TYPENAME);
+             k!=k.end(); ++k ) 
         {
             FWObject *oa = *k;
             FWObject *oa1= o1->addCopyOf(oa,preserve_id);
 
             if (oa!=NULL && oa1!=NULL)
-            {       
                 replaceRef(this, oa->getId(),  oa1->getId() );
-//                replaceRef(nat, oa->getId(),  oa1->getId() );
-            }
         }
 
-        k=o->findByType(physAddress::TYPENAME);
-        for ( ; k!=k.end(); ++k ) 
+        for (FWObjectTypedChildIterator k=o->findByType(IPv6::TYPENAME);
+             k!=k.end(); ++k ) 
+        {
+            FWObject *oa = *k;
+            FWObject *oa1= o1->addCopyOf(oa,preserve_id);
+
+            if (oa!=NULL && oa1!=NULL)
+                replaceRef(this, oa->getId(),  oa1->getId() );
+        }
+
+        for (FWObjectTypedChildIterator k = o->findByType(physAddress::TYPENAME);
+             k!=k.end(); ++k ) 
         {
             FWObject *opa = *k;
             FWObject *opa1= o1->addCopyOf(opa,preserve_id);
 
             if (opa!=NULL && opa1!=NULL)
-            {       
                 replaceRef(this, opa->getId(),  opa1->getId() );
-//                replaceRef(nat, opa->getId(),  opa1->getId() );
-            }
         }
     }
 

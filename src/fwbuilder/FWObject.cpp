@@ -286,10 +286,12 @@ FWObject& FWObject::operator=(const FWObject &x)  throw(FWException)
     return duplicate(&x, false);
 }
 
-FWObject& FWObject::duplicate(const FWObject *x, bool preserve_id) throw(FWException)
+FWObject& FWObject::duplicate(const FWObject *x, bool preserve_id)
+    throw(FWException)
 {
     checkReadOnly();
-    bool xro=x->getBool("ro"); 
+    bool xro = x->getBool("ro"); 
+
 #if 0
     cerr << "--------------------------------" << endl;
     cerr << "this: " << endl;
@@ -299,7 +301,8 @@ FWObject& FWObject::duplicate(const FWObject *x, bool preserve_id) throw(FWExcep
     ((FWObject*)x)->dump(true,true);
     cerr << endl;
 #endif
-    shallowDuplicate(x,preserve_id);
+
+    shallowDuplicate(x, preserve_id);
 
     if (xro) setReadOnly(false);
 
@@ -317,7 +320,8 @@ FWObject& FWObject::duplicate(const FWObject *x, bool preserve_id) throw(FWExcep
     return *this;
 }
 
-FWObject* FWObject::addCopyOf(const FWObject *x, bool preserve_id) throw(FWException)
+FWObject* FWObject::addCopyOf(const FWObject *x, bool preserve_id)
+    throw(FWException)
 {
     if (x==NULL) return NULL;
     FWObject *o1;
@@ -330,7 +334,9 @@ FWObject* FWObject::addCopyOf(const FWObject *x, bool preserve_id) throw(FWExcep
         throw FWException(string("Error creating object with type: ")+
                           x->getTypeName());
     add(o1);
+
     o1->duplicate(x, preserve_id);
+
     return o1;
 }
 
@@ -342,7 +348,8 @@ FWObject* FWObject::addCopyOf(const FWObject *x, bool preserve_id) throw(FWExcep
  * 07/06/2007 -- changed that. Now copy has the same value of "ro"
  * attribute.  Clear it in the caller if neccessary.
  */
-FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id) throw(FWException)
+FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
+    throw(FWException)
 {
     checkReadOnly();
 

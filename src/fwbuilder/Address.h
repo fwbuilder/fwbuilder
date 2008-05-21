@@ -92,6 +92,7 @@ public:
     bool belongs(const InetAddr &) const;
     
     virtual FWReference* createRef();
+    virtual bool cmp(const FWObject *obj) throw(FWException);
 
     bool isAny() const;
 };
