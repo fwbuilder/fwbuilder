@@ -291,7 +291,7 @@ int main(int argc, char * const * argv)
         if (only_print_inspection_code)
         {
             OSConfigurator_pix_os *oscnf=NULL;
-            oscnf=new OSConfigurator_pix_os(objdb , fwobjectname);
+            oscnf = new OSConfigurator_pix_os(objdb , fwobjectname, false);
             oscnf->prolog();
 
             cout << oscnf->getProtocolInspectionCommands();
@@ -490,14 +490,14 @@ int main(int argc, char * const * argv)
         if (user_name==NULL) 
             throw FWException("Can't figure out your user name, aborting");
 
-        Preprocessor* prep=new Preprocessor(objdb , fwobjectname);
+        Preprocessor* prep=new Preprocessor(objdb , fwobjectname, false);
         prep->compile();
 
 /*
  * Process firewall options, build OS network configuration script
  */
         OSConfigurator *oscnf=NULL;
-        oscnf=new OSConfigurator_pix_os(objdb , fwobjectname);
+        oscnf = new OSConfigurator_pix_os(objdb , fwobjectname, false);
 
         oscnf->prolog();
         oscnf->processFirewallOptions();
@@ -505,8 +505,8 @@ int main(int argc, char * const * argv)
 
 /* create compilers and run the whole thing */
 
-        NATCompiler_pix *n=new NATCompiler_pix( objdb ,
-                                                fwobjectname, oscnf );
+        NATCompiler_pix *n = new NATCompiler_pix( objdb ,
+                                                  fwobjectname, false, oscnf );
 
         if (test_mode) n->setTestMode();
         n->setDebugLevel( dl );
@@ -520,9 +520,10 @@ int main(int argc, char * const * argv)
             cout << " Nothing to compile in NAT \n" << flush;
 
 
-        PolicyCompiler_pix *c=new PolicyCompiler_pix( objdb ,
-                                                      fwobjectname ,
-                                                      oscnf , n);
+        PolicyCompiler_pix *c = new PolicyCompiler_pix( objdb ,
+                                                        fwobjectname ,
+                                                        false,
+                                                        oscnf , n);
 
         if (test_mode) c->setTestMode();
         c->setDebugLevel( dl );

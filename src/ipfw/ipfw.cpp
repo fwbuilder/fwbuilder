@@ -309,7 +309,7 @@ int main(int argc, char * const *argv)
 	bool debug=options->getBool("debug");
 	string shell_dbg=(debug)?"-x":"" ;
 
-        Preprocessor* prep=new Preprocessor(objdb , fwobjectname);
+        Preprocessor* prep=new Preprocessor(objdb , fwobjectname, false);
         prep->compile();
 
 /*
@@ -318,10 +318,10 @@ int main(int argc, char * const *argv)
 	OSConfigurator *oscnf=NULL;
         string family=Resources::os_res[fw->getStr("host_OS")]->Resources::getResourceStr("/FWBuilderResources/Target/family");
 	if ( family=="macosx")
-            oscnf=new OSConfigurator_macosx(objdb , fwobjectname);
+            oscnf=new OSConfigurator_macosx(objdb , fwobjectname, false);
 
 	if ( family=="freebsd")
-            oscnf=new OSConfigurator_freebsd(objdb , fwobjectname);
+            oscnf=new OSConfigurator_freebsd(objdb , fwobjectname, false);
 
 	if (oscnf==NULL)
 	    throw FWException(_("Unrecognized host OS ")+fw->getStr("host_OS")+"  (family "+family+")");
@@ -330,7 +330,7 @@ int main(int argc, char * const *argv)
 /*
  * create compilers and run the whole thing 
  */
-	PolicyCompiler_ipfw c( objdb , fwobjectname , oscnf );
+	PolicyCompiler_ipfw c( objdb , fwobjectname, false , oscnf );
 
 	c.setDebugLevel( dl );
 	c.setDebugRule(  drp );

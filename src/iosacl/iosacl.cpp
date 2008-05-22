@@ -318,14 +318,14 @@ int main(int argc, char * const * argv)
         if (user_name==NULL) 
             throw FWException("Can't figure out your user name, aborting");
 
-        Preprocessor* prep=new Preprocessor(objdb , fwobjectname);
+        Preprocessor* prep=new Preprocessor(objdb , fwobjectname, false);
         prep->compile();
 
 /*
  * Process firewall options, build OS network configuration script
  */
         OSConfigurator *oscnf=NULL;
-        oscnf=new OSConfigurator_ios(objdb , fwobjectname);
+        oscnf=new OSConfigurator_ios(objdb , fwobjectname, false);
 
         oscnf->prolog();
         oscnf->processFirewallOptions();
@@ -334,6 +334,7 @@ int main(int argc, char * const * argv)
 
         PolicyCompiler_iosacl *c = new PolicyCompiler_iosacl(objdb,
                                                              fwobjectname,
+                                                             false,
                                                              oscnf);
 
         if (test_mode) c->setTestMode();

@@ -61,8 +61,9 @@ using namespace std;
 string OSConfigurator_linux24::myPlatformName() { return "Linux24"; }
 
 OSConfigurator_linux24::OSConfigurator_linux24(FWObjectDatabase *_db,
-                                               const string &fwname) : 
-    OSConfigurator(_db,fwname) , os_data(fw->getStr("host_OS"))
+                                               const string &fwname,
+                                               bool ipv6_policy) : 
+    OSConfigurator(_db, fwname, ipv6_policy) , os_data(fw->getStr("host_OS"))
 {
 }
 
@@ -587,7 +588,7 @@ string  OSConfigurator_linux24::printPathForAllTools(const string &os)
     FWOptions* options=fw->getOptionsObject();
     
     string s, path_lsmod, path_modprobe, path_iptables, path_ip6tables;
-    string path_iptables_restore, path_ip, path_logger;
+    string path_iptables_restore, path_ip6tables_restore, path_ip, path_logger;
 
     s=options->getStr("linux24_path_lsmod");
     if (!s.empty()) path_lsmod=s;
@@ -608,6 +609,10 @@ string  OSConfigurator_linux24::printPathForAllTools(const string &os)
     s=options->getStr("linux24_path_iptables_restore");
     if (!s.empty()) path_iptables_restore=s;
     else            path_iptables_restore=os_data.getPathForTool(os,OSData::IPTABLES_RESTORE);
+
+    s=options->getStr("linux24_path_ip6tables_restore");
+    if (!s.empty()) path_ip6tables_restore=s;
+    else            path_ip6tables_restore=os_data.getPathForTool(os,OSData::IP6TABLES_RESTORE);
 
     s=options->getStr("linux24_path_ip");
     if (!s.empty()) path_ip=s;

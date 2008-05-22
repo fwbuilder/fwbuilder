@@ -66,9 +66,10 @@ string PolicyCompiler_pix::myPlatformName() { return "pix"; }
 
 PolicyCompiler_pix::PolicyCompiler_pix(FWObjectDatabase *_db,
                                        const std::string &fwname,
+                                       bool ipv6_policy,
                                        OSConfigurator *_oscnf,
                                        NATCompiler_pix *_natcmp) :
-    PolicyCompiler_cisco(_db,fwname,_oscnf) 
+    PolicyCompiler_cisco(_db, fwname, ipv6_policy, _oscnf) 
 {
     natcmp=_natcmp;
     resetinbound=false;

@@ -461,6 +461,7 @@ namespace fwcompiler {
 
 	NATCompiler_pix(libfwbuilder::FWObjectDatabase *_db,
                         const std::string &fwname,
+                        bool ipv6_policy,
                         fwcompiler::OSConfigurator *_oscnf);
 
 	virtual int  prolog();

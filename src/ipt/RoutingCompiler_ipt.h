@@ -158,8 +158,9 @@ namespace fwcompiler {
     public:
 
 	RoutingCompiler_ipt(libfwbuilder::FWObjectDatabase *_db,
-			   const std::string &fwname,
-			   fwcompiler::OSConfigurator *_oscnf) : RoutingCompiler(_db,fwname,_oscnf) {}
+                            const std::string &fwname, bool ipv6_policy,
+                            fwcompiler::OSConfigurator *_oscnf) :
+        RoutingCompiler(_db, fwname, ipv6_policy, _oscnf) {}
 
 
 	virtual int  prolog();

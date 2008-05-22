@@ -62,8 +62,9 @@ string PolicyCompiler_cisco::myPlatformName() { return ""; }
 
 PolicyCompiler_cisco::PolicyCompiler_cisco(FWObjectDatabase *_db,
                                            const std::string &fwname,
+                                           bool ipv6_policy,
                                            OSConfigurator *_oscnf) :
-    PolicyCompiler(_db,fwname,_oscnf) , helper(this)
+    PolicyCompiler(_db, fwname, ipv6_policy, _oscnf) , helper(this)
 {
 }
 

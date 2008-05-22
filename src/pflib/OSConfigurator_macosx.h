@@ -44,8 +44,9 @@ namespace fwcompiler {
 
 	virtual ~OSConfigurator_macosx() {};
 	OSConfigurator_macosx(libfwbuilder::FWObjectDatabase *_db,
-			      const std::string &fwname) : 
-	    OSConfigurator(_db,fwname) , os_data() {}
+			      const std::string &fwname,
+                              bool ipv6_policy) : 
+        OSConfigurator(_db, fwname, ipv6_policy) , os_data() {}
 
         virtual int prolog();
 

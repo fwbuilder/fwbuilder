@@ -2535,28 +2535,20 @@ bool PolicyCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::processNext()
 bool PolicyCompiler_ipt::expandMultipleAddressesIfNotFWinSrc::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-
     RuleElementSrc *srcrel=rule->getSrc();
     Address        *src   =compiler->getFirstSrc(rule);  assert(src);
-
-    if (Firewall::cast(src)==NULL)  compiler->_expandAddr(rule,srcrel);
-
+    if (Firewall::cast(src)==NULL)  compiler->_expandAddr(rule, srcrel);
     tmp_queue.push_back(rule);
-
     return true;
 }
 
 bool PolicyCompiler_ipt::expandMultipleAddressesIfNotFWinDst::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-
     RuleElementDst *dstrel=rule->getDst();
     Address        *dst   =compiler->getFirstDst(rule);  assert(dst);
-
-    if (Firewall::cast(dst)==NULL)  compiler->_expandAddr(rule,dstrel);
-
+    if (Firewall::cast(dst)==NULL)  compiler->_expandAddr(rule, dstrel);
     tmp_queue.push_back(rule);
-
     return true;
 }
 
@@ -2860,9 +2852,16 @@ bool PolicyCompiler_ipt::finalizeChain::processNext()
     {
 
 //    RuleElementSrc *srcrel=rule->getSrc();
-      Address        *src   =compiler->getFirstSrc(rule);  assert(src);
+      Address        *src   =compiler->getFirstSrc(rule);
+      if (src==NULL)
+          compiler->abort(string("finalizeChain: Empty Source rule element in rule ") +
+                          rule->getLabel());
+
 //    RuleElementDst *dstrel=rule->getDst();
-      Address        *dst   =compiler->getFirstDst(rule);  assert(dst);
+      Address        *dst   =compiler->getFirstDst(rule);
+      if (dst==NULL)
+          compiler->abort(string("finalizeChain: Empty Destination rule element in rule ") +
+                          rule->getLabel());
 
       bool b,m;
 /* 
@@ -2975,9 +2974,15 @@ bool PolicyCompiler_ipt::removeFW::processNext()
         ! rule->getBool("upstream_rule_neg") )
     {
         RuleElementSrc *srcrel=rule->getSrc();
-        Address        *src   =compiler->getFirstSrc(rule);  assert(src);
+        Address        *src   =compiler->getFirstSrc(rule);
+        if (src==NULL)
+            compiler->abort(string("removeFW: Empty Source rule element in rule ") +
+                            rule->getLabel());
         RuleElementDst *dstrel=rule->getDst();
-        Address        *dst   =compiler->getFirstDst(rule);  assert(dst);
+        Address        *dst   =compiler->getFirstDst(rule);
+        if (dst==NULL)
+            compiler->abort(string("removeFW: Empty Destination rule element in rule ") +
+                            rule->getLabel());
 
         if (( rule->getStr("ipt_chain")=="INPUT" || 
               rule->getStr("upstream_rule_chain")=="INPUT") && dst->getId()==compiler->getFwId() ) 
@@ -3623,8 +3628,9 @@ void PolicyCompiler_ipt::compile()
 {
     printRule=NULL;
 
-    cout << _(" Compiling rules for '") << my_table
-         << _("' table ...") <<  endl << flush;
+    cout << " Compiling rules for '" << my_table << "' table";
+    if (ipv6) cout << ", IPv6";
+    cout <<  endl << flush;
 
     try {
 
@@ -3659,6 +3665,8 @@ void PolicyCompiler_ipt::compile()
             check_for_recursive_groups=false;
 
             add( new ExpandGroups("expand groups"                          ) );
+            add( new dropRuleWithEmptyRE(
+                     "drop rules with empty rule elements"));
             add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC") );
             add( new eliminateDuplicatesInDST("eliminate duplicates in DST") );
             add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV") );
@@ -3674,6 +3682,9 @@ void PolicyCompiler_ipt::compile()
                      "expand objects with multiple addresses in SRC" ) );
             add( new ExpandMultipleAddressesInDST(
                      "expand objects with multiple addresses in DST" ) );
+            add( new dropRuleWithEmptyRE(
+                     "drop rules with empty rule elements"));
+
             add( new ConvertToAtomic("convert to atomic rules"            ) );
 
 /*
@@ -3801,6 +3812,8 @@ void PolicyCompiler_ipt::compile()
         add( new setChainPostroutingForTag("chain POSTROUTING for Tag"));
 
         add( new ExpandGroups(            "expand all groups"           ));
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+
         add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC" ));
         add( new eliminateDuplicatesInDST("eliminate duplicates in DST" ));
         add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV" ));
@@ -3852,6 +3865,17 @@ void PolicyCompiler_ipt::compile()
         add( new expandLoopbackInterfaceAddress(
                  "check for loopback interface in the rule objects") );
 
+        // processors that expand objects with multiple addresses
+        // check addresses against current address family using member
+        // ipv6. If all addresses do not match, we may end up with
+        // empty rule element.
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+
+        if (ipv6)
+            add( new DropIPv4Rules("drop ipv4 rules"));
+        else
+            add( new DropIPv6Rules("drop ipv6 rules"));
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
 // trying process rules with multiple interfaces as late as possible
         add( new InterfacePolicyRulesWithOptimization(
@@ -3926,7 +3950,6 @@ void PolicyCompiler_ipt::compile()
                  "drop rules with action Continue") );
         add( new convertInterfaceIdToStr("prepare interface assignments") );
         add( new optimize3("optimization 3") );
-        add( new CheckIfIPv6Rule("find ipv6 rules"));
 
         add( createPrintRuleProcessor() );
 
@@ -4107,11 +4130,6 @@ string PolicyCompiler_ipt::flushAndSetDefaultPolicy()
     res += printRule->_declareTable();
     res += printRule->_flushAndSetDefaultPolicy();
     res += printRule->_printOptionalGlobalRules();
-    if (haveIPv6Rules())
-    {
-        // same rules for ipv6
-        res += printRule->_printOptionalGlobalRules(true);
-    }
 
     return res;
 }

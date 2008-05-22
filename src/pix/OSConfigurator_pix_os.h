@@ -60,8 +60,9 @@ namespace fwcompiler {
 
 	virtual ~OSConfigurator_pix_os() {};
 	OSConfigurator_pix_os(libfwbuilder::FWObjectDatabase *_db,
-			      const std::string &fwname) : 
-	    OSConfigurator(_db,fwname) {}
+			      const std::string &fwname,
+                              bool ipv6_policy) : 
+        OSConfigurator(_db, fwname, ipv6_policy) {}
 
 	virtual int  prolog();
 

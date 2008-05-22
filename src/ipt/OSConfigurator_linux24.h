@@ -52,7 +52,7 @@ namespace fwcompiler {
 
 	virtual ~OSConfigurator_linux24() {};
 	OSConfigurator_linux24(libfwbuilder::FWObjectDatabase *_db,
-                               const std::string &fwname);
+                               const std::string &fwname, bool ipv6_policy);
 
 	virtual std::string myPlatformName();
 

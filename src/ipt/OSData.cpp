@@ -38,13 +38,14 @@ string  OSData::getPathForTool(const string &distro,tools t)
 
     switch (t)
     {
-    case LSMOD:            r+="path_lsmod";            break;
-    case MODPROBE:         r+="path_modprobe";         break;
-    case IPTABLES:         r+="path_iptables";         break;
-    case IP6TABLES:        r+="path_ip6tables";        break;
-    case IPTABLES_RESTORE: r+="path_iptables_restore"; break;
-    case IP:               r+="path_ip";               break;
-    case LOGGER:           r+="path_logger";           break;
+    case LSMOD:             r+="path_lsmod";            break;
+    case MODPROBE:          r+="path_modprobe";         break;
+    case IPTABLES:          r+="path_iptables";         break;
+    case IP6TABLES:         r+="path_ip6tables";        break;
+    case IPTABLES_RESTORE:  r+="path_iptables_restore"; break;
+    case IP6TABLES_RESTORE: r+="path_ip6tables_restore"; break;
+    case IP:                r+="path_ip";               break;
+    case LOGGER:            r+="path_logger";           break;
     }
     return Resources::os_res[host_os]->getResourceStr(r);
 }

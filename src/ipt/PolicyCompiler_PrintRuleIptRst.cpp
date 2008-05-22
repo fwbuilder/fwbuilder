@@ -57,8 +57,7 @@ using namespace std;
 /*
  *  check and create new chain if needed
  */
-string PolicyCompiler_ipt::PrintRuleIptRst::_createChain(const string &chain,
-                                                         bool)
+string PolicyCompiler_ipt::PrintRuleIptRst::_createChain(const string &chain)
 {
     string res;
     if ( ! chains[chain] )
@@ -69,7 +68,7 @@ string PolicyCompiler_ipt::PrintRuleIptRst::_createChain(const string &chain,
     return res;
 }
 
-string PolicyCompiler_ipt::PrintRuleIptRst::_startRuleLine(bool)
+string PolicyCompiler_ipt::PrintRuleIptRst::_startRuleLine()
 {            
     return string("-A ");
 }

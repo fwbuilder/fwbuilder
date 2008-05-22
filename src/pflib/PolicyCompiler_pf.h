@@ -440,9 +440,11 @@ namespace fwcompiler {
 
 	PolicyCompiler_pf(libfwbuilder::FWObjectDatabase *_db,
 			  const std::string &fwname,
+                          bool ipv6_policy,
 			  fwcompiler::OSConfigurator *_oscnf,
                           NATCompiler_pf *_natcmp,
-                          TableFactory *tbf = NULL) : PolicyCompiler(_db,fwname,_oscnf) 
+                          TableFactory *tbf = NULL) :
+        PolicyCompiler(_db, fwname, ipv6_policy, _oscnf) 
         {
             natcmp=_natcmp;
             tables = tbf;

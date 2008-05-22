@@ -1958,11 +1958,6 @@ void ProjectPanel::load(QWidget *dialogs_parent)
         if (fwbdebug) qDebug("ProjectPanel::load(): create RCS");
 
         createRCS("");
-/*
- * TODO: we should create new FWObjectDatabase object and assign db
- * instead of using singleton
- */
-//        objdb = FWObjectDatabase::db;
 
         setWindowTitle( "Firewall Builder" );
 
@@ -1992,7 +1987,7 @@ void ProjectPanel::load(QWidget *dialogs_parent)
 
 }
 
-void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs)
+void ProjectPanel::load(QWidget *dialogs_parent, RCS *_rcs)
 {
     QStatusBar *sb = mainW->statusBar();
 
@@ -2039,17 +2034,18 @@ void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs)
 
         sb->showMessage( tr("Reading and parsing data file...") );
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-        //QApplication::eventLoop()->processEvents(QEventLoop::ExcludeUserInput,100);
 
         FWObjectDatabase *ndb = new FWObjectDatabase();
-        ndb->load(rcs->getFileName().toLatin1().constData(), &upgrade_predicate,librespath);
-        time_t   oldtimestamp = ndb->getTimeLastModified();
+        ndb->load(rcs->getFileName().toLatin1().constData(),
+                  &upgrade_predicate,librespath);
+        time_t oldtimestamp = ndb->getTimeLastModified();
 
         sb->clearMessage();
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
 /* loadingLib is true if user wants to open a library or master library file */
-        bool loadingLib         = editingLibrary();
+
+        bool loadingLib = editingLibrary();
 
         if (fwbdebug)
         {
@@ -2109,8 +2105,8 @@ void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs)
         }
 
         sb->showMessage( tr("Merging with system objects...") );
-        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
-        //QApplication::eventLoop()->processEvents(QEventLoop::ExcludeUserInput,100);
+        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents,
+                                        100);
 
         MergeConflictRes mcr(dlgp);
         objdb->merge(ndb, &mcr);

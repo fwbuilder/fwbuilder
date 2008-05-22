@@ -62,8 +62,9 @@ string PolicyCompiler_iosacl::myPlatformName() { return "iosacl"; }
 
 PolicyCompiler_iosacl::PolicyCompiler_iosacl(FWObjectDatabase *_db,
                                              const std::string &fwname,
+                                             bool ipv6_policy,
                                              OSConfigurator *_oscnf) :
-    PolicyCompiler_cisco(_db,fwname,_oscnf)
+    PolicyCompiler_cisco(_db, fwname, ipv6_policy, _oscnf)
 {
     resetinbound=false;
     fragguard=false;

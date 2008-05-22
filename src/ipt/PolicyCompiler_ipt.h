@@ -795,8 +795,7 @@ namespace fwcompiler {
             std::string                      current_rule_label;
             std::map<const std::string,bool> chains;
 
-            virtual std::string _createChain(const std::string &chain,
-                                             bool ipv6=false);
+            virtual std::string _createChain(const std::string &chain);
             virtual std::string _printRuleLabel(libfwbuilder::PolicyRule *r);
 
             virtual std::string _printSrcService(libfwbuilder::RuleElementSrv  *o);
@@ -838,13 +837,13 @@ namespace fwcompiler {
 
             PrintRule(const std::string &name);
             virtual std::string _printGlobalLogParameters();
-            virtual std::string _printOptionalGlobalRules(bool ipv6=false);
+            virtual std::string _printOptionalGlobalRules();
             virtual std::string _declareTable();
             virtual std::string _flushAndSetDefaultPolicy();
             virtual std::string _commit();
             virtual std::string _quote(const std::string &s);
 
-            virtual std::string _startRuleLine(bool ipv6=false);
+            virtual std::string _startRuleLine();
             virtual std::string _endRuleLine();
             
             virtual bool processNext();
@@ -856,9 +855,8 @@ namespace fwcompiler {
 
         class PrintRuleIptRst : public PrintRule
         {
-            virtual std::string _createChain(const std::string &chain,
-                                             bool ipv6=false);
-            virtual std::string _startRuleLine(bool ipv6=false);
+            virtual std::string _createChain(const std::string &chain);
+            virtual std::string _startRuleLine();
             virtual std::string _endRuleLine();
             virtual std::string _printRuleLabel(libfwbuilder::PolicyRule *r);
 
@@ -875,9 +873,8 @@ namespace fwcompiler {
 
         class PrintRuleIptRstEcho : public PrintRuleIptRst
         {
-            virtual std::string _createChain(const std::string &chain,
-                                             bool ipv6=false);
-            virtual std::string _startRuleLine(bool ipv6=false);
+            virtual std::string _createChain(const std::string &chain);
+            virtual std::string _startRuleLine();
             virtual std::string _endRuleLine();
 
             public:
@@ -906,8 +903,10 @@ namespace fwcompiler {
 	public:
 
 	PolicyCompiler_ipt(libfwbuilder::FWObjectDatabase *_db,
-			  const std::string &fwname,
-                fwcompiler::OSConfigurator *_oscnf) : PolicyCompiler(_db,fwname,_oscnf)
+                           const std::string &fwname,
+                           bool ipv6_policy,
+                           fwcompiler::OSConfigurator *_oscnf) :
+        PolicyCompiler(_db, fwname, ipv6_policy, _oscnf)
         {
             have_dynamic_interfaces = false;
             have_connmark = false;

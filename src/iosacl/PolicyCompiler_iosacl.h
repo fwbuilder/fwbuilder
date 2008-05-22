@@ -251,7 +251,8 @@ namespace fwcompiler {
 	public:
 
 	PolicyCompiler_iosacl(libfwbuilder::FWObjectDatabase *_db,
-                           const std::string &fwname,
+                              const std::string &fwname,
+                              bool ipv6_policy,
                               fwcompiler::OSConfigurator *_oscnf);
         virtual ~PolicyCompiler_iosacl() {}
 

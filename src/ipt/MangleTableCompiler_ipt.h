@@ -45,8 +45,10 @@ namespace fwcompiler {
 	public:
 
 	MangleTableCompiler_ipt(libfwbuilder::FWObjectDatabase *_db,
-			   const std::string &fwname,
-   fwcompiler::OSConfigurator *_oscnf) : PolicyCompiler_ipt(_db,fwname,_oscnf)
+                                const std::string &fwname,
+                                bool ipv6_policy,
+                                fwcompiler::OSConfigurator *_oscnf) :
+        PolicyCompiler_ipt(_db, fwname, ipv6_policy, _oscnf)
         {
             my_table = "mangle";
         }

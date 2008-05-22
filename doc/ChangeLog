@@ -1,3 +1,12 @@
+2008-05-22  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ipt.cpp (main): Poliucy compiler for iptables supports
+	IPv6. Added command line switches "-4" and "-6" which force
+	compiler to generate script for only one specified address
+	family (by default it does both). Compiler can generate simple
+	ipv6 iptables script. Generated script still can be improved but
+	seems to be formally correct at this time.
+
 2008-05-18  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* OSConfigurator_linux24.cpp: compiler for iptables converted to

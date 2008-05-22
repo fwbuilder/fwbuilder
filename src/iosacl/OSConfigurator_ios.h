@@ -44,8 +44,10 @@ namespace fwcompiler {
 	public:
 
 	virtual ~OSConfigurator_ios() {};
-	OSConfigurator_ios(libfwbuilder::FWObjectDatabase *_db,const std::string &fwname) :
-	    OSConfigurator(_db,fwname) {}
+	OSConfigurator_ios(libfwbuilder::FWObjectDatabase *_db,
+                           const std::string &fwname,
+                           bool ipv6_policy) :
+        OSConfigurator(_db, fwname, ipv6_policy) {}
 
 	virtual int  prolog();
 

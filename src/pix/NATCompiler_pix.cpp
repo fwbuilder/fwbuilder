@@ -54,8 +54,9 @@ string NATCompiler_pix::myPlatformName() { return "pix"; }
 
 NATCompiler_pix::NATCompiler_pix(FWObjectDatabase *_db,
                                  const std::string &fwname,
+                                 bool ipv6_policy,
                                  OSConfigurator *_oscnf) : 
-    NATCompiler(_db,fwname,_oscnf) , helper(this)
+    NATCompiler(_db, fwname, ipv6_policy, _oscnf) , helper(this)
 { 
 }
 

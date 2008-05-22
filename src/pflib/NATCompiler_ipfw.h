@@ -50,7 +50,9 @@ namespace fwcompiler {
 
 	NATCompiler_ipfw(libfwbuilder::FWObjectDatabase *_db,
 			const std::string &fwname,
-			fwcompiler::OSConfigurator *_oscnf) : NATCompiler_pf(_db,fwname,_oscnf) {}
+                         bool ipv6_policy,
+                         fwcompiler::OSConfigurator *_oscnf) :
+        NATCompiler_pf(_db, fwname, ipv6_policy, _oscnf) {}
 
 
 	virtual int  prolog();

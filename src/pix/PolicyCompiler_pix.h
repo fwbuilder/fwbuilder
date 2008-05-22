@@ -311,6 +311,7 @@ namespace fwcompiler {
 
 	PolicyCompiler_pix(libfwbuilder::FWObjectDatabase *_db,
                            const std::string &fwname,
+                           bool ipv6_policy,
                            fwcompiler::OSConfigurator *_oscnf,
                            NATCompiler_pix *_natcmp);
         virtual ~PolicyCompiler_pix() {}

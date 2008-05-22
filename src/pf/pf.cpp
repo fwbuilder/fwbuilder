@@ -99,6 +99,8 @@ static int              drp            = -1;
 static int              drn            = -1;
 static int              verbose        = 0;
 static bool             test_mode      = false;
+static bool             ipv4_run       = true;
+static bool             ipv6_run       = true;
 
 static map<string,RuleSet*> branches;
 static map<string,string>   anchor_files;
@@ -136,7 +138,7 @@ void usage(const char *name)
 {
     cout << _("Firewall Builder:  policy compiler for OpenBSD PF") << endl;
     cout << _("Version ") << VERSION << RELEASE_NUM << endl;
-    cout << _("Usage: ") << name << " [-x] [-v] [-V] [-f filename.xml] [-o output.fw] [-d destdir] [-m] firewall_object_name" << endl;
+    cout << _("Usage: ") << name << " [-x] [-v] [-V] [-f filename.xml] [-o output.fw] [-d destdir] [-m] [-4|-6] firewall_object_name" << endl;
 }
 
 
@@ -189,10 +191,18 @@ int main(int argc, char * const *argv)
 
     int   opt;
 
-    while( (opt=getopt(argc,argv,"x:vVf:d:r:o:")) != EOF )
+    while( (opt=getopt(argc,argv,"x:vVf:d:r:o:46")) != EOF )
     {
         switch(opt)
         {
+        case '4':
+            ipv4_run = true;
+            ipv6_run = false;
+            break;
+        case '6':
+            ipv4_run = false;
+            ipv6_run = true;
+            break;
         case 'd':
             wdir = strdup(optarg);
             break;
@@ -381,9 +391,6 @@ int main(int argc, char * const *argv)
 //        if (fw->getStr("version")=="obsd_3.2")    pfctl_f_option="-f ";
         if (fw->getStr("version")=="obsd_lt_3.2") pfctl_f_option="-R ";
         
-        Preprocessor_pf* prep = new Preprocessor_pf(objdb , fwobjectname);
-        prep->compile();
-
 /*
  * Process firewall options, build OS network configuration script
  */
@@ -392,16 +399,16 @@ int main(int argc, char * const *argv)
           ]->Resources::getResourceStr("/FWBuilderResources/Target/family");
 
 	if (family=="solaris")
-            oscnf=new OSConfigurator_solaris(objdb , fwobjectname);
+            oscnf=new OSConfigurator_solaris(objdb , fwobjectname, false);
 
 	if (family=="openbsd")
         {
             cerr << "Calling OSConfigurator_openbsd" << endl;
-            oscnf=new OSConfigurator_openbsd(objdb , fwobjectname);
+            oscnf=new OSConfigurator_openbsd(objdb , fwobjectname, false);
         }
 
 	if (family=="freebsd")
-            oscnf=new OSConfigurator_freebsd(objdb , fwobjectname);
+            oscnf=new OSConfigurator_freebsd(objdb , fwobjectname, false);
 
 	if (oscnf==NULL)
 	    throw FWException(_("Unrecognized host OS ") + 
@@ -409,70 +416,176 @@ int main(int argc, char * const *argv)
 
 	oscnf->prolog();
 
-        // find branching rules and store names of the branches and
-        // pointers to corresponding rule sets
-        // 
-        FWObject *policy = fw->getFirstByType(Policy::TYPENAME);
-        for (FWObject::iterator i=policy->begin(); i!=policy->end(); i++)
+
+        vector<bool> ipv4_6_runs;
+        string generated_script;
+
+        // command line options -4 and -6 control address family for which
+        // script will be generated. If "-4" is used, only ipv4 part will 
+        // be generated. If "-6" is used, only ipv6 part will be generated.
+        // If neither is used, both parts will be done.
+
+        if (options->getStr("ipv4_6_order").empty() ||
+            options->getStr("ipv4_6_order") == "ipv4_first")
         {
-            PolicyRule *rule = PolicyRule::cast(*i);
-            if (rule->getAction()==PolicyRule::Branch)
-            {
-                int parentRuleNum = rule->getPosition();
-                RuleSet *subset = rule->getBranch();
-                if (subset==NULL)
-                {
-                    throw FWException(
-                        _("Action 'Branch' but no branch policy in policy rule ")
-                        +rule->getLabel());
-                }
-                subset->setInt("parent_rule_num",parentRuleNum);
-                FWOptions *ropt = rule->getOptionsObject();
-                string branchName = ropt->getStr("branch_name");
-                branches[branchName] = subset;
-                subset->ref();
-                rule->remove(subset);
-            }
+            if (ipv4_run) ipv4_6_runs.push_back(false);
+            if (ipv6_run && options->getBool("enable_ipv6"))
+                ipv4_6_runs.push_back(true);
         }
 
-        TableFactory *table_factory = new TableFactory();
-
-	NATCompiler_pf n( objdb, fwobjectname, oscnf, table_factory );
-
-	n.setDebugLevel( dl );
-	n.setDebugRule(  drn );
-	n.setVerbose( verbose );
-        if (test_mode) n.setTestMode();
-
-	bool     have_nat=false;
-	if ( n.prolog() > 0 ) 
+        if (options->getStr("ipv4_6_order") == "ipv6_first")
         {
-	    have_nat=true;
+            if (ipv6_run && options->getBool("enable_ipv6"))
+                ipv4_6_runs.push_back(true);
+            if (ipv4_run) ipv4_6_runs.push_back(false);
+        }
 
-	    n.compile();
-	    n.epilog();
-	}
-
-	PolicyCompiler_pf c( objdb, fwobjectname, oscnf, &n, table_factory );
-
-	c.setDebugLevel( dl );
-	c.setDebugRule(  drp );
-	c.setVerbose( verbose );
-        if (test_mode) c.setTestMode();
-
-	bool     have_pf=false;
-	if ( c.prolog() > 0 ) 
+        for (vector<bool>::iterator i=ipv4_6_runs.begin(); 
+             i!=ipv4_6_runs.end(); ++i)
         {
-	    have_pf=true;
+            bool ipv6_policy = *i;
 
-            cout << " Compiling policy rules for "
-                 << fwobjectname
-                 << " ..." <<  endl << flush;
+            if (ipv6_policy)
+            {
+                generated_script += "\n\n";
+                generated_script += "#================ IPv6 ================\n";
+                generated_script += "\n\n";
+            }
 
-	    c.compile();
-	    c.epilog();
-	}
+            TableFactory *table_factory = new TableFactory();
 
+            Preprocessor_pf* prep = new Preprocessor_pf(
+                objdb , fwobjectname, ipv6_policy);
+            prep->compile();
+
+            // find branching rules and store names of the branches and
+            // pointers to corresponding rule sets
+            // 
+            FWObject *policy = fw->getFirstByType(Policy::TYPENAME);
+            for (FWObject::iterator i=policy->begin(); i!=policy->end(); i++)
+            {
+                PolicyRule *rule = PolicyRule::cast(*i);
+                if (rule->getAction()==PolicyRule::Branch)
+                {
+                    int parentRuleNum = rule->getPosition();
+                    RuleSet *subset = rule->getBranch();
+                    if (subset==NULL)
+                    {
+                        throw FWException(
+                            _("Action 'Branch' but no branch policy in policy rule ")
+                            +rule->getLabel());
+                    }
+                    subset->setInt("parent_rule_num",parentRuleNum);
+                    FWOptions *ropt = rule->getOptionsObject();
+                    string branchName = ropt->getStr("branch_name");
+                    branches[branchName] = subset;
+                    subset->ref();
+                    rule->remove(subset);
+                }
+            }
+
+            NATCompiler_pf n( objdb, fwobjectname, ipv6_policy, oscnf,
+                              table_factory );
+
+            n.setDebugLevel( dl );
+            n.setDebugRule(  drn );
+            n.setVerbose( verbose );
+            if (test_mode) n.setTestMode();
+
+            bool     have_nat=false;
+            if ( n.prolog() > 0 ) 
+            {
+                have_nat=true;
+
+                n.compile();
+                n.epilog();
+            }
+
+            PolicyCompiler_pf c( objdb, fwobjectname, ipv6_policy, oscnf,
+                                 &n, table_factory );
+
+            c.setDebugLevel( dl );
+            c.setDebugRule(  drp );
+            c.setVerbose( verbose );
+            if (test_mode) c.setTestMode();
+
+            bool     have_pf=false;
+            if ( c.prolog() > 0 ) 
+            {
+                have_pf=true;
+
+                cout << " Compiling policy rules for "
+                     << fwobjectname
+                     << " ..." <<  endl << flush;
+
+                c.compile();
+                c.epilog();
+            }
+
+            generated_script += table_factory->PrintTables();
+            generated_script += "\n";
+
+            if (have_nat)   generated_script += n.getCompiledScript();
+            if (have_pf)    generated_script += c.getCompiledScript();
+
+            // run policy compiler for each branch we have found in the
+            // ruleset and store the result in a separate .conf file
+            //
+            map<string,RuleSet*>::iterator bi;
+            for (bi=branches.begin(); bi!=branches.end(); ++bi)
+            {
+                table_factory = new TableFactory();
+
+                string branchName = bi->first;
+                RuleSet *subset = bi->second;
+                PolicyCompiler_pf c( objdb , fwobjectname, ipv6_policy,
+                                     oscnf, &n, table_factory );
+                c.setSourceRuleSet( subset );
+                c.setRuleSetName(branchName);
+
+                c.setDebugLevel( dl );
+                c.setDebugRule(  drp );
+                c.setVerbose( verbose );
+                if (test_mode) c.setTestMode();
+
+                if ( c.prolog() > 0 ) 
+                {
+                    cout << " Compiling rules for anchor "
+                         << branchName
+                         << " ..." <<  endl << flush;
+
+                    c.compile();
+                    c.epilog();
+
+                    string anchor_file_name;
+                    if (fw_file_name.empty())
+                    {
+                        anchor_file_name=string(fwobjectname) + "-" + branchName + ".conf";
+                    } else
+                    {
+                        string::size_type n = fw_file_name.rfind(".");
+                        anchor_file_name = fw_file_name;
+                        anchor_file_name.erase(n);
+                        anchor_file_name.append("-" + branchName + ".conf");
+                    }
+                    anchor_files[branchName] = anchor_file_name;
+
+                    ofstream pf_file;
+                    pf_file.exceptions(ofstream::eofbit|ofstream::failbit|ofstream::badbit);
+
+#ifdef _WIN32
+                    pf_file.open(anchor_file_name.c_str(), ios::out|ios::binary);
+#else
+                    pf_file.open(anchor_file_name.c_str());
+#endif
+                    pf_file << endl;
+                    pf_file << table_factory->PrintTables();
+                    pf_file << endl;
+                    pf_file << c.getCompiledScript();
+                    pf_file.close();
+                }
+            }
+        }
 
 /*
  * now write generated scripts to files
@@ -594,7 +707,7 @@ int main(int argc, char * const *argv)
         // and generate 'set skip on <ifspec>' commands
 
         if (fw->getStr("version")=="ge_3.7" ||
-		fw->getStr("version")=="4.x") 
+            fw->getStr("version")=="4.x") 
         {
             for (list<FWObject*>::iterator i=all_interfaces.begin();
                  i!=all_interfaces.end(); ++i) 
@@ -653,73 +766,14 @@ int main(int argc, char * const *argv)
         if (prolog_place == "pf_file_after_scrub")
             printProlog(pf_file, pre_hook);
 
-        pf_file << table_factory->PrintTables();
-        pf_file << endl;
+        //pf_file << table_factory->PrintTables();
+        //pf_file << endl;
 
         if (prolog_place == "pf_file_after_tables")
             printProlog(pf_file, pre_hook);
 
-	if (have_nat)   pf_file << n.getCompiledScript();
-        if (have_pf)    pf_file << c.getCompiledScript();
+	pf_file << generated_script;
         pf_file.close();
-
-
-        // run policy compiler for each branch we have found in the
-        // ruleset and store the result in a separate .conf file
-        //
-        map<string,RuleSet*>::iterator bi;
-        for (bi=branches.begin(); bi!=branches.end(); ++bi)
-        {
-            table_factory = new TableFactory();
-
-            string branchName = bi->first;
-            RuleSet *subset = bi->second;
-            PolicyCompiler_pf c( objdb , fwobjectname , oscnf , &n, table_factory );
-            c.setSourceRuleSet( subset );
-            c.setRuleSetName(branchName);
-
-            c.setDebugLevel( dl );
-            c.setDebugRule(  drp );
-            c.setVerbose( verbose );
-            if (test_mode) c.setTestMode();
-
-            if ( c.prolog() > 0 ) 
-            {
-                cout << " Compiling rules for anchor "
-                     << branchName
-                     << " ..." <<  endl << flush;
-
-                c.compile();
-                c.epilog();
-
-                string anchor_file_name;
-                if (fw_file_name.empty())
-                {
-                    anchor_file_name=string(fwobjectname) + "-" + branchName + ".conf";
-                } else
-                {
-                    string::size_type n = fw_file_name.rfind(".");
-                    anchor_file_name = fw_file_name;
-                    anchor_file_name.erase(n);
-                    anchor_file_name.append("-" + branchName + ".conf");
-                }
-                anchor_files[branchName] = anchor_file_name;
-
-                ofstream pf_file;
-                pf_file.exceptions(ofstream::eofbit|ofstream::failbit|ofstream::badbit);
-
-#ifdef _WIN32
-                pf_file.open(anchor_file_name.c_str(), ios::out|ios::binary);
-#else
-                pf_file.open(anchor_file_name.c_str());
-#endif
-                pf_file << endl;
-                pf_file << table_factory->PrintTables();
-                pf_file << endl;
-                pf_file << c.getCompiledScript();
-                pf_file.close();
-            }
-        }
 
 
         char          *timestr;

@@ -247,7 +247,9 @@ namespace fwcompiler {
 
 	PolicyCompiler_ipf(libfwbuilder::FWObjectDatabase *_db,
 			   const std::string &fwname,
-			   fwcompiler::OSConfigurator *_oscnf) : PolicyCompiler_pf(_db,fwname,_oscnf,NULL) {}
+                           bool ipv6_policy,
+			   fwcompiler::OSConfigurator *_oscnf) :
+        PolicyCompiler_pf(_db, fwname, ipv6_policy, _oscnf, NULL) {}
 
 
 	virtual int  prolog();

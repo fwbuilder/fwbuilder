@@ -96,6 +96,8 @@ static int              drn            = -1;
 static int              verbose        = 0;
 static bool             have_dynamic_interfaces = false;
 static bool             test_mode      = false;
+static bool             ipv4_run       = true;
+static bool             ipv6_run       = true;
 
 FWObjectDatabase       *objdb = NULL;
 
@@ -133,11 +135,87 @@ string addPrologScript(bool nocomment,const string &script)
     return res;
 }
 
+string dumpPolicies(bool nocomm, Firewall *fw,
+                    MangleTableCompiler_ipt &m,
+                    NATCompiler_ipt &n,
+                    PolicyCompiler_ipt &c,
+                    bool ipv6_policy)
+{
+    ostringstream script;
+    string prolog_place= fw->getOptionsObject()->getStr("prolog_place");
+
+    if (fw->getOptionsObject()->getBool("use_iptables_restore"))
+    {
+        script << "(" << endl;
+
+        script << c.flushAndSetDefaultPolicy();
+
+        if (prolog_place == "after_flush")
+        {
+            script << addPrologScript(
+                nocomm, fw->getOptionsObject()->getStr("prolog_script"));
+        }
+
+        script << c.getCompiledScript();
+        script << c.commit();
+
+        if (m.getCompiledScriptLength()>0)
+        {
+            script << m.flushAndSetDefaultPolicy();
+            script << m.getCompiledScript();
+            script << m.commit();
+        }
+        if (n.getCompiledScriptLength()>0)
+        {
+            script << n.flushAndSetDefaultPolicy();
+            script << n.getCompiledScript();
+            script << n.commit();
+        }
+        script << "#" << endl;
+        if (ipv6_policy)
+            script << ") | $IP6TABLES_RESTORE; IPTABLES_RESTORE_RES=$?" << endl;
+        else
+            script << ") | $IPTABLES_RESTORE; IPTABLES_RESTORE_RES=$?" << endl;
+    } else
+    {
+
+        script << c.flushAndSetDefaultPolicy();
+        if (m.getCompiledScriptLength()>0)
+            script << m.flushAndSetDefaultPolicy();
+        if (n.getCompiledScriptLength()>0)
+            script << n.flushAndSetDefaultPolicy();
+
+        if (prolog_place == "after_flush")
+        {
+            script << addPrologScript(
+                nocomm, fw->getOptionsObject()->getStr("prolog_script"));
+        }
+
+        if (n.getCompiledScriptLength()>0)
+        {
+            script << n.getCompiledScript();
+            script << n.commit();
+        }
+
+        if (m.getCompiledScriptLength()>0)
+        {
+            script << m.getCompiledScript();
+            script << m.commit();
+        }
+
+        script << c.getCompiledScript();
+        script << c.commit();
+    }
+
+    return script.str();
+}
+
+
 void usage(const char *name)
 {
     cout << _("Firewall Builder:  policy compiler for Linux 2.4.x and 2.6.x iptables") << endl;
     cout << _("Version ") << VERSION << "-" << RELEASE_NUM << endl;
-    cout << _("Usage: ") << name << _(" [-x level] [-v] [-V] [-q] [-f filename.xml] [-d destdir] [-m] firewall_object_name") << endl;
+    cout << _("Usage: ") << name << _(" [-x level] [-v] [-V] [-q] [-f filename.xml] [-d destdir] [-m] [-4|-6] firewall_object_name") << endl;
 }
 
 int main(int argc, char * const *argv)
@@ -163,10 +241,18 @@ int main(int argc, char * const *argv)
 
     int   opt;
 
-    while( (opt=getopt(argc,argv,"x:vVqf:d:r:o:")) != EOF )
+    while( (opt=getopt(argc,argv,"x:vVqf:d:r:o:46")) != EOF )
     {
         switch(opt)
         {
+        case '4':
+            ipv4_run = true;
+            ipv6_run = false;
+            break;
+        case '6':
+            ipv4_run = false;
+            ipv6_run = true;
+            break;
         case 'd':
             wdir = strdup(optarg);
             break;
@@ -377,23 +463,26 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             }
         }
 
-	string firewall_dir=options->getStr("firewall_dir");
+	string firewall_dir = options->getStr("firewall_dir");
 	if (firewall_dir=="") firewall_dir="/etc";
 
 	bool debug=options->getBool("debug");
 	string shell_dbg=(debug)?"set -x":"" ;
 	string pfctl_dbg=(debug)?"-v":"";
 
-        Preprocessor* prep=new Preprocessor(objdb , fwobjectname);
-        prep->compile();
-
 	OSConfigurator_linux24 *oscnf=NULL;
         string family=Resources::os_res[fw->getStr("host_OS")]->Resources::getResourceStr("/FWBuilderResources/Target/family");
         if ( family=="linux24" )
-            oscnf=new OSConfigurator_linux24(objdb , fwobjectname);
+            oscnf = new OSConfigurator_linux24(objdb , fwobjectname, false);
 
 	if (oscnf==NULL)
 	    throw FWException(_("Unrecognized host OS ")+fw->getStr("host_OS")+"  (family "+family+")");
+
+/* do not put comment in the script if it is intended for linksys */
+        bool nocomm = Resources::os_res[fw->getStr("host_OS")]->
+            Resources::getResourceBool(
+                "/FWBuilderResources/Target/options/suppress_comments");
+
 
         oscnf->prolog();
 
@@ -402,54 +491,97 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         int nat_rules_count     = 0;
         int routing_rules_count = 0;
 
-	MangleTableCompiler_ipt m( objdb , fwobjectname , oscnf );
+        vector<bool> ipv4_6_runs;
+        string generated_script;
 
-	m.setDebugLevel( dl );
-	m.setDebugRule(  drp );
-	m.setVerbose( (bool)(verbose) );
-        m.setHaveDynamicInterfaces(have_dynamic_interfaces);
-        if (test_mode) m.setTestMode();
+        // command line options -4 and -6 control address family for which
+        // script will be generated. If "-4" is used, only ipv4 part will 
+        // be generated. If "-6" is used, only ipv6 part will be generated.
+        // If neither is used, both parts will be done.
 
-	if ( (mangle_rules_count=m.prolog()) > 0 )
+        if (options->getStr("ipv4_6_order").empty() ||
+            options->getStr("ipv4_6_order") == "ipv4_first")
         {
-	    m.compile();
-	    m.epilog();
-	}
+            if (ipv4_run) ipv4_6_runs.push_back(false);
+            if (ipv6_run && options->getBool("enable_ipv6"))
+                ipv4_6_runs.push_back(true);
+        }
 
-// compile NAT rules before policy rules because policy compiler
-// needs to know the number of virtual addresses being created for NAT
-
-	NATCompiler_ipt n( objdb , fwobjectname , oscnf );
-
-	n.setDebugLevel( dl );
-	n.setDebugRule(  drn );
-	n.setVerbose( (bool)(verbose) );
-        n.setHaveDynamicInterfaces(have_dynamic_interfaces);
-        if (test_mode) n.setTestMode();
-
-	if ( (nat_rules_count=n.prolog()) > 0 )
+        if (options->getStr("ipv4_6_order") == "ipv6_first")
         {
-            oscnf->generateCodeForProtocolHandlers(true);
-	    n.compile();
-	    n.epilog();
-	} else
-            oscnf->generateCodeForProtocolHandlers(false);
+            if (ipv6_run && options->getBool("enable_ipv6"))
+                ipv4_6_runs.push_back(true);
+            if (ipv4_run) ipv4_6_runs.push_back(false);
+        }
 
-	PolicyCompiler_ipt c( objdb , fwobjectname , oscnf );
-
-	c.setDebugLevel( dl );
-	c.setDebugRule(  drp );
-	c.setVerbose( (bool)(verbose) );
-        c.setHaveDynamicInterfaces(have_dynamic_interfaces);
-        if (test_mode) c.setTestMode();
-
-	if ( (policy_rules_count=c.prolog()) > 0 )
+        for (vector<bool>::iterator i=ipv4_6_runs.begin(); 
+             i!=ipv4_6_runs.end(); ++i)
         {
-	    c.compile();
-	    c.epilog();
-	}
+            bool ipv6_policy = *i;
 
-        RoutingCompiler_ipt r( objdb , fwobjectname , oscnf );
+            if (ipv6_policy)
+            {
+                generated_script += "\n\n";
+                generated_script += "#================ IPv6 ================\n";
+                generated_script += "\n\n";
+            }
+
+            Preprocessor* prep = new Preprocessor(
+                objdb , fwobjectname, ipv6_policy);
+            prep->compile();
+
+            MangleTableCompiler_ipt m(
+                objdb , fwobjectname, ipv6_policy , oscnf );
+
+            m.setDebugLevel( dl );
+            m.setDebugRule(  drp );
+            m.setVerbose( (bool)(verbose) );
+            m.setHaveDynamicInterfaces(have_dynamic_interfaces);
+            if (test_mode) m.setTestMode();
+
+            if ( (mangle_rules_count=m.prolog()) > 0 )
+            {
+                m.compile();
+                m.epilog();
+            }
+
+            // compile NAT rules before policy rules because policy
+            // compiler needs to know the number of virtual addresses
+            // being created for NAT
+            NATCompiler_ipt n(objdb, fwobjectname, ipv6_policy, oscnf);
+
+            n.setDebugLevel( dl );
+            n.setDebugRule(  drn );
+            n.setVerbose( (bool)(verbose) );
+            n.setHaveDynamicInterfaces(have_dynamic_interfaces);
+            if (test_mode) n.setTestMode();
+
+            if ( (nat_rules_count=n.prolog()) > 0 )
+            {
+                oscnf->generateCodeForProtocolHandlers(true);
+                n.compile();
+                n.epilog();
+            } else
+                oscnf->generateCodeForProtocolHandlers(false);
+
+            PolicyCompiler_ipt c(objdb, fwobjectname, ipv6_policy, oscnf);
+
+            c.setDebugLevel( dl );
+            c.setDebugRule(  drp );
+            c.setVerbose( (bool)(verbose) );
+            c.setHaveDynamicInterfaces(have_dynamic_interfaces);
+            if (test_mode) c.setTestMode();
+
+            if ( (policy_rules_count=c.prolog()) > 0 )
+            {
+                c.compile();
+                c.epilog();
+            }
+
+            generated_script += dumpPolicies(nocomm, fw, m, n, c, ipv6_policy);
+        }
+
+        RoutingCompiler_ipt r( objdb , fwobjectname , false, oscnf );
 
 	r.setDebugLevel( dl );
 	r.setDebugRule(  drp );
@@ -522,8 +654,6 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         script << "#" << endl;
         script << "#" << endl;
 
-/* do not put comment in the script if it is intended for linksys */
-        bool nocomm=Resources::os_res[fw->getStr("host_OS")]->Resources::getResourceBool("/FWBuilderResources/Target/options/suppress_comments");
         if ( !nocomm )
         {
             string fwcomment=fw->getComment();
@@ -559,8 +689,8 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         if (prolog_place == "top")
         {
             script <<
-                addPrologScript(nocomm, 
-                                fw->getOptionsObject()->getStr("prolog_script"));
+                addPrologScript(
+                    nocomm, fw->getOptionsObject()->getStr("prolog_script"));
         }
 
 	script << oscnf->getCompiledScript();
@@ -570,8 +700,8 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         if (prolog_place == "after_interfaces")
         {
             script <<
-                addPrologScript(nocomm, 
-                                fw->getOptionsObject()->getStr("prolog_script"));
+                addPrologScript(
+                    nocomm, fw->getOptionsObject()->getStr("prolog_script"));
         }
 
         script << "log '";
@@ -596,69 +726,9 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
 	script << endl;
 
-        if (options->getBool("use_iptables_restore"))
-        {
-            script << "(" << endl;
+        script << generated_script;
 
-            script << c.flushAndSetDefaultPolicy();
-
-            if (prolog_place == "after_flush")
-            {
-                script << addPrologScript(nocomm, 
-                                          fw->getOptionsObject()->getStr("prolog_script"));
-            }
-
-            script << c.getCompiledScript();
-            script << c.commit();
-
-            if (m.getCompiledScriptLength()>0)
-            {
-                script << m.flushAndSetDefaultPolicy();
-                script << m.getCompiledScript();
-                script << m.commit();
-            }
-            if (n.getCompiledScriptLength()>0)
-            {
-                script << n.flushAndSetDefaultPolicy();
-                script << n.getCompiledScript();
-                script << n.commit();
-            }
-            script << "#" << endl;
-            script << ") | $IPTABLES_RESTORE; IPTABLES_RESTORE_RES=$?" << endl;
-        } else
-        {
-
-            script << c.flushAndSetDefaultPolicy();
-            if (m.getCompiledScriptLength()>0)
-                script << m.flushAndSetDefaultPolicy();
-            if (n.getCompiledScriptLength()>0)
-                script << n.flushAndSetDefaultPolicy();
-
-            if (prolog_place == "after_flush")
-            {
-                script << addPrologScript(nocomm, 
-                             fw->getOptionsObject()->getStr("prolog_script"));
-            }
-
-            if (n.getCompiledScriptLength()>0)
-            {
-                script << n.getCompiledScript();
-                script << n.commit();
-            }
-
-            if (m.getCompiledScriptLength()>0)
-            {
-                script << m.getCompiledScript();
-                script << m.commit();
-            }
-
-            script << c.getCompiledScript();
-            script << c.commit();
-        }
         script << r.getCompiledScript();
-
-
-
 
         oscnf->epilog();
 	script << oscnf->getCompiledScript();

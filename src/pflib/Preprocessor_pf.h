@@ -41,7 +41,9 @@ namespace fwcompiler {
 	public:
 
 	Preprocessor_pf(libfwbuilder::FWObjectDatabase *_db,
-                        const std::string &fwname) : Preprocessor(_db,fwname)
+                        const std::string &fwname,
+                        bool ipv6_policy) :
+        Preprocessor(_db, fwname, ipv6_policy)
         { }
 
         virtual void convertObject(libfwbuilder::FWObject *obj);

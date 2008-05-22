@@ -344,7 +344,7 @@ int main(int argc, char * const *argv)
 	string shell_dbg=(debug)?"-x":"" ;
 	string ipf_dbg=(debug)?"-v":"";
 
-        Preprocessor* prep=new Preprocessor(objdb , fwobjectname);
+        Preprocessor* prep=new Preprocessor(objdb , fwobjectname, false);
         prep->compile();
 
 /*
@@ -353,13 +353,13 @@ int main(int argc, char * const *argv)
 	OSConfigurator *oscnf=NULL;
         string family=Resources::os_res[fw->getStr("host_OS")]->Resources::getResourceStr("/FWBuilderResources/Target/family");
         if ( family=="solaris" )
-            oscnf=new OSConfigurator_solaris(objdb , fwobjectname);
+            oscnf=new OSConfigurator_solaris(objdb , fwobjectname, false);
 
 	if ( family=="openbsd")
-            oscnf=new OSConfigurator_openbsd(objdb , fwobjectname);
+            oscnf=new OSConfigurator_openbsd(objdb , fwobjectname, false);
 
 	if ( family=="freebsd")
-            oscnf=new OSConfigurator_freebsd(objdb , fwobjectname);
+            oscnf=new OSConfigurator_freebsd(objdb , fwobjectname, false);
 
 	if (oscnf==NULL)
 	    throw FWException(_("Unrecognized host OS ")+fw->getStr("host_OS")+"  (family "+family+")");
@@ -369,7 +369,7 @@ int main(int argc, char * const *argv)
 /*
  * create compilers and run the whole thing 
  */
-	PolicyCompiler_ipf c( objdb , fwobjectname , oscnf );
+	PolicyCompiler_ipf c( objdb , fwobjectname, false , oscnf );
 
 	c.setDebugLevel( dl );
 	c.setDebugRule(  drp );
@@ -384,7 +384,7 @@ int main(int argc, char * const *argv)
 	}
 
 
-	NATCompiler_ipf n( objdb , fwobjectname , oscnf );
+	NATCompiler_ipf n( objdb , fwobjectname, false , oscnf );
 
 	n.setDebugLevel( dl );
 	n.setDebugRule(  drn );

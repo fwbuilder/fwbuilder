@@ -2101,7 +2101,9 @@ void NATCompiler_ipt::compile()
 {
 //    FWOptions* options=fw->getOptionsObject();
 
-    cout << _(" Compiling rules for 'nat' table ...") << endl << flush;
+    cout << " Compiling rules for 'nat' table";
+    if (ipv6) cout << ", IPv6";
+    cout <<  endl << flush;
 
     try {
 
@@ -2183,6 +2185,13 @@ void NATCompiler_ipt::compile()
         add( new splitOnDynamicInterfaceInTSrc("split rule if TSrc is dynamic interface" ) );
 
         add( new ExpandMultipleAddresses("expand multiple addresses") );
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+
+        if (ipv6)
+            add( new DropIPv4Rules("drop ipv4 rules"));
+        else
+            add( new DropIPv6Rules("drop ipv6 rules"));
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
         add( new specialCaseWithUnnumberedInterface("check for special cases with dynamic and unnumbered interfaces" ) );
         add( new checkForDynamicInterfacesOfOtherObjects( "check for dynamic interfaces of other hosts and firewalls" ) );
@@ -2208,8 +2217,6 @@ void NATCompiler_ipt::compile()
         add( new dynamicInterfaceInODst("split if dynamic interface in ODst") );
 	add( new dynamicInterfaceInTSrc("set target if dynamic interface in TSrc" ) );
         add( new convertInterfaceIdToStr("prepare interface assignments") );
-
-        add( new CheckIfIPv6Rule("find ipv6 rules"));
 
         if (fwopt->getBool("use_iptables_restore"))
         {

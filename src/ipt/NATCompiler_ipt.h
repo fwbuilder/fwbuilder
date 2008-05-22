@@ -511,9 +511,14 @@ namespace fwcompiler {
 	public:
 
 	NATCompiler_ipt(libfwbuilder::FWObjectDatabase *_db,
-		       const std::string &fwname,
-		       fwcompiler::OSConfigurator *_oscnf) : NATCompiler(_db,fwname,_oscnf)
-            {have_dynamic_interfaces=false; printRule=NULL;}
+                        const std::string &fwname,
+                        bool ipv6_policy,
+                        fwcompiler::OSConfigurator *_oscnf) :
+        NATCompiler(_db, fwname, ipv6_policy, _oscnf)
+        {
+            have_dynamic_interfaces=false;
+            printRule=NULL;
+        }
 
 
 	virtual int  prolog();

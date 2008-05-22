@@ -365,8 +365,10 @@ namespace fwcompiler {
 
 	NATCompiler_pf(libfwbuilder::FWObjectDatabase *_db,
 		       const std::string &fwname,
+                       bool ipv6_policy,
 		       fwcompiler::OSConfigurator *_oscnf,
-                       TableFactory *tbf = NULL) : NATCompiler(_db,fwname,_oscnf)
+                       TableFactory *tbf = NULL) :
+        NATCompiler(_db, fwname, ipv6_policy, _oscnf)
         {
             tables = tbf;
         }
