@@ -32,8 +32,9 @@ using namespace std;
 
 OSConfigurator::~OSConfigurator() {}
 
-OSConfigurator::OSConfigurator(FWObjectDatabase *_db, const string &fwname) :
-    Compiler(_db,fwname)
+OSConfigurator::OSConfigurator(FWObjectDatabase *_db,
+                               const string &fwname, bool ipv6_policy) :
+    Compiler(_db, fwname, ipv6_policy)
 {
     num_virtual_addresses_for_nat = 0;
 };

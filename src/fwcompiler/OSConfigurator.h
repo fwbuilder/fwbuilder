@@ -40,16 +40,19 @@ namespace fwcompiler {
 
     class OSConfigurator : public Compiler {
 
-        int                                  num_virtual_addresses_for_nat;
+        int num_virtual_addresses_for_nat;
 
 public:
 
 	virtual ~OSConfigurator();
-	OSConfigurator(libfwbuilder::FWObjectDatabase *_db,const std::string &fwname);
+	OSConfigurator(libfwbuilder::FWObjectDatabase *_db,
+                       const std::string &fwname, bool ipv6_policy);
 
 	virtual void processFirewallOptions() =0;
-	virtual void addVirtualAddressForNAT(const libfwbuilder::Address   *addr) =0;
-	virtual void addVirtualAddressForNAT(const libfwbuilder::Network   *nw)   =0;
+	virtual void addVirtualAddressForNAT(
+            const libfwbuilder::Address   *addr) =0;
+	virtual void addVirtualAddressForNAT(
+            const libfwbuilder::Network   *nw)   =0;
         void registerVirtualAddressForNat() { num_virtual_addresses_for_nat++; }
         int getNumOfVirtualAddressesForNat() { return num_virtual_addresses_for_nat; }
     };

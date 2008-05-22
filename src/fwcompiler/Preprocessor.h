@@ -49,7 +49,8 @@ public:
 	virtual std::string myPlatformName();
 
 	virtual ~Preprocessor();
-	Preprocessor(libfwbuilder::FWObjectDatabase *_db,const std::string &fwname);
+	Preprocessor(libfwbuilder::FWObjectDatabase *_db,
+                     const std::string &fwname, bool ipv6_policy);
 
         /**
          * converts  MultiAddress objects cobnfigured to be

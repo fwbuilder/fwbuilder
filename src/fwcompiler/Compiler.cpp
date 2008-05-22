@@ -41,6 +41,7 @@
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 #include "fwbuilder/InterfacePolicy.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/MultiAddress.h"
@@ -164,18 +165,19 @@ void Compiler::_init(FWObjectDatabase *_db, const string &fwobjectname)
 }
 
 Compiler::Compiler(FWObjectDatabase *_db, 
-		   const string &fwobjectname)
+		   const string &fwobjectname, bool ipv6_policy)
 {
     source_ruleset = NULL;
     ruleSetName = "";
     test_mode = false;
     osconfigurator = NULL;
     countIPv6Rules = 0;
+    ipv6 = ipv6_policy;
     _init(_db,fwobjectname);
 }
 
 Compiler::Compiler(FWObjectDatabase *_db, 
-		   const string &fwobjectname,
+		   const string &fwobjectname, bool ipv6_policy,
 		   OSConfigurator *_oscnf)
 {
     source_ruleset = NULL;
@@ -183,17 +185,19 @@ Compiler::Compiler(FWObjectDatabase *_db,
     test_mode = false;
     osconfigurator = _oscnf;
     countIPv6Rules = 0;
+    ipv6 = ipv6_policy;
     _init(_db,fwobjectname);
 }
 
 // this constructor is used by class Preprocessor, it does not call _init
-Compiler::Compiler(FWObjectDatabase*)
+Compiler::Compiler(FWObjectDatabase*, bool ipv6_policy)
 {
     source_ruleset = NULL;
     ruleSetName = "";
     test_mode = false;
     osconfigurator = NULL;
     countIPv6Rules = 0;
+    ipv6 = ipv6_policy;
     initialized = false;
     _cntr_ = 1; 
     fw = NULL; 
@@ -271,9 +275,34 @@ void Compiler::compile()
 
 }
 
+bool Compiler::MatchesAddressFamily(FWObject *o)
+{
+    if (Address::cast(o))
+    {
+        const  InetAddr *inet_addr = Address::cast(o)->getAddressPtr();
+        if (inet_addr)
+        {
+            if (ipv6)
+            {
+                if (inet_addr->isV6()) return true;
+            } else
+            {
+                if (inet_addr->isV4()) return true;
+            }
+        } else
+        {
+            // Address object with no ip address (e.g. dynamic interface
+            // or run-time address table)
+            return true;
+        }
+        return false;
+    }
+    // not an address object at all
+    return true;
+}
 
 
-void Compiler::_expand_group_recursive(FWObject *o,list<FWObject*> &ol)
+void Compiler::_expand_group_recursive(FWObject *o, list<FWObject*> &ol)
 {
 /* special case: MultiAddress. This class inherits ObjectGroup, but
  * should not be expanded if it is expanded at run time
@@ -282,20 +311,40 @@ void Compiler::_expand_group_recursive(FWObject *o,list<FWObject*> &ol)
  * run-time address tables
  */
     MultiAddress *adt = MultiAddress::cast(o);
-    if ((Group::cast(o)!=NULL && adt==NULL) || (adt!=NULL && adt->isCompileTime()))
+    if ((Group::cast(o)!=NULL && adt==NULL) ||
+        (adt!=NULL && adt->isCompileTime()))
     {
 	for (FWObject::iterator i2=o->begin(); i2!=o->end(); ++i2)
         {
-	    FWObject *o1= *i2;
-	    if (FWReference::cast(o1)!=NULL) o1=FWReference::cast(o1)->getPointer();
+	    FWObject *o1 = *i2;
+	    if (FWReference::cast(o1)!=NULL)
+                o1=FWReference::cast(o1)->getPointer();
 	    assert(o1);
 
-	    _expand_group_recursive(o1,ol);
+	    _expand_group_recursive(o1, ol);
 	}
     } else
     {
-	o->ref();
-	ol.push_back( o );
+        if (o->getId() == FWObjectDatabase::getAnyNetworkId())
+        {
+            o->ref();
+            ol.push_back( o );
+        } else
+        {
+            if (Address::cast(o) && Address::cast(o)->hasInetAddress())
+            {
+                if (MatchesAddressFamily(o))
+                {
+                    o->ref();
+                    ol.push_back( o );
+                }
+            } else
+            {
+                // not an address object at all
+                o->ref();
+                ol.push_back( o );
+            }
+        }
     }
 }
 
@@ -323,12 +372,11 @@ void Compiler::expandGroupsInRuleElement(RuleElement *s)
     }
 }
 
-void Compiler::_expand_addr_recursive(Rule *rule,FWObject *s,list<FWObject*> &ol)
+void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
+                                      list<FWObject*> &ol)
 {
     Interface *rule_iface = fw_interfaces[rule->getInterfaceId()];
     bool on_loopback= ( rule_iface && rule_iface->isLoopback() );
-
-    //cerr << "Rule " << rule->getLabel() << " object s: " << s->getName() << " " << s->getTypeName() << endl;
 
     list<FWObject*> addrlist;
 
@@ -338,15 +386,39 @@ void Compiler::_expand_addr_recursive(Rule *rule,FWObject *s,list<FWObject*> &ol
 	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 	assert(o);
 
-        if (Address::cast(o)!=NULL || MultiAddress::cast(o)!=NULL) addrlist.push_back(o);
+        if (Address::cast(o) &&
+            !Address::cast(o)->hasInetAddress())
+        {
+            addrlist.push_back(o);
+            continue;
+        }
+
+        if (Address::cast(o) &&
+            Address::cast(o)->hasInetAddress() &&
+            MatchesAddressFamily(o))
+        {            
+            addrlist.push_back(o);
+            continue;
+        }
+
+        if (o->getId() == FWObjectDatabase::getAnyNetworkId() ||
+            MultiAddress::cast(o)!=NULL ||
+            Interface::cast(o) ||
+            physAddress::cast(o))
+        {
+            addrlist.push_back(o);
+            continue;
+        }
     }
 
-    //cerr << "Rule " << rule->getLabel() << "  addrlist.size()=" << addrlist.size() << endl;
-
-    if (addrlist.empty()) ol.push_back(s);
+    if (addrlist.empty())
+    {
+        if (RuleElement::cast(s)==NULL) ol.push_back(s);
+    }
     else
     {
-        for (list<FWObject*>::iterator i2=addrlist.begin(); i2!=addrlist.end(); ++i2)
+        for (list<FWObject*>::iterator i2=addrlist.begin();
+             i2!=addrlist.end(); ++i2)
         {
             if (Interface::cast(*i2)!=NULL)
             {
@@ -361,7 +433,7 @@ void Compiler::_expand_addr_recursive(Rule *rule,FWObject *s,list<FWObject*> &ol
 
                 continue;
             }
-            _expand_addr_recursive(rule,*i2,ol);
+            _expand_addr_recursive(rule, *i2, ol);
         }
     }
 }
@@ -406,7 +478,7 @@ void Compiler::_expandInterface(Interface *iface,  std::list<FWObject*> &ol)
             continue;
         }
 
-        if (Address::cast(o)!=NULL) ol.push_back(o);
+        if (Address::cast(o)!=NULL && MatchesAddressFamily(o)) ol.push_back(o);
     }
 
 //    FWObjectTypedChildIterator j=iface->findByType(IPv4::TYPENAME);
@@ -421,11 +493,11 @@ void Compiler::_expandInterface(Interface *iface,  std::list<FWObject*> &ol)
  * a pointer at either src or dst in the rule
  *
  */
-void Compiler::_expandAddr(Rule *rule,FWObject *s) 
+void Compiler::_expandAddr(Rule *rule, FWObject *s) 
 {
     list<FWObject*> cl;
 
-    _expand_addr_recursive(rule,s,cl);
+    _expand_addr_recursive(rule, s, cl);
 
     if ( ! cl.empty() )
     {
@@ -436,6 +508,7 @@ void Compiler::_expandAddr(Rule *rule,FWObject *s)
             cerr << "Compiler::_expandAddr: adding object: (*i1)->name=";
             cerr << (*i1)->getName();
             cerr << "  (*i1)->id=" << (*i1)->getId();
+            cerr << "  type=" << (*i1)->getTypeName();
             cerr << endl;
 */
 	    s->addRef( *i1 );
@@ -452,8 +525,7 @@ void Compiler::_expandAddressRanges(Rule*, FWObject *s)
 	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 	assert(o!=NULL);
 
-	if (AddressRange::cast(o)==NULL) cl.push_back(o);
-	else
+	if (AddressRange::cast(o)!=NULL && MatchesAddressFamily(o))
         {
 	    InetAddr a1 = AddressRange::cast(o)->getRangeStart();
 	    InetAddr a2 = AddressRange::cast(o)->getRangeEnd();
@@ -470,7 +542,10 @@ void Compiler::_expandAddressRanges(Rule*, FWObject *s)
                 dbcopy->add(h,false);
                 cl.push_back(h);
             }
-	}
+	} else
+        {
+            cl.push_back(o);
+        }
     }
     if ( ! cl.empty() )
     {
@@ -1004,8 +1079,8 @@ void  Compiler::recursiveGroupsInRE::isRecursiveGroup(const string &grid,FWObjec
 
 bool Compiler::recursiveGroupsInRE::processNext()
 {
-    Rule        *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
-    RuleElement *re  =RuleElement::cast(rule->getFirstByType(re_type));
+    Rule *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
+    RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
 
     if (re->isAny())
     {
@@ -1038,16 +1113,29 @@ int  Compiler::emptyGroupsInRE::countChildren(FWObject *obj)
     {
 	FWObject *o= *i;
 	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-        if (Group::cast(o)!=NULL) n+=countChildren(o); // group itself does not count since it can be empty, too
-        else n++;   // but if it is not a group, then we count it.
+        // Check if this is a group, if yes, then count its children
+        // recursively. Group itself does not count since it can be
+        // empty, too.  However if this is MultiAddress object with
+        // run-time processing, it does not count as an empty group
+        // since we have no way to know at compile time if it will
+        // have some addresses at run time. So we just count it as a
+        // regular object.
+
+        if (MultiAddress::cast(o)!=NULL && MultiAddress::cast(o)->isRunTime())
+            n++;
+        else
+        {
+            if (Group::cast(o)!=NULL)  n += countChildren(o);
+            else n++;   // but if it is not a group, then we count it.
+        }
     }
     return n;
 }
 
 bool Compiler::emptyGroupsInRE::processNext()
 {
-    Rule        *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
-    RuleElement *re  =RuleElement::cast(rule->getFirstByType(re_type));
+    Rule *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
+    RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
 
     if (re->isAny())
     {
@@ -1180,6 +1268,69 @@ bool Compiler::swapMultiAddressObjectsInRE::processNext()
     tmp_queue.push_back(rule);
     return true;
 }
+
+bool Compiler::FindAddressFamilyInRE(FWObject *parent, bool ipv6)
+{
+    Address *addr = Address::cast(parent);
+    if (addr!=NULL)
+    {
+        const  InetAddr *inet_addr = addr->getAddressPtr();
+        if (ipv6)
+            return (inet_addr && inet_addr->isV6());
+        else
+            return (inet_addr && inet_addr->isV4());
+    }
+
+    for (FWObject::iterator i=parent->begin(); i!=parent->end(); i++) 
+    {
+        FWObject *o= *i;
+        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FindAddressFamilyInRE(o, ipv6)) return true;
+    }
+    return false;
+}
+
+
+void Compiler::DropAddressFamilyInRE(RuleElement *rel, bool drop_ipv6)
+{
+    FWObject *r = rel;
+    while (r && Rule::cast(r)==NULL) r = r->getParent();
+    Rule *rule = Rule::cast(r);
+
+    list<FWObject*> objects_to_remove;
+    for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) 
+    {
+        FWObject *o= *i;
+        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        // skip "Any"
+        if (o->getId() == FWObjectDatabase::getAnyNetworkId())
+            continue;
+
+        if (drop_ipv6)
+        {
+            if (Address::cast(o) && Address::cast(o)->hasInetAddress())
+            {
+                const  InetAddr *inet_addr = Address::cast(o)->getAddressPtr();
+                if (inet_addr && inet_addr->isV6())
+                    objects_to_remove.push_back(o);
+            }
+        } else
+        {
+            if (Address::cast(o) && Address::cast(o)->hasInetAddress())
+            {
+                const  InetAddr *inet_addr = Address::cast(o)->getAddressPtr();
+                if (inet_addr && inet_addr->isV4())
+                    objects_to_remove.push_back(o);
+            }
+        }
+    }
+
+    for (list<FWObject*>::iterator i = objects_to_remove.begin();
+         i != objects_to_remove.end(); ++i)
+        rel->removeRef(*i);
+
+}
+
 
 
 bool Compiler::catchUnnumberedIfaceInRE(RuleElement *re)

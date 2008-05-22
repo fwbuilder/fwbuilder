@@ -98,8 +98,6 @@ const InetAddrMask* Address::getInetAddrMaskObjectPtr() const
 
 const bool Address::hasInetAddress() const
 {
-    const Address *addr_obj = getAddressObject();
-    if (addr_obj) return addr_obj->hasInetAddress();
     return false;
 }
 

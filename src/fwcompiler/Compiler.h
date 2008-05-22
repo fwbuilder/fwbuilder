@@ -140,9 +140,16 @@ namespace fwcompiler {
         int  _cntr_;
         bool initialized;
         int countIPv6Rules;
+        bool ipv6;
 
         std::list<BasicRuleProcessor*> rule_processors;
 
+        /**
+         * if object <o> is Address, check if it matches address family
+         * (i.e. if it is IPv6 or IPv4). If it is service, always return true.
+         */
+        bool MatchesAddressFamily(libfwbuilder::FWObject *o);
+        
         /**
          * this method finds intersection of two atomic rules. Resulting
          * rule may have multiple objects in src,dst and srv, so
@@ -235,7 +242,18 @@ namespace fwcompiler {
 	 */
         bool catchUnnumberedIfaceInRE(libfwbuilder::RuleElement *re);
 
+        /**
+         * return true if any address object in source or destination is
+         * of given type (can be IPv4 or IPv6).
+         */
+        bool FindAddressFamilyInRE(libfwbuilder::FWObject *re, bool ipv6);
 
+        /**
+         * find ipv6 or ipv4 address objects in the given rule element
+         * and remove reference to them
+         */
+        void DropAddressFamilyInRE(libfwbuilder::RuleElement *rel,
+                                   bool drop_ipv6);
         /**
          *  rule processor that "injects" rules into the conveyor
          */
@@ -555,13 +573,13 @@ namespace fwcompiler {
 	virtual ~Compiler();
 
 	Compiler(libfwbuilder::FWObjectDatabase *_db,
-		 const std::string &fwname);
+		 const std::string &fwname, bool ipv6_policy);
 
 	Compiler(libfwbuilder::FWObjectDatabase *_db,
-		 const std::string &fwname,
+		 const std::string &fwname, bool ipv6_policy,
 		 fwcompiler::OSConfigurator *_oscnf);
 
-	Compiler(libfwbuilder::FWObjectDatabase *_db);
+	Compiler(libfwbuilder::FWObjectDatabase *_db, bool ipv6_policy);
         
 	void setDebugLevel(int dl) { debug=dl;       }
 	void setDebugRule(int dr)  { debug_rule=dr;  }

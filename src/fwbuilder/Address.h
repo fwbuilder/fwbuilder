@@ -66,6 +66,13 @@ public:
 
     const InetAddrMask* getInetAddrMaskObjectPtr() const;
 
+    /**
+     * This method returns true if object "owns" ip address. Owning
+     * in this context means that the object itself has an address, rather
+     * than one of its child objects. In this sense Firewall, Host,
+     * Interface do not "own" ip address, whereas IPv4, Network, IPv6
+     * NetworkIPv6 do.
+     */
     virtual const bool hasInetAddress() const;
 
     /**

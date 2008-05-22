@@ -40,8 +40,9 @@ string Preprocessor::myPlatformName() { return "generic_preprocessor"; }
 
 Preprocessor::~Preprocessor() {}
 
-Preprocessor::Preprocessor(FWObjectDatabase *_db, const string &fwname) :
-    Compiler(_db, fwname)
+Preprocessor::Preprocessor(FWObjectDatabase *_db,
+                           const string &fwname, bool ipv6_policy) :
+    Compiler(_db, fwname, ipv6_policy)
 {
     // This is the main difference between Preprocessor and other
     // compilers.  All compilers create a copy of the whole database

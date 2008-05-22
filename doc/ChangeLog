@@ -1,3 +1,12 @@
+2008-05-22  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Changes for IPv6 support. All compilers and OSConfigurator
+	classes now accept paraeter "bool ipv6_policy" to the constructor,
+	which sets address familiy the compiler should process rules
+	for. Supporting functions to allow rule processors
+	ExpandMultipleAddresses, ExpandGroups and others to pick only
+	those address objects that match current address familiy.
+
 2008-05-18  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Address.h (libfwbuilder): removed methods Address::getAddress

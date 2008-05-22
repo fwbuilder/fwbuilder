@@ -349,56 +349,40 @@ bool  PolicyCompiler::ExpandGroups::processNext()
 bool  PolicyCompiler::ExpandMultipleAddressesInSRC::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-
-    tmp_queue.push_back(rule);
-
     RuleElementSrc *src=rule->getSrc();    assert(src);
-
     compiler->_expandAddr(rule,src);
-
+    tmp_queue.push_back(rule);
     return true;
 }
 
 bool  PolicyCompiler::ExpandMultipleAddressesInDST::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-
-    tmp_queue.push_back(rule);
-
     RuleElementDst *dst=rule->getDst();    assert(dst);
-
     compiler->_expandAddr(rule,dst);
-
+    tmp_queue.push_back(rule);
     return true;
 }
 
 bool  PolicyCompiler::ExpandMultipleAddresses::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-
-    tmp_queue.push_back(rule);
-
     RuleElementSrc *src=rule->getSrc();    assert(src);
     RuleElementDst *dst=rule->getDst();    assert(dst);
-
     compiler->_expandAddr(rule,src);
     compiler->_expandAddr(rule,dst);
-
+    tmp_queue.push_back(rule);
     return true;
 }
 
 bool  PolicyCompiler::addressRanges::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-
-    tmp_queue.push_back(rule);
-
     RuleElementSrc *src=rule->getSrc();    assert(src);
     RuleElementDst *dst=rule->getDst();    assert(dst);
-
     compiler->_expandAddressRanges(rule,src);
     compiler->_expandAddressRanges(rule,dst);
-
+    tmp_queue.push_back(rule);
     return true;
 }
 
@@ -632,8 +616,14 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
         if (maddr && maddr->isRunTime()) continue;
 
         Address *addr = Address::cast(o);
+        
+        if (addr==NULL && o!=NULL)
+            compiler->warning(
+                string("findZeroAddress: Unknown object in rule element: ") +
+                o->getName() +
+                "  type=" + o->getTypeName());
 
-        if (addr->hasInetAddress())
+        if (addr && addr->hasInetAddress())
         {
             if (Interface::cast(o)!=NULL && 
                 (Interface::cast(o)->isDyn() ||
@@ -1031,36 +1021,51 @@ bool PolicyCompiler::CheckForTCPEstablished::processNext()
     return true;
 }
 
-bool PolicyCompiler::CheckIfIPv6Rule::CheckIfIPv6InRE(FWObject *parent)
+/* keep only rules that have ipv4 addresses in src and dst
+ * 
+ * TODO: figure out what to do with rules that have mix of ipv4 and ipv6
+ * addresses in different rule elements (such as ipv4 address in odst
+ * and ipv6 address in tdst or similar)
+ */
+bool PolicyCompiler::DropRulesByAddressFamily::processNext()
 {
-    Address *addr = Address::cast(parent);
-    if (addr!=NULL)
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    RuleElement *src = rule->getSrc();
+    RuleElement *dst = rule->getDst();
+
+    bool orig_src_any = src->isAny();
+    bool orig_dst_any = dst->isAny();
+    compiler->DropAddressFamilyInRE(src, drop_ipv6);
+    compiler->DropAddressFamilyInRE(dst, drop_ipv6);
+
+    if (!orig_src_any && src->isAny())
     {
-        const  InetAddr *inet_addr = addr->getAddressPtr();
-        return (inet_addr && inet_addr->isV6());
+        // removing all ipv6 addresses from source makes it 'any', drop
+        // this rule
+        return true;
     }
 
-    for (FWObject::iterator i=parent->begin(); i!=parent->end(); i++) 
+    if (!orig_dst_any && dst->isAny())
     {
-        FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-        if (CheckIfIPv6InRE(o)) return true;
+        // removing all ipv6 addresses from destination makes it 'any', drop
+        // this rule
+        return true;
     }
-    return false;
+
+    tmp_queue.push_back(rule);
+
+    return true;
 }
 
-bool PolicyCompiler::CheckIfIPv6Rule::processNext()
+bool PolicyCompiler::dropRuleWithEmptyRE::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    RuleElement *src=rule->getSrc();
-    RuleElement *dst=rule->getDst();
-
-    rule->setBool("ipv6_rule", false);
-    if (CheckIfIPv6InRE(src) || CheckIfIPv6InRE(dst))
-    {
-        rule->setBool("ipv6_rule", true);
-        compiler->registerIPv6Rule();
-    }
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    RuleElementSrc *srcrel=rule->getSrc();
+    RuleElementDst *dstrel=rule->getDst();
+    if ((srcrel->size() == 0) || (dstrel->size() == 0)) return true;
+//    Address     *src = compiler->getFirstSrc(rule);
+//    Address     *dst = compiler->getFirstDst(rule);
+//    if (src!=NULL && dst!=NULL) tmp_queue.push_back(rule);
     tmp_queue.push_back(rule);
     return true;
 }

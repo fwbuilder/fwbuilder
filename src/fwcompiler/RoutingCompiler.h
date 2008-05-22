@@ -54,8 +54,9 @@ namespace fwcompiler {
 	public:
 
 	RoutingCompiler(libfwbuilder::FWObjectDatabase *_db,
-		       const std::string &fwname,
-		       fwcompiler::OSConfigurator *_oscnf)   : Compiler(_db,fwname,_oscnf) {}
+                        const std::string &fwname, bool ipv6_policy,
+                        fwcompiler::OSConfigurator *_oscnf)   :
+        Compiler(_db, fwname, ipv6_policy, _oscnf) {}
  
         /**
          *  deals with empty groups in RDst. See description for

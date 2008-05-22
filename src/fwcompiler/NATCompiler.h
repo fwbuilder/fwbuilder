@@ -60,8 +60,9 @@ namespace fwcompiler {
 	public:
 
         NATCompiler(libfwbuilder::FWObjectDatabase *_db,
-		    const std::string &fwname,
-		    fwcompiler::OSConfigurator *_oscnf) : Compiler(_db,fwname,_oscnf) {}
+		    const std::string &fwname, bool ipv6_policy,
+		    fwcompiler::OSConfigurator *_oscnf) :
+        Compiler(_db, fwname, ipv6_policy, _oscnf) {}
 
         virtual int prolog();
 
@@ -171,16 +172,45 @@ namespace fwcompiler {
         DECLARE_NAT_RULE_PROCESSOR(ConvertToAtomic);
 
         /**
-         * If any address object in source or destination is ipv6 address,
-         * mark the rule as ipv6.
+         * drop rules that have ipv4 or ipv6 addresses  (depending
+         * on the argument ipv6 passed to the constructor)
          */
-        class CheckIfIPv6Rule : public NATRuleProcessor 
+        class DropRulesByAddressFamily : public NATRuleProcessor
         {
-            bool CheckIfIPv6InRE(libfwbuilder::FWObject *re);
+            bool drop_ipv6;
             public:
-            CheckIfIPv6Rule(const std::string &n) : NATRuleProcessor(n) {}
+            DropRulesByAddressFamily(const std::string &n,
+                                     bool ipv6) : NATRuleProcessor(n)
+            { drop_ipv6 = ipv6; }
             virtual bool processNext();
         };
+
+        /**
+         * Drop rule if any address object in source or destination is
+         * ipv4 address.
+         */
+        class DropIPv4Rules : public DropRulesByAddressFamily
+        {
+            public:
+            DropIPv4Rules(const std::string &n) :
+              DropRulesByAddressFamily(n, false) {};
+        };
+
+        /**
+         * Drop rule if any address object in source or destination is
+         * ipv6 address.
+         */
+        class DropIPv6Rules : public DropRulesByAddressFamily
+        {
+            public:
+            DropIPv6Rules(const std::string &n) :
+              DropRulesByAddressFamily(n, true) {};
+        };
+
+	/**
+	 * drop rules that have empty rule elements
+	 */
+        DECLARE_NAT_RULE_PROCESSOR(dropRuleWithEmptyRE);
 
         /**
          *  deals with recursive groups in OSrc. See description for
