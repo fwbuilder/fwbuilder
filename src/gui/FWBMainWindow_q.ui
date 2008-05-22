@@ -163,11 +163,17 @@
     <addaction name="separator" />
     <addaction name="fileExitAction" />
    </widget>
+   <widget class="QMenu" name="menuWindow" >
+    <property name="title" >
+     <string>Windows</string>
+    </property>
+   </widget>
    <addaction name="fileMenu" />
    <addaction name="editMenu" />
    <addaction name="ObjectMenu" />
    <addaction name="RulesMenu" />
    <addaction name="Tools" />
+   <addaction name="menuWindow" />
    <addaction name="helpMenu" />
   </widget>
   <action name="fileNewAction" >

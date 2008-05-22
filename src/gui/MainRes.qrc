@@ -73,6 +73,7 @@
         <file>Icons/compile_25.png</file>
 
         <file alias="Icons/DNSName/icon-neg">Icons/domainname-neg_25.png</file>
+        <file alias="Icons/DNSName/icon-neg-tree">Icons/domainname-neg_16.png</file>        
         <file alias="Icons/DNSName/icon-ref">Icons/domainname-ref_25.png</file>
         <file alias="Icons/DNSName/icon-tree">Icons/domainname_16.png</file>
         <file alias="Icons/DNSName/icon">Icons/domainname_25.png</file>

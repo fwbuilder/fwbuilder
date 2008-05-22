@@ -132,6 +132,9 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->linux24_path_iptables,
                          fwopt,
                          "linux24_path_iptables" );
+    data.registerOption( m_dialog->linux24_path_ip6tables,
+                         fwopt,
+                         "linux24_path_ip6tables" );
     data.registerOption( m_dialog->linux24_path_ip,
                          fwopt,
                          "linux24_path_ip"       );
@@ -147,6 +150,9 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->linux24_path_iptables_restore,
                          fwopt,
                          "linux24_path_iptables_restore" );
+    data.registerOption( m_dialog->linux24_path_ip6tables_restore,
+                         fwopt,
+                         "linux24_path_ip6tables_restore" );
 
 
     data.loadAll();

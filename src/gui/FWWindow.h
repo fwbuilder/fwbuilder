@@ -47,6 +47,7 @@ namespace libfwbuilder {
 
 };
 
+class QMdiSubWindow;
 class QTabWidget;
 class RuleSetView;
 class QTimer;
@@ -78,9 +79,15 @@ class FWWindow : public QMainWindow {
     void showSub(ProjectPanel *projectW);
 public:
     ProjectPanel* activeProject();
+    void recreateWindowsMenu ();
     void updateWindowTitle ();
- public slots:
+    QVector <QString> windowsTitles;
+    QVector <QMdiSubWindow*> windowsPainters;
+public slots:
+    void selectActiveSubWindow (/*const QString & text*/);
 
+    void minimizeAll ();
+    void maximizeAll ();
      virtual void search();
 
      virtual void openFirewall( int idx );

@@ -152,6 +152,7 @@
 #include <QHideEvent>
 #include <QMdiArea>
 #include <QMdiSubWindow>
+#include <QSignalMapper>
 #include "ProjectPanel.h"
 using namespace libfwbuilder;
 using namespace std;
@@ -200,7 +201,7 @@ FWWindow::FWWindow(): m_space(0),
     if (fwbdebug)
         qDebug("/FWWindow constructor");
 
-
+    recreateWindowsMenu();    
 //    findObject->setMinimumSize( QSize( 0, 0 ) );
 }
 
@@ -394,13 +395,14 @@ void FWWindow::fileOpen()
         }
         showSub(proj.release());
     }
-    
+    recreateWindowsMenu();
 }
 
 void FWWindow::fileClose()
 {
     if (activeProject())
         activeProject()->fileClose();
+    recreateWindowsMenu();
 }
 
 void FWWindow::fileSave()
@@ -1436,4 +1438,63 @@ void FWWindow::closeEvent( QCloseEvent*)
             pp->saveState();
         }
     }
+}
+
+void FWWindow::selectActiveSubWindow (/*const QString & text*/)
+{
+    QObject * sender_ = sender ();
+    QAction * act = (QAction*) sender_ ;
+    QString text = act->text();
+    if (text=="[Noname]")
+        text="";
+    for (int i = 0 ; i < windowsTitles.size();i++)
+    {
+        if (windowsTitles[i]==text)
+        {
+            getMdiArea()->setActiveSubWindow (windowsPainters[i]);
+        }
+    }
+}
+
+void FWWindow::minimizeAll ()
+{
+QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
+    for (int i = 0 ; i < subWindowList.size();i++)
+    {
+        subWindowList[i]->showMinimized ();
+    }
+}
+
+void FWWindow::maximizeAll ()
+{
+    m_space->activeSubWindow()->showMaximized ();
+}
+
+void FWWindow::recreateWindowsMenu ()
+{
+    windowsPainters.clear();
+    windowsTitles.clear();
+    m_mainWindow->menuWindow->clear();
+    QAction * minimize = m_mainWindow->menuWindow->addAction ("Minimize");
+    QAction * maximize = m_mainWindow->menuWindow->addAction ("Maximize");
+    m_mainWindow->menuWindow->addSeparator ();
+    connect(minimize, SIGNAL(triggered()), this, SLOT(minimizeAll()));
+    connect(maximize, SIGNAL(triggered()), this, SLOT(maximizeAll()));
+
+    QList<QMdiSubWindow *> subWindowList = getMdiArea()->subWindowList();
+    for (int i = 0 ; i < subWindowList.size();i++)
+    {
+        windowsPainters.push_back (subWindowList[i]);
+        ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
+        if (pp!=NULL)
+        {
+            QString text = pp->getFileName ();
+            windowsTitles.push_back(text);
+            if (text=="")
+                text = "[Noname]";
+            QAction * act = m_mainWindow->menuWindow->addAction (text);
+            connect(act, SIGNAL(triggered()), this, SLOT(selectActiveSubWindow()));
+        }
+    }
+
 }

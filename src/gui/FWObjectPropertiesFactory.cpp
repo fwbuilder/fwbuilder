@@ -45,7 +45,9 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 #include "fwbuilder/physAddress.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressTable.h"
@@ -94,6 +96,11 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
             str <<  IPv4::cast(obj)->getAddressPtr()->toString().c_str();
             str << "/";
             str << IPv4::cast(obj)->getNetmaskPtr()->toString().c_str();
+        } else if (IPv6::isA(obj))
+        {
+            str <<  IPv6::cast(obj)->getAddressPtr()->toString().c_str();
+            str << "/";
+            str << IPv6::cast(obj)->getNetmaskPtr()->toString().c_str();
 
         } else if (physAddress::isA(obj))
         {
@@ -148,6 +155,13 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
         } else if (Network::isA(obj))
         {
             Network *n=Network::cast(obj);
+            str << n->getAddressPtr()->toString().c_str();
+            str << "/";
+            str << n->getNetmaskPtr()->toString().c_str();
+
+        } else if (NetworkIPv6::isA(obj))
+        {
+            NetworkIPv6 *n=NetworkIPv6::cast(obj);
             str << n->getAddressPtr()->toString().c_str();
             str << "/";
             str << n->getNetmaskPtr()->toString().c_str();
@@ -275,6 +289,12 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             str += "/";
             str += IPv4::cast(obj)->getNetmaskPtr()->toString().c_str();
 
+        } else if (IPv6::isA(obj))
+        {
+            if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
+            str +=  IPv6::cast(obj)->getAddressPtr()->toString().c_str();
+            str += "/";
+            str += IPv6::cast(obj)->getNetmaskPtr()->toString().c_str();
         } else if (physAddress::isA(obj))
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
@@ -324,6 +344,13 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             str += "/";
             str += n->getNetmaskPtr()->toString().c_str();
 
+        } else if (NetworkIPv6::isA(obj))
+        {
+            if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
+            NetworkIPv6 *n=NetworkIPv6::cast(obj);
+            str += n->getAddressPtr()->toString().c_str();
+            str += "/";
+            str += n->getNetmaskPtr()->toString().c_str();
         } else if (Group::cast(obj)!=NULL)   // just any group
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";

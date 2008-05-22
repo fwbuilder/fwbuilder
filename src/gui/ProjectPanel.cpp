@@ -1251,18 +1251,7 @@ void ProjectPanel::fileClose()
     clearObjects();
     FWObjectClipboard::obj_clipboard->clear();
     mdiWindow->close();
-/*
-    if (fwbdebug) qDebug("ProjectPanel::fileClose(): loading standard objects");
-
-    load(this);
-
-    if (fwbdebug) qDebug("ProjectPanel::fileClose(): show firewalls");
-
-    showFirewalls( false );
-
-    if (fwbdebug) qDebug("ProjectPanel::fileClose(): all done");
-
-    setupAutoSave();*/
+    mw->recreateWindowsMenu();
 }
 
 void ProjectPanel::fileSave()
@@ -1319,6 +1308,7 @@ void ProjectPanel::fileExit()
 {
     if (saveIfModified() && checkin(true))
     {
+        saveState();
         if (rcs) delete rcs;
         qApp->quit();
     }
@@ -1876,7 +1866,7 @@ void ProjectPanel::startupLoad()
             openObject( show_obj );
         }
     }
-
+    mw->recreateWindowsMenu();
 }
 
 
