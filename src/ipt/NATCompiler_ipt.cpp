@@ -75,6 +75,30 @@ static int chain_no=0;
 #endif
 
 static std::map<std::string,int> tmp_chain_no;
+static std::list<std::string> standard_chains;
+
+const std::list<std::string>& NATCompiler_ipt::getStandardChains()
+{
+    if (standard_chains.size()==0)
+    {
+        standard_chains.push_back("POSTROUTING");
+        standard_chains.push_back("PREROUTING");
+        standard_chains.push_back("SNAT");
+        standard_chains.push_back("DNAT");
+        standard_chains.push_back("MASQUERADE");
+        standard_chains.push_back("REDIRECT");
+        standard_chains.push_back("NETMAP");
+        standard_chains.push_back("LOG");
+        standard_chains.push_back("MARK");
+        standard_chains.push_back("ACCEPT");
+        standard_chains.push_back("REJECT");
+        standard_chains.push_back("DROP");
+        standard_chains.push_back("RETURN");
+        standard_chains.push_back("OUTPUT");
+    }
+    return standard_chains;
+}
+
 
 string NATCompiler_ipt::myPlatformName() { return "iptables"; }
 

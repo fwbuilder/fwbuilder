@@ -49,6 +49,7 @@ namespace libfwbuilder {
 #define TCP_SYN_OBJ_ID   "__tcp_syn_obj__"
 #define BCAST_255_OBJ_ID "__bcast_255_obj__"
 
+
 namespace fwcompiler {
 
 
@@ -63,6 +64,12 @@ namespace fwcompiler {
         bool                           have_connmark;
         bool                           have_connmark_in_output;
         std::string                    my_table;
+
+        std::map<std::string, int>     tmp_chain_no;
+        std::map<std::string, int>     chain_usage_counter;
+
+
+        static const std::list<std::string>& getStandardChains();
         
         PolicyCompiler_ipt::PrintRule* createPrintRuleProcessor();
 
@@ -773,6 +780,12 @@ namespace fwcompiler {
          */
         DECLARE_POLICY_RULE_PROCESSOR(SkipActionContinueWithNoLogging);
 
+	/**
+	 * count how many times each user-defined chain we've created is
+         * used. We should be able to drop unused chains.
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(countChainUsage);
+
         
 	/**
 	 *  prints single policy rule, assuming all groups have been
@@ -931,8 +944,8 @@ namespace fwcompiler {
         virtual std::string flushAndSetDefaultPolicy();
         std::string commit();
 
-	static std::string getNewTmpChainName(libfwbuilder::PolicyRule *rule);
-	static std::string getNewChainName(libfwbuilder::PolicyRule *rule,libfwbuilder::Interface *rule_iface);
+	std::string getNewTmpChainName(libfwbuilder::PolicyRule *rule);
+	std::string getNewChainName(libfwbuilder::PolicyRule *rule,libfwbuilder::Interface *rule_iface);
 
     };
 

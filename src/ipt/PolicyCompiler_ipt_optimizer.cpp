@@ -68,8 +68,8 @@ void PolicyCompiler_ipt::optimize1::optimizeForRuleElement(PolicyRule    *rule,
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule     *r;
 
-    string this_chain  =rule->getStr("ipt_chain");
-    string new_chain=PolicyCompiler_ipt::getNewTmpChainName(rule);
+    string this_chain = rule->getStr("ipt_chain");
+    string new_chain  = ipt_comp->getNewTmpChainName(rule);
 
     r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
     compiler->temp_ruleset->add(r);

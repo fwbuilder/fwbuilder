@@ -1,3 +1,11 @@
+2008-05-23  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt.cpp (countChainUsage::processNext): New
+	feature: compiler for iptables keeps track of chain usage and
+	removes unused chains from the generated iptables script. This
+	helps optimize generated script and makes it smaller, especially
+	in mixed IPv4/IPv6 configurations.
+
 2008-05-22  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ipt.cpp (main): Poliucy compiler for iptables supports

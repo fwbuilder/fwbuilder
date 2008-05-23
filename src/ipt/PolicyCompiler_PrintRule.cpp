@@ -1049,25 +1049,16 @@ string PolicyCompiler_ipt::PrintRule::_printTimeInterval(PolicyRule *r)
 
 PolicyCompiler_ipt::PrintRule::PrintRule(const std::string &name) : PolicyRuleProcessor(name) 
 { 
+    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     init=true; 
     print_once_on_top=true;
 
-    chains["INPUT"]        =true;
-    chains["OUTPUT"]       =true;
-    chains["FORWARD"]      =true;
-    chains["PREROUTING"]   =true;
-    chains["POSTROUTING"]  =true;
-    chains["RETURN"]       =true;
-    chains["LOG"]          =true;
-    chains["ACCEPT"]       =true;
-    chains["DROP"]         =true;
-    chains["REJECT"]       =true;
-    chains["MARK"]         =true;
-    chains["CONNMARK"]     =true;
-    chains["QUEUE"]        =true;
-    chains["CLASSIFY"]     =true;
-    chains["CUSTOM"]       =true;
-    chains["ROUTE"]        =true;
+    for (list<string>::const_iterator i =
+             PolicyCompiler_ipt::getStandardChains().begin();
+         i != PolicyCompiler_ipt::getStandardChains().end(); ++i)
+    {
+        chains[*i] = true;
+    }
 }
 
 bool  PolicyCompiler_ipt::PrintRule::processNext()
@@ -1076,21 +1067,23 @@ bool  PolicyCompiler_ipt::PrintRule::processNext()
     PolicyRule         *rule    =getNext(); 
     if (rule==NULL) return false;
 
-    tmp_queue.push_back(rule);
+    string chain = rule->getStr("ipt_chain");
+    if (ipt_comp->chain_usage_counter[chain] > 0)
+    {
 
-    compiler->output << _printRuleLabel(rule);
-    compiler->output << _createChain(rule->getStr("ipt_chain"));
-    compiler->output << _createChain(rule->getStr("ipt_target"));
-    compiler->output 
-        << dynamic_cast<OSConfigurator_linux24*>(compiler->osconfigurator)->printRunTimeWrappers( rule, PolicyRuleToString(rule) );
+        tmp_queue.push_back(rule);
 
+        compiler->output << _printRuleLabel(rule);
+        compiler->output << _createChain(rule->getStr("ipt_chain"));
+        compiler->output << _createChain(rule->getStr("ipt_target"));
+        compiler->output 
+            << dynamic_cast<OSConfigurator_linux24*>(compiler->osconfigurator)->printRunTimeWrappers( rule, PolicyRuleToString(rule) );
+    }
     return true;
 }
 
 string PolicyCompiler_ipt::PrintRule::PolicyRuleToString(PolicyRule *rule)
 {
-    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
-
     FWOptions *ruleopt = rule->getOptionsObject();
     FWObject    *ref;
 
@@ -1222,7 +1215,6 @@ string PolicyCompiler_ipt::PrintRule::_declareTable()
 string PolicyCompiler_ipt::PrintRule::_flushAndSetDefaultPolicy()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    FWOptions *fwopt = compiler->getCachedFwOpt();
     ostringstream res;
 
     if (!ipt_comp->ipv6)
@@ -1336,7 +1328,7 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
          ! compiler->getCachedFwOpt()->getStr("mgmt_addr").empty() )
     {
         string addr_str = compiler->getCachedFwOpt()->getStr("mgmt_addr");
-        InetAddrMask *inet_addr;
+        InetAddrMask *inet_addr = NULL;
         bool addr_is_good = true;
         if (isIPv6)
         {

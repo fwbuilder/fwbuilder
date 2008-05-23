@@ -68,8 +68,32 @@ using namespace fwcompiler;
 using namespace std;
 
 static int chain_no=0;
+static std::list<std::string> standard_chains;
 
-static std::map<std::string,int> tmp_chain_no;
+
+const std::list<std::string>& PolicyCompiler_ipt::getStandardChains()
+{
+    if (standard_chains.size()==0)
+    {
+        standard_chains.push_back("INPUT");
+        standard_chains.push_back("OUTPUT");
+        standard_chains.push_back("FORWARD");
+        standard_chains.push_back("PREROUTING");
+        standard_chains.push_back("POSTROUTING");
+        standard_chains.push_back("RETURN");
+        standard_chains.push_back("LOG");
+        standard_chains.push_back("ACCEPT");
+        standard_chains.push_back("DROP");
+        standard_chains.push_back("REJECT");
+        standard_chains.push_back("MARK");
+        standard_chains.push_back("CONNMARK");
+        standard_chains.push_back("QUEUE");
+        standard_chains.push_back("CLASSIFY");
+        standard_chains.push_back("CUSTOM");
+        standard_chains.push_back("ROUTE");
+    }
+    return standard_chains;
+}
 
 string PolicyCompiler_ipt::myPlatformName() { return "iptables"; }
 
@@ -301,6 +325,14 @@ int PolicyCompiler_ipt::prolog()
 
     int n= PolicyCompiler::prolog();
 
+    // initialize counters for the standard chains
+    for (list<string>::const_iterator i =
+             PolicyCompiler_ipt::getStandardChains().begin();
+         i != PolicyCompiler_ipt::getStandardChains().end(); ++i)
+    {
+        chain_usage_counter[*i] = 1;
+    }
+
     Service     *anytcp, *anyudp, *anyicmp, *anyip;
     Address     *bcast255;
     TCPService  *tcpsyn;
@@ -479,6 +511,7 @@ bool  PolicyCompiler_ipt::SkipActionContinueWithNoLogging::processNext()
  */
 bool  PolicyCompiler_ipt::splitNonTerminatingTargets::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     string tgt = rule->getStr("ipt_target");
     FWOptions      *ruleopt = rule->getOptionsObject();
@@ -506,7 +539,7 @@ bool  PolicyCompiler_ipt::splitNonTerminatingTargets::processNext()
             !nsrv->isAny() ||
             !nitfre->isAny())
         {
-            new_chain   =PolicyCompiler_ipt::getNewTmpChainName(rule);
+            new_chain = ipt_comp->getNewTmpChainName(rule);
             r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
@@ -790,7 +823,7 @@ bool PolicyCompiler_ipt::storeAction::processNext()
  */
 bool PolicyCompiler_ipt::Logging2::processNext()
 {
-//    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     Interface *rule_iface = compiler->getCachedFwInterface(rule->getInterfaceId());
 
@@ -803,8 +836,8 @@ bool PolicyCompiler_ipt::Logging2::processNext()
     if (rule->getLogging()) 
     {
 /*chain could have been assigned if we split this rule before */
-        string this_chain  =rule->getStr("ipt_chain");
-	string new_chain=PolicyCompiler_ipt::getNewChainName(rule,rule_iface);
+        string this_chain = rule->getStr("ipt_chain");
+	string new_chain  = ipt_comp->getNewChainName(rule,rule_iface);
 
 	PolicyRule *r;
         FWOptions  *ruleopt;
@@ -976,7 +1009,7 @@ bool PolicyCompiler_ipt::singleSrvNegation::processNext()
 
 bool PolicyCompiler_ipt::SrcNegation::processNext()
 {
-//    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule         *rule=getNext(); if (rule==NULL) return false;
     FWOptions  *ruleopt =rule->getOptionsObject();
     bool afpa = ruleopt->getBool("firewall_is_part_of_any_and_networks");
@@ -996,8 +1029,8 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
         FWOptions      *ruleopt;
 
 /*chain could have been assigned if we split this rule before */
-        string this_chain  =rule->getStr("ipt_chain");
-	string new_chain   =PolicyCompiler_ipt::getNewTmpChainName(rule);
+        string this_chain  = rule->getStr("ipt_chain");
+	string new_chain   = ipt_comp->getNewTmpChainName(rule);
 	srcrel->setNeg(false);
 
         rule->setBool("upstream_rule_neg",true);
@@ -1092,7 +1125,7 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
 
 bool PolicyCompiler_ipt::DstNegation::processNext()
 {
-//    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     FWOptions  *ruleopt =rule->getOptionsObject();
     bool afpa = ruleopt->getBool("firewall_is_part_of_any_and_networks");
@@ -1112,8 +1145,8 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
         FWOptions      *ruleopt;
 
 /*chain could have been assigned if we split this rule before */
-        string this_chain  =rule->getStr("ipt_chain");
-	string new_chain=PolicyCompiler_ipt::getNewTmpChainName(rule);
+        string this_chain  = rule->getStr("ipt_chain");
+	string new_chain   = ipt_comp->getNewTmpChainName(rule);
 	dstrel->setNeg(false);
 
         rule->setBool("upstream_rule_neg",true);
@@ -1213,6 +1246,7 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
 
 bool PolicyCompiler_ipt::SrvNegation::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     RuleElementSrv *srvrel=rule->getSrv();
@@ -1230,8 +1264,8 @@ bool PolicyCompiler_ipt::SrvNegation::processNext()
         FWOptions      *ruleopt;
 
 /*chain could have been assigned if we split this rule before */
-        string this_chain  =rule->getStr("ipt_chain");
-	string new_chain=PolicyCompiler_ipt::getNewTmpChainName(rule);
+        string this_chain = rule->getStr("ipt_chain");
+	string new_chain  = ipt_comp->getNewTmpChainName(rule);
 	srvrel->setNeg(false);
 
 
@@ -1314,6 +1348,7 @@ bool PolicyCompiler_ipt::SrvNegation::processNext()
 
 bool PolicyCompiler_ipt::TimeNegation::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     FWOptions  *ruleopt =rule->getOptionsObject();
     bool afpa = ruleopt->getBool("firewall_is_part_of_any_and_networks");
@@ -1333,8 +1368,8 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
         FWOptions           *ruleopt;
 
 /*chain could have been assigned if we split this rule before */
-        string this_chain  =rule->getStr("ipt_chain");
-	string new_chain=PolicyCompiler_ipt::getNewTmpChainName(rule);
+        string this_chain = rule->getStr("ipt_chain");
+	string new_chain  = ipt_comp->getNewTmpChainName(rule);
 	intrel->setNeg(false);
 
         rule->setBool("upstream_rule_neg",true);
@@ -1602,7 +1637,7 @@ bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
             ruleopt->setBool("already_terminating_target",true);
 
         string this_chain  = rule->getStr("ipt_chain");
-	string new_chain=PolicyCompiler_ipt::getNewChainName(rule,rule_iface);
+	string new_chain=ipt_comp->getNewChainName(rule,rule_iface);
 
 	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
 	compiler->temp_ruleset->add(r);
@@ -3554,6 +3589,7 @@ bool PolicyCompiler_ipt::processMultiAddressObjectsInRE::processNext()
  */
 bool PolicyCompiler_ipt::accounting::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     Interface  *rule_iface = compiler->getCachedFwInterface(rule->getInterfaceId());
     FWOptions  *ruleopt =rule->getOptionsObject();
@@ -3561,8 +3597,8 @@ bool PolicyCompiler_ipt::accounting::processNext()
     if (rule->getAction()==PolicyRule::Accounting &&
         rule->getStr("ipt_target").empty())
     {
-        string this_chain  =rule->getStr("ipt_chain");
-	string new_chain=PolicyCompiler_ipt::getNewChainName(rule,rule_iface);
+        string this_chain = rule->getStr("ipt_chain");
+	string new_chain  = ipt_comp->getNewChainName(rule,rule_iface);
         string rule_name_accounting = ruleopt->getStr("rule_name_accounting");
         if (!rule_name_accounting.empty())
             new_chain = rule_name_accounting;
@@ -3595,7 +3631,7 @@ bool PolicyCompiler_ipt::accounting::processNext()
             r->setAction(PolicyRule::Continue);
             tmp_queue.push_back(r);
 
-            rule->setStr("ipt_target",new_chain);
+            rule->setStr("ipt_target", new_chain);
             rule->setLogging(false);
             ruleopt =rule->getOptionsObject();
             ruleopt->setInt("limit_value",-1);
@@ -3606,6 +3642,23 @@ bool PolicyCompiler_ipt::accounting::processNext()
     tmp_queue.push_back(rule);
     return true;
 }
+
+bool PolicyCompiler_ipt::countChainUsage::processNext()
+{
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+
+    slurp();
+    if (tmp_queue.size()==0) return false;
+
+    for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
+    {
+        PolicyRule *rule = PolicyRule::cast( *k );
+        ipt_comp->chain_usage_counter[rule->getStr("ipt_target")] += 1;
+    }
+
+    return true;
+}
+
 
 
 bool PolicyCompiler_ipt::addPredefinedRules::processNext()
@@ -3951,6 +4004,8 @@ void PolicyCompiler_ipt::compile()
         add( new convertInterfaceIdToStr("prepare interface assignments") );
         add( new optimize3("optimization 3") );
 
+        add( new countChainUsage("Count chain usage"));
+
         add( createPrintRuleProcessor() );
 
         add( new simplePrintProgress());
@@ -4074,25 +4129,27 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
     }
 
 
-    string s= str.str()
-        + " c="+rule->getStr("ipt_chain")
-        + " t="+rule->getStr("ipt_target")
-        + " intfId="+rule->getInterfaceId()
-        + " intfstr="+rule->getInterfaceStr();
+    str << " c="+rule->getStr("ipt_chain")
+        << "[" 
+        << chain_usage_counter[rule->getStr("ipt_chain")]
+        << "]"
+        << " t="+rule->getStr("ipt_target")
+        << " intfId="+rule->getInterfaceId()
+        << " intfstr="+rule->getInterfaceStr();
 
     if (rule->getAction()==PolicyRule::Reject)
-        s=s+" "+ruleopt->getStr("action_on_reject");
+        str << " "+ruleopt->getStr("action_on_reject");
 
     if (ruleopt!=NULL && ruleopt->getInt("limit_value")>0)
-        s=s+" limit";
+        str << " limit";
 
     if (ruleopt!=NULL && ruleopt->getInt("connlimit_value")>0)
-        s=s+" connlimit";
+        str << " connlimit";
 
     if (ruleopt!=NULL && ruleopt->getInt("hashlimit_value")>0)
-        s=s+" hashlimit";
+        str << " hashlimit";
 
-    return s;
+    return str.str();
 }
 
 void PolicyCompiler_ipt::epilog()
@@ -4116,7 +4173,8 @@ PolicyCompiler_ipt::PrintRule* PolicyCompiler_ipt::createPrintRuleProcessor()
             // for all these conditions, just always use PrintRuleIptRstEcho
             printRule = new PrintRuleIptRstEcho(
                 "generate code for iptables-restore using echo");
-        } else   printRule=new PrintRule("generate shell script"    );
+        } else
+            printRule = new PrintRule("generate shell script"    );
         printRule->setContext(this);
     }
     return printRule;

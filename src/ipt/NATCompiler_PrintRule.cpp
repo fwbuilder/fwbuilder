@@ -501,23 +501,16 @@ string NATCompiler_ipt::PrintRule::_printAddr(Address  *o,
 NATCompiler_ipt::PrintRule::PrintRule(const std::string &name) : 
     NATRuleProcessor(name)
 {
+    NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
     init=true; 
     print_once_on_top=true;
 
-    chains["POSTROUTING"]  =true;
-    chains["PREROUTING"]   =true;
-    chains["SNAT"]         =true;
-    chains["DNAT"]         =true;
-    chains["MASQUERADE"]   =true;
-    chains["REDIRECT"]     =true;
-    chains["NETMAP"]       =true;
-    chains["LOG"]          =true;
-    chains["MARK"]         =true;
-    chains["ACCEPT"]       =true;
-    chains["REJECT"]       =true;
-    chains["DROP"]         =true;
-    chains["RETURN"]       =true;
-    chains["OUTPUT"]       =true;
+    for (list<string>::const_iterator i =
+             NATCompiler_ipt::getStandardChains().begin();
+         i != NATCompiler_ipt::getStandardChains().end(); ++i)
+    {
+        chains[*i] = true;
+    }
 }
 
 bool NATCompiler_ipt::PrintRule::processNext()

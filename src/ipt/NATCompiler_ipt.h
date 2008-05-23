@@ -59,6 +59,7 @@ namespace fwcompiler {
         NATCompiler_ipt::PrintRule *printRule;
         bool   have_dynamic_interfaces;
 
+        static const std::list<std::string>& getStandardChains();
         std::string getInterfaceVarName(libfwbuilder::FWObject *iface);
         std::string getAddressTableVarName(libfwbuilder::FWObject *iface);
 
