@@ -67,8 +67,6 @@ namespace libfwbuilder
 
 class InetAddrMask
 {
-private:
-    void setNetworkAndBroadcastAddress();
     
 protected:
     
@@ -86,6 +84,7 @@ public:
     InetAddrMask(const std::string &s) throw(FWException);
     InetAddrMask(const InetAddrMask&);
     virtual ~InetAddrMask();
+    void setNetworkAndBroadcastAddress();
 
     virtual const InetAddr* getAddressPtr() const { return address; }
     virtual const InetAddr* getNetmaskPtr() const { return netmask; }

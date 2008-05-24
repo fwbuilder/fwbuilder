@@ -7,7 +7,6 @@ VERSION = $$SO_VERSION
 SOURCES  = 	inet_net_ntop.c \
 			inet_net_pton.c \
 			InetAddr.cpp \
-			Inet6Addr.cpp \
 			InetAddrMask.cpp \
 			Inet6AddrMask.cpp \
 			IPRoute.cpp \
@@ -68,7 +67,6 @@ SOURCES  = 	inet_net_ntop.c \
 
 HEADERS  = 	inet_net.h \
 			InetAddr.h \
-			Inet6Addr.h \
 			InetAddrMask.h \
 			Inet6AddrMask.h \
 			IPRoute.h \

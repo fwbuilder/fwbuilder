@@ -29,8 +29,11 @@
 #include <fwbuilder/InetAddr.h>
 #include <fwbuilder/Interface.h>
 
+#include <fwbuilder/inet_net.h>
+
 #include <stdio.h>
 #include <iostream>
+#include <sstream>
 #include <assert.h>
 
 #ifndef _WIN32
@@ -41,16 +44,90 @@
 #endif
 
 using namespace std;
+using namespace libfwbuilder;
 
-
-namespace libfwbuilder
+void InetAddr::init_from_string(const char* data)
 {
+    if(!data) throw FWException("NULL IP address data..");
+    if (address_family == AF_INET)
+    {
+        if (inet_aton(data, &ipv4)==0)
+            throw FWException(string("Invalid IP address: '")+string(data)+"'");
+    } else
+    {
+        if (inet_net_pton(PGSQL_AF_INET6, data, &ipv6, sizeof(ipv6)) < 0)
+            throw FWException(string("Invalid IPv6 address: '")+string(data)+"'");
+    }
+}
+
+void InetAddr::init_from_int(int len)
+{
+   if (address_family == AF_INET)
+   {
+       if (len<0 || len>32) throw FWException(string("Invalid netmask length"));
+       unsigned long nm_bits = 0;
+       int i = len;
+       while (i>0)
+       {
+           nm_bits >>= 1;
+           nm_bits |= 0x80000000;
+           i--;
+       }
+       ipv4.s_addr = htonl(nm_bits);
+   } else
+   {
+       if (len<0 || len>128)
+           throw FWException(string("Invalid netmask length"));
+
+       ((uint32_t *) (&ipv6))[0] = 0xffffffff;
+       ((uint32_t *) (&ipv6))[1] = 0xffffffff;
+       ((uint32_t *) (&ipv6))[2] = 0xffffffff;
+       ((uint32_t *) (&ipv6))[3] = 0xffffffff;
+
+       // bits is number of zeros counting from the right end
+       int nbits = 128 - len;
+       for (int i=3; i>=0; --i)
+       {
+           if (nbits >= 32)
+           {
+               ((uint32_t*)(&ipv6))[i] = 0;
+               nbits -= 32;
+               continue;
+           }
+           uint32_t t = 0xffffffff;
+           for (int k = nbits % 32; k; --k)
+           {
+               t <<= 1;
+               t &= 0xfffffffe;
+           }
+           ((uint32_t*)(&ipv6))[i] = htonl(t);
+           break;
+       }
+   }
+}
+
 
 InetAddr::InetAddr(const string &s)
     throw(FWException, FWNotSupportedException)
 {
+    address_family = AF_INET;
     if (inet_aton(s.c_str(), &ipv4)==0)
         throw FWException(string("Invalid IP address: '")+s+"'");
+}
+
+InetAddr::InetAddr(int af, const string &s)
+    throw(FWException, FWNotSupportedException)
+{
+    address_family = af;
+    if (address_family==AF_INET)
+    {
+        if (inet_aton(s.c_str(), &ipv4)==0)
+            throw FWException(string("Invalid IP address: '")+s+"'");
+    } else 
+    {
+        if (inet_net_pton(PGSQL_AF_INET6, s.c_str(), &ipv6, sizeof(ipv6)) < 0)
+            throw FWException(string("Invalid IPv6 address: '")+s+"'");
+    }
 }
 
 InetAddr::InetAddr(const InetAddr &o)
@@ -60,54 +137,268 @@ InetAddr::InetAddr(const InetAddr &o)
 
 InetAddr::InetAddr(const char *data) throw(FWException)
 {
-    if(!data)
-        throw FWException("NULL IP address data..");
-    if (inet_aton(data, &ipv4)==0)
-        throw FWException(string("Invalid IP address: '")+string(data)+"'");
+    address_family = AF_INET;
+    init_from_string(data);
+}
+
+InetAddr::InetAddr(int af, const char *data) throw(FWException)
+{
+    address_family = af;
+    init_from_string(data);
 }
 
 InetAddr::InetAddr(const struct in_addr *na) throw(FWException)
 {
+    address_family = AF_INET;
     ipv4.s_addr = na->s_addr;
+}
+
+InetAddr::InetAddr(const struct in6_addr *na) throw(FWException)
+{
+    address_family = AF_INET6;
+    _copy_in6_addr(&ipv6, na);
 }
 
 // Set netmask to 'n' bits
 InetAddr::InetAddr(int n)  throw(FWException)
 {
-    if (n<0 || n>32) throw FWException(string("Invalid netmask length"));
-    unsigned long nm_bits = 0;
-    int i = n;
-    while (i>0)
-    {
-        nm_bits >>= 1;
-        nm_bits |= 0x80000000;
-        i--;
-    }
-    ipv4.s_addr = htonl(nm_bits);
+    address_family = AF_INET;
+    init_from_int(n);
+}
+
+InetAddr::InetAddr(int af, int n)  throw(FWException)
+{
+    address_family = af;
+    init_from_int(n);
 }
 
 InetAddr& InetAddr::operator=(const InetAddr &addr)
 {
-    ipv4.s_addr = addr.ipv4.s_addr;
+    if ((address_family = addr.address_family)==AF_INET)
+    {
+        ipv4.s_addr = addr.ipv4.s_addr;
+    } else
+    {
+        InetAddr::_copy_in6_addr(&ipv6, &(addr.ipv6) );
+    }
     return *this;
 }
 
 int InetAddr::getLength() const
 {
-    if (ipv4.s_addr == INADDR_BROADCAST) return 32;
-    if (ipv4.s_addr == 0) return 0;
-
-    unsigned int n = ntohl(ipv4.s_addr);
-
-    int   i=0;
-    while (n)
+    if (address_family==AF_INET)
     {
-	n=n<<1;
-	i++;
-    }
+        if (ipv4.s_addr == INADDR_BROADCAST) return 32;
+        if (ipv4.s_addr == 0) return 0;
 
-    return i;
+        unsigned int n = ntohl(ipv4.s_addr);
+
+        int   i=0;
+        while (n)
+        {
+            n=n<<1;
+            i++;
+        }
+
+        return i;
+    } else
+    {
+        int bits = 0;
+        for (int i=3; i>=0; --i)
+        {
+            uint32_t n = ntohl(((uint32_t*)(&ipv6))[i]);
+            if (n==0)
+            {
+                bits += 32;
+                continue;
+            }
+            while ((n & 1) == 0)
+            {
+                bits++;
+                n = n >> 1;
+            }
+            bits = 128 - bits;
+            break;
+        }
+        return bits;
+    }
 }
 
+string InetAddr::toString() const
+{
+    if (address_family==AF_INET) return std::string(strdup(inet_ntoa(ipv4)));
+    else
+    {
+        char ntop_buf[sizeof
+                      "ffff:ffff:ffff:ffff:ffff:ffff:255.255.255.255/128"];
+        char *cp;
+        cp = inet_net_ntop(PGSQL_AF_INET6, (const void*)(&ipv6),
+                           -1, ntop_buf, sizeof(ntop_buf));
+        if (cp==NULL)
+        {
+            ostringstream err;
+            switch (errno)
+            {
+            case EINVAL:
+                err << "InetAddr::toString() Invalid bit length 0";
+                throw FWException(err.str());
+                ;;
+            case EMSGSIZE:
+                err << "InetAddr::toString() EMSGSIZE error";
+                throw FWException(err.str());
+                ;;
+            case EAFNOSUPPORT:
+                err << "InetAddr::toString() EAFNOSUPPORT error";
+                throw FWException(err.str());
+                ;;
+            default:
+                err << "InetAddr::toString() other error: " << errno;
+                throw FWException(err.str());
+                ;;
+            }
+        }
+        return std::string(strdup(cp));
+    }
+}
+
+// note that address family of the result is dictated by the address family of
+// "this". Address family of mask must be the same.
+InetAddr InetAddr::opAnd(const InetAddr &mask) const
+{
+    assert(address_family==mask.address_family);
+    if (address_family==AF_INET)
+    {
+        struct in_addr res;
+        res.s_addr = htonl(ntohl(ipv4.s_addr) & ntohl(mask.ipv4.s_addr));
+        return InetAddr(&res);
+    } else {
+        struct in6_addr res;
+        for (int i=0; i<4; ++i)
+            ((uint32_t*)(&res))[i] = 
+                htonl(ntohl(((uint32_t*)(&(ipv6)))[i]) &
+                      ntohl(((uint32_t*)(&(mask.ipv6)))[i]));
+        return InetAddr(&res);
+    }
+}
+
+InetAddr InetAddr::opOr(const InetAddr &mask) const
+{
+    assert(address_family==mask.address_family);
+    if (address_family==AF_INET)
+    {
+        struct in_addr res;
+        res.s_addr = htonl(ntohl(ipv4.s_addr) | ntohl(mask.ipv4.s_addr));
+        return InetAddr(&res);
+    } else
+    {
+        struct in6_addr res;
+        for (int i=0; i<4; ++i)
+            ((uint32_t*)(&res))[i] = 
+                htonl(ntohl(((uint32_t*)(&(ipv6)))[i]) |
+                      ntohl(((uint32_t*)(&(mask.ipv6)))[i]));
+        return InetAddr(&res);
+    }
+}
+
+InetAddr InetAddr::opPlus(int increment) const
+{
+    if (address_family==AF_INET)
+    {
+        struct in_addr res;
+        res.s_addr = htonl(ntohl(ipv4.s_addr) + increment);
+        return InetAddr(&res);
+    } else
+    {
+        struct in6_addr res;
+        InetAddr::_copy_in6_addr(&res, &(ipv6) );
+        ((uint32_t*)(&res))[3] =
+            htonl(ntohl( ((uint32_t*)(&(ipv6)))[3] + increment));
+        return InetAddr(&res);
+    }
+}
+
+InetAddr InetAddr::opMinus(int decrement) const
+{
+    if (address_family==AF_INET)
+    {
+        struct in_addr res;
+        res.s_addr = htonl(ntohl(ipv4.s_addr) - decrement);
+        return InetAddr(&res);
+    } else
+    {
+        struct in6_addr res;
+        InetAddr::_copy_in6_addr(&res, &(ipv6) );
+        ((uint32_t*)(&res))[3] =
+            htonl(ntohl( ((uint32_t*)(&(ipv6)))[3] - decrement));
+        return InetAddr(&res);
+    }
+}
+
+bool InetAddr::opLT(const InetAddr &other) const
+{
+    assert(address_family==other.address_family);
+    if (address_family==AF_INET)
+    {
+        return (ntohl( ipv4.s_addr ) < ntohl( other.ipv4.s_addr ));
+    } else
+    {
+        return (ntohl(((uint32_t*)(&(ipv6)))[3]) <
+                ntohl(((uint32_t*)(&(other.ipv6)))[3]));
+    }
+}
+
+bool InetAddr::opGT(const InetAddr &other) const
+{
+    assert(address_family==other.address_family);
+    if (address_family==AF_INET)
+    {
+        return (ntohl( ipv4.s_addr ) > ntohl( other.ipv4.s_addr ));
+    } else
+    {
+        return (ntohl(((uint32_t*)(&(ipv6)))[3]) >
+                ntohl(((uint32_t*)(&(other.ipv6)))[3]));
+    }
+}
+
+bool InetAddr::opEQ(const InetAddr &other) const
+{
+    assert(address_family==other.address_family);
+    if (address_family==AF_INET)
+    {
+        return ipv4.s_addr == other.ipv4.s_addr;
+    } else
+    {
+        return (IN6_ARE_ADDR_EQUAL(&(ipv6), &(other.ipv6)));
+    }
+}
+
+bool InetAddr::opNEQ(const InetAddr &other) const
+{
+    assert(address_family==other.address_family);
+    if (address_family==AF_INET)
+    {
+        return ipv4.s_addr != other.ipv4.s_addr;
+    } else
+    {
+        return (!(IN6_ARE_ADDR_EQUAL(&(ipv6), &(other.ipv6))));
+    }
+}
+    
+InetAddr InetAddr::opCompl() const
+{
+    if (address_family==AF_INET)
+    {
+        struct in_addr res;
+        res.s_addr = htonl(~(ntohl(ipv4.s_addr)));
+        return InetAddr(&res);
+    } else
+    {
+        struct in6_addr res;
+        ((uint32_t *) (&res))[0] = htonl(~(ntohl(((uint32_t *) (&ipv6))[0])));
+        ((uint32_t *) (&res))[1] = htonl(~(ntohl(((uint32_t *) (&ipv6))[1])));
+        ((uint32_t *) (&res))[2] = htonl(~(ntohl(((uint32_t *) (&ipv6))[2])));
+        ((uint32_t *) (&res))[3] = htonl(~(ntohl(((uint32_t *) (&ipv6))[3])));
+        return InetAddr(&res);
+    }
 }
 

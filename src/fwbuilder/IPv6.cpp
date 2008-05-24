@@ -92,7 +92,7 @@ void IPv6::fromXML(xmlNodePtr root) throw(FWException)
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
     assert(n!=NULL);
-    setAddress(Inet6Addr(n));
+    setAddress(InetAddr(AF_INET6, n));
     FREEXMLBUFF(n);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("netmask")));
@@ -101,15 +101,15 @@ void IPv6::fromXML(xmlNodePtr root) throw(FWException)
     {
         if (string(n).find(":")!=string::npos)
         {
-            setNetmask(Inet6Addr(n));
+            setNetmask(InetAddr(AF_INET6, n));
         } else
         {
             istringstream str(n);
             int netm;
             str >> netm;
-            setNetmask(Inet6Addr(netm));
+            setNetmask(InetAddr(AF_INET6, netm));
         }
-    } else setNetmask(Inet6Addr(0));
+    } else setNetmask(InetAddr(AF_INET6, 0));
     FREEXMLBUFF(n);
 }
 

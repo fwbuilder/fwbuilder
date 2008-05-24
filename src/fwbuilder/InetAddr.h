@@ -29,6 +29,8 @@
 
 #include <string>
 #include <vector>
+#include <typeinfo>
+#include <assert.h>
 
 #ifndef _WIN32
 #  include <sys/types.h>
@@ -45,7 +47,15 @@ namespace libfwbuilder
 {
 
 /**
- * Class InetAddr is a wrapper for struct inet_addr
+ * Class InetAddr is a wrapper for struct inet_addr and in6_addr
+ *
+ * Why both address families are implemented as the same class ? Mostly
+ * because I need to have a family of two-argument operators such as
+ * operator&, operator| etc which return new object of the class that
+ * represent the same address family as the arguments. These operators
+ * should be "friends" of class InetAddr since they return new object
+ * by value rather than modify "this". But how to do it if returned
+ * type should be different depending on the types of arguments ?
  *
  */
 class InetAddr
@@ -53,158 +63,250 @@ class InetAddr
     protected:
 
     friend class InetAddrMask;
+    friend class Inet6AddrMask;
 
+    int address_family;
     // Address in network order
-    struct in_addr ipv4;
+    struct in_addr  ipv4;
+    struct in6_addr ipv6;
 
+    // copy in6_addr from sa to da
+    static inline void _copy_in6_addr(struct in6_addr* da,
+                                      const struct in6_addr* sa)
+    {
+        ((uint32_t*)(da))[0] = ((uint32_t*)(sa))[0];
+        ((uint32_t*)(da))[1] = ((uint32_t*)(sa))[1];
+        ((uint32_t*)(da))[2] = ((uint32_t*)(sa))[2];
+        ((uint32_t*)(da))[3] = ((uint32_t*)(sa))[3];
+    }
+
+    void init_from_string(const char* data);
+    void init_from_int(int n);
+    
     public:
     
-    explicit InetAddr() { ipv4.s_addr = 0; }
+    explicit InetAddr()
+    {
+        address_family = AF_INET;
+        ipv4.s_addr = 0;
+        ((uint32_t *) (&ipv6))[0] = 0;
+        ((uint32_t *) (&ipv6))[1] = 0;
+        ((uint32_t *) (&ipv6))[2] = 0;
+        ((uint32_t *) (&ipv6))[3] = 0;
+    }
         
     virtual ~InetAddr() {}
 
     InetAddr(const char *data) throw(FWException);
+    InetAddr(int af, const char *data) throw(FWException);
     InetAddr(const struct in_addr*) throw(FWException);
+    InetAddr(const struct in6_addr*) throw(FWException);
     explicit InetAddr(const std::string&)
         throw(FWException, FWNotSupportedException);
+    explicit InetAddr(int af, const std::string&)
+        throw(FWException, FWNotSupportedException);
     InetAddr(const InetAddr &);
-
     // creates netmask 'n' bits long
     explicit InetAddr(int n) throw(FWException);
+    explicit InetAddr(int af, int n) throw(FWException);
 
     InetAddr& operator=(const InetAddr &addr);
     
-    virtual bool isV4() const { return true; }
-    virtual bool isV6() const { return false; }
+    bool isV4() const { return (address_family==AF_INET); }
+    bool isV6() const { return (address_family==AF_INET6); }
     
     static inline InetAddr getAny()
     {
         return InetAddr();
     }
 
-    static inline InetAddr getAllOnes()
+    static inline InetAddr getAllOnes(int af=AF_INET)
     {
-        struct in_addr allones;
-        allones.s_addr = 0xffffffff;
-        return InetAddr(&allones);
+        if (af==AF_INET)
+        {
+            struct in_addr allones;
+            allones.s_addr = 0xffffffff;
+            return InetAddr(&allones);
+        } else
+        {
+            struct in6_addr a;
+            ((uint32_t *) (&a))[0] = 0xffffffff;
+            ((uint32_t *) (&a))[1] = 0xffffffff;
+            ((uint32_t *) (&a))[2] = 0xffffffff;
+            ((uint32_t *) (&a))[3] = 0xffffffff;
+            return InetAddr(&a);
+        }
     }
 
-    static inline InetAddr getLoopbackAddr()
+    static inline InetAddr getLoopbackAddr(int af=AF_INET)
     {
-        struct in_addr loopback;
-        loopback.s_addr = htonl(INADDR_LOOPBACK);
-        return InetAddr(&loopback);
+        if (af==AF_INET)
+        {
+            struct in_addr loopback;
+            loopback.s_addr = htonl(INADDR_LOOPBACK);
+            return InetAddr(&loopback);
+        } else
+        {
+            struct in6_addr a;
+            ((uint32_t *) (&a))[0] = 0;
+            ((uint32_t *) (&a))[1] = 0;
+            ((uint32_t *) (&a))[2] = 0;
+            ((uint32_t *) (&a))[3] = htonl (1);
+            return InetAddr(&a);
+        }
     }
 
-    inline virtual std::string toString() const
-    {
-        return std::string(strdup(inet_ntoa(ipv4)));
-    }
+    std::string toString() const;
 
     /**
      * Broadcast :  255.255.255.255
+     *
+     * there are no broadcast addresses in ipv6. However some multicast
+     * addresses serve similar purpose. For example "link-scope
+     * all-hosts multicast" address ff02::1 corresponds to the ipv4
+     * broadcast 255.255.255.255
      */
-    inline virtual bool isBroadcast() const
+    inline bool isBroadcast() const
     {
-        return ipv4.s_addr == INADDR_BROADCAST;
+        if (address_family==AF_INET)
+            return ipv4.s_addr == INADDR_BROADCAST;
+        else
+            return IN6_IS_ADDR_MC_LINKLOCAL(&ipv6);
     }
 
     /**
      * Multicast :  224.0.0.0 - 239.0.0.0
      */
-    inline virtual bool isMulticast() const
+    inline bool isMulticast() const
     {
-        return IN_MULTICAST(ntohl(ipv4.s_addr));
+        if (address_family==AF_INET)
+            return IN_MULTICAST(ntohl(ipv4.s_addr));
+        else
+            return IN6_IS_ADDR_MULTICAST(&ipv6);
     }
 
     /**
      * INADDR_ANY: 0
      */
-    inline virtual bool isAny() const
+    inline bool isAny() const
     {
-        return ipv4.s_addr == INADDR_ANY;
+        if (address_family==AF_INET)
+            return ipv4.s_addr == INADDR_ANY;
+        else
+            return (IN6_IS_ADDR_UNSPECIFIED(&ipv6));
     }
 
     /**
      * calculate distance between _this_ address and address a2 and return
      * it as int
+     * This method is limited, it only calculates distance that fit in 32 bit
+     * number
      */
-    inline virtual int distance(const InetAddr &a2) const
+    inline int distance(const InetAddr &a2) const
     {
-        return ntohl(a2.ipv4.s_addr) - ntohl(ipv4.s_addr) + 1;
+        if (address_family==AF_INET)
+            return ntohl(a2.ipv4.s_addr) - ntohl(ipv4.s_addr) + 1;
+        else
+        {
+            uint32_t *d1 = (uint32_t *)(&ipv6);
+            uint32_t *d2 = (uint32_t *)(&(a2.ipv6));
+            return *d2 - *d1 + 1;
+        }
     }
 
     /**
      * returns the "length" of the netmask, that is number of bits set to '1'
      * counting from left to right
      */ 
-    virtual int getLength() const;
+    int getLength() const;
 
     /**
      * for netmasks: return true if this is host mask, i.e. all '1'
      */
     inline bool isHostMask() const
     {
-        return ipv4.s_addr == INADDR_BROADCAST;
+        if (address_family==AF_INET)
+            return ipv4.s_addr == INADDR_BROADCAST;
+        else
+            return (((uint32_t*)(&ipv6))[0] == 0xffffffff &&
+                    ((uint32_t*)(&ipv6))[1] == 0xffffffff &&
+                    ((uint32_t*)(&ipv6))[2] == 0xffffffff &&
+                    ((uint32_t*)(&ipv6))[3] == 0xffffffff);
     }
+
+    /*****************************************************************/
+
+    InetAddr opAnd(const InetAddr &mask) const;
+
+    InetAddr opOr(const InetAddr &mask) const;
+
+    InetAddr opPlus(int increment) const;
+
+    InetAddr opMinus(int decrement) const;
+
+    bool opLT(const InetAddr &other) const;
+
+    bool opGT(const InetAddr &other) const;
+
+    bool opEQ(const InetAddr &other) const;
+
+    bool opNEQ(const InetAddr &other) const;
+    
+    InetAddr opCompl() const;
 
     /*****************************************************************/
 
     inline friend InetAddr operator&(const InetAddr &addr,
                                      const InetAddr &mask)
     {
-        struct in_addr res;
-        res.s_addr = htonl(ntohl(addr.ipv4.s_addr) & ntohl(mask.ipv4.s_addr));
-        return InetAddr(&res);
+        assert (typeid(addr) == typeid(mask));
+        return addr.opAnd(mask);
     }
 
     inline friend InetAddr operator|(const InetAddr &addr,
                                      const InetAddr &mask)
     {
-        struct in_addr res;
-        res.s_addr = htonl(ntohl(addr.ipv4.s_addr) | ntohl(mask.ipv4.s_addr));
-        return InetAddr(&res);
+        assert (typeid(addr) == typeid(mask));
+        return addr.opOr(mask);
     }
 
     inline friend InetAddr operator+(const InetAddr &addr, int increment)
     {
-        struct in_addr res;
-        res.s_addr = htonl(ntohl(addr.ipv4.s_addr) + increment);
-        return InetAddr(&res);
+        return addr.opPlus(increment);
     }
 
-    inline friend InetAddr operator-(const InetAddr &addr,int decrement)
+    inline friend InetAddr operator-(const InetAddr &addr, int decrement)
     {
-        struct in_addr res;
-        res.s_addr = htonl(ntohl(addr.ipv4.s_addr) - decrement);
-        return InetAddr(&res);
+        return addr.opMinus(decrement);
     }
 
     inline friend bool operator<(const InetAddr &a, const InetAddr &b)
     {
-        return (ntohl( a.ipv4.s_addr ) < ntohl( b.ipv4.s_addr ));
+        assert (typeid(a) == typeid(b));
+        return a.opLT(b);
     }
 
     inline friend bool operator>(const InetAddr &a, const InetAddr &b)
     {
-        return (ntohl( a.ipv4.s_addr ) > ntohl( b.ipv4.s_addr ));
+        assert (typeid(a) == typeid(b));
+        return a.opGT(b);
     }
 
     inline friend bool operator==(const InetAddr &a, const InetAddr &b)
     {
-        return a.ipv4.s_addr == b.ipv4.s_addr;
+        assert (typeid(a) == typeid(b));
+        return a.opEQ(b);
     }
 
     inline friend bool operator!=(const InetAddr &a, const InetAddr &b)
     {
-        return a.ipv4.s_addr != b.ipv4.s_addr;
+        assert (typeid(a) == typeid(b));
+        return a.opNEQ(b);
     }
     
     inline friend InetAddr operator~(const InetAddr &a)
     {
-        struct in_addr res;
-        res.s_addr = htonl(~(ntohl(a.ipv4.s_addr)));
-        return InetAddr(&res);
+        return a.opCompl();
     }
 
 };

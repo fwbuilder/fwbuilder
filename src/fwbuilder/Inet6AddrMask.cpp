@@ -46,49 +46,15 @@
 using namespace std;
 using namespace libfwbuilder;
 
-void Inet6AddrMask::setNetworkAndBroadcastAddress()
+Inet6AddrMask::Inet6AddrMask() : InetAddrMask()
 {
-    delete network_address;
-    network_address = new Inet6Addr(
-        dynamic_cast<const Inet6Addr&>(*address) & dynamic_cast<const Inet6Addr&>(*netmask));
-    delete broadcast_address;
-    broadcast_address = new Inet6Addr(
-        dynamic_cast<const Inet6Addr&>(*address) | (~(dynamic_cast<const Inet6Addr&>(*netmask))));
+    address->address_family = AF_INET6;
+    netmask->address_family = AF_INET6;
+    setNetworkAndBroadcastAddress();
 }
 
-Inet6AddrMask::Inet6AddrMask() : InetAddrMask(true)
-{
-    address = new Inet6Addr();
-    netmask = new Inet6Addr();
-    broadcast_address = new Inet6Addr();
-    network_address = new Inet6Addr();
-}
-
-Inet6AddrMask::Inet6AddrMask(const Inet6Addr &a, const Inet6Addr &n) :
+Inet6AddrMask::Inet6AddrMask(const string &s) throw(FWException) :
     InetAddrMask(true)
-{    
-    address = new Inet6Addr(a & n);
-    netmask = new Inet6Addr(n);
-    broadcast_address = new Inet6Addr();
-    network_address = new Inet6Addr();
-    setNetworkAndBroadcastAddress();
-}
-
-Inet6AddrMask::Inet6AddrMask(const Inet6AddrMask& other) : InetAddrMask(true)
-{
-    Inet6Addr *i6_addr = dynamic_cast<Inet6Addr*>(other.address);
-    assert(i6_addr);
-    Inet6Addr *i6_nm = dynamic_cast<Inet6Addr*>(other.netmask);
-    assert(i6_nm);
-
-    address = new Inet6Addr(*i6_addr);
-    netmask = new Inet6Addr(*i6_nm);
-    broadcast_address = new Inet6Addr();
-    network_address = new Inet6Addr();
-    setNetworkAndBroadcastAddress();
-}
-
-Inet6AddrMask::Inet6AddrMask(const string &s) throw(FWException) : InetAddrMask(true)
 {
     struct in6_addr a_ipv6;
     int nbits;
@@ -96,12 +62,17 @@ Inet6AddrMask::Inet6AddrMask(const string &s) throw(FWException) : InetAddrMask(
     if (nbits < 0)
         throw FWException(string("Invalid IP address: '") + s + "'");
 
-    address = new Inet6Addr(&a_ipv6);
-    netmask = new Inet6Addr(nbits);
+    address = new InetAddr(&a_ipv6);
+    netmask = new InetAddr(AF_INET6, nbits);
     
-    broadcast_address = new Inet6Addr();
-    network_address = new Inet6Addr();
+    broadcast_address = new InetAddr();
+    network_address = new InetAddr();
     setNetworkAndBroadcastAddress();
+}
+
+Inet6AddrMask::Inet6AddrMask(const InetAddr &a, const InetAddr &n) :
+    InetAddrMask(a, n)
+{    
 }
 
 Inet6AddrMask::~Inet6AddrMask()
@@ -110,29 +81,11 @@ Inet6AddrMask::~Inet6AddrMask()
     // and other member variables
 }
 
-void Inet6AddrMask::setAddress(const InetAddr &a)
-{
-    assert(a.isV6());
-    delete address;
-    address = new Inet6Addr(dynamic_cast<const Inet6Addr&>(a));
-    setNetworkAndBroadcastAddress();
-}
-
-void Inet6AddrMask::setNetmask(const InetAddr &nm)
-{
-    assert(nm.isV6());
-    delete netmask;
-    netmask = new Inet6Addr(dynamic_cast<const Inet6Addr&>(nm));
-    setNetworkAndBroadcastAddress();
-}
-
-
 std::string Inet6AddrMask::toString() const
 {
     char ntop_buf[sizeof "ffff:ffff:ffff:ffff:ffff:ffff:255.255.255.255/128"];
     char *cp;
-    cp = inet_net_ntop(PGSQL_AF_INET6,
-                       (const void*)(&(dynamic_cast<Inet6Addr*>(address)->ipv6)),
+    cp = inet_net_ntop(PGSQL_AF_INET6, (const void*)(&(address->ipv6)),
                        netmask->getLength(),
                        ntop_buf, sizeof(ntop_buf));
     if (cp==NULL)

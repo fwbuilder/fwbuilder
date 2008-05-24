@@ -1,3 +1,14 @@
+2008-05-23  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* InetAddr.h (libfwbuilder): Class InetAddr represents both IPv4
+	and IPv6 addresses (depending on its member variable
+	address_family). This simplifies design of the operators that
+	perform address manipulations. The reason is that these operators
+	should not modify object they are called with but rather return
+	temporary object. The address family of this temporary object
+	depends on address family of arguments, which makes it hard to
+	use virtual operators.
+
 2008-05-22  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Changes for IPv6 support. All compilers and OSConfigurator

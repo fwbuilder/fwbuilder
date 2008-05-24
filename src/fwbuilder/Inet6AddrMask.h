@@ -48,27 +48,20 @@
 
 #include <fwbuilder/FWException.h>
 #include <fwbuilder/InetAddrMask.h>
-#include <fwbuilder/Inet6Addr.h>
 
 namespace libfwbuilder
 {
 
 class Inet6AddrMask : public InetAddrMask
 {
-private:
-    void setNetworkAndBroadcastAddress();
 
 public:
 
     Inet6AddrMask();
-    Inet6AddrMask(const Inet6Addr&, const Inet6Addr&);
     Inet6AddrMask(const std::string &s) throw(FWException);
-    Inet6AddrMask(const Inet6AddrMask&);
+    Inet6AddrMask(const InetAddr&, const InetAddr&);
     virtual ~Inet6AddrMask();
 
-    virtual void setAddress(const InetAddr &a);
-    virtual void setNetmask(const InetAddr &nm);
-    
     virtual std::string toString() const;
 };
 
