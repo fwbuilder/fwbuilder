@@ -31,7 +31,6 @@
 
 #include "FWBTree.h"
 #include "NetworkDialogIPv6.h"
-#include "fwbuilder/Inet6Addr.h"
 #include "ProjectPanel.h"
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Network.h"
@@ -116,7 +115,7 @@ void NetworkDialogIPv6::validate(bool *res)
     assert(s!=NULL);
     try
     {
-        Inet6Addr( m_dialog->address->text().toLatin1().constData() );
+        InetAddr(AF_INET6, m_dialog->address->text().toLatin1().constData() );
     } catch (FWException &ex)
     {
         *res=false;
@@ -164,10 +163,10 @@ void NetworkDialogIPv6::applyChanges()
     try
     {
         s->setAddress(
-            Inet6Addr(m_dialog->address->text().toLatin1().constData()) );
+            InetAddr(AF_INET6, m_dialog->address->text().toLatin1().constData()) );
         bool ok = false;
         s->setNetmask(
-            Inet6Addr(m_dialog->netmask->text().toInt(&ok)) );
+            InetAddr(AF_INET6, m_dialog->netmask->text().toInt(&ok)) );
         if (!ok) throw FWException("");
     } catch (FWException &ex)
     {

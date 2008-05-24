@@ -34,7 +34,7 @@
 #include "ProjectPanel.h"
 #include "fwbuilder/Library.h"
 #include "fwbuilder/IPv6.h"
-#include "fwbuilder/Inet6Addr.h"
+#include "fwbuilder/InetAddr.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/FWException.h"
 
@@ -108,9 +108,10 @@ void IPv6Dialog::loadFWObject(FWObject *o)
  * still can show netmask */
     try
     {
-        m_dialog->address->setText( Inet6Addr().toString().c_str() );
+        m_dialog->address->setText(InetAddr(AF_INET6, 0).toString().c_str() );
         const InetAddr *inet_addr = s->getAddressPtr();
-        m_dialog->address->setText( inet_addr->toString().c_str());
+        m_dialog->address->setText(
+            inet_addr->toString().c_str());
     } catch (FWException &ex) {}
 
     try
@@ -159,7 +160,7 @@ void IPv6Dialog::validate(bool *res)
     assert(s!=NULL);
     try
     {
-        Inet6Addr( m_dialog->address->text().toLatin1().constData() );
+        InetAddr(AF_INET6, m_dialog->address->text().toLatin1().constData() );
     } catch (FWException &ex)
     {
         *res=false;
@@ -174,7 +175,7 @@ void IPv6Dialog::validate(bool *res)
         try
         {
             bool ok = false;
-            Inet6Addr(m_dialog->netmask->text().toInt(&ok));
+            InetAddr(AF_INET6, m_dialog->netmask->text().toInt(&ok));
             if (!ok) throw FWException("");
         } catch (FWException &ex)
         {
@@ -210,7 +211,7 @@ void IPv6Dialog::applyChanges()
     try
     {
         s->setAddress(
-            Inet6Addr(m_dialog->address->text().toLatin1().constData()) );
+            InetAddr(AF_INET6, m_dialog->address->text().toLatin1().constData()) );
     } catch (FWException &ex) { }
 
     if ( showNetmask )
@@ -218,11 +219,12 @@ void IPv6Dialog::applyChanges()
         try
         {
             bool ok = false;
-            s->setNetmask(Inet6Addr(m_dialog->netmask->text().toInt(&ok)) );
+            s->setNetmask(
+                InetAddr(AF_INET6, m_dialog->netmask->text().toInt(&ok)) );
             if (!ok) throw FWException("");
         } catch (FWException &ex) { }
     } else
-        s->setNetmask(Inet6Addr());
+        s->setNetmask(InetAddr(AF_INET6, 0));
 
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 

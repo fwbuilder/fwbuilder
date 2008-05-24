@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="6" lastModified="1211435708" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="6" lastModified="1211586656" id="root">
   <Library color="#d2ffd0" comment="User defined objects" id="syslib001" name="User">
     <ObjectGroup id="stdid01_1" name="Objects">
       <ObjectGroup id="stdid01_1_og_ats_1" name="Address Tables">
@@ -24223,10 +24223,30 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="" host_OS="linux24" id="id4833F62B6131" inactive="False" lastCompiled="1211338917" lastInstalled="0" lastModified="1211408113" name="firewall-ipv6-1" platform="iptables" ro="False" version="">
+      <Firewall comment="" host_OS="linux24" id="id4833F62B6131" inactive="False" lastCompiled="1211586650" lastInstalled="0" lastModified="1211586656" name="firewall-ipv6-1" platform="iptables" ro="False" version="">
         <NAT id="id4833F62F6131" name="NAT"/>
         <Policy id="id4833F62E6131" name="Policy">
-          <PolicyRule action="Accept" comment="" direction="Both" disabled="False" id="id4834578B6131" log="False" position="0">
+          <PolicyRule action="Accept" comment="this rule shadows the next.&#10;Note that we add command line&#10;flag -xt to the compiler" direction="Both" disabled="False" group="" id="id4837BFE628819" log="False" position="0">
+            <Src neg="False">
+              <ObjectRef ref="id4834B9206131"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id4833F6316131"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Accept" comment="" direction="Both" disabled="False" id="id4834578B6131" log="False" position="1">
             <Src neg="False">
               <ObjectRef ref="id483426D06131"/>
             </Src>
@@ -24246,7 +24266,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" direction="Both" disabled="False" id="id4834577C6131" log="True" position="1">
+          <PolicyRule action="Accept" direction="Both" disabled="False" id="id4834577C6131" log="True" position="2">
             <Src neg="False">
               <ObjectRef ref="id483426D06131"/>
             </Src>
@@ -24266,7 +24286,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" direction="Both" disabled="False" group="" id="id4834D3038571" log="True" position="2">
+          <PolicyRule action="Accept" direction="Both" disabled="False" group="" id="id4834D3038571" log="True" position="3">
             <Src neg="False">
               <ObjectRef ref="id4834A2238571"/>
             </Src>
@@ -24286,7 +24306,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" direction="Both" disabled="False" group="" id="id4834D3108571" log="True" position="3">
+          <PolicyRule action="Accept" direction="Both" disabled="False" group="" id="id4834D3108571" log="True" position="4">
             <Src neg="False">
               <ObjectRef ref="id4834A2278571"/>
             </Src>
@@ -24306,7 +24326,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="" direction="Both" disabled="False" group="" id="id4835040E8571" log="True" position="4">
+          <PolicyRule action="Accept" comment="" direction="Both" disabled="False" group="" id="id4835040E8571" log="True" position="5">
             <Src neg="False">
               <ObjectRef ref="id4834A2238571"/>
             </Src>
@@ -24326,7 +24346,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="" direction="Both" disabled="False" group="" id="id4835041F8571" log="True" position="5">
+          <PolicyRule action="Accept" comment="" direction="Both" disabled="False" group="" id="id4835041F8571" log="True" position="6">
             <Src neg="False">
               <ObjectRef ref="id4834A2278571"/>
             </Src>
@@ -24346,7 +24366,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" direction="Inbound" disabled="False" id="id4834576F6131" log="True" position="6">
+          <PolicyRule action="Accept" direction="Inbound" disabled="False" id="id4834576F6131" log="True" position="7">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -24366,7 +24386,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" direction="Both" disabled="False" id="id4834B9216131" log="True" position="7">
+          <PolicyRule action="Accept" direction="Both" disabled="False" id="id4834B9216131" log="True" position="8">
             <Src neg="False">
               <ObjectRef ref="id4834B9206131"/>
             </Src>
@@ -24386,7 +24406,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" direction="Both" disabled="False" id="id483566468571" log="True" position="8">
+          <PolicyRule action="Accept" direction="Both" disabled="False" id="id483566468571" log="True" position="9">
             <Src neg="False">
               <ObjectRef ref="id4834A2238571"/>
             </Src>
@@ -24406,7 +24426,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" direction="Both" disabled="False" id="id483566548571" log="True" position="9">
+          <PolicyRule action="Accept" direction="Both" disabled="False" id="id483566548571" log="True" position="10">
             <Src neg="False">
               <ObjectRef ref="id4834A2278571"/>
             </Src>
@@ -24446,10 +24466,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="admUser"></Option>
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
-          <Option name="check_shading">False</Option>
+          <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
-          <Option name="cmdline"></Option>
+          <Option name="cmdline">-xt</Option>
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
