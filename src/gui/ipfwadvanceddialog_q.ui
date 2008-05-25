@@ -16,19 +16,40 @@
    <bool>false</bool>
   </property>
   <layout class="QGridLayout" >
-   <property name="margin" >
+   <property name="leftMargin" >
     <number>11</number>
    </property>
-   <property name="spacing" >
+   <property name="topMargin" >
+    <number>11</number>
+   </property>
+   <property name="rightMargin" >
+    <number>11</number>
+   </property>
+   <property name="bottomMargin" >
+    <number>11</number>
+   </property>
+   <property name="horizontalSpacing" >
+    <number>6</number>
+   </property>
+   <property name="verticalSpacing" >
     <number>6</number>
    </property>
    <item row="1" column="0" >
     <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
+     </property>
+     <property name="leftMargin" >
+      <number>0</number>
+     </property>
+     <property name="topMargin" >
+      <number>0</number>
+     </property>
+     <property name="rightMargin" >
+      <number>0</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>0</number>
      </property>
      <item>
       <spacer>
@@ -87,10 +108,22 @@
        <string>Compiler</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="margin" >
+       <property name="leftMargin" >
         <number>6</number>
        </property>
-       <property name="spacing" >
+       <property name="topMargin" >
+        <number>6</number>
+       </property>
+       <property name="rightMargin" >
+        <number>6</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>6</number>
+       </property>
+       <property name="horizontalSpacing" >
+        <number>6</number>
+       </property>
+       <property name="verticalSpacing" >
         <number>6</number>
        </property>
        <item rowspan="2" row="4" column="0" >
@@ -128,9 +161,7 @@
        <item row="1" column="0" colspan="2" >
         <widget class="QLabel" name="compilerArgsLabel" >
          <property name="sizePolicy" >
-          <sizepolicy>
-           <hsizetype>7</hsizetype>
-           <vsizetype>5</vsizetype>
+          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -162,9 +193,7 @@
        <item row="2" column="0" colspan="2" >
         <widget class="QLabel" name="textLabel1_5" >
          <property name="sizePolicy" >
-          <sizepolicy>
-           <hsizetype>7</hsizetype>
-           <vsizetype>5</vsizetype>
+          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -229,9 +258,7 @@
        <item row="7" column="2" >
         <widget class="QLineEdit" name="mgmt_addr" >
          <property name="sizePolicy" >
-          <sizepolicy>
-           <hsizetype>7</hsizetype>
-           <vsizetype>0</vsizetype>
+          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -247,9 +274,7 @@
        <item row="6" column="1" colspan="2" >
         <widget class="QCheckBox" name="ipfw_ignore_empty_groups" >
          <property name="sizePolicy" >
-          <sizepolicy>
-           <hsizetype>7</hsizetype>
-           <vsizetype>0</vsizetype>
+          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -265,9 +290,7 @@
        <item row="5" column="1" colspan="2" >
         <widget class="QCheckBox" name="ipfw_check_shadowing" >
          <property name="sizePolicy" >
-          <sizepolicy>
-           <hsizetype>7</hsizetype>
-           <vsizetype>0</vsizetype>
+          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -283,9 +306,7 @@
        <item row="4" column="1" colspan="2" >
         <widget class="QCheckBox" name="ipfw_add_check_state_rule" >
          <property name="sizePolicy" >
-          <sizepolicy>
-           <hsizetype>1</hsizetype>
-           <vsizetype>0</vsizetype>
+          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -312,10 +333,22 @@ with this address:</string>
        <string>Installer</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="margin" >
+       <property name="leftMargin" >
         <number>6</number>
        </property>
-       <property name="spacing" >
+       <property name="topMargin" >
+        <number>6</number>
+       </property>
+       <property name="rightMargin" >
+        <number>6</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>6</number>
+       </property>
+       <property name="horizontalSpacing" >
+        <number>6</number>
+       </property>
+       <property name="verticalSpacing" >
         <number>6</number>
        </property>
        <item row="2" column="0" >
@@ -340,18 +373,28 @@ with this address:</string>
           <string>External install script</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="margin" >
+          <property name="leftMargin" >
            <number>6</number>
           </property>
-          <property name="spacing" >
+          <property name="topMargin" >
+           <number>6</number>
+          </property>
+          <property name="rightMargin" >
+           <number>6</number>
+          </property>
+          <property name="bottomMargin" >
+           <number>6</number>
+          </property>
+          <property name="horizontalSpacing" >
+           <number>6</number>
+          </property>
+          <property name="verticalSpacing" >
            <number>6</number>
           </property>
           <item row="0" column="1" >
            <widget class="QLineEdit" name="installScript" >
             <property name="sizePolicy" >
-             <sizepolicy>
-              <hsizetype>0</hsizetype>
-              <vsizetype>0</vsizetype>
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -361,9 +404,7 @@ with this address:</string>
           <item row="0" column="0" >
            <widget class="QLabel" name="textLabel5_2" >
             <property name="sizePolicy" >
-             <sizepolicy>
-              <hsizetype>7</hsizetype>
-              <vsizetype>5</vsizetype>
+             <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -382,9 +423,7 @@ with this address:</string>
           <item row="1" column="0" >
            <widget class="QLabel" name="textLabel6_2_2" >
             <property name="sizePolicy" >
-             <sizepolicy>
-              <hsizetype>7</hsizetype>
-              <vsizetype>5</vsizetype>
+             <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -403,9 +442,7 @@ with this address:</string>
           <item row="1" column="1" >
            <widget class="QLineEdit" name="installScriptArgs" >
             <property name="sizePolicy" >
-             <sizepolicy>
-              <hsizetype>0</hsizetype>
-              <vsizetype>0</vsizetype>
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -421,10 +458,22 @@ with this address:</string>
           <string>Built-in installer</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="margin" >
+          <property name="leftMargin" >
            <number>6</number>
           </property>
-          <property name="spacing" >
+          <property name="topMargin" >
+           <number>6</number>
+          </property>
+          <property name="rightMargin" >
+           <number>6</number>
+          </property>
+          <property name="bottomMargin" >
+           <number>6</number>
+          </property>
+          <property name="horizontalSpacing" >
+           <number>6</number>
+          </property>
+          <property name="verticalSpacing" >
            <number>6</number>
           </property>
           <item row="2" column="0" >
@@ -469,9 +518,7 @@ with this address:</string>
           <item row="0" column="1" >
            <widget class="QLineEdit" name="ipfw_fw_dir" >
             <property name="sizePolicy" >
-             <sizepolicy>
-              <hsizetype>0</hsizetype>
-              <vsizetype>0</vsizetype>
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -481,9 +528,7 @@ with this address:</string>
           <item row="1" column="1" >
            <widget class="QLineEdit" name="ipfw_user" >
             <property name="sizePolicy" >
-             <sizepolicy>
-              <hsizetype>0</hsizetype>
-              <vsizetype>0</vsizetype>
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -493,9 +538,7 @@ with this address:</string>
           <item row="2" column="1" >
            <widget class="QLineEdit" name="altAddress" >
             <property name="sizePolicy" >
-             <sizepolicy>
-              <hsizetype>0</hsizetype>
-              <vsizetype>0</vsizetype>
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -505,9 +548,7 @@ with this address:</string>
           <item row="3" column="1" >
            <widget class="QLineEdit" name="activationCmd" >
             <property name="sizePolicy" >
-             <sizepolicy>
-              <hsizetype>0</hsizetype>
-              <vsizetype>0</vsizetype>
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -529,11 +570,20 @@ with this address:</string>
           </item>
           <item row="4" column="0" colspan="2" >
            <layout class="QHBoxLayout" >
-            <property name="margin" >
-             <number>0</number>
-            </property>
             <property name="spacing" >
              <number>6</number>
+            </property>
+            <property name="leftMargin" >
+             <number>0</number>
+            </property>
+            <property name="topMargin" >
+             <number>0</number>
+            </property>
+            <property name="rightMargin" >
+             <number>0</number>
+            </property>
+            <property name="bottomMargin" >
+             <number>0</number>
             </property>
             <item>
              <widget class="QLabel" name="textLabel1_7" >
@@ -548,9 +598,7 @@ with this address:</string>
             <item>
              <widget class="QLineEdit" name="sshArgs" >
               <property name="sizePolicy" >
-               <sizepolicy>
-                <hsizetype>7</hsizetype>
-                <vsizetype>0</vsizetype>
+               <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -569,10 +617,22 @@ with this address:</string>
        <string>Prolog/Epilog</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="margin" >
+       <property name="leftMargin" >
         <number>6</number>
        </property>
-       <property name="spacing" >
+       <property name="topMargin" >
+        <number>6</number>
+       </property>
+       <property name="rightMargin" >
+        <number>6</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>6</number>
+       </property>
+       <property name="horizontalSpacing" >
+        <number>6</number>
+       </property>
+       <property name="verticalSpacing" >
         <number>6</number>
        </property>
        <item row="1" column="0" >
@@ -581,10 +641,22 @@ with this address:</string>
           <string/>
          </property>
          <layout class="QGridLayout" >
-          <property name="margin" >
+          <property name="leftMargin" >
            <number>6</number>
           </property>
-          <property name="spacing" >
+          <property name="topMargin" >
+           <number>6</number>
+          </property>
+          <property name="rightMargin" >
+           <number>6</number>
+          </property>
+          <property name="bottomMargin" >
+           <number>6</number>
+          </property>
+          <property name="horizontalSpacing" >
+           <number>6</number>
+          </property>
+          <property name="verticalSpacing" >
            <number>6</number>
           </property>
           <item row="2" column="1" >
@@ -635,10 +707,22 @@ with this address:</string>
           <string/>
          </property>
          <layout class="QGridLayout" >
-          <property name="margin" >
+          <property name="leftMargin" >
            <number>6</number>
           </property>
-          <property name="spacing" >
+          <property name="topMargin" >
+           <number>6</number>
+          </property>
+          <property name="rightMargin" >
+           <number>6</number>
+          </property>
+          <property name="bottomMargin" >
+           <number>6</number>
+          </property>
+          <property name="horizontalSpacing" >
+           <number>6</number>
+          </property>
+          <property name="verticalSpacing" >
            <number>6</number>
           </property>
           <item row="2" column="0" >
@@ -690,10 +774,22 @@ with this address:</string>
        <string>Script Options</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="margin" >
+       <property name="leftMargin" >
         <number>6</number>
        </property>
-       <property name="spacing" >
+       <property name="topMargin" >
+        <number>6</number>
+       </property>
+       <property name="rightMargin" >
+        <number>6</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>6</number>
+       </property>
+       <property name="horizontalSpacing" >
+        <number>6</number>
+       </property>
+       <property name="verticalSpacing" >
         <number>6</number>
        </property>
        <item rowspan="3" row="2" column="0" >
@@ -774,6 +870,67 @@ with this address:</string>
           <size>
            <width>20</width>
            <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2" >
+      <attribute name="title" >
+       <string>IPv6</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <item row="0" column="0" >
+        <widget class="QCheckBox" name="ipv6_2" >
+         <property name="text" >
+          <string>Enable IPv6 support</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QLabel" name="label_2" >
+         <property name="text" >
+          <string>The order in which ipv4 and ipv6 rules should be generated:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="2" column="0" >
+        <widget class="QComboBox" name="ipv4before_2" >
+         <item>
+          <property name="text" >
+           <string>IPv4 before IPv6</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>IPv6 before IPv4</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="3" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
           </size>
          </property>
         </spacer>
