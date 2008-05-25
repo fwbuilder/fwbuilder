@@ -9,7 +9,7 @@
     <x>0</x>
     <y>0</y>
     <width>741</width>
-    <height>756</height>
+    <height>719</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -165,7 +165,7 @@
    </widget>
    <widget class="QMenu" name="menuWindow" >
     <property name="title" >
-     <string>Windows</string>
+     <string>Window</string>
     </property>
    </widget>
    <addaction name="fileMenu" />

@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>572</width>
-    <height>182</height>
+    <width>617</width>
+    <height>201</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -186,31 +186,18 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1" >
-         <widget class="QTextEdit" name="comment" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-            <horstretch>0</horstretch>
-            <verstretch>100</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>200</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="tabChangesFocus" >
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="0" >
          <widget class="QFrame" name="frame14" >
           <property name="minimumSize" >
            <size>
-            <width>350</width>
+            <width>250</width>
             <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>250</width>
+            <height>16777215</height>
            </size>
           </property>
           <property name="frameShape" >
@@ -248,7 +235,7 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1" colspan="3" >
+           <item row="0" column="1" >
             <widget class="QLineEdit" name="obj_name" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -258,7 +245,7 @@
              </property>
              <property name="minimumSize" >
               <size>
-               <width>250</width>
+               <width>170</width>
                <height>0</height>
               </size>
              </property>
@@ -274,7 +261,7 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1" colspan="3" >
+           <item row="1" column="1" >
             <widget class="QComboBox" name="libs" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -294,7 +281,7 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="1" colspan="3" >
+           <item row="2" column="1" >
             <widget class="QLineEdit" name="address" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -308,81 +295,88 @@
             </widget>
            </item>
            <item row="3" column="0" colspan="2" >
-            <widget class="QLabel" name="netmaskLabel" >
-             <property name="text" >
-              <string>Network (bit length)</string>
+            <widget class="QFrame" name="frame" >
+             <property name="frameShape" >
+              <enum>QFrame::NoFrame</enum>
              </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
+             <property name="frameShadow" >
+              <enum>QFrame::Raised</enum>
              </property>
+             <layout class="QGridLayout" >
+              <property name="leftMargin" >
+               <number>0</number>
+              </property>
+              <property name="topMargin" >
+               <number>0</number>
+              </property>
+              <property name="rightMargin" >
+               <number>0</number>
+              </property>
+              <property name="bottomMargin" >
+               <number>0</number>
+              </property>
+              <property name="horizontalSpacing" >
+               <number>0</number>
+              </property>
+              <property name="verticalSpacing" >
+               <number>0</number>
+              </property>
+              <item row="0" column="0" >
+               <widget class="QLabel" name="netmaskLabel" >
+                <property name="text" >
+                 <string>Network (bit length)</string>
+                </property>
+                <property name="wordWrap" >
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1" >
+               <widget class="QLineEdit" name="netmask" >
+                <property name="sizePolicy" >
+                 <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
-           <item row="3" column="2" >
+           <item row="4" column="0" colspan="2" >
             <spacer>
              <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
+              <enum>Qt::Vertical</enum>
              </property>
              <property name="sizeHint" >
               <size>
-               <width>40</width>
-               <height>20</height>
+               <width>232</width>
+               <height>31</height>
               </size>
              </property>
             </spacer>
            </item>
-           <item row="3" column="3" >
-            <widget class="QLineEdit" name="netmask" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0" colspan="4" >
-            <layout class="QHBoxLayout" >
-             <property name="spacing" >
-              <number>2</number>
-             </property>
-             <property name="leftMargin" >
-              <number>0</number>
-             </property>
-             <property name="topMargin" >
-              <number>0</number>
-             </property>
-             <property name="rightMargin" >
-              <number>0</number>
-             </property>
-             <property name="bottomMargin" >
-              <number>0</number>
-             </property>
-             <item>
-              <spacer>
-               <property name="orientation" >
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType" >
-                <enum>QSizePolicy::MinimumExpanding</enum>
-               </property>
-               <property name="sizeHint" >
-                <size>
-                 <width>30</width>
-                 <height>5</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="dnsLookup" >
-               <property name="text" >
-                <string>DNS Lookup...</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
           </layout>
+         </widget>
+        </item>
+        <item row="1" column="1" >
+         <widget class="QTextEdit" name="comment" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+            <horstretch>0</horstretch>
+            <verstretch>100</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="tabChangesFocus" >
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
        </layout>
@@ -397,8 +391,6 @@
   <tabstop>obj_name</tabstop>
   <tabstop>libs</tabstop>
   <tabstop>address</tabstop>
-  <tabstop>netmask</tabstop>
-  <tabstop>dnsLookup</tabstop>
   <tabstop>comment</tabstop>
  </tabstops>
  <resources/>
@@ -452,42 +444,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>netmask</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>IPv6Dialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>obj_name</sender>
    <signal>textChanged(QString)</signal>
    <receiver>IPv6Dialog_q</receiver>
    <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dnsLookup</sender>
-   <signal>clicked()</signal>
-   <receiver>IPv6Dialog_q</receiver>
-   <slot>DNSlookup()</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>20</x>
