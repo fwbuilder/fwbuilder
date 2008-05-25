@@ -414,8 +414,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>101</x>
+     <y>75</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -430,8 +430,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>101</x>
+     <y>127</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -446,12 +446,28 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>307</x>
+     <y>71</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>netmask</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>NetworkDialogIPv6_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>201</x>
+     <y>152</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>180</x>
+     <y>-2</y>
     </hint>
    </hints>
   </connection>

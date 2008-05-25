@@ -100,7 +100,7 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
         {
             str <<  IPv6::cast(obj)->getAddressPtr()->toString().c_str();
             str << "/";
-            str << IPv6::cast(obj)->getNetmaskPtr()->toString().c_str();
+            str << QString("%1").arg(IPv6::cast(obj)->getNetmaskPtr()->getLength());
 
         } else if (physAddress::isA(obj))
         {
@@ -164,7 +164,7 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
             NetworkIPv6 *n=NetworkIPv6::cast(obj);
             str << n->getAddressPtr()->toString().c_str();
             str << "/";
-            str << n->getNetmaskPtr()->toString().c_str();
+            str << QString("%1").arg(n->getNetmaskPtr()->getLength());
 
         } else if (Group::cast(obj)!=NULL)   // just any group
         {
@@ -294,7 +294,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
             str +=  IPv6::cast(obj)->getAddressPtr()->toString().c_str();
             str += "/";
-            str += IPv6::cast(obj)->getNetmaskPtr()->toString().c_str();
+            str += QString("%1").arg(IPv6::cast(obj)->getNetmaskPtr()->getLength());
         } else if (physAddress::isA(obj))
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
@@ -350,7 +350,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             NetworkIPv6 *n=NetworkIPv6::cast(obj);
             str += n->getAddressPtr()->toString().c_str();
             str += "/";
-            str += n->getNetmaskPtr()->toString().c_str();
+            str += QString("%1").arg(n->getNetmaskPtr()->getLength());
         } else if (Group::cast(obj)!=NULL)   // just any group
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
