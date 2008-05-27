@@ -386,6 +386,7 @@ void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
 	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 	assert(o);
 
+        // this condition includes Host, Firewall and Interface
         if (Address::cast(o) &&
             !Address::cast(o)->hasInetAddress())
         {
@@ -393,6 +394,7 @@ void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
             continue;
         }
 
+        // IPv4, IPv6, Network, NetworkIPv6
         if (Address::cast(o) &&
             Address::cast(o)->hasInetAddress() &&
             MatchesAddressFamily(o))
@@ -499,20 +501,18 @@ void Compiler::_expandAddr(Rule *rule, FWObject *s)
 
     _expand_addr_recursive(rule, s, cl);
 
-    if ( ! cl.empty() )
+    s->clearChildren();
+
+    for (FWObject::iterator i1=cl.begin(); i1!=cl.end(); ++i1) 
     {
-	s->clearChildren();
-	for (FWObject::iterator i1=cl.begin(); i1!=cl.end(); ++i1) 
-        {
-/*
-            cerr << "Compiler::_expandAddr: adding object: (*i1)->name=";
-            cerr << (*i1)->getName();
-            cerr << "  (*i1)->id=" << (*i1)->getId();
-            cerr << "  type=" << (*i1)->getTypeName();
-            cerr << endl;
-*/
-	    s->addRef( *i1 );
-	}
+#if 0
+        cerr << "Compiler::_expandAddr: adding object: (*i1)->name=";
+        cerr << (*i1)->getName();
+        cerr << "  (*i1)->id=" << (*i1)->getId();
+        cerr << "  type=" << (*i1)->getTypeName();
+        cerr << endl;
+#endif        
+        s->addRef( *i1 );
     }
 }
 
@@ -575,6 +575,37 @@ void Compiler::normalizePortRange(int &rs,int &re)
 }
 
 
+bool Compiler::_complexMatchWithAddress(const InetAddr *obj1_addr,
+                                        Interface *iface,
+                                        const string &address_type,
+                                        bool recognize_broadcasts)
+{
+    FWObjectTypedChildIterator k = iface->findByType(address_type);
+    for ( ; k!=k.end(); ++k ) 
+    {
+        Address *addr_obj = Address::cast(*k);
+                    
+        if ( *(addr_obj->getAddressPtr())==*(obj1_addr) ) return true;
+        const InetAddr *addr = addr_obj->getAddressPtr();
+        const InetAddr *netm = addr_obj->getNetmaskPtr();
+        if (addr)
+        {
+            InetAddrMask n(*addr, *netm);
+/*
+ * bug #1040773: need to match network address as well as
+ * broadcast. Packets sent to the network address (192.168.1.0 for net
+ * 192.168.1.0/24) go in the broadcast frame and behave just like IP
+ * broadcast packets (sent to 192.168.1.1255 for the same net)
+ *
+ */
+            if (recognize_broadcasts && (
+                    *(n.getNetworkAddressPtr())==*(obj1_addr) ||
+                    *(n.getBroadcastAddressPtr())==*(obj1_addr)
+                )) return true;
+        }
+    }
+    return false;
+}
 
 bool Compiler::_complexMatchWithInterface(Address   *obj1,
                                           Interface *iface,
@@ -592,33 +623,9 @@ bool Compiler::_complexMatchWithInterface(Address   *obj1,
 
     if ( iface->isRegular() )
     {
-        FWObjectTypedChildIterator k = iface->findByType(IPv4::TYPENAME);
-        for ( ; k!=k.end(); ++k ) 
-        {
-            Address *ipv4 = Address::cast(*k);
-                    
-            if ( *(ipv4->getAddressPtr())==*(obj1_addr) ) return true;
-            const InetAddr *addr = ipv4->getAddressPtr();
-            const InetAddr *netm = ipv4->getNetmaskPtr();
-            if (addr)
-            {
-                InetAddrMask n(*addr, *netm);
-/*
- * bug #1040773: need to match network address as well as
- * broadcast. Packets sent to the network address (192.168.1.0 for net
- * 192.168.1.0/24) go in the broadcast frame and behave just like IP
- * broadcast packets (sent to 192.168.1.1255 for the same net)
- *
- */
-                if (recognize_broadcasts)
-                {
-/* obj1 is an individual address - IPv4 or Address object */
-                    if (*(n.getAddressPtr())==*(obj1_addr) ||
-                        *(n.getBroadcastAddressPtr())==*(obj1_addr))
-                        return true;
-                }
-            }
-        }
+        string address_type = (ipv6) ? IPv6::TYPENAME : IPv4::TYPENAME;
+        return _complexMatchWithAddress(
+            obj1_addr, iface, address_type, recognize_broadcasts);
     }
     return false;
 }
@@ -634,8 +641,8 @@ bool Compiler::_complexMatchWithInterface(Address   *obj1,
  */
 bool Compiler::complexMatch(Address *obj1,
                             Address *obj2,
-                          bool recognize_broadcasts,
-                          bool recognize_multicasts)
+                            bool recognize_broadcasts,
+                            bool recognize_multicasts)
 {
     if (Network::isA(obj1))
     {
@@ -694,6 +701,8 @@ bool Compiler::complexMatch(Address *obj1,
     while ( (p=p->getParent())!=NULL )  // it is faster to search this way
         if (p->getId()==obj2->getId()) return true;
 
+    // TODO: this can be expensive since we create and return temporary
+    // list object only to get its size. Need method FWObject::countByType
     if ((obj1->getByType(IPv4::TYPENAME)).size()>1) return false;
 
     const InetAddr *obj1_addr = obj1->getAddressPtr();

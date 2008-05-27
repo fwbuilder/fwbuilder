@@ -135,6 +135,10 @@ namespace fwcompiler {
                                         libfwbuilder::Interface *iface,
                                         bool recognize_broadcasts=true);
 
+        bool _complexMatchWithAddress(const libfwbuilder::InetAddr *obj1_addr,
+                                      libfwbuilder::Interface *iface,
+                                      const std::string &address_type,
+                                      bool recognize_broadcasts);
 	protected:
 
         int  _cntr_;
