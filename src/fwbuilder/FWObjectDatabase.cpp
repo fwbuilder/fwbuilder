@@ -177,7 +177,7 @@ void FWObjectDatabase::load(const string &f,
     if(!root || !root->name || strcmp(FROMXMLCAST(root->name), FWObjectDatabase::TYPENAME)!=SAME)
     {
 	xmlFreeDoc(doc);
-        throw FWException("Data file have invalid structure: "+f);
+        throw FWException("Data file has invalid structure: "+f);
     }
     
     try {

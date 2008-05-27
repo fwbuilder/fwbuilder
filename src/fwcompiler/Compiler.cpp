@@ -516,46 +516,55 @@ void Compiler::_expandAddr(Rule *rule, FWObject *s)
     }
 }
 
-void Compiler::_expandAddressRanges(Rule*, FWObject *s)
+/**
+ * replace address range objects in the rule element 're' with series of
+ * regular address obejcts. Drop objects that do not match current
+ * address family.
+ */
+void Compiler::_expandAddressRanges(Rule*, FWObject *re)
 {
     list<FWObject*> cl;
-    for (FWObject::iterator i1=s->begin(); i1!=s->end(); ++i1) 
+    for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
     {
 	FWObject *o= *i1;
 	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 	assert(o!=NULL);
 
-	if (AddressRange::cast(o)!=NULL && MatchesAddressFamily(o))
+        // if this is address range, check if it matches current address
+        // family. If it is not address range, put it back into the rule element
+        // If it is address range but it does not match address family,
+        // throw it away.
+	if (AddressRange::cast(o)!=NULL)
         {
-	    InetAddr a1 = AddressRange::cast(o)->getRangeStart();
-	    InetAddr a2 = AddressRange::cast(o)->getRangeEnd();
-            vector<InetAddrMask> vn = libfwbuilder::convertAddressRange(a1,a2);
-
-            for (vector<InetAddrMask>::iterator i=vn.begin(); i!=vn.end(); i++)
+            if (MatchesAddressFamily(o))
             {
-                Network *h;
-                h= Network::cast(dbcopy->create(Network::TYPENAME) );
-                h->setName(string("%n-")+(*i).toString()+string("%") );
-                h->setNetmask(*(i->getNetmaskPtr()));
-                h->setAddress(*(i->getAddressPtr()));
-                cacheObj(h); // to keep cache consistent
-                dbcopy->add(h,false);
-                cl.push_back(h);
+                InetAddr a1 = AddressRange::cast(o)->getRangeStart();
+                InetAddr a2 = AddressRange::cast(o)->getRangeEnd();
+                vector<InetAddrMask> vn = 
+                    libfwbuilder::convertAddressRange(a1,a2);
+
+                for (vector<InetAddrMask>::iterator i=vn.begin();
+                     i!=vn.end(); i++)
+                {
+                    Network *h;
+                    h= Network::cast(dbcopy->create(Network::TYPENAME) );
+                    h->setName(string("%n-")+(*i).toString()+string("%") );
+                    h->setNetmask(*(i->getNetmaskPtr()));
+                    h->setAddress(*(i->getAddressPtr()));
+                    cacheObj(h); // to keep cache consistent
+                    dbcopy->add(h,false);
+                    cl.push_back(h);
+                }
             }
 	} else
         {
             cl.push_back(o);
         }
     }
-    if ( ! cl.empty() )
-    {
-	s->clearChildren();
 
-	for (FWObject::iterator i1=cl.begin(); i1!=cl.end(); ++i1)
-        {
-	    s->addRef( *i1 );
-	}
-    }
+    re->clearChildren();
+    for (FWObject::iterator i1=cl.begin(); i1!=cl.end(); ++i1)
+        re->addRef( *i1 );
 }
 
 void Compiler::normalizePortRange(int &rs,int &re)
