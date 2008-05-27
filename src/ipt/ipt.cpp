@@ -524,6 +524,11 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 generated_script += "\n\n";
                 generated_script += "#================ IPv6 ================\n";
                 generated_script += "\n\n";
+            } else
+            {
+                generated_script += "\n\n";
+                generated_script += "#================ IPv4 ================\n";
+                generated_script += "\n\n";
             }
 
             Preprocessor* prep = new Preprocessor(

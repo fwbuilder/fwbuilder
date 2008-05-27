@@ -2159,15 +2159,25 @@ void NATCompiler_ipt::compile()
         add( new emptyGroupsInTSrv("check for empty groups in TSRV"      ));
 
 	add( new ExpandGroups(            "Expand groups"                ));
+        // processors that expand objects with multiple addresses
+        // check addresses against current address family using member
+        // ipv6. If all addresses do not match, we may end up with
+        // empty rule element.
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+
         add( new eliminateDuplicatesInOSRC("eliminate duplicates in OSRC"));
         add( new eliminateDuplicatesInODST("eliminate duplicates in ODST"));
         add( new eliminateDuplicatesInOSRV("eliminate duplicates in OSRV"));
 
-        add( new swapMultiAddressObjectsInOSrc(" swap MultiAddress -> MultiAddressRunTime in OSrc") );
-        add( new swapMultiAddressObjectsInODst(" swap MultiAddress -> MultiAddressRunTime in ODst") );
+        add( new swapMultiAddressObjectsInOSrc(
+                 " swap MultiAddress -> MultiAddressRunTime in OSrc") );
+        add( new swapMultiAddressObjectsInODst(
+                 " swap MultiAddress -> MultiAddressRunTime in ODst") );
 
-        add( new processMultiAddressObjectsInOSrc("process MultiAddress objects in OSrc") );
-        add( new processMultiAddressObjectsInODst("process MultiAddress objects in ODst") );
+        add( new processMultiAddressObjectsInOSrc(
+                 "process MultiAddress objects in OSrc") );
+        add( new processMultiAddressObjectsInODst(
+                 "process MultiAddress objects in ODst") );
 
         add( new doOSrvNegation(   "process negation in OSrv"            ));
 
@@ -2186,7 +2196,8 @@ void NATCompiler_ipt::compile()
         add( new splitOnODst(            "split on ODst"                  ));
 
         add( new portTranslationRules(   "port translation rules"         ));
-        add( new specialCaseWithRedirect("check for special case with redirecting port translation rules" ) );
+        add( new specialCaseWithRedirect(
+                 "special case with redirecting port translation rules" ) );
 
         if (fwopt->getBool("local_nat") )
         {
@@ -2196,17 +2207,20 @@ void NATCompiler_ipt::compile()
             add( new splitIfOSrcMatchesFw("split rule if OSrc matches FW" ));
         }
 
-        add( new splitNONATRule("process NAT rules that request no translation"));
+        add( new splitNONATRule("NAT rules that request no translation"));
         add( new localNATRule("process local NAT rules"));
 //        add( new DNATforFW("process DNAT rules for packets originated on the firewall"));
         add( new decideOnChain(    "decide on chain"                    ) );
         add( new decideOnTarget(   "decide on target"                   ) );
 
-        add( new splitODstForSNAT( "split rule if objects in ODst belong to different subnets") );
+        add( new splitODstForSNAT(
+                 "split rule if objects in ODst belong to different subnets") );
         add( new ReplaceFirewallObjectsODst("replace firewall in ODst" ) );
 	add( new ReplaceFirewallObjectsTSrc("replace firewall in TSrc" ) );
-        add( new splitOnDynamicInterfaceInODst("split rule if ODst is dynamic interface" ) );
-        add( new splitOnDynamicInterfaceInTSrc("split rule if TSrc is dynamic interface" ) );
+        add( new splitOnDynamicInterfaceInODst(
+                 "split rule if ODst is dynamic interface" ) );
+        add( new splitOnDynamicInterfaceInTSrc(
+                 "split rule if TSrc is dynamic interface" ) );
 
         add( new ExpandMultipleAddresses("expand multiple addresses") );
         add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
@@ -2217,19 +2231,24 @@ void NATCompiler_ipt::compile()
             add( new DropIPv6Rules("drop ipv6 rules"));
         add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
-        add( new specialCaseWithUnnumberedInterface("check for special cases with dynamic and unnumbered interfaces" ) );
-        add( new checkForDynamicInterfacesOfOtherObjects( "check for dynamic interfaces of other hosts and firewalls" ) );
+        add( new specialCaseWithUnnumberedInterface(
+                 "special cases with dynamic and unnumbered interfaces" ) );
+        add( new checkForDynamicInterfacesOfOtherObjects(
+                 "dynamic interfaces of other hosts and firewalls" ) );
 
         add( new verifyRuleWithMAC("verify rules using MAC address filtering"));
         add( new ExpandAddressRanges("expand address ranges") );
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
-        add( new splitMultiSrcAndDst("split rules where multiple srcs and dsts are present" ) );
+        add( new splitMultiSrcAndDst(
+                 "split rules where multiple srcs and dsts are present" ) );
 
         add( new splitServices("split on services") );
         add( new VerifyRules2("check correctness of TSrv") );
         add( new separatePortRanges("separate port ranges") );
         add( new separateSourcePorts("separate objects with src") );
-        add( new separateSourceAndDestinationPorts( "separate objects with both src and dest ports" ) );
+        add( new separateSourceAndDestinationPorts(
+                 "separate objects with both src and dest ports" ) );
         add( new prepareForMultiport("prepare for multiport") );
         add( new splitMultipleICMP("split rule with multiple ICMP services") );
 
@@ -2239,7 +2258,8 @@ void NATCompiler_ipt::compile()
 
         add( new AssignInterface("assign rules to interfaces") );
         add( new dynamicInterfaceInODst("split if dynamic interface in ODst") );
-	add( new dynamicInterfaceInTSrc("set target if dynamic interface in TSrc" ) );
+	add( new dynamicInterfaceInTSrc(
+                 "set target if dynamic interface in TSrc" ) );
         add( new convertInterfaceIdToStr("prepare interface assignments") );
 
         if (fwopt->getBool("use_iptables_restore"))

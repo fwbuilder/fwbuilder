@@ -3886,6 +3886,7 @@ void PolicyCompiler_ipt::compile()
  * addresses in the range may match firewall
  */
         add( new addressRanges(              "process address ranges"   ) );
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
         add( new splitIfSrcMatchesFw( "split rule if src matches FW"    ) );
         add( new splitIfDstMatchesFw( "split rule if dst matches FW"    ) );
