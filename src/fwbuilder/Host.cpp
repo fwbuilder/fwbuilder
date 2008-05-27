@@ -122,15 +122,13 @@ Management *Host::getManagementObject()
     return res;
 }
 
-/*
- * takes address from management interface and copies it into
- * Management object. If there is no management interface or no
- * address to be found, returns "0.0.0.0". May throw exception if
- * interface has invalid address.
+/**
+ * returns address from management interface. If there is no
+ * management interface or no address to be found, returns NULL.
+ * May throw exception if interface has invalid address.
  */
-InetAddr Host::getManagementAddress() throw(FWException)
+const InetAddr* Host::getManagementAddress() throw(FWException)
 {
-    Management *mgmt=getManagementObject();
     FWObjectTypedChildIterator j = findByType(Interface::TYPENAME);
     for( ; j!=j.end(); ++j)
     {
@@ -139,15 +137,11 @@ InetAddr Host::getManagementAddress() throw(FWException)
         {
             FWObjectTypedChildIterator k = iface->findByType(IPv4::TYPENAME);
             if (k != k.end())
-            {
-                InetAddrMask *addr = dynamic_cast<InetAddrMask*>(*k);
-                assert(addr);
-                mgmt->setAddress( *(addr->getAddressPtr()) );
-                return *(addr->getAddressPtr());
-            }
+                return Address::cast(*k)->getAddressPtr();
+
         }
     }    
-    return InetAddr();
+    return NULL;
 }
 
 const Address* Host::getAddressObject() const

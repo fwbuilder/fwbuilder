@@ -65,7 +65,7 @@ class Host : public Address
     void addInterface(Interface *i);
     void removeInterface(Interface *i);
 
-    InetAddr getManagementAddress()  throw(FWException);
+    const InetAddr* getManagementAddress()  throw(FWException);
 
     /**
      *  This method returns reference to the object representing
