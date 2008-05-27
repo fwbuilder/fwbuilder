@@ -3008,25 +3008,28 @@ bool PolicyCompiler_ipt::removeFW::processNext()
     if (compiler->osconfigurator->getNumOfVirtualAddressesForNat()==0 &&
         ! rule->getBool("upstream_rule_neg") )
     {
-        RuleElementSrc *srcrel=rule->getSrc();
-        Address        *src   =compiler->getFirstSrc(rule);
-        if (src==NULL)
-            compiler->abort(string("removeFW: Empty Source rule element in rule ") +
-                            rule->getLabel());
-        RuleElementDst *dstrel=rule->getDst();
-        Address        *dst   =compiler->getFirstDst(rule);
-        if (dst==NULL)
-            compiler->abort(string("removeFW: Empty Destination rule element in rule ") +
-                            rule->getLabel());
+        RuleElementSrc *srcrel = rule->getSrc();
+        Address        *src    = compiler->getFirstSrc(rule);
+        if (src==NULL) compiler->abort(
+            string("removeFW: Empty Source rule element in rule ") +
+            rule->getLabel());
+
+        RuleElementDst *dstrel = rule->getDst();
+        Address        *dst    = compiler->getFirstDst(rule);
+        if (dst==NULL) compiler->abort(
+            string("removeFW: Empty Destination rule element in rule ") +
+            rule->getLabel());
 
         if (( rule->getStr("ipt_chain")=="INPUT" || 
-              rule->getStr("upstream_rule_chain")=="INPUT") && dst->getId()==compiler->getFwId() ) 
+              rule->getStr("upstream_rule_chain")=="INPUT") &&
+            dst->getId()==compiler->getFwId() ) 
         {
             dstrel->reset();
         }
 
         if (( rule->getStr("ipt_chain")=="OUTPUT" ||
-              rule->getStr("upstream_rule_chain")=="OUTPUT") && src->getId()==compiler->getFwId() ) 
+              rule->getStr("upstream_rule_chain")=="OUTPUT") &&
+            src->getId()==compiler->getFwId() ) 
         {
             srcrel->reset();
         }

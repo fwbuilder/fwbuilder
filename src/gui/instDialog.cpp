@@ -342,8 +342,13 @@ void instDialog::prepareInstallerOptions()
             if (!aaddr.isEmpty())
                 cnf.maddr = aaddr;
             else
-                cnf.maddr =
-                    cnf.fwobj->getManagementAddress().toString().c_str();
+            {
+                const InetAddr *mgmt_addr = cnf.fwobj->getManagementAddress();
+                if (mgmt_addr)
+                    cnf.maddr = mgmt_addr->toString().c_str();
+                else 
+                    cnf.maddr = "";
+            }
         }
 
         setReady(true);
@@ -718,8 +723,13 @@ bool instDialog::doInstallPage(Firewall* f)
         if (!aaddr.isEmpty())
             cnf.maddr = aaddr;
         else
-            cnf.maddr =
-                cnf.fwobj->getManagementAddress().toString().c_str();
+        {
+            const InetAddr *mgmt_addr = cnf.fwobj->getManagementAddress();
+            if (mgmt_addr)
+                cnf.maddr = mgmt_addr->toString().c_str();
+            else 
+                cnf.maddr = "";
+        }
     }
 
     if (fwbdebug)

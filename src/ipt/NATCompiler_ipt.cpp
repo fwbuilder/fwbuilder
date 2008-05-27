@@ -2165,6 +2165,11 @@ void NATCompiler_ipt::compile()
         // empty rule element.
         add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
+        if (ipv6)
+            add( new DropIPv4Rules("drop ipv4 rules"));
+        else
+            add( new DropIPv6Rules("drop ipv6 rules"));
+
         add( new eliminateDuplicatesInOSRC("eliminate duplicates in OSRC"));
         add( new eliminateDuplicatesInODST("eliminate duplicates in ODST"));
         add( new eliminateDuplicatesInOSRV("eliminate duplicates in OSRV"));
@@ -2229,6 +2234,7 @@ void NATCompiler_ipt::compile()
             add( new DropIPv4Rules("drop ipv4 rules"));
         else
             add( new DropIPv6Rules("drop ipv6 rules"));
+
         add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
         add( new specialCaseWithUnnumberedInterface(

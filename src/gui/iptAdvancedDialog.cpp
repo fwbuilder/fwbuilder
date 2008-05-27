@@ -217,7 +217,10 @@ void iptAdvancedDialog::accept()
 /*********************  data for fwbd and install script **************/
     PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
 
-    mgmt->setAddress( *((Firewall::cast(obj))->getAddressPtr()) );
+    // find first interface marked as "management"
+    const InetAddr *mgmt_addr = Firewall::cast(obj)->getManagementAddress();
+    if (mgmt_addr)
+        mgmt->setAddress(*mgmt_addr);
 
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData() );
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData() );
