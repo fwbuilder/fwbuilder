@@ -82,6 +82,7 @@ class ProjectPanel: public QWidget {
     int                                     ruleSetTabIndex;
     
     libfwbuilder::FWObject                 *visibleFirewall;
+    libfwbuilder::RuleSet                  *visibleRuleSet ;
     std::vector<libfwbuilder::FWObject*>    firewalls;
     int                                    lastFirewallIdx;
     
@@ -109,6 +110,7 @@ class ProjectPanel: public QWidget {
           const std::map<const std::string, libfwbuilder::FWObject *> &objByIds);
 public:  
     ProjectPanel * clone (ProjectPanel * cln);
+    void openRuleSet (libfwbuilder::FWObject * obj);
     FWBTree * getFWTree () {return objectTreeFormat;}
 
     QMdiSubWindow *mdiWindow;

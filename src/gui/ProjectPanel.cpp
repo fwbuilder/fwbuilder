@@ -169,9 +169,9 @@ void ProjectPanel::initMain(FWWindow *main)
     m_panel->auxiliaryPanel->layout()->addWidget( findWhereUsedWidget );
     findWhereUsedWidget->hide();
     connect( findWhereUsedWidget, SIGNAL( close() ), this, SLOT( closeAuxiliaryPanel() ) );
-    connect( m_panel->fwList, SIGNAL( activated(int) ), this, SLOT( openFirewall(int) ) );
+//    connect( m_panel->fwList, SIGNAL( activated(int) ), this, SLOT( openFirewall(int) ) );
     connect( m_panel->infoStyleButton, SIGNAL( clicked() ), this, SLOT( changeInfoStyle() ) );
-    connect( m_panel->ruleSets, SIGNAL( currentChanged(int) ), this, SLOT( ruleSetTabChanged(int) ) );
+//    connect( m_panel->ruleSets, SIGNAL( currentChanged(int) ), this, SLOT( ruleSetTabChanged(int) ) );
       
       
     m_panel->auxiliaryPanel->hide();
@@ -452,7 +452,7 @@ void ProjectPanel::restoreRERefs(RuleElement *re_new, RuleElement *re_old,
 
 void ProjectPanel::prefsEdited()
 {
-    if (m_panel->ruleSets->count()!=0)
+/*    if (m_panel->ruleSets->count()!=0)
     {
         m_panel->oi->setFont(st->getUiFont());
         if (st->getInfoStyle() != 0)
@@ -463,7 +463,7 @@ void ProjectPanel::prefsEdited()
         for (int i = 0; i < m_panel->ruleSets->count(); i++)
             dynamic_cast<RuleSetView*>(m_panel->ruleSets->widget(i))->updateAll();
         getCurrentObjectTree()->updateAfterPrefEdit();
-    }
+    }@@@*/
 }
 
 
@@ -531,12 +531,14 @@ void ProjectPanel::ruleSetTabChanged(int tab)
     ruleSetTabIndex = tab;
     rv->editSelected();
 //    rollBackSelectionDifferentWidget();  // make widget reopen the same object
+
 }
 
 void ProjectPanel::restoreRuleSetTab()
 {
     if (fwbdebug) qDebug("ProjectPanel::restoreRuleSetTab()");
     m_panel->ruleSets->setCurrentIndex(ruleSetTabIndex);
+
 }
 
 void ProjectPanel::loadObjects()
@@ -579,7 +581,7 @@ void ProjectPanel::clearFirewallTabs()
     while (m_panel->ruleSets->count()!=0)
     {
         QWidget *p = m_panel->ruleSets->widget(0);
-        m_panel->ruleSets->removeTab(m_panel->ruleSets->indexOf(p));
+        m_panel->ruleSets->removeWidget(m_panel->ruleSets->widget(m_panel->ruleSets->indexOf(p)));
         delete p;
     }
     m_panel->ruleSets->show();
@@ -644,17 +646,17 @@ void ProjectPanel::updateTreeViewItemOrder()
 
 void ProjectPanel::setPolicyBranchTabName(libfwbuilder::RuleSet *subset)
 {
-    assert(subset!=NULL);
-    RuleSetView *rsv = ruleSetViews[subset];
-    assert(rsv);
-    QString branchName = subset->getName().c_str();
-    m_panel->ruleSets->setTabText(m_panel->ruleSets->indexOf(rsv),
-                                       tr("%1").arg(branchName) );
+//    assert(subset!=NULL);
+//    RuleSetView *rsv = ruleSetViews[subset];
+//    assert(rsv);
+//    QString branchName = subset->getName().c_str();
+//    m_panel->ruleSets->setTabText(m_panel->ruleSets->indexOf(rsv),
+//                                       tr("%1").arg(branchName) );
 }
 
 void ProjectPanel::addPolicyBranchTab(libfwbuilder::RuleSet *subset)
 {
-    assert(subset!=NULL);
+/*    assert(subset!=NULL);
 
     QString branchName = subset->getName().c_str();
     QStatusBar *sb = mainW->statusBar();
@@ -681,30 +683,32 @@ void ProjectPanel::addPolicyBranchTab(libfwbuilder::RuleSet *subset)
         if (srule->getAction() == PolicyRule::Branch)
             addPolicyBranchTab(srule->getBranch());
     }
-
+*/
 }
 
 void ProjectPanel::removePolicyBranchTab(libfwbuilder::RuleSet *subset)
 {
-    if (subset==NULL) return;
+/*    if (subset==NULL) return;
     RuleSetView *rsv = ruleSetViews[subset];
     assert(rsv);
     m_panel->ruleSets->removeTab(m_panel->ruleSets->indexOf(rsv));
     ruleSetViews.erase(subset);
+*/
 }
 
 void ProjectPanel::deleteFirewall(libfwbuilder::FWObject *fw)
 {
-    if (fwbdebug) qDebug("ProjectPanel::deleteFirewall   - fw %s %s",
+ /*   if (fwbdebug) qDebug("ProjectPanel::deleteFirewall   - fw %s %s",
                          fw->getName().c_str(), fw->getId().c_str());
 
     removeFirewallFromList(fw);
     if (visibleFirewall==fw)  visibleFirewall=NULL;
+*/
 }
     
 void ProjectPanel::showFirewalls(bool open_first_firewall)
 {
-    if (fwbdebug)  qDebug("ProjectPanel::showFirewalls");
+/*    if (fwbdebug)  qDebug("ProjectPanel::showFirewalls");
 
     list<FWObject*> fl;
     findFirewalls(db(), fl);
@@ -730,11 +734,12 @@ void ProjectPanel::showFirewalls(bool open_first_firewall)
     }
     mainW->setActionsEnabled(fl.size()!=0);
     if (fwbdebug)  qDebug("end of ProjectPanel::showFirewalls");
+*/
 }
 
 void ProjectPanel::showFirewall(libfwbuilder::FWObject *obj)
 {
-
+/*
     if (firewalls.size()>0)
     {
         vector<FWObject*>::iterator i;
@@ -749,6 +754,7 @@ void ProjectPanel::showFirewall(libfwbuilder::FWObject *obj)
             }
         }
     }
+*/
 }
 
 void ProjectPanel::reopenFirewall()
@@ -763,29 +769,59 @@ void ProjectPanel::reopenFirewall()
 
     clearFirewallTabs();
     
-    if (firewalls.size()==0 || visibleFirewall==NULL)
+/*    if (firewalls.size()==0 || visibleFirewall==NULL)
     {
         changingTabs=false;
         return;
     }
-
+*/
     QStatusBar *sb = mainW->statusBar();
     sb->showMessage( tr("Building policy view...") );
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
     if (fwbdebug)  qDebug("ProjectPanel::reopenFirewall()   adding Policy tab");
-
+/*
     RuleSetView *rsv;
     Policy *pol=Policy::cast(visibleFirewall->getFirstByType(Policy::TYPENAME));
     m_panel->ruleSets->addTab( rsv=new PolicyView(this, pol,NULL) , tr("Policy") );
     ruleSetViews[pol]=rsv;
-
+*/
 // let the GUI process events to display new tab
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
+    if (visibleRuleSet==NULL)
+        return ;
 
+    for (int i =0 ; i < m_panel->ruleSets->count (); i++)
+    {
+        m_panel->ruleSets->removeWidget(m_panel->ruleSets->widget(i));
+    }
+
+    Policy *rule = Policy::cast(visibleRuleSet);
+    if (rule!=NULL)
+    {
+       // if (rule->getAction() == PolicyRule::Branch)
+            m_panel->ruleSets->addWidget( new PolicyView(this, rule,NULL) );
+            m_panel->rulesetname->setText(tr("Policy"));
+           
+    // addPolicyBranchTab(rule);
+    }
+
+        NAT *nat  = NAT::cast(visibleRuleSet);
+        if (nat!=NULL)
+        {
+            m_panel->ruleSets->addWidget( new NATView(this, nat,NULL) );
+            m_panel->rulesetname->setText(tr("NAT"));
+        }
+
+        Routing *r = Routing::cast(visibleRuleSet);
+        if (r!=NULL)
+        {
+            m_panel->ruleSets->addWidget( new RoutingView(this, r,NULL) );
+            m_panel->rulesetname->setText(tr("Routing"));
+        }
 // as of 2.1.5 we have rule branches :-)
 // so far branches are only supported in policy rules because only there
 // we have action which we use to define branching rules
-
+/*
     for (libfwbuilder::FWObject::iterator i=pol->begin(); i!=pol->end(); i++)
     {
         PolicyRule *rule = PolicyRule::cast(*i);
@@ -822,7 +858,7 @@ void ProjectPanel::reopenFirewall()
         m_panel->ruleSets->addTab( rsv=new RoutingView(this, r,NULL) , tr("Routing") );
         ruleSetViews[r]=rsv;
     }
-
+*/
     sb->clearMessage();
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
     if (fwbdebug)  qDebug("ProjectPanel::reopenFirewall()   all tabs are done");
@@ -847,7 +883,7 @@ int  ProjectPanel::findFirewallInList(libfwbuilder::FWObject *f)
 
 void ProjectPanel::addFirewallToList(libfwbuilder::FWObject *o)
 {
-    QString icn_filename =
+ /*   QString icn_filename =
         ( ":/Icons/"+o->getTypeName()+"icon-tree" ).c_str();
 
     int n=m_panel->fwList->count();
@@ -872,11 +908,12 @@ void ProjectPanel::addFirewallToList(libfwbuilder::FWObject *o)
 
     m_panel->fwList->setCurrentIndex( n );
 //    openFirewall( n );
+*/
 }
 
 void ProjectPanel::removeFirewallFromList(libfwbuilder::FWObject *o)
 {
-    if (fwbdebug) qDebug("ProjectPanel::removeFirewallFromList %p %s",
+/*    if (fwbdebug) qDebug("ProjectPanel::removeFirewallFromList %p %s",
                          o, o->getName().c_str() );
 
     vector<FWObject*>::iterator i;
@@ -890,11 +927,12 @@ void ProjectPanel::removeFirewallFromList(libfwbuilder::FWObject *o)
             break;
         }
     }
+*/
 }
 
 void ProjectPanel::updateFirewallName(libfwbuilder::FWObject *obj,const QString &str)
 {
-    updateFirewallName(obj, str);
+/*    updateFirewallName(obj, str);
     
     if (fwbdebug) qDebug("ProjectPanel::updateFirewallName ");
 
@@ -921,12 +959,28 @@ void ProjectPanel::updateFirewallName(libfwbuilder::FWObject *obj,const QString 
             return;
         }
     }
+*/
 }
 
+void ProjectPanel::openRuleSet (libfwbuilder::FWObject * obj)
+{
+    if (!isEditorVisible() ||
+        requestEditorOwnership(NULL,NULL,ObjectEditor::optNone,true))
+    {
+        blankEditor();
+        //FWObject *fw = firewalls[idx];
+        //showFirewallRuleSets(fw);
+        visibleRuleSet = RuleSet::cast(obj);
+        //ruleSetRedrawPending = false ;
+        scheduleRuleSetRedraw();
+        //openObject(visibleRuleSet);
+        //lastFirewallIdx=idx;
+    }     
+}
 
 void ProjectPanel::openFirewall( int idx )
 {
-    if (fwbdebug)
+/*    if (fwbdebug)
         qDebug("ProjectPanel::openFirewall");
 
     if (firewalls.size()>0)
@@ -943,12 +997,12 @@ void ProjectPanel::openFirewall( int idx )
         } else
             m_panel->fwList->setCurrentIndex( lastFirewallIdx );
     } else
-        visibleFirewall = NULL;
+        visibleFirewall = NULL;*/
 }
 
 void ProjectPanel::showFirewallRuleSets(libfwbuilder::FWObject *fw )
 {
-    if (fwbdebug)
+/*    if (fwbdebug)
         qDebug("ProjectPanel::showFirewallRuleSets");
 
     if (fw==NULL) return;
@@ -957,7 +1011,7 @@ void ProjectPanel::showFirewallRuleSets(libfwbuilder::FWObject *fw )
     findObjectWidget->firewallOpened(Firewall::cast(fw));
     m_panel->firewallName->setText(QString::fromUtf8(fw->getName().c_str()));
     scheduleRuleSetRedraw();
-    //reopenFirewall();
+*/    //reopenFirewall();
 }
 
 void ProjectPanel::selectRules()
@@ -1213,6 +1267,10 @@ bool ProjectPanel::fileOpen()
         }
 /***********************************************************************/
 
+
+
+        
+
         QList<QMdiSubWindow *> subWindowList = mw->getMdiArea()->subWindowList();
         QString fileName = rcs->getFileName();
         for (int i = 0 ; i < subWindowList.size();i++)
@@ -1263,8 +1321,9 @@ void ProjectPanel::fileClose()
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): clearing widgets");
 
     firewalls.clear();
-    m_panel->fwList->clear();
+//    m_panel->fwList->clear();
     visibleFirewall = NULL;
+    visibleRuleSet = NULL;
     clearFirewallTabs();
     clearObjects();
     FWObjectClipboard::obj_clipboard->clear();
@@ -1847,6 +1906,7 @@ void ProjectPanel::startupLoad()
                 RCS *rcs=new RCS(startupFileName);
                 rcs->co();
                 load(NULL,rcs);
+                
             } catch (FWException &ex)
             {
                 qDebug("Exception: %s",ex.toString().c_str());
@@ -1976,6 +2036,11 @@ void ProjectPanel::load(QWidget *dialogs_parent)
         if (fwbdebug) qDebug("ProjectPanel::load(): create RCS");
 
         createRCS("");
+/*
+ * TODO: we should create new FWObjectDatabase object and assign db
+ * instead of using singleton
+ */
+//        objdb = FWObjectDatabase::db;
 
         setWindowTitle( "Firewall Builder" );
 

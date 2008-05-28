@@ -244,7 +244,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject( ObjectTreeViewItem *itm,
 {
     if (FWReference::cast(obj)!=NULL) return NULL;
     if (Resources::global_res->getObjResourceBool(obj,"hidden") ) return NULL;
-    if (RuleSet::cast(obj)!=NULL) return NULL;
+//    if (RuleSet::cast(obj)!=NULL) return NULL;
 
     ObjectTreeViewItem *nitm=NULL;
 
@@ -2098,6 +2098,11 @@ void ObjectManipulator::editSelectedObject()
 
     FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
     if (obj==NULL) return;
+    if (RuleSet::cast(obj)!=NULL)
+    {
+        m_project->openRuleSet(obj);
+        return ;
+    }
     editObject(obj);
 }
 
