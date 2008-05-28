@@ -72,7 +72,8 @@
 #include <qstatusbar.h>
 #include <qeventloop.h>
 #include <QPixmap>
-
+#include <QMdiSubWindow>
+#include <QMdiArea>
 
 #include "DialogFactory.h"
 #include "FWBTree.h"
@@ -596,7 +597,7 @@ void ObjectManipulator::clearObjects()
         QTreeWidget *otv = idxToTrees[i];
         assert(otv!=NULL);
         m_objectManipulator->widgetStack->removeWidget( otv );
-        delete otv;
+       // delete otv;
         removeLib(i);
     }
 
@@ -2103,6 +2104,25 @@ void ObjectManipulator::editSelectedObject()
 bool ObjectManipulator::editObject(FWObject *obj)
 {
     if (!m_project->isEditorVisible()) m_project->showEditor();
+QList<QMdiSubWindow *> subWindowList = mw->getMdiArea()->subWindowList();
+        QString fileName = m_project->getRCS()->getFileName();
+        for (int i = 0 ; i < subWindowList.size();i++)
+        {
+            ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
+            if (pp!=NULL)
+            {
+                if (pp->getFileName () == fileName)
+                {
+                    if (pp->m_panel->om!=this)
+                    {
+                        //libfwbuilder::FWObject* cl = pp->m_panel->om->getCurrentLib();
+                        pp->m_panel->om->loadObjects();
+                        pp->m_panel->om->currentTreePageChanged(2);
+//                        return true ;
+                    }
+                }
+            }
+        }
     return switchObjectInEditor(obj);
 }
 

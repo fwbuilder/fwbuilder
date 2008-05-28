@@ -1348,7 +1348,7 @@ with this address:</string>
      </widget>
      <widget class="QWidget" name="tab" >
       <attribute name="title" >
-       <string>Page</string>
+       <string>IPv6</string>
       </attribute>
       <layout class="QGridLayout" >
        <item row="0" column="0" >

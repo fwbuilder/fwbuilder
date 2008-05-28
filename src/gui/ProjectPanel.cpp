@@ -1025,9 +1025,12 @@ bool ProjectPanel::saveIfModified()
 {
     if (db() && db()->isDirty())
     {
+        QString message = "Some objects have been modified but not saved.\n";
+        message+="Do you want to save ";
+        message+=rcs->getFileName();
+        message+=" changes now ?"; 
         switch (QMessageBox::information(this, "Firewall Builder",
-            tr("Some objects have been modified but not saved.\n"
-               "Do you want to save changes now ?"),
+            message,
             tr("&Save"), tr("&Discard"), tr("&Cancel"),
             0,       // Enter = button 0
             2 ) ) {   // Escape == button 2
@@ -1218,13 +1221,28 @@ bool ProjectPanel::fileOpen()
             if (pp!=NULL)
             {
                 if (pp->getFileName () == fileName)
-                    return false;
+                {
+                    load(this, rcs, pp->objdb );
+
+                    if (rcs->isTemp()) unlink(rcs->getFileName().toLatin1().constData());
+
+                    showFirewalls( true );
+
+                    //pp->clone (this);
+                    //initMain(mw);
+                    //load (this,this->rcs);
+                    //showFirewalls( true );
+                    
+                    return true ;
+                }
             }
         }
         load(this, rcs );
-        showFirewalls( true );
 
         if (rcs->isTemp()) unlink(rcs->getFileName().toLatin1().constData());
+
+        showFirewalls( true );
+
         return true;
     }
     return false;
@@ -1987,7 +2005,7 @@ void ProjectPanel::load(QWidget *dialogs_parent)
 
 }
 
-void ProjectPanel::load(QWidget *dialogs_parent, RCS *_rcs)
+void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs,libfwbuilder::FWObjectDatabase * clone)
 {
     QStatusBar *sb = mainW->statusBar();
 
@@ -2018,6 +2036,339 @@ void ProjectPanel::load(QWidget *dialogs_parent, RCS *_rcs)
         /* load the data file */
         systemFile=false;
 
+        objdb = clone;
+
+// need to drop read-only flag on the database before I load new objects
+        //objdb->setReadOnly( false );
+
+// always loading system objects
+        sb->showMessage( tr("Loading system objects...") );
+        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+
+        //objdb->load( sysfname, &upgrade_predicate, librespath);
+        //objdb->setFileName("");
+
+// objects from a data file are in database ndb
+
+        sb->showMessage( tr("Reading and parsing data file...") );
+        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+        //QApplication::eventLoop()->processEvents(QEventLoop::ExcludeUserInput,100);
+
+        //FWObjectDatabase *ndb = new FWObjectDatabase();
+        //ndb->load(rcs->getFileName().toLatin1().constData(), &upgrade_predicate,librespath);
+        //time_t   oldtimestamp = ndb->getTimeLastModified();
+
+        sb->clearMessage();
+        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+
+/* loadingLib is true if user wants to open a library or master library file */
+        bool loadingLib         = editingLibrary();
+
+        /*if (fwbdebug)
+        {
+            list<FWObject*> ll = ndb->getByType(Library::TYPENAME);
+            for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
+            {
+                qDebug("* Found library %s %s in the data file",
+                       (*i)->getId().c_str(),(*i)->getName().c_str() );
+            }
+        }*/
+
+/* if user opens library file, clear read-only flag so they can edit it */
+/*        if (loadingLib)
+        {
+            list<FWObject*> ll = ndb->getByType(Library::TYPENAME);
+            for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
+            {
+                if ((*i)->getId()==STANDARD_LIB) editingStandardLib=true;
+                if ((*i)->getId()==TEMPLATE_LIB) editingTemplateLib=true;
+                (*i)->setReadOnly( false );
+            }
+        } else
+        {
+            for (list<libData>::iterator i=addOnLibs->begin();
+                 i!=addOnLibs->end(); ++i)
+            {
+                string libfname = i->path.toLatin1().constData();
+                if (libfname!=sysfname && i->load)
+                {
+                    if (fwbdebug)
+                        qDebug("* Adding library %s",i->name.toLatin1().constData());
+
+                    FWObjectDatabase *ndb1 = new FWObjectDatabase();
+                    ndb1->load(libfname, &upgrade_predicate,librespath);
+                    FWObject  *nlib1 = ndb1->getFirstByType(Library::TYPENAME);
+                    if(nlib1==NULL)
+                    {
+                        qDebug("Error preloading library from file %s",
+                               libfname.c_str());
+                        assert(nlib1!=NULL);
+                    }
+                    string nlib1ID = nlib1->getId();
+                    FWObject *dobj =
+                        ndb1->findInIndex(FWObjectDatabase::getDeletedObjectsId());
+                    if (dobj) ndb1->remove(dobj, false);
+
+                    MergeConflictRes mcr(dlgp);
+                    objdb->merge(ndb1, &mcr);
+
+                    objdb->findInIndex(nlib1ID)->setReadOnly(true);
+
+                    delete ndb1;
+                }
+            }
+        }
+*/
+        sb->showMessage( tr("Merging with system objects...") );
+        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
+        //QApplication::eventLoop()->processEvents(QEventLoop::ExcludeUserInput,100);
+
+        MergeConflictRes mcr(dlgp);
+//        objdb->merge(ndb, &mcr);
+
+//        delete ndb;
+
+ //       objdb->setFileName(rcs->getFileName().toLatin1().constData());
+ //       objdb->resetTimeLastModified(oldtimestamp);
+ //       objdb->setDirty(false);
+
+        sb->clearMessage();
+        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
+        //QApplication::eventLoop()->processEvents(QEventLoop::ExcludeUserInput,100);
+
+/*
+ * TODO: we should create new FWObjectDatabase object and assign db
+ * instead of using singleton
+ */
+//        objdb = FWObjectDatabase::db;
+
+        if (fwbdebug)
+        {
+            qDebug("* Merge is done");
+            list<FWObject*> ll = db()->getByType(Library::TYPENAME);
+            for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
+            {
+                qDebug("* Library %s %s in the data file",
+                       (*i)->getId().c_str(),(*i)->getName().c_str() );
+            }
+        }
+
+
+/* this is a hack: 'Standard' library should be read-only. I have too
+ * many files I already converted to the new API/DTD and I am too lazy
+ * to convert them again, so I patch it up here.
+ *
+ * However, if I am editing standard library, it should not be read-only.
+ */
+        FWObject *slib = objdb->findInIndex("syslib000");
+        if (fwbdebug)
+            qDebug("standard library read-only status: %d, editingStandardLib: %d",
+                   slib->isReadOnly(), editingStandardLib);
+
+        if (slib!=NULL ) slib->setReadOnly(! editingStandardLib);
+
+/* if the file name has an old extension .xml, change it to .fwb and
+ * warn the user
+ */
+        QString   fn = rcs->getFileName();
+        QFileInfo ofinfo(fn);
+
+        if ( ofinfo.suffix()=="xml")
+        {
+            if (fwbdebug)
+            {
+                qDebug("Need to rename file:  %s",fn.toAscii().constData());
+                qDebug("             dirPath: %s",ofinfo.dir().absolutePath().toAscii().constData());
+                qDebug("            filePath: %s",ofinfo.absoluteFilePath().toAscii().constData());
+            }
+            QString nfn=ofinfo.dir().absolutePath() + "/" + ofinfo.completeBaseName() + ".fwb";
+
+            bool needToRename = true;
+
+/* need these dances with symlinks to fix bug #1008956: "Existing .fwb
+ * file gets overwritten if has wrong extension"
+ */
+            QFileInfo nfinfo(nfn);
+            if (nfinfo.exists() && ofinfo.isSymLink() && ofinfo.readLink()==nfn)
+            {
+// .xml file is a symlink pointing at .fwb file
+// no need to rename
+                needToRename = false;
+            }
+
+            if (needToRename)
+            {
+                if (nfinfo.exists())
+                {
+/* .fwb file exists but .xml is not a symlink
+ * .fwb is a separate file with the same name.
+ *
+ * tell the user we need to rename old file but the new file exists,
+ * then ask them to choose a new name. If the user chooses the same
+ * name and agrees to overwrite the file, just use this name. If the
+ * user hits cancel, tell them they need to choose a new name and open
+ * "file save" dialog again.
+ *
+ * Show the first dialog only once. If user hits Cancel, they see
+ * shorted version of the dialog and will be presented with "save
+ * file" dialog again.
+ */
+                    QMessageBox::warning(
+                        this,"Firewall Builder",
+                        tr("Firewall Builder 2 uses file extension '.fwb' and \nneeds to rename old data file '%1' to '%2',\nbut file '%3' already exists.\nChoose a different name for the new file.")
+                        .arg(fn).arg(nfn).arg(nfn),
+                        tr("&Continue"), QString::null,QString::null,
+                        0, 1 );
+
+                    nfn=chooseNewFileName(fn,true,
+                                          tr("Choose name and location for the new file"));
+                    if (nfn.isEmpty())
+                    {
+                        QString oldFileName = ofinfo.absoluteFilePath() + ".bak";
+                        rename(oldFileName.toLatin1().constData(), fn.toLatin1().constData());
+
+                        QMessageBox::warning(
+                            this,"Firewall Builder",
+                            tr("Load operation cancelled and data file reverted to original version."),
+                            tr("&Continue"), QString::null,QString::null,
+                            0, 1 );
+
+                        load(this);
+                        return;
+                    }
+                    nfinfo.setFile(nfn);
+                }
+
+                rename(fn.toLatin1().constData(), nfn.toLatin1().constData());
+
+
+                QMessageBox::warning(
+                this,"Firewall Builder",
+                tr("Firewall Builder 2 uses file extension '.fwb'. Your data file '%1' \nhas been renamed '%2'")
+                .arg(fn).arg(nfn),
+                tr("&Continue"), QString::null,QString::null,
+                0, 1 );
+
+            }
+
+            fn = nfn;
+        }
+
+        rcs->setFileName(fn);
+        db()->setFileName(fn.toLatin1().constData());
+
+        QString caption = rcs->getFileName().section("/",-1,-1);
+        if (rcs->isInRCS()) caption = caption + ", rev " + rcs->getSelectedRev();
+        if (rcs->isRO()) caption = caption + " " + tr("(read-only)");
+
+        setWindowTitle( QString("Firewall Builder: ")+caption );
+
+        mainW->fileSaveActionSetEn( !rcs->isRO() && !rcs->isTemp());
+        mainW->addToRCSActionSetEn( !rcs->isInRCS() && !rcs->isRO());
+        mainW->fileDiscardActionSetEn( rcs->isInRCS() && !rcs->isRO());
+        mainW->fileCommitActionSetEn( rcs->isInRCS() && !rcs->isRO());
+
+    } catch(FWException &ex)
+    {
+        string trans = ex.getProperties()["failed_transformation"];
+        string elem  = ex.getProperties()["failed_element"];
+
+        if(!trans.empty() || !elem.empty())
+        {
+            QString msg = tr("Exception: %1").arg(ex.toString().c_str());
+            if (!trans.empty())
+        msg+="\n"+tr("Failed transformation : %1").arg(trans.c_str());
+            if (!elem.empty())
+        msg+="\n"+tr("XML element : %1").arg(elem.c_str());
+
+             QMessageBox::warning(
+                 this,"Firewall Builder",
+                 tr("Error loading file:\n%1").arg(msg),
+                 tr("&Continue"), QString::null,QString::null,
+                 0, 1 );
+        } else
+             QMessageBox::warning(
+                 this,"Firewall Builder",
+                 tr("Error loading file:\n%1").arg(ex.toString().c_str()),
+                 tr("&Continue"), QString::null,QString::null,
+                 0, 1 );
+
+        load(this);
+        return;
+    }
+
+    db()->setReadOnly( rcs->isRO() || rcs->isTemp() );
+
+// clear dirty flag for all objects, recursively
+    if (!forceSave)  db()->setDirty(false);
+
+    sb->showMessage( tr("Building object tree...") );
+    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
+
+    loadObjects();
+    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
+
+    sb->showMessage( tr("Indexing...") );
+    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
+    db()->reIndex();
+
+    sb->clearMessage();
+    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
+
+    setupAutoSave();
+}
+
+
+void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs)
+{
+    QStatusBar *sb = mainW->statusBar();
+
+    resetFD();
+
+    editingStandardLib = false;
+    editingTemplateLib = false;
+
+    bool forceSave=false; // use this flag to force 'save' operation if file should be renamed
+
+    QWidget *dlgp=NULL;
+    if (dialogs_parent==NULL)
+    {
+        if (isVisible()) dlgp=this;
+    } else
+    {
+        dlgp=dialogs_parent;
+    }
+
+    MessageBoxUpgradePredicate upgrade_predicate(dlgp);
+
+    assert(_rcs!=NULL);
+
+    rcs = _rcs;
+    /*libfwbuilder::FWObjectDatabase *copy = NULL;
+    QList<QMdiSubWindow *> subWindowList = mw->getMdiArea()->subWindowList();
+        QString fileName = rcs->getFileName();
+        for (int i = 0 ; i < subWindowList.size();i++)
+        {
+            ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
+            if (pp!=NULL)
+            {
+                if (pp->getFileName () == fileName)
+                {
+                    this->objdb = objdb ;
+                    //pp->clone (this);
+                    //initMain(mw);
+                    //load (this,this->rcs);
+                    //showFirewalls( true );
+                    
+                    return true ;
+                }
+            }
+        }*/
+    try
+    {
+        /* load the data file */
+        systemFile=false;
+
         objdb = new FWObjectDatabase();
 
 // need to drop read-only flag on the database before I load new objects
@@ -2034,18 +2385,17 @@ void ProjectPanel::load(QWidget *dialogs_parent, RCS *_rcs)
 
         sb->showMessage( tr("Reading and parsing data file...") );
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+        //QApplication::eventLoop()->processEvents(QEventLoop::ExcludeUserInput,100);
 
         FWObjectDatabase *ndb = new FWObjectDatabase();
-        ndb->load(rcs->getFileName().toLatin1().constData(),
-                  &upgrade_predicate,librespath);
-        time_t oldtimestamp = ndb->getTimeLastModified();
+        ndb->load(rcs->getFileName().toLatin1().constData(), &upgrade_predicate,librespath);
+        time_t   oldtimestamp = ndb->getTimeLastModified();
 
         sb->clearMessage();
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
 /* loadingLib is true if user wants to open a library or master library file */
-
-        bool loadingLib = editingLibrary();
+        bool loadingLib         = editingLibrary();
 
         if (fwbdebug)
         {
@@ -2105,8 +2455,8 @@ void ProjectPanel::load(QWidget *dialogs_parent, RCS *_rcs)
         }
 
         sb->showMessage( tr("Merging with system objects...") );
-        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents,
-                                        100);
+        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
+        //QApplication::eventLoop()->processEvents(QEventLoop::ExcludeUserInput,100);
 
         MergeConflictRes mcr(dlgp);
         objdb->merge(ndb, &mcr);
@@ -3327,6 +3677,7 @@ void ProjectPanel::loadState ()
         firstResize=true ;
         loadSplitters();
         mdiWindow->setGeometry (x,y,width,height);
+        
         }
     }
     
@@ -3360,4 +3711,38 @@ void ProjectPanel::resizeEvent ( QResizeEvent* )
     {
         saveState();
     }   
+}
+
+ProjectPanel * ProjectPanel::clone (ProjectPanel * cln)
+{
+    cln->mainW = mainW;
+    cln->rcs = rcs;
+    cln->addOnLibs = addOnLibs;
+    //cln->objectTreeFormat = objectTreeFormat;
+    cln->systemFile = systemFile;
+    cln->safeMode = safeMode;
+    cln->editingStandardLib = editingStandardLib;
+    cln->editingTemplateLib = editingTemplateLib;
+    cln->ruleSetRedrawPending = ruleSetRedrawPending;
+    cln->firstResize = firstResize;
+    cln->startupFileName = startupFileName;
+    //cln->objdb = objdb;
+    cln->editorOwner = editorOwner;
+    cln->oe = oe;
+    cln->fd = fd;
+    cln->shownInInfo = shownInInfo;
+    cln->autosaveTimer = autosaveTimer;
+    //cln->ruleSetViews = ruleSetViews;
+    cln->ruleSetTabIndex = ruleSetTabIndex;
+    cln->visibleFirewall = visibleFirewall;
+    cln->firewalls = firewalls;
+    cln->lastFirewallIdx = lastFirewallIdx;
+    cln->changingTabs = changingTabs;
+    cln->noFirewalls = noFirewalls;
+    cln->mdiWindow = mdiWindow ;
+    cln->m_panel = m_panel;
+    cln->findObjectWidget = findObjectWidget;
+    cln->findWhereUsedWidget = findWhereUsedWidget;
+    cln->copySet = copySet;
+    return cln;
 }

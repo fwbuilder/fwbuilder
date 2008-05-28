@@ -108,6 +108,7 @@ class ProjectPanel: public QWidget {
           libfwbuilder::RuleElement *re_old,
           const std::map<const std::string, libfwbuilder::FWObject *> &objByIds);
 public:  
+    ProjectPanel * clone (ProjectPanel * cln);
     FWBTree * getFWTree () {return objectTreeFormat;}
 
     QMdiSubWindow *mdiWindow;
@@ -339,6 +340,7 @@ public:
     bool editingLibrary();
     void createRCS( const QString &filename);
     void load(QWidget *dialogs_parent,RCS *rcs);
+    void load(QWidget *dialogs_parent,RCS *rcs,libfwbuilder::FWObjectDatabase * clone);
     void load(QWidget *dialogs_parent);
     void save();
     void saveState ();

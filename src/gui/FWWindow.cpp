@@ -1458,11 +1458,14 @@ void FWWindow::selectActiveSubWindow (/*const QString & text*/)
 
 void FWWindow::minimizeAll ()
 {
-QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
+    m_space->activeSubWindow ()->showMinimized ();
+    QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
     for (int i = 0 ; i < subWindowList.size();i++)
     {
         if (!subWindowList[i]->isMinimized())
-        subWindowList[i]->showMinimized ();
+        {
+            subWindowList[i]->showMinimized ();
+        }
     }
 }
 
