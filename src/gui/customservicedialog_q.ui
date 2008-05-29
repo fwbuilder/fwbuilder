@@ -9,7 +9,7 @@
     <x>0</x>
     <y>0</y>
     <width>770</width>
-    <height>286</height>
+    <height>311</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -174,6 +174,24 @@
            <enum>QFrame::Sunken</enum>
           </property>
           <layout class="QGridLayout" >
+           <property name="leftMargin" >
+            <number>2</number>
+           </property>
+           <property name="topMargin" >
+            <number>2</number>
+           </property>
+           <property name="rightMargin" >
+            <number>2</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>2</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>2</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>2</number>
+           </property>
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
              <property name="text" >
@@ -184,7 +202,7 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1" colspan="2" >
+           <item row="0" column="1" >
             <widget class="QLineEdit" name="obj_name" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -204,7 +222,7 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1" colspan="2" >
+           <item row="1" column="1" >
             <widget class="QComboBox" name="libs" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -214,7 +232,7 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0" colspan="3" >
+           <item row="2" column="0" colspan="2" >
             <widget class="QLabel" name="textLabel2_2" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
@@ -255,10 +273,10 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="1" colspan="2" >
+           <item row="3" column="1" >
             <widget class="QComboBox" name="platform" />
            </item>
-           <item row="4" column="0" colspan="3" >
+           <item row="4" column="0" colspan="2" >
             <widget class="QLabel" name="textLabel1_3" >
              <property name="text" >
               <string>Code:</string>
@@ -268,7 +286,7 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="0" colspan="3" >
+           <item row="5" column="0" colspan="2" >
             <widget class="QLineEdit" name="code" >
              <property name="minimumSize" >
               <size>
@@ -281,7 +299,7 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="1" colspan="2" >
+           <item row="8" column="1" >
             <spacer>
              <property name="orientation" >
               <enum>Qt::Vertical</enum>
@@ -296,6 +314,16 @@
               </size>
              </property>
             </spacer>
+           </item>
+           <item row="6" column="0" >
+            <widget class="QLabel" name="protocol_string_label" >
+             <property name="text" >
+              <string>Protocol String:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0" colspan="2" >
+            <widget class="QLineEdit" name="protocol_string" />
            </item>
           </layout>
          </widget>
