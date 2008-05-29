@@ -73,10 +73,11 @@ void CustomServiceDialog::loadFWObject(FWObject *o)
     init=true;
 
     fillLibraries(m_dialog->libs,obj);
-
+    m_dialog->protocol_string_label->setVisible (false); //!REM 
+    m_dialog->protocol_string->setVisible (false); //!REM 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
-
+    //!NEW m_dialog->protocl_string->setText(QString::fromUtf8(s->getProtocolStringForPlatform().c_str()));
 /* fill in m_dialog->platform */
     m_dialog->platform->clear();
 
@@ -171,7 +172,7 @@ void CustomServiceDialog::applyChanges()
     obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     string commText = string(m_dialog->comment->toPlainText().toUtf8().constData());
     obj->setComment( commText );
-
+    //!NEW s->setProtocolStringForPlatform(string(m_dialog->protocol_string->text().toUtf8().constData()));
     QMap<QString,QString>::iterator i;
     for (i=allCodes.begin(); i!=allCodes.end(); ++i)
     {
