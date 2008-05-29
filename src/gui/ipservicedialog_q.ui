@@ -9,7 +9,7 @@
     <x>0</x>
     <y>0</y>
     <width>652</width>
-    <height>203</height>
+    <height>244</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -320,7 +320,7 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="0" colspan="2" >
+           <item row="7" column="0" colspan="2" >
             <spacer>
              <property name="orientation" >
               <enum>Qt::Vertical</enum>
@@ -389,6 +389,33 @@
              </property>
             </widget>
            </item>
+           <item row="4" column="0" colspan="2" >
+            <widget class="QRadioButton" name="use_dscp" >
+             <property name="text" >
+              <string>Use DSCP</string>
+             </property>
+             <property name="checked" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0" colspan="2" >
+            <widget class="QRadioButton" name="use_tos" >
+             <property name="text" >
+              <string>Use TOS</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0" >
+            <widget class="QLabel" name="code_label" >
+             <property name="text" >
+              <string>DSCP code:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1" colspan="2" >
+            <widget class="QLineEdit" name="code" />
+           </item>
           </layout>
          </widget>
         </item>
@@ -421,8 +448,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>109</x>
+     <y>75</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -437,8 +464,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>174</x>
+     <y>129</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -453,8 +480,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>251</x>
+     <y>81</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -469,8 +496,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>251</x>
+     <y>109</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -485,8 +512,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>251</x>
+     <y>137</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -501,8 +528,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>251</x>
+     <y>165</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -517,8 +544,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>251</x>
+     <y>193</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -533,8 +560,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>251</x>
+     <y>221</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -549,8 +576,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>425</x>
+     <y>71</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -565,12 +592,44 @@
    <slot>libChanged()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>109</x>
+     <y>98</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>use_dscp</sender>
+   <signal>clicked()</signal>
+   <receiver>IPServiceDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>65</x>
+     <y>157</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>193</x>
+     <y>-4</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>use_tos</sender>
+   <signal>clicked()</signal>
+   <receiver>IPServiceDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>40</x>
+     <y>178</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>293</x>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
