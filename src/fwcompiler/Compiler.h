@@ -607,14 +607,8 @@ namespace fwcompiler {
 
 	std::string getUniqueRuleLabel();
 
-	virtual std::string createRuleLabel(const std::string &txt,
-                                            libfwbuilder::Interface *iface,
-                                            int rule_num);
-
-	virtual std::string createRuleLabel(const std::string &txt,
-                                            int rule_num);
-
-	virtual std::string createRuleLabel(libfwbuilder::Interface *iface,
+	virtual std::string createRuleLabel(const std::string &prefix,
+                                            const std::string &txt,
                                             int rule_num);
 
 	/**

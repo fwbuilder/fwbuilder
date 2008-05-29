@@ -208,28 +208,14 @@ Compiler::Compiler(FWObjectDatabase*, bool ipv6_policy)
     verbose = true;
 }
 
-string Compiler::createRuleLabel(const string &txt,
-                       int rule_num)
-{
-    return createRuleLabel(txt,NULL,rule_num);
-}
-
-string Compiler::createRuleLabel(Interface *iface,
-                       int rule_num)
-{
-    return createRuleLabel("",iface,rule_num);
-}
-
-
-string Compiler::createRuleLabel(const string &txt,
-                                 Interface *iface,
-                                 int rule_num)
+string Compiler::createRuleLabel(const std::string &prefix,
+                                 const string &txt, int rule_num)
 {
     ostringstream  str;
-    
+
+    str << prefix << " ";
     str << rule_num << " ";
-    if (iface!=NULL) str << "(" << iface->getName() << ")";
-    else             str << "(" << txt << ")";
+    str << "(" << txt << ")";
     return str.str();
 }
 

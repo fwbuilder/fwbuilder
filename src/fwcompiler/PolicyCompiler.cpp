@@ -78,6 +78,9 @@ int PolicyCompiler::prolog()
     FWObject *ruleset = source_ruleset;
     if (ruleset == NULL) ruleset = policy;
 
+    string label_prefix = "";
+    if (ruleset->getName() != "Policy") label_prefix = ruleset->getName();
+
     for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++)
     {
 	PolicyRule *r= PolicyRule::cast(*i);
@@ -87,7 +90,8 @@ int PolicyCompiler::prolog()
 
         if (itfre->isAny())
         {
-            r->setLabel( createRuleLabel("global", r->getPosition()) );
+            r->setLabel( createRuleLabel(label_prefix, 
+                                         "global", r->getPosition()) );
         } else
         {
             string interfaces = "";
@@ -99,7 +103,8 @@ int PolicyCompiler::prolog()
                 if (interfaces!="") interfaces += ",";
                 interfaces += o->getName();
             }
-            r->setLabel( createRuleLabel(interfaces, r->getPosition()) );
+            r->setLabel( createRuleLabel(label_prefix, 
+                                         interfaces, r->getPosition()) );
         }
 	r->setAbsRuleNumber(global_num); global_num++;
         r->setUniqueId( r->getId() );

@@ -74,14 +74,13 @@ int RoutingCompiler::prolog()
     temp_ruleset = new Routing();   // working copy of the routing
     fw->add( temp_ruleset );
 
-    
     list<FWObject*> l=routing->getByType(RoutingRule::TYPENAME);
     for (list<FWObject*>::iterator j=l.begin(); j!=l.end(); ++j) 
     {
 	Rule *r= Rule::cast(*j);
 	if (r->isDisabled()) continue;
 	r->setInterfaceId("");
-	r->setLabel( createRuleLabel("main", r->getPosition()) );
+	r->setLabel( createRuleLabel("", "main", r->getPosition()) );
 	combined_ruleset->add( r );
     }
 
