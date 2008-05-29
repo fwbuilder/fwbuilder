@@ -163,6 +163,14 @@ string NATCompiler_ipt::debugPrintRule(Rule *r)
 
 int NATCompiler_ipt::prolog()
 {
+    // initialize counters for the standard chains
+    for (list<string>::const_iterator i =
+             NATCompiler_ipt::getStandardChains().begin();
+         i != NATCompiler_ipt::getStandardChains().end(); ++i)
+    {
+        chain_usage_counter[*i] = 1;
+    }
+
     int n=NATCompiler::prolog();
 
     if ( n>0 ) 
@@ -2120,6 +2128,23 @@ bool NATCompiler_ipt::processMultiAddressObjectsInRE::processNext()
     return true;
 }
 
+bool NATCompiler_ipt::countChainUsage::processNext()
+{
+    NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
+
+    slurp();
+    if (tmp_queue.size()==0) return false;
+
+    for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
+    {
+        NATRule *rule = NATRule::cast( *k );
+        ipt_comp->chain_usage_counter[rule->getStr("ipt_target")] += 1;
+    }
+
+    return true;
+}
+
+
 
 void NATCompiler_ipt::compile()
 {
@@ -2267,6 +2292,8 @@ void NATCompiler_ipt::compile()
 	add( new dynamicInterfaceInTSrc(
                  "set target if dynamic interface in TSrc" ) );
         add( new convertInterfaceIdToStr("prepare interface assignments") );
+
+        add( new countChainUsage("Count chain usage"));
 
         if (fwopt->getBool("use_iptables_restore"))
         {

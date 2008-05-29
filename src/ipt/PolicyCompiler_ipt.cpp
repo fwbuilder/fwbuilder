@@ -1805,8 +1805,7 @@ bool PolicyCompiler_ipt::bridgingFw::processNext()
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
 //    Address        *src=compiler->getFirstSrc(rule);
-    Address        *dst=compiler->getFirstDst(rule);
-
+    Address *dst = compiler->getFirstDst(rule);
 
     if ( rule->getStr("ipt_chain")=="INPUT" )
     {
@@ -3659,6 +3658,15 @@ bool PolicyCompiler_ipt::countChainUsage::processNext()
         ipt_comp->chain_usage_counter[rule->getStr("ipt_target")] += 1;
     }
 
+    // second pass: if chain the rule belongs to has never been used as a target
+    // then the target chain of the rule will never be used as well
+    for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
+    {
+        PolicyRule *rule = PolicyRule::cast( *k );
+        if (ipt_comp->chain_usage_counter[rule->getStr("ipt_chain")] == 0)
+            ipt_comp->chain_usage_counter[rule->getStr("ipt_target")] = 0;
+    }
+
     return true;
 }
 
@@ -3959,12 +3967,14 @@ void PolicyCompiler_ipt::compile()
         add( new removeFW(                   "remove fw"              ) );
 
         add( new ExpandMultipleAddresses("expand multiple addresses"  ) );
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+
         add( new checkForUnnumbered("check for unnumbered interfaces" ) );
         add( new checkForDynamicInterfacesOfOtherObjects(
                  "check for dynamic interfaces of other hosts and firewalls"));
 
 	if ( fwopt->getBool("bridging_fw") ) 
-            add( new bridgingFw(  "handle bridging firewall cases"    ) );
+            add( new bridgingFw("handle bridging firewall cases"));
 
         add( new specialCaseWithUnnumberedInterface(
                  "check for a special cases with unnumbered interface" ) );

@@ -58,6 +58,7 @@ namespace fwcompiler {
 
         NATCompiler_ipt::PrintRule *printRule;
         bool   have_dynamic_interfaces;
+        std::map<std::string, int> chain_usage_counter;
 
         static const std::list<std::string>& getStandardChains();
         std::string getInterfaceVarName(libfwbuilder::FWObject *iface);
@@ -421,6 +422,12 @@ namespace fwcompiler {
                 processMultiAddressObjectsInRE(n,libfwbuilder::RuleElementODst::TYPENAME) {}
         };
 
+
+	/**
+	 * count how many times each user-defined chain we've created is
+         * used. We should be able to drop unused chains.
+	 */
+        DECLARE_NAT_RULE_PROCESSOR(countChainUsage);
 
 	/**
 	 *   prints single policy rule, assuming all * groups have

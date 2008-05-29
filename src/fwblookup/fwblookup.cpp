@@ -90,7 +90,7 @@ int fwbdebug = 0;
 class UpgradePredicate: public XMLTools::UpgradePredicate
 {
     public:
-    virtual bool operator()(const string &msg) const 
+    virtual bool operator()(const string&) const 
     { 
 	cout << _("Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it.") << endl;
 	return false;
@@ -317,10 +317,10 @@ int main(int argc, char * const *argv)
             {
                 if (Host::isA(obj) || Firewall::isA(obj))
                 {
-                    InetAddr ma = Host::cast(obj)->getManagementAddress();
-                    if (ma != InetAddr::getAny())
+                    const InetAddr *ma = Host::cast(obj)->getManagementAddress();
+                    if (ma && (*ma) != InetAddr::getAny())
                     {
-                        cout << ma.toString() << endl;
+                        cout << ma->toString() << endl;
                     } else
                     {
                         SNPRINTF(errstr,sizeof(errstr),

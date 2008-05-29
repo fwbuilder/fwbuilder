@@ -501,7 +501,6 @@ string NATCompiler_ipt::PrintRule::_printAddr(Address  *o,
 NATCompiler_ipt::PrintRule::PrintRule(const std::string &name) : 
     NATRuleProcessor(name)
 {
-    NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
     init=true; 
     print_once_on_top=true;
 
@@ -515,8 +514,13 @@ NATCompiler_ipt::PrintRule::PrintRule(const std::string &name) :
 
 bool NATCompiler_ipt::PrintRule::processNext()
 {
+    NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
     NATRule *rule=getNext(); 
     if (rule==NULL) return false;
+
+    string chain = rule->getStr("ipt_chain");
+    if (ipt_comp->chain_usage_counter[chain] == 0)
+        return true;
 
     tmp_queue.push_back(rule);
 
