@@ -420,8 +420,19 @@ void FWWindow::fileSaveAs()
 void FWWindow::fileExit()
 {
     if (activeProject())
-        activeProject()->fileExit();
-    else
+    {
+        QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
+        for (int i = 0 ; i < subWindowList.size(); i++)
+        {
+            ProjectPanel * project = dynamic_cast<ProjectPanel*>(subWindowList[i]->widget ());
+            if (project!=NULL)
+            {
+                project->fileClose();
+            }
+        }
+ //       activeProject()->fileExit();
+    }
+ //   else
         qApp->quit();
 }
 
