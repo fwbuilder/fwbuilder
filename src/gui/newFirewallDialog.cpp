@@ -595,7 +595,6 @@ void newFirewallDialog::addInterface()
         try
         {
             InetAddr(addr.toLatin1().constData());
-            InetAddr(netm.toLatin1().constData());
         }
         catch (FWException &ex)
         {
@@ -605,6 +604,30 @@ void newFirewallDialog::addInterface()
                 "&Continue", QString::null, QString::null, 0, 1 );
             return;
         }
+        try
+        {
+            InetAddr(netm.toLatin1().constData());
+        }
+        catch (FWException &ex)
+        {
+           
+            bool ok = false ;
+            int ilen = netm.toInt (&ok);
+            if (ok&&(ilen>0 && ilen < 32))
+            {
+            
+            }
+            else
+            {
+                QMessageBox::warning(
+                    this,"Firewall Builder",
+                    tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+                    "&Continue", QString::null, QString::null, 0, 1 );
+                return;
+            }
+        }
+
+
     }
     QStringList qsl;
     qsl << m_dialog->iface_name->text()
@@ -812,7 +835,17 @@ void newFirewallDialog::finishClicked()
                 QString addrname=QString("%1:%2:ip").arg(m_dialog->obj_name->text()).arg(name);
                 IPv4 *oa = IPv4::cast(mw->createObject(oi, IPv4::TYPENAME,addrname));
                 oa->setAddress( InetAddr(addr.toLatin1().constData()) );
-                oa->setNetmask( InetAddr(netmask.toLatin1().constData()) );
+
+                bool ok = false ;
+                int inetmask = netmask.toInt(&ok);
+                if (ok)
+                {
+                    oa->setNetmask( InetAddr(inetmask) );
+                }
+                else
+                {
+                    oa->setNetmask( InetAddr(netmask.toLatin1().constData()) );
+                }
             }
             // updateObjName has a side effect: it causes redraw of the ruleset
             // views in the main window
