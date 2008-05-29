@@ -213,7 +213,7 @@ string Compiler::createRuleLabel(const std::string &prefix,
 {
     ostringstream  str;
 
-    str << prefix << " ";
+    if (!prefix.empty()) str << prefix << " ";
     str << rule_num << " ";
     str << "(" << txt << ")";
     return str.str();
