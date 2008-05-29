@@ -9,7 +9,7 @@
     <x>0</x>
     <y>0</y>
     <width>652</width>
-    <height>244</height>
+    <height>302</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -193,7 +193,7 @@
         <item row="1" column="1" >
          <widget class="QFrame" name="frame34" >
           <property name="frameShape" >
-           <enum>QFrame::Box</enum>
+           <enum>QFrame::NoFrame</enum>
           </property>
           <property name="frameShadow" >
            <enum>QFrame::Sunken</enum>
@@ -217,7 +217,7 @@
            <item>
             <widget class="QGroupBox" name="buttonGroup2" >
              <property name="title" >
-              <string/>
+              <string>IP options</string>
              </property>
              <layout class="QGridLayout" >
               <property name="leftMargin" >
@@ -313,33 +313,10 @@
            <property name="verticalSpacing" >
             <number>2</number>
            </property>
-           <item rowspan="2" row="2" column="2" >
-            <widget class="QSpinBox" name="protocolNum" >
-             <property name="maximum" >
-              <number>255</number>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="0" colspan="2" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::MinimumExpanding</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>20</width>
-               <height>5</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="1" column="0" >
-            <widget class="QLabel" name="textLabel1_2" >
+           <item row="0" column="0" >
+            <widget class="QLabel" name="textLabel1" >
              <property name="text" >
-              <string>Library:</string>
+              <string>Name:</string>
              </property>
              <property name="wordWrap" >
               <bool>false</bool>
@@ -349,10 +326,10 @@
            <item row="0" column="1" colspan="2" >
             <widget class="QLineEdit" name="obj_name" />
            </item>
-           <item row="0" column="0" >
-            <widget class="QLabel" name="textLabel1" >
+           <item row="1" column="0" >
+            <widget class="QLabel" name="textLabel1_2" >
              <property name="text" >
-              <string>Name:</string>
+              <string>Library:</string>
              </property>
              <property name="wordWrap" >
               <bool>false</bool>
@@ -379,6 +356,13 @@
              </property>
             </widget>
            </item>
+           <item rowspan="2" row="2" column="2" >
+            <widget class="QSpinBox" name="protocolNum" >
+             <property name="maximum" >
+              <number>255</number>
+             </property>
+            </widget>
+           </item>
            <item row="3" column="0" colspan="2" >
             <widget class="QLabel" name="textLabel4" >
              <property name="text" >
@@ -389,32 +373,75 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="0" colspan="2" >
-            <widget class="QRadioButton" name="use_dscp" >
-             <property name="text" >
-              <string>Use DSCP</string>
+           <item row="4" column="0" colspan="3" >
+            <widget class="QGroupBox" name="groupBox" >
+             <property name="title" >
+              <string>DiffServ</string>
              </property>
-             <property name="checked" >
-              <bool>true</bool>
-             </property>
+             <layout class="QGridLayout" >
+              <property name="leftMargin" >
+               <number>2</number>
+              </property>
+              <property name="topMargin" >
+               <number>2</number>
+              </property>
+              <property name="rightMargin" >
+               <number>2</number>
+              </property>
+              <property name="bottomMargin" >
+               <number>2</number>
+              </property>
+              <property name="horizontalSpacing" >
+               <number>2</number>
+              </property>
+              <property name="verticalSpacing" >
+               <number>2</number>
+              </property>
+              <item row="0" column="0" colspan="2" >
+               <widget class="QRadioButton" name="use_dscp" >
+                <property name="text" >
+                 <string>Use DSCP</string>
+                </property>
+                <property name="checked" >
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" colspan="2" >
+               <widget class="QRadioButton" name="use_tos" >
+                <property name="text" >
+                 <string>Use TOS</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0" >
+               <widget class="QLabel" name="code_label" >
+                <property name="text" >
+                 <string>DSCP code:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1" >
+               <widget class="QLineEdit" name="code" />
+              </item>
+             </layout>
             </widget>
            </item>
-           <item row="5" column="0" colspan="2" >
-            <widget class="QRadioButton" name="use_tos" >
-             <property name="text" >
-              <string>Use TOS</string>
+           <item row="5" column="0" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
              </property>
-            </widget>
-           </item>
-           <item row="6" column="0" >
-            <widget class="QLabel" name="code_label" >
-             <property name="text" >
-              <string>DSCP code:</string>
+             <property name="sizeType" >
+              <enum>QSizePolicy::MinimumExpanding</enum>
              </property>
-            </widget>
-           </item>
-           <item row="6" column="1" colspan="2" >
-            <widget class="QLineEdit" name="code" />
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>5</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </widget>
@@ -598,38 +625,6 @@
     <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>use_dscp</sender>
-   <signal>clicked()</signal>
-   <receiver>IPServiceDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>65</x>
-     <y>157</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>193</x>
-     <y>-4</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>use_tos</sender>
-   <signal>clicked()</signal>
-   <receiver>IPServiceDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>40</x>
-     <y>178</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>293</x>
-     <y>0</y>
     </hint>
    </hints>
   </connection>
