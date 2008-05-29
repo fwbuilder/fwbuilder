@@ -128,6 +128,14 @@ void NetworkDialog::validate(bool *res)
         InetAddr( m_dialog->netmask->text().toLatin1().constData() );
     } catch (FWException &ex)
     {
+        QString len = m_dialog->netmask->text() ;
+        bool ok = false ;
+        int ilen = len.toInt (&ok);
+        if (ok)
+        {
+            if (ilen>0 && ilen < 32)
+                return ;
+        }
         *res=false;
         QMessageBox::critical(this, "Firewall Builder",
                               tr("Illegal netmask '%1'").arg( m_dialog->netmask->text() ),
@@ -158,13 +166,25 @@ void NetworkDialog::applyChanges()
     {
         s->setAddress(
             InetAddr(m_dialog->address->text().toLatin1().constData()) );
-        s->setNetmask(
-            InetAddr(m_dialog->netmask->text().toLatin1().constData()) );
     } catch (FWException &ex)
     {
 /* exception thrown if user types illegal m_dialog->address or m_dialog->netmask */
 
     }
+
+    try
+    {
+        s->setNetmask(
+            InetAddr(m_dialog->netmask->text().toLatin1().constData()) );
+    } catch (FWException &ex)
+    {
+/* exception thrown if user types illegal m_dialog->address or m_dialog->netmask */
+        bool ok = false ;
+        s->setNetmask(InetAddr(m_dialog->netmask->text().toInt(&ok)));
+    }
+
+
+
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     init=true;
