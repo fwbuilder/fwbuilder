@@ -699,12 +699,14 @@ bool NATCompiler::dropRuleWithEmptyRE::processNext()
     RuleElementTDst *tdstrel = rule->getTDst();
     if ((osrcrel->size() == 0) || (odstrel->size() == 0)) return true;
     if ((tsrcrel->size() == 0) || (tdstrel->size() == 0)) return true;
-    Address *osrc = compiler->getFirstOSrc(rule);
-    Address *odst = compiler->getFirstODst(rule);
-    Address *tsrc = compiler->getFirstTSrc(rule);
-    Address *tdst = compiler->getFirstTDst(rule);
-    if (osrc!=NULL && odst!=NULL && tsrc!=NULL && tdst!=NULL)
-        tmp_queue.push_back(rule);
+//    Address *osrc = compiler->getFirstOSrc(rule);
+//    Address *odst = compiler->getFirstODst(rule);
+//    Address *tsrc = compiler->getFirstTSrc(rule);
+//    Address *tdst = compiler->getFirstTDst(rule);
+//    if (osrc!=NULL && odst!=NULL && tsrc!=NULL && tdst!=NULL)
+//      tmp_queue.push_back(rule);
+
+    tmp_queue.push_back(rule);
     return true;
 }
 

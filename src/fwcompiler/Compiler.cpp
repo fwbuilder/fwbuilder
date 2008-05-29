@@ -360,7 +360,7 @@ void Compiler::expandGroupsInRuleElement(RuleElement *s)
         FWObject *o= *i1;
         if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
         assert(o);
-        _expand_group_recursive(o,cl);
+        _expand_group_recursive(o, cl);
     }
 
     s->clearChildren();
@@ -1260,8 +1260,8 @@ bool Compiler::swapMultiAddressObjectsInRE::processNext()
             MultiAddress *ma = *i;
 
             string mart_id = ma->getId()+"_runtime";
-            MultiAddressRunTime *mart = 
-                MultiAddressRunTime::cast(compiler->dbcopy->findInIndex(mart_id));
+            MultiAddressRunTime *mart = MultiAddressRunTime::cast(
+                compiler->dbcopy->findInIndex(mart_id));
             if (mart==NULL)
             {
                 mart = new MultiAddressRunTime(ma);
@@ -1275,6 +1275,7 @@ bool Compiler::swapMultiAddressObjectsInRE::processNext()
                 mart->setId( mart_id );
                 compiler->dbcopy->addToIndex(mart);
                 compiler->dbcopy->add(mart);
+                compiler->cacheObj(mart);
             }
             re->removeRef(ma);
             re->addRef(mart);
