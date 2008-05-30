@@ -541,7 +541,7 @@
           <item row="0" column="0" >
            <widget class="QLabel" name="rulesetname" >
             <property name="text" >
-             <string>TextLabel</string>
+             <string/>
             </property>
            </widget>
           </item>

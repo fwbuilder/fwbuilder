@@ -210,7 +210,11 @@ ObjectManipulator::ObjectManipulator( QWidget *parent):
 QString ObjectManipulator::getTreeLabel( FWObject *obj )
 {
     QString name;
-
+    if (RuleSet::isA(obj))
+    {
+        name=QString::fromUtf8(obj->getName().c_str());
+        return name ;
+    }
     if (Interface::isA(obj))
     {
         name=Interface::constcast(obj)->getLabel().c_str();
@@ -478,6 +482,10 @@ void ObjectManipulator::updateObjName(FWObject *obj,
     
     /* need to update name of the firewall in the drop-down list */
         if (Firewall::isA(obj))
+        {
+            pom->m_project->updateFirewallName(obj,oldName);
+        }
+        if (RuleSet::cast(obj)!=NULL)
         {
             pom->m_project->updateFirewallName(obj,oldName);
         }
@@ -756,11 +764,11 @@ void ObjectManipulator::addTreePage( FWObject *lib)
     connect(objTreeView,SIGNAL( editCurrentObject_sign() ),
             this,        SLOT( editSelectedObject()) );
 
-    connect(objTreeView,SIGNAL( editCurrentObject_sign() ),
-             this,        SLOT( editSelectedObject()) );
+//    connect(objTreeView,SIGNAL( editCurrentObject_sign() ),
+//             this,        SLOT( editSelectedObject()) );
 
-    connect(objTreeView,SIGNAL( switchObjectInEditor_sign(libfwbuilder::FWObject*) ),
-             this,        SLOT( switchObjectInEditor(libfwbuilder::FWObject*)) );
+//    connect(objTreeView,SIGNAL( switchObjectInEditor_sign(libfwbuilder::FWObject*) ),
+//             this,        SLOT( switchObjectInEditor(libfwbuilder::FWObject*)) );
 
     connect(objTreeView, SIGNAL( deleteObject_sign(libfwbuilder::FWObject*) ),
              this,        SLOT( deleteObj() ) );
@@ -2200,8 +2208,11 @@ void ObjectManipulator::editSelectedObject()
 //    obj->dump(false,false);
     if (RuleSet::cast(obj)!=NULL)
     {
-        m_project->openRuleSet(obj);
-        return ;
+        if (m_project->getCurrentRuleSet()!=obj)
+        {
+            m_project->openRuleSet(obj);
+            return ;
+        }
     }
     editObject(obj);
 }

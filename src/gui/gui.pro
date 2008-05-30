@@ -68,6 +68,7 @@ HEADERS += ../../config.h \
 	PhysicalAddressDialog.h \
 	NetworkDialog.h \
 	NetworkDialogIPv6.h \
+	RuleSetDialog.h \
 	LibraryDialog.h \
 	CustomServiceDialog.h \
 	IPServiceDialog.h \
@@ -186,6 +187,7 @@ SOURCES += ProjectPanel.cpp \
 	UDPServiceDialog.cpp \
 	GroupObjectDialog.cpp \
 	TimeDialog.cpp \
+	RuleSetDialog.cpp \
 	RuleSetView.cpp \
 	inplaceComboBox.cpp \
 	iptAdvancedDialog.cpp \
@@ -245,6 +247,7 @@ FORMS = FWBMainWindow_q.ui \
 	librarydialog_q.ui \
 	ipv4dialog_q.ui \
 	ipv6dialog_q.ui \
+	rulesetdialog_q.ui \
 	addressrangedialog_q.ui \
 	addresstabledialog_q.ui \
 	networkdialog_q.ui \

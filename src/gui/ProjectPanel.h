@@ -109,6 +109,7 @@ class ProjectPanel: public QWidget {
           libfwbuilder::RuleElement *re_old,
           const std::map<const std::string, libfwbuilder::FWObject *> &objByIds);
 public:  
+    libfwbuilder::RuleSet* getCurrentRuleSet () {return visibleRuleSet;};
     RuleSetView * getCurrentRuleSetView () ;
     ProjectPanel * clone (ProjectPanel * cln);
     void openRuleSet (libfwbuilder::FWObject * obj);

@@ -800,13 +800,14 @@ void ProjectPanel::reopenFirewall()
     {
         m_panel->ruleSets->removeWidget(m_panel->ruleSets->widget(i));
     }
-
+    QString name = visibleRuleSet->getName().c_str();
+    name += " / ";
     Policy *rule = Policy::cast(visibleRuleSet);
     if (rule!=NULL)
     {
        // if (rule->getAction() == PolicyRule::Branch)
             m_panel->ruleSets->addWidget( new PolicyView(this, rule,NULL) );
-            m_panel->rulesetname->setText(tr("Policy"));
+            m_panel->rulesetname->setText(name + tr("Policy"));
            
     // addPolicyBranchTab(rule);
     }
@@ -815,14 +816,14 @@ void ProjectPanel::reopenFirewall()
         if (nat!=NULL)
         {
             m_panel->ruleSets->addWidget( new NATView(this, nat,NULL) );
-            m_panel->rulesetname->setText(tr("NAT"));
+            m_panel->rulesetname->setText(name + tr("NAT"));
         }
 
         Routing *r = Routing::cast(visibleRuleSet);
         if (r!=NULL)
         {
             m_panel->ruleSets->addWidget( new RoutingView(this, r,NULL) );
-            m_panel->rulesetname->setText(tr("Routing"));
+            m_panel->rulesetname->setText(name + tr("Routing"));
         }
 // as of 2.1.5 we have rule branches :-)
 // so far branches are only supported in policy rules because only there
@@ -938,6 +939,25 @@ void ProjectPanel::removeFirewallFromList(libfwbuilder::FWObject *o)
 
 void ProjectPanel::updateFirewallName(libfwbuilder::FWObject *obj,const QString &str)
 {
+    QString name = visibleRuleSet->getName().c_str();
+    name += " / ";
+    Policy *rule = Policy::cast(visibleRuleSet);
+    if (rule!=NULL)
+    {
+        m_panel->rulesetname->setText(name + tr("Policy"));           
+    }
+    NAT *nat  = NAT::cast(visibleRuleSet);
+    if (nat!=NULL)
+    {
+        m_panel->rulesetname->setText(name + tr("NAT"));
+    }
+
+    Routing *r = Routing::cast(visibleRuleSet);
+    if (r!=NULL)
+    {
+        m_panel->rulesetname->setText(name + tr("Routing"));
+    }
+
 /*    updateFirewallName(obj, str);
     
     if (fwbdebug) qDebug("ProjectPanel::updateFirewallName ");
@@ -970,18 +990,19 @@ void ProjectPanel::updateFirewallName(libfwbuilder::FWObject *obj,const QString 
 
 void ProjectPanel::openRuleSet (libfwbuilder::FWObject * obj)
 {
-    if (!isEditorVisible() ||
-        requestEditorOwnership(NULL,NULL,ObjectEditor::optNone,true))
-    {
+
         blankEditor();
         //FWObject *fw = firewalls[idx];
-        //showFirewallRuleSets(fw);
-        visibleRuleSet = RuleSet::cast(obj);
+        //showFirewallRuleSets(fw)
+/*        if (!ruleSetRedrawPending && (getCurrentRuleSet()==visibleRuleSet))
+        {
+            m_panel->om->editObject(obj);
+        }
+*/        visibleRuleSet = RuleSet::cast(obj);
         //ruleSetRedrawPending = false ;
         scheduleRuleSetRedraw();
         //openObject(visibleRuleSet);
         //lastFirewallIdx=idx;
-    }     
 }
 
 void ProjectPanel::openFirewall( int idx )

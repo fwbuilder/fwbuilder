@@ -158,7 +158,6 @@ void NetworkDialog::applyChanges()
 {
     Network *s = dynamic_cast<Network*>(obj);
     assert(s!=NULL);
-
     string oldname=obj->getName();
     obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );

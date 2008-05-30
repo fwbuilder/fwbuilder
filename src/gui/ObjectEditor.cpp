@@ -105,6 +105,18 @@ ObjectEditor::ObjectEditor( QWidget *parent, ProjectPanel *project):
 #endif
 
     QWidget *w;
+    w= DialogFactory::createDialog(m_project, parent,Policy::TYPENAME);
+    stackIds[Policy::TYPENAME]  = parentWidget->addWidget(w);
+    dialogs[stackIds[Policy::TYPENAME]] = w;
+
+    w= DialogFactory::createDialog(m_project, parent,NAT::TYPENAME);
+    stackIds[NAT::TYPENAME]  = parentWidget->addWidget(w);
+    dialogs[stackIds[NAT::TYPENAME]] = w;
+
+    w= DialogFactory::createDialog(m_project, parent,Routing::TYPENAME);
+    stackIds[Routing::TYPENAME]  = parentWidget->addWidget(w);
+    dialogs[stackIds[Routing::TYPENAME]] = w;
+
     w= DialogFactory::createDialog(m_project, parent,Library::TYPENAME);
     stackIds[Library::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[Library::TYPENAME]] = w;

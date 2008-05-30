@@ -34,6 +34,7 @@
 #include "DialogFactory.h"
 
 #include "LibraryDialog.h"
+#include "RuleSetDialog.h"
 #include "AddressRangeDialog.h"
 #include "IPv4Dialog.h"
 #include "IPv6Dialog.h"
@@ -107,6 +108,11 @@ using namespace libfwbuilder;
 
 QWidget *DialogFactory::createDialog(ProjectPanel *project, QWidget *parent,const QString &objType)
 {
+    if (objType==Policy::TYPENAME)        return new RuleSetDialog(project, parent);
+
+    if (objType==NAT::TYPENAME)           return new RuleSetDialog(project, parent);
+
+    if (objType==Routing::TYPENAME)       return new RuleSetDialog(project, parent);
 
     if (objType==Library::TYPENAME)       return new LibraryDialog(project, parent);
 
