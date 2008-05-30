@@ -336,7 +336,7 @@ InetAddr InetAddr::opMinus(int decrement) const
 
 bool InetAddr::opLT(const InetAddr &other) const
 {
-    assert(address_family==other.address_family);
+    if (address_family!=other.address_family) return false;
     if (address_family==AF_INET)
     {
         return (ntohl( ipv4.s_addr ) < ntohl( other.ipv4.s_addr ));
@@ -349,7 +349,7 @@ bool InetAddr::opLT(const InetAddr &other) const
 
 bool InetAddr::opGT(const InetAddr &other) const
 {
-    assert(address_family==other.address_family);
+    if (address_family!=other.address_family) return false;
     if (address_family==AF_INET)
     {
         return (ntohl( ipv4.s_addr ) > ntohl( other.ipv4.s_addr ));
@@ -362,7 +362,7 @@ bool InetAddr::opGT(const InetAddr &other) const
 
 bool InetAddr::opEQ(const InetAddr &other) const
 {
-    assert(address_family==other.address_family);
+    if (address_family!=other.address_family) return false;
     if (address_family==AF_INET)
     {
         return ipv4.s_addr == other.ipv4.s_addr;
@@ -374,7 +374,7 @@ bool InetAddr::opEQ(const InetAddr &other) const
 
 bool InetAddr::opNEQ(const InetAddr &other) const
 {
-    assert(address_family==other.address_family);
+    if (address_family!=other.address_family) return false;
     if (address_family==AF_INET)
     {
         return ipv4.s_addr != other.ipv4.s_addr;
