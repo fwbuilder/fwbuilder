@@ -590,6 +590,8 @@ namespace fwcompiler {
 	void setVerbose(bool v)    { verbose=v;      }
         void setTestMode()         { test_mode=true; }
         void setSourceRuleSet(libfwbuilder::RuleSet *rs) { source_ruleset = rs; }
+        libfwbuilder::RuleSet* getSourceRuleSet() { return source_ruleset; }
+
         void setRuleSetName(const std::string &name) { ruleSetName = name; }
         std::string getRuleSetName() { return ruleSetName; }
         
@@ -597,7 +599,6 @@ namespace fwcompiler {
         int         getCompiledScriptLength();
 
 	void expandGroupsInRuleElement(libfwbuilder::RuleElement *s);
-
 
         /**
 	 * this method should return platform name. It is used 
@@ -625,6 +626,13 @@ namespace fwcompiler {
 	 */
         void debugRule();
 
+        /**
+         * determine if given rule set is "root" rule set, as opposed
+         * to branch.
+         */ 
+        static bool isRootRuleSet(libfwbuilder::RuleSet*);
+
+        
     };
 
 
