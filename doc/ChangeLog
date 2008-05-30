@@ -1,3 +1,15 @@
+2008-05-30  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* pf.cpp (main): Like compiler for iptables, compiler for PF now
+	supports multiple rule sets for policy and nat. Each rule set is
+	translated into corresponding anchor .conf file. If some rule in
+	another rule set references it via action Branch, corresponding
+	"anchor" configuration line is generated, but if it is not
+	references from any rule, the anchor .conf file is still
+	created. Rule sets "Policy" and "NAT" are configured "main" or
+	"root" and placed in the main .conf file with the name of the
+	firewall object.
+
 2008-05-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ipt.cpp (main): Compiler for iptables processes all Policy and

@@ -102,7 +102,12 @@ int NATCompiler_pf::prolog()
     dbcopy->add(loopback_address,false);
     cacheObj(loopback_address);
 
-    if (tables) tables->init(dbcopy);
+    if (tables)
+    {
+        tables->init(dbcopy);
+        if (!isRootRuleSet(getSourceRuleSet()))
+            tables->setRuleSetName(getRuleSetName());
+    }
 
     return n;
 }
@@ -906,8 +911,10 @@ void NATCompiler_pf::compile()
 {
     bool manage_virtual_addr=fwopt->getBool("manage_virtual_addr");
 
-
-    cout << _(" Compiling NAT rules for ") << fw->getName() << " ..." << endl << flush;
+    cout << " Compiling " << fw->getName();
+    if (!getRuleSetName().empty())  cout << " ruleset " << getRuleSetName();
+    if (ipv6) cout << ", IPv6";
+    cout <<  endl << flush;
 
     try {
 

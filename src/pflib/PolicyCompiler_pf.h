@@ -29,6 +29,7 @@
 #include <fwbuilder/libfwbuilder-config.h>
 #include "fwcompiler/PolicyCompiler.h"
 
+#include "NATCompiler_pf.h"
 #include "TableFactory.h"
 
 namespace libfwbuilder {
@@ -44,8 +45,6 @@ namespace libfwbuilder {
 
 
 namespace fwcompiler {
-
-    class NATCompiler_pf;
 
     class PolicyCompiler_pf : public PolicyCompiler {
 
@@ -442,11 +441,11 @@ namespace fwcompiler {
 			  const std::string &fwname,
                           bool ipv6_policy,
 			  fwcompiler::OSConfigurator *_oscnf,
-                          NATCompiler_pf *_natcmp,
+                          const std::list<NATCompiler_pf::redirectRuleInfo> *rri,
                           TableFactory *tbf = NULL) :
         PolicyCompiler(_db, fwname, ipv6_policy, _oscnf) 
         {
-            natcmp=_natcmp;
+            redirect_rules_info = rri;
             tables = tbf;
         }
 
@@ -457,9 +456,8 @@ namespace fwcompiler {
 	protected:
 
         TableFactory           *tables;
-        NATCompiler_pf         *natcmp;
 	libfwbuilder::IPv4     *loopback_address;
-
+        const std::list<NATCompiler_pf::redirectRuleInfo> *redirect_rules_info;
 
 
         private:

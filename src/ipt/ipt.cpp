@@ -596,13 +596,13 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 n.setHaveDynamicInterfaces(have_dynamic_interfaces);
                 if (test_mode) n.setTestMode();
 
-                have_nat = (have_nat || ((nat_rules_count=n.prolog()) > 0));
-
                 if ( (nat_rules_count=n.prolog()) > 0 )
                 {
                     n.compile();
                     n.epilog();
                 }
+
+                have_nat = (have_nat || (nat_rules_count > 0));
 
                 if (n.getCompiledScriptLength() > 0)
                 {

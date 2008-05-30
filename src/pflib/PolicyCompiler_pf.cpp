@@ -83,7 +83,8 @@ int PolicyCompiler_pf::prolog()
     if (tables)
     {
         tables->init(dbcopy);
-        tables->setRuleSetName(getRuleSetName());
+        if (!isRootRuleSet(getSourceRuleSet()))
+            tables->setRuleSetName(getRuleSetName());
     }
 
     return  PolicyCompiler::prolog();
@@ -374,133 +375,138 @@ bool PolicyCompiler_pf::fillDirection::processNext()
  */
 void PolicyCompiler_pf::addDefaultPolicyRule()
 {
-    if (!getRuleSetName().empty()) return;
-
-    if ( getCachedFwOpt()->getBool("mgmt_ssh") &&
-         !getCachedFwOpt()->getStr("mgmt_addr").empty() )
+    if (isRootRuleSet(getSourceRuleSet()))
     {
-	PolicyRule *r;
-        TCPService *ssh=TCPService::cast(dbcopy->create(TCPService::TYPENAME) );
-        ssh->setInt("dst_range_start",22);
-        ssh->setInt("dst_range_end",22);
-        ssh->setName("mgmt_ssh");
-        dbcopy->add(ssh,false);
-        cacheObj(ssh); // to keep cache consistent
-
-        string mgmt_addr = getCachedFwOpt()->getStr("mgmt_addr");
-        InetAddr  addr;
-        InetAddr netmask(InetAddr::getAllOnes());
-        try
+        if ( getCachedFwOpt()->getBool("mgmt_ssh") &&
+             !getCachedFwOpt()->getStr("mgmt_addr").empty() )
         {
-            addr = InetAddr(mgmt_addr);
-            string::size_type sep = mgmt_addr.find("/");
-            if (sep != string::npos)
+            PolicyRule *r;
+            TCPService *ssh =
+                TCPService::cast(dbcopy->create(TCPService::TYPENAME) );
+            ssh->setInt("dst_range_start",22);
+            ssh->setInt("dst_range_end",22);
+            ssh->setName("mgmt_ssh");
+            dbcopy->add(ssh,false);
+            cacheObj(ssh); // to keep cache consistent
+
+            string mgmt_addr = getCachedFwOpt()->getStr("mgmt_addr");
+            InetAddr  addr;
+            InetAddr netmask(InetAddr::getAllOnes());
+            try
             {
-                addr = InetAddr(mgmt_addr.substr(0,sep));
-                string nm = mgmt_addr.substr(sep+1);
-                int o1,o2,o3,o4;
-                if(sscanf(nm.c_str(), "%3u.%3u.%3u.%3u", &o1, &o2, &o3, &o4)==4)
+                addr = InetAddr(mgmt_addr);
+                string::size_type sep = mgmt_addr.find("/");
+                if (sep != string::npos)
                 {
-                    netmask = InetAddr(nm);
-                } else
-                {
-                    sscanf(nm.c_str(),"%u",&o1);
-                    netmask = InetAddr(o1);
+                    addr = InetAddr(mgmt_addr.substr(0,sep));
+                    string nm = mgmt_addr.substr(sep+1);
+                    int o1,o2,o3,o4;
+                    if (sscanf(nm.c_str(),
+                               "%3u.%3u.%3u.%3u", &o1, &o2, &o3, &o4)==4)
+                    {
+                        netmask = InetAddr(nm);
+                    } else
+                    {
+                        sscanf(nm.c_str(),"%u",&o1);
+                        netmask = InetAddr(o1);
+                    }
                 }
+            } catch(FWException &ex)
+            {
+                char errstr[256];
+                sprintf(errstr,
+                        _("Invalid address for the backup ssh access: '%s'"),
+                        mgmt_addr.c_str() );
+                abort( errstr );
             }
-        } catch(FWException &ex)
-        {
-            char errstr[256];
-            sprintf(errstr,
-                    _("Invalid address for the backup ssh access: '%s'"),
-                    mgmt_addr.c_str() );
-            abort( errstr );
-        }
 
-        Network *mgmt_workstation = Network::cast(dbcopy->create(Network::TYPENAME));
-        mgmt_workstation->setName("mgmt_addr");
-        mgmt_workstation->setAddress( addr );
-        mgmt_workstation->setNetmask( netmask );
+            Network *mgmt_workstation =
+                Network::cast(dbcopy->create(Network::TYPENAME));
+            mgmt_workstation->setName("mgmt_addr");
+            mgmt_workstation->setAddress( addr );
+            mgmt_workstation->setNetmask( netmask );
 //        IPv4 *mgmt_workstation = IPv4::cast(dbcopy->create(IPv4::TYPENAME));
 //        mgmt_workstation->setAddress( getCachedFwOpt()->getStr("mgmt_addr") );
-        dbcopy->add(mgmt_workstation,false);
-        cacheObj(mgmt_workstation); // to keep cache consistent
+            dbcopy->add(mgmt_workstation,false);
+            cacheObj(mgmt_workstation); // to keep cache consistent
 
 
-	r= PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );
-	temp_ruleset->add(r);
-	r->setAction(PolicyRule::Accept);
-	r->setLogging(false);
-	r->setDirection(PolicyRule::Inbound);
-	r->setPosition(9999);
-        r->setComment("   backup ssh access rule ");
-        r->setHidden(true);
-        r->setFallback(false);
-        r->setLabel("backup ssh access rule");
-        r->setBool("needs_established",true);  // supported in ipfw
+            r= PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );
+            temp_ruleset->add(r);
+            r->setAction(PolicyRule::Accept);
+            r->setLogging(false);
+            r->setDirection(PolicyRule::Inbound);
+            r->setPosition(9999);
+            r->setComment("   backup ssh access rule ");
+            r->setHidden(true);
+            r->setFallback(false);
+            r->setLabel("backup ssh access rule");
+            r->setBool("needs_established",true);  // supported in ipfw
 
-        RuleElement *src=r->getSrc();
-        assert(src!=NULL);
-        src->addRef(mgmt_workstation);
+            RuleElement *src=r->getSrc();
+            assert(src!=NULL);
+            src->addRef(mgmt_workstation);
 
-        RuleElement *dst=r->getDst();
-        assert(dst!=NULL);
-        dst->addRef(fw);
+            RuleElement *dst=r->getDst();
+            assert(dst!=NULL);
+            dst->addRef(fw);
 
-        RuleElement *srv=r->getSrv();
-        assert(srv!=NULL);
-        srv->addRef(ssh);
+            RuleElement *srv=r->getSrv();
+            assert(srv!=NULL);
+            srv->addRef(ssh);
 
-	combined_ruleset->push_front(r);
-    }
+            combined_ruleset->push_front(r);
+        }
 
-    if ( getCachedFwOpt()->getBool("pass_all_out") )
-    {
-	PolicyRule *r;
-        FWOptions *ruleopt;
+        if ( getCachedFwOpt()->getBool("pass_all_out") )
+        {
+            PolicyRule *r;
+            FWOptions *ruleopt;
 
-	r= PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );
-	temp_ruleset->add(r);
-	r->setAction(PolicyRule::Accept);
-	r->setLogging( getCachedFwOpt()->getBool("fallback_log") );
-	r->setDirection(PolicyRule::Outbound);
-	r->setPosition(10000);
-        r->setComment("   fallback rule ");
-        r->setHidden(true);
-        r->setFallback(true);
-        r->setLabel("fallback rule");
-	combined_ruleset->push_back(r);
+            r= PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );
+            temp_ruleset->add(r);
+            r->setAction(PolicyRule::Accept);
+            r->setLogging( getCachedFwOpt()->getBool("fallback_log") );
+            r->setDirection(PolicyRule::Outbound);
+            r->setPosition(10000);
+            r->setComment("   fallback rule ");
+            r->setHidden(true);
+            r->setFallback(true);
+            r->setLabel("fallback rule");
+            combined_ruleset->push_back(r);
 
-	r= PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );
-	temp_ruleset->add(r);
-	r->setAction(PolicyRule::Deny);
-	r->setLogging( getCachedFwOpt()->getBool("fallback_log") );
-	r->setDirection(PolicyRule::Inbound);
-	r->setPosition(10001);
-        r->setComment("   fallback rule ");
-        r->setHidden(true);
-        r->setFallback(true);
-        r->setLabel("fallback rule");
-        ruleopt = r->getOptionsObject();
-        ruleopt->setBool("stateless", true);
-	combined_ruleset->push_back(r);
-    } else
-    {
-	PolicyRule *r= PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );
-        FWOptions *ruleopt;
+            r= PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );
+            temp_ruleset->add(r);
+            r->setAction(PolicyRule::Deny);
+            r->setLogging( getCachedFwOpt()->getBool("fallback_log") );
+            r->setDirection(PolicyRule::Inbound);
+            r->setPosition(10001);
+            r->setComment("   fallback rule ");
+            r->setHidden(true);
+            r->setFallback(true);
+            r->setLabel("fallback rule");
+            ruleopt = r->getOptionsObject();
+            ruleopt->setBool("stateless", true);
+            combined_ruleset->push_back(r);
+        } else
+        {
+            PolicyRule *r=
+                PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );
+            FWOptions *ruleopt;
 
-	temp_ruleset->add(r);
-	r->setAction(PolicyRule::Deny);
-	r->setLogging( getCachedFwOpt()->getBool("fallback_log") );
-	r->setDirection(PolicyRule::Both);
-	r->setPosition(10000);
-        r->setComment("   fallback rule ");
-        r->setHidden(true);
-        r->setFallback(true);
-        r->setLabel("fallback rule");
-        ruleopt = r->getOptionsObject();
-        ruleopt->setBool("stateless", true);
-	combined_ruleset->push_back(r);
+            temp_ruleset->add(r);
+            r->setAction(PolicyRule::Deny);
+            r->setLogging( getCachedFwOpt()->getBool("fallback_log") );
+            r->setDirection(PolicyRule::Both);
+            r->setPosition(10000);
+            r->setComment("   fallback rule ");
+            r->setHidden(true);
+            r->setFallback(true);
+            r->setLabel("fallback rule");
+            ruleopt = r->getOptionsObject();
+            ruleopt->setBool("stateless", true);
+            combined_ruleset->push_back(r);
+        }
     }
 }
 
@@ -719,14 +725,17 @@ bool PolicyCompiler_pf::addLoopbackForRedirect::processNext()
     RuleElementDst *dst=rule->getDst();
     RuleElementSrv *srv=rule->getSrv();
 
-    if (pf_comp->natcmp==NULL)
-        compiler->abort("addLoopbackForRedirect needs a valid pointer to the NAT compiler object");
+    if (pf_comp->redirect_rules_info==NULL)
+        compiler->abort(
+            "addLoopbackForRedirect needs a valid pointer to "
+            "the list<NATCompiler_pf::redirectRuleInfo> object");
 
     tmp_queue.push_back(rule);
 
-    const list<NATCompiler_pf::redirectRuleInfo> lst=pf_comp->natcmp->getRedirRulesInfo();
+    //const list<NATCompiler_pf::redirectRuleInfo> lst = 
+    //  pf_comp->natcmp->getRedirRulesInfo();
 
-    if (lst.empty()) return true;
+    if (pf_comp->redirect_rules_info->empty()) return true;
 
 /*
  *  struct redirectRuleInfo {
@@ -751,7 +760,8 @@ bool PolicyCompiler_pf::addLoopbackForRedirect::processNext()
             assert(a);
 
             list<NATCompiler_pf::redirectRuleInfo>::const_iterator k;
-            for (k=lst.begin(); k!=lst.end(); ++k)
+            for (k=pf_comp->redirect_rules_info->begin();
+                 k!=pf_comp->redirect_rules_info->end(); ++k)
             {
                 if ( *a == *(k->old_tdst) &&  *s == *(k->tsrv) )
                 {
@@ -942,6 +952,11 @@ bool PolicyCompiler_pf::printScrubRule::processNext()
 
 void PolicyCompiler_pf::compile()
 {
+    cout << " Compiling " << fw->getName();
+    if (!getRuleSetName().empty())  cout << " ruleset " << getRuleSetName();
+    if (ipv6) cout << ", IPv6";
+    cout <<  endl << flush;
+
     try 
     {
 	Compiler::compile();

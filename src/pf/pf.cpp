@@ -70,6 +70,7 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Policy.h"
+#include "fwbuilder/NAT.h"
 
 #ifdef HAVE_GETOPT_H
   #include <getopt.h>
@@ -102,8 +103,18 @@ static bool             test_mode      = false;
 static bool             ipv4_run       = true;
 static bool             ipv6_run       = true;
 
-static map<string,RuleSet*> branches;
-static map<string,string>   anchor_files;
+// Note that in the following maps ruleset name will be 
+// "__main__" for both main Policy and NAT rulesets.
+
+// map ruleset_name -> conf file name
+static map<string, string>   conf_files;
+
+// map ruleset_name -> generated script
+static map<string, ostringstream*>   generated_scripts;
+
+// map ruleset_name -> TableFactory*
+static map<string, TableFactory*>   table_factories;
+
 
 FWObjectDatabase       *objdb = NULL;
 
@@ -132,6 +143,30 @@ void join::operator()(std::string &s)
 {
     if (!result->empty()) *result += separator;
     *result += s;
+}
+
+string getConfFileName(const string &ruleset_name,
+                       const string &fwobjectname,
+                       const string &fw_file_name)
+{
+    string conf_file_name;
+    if (ruleset_name == "__main__")
+        conf_file_name = string(fwobjectname) + ".conf";
+    else
+    {
+        if (fw_file_name.empty())
+        {
+            conf_file_name = string(fwobjectname) + "-" +
+                ruleset_name + ".conf";
+        } else
+        {
+            string::size_type n = fw_file_name.rfind(".");
+            conf_file_name = fw_file_name;
+            conf_file_name.erase(n);
+            conf_file_name.append("-" + ruleset_name + ".conf");
+        }
+    }
+    return conf_file_name;
 }
 
 void usage(const char *name)
@@ -166,6 +201,191 @@ void printProlog(ofstream &file, const string &prolog_code)
     file << "#" << endl;
     file << "# End of prolog script" << endl;
     file << "#" << endl;
+}
+
+void printStaticOptions(ofstream &file, Firewall* fw)
+{
+    FWOptions* options = fw->getOptionsObject();
+    list<FWObject*> all_interfaces=fw->getByType(Interface::TYPENAME);
+    string prolog_place = options->getStr("prolog_place");
+    if (prolog_place.empty()) prolog_place = "fw_file";  // old default
+    string pre_hook = options->getStr("prolog_script");
+
+    if (prolog_place == "pf_file_top")
+        printProlog(file, pre_hook);
+
+    file << endl;
+
+    list<string> limits;
+    if (options->getBool("pf_do_limit_frags") &&
+        options->getInt("pf_limit_frags")>0 )
+        limits.push_back(string("frags ") +
+                         options->getStr("pf_limit_frags"));
+
+    if (options->getBool("pf_do_limit_states") &&
+        options->getInt("pf_limit_states")>0 )
+        limits.push_back(string("states ") +
+                         options->getStr("pf_limit_states"));
+
+    if (options->getBool("pf_do_limit_src_nodes") &&
+        options->getInt("pf_limit_src_nodes")>0 )
+        limits.push_back(string("src-nodes ") +
+                         options->getStr("pf_limit_src_nodes"));
+
+    if (options->getBool("pf_do_limit_tables") &&
+        options->getInt("pf_limit_tables")>0 )
+        limits.push_back(string("tables ") +
+                         options->getStr("pf_limit_tables"));
+
+    if (options->getBool("pf_do_limit_table_entries") &&
+        options->getInt("pf_limit_table_entries")>0 )
+        limits.push_back(string("table-entries ") +
+                         options->getStr("pf_limit_table_entries"));
+
+    if (limits.size() > 0)
+    {
+        file << "set limit ";
+        if (limits.size() > 1 ) file << "{ ";
+        string all_limits;
+        for_each(limits.begin(), limits.end(), join( &all_limits, ", "));
+        file << all_limits;
+        if (limits.size() > 1 ) file << " }";
+        file << endl;
+    }
+
+    if ( ! options->getStr("pf_optimization").empty() )
+        file << "set optimization "
+             << options->getStr("pf_optimization") << endl;
+
+    file << printTimeout(options,
+                         "pf_do_timeout_interval","pf_timeout_interval",
+                         "interval");
+    file << printTimeout(options,
+                         "pf_do_timeout_frag","pf_timeout_frag",
+                         "frag");
+
+    file << printTimeout(options,
+                         "pf_set_tcp_first","pf_tcp_first",
+                         "tcp.first" );
+    file << printTimeout(options,
+                         "pf_set_tcp_opening","pf_tcp_opening",
+                         "tcp.opening" );
+    file << printTimeout(options,
+                         "pf_set_tcp_established","pf_tcp_established",
+                         "tcp.established" );
+    file << printTimeout(options,
+                         "pf_set_tcp_closing","pf_tcp_closing",
+                         "tcp.closing" );
+    file << printTimeout(options,
+                         "pf_set_tcp_finwait","pf_tcp_finwait",
+                         "tcp.finwait" );
+    file << printTimeout(options,
+                         "pf_set_tcp_closed","pf_tcp_closed",
+                         "tcp.closed" );
+    file << printTimeout(options,
+                         "pf_set_udp_first","pf_udp_first",
+                         "udp.first" );
+    file << printTimeout(options,
+                         "pf_set_udp_single","pf_udp_single",
+                         "udp.single" );
+    file << printTimeout(options,
+                         "pf_set_udp_multiple","pf_udp_multiple",
+                         "udp.multiple" );
+    file << printTimeout(options,
+                         "pf_set_icmp_first","pf_icmp_first",
+                         "icmp.first" );
+    file << printTimeout(options,
+                         "pf_set_icmp_error","pf_icmp_error",
+                         "icmp.error" );
+    file << printTimeout(options,
+                         "pf_set_other_first","pf_other_first",
+                         "other.first" );
+    file << printTimeout(options,
+                         "pf_set_other_single","pf_other_single",
+                         "other.single" );
+    file << printTimeout(options,
+                         "pf_set_other_multiple","pf_other_multiple",
+                         "other.multiple" );
+
+    file << printTimeout(options,
+                         "pf_set_adaptive","pf_adaptive_start",
+                         "adaptive.start" );
+    file << printTimeout(options,
+                         "pf_set_adaptive","pf_adaptive_end",
+                         "adaptive.end");
+
+    // check if any interface is marked as 'unprotected'
+    // and generate 'set skip on <ifspec>' commands
+
+    if (fw->getStr("version")=="ge_3.7" ||
+        fw->getStr("version")=="4.x") 
+    {
+        for (list<FWObject*>::iterator i=all_interfaces.begin();
+             i!=all_interfaces.end(); ++i) 
+        {
+            Interface *iface=dynamic_cast<Interface*>(*i);
+            assert(iface);
+
+            if ( iface->isUnprotected())  
+                file << "set skip on " << iface->getName() << endl;
+        }
+    }
+
+    file << endl;
+
+    if (prolog_place == "pf_file_after_set")
+        printProlog(file, pre_hook);
+
+    string   scrub_options;
+
+    if (options->getBool("pf_do_scrub"))
+    {
+        if (options->getBool("pf_scrub_reassemble"))     
+            scrub_options+="fragment reassemble ";
+        else
+        {
+            if (options->getBool("pf_scrub_fragm_crop"))
+                scrub_options+="fragment crop ";
+            else
+            {
+                if (options->getBool("pf_scrub_fragm_drop_ovl"))
+                    scrub_options+="fragment drop-ovl ";
+            }
+        }
+    }
+
+    if (options->getBool("pf_scrub_no_df"))  scrub_options+="no-df ";
+
+    if (!scrub_options.empty())
+    {
+        file << "#" << endl;
+        file << "# Scrub rules" << endl;
+        file << "#" << endl;
+        file << "scrub in all " << scrub_options << endl;
+    }
+
+    scrub_options="";
+    if (options->getBool("pf_scrub_random_id"))
+        scrub_options+="random-id ";
+    if (options->getBool("pf_scrub_use_minttl"))
+        scrub_options+="min-ttl " + options->getStr("pf_scrub_minttl") + " ";
+    if (options->getBool("pf_scrub_use_maxmss"))
+        scrub_options+="max-mss " + options->getStr("pf_scrub_maxmss") + " ";
+    if (!scrub_options.empty())
+    {
+        file << "scrub out all " << scrub_options << endl; 
+    }
+    file << endl;
+
+    if (prolog_place == "pf_file_after_scrub")
+        printProlog(file, pre_hook);
+
+    //file << table_factory->PrintTables();
+    //file << endl;
+
+    if (prolog_place == "pf_file_after_tables")
+        printProlog(file, pre_hook);
+
 }
 
 int main(int argc, char * const *argv)
@@ -416,9 +636,12 @@ int main(int argc, char * const *argv)
 
 	oscnf->prolog();
 
+        list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
+        list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
 
         vector<bool> ipv4_6_runs;
-        string generated_script;
+        bool have_nat = false;
+        bool have_pf = false;
 
         // command line options -4 and -6 control address family for which
         // script will be generated. If "-4" is used, only ipv4 part will 
@@ -440,346 +663,152 @@ int main(int argc, char * const *argv)
             if (ipv4_run) ipv4_6_runs.push_back(false);
         }
 
+        ostringstream *main_str = new ostringstream();
+
         for (vector<bool>::iterator i=ipv4_6_runs.begin(); 
              i!=ipv4_6_runs.end(); ++i)
         {
             bool ipv6_policy = *i;
 
-            if (ipv6_policy)
-            {
-                generated_script += "\n\n";
-                generated_script += "#================ IPv6 ================\n";
-                generated_script += "\n\n";
-            } else
-            {
-                generated_script += "\n\n";
-                generated_script += "#================ IPv4 ================\n";
-                generated_script += "\n\n";
-            }
-
-            TableFactory *table_factory = new TableFactory();
-
             Preprocessor_pf* prep = new Preprocessor_pf(
                 objdb , fwobjectname, ipv6_policy);
             prep->compile();
 
-            // find branching rules and store names of the branches and
-            // pointers to corresponding rule sets
-            // 
-            FWObject *policy = fw->getFirstByType(Policy::TYPENAME);
-            for (FWObject::iterator i=policy->begin(); i!=policy->end(); i++)
+            list<NATCompiler_pf::redirectRuleInfo> redirect_rules_info;
+
+            for (list<FWObject*>::iterator p=all_nat.begin();
+                 p!=all_nat.end(); ++p )
             {
-                PolicyRule *rule = PolicyRule::cast(*i);
-                if (rule->getAction()==PolicyRule::Branch)
+                NAT *nat = NAT::cast(*p);
+                string ruleset_name = nat->getName();
+                if (Compiler::isRootRuleSet(nat))
+                    ruleset_name = "__main__";
+
+                if (!table_factories.count(ruleset_name))
+                    table_factories[ruleset_name] = new TableFactory();
+
+                NATCompiler_pf n( objdb, fwobjectname, ipv6_policy, oscnf,
+                                  table_factories[ruleset_name] );
+
+                n.setSourceRuleSet( nat );
+                n.setRuleSetName(nat->getName());
+
+                n.setDebugLevel( dl );
+                n.setDebugRule(  drn );
+                n.setVerbose( verbose );
+                if (test_mode) n.setTestMode();
+
+                int nat_rules_count = 0;
+                if ( (nat_rules_count=n.prolog()) > 0 ) 
                 {
-                    int parentRuleNum = rule->getPosition();
-                    RuleSet *subset = rule->getBranch();
-                    if (subset==NULL)
-                    {
-                        throw FWException(
-                            _("Action 'Branch' but no branch policy in policy rule ")
-                            +rule->getLabel());
-                    }
-                    subset->setInt("parent_rule_num",parentRuleNum);
-                    FWOptions *ropt = rule->getOptionsObject();
-                    string branchName = ropt->getStr("branch_name");
-                    branches[branchName] = subset;
-                    subset->ref();
-                    rule->remove(subset);
+                    n.compile();
+                    n.epilog();
                 }
+                have_nat = (have_nat || (nat_rules_count > 0));
+
+                if (Compiler::isRootRuleSet(nat))
+                {
+                    generated_scripts[ruleset_name] = main_str;
+                } else
+                {
+                    generated_scripts[ruleset_name] = new ostringstream();
+                }
+
+                if (n.getCompiledScriptLength() > 0)
+                {
+                    *(generated_scripts[ruleset_name]) << n.getCompiledScript();
+                    *(generated_scripts[ruleset_name]) << endl;
+                }
+
+                conf_files[ruleset_name] = getConfFileName(ruleset_name,
+                                                           fwobjectname,
+                                                           fw_file_name);
+                const list<NATCompiler_pf::redirectRuleInfo> lst = 
+                    n.getRedirRulesInfo();
+                redirect_rules_info.insert(redirect_rules_info.begin(),
+                                           lst.begin(), lst.end());
             }
 
-            NATCompiler_pf n( objdb, fwobjectname, ipv6_policy, oscnf,
-                              table_factory );
-
-            n.setDebugLevel( dl );
-            n.setDebugRule(  drn );
-            n.setVerbose( verbose );
-            if (test_mode) n.setTestMode();
-
-            bool     have_nat=false;
-            if ( n.prolog() > 0 ) 
+            for (list<FWObject*>::iterator p=all_policies.begin();
+                 p!=all_policies.end(); ++p )
             {
-                have_nat=true;
+                Policy *policy = Policy::cast(*p);
+                string ruleset_name = policy->getName();
+                if (Compiler::isRootRuleSet(policy))
+                    ruleset_name = "__main__";
 
-                n.compile();
-                n.epilog();
-            }
+                if (!table_factories.count(ruleset_name))
+                    table_factories[ruleset_name] = new TableFactory();
 
-            PolicyCompiler_pf c( objdb, fwobjectname, ipv6_policy, oscnf,
-                                 &n, table_factory );
+                PolicyCompiler_pf c( objdb, fwobjectname, ipv6_policy, oscnf,
+                                     &redirect_rules_info,
+                                     table_factories[ruleset_name] );
 
-            c.setDebugLevel( dl );
-            c.setDebugRule(  drp );
-            c.setVerbose( verbose );
-            if (test_mode) c.setTestMode();
-
-            bool     have_pf=false;
-            if ( c.prolog() > 0 ) 
-            {
-                have_pf=true;
-
-                cout << " Compiling policy rules for "
-                     << fwobjectname
-                     << " ..." <<  endl << flush;
-
-                c.compile();
-                c.epilog();
-            }
-
-            generated_script += table_factory->PrintTables();
-            generated_script += "\n";
-
-            if (have_nat)   generated_script += n.getCompiledScript();
-            if (have_pf)    generated_script += c.getCompiledScript();
-
-            // run policy compiler for each branch we have found in the
-            // ruleset and store the result in a separate .conf file
-            //
-            map<string,RuleSet*>::iterator bi;
-            for (bi=branches.begin(); bi!=branches.end(); ++bi)
-            {
-                table_factory = new TableFactory();
-
-                string branchName = bi->first;
-                RuleSet *subset = bi->second;
-                PolicyCompiler_pf c( objdb , fwobjectname, ipv6_policy,
-                                     oscnf, &n, table_factory );
-                c.setSourceRuleSet( subset );
-                c.setRuleSetName(branchName);
+                c.setSourceRuleSet( policy );
+                c.setRuleSetName(policy->getName());
 
                 c.setDebugLevel( dl );
                 c.setDebugRule(  drp );
                 c.setVerbose( verbose );
                 if (test_mode) c.setTestMode();
 
-                if ( c.prolog() > 0 ) 
+                int pf_rules_count = 0;
+                if ( (pf_rules_count=c.prolog()) > 0 ) 
                 {
-                    cout << " Compiling rules for anchor "
-                         << branchName
-                         << " ..." <<  endl << flush;
-
                     c.compile();
                     c.epilog();
-
-                    string anchor_file_name;
-                    if (fw_file_name.empty())
-                    {
-                        anchor_file_name=string(fwobjectname) + "-" + branchName + ".conf";
-                    } else
-                    {
-                        string::size_type n = fw_file_name.rfind(".");
-                        anchor_file_name = fw_file_name;
-                        anchor_file_name.erase(n);
-                        anchor_file_name.append("-" + branchName + ".conf");
-                    }
-                    anchor_files[branchName] = anchor_file_name;
-
-                    ofstream pf_file;
-                    pf_file.exceptions(ofstream::eofbit|ofstream::failbit|ofstream::badbit);
-
-#ifdef _WIN32
-                    pf_file.open(anchor_file_name.c_str(), ios::out|ios::binary);
-#else
-                    pf_file.open(anchor_file_name.c_str());
-#endif
-                    pf_file << endl;
-                    pf_file << table_factory->PrintTables();
-                    pf_file << endl;
-                    pf_file << c.getCompiledScript();
-                    pf_file.close();
                 }
+                have_pf = (have_pf || (pf_rules_count > 0));
+
+                if (Compiler::isRootRuleSet(policy))
+                {
+                    generated_scripts[ruleset_name] = main_str;
+                } else
+                {
+                    generated_scripts[ruleset_name] = new ostringstream();
+                }
+
+                if (c.getCompiledScriptLength() > 0)
+                {
+                    *(generated_scripts[ruleset_name]) << c.getCompiledScript();
+                    *(generated_scripts[ruleset_name]) << endl;
+                }
+
+                conf_files[ruleset_name] = getConfFileName(ruleset_name,
+                                                           fwobjectname,
+                                                           fw_file_name);
             }
         }
-
+ 
 /*
  * now write generated scripts to files
  */
+        for (map<string, ostringstream*>::iterator fi=generated_scripts.begin();
+             fi!=generated_scripts.end(); fi++)
+        {
+            string ruleset_name = fi->first;
+            string file_name = conf_files[ruleset_name];
+            ostringstream *strm = fi->second;
 
-        ofstream pf_file;
-        pf_file.exceptions(ofstream::eofbit|ofstream::failbit|ofstream::badbit);
+            ofstream pf_file;
+            pf_file.exceptions(
+                ofstream::eofbit|ofstream::failbit|ofstream::badbit);
 
 #ifdef _WIN32
-        pf_file.open(pf_file_name.c_str(), ios::out|ios::binary);
+            pf_file.open(file_name.c_str(), ios::out|ios::binary);
 #else
-        pf_file.open(pf_file_name.c_str());
+            pf_file.open(file_name.c_str());
 #endif
 
-        if (prolog_place == "pf_file_top")
-            printProlog(pf_file, pre_hook);
-
-        pf_file << endl;
-
-        list<string> limits;
-        if (options->getBool("pf_do_limit_frags") &&
-            options->getInt("pf_limit_frags")>0 )
-            limits.push_back(string("frags ") +
-                             options->getStr("pf_limit_frags"));
-
-        if (options->getBool("pf_do_limit_states") &&
-            options->getInt("pf_limit_states")>0 )
-            limits.push_back(string("states ") +
-                             options->getStr("pf_limit_states"));
-
-        if (options->getBool("pf_do_limit_src_nodes") &&
-            options->getInt("pf_limit_src_nodes")>0 )
-            limits.push_back(string("src-nodes ") +
-                             options->getStr("pf_limit_src_nodes"));
-
-        if (options->getBool("pf_do_limit_tables") &&
-            options->getInt("pf_limit_tables")>0 )
-            limits.push_back(string("tables ") +
-                             options->getStr("pf_limit_tables"));
-
-        if (options->getBool("pf_do_limit_table_entries") &&
-            options->getInt("pf_limit_table_entries")>0 )
-            limits.push_back(string("table-entries ") +
-                             options->getStr("pf_limit_table_entries"));
-
-        if (limits.size() > 0)
-        {
-            pf_file << "set limit ";
-            if (limits.size() > 1 ) pf_file << "{ ";
-            string all_limits;
-            for_each(limits.begin(), limits.end(), join( &all_limits, ", "));
-            pf_file << all_limits;
-            if (limits.size() > 1 ) pf_file << " }";
-            pf_file << endl;
-        }
-
-        if ( ! options->getStr("pf_optimization").empty() )
-            pf_file << "set optimization "
-                    << options->getStr("pf_optimization") << endl;
-
-        pf_file << printTimeout(options,
-                                "pf_do_timeout_interval","pf_timeout_interval",
-                                "interval");
-        pf_file << printTimeout(options,
-                                "pf_do_timeout_frag","pf_timeout_frag",
-                                "frag");
-
-        pf_file << printTimeout(options,
-                                "pf_set_tcp_first","pf_tcp_first",
-                                "tcp.first" );
-        pf_file << printTimeout(options,
-                                "pf_set_tcp_opening","pf_tcp_opening",
-                                "tcp.opening" );
-        pf_file << printTimeout(options,
-                                "pf_set_tcp_established","pf_tcp_established",
-                                "tcp.established" );
-        pf_file << printTimeout(options,
-                                "pf_set_tcp_closing","pf_tcp_closing",
-                                "tcp.closing" );
-        pf_file << printTimeout(options,
-                                "pf_set_tcp_finwait","pf_tcp_finwait",
-                                "tcp.finwait" );
-        pf_file << printTimeout(options,
-                                "pf_set_tcp_closed","pf_tcp_closed",
-                                "tcp.closed" );
-        pf_file << printTimeout(options,
-                                "pf_set_udp_first","pf_udp_first",
-                                "udp.first" );
-        pf_file << printTimeout(options,
-                                "pf_set_udp_single","pf_udp_single",
-                                "udp.single" );
-        pf_file << printTimeout(options,
-                                "pf_set_udp_multiple","pf_udp_multiple",
-                                "udp.multiple" );
-        pf_file << printTimeout(options,
-                                "pf_set_icmp_first","pf_icmp_first",
-                                "icmp.first" );
-        pf_file << printTimeout(options,
-                                "pf_set_icmp_error","pf_icmp_error",
-                                "icmp.error" );
-        pf_file << printTimeout(options,
-                                "pf_set_other_first","pf_other_first",
-                                "other.first" );
-        pf_file << printTimeout(options,
-                                "pf_set_other_single","pf_other_single",
-                                "other.single" );
-        pf_file << printTimeout(options,
-                                "pf_set_other_multiple","pf_other_multiple",
-                                "other.multiple" );
-
-        pf_file << printTimeout(options,
-                                "pf_set_adaptive","pf_adaptive_start",
-                                "adaptive.start" );
-        pf_file << printTimeout(options,
-                                "pf_set_adaptive","pf_adaptive_end",
-                                "adaptive.end");
-
-        // check if any interface is marked as 'unprotected'
-        // and generate 'set skip on <ifspec>' commands
-
-        if (fw->getStr("version")=="ge_3.7" ||
-            fw->getStr("version")=="4.x") 
-        {
-            for (list<FWObject*>::iterator i=all_interfaces.begin();
-                 i!=all_interfaces.end(); ++i) 
+            if (ruleset_name == "__main__")
             {
-                Interface *iface=dynamic_cast<Interface*>(*i);
-                assert(iface);
-
-                if ( iface->isUnprotected())  
-                    pf_file << "set skip on " << iface->getName() << endl;
+                printStaticOptions(pf_file, fw);
             }
+            pf_file << table_factories[ruleset_name]->PrintTables();
+
+            pf_file << strm->str();
+            pf_file.close();
         }
-
-        pf_file << endl;
-
-        if (prolog_place == "pf_file_after_set")
-            printProlog(pf_file, pre_hook);
-
-        string   scrub_options;
-
-        if (options->getBool("pf_do_scrub"))
-        {
-            if (options->getBool("pf_scrub_reassemble"))     
-                scrub_options+="fragment reassemble ";
-            else
-            {
-                if (options->getBool("pf_scrub_fragm_crop"))
-                    scrub_options+="fragment crop ";
-                else
-                {
-                    if (options->getBool("pf_scrub_fragm_drop_ovl"))
-                        scrub_options+="fragment drop-ovl ";
-                }
-            }
-        }
-
-        if (options->getBool("pf_scrub_no_df"))  scrub_options+="no-df ";
-
-        if (!scrub_options.empty())
-        {
-            pf_file << "#" << endl;
-            pf_file << "# Scrub rules" << endl;
-            pf_file << "#" << endl;
-            pf_file << "scrub in all " << scrub_options << endl;
-        }
-
-        scrub_options="";
-        if (options->getBool("pf_scrub_random_id"))  scrub_options+="random-id ";
-        if (options->getBool("pf_scrub_use_minttl")) scrub_options+="min-ttl " + options->getStr("pf_scrub_minttl") + " ";
-        if (options->getBool("pf_scrub_use_maxmss")) scrub_options+="max-mss " + options->getStr("pf_scrub_maxmss") + " ";
-        if (!scrub_options.empty())
-        {
-            pf_file << "scrub out all " << scrub_options << endl; 
-        }
-        pf_file << endl;
-
-        if (prolog_place == "pf_file_after_scrub")
-            printProlog(pf_file, pre_hook);
-
-        //pf_file << table_factory->PrintTables();
-        //pf_file << endl;
-
-        if (prolog_place == "pf_file_after_tables")
-            printProlog(pf_file, pre_hook);
-
-	pf_file << generated_script;
-        pf_file.close();
-
 
         char          *timestr;
         time_t         tm;
@@ -826,9 +855,9 @@ int main(int argc, char * const *argv)
                << user_name << "\n#\n";
 
         fw_file << MANIFEST_MARKER << "* " << fw_file_name << endl;
-        fw_file << MANIFEST_MARKER << "  " << pf_file_name << endl;
-        for (map<string,string>::iterator i=anchor_files.begin();
-                                          i!=anchor_files.end(); ++i)
+        //fw_file << MANIFEST_MARKER << "  " << pf_file_name << endl;
+        for (map<string,string>::iterator i=conf_files.begin();
+                                          i!=conf_files.end(); ++i)
             fw_file << MANIFEST_MARKER << "  " << i->second << endl;
 
         fw_file << "#" << endl;
@@ -869,15 +898,17 @@ int main(int argc, char * const *argv)
                 << " || exit 1"
                 << endl;
 
-        for (map<string,string>::iterator i=anchor_files.begin();
-             i!=anchor_files.end(); ++i)
-            fw_file << "$PFCTL " << pfctl_dbg
-                    << "-a " << i->first << " "
-                    << pfctl_f_option
-                    << "${FWDIR}/" << i->second
-                    << " || exit 1"
-                    << endl;
-
+        for (map<string,string>::iterator i=conf_files.begin();
+             i!=conf_files.end(); ++i)
+        {
+            if (i->first != "__main__")
+                fw_file << "$PFCTL " << pfctl_dbg
+                        << "-a " << i->first << " "
+                        << pfctl_f_option
+                        << "${FWDIR}/" << i->second
+                        << " || exit 1"
+                        << endl;
+        }
         fw_file << endl;
         fw_file << "#" << endl;
         fw_file << "# Epilog script" << endl;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="7" lastModified="1212115906" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="7" lastModified="1212118893" id="root">
   <Library color="#d2ffd0" comment="User defined objects" id="syslib001" name="User">
     <ObjectGroup id="stdid01_1" name="Objects">
       <ObjectGroup id="stdid01_1_og_ats_1" name="Address Tables">
@@ -27,6 +27,8 @@
         <IPv4 comment="" id="id45D61A0923626" name="VRRP" address="224.0.0.18" netmask="255.255.255.255"/>
         <IPv6 comment="" id="id483426D06131" name="ipv6-1" address="fe80::aaaa:bbbb:cccc:1" netmask="128"/>
         <IPv6 comment="" id="id483426D16131" name="ipv6-2" address="fe80::aaaa:bbbb:cccc:2" netmask="128"/>
+        <IPv6 comment="" id="id48416A7116880" name="altavista" address="3ffe:1200:2001:1:8000::1" netmask="128"/>
+        <IPv6 comment="" id="id48416A7216880" name="6bone.net" address="2001:5c0:0:2::24" netmask="128"/>
       </ObjectGroup>
       <ObjectGroup id="stdid04_1" name="Groups">
         <ObjectGroup id="id3B4572AF" name="group1">
@@ -110,15 +112,15 @@
           <ObjectRef ref="id4387287A18346"/>
         </ObjectGroup>
         <ObjectGroup comment="" id="id4834A2238571" name="ipv6 addresses">
-          <ObjectRef ref="id483426D06131"/>
-          <ObjectRef ref="id483426D16131"/>
-          <ObjectRef ref="id4834B9206131"/>
+          <ObjectRef ref="id48416A7016880"/>
+          <ObjectRef ref="id48416A7216880"/>
+          <ObjectRef ref="id48416A7116880"/>
         </ObjectGroup>
         <ObjectGroup comment="" id="id4834A2278571" name="ipv4 ipv6 addresses">
           <ObjectRef ref="id417B3641"/>
-          <ObjectRef ref="id483426D06131"/>
-          <ObjectRef ref="id483426D16131"/>
           <ObjectRef ref="id4388C37D674"/>
+          <ObjectRef ref="id48416A7216880"/>
+          <ObjectRef ref="id48416A7116880"/>
         </ObjectGroup>
       </ObjectGroup>
       <ObjectGroup id="stdid02_1" name="Hosts">
@@ -831,6 +833,8 @@
         <Network comment="" id="id43913DEA25682" name="Internal_net_t" address="192.168.1.0" netmask="255.255.255.0"/>
         <Network comment="" id="id4733FFE419714" name="n-192.168.2.0" address="192.168.2.0" netmask="255.255.255.0"/>
         <NetworkIPv6 comment="" id="id4834B9206131" name="net-fe80" address="fe80::" netmask="64"/>
+        <NetworkIPv6 comment="" id="id48416A7016880" name="DIGITAL-CA-DEC" address="3ffe:1200:2000::" netmask="36"/>
+        <NetworkIPv6 comment="" id="id48416A7316880" name="HEXAGO-V6-NET1" address="2001:5c0::" netmask="32"/>
       </ObjectGroup>
       <ObjectGroup id="stdid15_1" name="Address Ranges">
         <AddressRange comment="" id="id3CD8769F" name="test_range_1" start_address="192.168.1.11" end_address="192.168.1.15"/>
@@ -24365,7 +24369,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="" host_OS="linux24" id="id4833F62B6131" inactive="False" lastCompiled="1211586650" lastInstalled="0" lastModified="1212115906" name="firewall-ipv6-1" platform="iptables" ro="False" version="">
+      <Firewall comment="" host_OS="linux24" id="id4833F62B6131" inactive="False" lastCompiled="1212115999" lastInstalled="0" lastModified="1212118783" name="firewall-ipv6-1" platform="iptables" ro="False" version="">
         <NAT id="id4833F62F6131" name="NAT"/>
         <Policy id="id483F5B7623190" name="Policy_ipv4"/>
         <Policy id="id4833F62E6131" name="Policy">
@@ -24391,7 +24395,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           </PolicyRule>
           <PolicyRule action="Accept" comment="" direction="Both" disabled="False" id="id4834578B6131" log="False" position="1">
             <Src neg="False">
-              <ObjectRef ref="id483426D06131"/>
+              <ObjectRef ref="id48416A7216880"/>
             </Src>
             <Dst neg="False">
               <ObjectRef ref="id4833F6316131"/>
@@ -24411,7 +24415,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           </PolicyRule>
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id4834577C6131" log="True" position="2">
             <Src neg="False">
-              <ObjectRef ref="id483426D06131"/>
+              <ObjectRef ref="id48416A7116880"/>
             </Src>
             <Dst neg="False">
               <ObjectRef ref="id4833F62B6131"/>
