@@ -2,7 +2,7 @@
 
 $XMLFILE=@ARGV[0];
 
-$DIFFCMD="diff -C 1 -c -b -B -I \"#  Generated\" -I 'Activating ' -I '#  Firewall Builder  fwb_ipt v' -I 'Can not find file' ";
+$DIFFCMD="diff -C 1 -c -b -B -I \"#  Generated\" -I 'Activating ' -I '#  Firewall Builder  fwb_ipt v' -I 'Can not find file' -I '====' -I 'log '";
 
 while (<>) {
   $str=$_;

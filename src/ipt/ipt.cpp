@@ -66,6 +66,8 @@
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/NAT.h"
 
 #ifdef HAVE_GETOPT_H
   #include <getopt.h>
@@ -101,6 +103,8 @@ static bool             ipv6_run       = true;
 
 FWObjectDatabase       *objdb = NULL;
 
+static map<string,RuleSet*> branches;
+
 class UpgradePredicate: public XMLTools::UpgradePredicate
 {
     public:
@@ -135,11 +139,60 @@ string addPrologScript(bool nocomment,const string &script)
     return res;
 }
 
-string dumpPolicies(bool nocomm, Firewall *fw,
-                    MangleTableCompiler_ipt &m,
-                    NATCompiler_ipt &n,
-                    PolicyCompiler_ipt &c,
-                    bool ipv6_policy)
+void assignRuleSetChain(RuleSet *ruleset)
+{
+    string branch_name = ruleset->getName();
+    for (FWObject::iterator r=ruleset->begin(); r!=ruleset->end(); r++)
+    {
+        Rule *rule = Rule::cast(*r);
+        if (rule->isDisabled()) continue;
+
+        //rule->setStr("parent_rule_num", parentRuleNum);
+        if (branch_name != "Policy" && branch_name != "NAT")
+            rule->setStr("ipt_chain", branch_name);
+        rule->setUniqueId( rule->getId() );
+    }
+
+}
+
+void findBranchesInMangleTable(Firewall *fw, list<FWObject*> &all_policies)
+{
+    // special but common case: if we only have one policy, there is
+    // no need to check if we have to do branching in mangle table
+    // since we do not have any branching rules in that case.
+    if (all_policies.size() > 1)
+    {
+        for (list<FWObject*>::iterator i=all_policies.begin();
+             i!=all_policies.end(); ++i)
+        {
+            for (list<FWObject*>::iterator r=(*i)->begin();
+                 r!=(*i)->end(); ++r)
+            {
+                PolicyRule *rule = PolicyRule::cast(*r);
+                FWOptions *ruleopt = rule->getOptionsObject();
+                if (rule->getAction() == PolicyRule::Branch &&
+                    ruleopt->getBool("ipt_branch_in_mangle"))
+                {
+                    RuleSet *ruleset = rule->getBranch();
+                    for (list<FWObject*>::iterator br=ruleset->begin();
+                         br!=ruleset->end(); ++br)
+                    {
+                        Rule *b_rule = Rule::cast(*br);
+                        ruleopt = b_rule->getOptionsObject();
+                        ruleopt->setBool("put_in_mangle_table", true);
+                    }
+                }
+            }
+        }
+    }
+}
+
+string dumpScript(bool nocomm, Firewall *fw,
+                  const string& reset_script,
+                  const string& nat_script,
+                  const string& mangle_script,
+                  const string& filter_script,
+                  bool ipv6_policy)
 {
     ostringstream script;
     string prolog_place= fw->getOptionsObject()->getStr("prolog_place");
@@ -148,7 +201,7 @@ string dumpPolicies(bool nocomm, Firewall *fw,
     {
         script << "(" << endl;
 
-        script << c.flushAndSetDefaultPolicy();
+        script << reset_script;
 
         if (prolog_place == "after_flush")
         {
@@ -156,21 +209,10 @@ string dumpPolicies(bool nocomm, Firewall *fw,
                 nocomm, fw->getOptionsObject()->getStr("prolog_script"));
         }
 
-        script << c.getCompiledScript();
-        script << c.commit();
+        if (!filter_script.empty())  script << filter_script;
+        if (!mangle_script.empty()) script << mangle_script;
+        if (!nat_script.empty()) script << nat_script;
 
-        if (m.getCompiledScriptLength()>0)
-        {
-            script << m.flushAndSetDefaultPolicy();
-            script << m.getCompiledScript();
-            script << m.commit();
-        }
-        if (n.getCompiledScriptLength()>0)
-        {
-            script << n.flushAndSetDefaultPolicy();
-            script << n.getCompiledScript();
-            script << n.commit();
-        }
         script << "#" << endl;
         if (ipv6_policy)
             script << ") | $IP6TABLES_RESTORE; IPTABLES_RESTORE_RES=$?" << endl;
@@ -179,11 +221,7 @@ string dumpPolicies(bool nocomm, Firewall *fw,
     } else
     {
 
-        script << c.flushAndSetDefaultPolicy();
-        if (m.getCompiledScriptLength()>0)
-            script << m.flushAndSetDefaultPolicy();
-        if (n.getCompiledScriptLength()>0)
-            script << n.flushAndSetDefaultPolicy();
+        script << reset_script;
 
         if (prolog_place == "after_flush")
         {
@@ -191,31 +229,22 @@ string dumpPolicies(bool nocomm, Firewall *fw,
                 nocomm, fw->getOptionsObject()->getStr("prolog_script"));
         }
 
-        if (n.getCompiledScriptLength()>0)
-        {
-            script << n.getCompiledScript();
-            script << n.commit();
-        }
-
-        if (m.getCompiledScriptLength()>0)
-        {
-            script << m.getCompiledScript();
-            script << m.commit();
-        }
-
-        script << c.getCompiledScript();
-        script << c.commit();
+        if (!nat_script.empty()) script << nat_script;
+        if (!mangle_script.empty()) script << mangle_script;
+        if (!filter_script.empty())  script << filter_script;
     }
 
     return script.str();
 }
 
-
 void usage(const char *name)
 {
-    cout << _("Firewall Builder:  policy compiler for Linux 2.4.x and 2.6.x iptables") << endl;
+    cout << "Firewall Builder:  policy compiler for "
+            "Linux 2.4.x and 2.6.x iptables" << endl;
     cout << _("Version ") << VERSION << "-" << RELEASE_NUM << endl;
-    cout << _("Usage: ") << name << _(" [-x level] [-v] [-V] [-q] [-f filename.xml] [-d destdir] [-m] [-4|-6] firewall_object_name") << endl;
+    cout << _("Usage: ") << name
+         << " [-x level] [-v] [-V] [-q] [-f filename.xml] [-d destdir] "
+            "[-m] [-4|-6] firewall_object_name" << endl;
 }
 
 int main(int argc, char * const *argv)
@@ -486,13 +515,19 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
         oscnf->prolog();
 
+        list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
+        list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
+
         int policy_rules_count  = 0;
         int mangle_rules_count  = 0;
         int nat_rules_count     = 0;
         int routing_rules_count = 0;
+        bool have_nat = false;
 
         vector<bool> ipv4_6_runs;
         string generated_script;
+
+        findBranchesInMangleTable(fw, all_policies);
 
         // command line options -4 and -6 control address family for which
         // script will be generated. If "-4" is used, only ipv4 part will 
@@ -522,12 +557,12 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             if (ipv6_policy)
             {
                 generated_script += "\n\n";
-                generated_script += "#================ IPv6 ================\n";
+                generated_script += "# ================ IPv6\n";
                 generated_script += "\n\n";
             } else
             {
                 generated_script += "\n\n";
-                generated_script += "#================ IPv4 ================\n";
+                generated_script += "# ================ IPv4\n";
                 generated_script += "\n\n";
             }
 
@@ -535,55 +570,144 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 objdb , fwobjectname, ipv6_policy);
             prep->compile();
 
-            MangleTableCompiler_ipt m(
-                objdb , fwobjectname, ipv6_policy , oscnf );
 
-            m.setDebugLevel( dl );
-            m.setDebugRule(  drp );
-            m.setVerbose( (bool)(verbose) );
-            m.setHaveDynamicInterfaces(have_dynamic_interfaces);
-            if (test_mode) m.setTestMode();
+            ostringstream reset_rules;
+            ostringstream c_str;
+            ostringstream m_str;
+            ostringstream n_str;
 
-            if ( (mangle_rules_count=m.prolog()) > 0 )
+            for (list<FWObject*>::iterator p=all_nat.begin();
+                 p!=all_nat.end(); ++p )
             {
-                m.compile();
-                m.epilog();
+                NAT *nat = NAT::cast(*p);
+                assignRuleSetChain(nat);
+                string branch_name = nat->getName();
+
+                // compile NAT rules before policy rules because policy
+                // compiler needs to know the number of virtual addresses
+                // being created for NAT
+                NATCompiler_ipt n(objdb, fwobjectname, ipv6_policy, oscnf);
+                n.setSourceRuleSet( nat );
+                n.setRuleSetName(branch_name);
+
+                n.setDebugLevel( dl );
+                n.setDebugRule(  drn );
+                n.setVerbose( (bool)(verbose) );
+                n.setHaveDynamicInterfaces(have_dynamic_interfaces);
+                if (test_mode) n.setTestMode();
+
+                have_nat = (have_nat || ((nat_rules_count=n.prolog()) > 0));
+
+                if ( (nat_rules_count=n.prolog()) > 0 )
+                {
+                    n.compile();
+                    n.epilog();
+                }
+
+                if (n.getCompiledScriptLength() > 0)
+                {
+                    n_str << "# ================ Table 'nat', rule set "
+                          << branch_name << endl;
+
+                    if (branch_name == "NAT")
+                        n_str << n.flushAndSetDefaultPolicy();
+
+                    n_str << n.getCompiledScript();
+                    n_str << n.commit();
+                    n_str << endl;
+                }
             }
 
-            // compile NAT rules before policy rules because policy
-            // compiler needs to know the number of virtual addresses
-            // being created for NAT
-            NATCompiler_ipt n(objdb, fwobjectname, ipv6_policy, oscnf);
-
-            n.setDebugLevel( dl );
-            n.setDebugRule(  drn );
-            n.setVerbose( (bool)(verbose) );
-            n.setHaveDynamicInterfaces(have_dynamic_interfaces);
-            if (test_mode) n.setTestMode();
-
-            if ( (nat_rules_count=n.prolog()) > 0 )
+            for (list<FWObject*>::iterator p=all_policies.begin();
+                 p!=all_policies.end(); ++p )
             {
-                oscnf->generateCodeForProtocolHandlers(true);
-                n.compile();
-                n.epilog();
-            } else
-                oscnf->generateCodeForProtocolHandlers(false);
+                Policy *policy = Policy::cast(*p);
+                assignRuleSetChain(policy);
+                string branch_name = policy->getName();
 
-            PolicyCompiler_ipt c(objdb, fwobjectname, ipv6_policy, oscnf);
+                MangleTableCompiler_ipt m(
+                    objdb , fwobjectname, ipv6_policy , oscnf );
 
-            c.setDebugLevel( dl );
-            c.setDebugRule(  drp );
-            c.setVerbose( (bool)(verbose) );
-            c.setHaveDynamicInterfaces(have_dynamic_interfaces);
-            if (test_mode) c.setTestMode();
+                if (branch_name != "Policy")
+                    m.registerRuleSetChain(branch_name);
 
-            if ( (policy_rules_count=c.prolog()) > 0 )
-            {
-                c.compile();
-                c.epilog();
+                m.setSourceRuleSet( policy );
+                m.setRuleSetName(branch_name);
+
+                m.setDebugLevel( dl );
+                m.setDebugRule(  drp );
+                m.setVerbose( (bool)(verbose) );
+                m.setHaveDynamicInterfaces(have_dynamic_interfaces);
+                if (test_mode) m.setTestMode();
+
+                if ( (mangle_rules_count=m.prolog()) > 0 )
+                {
+                    m.compile();
+                    m.epilog();
+
+                    if (m.getCompiledScriptLength() > 0)
+                    {
+                        if (branch_name == "Policy")
+                        {
+                            m_str
+                                << "# ================ Table 'mangle', automatic rules"
+                                << endl;
+                            m_str << m.flushAndSetDefaultPolicy();
+                        }
+                        m_str << "# ================ Table 'mangle', rule set "
+                              << branch_name << endl;
+                        m_str << m.getCompiledScript();
+                        m_str << m.commit();
+                        m_str << endl;
+                    }
+                }
+
+
+                PolicyCompiler_ipt c(objdb, fwobjectname, ipv6_policy, oscnf);
+
+                if (branch_name != "Policy")
+                    c.registerRuleSetChain(branch_name);
+
+                c.setSourceRuleSet( policy );
+                c.setRuleSetName(branch_name);
+
+                c.setDebugLevel( dl );
+                c.setDebugRule(  drp );
+                c.setVerbose( (bool)(verbose) );
+                c.setHaveDynamicInterfaces(have_dynamic_interfaces);
+                if (test_mode) c.setTestMode();
+
+                if ( (policy_rules_count=c.prolog()) > 0 )
+                {
+                    c.compile();
+                    c.epilog();
+
+                    if (c.getCompiledScriptLength() > 0)
+                    {
+                        c_str << "# ================ Table 'filter', rule set "
+                              << branch_name << endl;
+                        c_str << c.getCompiledScript();
+                        c_str << c.commit();
+                        c_str << endl;
+                    }
+                }
+
+                if (branch_name == "Policy")
+                {
+                    reset_rules
+                        << "# ================ Table 'filter', automatic rules"
+                        << endl;
+                    reset_rules << c.flushAndSetDefaultPolicy();
+                }
+
             }
 
-            generated_script += dumpPolicies(nocomm, fw, m, n, c, ipv6_policy);
+            generated_script += dumpScript(nocomm, fw,
+                                           reset_rules.str(),
+                                           n_str.str(),
+                                           m_str.str(),
+                                           c_str.str(),
+                                           ipv6_policy);
         }
 
         RoutingCompiler_ipt r( objdb , fwobjectname , false, oscnf );
@@ -598,6 +722,8 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 	    r.compile();
 	    r.epilog();
 	}
+
+        oscnf->generateCodeForProtocolHandlers(have_nat);
 
         oscnf->printChecksForRunTimeMultiAddress();
         oscnf->processFirewallOptions();

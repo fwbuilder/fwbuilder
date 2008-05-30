@@ -145,7 +145,8 @@ string PolicyCompiler_ipt::getNewTmpChainName(PolicyRule *rule)
 #endif
 }
 
-string PolicyCompiler_ipt::getNewChainName(PolicyRule *rule,Interface *rule_iface)
+string PolicyCompiler_ipt::getNewChainName(PolicyRule *rule,
+                                           Interface *rule_iface)
 {
     std::ostringstream str;
 
@@ -167,12 +168,13 @@ string PolicyCompiler_ipt::getNewChainName(PolicyRule *rule,Interface *rule_ifac
     }
     int pos=rule->getPosition();
 
-    // parent_rule_num is set by processor "Branching" for branch rules
-    string ppos = rule->getStr("parent_rule_num");
+    string ruleset_name = getRuleSetName();
 
-    str << "RULE_";
-    if (ppos != "")
-        str << ppos << "_";
+    if (ruleset_name != "Policy")
+        str << ruleset_name << "_";
+    else
+        str << "RULE_";
+
     if (pos>=0)
         str << pos;
     else // special case: position == -1
@@ -316,6 +318,11 @@ void PolicyCompiler_ipt::resetActionOnReject(PolicyRule *rule)
         }
     } else
         ruleopt->setStr("action_on_reject","none"); // hack.
+}
+
+void PolicyCompiler_ipt::registerRuleSetChain(const std::string &chain_name)
+{
+    chain_usage_counter[chain_name] = 1;
 }
 
 int PolicyCompiler_ipt::prolog()
@@ -642,88 +649,6 @@ bool  PolicyCompiler_ipt::InterfacePolicyRulesWithOptimization::processNext()
     }
     return true;
 }
-
-void PolicyCompiler_ipt::Branching::expandBranch(PolicyRule *rule,
-                                                 const string &parentRuleNum)
-{
-    std::ostringstream str;
-
-    if (rule->getAction() == PolicyRule::Branch)
-    {
-        RuleSet *subset = rule->getBranch();
-        if (subset==NULL)
-        {
-            compiler->abort(
-                _("Action 'Branch' but no branch policy in policy rule ")
-                +rule->getLabel());
-        }
-        tmp_queue.push_back(rule);
-
-        FWOptions *ropt = rule->getOptionsObject();
-        string branchName = ropt->getStr("branch_name");
-        rule->setStr("ipt_target",branchName);
-        string branchRuleLabelSuffix = string("branch head: ") + rule->getLabel();
-        //string parentRuleNum = r->getStr("parent_rule_num");
-
-        string lbl;
-
-        for (FWObject::iterator i=subset->begin(); i!=subset->end(); i++)
-        {
-            PolicyRule *r = PolicyRule::cast(*i);
-            if (r->isDisabled()) continue;
-
-            RuleElementItf *itfre=r->getItf();   assert(itfre);
-
-            if (itfre->isAny())
-            {
-                lbl = rule->getLabel() + " / " + branchName + " " +
-                    compiler->createRuleLabel("",
-                                              r->getPosition());
-                r->setLabel(lbl);
-            } else
-            {
-                string interfaces = "";
-                for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
-                {
-                    FWObject *o=*i;
-                    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-                    if (interfaces!="") interfaces += ",";
-                    interfaces += o->getName();
-                }
-                lbl = rule->getLabel() + " / " + branchName + " " +
-                    compiler->createRuleLabel(interfaces,
-                                              r->getPosition());
-                r->setLabel(lbl);
-            }
-            std::ostringstream str;
-
-            r->setStr("parent_rule_num",parentRuleNum);
-            r->setStr("ipt_chain",branchName);
-            r->setUniqueId( r->getId() );
-
-            //tmp_queue.push_back(r);
-            str << parentRuleNum << "_" << r->getPosition();
-            expandBranch(r, str.str() );
-        }
-        subset->ref();
-        rule->remove(subset);
-
-    } else
-        tmp_queue.push_back(rule);
-
-}
-
-bool PolicyCompiler_ipt::Branching::processNext()
-{
-    std::ostringstream str;
-
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    str << rule->getPosition();
-    expandBranch( rule, str.str() );
-
-    return true;
-}
-
 
 bool PolicyCompiler_ipt::Route::processNext()
 {
@@ -1595,6 +1520,17 @@ bool PolicyCompiler_ipt::setChainForMangle::processNext()
 
         if (rule->getDirection()==PolicyRule::Outbound)
             rule->setStr("ipt_chain","POSTROUTING");
+
+/* if direction is "Outbound", chain can never be INPUT, but could be FORWARD */
+        RuleElementSrc *srcrel=rule->getSrc();
+        Address        *src   =compiler->getFirstSrc(rule);  assert(src);
+
+        if ( rule->getDirection()!=PolicyRule::Inbound &&
+             !srcrel->isAny() &&
+             compiler->complexMatch(src,compiler->fw,true,true))
+        {
+            rule->setStr("ipt_chain","OUTPUT");
+        }
     }
 
     tmp_queue.push_back(rule);
@@ -2973,6 +2909,12 @@ bool PolicyCompiler_ipt::decideOnTarget::processNext()
     case PolicyRule::Continue: rule->setStr("ipt_target","CONTINUE");  break;
     case PolicyRule::Custom:   rule->setStr("ipt_target","CUSTOM");    break;
     case PolicyRule::Route:    rule->setStr("ipt_target","ROUTE");     break;
+    case PolicyRule::Branch:
+    {
+        FWOptions *ropt = rule->getOptionsObject();
+        rule->setStr("ipt_target", ropt->getStr("branch_name"));
+        break;
+    }
     default: ;
     }
     return true;
@@ -3692,7 +3634,7 @@ void PolicyCompiler_ipt::compile()
 {
     printRule=NULL;
 
-    cout << " Compiling rules for '" << my_table << "' table";
+    cout << " Compiling ruleset " << getRuleSetName() << " for '" << my_table << "' table";
     if (ipv6) cout << ", IPv6";
     cout <<  endl << flush;
 
@@ -3706,8 +3648,6 @@ void PolicyCompiler_ipt::compile()
         if ( fw->getOptionsObject()->getBool ("check_shading") ) 
         {
             add( new Begin("Detecting rule shadowing"));
-
-            add( new Branching("fold in branches"));
 
             addRuleFilter();
 
@@ -3780,19 +3720,15 @@ void PolicyCompiler_ipt::compile()
         add( new PolicyCompiler::Begin() );
         add( new addPredefinedRules("Add some predefined rules"           ) );
 
-        add( new Branching(         "fold in branches"                    ) );
-
         addRuleFilter();
 
         add( new printTotalNumberOfRules(                                 ) );
-
-//        add( new Branching("process branch rules"                  ) );
 
         add( new Route("process route rules"                   ) );
         add( new storeAction("store original action of this rule"    ) );
 
         add( new splitIfTagAndConnmark("Tag+CONNMARK combo"));
-        add( new setChainForMangle("set chain for other rules in mangle"));
+        //add( new setChainForMangle("set chain for other rules in mangle"));
 
         add( new Logging1("check global logging override option"  ) );
         add( new ItfNegation("process negation in Itf"  ) );
@@ -3867,6 +3803,8 @@ void PolicyCompiler_ipt::compile()
 //        add( new decideOnChainIfLoopback("any-any rule on loopback"     ) );
 
         add( new splitIfSrcAny("split rule if src is any") );
+
+        add( new setChainForMangle("set chain for other rules in mangle"));
 
         // call setChainPreroutingForTag before splitIfDstAny
         add( new setChainPreroutingForTag("chain PREROUTING for Tag"));

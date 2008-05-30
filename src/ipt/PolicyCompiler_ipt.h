@@ -938,6 +938,15 @@ namespace fwcompiler {
          * some of the rules out before we begin actual processing
          */
         virtual void addRuleFilter();
+
+        /**
+         * this method registers chain used for the ruleset (most
+         * often branch rule set). Since rules in the same ruleset do
+         * not use this chain as target, rule processor
+         * countChainUsage considers it unused.  Registering it makes
+         * sure its usage counter is > 0.
+         */
+        void registerRuleSetChain(const std::string &chain_name);
         
         void setHaveDynamicInterfaces(bool f) { have_dynamic_interfaces=f; }
         

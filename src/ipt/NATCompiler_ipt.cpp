@@ -2165,7 +2165,7 @@ void NATCompiler_ipt::compile()
 #endif
         add( new NATCompiler::Begin());
 
-        add( new printTotalNumberOfRules(                                  ));
+        add( new printTotalNumberOfRules());
 
         add( new recursiveGroupsInOSrc("check for recursive groups in OSRC"));
         add( new recursiveGroupsInODst("check for recursive groups in ODST"));
@@ -2184,6 +2184,7 @@ void NATCompiler_ipt::compile()
         add( new emptyGroupsInTSrv("check for empty groups in TSRV"      ));
 
 	add( new ExpandGroups(            "Expand groups"                ));
+
         // processors that expand objects with multiple addresses
         // check addresses against current address family using member
         // ipv6. If all addresses do not match, we may end up with

@@ -1,3 +1,45 @@
+2008-05-29  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ipt.cpp (main): Compiler for iptables processes all Policy and
+	NAT rulesets that firewall object has, regardless of whether they
+	are referenced from any rules with action Branch or not. This is a
+	change compared to the behavior of 2.1 which processed only those
+	branch rule sets that were used in Branch rules. Each rule set
+	that has name other than "Policy" is placed in a chain with the
+	name the same as the name of the rule set. This way the user can
+	create multiple rule sets and place them in different chains,
+	control to these chains can be passed in the iptables commands
+	supplied in prolog or epilog scripts.
+
+	Another reason for this is to allow the user to place rules for
+	ipv4 and ipv6 in separate rule sets. An attribute "address_family"
+	will be added to objects Policy and NAT later on to be able to
+	mark rule sets as belonging to either ipv4 or ipv6 address
+	family. This separation helps avoid ambiguity that is possible in
+	mixed rule sets (when both ipv4 and ipv6 rules are mixed in the
+	same rule set). Suppose we allow the user to put both ipv4 and
+	ipv6 rules in the same rule set and the user creates a rule with
+	ipv4 object in Dst with negation. "Not host A", where "host A"
+	translates into one ipv4 address should probably include "all
+	ipv6" as well, which means that this simple rule can inadvertenly
+	block all ipv6 without user even noticing it. This can be very
+	confusing and difficult to troubleshoot. Placing rules acting on
+	different address families into different rule sets helps avoid
+	this problem.
+
+	* ipt.cpp: Compiler for iptables can determine if a rule set is
+	referenced by a rule with action Branch and option "branch in
+	mangle table in addition to the filter table" and correctly places
+	referenced rule set in both filter and mangle tables.
+	
+	* ObjectManipulator.cpp: Policy rules can now be arranged in
+	multiple rule sets with names. These rule sets are shown in the
+	tree under the firewall object (next to its interfaces). Each rule
+	set is independent from others, user can add as many as they
+	want. Rules with action "Branch" refer to existing rule sets, user
+	associates them by dragging rule set object into action parameters
+	dialog of the branching rule.
+	
 2008-05-23  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (countChainUsage::processNext): New
@@ -8,7 +50,7 @@
 
 2008-05-22  Vadim Kurland  <vadim@vk.crocodile.org>
 
-	* ipt.cpp (main): Poliucy compiler for iptables supports
+	* ipt.cpp (main): Policy compiler for iptables supports
 	IPv6. Added command line switches "-4" and "-6" which force
 	compiler to generate script for only one specified address
 	family (by default it does both). Compiler can generate simple

@@ -450,6 +450,11 @@ int main(int argc, char * const *argv)
                 generated_script += "\n\n";
                 generated_script += "#================ IPv6 ================\n";
                 generated_script += "\n\n";
+            } else
+            {
+                generated_script += "\n\n";
+                generated_script += "#================ IPv4 ================\n";
+                generated_script += "\n\n";
             }
 
             TableFactory *table_factory = new TableFactory();

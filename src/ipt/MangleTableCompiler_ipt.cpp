@@ -100,7 +100,8 @@ bool MangleTableCompiler_ipt::keepMangleTableRules::processNext()
 
     if (rule->getAction() == PolicyRule::Tag ||
         rule->getAction() == PolicyRule::Route ||
-        rule->getAction() == PolicyRule::Classify) tmp_queue.push_back(rule);
+        rule->getAction() == PolicyRule::Classify ||
+        ruleopt->getBool("put_in_mangle_table")) tmp_queue.push_back(rule);
 
     return true;
 }
@@ -117,6 +118,7 @@ string MangleTableCompiler_ipt::flushAndSetDefaultPolicy()
 
     PolicyCompiler_ipt::PrintRule *prp = createPrintRuleProcessor();
 
+    res << endl;
     res << prp->_declareTable();
 
     if (have_connmark)
