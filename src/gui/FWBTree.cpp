@@ -128,6 +128,9 @@ FWBTree::FWBTree()
     systemGroupTypes[Network::TYPENAME]=       ObjectGroup::TYPENAME;
     systemGroupNames[Network::TYPENAME]=       "Networks"       ;
 
+    systemGroupTypes[NetworkIPv6::TYPENAME]=   ObjectGroup::TYPENAME;
+    systemGroupNames[NetworkIPv6::TYPENAME]=   "Networks"       ;
+
     systemGroupTypes[IPv4::TYPENAME]=          ObjectGroup::TYPENAME;
     systemGroupNames[IPv4::TYPENAME]=          "Addresses"      ;
 
@@ -161,8 +164,8 @@ FWBTree::FWBTree()
     systemGroupTypes[UDPService::TYPENAME]=    ServiceGroup::TYPENAME;
     systemGroupNames[UDPService::TYPENAME]=    "UDP"           ;
 
-    systemGroupTypes[TagService::TYPENAME]=          ServiceGroup::TYPENAME;
-    systemGroupNames[TagService::TYPENAME]=          "TagService"           ;
+    systemGroupTypes[TagService::TYPENAME]=    ServiceGroup::TYPENAME;
+    systemGroupNames[TagService::TYPENAME]=    "TagService"    ;
 
     systemGroupTypes[ServiceGroup::TYPENAME]=  ServiceGroup::TYPENAME;
     systemGroupNames[ServiceGroup::TYPENAME]=  "Groups"        ;
@@ -334,7 +337,7 @@ bool FWBTree::isStandardId(FWObject *obj)
     return standardIDs[ obj->getId() ];
 }
 
-bool FWBTree::validateForInsertion(FWObject *target,FWObject *obj)
+bool FWBTree::validateForInsertion(FWObject *target, FWObject *obj)
 {
     if (fwbdebug) qDebug("FWBTree::validateForInsertion  target %s  obj %s",
                          target->getTypeName().c_str(),

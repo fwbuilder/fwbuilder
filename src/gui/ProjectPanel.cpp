@@ -3546,7 +3546,8 @@ bool ProjectPanel::isStandardId(libfwbuilder::FWObject *obj)
     return objectTreeFormat->isStandardId(obj);
 }
     
-bool ProjectPanel::validateForInsertion(libfwbuilder::FWObject *target,libfwbuilder::FWObject *obj)
+bool ProjectPanel::validateForInsertion(libfwbuilder::FWObject *target,
+                                        libfwbuilder::FWObject *obj)
 {
     return objectTreeFormat->validateForInsertion(target, obj);
 }

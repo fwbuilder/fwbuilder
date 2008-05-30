@@ -2,7 +2,7 @@
 
 $XMLFILE=@ARGV[0];
 
-$DIFFCMD="diff -C 1 -b -B -c -I \"#  Generated\" -I 'Activating '  -I '#  Firewall Builder  fwb_pf v'";
+$DIFFCMD="diff -C 1 -b -B -c -I \"#  Generated\" -I 'Activating '  -I '#  Firewall Builder  fwb_pf v' -I '===='";
 
 
 while (<>) {

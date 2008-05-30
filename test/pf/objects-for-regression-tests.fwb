@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="6" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="7" id="root">
   <Library color="#d2ffd0" comment="User defined objects" id="syslib001" name="User" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects">
       <ObjectGroup id="stdid01_1_og_ats_1" name="Address Tables">
@@ -489,9 +489,8 @@
           <CustomServiceCommand platform="pix"/>
           <CustomServiceCommand platform="unknown"/>
         </CustomService>
+      </ServiceGroup><ServiceGroup id="stdid05_1_userservices" name="User"/>
       </ServiceGroup>
-      <ServiceGroup id="stdid05_1_userservices" name="User"/>
-    </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls">
       <Firewall comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" host_OS="openbsd" id="fw-firewall2" inactive="False" lastCompiled="1157930800" lastInstalled="0" lastModified="1202682308" name="firewall" platform="pf" ro="False" version="">
         <NAT id="nat-firewall2" name="NAT">
@@ -10046,9 +10045,8 @@
         <ObjectGroup id="id40E233F9" name="Address Ranges"/>
       </ObjectGroup>
       <ServiceGroup id="id40E233FA" name="Services">
-      <ServiceGroup id="id40E233FA_og_tag_1" name="TagServices"/><ServiceGroup id="id40E233FB" name="Groups"/><ServiceGroup id="id40E233FC" name="ICMP"/><ServiceGroup id="id40E233FD" name="IP"/><ServiceGroup id="id40E233FE" name="TCP"/><ServiceGroup id="id40E233FF" name="UDP"/><ServiceGroup id="id40E23400" name="Custom"/>
-      <ServiceGroup id="id40E233FA_userservices" name="User"/>
-    </ServiceGroup>
+      <ServiceGroup id="id40E233FA_og_tag_1" name="TagServices"/><ServiceGroup id="id40E233FB" name="Groups"/><ServiceGroup id="id40E233FC" name="ICMP"/><ServiceGroup id="id40E233FD" name="IP"/><ServiceGroup id="id40E233FE" name="TCP"/><ServiceGroup id="id40E233FF" name="UDP"/><ServiceGroup id="id40E23400" name="Custom"/><ServiceGroup id="id40E233FA_userservices" name="User"/>
+      </ServiceGroup>
       <ObjectGroup id="id40E23401" name="Firewalls"/>
       <IntervalGroup id="id40E23402" name="Time"/>
     </Library>
@@ -10067,9 +10065,8 @@
         <ObjectGroup id="id40D07E80" name="Address Ranges"/>
       </ObjectGroup>
       <ServiceGroup id="id40D07E81" name="Services">
-      <ServiceGroup id="id40D07E81_og_tag_1" name="TagServices"/><ServiceGroup id="id40D07E82" name="Groups"/><ServiceGroup id="id40D07E83" name="ICMP"/><ServiceGroup id="id40D07E84" name="IP"/><ServiceGroup id="id40D07E85" name="TCP"/><ServiceGroup id="id40D07E86" name="UDP"/><ServiceGroup id="id40D07E87" name="Custom"/>
-      <ServiceGroup id="id40D07E81_userservices" name="User"/>
-    </ServiceGroup>
+      <ServiceGroup id="id40D07E81_og_tag_1" name="TagServices"/><ServiceGroup id="id40D07E82" name="Groups"/><ServiceGroup id="id40D07E83" name="ICMP"/><ServiceGroup id="id40D07E84" name="IP"/><ServiceGroup id="id40D07E85" name="TCP"/><ServiceGroup id="id40D07E86" name="UDP"/><ServiceGroup id="id40D07E87" name="Custom"/><ServiceGroup id="id40D07E81_userservices" name="User"/>
+      </ServiceGroup>
       <ObjectGroup id="id40D07E88" name="Firewalls"/>
       <IntervalGroup id="id40D07E89" name="Time"/>
     </Library>
@@ -10096,9 +10093,8 @@
         <ObjectGroup id="id44EC14038791" name="Address Ranges"/>
       </ObjectGroup>
       <ServiceGroup id="id44EC14048791" name="Services">
-      <ServiceGroup id="id44EC14058791" name="Groups"/><ServiceGroup id="id44EC14068791" name="ICMP"/><ServiceGroup id="id44EC14078791" name="IP"/><ServiceGroup id="id44EC14088791" name="TCP"/><ServiceGroup id="id44EC14098791" name="UDP"/><ServiceGroup id="id44EC140A8791" name="Custom"/><ServiceGroup id="id44EC140B8791" name="TagServices"/>
-      <ServiceGroup id="id44EC14048791_userservices" name="User"/>
-    </ServiceGroup>
+      <ServiceGroup id="id44EC14058791" name="Groups"/><ServiceGroup id="id44EC14068791" name="ICMP"/><ServiceGroup id="id44EC14078791" name="IP"/><ServiceGroup id="id44EC14088791" name="TCP"/><ServiceGroup id="id44EC14098791" name="UDP"/><ServiceGroup id="id44EC140A8791" name="Custom"/><ServiceGroup id="id44EC140B8791" name="TagServices"/><ServiceGroup id="id44EC14048791_userservices" name="User"/>
+      </ServiceGroup>
       <ObjectGroup id="id44EC140C8791" name="Firewalls"/>
       <IntervalGroup id="id44EC140D8791" name="Time"/>
     </Library>
@@ -10125,9 +10121,8 @@
       <ObjectGroup id="id4386458B18448" name="DNS Names"/>
     </ObjectGroup>
     <ServiceGroup id="id415276CF" name="Services">
-      <ServiceGroup id="id415276CF_og_tag_1" name="TagServices"/><ServiceGroup id="id415276D0" name="Groups"/><ServiceGroup id="id415276D1" name="ICMP"/><ServiceGroup id="id415276D2" name="IP"/><ServiceGroup id="id415276D3" name="TCP"/><ServiceGroup id="id415276D4" name="UDP"/><ServiceGroup id="id415276D5" name="Custom"/>
-      <ServiceGroup id="id415276CF_userservices" name="User"/>
-    </ServiceGroup>
+      <ServiceGroup id="id415276CF_og_tag_1" name="TagServices"/><ServiceGroup id="id415276D0" name="Groups"/><ServiceGroup id="id415276D1" name="ICMP"/><ServiceGroup id="id415276D2" name="IP"/><ServiceGroup id="id415276D3" name="TCP"/><ServiceGroup id="id415276D4" name="UDP"/><ServiceGroup id="id415276D5" name="Custom"/><ServiceGroup id="id415276CF_userservices" name="User"/>
+      </ServiceGroup>
     <ObjectGroup id="id415276D6" name="Firewalls">
       <Firewall comment="firewall protects host it is running on&#10;&#10;Note that we set output file name to  /tmp/labfw.fw to test what compiler is going to do (since it generates three files rather than one), as well as to test installer in this case&#10;" host_OS="openbsd" id="id3AF5A2BA" inactive="False" lastCompiled="1172032243" lastInstalled="1172032344" lastModified="1172032234" name="labfw-openbsd" platform="pf" ro="False" version="">
         <NAT id="id3AF5A2BD" name="NAT">
@@ -11406,9 +11401,8 @@
       <ObjectGroup id="id4387B43F18346" name="Address Ranges"/>
     </ObjectGroup>
     <ServiceGroup id="id4387B44018346" name="Services">
-      <ServiceGroup id="id4387B44018346_og_tag_1" name="TagServices"/><ServiceGroup id="id4387B44118346" name="Groups"/><ServiceGroup id="id4387B44218346" name="ICMP"/><ServiceGroup id="id4387B44318346" name="IP"/><ServiceGroup id="id4387B44418346" name="TCP"/><ServiceGroup id="id4387B44518346" name="UDP"/><ServiceGroup id="id4387B44618346" name="Custom"/>
-      <ServiceGroup id="id4387B44018346_userservices" name="User"/>
-    </ServiceGroup>
+      <ServiceGroup id="id4387B44018346_og_tag_1" name="TagServices"/><ServiceGroup id="id4387B44118346" name="Groups"/><ServiceGroup id="id4387B44218346" name="ICMP"/><ServiceGroup id="id4387B44318346" name="IP"/><ServiceGroup id="id4387B44418346" name="TCP"/><ServiceGroup id="id4387B44518346" name="UDP"/><ServiceGroup id="id4387B44618346" name="Custom"/><ServiceGroup id="id4387B44018346_userservices" name="User"/>
+      </ServiceGroup>
     <ObjectGroup id="id4387B44718346" name="Firewalls"/>
     <IntervalGroup id="id4387B44818346" name="Time"/>
   </Library>
@@ -11481,9 +11475,8 @@
         <ICMPService code="0" comment="ICMP messages of this type are needed for traceroute" id="icmp-Time_exceeded" name="time exceeded" type="11"/>
         <ICMPService code="1" comment="" id="icmp-Time_exceeded_in_transit" name="time exceeded in transit" type="11"/>
         <ICMPService code="0" comment="" id="icmp-ping_reply" name="ping reply" type="0"/>
+      </ServiceGroup><ServiceGroup id="stdid05_userservices" name="User"/>
       </ServiceGroup>
-      <ServiceGroup id="stdid05_userservices" name="User"/>
-    </ServiceGroup>
     <AnyNetwork comment="Any Network" id="sysid0" name="Any" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyInterval comment="Any Interval" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" id="sysid2" name="Any" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1"/>
     <AnyIPService comment="Any IP Service" id="sysid1" name="Any" protocol_num="0"/>
