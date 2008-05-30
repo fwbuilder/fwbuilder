@@ -99,7 +99,7 @@ class ObjectManipulator : public QWidget/*ObjectManipulator_q*/ {
  * quickly locate given object in the tree and open it
  */
     std::map<libfwbuilder::FWObject*, ObjectTreeViewItem*> allItems;
-
+    QVector <ObjectManipulator*> getAllMdiObjectManipulators ();
     
     ObjectTreeViewItem* insertObject( ObjectTreeViewItem *itm,libfwbuilder::FWObject *obj );
     void insertSubtree( ObjectTreeViewItem *itm,libfwbuilder::FWObject *obj );

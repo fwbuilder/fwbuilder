@@ -146,7 +146,7 @@ class RuleSetView : public QTableView
     friend class RuleDelegate;
     
     Q_OBJECT
-    
+    QVector <ProjectPanel*> getAllMdiProjectPanel ();
  public slots:
     
     void selectionChanged(const QItemSelection&, const QItemSelection&);

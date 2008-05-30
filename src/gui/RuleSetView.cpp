@@ -85,6 +85,9 @@
 #include "ProjectPanel.h"
 #include "RuleRowInfo.h"
 #include "RuleGroupPanel.h"
+#include <QMdiSubWindow>
+#include <QMdiArea>
+
 using namespace libfwbuilder;
 using namespace std;
 
@@ -649,6 +652,15 @@ void RuleSetView::updateCell( const int row, const int col )
     QModelIndex ind = ruleModel->index(row,col);
     setCurrentCell(row, col);
     dataChanged(ind, ind);
+    QVector <ProjectPanel*> pps = getAllMdiProjectPanel();
+    for (int i = 0 ; i < pps.size();i++)
+    {
+        ProjectPanel*pp= pps[i];
+        if (pp!=m_project)
+        {
+            pp->getCurrentRuleSetView()->updateAll();
+        }
+    }
 }
 
 void RuleSetView::setName(QString)
@@ -3482,6 +3494,26 @@ void RuleSetView::negateRE()
 
         updateCell(currentRow(),currentColumn());
     }
+}
+
+QVector <ProjectPanel*> RuleSetView::getAllMdiProjectPanel ()
+{
+    QVector <ProjectPanel*> ret ;
+    QList<QMdiSubWindow *> subWindowList = mw->getMdiArea()->subWindowList();
+    QString fileName = m_project->getRCS()->getFileName();
+    for (int i = 0 ; i < subWindowList.size();i++)
+    {
+        ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
+        if (pp!=NULL)
+        {
+            if (pp->getFileName () == fileName)
+            {
+                ret.push_back (pp);
+            }
+        }
+    }
+    return ret ;
+
 }
 
 void RuleSetView::editRE()

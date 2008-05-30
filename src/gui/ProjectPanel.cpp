@@ -757,6 +757,12 @@ void ProjectPanel::showFirewall(libfwbuilder::FWObject *obj)
 */
 }
 
+RuleSetView * ProjectPanel::getCurrentRuleSetView () 
+{
+    return dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget ());
+}
+
+
 void ProjectPanel::reopenFirewall()
 {
     if (fwbdebug)  qDebug("ProjectPanel::reopenFirewall()");
