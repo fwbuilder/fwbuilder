@@ -148,7 +148,8 @@ void assignRuleSetChain(RuleSet *ruleset)
         if (rule->isDisabled()) continue;
 
         //rule->setStr("parent_rule_num", parentRuleNum);
-        if (branch_name != "Policy" && branch_name != "NAT")
+
+        if (!Compiler::isRootRuleSet(ruleset))
             rule->setStr("ipt_chain", branch_name);
         rule->setUniqueId( rule->getId() );
     }
@@ -609,7 +610,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     n_str << "# ================ Table 'nat', rule set "
                           << branch_name << endl;
 
-                    if (branch_name == "NAT")
+                    if (Compiler::isRootRuleSet(nat))
                         n_str << n.flushAndSetDefaultPolicy();
 
                     n_str << n.getCompiledScript();
@@ -628,7 +629,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 MangleTableCompiler_ipt m(
                     objdb , fwobjectname, ipv6_policy , oscnf );
 
-                if (branch_name != "Policy")
+                if (!Compiler::isRootRuleSet(policy))
                     m.registerRuleSetChain(branch_name);
 
                 m.setSourceRuleSet( policy );
@@ -647,7 +648,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
                     if (m.getCompiledScriptLength() > 0)
                     {
-                        if (branch_name == "Policy")
+                        if (Compiler::isRootRuleSet(policy))
                         {
                             m_str
                                 << "# ================ Table 'mangle', automatic rules"
@@ -665,7 +666,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
                 PolicyCompiler_ipt c(objdb, fwobjectname, ipv6_policy, oscnf);
 
-                if (branch_name != "Policy")
+                if (!Compiler::isRootRuleSet(policy))
                     c.registerRuleSetChain(branch_name);
 
                 c.setSourceRuleSet( policy );
@@ -692,7 +693,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     }
                 }
 
-                if (branch_name == "Policy")
+                if (Compiler::isRootRuleSet(policy))
                 {
                     reset_rules
                         << "# ================ Table 'filter', automatic rules"
