@@ -66,6 +66,7 @@ class ProjectPanel: public QWidget {
     bool                                    editingTemplateLib;
     bool                                    ruleSetRedrawPending;
     bool                                    firstResize;
+    bool                                    closing ; 
     QString                                 startupFileName;
     
     libfwbuilder::FWObjectDatabase         *objdb;
@@ -114,7 +115,7 @@ public:
     ProjectPanel * clone (ProjectPanel * cln);
     void openRuleSet (libfwbuilder::FWObject * obj);
     FWBTree * getFWTree () {return objectTreeFormat;}
-
+    bool isClosing (){return closing;}
     QMdiSubWindow *mdiWindow;
     Ui::ProjectPanel_q *m_panel;
     FindObjectWidget *findObjectWidget;

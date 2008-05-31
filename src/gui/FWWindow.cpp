@@ -1503,6 +1503,8 @@ void FWWindow::recreateWindowsMenu ()
         ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
         if (pp!=NULL)
         {
+            if (pp->isClosing())
+                continue ;
             QString text = pp->getFileName ();
             windowsTitles.push_back(text);
             if (text=="")

@@ -155,6 +155,7 @@ void ProjectPanel::initMain(FWWindow *main)
     mainW = main;
     firstResize = false ;
     firstLoad = false;
+    closing = false ;
     oldState=-1;
     if (st->getInfoStyle()!=0) m_panel->oi->show();
     else m_panel->oi->hide();
@@ -3694,8 +3695,10 @@ void ProjectPanel::closeEvent( QCloseEvent * ev)
         ev->ignore();
         return;
     }
+    closing = true ;
     QWidget::closeEvent(ev);
     mw->updateWindowTitle();
+    mw->recreateWindowsMenu();
 //    emit closed();
 }
 
