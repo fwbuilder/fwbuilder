@@ -412,24 +412,17 @@ void ActionsDialog::setRule(PolicyRule *r )
     else if (editor=="BranchChain")
     {
         w=m_dialog->BranchChainPage;
-        std::string id = ropt->getStr("branch_id");
-        FWObject * o = rule->getRoot()->getById(id,true);
-        if (o!=NULL)
-        {
-            BranchChainArea->setObject(o);
-        }
+        RuleSet *ruleset = r->getBranch();
+        if (ruleset!=NULL) BranchChainArea->setObject(ruleset);
+
         //data.registerOption ( m_dialog->branchChainName     , ropt , "branch_name" );
         data.registerOption ( m_dialog->ipt_branch_in_mangle, ropt , "ipt_branch_in_mangle" );
     }
     else if (editor=="BranchAnchor")
     {
         w=m_dialog->BranchAnchorPage;
-        std::string id = ropt->getStr("branch_id");
-        FWObject * o = rule->getRoot()->getById(id,true);
-        if (o!=NULL)
-        {
-            BranchAnchorArea->setObject(o);
-        }
+        RuleSet *ruleset = r->getBranch();
+        if (ruleset!=NULL) BranchChainArea->setObject(ruleset);
 
         //int idx = ropt->getInt("branch_id");
         //data.registerOption ( m_dialog->branchAnchorName    , ropt , "branch_name" );

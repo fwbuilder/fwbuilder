@@ -349,9 +349,9 @@ bool PolicyCompiler_pf::fillDirection::processNext()
         {
 	    rule->setDirection( PolicyRule::Both );
 
-	    Address  *src=compiler->getFirstSrc(rule);
-	    Address  *dst=compiler->getFirstDst(rule);
-	    string    fwid=compiler->getFwId();
+	    Address  *src = compiler->getFirstSrc(rule);
+	    Address  *dst = compiler->getFirstDst(rule);
+	    string    fwid = compiler->getFwId();
 
             if (src==NULL || dst==NULL)
                 compiler->abort("Broken src or dst in rule "+rule->getLabel());
