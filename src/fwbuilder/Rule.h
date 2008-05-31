@@ -110,7 +110,11 @@ class Rule : public Group
 
     virtual FWOptions* getOptionsObject();
 
+    // find branch ruleset for policy rules with action Branch
+    // We may support some kind of  branching in NAT in the future, so
+    // lets make this method virtual.
     virtual RuleSet* getBranch();
+
 };
 
 class PolicyRule : public Rule 
@@ -204,6 +208,10 @@ class PolicyRule : public Rule
 
     bool   getLogging() const;
     void   setLogging(bool flag);
+
+    // find TagService object for rules with action Tag
+    FWObject* getTagObject();
+    std::string getTagValue();
 };
 
 class NATRule : public Rule 

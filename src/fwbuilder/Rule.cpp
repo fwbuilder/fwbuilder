@@ -40,6 +40,7 @@
 #include <fwbuilder/Policy.h>
 #include <fwbuilder/NAT.h>
 #include <fwbuilder/Routing.h>
+#include <fwbuilder/TagService.h>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -366,6 +367,30 @@ RuleSet*   PolicyRule::getBranch()
         } else
             return NULL;
     }
+}
+
+FWObject* PolicyRule::getTagObject()
+{
+    if (getAction() == Tag)
+    {
+        string tagobj_id = getOptionsObject()->getStr("tagobject_id");
+        if (!tagobj_id.empty())
+        {
+            return getRoot()->findInIndex(tagobj_id);
+        }
+    }
+    return NULL;
+}
+
+string PolicyRule::getTagValue()
+{
+    if (getAction() == Tag)
+    {
+        TagService *tagobj = TagService::cast(getTagObject());
+        if (tagobj)  return tagobj->getCode();
+        else         return getOptionsObject()->getStr("tagvalue");
+    }
+    return "";
 }
 
 /***************************************************************************/
