@@ -393,7 +393,12 @@ void ObjectManipulator::showDeletedObjects(bool f)
     }
 }
 
-QVector <ObjectManipulator*> ObjectManipulator::getAllMdiObjectManipulators ()
+/*
+ * Return list of pointers to ObjectManipulator objects for all internal
+ * windows that show the file that is currently active (because the same
+ * file can be opened in multiple internal windows).
+ */
+QVector <ObjectManipulator*> ObjectManipulator::getAllMdiObjectManipulators()
 {
     QVector <ObjectManipulator*> ret ;
     QList<QMdiSubWindow *> subWindowList = mw->getMdiArea()->subWindowList();
@@ -402,7 +407,8 @@ QVector <ObjectManipulator*> ObjectManipulator::getAllMdiObjectManipulators ()
     QString fileName = m_project->getRCS()->getFileName();
     for (int i = 0 ; i < subWindowList.size();i++)
     {
-        ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
+        ProjectPanel * pp = dynamic_cast<ProjectPanel *>(
+            subWindowList[i]->widget());
         if (pp!=NULL)
         {
             if (pp->getFileName () == fileName)
@@ -590,7 +596,7 @@ void ObjectManipulator::autorename(FWObject *obj,bool ask)
             }
         }
     }
-
+ 
     if (Interface::isA(obj))
     {
         if (!ask || QMessageBox::warning(
@@ -605,8 +611,7 @@ void ObjectManipulator::autorename(FWObject *obj,bool ask)
 "objects using scheme 'host_name:interface_name:mac'.\n"
 "Do you want to rename child IP and MAC address objects now?\n"
 "(If you click 'No', names of all address objects that belong to\n"
-"%1 will stay the same.)")
-                .arg(QString::fromUtf8(obj->getName().c_str()))
+"interface '%1' will stay the same.)")
                 .arg(QString::fromUtf8(obj->getName().c_str())),
                 tr("&Yes"), tr("&No"), QString::null,
                 0, 1 )==0 )
@@ -661,7 +666,7 @@ void ObjectManipulator::clearObjects()
     while (history.size()!=0) history.pop();
 
     if (fwbdebug) qDebug("ObjectManipulator::clearObjects  history size: %d",
-                         history.size());
+                         int(history.size()));
 
     int N=m_objectManipulator->libs->count();
 
@@ -677,9 +682,9 @@ void ObjectManipulator::clearObjects()
     }
 
     if (fwbdebug) qDebug("ObjectManipulator::clearObjects  idxToLibs size: %d",
-                         idxToLibs.size());
+                         int(idxToLibs.size()));
     if (fwbdebug) qDebug("ObjectManipulator::clearObjects  idxToTrees size: %d",
-                         idxToTrees.size());
+                         int(idxToTrees.size()));
 
     idxToLibs.clear();
     idxToTrees.clear();
@@ -1367,7 +1372,8 @@ void ObjectManipulator::compile()
     //if (obj==NULL) return;
     //m_project->showFirewall(obj);
     if (fwbdebug)
-        qDebug("ObjectManipulator::compile filtered %d firewalls",fo.size());
+        qDebug("ObjectManipulator::compile filtered %d firewalls",
+               int(fo.size()));
     m_project->compile(fo);
 }
 void ObjectManipulator::filterFirewallsFromSelection(vector<FWObject*> &so,set<Firewall*> &fo)
@@ -1697,125 +1703,121 @@ void ObjectManipulator::pasteObj()
     {
         ObjectManipulator* pom = oms[i] ;
 
-    if (pom->getCurrentObjectTree()->getNumSelected()==0) return;
-    FWObject *obj=pom->getCurrentObjectTree()->getSelectedObjects().front();
-    if (obj==NULL) return;
-    vector<string>::iterator i;
+        if (pom->getCurrentObjectTree()->getNumSelected()==0) return;
+        FWObject *obj=pom->getCurrentObjectTree()->getSelectedObjects().front();
+        if (obj==NULL) return;
+        vector<string>::iterator i;
 	int idx = 0;
-    for (i= FWObjectClipboard::obj_clipboard->begin(); i!=FWObjectClipboard::obj_clipboard->end(); ++i)
-    {
-		FWObject *co= FWObjectClipboard::obj_clipboard->getObjectByIdx(idx); //win->db()->findInIndex(*i);
-        pom->copyObjWithDeep(co);
-        /*FWObject *nobj=pasteTo( obj , co );
-        if (nobj!=NULL)
+        for (i= FWObjectClipboard::obj_clipboard->begin();
+             i!=FWObjectClipboard::obj_clipboard->end(); ++i)
         {
-            if (Firewall::isA(nobj)) m_project->addFirewallToList(nobj);
-            if (Firewall::isA(obj))  m_project->showFirewall(obj);
-        }*/
-    }
+            FWObject *co =
+                FWObjectClipboard::obj_clipboard->getObjectByIdx(idx);
+            pom->copyObjWithDeep(co);
+        }
     }
 }
 
-
-
-FWObject*  ObjectManipulator::pasteTo(FWObject *target,FWObject *obj,
-                                      bool openobj,bool validateOnly, bool renew_id)
+FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
+                                      bool openobj, bool validateOnly,
+                                      bool renew_id)
 {
     QVector <ObjectManipulator*> oms = getAllMdiObjectManipulators();
     for (int i = 0 ; i < oms.size(); i++)
     {
         ObjectManipulator* pom = oms[i] ;
 
-    FWObject *ta=target;
-    if (IPv4::isA(ta) || IPv6::isA(ta)) ta=ta->getParent();
-    try
-    {
+        FWObject *ta=target;
+        if (IPv4::isA(ta) || IPv6::isA(ta)) ta=ta->getParent();
+        try
+        {
 /* clipboard holds a copy of the object */
 //        if (ta->getTypeName()==obj->getTypeName()) ta=ta->getParent();
 
-        Host      *hst  = Host::cast(ta);   // works for firewall, too
-        Interface *intf = Interface::cast(ta);
+            Host      *hst  = Host::cast(ta);   // works for firewall, too
+            Interface *intf = Interface::cast(ta);
 
-        if (pom->m_project->isSystem(ta))
-        {
-            if (!pom->m_project->validateForInsertion(ta,obj))
+            if (pom->m_project->isSystem(ta))
             {
-                if (validateOnly) return NULL;
+                if (!pom->m_project->validateForInsertion(ta,obj))
+                {
+                    if (validateOnly) return NULL;
 
-                QMessageBox::warning(
-                    this,"Firewall Builder",
-                    QObject::tr("Impossible to insert object %1 (type %2) into %3\nbecause of incompatible type.")
-                    .arg(obj->getName().c_str())
-                    .arg(obj->getTypeName().c_str())
-                    .arg(target->getName().c_str()),
-                    "&Continue", QString::null, QString::null,
-                    0, 1 );
+                    QMessageBox::warning(
+                        this,"Firewall Builder",
+                        QObject::tr("Impossible to insert object %1 (type %2) into %3\nbecause of incompatible type.")
+                        .arg(obj->getName().c_str())
+                        .arg(obj->getTypeName().c_str())
+                        .arg(target->getName().c_str()),
+                        "&Continue", QString::null, QString::null,
+                        0, 1 );
 
-                return obj;
+                    return obj;
+                }
             }
-        }
 
-        if ( pom->m_project->isSystem(ta) ||
-            (hst!=NULL  && hst->validateChild(obj)) ||
-            (intf!=NULL && intf->validateChild(obj))
-        )
-        {
-            if (validateOnly) return obj;
+            if ( pom->m_project->isSystem(ta) ||
+                 (hst!=NULL  && hst->validateChild(obj)) ||
+                 (intf!=NULL && intf->validateChild(obj))
+            )
+            {
+                if (validateOnly) return obj;
 
 /* add a copy of the object to system group */
 
-            FWObject *nobj=
-                pom->m_project->db()->create(obj->getTypeName());
-            assert (nobj!=NULL);
-            nobj->ref();
-            nobj->duplicate(obj,renew_id);   //if renew_id == true creates new object ID
+                FWObject *nobj=
+                    pom->m_project->db()->create(obj->getTypeName());
+                assert (nobj!=NULL);
+                nobj->ref();
+                nobj->duplicate(obj,renew_id);   //if renew_id == true creates new object ID
 
-            pom->makeNameUnique(ta,nobj);
-            ta->add( nobj );
-            pom->insertSubtree( pom->allItems[ta], nobj);
+                pom->makeNameUnique(ta,nobj);
+                ta->add( nobj );
+                pom->insertSubtree( pom->allItems[ta], nobj);
 
-            if (openobj) pom->openObject(nobj);
+                if (openobj) pom->openObject(nobj);
 
-            return nobj;
-        }
-
-        Group *grp=Group::cast(ta);
-
-        if (grp!=NULL && grp->validateChild(obj))
-        {
-            if (validateOnly) return obj;
-
-/* check for duplicates. We just won't add an object if it is already there */
-            string cp_id=obj->getId();
-            list<FWObject*>::iterator j;
-            for(j=grp->begin(); j!=grp->end(); ++j)
-            {
-                FWObject *o1=*j;
-                if(cp_id==o1->getId()) return o1;
-
-                FWReference *ref;
-                if( (ref=FWReference::cast(o1))!=NULL &&
-                    cp_id==ref->getPointerId()) return o1;
+                return nobj;
             }
 
-            grp->addRef(obj);
-            if (openobj) pom->openObject(grp);
+            Group *grp=Group::cast(ta);
+
+            if (grp!=NULL && grp->validateChild(obj))
+            {
+                if (validateOnly) return obj;
+
+/* check for duplicates. We just won't add an object if it is already there */
+                string cp_id=obj->getId();
+                list<FWObject*>::iterator j;
+                for(j=grp->begin(); j!=grp->end(); ++j)
+                {
+                    FWObject *o1=*j;
+                    if(cp_id==o1->getId()) return o1;
+
+                    FWReference *ref;
+                    if( (ref=FWReference::cast(o1))!=NULL &&
+                        cp_id==ref->getPointerId()) return o1;
+                }
+
+                grp->addRef(obj);
+                if (openobj) pom->openObject(grp);
+            }
         }
-    }
-    catch(FWException &ex)
-    {
+        catch(FWException &ex)
+        {
+            if (validateOnly) return NULL;
+
+            QMessageBox::warning(
+                this,"Firewall Builder",
+                ex.toString().c_str(),
+                "&Continue", QString::null,QString::null,
+                0, 1 );
+        }
+
         if (validateOnly) return NULL;
-
-        QMessageBox::warning(
-            this,"Firewall Builder",
-            ex.toString().c_str(),
-            "&Continue", QString::null,QString::null,
-            0, 1 );
+        return obj;
     }
-
-    if (validateOnly) return NULL;
-    return obj;
-    }
+    return NULL;
 }
 
 
@@ -1827,26 +1829,26 @@ void ObjectManipulator::lockObject()
     {
         ObjectManipulator* pom = oms[i] ;
 
-    if (fwbdebug)
-        qDebug("ObjectManipulator::lockObject selected %d objects ",
-               getCurrentObjectTree()->getNumSelected());
+        if (fwbdebug)
+            qDebug("ObjectManipulator::lockObject selected %d objects ",
+                   getCurrentObjectTree()->getNumSelected());
 
-    if (getCurrentObjectTree()->getNumSelected()==0) return;
+        if (getCurrentObjectTree()->getNumSelected()==0) return;
 
-    FWObject *obj;
+        FWObject *obj;
 
-    vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
-    for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
-    {
-        obj= *i;
-        FWObject *lib = obj->getLibrary();
-        // these lbraries are locked anyway, do not let the user
-        // lock objects inside because they won't be able to unlock them.
-        if (lib->getId()!=STANDARD_LIB && lib->getId()!=TEMPLATE_LIB)
-            obj->setReadOnly(true);
-    }
-    pom->getCurrentObjectTree()->setLockFlags();
-    pom->getCurrentObjectTree()->updateTreeItems();
+        vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
+        for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
+        {
+            obj= *i;
+            FWObject *lib = obj->getLibrary();
+            // these lbraries are locked anyway, do not let the user
+            // lock objects inside because they won't be able to unlock them.
+            if (lib->getId()!=STANDARD_LIB && lib->getId()!=TEMPLATE_LIB)
+                obj->setReadOnly(true);
+        }
+        pom->getCurrentObjectTree()->setLockFlags();
+        pom->getCurrentObjectTree()->updateTreeItems();
     }
 }
 
@@ -1857,173 +1859,176 @@ void ObjectManipulator::unlockObject()
     {
         ObjectManipulator* pom = oms[i] ;
 
-    if (fwbdebug)
-        qDebug("ObjectManipulator::unlockObject selected %d objects ",
-               getCurrentObjectTree()->getNumSelected());
+        if (fwbdebug)
+            qDebug("ObjectManipulator::unlockObject selected %d objects ",
+                   getCurrentObjectTree()->getNumSelected());
 
-    if (pom->getCurrentObjectTree()->getNumSelected()==0) return;
+        if (pom->getCurrentObjectTree()->getNumSelected()==0) return;
 
-    FWObject *obj;
+        FWObject *obj;
 
-    vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
-    for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
-    {
-        obj= *i;
-        FWObject *lib = obj->getLibrary();
-        if (lib->getId()!=STANDARD_LIB && lib->getId()!=TEMPLATE_LIB)
-            obj->setReadOnly(false);
-    }
-    pom->getCurrentObjectTree()->setLockFlags();
-    pom->getCurrentObjectTree()->updateTreeItems();
+        vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
+        for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
+        {
+            obj= *i;
+            FWObject *lib = obj->getLibrary();
+            if (lib->getId()!=STANDARD_LIB && lib->getId()!=TEMPLATE_LIB)
+                obj->setReadOnly(false);
+        }
+        pom->getCurrentObjectTree()->setLockFlags();
+        pom->getCurrentObjectTree()->updateTreeItems();
     }
 }
 
 void ObjectManipulator::deleteObj()
 {
 
-        if (fwbdebug)
-            qDebug("ObjectManipulator::deleteObj selected %d objects ",
-                getCurrentObjectTree()->getNumSelected());
+    if (fwbdebug)
+        qDebug("ObjectManipulator::deleteObj selected %d objects ",
+               getCurrentObjectTree()->getNumSelected());
     
-        if (getCurrentObjectTree()->getNumSelected()==0) return;
+    if (getCurrentObjectTree()->getNumSelected()==0) return;
     
-        FWObject *obj;
-        bool emptyingTrash      = false;
-        bool emptyingTrashInLib = false;
+    FWObject *obj;
+    bool emptyingTrash      = false;
+    bool emptyingTrashInLib = false;
     
-        FWObject *delObjLib = m_project->db()->findInIndex(FWObjectDatabase::getDeletedObjectsId());
-        if (fwbdebug)
-            qDebug("ObjectManipulator::deleteObj  delObjLib=%p",delObjLib);
+    FWObject *delObjLib =
+        m_project->db()->findInIndex(FWObjectDatabase::getDeletedObjectsId());
+
+    if (fwbdebug)
+        qDebug("ObjectManipulator::deleteObj  delObjLib=%p",delObjLib);
     
-        vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
+    vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
     
-        if (delObjLib!=NULL)
+    if (delObjLib!=NULL)
+    {
+        for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
         {
-            for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
-            {
-                obj= *i;
-                emptyingTrash |= obj->isChildOf(delObjLib);
-            }
+            obj= *i;
+            emptyingTrash |= obj->isChildOf(delObjLib);
         }
+    }
     
-        emptyingTrashInLib = emptyingTrash && m_project->editingLibrary();
+    emptyingTrashInLib = emptyingTrash && m_project->editingLibrary();
     
     /* Ask user iff:
-    *
-    * we are emptying trash while editing library file (.fwl)
-    *    else
-    *
-    * if we are not emptying Trash (i.e. not deleting "Deleted objects" library)
-    *    and
-    * (we delete more than one object
-    *    or
-    * we delete one object and it is not a library (because in this case
-    * we ask them later anyway))
-    */
+     *
+     * we are emptying trash while editing library file (.fwl)
+     *    else
+     *
+     * if we are not emptying Trash (i.e. not deleting "Deleted objects" library)
+     *    and
+     * (we delete more than one object
+     *    or
+     * we delete one object and it is not a library (because in this case
+     * we ask them later anyway))
+     */
     
-        QString msg;
+    QString msg;
     
-        if (emptyingTrashInLib)
+    if (emptyingTrashInLib)
+    {
+        msg = tr(
+            "Emptying the 'Deleted Objects' in a library file is not recommended.\n"
+            "When you remove deleted objects from a library file, Firewall Builder\n"
+            "loses ability to track them. If a group or a policy rule in some\n"
+            "data file still uses removed object from this library, you may encounter\n"
+            "unusual and unexpected behavior of the program.\n"
+            "Do you want to delete selected objects anyway ?"
+        );
+        if (QMessageBox::warning(
+                this,"Firewall Builder", msg,
+                tr("&Yes"), tr("&No"), QString::null,
+                0, 1 )!=0) return;
+    } else
+    {
+    
+        if (fwbdebug)
+            qDebug("ObjectManipulator::deleteObj emptyingTrash=%d "
+                   "so.size=%d  so.front()->type=%s",
+                   emptyingTrash,
+                   int(so.size()),
+                   so.front()->getTypeName().c_str() );
+    
+    
+        if (!emptyingTrash && (so.size()>1 || !Library::isA(so.front())))
         {
-            msg = tr(
-        "Emptying the 'Deleted Objects' in a library file is not recommended.\n"
-        "When you remove deleted objects from a library file, Firewall Builder\n"
-        "loses ability to track them. If a group or a policy rule in some\n"
-        "data file still uses removed object from this library, you may encounter\n"
-        "unusual and unexpected behavior of the program.\n"
-        "Do you want to delete selected objects anyway ?"
-            );
-            if (QMessageBox::warning(
-                    this,"Firewall Builder", msg,
-                    tr("&Yes"), tr("&No"), QString::null,
-                    0, 1 )!=0) return;
-        } else
-        {
+            /*
+              msg = tr(
+              "When you delete an object, it is removed from the tree and\n"
+              "all groups and firewall policy rules that reference it.\n"
+              "Do you want to delete selected objects ?"
+              );
+              if (QMessageBox::warning(
+              this,"Firewall Builder", msg,
+              tr("&Yes"), tr("&No"), QString::null,
+              0, 1 )!=0) return;
+            */
+            QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
+            ConfirmDeleteObjectDialog * dlg= new ConfirmDeleteObjectDialog(this);
     
-            if (fwbdebug)
-                qDebug("ObjectManipulator::deleteObj emptyingTrash=%d so.size=%d  so.front()->type=%s",
-                    emptyingTrash,
-                    so.size(),
-                    so.front()->getTypeName().c_str() );
+            dlg->load(so);
     
-    
-            if (!emptyingTrash && (so.size()>1 || !Library::isA(so.front())))
-            {
-                /*
-                msg = tr(
-                    "When you delete an object, it is removed from the tree and\n"
-                    "all groups and firewall policy rules that reference it.\n"
-                    "Do you want to delete selected objects ?"
-                );
-                if (QMessageBox::warning(
-                        this,"Firewall Builder", msg,
-                        tr("&Yes"), tr("&No"), QString::null,
-                        0, 1 )!=0) return;
-                        */
-                QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
-                ConfirmDeleteObjectDialog * dlg= new ConfirmDeleteObjectDialog(this);
-    
-                dlg->load(so);
-    
-                QApplication::restoreOverrideCursor();
-                if(dlg->exec()==QDialog::Rejected ) return;
-            }
+            QApplication::restoreOverrideCursor();
+            if(dlg->exec()==QDialog::Rejected ) return;
         }
+    }
     
     
     /* need to work with a copy of the list of selected objects because
-    * some of the methods we call below clear list
-    * getCurrentObjectTree()->getSelectedObjects()
-    */
+     * some of the methods we call below clear list
+     * getCurrentObjectTree()->getSelectedObjects()
+     */
     
-        vector<FWObject*> so2 = so;
+    vector<FWObject*> so2 = so;
     
-        if (fwbdebug)
+    if (fwbdebug)
+    {
+        for (vector<FWObject*>::iterator i=so2.begin();  i!=so2.end(); ++i)
         {
-            for (vector<FWObject*>::iterator i=so2.begin();  i!=so2.end(); ++i)
-            {
-                obj= *i;
-                qDebug("ObjectManipulator::deleteObj will delete obj=%p ( %s %s ) ",
-                    obj, obj->getTypeName().c_str(), obj->getName().c_str());
-            }
+            obj= *i;
+            qDebug("ObjectManipulator::deleteObj will delete obj=%p ( %s %s ) ",
+                   obj, obj->getTypeName().c_str(), obj->getName().c_str());
         }
+    }
     
-        try
+    try
+    {
+        for (vector<FWObject*>::iterator i=so2.begin();  i!=so2.end(); ++i)
         {
-            for (vector<FWObject*>::iterator i=so2.begin();  i!=so2.end(); ++i)
+            obj= *i;
+    
+            //        openObject(obj,false);
+    
+            if ( ! m_project->isSystem(obj) )
             {
-                obj= *i;
-    
-    //        openObject(obj,false);
-    
-                if ( ! m_project->isSystem(obj) )
+                if (Library::isA(obj))
                 {
-                    if (Library::isA(obj))
-                    {
-                        list<FWObject*> ll=m_project->db()->getByType(Library::TYPENAME);
-                        if (ll.size()==1)  return;
+                    list<FWObject*> ll=m_project->db()->getByType(Library::TYPENAME);
+                    if (ll.size()==1)  return;
     
-                        if (QMessageBox::warning(
-                                this,"Firewall Builder",
-                                tr(
-    "When you delete a library, all objects that belong to it\n"
-    "disappear from the tree and all groups and rules that reference them.\n"
-    "You won't be able to reverse this operation later.\n"
-    "Do you still want to delete library %1?")
-                                .arg(QString::fromUtf8(obj->getName().c_str())),
-                                tr("&Yes"), tr("&No"), QString::null,
-                                0, 1 )!=0 ) continue;
-                    }
-    
-                    if (m_project->isEditorVisible() && m_project->getOpenedEditor()==obj) m_project->hideEditor();
-                    
-                    delObj(obj);
+                    if (QMessageBox::warning(
+                            this,"Firewall Builder",
+                            tr(
+                                "When you delete a library, all objects that belong to it\n"
+                                "disappear from the tree and all groups and rules that reference them.\n"
+                                "You won't be able to reverse this operation later.\n"
+                                "Do you still want to delete library %1?")
+                            .arg(QString::fromUtf8(obj->getName().c_str())),
+                            tr("&Yes"), tr("&No"), QString::null,
+                            0, 1 )!=0 ) continue;
                 }
+    
+                if (m_project->isEditorVisible() && m_project->getOpenedEditor()==obj) m_project->hideEditor();
+                    
+                delObj(obj);
             }
         }
-        catch(FWException &ex)
-        {
-        }
+    }
+    catch(FWException &ex)
+    {
+    }
 
 }
 
@@ -2042,17 +2047,17 @@ void ObjectManipulator::delObj(FWObject *obj,bool openobj)
         {
             if (fwbdebug)
                 qDebug("ObjectManipulator::delObj  delete obj %p %s openobj=%d",
-                    obj,obj->getName().c_str(),openobj);
+                       obj,obj->getName().c_str(),openobj);
     
             FWObject *parent=obj->getParent();
             FWObject *delObjLib = pom->m_project->db()->findInIndex( DELETED_LIB );
     
             if (fwbdebug)
                 qDebug("ObjectManipulator::delObj  deleted obj lib %p",
-                    delObjLib);
+                       delObjLib);
     
             bool islib  = Library::isA(obj);
-    //        bool isintf = (Interface::isA(obj) && Firewall::isA(parent));
+            //        bool isintf = (Interface::isA(obj) && Firewall::isA(parent));
             bool isfw   = Firewall::isA(obj);
             bool isDelObj = (delObjLib!=NULL && obj->isChildOf(delObjLib));
     
@@ -2062,15 +2067,16 @@ void ObjectManipulator::delObj(FWObject *obj,bool openobj)
             if (fwbdebug)
                 qDebug("ObjectManipulator::delObj  delete islib=%d isfw=%d isDelObj=%d",islib,isfw,isDelObj);
     
-    /*
-    * TODO: we have to remove not only the object, but also all its child
-    * objects from the database, as well as all references to them. This
-    * logic should really be in FWObject::removeAllInstances(FWObject*);
-    */
+            /*
+             * TODO: we have to remove not only the object, but also
+             * all its child objects from the database, as well as all
+             * references to them. This logic should really be in
+             * FWObject::removeAllInstances(FWObject*);
+             */
     
-    /* remove from our internal tables before it is removed from the
-    * object tree so we could use obj->getId()
-    */
+            /* remove from our internal tables before it is removed from the
+             * object tree so we could use obj->getId()
+             */
             if (islib && !isDelObj)
             {
                 int idx = pom->getIdxForLib(obj);
@@ -2088,26 +2094,33 @@ void ObjectManipulator::delObj(FWObject *obj,bool openobj)
             //if (isfw && !isDelObj) pom->m_project->deleteFirewall(obj);
     
     
-    //        removeObjectFromTreeView(obj);
+            //        removeObjectFromTreeView(obj);
     
             QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
     
             if (islib && obj->isReadOnly()) obj->setReadOnly(false);
             if (firstAction)
             {
-            if (obj->getId()==TEMPLATE_LIB) // special case
-            {
-                if (fwbdebug) qDebug("ObjectManipulator::delObj:   special case: deleting template library");
-                pom->m_project->db()->removeAllInstances(obj);
-            } else
-            {
-                if (fwbdebug) qDebug("ObjectManipulator::delObj:   recursively deleting library and all its objects");
-                pom->m_project->db()->recursivelyRemoveObjFromTree(obj, false);
-                if (islib) parent=pom->m_project->db()->getFirstByType(Library::TYPENAME);
-            }
+                if (obj->getId()==TEMPLATE_LIB) // special case
+                {
+                    if (fwbdebug)
+                        qDebug("ObjectManipulator::delObj:   "
+                               "special case: deleting template library");
+                    pom->m_project->db()->removeAllInstances(obj);
+                } else
+                {
+                    if (fwbdebug)
+                        qDebug("ObjectManipulator::delObj:   "
+                               "recursively deleting library and all its objects");
+                    pom->m_project->db()->recursivelyRemoveObjFromTree(obj,
+                                                                       false);
+                    if (islib)
+                        parent=pom->m_project->db()->getFirstByType(
+                            Library::TYPENAME);
+                }
     
-            QApplication::restoreOverrideCursor();
-            if (fwbdebug) qDebug("ObjectManipulator::delObj:   done");
+                QApplication::restoreOverrideCursor();
+                if (fwbdebug) qDebug("ObjectManipulator::delObj:   done");
             }
             pom->removeObjectFromTreeView(obj);
             pom->m_project->scheduleRuleSetRedraw();
@@ -2142,7 +2155,9 @@ void ObjectManipulator::delObj(FWObject *obj,bool openobj)
         }
         catch(FWException &ex)
         {
-            if (fwbdebug) qDebug("ObjectManipulator::delObj: catch:  restoreOverrideCursor");
+            if (fwbdebug)
+                qDebug("ObjectManipulator::delObj: "
+                       "catch:  restoreOverrideCursor");
             QApplication::restoreOverrideCursor();
             QMessageBox::warning(
                 this,"Firewall Builder",
@@ -2405,11 +2420,11 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
     active=true;
 
 /*
-    m_project->unselectRules();
-    if (m_project->validateAndSaveEditor())
-    {
-        //oe->selectionChanged(obj);
-    }
+  m_project->unselectRules();
+  if (m_project->validateAndSaveEditor())
+  {
+  //oe->selectionChanged(obj);
+  }
 */
     info();
     select();
