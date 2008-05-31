@@ -44,7 +44,7 @@ namespace libfwbuilder
 
 class QLineEdit;
 class QComboBox;
-
+class FWObjectDropArea;
 class ActionsDialog : public QWidget
 {
     Q_OBJECT
@@ -56,16 +56,17 @@ class ActionsDialog : public QWidget
     QLineEdit                *branchNameInput;
     
     DialogData                data;
+    FWObjectDropArea * BranchChainArea ;
+    FWObjectDropArea * BranchAnchorArea;
+    FWObjectDropArea * TagIntArea ;
+    FWObjectDropArea * TagStrArea ;
+
  public:
     Ui::ActionsDialog_q *m_dialog;
      
-    ActionsDialog(QWidget *parent) : QWidget(parent)
-    {
-        m_dialog = new Ui::ActionsDialog_q;
-        m_dialog->setupUi(this);
-    };
+    ActionsDialog(QWidget *parent);
     
-    ~ActionsDialog() { delete m_dialog; };
+    ~ActionsDialog();
     virtual void closeEvent(QCloseEvent *e);
     void fillInterfaces(QComboBox *);
 

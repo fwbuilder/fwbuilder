@@ -62,6 +62,8 @@ public:
     
     QByteArray encodedData() const;
     static bool decode( QDropEvent *ev, std::list<libfwbuilder::FWObject*> &ol);
+    static bool decode( QDragEnterEvent *ev, std::list<libfwbuilder::FWObject*> &ol);
+
 };
 
 #endif

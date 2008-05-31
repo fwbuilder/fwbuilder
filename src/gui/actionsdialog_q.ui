@@ -139,7 +139,7 @@
            <enum>QFrame::Plain</enum>
           </property>
           <property name="currentIndex" >
-           <number>0</number>
+           <number>3</number>
           </property>
           <widget class="QWidget" name="TagStrPage" >
            <layout class="QGridLayout" >
@@ -161,9 +161,6 @@
             <property name="verticalSpacing" >
              <number>2</number>
             </property>
-            <item row="2" column="0" >
-             <widget class="QLineEdit" name="tagvalue_str" />
-            </item>
             <item row="1" column="0" >
              <widget class="QLabel" name="textLabel4" >
               <property name="text" >
@@ -190,7 +187,7 @@
               </property>
              </spacer>
             </item>
-            <item row="3" column="0" >
+            <item row="5" column="0" >
              <spacer>
               <property name="orientation" >
                <enum>Qt::Vertical</enum>
@@ -205,6 +202,39 @@
                </size>
               </property>
              </spacer>
+            </item>
+            <item row="2" column="0" >
+             <widget class="QFrame" name="TagStrFrame" >
+              <property name="frameShape" >
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow" >
+               <enum>QFrame::Raised</enum>
+              </property>
+              <layout class="QGridLayout" >
+               <property name="leftMargin" >
+                <number>2</number>
+               </property>
+               <property name="topMargin" >
+                <number>2</number>
+               </property>
+               <property name="rightMargin" >
+                <number>2</number>
+               </property>
+               <property name="bottomMargin" >
+                <number>2</number>
+               </property>
+               <property name="horizontalSpacing" >
+                <number>2</number>
+               </property>
+               <property name="verticalSpacing" >
+                <number>2</number>
+               </property>
+               <item row="0" column="0" >
+                <layout class="QGridLayout" />
+               </item>
+              </layout>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -379,22 +409,42 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="tagvalue_int" >
-                <property name="sizePolicy" >
-                 <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
+               <widget class="QFrame" name="TagIntFrame" >
                 <property name="minimumSize" >
                  <size>
-                  <width>80</width>
-                  <height>0</height>
+                  <width>100</width>
+                  <height>50</height>
                  </size>
                 </property>
-                <property name="maximum" >
-                 <number>65535</number>
+                <property name="frameShape" >
+                 <enum>QFrame::StyledPanel</enum>
                 </property>
+                <property name="frameShadow" >
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QGridLayout" >
+                 <property name="leftMargin" >
+                  <number>2</number>
+                 </property>
+                 <property name="topMargin" >
+                  <number>2</number>
+                 </property>
+                 <property name="rightMargin" >
+                  <number>2</number>
+                 </property>
+                 <property name="bottomMargin" >
+                  <number>2</number>
+                 </property>
+                 <property name="horizontalSpacing" >
+                  <number>2</number>
+                 </property>
+                 <property name="verticalSpacing" >
+                  <number>2</number>
+                 </property>
+                 <item row="0" column="0" >
+                  <layout class="QGridLayout" />
+                 </item>
+                </layout>
                </widget>
               </item>
               <item>
@@ -932,9 +982,6 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="0" colspan="2" >
-             <widget class="QLineEdit" name="branchChainName" />
-            </item>
             <item row="4" column="0" >
              <spacer>
               <property name="orientation" >
@@ -956,6 +1003,39 @@
               <property name="text" >
                <string>In addition to 'filter', create branching rule in 'mangle' table as well</string>
               </property>
+             </widget>
+            </item>
+            <item row="2" column="0" >
+             <widget class="QFrame" name="branchChainNameFrame" >
+              <property name="frameShape" >
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow" >
+               <enum>QFrame::Raised</enum>
+              </property>
+              <layout class="QGridLayout" >
+               <property name="leftMargin" >
+                <number>2</number>
+               </property>
+               <property name="topMargin" >
+                <number>2</number>
+               </property>
+               <property name="rightMargin" >
+                <number>2</number>
+               </property>
+               <property name="bottomMargin" >
+                <number>2</number>
+               </property>
+               <property name="horizontalSpacing" >
+                <number>2</number>
+               </property>
+               <property name="verticalSpacing" >
+                <number>2</number>
+               </property>
+               <item row="0" column="0" >
+                <layout class="QGridLayout" />
+               </item>
+              </layout>
              </widget>
             </item>
            </layout>
@@ -990,10 +1070,7 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="0" >
-             <widget class="QLineEdit" name="branchAnchorName" />
-            </item>
-            <item row="3" column="0" >
+            <item row="4" column="0" >
              <spacer>
               <property name="orientation" >
                <enum>Qt::Vertical</enum>
@@ -1024,6 +1101,39 @@
                </size>
               </property>
              </spacer>
+            </item>
+            <item row="2" column="0" >
+             <widget class="QFrame" name="BranchAnchorPageFrame" >
+              <property name="frameShape" >
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow" >
+               <enum>QFrame::Raised</enum>
+              </property>
+              <layout class="QGridLayout" >
+               <property name="leftMargin" >
+                <number>2</number>
+               </property>
+               <property name="topMargin" >
+                <number>2</number>
+               </property>
+               <property name="rightMargin" >
+                <number>2</number>
+               </property>
+               <property name="bottomMargin" >
+                <number>2</number>
+               </property>
+               <property name="horizontalSpacing" >
+                <number>2</number>
+               </property>
+               <property name="verticalSpacing" >
+                <number>2</number>
+               </property>
+               <item row="0" column="0" >
+                <layout class="QGridLayout" />
+               </item>
+              </layout>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -1439,70 +1549,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>tagvalue_str</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>ActionsDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>45</x>
-     <y>214</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tagvalue_int</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>ActionsDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>119</x>
-     <y>106</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tagvalue_int</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>ActionsDialog_q</receiver>
-   <slot>tagvalueChanged(int)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>119</x>
-     <y>106</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tagvalue_int</sender>
-   <signal>valueChanged(QString)</signal>
-   <receiver>ActionsDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>119</x>
-     <y>106</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>rejectvalue</sender>
    <signal>activated(QString)</signal>
    <receiver>ActionsDialog_q</receiver>
@@ -1799,38 +1845,6 @@
     <hint type="sourcelabel" >
      <x>46</x>
      <y>131</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>branchChainName</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>ActionsDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>47</x>
-     <y>221</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>branchAnchorName</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>ActionsDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>46</x>
-     <y>233</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>

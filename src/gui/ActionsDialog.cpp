@@ -33,6 +33,7 @@
 
 #include "ActionsDialog.h"
 #include "FWWindow.h"
+#include "FWObjectDropArea.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Interface.h"
@@ -60,10 +61,57 @@
 using namespace std;
 using namespace libfwbuilder;
 
+ActionsDialog::ActionsDialog(QWidget *parent) : QWidget(parent)
+{
+    m_dialog = new Ui::ActionsDialog_q;
+    m_dialog->setupUi(this);
+
+    BranchChainArea =  new FWObjectDropArea(m_dialog->branchChainNameFrame);
+    BranchChainArea->addAcceptedTypes("Policy");
+    BranchChainArea->addAcceptedTypes("NAT");
+    BranchChainArea->addAcceptedTypes("Routing");
+    m_dialog->gridLayout17->addWidget(BranchChainArea);
+    connect (BranchChainArea,SIGNAL(objectDeleted()),this,SLOT(changed()));
+    connect (BranchChainArea,SIGNAL(objectInserted()),this,SLOT(changed()));
+
+
+    BranchAnchorArea =  new FWObjectDropArea(m_dialog->BranchAnchorPageFrame);
+    BranchAnchorArea->addAcceptedTypes("Policy");
+    BranchAnchorArea->addAcceptedTypes("NAT");
+    BranchAnchorArea->addAcceptedTypes("Routing");
+    m_dialog->gridLayout20->addWidget(BranchAnchorArea);
+    connect (BranchAnchorArea,SIGNAL(objectDeleted()),this,SLOT(changed()));
+    connect (BranchAnchorArea,SIGNAL(objectInserted()),this,SLOT(changed()));
+
+    TagStrArea =  new FWObjectDropArea(m_dialog->TagStrFrame);
+    TagStrArea->addAcceptedTypes("TagService");
+    m_dialog->gridLayout4->addWidget(TagStrArea);
+    connect (TagStrArea,SIGNAL(objectDeleted()),this,SLOT(changed()));
+    connect (TagStrArea,SIGNAL(objectInserted()),this,SLOT(changed()));
+
+    TagIntArea =  new FWObjectDropArea(m_dialog->TagIntFrame);
+    TagIntArea->addAcceptedTypes("TagService");
+    m_dialog->gridLayout9->addWidget(TagIntArea);
+    connect (TagIntArea,SIGNAL(objectDeleted()),this,SLOT(changed()));
+    connect (TagIntArea,SIGNAL(objectInserted()),this,SLOT(changed()));
+
+
+//        FWObjectDropArea * fwoda =  new FWObjectDropArea(m_dialog->TagIntFrame);
+
+};
+
+ActionsDialog::~ActionsDialog() 
+{ 
+    delete m_dialog; 
+    delete TagIntArea;
+    delete TagStrArea;
+    delete BranchChainArea;
+    delete BranchAnchorArea;
+}
+
 void ActionsDialog::loadFWObject(FWObject *o)
 {
     setRule(PolicyRule::cast(o));
-
 }
 
 void ActionsDialog::changed()
@@ -133,10 +181,44 @@ void ActionsDialog::applyChanges()
 
     FWOptions *ropt = rule->getOptionsObject();
 
-    if (editor=="BranchChain" || editor=="BranchAnchor")
+    if (editor=="TagInt")
     {
-        mw->setPolicyBranchTabName(rule->getBranch());
+        if (TagIntArea!=NULL)
+        {
+            QString id = TagIntArea->getObject()->getId().c_str();
+            ropt->setStr("tagobject_id",id.toAscii().data());
+        }
     }
+
+    if (editor=="TagStr")
+    {
+        if (TagStrArea!=NULL)
+        {
+            QString id = TagStrArea->getObject()->getId().c_str();
+            ropt->setStr("tagobject_id",id.toAscii().data());
+        }
+    }
+
+    if (editor=="BranchChain")
+    {
+        if (BranchChainArea!=NULL)
+        {
+            QString id = BranchChainArea->getObject()->getId().c_str();
+            ropt->setStr("branch_id",id.toAscii().data());
+            mw->setPolicyBranchTabName(rule->getBranch());
+        }
+    }
+
+    if (editor=="BranchAnchor")
+    {
+        if (BranchAnchorArea!=NULL)
+        {
+            QString id = BranchAnchorArea->getObject()->getId().c_str();
+            ropt->setStr("branch_id",id.toAscii().data());
+            mw->setPolicyBranchTabName(rule->getBranch());
+        }
+    }
+
 
     if (m_dialog->useDummyNetPipe->isChecked())
         ropt->setInt("ipfw_classify_method",DUMMYNETPIPE);
@@ -155,8 +237,8 @@ void ActionsDialog::discardChanges()
 void ActionsDialog::tagvalueChanged(int)
 {
     QString buf;
-    buf.setNum(m_dialog->tagvalue_int->value());
-    m_dialog->tagvalue_str->setText(buf);
+//!!!    buf.setNum(m_dialog->tagvalue_int->value());
+//!!!    m_dialog->tagvalue_str->setText(buf);
 }
 
 void ActionsDialog::iptRouteContinueToggled()
@@ -284,12 +366,28 @@ void ActionsDialog::setRule(PolicyRule *r )
     else if (editor=="TagInt")
     {
         w=m_dialog->TagIntPage;
-        data.registerOption(m_dialog->tagvalue_int , ropt , "tagvalue");
+        std::string id = ropt->getStr("tagobject_id");
+        FWObject * o = rule->getRoot()->getById(id,true);
+        if (o!=NULL)
+        {
+            TagIntArea->setObject(o);
+        }
+//        FWObjectDropArea * fwoda =  new FWObjectDropArea(m_dialog->TagIntFrame);
+//        m_dialog->TagIntFrame->addWidget(fwoda);
+//!        data.registerOption(m_dialog->tagvalue_int , ropt , "tagvalue");
     }
     else if (editor=="TagStr")
     {
         w=m_dialog->TagStrPage;
-        data.registerOption(m_dialog->tagvalue_str , ropt , "tagvalue");
+        std::string id = ropt->getStr("tagobject_id");
+        FWObject * o = rule->getRoot()->getById(id,true);
+        if (o!=NULL)
+        {
+            TagStrArea->setObject(o);
+        }
+//        FWObjectDropArea * fwoda =  new FWObjectDropArea(m_dialog->TagStrFrame);
+//        m_dialog->TagStrFrame->addWidget(fwoda);
+//!        data.registerOption(m_dialog->tagvalue_str , ropt , "tagvalue");
     }
     else if (editor=="AccountingStr")
     {
@@ -314,13 +412,27 @@ void ActionsDialog::setRule(PolicyRule *r )
     else if (editor=="BranchChain")
     {
         w=m_dialog->BranchChainPage;
-        data.registerOption ( m_dialog->branchChainName     , ropt , "branch_name" );
+        std::string id = ropt->getStr("branch_id");
+        FWObject * o = rule->getRoot()->getById(id,true);
+        if (o!=NULL)
+        {
+            BranchChainArea->setObject(o);
+        }
+        //data.registerOption ( m_dialog->branchChainName     , ropt , "branch_name" );
         data.registerOption ( m_dialog->ipt_branch_in_mangle, ropt , "ipt_branch_in_mangle" );
     }
     else if (editor=="BranchAnchor")
     {
         w=m_dialog->BranchAnchorPage;
-        data.registerOption ( m_dialog->branchAnchorName    , ropt , "branch_name" );
+        std::string id = ropt->getStr("branch_id");
+        FWObject * o = rule->getRoot()->getById(id,true);
+        if (o!=NULL)
+        {
+            BranchAnchorArea->setObject(o);
+        }
+
+        //int idx = ropt->getInt("branch_id");
+        //data.registerOption ( m_dialog->branchAnchorName    , ropt , "branch_name" );
     }
     else if (editor=="RouteIPT")
     {

@@ -50,6 +50,7 @@ class FWObjectDropArea : public QWidget//Ui::FWObjectDropArea_q
     Q_OBJECT
  private:
         libfwbuilder::FWObject *object;
+        QVector <QString> acceptedTypes ;
  protected:
         void paintEvent(QPaintEvent *ev);
         void contextMenuEvent (QContextMenuEvent * e);
@@ -61,7 +62,8 @@ class FWObjectDropArea : public QWidget//Ui::FWObjectDropArea_q
     FWObjectDropArea(QWidget*p, const char * n = 0, Qt::WFlags f = 0);
     ~FWObjectDropArea(); 
     libfwbuilder::FWObject * getObject(){return object;};
-    
+    void setObject(libfwbuilder::FWObject * o){ object = o ;};
+    void addAcceptedTypes (QString type){acceptedTypes.push_back(type);};
     bool isEmpty() {return object==NULL;};
 
 public slots:

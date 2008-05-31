@@ -185,6 +185,30 @@ void FWObjectDropArea::dropEvent( QDropEvent *ev)
 
 void FWObjectDropArea::dragEnterEvent( QDragEnterEvent *ev)
 {
+    list<FWObject*> dragol;
+    if (FWObjectDrag::decode(ev, dragol))
+    {
+        if (dragol.size()>0)
+        {
+            FWObject * o = dragol.front();
+            bool ok = false ;
+            for (int p = 0 ; p < acceptedTypes.size(); p++)
+            {
+                QString type =o->getTypeName().c_str(); 
+                if (type==acceptedTypes[p])
+                {
+                    ok = true ;
+                    break ;
+                }
+            }
+            if (!ok)
+            {
+                ev->setAccepted(false);
+                return ;
+            }
+        }
+    }
+
     ev->setAccepted( ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) );
 }
 

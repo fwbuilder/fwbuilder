@@ -116,6 +116,27 @@ bool FWObjectDrag::decode( QDropEvent *ev, list<FWObject*> &ol)
     return true;
 }
 
+bool FWObjectDrag::decode( QDragEnterEvent *ev, list<FWObject*> &ol)
+{
+    QByteArray rawdata = ev->encodedData( static_cast<const char*>(FWB_MIME_TYPE.toLatin1()) );
+
+    ol.clear();
+    QDataStream stream(&rawdata, QIODevice::ReadOnly);
+
+    int     n = 0;
+    stream >> n;
+
+    for (int i=0; i<n; i++)
+    {
+        FWObject *o;
+        stream.readRawData( (char*)(&o) , sizeof(FWObject*) );
+        ol.push_back(o);
+    }
+
+    ev->accept();
+    return true;
+}
+
 Qt::DropAction FWObjectDrag::start(Qt::DropActions action)
 {
     if (fwbdebug)  qDebug("FWObjectDrag::start"/*, action*/);
