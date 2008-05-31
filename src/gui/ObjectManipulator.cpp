@@ -767,8 +767,8 @@ void ObjectManipulator::addTreePage( FWObject *lib)
 //    connect(objTreeView,SIGNAL( editCurrentObject_sign() ),
 //             this,        SLOT( editSelectedObject()) );
 
-//    connect(objTreeView,SIGNAL( switchObjectInEditor_sign(libfwbuilder::FWObject*) ),
-//             this,        SLOT( switchObjectInEditor(libfwbuilder::FWObject*)) );
+    connect(objTreeView,SIGNAL( switchObjectInEditor_sign(libfwbuilder::FWObject*) ),
+             this,        SLOT( switchObjectInEditor(libfwbuilder::FWObject*)) );
 
     connect(objTreeView, SIGNAL( deleteObject_sign(libfwbuilder::FWObject*) ),
              this,        SLOT( deleteObj() ) );
@@ -2261,6 +2261,13 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
 
     if (obj!=m_project->getOpenedEditor())
     {
+        if (RuleSet::cast(obj)!=NULL)
+        {
+//        qDebug("!2");
+        if (obj!=m_project->getCurrentRuleSet())            
+            m_project->openRuleSet(obj);
+    
+        }
         m_project->openEditor(obj);
         currentObj=obj;
         active=true;
