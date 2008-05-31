@@ -421,6 +421,7 @@ namespace fwcompiler {
             virtual void _printLogging(libfwbuilder::PolicyRule *r);
             virtual void _printDirection(libfwbuilder::PolicyRule *r);
             virtual void _printInterface(libfwbuilder::PolicyRule *r);
+            virtual void _printAF(libfwbuilder::PolicyRule *r);
             virtual void _printLabel(libfwbuilder::PolicyRule *r);
             virtual void _printQueue(libfwbuilder::PolicyRule *r);
             virtual void _printTag(libfwbuilder::PolicyRule *r);
@@ -430,6 +431,7 @@ namespace fwcompiler {
             PrintRule(const std::string &name);
             virtual bool processNext();
         };
+        friend class PolicyCompiler_pf::PrintRule;
  
 
 	virtual std::string myPlatformName();

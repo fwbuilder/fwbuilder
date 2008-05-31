@@ -278,8 +278,6 @@ void PolicyCompiler_pf::PrintRule::_printQueue(PolicyRule *rule)
 
 void PolicyCompiler_pf::PrintRule::_printTag(PolicyRule *rule)
 {
-    FWOptions *ruleopt =rule->getOptionsObject();
-
     if (rule->getAction() == PolicyRule::Tag)
         compiler->output << "tag " << rule->getTagValue() << " ";
 //        compiler->output << "tag " << ruleopt->getStr("tagvalue") << " ";
@@ -357,6 +355,13 @@ void PolicyCompiler_pf::PrintRule::_printInterface(PolicyRule *rule)
     string       iface_name = rule->getInterfaceStr();
     if (iface_name!="") 
 	compiler->output << "on " << iface_name << " ";
+}
+
+// print address family
+void PolicyCompiler_pf::PrintRule::_printAF(PolicyRule*)
+{
+    PolicyCompiler_pf *pf_comp=dynamic_cast<PolicyCompiler_pf*>(compiler);
+    if (pf_comp->ipv6) compiler->output << "inet6 ";
 }
 
 void PolicyCompiler_pf::PrintRule::_printProtocol(libfwbuilder::Service *srv)
@@ -771,6 +776,8 @@ bool PolicyCompiler_pf::PrintRule::processNext()
     if ( rule->getBool("quick") ) compiler->output << " quick ";
 
     _printInterface(rule);
+
+    _printAF(rule);
 
     _printRouteOptions(rule);
 

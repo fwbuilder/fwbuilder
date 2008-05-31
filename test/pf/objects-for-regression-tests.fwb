@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="7" lastModified="1212118934" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="7" lastModified="1212272477" id="root">
   <Library color="#d2ffd0" comment="User defined objects" id="syslib001" name="User" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects">
       <ObjectGroup id="stdid01_1_og_ats_1" name="Address Tables">
@@ -10051,11 +10051,31 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="" host_OS="freebsd" id="id4833F62B6131" inactive="False" lastCompiled="1212115999" lastInstalled="0" lastModified="1212118934" name="firewall-ipv6-1" platform="pf" ro="False" version="">
+      <Firewall comment="" host_OS="freebsd" id="id4833F62B6131" inactive="False" lastCompiled="1212115999" lastInstalled="0" lastModified="1212272477" name="firewall-ipv6-1" platform="pf" ro="False" version="">
         <NAT id="id4833F62F6131" name="NAT"/>
         <Policy id="id483F5B7623190" name="Policy_ipv4"/>
         <Policy id="id4833F62E6131" name="Policy">
-          <PolicyRule action="Accept" comment="this rule shadows the next.&#10;Note that we add command line&#10;flag -xt to the compiler" direction="Both" disabled="False" group="" id="id4837BFE628819" log="False" position="0">
+          <PolicyRule action="Accept" direction="Both" disabled="False" group="" id="id4841FADE30813" log="False" position="0">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4841FADB30813"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Accept" comment="this rule shadows the next.&#10;Note that we add command line&#10;flag -xt to the compiler" direction="Both" disabled="False" group="" id="id4837BFE628819" log="False" position="1">
             <Src neg="False">
               <ObjectRef ref="id4834B9206131"/>
             </Src>
@@ -10075,7 +10095,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="" direction="Both" disabled="False" id="id4834578B6131" log="False" position="1">
+          <PolicyRule action="Accept" comment="" direction="Both" disabled="False" id="id4834578B6131" log="False" position="2">
             <Src neg="False">
               <ObjectRef ref="id48416A7216880"/>
             </Src>
@@ -10095,7 +10115,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" direction="Both" disabled="False" id="id4834577C6131" log="True" position="2">
+          <PolicyRule action="Accept" direction="Both" disabled="False" id="id4834577C6131" log="True" position="3">
             <Src neg="False">
               <ObjectRef ref="id48416A7116880"/>
             </Src>
@@ -10115,7 +10135,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" direction="Both" disabled="False" group="" id="id4834D3038571" log="True" position="3">
+          <PolicyRule action="Accept" direction="Both" disabled="False" group="" id="id4834D3038571" log="True" position="4">
             <Src neg="False">
               <ObjectRef ref="id4834A2238571"/>
             </Src>
@@ -10135,7 +10155,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" direction="Both" disabled="False" group="" id="id4834D3108571" log="True" position="4">
+          <PolicyRule action="Accept" direction="Both" disabled="False" group="" id="id4834D3108571" log="True" position="5">
             <Src neg="False">
               <ObjectRef ref="id4834A2278571"/>
             </Src>
@@ -10155,7 +10175,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="" direction="Both" disabled="False" group="" id="id4835040E8571" log="True" position="5">
+          <PolicyRule action="Accept" comment="" direction="Both" disabled="False" group="" id="id4835040E8571" log="True" position="6">
             <Src neg="False">
               <ObjectRef ref="id4834A2238571"/>
             </Src>
@@ -10175,7 +10195,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="" direction="Both" disabled="False" group="" id="id4835041F8571" log="True" position="6">
+          <PolicyRule action="Accept" comment="" direction="Both" disabled="False" group="" id="id4835041F8571" log="True" position="7">
             <Src neg="False">
               <ObjectRef ref="id4834A2278571"/>
             </Src>
@@ -10195,7 +10215,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" direction="Inbound" disabled="False" id="id4834576F6131" log="True" position="7">
+          <PolicyRule action="Accept" direction="Inbound" disabled="False" id="id4834576F6131" log="True" position="8">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -10215,7 +10235,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" direction="Both" disabled="False" id="id4834B9216131" log="True" position="8">
+          <PolicyRule action="Accept" direction="Both" disabled="False" id="id4834B9216131" log="True" position="9">
             <Src neg="False">
               <ObjectRef ref="id4834B9206131"/>
             </Src>
@@ -10235,7 +10255,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" direction="Both" disabled="False" id="id483566468571" log="True" position="9">
+          <PolicyRule action="Accept" direction="Both" disabled="False" id="id483566468571" log="True" position="10">
             <Src neg="False">
               <ObjectRef ref="id4834A2238571"/>
             </Src>
@@ -10255,7 +10275,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" direction="Both" disabled="False" id="id483566548571" log="True" position="10">
+          <PolicyRule action="Accept" direction="Both" disabled="False" id="id483566548571" log="True" position="11">
             <Src neg="False">
               <ObjectRef ref="id4834A2278571"/>
             </Src>
@@ -10280,6 +10300,10 @@
         <Interface bridgeport="False" dyn="False" id="id4833F6316131" label="" name="eth0" security_level="50" unnum="False" unprotected="False">
           <IPv4 id="id4833F6326131" name="firewall-ipv6-1:eth0:ip" address="1.1.1.1" netmask="255.255.255.0"/>
           <IPv6 comment="" id="id4833F6346131" name="firewall-ipv6-1:eth0:ipv6" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
+        </Interface>
+        <Interface bridgeport="False" comment="" dyn="False" id="id4841FADB30813" label="" mgmt="False" name="lo" security_level="100" unnum="False" unprotected="False">
+          <IPv4 comment="" id="id4841FADC30813" name="firewall-ipv6-1:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
+          <IPv6 comment="" id="id4841FADD30813" name="firewall-ipv6-1:lo:ipv6" address="::1" netmask="128"/>
         </Interface>
         <Management address="1.1.1.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>

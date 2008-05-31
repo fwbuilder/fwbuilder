@@ -978,7 +978,9 @@ void PolicyCompiler_pf::compile()
             add( new recursiveGroupsInSrv("check for recursive groups in SRV"));
             check_for_recursive_groups=false;
 
-            add( new ExpandGroups                ("expand groups"          ) );
+            add( new ExpandGroups("expand groups"          ) );
+            add( new dropRuleWithEmptyRE(
+                     "drop rules with empty rule elements"));
             add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC") );
             add( new eliminateDuplicatesInDST("eliminate duplicates in DST") );
             add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV") );
@@ -997,6 +999,8 @@ void PolicyCompiler_pf::compile()
                      "expand objects with multiple addresses in SRC" ) );
             add( new ExpandMultipleAddressesInDST(
                      "expand objects with multiple addresses in DST" ) );
+            add( new dropRuleWithEmptyRE(
+                     "drop rules with empty rule elements"));
             add( new ConvertToAtomic             ("convert to atomic rules") );
             add( new DetectShadowing             ("Detect shadowing"       ) );
             add( new simplePrintProgress         (                         ) );
@@ -1026,6 +1030,7 @@ void PolicyCompiler_pf::compile()
 
 // ExpandGroups opens groups, as well as groups in groups etc.
         add( new ExpandGroups(          "expand groups"                      ));
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
         add( new CheckForTCPEstablished(
                  "check for TCPService objects with flag \"established\"") );
@@ -1061,6 +1066,7 @@ void PolicyCompiler_pf::compile()
                  "add loopback to rules that permit redirected services" ) );
 	add( new ExpandMultipleAddresses(
                  "expand objects with multiple addresses" ) );
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
         add( new checkForDynamicInterfacesOfOtherObjects(
                  "check for dynamic interfaces of other hosts and firewalls" ));
         add( new MACFiltering(          "verify for MAC address filtering"   ));
