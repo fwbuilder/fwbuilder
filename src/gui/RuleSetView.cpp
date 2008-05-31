@@ -1658,7 +1658,9 @@ void RuleSetView::paintCell(QPainter *pntr,
                 x += pm.width()+1;
                 if (st->getShowDirectionText())
                 {
-                    res = act.c_str() ;
+                    QString res2 = act.c_str();
+                    res2 += " " ;
+                    res =  res2 + res ;
                 }
                 QRect br=p.boundingRect(QRect(x, y, 1000, 1000),
                                         Qt::AlignLeft|Qt::AlignVCenter,
@@ -1718,7 +1720,7 @@ void RuleSetView::paintCell(QPainter *pntr,
                 if (policyRule && policyRule->getLogging())
                 {
                     QString icn = chooseIcon(":/Icons/Log");//Resources::global_res->getResourceStr("/FWBuilderResources/UI/Icons/Log" ).c_str();
-                    assert(icn!="");
+                    //assert(icn!="");
 
                     QPixmap pm;
                     LoadPixmap(icn, pm);
