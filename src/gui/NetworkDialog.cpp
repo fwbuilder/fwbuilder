@@ -66,7 +66,7 @@ void NetworkDialog::loadFWObject(FWObject *o)
     obj=o;
     Network *s = dynamic_cast<Network*>(obj);
     assert(s!=NULL);
-
+    
     init=true;
 
     fillLibraries(m_dialog->libs,obj);
@@ -125,17 +125,29 @@ void NetworkDialog::validate(bool *res)
     }
     try
     {
-        InetAddr( m_dialog->netmask->text().toLatin1().constData() );
-    } catch (FWException &ex)
-    {
         QString len = m_dialog->netmask->text() ;
         bool ok = false ;
         int ilen = len.toInt (&ok);
         if (ok)
         {
             if (ilen>0 && ilen < 32)
+            {
                 return ;
+            }
+            else
+            {
+                    *res=false;
+        QMessageBox::critical(this, "Firewall Builder",
+                              tr("Illegal netmask '%1'").arg( m_dialog->netmask->text() ),
+                              tr("&Continue"), 0, 0,
+                              0 );
+
+            }
         }
+        InetAddr( m_dialog->netmask->text().toLatin1().constData() );
+    } catch (FWException &ex)
+    {
+
         *res=false;
         QMessageBox::critical(this, "Firewall Builder",
                               tr("Illegal netmask '%1'").arg( m_dialog->netmask->text() ),
@@ -158,6 +170,7 @@ void NetworkDialog::applyChanges()
 {
     Network *s = dynamic_cast<Network*>(obj);
     assert(s!=NULL);
+    s->dump(false,false);
     string oldname=obj->getName();
     obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
@@ -173,13 +186,22 @@ void NetworkDialog::applyChanges()
 
     try
     {
-        s->setNetmask(
-            InetAddr(m_dialog->netmask->text().toLatin1().constData()) );
+        QString len = m_dialog->netmask->text() ;
+        bool ok = false ;
+        int ilen = len.toInt (&ok);
+        if (ok)
+        {
+            s->setNetmask(InetAddr(ilen));
+        }
+        else
+        {
+            s->setNetmask(
+                InetAddr(m_dialog->netmask->text().toLatin1().constData()) );
+        }
     } catch (FWException &ex)
     {
 /* exception thrown if user types illegal m_dialog->address or m_dialog->netmask */
-        bool ok = false ;
-        s->setNetmask(InetAddr(m_dialog->netmask->text().toInt(&ok)));
+//        bool ok = false ;
     }
 
 

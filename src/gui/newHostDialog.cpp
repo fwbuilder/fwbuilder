@@ -514,26 +514,35 @@ void newHostDialog::addInterface()
         }
         try
         {
-            InetAddr(netm.toLatin1().constData());
-        }
-        catch (FWException &ex)
-        {
             bool ok = false ;
             int ilen = netm.toInt (&ok);
-            if (ok&&(ilen>0 && ilen < 32))
+            if (ok)
             {
-            
-            }
-            else
-            {
-    
+                  if (ilen>0 && ilen < 32)
+                  {
                 QMessageBox::warning(
                     this,"Firewall Builder",
                     tr("Illegal address '%1/%2'").arg(addr).arg(netm),
-                    "&Continue", QString::null, QString::null, 0, 1 );
-                return;
+                    "&Continue", QString::null, QString::null, 0, 1 );           
+                    return ;
+
+                  }          
             }
+            else
+            {
+                InetAddr(netm.toLatin1().constData());
+
+            }
+
         }
+        catch (FWException &ex)
+        {
+                QMessageBox::warning(
+                    this,"Firewall Builder",
+                    tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+                    "&Continue", QString::null, QString::null, 0, 1 );           
+        }
+
 
     }
     QStringList sl;
