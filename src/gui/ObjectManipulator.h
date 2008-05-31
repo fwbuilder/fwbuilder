@@ -195,7 +195,8 @@ public slots:
      void newServiceGroup();
      
      void newInterval();
-
+     void newPolicyRuleSet ();
+     void newNATRuleSet ();
      void duplicateObj(QAction*);
      void duplicateObjUnderSameParent();
      void moveObj(QAction*);

@@ -1052,9 +1052,18 @@ QAction *movID;
 
         if ( (Firewall::isA(currentObj) || Host::isA(currentObj)) &&
              ! currentObj->isReadOnly() )
+        {
             newID1=popup->addAction( tr("Add Interface"),     this ,
                                SLOT( newInterface() ) );
 
+        }
+        if ((Firewall::isA(currentObj)  &&! currentObj->isReadOnly()))
+        {
+            newID1=popup->addAction( tr("Add Policy Rule Set"),     this ,
+                               SLOT( newPolicyRuleSet() ) );
+            newID1=popup->addAction( tr("Add NAT Rule Set"),     this ,
+                               SLOT( newNATRuleSet() ) );
+        }
         if (Interface::isA(currentObj) && ! currentObj->isReadOnly())
         {
             newID1=popup->addAction( tr("Add IP Address"),    this ,
@@ -2788,6 +2797,31 @@ void ObjectManipulator::newLibrary()
     
 }
 
+void ObjectManipulator::newPolicyRuleSet ()
+{
+    if ( currentObj->isReadOnly() ) return;
+    FWObject *o=createObject(currentObj,Policy::TYPENAME,tr("New Policy"));
+    if (o!=NULL)
+    {
+        openObject(o);
+        editObject(o);
+    }
+
+}
+
+void ObjectManipulator::newNATRuleSet ()
+{
+    if ( currentObj->isReadOnly() ) return;
+    FWObject *o=createObject(currentObj,NAT::TYPENAME,tr("New NAT"));
+    if (o!=NULL)
+    {
+        openObject(o);
+        editObject(o);
+    }
+
+}
+
+
 void ObjectManipulator::newFirewall()
 {
 //    QVector <ObjectManipulator*> oms = getAllMdiObjectManipulators();
@@ -2967,6 +3001,7 @@ void ObjectManipulator::newAddressTable()
         editObject(o);
     }
 }
+
 
 void ObjectManipulator::newInterfaceAddress()
 {
