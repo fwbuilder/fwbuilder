@@ -3629,11 +3629,12 @@ void ProjectPanel::findWhereUsed(FWObject * obj)
 }
 
 void ProjectPanel::showEvent( QShowEvent *ev)
-{   if (rcs!=NULL)
-    if (!firstLoad)
-    {
-        loadSplitters();
-    }
+{ 
+//  if (rcs!=NULL)
+//    if (!firstLoad)
+//    {
+//        loadSplitters();
+//    }
     QWidget::showEvent(ev);
 }
 
@@ -3641,6 +3642,10 @@ void ProjectPanel::loadSplitters()
 {
     firstLoad=true ;
     QString val = st->getStr("Layout/MainWindowSplitter"+getFileName());
+    QString out1 = "load Layout/MainWindowSplitter"+getFileName();
+    out1+= " " + val;
+    qDebug(out1.toAscii().data());
+    
     if (!val.isEmpty())
     {
         int  w1 = val.section(',',0,0).toInt();
@@ -3727,23 +3732,26 @@ void ProjectPanel::saveState ()
             st->setInt("Window/"+FileName+"/y",mdiWindow->y());
             st->setInt("Window/"+FileName+"/width",mdiWindow->width ());
             st->setInt("Window/"+FileName+"/height",mdiWindow->height ());
-        }
+//        }
 
 
 
-    oe->hide();
-    fd->hide();
-    st->saveGeometry(this);
+//    oe->hide();
+//    fd->hide();
+//    st->saveGeometry(this);
     QList<int> sl = m_panel->mainSplitter->sizes();
     QString arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
     if (sl[0] || sl[1])
         st->setStr("Layout/MainWindowSplitter"+getFileName(), arg );
+    QString out1 = " save Layout/MainWindowSplitter"+getFileName();
+    out1+= " " + arg;
+    qDebug(out1.toAscii().data());
 
     sl = m_panel->objInfoSplitter->sizes();
     arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
     if (sl[0] || sl[1])
         st->setStr("Layout/ObjInfoSplitter"+getFileName(), arg );
-    
+        }  
     }
 }
 
@@ -3768,7 +3776,7 @@ void ProjectPanel::loadState ()
             height= 600;
         }
         firstResize=true ;
-        loadSplitters();
+//        loadSplitters();
         mdiWindow->setGeometry (x,y,width,height);
         
         }
@@ -3796,14 +3804,17 @@ void ProjectPanel::resizeEvent ( QResizeEvent* )
             oldState=0;
         return ;
     }*/
-    if (!firstResize&&rcs!=NULL)
-    {
-        loadState();
-    } 
     if (firstResize)
     {
         saveState();
     }   
+
+    if (!firstResize&&rcs!=NULL)
+    {
+        loadState();
+        loadSplitters();
+        firstResize = true ;    
+    } 
 }
 
 ProjectPanel * ProjectPanel::clone (ProjectPanel * cln)
