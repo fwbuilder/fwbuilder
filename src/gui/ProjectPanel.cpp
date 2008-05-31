@@ -186,7 +186,7 @@ ProjectPanel::ProjectPanel(QWidget *parent):
   editingTemplateLib(false),
   ruleSetRedrawPending(false), objdb(0), editorOwner(0), 
   oe(0), fd(0), shownInInfo(0), autosaveTimer(new QTimer(static_cast<QObject*>(this))), ruleSetTabIndex(0),
-    visibleFirewall(0),lastFirewallIdx(-2), changingTabs(false),
+    visibleFirewall(0), visibleRuleSet(0),lastFirewallIdx(-2), changingTabs(false),
      noFirewalls(tr("No firewalls defined")), m_panel(0), findObjectWidget(0), 
      findWhereUsedWidget(0)
 {
