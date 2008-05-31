@@ -290,7 +290,8 @@ string PolicyCompiler_ipt::PrintRule::_printTarget(PolicyRule *rule)
     
     if (target=="MARK")
     {
-        ostr << " --set-mark " << ruleopt->getStr("tagvalue");
+//        ostr << " --set-mark " << ruleopt->getStr("tagvalue");
+        ostr << " --set-mark " << rule->getTagValue();
     }
 
     if (target=="CONNMARK")

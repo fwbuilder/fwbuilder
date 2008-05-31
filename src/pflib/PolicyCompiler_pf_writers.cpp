@@ -281,7 +281,8 @@ void PolicyCompiler_pf::PrintRule::_printTag(PolicyRule *rule)
     FWOptions *ruleopt =rule->getOptionsObject();
 
     if (rule->getAction() == PolicyRule::Tag)
-        compiler->output << "tag " << ruleopt->getStr("tagvalue") << " ";
+        compiler->output << "tag " << rule->getTagValue() << " ";
+//        compiler->output << "tag " << ruleopt->getStr("tagvalue") << " ";
 }
 
 void PolicyCompiler_pf::PrintRule::_printDirection(PolicyRule *rule)
