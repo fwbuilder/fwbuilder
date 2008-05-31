@@ -370,6 +370,8 @@ QVector <ObjectManipulator*> ObjectManipulator::getAllMdiObjectManipulators ()
 {
     QVector <ObjectManipulator*> ret ;
     QList<QMdiSubWindow *> subWindowList = mw->getMdiArea()->subWindowList();
+    if (m_project->getRCS()==NULL)
+        return ret ;
     QString fileName = m_project->getRCS()->getFileName();
     for (int i = 0 ; i < subWindowList.size();i++)
     {
