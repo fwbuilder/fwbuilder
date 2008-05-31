@@ -432,17 +432,17 @@ void ObjectManipulator::removeObjectFromTreeView(FWObject *obj )
 
 void ObjectManipulator::updateLibColor(FWObject *lib)
 {
-    QVector <ObjectManipulator*> oms = getAllMdiObjectManipulators();
-    for (int i = 0 ; i < oms.size(); i++)
-    {
-        ObjectManipulator* pom = oms[i] ;
-        QTreeWidget *objTreeView = pom->idxToTrees[ pom->getIdxForLib(lib) ];
+//    QVector <ObjectManipulator*> oms = getAllMdiObjectManipulators();
+//    for (int i = 0 ; i < oms.size(); i++)
+//    {
+//        ObjectManipulator* pom = oms[i] ;
+        QTreeWidget *objTreeView = idxToTrees[ getIdxForLib(lib) ];
         QString clr=lib->getStr("color").c_str();
         if (clr=="" || clr=="#000000" || clr=="black") clr="#FFFFFF";
         QPalette palette = objTreeView->palette();
         palette.setColor(QPalette::Active, QPalette::Base, QColor( clr ));
         objTreeView->setPalette(palette);
-    }
+//    }
 }
 
 int ObjectManipulator::getIdxForLib(FWObject* lib)
