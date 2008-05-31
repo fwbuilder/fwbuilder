@@ -352,13 +352,20 @@ RuleSet*   PolicyRule::getBranch()
     FWObject *fw = this;
     while (fw && !Firewall::isA(fw)) fw = fw->getParent();
     assert(fw!=NULL);
-    string branch_name = getOptionsObject()->getStr("branch_name");
-    if (!branch_name.empty())
+    string branch_id = getOptionsObject()->getStr("branch_id");
+    if (!branch_id.empty())
     {
-        return RuleSet::cast(
-            fw->findObjectByName(Policy::TYPENAME, branch_name));
+        return RuleSet::cast(getRoot()->findInIndex(branch_id));
     } else
-        return NULL;
+    {
+        string branch_name = getOptionsObject()->getStr("branch_name");
+        if (!branch_name.empty())
+        {
+            return RuleSet::cast(
+                fw->findObjectByName(Policy::TYPENAME, branch_name));
+        } else
+            return NULL;
+    }
 }
 
 /***************************************************************************/
@@ -513,12 +520,19 @@ RuleSet*   NATRule::getBranch()
 {
     FWObject *fw = getParent()->getParent();
     assert(fw!=NULL);
-    string branch_name = getOptionsObject()->getStr("branch_name");
-    if (!branch_name.empty())
-        return RuleSet::cast(fw->findObjectByName(NAT::TYPENAME,
+    string branch_id = getOptionsObject()->getStr("branch_id");
+    if (!branch_id.empty())
+    {
+        return RuleSet::cast(getRoot()->findInIndex(branch_id));
+    } else
+    {
+        string branch_name = getOptionsObject()->getStr("branch_name");
+        if (!branch_name.empty())
+            return RuleSet::cast(fw->findObjectByName(NAT::TYPENAME,
                                                   branch_name));
-    else
-        return NULL;
+        else
+            return NULL;
+    }
 }
 
 NATRule::NATRuleTypes NATRule::getRuleType() const
@@ -703,12 +717,19 @@ RuleSet*   RoutingRule::getBranch()
 {
     FWObject *fw = getParent()->getParent();
     assert(fw!=NULL);
-    string branch_name = getOptionsObject()->getStr("branch_name");
-    if (!branch_name.empty())
-        return RuleSet::cast(fw->findObjectByName(Routing::TYPENAME,
-                                                  branch_name));
-    else
-        return NULL;
+    string branch_id = getOptionsObject()->getStr("branch_id");
+    if (!branch_id.empty())
+    {
+        return RuleSet::cast(getRoot()->findInIndex(branch_id));
+    } else
+    {
+        string branch_name = getOptionsObject()->getStr("branch_name");
+        if (!branch_name.empty())
+            return RuleSet::cast(fw->findObjectByName(Routing::TYPENAME,
+                                                      branch_name));
+        else
+            return NULL;
+    }
 }
 
 RoutingRule::RoutingRuleTypes RoutingRule::getRuleType() const
