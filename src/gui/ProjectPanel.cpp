@@ -801,14 +801,16 @@ void ProjectPanel::reopenFirewall()
     {
         m_panel->ruleSets->removeWidget(m_panel->ruleSets->widget(i));
     }
-    QString name = visibleRuleSet->getName().c_str();
+    m_panel->rulesetname->setTextFormat(Qt::RichText);
+    QString name = "<B>";
+    name += visibleRuleSet->getName().c_str();
     name += " / ";
     Policy *rule = Policy::cast(visibleRuleSet);
     if (rule!=NULL)
     {
        // if (rule->getAction() == PolicyRule::Branch)
             m_panel->ruleSets->addWidget( new PolicyView(this, rule,NULL) );
-            m_panel->rulesetname->setText(name + tr("Policy"));
+            m_panel->rulesetname->setText(name + tr("Policy") + "</B>");
            
     // addPolicyBranchTab(rule);
     }
@@ -817,14 +819,14 @@ void ProjectPanel::reopenFirewall()
         if (nat!=NULL)
         {
             m_panel->ruleSets->addWidget( new NATView(this, nat,NULL) );
-            m_panel->rulesetname->setText(name + tr("NAT"));
+            m_panel->rulesetname->setText(name + tr("NAT")+ "</B>");
         }
 
         Routing *r = Routing::cast(visibleRuleSet);
         if (r!=NULL)
         {
             m_panel->ruleSets->addWidget( new RoutingView(this, r,NULL) );
-            m_panel->rulesetname->setText(name + tr("Routing"));
+            m_panel->rulesetname->setText(name + tr("Routing")+ "</B>");
         }
 // as of 2.1.5 we have rule branches :-)
 // so far branches are only supported in policy rules because only there
@@ -940,23 +942,25 @@ void ProjectPanel::removeFirewallFromList(libfwbuilder::FWObject *o)
 
 void ProjectPanel::updateFirewallName(libfwbuilder::FWObject *obj,const QString &str)
 {
-    QString name = visibleRuleSet->getName().c_str();
+    QString name = "<B>";
+    name += visibleRuleSet->getName().c_str();
     name += " / ";
+    m_panel->rulesetname->setTextFormat(Qt::RichText);
     Policy *rule = Policy::cast(visibleRuleSet);
     if (rule!=NULL)
     {
-        m_panel->rulesetname->setText(name + tr("Policy"));           
+        m_panel->rulesetname->setText(name + tr("Policy")+ "</B>");           
     }
     NAT *nat  = NAT::cast(visibleRuleSet);
     if (nat!=NULL)
     {
-        m_panel->rulesetname->setText(name + tr("NAT"));
+        m_panel->rulesetname->setText(name + tr("NAT")+ "</B>");
     }
 
     Routing *r = Routing::cast(visibleRuleSet);
     if (r!=NULL)
     {
-        m_panel->rulesetname->setText(name + tr("Routing"));
+        m_panel->rulesetname->setText(name + tr("Routing")+ "</B>");
     }
 
 /*    updateFirewallName(obj, str);
