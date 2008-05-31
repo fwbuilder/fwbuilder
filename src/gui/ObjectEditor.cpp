@@ -75,6 +75,7 @@
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/ServiceGroup.h"
 #include "fwbuilder/TagService.h"
+#include "fwbuilder/UserService.h"
 
 #include "fwbuilder/Interval.h"
 #include "fwbuilder/IntervalGroup.h"
@@ -105,6 +106,10 @@ ObjectEditor::ObjectEditor( QWidget *parent, ProjectPanel *project):
 #endif
 
     QWidget *w;
+    w= DialogFactory::createDialog(m_project, parent,UserService::TYPENAME);
+    stackIds[UserService::TYPENAME]  = parentWidget->addWidget(w);
+    dialogs[stackIds[UserService::TYPENAME]] = w;
+
     w= DialogFactory::createDialog(m_project, parent,Policy::TYPENAME);
     stackIds[Policy::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[Policy::TYPENAME]] = w;

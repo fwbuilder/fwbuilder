@@ -43,6 +43,7 @@
 #include "AddressTableDialog.h"
 #include "NetworkDialog.h"
 #include "NetworkDialogIPv6.h"
+#include "UserDialog.h"
 #include "CustomServiceDialog.h"
 #include "ICMPServiceDialog.h"
 #include "IPServiceDialog.h"
@@ -99,6 +100,7 @@
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/TagService.h"
+#include "fwbuilder/UserService.h"
 
 #include <iostream>
 #include "ProjectPanel.h"
@@ -108,6 +110,8 @@ using namespace libfwbuilder;
 
 QWidget *DialogFactory::createDialog(ProjectPanel *project, QWidget *parent,const QString &objType)
 {
+    if (objType==UserService::TYPENAME)   return new UserDialog(project, parent);
+
     if (objType==Policy::TYPENAME)        return new RuleSetDialog(project, parent);
 
     if (objType==NAT::TYPENAME)           return new RuleSetDialog(project, parent);
