@@ -51,6 +51,7 @@ class FWObjectDropArea : public QWidget//Ui::FWObjectDropArea_q
  private:
         libfwbuilder::FWObject *object;
         QVector <QString> acceptedTypes ;
+        QString helperText ;
  protected:
         void paintEvent(QPaintEvent *ev);
         void contextMenuEvent (QContextMenuEvent * e);
@@ -65,7 +66,7 @@ class FWObjectDropArea : public QWidget//Ui::FWObjectDropArea_q
     void setObject(libfwbuilder::FWObject * o){ object = o ;};
     void addAcceptedTypes (QString type){acceptedTypes.push_back(type);};
     bool isEmpty() {return object==NULL;};
-
+    void setHelperText (QString text){helperText=text;}
 public slots:
     void insertObject(libfwbuilder::FWObject *o);
     void deleteObject();

@@ -69,6 +69,7 @@ FWObjectDropArea::FWObjectDropArea(QWidget*p, const char * n, Qt::WFlags f):
     m_objectDropArea = new Ui::FWObjectDropArea_q;
     m_objectDropArea->setupUi(this);
     object=NULL;
+    helperText =tr("Drop object here.");
 
 }
 void FWObjectDropArea::paintEvent(QPaintEvent *ev)
@@ -116,7 +117,7 @@ void FWObjectDropArea::paintEvent(QPaintEvent *ev)
     }
     else
     {
-        QString t=tr("Drop object here.");
+        QString t=helperText ; 
 
         int t_x=2;
         int t_y=2;

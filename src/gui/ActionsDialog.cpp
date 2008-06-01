@@ -70,6 +70,7 @@ ActionsDialog::ActionsDialog(QWidget *parent) : QWidget(parent)
     BranchChainArea->addAcceptedTypes("Policy");
     BranchChainArea->addAcceptedTypes("NAT");
     BranchChainArea->addAcceptedTypes("Routing");
+    BranchChainArea->setHelperText("Drop rule set object here");
     m_dialog->gridLayout17->addWidget(BranchChainArea);
     connect (BranchChainArea,SIGNAL(objectDeleted()),this,SLOT(changed()));
     connect (BranchChainArea,SIGNAL(objectInserted()),this,SLOT(changed()));
@@ -79,6 +80,7 @@ ActionsDialog::ActionsDialog(QWidget *parent) : QWidget(parent)
     BranchAnchorArea->addAcceptedTypes("Policy");
     BranchAnchorArea->addAcceptedTypes("NAT");
     BranchAnchorArea->addAcceptedTypes("Routing");
+    BranchAnchorArea->setHelperText("Drop rule set object here");
     m_dialog->gridLayout20->addWidget(BranchAnchorArea);
     connect (BranchAnchorArea,SIGNAL(objectDeleted()),this,SLOT(changed()));
     connect (BranchAnchorArea,SIGNAL(objectInserted()),this,SLOT(changed()));

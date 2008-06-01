@@ -192,6 +192,7 @@ public slots:
      void newTCP();
      void newUDP();
      void newTagService();
+     void newUserService();
      void newServiceGroup();
      
      void newInterval();

@@ -562,7 +562,7 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(PolicyRule *rule)
                 par = ropt->getStr("action_on_reject").c_str();
                 break;
             case PolicyRule::Tag        :
-                par = ropt->getStr("tagvalue").c_str();
+                par = rule->getTagValue().c_str();//ropt->getStr("tagvalue").c_str();
                 break;
             case PolicyRule::Accounting :
                 par = ropt->getStr("rule_name_accounting").c_str();

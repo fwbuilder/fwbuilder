@@ -711,26 +711,26 @@ void ProjectPanel::showFirewalls(bool open_first_firewall)
 {
 /*    if (fwbdebug)  qDebug("ProjectPanel::showFirewalls");
 
-    list<FWObject*> fl;
+//    list<FWObject*> fl;
     findFirewalls(db(), fl);
     fl.sort(FWObjectNameCmpPredicate());
 
     firewalls.clear();
-    m_panel->fwList->clear();
+//    m_panel->fwList->clear();
     clearFirewallTabs();
     m_panel->firewallName->setText("");
-    if (fl.size()==0)
-    {
-        m_panel->fwList->addItem( noFirewalls );
-        return;
-    }
+//    if (fl.size()==0)
+//    {
+//        m_panel->fwList->addItem( noFirewalls );
+//        return;
+//    }
 
-    for (list<FWObject*>::iterator m=fl.begin(); m!=fl.end(); m++)
-        addFirewallToList( *m );
+//    for (list<FWObject*>::iterator m=fl.begin(); m!=fl.end(); m++)
+//        addFirewallToList( *m );
 
     if (open_first_firewall)
     {
-        m_panel->fwList->setCurrentIndex( 0 );
+//        m_panel->fwList->setCurrentIndex( 0 );
         openFirewall( 0 );
     }
     mainW->setActionsEnabled(fl.size()!=0);
@@ -803,31 +803,33 @@ void ProjectPanel::reopenFirewall()
     }
     m_panel->rulesetname->setTextFormat(Qt::RichText);
     QString name = "<B>";
-    name += visibleRuleSet->getName().c_str();
+    FWObject * p = visibleRuleSet->getParent();
+    name += p->getName().c_str();
     name += " / ";
+    name += visibleRuleSet->getName().c_str();
+    name += "</B>";
     Policy *rule = Policy::cast(visibleRuleSet);
+    m_panel->rulesetname->setText(name );
+
     if (rule!=NULL)
     {
        // if (rule->getAction() == PolicyRule::Branch)
             m_panel->ruleSets->addWidget( new PolicyView(this, rule,NULL) );
-            m_panel->rulesetname->setText(name + tr("Policy") + "</B>");
            
     // addPolicyBranchTab(rule);
     }
 
-        NAT *nat  = NAT::cast(visibleRuleSet);
-        if (nat!=NULL)
-        {
-            m_panel->ruleSets->addWidget( new NATView(this, nat,NULL) );
-            m_panel->rulesetname->setText(name + tr("NAT")+ "</B>");
-        }
+    NAT *nat  = NAT::cast(visibleRuleSet);
+    if (nat!=NULL)
+    {
+        m_panel->ruleSets->addWidget( new NATView(this, nat,NULL) );
+    }
 
-        Routing *r = Routing::cast(visibleRuleSet);
-        if (r!=NULL)
-        {
-            m_panel->ruleSets->addWidget( new RoutingView(this, r,NULL) );
-            m_panel->rulesetname->setText(name + tr("Routing")+ "</B>");
-        }
+    Routing *r = Routing::cast(visibleRuleSet);
+    if (r!=NULL)
+    {
+        m_panel->ruleSets->addWidget( new RoutingView(this, r,NULL) );
+    }
 // as of 2.1.5 we have rule branches :-)
 // so far branches are only supported in policy rules because only there
 // we have action which we use to define branching rules

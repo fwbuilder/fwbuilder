@@ -1213,10 +1213,18 @@ QRect RuleSetView::calculateCellSize( int row, int col )
             PolicyRule *ruleP = PolicyRule::cast( rule );
             if (ruleP==NULL)
                 break ;
-            QString ac = ruleP->getActionAsString().c_str();
-             
 
- 
+            string act = ruleP->getActionAsString();
+            QString res="";
+            res = FWObjectPropertiesFactory::getRuleActionProperties(ruleP);
+            if (st->getShowDirectionText())
+            {
+                QString res2 = act.c_str();
+                res2 += " " ;
+                res =  res2 + res ;
+            }
+
+            QString ac = res;
                     //FWObjectPropertiesFactory::getRuleActionProperties(
                     //PolicyRule::cast(rule));
             QRect br=p.boundingRect(QRect(0, 0, 1000, 1000),
@@ -1646,7 +1654,6 @@ void RuleSetView::paintCell(QPainter *pntr,
 
                 QString platform=getPlatform();
                 string act = rule->getActionAsString();
-
                 QString icn = chooseIcon((":/Icons/" + act).c_str()); //for example :/Icons/Continue
                 QString res="";
             //FWOptions *ropt = rule->getOptionsObject();
@@ -3502,12 +3509,17 @@ QVector <ProjectPanel*> RuleSetView::getAllMdiProjectPanel ()
 {
     QVector <ProjectPanel*> ret ;
     QList<QMdiSubWindow *> subWindowList = mw->getMdiArea()->subWindowList();
+    if (m_project->getRCS()==NULL)
+        return ret ;
+    ret.push_back (m_project);
     QString fileName = m_project->getRCS()->getFileName();
     for (int i = 0 ; i < subWindowList.size();i++)
     {
         ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
         if (pp!=NULL)
         {
+            if (pp==this->m_project)
+                continue ;
             if (pp->getFileName () == fileName)
             {
                 ret.push_back (pp);

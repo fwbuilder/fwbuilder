@@ -110,6 +110,7 @@
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/ServiceGroup.h"
 #include "fwbuilder/TagService.h"
+#include "fwbuilder/UserService.h"
 
 #include "fwbuilder/Interval.h"
 #include "fwbuilder/IntervalGroup.h"
@@ -180,6 +181,7 @@ ObjectManipulator::ObjectManipulator( QWidget *parent):
     newObjectPopup->addAction(QIcon(icon_path+TCPService::TYPENAME+"/icon-tree"), tr( "New &TCP Serivce" ), this, SLOT( newTCP() ));
     newObjectPopup->addAction(QIcon(icon_path+UDPService::TYPENAME+"/icon-tree"), tr( "New &UDP Service" ), this, SLOT( newUDP() ));
     newObjectPopup->addAction(QIcon(icon_path+TagService::TYPENAME+"/icon-tree"), tr( "New &TagService" ), this, SLOT( newTagService() ));
+    newObjectPopup->addAction(QIcon(icon_path+UserService::TYPENAME+"/icon-tree"), tr( "New &User Service" ), this, SLOT( newUserService() ));
     newObjectPopup->addAction(QIcon(icon_path+ServiceGroup::TYPENAME+"/icon-tree"), tr( "New &Service Group" ), this, SLOT( newServiceGroup() ));
     newObjectPopup->addSeparator();
     newObjectPopup->addAction(QIcon(icon_path+Interval::TYPENAME+"/icon-tree"), tr( "New Ti&me Interval" ), this, SLOT( newInterval() ));
@@ -405,12 +407,14 @@ QVector <ObjectManipulator*> ObjectManipulator::getAllMdiObjectManipulators()
     if (m_project->getRCS()==NULL)
         return ret ;
     QString fileName = m_project->getRCS()->getFileName();
+    ret.push_back (this);
     for (int i = 0 ; i < subWindowList.size();i++)
     {
-        ProjectPanel * pp = dynamic_cast<ProjectPanel *>(
-            subWindowList[i]->widget());
+        ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
         if (pp!=NULL)
-        {
+        {   
+            if (pp==m_project)
+                continue ;
             if (pp->getFileName () == fileName)
             {
                 ret.push_back (pp->m_panel->om);
@@ -438,17 +442,17 @@ void ObjectManipulator::removeObjectFromTreeView(FWObject *obj )
 
 void ObjectManipulator::updateLibColor(FWObject *lib)
 {
-//    QVector <ObjectManipulator*> oms = getAllMdiObjectManipulators();
-//    for (int i = 0 ; i < oms.size(); i++)
-//    {
-//        ObjectManipulator* pom = oms[i] ;
-        QTreeWidget *objTreeView = idxToTrees[ getIdxForLib(lib) ];
-        QString clr=lib->getStr("color").c_str();
+    QVector <ObjectManipulator*> oms = getAllMdiObjectManipulators();
+    QString clr=lib->getStr("color").c_str();
+    for (int i = 0 ; i < oms.size(); i++)
+    {
+        ObjectManipulator* pom = oms[i] ;
+        QTreeWidget *objTreeView = pom->idxToTrees[ pom->getIdxForLib(lib) ];
         if (clr=="" || clr=="#000000" || clr=="black") clr="#FFFFFF";
         QPalette palette = objTreeView->palette();
         palette.setColor(QPalette::Active, QPalette::Base, QColor( clr ));
         objTreeView->setPalette(palette);
-//    }
+    }
 }
 
 int ObjectManipulator::getIdxForLib(FWObject* lib)
@@ -1893,9 +1897,7 @@ void ObjectManipulator::deleteObj()
     bool emptyingTrash      = false;
     bool emptyingTrashInLib = false;
     
-    FWObject *delObjLib =
-        m_project->db()->findInIndex(FWObjectDatabase::getDeletedObjectsId());
-
+        FWObject *delObjLib = m_project->db()->findInIndex(FWObjectDatabase::getDeletedObjectsId());
     if (fwbdebug)
         qDebug("ObjectManipulator::deleteObj  delObjLib=%p",delObjLib);
     
@@ -2036,30 +2038,32 @@ void ObjectManipulator::delObj(FWObject *obj,bool openobj)
 {
     bool firstAction = true ;
     QVector <ObjectManipulator*> oms = getAllMdiObjectManipulators();
+
+        if (fwbdebug)
+            qDebug("ObjectManipulator::delObj  delete obj %p %s openobj=%d",
+                obj,obj->getName().c_str(),openobj);
+
+        FWObject *parent=obj->getParent();
+        FWObject *delObjLib = m_project->db()->findInIndex( DELETED_LIB );
+
+        if (fwbdebug)
+            qDebug("ObjectManipulator::delObj  deleted obj lib %p",
+                delObjLib);
+
+        bool islib  = Library::isA(obj);
+//        bool isintf = (Interface::isA(obj) && Firewall::isA(parent));
+        bool isfw   = Firewall::isA(obj);
+        bool isDelObj = (delObjLib!=NULL && obj->isChildOf(delObjLib));
+
+
     for (int i = 0 ; i < oms.size(); i++)
     {
         ObjectManipulator* pom = oms[i] ;
-
         if (obj->getId()==STANDARD_LIB || obj->getId()==DELETED_LIB) return;
     
         pom->m_project->findObjectWidget->reset();
         try
         {
-            if (fwbdebug)
-                qDebug("ObjectManipulator::delObj  delete obj %p %s openobj=%d",
-                       obj,obj->getName().c_str(),openobj);
-    
-            FWObject *parent=obj->getParent();
-            FWObject *delObjLib = pom->m_project->db()->findInIndex( DELETED_LIB );
-    
-            if (fwbdebug)
-                qDebug("ObjectManipulator::delObj  deleted obj lib %p",
-                       delObjLib);
-    
-            bool islib  = Library::isA(obj);
-            //        bool isintf = (Interface::isA(obj) && Firewall::isA(parent));
-            bool isfw   = Firewall::isA(obj);
-            bool isDelObj = (delObjLib!=NULL && obj->isChildOf(delObjLib));
     
             if (!islib && !isDelObj && obj->getId()!=TEMPLATE_LIB)
                 pom->updateLastModifiedTimestampForAllFirewalls(obj);
@@ -2067,16 +2071,15 @@ void ObjectManipulator::delObj(FWObject *obj,bool openobj)
             if (fwbdebug)
                 qDebug("ObjectManipulator::delObj  delete islib=%d isfw=%d isDelObj=%d",islib,isfw,isDelObj);
     
-            /*
-             * TODO: we have to remove not only the object, but also
-             * all its child objects from the database, as well as all
-             * references to them. This logic should really be in
-             * FWObject::removeAllInstances(FWObject*);
-             */
+    /*
+    * TODO: we have to remove not only the object, but also all its child
+    * objects from the database, as well as all references to them. This
+    * logic should really be in FWObject::removeAllInstances(FWObject*);
+    */
     
-            /* remove from our internal tables before it is removed from the
-             * object tree so we could use obj->getId()
-             */
+    /* remove from our internal tables before it is removed from the
+    * object tree so we could use obj->getId()
+    */
             if (islib && !isDelObj)
             {
                 int idx = pom->getIdxForLib(obj);
@@ -2094,13 +2097,13 @@ void ObjectManipulator::delObj(FWObject *obj,bool openobj)
             //if (isfw && !isDelObj) pom->m_project->deleteFirewall(obj);
     
     
-            //        removeObjectFromTreeView(obj);
+    //        removeObjectFromTreeView(obj);
     
             QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
     
             if (islib && obj->isReadOnly()) obj->setReadOnly(false);
-            if (firstAction)
-            {
+ //           if (firstAction)
+ //           {
                 if (obj->getId()==TEMPLATE_LIB) // special case
                 {
                     if (fwbdebug)
@@ -2118,21 +2121,22 @@ void ObjectManipulator::delObj(FWObject *obj,bool openobj)
                         parent=pom->m_project->db()->getFirstByType(
                             Library::TYPENAME);
                 }
-    
+        
                 QApplication::restoreOverrideCursor();
                 if (fwbdebug) qDebug("ObjectManipulator::delObj:   done");
-            }
+//            }
             pom->removeObjectFromTreeView(obj);
-            pom->m_project->scheduleRuleSetRedraw();
+            if (pom==this)
+                pom->m_project->scheduleRuleSetRedraw();
     
             if (!isDelObj)
             {
                 if (pom->allItems[delObjLib]!=NULL)
-                    pom->insertSubtree( allItems[delObjLib], obj );
+                    pom->insertSubtree( pom->allItems[delObjLib], obj );
             } else
                 FWObjectClipboard::obj_clipboard->clear();
     
-            if (openobj)
+            if (openobj&&pom==this)
             {
                 if (isfw && !isDelObj)
                 {
@@ -2312,7 +2316,16 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
     if (fwbdebug) qDebug("ObjectManipulator::switchObjectInEditor");
 
     m_project->unselectRules();
-
+    if (RuleSet::cast(obj)!=NULL)
+        {
+//        qDebug("!2");
+        if (obj!=m_project->getCurrentRuleSet()) 
+        {           
+            if (m_project->getCurrentRuleSet()!=NULL)
+                m_project->openRuleSet(obj);
+        }
+    
+        }
     if (!m_project->isEditorVisible()) return false;
 
     if (!m_project->requestEditorOwnership(this,
@@ -2325,13 +2338,7 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
     
     if (obj!=m_project->getOpenedEditor())
     {
-        if (RuleSet::cast(obj)!=NULL)
-        {
-//        qDebug("!2");
-        if (obj!=m_project->getCurrentRuleSet())            
-            m_project->openRuleSet(obj);
-    
-        }
+        
         m_project->openEditor(obj);
         currentObj=obj;
         active=true;
@@ -3074,6 +3081,17 @@ void ObjectManipulator::newTagService()
         editObject(o);
     }
 }
+void ObjectManipulator::newUserService()
+{
+    FWObject *o;
+    o=createObject(UserService::TYPENAME,tr("New User Service"));
+    if (o!=NULL)
+    {
+        openObject(o);
+        editObject(o);
+    }
+}
+
 void ObjectManipulator::newPhysicalAddress()
 {
     if ( currentObj->isReadOnly() ) return;

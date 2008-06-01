@@ -139,7 +139,7 @@
            <enum>QFrame::Plain</enum>
           </property>
           <property name="currentIndex" >
-           <number>3</number>
+           <number>9</number>
           </property>
           <widget class="QWidget" name="TagStrPage" >
            <layout class="QGridLayout" >
@@ -205,6 +205,18 @@
             </item>
             <item row="2" column="0" >
              <widget class="QFrame" name="TagStrFrame" >
+              <property name="minimumSize" >
+               <size>
+                <width>80</width>
+                <height>80</height>
+               </size>
+              </property>
+              <property name="maximumSize" >
+               <size>
+                <width>80</width>
+                <height>16777215</height>
+               </size>
+              </property>
               <property name="frameShape" >
                <enum>QFrame::StyledPanel</enum>
               </property>
@@ -235,6 +247,19 @@
                </item>
               </layout>
              </widget>
+            </item>
+            <item row="2" column="1" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </widget>
@@ -939,16 +964,16 @@
           <widget class="QWidget" name="BranchChainPage" >
            <layout class="QGridLayout" >
             <property name="leftMargin" >
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="topMargin" >
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="rightMargin" >
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="bottomMargin" >
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="horizontalSpacing" >
              <number>2</number>
@@ -956,7 +981,7 @@
             <property name="verticalSpacing" >
              <number>2</number>
             </property>
-            <item row="0" column="1" >
+            <item row="0" column="1" colspan="2" >
              <spacer>
               <property name="orientation" >
                <enum>Qt::Vertical</enum>
@@ -966,13 +991,13 @@
               </property>
               <property name="sizeHint" >
                <size>
-                <width>20</width>
-                <height>0</height>
+                <width>589</width>
+                <height>21</height>
                </size>
               </property>
              </spacer>
             </item>
-            <item row="1" column="0" colspan="2" >
+            <item row="1" column="0" colspan="3" >
              <widget class="QLabel" name="textLabel1_3" >
               <property name="text" >
                <string>User-defined chain name:</string>
@@ -982,31 +1007,14 @@
               </property>
              </widget>
             </item>
-            <item row="4" column="0" >
-             <spacer>
-              <property name="orientation" >
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType" >
-               <enum>QSizePolicy::MinimumExpanding</enum>
-              </property>
-              <property name="sizeHint" >
+            <item row="2" column="0" colspan="2" >
+             <widget class="QFrame" name="branchChainNameFrame" >
+              <property name="minimumSize" >
                <size>
-                <width>20</width>
-                <height>0</height>
+                <width>80</width>
+                <height>80</height>
                </size>
               </property>
-             </spacer>
-            </item>
-            <item row="3" column="0" colspan="2" >
-             <widget class="QCheckBox" name="ipt_branch_in_mangle" >
-              <property name="text" >
-               <string>In addition to 'filter', create branching rule in 'mangle' table as well</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0" >
-             <widget class="QFrame" name="branchChainNameFrame" >
               <property name="frameShape" >
                <enum>QFrame::StyledPanel</enum>
               </property>
@@ -1037,6 +1045,42 @@
                </item>
               </layout>
              </widget>
+            </item>
+            <item row="2" column="2" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>531</width>
+                <height>30</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="3" column="0" colspan="3" >
+             <widget class="QCheckBox" name="ipt_branch_in_mangle" >
+              <property name="text" >
+               <string>In addition to 'filter', create branching rule in 'mangle' table as well</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType" >
+               <enum>QSizePolicy::MinimumExpanding</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>30</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </widget>

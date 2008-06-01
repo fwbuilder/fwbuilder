@@ -119,6 +119,17 @@ void RuleSetDialog::validate(bool *res)
     *res=true;
     if (!isTreeReadWrite(this,obj)) { *res=false; return; }
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
+    QRegExp rx("([a-zA-Z0-9_-+=@%^]+)");
+    if (!rx.exactMatch(m_dialog->obj_name->text()))
+    {
+        *res=false ;
+        QMessageBox::critical(this, "Firewall Builder",
+                              tr("Not valid name '%1'. Only '[a-z][A-Z][0-9]_-+=@%^' characters.").arg( m_dialog->obj_name->text() ),
+                              tr("&Continue"), 0, 0,
+                              0 );
+
+        return ;
+    }
 }
 
 void RuleSetDialog::isChanged(bool *res)

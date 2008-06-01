@@ -52,6 +52,7 @@
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
+#include "fwbuilder/UserService.h"
 #include "fwbuilder/ServiceGroup.h"
 #include "fwbuilder/Interval.h"
 #include "fwbuilder/IntervalGroup.h"
@@ -81,7 +82,7 @@ const char* systemObjects[] = {
     "Services/TCP",
     "Services/UDP",
     "Services/TagServices",
-
+    "Services/Users",
     "Firewalls",
 
     "Time",
@@ -111,6 +112,8 @@ FWBTree::FWBTree()
     systemGroupPaths[ICMPService::TYPENAME]   = "Services/ICMP";
     systemGroupPaths[TCPService::TYPENAME]    = "Services/TCP";
     systemGroupPaths[UDPService::TYPENAME]    = "Services/UDP";
+    systemGroupPaths[UserService::TYPENAME]    = "Services/Users";
+
     systemGroupPaths[TagService::TYPENAME]          = "Services/TagServices";
 
     systemGroupPaths[Firewall::TYPENAME]      = "Firewalls";
@@ -157,6 +160,9 @@ FWBTree::FWBTree()
 
     systemGroupTypes[ICMPService::TYPENAME]=   ServiceGroup::TYPENAME;
     systemGroupNames[ICMPService::TYPENAME]=   "ICMP"          ;
+
+    systemGroupTypes[UserService::TYPENAME]=   UserService::TYPENAME;
+    systemGroupNames[UserService::TYPENAME]=   "User"          ;
 
     systemGroupTypes[TCPService::TYPENAME]=    ServiceGroup::TYPENAME;
     systemGroupNames[TCPService::TYPENAME]=    "TCP"           ;
@@ -264,6 +270,7 @@ FWBTree::FWBTree()
     cutMenuState["Services/IP"] = false;
     cutMenuState["Services/TCP"] = false;
     cutMenuState["Services/UDP"] = false;
+    cutMenuState["Services/Users"] = false;
     cutMenuState["Services/TagServices"] = false;
     cutMenuState["Time"] = false;
 
@@ -284,6 +291,7 @@ FWBTree::FWBTree()
     pasteMenuState["Services/IP"] = true;
     pasteMenuState["Services/TCP"] = true;
     pasteMenuState["Services/UDP"] = true;
+    pasteMenuState["Services/Users"] = true;
     pasteMenuState["Services/TagServices"] = true;
     pasteMenuState["Time"] = true;
 
@@ -304,6 +312,7 @@ FWBTree::FWBTree()
     deleteMenuState["Services/IP"] = false;
     deleteMenuState["Services/TCP"] = false;
     deleteMenuState["Services/UDP"] = false;
+    deleteMenuState["Services/Users"] = false;
     deleteMenuState["Services/TagServices"] = false;
     deleteMenuState["Time"] = false;
 }
@@ -459,6 +468,10 @@ FWObject* FWBTree::createNewLibrary(FWObjectDatabase *db)
 
     o2 = db->create(ServiceGroup::TYPENAME);
     o2->setName("UDP");
+    o1->add(o2);
+
+    o2 = db->create(UserService::TYPENAME);
+    o2->setName("Users");
     o1->add(o2);
 
     o2 = db->create(ServiceGroup::TYPENAME);
