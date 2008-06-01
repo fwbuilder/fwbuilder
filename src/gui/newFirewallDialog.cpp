@@ -424,26 +424,16 @@ void newFirewallDialog::showPage(const int page)
 
             tmpldb = new FWObjectDatabase();
             tmpldb->setReadOnly( false );
-            tmpldb->load( m_dialog->templaterFilePath->text().toAscii().data(), &upgrade_predicate, librespath);
+            tmpldb->load( m_dialog->templaterFilePath->text().toAscii().data(),
+                          &upgrade_predicate, librespath);
         }
-        FWObject *tlib = tmpldb->getById(TEMPLATE_LIB);
-
-#if 0
-        FWObject *tlib = mw->db()->getById(TEMPLATE_LIB);
-        if (tlib==NULL)
-        {
-            FWObject *cl = mw->getCurrentLib();
-            mw->loadLibrary(tempfname);
-            unloadTemplatesLib = true;
-            mw->loadObjects();
-            tlib = mw->db()->getById(TEMPLATE_LIB);
-/* restore library that was opened prior loading templates */
-            mw->openLib(cl);
-        }
-#endif
 
         list<FWObject*> fl;
-        findFirewalls(tlib, fl, false);
+
+        FWObjectTypedChildIterator libiter = tmpldb->findByType(Library::TYPENAME);
+        for ( ; libiter!=libiter.end(); ++libiter)
+            findFirewalls(*libiter, fl, false);
+
 
         QString icn = QString( Resources::global_res->getObjResourceStr(fl.front(), "icon-tree").c_str() );
 
@@ -595,9 +585,13 @@ void newFirewallDialog::fillInterfaceData(Interface *intf, QTextBrowser *qte)
         else
             if (intf->isBridgePort()) s +=  tr("Bridge port");
             else
-                s += QString("%1/%2")
-                    .arg(intf->getAddressPtr()->toString().c_str())
-                    .arg(intf->getNetmaskPtr()->toString().c_str());
+            {
+                const InetAddr *addr = intf->getAddressPtr();
+                QString addr_str = (addr) ? addr->toString().c_str() : "";
+                const InetAddr *netm = intf->getNetmaskPtr();
+                QString netm_str = (netm) ? netm->toString().c_str() : "";
+                s += QString("%1/%2").arg(addr_str).arg(netm_str);
+            }
     s += "</td>";
     s += "</tr>";
     s += "</table>";
