@@ -46,17 +46,28 @@
 using namespace std;
 using namespace libfwbuilder;
 
+/*
+ * if data is a string that represents integer number without '.' or ':'
+ * in it, call init_from_int
+ */
 void InetAddr::init_from_string(const char* data)
 {
     if(!data) throw FWException("NULL IP address data..");
-    if (address_family == AF_INET)
+    if (strchr(data, '.')==NULL && strchr(data, ':')==NULL)
+        init_from_int(atoi(data));
+    else
     {
-        if (inet_aton(data, &ipv4)==0)
-            throw FWException(string("Invalid IP address: '")+string(data)+"'");
-    } else
-    {
-        if (inet_net_pton(PGSQL_AF_INET6, data, &ipv6, sizeof(ipv6)) < 0)
-            throw FWException(string("Invalid IPv6 address: '")+string(data)+"'");
+        if (address_family == AF_INET)
+        {
+            if (inet_net_pton(PGSQL_AF_INET, data, &ipv4, sizeof(ipv4)) < 0)
+                throw FWException(string("Invalid IP address: '") +
+                                  string(data)+"'");
+        } else
+        {
+            if (inet_net_pton(PGSQL_AF_INET6, data, &ipv6, sizeof(ipv6)) < 0)
+                throw FWException(string("Invalid IPv6 address: '") +
+                                  string(data)+"'");
+        }
     }
 }
 
@@ -107,32 +118,23 @@ void InetAddr::init_from_int(int len)
 }
 
 
+InetAddr::InetAddr(const InetAddr &o)
+{
+    *this = o;
+}
+
 InetAddr::InetAddr(const string &s)
     throw(FWException, FWNotSupportedException)
 {
     address_family = AF_INET;
-    if (inet_aton(s.c_str(), &ipv4)==0)
-        throw FWException(string("Invalid IP address: '")+s+"'");
+    init_from_string(s.c_str());
 }
 
 InetAddr::InetAddr(int af, const string &s)
     throw(FWException, FWNotSupportedException)
 {
     address_family = af;
-    if (address_family==AF_INET)
-    {
-        if (inet_aton(s.c_str(), &ipv4)==0)
-            throw FWException(string("Invalid IP address: '")+s+"'");
-    } else 
-    {
-        if (inet_net_pton(PGSQL_AF_INET6, s.c_str(), &ipv6, sizeof(ipv6)) < 0)
-            throw FWException(string("Invalid IPv6 address: '")+s+"'");
-    }
-}
-
-InetAddr::InetAddr(const InetAddr &o)
-{
-    *this = o;
+    init_from_string(s.c_str());
 }
 
 InetAddr::InetAddr(const char *data) throw(FWException)

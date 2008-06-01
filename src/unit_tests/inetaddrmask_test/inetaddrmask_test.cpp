@@ -124,6 +124,13 @@ int main(int, char * const *)
         assert(sa=="255.255.0.0");
         assert(a4->dimension()==256*256);
 
+        a4->setNetmask(InetAddr("8"));
+        sa = a4->getAddressPtr()->toString();
+        assert(sa=="2.2.2.2");
+        sa = a4->getNetmaskPtr()->toString();
+        assert(sa=="255.0.0.0");
+        assert(a4->dimension()==256*256*256);
+
         cout << "All tests passed" << endl;
 
     } catch(FWException &ex)  {

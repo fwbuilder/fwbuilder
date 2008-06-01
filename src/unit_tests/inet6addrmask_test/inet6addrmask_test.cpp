@@ -100,10 +100,13 @@ int main(int, char * const *)
         cout << "Inet6Addr::Inet6Addr(128) "
              << x5.toString() << "  length=" << x5.getLength() << endl;
 
+        InetAddr x6(AF_INET6, "64");
+        cout << "Inet6Addr::Inet6Addr(\"64\") "
+             << x6.toString() << "  length=" << x6.getLength() << endl;
 
-        InetAddr x6(AF_INET6, "fe80::21d:9ff:fe8b:8e94");
+        InetAddr x7(AF_INET6, "fe80::21d:9ff:fe8b:8e94");
         InetAddr y6(AF_INET6, 64);
-        InetAddr z = x6 & y6;
+        InetAddr z = x7 & y6;
 
         cout << "z=" << z.toString() << endl;
         assert(z.toString()=="fe80::");

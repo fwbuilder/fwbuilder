@@ -1,3 +1,11 @@
+2008-05-31  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* InetAddr.cpp (InetAddr::init_from_string): Constructors of
+	InetAddr accept string that represent just a number (with no '.'
+	or ':' characters), which is interpreted as netmask length. Call
+	to constructor with such string is equivalent to the constructor
+	InetAddr(int).
+
 2008-05-23  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* InetAddr.h (libfwbuilder): Class InetAddr represents both IPv4
