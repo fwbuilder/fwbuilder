@@ -66,7 +66,8 @@ class newHostDialog : public QDialog, public FakeWizard
 
 
     void fillInterfaceData(libfwbuilder::Interface *intf, QTextBrowser *qte);
-
+    bool validateAddressAndMask(const QString &addr, const QString &netm);
+    
  public:
     newHostDialog();
     virtual ~newHostDialog();

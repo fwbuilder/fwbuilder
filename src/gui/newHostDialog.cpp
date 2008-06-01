@@ -400,6 +400,7 @@ void newHostDialog::showPage(const int page)
     }
     }
 }
+
 void newHostDialog::templateSelected(QListWidgetItem *itm)
 //void newHostDialog::templateSelected(QListWidgetItem *cur)
 {
@@ -480,6 +481,54 @@ void newHostDialog::fillInterfaceData(Interface *intf, QTextBrowser *qte)
     qte->setText(s);
 }
 
+bool newHostDialog::validateAddressAndMask(const QString &addr,
+                                           const QString &netm)
+{
+    try
+    {
+        InetAddr(addr.toLatin1().constData());
+    }
+    catch (FWException &ex)
+    {
+        QMessageBox::warning(
+            this,"Firewall Builder",
+            tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+            "&Continue", QString::null, QString::null, 0, 1 );
+        return false;
+    }
+    try
+    {
+        bool ok = false ;
+        int ilen = netm.toInt (&ok);
+        if (ok)
+        {
+            if (ilen < 0 || ilen > 32)
+            {
+                QMessageBox::warning(
+                    this,"Firewall Builder",
+                    tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+                    "&Continue", QString::null, QString::null, 0, 1 );
+                return false;
+            }          
+        }
+        else
+        {
+            InetAddr(netm.toLatin1().constData());
+        }
+
+    }
+    catch (FWException &ex)
+    {
+        QMessageBox::warning(
+            this,"Firewall Builder",
+            tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+            "&Continue", QString::null, QString::null, 0, 1 );
+        return false;
+    }
+    return true;
+}
+
+
 void newHostDialog::addInterface()
 {
     QString dn = "";
@@ -500,50 +549,7 @@ void newHostDialog::addInterface()
         if (netm.isEmpty())
             netm = QString(InetAddr::getAny().toString().c_str());
 
-        try
-        {
-            InetAddr(addr.toLatin1().constData());
-        }
-        catch (FWException &ex)
-        {
-            QMessageBox::warning(
-                this,"Firewall Builder",
-                tr("Illegal address '%1/%2'").arg(addr).arg(netm),
-                "&Continue", QString::null, QString::null, 0, 1 );
-            return;
-        }
-        try
-        {
-            bool ok = false ;
-            int ilen = netm.toInt (&ok);
-            if (ok)
-            {
-                  if (ilen>0 && ilen < 32)
-                  {
-                QMessageBox::warning(
-                    this,"Firewall Builder",
-                    tr("Illegal address '%1/%2'").arg(addr).arg(netm),
-                    "&Continue", QString::null, QString::null, 0, 1 );           
-                    return ;
-
-                  }          
-            }
-            else
-            {
-                InetAddr(netm.toLatin1().constData());
-
-            }
-
-        }
-        catch (FWException &ex)
-        {
-                QMessageBox::warning(
-                    this,"Firewall Builder",
-                    tr("Illegal address '%1/%2'").arg(addr).arg(netm),
-                    "&Continue", QString::null, QString::null, 0, 1 );           
-        }
-
-
+        if (!validateAddressAndMask(addr, netm)) return;
     }
     QStringList sl;
     sl << m_dialog->iface_name->text()
@@ -555,6 +561,8 @@ void newHostDialog::addInterface()
 
     new QTreeWidgetItem(m_dialog->iface_list, sl);
 }
+
+
 void newHostDialog::selectedInterface(QTreeWidgetItem*cur,QTreeWidgetItem*)
 //void newHostDialog::selectedInterface(QTreeWidgetItem *cur)
 {
@@ -577,10 +585,14 @@ void newHostDialog::updateInterface()
     QTreeWidgetItem *itm = m_dialog->iface_list->currentItem();
     if (itm==NULL) return;
 
+    QString addr = m_dialog->iface_addr->text();
+    QString netm = m_dialog->iface_netmask->text();
+    if (!validateAddressAndMask(addr, netm)) return;
+
     itm->setText( 0 , m_dialog->iface_name->text() );
     itm->setText( 1 , m_dialog->iface_label->text() );
-    itm->setText( 2 , m_dialog->iface_addr->text() );
-    itm->setText( 3 , m_dialog->iface_netmask->text() );
+    itm->setText( 2 , addr );
+    itm->setText( 3 , netm );
     itm->setText( 4 , dn );
     itm->setText( 5 , m_dialog->iface_physaddr->text() );
 }
