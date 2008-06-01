@@ -94,6 +94,11 @@ newHostDialog::newHostDialog() : QDialog()
 
     timer = new QTimer(this);
     connect( timer, SIGNAL(timeout()), this, SLOT(monitor()) );
+    connect( m_dialog->templaterBrowseButton, SIGNAL(pressed()),this,SLOT(browseTemplate()));
+    connect( m_dialog->templateUseStandart, SIGNAL(pressed()),this,SLOT(useStandartTemplate()));
+    connect( m_dialog->useTemplate, SIGNAL(released()),this,SLOT(showHideTemplatePanel()));
+    m_dialog->templaterFilePath->setText(tempfname.c_str());
+    m_dialog->templaterFrame->setVisible(false);
 
     setNextEnabled( OBJECT_NAME_PAGE, false );
 
@@ -103,6 +108,36 @@ newHostDialog::newHostDialog() : QDialog()
 
     showPage(0);
 }
+
+void newHostDialog::browseTemplate()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("FWBuilder template files"), "", tr("FWBuilder template files (*.xml *.fwb)"));
+    if (fileName=="")
+        return ;
+    QDir dir (fileName);
+//    if (dir.exists ())
+//    {
+        m_dialog->templaterFilePath->setText(fileName);
+//    }
+}
+
+void newHostDialog::useStandartTemplate()
+{
+    m_dialog->templaterFilePath->setText(tempfname.c_str());
+}
+
+void newHostDialog::showHideTemplatePanel()
+{
+    if (m_dialog->useTemplate->checkState()==Qt::Checked)
+    {
+            m_dialog->templaterFrame->setVisible(true);
+    }
+    else
+    {
+            m_dialog->templaterFrame->setVisible(false);
+    }
+}
+
 
 newHostDialog::~newHostDialog()
 {

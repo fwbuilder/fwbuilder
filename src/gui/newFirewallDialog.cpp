@@ -80,7 +80,6 @@ newFirewallDialog::newFirewallDialog() : QDialog()
                       m_dialog->backButton,
                       m_dialog->cancelButton,
                       m_dialog->titleLabel);
-
     /*connect( m_dialog->nextButton, SIGNAL( clicked() ),
              this, SLOT( nextClicked() ));
     connect( m_dialog->backButton, SIGNAL( clicked() ),
@@ -99,6 +98,11 @@ newFirewallDialog::newFirewallDialog() : QDialog()
 
     timer = new QTimer(this);
     connect( timer, SIGNAL(timeout()), this, SLOT(monitor()) );
+    connect( m_dialog->templaterBrowseButton, SIGNAL(pressed()),this,SLOT(browseTemplate()));
+    connect( m_dialog->templateUseStandart, SIGNAL(pressed()),this,SLOT(useStandartTemplate()));
+    connect( m_dialog->useTemplate, SIGNAL(released()),this,SLOT(showHideTemplatePanel()));
+    m_dialog->templaterFilePath->setText(tempfname.c_str());
+    m_dialog->templaterFrame->setVisible(false);
 
 /* fill in platform */
     setPlatform(m_dialog->platform, "" );
@@ -122,6 +126,35 @@ newFirewallDialog::newFirewallDialog() : QDialog()
     showPage(0);
 }
 
+void newFirewallDialog::browseTemplate()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("FWBuilder template files"), "", tr("FWBuilder template files (*.xml *.fwb)"));
+    if (fileName=="")
+        return ;
+    QDir dir (fileName);
+//    if (dir.exists ())
+//    {
+        m_dialog->templaterFilePath->setText(fileName);
+//    }
+}
+
+void newFirewallDialog::useStandartTemplate()
+{
+    m_dialog->templaterFilePath->setText(tempfname.c_str());
+}
+
+void newFirewallDialog::showHideTemplatePanel()
+{
+    if (m_dialog->useTemplate->checkState()==Qt::Checked)
+    {
+            m_dialog->templaterFrame->setVisible(true);
+    }
+    else
+    {
+            m_dialog->templaterFrame->setVisible(false);
+    }
+}
+
 newFirewallDialog::~newFirewallDialog()
 {
     delete m_dialog;
@@ -137,6 +170,7 @@ void newFirewallDialog::changed()
     if (p==0)
     {
         setNextEnabled( p, !m_dialog->obj_name->text().isEmpty() );
+        
     }
 
     if (p==1)
@@ -390,7 +424,7 @@ void newFirewallDialog::showPage(const int page)
 
             tmpldb = new FWObjectDatabase();
             tmpldb->setReadOnly( false );
-            tmpldb->load( tempfname, &upgrade_predicate, librespath);
+            tmpldb->load( m_dialog->templaterFilePath->text().toAscii().data(), &upgrade_predicate, librespath);
         }
         FWObject *tlib = tmpldb->getById(TEMPLATE_LIB);
 

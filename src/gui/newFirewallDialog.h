@@ -89,7 +89,9 @@ public slots:
     virtual void getInterfacesViaSNMP();    
     virtual void monitor();
     virtual void templateSelected(QListWidgetItem *itm);
-    
+    void browseTemplate();
+    void useStandartTemplate();
+    void showHideTemplatePanel();
  protected slots:
     
     void finishClicked();

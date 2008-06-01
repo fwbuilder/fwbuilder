@@ -67,7 +67,7 @@ class newHostDialog : public QDialog, public FakeWizard
 
     void fillInterfaceData(libfwbuilder::Interface *intf, QTextBrowser *qte);
     bool validateAddressAndMask(const QString &addr, const QString &netm);
-    
+
  public:
     newHostDialog();
     virtual ~newHostDialog();
@@ -89,7 +89,9 @@ public slots:
 
     virtual void selectedInterface(QTreeWidgetItem*,QTreeWidgetItem*);
     virtual void templateSelected(QListWidgetItem *itm);
-
+    void browseTemplate();
+    void useStandartTemplate();
+    void showHideTemplatePanel();
 
     
  protected slots:
