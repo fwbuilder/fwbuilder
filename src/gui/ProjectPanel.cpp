@@ -944,26 +944,16 @@ void ProjectPanel::removeFirewallFromList(libfwbuilder::FWObject *o)
 
 void ProjectPanel::updateFirewallName(libfwbuilder::FWObject *obj,const QString &str)
 {
-    QString name = "<B>";
-    name += visibleRuleSet->getName().c_str();
-    name += " / ";
-    m_panel->rulesetname->setTextFormat(Qt::RichText);
-    Policy *rule = Policy::cast(visibleRuleSet);
-    if (rule!=NULL)
-    {
-        m_panel->rulesetname->setText(name + tr("Policy")+ "</B>");           
-    }
-    NAT *nat  = NAT::cast(visibleRuleSet);
-    if (nat!=NULL)
-    {
-        m_panel->rulesetname->setText(name + tr("NAT")+ "</B>");
-    }
+    if (visibleRuleSet==NULL)
+        return ;
 
-    Routing *r = Routing::cast(visibleRuleSet);
-    if (r!=NULL)
-    {
-        m_panel->rulesetname->setText(name + tr("Routing")+ "</B>");
-    }
+    QString name = "<B>";
+    FWObject * p = visibleRuleSet->getParent();
+    name += p->getName().c_str();
+    name += " / ";
+    name += visibleRuleSet->getName().c_str();
+    name += "</B>";
+    m_panel->rulesetname->setText(name );
 
 /*    updateFirewallName(obj, str);
     

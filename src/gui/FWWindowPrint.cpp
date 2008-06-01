@@ -291,14 +291,21 @@ void printFirewall(FWObject *fw,
     pr.printText(QObject::tr("Version: ")  + readableVersion);
     pr.printText(QObject::tr("Host OS: ")  + hostOS);
     pr.printText(" ");
-
+    RuleSetView *ruleView =NULL;
 //            ppd->genericProgressIndicator(ppdCounter++,QObject::tr("Processing global policy"));
     if (fwbdebug)  qDebug("******** Global policy");
 
-    pr.printText(QObject::tr("Global Policy"));
 
-    RuleSetView *ruleView=new PolicyView(project,
-        Policy::cast(fw->getFirstByType(Policy::TYPENAME)),NULL);
+    FWObjectTypedChildIterator j =fw->findByType(Policy::TYPENAME);
+    for ( ; j!=j.end(); ++j )
+    {
+    Policy * pol = Policy::cast(*j) ;
+    QString name = QObject::tr("Policy: ");
+    name += pol->getName().c_str();
+    pr.printText(name);
+
+    ruleView=new PolicyView(project,
+        pol,NULL);
     ruleView->setSizePolicy( QSizePolicy( (QSizePolicy::Policy)7,
                                           (QSizePolicy::Policy)7) );
     ruleView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -321,9 +328,9 @@ void printFirewall(FWObject *fw,
     pr.printQTable(ruleView);
 
     delete ruleView;
+    }
 
-
-    FWObjectTypedChildIterator j=fw->findByType(Interface::TYPENAME);
+    j=fw->findByType(Interface::TYPENAME);
     for ( ; j!=j.end(); ++j )
     {
         Interface       *intf = Interface::cast(*j);
@@ -366,7 +373,11 @@ void printFirewall(FWObject *fw,
 
 //            ppd->genericProgressIndicator(ppdCounter++,QObject::tr("Processing NAT rules"));
     if (fwbdebug)  qDebug("******** NAT");
-    NAT *nat  = NAT::cast(fw->getFirstByType(NAT::TYPENAME));
+    j=fw->findByType(NAT::TYPENAME);
+    for ( ; j!=j.end(); ++j )
+    {
+
+    NAT *nat  = NAT::cast(*j);
     if (nat && nat->size()!=0)
     {
         if (newPageForSection)
@@ -375,8 +386,9 @@ void printFirewall(FWObject *fw,
             pr.beginPage();   // resets yPos
         } else
             pr.printText(" ");
-
-        pr.printText(QObject::tr("NAT"));
+        QString name = QObject::tr("NAT: ");
+        name += nat->getName ().c_str(); 
+        pr.printText(name);
 
         ruleView=new NATView(project, nat,NULL);
 
@@ -391,7 +403,7 @@ void printFirewall(FWObject *fw,
 //    pr.printPixmap(QPixmap::grabWidget(ruleView,0,0));
         delete ruleView;
     }
-
+    }
     if (fwbdebug)  qDebug("******** Routing");
     Routing *routing  = Routing::cast(fw->getFirstByType(Routing::TYPENAME));
     if (routing && routing->size()!=0)
@@ -537,7 +549,7 @@ void FWWindow::filePrint()
             }
 
 //            int ppdCounter = 1;
-            printFirewall(activeProject()->getVisibleFirewall(),pr,ppd,
+            printFirewall(activeProject()->getCurrentRuleSet()->getParent(),pr,ppd,
                   newPageForSection, activeProject());
 
             if (printLegend)
