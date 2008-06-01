@@ -658,7 +658,8 @@ void RuleSetView::updateCell( const int row, const int col )
         ProjectPanel*pp= pps[i];
         if (pp!=m_project)
         {
-            pp->getCurrentRuleSetView()->updateAll();
+            if (pp->getCurrentRuleSetView()!=NULL)
+                pp->getCurrentRuleSetView()->updateAll();
         }
     }
 }
