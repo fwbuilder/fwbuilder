@@ -186,8 +186,12 @@ void ActionsDialog::applyChanges()
     if (editor=="TagInt")
     {
         if (TagIntArea!=NULL)
-        {
-            QString id = TagIntArea->getObject()->getId().c_str();
+        {   
+            QString id ;
+            if (TagIntArea->getObject()!=NULL)
+                id = TagIntArea->getObject()->getId().c_str();
+            else 
+                id = "";
             ropt->setStr("tagobject_id",id.toAscii().data());
         }
     }
@@ -196,7 +200,11 @@ void ActionsDialog::applyChanges()
     {
         if (TagStrArea!=NULL)
         {
-            QString id = TagStrArea->getObject()->getId().c_str();
+            QString id ;
+            if (TagStrArea->getObject()!=NULL)
+                id = TagStrArea->getObject()->getId().c_str();
+            else 
+                id = "";
             ropt->setStr("tagobject_id",id.toAscii().data());
         }
     }
@@ -205,7 +213,11 @@ void ActionsDialog::applyChanges()
     {
         if (BranchChainArea!=NULL)
         {
-            QString id = BranchChainArea->getObject()->getId().c_str();
+            QString id ;
+            if (BranchChainArea->getObject()!=NULL)
+                id = BranchChainArea->getObject()->getId().c_str();
+            else 
+                id = "";
             ropt->setStr("branch_id",id.toAscii().data());
             mw->setPolicyBranchTabName(rule->getBranch());
         }
@@ -215,7 +227,11 @@ void ActionsDialog::applyChanges()
     {
         if (BranchAnchorArea!=NULL)
         {
-            QString id = BranchAnchorArea->getObject()->getId().c_str();
+            QString id ;
+            if (BranchAnchorArea->getObject()!=NULL)
+                id = BranchAnchorArea->getObject()->getId().c_str();
+            else 
+                id = "";
             ropt->setStr("branch_id",id.toAscii().data());
             mw->setPolicyBranchTabName(rule->getBranch());
         }
@@ -370,7 +386,7 @@ void ActionsDialog::setRule(PolicyRule *r )
         w=m_dialog->TagIntPage;
         std::string id = ropt->getStr("tagobject_id");
         FWObject * o = rule->getRoot()->getById(id,true);
-        if (o!=NULL)
+        if (o!=NULL&&QString(id.c_str())!="")
         {
             TagIntArea->setObject(o);
         }
@@ -383,7 +399,7 @@ void ActionsDialog::setRule(PolicyRule *r )
         w=m_dialog->TagStrPage;
         std::string id = ropt->getStr("tagobject_id");
         FWObject * o = rule->getRoot()->getById(id,true);
-        if (o!=NULL)
+        if (o!=NULL&&QString(id.c_str())!="")
         {
             TagStrArea->setObject(o);
         }
