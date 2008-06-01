@@ -131,21 +131,34 @@ int main(int, char * const *)
         assert(sa=="255.0.0.0");
         assert(a4->dimension()==256*256*256);
 
+        try 
+        {
+            a4->setNetmask(InetAddr("40"));
+        } catch(FWException &ex)  {
+            cerr << "Expected exception: " << ex.toString() << endl;
+        }
+        // a4 should not have changed
+        sa = a4->getAddressPtr()->toString();
+        assert(sa=="2.2.2.2");
+        sa = a4->getNetmaskPtr()->toString();
+        assert(sa=="255.0.0.0");
+        assert(a4->dimension()==256*256*256);
+
         cout << "All tests passed" << endl;
 
-    } catch(FWException &ex)  {
-    cerr << ex.toString() << endl;
-        exit(1);
-    } catch (std::string s) {
-    cerr << s;
-        exit(1);
-    } catch (std::exception ex) {
-    cerr << ex.what();
-        exit(1);
-    } catch (...) {
-    cerr << "Unsupported exception";
-        exit(1);
-    }
+        } catch(FWException &ex)  {
+            cerr << ex.toString() << endl;
+            exit(1);
+        } catch (std::string s) {
+            cerr << s;
+            exit(1);
+        } catch (std::exception ex) {
+            cerr << ex.what();
+            exit(1);
+        } catch (...) {
+            cerr << "Unsupported exception";
+            exit(1);
+        }
 
 }
 
