@@ -92,6 +92,7 @@ class ProjectPanel: public QWidget {
     void initFD();
         
     QString                                 noFirewalls;
+    bool                                    enableAvtoSaveState;
     
     void checkRERefs(libfwbuilder::RuleElement *re, 
        std::list<libfwbuilder::FWObject*> &extRefs);
@@ -350,8 +351,8 @@ public:
     void save();
     void saveState ();
     bool firstLoad ;
-    void loadState ();
-    void loadSplitters();
+    void loadState (QString filename="");
+    void loadSplitters(QString filename="");
     bool checkin(bool unlock);
     void loadLibrary(const std::string &libfpath);
     
@@ -363,7 +364,7 @@ public:
                        std::list<libfwbuilder::FWReference*> &extRefs);
     
     void setSafeMode(bool f) { safeMode=f; }
-    void setStartupFileName(const QString &fn) { startupFileName = fn; }
+    void setStartupFileName(const QString &fn);
     void setupAutoSave();
     QString getCurrentFileName();
     RCS * getRCS();

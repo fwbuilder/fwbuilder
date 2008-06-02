@@ -156,6 +156,7 @@ void ProjectPanel::initMain(FWWindow *main)
     firstResize = false ;
     firstLoad = false;
     closing = false ;
+    enableAvtoSaveState=true ;
     oldState=-1;
     if (st->getInfoStyle()!=0) m_panel->oi->show();
     else m_panel->oi->hide();
@@ -229,6 +230,12 @@ void ProjectPanel::info(libfwbuilder::FWObject *obj, bool forced)
     }
 
 //    unselectRules();
+}
+
+void ProjectPanel::setStartupFileName(const QString &fn) 
+{ 
+//    enableAvtoSaveState = false;
+    startupFileName = fn; 
 }
 
 RuleElement* ProjectPanel::getRE( Rule* r, int col )
@@ -1927,10 +1934,14 @@ void ProjectPanel::startupLoad()
         {
             try
             {
+                enableAvtoSaveState=false;
+
                 RCS *rcs=new RCS(startupFileName);
                 rcs->co();
                 load(NULL,rcs);
-                
+                loadState(startupFileName);
+                loadSplitters(startupFileName);
+                //firstResize=true;
             } catch (FWException &ex)
             {
                 qDebug("Exception: %s",ex.toString().c_str());
@@ -1969,6 +1980,7 @@ void ProjectPanel::startupLoad()
         }
     }
     mw->recreateWindowsMenu();
+    enableAvtoSaveState=true ;
 }
 
 
@@ -3635,11 +3647,14 @@ void ProjectPanel::showEvent( QShowEvent *ev)
     QWidget::showEvent(ev);
 }
 
-void ProjectPanel::loadSplitters()
+void ProjectPanel::loadSplitters(QString filename)
 {
+    QString FileName = getFileName();
+    if (filename !="")
+        FileName = filename;
     firstLoad=true ;
-    QString val = st->getStr("Layout/MainWindowSplitter"+getFileName());
-    QString out1 = "load Layout/MainWindowSplitter"+getFileName();
+    QString val = st->getStr("Layout/MainWindowSplitter"+FileName);
+    QString out1 = "load Layout/MainWindowSplitter"+FileName;
     out1+= " " + val;
     qDebug(out1.toAscii().data());
     
@@ -3655,7 +3670,7 @@ void ProjectPanel::loadSplitters()
             m_panel->mainSplitter->setSizes( sl );
     }
 
-    val = st->getStr("Layout/ObjInfoSplitter"+getFileName());
+    val = st->getStr("Layout/ObjInfoSplitter"+FileName);
     if (!val.isEmpty())
     {
         int  w1 = val.section(',',0,0).toInt();
@@ -3712,18 +3727,23 @@ QString ProjectPanel::getFileName()
 
 void ProjectPanel::saveState ()
 {
-    if (isMaximized ())
-    {
-        st->setInt("Window/maximized",0);
-    }
-    else
-    {
-        st->setInt("Window/maximized",1);
-    }
 
 
     if (rcs!=NULL)
     {
+        if (isMaximized ())
+        {
+            qDebug ("Window/maximized true");
+            st->setInt("Window/maximized",0);
+        }
+        else
+        {
+            qDebug ("Window/maximized false");
+            st->setInt("Window/maximized",1);
+        }
+
+
+
         QString FileName = rcs->getFileName();
         if (!isMaximized ())
         {
@@ -3732,33 +3752,32 @@ void ProjectPanel::saveState ()
             st->setInt("Window/"+FileName+"/width",mdiWindow->width ());
             st->setInt("Window/"+FileName+"/height",mdiWindow->height ());
 //        }
-
-
-
 //    oe->hide();
 //    fd->hide();
 //    st->saveGeometry(this);
-    QList<int> sl = m_panel->mainSplitter->sizes();
-    QString arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
-    if (sl[0] || sl[1])
-        st->setStr("Layout/MainWindowSplitter"+getFileName(), arg );
-    QString out1 = " save Layout/MainWindowSplitter"+getFileName();
-    out1+= " " + arg;
-    qDebug(out1.toAscii().data());
-
-    sl = m_panel->objInfoSplitter->sizes();
-    arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
-    if (sl[0] || sl[1])
-        st->setStr("Layout/ObjInfoSplitter"+getFileName(), arg );
+            QList<int> sl = m_panel->mainSplitter->sizes();
+            QString arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
+            if (sl[0] || sl[1])
+                st->setStr("Layout/MainWindowSplitter"+getFileName(), arg );
+            QString out1 = " save Layout/MainWindowSplitter"+getFileName();
+            out1+= " " + arg;
+            qDebug(out1.toAscii().data());
+            
+            sl = m_panel->objInfoSplitter->sizes();
+            arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
+            if (sl[0] || sl[1])
+                st->setStr("Layout/ObjInfoSplitter"+getFileName(), arg );
         }  
     }
 }
 
-void ProjectPanel::loadState ()
+void ProjectPanel::loadState (QString filename)
 {
     QString FileName ;
     if (rcs!=NULL) 
         FileName =rcs->getFileName();
+    if (filename!="")
+        FileName = filename ;
     if (FileName!="")
     {
         if (st->getInt("Window/maximized")!=0)
@@ -3774,10 +3793,9 @@ void ProjectPanel::loadState ()
             width = 600;
             height= 600;
         }
-        firstResize=true ;
 //        loadSplitters();
         mdiWindow->setGeometry (x,y,width,height);
-        
+        firstResize=true ;
         }
     }
     
@@ -3785,14 +3803,10 @@ void ProjectPanel::loadState ()
     {
         if (st->getInt("Window/maximized")!=0)
         {
-            firstResize=true ;
-        //mdiWindow->resize (600,400);
-        //mdiWindow->resize (600,400);
             mdiWindow->setGeometry (10,10,600,600);
-        //mdiWindow->resize (600,800);      
+            firstResize=true ;
         }
     }
-
 }
 
 void ProjectPanel::resizeEvent ( QResizeEvent* )
@@ -3803,7 +3817,14 @@ void ProjectPanel::resizeEvent ( QResizeEvent* )
             oldState=0;
         return ;
     }*/
-    if (firstResize)
+    if (!firstResize&&!startupFileName.isEmpty())
+    {
+        loadState(startupFileName);
+        loadSplitters(startupFileName);
+       //firstResize = true ;    
+      //  startupFileName="";
+    }
+    if (firstResize&&enableAvtoSaveState)
     {
         saveState();
     }   
@@ -3812,7 +3833,8 @@ void ProjectPanel::resizeEvent ( QResizeEvent* )
     {
         loadState();
         loadSplitters();
-        firstResize = true ;    
+        if (!isMaximized())
+            firstResize = true ;    
     } 
 }
 
