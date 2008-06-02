@@ -554,7 +554,7 @@ Interface can have the following attributes:
  to_year      %NUMBER; "-1"
  to_weekday   %NUMBER; "-1"
 
- days_of_week %STRING; #IMPLIED;
+ days_of_week %STRING; #IMPLIED
 >
 
 <!ELEMENT AnyInterval EMPTY>
