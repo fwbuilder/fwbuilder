@@ -104,7 +104,7 @@ FWBTree::FWBTree()
     systemGroupPaths[ObjectGroup::TYPENAME]   = "Objects/Groups";
     systemGroupPaths[Host::TYPENAME]          = "Objects/Hosts";
     systemGroupPaths[Network::TYPENAME]       = "Objects/Networks";
-    systemGroupPaths[NetworkIPv6::TYPENAME]       = "Objects/Networks";
+    systemGroupPaths[NetworkIPv6::TYPENAME]   = "Objects/Networks";
 
     systemGroupPaths[ServiceGroup::TYPENAME]  = "Services/Groups";
     systemGroupPaths[CustomService::TYPENAME] = "Services/Custom";
@@ -112,9 +112,9 @@ FWBTree::FWBTree()
     systemGroupPaths[ICMPService::TYPENAME]   = "Services/ICMP";
     systemGroupPaths[TCPService::TYPENAME]    = "Services/TCP";
     systemGroupPaths[UDPService::TYPENAME]    = "Services/UDP";
-    systemGroupPaths[UserService::TYPENAME]    = "Services/Users";
+    systemGroupPaths[UserService::TYPENAME]   = "Services/Users";
 
-    systemGroupPaths[TagService::TYPENAME]          = "Services/TagServices";
+    systemGroupPaths[TagService::TYPENAME]    = "Services/TagServices";
 
     systemGroupPaths[Firewall::TYPENAME]      = "Firewalls";
 
@@ -162,7 +162,7 @@ FWBTree::FWBTree()
     systemGroupNames[ICMPService::TYPENAME]=   "ICMP"          ;
 
     systemGroupTypes[UserService::TYPENAME]=   UserService::TYPENAME;
-    systemGroupNames[UserService::TYPENAME]=   "User"          ;
+    systemGroupNames[UserService::TYPENAME]=   "Users"          ;
 
     systemGroupTypes[TCPService::TYPENAME]=    ServiceGroup::TYPENAME;
     systemGroupNames[TCPService::TYPENAME]=    "TCP"           ;
