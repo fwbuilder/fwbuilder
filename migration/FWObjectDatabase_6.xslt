@@ -33,12 +33,12 @@
       </xsl:text>
 
     <xsl:choose>
-      <xsl:when test="fwb:ServiceGroup[@name='User']">
+      <xsl:when test="fwb:ServiceGroup[@name='Users']">
       </xsl:when>
       <xsl:otherwise>
         <xsl:element name="ServiceGroup" namespace="http://www.fwbuilder.org/1.0/">
           <xsl:attribute name="id"><xsl:value-of select="$parent_id"/>_userservices</xsl:attribute>
-          <xsl:attribute name="name">User</xsl:attribute>
+          <xsl:attribute name="name">Users</xsl:attribute>
         </xsl:element>
         <xsl:text>
         </xsl:text>
