@@ -31,6 +31,8 @@
 #include <fwbuilder/XMLTools.h>
 #include <fwbuilder/FWObjectDatabase.h>
 
+#include <sstream>
+
 using namespace libfwbuilder;
 
 const char *Interval::TYPENAME={"Interval"};
@@ -51,6 +53,7 @@ Interval::Interval()
     setInt("to_year", -1);
     setInt("to_weekday", -1);
 
+    setStr("days_of_week", "");
 }
 
 Interval::Interval(const FWObject *root,bool prepopulate) : FWObject(root,prepopulate)
@@ -69,7 +72,40 @@ Interval::Interval(const FWObject *root,bool prepopulate) : FWObject(root,prepop
     setInt("to_year", -1);
     setInt("to_weekday", -1);
 
+    setStr("days_of_week", "");
 }
+
+std::string Interval::constructDaysOfWeek(int sdayofweek, int edayofweek)
+{
+    std::ostringstream  ostr;
+
+    if (sdayofweek<0) sdayofweek=0;
+    if (sdayofweek>6) sdayofweek=6;
+    
+    // if both start and end day are -1, need to
+    // generate "sun,mon,tue,wed,thu,fri,sat"
+    if (edayofweek<0) edayofweek=6;
+    if (edayofweek>6) edayofweek=6;
+
+    bool first=true;
+    bool inside_interval = false;
+    int  day=0;
+    while (1)
+    {
+        if (!inside_interval && day==sdayofweek) inside_interval=true;
+        if (inside_interval)
+        {
+            if (!first) ostr << ",";
+            first=false;
+            ostr << day;
+            // if sdayofweek==edayofweek print one day
+            if (day==edayofweek)  break;
+        }
+        if (++day>6) day=0;
+    }
+    return ostr.str();
+}
+
 
 void Interval::setStartTime(int min,int hour,int day,int month,int year,int dayofweek)
 {
@@ -79,6 +115,8 @@ void Interval::setStartTime(int min,int hour,int day,int month,int year,int dayo
     setInt("from_month", month);
     setInt("from_year", year);
     setInt("from_weekday", dayofweek);
+
+    setStr("days_of_week", constructDaysOfWeek(dayofweek,getInt("to_weekday")));
 }
 
 void Interval::setEndTime(int min,int hour,int day,int month,int year,int dayofweek)
@@ -89,7 +127,35 @@ void Interval::setEndTime(int min,int hour,int day,int month,int year,int dayofw
     setInt("to_month", month);
     setInt("to_year", year);
     setInt("to_weekday", dayofweek);
+
+    setStr("days_of_week", constructDaysOfWeek(getInt("from_weekday"),dayofweek));
 }
+
+
+
+void Interval::setStartTime(int min,int hour,int day,int month,int year)
+{
+    setInt("from_minute", min);
+    setInt("from_hour", hour);
+    setInt("from_day", day);
+    setInt("from_month", month);
+    setInt("from_year", year);
+}
+
+void Interval::setEndTime(int min,int hour,int day,int month,int year)
+{
+    setInt("to_minute", min);
+    setInt("to_hour", hour);
+    setInt("to_day", day);
+    setInt("to_month", month);
+    setInt("to_year", year);
+}
+
+void Interval::setDaysOfWeek(const std::string &days_of_week)
+{
+    setStr("days_of_week", days_of_week);
+}
+
 
 void Interval::getStartTime(int *min,int *hour,int *day,int *month,int *year,int *dayofweek) const
 {
@@ -109,6 +175,25 @@ void Interval::getEndTime(int *min,int *hour,int *day,int *month,int *year,int *
     *month=getInt("to_month");
     *year=getInt("to_year");
     *dayofweek=getInt("to_weekday");
+}
+
+/**
+ * Returns a string, a comma separated list of day numbers. Sunday is
+ * day "0"
+ */
+std::string Interval::getDaysOfWeek()
+{
+    std::string days_of_week = getStr("days_of_week");
+    int sdayofweek = getInt("from_weekday");
+    int edayofweek = getInt("to_weekday");
+    if (!days_of_week.empty())
+        return getStr("days_of_week");
+
+    if (sdayofweek!=-1 || edayofweek!=-1)
+        // Old school representation of the days of week
+        return constructDaysOfWeek(sdayofweek, edayofweek);
+
+    return "";
 }
 
 void Interval::fromXML(xmlNodePtr root) throw(FWException)
@@ -202,6 +287,16 @@ void Interval::fromXML(xmlNodePtr root) throw(FWException)
         FREEXMLBUFF(n);
     }
 
+    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("days_of_week")));
+    if (n!=NULL)
+    {
+        setStr("days_of_week", n);
+        FREEXMLBUFF(n);
+    } else
+    {
+        setStr("days_of_week", 
+               constructDaysOfWeek(getInt("from_weekday"), getInt("to_weekday")));
+    }
 }
 
 FWReference* Interval::createRef()

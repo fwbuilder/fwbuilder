@@ -36,6 +36,8 @@ namespace libfwbuilder
 class Interval : public FWObject 
 {
 
+    std::string constructDaysOfWeek(int from_dayofweek, int to_dayofweek);
+    
 public:
 
     Interval();
@@ -44,8 +46,14 @@ public:
     void setStartTime(int min,int hour,int day,int month,int year,int dayofweek);
     void setEndTime(int min,int hour,int day,int month,int year,int dayofweek);
 
+    void setStartTime(int min,int hour,int day,int month,int year);
+    void setEndTime(int min,int hour,int day,int month,int year);
+    void setDaysOfWeek(const std::string &days_of_week);
+    
     void getStartTime(int *min,int *hour,int *day,int *month,int *year,int *dayofweek) const;
     void getEndTime(int *min,int *hour,int *day,int *month,int *year,int *dayofweek) const;
+
+    std::string getDaysOfWeek();
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
 

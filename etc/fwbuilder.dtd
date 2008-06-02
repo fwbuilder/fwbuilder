@@ -527,6 +527,14 @@ Interface can have the following attributes:
        ref IDREF #REQUIRED
 >
 
+<!-- up until fwbuilder3 this element used two separate attributes
+ to deal with days of week, one for the start day of week and another
+ for the end day of week. Starting with fwbuilder3 we support iptables 1.4.0
+ module "time" which allows for random day of week spec. Fwbuilder3 
+ provides support for that in object Interval, which uses attrbute
+ days_of_week in this element. Need to phase out attributes from_weekday
+ and to_weekday some time in the future.
+-->
 <!ELEMENT Interval EMPTY>
 <!ATTLIST Interval
  %STD_ATTRIBUTES;
@@ -545,6 +553,8 @@ Interface can have the following attributes:
  to_month     %NUMBER; "-1"
  to_year      %NUMBER; "-1"
  to_weekday   %NUMBER; "-1"
+
+ days_of_week %STRING; #IMPLIED;
 >
 
 <!ELEMENT AnyInterval EMPTY>
