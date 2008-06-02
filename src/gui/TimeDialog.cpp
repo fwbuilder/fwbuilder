@@ -137,7 +137,10 @@ void TimeDialog::loadFWObject(FWObject *o)
     QString sFromWeekday = obj->getStr("from_weekday").c_str();
     qDebug (sFromWeekday.toAscii().data());
     if (sFromWeekday=="-1")
-        sFromWeekday="1,2,3,4,5,6,7";
+        sFromWeekday="0,1,2,3,4,5,6";
+    // Sunday is cbStart7
+    if (sFromWeekday.contains('0'))
+        m_dialog->cbStart7->setCheckState(Qt::Checked);
     if (sFromWeekday.contains('1'))
         m_dialog->cbStart1->setCheckState(Qt::Checked);
     if (sFromWeekday.contains('2'))
@@ -150,8 +153,6 @@ void TimeDialog::loadFWObject(FWObject *o)
         m_dialog->cbStart5->setCheckState(Qt::Checked);
     if (sFromWeekday.contains('6'))
         m_dialog->cbStart6->setCheckState(Qt::Checked);
-    if (sFromWeekday.contains('7'))
-        m_dialog->cbStart7->setCheckState(Qt::Checked);
 
     int toH = obj->getInt("to_hour");
     int toM = obj->getInt("to_minute");
@@ -170,7 +171,10 @@ void TimeDialog::loadFWObject(FWObject *o)
 //    m_dialog->endDOW->setCurrentIndex( obj->getInt("to_weekday") + 1 );
     QString sToWeekday = obj->getStr("to_weekday").c_str();
     if (sToWeekday=="-1")
-        sToWeekday="1,2,3,4,5,6,7";
+        sToWeekday="0,1,2,3,4,5,6";
+    // Sunday is cbStop7
+    if (sToWeekday.contains('0'))
+        m_dialog->cbStop7->setCheckState(Qt::Checked);
     if (sToWeekday.contains('1'))
         m_dialog->cbStop1->setCheckState(Qt::Checked);
     if (sToWeekday.contains('2'))
@@ -183,8 +187,6 @@ void TimeDialog::loadFWObject(FWObject *o)
         m_dialog->cbStop5->setCheckState(Qt::Checked);
     if (sToWeekday.contains('6'))
         m_dialog->cbStop6->setCheckState(Qt::Checked);
-    if (sToWeekday.contains('7'))
-        m_dialog->cbStop7->setCheckState(Qt::Checked);
 
 
     setDisabledPalette(m_dialog->obj_name);
