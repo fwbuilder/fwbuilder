@@ -137,20 +137,20 @@ void TimeDialog::loadFWObject(FWObject *o)
     QString sFromWeekday = obj->getStr("from_weekday").c_str();
     qDebug (sFromWeekday.toAscii().data());
     if (sFromWeekday=="-1")
-        sFromWeekday="0,1,2,3,4,5,6";
-    if (sFromWeekday.contains('0'))
-        m_dialog->cbStart1->setCheckState(Qt::Checked);
+        sFromWeekday="1,2,3,4,5,6,7";
     if (sFromWeekday.contains('1'))
-        m_dialog->cbStart2->setCheckState(Qt::Checked);
+        m_dialog->cbStart1->setCheckState(Qt::Checked);
     if (sFromWeekday.contains('2'))
-        m_dialog->cbStart3->setCheckState(Qt::Checked);
+        m_dialog->cbStart2->setCheckState(Qt::Checked);
     if (sFromWeekday.contains('3'))
-        m_dialog->cbStart4->setCheckState(Qt::Checked);
+        m_dialog->cbStart3->setCheckState(Qt::Checked);
     if (sFromWeekday.contains('4'))
-        m_dialog->cbStart5->setCheckState(Qt::Checked);
+        m_dialog->cbStart4->setCheckState(Qt::Checked);
     if (sFromWeekday.contains('5'))
-        m_dialog->cbStart6->setCheckState(Qt::Checked);
+        m_dialog->cbStart5->setCheckState(Qt::Checked);
     if (sFromWeekday.contains('6'))
+        m_dialog->cbStart6->setCheckState(Qt::Checked);
+    if (sFromWeekday.contains('7'))
         m_dialog->cbStart7->setCheckState(Qt::Checked);
 
     int toH = obj->getInt("to_hour");
@@ -170,20 +170,20 @@ void TimeDialog::loadFWObject(FWObject *o)
 //    m_dialog->endDOW->setCurrentIndex( obj->getInt("to_weekday") + 1 );
     QString sToWeekday = obj->getStr("to_weekday").c_str();
     if (sToWeekday=="-1")
-        sToWeekday="0,1,2,3,4,5,6";
-    if (sToWeekday.contains('0'))
-        m_dialog->cbStop1->setCheckState(Qt::Checked);
+        sToWeekday="1,2,3,4,5,6,7";
     if (sToWeekday.contains('1'))
-        m_dialog->cbStop2->setCheckState(Qt::Checked);
+        m_dialog->cbStop1->setCheckState(Qt::Checked);
     if (sToWeekday.contains('2'))
-        m_dialog->cbStop3->setCheckState(Qt::Checked);
+        m_dialog->cbStop2->setCheckState(Qt::Checked);
     if (sToWeekday.contains('3'))
-        m_dialog->cbStop4->setCheckState(Qt::Checked);
+        m_dialog->cbStop3->setCheckState(Qt::Checked);
     if (sToWeekday.contains('4'))
-        m_dialog->cbStop5->setCheckState(Qt::Checked);
+        m_dialog->cbStop4->setCheckState(Qt::Checked);
     if (sToWeekday.contains('5'))
-        m_dialog->cbStop6->setCheckState(Qt::Checked);
+        m_dialog->cbStop5->setCheckState(Qt::Checked);
     if (sToWeekday.contains('6'))
+        m_dialog->cbStop6->setCheckState(Qt::Checked);
+    if (sToWeekday.contains('7'))
         m_dialog->cbStop7->setCheckState(Qt::Checked);
 
 
