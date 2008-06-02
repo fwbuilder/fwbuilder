@@ -576,5 +576,7 @@ Interface can have the following attributes:
  to_month     %NUMBER; #FIXED "-1"
  to_year      %NUMBER; #FIXED "-1"
  to_weekday   %NUMBER; #FIXED "-1"
+
+ days_of_week %STRING; #IMPLIED
 >
 
