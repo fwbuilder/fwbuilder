@@ -355,7 +355,8 @@ string PolicyCompiler_ipt::PrintRule::_printDirectionAndInterface(PolicyRule *ru
     Interface *rule_iface =
         compiler->getCachedFwInterface(rule->getInterfaceId());
 
-    if (rule_iface && rule_iface->isBridgePort() && version == "1.3.0")
+    if (rule_iface && rule_iface->isBridgePort() &&
+        (version == "1.3.0" || version == "1.4.0"))
     {
         if (rule->getDirection()==PolicyRule::Inbound)   
             ostr << " -m physdev --physdev-in "  << iface_name; 
@@ -392,23 +393,31 @@ string PolicyCompiler_ipt::PrintRule::_printActionOnReject(libfwbuilder::PolicyR
     string s=ipt_comp->getActionOnReject(rule);
     if (!s.empty()) 
     {
-        if (ipt_comp->isActionOnRejectTCPRST(rule)) str << " --reject-with tcp-reset";
+        if (ipt_comp->isActionOnRejectTCPRST(rule))
+            str << " --reject-with tcp-reset";
 
 	if (s.find("ICMP")!=string::npos) 
         {
 	    if (s.find("unreachable")!=string::npos) 
             {
-		if (s.find("net")!=string::npos)   str << " --reject-with icmp-net-unreachable";
-		if (s.find("host")!=string::npos)  str << " --reject-with icmp-host-unreachable";
-		if (s.find("port")!=string::npos)  str << " --reject-with icmp-port-unreachable";
-		if (s.find("proto")!=string::npos) str << " --reject-with icmp-proto-unreachable";
+		if (s.find("net")!=string::npos)
+                    str << " --reject-with icmp-net-unreachable";
+		if (s.find("host")!=string::npos)
+                    str << " --reject-with icmp-host-unreachable";
+		if (s.find("port")!=string::npos)
+                    str << " --reject-with icmp-port-unreachable";
+		if (s.find("proto")!=string::npos)
+                    str << " --reject-with icmp-proto-unreachable";
 	    }
 	    if (s.find("prohibited")!=string::npos) 
             {
-		if (s.find("net")!=string::npos)   str << " --reject-with icmp-net-prohibited";
-		if (s.find("host")!=string::npos)  str << " --reject-with icmp-host-prohibited";
-                if ((version=="1.2.9" || version=="1.3.0") && 
-                    s.find("admin")!=string::npos)  str << " --reject-with icmp-admin-prohibited";
+		if (s.find("net")!=string::npos)
+                    str << " --reject-with icmp-net-prohibited";
+		if (s.find("host")!=string::npos)
+                    str << " --reject-with icmp-host-prohibited";
+                if (ipt_comp->newIptables(version) &&
+                    s.find("admin")!=string::npos)
+                    str << " --reject-with icmp-admin-prohibited";
 	    }
 	}
     }
@@ -580,6 +589,7 @@ string PolicyCompiler_ipt::PrintRule::_printLimit(libfwbuilder::PolicyRule *rule
 
 string PolicyCompiler_ipt::PrintRule::_printProtocol(libfwbuilder::Service *srv)
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     string version=compiler->fw->getStr("version");
     string s;
     if (! srv->isAny() && !CustomService::isA(srv)  && !TagService::isA(srv))
@@ -591,7 +601,7 @@ string PolicyCompiler_ipt::PrintRule::_printProtocol(libfwbuilder::Service *srv)
 
         if (pn == "icmp")
         {
-            if (version.empty() || version=="1.2.9" || version=="1.3.0")
+            if (ipt_comp->newIptables(version))
             {
                 s += " -m icmp ";
             }
@@ -733,6 +743,7 @@ string PolicyCompiler_ipt::PrintRule::_printTCPFlags(libfwbuilder::TCPService *s
  */
 string PolicyCompiler_ipt::PrintRule::_printSrcService(RuleElementSrv  *rel)
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     std::ostringstream  ostr;
 /* I do not want to use rel->getFirst because it traverses the tree to
  * find the object. I'd rather use a cached copy in the compiler
@@ -773,7 +784,7 @@ string PolicyCompiler_ipt::PrintRule::_printSrcService(RuleElementSrv  *rel)
 	if ( !str.empty() ) 
         {
             string v=compiler->fw->getStr("version");
-            if (v.empty() || v=="ge_1.2.6" || v=="1.2.9" || v=="1.3.0")
+            if (ipt_comp->newIptables(v))
                 ostr << " --sports ";
             else
                 ostr << " --source-port ";
@@ -786,6 +797,7 @@ string PolicyCompiler_ipt::PrintRule::_printSrcService(RuleElementSrv  *rel)
 
 string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
 {
+    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     std::ostringstream  ostr;
     FWObject *o=rel->front();
     string version=compiler->fw->getStr("version");
@@ -818,7 +830,7 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
 	    string str=_printICMP( ICMPService::cast(srv) );
 	    if (str.empty() ) 
             {
-                if (version.empty() || version=="1.2.9" || version=="1.3.0")
+                if (ipt_comp->newIptables(version))
                     ostr << " --icmp-type any ";
             } else
             {
@@ -868,7 +880,7 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
 	if ( !str.empty() ) 
         {
             string v=compiler->fw->getStr("version");
-            if (v.empty() || v=="ge_1.2.6" || v=="1.2.9" || v=="1.3.0")
+            if (ipt_comp->newIptables(v))
                 ostr << " --dports ";
             else
                 ostr << " --destination-port ";
@@ -1050,7 +1062,6 @@ string PolicyCompiler_ipt::PrintRule::_printTimeInterval(PolicyRule *r)
 
 PolicyCompiler_ipt::PrintRule::PrintRule(const std::string &name) : PolicyRuleProcessor(name) 
 { 
-    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     init=true; 
     print_once_on_top=true;
 

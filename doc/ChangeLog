@@ -1,3 +1,9 @@
+2008-06-02  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* platforms.cpp (list): Added iptables version 1.4.0 to the list.
+	Will use it for the "new" time module support. Bug #1914371:
+	"iptables 1.4.0"
+
 2008-05-30  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* pf.cpp (main): Like compiler for iptables, compiler for PF now

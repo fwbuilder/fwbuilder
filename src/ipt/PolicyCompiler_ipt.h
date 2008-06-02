@@ -75,7 +75,9 @@ namespace fwcompiler {
 
         std::string getInterfaceVarName(libfwbuilder::FWObject *iface);
         std::string getAddressTableVarName(libfwbuilder::FWObject *iface);
-        
+
+        bool newIptables(const std::string &version);
+
 	/**
 	 * Add some predefined rules controlled by checkboxes in
 	 * firewall settings dialog

@@ -395,7 +395,8 @@ list<QStringPair> getVersionsForPlatform(const QString &platform)
         res.push_back(QStringPair("lt_1.2.6", QObject::tr("1.2.5 or earlier")));
         res.push_back(QStringPair("ge_1.2.6", QObject::tr("1.2.6 to 1.2.8")));
         res.push_back(QStringPair("1.2.9", QObject::tr("1.2.9 to 1.2.11")));
-        res.push_back(QStringPair("1.3.0", QObject::tr("1.3.0 or later")));
+        res.push_back(QStringPair("1.3.0", QObject::tr("1.3.x")));
+        res.push_back(QStringPair("1.4.0", QObject::tr("1.4.0 or later")));
     } else
     {
         if (platform=="pix" || platform=="fwsm" || platform=="iosacl")

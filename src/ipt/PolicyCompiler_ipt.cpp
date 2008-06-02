@@ -4149,4 +4149,13 @@ string PolicyCompiler_ipt::commit()
     return createPrintRuleProcessor()->_commit();
 }
 
+bool PolicyCompiler_ipt::newIptables(const string &version)
+{
+    return (version.empty() || 
+            version == "ge_1.2.6" ||
+            version == "1.2.9" ||
+            version == "1.3.0" ||
+            version == "1.4.0");
+}
+
 
