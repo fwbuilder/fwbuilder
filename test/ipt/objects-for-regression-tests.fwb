@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="7" lastModified="1212118893" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="7" lastModified="1212443916" id="root">
   <Library color="#d2ffd0" comment="User defined objects" id="syslib001" name="User">
     <ObjectGroup id="stdid01_1" name="Objects">
       <ObjectGroup id="stdid01_1_og_ats_1" name="Address Tables">
@@ -24686,10 +24686,406 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
+      <Firewall comment="testing time litmiting for iptables &lt; 1.4.0&#10;" host_OS="linux24" id="id4844C0A114522" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1212443911" name="firewall60" platform="iptables" ro="False" version="">
+        <NAT id="id4844C0A514522" name="NAT"/>
+        <Policy id="id4844C0A414522" name="Policy">
+          <PolicyRule action="Deny" direction="Both" disabled="False" id="id484523F114522" log="True" position="0">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="id3C63479C"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Deny" direction="Both" disabled="False" group="" id="id4844D58415791" log="True" position="1">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="id3C63479E"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Deny" direction="Both" disabled="False" group="" id="id4844D57815791" log="True" position="2">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="int-afterhours"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Deny" direction="Both" disabled="False" group="" id="id4844D56C15791" log="True" position="3">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="int-weekends"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Deny" direction="Both" disabled="False" id="id4844D56015791" log="True" position="4">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="int-workhours"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Routing id="id4844C0A614522" name="Routing"/>
+        <Interface bridgeport="False" comment="" dyn="False" id="id4844C0A814522" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
+          <IPv4 comment="" id="id4844C0A914522" name="firewall60:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface bridgeport="False" comment="" dyn="False" id="id4844F24B14522" label="" mgmt="False" name="eth1" security_level="0" unnum="False" unprotected="False">
+          <IPv4 comment="" id="id4844F24C14522" name="firewall60:eth1:ip" address="222.222.222.222" netmask="255.255.255.0"/>
+        </Interface>
+        <Management address="192.168.1.1">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">True</Option>
+          <Option name="accept_new_tcp_with_no_syn">True</Option>
+          <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
+          <Option name="add_check_state_rule">true</Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="bridging_fw">False</Option>
+          <Option name="check_shading">False</Option>
+          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="classify_mark_terminating">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="debug">False</Option>
+          <Option name="drop_invalid">False</Option>
+          <Option name="eliminate_duplicates">true</Option>
+          <Option name="enable_ipv6">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">true</Option>
+          <Option name="iosacl_add_clear_statements">true</Option>
+          <Option name="iosacl_assume_fw_part_of_any">true</Option>
+          <Option name="iosacl_include_comments">true</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="limit_suffix"></Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">True</Option>
+          <Option name="local_nat">False</Option>
+          <Option name="log_all">False</Option>
+          <Option name="log_invalid">False</Option>
+          <Option name="log_ip_opt">False</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="log_tcp_opt">False</Option>
+          <Option name="log_tcp_seq">False</Option>
+          <Option name="loopback_interface">lo0</Option>
+          <Option name="macosx_ip_forward">1</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
+          <Option name="pass_all_out">false</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pix_add_clear_statements">true</Option>
+          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_default_logint">300</Option>
+          <Option name="pix_emblem_log_format">false</Option>
+          <Option name="pix_emulate_out_acl">true</Option>
+          <Option name="pix_floodguard">true</Option>
+          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_route_dnat_supported">true</Option>
+          <Option name="pix_rule_syslog_settings">false</Option>
+          <Option name="pix_security_fragguard_supported">true</Option>
+          <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="prolog_place">top</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="prompt1">$ </Option>
+          <Option name="prompt2"> # </Option>
+          <Option name="solaris_ip_forward">1</Option>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_cprange">0</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="ulog_qthreshold">1</Option>
+          <Option name="use_ULOG">False</Option>
+          <Option name="use_iptables_restore">False</Option>
+          <Option name="use_numeric_log_levels">False</Option>
+          <Option name="verify_interfaces">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall comment="testing time litmiting for iptables 1.4.0&#10;" host_OS="linux24" id="id4845077415791" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1212443916" name="firewall61" platform="iptables" ro="False" version="1.4.0">
+        <NAT id="id484507B715791" name="NAT"/>
+        <Policy id="id4845077A15791" name="Policy">
+          <PolicyRule action="Deny" direction="Both" disabled="False" id="id4845077B15791" log="True" position="0">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="id3C63479C"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Deny" direction="Both" disabled="False" group="" id="id4845078715791" log="True" position="1">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="id3C63479E"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Deny" direction="Both" disabled="False" group="" id="id4845079315791" log="True" position="2">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="int-afterhours"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Deny" direction="Both" disabled="False" group="" id="id4845079F15791" log="True" position="3">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="int-weekends"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule action="Deny" direction="Both" disabled="False" id="id484507AB15791" log="True" position="4">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="int-workhours"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Routing id="id484507B815791" name="Routing"/>
+        <Interface bridgeport="False" comment="" dyn="False" id="id484507B915791" label="" mgmt="True" name="eth0" security_level="100" unnum="False" unprotected="False">
+          <IPv4 comment="" id="id484507BB15791" name="firewall61:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface bridgeport="False" comment="" dyn="False" id="id484507BC15791" label="" mgmt="False" name="eth1" security_level="0" unnum="False" unprotected="False">
+          <IPv4 comment="" id="id484507BE15791" name="firewall61:eth1:ip" address="222.222.222.222" netmask="255.255.255.0"/>
+        </Interface>
+        <Management address="192.168.1.1">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">True</Option>
+          <Option name="accept_new_tcp_with_no_syn">True</Option>
+          <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
+          <Option name="add_check_state_rule">true</Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="bridging_fw">False</Option>
+          <Option name="check_shading">False</Option>
+          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="classify_mark_terminating">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="debug">False</Option>
+          <Option name="drop_invalid">False</Option>
+          <Option name="eliminate_duplicates">true</Option>
+          <Option name="enable_ipv6">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">true</Option>
+          <Option name="iosacl_add_clear_statements">true</Option>
+          <Option name="iosacl_assume_fw_part_of_any">true</Option>
+          <Option name="iosacl_include_comments">true</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="limit_suffix"></Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">True</Option>
+          <Option name="local_nat">False</Option>
+          <Option name="log_all">False</Option>
+          <Option name="log_invalid">False</Option>
+          <Option name="log_ip_opt">False</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="log_tcp_opt">False</Option>
+          <Option name="log_tcp_seq">False</Option>
+          <Option name="loopback_interface">lo0</Option>
+          <Option name="macosx_ip_forward">1</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
+          <Option name="pass_all_out">false</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pix_add_clear_statements">true</Option>
+          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_default_logint">300</Option>
+          <Option name="pix_emblem_log_format">false</Option>
+          <Option name="pix_emulate_out_acl">true</Option>
+          <Option name="pix_floodguard">true</Option>
+          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_route_dnat_supported">true</Option>
+          <Option name="pix_rule_syslog_settings">false</Option>
+          <Option name="pix_security_fragguard_supported">true</Option>
+          <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="prolog_place">top</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="prompt1">$ </Option>
+          <Option name="prompt2"> # </Option>
+          <Option name="solaris_ip_forward">1</Option>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_cprange">0</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="ulog_qthreshold">1</Option>
+          <Option name="use_ULOG">False</Option>
+          <Option name="use_iptables_restore">False</Option>
+          <Option name="use_numeric_log_levels">False</Option>
+          <Option name="verify_interfaces">True</Option>
+        </FirewallOptions>
+      </Firewall>
     </ObjectGroup>
     <IntervalGroup id="stdid11_1" name="Time">
-      <Interval comment="" from_day="-1" from_hour="1" from_minute="1" from_month="-1" from_weekday="0" from_year="-1" id="id3D6864D0" name="test time 1" to_day="-1" to_hour="2" to_minute="2" to_month="-1" to_weekday="1" to_year="-1"/>
-      <Interval comment="" from_day="13" from_hour="1" from_minute="1" from_month="3" from_weekday="0" from_year="2007" id="id45F8C4E013056" name="test time 2" to_day="1" to_hour="2" to_minute="2" to_month="1" to_weekday="1" to_year="2010"/>
+      <Interval comment="" days_of_week="0,1" from_day="-1" from_hour="1" from_minute="1" from_month="-1" from_weekday="0" from_year="-1" id="id3D6864D0" name="test time 1" to_day="-1" to_hour="2" to_minute="2" to_month="-1" to_weekday="1" to_year="-1"/>
+      <Interval comment="" days_of_week="0,1" from_day="13" from_hour="1" from_minute="1" from_month="3" from_weekday="0" from_year="2007" id="id45F8C4E013056" name="test time 2" to_day="1" to_hour="2" to_minute="2" to_month="1" to_weekday="1" to_year="2010"/>
     </IntervalGroup>
     <ObjectRef ref="id483F5B7623190"/>
     <ObjectRef ref="id4833F6316131"/>
@@ -25380,14 +25776,14 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
       </ServiceGroup>
     </ServiceGroup>
     <AnyNetwork comment="Any Network" id="sysid0" name="Any" address="0.0.0.0" netmask="0.0.0.0"/>
-    <AnyInterval comment="Any Interval" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" id="sysid2" name="Any" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1"/>
+    <AnyInterval comment="Any Interval" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" id="sysid2" name="Any" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1"/>
     <AnyIPService comment="Any IP Service" id="sysid1" name="Any" protocol_num="0"/>
     <IntervalGroup id="stdid11" name="Time">
-      <Interval comment="any day 6:00pm - 12:00am" from_day="-1" from_hour="18" from_minute="0" from_month="-1" from_weekday="-1" from_year="-1" id="int-afterhours" name="afterhours" to_day="-1" to_hour="23" to_minute="59" to_month="-1" to_weekday="-1" to_year="-1"/>
-      <Interval comment="" from_day="-1" from_hour="0" from_minute="0" from_month="-1" from_weekday="6" from_year="-1" id="id3C63479C" name="Sat" to_day="-1" to_hour="23" to_minute="59" to_month="-1" to_weekday="6" to_year="-1"/>
-      <Interval comment="" from_day="-1" from_hour="0" from_minute="0" from_month="-1" from_weekday="0" from_year="-1" id="id3C63479E" name="Sun" to_day="-1" to_hour="23" to_minute="59" to_month="-1" to_weekday="0" to_year="-1"/>
-      <Interval comment="any day, 9:00am through 5:00pm" from_day="-1" from_hour="9" from_minute="0" from_month="-1" from_weekday="1" from_year="-1" id="int-workhours" name="workhours" to_day="-1" to_hour="17" to_minute="0" to_month="-1" to_weekday="5" to_year="-1"/>
-      <Interval comment="weekends: Saturday 0:00 through Sunday 23:59 " from_day="-1" from_hour="0" from_minute="0" from_month="-1" from_weekday="6" from_year="-1" id="int-weekends" name="weekends" to_day="-1" to_hour="23" to_minute="59" to_month="-1" to_weekday="0" to_year="-1"/>
+      <Interval comment="any day 6:00pm - 12:00am" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="18" from_minute="0" from_month="-1" from_weekday="-1" from_year="-1" id="int-afterhours" name="afterhours" to_day="-1" to_hour="23" to_minute="59" to_month="-1" to_weekday="-1" to_year="-1"/>
+      <Interval comment="" days_of_week="6" from_day="-1" from_hour="0" from_minute="0" from_month="-1" from_weekday="6" from_year="-1" id="id3C63479C" name="Sat" to_day="-1" to_hour="23" to_minute="59" to_month="-1" to_weekday="6" to_year="-1"/>
+      <Interval comment="" days_of_week="0" from_day="-1" from_hour="0" from_minute="0" from_month="-1" from_weekday="0" from_year="-1" id="id3C63479E" name="Sun" to_day="-1" to_hour="23" to_minute="59" to_month="-1" to_weekday="0" to_year="-1"/>
+      <Interval comment="any day, 9:00am through 5:00pm" days_of_week="1,2,3,4,5" from_day="-1" from_hour="9" from_minute="0" from_month="-1" from_weekday="1" from_year="-1" id="int-workhours" name="workhours" to_day="-1" to_hour="17" to_minute="0" to_month="-1" to_weekday="5" to_year="-1"/>
+      <Interval comment="weekends: Saturday 0:00 through Sunday 23:59 " days_of_week="6,0" from_day="-1" from_hour="0" from_minute="0" from_month="-1" from_weekday="6" from_year="-1" id="int-weekends" name="weekends" to_day="-1" to_hour="23" to_minute="59" to_month="-1" to_weekday="0" to_year="-1"/>
     </IntervalGroup>
     <ObjectGroup id="stdid01" name="Objects">
       <ObjectGroup id="stdid15" name="Address Ranges">
