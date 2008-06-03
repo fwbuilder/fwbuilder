@@ -40,6 +40,7 @@
 #include "FWBSettings.h"
 #include "ObjectTreeView.h"
 #include "RuleSetView.h"
+#include "ProjectPanel.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWReference.h"
@@ -253,10 +254,10 @@ void FindWhereUsedWidget::showObject(FWObject* o)
     {
         ref=findRef(object,o);
         if (ref==NULL) return;
-
+        mw->activeProject()->openRuleSet(o->getParent()->getParent());
         mw->clearManipulatorFocus();
         mw->ensureObjectVisibleInRules( ref );
-        mw->selectRules();
+//        mw->selectRules();
         if (mw->isEditorVisible())
         {
             mw->editObject( object );

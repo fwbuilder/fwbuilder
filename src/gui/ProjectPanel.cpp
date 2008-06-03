@@ -3622,7 +3622,8 @@ void ProjectPanel::scheduleRuleSetRedraw()
     if (!ruleSetRedrawPending)
     {
         ruleSetRedrawPending = true;
-        QTimer::singleShot( 0, this, SLOT(redrawRuleSets()) );
+        redrawRuleSets();
+        //QTimer::singleShot( 0, this, SLOT(redrawRuleSets()) );
     }
 }
 

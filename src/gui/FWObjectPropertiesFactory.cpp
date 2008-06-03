@@ -571,7 +571,7 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(PolicyRule *rule)
                 par = ropt->getStr("custom_str").c_str();
                 break;
             case PolicyRule::Branch :
-                par = ropt->getStr("branch_name").c_str();
+                par = rule->getBranch()->getName().c_str();//ropt->getStr("branch_name").c_str();
                 break;
             case PolicyRule::Classify :
                 if (platform=="ipfw")

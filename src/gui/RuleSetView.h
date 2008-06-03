@@ -162,7 +162,7 @@ class RuleSetView : public QTableView
     void addToGroupAbove ();
     void addToGroupBelow();
     void removeFromGroup();
-    
+    void insertRuleAboveFirstGroup();    
     void showHideRuleGroup (RuleGroupPanel * rgp);
 
     void editSelected();

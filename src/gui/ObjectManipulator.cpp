@@ -2321,7 +2321,7 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
 //        qDebug("!2");
         if (obj!=m_project->getCurrentRuleSet()) 
         {           
-            if (m_project->getCurrentRuleSet()!=NULL)
+//            if (m_project->getCurrentRuleSet()!=NULL)
                 m_project->openRuleSet(obj);
         }
     

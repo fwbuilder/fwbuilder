@@ -126,9 +126,9 @@ void UserDialog::applyChanges()
     assert(s!=NULL);
     s->dump(false,false);
     string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
-    obj->setName( string(m_dialog->userid->text().toUtf8().constData()) );
+    s->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    s->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    s->setUserId( string(m_dialog->userid->text().toUtf8().constData()) );
 
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 

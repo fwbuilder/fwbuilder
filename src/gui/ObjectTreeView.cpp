@@ -151,6 +151,7 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project, QWidget* parent, const cha
     setAcceptDrops( true );
     setDragDropMode( QAbstractItemView::DragDrop );
     setRootIsDecorated( TRUE );
+    setSortingEnabled(false);
 }
 
 bool ObjectTreeView::event( QEvent *event )

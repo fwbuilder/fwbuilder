@@ -2165,6 +2165,12 @@ void RuleSetView::insertRule()
     mw->updateLastModifiedTimestampForOneFirewall(getFirewall());
 }
 
+void RuleSetView::insertRuleAboveFirstGroup()
+{
+    insertRule(0,NULL);
+    updateGroups();
+}
+
 FWObject* RuleSetView::getSelectedObject()
 {
     return selectedObject;
@@ -2705,42 +2711,42 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
     }
     else
     {
+            if (row==0)
+                popup->addAction( tr("Insert Rule Above"), this, SLOT( insertRuleAboveFirstGroup() ));
+
             popup->addAction( tr("Rename group"), this, SLOT( renameGroup() ));
-                popup->addSeparator();
+            popup->addSeparator();
 
-                QMenu *subcolor = popup->addMenu( tr("Change color") );
+            QMenu *subcolor = popup->addMenu( tr("Change color") );
 
-                QPixmap pcolor(16,16);
-                pcolor.fill(QColor(255,255,255));
-                subcolor->addAction( QIcon(pcolor), tr("No color"), this, SLOT ( setColorEmpty() ));
+            QPixmap pcolor(16,16);
+            pcolor.fill(QColor(255,255,255));
+            subcolor->addAction( QIcon(pcolor), tr("No color"), this, SLOT ( setColorEmpty() ));
 
-                pcolor.fill(st->getLabelColor(FWBSettings::RED));
-                subcolor->addAction( QIcon(pcolor), tr("Red"), this, SLOT ( setColorRed() ));
+            pcolor.fill(st->getLabelColor(FWBSettings::RED));
+            subcolor->addAction( QIcon(pcolor), tr("Red"), this, SLOT ( setColorRed() ));
 
-                pcolor.fill(st->getLabelColor(FWBSettings::ORANGE));
-                subcolor->addAction( QIcon(pcolor), tr("Orange"), this, SLOT ( setColorOrange() ));
+            pcolor.fill(st->getLabelColor(FWBSettings::ORANGE));
+            subcolor->addAction( QIcon(pcolor), tr("Orange"), this, SLOT ( setColorOrange() ));
 
-                pcolor.fill(st->getLabelColor(FWBSettings::YELLOW));
-                subcolor->addAction( QIcon(pcolor), tr("Yellow"), this, SLOT ( setColorYellow() ));
+            pcolor.fill(st->getLabelColor(FWBSettings::YELLOW));
+            subcolor->addAction( QIcon(pcolor), tr("Yellow"), this, SLOT ( setColorYellow() ));
 
-                pcolor.fill(st->getLabelColor(FWBSettings::GREEN));
-                subcolor->addAction( QIcon(pcolor), tr("Green"), this, SLOT ( setColorGreen() ));
+            pcolor.fill(st->getLabelColor(FWBSettings::GREEN));
+            subcolor->addAction( QIcon(pcolor), tr("Green"), this, SLOT ( setColorGreen() ));
 
-                pcolor.fill(st->getLabelColor(FWBSettings::BLUE));
-                subcolor->addAction( QIcon(pcolor), tr("Blue"), this, SLOT ( setColorBlue() ));
+            pcolor.fill(st->getLabelColor(FWBSettings::BLUE));
+            subcolor->addAction( QIcon(pcolor), tr("Blue"), this, SLOT ( setColorBlue() ));
 
-                pcolor.fill(st->getLabelColor(FWBSettings::PURPLE));
-                subcolor->addAction( QIcon(pcolor), tr("Purple"), this, SLOT ( setColorPurple() ));
+            pcolor.fill(st->getLabelColor(FWBSettings::PURPLE));
+            subcolor->addAction( QIcon(pcolor), tr("Purple"), this, SLOT ( setColorPurple() ));
 
-                pcolor.fill(st->getLabelColor(FWBSettings::GRAY));
-                subcolor->addAction( QIcon(pcolor), tr("Gray"), this, SLOT ( setColorGray() ));
+            pcolor.fill(st->getLabelColor(FWBSettings::GRAY));
+            subcolor->addAction( QIcon(pcolor), tr("Gray"), this, SLOT ( setColorGray() ));
 
+            popup->exec( pos );
 
-
-
-                popup->exec( pos );
-    
-                delete popup;
+            delete popup;
             return ;
 
     }
