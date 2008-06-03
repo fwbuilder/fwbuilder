@@ -1340,6 +1340,7 @@ bool ProjectPanel::fileOpen()
 
 void ProjectPanel::fileClose()
 {
+    saveState();
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): start");
 
     findObjectWidget->init();
