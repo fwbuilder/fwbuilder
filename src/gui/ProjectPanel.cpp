@@ -174,8 +174,9 @@ void ProjectPanel::initMain(FWWindow *main)
 //    connect( m_panel->fwList, SIGNAL( activated(int) ), this, SLOT( openFirewall(int) ) );
     connect( m_panel->infoStyleButton, SIGNAL( clicked() ), this, SLOT( changeInfoStyle() ) );
 //    connect( m_panel->ruleSets, SIGNAL( currentChanged(int) ), this, SLOT( ruleSetTabChanged(int) ) );
-      
-      
+    connect(m_panel->mainSplitter, SIGNAL(splitterMoved(int,int)),this,SLOT(splitterMoved(int,int)));
+    connect(m_panel->objInfoSplitter, SIGNAL(splitterMoved(int,int)),this,SLOT(splitterMoved(int,int)));
+          
     m_panel->auxiliaryPanel->hide();
     initOE();
     initFD();
@@ -3807,6 +3808,11 @@ void ProjectPanel::loadState (QString filename)
             firstResize=true ;
         }
     }
+}
+
+void ProjectPanel::splitterMoved ( int pos, int index )
+{
+    saveState();
 }
 
 void ProjectPanel::resizeEvent ( QResizeEvent* )

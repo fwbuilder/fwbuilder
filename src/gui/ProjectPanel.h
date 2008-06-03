@@ -338,7 +338,7 @@ public:
      
      virtual void rollBackSelectionSameWidget();
      virtual void rollBackSelectionDifferentWidget();
-
+     void splitterMoved ( int pos, int index );
  signals:
      void restoreSelection_sign(bool same_widget);
 public:
