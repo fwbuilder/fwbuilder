@@ -1,3 +1,17 @@
+2008-06-04  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWObjectDatabase_7.xslt, FWObjectDatabase_8.xslt: autoupgrade
+	scripts that create missing TagService objects for all Tag
+	actions.  Scripts check if TagService element with required
+	tagvalue attribute already exists in the same library and do not
+	create duplicates. Also suppress duplicates if many rules use the
+	same tag value. Duplicate TagService objects are not created
+	inside of each library, but TagService objects with the same codes
+	will be created if firewalls in different libraries need them. All
+	rules with action Tag have their option "tagvalue" replaced with
+	option "tagobject_id" pointing at existing or create TagService
+	objects in the same library.
+
 2008-05-31  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* InetAddr.cpp (InetAddr::init_from_string): Constructors of
