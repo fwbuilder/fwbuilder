@@ -65,7 +65,10 @@ void Preprocessor::convertObject(FWObject *obj)
             set<FWObject*>::iterator i;
             for (i=resset.begin(); i!=resset.end(); ++i)
             {
-                if ( (*i)->getId()==fw->getId() )
+                FWObject *p = (*i);
+                while (p && !Firewall::isA(p)) p = p->getParent();
+
+                if (p && p->getId()==fw->getId())
                 {
                     try
                     {
