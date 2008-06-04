@@ -73,6 +73,7 @@ void Preprocessor::convertObject(FWObject *obj)
                     try
                     {
                         adt->loadFromSource();
+                        break;
                     } catch (FWException &ex)
                     {
                         abort(ex.toString());
