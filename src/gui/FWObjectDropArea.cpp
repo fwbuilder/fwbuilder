@@ -95,7 +95,7 @@ void FWObjectDropArea::paintEvent(QPaintEvent *ev)
     {
 
         QPixmap pm;
-        QString icn_file = (":/Icons/"+object->getTypeName()+"/icon-tree").c_str();
+        QString icn_file = (":/Icons/"+object->getTypeName()+"/icon").c_str();
 
         if ( ! QPixmapCache::find( icn_file, pm) )
         {
