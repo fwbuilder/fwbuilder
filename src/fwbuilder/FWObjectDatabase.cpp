@@ -1054,13 +1054,17 @@ bool FWObjectDatabase::_isInIgnoreList(FWObject *o)
  *  references using temporary flags set in objects this method
  *  visits.
  */
-void FWObjectDatabase::findWhereUsed(FWObject *o,FWObject *p,set<FWObject *> &resset)
+void FWObjectDatabase::findWhereUsed(FWObject *o,
+                                     FWObject *p,
+                                     set<FWObject *> &resset)
 {
     searchId++;
-    _findWhereUsed(o,p,resset);
+    _findWhereUsed(o, p, resset);
 }
 
-bool FWObjectDatabase::_findWhereUsed(FWObject *o,FWObject *p,set<FWObject *> &resset)
+bool FWObjectDatabase::_findWhereUsed(FWObject *o,
+                                      FWObject *p,
+                                      set<FWObject *> &resset)
 {
     bool res=false;
         
@@ -1073,25 +1077,45 @@ bool FWObjectDatabase::_findWhereUsed(FWObject *o,FWObject *p,set<FWObject *> &r
     }
 
 // set flags to break indefinite recursion in case we encounter circular groups
-    p->setInt(".searchId",searchId);
-    p->setBool(".searchResult",res);   // res==false at this time
+    p->setInt(".searchId", searchId);
+    p->setBool(".searchResult", res);   // res==false at this time
+
+    if (PolicyRule::cast(p))
+    {
+        PolicyRule *rule = PolicyRule::cast(p);
+        switch (rule->getAction()) {
+        case PolicyRule::Tag:
+        {
+            FWObject *tagobj = rule->getTagObject();
+            if (o==tagobj)  { res=true; break; }
+            break;
+        }
+        case PolicyRule::Branch:
+        {
+            FWObject *ruleset = rule->getBranch();
+            if (o==ruleset)  { res=true; break; }
+            break;
+        }
+        default: ;
+        }
+    }
    
-    FWObject::iterator i1=p->begin();
-    for (;i1!=p->end(); ++i1)
+    FWObject::iterator i1 = p->begin();
+    for ( ; i1!=p->end(); ++i1)
     {
         if ((*i1)->getId()==FWObjectDatabase::getDeletedObjectsId()) continue;
 
-        FWReference  *ref=FWReference::cast(*i1);
+        FWReference  *ref = FWReference::cast(*i1);
         if (ref!=NULL)
         {  // child is a reference
-            FWObject *g=ref->getPointer();
-            if (o==g) res= true;
-            else      res |= _findWhereUsed(o,g,resset);
+            FWObject *g = ref->getPointer();
+            if (o==g) res = true;
+            else      _findWhereUsed(o, g, resset);
         }
         else    // child is a regular object, not a reference
         {
-            if (o==(*i1))  res=true;
-            else           res |= _findWhereUsed(o,*i1,resset);
+            if (o==(*i1))  { res=true; break; }
+            _findWhereUsed(o, *i1, resset);
         }
     }
 
