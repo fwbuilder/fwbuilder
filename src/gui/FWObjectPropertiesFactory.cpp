@@ -180,7 +180,6 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
             FWObjectTypedChildIterator j = obj->findByType(IPv4::TYPENAME);
             for ( ; j!=j.end(); ++j)
             {
-                IPv4 *intf = IPv4::cast(*j);
                 str << getObjectProperties(*j);
                 str << "<br>";
             }
@@ -330,7 +329,6 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
                 Interface::TYPENAME);
             for ( ; j!=j.end(); ++j)
             {
-                Interface *intf = Interface::cast(*j);
                 str += (*j)->getName().c_str();
                 str += ": ";
                 str += getObjectProperties(*j);
@@ -425,7 +423,6 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             FWObjectTypedChildIterator j = obj->findByType(IPv4::TYPENAME);
             for ( ; j!=j.end(); ++j)
             {
-                IPv4 *intf = IPv4::cast(*j);
                 str += getObjectProperties(*j);
                 str += "<br>";
             }
@@ -558,22 +555,33 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(PolicyRule *rule)
         {
             switch (rule->getAction())
             {
-            case PolicyRule::Reject     :
+            case PolicyRule::Reject:
                 par = ropt->getStr("action_on_reject").c_str();
                 break;
-            case PolicyRule::Tag        :
-                par = rule->getTagValue().c_str();//ropt->getStr("tagvalue").c_str();
+            case PolicyRule::Tag:
+            {
+                FWObject *tag_object = rule->getTagObject();
+                if (tag_object)
+                    par = tag_object->getName().c_str();
+                else
+                    par = rule->getTagValue().c_str();
                 break;
+            }
             case PolicyRule::Accounting :
                 par = ropt->getStr("rule_name_accounting").c_str();
                 break;
-            case PolicyRule::Custom :
+            case PolicyRule::Custom:
                 par = ropt->getStr("custom_str").c_str();
                 break;
-            case PolicyRule::Branch :
-                par = rule->getBranch()->getName().c_str();//ropt->getStr("branch_name").c_str();
+            case PolicyRule::Branch:
+            {
+                FWObject *branch_ruleset = rule->getBranch();
+                if (branch_ruleset)
+                    par = branch_ruleset->getName().c_str();
+                // ropt->getStr("branch_name").c_str();
                 break;
-            case PolicyRule::Classify :
+            }
+            case PolicyRule::Classify:
                 if (platform=="ipfw")
                 {
                     if (ropt->getInt("ipfw_classify_method") == DUMMYNETPIPE)

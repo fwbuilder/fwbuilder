@@ -78,7 +78,10 @@ using namespace std;
 using namespace libfwbuilder;
 
 
-FindWhereUsedWidget::FindWhereUsedWidget(QWidget*p, const char * n, Qt::WindowFlags f, bool f_mini) : QWidget(p)
+FindWhereUsedWidget::FindWhereUsedWidget(QWidget*p,
+                                         const char * n,
+                                         Qt::WindowFlags f,
+                                         bool f_mini) : QWidget(p)
 {
     m_widget = new Ui::findWhereUsedWidget_q;
     m_widget->setupUi(this);
@@ -94,7 +97,6 @@ FindWhereUsedWidget::FindWhereUsedWidget(QWidget*p, const char * n, Qt::WindowFl
     }
     else
     {
-        //connect (m_widget->dropArea,SIGNAL(objectInserted()),this,SLOT(findFromDrop()));
         connect (m_widget->dropArea,SIGNAL(objectDeleted()),this,SLOT(init()));
     }
 }
@@ -112,7 +114,7 @@ void FindWhereUsedWidget::setShowObject(bool fl)
 void FindWhereUsedWidget::itemActivated(QTreeWidgetItem* item)
 {
     FWObject *o;
-    o=mapping[item];
+    o = mapping[item];
 
     if (flShowObject && o!=NULL)
     {
@@ -139,7 +141,7 @@ void FindWhereUsedWidget::_find(FWObject *obj)
     resset.clear();
 
 
-    mw->db()->findWhereUsed(obj,mw->db(),resset);
+    mw->db()->findWhereUsed(obj, mw->db(), resset);
 
     set<FWObject*>::iterator i=resset.begin();
     QTreeWidgetItem *item;
@@ -156,11 +158,17 @@ void FindWhereUsedWidget::_find(FWObject *obj)
         r=NULL;
         rs=NULL;
 
-        if (findRef(object,o)==NULL) continue;
-        if (RuleElement::cast(o)!=NULL)
-        {
-            fw=o->getParent();
+//        if (findRef(object,o)==NULL) continue;
 
+        if (mw->isSystem(o) || RuleSet::cast(o) ||
+            Firewall::cast(o) || Library::cast(o)) continue;
+
+        c1 = QString::fromUtf8(o->getName().c_str());
+        c2 = tr("Type: ")+QString::fromUtf8(o->getTypeName().c_str());
+
+        if (RuleElement::cast(o)!=NULL || Rule::cast(o)!=NULL)
+        {
+            fw = o;
             while (fw!=NULL && !Firewall::isA(fw))
             {
                 if (Rule::cast(fw))
@@ -170,12 +178,11 @@ void FindWhereUsedWidget::_find(FWObject *obj)
                 {
                     rs=RuleSet::cast(fw);
                 }
-
                 fw=fw->getParent();
             }
             if (fw==NULL || r==NULL || rs==NULL) continue;
 
-            c1=QString::fromUtf8(fw->getName().c_str());
+            c1 = QString::fromUtf8(fw->getName().c_str());
 
             if (NAT::isA(rs))
             {
@@ -191,25 +198,12 @@ void FindWhereUsedWidget::_find(FWObject *obj)
                 c2=tr("Unknown rule set");
             }
             c2+=tr("/Rule%1").arg(r->getPosition());
-
-        } else if (
-                mw->isSystem(o) ||
-                Rule::cast(o) ||
-                RuleSet::cast(o) ||
-                Firewall::cast(o) ||
-                Library::cast(o))
-        {
-            continue;
-        }
-        else
-        {
-            c1=QString::fromUtf8(o->getName().c_str());
-            c2=tr("Type: ")+QString::fromUtf8(o->getTypeName().c_str());
         }
 
         FWObject *pixobj=(fw==NULL)?o:fw;
 
-        QString icn_file = (":/Icons/"+pixobj->getTypeName()+"/icon-tree").c_str();
+        QString icn_file =
+            (":/Icons/"+pixobj->getTypeName()+"/icon-tree").c_str();
 
         QPixmap pm;
         if ( ! QPixmapCache::find( icn_file, pm) )
@@ -220,9 +214,9 @@ void FindWhereUsedWidget::_find(FWObject *obj)
 
         QStringList qsl;
         qsl << c1 << c2;
-        item=new QTreeWidgetItem(m_widget->resListView, qsl);
-        item->setIcon(0,QIcon(pm));
-        mapping[item]=o;
+        item = new QTreeWidgetItem(m_widget->resListView, qsl);
+        item->setIcon(0, QIcon(pm));
+        mapping[item] = o;
     }
     show();
 }
@@ -252,11 +246,14 @@ void FindWhereUsedWidget::showObject(FWObject* o)
 
     if (RuleElement::cast(o)!=NULL)
     {
-        ref=findRef(object,o);
+        ref = findRef(object, o);
         if (ref==NULL) return;
         mw->activeProject()->openRuleSet(o->getParent()->getParent());
         mw->clearManipulatorFocus();
         mw->ensureObjectVisibleInRules( ref );
+        RuleSetView *rsv = mw->activeProject()->getCurrentRuleSetView();
+        rsv->selectRE( ref );
+
 //        mw->selectRules();
         if (mw->isEditorVisible())
         {
@@ -264,6 +261,23 @@ void FindWhereUsedWidget::showObject(FWObject* o)
         }
         return;
     }
+
+    if (Rule::cast(o)!=NULL)
+    {
+        mw->activeProject()->openRuleSet(o->getParent());
+        mw->clearManipulatorFocus();
+        mw->ensureRuleIsVisible( Rule::cast(o) );
+        RuleSetView *rsv = mw->activeProject()->getCurrentRuleSetView();
+        rsv->selectRE( Rule::cast(o)->getPosition(),
+                       rsv->getColByType(RuleSetView::Action));
+
+        if (mw->isEditorVisible())
+        {
+            mw->editObject( object );
+        }
+        return;
+    }
+
     mw->unselectRules();
 
     if (Group::cast(o)!=NULL)

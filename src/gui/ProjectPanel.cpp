@@ -624,6 +624,28 @@ void ProjectPanel::ensureObjectVisibleInRules(FWReference *obj)
     rsv->selectRE( obj );
 }
 
+/*
+ * Ensure rule is visible and highlight given column
+ */
+void ProjectPanel::ensureRuleIsVisible(Rule *rule, int col)
+{
+    FWObject *p = rule;
+
+    while (p && RuleSet::cast(p)==NULL ) p=p->getParent();
+    if (p==NULL) return;  // something is broken
+
+    RuleSetView *rsv = ruleSetViews[p];
+
+    if (rsv==NULL)
+    {
+        if (fwbdebug)
+            qDebug("ProjectPanel::ensureRuleIsVisible : orphan rule set found");
+        return;
+    }
+
+    m_panel->ruleSets->setCurrentIndex(m_panel->ruleSets->indexOf(rsv));
+    rsv->selectRE( rule->getPosition(), col );
+}
 
 void ProjectPanel::updateRuleSetViewSelection()
 {

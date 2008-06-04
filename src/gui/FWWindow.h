@@ -184,6 +184,7 @@ public slots:
     bool editingLibrary();
 
     void ensureObjectVisibleInRules(libfwbuilder::FWReference *obj);
+    void ensureRuleIsVisible(libfwbuilder::Rule *rule, int col=0);
 
     QString chooseNewFileName(const QString &fname,
                               bool checkPresence, const QString &title);

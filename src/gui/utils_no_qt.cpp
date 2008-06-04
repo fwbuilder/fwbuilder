@@ -95,9 +95,8 @@ void findByObjectType(FWObject *o,
 }
 
 
-FWReference* findRef(FWObject *o,FWObject *p)
+FWReference* findRef(FWObject *o, FWObject *p)
 {
-
     FWReference* ref=NULL;
     FWObject::iterator i=p->begin();
     for(;i!=p->end();++i)

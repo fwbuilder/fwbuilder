@@ -1319,6 +1319,20 @@ RuleSetView::REType  RuleSetView::getColType(int col) const
     return i->second;
 }
 
+/**
+ * Returns column number for the given column type.
+ * Note that for some types this operation is ambiguous because we have
+ * several columns with the same type. In that case return the number
+ * of the first column that matches.
+ */
+int RuleSetView::getColByType(REType type) const
+{
+    map<int,REType>::const_iterator i;
+    for (i=colTypes.begin(); i!=colTypes.end(); ++i)
+        if (i->second == type) return i->first;
+    return -1;
+}
+
 
 QString RuleSetView::objectText(RuleElement *re,FWObject *obj)
 {
@@ -1929,7 +1943,13 @@ void RuleSetView::selectRE( int row, int col)
     if (row!=currentRow() || col!=currentColumn())
     {
         selectedObject = NULL;
-        updateCell(currentRow(),currentColumn());
+
+        setCurrentCell(row,col);
+        scrollTo( ruleModel->index(row,col),
+                  QAbstractItemView::EnsureVisible);
+        updateCell(row,col);
+
+//        updateCell(currentRow(),currentColumn());
     }
 }
 
@@ -1948,12 +1968,14 @@ void RuleSetView::selectRE(libfwbuilder::FWReference *ref)
     int col;
     for (col=0; col<ncols; ++col)
         if (re==getRE(r,col))
-    {
-        setCurrentCell(row,col);
-        scrollTo( ruleModel->index(row,col), QAbstractItemView::EnsureVisible);
-        updateCell(row,col);
-        break;
-    }
+        {
+            selectRE(row, col);
+            //setCurrentCell(row,col);
+            //scrollTo( ruleModel->index(row,col),
+            //          QAbstractItemView::EnsureVisible);
+            //updateCell(row,col);
+            break;
+        }
 }
 
 void RuleSetView::itemDoubleClicked(const QModelIndex & index)

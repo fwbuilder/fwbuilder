@@ -446,6 +446,7 @@ class RuleSetView : public QTableView
     void openObjectInTree(libfwbuilder::FWObject *obj); 
 
     REType  getColType(int col) const;
+    int     getColByType(REType) const;
 
 private:
     ProjectPanel *m_project;

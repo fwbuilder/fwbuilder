@@ -241,6 +241,7 @@ public:
     
     void clearFirewallTabs();
     void ensureObjectVisibleInRules(libfwbuilder::FWReference *obj);
+    void ensureRuleIsVisible(libfwbuilder::Rule *rule, int col=0);
     
     libfwbuilder::FWObject* getVisibleFirewall() { return visibleFirewall; }
     RuleSetView* getRuleSetViews(libfwbuilder::FWObject *o) 

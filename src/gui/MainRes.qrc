@@ -10,11 +10,11 @@
         <file alias="Icons/Pipe">Icons/pipe_25.png</file>
         <file alias="Icons/Reject">Icons/reject_25.png</file>
         <file alias="Icons/Route">Icons/route_25.png</file>
-        <file alias="Icons/Tag">Icons/tag_25.png</file>
+        <file alias="Icons/Tag">Icons/service-tag_25.png</file>
         <file alias="Icons/Options">Icons/options_25.png</file>
 
         <file alias="Icons/Options-tree">Icons/options_16.png</file>        
-        <file alias="Icons/Tag-tree">Icons/tag_16.png</file>
+        <file alias="Icons/Tag-tree">Icons/service-tag_16.png</file>
         <file alias="Icons/Route-tree">Icons/route_16.png</file>
         <file alias="Icons/Reject-tree">Icons/reject_16.png</file>
         <file alias="Icons/Pipe-tree">Icons/pipe_16.png</file>

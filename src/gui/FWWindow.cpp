@@ -633,6 +633,15 @@ void FWWindow::ensureObjectVisibleInRules(FWReference *obj)
         activeProject()->ensureObjectVisibleInRules(obj);
 }
 
+/*
+ * Make rule visible and highlight given column
+ */
+void FWWindow::ensureRuleIsVisible(Rule *rule, int col)
+{
+    if (activeProject())
+        activeProject()->ensureRuleIsVisible(rule, col);
+}
+
 void FWWindow::updateRuleSetViewSelection()
 {
     if (activeProject())
