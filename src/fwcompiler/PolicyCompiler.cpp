@@ -837,16 +837,17 @@ bool  PolicyCompiler::ConvertToAtomic::processNext()
 
 
 std::deque<Rule*>::iterator 
-PolicyCompiler::findMoreGeneralRule::find_more_general_rule(PolicyRule *rule,
-                                                            bool check_interface,
-                                                            const std::deque<Rule*>::iterator &start_here,
-                                                            const std::deque<Rule*>::iterator &stop_here,
-                                                            bool reverse)
+PolicyCompiler::findMoreGeneralRule::find_more_general_rule(
+    PolicyRule *rule,
+    bool check_interface,
+    const std::deque<Rule*>::iterator &start_here,
+    const std::deque<Rule*>::iterator &stop_here,
+    bool reverse)
 {
     PolicyCompiler *pcomp=dynamic_cast<PolicyCompiler*>(compiler);
     if (compiler->debug>=9) 
     {
-        cerr << "*********  searching for more general rule: --------------------\n";
+        cerr << "*********  searching for more general rule: -------------\n";
         cerr << compiler->debugPrintRule(rule);
         cerr << endl;
     }
@@ -896,11 +897,12 @@ bool PolicyCompiler::DetectShadowing::processNext()
     if (rule->isFallback()) return true; // do not check fallback  ..
     if (rule->isHidden())   return true; //  ... and hidden rules
 
-    std::deque<Rule*>::iterator i=find_more_general_rule(rule,
-                                                         true,
-                                                         rules_seen_so_far.begin(),
-                                                         rules_seen_so_far.end(),
-                                                         false);
+    std::deque<Rule*>::iterator i =
+        find_more_general_rule(rule,
+                               true,
+                               rules_seen_so_far.begin(),
+                               rules_seen_so_far.end(),
+                               false);
     if (i!=rules_seen_so_far.end()) 
     {
         Rule *r = *i;
@@ -929,11 +931,12 @@ bool PolicyCompiler::DetectShadowingForNonTerminatingRules::processNext()
     if (rule->isFallback()) return true; // do not check fallback  ..
     if (rule->isHidden())   return true; //  ... and hidden rules
 
-    std::deque<Rule*>::iterator i=find_more_general_rule(rule,
-                                                         true,
-                                                         rules_seen_so_far.begin(),
-                                                         rules_seen_so_far.end(),
-                                                         true);   // <<<<<<< NB!
+    std::deque<Rule*>::iterator i = 
+        find_more_general_rule(rule,
+                               true,
+                               rules_seen_so_far.begin(),
+                               rules_seen_so_far.end(),
+                               true);   // <<<<<<< NB!
     if (i!=rules_seen_so_far.end()) 
     {
         Rule *r = *i;

@@ -571,6 +571,7 @@ namespace fwcompiler {
         libfwbuilder::Group               *temp;
 
 	std::stringstream                  output;
+	std::stringstream                  errors_buffer;
 
         bool                               test_mode;
 
@@ -596,7 +597,9 @@ namespace fwcompiler {
         std::string getRuleSetName() { return ruleSetName; }
         
 	std::string getCompiledScript();
-        int         getCompiledScriptLength();
+        int getCompiledScriptLength();
+	std::string getErrors();
+	bool haveErrorsAndWarnings();
 
 	void expandGroupsInRuleElement(libfwbuilder::RuleElement *s);
 

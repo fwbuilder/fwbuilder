@@ -141,6 +141,18 @@ string Compiler::getCompiledScript()
     return res;
 }
 
+bool Compiler::haveErrorsAndWarnings()
+{
+    return (int(output.tellp()) > 0);
+}
+
+string Compiler::getErrors()
+{
+    string res = errors_buffer.str();
+    errors_buffer.str("");
+    return res;
+}
+
 void Compiler::_init(FWObjectDatabase *_db, const string &fwobjectname)
 { 
     initialized=false;
@@ -232,6 +244,8 @@ void Compiler::error(const string &errstr)
     cout << flush;
     cerr << "Error (" << myPlatformName() << "): ";
     cerr << errstr << endl;
+    errors_buffer << "Error (" << myPlatformName() << "): ";
+    errors_buffer << errstr << endl;
 }
 
 void Compiler::warning(const string &warnstr)
@@ -239,10 +253,9 @@ void Compiler::warning(const string &warnstr)
     cout << flush;
     cerr << "Warning (" << myPlatformName() << "): ";
     cerr << warnstr << endl;
+    errors_buffer << "Warning (" << myPlatformName() << "): ";
+    errors_buffer << warnstr << endl;
 }
-
-
-
 
 string Compiler::getUniqueRuleLabel()
 {
@@ -251,8 +264,6 @@ string Compiler::getUniqueRuleLabel()
     _cntr_++;
     return str;
 }
-
-
 
 void Compiler::compile()
 {
