@@ -169,6 +169,36 @@ string getConfFileName(const string &ruleset_name,
     return conf_file_name;
 }
 
+/* Find rulesets that belong to other firewall objects but are
+ * referenced by rules of this firewall using action Branch
+ */
+void findImportedRuleSets(Firewall *fw, list<FWObject*> &all_policies)
+{
+    list<FWObject*> imported_policies;
+    for (list<FWObject*>::iterator i=all_policies.begin();
+         i!=all_policies.end(); ++i)
+    {
+        for (list<FWObject*>::iterator r=(*i)->begin();
+             r!=(*i)->end(); ++r)
+        {
+            PolicyRule *rule = PolicyRule::cast(*r);
+            RuleSet *ruleset = NULL;
+            if (rule->getAction() == PolicyRule::Branch &&
+                (ruleset = rule->getBranch())!=NULL &&
+                !ruleset->isChildOf(fw))
+            {
+                imported_policies.push_back(ruleset);
+            }
+        }
+    }
+    if (imported_policies.size() > 0)
+        all_policies.insert(all_policies.end(),
+                            imported_policies.begin(), imported_policies.end());
+}
+
+
+
+
 void usage(const char *name)
 {
     cout << _("Firewall Builder:  policy compiler for OpenBSD PF") << endl;
@@ -638,6 +668,8 @@ int main(int argc, char * const *argv)
 
         list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
         list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
+
+        findImportedRuleSets(fw, all_policies);
 
         vector<bool> ipv4_6_runs;
         bool have_nat = false;

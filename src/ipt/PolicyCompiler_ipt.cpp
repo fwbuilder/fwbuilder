@@ -2925,8 +2925,11 @@ bool PolicyCompiler_ipt::decideOnTarget::processNext()
     case PolicyRule::Route:    rule->setStr("ipt_target","ROUTE");     break;
     case PolicyRule::Branch:
     {
-        FWOptions *ropt = rule->getOptionsObject();
-        rule->setStr("ipt_target", ropt->getStr("branch_name"));
+        RuleSet *ruleset = rule->getBranch();
+        if (ruleset==NULL)
+            compiler->abort(string("Branching rule ") + rule->getLabel() +
+                            " refers ruleset that does not exist");
+        rule->setStr("ipt_target", ruleset->getName());
         break;
     }
     default: ;

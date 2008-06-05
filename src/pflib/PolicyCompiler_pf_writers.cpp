@@ -117,8 +117,14 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
         compiler->output << ruleopt->getStr("custom_str") << " ";
         break;
     case PolicyRule::Branch:
-        compiler->output << "anchor " << ruleopt->getStr("branch_name") << " ";
+    {
+        RuleSet *ruleset = rule->getBranch();
+        if (ruleset==NULL)
+            compiler->abort(string("Branching rule ") + rule->getLabel() +
+                            " refers ruleset that does not exist");
+        compiler->output << "anchor " << ruleset->getName() << " ";
         break;
+    }
     default:
         compiler->abort(
             string("Unknown action '") + rule->getActionAsString()

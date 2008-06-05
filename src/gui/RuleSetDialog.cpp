@@ -124,7 +124,7 @@ void RuleSetDialog::validate(bool *res)
     {
         *res=false ;
         QMessageBox::critical(this, "Firewall Builder",
-                              tr("Not valid name '%1'. Only '[a-z][A-Z][0-9]_-+=@%^' characters.").arg( m_dialog->obj_name->text() ),
+                              tr("Rule set name '%1' is invalid. Only '[a-z][A-Z][0-9]_-+=@%^' characters are allowed.").arg( m_dialog->obj_name->text() ),
                               tr("&Continue"), 0, 0,
                               0 );
 

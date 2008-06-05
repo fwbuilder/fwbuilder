@@ -1,5 +1,23 @@
 2008-06-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* IPv4Dialog, NetworkDialog, newHostDialog, newFirewallDialog:
+	netmask can be entered as bit length, in addition to the bit mask
+	format supported before. Both formats are recognized. FR #995452,
+	1617297, 1666016
+
+	* IPv6 suport implemented in the GUI and compilers for iptables
+	and pf: FR #1517015, 1705261, 1706246, 1826325
+
+	* Rules with action Tag reference TagService objects. User drags
+	and drops TagService object into a drop area in the rule action
+	dialog. FR #1696841: "Mark action and TagService"
+
+2008-06-05  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ipt.cpp, pf.cpp: Compilers for iptables and pf recognize branch
+	rule sets that belong to different firewall objects. FR #737132:
+	"Linkable Rules", #1224898 "Rule Link"
+
 	* PolicyCompiler_ipt.cpp (dropTerminatingTargets::processNext):
 	bugfix in the shadowing detection for non-terminating rules in the
 	mangle table.
@@ -70,13 +88,13 @@
 	mangle table in addition to the filter table" and correctly places
 	referenced rule set in both filter and mangle tables.
 	
-	* ObjectManipulator.cpp: Policy rules can now be arranged in
-	multiple rule sets with names. These rule sets are shown in the
-	tree under the firewall object (next to its interfaces). Each rule
-	set is independent from others, user can add as many as they
-	want. Rules with action "Branch" refer to existing rule sets, user
-	associates them by dragging rule set object into action parameters
-	dialog of the branching rule.
+	* ObjectManipulator.cpp: new feature v3: Policy rules can now be
+	arranged in multiple rule sets with names. These rule sets are
+	shown in the tree under the firewall object (next to its
+	interfaces). Each rule set is independent from others, user can
+	add as many as they want. Rules with action "Branch" refer to
+	existing rule sets, user associates them by dragging rule set
+	object into action parameters dialog of the branching rule.
 	
 2008-05-23  Vadim Kurland  <vadim@vk.crocodile.org>
 
@@ -198,7 +216,15 @@
 
 	* v3 feature: Firewall Builder v3 GUI redesigned as MDI
 	interfaces. Several data files can be opened simultaneously and
-	objects dragged and dropped from one file to another.
+	objects dragged and dropped from one file to another. FR # 984979
+	"split window view of tabs".
+
+	* v3 feature: the GUI allows the user to change font used for the
+	UI, object tree and rules (separately). FR #1621799: "main window
+	font_size & column resizing" (although column width is not saved).
+
+	* v3 feature: The user can switch between icons 25x25 and 16x16 in
+	rules. FR #1844437 "25x25 Icons to 16x16"
 
 2008-03-05  vadim  <vadim@vk.crocodile.org>
 

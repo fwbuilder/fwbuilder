@@ -188,6 +188,33 @@ void findBranchesInMangleTable(Firewall *fw, list<FWObject*> &all_policies)
     }
 }
 
+/* Find rulesets that belong to other firewall objects but are
+ * referenced by rules of this firewall using action Branch
+ */
+void findImportedRuleSets(Firewall *fw, list<FWObject*> &all_policies)
+{
+    list<FWObject*> imported_policies;
+    for (list<FWObject*>::iterator i=all_policies.begin();
+         i!=all_policies.end(); ++i)
+    {
+        for (list<FWObject*>::iterator r=(*i)->begin();
+             r!=(*i)->end(); ++r)
+        {
+            PolicyRule *rule = PolicyRule::cast(*r);
+            RuleSet *ruleset = NULL;
+            if (rule->getAction() == PolicyRule::Branch &&
+                (ruleset = rule->getBranch())!=NULL &&
+                !ruleset->isChildOf(fw))
+            {
+                imported_policies.push_back(ruleset);
+            }
+        }
+    }
+    if (imported_policies.size() > 0)
+        all_policies.insert(all_policies.end(),
+                            imported_policies.begin(), imported_policies.end());
+}
+
 string dumpScript(bool nocomm, Firewall *fw,
                   const string& reset_script,
                   const string& nat_script,
@@ -528,6 +555,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         vector<bool> ipv4_6_runs;
         string generated_script;
 
+        findImportedRuleSets(fw, all_policies);
         findBranchesInMangleTable(fw, all_policies);
 
         // command line options -4 and -6 control address family for which
