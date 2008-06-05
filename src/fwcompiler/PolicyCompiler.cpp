@@ -76,7 +76,11 @@ int PolicyCompiler::prolog()
     int global_num=0;
 
     FWObject *ruleset = source_ruleset;
-    if (ruleset == NULL) ruleset = policy;
+    if (ruleset == NULL)
+    {
+        source_ruleset = RuleSet::cast(policy);
+        ruleset = policy;
+    }
 
     string label_prefix = "";
     if (ruleset->getName() != "Policy") label_prefix = ruleset->getName();

@@ -76,7 +76,11 @@ int NATCompiler::prolog()
 //    for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) {
 
     FWObject *ruleset = source_ruleset;
-    if (ruleset == NULL) ruleset = nat;
+    if (ruleset == NULL)
+    {
+        source_ruleset = RuleSet::cast(nat);
+        ruleset = nat;
+    }
 
     string label_prefix = "";
     if (ruleset->getName() != "NAT") label_prefix = ruleset->getName();
