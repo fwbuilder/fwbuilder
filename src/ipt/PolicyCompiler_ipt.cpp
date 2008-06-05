@@ -509,6 +509,20 @@ bool  PolicyCompiler_ipt::SkipActionContinueWithNoLogging::processNext()
 }
 
 /*
+ * by the time this processor is called all non-terminating rules should
+ * be processed if terminating behevior needs to be emulated.
+ */
+bool  PolicyCompiler_ipt::dropTerminatingTargets::processNext()
+{
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    string tgt = rule->getStr("ipt_target");
+    
+    if (tgt=="CLASSIFY" || tgt=="MARK") tmp_queue.push_back(rule);
+    return true;
+}
+
+/*
  * This rule processor converts non-terminating targets CLASSIFY and
  * MARK to terminating targets (equivalent) by splitting the rule and
  * adding one more rule with target ACCEPT.
@@ -3705,9 +3719,12 @@ void PolicyCompiler_ipt::compile()
             if (my_table=="mangle" &&
                 !fw->getOptionsObject()->getBool("classify_mark_terminating")
             )
+            {
+                add( new dropTerminatingTargets(
+                         "Drop rules with terminating targets") );
                 add( new DetectShadowingForNonTerminatingRules(
                          "Detect shadowing for non-terminating rules" ) );
-            else
+            } else
                 add( new DetectShadowing("Detect shadowing" ) );
 
             add( new simplePrintProgress() );

@@ -596,6 +596,13 @@ namespace fwcompiler {
          */
         DECLARE_POLICY_RULE_PROCESSOR(splitNonTerminatingTargets);
 
+        /**
+         * drop rules with terminating targets. Used as part of the
+         * shadowing detection for non-terminating rules in the mangle
+         * table.
+         */
+        DECLARE_POLICY_RULE_PROCESSOR(dropTerminatingTargets);
+        
 	/**
 	 * decides what chain this rule should go to if it has not
 	 * been decided in decideOnChainIfFW

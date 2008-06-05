@@ -1,5 +1,9 @@
 2008-06-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipt.cpp (dropTerminatingTargets::processNext):
+	bugfix in the shadowing detection for non-terminating rules in the
+	mangle table.
+
 	* All compilers: all compilers include error and warning messages
 	produced during compilation in the generated script. Messages are
 	grouped by corresponding section (Policy, NAT, all branches
