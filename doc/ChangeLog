@@ -1,3 +1,15 @@
+2008-06-05  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* All compilers: all compilers include error and warning messages
+	produced during compilation in the generated script. Messages are
+	grouped by corresponding section (Policy, NAT, all branches
+	etc.). Normally only warnings will be included because compilers
+	stop when they encounter an error condition, however if compiler
+	is being ran with "-xt" command line option, it does not stop and
+	includes error messages in the output as well. This helps catch
+	changes that generate warnings but do not translate into
+	differences in generated configuration.
+
 2008-06-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printTimeInterval):

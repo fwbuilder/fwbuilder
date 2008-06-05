@@ -606,8 +606,24 @@ int main(int argc, char * const * argv)
 
         ofile << oscnf->getCompiledScript();
         ofile << endl;
+
+        if (c->haveErrorsAndWarnings())
+        {
+            ofile << "! Policy compiler errors and warnings:"
+                    << endl;
+            ofile << c->getErrors();
+        }
+
         ofile << c->getCompiledScript();
         ofile << endl;
+
+        if (n->haveErrorsAndWarnings())
+        {
+            ofile << "! NAT compiler errors and warnings:"
+                    << endl;
+            ofile << n->getErrors();
+        }
+
         ofile << n->getCompiledScript();
         
         ofile << endl;

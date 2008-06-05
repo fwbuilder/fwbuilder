@@ -610,6 +610,13 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     n_str << "# ================ Table 'nat', rule set "
                           << branch_name << endl;
 
+                    if (n.haveErrorsAndWarnings())
+                    {
+                        n_str << "# NAT compiler errors and warnings:"
+                              << endl;
+                        n_str << n.getErrors();
+                    }
+
                     if (Compiler::isRootRuleSet(nat))
                         n_str << n.flushAndSetDefaultPolicy();
 
@@ -657,6 +664,13 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                         }
                         m_str << "# ================ Table 'mangle', rule set "
                               << branch_name << endl;
+                        if (m.haveErrorsAndWarnings())
+                        {
+                            m_str << "# Policy compiler errors and warnings:"
+                                  << endl;
+                            m_str << m.getErrors();
+                        }
+
                         m_str << m.getCompiledScript();
                         m_str << m.commit();
                         m_str << endl;
@@ -687,6 +701,12 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     {
                         c_str << "# ================ Table 'filter', rule set "
                               << branch_name << endl;
+                        if (c.haveErrorsAndWarnings())
+                        {
+                            c_str << "# Policy compiler errors and warnings:"
+                                  << endl;
+                            c_str << c.getErrors();
+                        }
                         c_str << c.getCompiledScript();
                         c_str << c.commit();
                         c_str << endl;

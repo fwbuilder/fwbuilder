@@ -10,7 +10,7 @@ while (<>) {
     $fw=$1;
     printf "\n";
     printf "echo '***** $fw'\n";
-    printf "fwb_ipt -4 -v -f $XMLFILE $fw\n";
+    printf "fwb_ipt -4 -v -f $XMLFILE -xt $fw\n";
     $str=~ s/^.*<Firewall [^>]+name="$fw"[^>]+>//;
   }
 }

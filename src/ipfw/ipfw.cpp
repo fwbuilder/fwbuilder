@@ -445,6 +445,13 @@ int main(int argc, char * const *argv)
 
 	if (have_ipfw)
         {
+            if (c.haveErrorsAndWarnings())
+            {
+                fw_file << "# Policy compiler errors and warnings:"
+                         << endl;
+                fw_file << c.getErrors();
+            }
+
 	    fw_file << c.getCompiledScript();
         }
 

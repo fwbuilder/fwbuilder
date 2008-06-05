@@ -716,6 +716,13 @@ int main(int argc, char * const *argv)
 
                 if (n.getCompiledScriptLength() > 0)
                 {
+                    if (n.haveErrorsAndWarnings())
+                    {
+                        *(generated_scripts[ruleset_name])
+                            << "# NAT compiler errors and warnings:"
+                            << endl;
+                        *(generated_scripts[ruleset_name]) << n.getErrors();
+                    }
                     *(generated_scripts[ruleset_name]) << n.getCompiledScript();
                     *(generated_scripts[ruleset_name]) << endl;
                 }
@@ -770,6 +777,13 @@ int main(int argc, char * const *argv)
 
                 if (c.getCompiledScriptLength() > 0)
                 {
+                    if (c.haveErrorsAndWarnings())
+                    {
+                        *(generated_scripts[ruleset_name])
+                            << "# Policy compiler errors and warnings:"
+                            << endl;
+                        *(generated_scripts[ruleset_name]) << c.getErrors();
+                    }
                     *(generated_scripts[ruleset_name]) << c.getCompiledScript();
                     *(generated_scripts[ruleset_name]) << endl;
                 }

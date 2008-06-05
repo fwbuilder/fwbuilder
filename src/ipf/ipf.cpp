@@ -513,6 +513,14 @@ int main(int argc, char * const *argv)
 #else
             ipf_file.open(ipf_file_name.c_str());
 #endif
+
+            if (c.haveErrorsAndWarnings())
+            {
+                ipf_file << "# Policy compiler errors and warnings:"
+                         << endl;
+                ipf_file << c.getErrors();
+            }
+
 	    ipf_file << c.getCompiledScript();
 	    ipf_file.close();
 
@@ -540,6 +548,15 @@ int main(int argc, char * const *argv)
 #else
             nat_file.open(nat_file_name.c_str());
 #endif
+
+            if (n.haveErrorsAndWarnings())
+            {
+                nat_file << "# NAT compiler errors and warnings:"
+                         << endl;
+                nat_file << n.getErrors();
+            }
+
+
 	    nat_file << n.getCompiledScript();
 	    nat_file.close();
 
