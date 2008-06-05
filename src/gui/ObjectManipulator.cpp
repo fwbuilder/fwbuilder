@@ -572,9 +572,7 @@ void ObjectManipulator::autorename(FWObject *obj,bool ask)
 {
     if (Host::isA(obj) || Firewall::isA(obj))
     {
-        if (!ask || QMessageBox::warning(
-                this,"Firewall Builder",
-                tr(
+        QString dialog_txt = tr(
 "The name of the object '%1' has changed. The program can also\n"
 "rename IP address objects that belong to this object,\n"
 "using standard naming scheme 'host_name:interface_name:ip'.\n"
@@ -584,9 +582,12 @@ void ObjectManipulator::autorename(FWObject *obj,bool ask)
 "objects using scheme 'host_name:interface_name:mac'.\n"
 "Do you want to rename child IP and MAC address objects now?\n"
 "(If you click 'No', names of all address objects that belong to\n"
-"%1 will stay the same.)")
-                .arg(QString::fromUtf8(obj->getName().c_str()))
-                .arg(QString::fromUtf8(obj->getName().c_str())),
+"%2 will stay the same.)")
+            .arg(QString::fromUtf8(obj->getName().c_str()))
+            .arg(QString::fromUtf8(obj->getName().c_str()));
+
+        if (!ask || QMessageBox::warning(
+                this,"Firewall Builder", dialog_txt,
                 tr("&Yes"), tr("&No"), QString::null,
                 0, 1 )==0 )
         {
@@ -603,9 +604,7 @@ void ObjectManipulator::autorename(FWObject *obj,bool ask)
  
     if (Interface::isA(obj))
     {
-        if (!ask || QMessageBox::warning(
-                this,"Firewall Builder",
-                tr(
+        QString dialog_txt = tr(
 "The name of the interface '%1' has changed. The program can also\n"
 "rename IP address objects that belong to this interface,\n"
 "using standard naming scheme 'host_name:interface_name:ip'.\n"
@@ -615,8 +614,12 @@ void ObjectManipulator::autorename(FWObject *obj,bool ask)
 "objects using scheme 'host_name:interface_name:mac'.\n"
 "Do you want to rename child IP and MAC address objects now?\n"
 "(If you click 'No', names of all address objects that belong to\n"
-"interface '%1' will stay the same.)")
-                .arg(QString::fromUtf8(obj->getName().c_str())),
+"interface '%2' will stay the same.)")
+            .arg(QString::fromUtf8(obj->getName().c_str()))
+            .arg(QString::fromUtf8(obj->getName().c_str()));
+
+        if (!ask || QMessageBox::warning(
+                this,"Firewall Builder", dialog_txt,
                 tr("&Yes"), tr("&No"), QString::null,
                 0, 1 )==0 )
         {

@@ -2152,10 +2152,6 @@ Rule* RuleSetView::insertRule(int pos, FWObject *r)
     for (int i=ruleIndex.size(); i>=pos; --i)
         setRuleNumber(i, Rule::cast(ruleIndex[i]));
 
-    if (newrule_as_policy_rule!=NULL &&
-        newrule_as_policy_rule->getAction()==PolicyRule::Branch )
-        addRuleBranch( newrule_as_policy_rule );
-
     ruleModel->insertRow(pos);
     rowsInfo.insert(pos,NULL);
     adjustRow(pos);
@@ -2196,28 +2192,6 @@ void RuleSetView::insertRuleAboveFirstGroup()
 FWObject* RuleSetView::getSelectedObject()
 {
     return selectedObject;
-}
-
-void RuleSetView::addRuleBranch(PolicyRule *rule)
-{
-    if (fwbdebug) qDebug("RuleSetView::addRuleBranch");
-
-    FWOptions *ropt = rule->getOptionsObject();
-    QString branchName = ropt->getStr("branch_name").c_str();
-    if (branchName.isEmpty())
-    {
-        QString bn = QString("rule%1_branch").arg(rule->getPosition());
-        ropt->setStr("branch_name",bn.toAscii().constData());
-    }
-    RuleSet *subset = rule->getBranch();
-    if (subset==NULL)
-    {
-        // can change action only for the policy rule, therefore
-        // branch can only be a Policy (i.e. can not be NAT)
-        subset = new Policy();
-        rule->add(subset);
-    }
-    mw->addPolicyBranchTab(subset);
 }
 
 void RuleSetView::copyRuleContent(Rule *dst, Rule *src)
@@ -3266,14 +3240,8 @@ void RuleSetView::changeActionToContinue()
 void RuleSetView::changeActionToBranch()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
-
-    if ( currentRow()!=-1 && currentColumn()!=-1 )
-    {
-        if (fwbdebug) qDebug("Firewall action: changeActionToBranch");
-        changeAction( PolicyRule::Branch );
-
-        addRuleBranch( PolicyRule::cast( ruleIndex[currentRow()] ) );
-    }
+    if (fwbdebug) qDebug("Firewall action: changeActionToBranch");
+    changeAction( PolicyRule::Branch );
 }
 
 void RuleSetView::changeDitection(PolicyRule::Direction dir)

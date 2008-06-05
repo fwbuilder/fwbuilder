@@ -48,18 +48,20 @@ class QDragEnterEvent;
 class FWObjectDropArea : public QWidget//Ui::FWObjectDropArea_q
 {
     Q_OBJECT
- private:
-        libfwbuilder::FWObject *object;
-        QVector <QString> acceptedTypes ;
-        QString helperText ;
- protected:
-        void paintEvent(QPaintEvent *ev);
-        void contextMenuEvent (QContextMenuEvent * e);
-        void dropEvent( QDropEvent *ev);
-        void dragEnterEvent( QDragEnterEvent *ev);
+
+private:
+    libfwbuilder::FWObject *object;
+    QVector <QString> acceptedTypes ;
+    QString helperText ;
+
+protected:
+    void paintEvent(QPaintEvent *ev);
+    void contextMenuEvent (QContextMenuEvent * e);
+    void dropEvent( QDropEvent *ev);
+    void dragEnterEvent( QDragEnterEvent *ev);
         
- public:
-     Ui::FWObjectDropArea_q *m_objectDropArea;
+public:
+    Ui::FWObjectDropArea_q *m_objectDropArea;
     FWObjectDropArea(QWidget*p, const char * n = 0, Qt::WFlags f = 0);
     ~FWObjectDropArea(); 
     libfwbuilder::FWObject * getObject(){return object;};
@@ -67,12 +69,12 @@ class FWObjectDropArea : public QWidget//Ui::FWObjectDropArea_q
     void addAcceptedTypes (QString type){acceptedTypes.push_back(type);};
     bool isEmpty() {return object==NULL;};
     void setHelperText (QString text){helperText=text;}
-public slots:
+    public slots:
     void insertObject(libfwbuilder::FWObject *o);
     void deleteObject();
     void pasteObject();
     
- signals:
+signals:
     void objectDeleted();
     void objectInserted();
     

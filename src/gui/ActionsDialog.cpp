@@ -384,28 +384,14 @@ void ActionsDialog::setRule(PolicyRule *r )
     else if (editor=="TagInt")
     {
         w=m_dialog->TagIntPage;
-        std::string id = ropt->getStr("tagobject_id");
-        FWObject * o = rule->getRoot()->getById(id,true);
-        if (o!=NULL&&QString(id.c_str())!="")
-        {
-            TagIntArea->setObject(o);
-        }
-//        FWObjectDropArea * fwoda =  new FWObjectDropArea(m_dialog->TagIntFrame);
-//        m_dialog->TagIntFrame->addWidget(fwoda);
-//!        data.registerOption(m_dialog->tagvalue_int , ropt , "tagvalue");
+        FWObject *o = rule->getTagObject();
+        TagIntArea->setObject(o);
     }
     else if (editor=="TagStr")
     {
         w=m_dialog->TagStrPage;
-        std::string id = ropt->getStr("tagobject_id");
-        FWObject * o = rule->getRoot()->getById(id,true);
-        if (o!=NULL&&QString(id.c_str())!="")
-        {
-            TagStrArea->setObject(o);
-        }
-//        FWObjectDropArea * fwoda =  new FWObjectDropArea(m_dialog->TagStrFrame);
-//        m_dialog->TagStrFrame->addWidget(fwoda);
-//!        data.registerOption(m_dialog->tagvalue_str , ropt , "tagvalue");
+        FWObject *o = rule->getTagObject();
+        TagStrArea->setObject(o);
     }
     else if (editor=="AccountingStr")
     {
@@ -431,19 +417,16 @@ void ActionsDialog::setRule(PolicyRule *r )
     {
         w=m_dialog->BranchChainPage;
         RuleSet *ruleset = r->getBranch();
-        if (ruleset!=NULL) BranchChainArea->setObject(ruleset);
+        BranchChainArea->setObject(ruleset);
 
-        //data.registerOption ( m_dialog->branchChainName     , ropt , "branch_name" );
-        data.registerOption ( m_dialog->ipt_branch_in_mangle, ropt , "ipt_branch_in_mangle" );
+        data.registerOption(
+            m_dialog->ipt_branch_in_mangle, ropt , "ipt_branch_in_mangle" );
     }
     else if (editor=="BranchAnchor")
     {
         w=m_dialog->BranchAnchorPage;
         RuleSet *ruleset = r->getBranch();
-        if (ruleset!=NULL) BranchChainArea->setObject(ruleset);
-
-        //int idx = ropt->getInt("branch_id");
-        //data.registerOption ( m_dialog->branchAnchorName    , ropt , "branch_name" );
+        BranchChainArea->setObject(ruleset);
     }
     else if (editor=="RouteIPT")
     {

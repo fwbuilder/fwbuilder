@@ -377,8 +377,6 @@ class RuleSetView : public QTableView
     virtual void adjustRow( int row );
     virtual void adjustColumn( int col );
 
-    void addRuleBranch(libfwbuilder::PolicyRule *rule);
-
     QString getPlatform(); 
 
     QRect calculateCellSize( int row, int col );
