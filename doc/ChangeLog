@@ -1,3 +1,11 @@
+2008-06-06  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWBSettings.cpp (FWBSettings::restoreGeometry): the program will
+	remember window size and restore it on subsequent runs, but will
+	not remember window position on the screen. This caused problems
+	on Mac OS X (because window title bar and tool bar weren't taken
+	into account, so window would slide up on every next run)
+
 2008-06-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (checkUserServiceInWrongChains::processNext): 

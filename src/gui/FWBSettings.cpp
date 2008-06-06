@@ -408,7 +408,6 @@ void    FWBSettings::restoreGeometry(QWidget *w)
     }
 
     w->resize( QSize(width,height) );
-    w->move( QPoint(x,y) );
 }
 
 void    FWBSettings::restoreGeometry(QWidget *w, const QRect &dg)
@@ -438,10 +437,7 @@ void    FWBSettings::restoreGeometry(QWidget *w, const QRect &dg)
                name.toAscii().constData(), w->isVisible(), x,y);
     }
 
-//    w->setGeometry( QRect(x,y,width,height) );
-
     w->resize( QSize(width,height) );
-    w->move( QPoint(x,y) );
 }
 
 void    FWBSettings::saveGeometry(QWidget *w)
