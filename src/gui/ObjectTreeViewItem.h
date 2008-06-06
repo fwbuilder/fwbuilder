@@ -70,6 +70,7 @@ class ObjectTreeViewItem : public QTreeWidgetItem {
     }
     
     QVariant data (int column, int role) const;
+    virtual bool operator< ( const QTreeWidgetItem & other ) const;
 };
 
 #endif

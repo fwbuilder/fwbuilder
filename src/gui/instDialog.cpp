@@ -123,7 +123,7 @@ instDialog::instDialog(QWidget* p, BatchOperation op, t_fwSet reqFirewalls_) : Q
 
     proc.setProcessChannelMode(QProcess::MergedChannels);
 
-    m_dialog->listView4->setSortingEnabled(false);
+    m_dialog->listView4->setSortingEnabled(true);
 
     setFinishEnabled(pageCount()-1,true);
 

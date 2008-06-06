@@ -39,3 +39,61 @@ QVariant ObjectTreeViewItem::data (int column, int role) const
         return QTreeWidgetItem::data(column, role);
 }
 
+bool ObjectTreeViewItem::operator< ( const QTreeWidgetItem & other ) const 
+{
+    int rank1 = -1 ;
+    int rank2 = -1;
+    const ObjectTreeViewItem * otvi = dynamic_cast<const ObjectTreeViewItem*>(& other);
+    if (otvi->objptr==NULL)
+        return true ;
+    if (objptr==NULL)
+        return true ;
+
+    if (Interface::cast(otvi->objptr)!=NULL)
+    {
+        rank1=0;
+    }
+    if (Policy::cast(otvi->objptr)!=NULL)
+    {
+        rank1=1;
+    }
+    if (NAT::cast(otvi->objptr)!=NULL)
+    {
+        rank1=2;
+    }
+    if (Routing::cast(otvi->objptr)!=NULL)
+    {
+        rank1=3;
+    }
+    if (Interface::cast(objptr)!=NULL)
+    {
+        rank2=0;
+    }
+    if (Policy::cast(objptr)!=NULL)
+    {
+        rank2=1;
+    }
+    if (NAT::cast(objptr)!=NULL)
+    {
+        rank2=2;
+    }
+    if (Routing::cast(objptr)!=NULL)
+    {
+        rank2=3;
+    }
+
+    if (rank1==rank2)
+    {
+        QString s1 = objptr->getName ().c_str();
+        QString s2 = otvi->objptr->getName ().c_str();  
+        return ( s1 < s2);
+    }
+    if (rank1>rank2)
+    {
+        return true ;
+    }
+    if (rank1<rank2)
+    {
+        return false ;
+    }
+}

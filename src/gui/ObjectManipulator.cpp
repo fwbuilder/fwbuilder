@@ -1720,6 +1720,11 @@ void ObjectManipulator::pasteObj()
         {
             FWObject *co =
                 FWObjectClipboard::obj_clipboard->getObjectByIdx(idx);
+            if (Interface::isA(co) && Firewall::isA(obj))
+            {
+                FWObject *no  = pasteTo (obj, co, false, false, true);
+                continue ;
+            }
             pom->copyObjWithDeep(co);
         }
     }
@@ -2674,10 +2679,15 @@ FWObject* ObjectManipulator::createObject(FWObject *parent,
 
 
 FWObject* ObjectManipulator::copyObj2Tree(const QString &/*objType*/, const QString &/*objName*/,
-         libfwbuilder::FWObject *copyFrom, FWObject */*parent*/, bool /*askLib*/)
+         libfwbuilder::FWObject *copyFrom, FWObject *parent, bool /*askLib*/)
 {
     if (!validateDialog()) return NULL;
     ids.clear();
+    if (Interface::isA(copyFrom) && Firewall::isA(parent))
+    {
+        FWObject *no  = pasteTo (parent,copyFrom , false, false, true);
+        return no;
+    }
     return copyObjWithDeep(copyFrom);
 }
 
