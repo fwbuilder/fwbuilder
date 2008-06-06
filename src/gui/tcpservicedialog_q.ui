@@ -9,7 +9,7 @@
     <x>0</x>
     <y>0</y>
     <width>739</width>
-    <height>254</height>
+    <height>392</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -378,7 +378,7 @@
             <number>8</number>
            </property>
            <property name="horizontalSpacing" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="verticalSpacing" >
             <number>8</number>
@@ -393,10 +393,26 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0" colspan="2" >
+           <item row="0" column="1" >
+            <widget class="QLineEdit" name="obj_name" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>200</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2" >
             <widget class="QGroupBox" name="groupBox7" >
              <property name="sizePolicy" >
-              <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -404,39 +420,8 @@
              <property name="title" >
               <string/>
              </property>
-             <layout class="QVBoxLayout" >
-              <property name="spacing" >
-               <number>0</number>
-              </property>
-              <property name="leftMargin" >
-               <number>2</number>
-              </property>
-              <property name="topMargin" >
-               <number>0</number>
-              </property>
-              <property name="rightMargin" >
-               <number>2</number>
-              </property>
-              <property name="bottomMargin" >
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="textLabel9" >
-                <property name="sizePolicy" >
-                 <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text" >
-                 <string/>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
+             <layout class="QGridLayout" >
+              <item row="0" column="0" >
                <layout class="QGridLayout" >
                 <property name="leftMargin" >
                  <number>0</number>
@@ -451,10 +436,10 @@
                  <number>0</number>
                 </property>
                 <property name="horizontalSpacing" >
-                 <number>2</number>
+                 <number>4</number>
                 </property>
                 <property name="verticalSpacing" >
-                 <number>2</number>
+                 <number>4</number>
                 </property>
                 <item row="1" column="3" >
                  <widget class="QCheckBox" name="psh_m" >
@@ -752,84 +737,74 @@
                 </item>
                </layout>
               </item>
-              <item>
+              <item row="1" column="0" >
                <spacer>
                 <property name="orientation" >
                  <enum>Qt::Vertical</enum>
                 </property>
                 <property name="sizeType" >
-                 <enum>QSizePolicy::MinimumExpanding</enum>
+                 <enum>QSizePolicy::Fixed</enum>
                 </property>
                 <property name="sizeHint" >
                  <size>
-                  <width>20</width>
-                  <height>0</height>
+                  <width>235</width>
+                  <height>16</height>
                  </size>
                 </property>
                </spacer>
               </item>
-              <item>
-               <layout class="QHBoxLayout" >
-                <property name="spacing" >
-                 <number>2</number>
+              <item row="2" column="0" >
+               <widget class="QCheckBox" name="established" >
+                <property name="sizePolicy" >
+                 <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
                 </property>
-                <property name="leftMargin" >
-                 <number>0</number>
+                <property name="text" >
+                 <string>Established</string>
                 </property>
-                <property name="topMargin" >
-                 <number>0</number>
+               </widget>
+              </item>
+              <item row="3" column="0" >
+               <widget class="QLabel" name="textLabel1_4" >
+                <property name="sizePolicy" >
+                 <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
                 </property>
-                <property name="rightMargin" >
-                 <number>0</number>
+                <property name="text" >
+                 <string>Option "established" can be used if supported by the target firewall platform</string>
                 </property>
-                <property name="bottomMargin" >
-                 <number>0</number>
+                <property name="alignment" >
+                 <set>Qt::AlignVCenter</set>
                 </property>
-                <item>
-                 <widget class="QCheckBox" name="established" >
-                  <property name="text" >
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="textLabel1_4" >
-                  <property name="sizePolicy" >
-                   <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text" >
-                   <string>Use option "established" if supported by the target firewall platform</string>
-                  </property>
-                  <property name="alignment" >
-                   <set>Qt::AlignVCenter</set>
-                  </property>
-                  <property name="wordWrap" >
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
+                <property name="wordWrap" >
+                 <bool>true</bool>
+                </property>
+                <property name="buddy" >
+                 <cstring>established</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0" >
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType" >
+                 <enum>QSizePolicy::Expanding</enum>
+                </property>
+                <property name="sizeHint" >
+                 <size>
+                  <width>91</width>
+                  <height>8</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
              </layout>
-            </widget>
-           </item>
-           <item row="0" column="1" >
-            <widget class="QLineEdit" name="obj_name" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize" >
-              <size>
-               <width>200</width>
-               <height>0</height>
-              </size>
-             </property>
             </widget>
            </item>
           </layout>
@@ -901,8 +876,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>88</x>
+     <y>91</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -917,8 +892,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>403</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -933,8 +908,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>403</x>
+     <y>132</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -949,8 +924,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>403</x>
+     <y>188</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -965,8 +940,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>403</x>
+     <y>217</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -981,8 +956,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>502</x>
+     <y>77</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -997,8 +972,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>144</x>
+     <y>158</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -1013,8 +988,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>144</x>
+     <y>176</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -1029,8 +1004,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>244</x>
+     <y>158</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -1045,8 +1020,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>244</x>
+     <y>176</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -1061,8 +1036,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>169</x>
+     <y>158</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -1077,8 +1052,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>169</x>
+     <y>176</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -1093,8 +1068,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>194</x>
+     <y>158</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -1109,8 +1084,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>194</x>
+     <y>176</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -1125,8 +1100,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>219</x>
+     <y>158</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -1141,8 +1116,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>219</x>
+     <y>176</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -1157,8 +1132,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>119</x>
+     <y>158</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -1173,8 +1148,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>119</x>
+     <y>176</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -1189,8 +1164,8 @@
    <slot>toggleEstablished()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>46</x>
+     <y>246</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -1205,8 +1180,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>46</x>
+     <y>246</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
