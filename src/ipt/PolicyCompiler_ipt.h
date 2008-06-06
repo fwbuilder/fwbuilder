@@ -638,6 +638,12 @@ namespace fwcompiler {
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(checkMACinOUTPUTChain);
 
+	/**
+	 * iptables permits using "--m owner --uid-owner" only in
+	 * the OUTPUT chain
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(checkUserServiceInWrongChains);
+
 
 	/**
 	 * expand groups in Srv

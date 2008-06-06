@@ -972,13 +972,15 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         cerr << "Error while opening or writing to the output file" << endl;
         return 1;
 #endif
+
     } catch (const std::string &s) {
 	cerr << s << endl;
         return 1;
     } catch (const std::exception &ex) {
 	cerr << ex.what() << endl;
         return 1;
-    } catch (...) {
+    }
+    catch (...) {
 	cerr << _("Unsupported exception") << endl;
         return 1;
     }

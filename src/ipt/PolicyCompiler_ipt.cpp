@@ -44,6 +44,7 @@
 #include "fwbuilder/Network.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/DNSName.h"
+#include "fwbuilder/UserService.h"
 
 #include "combinedAddress.h"
 
@@ -3022,6 +3023,26 @@ bool PolicyCompiler_ipt::checkMACinOUTPUTChain::processNext()
     return true;
 }
 
+bool PolicyCompiler_ipt::checkUserServiceInWrongChains::processNext()
+{
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    Service *srv = compiler->getFirstSrv(rule);  assert(srv);
+    string chain = rule->getStr("ipt_chain");
+    string upstream_chain = rule->getStr("upstream_rule_chain");
+
+    if (UserService::cast(srv) != NULL &&
+        chain != "OUTPUT" &&
+        upstream_chain != "OUTPUT")
+    {
+        compiler->warning("Iptables does not support module 'owner' in a chain "
+                          "other than OUTPUT; Rule " + rule->getLabel());
+        return true;
+    }
+
+    tmp_queue.push_back(rule);
+    return true;
+}
+
 
 bool PolicyCompiler_ipt::separatePortRanges::processNext()
 {
@@ -3655,58 +3676,57 @@ void PolicyCompiler_ipt::compile()
     if (ipv6) cout << ", IPv6";
     cout <<  endl << flush;
 
-    try {
 
-	Compiler::compile();
-        bool check_for_recursive_groups=true;
+    Compiler::compile();
+    bool check_for_recursive_groups=true;
 
-        addPredefinedPolicyRules();
+    addPredefinedPolicyRules();
 
-        if ( fw->getOptionsObject()->getBool ("check_shading") ) 
-        {
-            add( new Begin("Detecting rule shadowing"));
+    if ( fw->getOptionsObject()->getBool ("check_shading") ) 
+    {
+        add( new Begin("Detecting rule shadowing"));
 
-            addRuleFilter();
+        addRuleFilter();
 
-            add( new printTotalNumberOfRules());
+        add( new printTotalNumberOfRules());
 
-            add( new ItfNegation(            "process negation in Itf"  ) );
-            add( new InterfacePolicyRules(
-                   "process interface policy rules and store interface ids"));
-            add( new convertAnyToNotFWForShadowing("convert 'any' to '!fw'"     ) );
+        add( new ItfNegation(            "process negation in Itf"  ) );
+        add( new InterfacePolicyRules(
+                 "process interface policy rules and store interface ids"));
+        add( new convertAnyToNotFWForShadowing("convert 'any' to '!fw'"     ) );
 #if 0
-            add( new splitIfSrcAnyForShadowing("split rule if src is any" ) );
-            add( new splitIfDstAnyForShadowing("split rule if dst is any" ) );
-            add( new SrcNegation( true,        "process negation in Src"  ) );
-            add( new DstNegation( true,        "process negation in Dst"  ) );
+        add( new splitIfSrcAnyForShadowing("split rule if src is any" ) );
+        add( new splitIfDstAnyForShadowing("split rule if dst is any" ) );
+        add( new SrcNegation( true,        "process negation in Src"  ) );
+        add( new DstNegation( true,        "process negation in Dst"  ) );
 #endif
-            add( new recursiveGroupsInSrc("check for recursive groups in SRC"));
-            add( new recursiveGroupsInDst("check for recursive groups in DST"));
-            add( new recursiveGroupsInSrv("check for recursive groups in SRV"));
-            check_for_recursive_groups=false;
+        add( new recursiveGroupsInSrc("check for recursive groups in SRC"));
+        add( new recursiveGroupsInDst("check for recursive groups in DST"));
+        add( new recursiveGroupsInSrv("check for recursive groups in SRV"));
+        check_for_recursive_groups=false;
 
-            add( new ExpandGroups("expand groups"                          ) );
-            add( new dropRuleWithEmptyRE(
-                     "drop rules with empty rule elements"));
-            add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC") );
-            add( new eliminateDuplicatesInDST("eliminate duplicates in DST") );
-            add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV") );
+        add( new ExpandGroups("expand groups"                          ) );
+        add( new dropRuleWithEmptyRE(
+                 "drop rules with empty rule elements"));
+        add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC") );
+        add( new eliminateDuplicatesInDST("eliminate duplicates in DST") );
+        add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV") );
 
-            add( new swapMultiAddressObjectsInSrc(
-                     " swap MultiAddress -> MultiAddressRunTime in Src") );
-            add( new swapMultiAddressObjectsInDst(
-                     " swap MultiAddress -> MultiAddressRunTime in Dst") );
+        add( new swapMultiAddressObjectsInSrc(
+                 " swap MultiAddress -> MultiAddressRunTime in Src") );
+        add( new swapMultiAddressObjectsInDst(
+                 " swap MultiAddress -> MultiAddressRunTime in Dst") );
 
 /* behavior of processors ExpandMultiple... has been changed in
  * virtual method _expandInterface  */
-            add( new ExpandMultipleAddressesInSRC(
-                     "expand objects with multiple addresses in SRC" ) );
-            add( new ExpandMultipleAddressesInDST(
-                     "expand objects with multiple addresses in DST" ) );
-            add( new dropRuleWithEmptyRE(
-                     "drop rules with empty rule elements"));
+        add( new ExpandMultipleAddressesInSRC(
+                 "expand objects with multiple addresses in SRC" ) );
+        add( new ExpandMultipleAddressesInDST(
+                 "expand objects with multiple addresses in DST" ) );
+        add( new dropRuleWithEmptyRE(
+                 "drop rules with empty rule elements"));
 
-            add( new ConvertToAtomic("convert to atomic rules"            ) );
+        add( new ConvertToAtomic("convert to atomic rules"            ) );
 
 /*
  * This assumes that all rules that go into the mangle table are
@@ -3716,64 +3736,64 @@ void PolicyCompiler_ipt::compile()
  * MARK) are indeed non-terminating.
  */
 
-            add( new SkipActionContinueWithNoLogging(
-                     "drop rules with action Continue") );
+        add( new SkipActionContinueWithNoLogging(
+                 "drop rules with action Continue") );
             
-            if (my_table=="mangle" &&
-                !fw->getOptionsObject()->getBool("classify_mark_terminating")
-            )
-            {
-                add( new dropTerminatingTargets(
-                         "Drop rules with terminating targets") );
-                add( new DetectShadowingForNonTerminatingRules(
-                         "Detect shadowing for non-terminating rules" ) );
-            } else
-                add( new DetectShadowing("Detect shadowing" ) );
+        if (my_table=="mangle" &&
+            !fw->getOptionsObject()->getBool("classify_mark_terminating")
+        )
+        {
+            add( new dropTerminatingTargets(
+                     "Drop rules with terminating targets") );
+            add( new DetectShadowingForNonTerminatingRules(
+                     "Detect shadowing for non-terminating rules" ) );
+        } else
+            add( new DetectShadowing("Detect shadowing" ) );
 
-            add( new simplePrintProgress() );
+        add( new simplePrintProgress() );
 
-            runRuleProcessors();
-            deleteRuleProcessors();
-        }
+        runRuleProcessors();
+        deleteRuleProcessors();
+    }
 
 
-        add( new PolicyCompiler::Begin() );
-        add( new addPredefinedRules("Add some predefined rules"           ) );
+    add( new PolicyCompiler::Begin() );
+    add( new addPredefinedRules("Add some predefined rules"           ) );
 
-        addRuleFilter();
+    addRuleFilter();
 
-        add( new printTotalNumberOfRules(                                 ) );
+    add( new printTotalNumberOfRules(                                 ) );
 
-        add( new Route("process route rules"                   ) );
-        add( new storeAction("store original action of this rule"    ) );
+    add( new Route("process route rules"                   ) );
+    add( new storeAction("store original action of this rule"    ) );
 
-        add( new splitIfTagAndConnmark("Tag+CONNMARK combo"));
-        //add( new setChainForMangle("set chain for other rules in mangle"));
+    add( new splitIfTagAndConnmark("Tag+CONNMARK combo"));
+    //add( new setChainForMangle("set chain for other rules in mangle"));
 
-        add( new Logging1("check global logging override option"  ) );
-        add( new ItfNegation("process negation in Itf"  ) );
+    add( new Logging1("check global logging override option"  ) );
+    add( new ItfNegation("process negation in Itf"  ) );
 
 //        add( new InterfacePolicyRulesWithOptimization("process interface policy rules and store interface ids") );
 
-        add( new decideOnChainForClassify("set chain for action is Classify") );
+    add( new decideOnChainForClassify("set chain for action is Classify") );
 
-        add( new InterfaceAndDirection("fill in interface and direction"  ) );
+    add( new InterfaceAndDirection("fill in interface and direction"  ) );
 
 // if an action requires chain POSTROUTING (e.g. Classify), set chain
 // BEFORE calling splitIfIfaceAndDirectionBoth
-        add( new splitIfIfaceAndDirectionBoth(
-                 "split interface rule with direction 'both'"));
+    add( new splitIfIfaceAndDirectionBoth(
+             "split interface rule with direction 'both'"));
 
-        if (check_for_recursive_groups)
-        {
-            add( new recursiveGroupsInSrc("check for recursive groups in SRC"));
-            add( new recursiveGroupsInDst("check for recursive groups in DST"));
-            add( new recursiveGroupsInSrv("check for recursive groups in SRV"));
-        }
+    if (check_for_recursive_groups)
+    {
+        add( new recursiveGroupsInSrc("check for recursive groups in SRC"));
+        add( new recursiveGroupsInDst("check for recursive groups in DST"));
+        add( new recursiveGroupsInSrv("check for recursive groups in SRV"));
+    }
 
-        add( new emptyGroupsInSrc("check for empty groups in SRC"         ) );
-        add( new emptyGroupsInDst("check for empty groups in DST"         ) );
-        add( new emptyGroupsInSrv("check for empty groups in SRV"         ) );
+    add( new emptyGroupsInSrc("check for empty groups in SRC"         ) );
+    add( new emptyGroupsInDst("check for empty groups in DST"         ) );
+    add( new emptyGroupsInSrv("check for empty groups in SRV"         ) );
 /*
  * commented out to fix bug #727324. "-p tcp --destination-port ! 25"
  * means "all TCP with port != 25", which is not the same as "all
@@ -3782,38 +3802,38 @@ void PolicyCompiler_ipt::compile()
  * element.
  */
 //        add( new singleSrvNegation("negation in Srv if it holds 1 object"));
-        add( new splitRuleIfSrvAnyActionReject(
-                 "split rule if action is reject and srv is any" ) );
-        add( new SrvNegation( false,      "process negation in Srv"               ) );
-        add( new expandGroupsInSrv("expand groups in Srv" ));
+    add( new splitRuleIfSrvAnyActionReject(
+             "split rule if action is reject and srv is any" ) );
+    add( new SrvNegation( false,      "process negation in Srv"               ) );
+    add( new expandGroupsInSrv("expand groups in Srv" ));
 
-        add( new CheckForTCPEstablished("TCPService with \"established\"") );
+    add( new CheckForTCPEstablished("TCPService with \"established\"") );
             
 //        add( new splitRuleIfSrvAnyActionReject(
 //                 "split rule if action is reject and srv is any" ) );
-        add( new fillActionOnReject("fill in action_on_reject"            ) );
-        add( new splitServicesIfRejectWithTCPReset(
-                 "check and split if action on reject is TCP reset"));
-        add( new fillActionOnReject("fill in action_on_reject 2"          ) );
-        add( new splitServicesIfRejectWithTCPReset(
-                 "check and split if action on reject is TCP reset 2"));
-        add( new singleSrcNegation(
-                 "process negation in Src if it holds single object"      ) );
-        add( new singleDstNegation( 
-                 "process negation in Dst if it holds single object"      ) );
+    add( new fillActionOnReject("fill in action_on_reject"            ) );
+    add( new splitServicesIfRejectWithTCPReset(
+             "check and split if action on reject is TCP reset"));
+    add( new fillActionOnReject("fill in action_on_reject 2"          ) );
+    add( new splitServicesIfRejectWithTCPReset(
+             "check and split if action on reject is TCP reset 2"));
+    add( new singleSrcNegation(
+             "process negation in Src if it holds single object"      ) );
+    add( new singleDstNegation( 
+             "process negation in Dst if it holds single object"      ) );
 
 /*
  * phased out these processors, they are not needed anymore because we use variable
  * for dynamic interfaces.
  */
-        add( new splitIfSrcNegAndFw("split rule if src has negation and fw"));
-        add( new splitIfDstNegAndFw("split rule if dst has negation and fw"));
+    add( new splitIfSrcNegAndFw("split rule if src has negation and fw"));
+    add( new splitIfDstNegAndFw("split rule if dst has negation and fw"));
 
-        add( new SrcNegation( false,         "process negation in Src"  ));
-        add( new DstNegation( false,         "process negation in Dst"  ));
-        add( new TimeNegation( false,        "process negation in Time" ));
+    add( new SrcNegation( false,         "process negation in Src"  ));
+    add( new DstNegation( false,         "process negation in Dst"  ));
+    add( new TimeNegation( false,        "process negation in Time" ));
 
-        add( new Logging2(                   "process logging"          ));
+    add( new Logging2(                   "process logging"          ));
 
 /* this is just a patch for those who do not understand how does
  * "assume firewall is part of any" work. It also eliminates redundant
@@ -3822,172 +3842,170 @@ void PolicyCompiler_ipt::compile()
  */
 //        add( new decideOnChainIfLoopback("any-any rule on loopback"     ) );
 
-        add( new splitIfSrcAny("split rule if src is any") );
+    add( new splitIfSrcAny("split rule if src is any") );
 
-        add( new setChainForMangle("set chain for other rules in mangle"));
+    add( new setChainForMangle("set chain for other rules in mangle"));
 
-        // call setChainPreroutingForTag before splitIfDstAny
-        add( new setChainPreroutingForTag("chain PREROUTING for Tag"));
+    // call setChainPreroutingForTag before splitIfDstAny
+    add( new setChainPreroutingForTag("chain PREROUTING for Tag"));
 
-        add( new splitIfDstAny("split rule if dst is any") );
+    add( new splitIfDstAny("split rule if dst is any") );
 
-        add( new setChainPostroutingForTag("chain POSTROUTING for Tag"));
+    add( new setChainPostroutingForTag("chain POSTROUTING for Tag"));
 
-        add( new ExpandGroups(            "expand all groups"           ));
-        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+    add( new ExpandGroups(            "expand all groups"           ));
+    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
-        add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC" ));
-        add( new eliminateDuplicatesInDST("eliminate duplicates in DST" ));
-        add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV" ));
+    add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC" ));
+    add( new eliminateDuplicatesInDST("eliminate duplicates in DST" ));
+    add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV" ));
 
-        add( new swapMultiAddressObjectsInSrc(
-                 " swap MultiAddress -> MultiAddressRunTime in Src"));
-        add( new swapMultiAddressObjectsInDst(
-                 " swap MultiAddress -> MultiAddressRunTime in Dst"));
+    add( new swapMultiAddressObjectsInSrc(
+             " swap MultiAddress -> MultiAddressRunTime in Src"));
+    add( new swapMultiAddressObjectsInDst(
+             " swap MultiAddress -> MultiAddressRunTime in Dst"));
 
-        add( new processMultiAddressObjectsInSrc(
-                 "process MultiAddress objects in Src"));
-        add( new processMultiAddressObjectsInDst(
-                 "process MultiAddress objects in Dst"));
+    add( new processMultiAddressObjectsInSrc(
+             "process MultiAddress objects in Src"));
+    add( new processMultiAddressObjectsInDst(
+             "process MultiAddress objects in Dst"));
 
 /*
  * should expand address range before splitIfSrcMatchesFw because some
  * addresses in the range may match firewall
  */
-        add( new addressRanges(              "process address ranges"   ) );
-        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+    add( new addressRanges(              "process address ranges"   ) );
+    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
-        add( new splitIfSrcMatchesFw( "split rule if src matches FW"    ) );
-        add( new splitIfDstMatchesFw( "split rule if dst matches FW"    ) );
+    add( new splitIfSrcMatchesFw( "split rule if src matches FW"    ) );
+    add( new splitIfDstMatchesFw( "split rule if dst matches FW"    ) );
 
 /*  at this point in all rules where firewall is in either src or dst,
  *  firewall is a single object in that rule element. Other rule
  *  elements may contain multiple objects yet
  */
 
-        add( new specialCaseWithFW1(  "special case with firewall"      ) );
+    add( new specialCaseWithFW1(  "special case with firewall"      ) );
 
-        add( new decideOnChainIfDstFW( "decide on chain if Dst has fw" ) );
-        add( new splitIfSrcFWNetwork(
-                 "split rule if src has a net fw has interface on" ) );
+    add( new decideOnChainIfDstFW( "decide on chain if Dst has fw" ) );
+    add( new splitIfSrcFWNetwork(
+             "split rule if src has a net fw has interface on" ) );
 
-        add( new decideOnChainIfSrcFW( "decide on chain if Src has fw" ) );
-        add( new splitIfDstFWNetwork(
-                 "split rule if dst has a net fw has interface on" ) );
+    add( new decideOnChainIfSrcFW( "decide on chain if Src has fw" ) );
+    add( new splitIfDstFWNetwork(
+             "split rule if dst has a net fw has interface on" ) );
 
-        add( new specialCaseWithFW2(
-                 "replace fw with its interfaces if src==dst==fw" ) );
+    add( new specialCaseWithFW2(
+             "replace fw with its interfaces if src==dst==fw" ) );
 
 /* behavior of processors ExpandMultiple... has been changed in the
  * virtual method expandInterface 
  */
-        add( new expandMultipleAddressesIfNotFWinSrc(
-                 "expand multiple addresses if not FW in Src") );
-        add( new expandMultipleAddressesIfNotFWinDst(
-                 "expand multiple addresses if not FW in Dst") );
-        add( new expandLoopbackInterfaceAddress(
-                 "check for loopback interface in the rule objects") );
+    add( new expandMultipleAddressesIfNotFWinSrc(
+             "expand multiple addresses if not FW in Src") );
+    add( new expandMultipleAddressesIfNotFWinDst(
+             "expand multiple addresses if not FW in Dst") );
+    add( new expandLoopbackInterfaceAddress(
+             "check for loopback interface in the rule objects") );
 
-        // processors that expand objects with multiple addresses
-        // check addresses against current address family using member
-        // ipv6. If all addresses do not match, we may end up with
-        // empty rule element.
-        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+    // processors that expand objects with multiple addresses
+    // check addresses against current address family using member
+    // ipv6. If all addresses do not match, we may end up with
+    // empty rule element.
+    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
-        if (ipv6)
-            add( new DropIPv4Rules("drop ipv4 rules"));
-        else
-            add( new DropIPv6Rules("drop ipv6 rules"));
-        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+    if (ipv6)
+        add( new DropIPv4Rules("drop ipv4 rules"));
+    else
+        add( new DropIPv6Rules("drop ipv6 rules"));
+    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
 // trying process rules with multiple interfaces as late as possible
-        add( new InterfacePolicyRulesWithOptimization(
-                 "process interface policy rules and store interface ids") );
+    add( new InterfacePolicyRulesWithOptimization(
+             "process interface policy rules and store interface ids") );
 
 /* this is just a patch for those who do not understand how does
  * "assume firewall is part of any" work. It also eliminates redundant
  * and useless rules in the FORWARD chain for rules assigned to a
  * loopback interface.
  */
-        add( new decideOnChainIfLoopback("any-any rule on loopback"     ) );
+    add( new decideOnChainIfLoopback("any-any rule on loopback"     ) );
 
 //      add( new decideOnChainForClassify("set chain if action is Classify"));
-        add( new finalizeChain(              "decide on chain"   ) );
-        add( new decideOnTarget(             "decide on target"  ) );
+    add( new finalizeChain(              "decide on chain"   ) );
+    add( new decideOnTarget(             "decide on target"  ) );
 
-        add( new checkForRestoreMarkInOutput(
-                 "check if we need -A OUTPUT -j CONNMARK --restore-mark"));
+    add( new checkForRestoreMarkInOutput(
+             "check if we need -A OUTPUT -j CONNMARK --restore-mark"));
 
 /*
  * removed call to processor removeFW to make changes for bug #685947:
  * "Rules with firewall object allow too much. "
  */
-        add( new removeFW(                   "remove fw"              ) );
+    add( new removeFW(                   "remove fw"              ) );
 
-        add( new ExpandMultipleAddresses("expand multiple addresses"  ) );
-        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+    add( new ExpandMultipleAddresses("expand multiple addresses"  ) );
+    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
-        add( new checkForUnnumbered("check for unnumbered interfaces" ) );
-        add( new checkForDynamicInterfacesOfOtherObjects(
-                 "check for dynamic interfaces of other hosts and firewalls"));
+    add( new checkForUnnumbered("check for unnumbered interfaces" ) );
+    add( new checkForDynamicInterfacesOfOtherObjects(
+             "check for dynamic interfaces of other hosts and firewalls"));
 
-	if ( fwopt->getBool("bridging_fw") ) 
-            add( new bridgingFw("handle bridging firewall cases"));
+    if ( fwopt->getBool("bridging_fw") ) 
+        add( new bridgingFw("handle bridging firewall cases"));
 
-        add( new specialCaseWithUnnumberedInterface(
-                 "check for a special cases with unnumbered interface" ) );
+    add( new specialCaseWithUnnumberedInterface(
+             "check for a special cases with unnumbered interface" ) );
 
 //        add( new splitServices(              "split on services"       ) );
 //        add( new prepareForMultiport("prepare for multiport"           ) );
 
-        add( new optimize1(        "optimization 1, pass 1"              ) );
-        add( new optimize1(        "optimization 1, pass 2"              ) );
-        add( new optimize1(        "optimization 1, pass 3"              ) );
+    add( new optimize1(        "optimization 1, pass 1"              ) );
+    add( new optimize1(        "optimization 1, pass 2"              ) );
+    add( new optimize1(        "optimization 1, pass 3"              ) );
 
 
-        add( new splitServices(              "split on services"           ));
-        add( new separateTCPWithFlags( "split on TCP services with flags"  ));
-        add( new verifyCustomServices( "verify custom services"            ));
-        add( new specialCasesWithCustomServices(
-                 "scpecial cases with some custom services"      ) );
-        add( new separatePortRanges(         "separate port ranges"        ));
-        add( new separateSrcPort(  "split on TCP and UDP with source ports"));
+    add( new splitServices(              "split on services"           ));
+    add( new separateTCPWithFlags( "split on TCP services with flags"  ));
+    add( new verifyCustomServices( "verify custom services"            ));
+    add( new specialCasesWithCustomServices(
+             "scpecial cases with some custom services"      ) );
+    add( new separatePortRanges(         "separate port ranges"        ));
+    add( new separateSrcPort(  "split on TCP and UDP with source ports"));
 
 //        add( new optimize1(        "optimization 1, pass 1"              ) );
 //        add( new optimize1(        "optimization 1, pass 2"              ) );
-        add( new optimize2(        "optimization 2"                        ) );
-        add( new accounting(       "Accounting"                            ) );
-        add( new prepareForMultiport("prepare for multiport"               ) );
+    add( new optimize2(        "optimization 2"                        ) );
+    add( new accounting(       "Accounting"                            ) );
+    add( new prepareForMultiport("prepare for multiport"               ) );
 
-        add( new splitNonTerminatingTargets(
-                 "split rules using non-terminating targets" ) );
+    add( new splitNonTerminatingTargets(
+             "split rules using non-terminating targets" ) );
 
-        add( new ConvertToAtomicForAddresses(
-                 "convert to atomic rules by address elements") );
+    add( new ConvertToAtomicForAddresses(
+             "convert to atomic rules by address elements") );
 
-        add( new checkForZeroAddr("check for zero addresses") );
-        add( new checkMACinOUTPUTChain("check for MAC in OUTPUT chain") );
+    add( new checkForZeroAddr("check for zero addresses") );
+    add( new checkMACinOUTPUTChain("check for MAC in OUTPUT chain") );
+    add( new checkUserServiceInWrongChains(
+             "Check for UserSErvice ojects in chains other than OUTPUT"));
 
-        add( new ConvertToAtomicForIntervals(
-                 "convert to atomic rules by interval element") );
+    add( new ConvertToAtomicForIntervals(
+             "convert to atomic rules by interval element") );
 
-        add( new SkipActionContinueWithNoLogging(
-                 "drop rules with action Continue") );
-        add( new convertInterfaceIdToStr("prepare interface assignments") );
-        add( new optimize3("optimization 3") );
+    add( new SkipActionContinueWithNoLogging(
+             "drop rules with action Continue") );
+    add( new convertInterfaceIdToStr("prepare interface assignments") );
+    add( new optimize3("optimization 3") );
 
-        add( new countChainUsage("Count chain usage"));
+    add( new countChainUsage("Count chain usage"));
 
-        add( createPrintRuleProcessor() );
+    add( createPrintRuleProcessor() );
 
-        add( new simplePrintProgress());
+    add( new simplePrintProgress());
 
-        runRuleProcessors();
+    runRuleProcessors();
 
-    } catch (FWException &ex) {
-	error(ex.toString());
-	exit(1);
-    }
 }
 
 string PolicyCompiler_ipt::debugPrintRule(Rule *r)

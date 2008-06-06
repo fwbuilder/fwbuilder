@@ -1,5 +1,9 @@
 2008-06-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipt.cpp (checkUserServiceInWrongChains::processNext): 
+	Support for UserService in compiler for iptables. FR #1948872:
+	"User based rules"
+
 	* IPv4Dialog, NetworkDialog, newHostDialog, newFirewallDialog:
 	netmask can be entered as bit length, in addition to the bit mask
 	format supported before. Both formats are recognized. FR #995452,

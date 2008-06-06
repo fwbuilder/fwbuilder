@@ -45,6 +45,7 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/UserService.h"
 
 #include "fwbuilder/Inet6AddrMask.h"
 
@@ -592,7 +593,11 @@ string PolicyCompiler_ipt::PrintRule::_printProtocol(libfwbuilder::Service *srv)
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     string version=compiler->fw->getStr("version");
     string s;
-    if (! srv->isAny() && !CustomService::isA(srv)  && !TagService::isA(srv))
+    if (! srv->isAny() &&
+        !CustomService::isA(srv) &&
+        !TagService::isA(srv) &&
+        !UserService::isA(srv)
+    )
     {
         string pn=srv->getProtocolName();
         if (pn=="ip") pn="all";
@@ -857,6 +862,11 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
         {
 	    ostr << "-m mark --mark "
                  << TagService::cast(srv)->getCode() << " ";
+        }
+        if (UserService::isA(srv))
+        {
+	    ostr << "-m owner --uid-owner "
+                 << UserService::cast(srv)->getUserId() << " ";
         }
     } else 
     {
