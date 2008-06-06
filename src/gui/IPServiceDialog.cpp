@@ -73,8 +73,6 @@ void IPServiceDialog::loadFWObject(FWObject *o)
 
     init=true;
 
-    fillLibraries(m_dialog->libs,obj);
-
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->protocolNum->setValue( s->getProtocolNumber() );
     m_dialog->lsrr->setChecked( s->getBool("m_dialog->lsrr") );
@@ -100,9 +98,6 @@ void IPServiceDialog::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->obj_name);
-
-    m_dialog->libs->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->libs);
 
     m_dialog->protocolNum->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->protocolNum);
@@ -180,14 +175,6 @@ void IPServiceDialog::applyChanges()
     obj->setBool("use_tos", m_dialog->use_tos->isChecked());
     obj->setStr("dscp_tos_code", m_dialog->code->text().toUtf8().constData());
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
-    init=true;
-
-/* move to another lib if we have to */
-    if (! m_project->isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        mw->moveObject(m_dialog->libs->currentText(), obj);
-
-    init=false;
 
     //apply->setEnabled( false );
     mw->updateLastModifiedTimestampForAllFirewalls(obj);

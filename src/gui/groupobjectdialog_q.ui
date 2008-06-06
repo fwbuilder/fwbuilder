@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>725</width>
-    <height>200</height>
+    <width>752</width>
+    <height>205</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -328,22 +328,22 @@
           </property>
           <layout class="QGridLayout" >
            <property name="leftMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="topMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="rightMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="bottomMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="horizontalSpacing" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="verticalSpacing" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <item row="2" column="1" >
             <spacer>
@@ -361,16 +361,6 @@
              </property>
             </spacer>
            </item>
-           <item row="1" column="0" >
-            <widget class="QLabel" name="textLabel1_2" >
-             <property name="text" >
-              <string>Library:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="1" >
             <widget class="QLineEdit" name="obj_name" >
              <property name="sizePolicy" >
@@ -381,28 +371,12 @@
              </property>
              <property name="minimumSize" >
               <size>
-               <width>120</width>
+               <width>130</width>
                <height>0</height>
               </size>
              </property>
              <property name="cursor" >
               <cursorShape>ArrowCursor</cursorShape>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1" >
-            <widget class="QComboBox" name="libs" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize" >
-              <size>
-               <width>120</width>
-               <height>0</height>
-              </size>
              </property>
             </widget>
            </item>
@@ -429,7 +403,6 @@
  <layoutdefault spacing="2" margin="2" />
  <tabstops>
   <tabstop>obj_name</tabstop>
-  <tabstop>libs</tabstop>
   <tabstop>comment</tabstop>
  </tabstops>
  <includes>
@@ -458,22 +431,6 @@
    <signal>textChanged()</signal>
    <receiver>GroupObjectDialog_q</receiver>
    <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>libs</sender>
-   <signal>activated(int)</signal>
-   <receiver>GroupObjectDialog_q</receiver>
-   <slot>libChanged()</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>20</x>

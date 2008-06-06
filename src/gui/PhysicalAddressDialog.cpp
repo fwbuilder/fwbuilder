@@ -75,21 +75,14 @@ void PhysicalAddressDialog::loadFWObject(FWObject *o)
 
     init=true;
 
-    fillLibraries(m_dialog->libs,obj);
-
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->pAddress->setText( s->getPhysAddress().c_str() );
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
-
-    m_dialog->libs->setEnabled( false );
 
     //apply->setEnabled( false );
 
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->obj_name);
-
-    m_dialog->libs->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->libs);
 
     m_dialog->pAddress->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->pAddress);
@@ -136,14 +129,6 @@ void PhysicalAddressDialog::applyChanges()
     s->setPhysAddress( m_dialog->pAddress->text().toLatin1().constData() );
 
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
-    init=true;
-
-/* move to another lib if we have to */
-    if (! m_project->isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        mw->moveObject(m_dialog->libs->currentText(), obj);
-
-    init=false;
 
     //apply->setEnabled( false );
     mw->updateLastModifiedTimestampForAllFirewalls(obj);

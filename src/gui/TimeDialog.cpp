@@ -76,7 +76,6 @@ void TimeDialog::loadFWObject(FWObject *o)
 
     init=true;
 
-    fillLibraries(m_dialog->libs,obj);
     m_dialog->cbStart1->setCheckState(Qt::Unchecked);
     m_dialog->cbStart2->setCheckState(Qt::Unchecked);
     m_dialog->cbStart3->setCheckState(Qt::Unchecked);
@@ -190,7 +189,6 @@ void TimeDialog::loadFWObject(FWObject *o)
 
 
     setDisabledPalette(m_dialog->obj_name);
-    setDisabledPalette(m_dialog->libs);
     setDisabledPalette(m_dialog->comment);
     setDisabledPalette(m_dialog->startTime);
     setDisabledPalette(m_dialog->useStartDate);
@@ -212,7 +210,6 @@ void TimeDialog::loadFWObject(FWObject *o)
 void TimeDialog::enableAllWidgets()
 {
     m_dialog->obj_name->setEnabled(!obj->isReadOnly());
-    m_dialog->libs->setEnabled(!obj->isReadOnly());
     m_dialog->comment->setReadOnly(obj->isReadOnly());
 
     m_dialog->startTime->setEnabled(!obj->isReadOnly());
@@ -348,14 +345,6 @@ void TimeDialog::applyChanges()
     obj->setStr( "to_weekday" ,      sToWeekday.toAscii().data() );
 
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
-    init=true;
-
-/* move to another lib if we have to */
-    if (! m_project->isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        mw->moveObject(m_dialog->libs->currentText(), obj);
-
-    init=false;
 
     //apply->setEnabled( false );
     mw->updateLastModifiedTimestampForAllFirewalls(obj);

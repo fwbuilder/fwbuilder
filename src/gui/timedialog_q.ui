@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>714</width>
-    <height>238</height>
+    <width>828</width>
+    <height>261</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -147,7 +147,7 @@
          <number>2</number>
         </property>
         <property name="horizontalSpacing" >
-         <number>2</number>
+         <number>8</number>
         </property>
         <property name="verticalSpacing" >
          <number>2</number>
@@ -172,37 +172,27 @@
           </property>
           <layout class="QGridLayout" >
            <property name="leftMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="topMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="rightMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="bottomMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="horizontalSpacing" >
             <number>2</number>
            </property>
            <property name="verticalSpacing" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
              <property name="text" >
               <string>Name:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" >
-            <widget class="QLabel" name="textLabel1_2" >
-             <property name="text" >
-              <string>Library:</string>
              </property>
              <property name="wordWrap" >
               <bool>false</bool>
@@ -233,15 +223,11 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-            </widget>
-           </item>
-           <item row="1" column="1" >
-            <widget class="QComboBox" name="libs" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
+             <property name="minimumSize" >
+              <size>
+               <width>130</width>
+               <height>0</height>
+              </size>
              </property>
             </widget>
            </item>
@@ -657,7 +643,6 @@
  <layoutdefault spacing="2" margin="2" />
  <tabstops>
   <tabstop>obj_name</tabstop>
-  <tabstop>libs</tabstop>
   <tabstop>startDate</tabstop>
   <tabstop>startTime</tabstop>
   <tabstop>endDate</tabstop>
@@ -675,22 +660,6 @@
     <hint type="sourcelabel" >
      <x>81</x>
      <y>75</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>libs</sender>
-   <signal>activated(int)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>libChanged()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>81</x>
-     <y>102</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>

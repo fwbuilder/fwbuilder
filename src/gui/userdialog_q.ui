@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>562</width>
-    <height>166</height>
+    <width>631</width>
+    <height>222</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -218,22 +218,22 @@
           </property>
           <layout class="QGridLayout" >
            <property name="leftMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="topMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="rightMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="bottomMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="horizontalSpacing" >
             <number>2</number>
            </property>
            <property name="verticalSpacing" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <item row="4" column="1" >
             <spacer>
@@ -255,16 +255,6 @@
             <widget class="QLabel" name="textLabel1" >
              <property name="text" >
               <string>Name:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" >
-            <widget class="QLabel" name="textLabel1_2" >
-             <property name="text" >
-              <string>Library:</string>
              </property>
              <property name="wordWrap" >
               <bool>false</bool>
@@ -299,15 +289,11 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-            </widget>
-           </item>
-           <item row="1" column="1" >
-            <widget class="QComboBox" name="libs" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
+             <property name="minimumSize" >
+              <size>
+               <width>130</width>
+               <height>0</height>
+              </size>
              </property>
             </widget>
            </item>
@@ -324,7 +310,6 @@
  <layoutdefault spacing="2" margin="2" />
  <tabstops>
   <tabstop>obj_name</tabstop>
-  <tabstop>libs</tabstop>
   <tabstop>userid</tabstop>
   <tabstop>comment</tabstop>
  </tabstops>
@@ -335,22 +320,6 @@
    <signal>textChanged(QString)</signal>
    <receiver>UserDialog_q</receiver>
    <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>libs</sender>
-   <signal>activated(int)</signal>
-   <receiver>UserDialog_q</receiver>
-   <slot>libChanged()</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>20</x>

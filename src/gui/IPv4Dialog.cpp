@@ -79,8 +79,6 @@ void IPv4Dialog::loadFWObject(FWObject *o)
     dnsBusy=false;
     init=true;
 
-    fillLibraries(m_dialog->libs,obj);
-
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
 
@@ -92,13 +90,11 @@ void IPv4Dialog::loadFWObject(FWObject *o)
     if ( Interface::isA( obj->getParent() ) )
     {
         showNetmask=true;
-        m_dialog->libs->setEnabled( false );
         m_dialog->netmaskLabel->show();
         m_dialog->netmask->show();
     } else
     {
         showNetmask=false;
-        m_dialog->libs->setEnabled( true );
         m_dialog->netmaskLabel->hide();
         m_dialog->netmask->hide();
     }
@@ -120,9 +116,6 @@ void IPv4Dialog::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->obj_name);
-
-    m_dialog->libs->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->libs);
 
     m_dialog->address->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->address);
@@ -218,15 +211,6 @@ void IPv4Dialog::applyChanges()
         s->setNetmask(InetAddr());
 
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
-    init=true;
-
-/* move to another lib if we have to */
-    if ( ! Interface::isA( obj->getParent() ) &&
-           m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        mw->moveObject(m_dialog->libs->currentText(), obj);
-
-    init=false;
 
     //apply->setEnabled( false );
     mw->updateLastModifiedTimestampForAllFirewalls(obj);

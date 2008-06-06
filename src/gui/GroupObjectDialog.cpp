@@ -343,13 +343,10 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
     allIconViewItems.clear();
     allListViewItems.clear();
 
-    fillLibraries(m_dialog->libs,obj);
-
     m_dialog->obj_name->setText( QString::fromUtf8(g->getName().c_str()) );
     m_dialog->comment->setText( QString::fromUtf8(g->getComment().c_str()) );
 
     m_dialog->obj_name->setEnabled( !m_project->isSystem(obj) );
-    m_dialog->libs->setEnabled(     !m_project->isSystem(obj) );
     m_dialog->comment->setEnabled(  !m_project->isSystem(obj) );
 
     listView->clear();
@@ -383,9 +380,6 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
 
     m_dialog->comment->setEnabled(!o->isReadOnly() && !m_project->isSystem(o));
     setDisabledPalette(m_dialog->comment);
-
-    m_dialog->libs->setEnabled(!o->isReadOnly() && !m_project->isSystem(o));
-    setDisabledPalette(m_dialog->libs);
 
 //    listView->setEnabled(!o->isReadOnly());
     setDisabledPalette(listView);
@@ -476,14 +470,6 @@ void GroupObjectDialog::applyChanges()
     }
 
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
-    init=true;
-
-/* move to another lib if we have to */
-    if (! m_project->isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        mw->moveObject(m_dialog->libs->currentText(), obj);
-
-    init=false;
 
     //apply->setEnabled( false );
     mw->updateLastModifiedTimestampForAllFirewalls(obj);

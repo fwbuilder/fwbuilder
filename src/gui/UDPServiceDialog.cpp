@@ -72,8 +72,6 @@ void UDPServiceDialog::loadFWObject(FWObject *o)
 
     init=true;
 
-    fillLibraries(m_dialog->libs,obj);
-
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->ss->setValue( s->getInt("src_range_start") );
     m_dialog->se->setValue( s->getInt("src_range_end") );
@@ -86,9 +84,6 @@ void UDPServiceDialog::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->obj_name);
-
-    m_dialog->libs->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->libs);
 
     m_dialog->ss->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->ss);
@@ -173,14 +168,6 @@ void UDPServiceDialog::applyChanges()
     obj->setInt("dst_range_end",   m_dialog->de->value() );
 
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
-    init=true;
-
-/* move to another lib if we have to */
-    if (! m_project->isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        mw->moveObject(m_dialog->libs->currentText(), obj);
-
-    init=false;
 
     //apply->setEnabled( false );
     mw->updateLastModifiedTimestampForAllFirewalls(obj);

@@ -85,8 +85,6 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
     init=true;
 
-    fillLibraries(m_dialog->libs,obj);
-
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->label->setText( QString::fromUtf8(s->getLabel().c_str()) );
 
@@ -100,10 +98,6 @@ void InterfaceDialog::loadFWObject(FWObject *o)
     m_dialog->management->setChecked( s->isManagement() );
 
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
-
-/* interface should always belong to the host or firewall so we can't
- * move them from library to library */
-    m_dialog->libs->setEnabled( false );
 
     FWObject *f=obj->getParent();
 
@@ -242,9 +236,6 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->obj_name);
-
-    m_dialog->libs->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->libs);
 
     m_dialog->comment->setReadOnly(o->isReadOnly());
     setDisabledPalette(m_dialog->comment);

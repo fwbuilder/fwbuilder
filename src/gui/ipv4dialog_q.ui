@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>488</width>
-    <height>188</height>
+    <width>557</width>
+    <height>245</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -208,29 +208,29 @@
         <item row="1" column="0" >
          <widget class="QFrame" name="frame14" >
           <property name="frameShape" >
-           <enum>QFrame::NoFrame</enum>
+           <enum>QFrame::Box</enum>
           </property>
           <property name="frameShadow" >
-           <enum>QFrame::Plain</enum>
+           <enum>QFrame::Sunken</enum>
           </property>
           <layout class="QGridLayout" >
            <property name="leftMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="topMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="rightMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="bottomMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="horizontalSpacing" >
             <number>2</number>
            </property>
            <property name="verticalSpacing" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <item row="0" column="1" >
             <widget class="QLineEdit" name="obj_name" >
@@ -240,32 +240,18 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="minimumSize" >
+              <size>
+               <width>200</width>
+               <height>0</height>
+              </size>
+             </property>
             </widget>
            </item>
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
              <property name="text" >
               <string>Name:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1" >
-            <widget class="QComboBox" name="libs" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" >
-            <widget class="QLabel" name="textLabel1_2" >
-             <property name="text" >
-              <string>Library:</string>
              </property>
              <property name="wordWrap" >
               <bool>false</bool>
@@ -367,7 +353,6 @@
  <layoutdefault spacing="2" margin="4" />
  <tabstops>
   <tabstop>obj_name</tabstop>
-  <tabstop>libs</tabstop>
   <tabstop>address</tabstop>
   <tabstop>netmask</tabstop>
   <tabstop>dnsLookup</tabstop>
@@ -394,22 +379,6 @@
   <connection>
    <sender>address</sender>
    <signal>textChanged(QString)</signal>
-   <receiver>IPv4Dialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>libs</sender>
-   <signal>activated(int)</signal>
    <receiver>IPv4Dialog_q</receiver>
    <slot>changed()</slot>
    <hints>

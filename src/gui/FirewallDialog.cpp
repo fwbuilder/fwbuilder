@@ -85,8 +85,6 @@ void FirewallDialog::loadFWObject(FWObject *o)
 
     init=true;
 
-    fillLibraries(m_dialog->libs,obj);
-
 /* fill in platform */
     setPlatform(m_dialog->platform, obj->getStr("platform").c_str() );
 
@@ -116,9 +114,6 @@ void FirewallDialog::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->obj_name);
-
-    m_dialog->libs->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->libs);
 
     m_dialog->platform->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->platform);
@@ -288,14 +283,6 @@ void FirewallDialog::applyChanges()
         FWOptions  *opt =s->getOptionsObject();
         opt->setStr("compiler","");
     }
-
-    init=true;
-
-/* move to another lib if we have to */
-    if (! m_project->isSystem(obj) && m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        mw->moveObject(m_dialog->libs->currentText(), obj);
-
-    init=false;
 
     //apply->setEnabled( false );
     mw->updateLastModifiedTimestampForAllFirewalls(s);

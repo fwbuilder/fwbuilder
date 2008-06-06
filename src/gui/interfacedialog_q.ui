@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>780</width>
-    <height>236</height>
+    <width>859</width>
+    <height>297</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -156,7 +156,7 @@
          <number>1</number>
         </property>
         <property name="horizontalSpacing" >
-         <number>2</number>
+         <number>8</number>
         </property>
         <property name="verticalSpacing" >
          <number>2</number>
@@ -200,22 +200,22 @@
           </property>
           <layout class="QGridLayout" >
            <property name="leftMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="topMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="rightMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="bottomMargin" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="horizontalSpacing" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="verticalSpacing" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
@@ -237,20 +237,11 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="0" >
-            <widget class="QLabel" name="textLabel1_2" >
-             <property name="text" >
-              <string>Library:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
            <item row="3" column="0" >
             <widget class="QLabel" name="seclevelLabel" >
              <property name="text" >
-              <string>Security level:</string>
+              <string>Security
+level:</string>
              </property>
              <property name="wordWrap" >
               <bool>false</bool>
@@ -259,6 +250,12 @@
            </item>
            <item row="3" column="1" >
             <widget class="QSpinBox" name="seclevel" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="toolTip" >
               <string>&lt;p>Each interface of the firewall must have security level associated with it.&lt;br>Security level can be any number between 0 and 100, 0 being least secure and 100 being most secure levels. Interface with security level 0 ususally serves Internet connection.&lt;/p></string>
              </property>
@@ -277,18 +274,15 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
            <item row="2" column="1" >
             <widget class="QLineEdit" name="label" />
            </item>
-           <item row="1" column="1" >
-            <widget class="QComboBox" name="libs" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
+           <item row="0" column="1" >
+            <widget class="QLineEdit" name="obj_name" >
+             <property name="minimumSize" >
+              <size>
+               <width>200</width>
+               <height>0</height>
+              </size>
              </property>
             </widget>
-           </item>
-           <item row="0" column="1" >
-            <widget class="QLineEdit" name="obj_name" />
            </item>
            <item row="5" column="1" >
             <spacer>
@@ -346,22 +340,22 @@ If network zone for this interface consists of only one subnet, you can simply c
           </property>
           <layout class="QGridLayout" >
            <property name="leftMargin" >
-            <number>0</number>
+            <number>8</number>
            </property>
            <property name="topMargin" >
-            <number>0</number>
+            <number>8</number>
            </property>
            <property name="rightMargin" >
-            <number>0</number>
+            <number>8</number>
            </property>
            <property name="bottomMargin" >
-            <number>0</number>
+            <number>8</number>
            </property>
            <property name="horizontalSpacing" >
             <number>1</number>
            </property>
            <property name="verticalSpacing" >
-            <number>1</number>
+            <number>4</number>
            </property>
            <item row="1" column="0" >
             <widget class="QCheckBox" name="ext" >
@@ -437,7 +431,6 @@ If network zone for this interface consists of only one subnet, you can simply c
  <layoutdefault spacing="2" margin="2" />
  <tabstops>
   <tabstop>obj_name</tabstop>
-  <tabstop>libs</tabstop>
   <tabstop>label</tabstop>
   <tabstop>seclevel</tabstop>
   <tabstop>management</tabstop>
@@ -518,22 +511,6 @@ If network zone for this interface consists of only one subnet, you can simply c
   <connection>
    <sender>label</sender>
    <signal>textChanged(QString)</signal>
-   <receiver>InterfaceDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>libs</sender>
-   <signal>editTextChanged(QString)</signal>
    <receiver>InterfaceDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
