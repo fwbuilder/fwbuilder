@@ -185,65 +185,36 @@ void ActionsDialog::applyChanges()
 
     if (editor=="TagInt")
     {
-        if (TagIntArea!=NULL)
-        {   
-            QString id ;
-            if (TagIntArea->getObject()!=NULL)
-                id = TagIntArea->getObject()->getId().c_str();
-            else 
-                id = "";
-            ropt->setStr("tagobject_id",id.toAscii().data());
-        }
+        FWObject *tag_object = TagIntArea->getObject();
+        // if tag_object==NULL, setTagObject clears setting in the rule
+        rule->setTagObject(tag_object);
     }
 
     if (editor=="TagStr")
     {
-        if (TagStrArea!=NULL)
-        {
-            QString id ;
-            if (TagStrArea->getObject()!=NULL)
-                id = TagStrArea->getObject()->getId().c_str();
-            else 
-                id = "";
-            ropt->setStr("tagobject_id",id.toAscii().data());
-        }
+        FWObject *tag_object = TagStrArea->getObject();
+        // if tag_object==NULL, setTagObject clears setting in the rule
+        rule->setTagObject(tag_object);
     }
 
     if (editor=="BranchChain")
     {
-        if (BranchChainArea!=NULL)
-        {
-            QString id ;
-            if (BranchChainArea->getObject()!=NULL)
-                id = BranchChainArea->getObject()->getId().c_str();
-            else 
-                id = "";
-            ropt->setStr("branch_id",id.toAscii().data());
-            mw->setPolicyBranchTabName(rule->getBranch());
-        }
+        RuleSet *ruleset = RuleSet::cast(BranchChainArea->getObject());
+        // if ruleset==NULL, setBranch clears setting in the rule
+        rule->setBranch(ruleset);
     }
 
     if (editor=="BranchAnchor")
     {
-        if (BranchAnchorArea!=NULL)
-        {
-            QString id ;
-            if (BranchAnchorArea->getObject()!=NULL)
-                id = BranchAnchorArea->getObject()->getId().c_str();
-            else 
-                id = "";
-            ropt->setStr("branch_id",id.toAscii().data());
-            mw->setPolicyBranchTabName(rule->getBranch());
-        }
+        RuleSet *ruleset = RuleSet::cast(BranchAnchorArea->getObject());
+        // if ruleset==NULL, setBranch clears setting in the rule
+        rule->setBranch(ruleset);
     }
-
 
     if (m_dialog->useDummyNetPipe->isChecked())
         ropt->setInt("ipfw_classify_method",DUMMYNETPIPE);
     else
         ropt->setInt("ipfw_classify_method",DUMMYNETQUEUE);
-
-
 
     mw->updateLastModifiedTimestampForAllFirewalls(rule);
 }
