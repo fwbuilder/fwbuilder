@@ -1,5 +1,9 @@
 2008-06-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* VERSION (LIBFWBUILDER_CURRENT): Library so version set to 8.0.0
+	to allow for simultaneous installation of fwbuilder 2.1 and
+	fwbuilder 3.0
+
 	* Compiler.cpp (Compiler::getErrors): compilers accumulate error
 	and warning messages the generate in an internal buffer; these
 	messages can later be added to the generated script.

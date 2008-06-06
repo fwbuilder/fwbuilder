@@ -114,6 +114,7 @@ class Rule : public Group
     // We may support some kind of  branching in NAT in the future, so
     // lets make this method virtual.
     virtual RuleSet* getBranch();
+    virtual void setBranch(RuleSet *ruleset);
 
 };
 
@@ -187,7 +188,10 @@ class PolicyRule : public Rule
 
     DECLARE_FWOBJECT_SUBTYPE(PolicyRule);
     virtual FWOptions* getOptionsObject();
+
     virtual RuleSet* getBranch();
+    virtual void setBranch(RuleSet *ruleset);
+
     virtual bool isEmpty() const;
 
     libfwbuilder::RuleElementSrc*  getSrc() const;
@@ -212,6 +216,7 @@ class PolicyRule : public Rule
     // find TagService object for rules with action Tag
     FWObject* getTagObject();
     std::string getTagValue();
+    void setTagObject(FWObject *tag_object);
 };
 
 class NATRule : public Rule 
@@ -245,7 +250,10 @@ class NATRule : public Rule
 
     DECLARE_FWOBJECT_SUBTYPE(NATRule);
     virtual FWOptions* getOptionsObject();
+
     virtual RuleSet* getBranch();
+    virtual void setBranch(RuleSet *ruleset);
+
     virtual bool isEmpty() const;
 
     libfwbuilder::RuleElementOSrc* getOSrc() const;

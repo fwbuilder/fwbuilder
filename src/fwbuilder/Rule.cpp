@@ -75,6 +75,8 @@ void       Rule::enable()            {    setBool("disabled",false);}
 bool       Rule::isDisabled() const  {    return( getBool("disabled") );}
 bool       Rule::isEmpty() const     {    return false;             }
 
+void Rule::setBranch(RuleSet*) {};
+
 string Rule::getRuleGroupName() const { return getStr("group"); }
 
 void Rule::setRuleGroupName(const std::string &group_name)
@@ -369,6 +371,18 @@ RuleSet*   PolicyRule::getBranch()
     }
 }
 
+void PolicyRule::setBranch(RuleSet* ruleset)
+{
+    getOptionsObject()->setStr("branch_id",
+                               (ruleset) ? ruleset->getId() : "");
+}
+
+void PolicyRule::setTagObject(FWObject *tag_object)
+{
+    getOptionsObject()->setStr("tagobject_id",
+                               (tag_object) ? tag_object->getId() : "");
+}
+
 FWObject* PolicyRule::getTagObject()
 {
     if (getAction() == Tag)
@@ -558,6 +572,12 @@ RuleSet*   NATRule::getBranch()
         else
             return NULL;
     }
+}
+
+void NATRule::setBranch(RuleSet* ruleset)
+{
+    getOptionsObject()->setStr("branch_id",
+                               (ruleset) ? ruleset->getId() : "");
 }
 
 NATRule::NATRuleTypes NATRule::getRuleType() const
