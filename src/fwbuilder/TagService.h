@@ -48,8 +48,8 @@ class TagService : public Service
 
     public:
 
-        std::string getCode();
-        void setCode(std::string p);
+    std::string getCode() const;
+    void setCode(const std::string &p);
 
     DECLARE_FWOBJECT_SUBTYPE(TagService);
 

@@ -38,6 +38,9 @@
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/CustomService.h"
+#include "fwbuilder/TagService.h"
+#include "fwbuilder/UserService.h"
+
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Rule.h"
 
@@ -241,6 +244,19 @@ bool fwcompiler::checkForShadowing(const Service &o1,const Service &o2)
 
 	    return (srs1>=srs2 && sre1<=sre2 && drs1>=drs2 && dre1<=dre2);
 	}
+	if ( TagService::constcast(&o1)) 
+        {
+            string tagvalue1 = TagService::constcast(&o1)->getCode();
+            string tagvalue2 = TagService::constcast(&o2)->getCode();
+            return (tagvalue1 == tagvalue2);
+	}
+	if ( UserService::constcast(&o1)) 
+        {
+            string uid1 = UserService::constcast(&o1)->getUserId();
+            string uid2 = UserService::constcast(&o2)->getUserId();
+            return (uid1 == uid2);
+	}
+
         return false;
     }
 /*

@@ -1,5 +1,8 @@
 2008-06-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* Compiler_ops.cpp (fwcompiler::checkForShadowing): compilers will
+	include TagService and UserService in the rule shadowing analysis
+
 	* VERSION (LIBFWBUILDER_CURRENT): Library so version set to 8.0.0
 	to allow for simultaneous installation of fwbuilder 2.1 and
 	fwbuilder 3.0

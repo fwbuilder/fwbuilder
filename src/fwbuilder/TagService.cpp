@@ -52,12 +52,12 @@ TagService::TagService(const FWObject *root,bool prepopulate) : Service(root,pre
 
 TagService::~TagService() {}
 
-void TagService::setCode(string p)
+void TagService::setCode(const string &p)
 {
     setStr("tagcode", p);
 }
 
-string TagService::getCode()
+string TagService::getCode() const
 {
     return getStr("tagcode");
 }
