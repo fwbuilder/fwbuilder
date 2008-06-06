@@ -562,7 +562,7 @@ string PolicyCompiler_pf::PrintRule::_printDstService(Service *srv,bool neg)
 
     if (TagService::isA(srv)) 
     {
-	str << "tagged " << TagService::cast(srv)->getCode() << " ";
+	str << "tagged " << TagService::constcast(srv)->getCode() << " ";
     }
 
     return str.str();

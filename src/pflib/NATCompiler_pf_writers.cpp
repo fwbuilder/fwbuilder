@@ -256,7 +256,7 @@ void NATCompiler_pf::PrintRule::_printPort(Service *srv,bool print_range_end)
     }
     if (TagService::isA(srv)) 
     {
-	compiler->output << "tagged " << TagService::cast(srv)->getCode() << " ";
+	compiler->output << "tagged " << TagService::constcast(srv)->getCode() << " ";
     }
 }
 

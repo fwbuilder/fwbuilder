@@ -861,7 +861,7 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
         if (TagService::isA(srv))
         {
 	    ostr << "-m mark --mark "
-                 << TagService::cast(srv)->getCode() << " ";
+                 << TagService::constcast(srv)->getCode() << " ";
         }
         if (UserService::isA(srv))
         {

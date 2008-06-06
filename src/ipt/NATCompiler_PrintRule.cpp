@@ -392,7 +392,7 @@ string NATCompiler_ipt::PrintRule::_printDstService(RuleElementOSrv  *rel)
         if (TagService::isA(srv))
         {
 	    ostr << "-m mark --mark "
-                 << TagService::cast(srv)->getCode() << " ";
+                 << TagService::constcast(srv)->getCode() << " ";
         }
 
     } else {
