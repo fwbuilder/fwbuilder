@@ -499,7 +499,6 @@ bool PolicyCompiler::splitServices::processNext()
 
     map<int, list<Service*> > services;
 
-// loop:
     for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
     {
         FWObject *o= *i;
@@ -512,7 +511,8 @@ bool PolicyCompiler::splitServices::processNext()
         services[proto].push_back(s);
     }
 
-    for (map<int, list<Service*> >::iterator i1=services.begin(); i1!=services.end(); i1++)
+    for (map<int, list<Service*> >::iterator i1=services.begin();
+         i1!=services.end(); i1++)
     {
         list<Service*> &sl=(*i1).second;
 

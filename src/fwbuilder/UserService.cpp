@@ -42,6 +42,8 @@ UserService::UserService(const FWObject *root, bool prepopulate) :
     Service(root, prepopulate) {}
 UserService::~UserService() {}
 
+string UserService::getProtocolName()     {    return "user_service";}
+int    UserService::getProtocolNumber()   {    return 65002; }
 
 FWObject& UserService::shallowDuplicate(const FWObject *x,
                                         bool preserve_id) throw(FWException)

@@ -57,6 +57,9 @@ class UserService : public Service
     
     DECLARE_FWOBJECT_SUBTYPE(UserService);
 
+    virtual std::string getProtocolName();
+    virtual int    getProtocolNumber();
+   
     const std::string& getUserId() const { return userid; } 
     void setUserId(const std::string& uid) { userid = uid; }
 };
