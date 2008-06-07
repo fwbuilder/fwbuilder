@@ -337,6 +337,8 @@ void PolicyCompiler_iosacl::compile()
         add( new pickACL( true, "assign ACLs" ) );
 
         add( new SpecialServices( "check for special services" ) );
+        add( new CheckForUnsupportedUserService("check for user service") );
+
         add( new checkForZeroAddr(    "check for zero addresses" ) );
         add( new checkForDynamicInterface("check for dynamic interfaces" ) );
 

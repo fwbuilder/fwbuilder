@@ -761,6 +761,7 @@ void PolicyCompiler_pix::compile()
             add( new pickACL_v6( "assign ACLs for v6" ));
 
         add( new SpecialServices( "check for special services" ));
+        add( new CheckForUnsupportedUserService("check for user service") );
         add( new checkForZeroAddr( "check for zero addresses" ));
         add( new checkVersionAndDynamicInterface(
                  "check for dynamic interfaces in policy rule and verify version of PIX OS"));
