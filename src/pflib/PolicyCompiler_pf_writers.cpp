@@ -34,6 +34,7 @@
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/TagService.h"
+#include "fwbuilder/UserService.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/FWOptions.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -282,6 +283,43 @@ void PolicyCompiler_pf::PrintRule::_printQueue(PolicyRule *rule)
         compiler->output << "queue " << ruleopt->getStr("classify_str") << " ";
 }
 
+void PolicyCompiler_pf::PrintRule::_printUser(PolicyRule *rule)
+{
+    RuleElementSrv *srvrel = rule->getSrv();
+    FWObject *o = srvrel->front();
+    if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+    Service *srv= Service::cast(o);
+    if (!UserService::isA(srv)) return;
+    ostringstream str;
+
+    if (srvrel->size()==1) 
+    {
+        str << "user ";
+        if (srvrel->getNeg()) str << "!= ";
+        str << UserService::constcast(srv)->getUserId() << " ";
+        compiler->output << str.str() << " ";
+    } else 
+    {
+        int counter = 0;
+	for (FWObject::iterator i=srvrel->begin(); i!=srvrel->end(); i++) 
+        {
+	    FWObject *o= *i;
+	    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+	    Service *s=Service::cast( o );
+	    assert(s);
+            if (counter > 0) str << ",";
+            str << " ";
+            if (srvrel->getNeg()) str << "!= ";
+            str << UserService::constcast(s)->getUserId();
+            counter++;
+	}
+	if ( counter )
+        {
+            compiler->output << "user {" << str.str() << " } ";
+	}
+    }
+}
+
 void PolicyCompiler_pf::PrintRule::_printTag(PolicyRule *rule)
 {
     if (rule->getAction() == PolicyRule::Tag)
@@ -375,7 +413,8 @@ void PolicyCompiler_pf::PrintRule::_printProtocol(libfwbuilder::Service *srv)
 
     if (!srv->isAny() &&
         !CustomService::isA(srv) &&
-        !TagService::isA(srv) &&
+        !TagService::isA(srv) && 
+        !UserService::isA(srv) && 
         srv->getProtocolName()!="ip")
     {
 	compiler->output << "proto ";
@@ -430,7 +469,7 @@ string PolicyCompiler_pf::PrintRule::_printPort(int rs,int re,bool neg)
 }
 
 /*
- * we made sure that all services in rel  represent the same protocol
+ * we made sure that all services in rel  represent the same protocol. 
  */
 void PolicyCompiler_pf::PrintRule::_printSrcService(RuleElementSrv  *rel)
 {
@@ -441,33 +480,40 @@ void PolicyCompiler_pf::PrintRule::_printSrcService(RuleElementSrv  *rel)
     if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 
     Service *srv= Service::cast(o);
+    string prefix = "";
+    if (UDPService::isA(srv) || TCPService::isA(srv)) prefix = "port ";
 
-    if (rel->size()==1) {
-	if (UDPService::isA(srv) || TCPService::isA(srv)) {
+    if (rel->size()==1)
+    {
+        if (UDPService::isA(srv) || TCPService::isA(srv))
+        {
 	    string str=_printSrcService( srv , rel->getNeg());
-	    if (! str.empty() ) compiler->output << "port " << str << " ";
-	}
-    } else {
-
+            if (! str.empty() ) compiler->output << prefix << str << " ";
+        }
+    } else
+    {
 	string str;
-	for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) {
+	for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++)
+        {
 	    FWObject *o= *i;
-	    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-	    Service *s=Service::cast( o );
+	    if (FWReference::cast(o)!=NULL)
+                o=FWReference::cast(o)->getPointer();
+	    Service *s = Service::cast( o );
 	    assert(s);
-	    if (UDPService::isA(srv) || TCPService::isA(srv)) {
-		string str1= _printSrcService(s , rel->getNeg() );
-		if (! str.empty() && ! str1.empty() )  str = str + ", ";
-		str = str + str1;
-	    }
+            string str1;
+
+	    if (UDPService::isA(srv) || TCPService::isA(srv))
+                str1 = _printSrcService(s , rel->getNeg() );
+
+            if (! str.empty() && ! str1.empty() )  str = str + ", ";
+            str = str + str1;
 	}
-	if ( !str.empty() ) {
-	    compiler->output << "port { " << str << "} ";
-	}
+	if ( !str.empty() )
+	    compiler->output << prefix << "{ " << str << "} ";
     }
 }
 
-string PolicyCompiler_pf::PrintRule::_printSrcService(Service *srv,bool neg)
+string PolicyCompiler_pf::PrintRule::_printSrcService(Service *srv, bool neg)
 {
     ostringstream  str;
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
@@ -483,9 +529,7 @@ void PolicyCompiler_pf::PrintRule::_printDstService(RuleElementSrv  *rel)
 {
     FWObject *o=rel->front();
     if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-
     Service *srv= Service::cast(o);
-
 
     if (rel->size()==1) 
     {
@@ -507,9 +551,9 @@ void PolicyCompiler_pf::PrintRule::_printDstService(RuleElementSrv  *rel)
 	    str=_printTCPFlags(TCPService::cast(srv));
 	    if (!str.empty()) compiler->output << "flags " << str << " ";
 	}
-        if (IPService::isA(srv) && (srv->getBool("fragm") || srv->getBool("short_fragm")) )
+        if (IPService::isA(srv) &&
+            (srv->getBool("fragm") || srv->getBool("short_fragm")) )
                 compiler->output << " fragment ";
-
     } else 
     {
 	string str;
@@ -532,13 +576,15 @@ void PolicyCompiler_pf::PrintRule::_printDstService(RuleElementSrv  *rel)
                 if (ICMPService::isA(srv)) 
                     compiler->output << "icmp-type { " << str << " } ";
                 else
+                {
                     compiler->output << str << " " << endl;
+                }
             }
 	}
     }
 }
 
-string PolicyCompiler_pf::PrintRule::_printDstService(Service *srv,bool neg)
+string PolicyCompiler_pf::PrintRule::_printDstService(Service *srv, bool neg)
 {
     ostringstream  str;
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
@@ -557,7 +603,8 @@ string PolicyCompiler_pf::PrintRule::_printDstService(Service *srv,bool neg)
 
     if (CustomService::isA(srv)) 
     {
-	str << CustomService::cast(srv)->getCodeForPlatform( compiler->myPlatformName() ) << " ";
+	str << CustomService::cast(srv)->getCodeForPlatform(
+            compiler->myPlatformName() ) << " ";
     }
 
     if (TagService::isA(srv)) 
@@ -802,6 +849,7 @@ bool PolicyCompiler_pf::PrintRule::processNext()
     _printDstService(srvrel);
 
     _printTag(rule);
+    _printUser(rule);
 
 /* 
  * Dealing with "keep state" and "modulate state" flags

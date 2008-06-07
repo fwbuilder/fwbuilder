@@ -1,5 +1,9 @@
 2008-06-06  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_pf_writers.cpp (PrintRule::_printUser): Support
+	for UserService in compiler for PF. FR #1948872: "User based
+	rules"
+
 	* FWBSettings.cpp (FWBSettings::restoreGeometry): the program will
 	remember window size and restore it on subsequent runs, but will
 	not remember window position on the screen. This caused problems

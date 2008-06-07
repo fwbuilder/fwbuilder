@@ -424,6 +424,7 @@ namespace fwcompiler {
             virtual void _printAF(libfwbuilder::PolicyRule *r);
             virtual void _printLabel(libfwbuilder::PolicyRule *r);
             virtual void _printQueue(libfwbuilder::PolicyRule *r);
+            virtual void _printUser(libfwbuilder::PolicyRule *r);
             virtual void _printTag(libfwbuilder::PolicyRule *r);
             virtual std::string _printLogPrefix(libfwbuilder::PolicyRule *r,const std::string &prefix);
 
