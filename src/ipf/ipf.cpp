@@ -518,7 +518,7 @@ int main(int argc, char * const *argv)
             {
                 ipf_file << "# Policy compiler errors and warnings:"
                          << endl;
-                ipf_file << c.getErrors();
+                ipf_file << c.getErrors("# ");
             }
 
 	    ipf_file << c.getCompiledScript();
@@ -553,7 +553,7 @@ int main(int argc, char * const *argv)
             {
                 nat_file << "# NAT compiler errors and warnings:"
                          << endl;
-                nat_file << n.getErrors();
+                nat_file << n.getErrors("# ");
             }
 
 

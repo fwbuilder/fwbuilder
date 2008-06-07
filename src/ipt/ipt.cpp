@@ -642,7 +642,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     {
                         n_str << "# NAT compiler errors and warnings:"
                               << endl;
-                        n_str << n.getErrors();
+                        n_str << n.getErrors("# ");
                     }
 
                     if (Compiler::isRootRuleSet(nat))
@@ -696,7 +696,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                         {
                             m_str << "# Policy compiler errors and warnings:"
                                   << endl;
-                            m_str << m.getErrors();
+                            m_str << m.getErrors("# ");
                         }
 
                         m_str << m.getCompiledScript();
@@ -733,7 +733,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                         {
                             c_str << "# Policy compiler errors and warnings:"
                                   << endl;
-                            c_str << c.getErrors();
+                            c_str << c.getErrors("# ");
                         }
                         c_str << c.getCompiledScript();
                         c_str << c.commit();

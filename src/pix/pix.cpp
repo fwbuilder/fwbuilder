@@ -611,7 +611,7 @@ int main(int argc, char * const * argv)
         {
             ofile << "! Policy compiler errors and warnings:"
                     << endl;
-            ofile << c->getErrors();
+            ofile << c->getErrors("! ");
         }
 
         ofile << c->getCompiledScript();
@@ -621,7 +621,7 @@ int main(int argc, char * const * argv)
         {
             ofile << "! NAT compiler errors and warnings:"
                     << endl;
-            ofile << n->getErrors();
+            ofile << n->getErrors("! ");
         }
 
         ofile << n->getCompiledScript();

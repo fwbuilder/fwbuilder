@@ -398,7 +398,7 @@ int main(int argc, char * const * argv)
         {
             ofile << "! Policy compiler errors and warnings:"
                     << endl;
-            ofile << c->getErrors();
+            ofile << c->getErrors("! ");
         }
 
         ofile << c->getCompiledScript();
