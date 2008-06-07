@@ -146,11 +146,18 @@ bool Compiler::haveErrorsAndWarnings()
     return (int(output.tellp()) > 0);
 }
 
-string Compiler::getErrors()
+string Compiler::getErrors(const string &comment_sep)
 {
-    string res = errors_buffer.str();
+    ostringstream ostr;
+    istringstream istr(errors_buffer.str());
+    while (!istr.eof())
+    {
+        string tmpstr;
+        getline(istr, tmpstr);
+        ostr << comment_sep << tmpstr << endl;
+    }
     errors_buffer.str("");
-    return res;
+    return ostr.str();
 }
 
 void Compiler::_init(FWObjectDatabase *_db, const string &fwobjectname)

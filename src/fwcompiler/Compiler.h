@@ -598,7 +598,7 @@ namespace fwcompiler {
         
 	std::string getCompiledScript();
         int getCompiledScriptLength();
-	std::string getErrors();
+	std::string getErrors(const std::string &comment_sep);
 	bool haveErrorsAndWarnings();
 
 	void expandGroupsInRuleElement(libfwbuilder::RuleElement *s);
