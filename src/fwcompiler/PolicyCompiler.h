@@ -229,6 +229,13 @@ namespace fwcompiler {
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(CheckForTCPEstablished);
 
+	/**
+	 * simply check if UserService objectis used in Service and
+         * abort with an error saying that target firewall does not
+         * support this.
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(CheckForUnsupportedUserService);
+
         /**
          * drop rules that have ipv4 or ipv6 addresses  (depending
          * on the argument ipv6 passed to the constructor)

@@ -36,6 +36,7 @@
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
+#include "fwbuilder/UserService.h"
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Rule.h"
@@ -1027,6 +1028,26 @@ bool PolicyCompiler::CheckForTCPEstablished::processNext()
 
         if (s->getEstablished())
             compiler->abort(string("TCPService object with option \"established\" is not supported by firewall platform \"") + compiler->myPlatformName() + string("\". Use stateful rule instead."));
+    }
+
+    tmp_queue.push_back(rule);
+    return true;
+}
+
+bool PolicyCompiler::CheckForUnsupportedUserService::processNext()
+{
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+
+    RuleElementSrv *srv=rule->getSrv();
+
+    for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
+    {
+        FWObject *o= *i;
+        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+
+        if (UserService::isA(o))
+            compiler->abort(string("UserService object is not supported by ") +
+                            compiler->myPlatformName());
     }
 
     tmp_queue.push_back(rule);
