@@ -173,6 +173,9 @@ FWBTree::FWBTree()
     systemGroupTypes[TagService::TYPENAME]=    ServiceGroup::TYPENAME;
     systemGroupNames[TagService::TYPENAME]=    "TagService"    ;
 
+    systemGroupTypes[UserService::TYPENAME]=   ServiceGroup::TYPENAME;
+    systemGroupNames[UserService::TYPENAME]=   "Users"    ;
+
     systemGroupTypes[ServiceGroup::TYPENAME]=  ServiceGroup::TYPENAME;
     systemGroupNames[ServiceGroup::TYPENAME]=  "Groups"        ;
 
