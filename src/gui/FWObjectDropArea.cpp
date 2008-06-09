@@ -193,6 +193,8 @@ void FWObjectDropArea::dragEnterEvent( QDragEnterEvent *ev)
         {
             FWObject * o = dragol.front();
             bool ok = false ;
+            if (acceptedTypes.size()==0)
+                ok = true ;
             for (int p = 0 ; p < acceptedTypes.size(); p++)
             {
                 QString type =o->getTypeName().c_str(); 
