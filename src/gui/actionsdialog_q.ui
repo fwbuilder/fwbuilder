@@ -107,22 +107,22 @@
        </property>
        <layout class="QGridLayout" >
         <property name="leftMargin" >
-         <number>2</number>
+         <number>8</number>
         </property>
         <property name="topMargin" >
-         <number>2</number>
+         <number>8</number>
         </property>
         <property name="rightMargin" >
-         <number>2</number>
+         <number>8</number>
         </property>
         <property name="bottomMargin" >
-         <number>2</number>
+         <number>8</number>
         </property>
         <property name="horizontalSpacing" >
-         <number>2</number>
+         <number>8</number>
         </property>
         <property name="verticalSpacing" >
-         <number>2</number>
+         <number>8</number>
         </property>
         <item row="0" column="0" >
          <widget class="QStackedWidget" name="widgetStack" >
@@ -139,7 +139,7 @@
            <enum>QFrame::Plain</enum>
           </property>
           <property name="currentIndex" >
-           <number>9</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="TagStrPage" >
            <layout class="QGridLayout" >
@@ -207,7 +207,7 @@
              <widget class="QFrame" name="TagStrFrame" >
               <property name="minimumSize" >
                <size>
-                <width>80</width>
+                <width>200</width>
                 <height>80</height>
                </size>
               </property>
@@ -1107,28 +1107,12 @@
             <item row="1" column="0" >
              <widget class="QLabel" name="textLabel2_4" >
               <property name="text" >
-               <string>Anchor name:</string>
+               <string>Anchor name:      </string>
               </property>
               <property name="wordWrap" >
                <bool>false</bool>
               </property>
              </widget>
-            </item>
-            <item row="4" column="0" >
-             <spacer>
-              <property name="orientation" >
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType" >
-               <enum>QSizePolicy::MinimumExpanding</enum>
-              </property>
-              <property name="sizeHint" >
-               <size>
-                <width>20</width>
-                <height>0</height>
-               </size>
-              </property>
-             </spacer>
             </item>
             <item row="0" column="0" >
              <spacer>
@@ -1148,6 +1132,18 @@
             </item>
             <item row="2" column="0" >
              <widget class="QFrame" name="BranchAnchorPageFrame" >
+              <property name="minimumSize" >
+               <size>
+                <width>200</width>
+                <height>64</height>
+               </size>
+              </property>
+              <property name="maximumSize" >
+               <size>
+                <width>64</width>
+                <height>10000</height>
+               </size>
+              </property>
               <property name="frameShape" >
                <enum>QFrame::StyledPanel</enum>
               </property>
@@ -1178,6 +1174,35 @@
                </item>
               </layout>
              </widget>
+            </item>
+            <item row="4" column="0" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType" >
+               <enum>QSizePolicy::MinimumExpanding</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>20</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="2" column="1" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </widget>
