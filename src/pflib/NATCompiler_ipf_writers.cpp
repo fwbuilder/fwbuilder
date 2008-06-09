@@ -199,7 +199,7 @@ void NATCompiler_ipf::PrintRule::_printPort(Service *srv,bool eq)
 {
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
     {
-	int drs=srv->getInt("dst_range_start");
+	int drs=TCPUDPService::cast(srv)->getDstRangeStart();
         if (!eq || drs!=0)
         {
             compiler->output << "port ";

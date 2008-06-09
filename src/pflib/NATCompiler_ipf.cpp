@@ -139,52 +139,52 @@ bool NATCompiler_ipf::ExpandPortRange::processNext()
 
     if (UDPService::isA(osrv) || TCPService::isA(osrv))
     {
-      int rs = osrv->getInt("dst_range_start");
-      int re = osrv->getInt("dst_range_end");
+	int rs = TCPUDPService::cast(osrv)->getDstRangeStart();
+	int re = TCPUDPService::cast(osrv)->getDstRangeEnd();
 
-      int numPorts = re-rs+1;
-      if (numPorts==1)
-      {
-          tmp_queue.push_back(rule);
-	  return true;
-      }
+        int numPorts = re-rs+1;
+        if (numPorts==1)
+        {
+            tmp_queue.push_back(rule);
+            return true;
+        }
 
-      if (numPorts > 20)
-      {
-	ostringstream ostr;
-	ostr << string("Rule ") << rule->getLabel() << " : "
-             << string("Expanding port range ") << osrv->getName()
-	     << " creates " << numPorts << " rules";
-	compiler->warning(ostr.str());
-      }
+        if (numPorts > 20)
+        {
+            ostringstream ostr;
+            ostr << string("Rule ") << rule->getLabel() << " : "
+                 << string("Expanding port range ") << osrv->getName()
+                 << " creates " << numPorts << " rules";
+            compiler->warning(ostr.str());
+        }
 
-      string newSrvType = TCPService::TYPENAME;
-      if (UDPService::isA(osrv)) newSrvType = UDPService::TYPENAME;
+        string newSrvType = TCPService::TYPENAME;
+        if (UDPService::isA(osrv)) newSrvType = UDPService::TYPENAME;
 
-      for (int p=rs; p<=re; ++p)
-      {
-	  NATRule *r = NATRule::cast(
+        for (int p=rs; p<=re; ++p)
+        {
+            NATRule *r = NATRule::cast(
                 compiler->dbcopy->create(NATRule::TYPENAME) );
-	  r->duplicate(rule);
+            r->duplicate(rule);
 
-	  FWObject *newSrv = compiler->dbcopy->create(newSrvType);
-	  newSrv->duplicate(osrv,true);
-	  newSrv->setInt("dst_range_start",p);
-	  newSrv->setInt("dst_range_end",p);
-	  compiler->dbcopy->add(newSrv,false);
-	  compiler->dbcopy->addToIndex(newSrv);
-	  compiler->cacheObj(newSrv);
+            FWObject *newSrv = compiler->dbcopy->create(newSrvType);
+            newSrv->duplicate(osrv,true);
+            TCPUDPService::cast(newSrv)->setDstRangeStart(p);
+            TCPUDPService::cast(newSrv)->setDstRangeEnd(p);
+            compiler->dbcopy->add(newSrv,false);
+            compiler->dbcopy->addToIndex(newSrv);
+            compiler->cacheObj(newSrv);
 
-	  RuleElementOSrv *nosrv = r->getOSrv();
-	  nosrv->clearChildren();
-	  nosrv->addRef(newSrv);
+            RuleElementOSrv *nosrv = r->getOSrv();
+            nosrv->clearChildren();
+            nosrv->addRef(newSrv);
 
-	  compiler->temp_ruleset->add(r);
-	  tmp_queue.push_back(r);
-      }
+            compiler->temp_ruleset->add(r);
+            tmp_queue.push_back(r);
+        }
     } else
     {
-      tmp_queue.push_back(rule);
+        tmp_queue.push_back(rule);
     }
     return true;
 }
@@ -436,7 +436,8 @@ bool NATCompiler_ipf::appProxy::processNext()
         {
             UDPService *s=UDPService::cast(osrv);
             if (ipsec_proxy && 
-                s->getInt("dst_range_start")==ISAKMP_PORT && s->getInt("dst_range_end")==ISAKMP_PORT)  
+
+                s->getDstRangeStart()==ISAKMP_PORT && s->getDstRangeEnd()==ISAKMP_PORT)  
                 rule->setStr("nat_rule_proxy",ipsec_proxy_str);
         }
 
@@ -444,35 +445,35 @@ bool NATCompiler_ipf::appProxy::processNext()
         {
             TCPService *s=TCPService::cast(osrv);
             if (ftp_proxy && 
-                s->getInt("dst_range_start")==FTP_PORT && s->getInt("dst_range_end")==FTP_PORT )  
+                s->getDstRangeStart()==FTP_PORT && s->getDstRangeEnd()==FTP_PORT )  
                 rule->setStr("nat_rule_proxy",ftp_proxy_str);
             
             if (rcmd_proxy &&
-                s->getInt("dst_range_start")==RCMD_PORT && s->getInt("dst_range_end")==RCMD_PORT )   
+                s->getDstRangeStart()==RCMD_PORT && s->getDstRangeEnd()==RCMD_PORT )   
                 rule->setStr("nat_rule_proxy",rcmd_proxy_str);
 
             if (krcmd_proxy &&
-                s->getInt("dst_range_start")==KRCMD_PORT && s->getInt("dst_range_end")==KRCMD_PORT )   
+                s->getDstRangeStart()==KRCMD_PORT && s->getDstRangeEnd()==KRCMD_PORT )   
                 rule->setStr("nat_rule_proxy",krcmd_proxy_str);
 
             if (ekshell_proxy &&
-                s->getInt("dst_range_start")==EKSHELL_PORT && s->getInt("dst_range_end")==EKSHELL_PORT )   
+                s->getDstRangeStart()==EKSHELL_PORT && s->getDstRangeEnd()==EKSHELL_PORT )   
                 rule->setStr("nat_rule_proxy",ekshell_proxy_str);
 
             if (raudio_proxy &&
-                s->getInt("dst_range_start")==RAUDIO_PORT && s->getInt("dst_range_end")==RAUDIO_PORT ) 
+                s->getDstRangeStart()==RAUDIO_PORT && s->getDstRangeEnd()==RAUDIO_PORT ) 
                 rule->setStr("nat_rule_proxy",raudio_proxy_str);
 
             if (h323_proxy &&
-                s->getInt("dst_range_start")==H323_PORT && s->getInt("dst_range_end")==H323_PORT )   
+                s->getDstRangeStart()==H323_PORT && s->getDstRangeEnd()==H323_PORT )   
                 rule->setStr("nat_rule_proxy",h323_proxy_str);
 
             if (pptp_proxy &&
-                s->getInt("dst_range_start")==PPTP_PORT && s->getInt("dst_range_end")==PPTP_PORT )   
+                s->getDstRangeStart()==PPTP_PORT && s->getDstRangeEnd()==PPTP_PORT )   
                 rule->setStr("nat_rule_proxy",pptp_proxy_str);
 
             if (irc_proxy &&
-                s->getInt("dst_range_start")==IRC_PORT && s->getInt("dst_range_end")==IRC_PORT )   
+                s->getDstRangeStart()==IRC_PORT && s->getDstRangeEnd()==IRC_PORT )   
                 rule->setStr("nat_rule_proxy",irc_proxy_str);
         }
     }
