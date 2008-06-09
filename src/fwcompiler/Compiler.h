@@ -216,6 +216,33 @@ namespace fwcompiler {
 
 	public:
 
+	int                                debug;
+	int                                debug_rule;
+	bool                               verbose;
+
+	fwcompiler::OSConfigurator        *osconfigurator;
+	libfwbuilder::FWObjectDatabase    *dbcopy;
+	libfwbuilder::Firewall            *fw;
+
+        std::string                        ruleSetName;;
+        
+	libfwbuilder::RuleSet             *source_ruleset;
+	libfwbuilder::RuleSet             *combined_ruleset;
+	libfwbuilder::RuleSet             *temp_ruleset;
+
+        libfwbuilder::Group               *temp;
+
+	std::stringstream                  output;
+	std::stringstream                  errors_buffer;
+
+        bool                               test_mode;
+
+        // this map associates IDs of MultiAddress objects with corresponding
+        // MultiAddressRunTime objects
+        std::map<int, int> multi_address_run_time_association;
+        
+        
+        
         void registerIPv6Rule() { countIPv6Rules++; }
         bool haveIPv6Rules() { return countIPv6Rules > 0; }
 
@@ -553,27 +580,6 @@ namespace fwcompiler {
          * prints warning message
          */
 	void warning(const std::string &warnstr);
-
-	int                                debug;
-	int                                debug_rule;
-	bool                               verbose;
-
-	fwcompiler::OSConfigurator        *osconfigurator;
-	libfwbuilder::FWObjectDatabase    *dbcopy;
-	libfwbuilder::Firewall            *fw;
-
-        std::string                        ruleSetName;;
-        
-	libfwbuilder::RuleSet             *source_ruleset;
-	libfwbuilder::RuleSet             *combined_ruleset;
-	libfwbuilder::RuleSet             *temp_ruleset;
-
-        libfwbuilder::Group               *temp;
-
-	std::stringstream                  output;
-	std::stringstream                  errors_buffer;
-
-        bool                               test_mode;
 
 	virtual ~Compiler();
 

@@ -90,6 +90,8 @@ void Compiler::cacheObj(libfwbuilder::FWObject *o)
 
 int Compiler::prolog() 
 {
+    multi_address_run_time_association.clear();
+
     temp=new Group();
 
     fw->add(temp,false);
@@ -1269,6 +1271,8 @@ bool Compiler::swapMultiAddressObjectsInRE::processNext()
                 compiler->dbcopy->findInIndex(mart_id));
             if (mart==NULL)
             {
+                compiler->multi_address_run_time_association[ma->getId()] = mart_id;
+
                 mart = new MultiAddressRunTime(ma);
 
                 // need to ensure stable ID for the runtime object, so

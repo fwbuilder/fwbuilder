@@ -436,7 +436,9 @@ bool RoutingCompiler::competingRules::processNext()
      
     string metric = rule->getMetricAsString();
     string label  = rule->getSortedDstIds();
-    string combiId = gtw->getStr("id") + itf->getStr("id");
+    ostringstream ostr;
+    ostr << gtw->getId() << "_" << itf->getId();
+    string combiId = ostr.str();
     
     if( label == "") compiler->abort("Place 'createSortedDstIdsLabel()' before 'competingRules()' in the rule processor chain!");
     
@@ -548,7 +550,9 @@ bool RoutingCompiler::classifyRoutingRules::processNext()
         
         string metric  = rule->getMetricAsString();
         string label   = rule->getSortedDstIds();
-        string combiId = gtw->getStr("id") + itf->getStr("id");
+        ostringstream ostr;
+        ostr << gtw->getId() << "_" << itf->getId();
+        string combiId = ostr.str();
         
         if( label == "") compiler->abort("Place 'createSortedDstIdsLabel()' right before 'classifyRoutingRules()' in the rule processor chain!");
         
@@ -617,7 +621,9 @@ bool RoutingCompiler::createSortedDstIdsLabel::processNext()
     std::list<string> idList;
     for (FWObject::iterator it=dstrel->begin(); it!=dstrel->end(); ++it) {
         
-        idList.insert(idList.end(), (FWReference::cast(*it)->getPointer())->getStr("id"));
+        idList.insert(idList.end(),
+                      FWObjectDatabase::getStringId(
+                          (FWReference::cast(*it)->getPointer())->getId()));
     }
     idList.sort();
     for (std::list<string>::iterator it=idList.begin(); it!=idList.end(); ++it) {
