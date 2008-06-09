@@ -758,37 +758,37 @@ string NATCompiler::debugPrintRule(libfwbuilder::Rule *r)
 
         if (i1!=osrcrel->end()) {
             FWObject *o=*i1;
-            if (FWReference::cast(o)!=NULL) o=objcache[o->getInt("ref")];
+            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             osrc=o->getName();
         }
 
         if (i2!=odstrel->end()) {
             FWObject *o=*i2;
-            if (FWReference::cast(o)!=NULL) o=objcache[o->getInt("ref")];
+            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             odst=o->getName();
         }
 
         if (i3!=osrvrel->end()) {
             FWObject *o=*i3;
-            if (FWReference::cast(o)!=NULL) o=objcache[o->getInt("ref")];
+            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             osrv=o->getName();
         }
 
         if (i4!=tsrcrel->end()) {
             FWObject *o=*i4;
-            if (FWReference::cast(o)!=NULL) o=objcache[o->getInt("ref")];
+            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             tsrc=o->getName();
         }
 
         if (i5!=tdstrel->end()) {
             FWObject *o=*i5;
-            if (FWReference::cast(o)!=NULL) o=objcache[o->getInt("ref")];
+            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             tdst=o->getName();
         }
 
         if (i6!=tsrvrel->end()) {
             FWObject *o=*i6;
-            if (FWReference::cast(o)!=NULL) o=objcache[o->getInt("ref")];
+            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             tsrv=o->getName();
         }
 
