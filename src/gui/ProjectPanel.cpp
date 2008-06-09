@@ -3693,17 +3693,18 @@ void ProjectPanel::loadSplitters(QString filename)
     out1+= " " + val;
     qDebug(out1.toAscii().data());
     
-    if (!val.isEmpty())
-    {
         int  w1 = val.section(',',0,0).toInt();
         int  w2 = val.section(',',1,1).toInt();
-
+        if (w1==0&&w2==0)
+        {
+            w1=250;
+            w2=mdiWindow->width ()-250;
+        }
         QList<int> sl;
         sl.push_back(w1);
         sl.push_back(w2);
         if (w1 || w2)
             m_panel->mainSplitter->setSizes( sl );
-    }
 
     val = st->getStr("Layout/ObjInfoSplitter"+FileName);
     if (!val.isEmpty())
@@ -3839,6 +3840,7 @@ void ProjectPanel::loadState (QString filename)
         if (st->getInt("Window/maximized")!=0)
         {
             mdiWindow->setGeometry (10,10,600,600);
+            loadSplitters();
             firstResize=true ;
         }
     }
@@ -3869,7 +3871,7 @@ void ProjectPanel::resizeEvent ( QResizeEvent* )
         saveState();
     }   
 
-    if (!firstResize&&rcs!=NULL)
+    if (!firstResize/*&&rcs!=NULL*/)
     {
         loadState();
         loadSplitters();
