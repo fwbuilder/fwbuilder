@@ -718,7 +718,14 @@ void PolicyCompiler_pf::PrintRule::_printSrcAddr(RuleElementSrc  *rel)
     if (o==NULL)
     {
         PolicyRule *rule = PolicyRule::cast(rel->getParent());
-        compiler->abort("Broken rule element " + rel->getTypeName() + " in rule '" + rule->getLabel() + "'  rel->front(): " + oref->getPointerId());
+        ostringstream errstr;
+        errstr << "Broken rule element " 
+               << rel->getTypeName()
+               << " in rule '"
+               << rule->getLabel()
+               << "'  rel->front(): "
+               << oref->getPointerId();
+        compiler->abort(errstr.str());
     }
 
     if (rel->size()==1 && ! o->getBool("pf_table") )
@@ -750,7 +757,14 @@ void PolicyCompiler_pf::PrintRule::_printDstAddr(RuleElementDst  *rel)
     if (o==NULL)
     {
         PolicyRule *rule = PolicyRule::cast(rel->getParent());
-        compiler->abort("Broken rule element " + rel->getTypeName() + " in rule '" + rule->getLabel() + "'  rel->front(): " + oref->getPointerId());
+        ostringstream errstr;
+        errstr << "Broken rule element "
+               << rel->getTypeName()
+               << " in rule '"
+               << rule->getLabel()
+               <<  "'  rel->front(): "
+               << oref->getPointerId();
+        compiler->abort(errstr.str());
     }
 
     if (rel->size()==1 && ! o->getBool("pf_table") )

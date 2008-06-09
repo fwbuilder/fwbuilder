@@ -125,7 +125,14 @@ bool PolicyCompiler_pf::swapAddressTableObjectsInRE::processNext()
         {
             MultiAddress *atbl = *i;
 
-            string mart_id = atbl->getId()+"_runtime";
+            // Need to make sure the ID of the MultiAddressRunTime
+            // object created here is stable and is always the same
+            // for the same MultiAddress object. In particular this
+            // ensures that we reuse tables between policy and NAT rules
+            string mart_id_str = FWObjectDatabase::getStringId(atbl->getId()) +
+                "_runtime";
+            int mart_id = FWObjectDatabase::registerStringId(mart_id_str);
+
             MultiAddressRunTime *mart = 
                 MultiAddressRunTime::cast(compiler->dbcopy->findInIndex(mart_id));
             if (mart==NULL)
@@ -340,7 +347,7 @@ bool PolicyCompiler_pf::fillDirection::processNext()
  * again anyway.
  */
 
-    if (rule->getDirectionAsString()=="" || rule->getInterfaceId()=="" )
+    if (rule->getDirectionAsString()=="" || rule->getInterfaceId()==-1 )
     {
 	if ( compiler->getCachedFwOpt()->getBool("pass_all_out") )
         {
@@ -351,7 +358,7 @@ bool PolicyCompiler_pf::fillDirection::processNext()
 
 	    Address  *src = compiler->getFirstSrc(rule);
 	    Address  *dst = compiler->getFirstDst(rule);
-	    string    fwid = compiler->getFwId();
+	    int fwid = compiler->getFwId();
 
             if (src==NULL || dst==NULL)
                 compiler->abort("Broken src or dst in rule "+rule->getLabel());

@@ -95,7 +95,7 @@ int NATCompiler_pf::prolog()
     //FWObject    *grp;
     loopback_address = dbcopy->create(IPv4::TYPENAME);
     loopback_address->setName("__loopback_address__");
-    loopback_address->setId("__loopback_address_id__");
+    loopback_address->setId(FWObjectDatabase::generateUniqueId()); // "__loopback_address_id__");
 
     IPv4::cast(loopback_address)->setAddress(InetAddr::getLoopbackAddr());
 
@@ -418,7 +418,7 @@ bool NATCompiler_pf::splitForTSrc::processNext()
     NATRule *rule=getNext(); if (rule==NULL) return false;
     RuleElementTSrc  *tsrc=rule->getTSrc();  assert(tsrc);
 
-    map<string,list<FWObject*> > interfaceGroups;
+    map<int,list<FWObject*> > interfaceGroups;
 
     for(list<FWObject*>::iterator i=tsrc->begin(); i!=tsrc->end(); ++i)
     {
@@ -433,7 +433,7 @@ bool NATCompiler_pf::splitForTSrc::processNext()
     if (interfaceGroups.size()<=1) tmp_queue.push_back(rule);
     else
     {
-        map<string,list<FWObject*> >::iterator i;
+        map<int,list<FWObject*> >::iterator i;
         for (i=interfaceGroups.begin(); i!=interfaceGroups.end(); i++)
         {
             list<FWObject*> &objSubset = (*i).second;
@@ -738,7 +738,14 @@ bool NATCompiler_pf::swapAddressTableObjectsInRE::processNext()
         {
             MultiAddress *atbl = *i;
 
-            string mart_id = atbl->getId()+"_runtime";
+            // Need to make sure the ID of the MultiAddressRunTime
+            // object created here is stable and is always the same
+            // for the same MultiAddress object. In particular this
+            // ensures that we reuse tables between policy and NAT rules
+            string mart_id_str = FWObjectDatabase::getStringId(atbl->getId()) +
+                "_runtime";
+            int mart_id = FWObjectDatabase::registerStringId(mart_id_str);
+
             MultiAddressRunTime *mart = 
                 MultiAddressRunTime::cast(compiler->dbcopy->findInIndex(mart_id));
             if (mart==NULL)

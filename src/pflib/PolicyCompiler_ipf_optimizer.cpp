@@ -49,8 +49,8 @@ using namespace std;
 static map<string,bool> skip_targets;
 
 
-void PolicyCompiler_ipf::optimize1::optimizeForRuleElement(PolicyRule         *rule, 
-                                                           const std::string  &re_type)
+void PolicyCompiler_ipf::optimize1::optimizeForRuleElement(PolicyRule *rule, 
+                                                  const std::string  &re_type)
 {
     RuleElement    *re=RuleElement::cast(rule->getFirstByType(re_type));
 
@@ -64,11 +64,12 @@ void PolicyCompiler_ipf::optimize1::optimizeForRuleElement(PolicyRule         *r
  * "skip_label". That's why I set skip_label after I create a copy of the rule
  */
 
-    string skip_target=rule->getId();
+    string skip_target = FWObjectDatabase::getStringId(rule->getId());
     while (skip_targets[skip_target]) skip_target+=".A";
     skip_targets[skip_target]=true;
 
-    rule->setStr("skip_label",skip_target);  // just need a unique label, and ID is unique
+    // just need a unique label, and ID is unique
+    rule->setStr("skip_label", skip_target);
 
     for (FWObject::iterator i=r->begin(); i!=r->end(); ++i)
     {

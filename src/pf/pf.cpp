@@ -553,8 +553,8 @@ int main(int argc, char * const *argv)
 //	objdb->load(filename,  &upgrade_predicate, librespath);
 	if (verbose) cout << _(" done\n");
 
-        FWObject *slib = objdb->getById("syslib000");
-        if ( slib->isReadOnly()) slib->setReadOnly(false);
+        FWObject *slib = objdb->getById(FWObjectDatabase::STANDARD_LIB_ID);
+        if (slib && slib->isReadOnly()) slib->setReadOnly(false);
 
 	/* Review firewall and OS options and generate commands */
 	Firewall*  fw=objdb->findFirewallByName(fwobjectname);

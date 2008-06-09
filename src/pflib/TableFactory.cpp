@@ -80,14 +80,15 @@ string TableFactory::generateTblID(RuleElement *re)
     {
         FWObject *o   = *i;
         if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-        lids.push_back(o->getId());
+        lids.push_back(FWObjectDatabase::getStringId(o->getId()));
     }
     lids.sort();
     joinIDs R = for_each(lids.begin(), lids.end(), joinIDs("_"));
     return R.out;
 }
 
-void TableFactory::registerTable(const string& tblname, const string& tblid, FWObject* tbl)
+void TableFactory::registerTable(const string& tblname, const string& tblid,
+                                 FWObject* tbl)
  throw(FWException)
 {
 // two different table objects should have different names
@@ -138,7 +139,7 @@ void TableFactory::createTablesForRE(RuleElement *re,Rule *rule)
         while (tblnames.count(tblname.str())>0)  tblname << "x";
 
         tblgrp->setName( tblname.str() );
-        tblgrp->setId( "id_" + tblname.str() );
+        tblgrp->setId(FWObjectDatabase::generateUniqueId()); //  "id_" + tblname.str() );
 
         persistent_tables->add(tblgrp,false);
         dbroot->addToIndex(tblgrp);
@@ -166,14 +167,16 @@ string TableFactory::PrintTables()
     output << endl;
     output << "# Tables: (" << tables.size() << ")" << endl;
 
-    for (map<string,string>::const_iterator i=tblnames.begin(); i!=tblnames.end(); i++)
+    for (map<string,string>::const_iterator i=tblnames.begin();
+         i!=tblnames.end(); i++)
     {
         string tblID = i->second;
         FWObject *grp = tables[tblID];
         output << "table ";
         output << "<" << grp->getName() << "> ";
         MultiAddressRunTime *atrt = MultiAddressRunTime::cast(grp);
-        if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
+        if (atrt!=NULL &&
+            atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
         {
             output << "persist";
             if ( !atrt->getSourceName().empty() )
@@ -210,7 +213,8 @@ string TableFactory::PrintTables()
                 {
                     Address *A=Address::cast( o );
                     if (A==NULL)
-                        throw(FWException("table object must be an address: '"+o->getTypeName()+"'"));
+                        throw(FWException("table object must be an address: '" +
+                                          o->getTypeName()+"'"));
 
                     const InetAddr *addr = A->getAddressPtr();
                     InetAddr mask = *(A->getNetmaskPtr());

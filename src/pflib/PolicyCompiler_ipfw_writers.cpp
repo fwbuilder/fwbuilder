@@ -334,8 +334,8 @@ void PolicyCompiler_ipfw::PrintRule::_printDirection(libfwbuilder::PolicyRule *r
 
 void PolicyCompiler_ipfw::PrintRule::_printInterface(PolicyRule *r)
 {
-    string       iface_id = r->getInterfaceId();
-    if (iface_id!="") 
+    int iface_id = r->getInterfaceId();
+    if (iface_id > -1) 
     {
         switch (r->getDirection())
         {

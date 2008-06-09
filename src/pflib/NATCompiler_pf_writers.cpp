@@ -236,11 +236,11 @@ void NATCompiler_pf::PrintRule::_printProtocol(Service *srv)
     }
 }
 
-void NATCompiler_pf::PrintRule::_printPort(Service *srv,bool print_range_end)
+void NATCompiler_pf::PrintRule::_printPort(Service *srv, bool print_range_end)
 {
     if (TCPService::isA(srv) || UDPService::isA(srv)) {
-	int drs=srv->getInt("dst_range_start");
-	int dre=srv->getInt("dst_range_end");
+	int drs=TCPUDPService::cast(srv)->getDstRangeStart();
+	int dre=TCPUDPService::cast(srv)->getDstRangeEnd();
 	if (drs!=0)
         {
             compiler->output << "port " << drs;

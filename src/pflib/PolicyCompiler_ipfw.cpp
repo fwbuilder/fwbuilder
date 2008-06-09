@@ -53,17 +53,17 @@ int PolicyCompiler_ipfw::prolog()
     int n= PolicyCompiler_pf::prolog();
 
     anytcp=TCPService::cast(dbcopy->create(TCPService::TYPENAME) );
-    anytcp->setId(ANY_TCP_OBJ_ID);
+    anytcp->setId(FWObjectDatabase::generateUniqueId()); // ANY_TCP_OBJ_ID);
     dbcopy->add(anytcp,false);
     cacheObj(anytcp); // to keep cache consistent
 
     anyudp=UDPService::cast(dbcopy->create(UDPService::TYPENAME) );
-    anyudp->setId(ANY_UDP_OBJ_ID);
+    anyudp->setId(FWObjectDatabase::generateUniqueId()); //ANY_UDP_OBJ_ID);
     dbcopy->add(anyudp,false);
     cacheObj(anyudp); // to keep cache consistent
 
     anyicmp=ICMPService::cast(dbcopy->create(ICMPService::TYPENAME) );
-    anyicmp->setId(ANY_ICMP_OBJ_ID);
+    anyicmp->setId(FWObjectDatabase::generateUniqueId()); //ANY_ICMP_OBJ_ID);
     dbcopy->add(anyicmp,false);
     cacheObj(anyicmp); // to keep cache consistent
 
@@ -92,6 +92,7 @@ void PolicyCompiler_ipfw::_expandAddr(Rule *rule,FWObject *s)
 
 bool PolicyCompiler_ipfw::expandAnyService::processNext()
 {
+    PolicyCompiler_ipfw *pcomp=dynamic_cast<PolicyCompiler_ipfw*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     RuleElementSrv *srv=rule->getSrv();
@@ -105,7 +106,7 @@ bool PolicyCompiler_ipfw::expandAnyService::processNext()
 	r->duplicate(rule);
 	RuleElementSrv *nsrv=r->getSrv();
 	nsrv->clearChildren();
-	nsrv->addRef(compiler->dbcopy->findInIndex(ANY_ICMP_OBJ_ID));
+	nsrv->addRef(pcomp->anyicmp); //compiler->dbcopy->findInIndex(ANY_ICMP_OBJ_ID));
 	tmp_queue.push_back(r);
 
 	r= PolicyRule::cast(
@@ -114,7 +115,7 @@ bool PolicyCompiler_ipfw::expandAnyService::processNext()
 	r->duplicate(rule);
 	nsrv=r->getSrv();
 	nsrv->clearChildren();
-	nsrv->addRef(compiler->dbcopy->findInIndex(ANY_TCP_OBJ_ID));
+	nsrv->addRef(pcomp->anytcp); //compiler->dbcopy->findInIndex(ANY_TCP_OBJ_ID));
 	tmp_queue.push_back(r);
 
 	r= PolicyRule::cast(
@@ -123,7 +124,7 @@ bool PolicyCompiler_ipfw::expandAnyService::processNext()
 	r->duplicate(rule);
 	nsrv=r->getSrv();
 	nsrv->clearChildren();
-	nsrv->addRef(compiler->dbcopy->findInIndex(ANY_UDP_OBJ_ID));
+	nsrv->addRef(pcomp->anyudp); //compiler->dbcopy->findInIndex(ANY_UDP_OBJ_ID));
 	tmp_queue.push_back(r);
 
 	r= PolicyRule::cast(
@@ -637,13 +638,14 @@ void PolicyCompiler_ipfw::compile()
 string PolicyCompiler_ipfw::debugPrintRule(Rule *r)
 {
     PolicyRule *rule=PolicyRule::cast(r);
+    string s= PolicyCompiler::debugPrintRule(rule);
 
-    string  iface = rule->getInterfaceId();
-    if (iface!="") {
+    int  iface = rule->getInterfaceId();
+    if (iface > -1)
+    {
 	Interface *rule_iface = getCachedFwInterface( iface );
-        iface=" intf: "+rule_iface->getName();
+        s += " intf: "+rule_iface->getName();
     }
-    string s= PolicyCompiler::debugPrintRule(rule)+" "+iface;
 
     return s;
 }

@@ -198,31 +198,32 @@ namespace fwcompiler {
                 eliminateDuplicatesInRE(n,libfwbuilder::RuleElementOSrv::TYPENAME) {}
         };
 
-        friend class checkForDynamicInterfacesOfOtherObjects;
         class checkForDynamicInterfacesOfOtherObjects : public NATRuleProcessor
         {
             void findDynamicInterfaces(libfwbuilder::RuleElement *re,
                                        libfwbuilder::Rule        *rule);
             public:
-            checkForDynamicInterfacesOfOtherObjects(const std::string &name) : NATRuleProcessor(name) {}
+            checkForDynamicInterfacesOfOtherObjects(const std::string &name) :
+              NATRuleProcessor(name) {}
             virtual bool processNext();
         };
+        friend class checkForDynamicInterfacesOfOtherObjects;
 
         /**
          * like standard processor swapMultiAddressObjectsInRE, but
          * swaps compile-time address tables. See comment for this
          * rule processor in PolicyCompiler_pf
          */
-        class swapAddressTableObjectsInRE : public PolicyRuleProcessor
+        class swapAddressTableObjectsInRE : public NATRuleProcessor
         {
             std::string re_type;
             public:
             swapAddressTableObjectsInRE(const std::string &name,
-                      const std::string &t) : PolicyRuleProcessor(name)
+                      const std::string &t) : NATRuleProcessor(name)
             { re_type=t; }
             virtual bool processNext();
         };
-
+        friend class swapAddressTableObjectsInRE;
 
         class swapAddressTableObjectsInOSrc : public swapAddressTableObjectsInRE
         {
@@ -231,6 +232,7 @@ namespace fwcompiler {
                 swapAddressTableObjectsInRE(n,
                                   libfwbuilder::RuleElementOSrc::TYPENAME) {}
         };
+        friend class swapAddressTableObjectsInOSrc;
 
         class swapAddressTableObjectsInODst : public swapAddressTableObjectsInRE
         {
@@ -239,6 +241,7 @@ namespace fwcompiler {
                 swapAddressTableObjectsInRE(n,
                                   libfwbuilder::RuleElementODst::TYPENAME) {}
         };
+        friend class swapAddressTableObjectsInODst;
             
         class swapAddressTableObjectsInTDst : public swapAddressTableObjectsInRE
         {
