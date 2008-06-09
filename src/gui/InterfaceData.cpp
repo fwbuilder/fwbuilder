@@ -63,7 +63,7 @@ InterfaceData::InterfaceData(const libfwbuilder::Interface &iface)
     networkZone = iface.getStr("network_zone");
 }
 
-void InterfaceData::guessLabel(const string &platform)
+void InterfaceData::guessLabel(const string&)
 {
 /*
  *  some firewalls report fairly regular names for interfaces through
@@ -88,7 +88,7 @@ void InterfaceData::guessLabel(const string &platform)
 
 
 
-void InterfaceData::guessSecurityLevel(const string &platform)
+void InterfaceData::guessSecurityLevel(const string&)
 {
     InetAddrMask n10(InetAddr("10.0.0.0"), InetAddr("255.0.0.0"));
     InetAddrMask n172(InetAddr("172.16.0.0"), InetAddr("255.240.0.0"));

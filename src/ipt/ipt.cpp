@@ -151,12 +151,12 @@ void assignRuleSetChain(RuleSet *ruleset)
 
         if (!Compiler::isRootRuleSet(ruleset))
             rule->setStr("ipt_chain", branch_name);
-        rule->setUniqueId( rule->getId() );
+        rule->setUniqueId( FWObjectDatabase::getStringId(rule->getId()) );
     }
 
 }
 
-void findBranchesInMangleTable(Firewall *fw, list<FWObject*> &all_policies)
+void findBranchesInMangleTable(Firewall*, list<FWObject*> &all_policies)
 {
     // special but common case: if we only have one policy, there is
     // no need to check if we have to do branching in mangle table
@@ -406,8 +406,8 @@ int main(int argc, char * const *argv)
 
         //objdb->dump(true,true);
 
-        FWObject *slib = objdb->findInIndex("syslib000");
-        if ( slib->isReadOnly()) slib->setReadOnly(false);
+        FWObject *slib = objdb->findInIndex(FWObjectDatabase::STANDARD_LIB_ID);
+        if (slib && slib->isReadOnly()) slib->setReadOnly(false);
 
 	/* Review firewall and OS options and generate commands */
 	Firewall*  fw=objdb->findFirewallByName(fwobjectname);
@@ -512,7 +512,8 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                         sprintf(errstr,
                                 "Interface %s (id=%s) has IP address %s.\n",
                                 iface->getName().c_str(),
-                                iface->getId().c_str(),
+                                FWObjectDatabase::getStringId(
+                                    iface->getId()).c_str(),
                                 ip_addr->toString().c_str());
                         throw FWException(errstr);
                     }

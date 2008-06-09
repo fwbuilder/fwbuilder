@@ -163,8 +163,8 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
             int n=0;
 
-            netzoneObjectIDs["sysid0"]=n;
-            netzoneObjectNos[n]="sysid0";
+            netzoneObjectIDs[FWObjectDatabase::ANY_ADDRESS_ID] = n;
+            netzoneObjectNos[n] = FWObjectDatabase::ANY_ADDRESS_ID;
             netzoneObjectNames.push_back(" Any ");
 
             ++n;
@@ -177,7 +177,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
                 FWObject *library= *l;
                 FWObject *o1,*o2;
 
-                if ( library->getId()==DELETED_LIB ) continue;
+                if ( library->getId()==FWObjectDatabase::DELETED_OBJECTS_ID ) continue;
 
                 o1=library->findObjectByName(ObjectGroup::TYPENAME,"Objects");
                 assert(o1!=NULL);
@@ -185,15 +185,15 @@ void InterfaceDialog::loadFWObject(FWObject *o)
                 if (o2==NULL)
                 {
                     if (fwbdebug)
-                        qDebug("InterfaceDialog::loadFWObject  missing Groups group in %s",o1->getId().c_str());
+                        qDebug("InterfaceDialog::loadFWObject  missing Groups group in %s", FWObjectDatabase::getStringId(o1->getId()).c_str());
                     continue;
                 }
 //                assert(o2!=NULL);
 
                 for (FWObject::iterator i=o2->begin(); i!=o2->end(); ++i)
                 {
-                    netzoneObjectIDs[ (*i)->getId().c_str() ]=n;
-                    netzoneObjectNos[n]= (*i)->getId().c_str();
+                    netzoneObjectIDs[(*i)->getId()] = n;
+                    netzoneObjectNos[n] =(*i)->getId();
                     netzoneObjectNames.push_back(
                         tr("Group: ")+ (*i)->getName().c_str() );
                     ++n;
@@ -203,15 +203,16 @@ void InterfaceDialog::loadFWObject(FWObject *o)
                 if (o2==NULL)
                 {
                     if (fwbdebug)
-                        qDebug("InterfaceDialog::loadFWObject  missing Networks group in %s",o1->getId().c_str());
+                        qDebug("InterfaceDialog::loadFWObject  missing Networks group in %s",
+                               FWObjectDatabase::getStringId(o1->getId()).c_str());
                     continue;
                 }
 //                assert(o2!=NULL);
 
                 for (FWObject::iterator i1=o2->begin(); i1!=o2->end(); ++i1)
                 {
-                    netzoneObjectIDs[ (*i1)->getId().c_str() ]=n;
-                    netzoneObjectNos[n]= (*i1)->getId().c_str();
+                    netzoneObjectIDs[(*i1)->getId()] = n;
+                    netzoneObjectNos[n] = (*i1)->getId();
                     netzoneObjectNames.push_back(
                         tr("Network: ")+ (*i1)->getName().c_str() );
                     ++n;
@@ -221,8 +222,8 @@ void InterfaceDialog::loadFWObject(FWObject *o)
             m_dialog->netzone->clear();
             m_dialog->netzone->addItems( netzoneObjectNames );
 
-            QString id=obj->getStr("network_zone").c_str();
-            if (id=="") id="sysid0";  // any network
+            int id = FWObjectDatabase::getIntId(obj->getStr("network_zone"));
+            if (id==-1) id = FWObjectDatabase::ANY_ADDRESS_ID;  // any network
             m_dialog->netzone->setCurrentIndex( netzoneObjectIDs[id] );
         }
         else
@@ -290,7 +291,7 @@ void InterfaceDialog::validate(bool *res)
     if (!validateName(this,obj,m_dialog->obj_name->text())) *res=false;
 }
 
-void InterfaceDialog::isChanged(bool *res)
+void InterfaceDialog::isChanged(bool*)
 {
     //*res=(!init && apply->isEnabled());
 }
@@ -342,7 +343,9 @@ void InterfaceDialog::applyChanges()
 
         if (supports_network_zones)
             obj->setStr("network_zone",
-                        netzoneObjectNos[ m_dialog->netzone->currentIndex() ].toLatin1().constData() );
+                        FWObjectDatabase::getStringId(
+                            netzoneObjectNos[
+                                m_dialog->netzone->currentIndex() ]));
 
         s->setManagement( m_dialog->management->isChecked() );
 

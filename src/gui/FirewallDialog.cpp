@@ -220,7 +220,7 @@ void FirewallDialog::validate(bool *res)
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
-void FirewallDialog::isChanged(bool *res)
+void FirewallDialog::isChanged(bool*)
 {
     if (fwbdebug)
         qDebug("FirewallDialog::isChanged");

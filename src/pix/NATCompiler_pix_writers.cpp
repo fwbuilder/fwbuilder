@@ -202,7 +202,7 @@ void NATCompiler_pix::PrintRule::_printPort(Service *srv)
 {
     if (TCPService::isA(srv) || UDPService::isA(srv))
     {
-	int drs=srv->getInt("dst_range_start");
+	int drs=TCPUDPService::cast(srv)->getDstRangeStart();
 
 	if (drs!=0)   compiler->output << drs << " ";
     }
@@ -214,8 +214,8 @@ string NATCompiler_pix::PrintRule::_printSrcService(Service *srv)
 
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
     {
-	int rs=srv->getInt("src_range_start");
-	int re=srv->getInt("src_range_end");
+	int rs=TCPUDPService::cast(srv)->getSrcRangeStart();
+	int re=TCPUDPService::cast(srv)->getSrcRangeEnd();
 
         if (rs<0) rs=0;
         if (re<0) re=0;
@@ -238,8 +238,8 @@ string NATCompiler_pix::PrintRule::_printDstService(Service *srv)
     ostringstream  str;
 
     if (TCPService::isA(srv) || UDPService::isA(srv)) {
-	int rs=srv->getInt("dst_range_start");
-	int re=srv->getInt("dst_range_end");
+	int rs=TCPUDPService::cast(srv)->getDstRangeStart();
+	int re=TCPUDPService::cast(srv)->getDstRangeEnd();
 
         if (rs<0) rs=0;
         if (re<0) re=0;

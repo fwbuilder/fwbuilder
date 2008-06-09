@@ -263,12 +263,12 @@ void GroupObjectDialog::insertObject(FWObject *o)
                o->getName().c_str(), g->getName().c_str());
 
 /* avoid duplicates */
-    string cp_id=o->getId();
+    int cp_id = o->getId();
 
-    map<string, ObjectListViewItem*>::iterator i;
+    map<int, ObjectListViewItem*>::iterator i;
     for (i=allListViewItems.begin(); i!=allListViewItems.end(); ++i)
     {
-        string go=(*i).first;
+        int go = (*i).first;
         //if (FWReference::cast(go)!=NULL) go=FWReference::cast(go)->getPointer();
         //if (o==go || o->getId()==go->getId()) return;
 	if(go==cp_id) return;
@@ -312,7 +312,7 @@ void GroupObjectDialog::addIcon(FWObject *o,bool ref)
     }
 
     ObjectIconViewItem *ivitm = new ObjectIconViewItem(iconView,obj_name,pm );
-    ivitm->setProperty("id",   o->getId().c_str()   );
+    //ivitm->setProperty("id",   o->getId().c_str()   );
     ivitm->setProperty("type", o->getTypeName().c_str() );
     ivitm->setFWObject( o );
 
@@ -325,7 +325,7 @@ void GroupObjectDialog::addIcon(FWObject *o,bool ref)
     tvitm->setText( 1, FWObjectPropertiesFactory::getObjectProperties(o) );
     tvitm->setIcon( 0, QIcon(pm) );
 
-    tvitm->setProperty("id",   o->getId().c_str()   );
+    //tvitm->setProperty("id",   o->getId().c_str()   );
     tvitm->setProperty("type", o->getTypeName().c_str() );
     tvitm->setFWObject( o );
 
@@ -428,7 +428,7 @@ void GroupObjectDialog::applyChanges()
 
     set<FWObject*> oldobj;
     set<FWObject*> newobj;
-    map<string, ObjectListViewItem*>::iterator i;
+    map<int, ObjectListViewItem*>::iterator i;
     for (i=allListViewItems.begin(); i!=allListViewItems.end(); ++i)
     {
         newobj.insert( mw->db()->findInIndex((*i).first) );
@@ -647,7 +647,7 @@ void GroupObjectDialog::cutObj()
 
 void GroupObjectDialog::pasteObj()
 {
-    vector<string>::iterator i;
+    vector<int>::iterator i;
 
     for (i= FWObjectClipboard::obj_clipboard->begin();
          i!=FWObjectClipboard::obj_clipboard->end(); ++i)

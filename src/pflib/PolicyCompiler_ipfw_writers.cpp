@@ -388,8 +388,8 @@ string PolicyCompiler_ipfw::PrintRule::_printSrcService(Service *srv,bool neg)
 
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
     {
-	int rs=srv->getInt("src_range_start");
-	int re=srv->getInt("src_range_end");
+	int rs=TCPUDPService::cast(srv)->getSrcRangeStart();
+	int re=TCPUDPService::cast(srv)->getSrcRangeEnd();
 	string s1= _printPort(rs,re,neg);
         if (!s1.empty()) res= s1;
     }
@@ -454,8 +454,8 @@ string PolicyCompiler_ipfw::PrintRule::_printDstService(Service *srv,bool neg)
 
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
     {
-	int rs=srv->getInt("dst_range_start");
-	int re=srv->getInt("dst_range_end");
+	int rs=TCPUDPService::cast(srv)->getDstRangeStart();
+	int re=TCPUDPService::cast(srv)->getDstRangeEnd();
         string s1=_printPort(rs,re,neg);;
         if (!s1.empty()) res= s1;
     }

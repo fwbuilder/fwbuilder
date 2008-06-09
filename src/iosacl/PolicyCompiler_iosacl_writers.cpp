@@ -310,8 +310,8 @@ string PolicyCompiler_iosacl::PrintRule::_printSrcService(libfwbuilder::Service 
 
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
     {
-	int rs=srv->getInt("src_range_start");
-	int re=srv->getInt("src_range_end");
+	int rs=TCPUDPService::cast(srv)->getSrcRangeStart();
+	int re=TCPUDPService::cast(srv)->getSrcRangeEnd();
 
         if (rs<0) rs=0;
         if (re<0) re=0;
@@ -343,8 +343,8 @@ string PolicyCompiler_iosacl::PrintRule::_printDstService(Service *srv)
 
     if (TCPService::isA(srv) || UDPService::isA(srv))
     {
-	int rs=srv->getInt("dst_range_start");
-	int re=srv->getInt("dst_range_end");
+	int rs=TCPUDPService::cast(srv)->getDstRangeStart();
+	int re=TCPUDPService::cast(srv)->getDstRangeEnd();
 
         if (rs<0) rs=0;
         if (re<0) re=0;

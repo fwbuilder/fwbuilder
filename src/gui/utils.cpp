@@ -122,9 +122,9 @@ void fillLibraries(QComboBox *libs, libfwbuilder::FWObject *obj, bool rw)
         FWObject *libobj = obj->getLibrary();
         assert(libobj!=NULL);
         lib = libobj->getName().c_str();
-        standardObj = (libobj->getId()==STANDARD_LIB);
-        templateObj = (libobj->getId()==TEMPLATE_LIB);
-        deletedObj = (libobj->getId()==DELETED_LIB);
+        standardObj = (libobj->getId()==FWObjectDatabase::STANDARD_LIB_ID);
+        templateObj = (libobj->getId()==FWObjectDatabase::TEMPLATE_LIB_ID);
+        deletedObj = (libobj->getId()==FWObjectDatabase::DELETED_OBJECTS_ID);
     }
 
     libs->clear();
@@ -138,9 +138,12 @@ void fillLibraries(QComboBox *libs, libfwbuilder::FWObject *obj, bool rw)
         if (libicn.empty())
             libicn=(":/Icons/"+(*i)->getTypeName()+"/icon-tree").c_str();
 
-        if ( (*i)->getId()==STANDARD_LIB && !standardObj) continue;
-        if ( (*i)->getId()==TEMPLATE_LIB && !templateObj) continue;
-        if ( (*i)->getId()==DELETED_LIB  && !deletedObj ) continue;
+        if ( (*i)->getId()==FWObjectDatabase::STANDARD_LIB_ID &&
+             !standardObj) continue;
+        if ( (*i)->getId()==FWObjectDatabase::TEMPLATE_LIB_ID &&
+             !templateObj) continue;
+        if ( (*i)->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  &&
+             !deletedObj ) continue;
 
         if (rw && (*i)->isReadOnly()) continue;
         if (lib==QString((*i)->getName().c_str())) cn=n;
@@ -167,9 +170,9 @@ void fillLibraries(QListWidget *libs, libfwbuilder::FWObject *obj, bool rw)
         FWObject *libobj = obj->getLibrary();
         assert(libobj!=NULL);
         lib = libobj->getName().c_str();
-        standardObj = (libobj->getId()==STANDARD_LIB);
-        templateObj = (libobj->getId()==TEMPLATE_LIB);
-        deletedObj = (libobj->getId()==DELETED_LIB);
+        standardObj = (libobj->getId()==FWObjectDatabase::STANDARD_LIB_ID);
+        templateObj = (libobj->getId()==FWObjectDatabase::TEMPLATE_LIB_ID);
+        deletedObj = (libobj->getId()==FWObjectDatabase::DELETED_OBJECTS_ID);
     }
 
     libs->clear();
@@ -183,9 +186,9 @@ void fillLibraries(QListWidget *libs, libfwbuilder::FWObject *obj, bool rw)
         if (libicn.empty())
             libicn=Resources::global_res->getObjResourceStr(*i,"icon-tree").c_str();
 
-        if ( (*i)->getId()==STANDARD_LIB && !standardObj) continue;
-        if ( (*i)->getId()==TEMPLATE_LIB && !templateObj) continue;
-        if ( (*i)->getId()==DELETED_LIB  && !deletedObj ) continue;
+        if ( (*i)->getId()==FWObjectDatabase::STANDARD_LIB_ID && !standardObj) continue;
+        if ( (*i)->getId()==FWObjectDatabase::TEMPLATE_LIB_ID && !templateObj) continue;
+        if ( (*i)->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  && !deletedObj ) continue;
 
         if (rw && (*i)->isReadOnly()) continue;
         if (lib==QString((*i)->getName().c_str())) cn=n;

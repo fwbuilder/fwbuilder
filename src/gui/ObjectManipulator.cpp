@@ -267,7 +267,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject( ObjectTreeViewItem *itm,
             string("/FWBuilderResources/Type/") +
             obj->getTypeName() + "/hidden") ) return NULL;
 
-    nitm=new ObjectTreeViewItem( itm );
+    nitm = new ObjectTreeViewItem( itm );
     nitm->setLib("");
     nitm->setText( 0, getTreeLabel(obj) );
     QPixmap pm;
@@ -280,7 +280,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject( ObjectTreeViewItem *itm,
     nitm->setIcon( 1, QIcon(pm) );
     nitm->setFlags(nitm->flags() | Qt::ItemIsDragEnabled);
 
-    nitm->setProperty("id",   obj->getId().c_str()   );
+    //nitm->setProperty("id",   obj->getId().c_str()   );
     nitm->setProperty("type", obj->getTypeName().c_str() );
     nitm->setFWObject( obj );
 
@@ -349,7 +349,8 @@ void ObjectManipulator::showDeletedObjects(bool f)
 {
     try
     {
-        FWObject *dobj = m_project->db()->findInIndex( FWObjectDatabase::getDeletedObjectsId());
+        FWObject *dobj = m_project->db()->findInIndex(
+            FWObjectDatabase::DELETED_OBJECTS_ID);
 
         if (fwbdebug)
             qDebug("ObjectManipulator::showDeletedObjects f=%d  dobj=%p",f, dobj);
@@ -357,7 +358,7 @@ void ObjectManipulator::showDeletedObjects(bool f)
         if (dobj==NULL)
         {
             dobj=m_project->db()->create(Library::TYPENAME);
-            dobj->setId(m_project->db()->getDeletedObjectsId());
+            dobj->setId(FWObjectDatabase::DELETED_OBJECTS_ID);
             dobj->setName("Deleted Objects");
             dobj->setReadOnly(false);
             m_project->db()->add(dobj);
@@ -721,13 +722,15 @@ void ObjectManipulator::loadObjects(FWObjectDatabase *)
 
         if (fwbdebug)
             qDebug("ObjectManipulator::loadObjects  lib %p %s %s",
-                   lib, lib->getId().c_str(), lib->getName().c_str() );
+                   lib,
+                   FWObjectDatabase::getStringId(lib->getId()).c_str(),
+                   lib->getName().c_str() );
 
-        if ( lib->getId()==DELETED_LIB &&
+        if ( lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID &&
              ! st->getBool("UI/ShowDeletedObjects")) continue;
 
-        if ( lib->getId()!=STANDARD_LIB &&
-             lib->getId()!=TEMPLATE_LIB &&
+        if ( lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
+             lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID &&
              firstUserLib==NULL) firstUserLib=*i;
 
         addTreePage( lib );
@@ -858,7 +861,7 @@ void ObjectManipulator::addTreePage( FWObject *lib)
         itm1->setIcon( 0, pm);
     }
 
-    itm1->setProperty("id",   lib->getId().c_str()   );
+    //itm1->setProperty("id",   lib->getId().c_str()   );
     itm1->setProperty("type", lib->getTypeName().c_str() );
     itm1->setFWObject( lib );
     allItems[lib] = itm1;
@@ -1001,9 +1004,9 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
          */
         if (lib==cl) continue;
 
-        if ( lib->getId()==STANDARD_LIB ||
-             lib->getId()==TEMPLATE_LIB ||
-             lib->getId()==DELETED_LIB  ||
+        if ( lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
+             lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
+             lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
              lib->isReadOnly())
             continue;
         QAction* dact=duptargets->addAction(
@@ -1255,7 +1258,7 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
     inDeletedObjects = false;
 
     FWObject *delObjLib =
-        m_project->db()->findInIndex( FWObjectDatabase::getDeletedObjectsId());
+        m_project->db()->findInIndex( FWObjectDatabase::DELETED_OBJECTS_ID);
 
     vector<FWObject*> so = getCurrentObjectTree()->getSelectedObjects();
     for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
@@ -1275,7 +1278,7 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
             /*
              *  enable Paste menu item only if object can be pasted
              */
-            vector<string>::iterator i;
+            vector<int>::iterator i;
             for (i= FWObjectClipboard::obj_clipboard->begin();
                  i!=FWObjectClipboard::obj_clipboard->end(); ++i)
             {
@@ -1531,7 +1534,7 @@ void ObjectManipulator::moveObject(FWObject *targetLib, FWObject *obj)
     FWObject *cl=pom->getCurrentLib();
     if (cl==targetLib) return;
 
-//    bool inDeletedObjects = (obj->getParent()->getId()==FWObjectDatabase::getDeletedObjectsId());
+//    bool inDeletedObjects = (obj->getParent()->getId()==FWObjectDatabase::DELETED_OBJECTS_ID);
 
 //    QString parentType;
 //    QString parentName;
@@ -1713,7 +1716,7 @@ void ObjectManipulator::pasteObj()
         if (pom->getCurrentObjectTree()->getNumSelected()==0) return;
         FWObject *obj=pom->getCurrentObjectTree()->getSelectedObjects().front();
         if (obj==NULL) return;
-        vector<string>::iterator i;
+        vector<int>::iterator i;
 	int idx = 0;
         for (i= FWObjectClipboard::obj_clipboard->begin();
              i!=FWObjectClipboard::obj_clipboard->end(); ++i)
@@ -1722,7 +1725,7 @@ void ObjectManipulator::pasteObj()
                 FWObjectClipboard::obj_clipboard->getObjectByIdx(idx);
             if (Interface::isA(co) && Firewall::isA(obj))
             {
-                FWObject *no  = pasteTo (obj, co, false, false, true);
+                pasteTo (obj, co, false, false, true);
                 continue ;
             }
             pom->copyObjWithDeep(co);
@@ -1799,7 +1802,7 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
                 if (validateOnly) return obj;
 
 /* check for duplicates. We just won't add an object if it is already there */
-                string cp_id=obj->getId();
+                int cp_id = obj->getId();
                 list<FWObject*>::iterator j;
                 for(j=grp->begin(); j!=grp->end(); ++j)
                 {
@@ -1856,7 +1859,7 @@ void ObjectManipulator::lockObject()
             FWObject *lib = obj->getLibrary();
             // these lbraries are locked anyway, do not let the user
             // lock objects inside because they won't be able to unlock them.
-            if (lib->getId()!=STANDARD_LIB && lib->getId()!=TEMPLATE_LIB)
+            if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID && lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
                 obj->setReadOnly(true);
         }
         pom->getCurrentObjectTree()->setLockFlags();
@@ -1884,7 +1887,7 @@ void ObjectManipulator::unlockObject()
         {
             obj= *i;
             FWObject *lib = obj->getLibrary();
-            if (lib->getId()!=STANDARD_LIB && lib->getId()!=TEMPLATE_LIB)
+            if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID && lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
                 obj->setReadOnly(false);
         }
         pom->getCurrentObjectTree()->setLockFlags();
@@ -1905,7 +1908,7 @@ void ObjectManipulator::deleteObj()
     bool emptyingTrash      = false;
     bool emptyingTrashInLib = false;
     
-        FWObject *delObjLib = m_project->db()->findInIndex(FWObjectDatabase::getDeletedObjectsId());
+        FWObject *delObjLib = m_project->db()->findInIndex(FWObjectDatabase::DELETED_OBJECTS_ID);
     if (fwbdebug)
         qDebug("ObjectManipulator::deleteObj  delObjLib=%p",delObjLib);
     
@@ -2052,7 +2055,7 @@ void ObjectManipulator::delObj(FWObject *obj,bool openobj)
                 obj,obj->getName().c_str(),openobj);
 
         FWObject *parent=obj->getParent();
-        FWObject *delObjLib = m_project->db()->findInIndex( DELETED_LIB );
+        FWObject *delObjLib = m_project->db()->findInIndex( FWObjectDatabase::DELETED_OBJECTS_ID );
 
         if (fwbdebug)
             qDebug("ObjectManipulator::delObj  deleted obj lib %p",
@@ -2067,13 +2070,13 @@ void ObjectManipulator::delObj(FWObject *obj,bool openobj)
     for (int i = 0 ; i < oms.size(); i++)
     {
         ObjectManipulator* pom = oms[i] ;
-        if (obj->getId()==STANDARD_LIB || obj->getId()==DELETED_LIB) return;
+        if (obj->getId()==FWObjectDatabase::STANDARD_LIB_ID || obj->getId()==FWObjectDatabase::DELETED_OBJECTS_ID) return;
     
         pom->m_project->findObjectWidget->reset();
         try
         {
     
-            if (!islib && !isDelObj && obj->getId()!=TEMPLATE_LIB)
+            if (!islib && !isDelObj && obj->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
                 pom->updateLastModifiedTimestampForAllFirewalls(obj);
     
             if (fwbdebug)
@@ -2112,7 +2115,7 @@ void ObjectManipulator::delObj(FWObject *obj,bool openobj)
             if (islib && obj->isReadOnly()) obj->setReadOnly(false);
  //           if (firstAction)
  //           {
-                if (obj->getId()==TEMPLATE_LIB) // special case
+                if (obj->getId()==FWObjectDatabase::TEMPLATE_LIB_ID) // special case
                 {
                     if (fwbdebug)
                         qDebug("ObjectManipulator::delObj:   "
@@ -2410,7 +2413,7 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
     if (history.empty() || otvi!=history.top().item() )
     {
         mw->m_mainWindow->backAction->setEnabled( true );
-        history.push( HistoryItem(otvi,o->getId().c_str()) );
+        history.push( HistoryItem(otvi, o->getId()) );
     }
 
     currentObj = obj;
@@ -2508,9 +2511,9 @@ void ObjectManipulator::libChanged(int ln)
 void ObjectManipulator::updateCreateObjectMenu(FWObject* lib)
 {
     bool      f   =
-        lib->getId()==STANDARD_LIB ||
-        lib->getId()==TEMPLATE_LIB ||
-        lib->getId()==DELETED_LIB  ||
+        lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
+        lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
+        lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
         lib->isReadOnly();
 
     m_objectManipulator->newButton->setEnabled( !f );
@@ -2529,7 +2532,7 @@ void ObjectManipulator::back()
 /* skip objects that have been deleted */
         while ( ! history.empty())
         {
-            if (m_project->db()->findInIndex( history.top().id().toLatin1().constData() )!=NULL) break;
+            if (m_project->db()->findInIndex( history.top().id() )!=NULL) break;
             history.pop();
         }
 
@@ -2584,15 +2587,17 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
 
     if (fwbdebug)
     {
-        qDebug("lib: %s %s",lib->getName().c_str(), lib->getId().c_str());
+        qDebug("lib: %s %s",
+               lib->getName().c_str(),
+               FWObjectDatabase::getStringId(lib->getId()).c_str());
         qDebug("lib: isReadOnly=%d isLoaded=%d",
                lib->isReadOnly(), m_project->getAddOnLibs()->isLoaded( lib->getName().c_str() ) );
         qDebug("libs->count()=%d", m_objectManipulator->libs->count() );
     }
 
-    while ( lib->getId()==STANDARD_LIB ||
-            lib->getId()==TEMPLATE_LIB ||
-            lib->getId()==DELETED_LIB  ||
+    while ( lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
+            lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
+            lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
             lib->isReadOnly() )
     {
         if (i>=m_objectManipulator->libs->count())
@@ -2609,7 +2614,9 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
         if (fwbdebug)
         {
             qDebug("i=%d",i);
-            qDebug("lib: %s %s",lib->getName().c_str(), lib->getId().c_str());
+            qDebug("lib: %s %s",
+                   lib->getName().c_str(),
+                   FWObjectDatabase::getStringId(lib->getId()).c_str());
             qDebug("lib: isReadOnly=%d isLoaded=%d",
                    lib->isReadOnly(), m_project->getAddOnLibs()->isLoaded( lib->getName().c_str() ) );
         }
@@ -2657,9 +2664,9 @@ FWObject* ObjectManipulator::createObject(FWObject *parent,
                objType.toLatin1().constData(), objName.toLatin1().constData());
     }
 
-    while ( lib->getId()==STANDARD_LIB ||
-            lib->getId()==TEMPLATE_LIB ||
-            lib->getId()==DELETED_LIB  ||
+    while ( lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
+            lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
+            lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
             lib->isReadOnly() )
     {
         if (i >= m_objectManipulator->libs->count())
@@ -2678,8 +2685,9 @@ FWObject* ObjectManipulator::createObject(FWObject *parent,
 }
 
 
-FWObject* ObjectManipulator::copyObj2Tree(const QString &/*objType*/, const QString &/*objName*/,
-         libfwbuilder::FWObject *copyFrom, FWObject *parent, bool /*askLib*/)
+FWObject* ObjectManipulator::copyObj2Tree(
+    const QString &/*objType*/, const QString &/*objName*/,
+    FWObject *copyFrom, FWObject *parent, bool /*askLib*/)
 {
     if (!validateDialog()) return NULL;
     ids.clear();
@@ -2691,22 +2699,21 @@ FWObject* ObjectManipulator::copyObj2Tree(const QString &/*objType*/, const QStr
     return copyObjWithDeep(copyFrom);
 }
 
-libfwbuilder::FWObject * ObjectManipulator::copyObjWithDeep(libfwbuilder::FWObject *copyFrom)
+FWObject * ObjectManipulator::copyObjWithDeep(FWObject *copyFrom)
 {
-    
-    if (copyFrom==NULL)
-        return NULL;
+    if (copyFrom==NULL) return NULL;
+
     FWObject *nobj= copyFrom;
-    if (nobj->getId()!="")
+    if (nobj->getId() > -1)
     {
-        if (ids.contains(nobj->getId().c_str()))
+        if (ids.contains(nobj->getId()))
         {
             
             return nobj;
         }
         else
         {
-            ids.insert(nobj->getId().c_str());
+            ids.insert(nobj->getId());
         }
     }
     //nobj->duplicate(copyFrom,false); 

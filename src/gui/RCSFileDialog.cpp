@@ -40,7 +40,7 @@
 using namespace std;
 
 RCSFileDialog::RCSFileDialog( const QString& dirName, const QString& filter,
-                              QWidget* parent, const char* name, bool modal )
+                              QWidget* parent, const char* name, bool  )
     : QFileDialog( parent, name, dirName, filter )
 {
     if (fwbdebug) qDebug("RCSFileDialog: constructor 1");
@@ -68,7 +68,7 @@ RCSFileDialog::RCSFileDialog( const QString& dirName, const QString& filter,
     if (fwbdebug) qDebug("RCSFileDialog: constructor done");
 }
 
-RCSFileDialog::RCSFileDialog( QWidget* parent, const char* name, bool modal )
+RCSFileDialog::RCSFileDialog( QWidget* parent, const char* , bool )
     : QFileDialog(parent, "Open file")// name
 {
     if (fwbdebug) qDebug("RCSFileDialog: constructor 2");

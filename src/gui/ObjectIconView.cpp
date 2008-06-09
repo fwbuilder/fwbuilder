@@ -56,7 +56,7 @@ using namespace libfwbuilder;
  *
  ****************************************************************************/
 
-ObjectIconView::ObjectIconView(QWidget* parent, const char * name, Qt::WindowFlags f) :
+ObjectIconView::ObjectIconView(QWidget* parent, const char*, Qt::WindowFlags) :
     QListWidget(parent)
 {
     //setWindowFlags(f);

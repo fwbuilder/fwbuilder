@@ -56,9 +56,9 @@ FWObjectClipboard::~FWObjectClipboard()
 
 void FWObjectClipboard::clear()
 {
-    for (vector<string>::iterator i=ids.begin(); i!=ids.end(); ++i)
+    for (vector<int>::iterator i=ids.begin(); i!=ids.end(); ++i)
     {
-        FWObject *obj= mw->db()->findInIndex(*i);
+        FWObject *obj = mw->db()->findInIndex(*i);
         if (obj) obj->unref();
     }
     ids.clear();
@@ -70,7 +70,9 @@ void FWObjectClipboard::add(FWObject *_obj, ProjectPanel * fww)
     if (fwbdebug)
     {
 	qDebug("FWObjectClipboard::add  adding _obj=%p (id=%s)",
-               _obj,_obj->getId().c_str());
+               _obj,
+               FWObjectDatabase::getStringId(_obj->getId()).c_str()
+        );
     }
 
     _obj->ref();
@@ -90,20 +92,26 @@ FWObject* FWObjectClipboard::getObject()
         return NULL;
 }
 
-	size_t FWObjectClipboard::windowsCount (){return windows.size();}
-	ProjectPanel * FWObjectClipboard::getWindowByIdx (int idx)
-	{
-		if (idx<windowsCount ())
-		{
-			return windows[idx];
-		}
-		return NULL;
-	}
-libfwbuilder::FWObject* FWObjectClipboard::getObjectByIdx (int idx)
+size_t FWObjectClipboard::windowsCount ()
 {
-	std::string s1 = ids[idx];
-	ProjectPanel * w1 = windows[idx];
-	FWObject *co= w1->db()->findInIndex(s1);
-	return co;
-	//w1->db()->FWObject *co= win->db()->findInIndex(*i);
+    return windows.size();
 }
+
+ProjectPanel * FWObjectClipboard::getWindowByIdx (int idx)
+{
+    if (idx < int(windowsCount()))
+    {
+        return windows[idx];
+    }
+    return NULL;
+}
+
+FWObject* FWObjectClipboard::getObjectByIdx (int idx)
+{
+    int s1 = ids[idx];
+    ProjectPanel * w1 = windows[idx];
+    FWObject *co= w1->db()->findInIndex(s1);
+    return co;
+    //w1->db()->FWObject *co= win->db()->findInIndex(*i);
+}
+

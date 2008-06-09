@@ -39,13 +39,13 @@
 class libData
 {
  public:
-    QString id;
+    int id;
     QString name;
     QString path;
     bool    mandatory;
     bool    load;
 
-    libData(const QString &i,const QString &n,const QString &p,bool f)
+    libData(int i, const QString &n, const QString &p, bool f)
         { id=i; name=n; path=p; mandatory=f; load=false; }
 };
 
@@ -70,7 +70,7 @@ class listOfLibraries : public std::list<libData>
     bool getLoad(const QString &libPath);
 
     bool isLoaded(const QString &libName);
-    bool isKnown(const QString &id);
+    bool isKnown(int id);
 
     void load();
     void save();

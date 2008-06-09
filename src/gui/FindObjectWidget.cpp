@@ -153,13 +153,13 @@ void FindObjectWidget::find()
     findNext();
 }
 
-bool FindObjectWidget::matchID(const QString &id)
+bool FindObjectWidget::matchID(int id)
 {
     if (m_widget->findDropArea->isEmpty()) return true;
-    QString s=QString::fromUtf8(m_widget->findDropArea->getObject()->getId().c_str() );
-
-    return s==id;
+    int s_id = m_widget->findDropArea->getObject()->getId();
+    return s_id==id;
 }
+
 bool FindObjectWidget::matchAttr(libfwbuilder::FWObject *obj)
 {
     if (!m_widget->findDropArea->isEmpty()) return true;
@@ -206,22 +206,26 @@ bool FindObjectWidget::matchAttr(libfwbuilder::FWObject *obj)
             if (m_widget->useRegexp->isChecked())
             {
                 QString port;
-                port.setNum(obj->getInt("src_range_start"));
+                port.setNum(TCPUDPService::cast(obj)->getSrcRangeStart());
                 res |= ( port.indexOf( QRegExp(s) )!=-1 );
-                port.setNum(obj->getInt("src_range_end"));
+                port.setNum(TCPUDPService::cast(obj)->getSrcRangeEnd());
                 res |= ( port.indexOf( QRegExp(s) )!=-1 );
-                port.setNum(obj->getInt("dst_range_start"));
+                port.setNum(TCPUDPService::cast(obj)->getDstRangeStart());
                 res |= ( port.indexOf( QRegExp(s) )!=-1 );
-                port.setNum(obj->getInt("dst_range_end"));
+                port.setNum(TCPUDPService::cast(obj)->getDstRangeEnd());
                 res |= ( port.indexOf( QRegExp(s) )!=-1 );
             } else
             {
                 bool conversion_status = false;
                 int port = s.toInt(&conversion_status);
-                res |= (conversion_status && (port == obj->getInt("src_range_start")));
-                res |= (conversion_status && (port == obj->getInt("src_range_end")));
-                res |= (conversion_status && (port == obj->getInt("dst_range_start")));
-                res |= (conversion_status && (port == obj->getInt("dst_range_end")));
+                res |= (conversion_status &&
+                        (port == TCPUDPService::cast(obj)->getSrcRangeStart()));
+                res |= (conversion_status &&
+                        (port == TCPUDPService::cast(obj)->getSrcRangeEnd()));
+                res |= (conversion_status &&
+                        (port == TCPUDPService::cast(obj)->getDstRangeStart()));
+                res |= (conversion_status &&
+                        (port == TCPUDPService::cast(obj)->getDstRangeEnd()));
             }
             break;
         }
@@ -304,14 +308,12 @@ loop:
         if (FWReference::cast(o)!=NULL)
         {
             FWReference *r=FWReference::cast(o);
-            if (
-                matchAttr( r->getPointer() ) &&
-                matchID( QString::fromUtf8(r->getPointer()->getId().c_str()) )) break;
+            if (matchAttr( r->getPointer() ) &&
+                matchID( r->getPointer()->getId() )) break;
         } else
         {
-            if (
-                matchAttr( o ) &&
-                matchID( QString::fromUtf8(o->getId().c_str()) )) break;
+            if (matchAttr( o ) &&
+                matchID( o->getId() )) break;
         }
     }
 
@@ -352,7 +354,9 @@ loop:
     if (fwbdebug)
     {
         qDebug("Found object: o=%p  id=%s  name=%s  type=%s",
-               o, o->getId().c_str(),o->getName().c_str(),o->getTypeName().c_str());
+               o,
+               FWObjectDatabase::getStringId(o->getId()).c_str(),
+               o->getName().c_str(),o->getTypeName().c_str());
     }
 }
 
@@ -447,14 +451,12 @@ void FindObjectWidget::replaceAll()
             if (FWReference::cast(o)!=NULL)
             {
                 FWReference *r=FWReference::cast(o);
-                if (
-                     matchAttr( r->getPointer() ) &&
-                     matchID( QString::fromUtf8(r->getPointer()->getId().c_str()) )) break;
+                if (matchAttr( r->getPointer() ) &&
+                    matchID( r->getPointer()->getId() )) break;
             } else
             {
-                if (
-                    matchAttr( o ) &&
-                    matchID( QString::fromUtf8(o->getId().c_str()) )) break;
+                if (matchAttr( o ) &&
+                    matchID( o->getId() )) break;
             }
         }
         if (treeSeeker==mw->db()->tree_end())
@@ -492,7 +494,7 @@ FWObject* FindObjectWidget::_replaceCurrent()
     if (RuleElement::cast(p)==NULL || !RuleElement::cast(p)->isAny())
     {
 /* avoid duplicates */
-        string cp_id=ro->getId();
+        int cp_id = ro->getId();
         FWObject *oo;
         FWReference *ref;
 
@@ -511,7 +513,7 @@ FWObject* FindObjectWidget::_replaceCurrent()
     FWObject *to;
     FWReference *ref;
     list<FWObject*>::iterator i;
-    string id=m_widget->replaceDropArea->getObject()->getId();
+    int id = m_widget->replaceDropArea->getObject()->getId();
     for (i=p->begin();i!=p->end();++i)
     {
         to=*i;

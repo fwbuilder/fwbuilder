@@ -62,10 +62,10 @@ class ObjectTreeViewItem : public QTreeWidgetItem {
     ObjectTreeView* getTree();
 
     QString getLib() { return lib; }
-    void        setLib(const QString &l) { lib=l; }
+    void    setLib(const QString &l) { lib=l; }
 
     QString getProperty(const QString &name) const { return props[name]; }
-    void        setProperty(const QString &name,const QString &val) {
+    void    setProperty(const QString &name, const QString &val) {
         props[name]=val;
     }
     

@@ -1624,11 +1624,11 @@ void RuleSetView::paintCell(QPainter *pntr,
                 mwSelObj = om_selected_objects.front();
 
             if (    (!sel) &&
-                      mwSelObj!= NULL &&
-                      mwSelObj->getId() != "sysid0" &&
-                      mwSelObj->getId() != "sysid1" &&
-                      mwSelObj->getId() != "sysid2" &&
-                      mwSelObj == o1)
+                    mwSelObj!= NULL &&
+                    mwSelObj->getId() != FWObjectDatabase::ANY_ADDRESS_ID &&
+                    mwSelObj->getId() != FWObjectDatabase::ANY_SERVICE_ID &&
+                    mwSelObj->getId() != FWObjectDatabase::ANY_INTERVAL_ID &&
+                    mwSelObj == o1)
             {
                 p.setPen(Qt::red);
                 p.drawLine( 1, y+1, cr.width()-3, y+1 );
@@ -2196,8 +2196,8 @@ FWObject* RuleSetView::getSelectedObject()
 
 void RuleSetView::copyRuleContent(Rule *dst, Rule *src)
 {
-    string id=dst->getId();
-    int     p=dst->getPosition();
+    int id = dst->getId();
+    int p = dst->getPosition();
 
     if ( src->isDisabled() ) dst->disable();
     else                     dst->enable();
@@ -2221,7 +2221,7 @@ void RuleSetView::copyRuleContent(Rule *dst, Rule *src)
             (*j)->duplicate(selem);
     }
 
-    if (id!="") dst->setId(id);
+    if (id > -1) dst->setId(id);
     dst->setPosition(p);
 }
 
@@ -3343,13 +3343,13 @@ void RuleSetView::deleteObject(int row, int col, FWObject *obj)
 {
     RuleElement *re = getRE(row,col);
     if (re==NULL || re->isAny()) return;
-    string id = obj->getId();
+    int id = obj->getId();
 
     if (fwbdebug)
     {
         qDebug("RuleSetView::deleteObject row=%d col=%d id=%s",
-               row,col,id.c_str());
-        qDebug("obj = %p",re->getRoot()->findInIndex(id));
+               row, col, FWObjectDatabase::getStringId(id).c_str());
+        qDebug("obj = %p", re->getRoot()->findInIndex(id));
         int rc = obj->ref()-1;  obj->unref();
         qDebug("obj->ref_counter=%d",rc);
     }
@@ -3430,7 +3430,7 @@ bool RuleSetView::insertObject(int row, int col, FWObject *obj)
     if (! re->isAny())
     {
         /* avoid duplicates */
-        string cp_id=obj->getId();
+        int cp_id = obj->getId();
         list<FWObject*>::iterator j;
         for(j=re->begin(); j!=re->end(); ++j)
         {
@@ -3465,7 +3465,7 @@ void RuleSetView::pasteObject()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    vector<string>::iterator i;
+    vector<int>::iterator i;
     for (i= FWObjectClipboard::obj_clipboard->begin();
          i!=FWObjectClipboard::obj_clipboard->end(); ++i)
     {
@@ -4204,7 +4204,7 @@ void RuleSetView::pasteRuleAbove()
     if (fwbdebug) qDebug("Firewall: pasteRuleAbove");
 
     /* pick rules in reverse order */
-    vector<string>::reverse_iterator i;
+    vector<int>::reverse_iterator i;
     for (i= FWObjectClipboard::obj_clipboard->rbegin();
          i!=FWObjectClipboard::obj_clipboard->rend(); ++i)
     {
@@ -4248,7 +4248,7 @@ void RuleSetView::pasteRuleBelow()
         position = currentRow();
 
     int n=0;
-    vector<string>::iterator i;
+    vector<int>::iterator i;
     for (i= FWObjectClipboard::obj_clipboard->begin();
          i!=FWObjectClipboard::obj_clipboard->end(); ++i,++n)
     {

@@ -150,7 +150,7 @@ int fwbdebug = 0;
 class UpgradePredicate: public XMLTools::UpgradePredicate
 {
     public:
-    virtual bool operator()(const string &msg) const 
+    virtual bool operator()(const string&) const 
     {
         bool res=false;
         cout << _("Data file has been created in the old version of Firewall Builder.") << endl << flush;
@@ -280,7 +280,7 @@ FWObject *getObject(const char *objstr) throw (FWException)
         }
     } else {
 /* got object ID */
-        obj=objdb->getById(objstr,true);
+        obj=objdb->getById(FWObjectDatabase::getIntId(objstr), true);
         if (obj==NULL) 
         {
             SNPRINTF(errstr,sizeof(errstr),_("Object with ID='%s' not found"),objstr );
@@ -601,7 +601,7 @@ int main(int argc, char * const *argv)
             {
                 nlib=*i;
                 lib=nlib->getName();
-                if (nlib->getId()!="sysid99")
+                if (nlib->getId()!=FWObjectDatabase::DELETED_OBJECTS_ID)
                 {
                     ro_flag=nlib->isReadOnly();
                     cout << _("Library: ") << lib << ((ro_flag)?"(Read only)":" ") << endl;
@@ -880,11 +880,12 @@ int main(int argc, char * const *argv)
                 FWObject *nobj=createObject(objtype,"/"+lib+"/"+systemGroupPaths[objtype]);
                 TCPService *o=TCPService::cast(nobj);
                 o->setName(name);
-                o->setInt("src_range_start",atoi(addr1.c_str()));
-                o->setInt("src_range_end",atoi(addr2.c_str()));
-                o->setInt("dst_range_start",atoi(addr3.c_str()));
-                o->setInt("dst_range_end",atoi(addr4.c_str()));
-                
+
+                o->setSrcRangeStart(atoi(addr1.c_str()));
+                o->setSrcRangeEnd(  atoi(addr2.c_str()));
+                o->setDstRangeStart(atoi(addr3.c_str()));
+                o->setDstRangeEnd(  atoi(addr4.c_str()));
+
                 o->setBool("urg_flag_mask",mask.find('u')!=string::npos || mask.find('U')!=string::npos);
                 o->setBool("ack_flag_mask",mask.find('a')!=string::npos || mask.find('A')!=string::npos);
                 o->setBool("psh_flag_mask",mask.find('p')!=string::npos || mask.find('P')!=string::npos);
@@ -910,10 +911,11 @@ int main(int argc, char * const *argv)
                 FWObject *nobj=createObject(objtype,"/"+lib+"/"+systemGroupPaths[objtype]);
                 UDPService *o=UDPService::cast(nobj);
                 o->setName(name);
-                o->setInt("src_range_start",atoi(addr1.c_str()));
-                o->setInt("src_range_end",atoi(addr2.c_str()));
-                o->setInt("dst_range_start",atoi(addr3.c_str()));
-                o->setInt("dst_range_end",atoi(addr4.c_str()));
+
+                o->setSrcRangeStart(atoi(addr1.c_str()));
+                o->setSrcRangeEnd(  atoi(addr2.c_str()));
+                o->setDstRangeStart(atoi(addr3.c_str()));
+                o->setDstRangeEnd(  atoi(addr4.c_str()));
                 
             }
             else if (objtype==ICMPService::TYPENAME)

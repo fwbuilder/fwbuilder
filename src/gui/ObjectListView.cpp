@@ -57,7 +57,8 @@ using namespace libfwbuilder;
  *
  ****************************************************************************/
 
-ObjectListView::ObjectListView(QWidget* parent, const char * name, Qt::WindowFlags f) :
+ObjectListView::ObjectListView(QWidget* parent, const char*,
+                               Qt::WindowFlags f) :
     QTreeWidget(parent)
 {
     setWindowFlags(f);

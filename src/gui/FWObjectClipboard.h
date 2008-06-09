@@ -36,8 +36,8 @@ class libfwbuilder::FWObject;
 class ProjectPanel ;
 class FWObjectClipboard  {
 
-    std::vector<std::string> ids;
-	std::vector<ProjectPanel*> windows;
+    std::vector<int> ids;
+    std::vector<ProjectPanel*> windows;
 
 public:
 
@@ -47,7 +47,7 @@ public:
     /**
      *  adds an object to the clipboard
      */
-    void add(libfwbuilder::FWObject*,ProjectPanel * fww=NULL);
+    void add(libfwbuilder::FWObject*, ProjectPanel * fww=NULL);
 
     /**
      * returns the last added object
@@ -58,13 +58,16 @@ public:
      * clear the clipboard
      */
     void clear();
-	size_t windowsCount ();
-	ProjectPanel * getWindowByIdx (int idx);
+
+    size_t windowsCount ();
+
+    ProjectPanel * getWindowByIdx (int idx);
     libfwbuilder::FWObject* getObjectByIdx (int idx);
-	std::vector<std::string>::iterator begin() { return ids.begin(); }
-    std::vector<std::string>::iterator end() { return ids.end(); }
-    std::vector<std::string>::reverse_iterator rbegin() { return ids.rbegin(); }
-    std::vector<std::string>::reverse_iterator rend() { return ids.rend(); }
+
+    std::vector<int>::iterator begin() { return ids.begin(); }
+    std::vector<int>::iterator end() { return ids.end(); }
+    std::vector<int>::reverse_iterator rbegin() { return ids.rbegin(); }
+    std::vector<int>::reverse_iterator rend() { return ids.rend(); }
     int size() { return ids.size(); }
     
     static FWObjectClipboard  *obj_clipboard;

@@ -43,8 +43,12 @@ class InterfaceDialog : public QWidget
 
     libfwbuilder::FWObject *obj;
     bool init;
-    QMap<QString,int> netzoneObjectIDs;
-    QMap<int,QString> netzoneObjectNos;
+
+    // netzoneObjectIDs : key - object id, value - number in the list
+    QMap<int,int> netzoneObjectIDs;
+
+    // netzoneObjectNos : key - number in the list, value - obj id
+    QMap<int,int> netzoneObjectNos;
 
     Ui::InterfaceDialog_q *m_dialog;
     ProjectPanel *m_project;

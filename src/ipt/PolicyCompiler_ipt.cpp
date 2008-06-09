@@ -346,13 +346,13 @@ int PolicyCompiler_ipt::prolog()
     TCPService  *tcpsyn;
 
     anytcp=Service::cast(dbcopy->create(TCPService::TYPENAME) );
-    anytcp->setId(ANY_TCP_OBJ_ID);
+    anytcp->setId(FWObjectDatabase::registerStringId(ANY_TCP_OBJ_ID));
     anytcp->setName("AnyTCP");
     dbcopy->add(anytcp);
     cacheObj(anytcp); // to keep cache consistent
 
     tcpsyn=TCPService::cast(dbcopy->create(TCPService::TYPENAME) );
-    tcpsyn->setId(TCP_SYN_OBJ_ID);
+    tcpsyn->setId(FWObjectDatabase::registerStringId(TCP_SYN_OBJ_ID));
     tcpsyn->setName("tcpSYN");
     tcpsyn->setTCPFlag(TCPService::SYN,true);
     tcpsyn->setAllTCPFlagMasks();
@@ -360,25 +360,25 @@ int PolicyCompiler_ipt::prolog()
     cacheObj(tcpsyn); // to keep cache consistent
 
     anyudp=Service::cast(dbcopy->create(UDPService::TYPENAME) );
-    anyudp->setId(ANY_UDP_OBJ_ID);
+    anyudp->setId(FWObjectDatabase::registerStringId(ANY_UDP_OBJ_ID));
     anyudp->setName("AnyUDP");
     dbcopy->add(anyudp);
     cacheObj(anyudp); // to keep cache consistent
 
     anyicmp=Service::cast(dbcopy->create(ICMPService::TYPENAME) );
-    anyicmp->setId(ANY_ICMP_OBJ_ID);
+    anyicmp->setId(FWObjectDatabase::registerStringId(ANY_ICMP_OBJ_ID));
     anyicmp->setName("AnyICMP");
     dbcopy->add(anyicmp);
     cacheObj(anyicmp); // to keep cache consistent
 
     anyip=Service::cast(dbcopy->create(IPService::TYPENAME) );
-    anyip->setId(ANY_IP_OBJ_ID);
+    anyip->setId(FWObjectDatabase::registerStringId(ANY_IP_OBJ_ID));
     anyip->setName("AnyIP");
     dbcopy->add(anyip);
     cacheObj(anyip); // to keep cache consistent
 
     bcast255=Address::cast(dbcopy->create(IPv4::TYPENAME) );
-    bcast255->setId(BCAST_255_OBJ_ID);
+    bcast255->setId(FWObjectDatabase::registerStringId(BCAST_255_OBJ_ID));
     bcast255->setName("Broadcast_addr");
     bcast255->setAddress(InetAddr::getAllOnes());
     bcast255->setNetmask(InetAddr(InetAddr::getAllOnes()));
@@ -577,7 +577,7 @@ bool  PolicyCompiler_ipt::splitNonTerminatingTargets::processNext()
         ndst = r->getDst();   ndst->reset();
         nsrv = r->getSrv();   nsrv->reset();
         nitfre = r->getItf(); nitfre->reset();
-        r->setInterfaceId("");
+        r->setInterfaceId(-1);
         ruleopt = r->getOptionsObject();
         ruleopt->setInt("limit_value",-1);
         ruleopt->setInt("limit_value",-1);
@@ -615,7 +615,7 @@ bool  PolicyCompiler_ipt::InterfacePolicyRulesWithOptimization::processNext()
     RuleElementItf *itfre=rule->getItf();   assert(itfre);
     if (itfre->isAny())
     {
-        rule->setInterfaceId("");
+        rule->setInterfaceId(-1);
         tmp_queue.push_back(rule);
         return true;
     }
@@ -864,7 +864,8 @@ bool PolicyCompiler_ipt::Logging2::processNext()
         if (TCPService::isA(srv))
         {
             nsrv->clearChildren();
-            nsrv->addRef(compiler->dbcopy->findInIndex(ANY_TCP_OBJ_ID));
+            nsrv->addRef(compiler->dbcopy->findInIndex(
+                             FWObjectDatabase::getIntId(ANY_TCP_OBJ_ID)));
         }
         else
         {
@@ -1040,7 +1041,8 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
             if (TCPService::isA(srv))
             {
                 nsrv->clearChildren();
-                nsrv->addRef(compiler->dbcopy->findInIndex(ANY_TCP_OBJ_ID));
+                nsrv->addRef(compiler->dbcopy->findInIndex(
+                                 FWObjectDatabase::getIntId(ANY_TCP_OBJ_ID)));
             }
             else
             {
@@ -1157,7 +1159,8 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
             if (TCPService::isA(srv))
             {
                 nsrv->clearChildren();
-                nsrv->addRef(compiler->dbcopy->findInIndex(ANY_TCP_OBJ_ID));
+                nsrv->addRef(compiler->dbcopy->findInIndex(
+                                 FWObjectDatabase::getIntId(ANY_TCP_OBJ_ID)));
             }
             else
             {
@@ -1381,7 +1384,8 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
             if (TCPService::isA(srv))
             {
                 nsrv->clearChildren();
-                nsrv->addRef(compiler->dbcopy->findInIndex(ANY_TCP_OBJ_ID));
+                nsrv->addRef(compiler->dbcopy->findInIndex(
+                                 FWObjectDatabase::getIntId(ANY_TCP_OBJ_ID)));
             }
             else
             {
@@ -1480,7 +1484,7 @@ bool PolicyCompiler_ipt::setChainPreroutingForTag::processNext()
           rule->getStr("ipt_chain").empty() &&
          (rule->getDirection()==PolicyRule::Both ||
           rule->getDirection()==PolicyRule::Inbound) &&
-         rule->getInterfaceId().empty() )
+         rule->getInterfaceId()==-1 )
         rule->setStr("ipt_chain","PREROUTING");
 
     tmp_queue.push_back(rule);
@@ -1498,7 +1502,7 @@ bool PolicyCompiler_ipt::setChainPostroutingForTag::processNext()
           rule->getStr("ipt_chain").empty() &&
          (rule->getDirection()==PolicyRule::Both ||
           rule->getDirection()==PolicyRule::Outbound) &&
-         rule->getInterfaceId().empty() )
+         rule->getInterfaceId()==-1 )
         rule->setStr("ipt_chain","POSTROUTING");
 
     tmp_queue.push_back(rule);
@@ -3066,10 +3070,10 @@ bool PolicyCompiler_ipt::separatePortRanges::processNext()
 
 	if ( TCPService::isA(s) || UDPService::isA(s) ) 
         {
-            unsigned srs=s->getInt("src_range_start");
-            unsigned sre=s->getInt("src_range_end");
-            unsigned drs=s->getInt("dst_range_start");
-            unsigned dre=s->getInt("dst_range_end");
+            unsigned srs=TCPUDPService::cast(s)->getSrcRangeStart();
+            unsigned sre=TCPUDPService::cast(s)->getSrcRangeEnd();
+            unsigned drs=TCPUDPService::cast(s)->getDstRangeStart();
+            unsigned dre=TCPUDPService::cast(s)->getDstRangeEnd();
 
             if (srs!=0 && sre==0) sre=srs;
             if (drs!=0 && dre==0) dre=drs;
@@ -3127,9 +3131,10 @@ bool PolicyCompiler_ipt::separateSrcPort::processNext()
 	Service *s=Service::cast(o);
 	assert(s!=NULL);
 
-	if ( TCPService::isA(s) || UDPService::isA(s) ) {
-            int srs=s->getInt("src_range_start");
-            int sre=s->getInt("src_range_end");
+	if ( TCPService::isA(s) || UDPService::isA(s) )
+        {
+            int srs=TCPUDPService::cast(s)->getSrcRangeStart();
+            int sre=TCPUDPService::cast(s)->getSrcRangeEnd();
 
             compiler->normalizePortRange(srs,sre);
 
@@ -3200,7 +3205,8 @@ bool PolicyCompiler_ipt::splitRuleIfSrvAnyActionReject::processNext()
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
         nsrv=r->getSrv();
-        nsrv->addRef(compiler->dbcopy->findInIndex(ANY_TCP_OBJ_ID));
+        nsrv->addRef(compiler->dbcopy->findInIndex(
+                         FWObjectDatabase::getIntId(ANY_TCP_OBJ_ID)));
 
         FWOptions  *ruleopt =r->getOptionsObject();
         ruleopt->setStr("action_on_reject","TCP RST");
@@ -4020,7 +4026,7 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
     RuleElementInterval *intrel=rule->getWhen();
     RuleElementItf      *itfrel=rule->getItf();
 
-    string       iface_id = rule->getInterfaceId();
+    int iface_id = rule->getInterfaceId();
 //    Interface *rule_iface = fw_interfaces[iface_id];
 
     ostringstream str;

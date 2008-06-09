@@ -80,7 +80,8 @@ void LibraryDialog::loadFWObject(FWObject *o)
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
 
-    m_dialog->obj_name->setEnabled( obj->getId() != "syslib000" );
+    m_dialog->obj_name->setEnabled(
+        obj->getId() != FWObjectDatabase::STANDARD_LIB_ID);
 //    apply->setEnabled( obj->getId() != "syslib000" );
 //    comment->setEnabled(  !m_project->isSystem(obj) );
 
@@ -124,7 +125,8 @@ void LibraryDialog::applyChanges()
     obj->setStr("color", color.toLatin1().constData());
 
 /* just for fool-proof'ness, do not allow changing name of the 'Standard' lib */
-    if (oldname!=obj->getName() && obj->getId()=="syslib000")
+    if (oldname!=obj->getName() &&
+        obj->getId()==FWObjectDatabase::STANDARD_LIB_ID)
     {
         obj->setName( oldname );
     }

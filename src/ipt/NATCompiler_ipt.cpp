@@ -154,9 +154,9 @@ string NATCompiler_ipt::debugPrintRule(Rule *r)
     NATRule *rule=NATRule::cast(r);
 
     return NATCompiler::debugPrintRule(rule)+
-        " "+rule->getInterfaceId()+
-        " "+rule->getStr("ipt_chain")+
-        " "+rule->getStr("ipt_target")+
+        " " + FWObjectDatabase::getStringId(rule->getInterfaceId()) +
+        " " + rule->getStr("ipt_chain") +
+        " " + rule->getStr("ipt_target") +
         " (type="+rule->getRuleTypeAsString()+")";
 }
 
@@ -1209,10 +1209,10 @@ bool NATCompiler_ipt::separatePortRanges::processNext()
 	assert(s!=NULL);
 
 	if ( TCPService::isA(s) || UDPService::isA(s) ) {
-            int srs=s->getInt("src_range_start");
-            int sre=s->getInt("src_range_end");
-            int drs=s->getInt("dst_range_start");
-            int dre=s->getInt("dst_range_end");
+            int srs=TCPUDPService::cast(s)->getSrcRangeStart();
+            int sre=TCPUDPService::cast(s)->getSrcRangeEnd();
+            int drs=TCPUDPService::cast(s)->getDstRangeStart();
+            int dre=TCPUDPService::cast(s)->getDstRangeEnd();
 
             compiler->normalizePortRange(srs,sre);
             compiler->normalizePortRange(drs,dre);
@@ -1262,8 +1262,8 @@ bool NATCompiler_ipt::separateSourcePorts::processNext()
 	assert(s!=NULL);
 
 	if ( TCPService::isA(s) || UDPService::isA(s) ) {
-            int srs=s->getInt("src_range_start");
-            int sre=s->getInt("src_range_end");
+            int srs=TCPUDPService::cast(s)->getSrcRangeStart();
+            int sre=TCPUDPService::cast(s)->getSrcRangeEnd();
 
             compiler->normalizePortRange(srs,sre);
 
@@ -1317,10 +1317,10 @@ bool NATCompiler_ipt::separateSourceAndDestinationPorts::processNext()
 	assert(s!=NULL);
 
 	if ( TCPService::isA(s) || UDPService::isA(s) ) {
-            int srs=s->getInt("src_range_start");
-            int sre=s->getInt("src_range_end");
-            int drs=s->getInt("dst_range_start");
-            int dre=s->getInt("dst_range_end");
+            int srs=TCPUDPService::cast(s)->getSrcRangeStart();
+            int sre=TCPUDPService::cast(s)->getSrcRangeEnd();
+            int drs=TCPUDPService::cast(s)->getDstRangeStart();
+            int dre=TCPUDPService::cast(s)->getDstRangeEnd();
 
             compiler->normalizePortRange(srs,sre);
             compiler->normalizePortRange(drs,dre);

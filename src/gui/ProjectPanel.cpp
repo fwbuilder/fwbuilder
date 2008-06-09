@@ -312,8 +312,8 @@ void ProjectPanel::findIntersectRefs(FWObject *lib,
     if (ref!=NULL)
     {
         FWObject *plib = ref->getPointer()->getLibrary();
-        if ( plib->getId()!=STANDARD_LIB &&
-             plib->getId()!=DELETED_LIB  &&
+        if ( plib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
+             plib->getId()!=FWObjectDatabase::DELETED_OBJECTS_ID  &&
              plib!=lib )
         {
                 FWObject* ptr=ref->getPointer();
@@ -392,7 +392,7 @@ void ProjectPanel::findIntersectRefs(FWObject *lib,
 
 
 void ProjectPanel::restoreDepends(FWObject *obj_old, FWObject *obj, 
-          const std::map<const std::string, FWObject *> &objByIds)
+          const std::map<int, FWObject *> &objByIds)
 {
     Firewall *fw = Firewall::cast(obj);
     Firewall *fw_old = Firewall::cast(obj_old);
@@ -405,7 +405,7 @@ void ProjectPanel::restoreDepends(FWObject *obj_old, FWObject *obj,
 }
 
 void ProjectPanel::restorePolicyRefs(Policy *pol, Policy *pol_old, 
-        const std::map<const std::string, FWObject *> &objByIds)
+        const std::map<int, FWObject *> &objByIds)
 {
     if (!pol || !pol_old)
         return;
@@ -420,7 +420,7 @@ void ProjectPanel::restorePolicyRefs(Policy *pol, Policy *pol_old,
 }
     
 void ProjectPanel::restorePolicyRuleRefs(PolicyRule *rule, PolicyRule *rule_old, 
-          const std::map<const std::string, FWObject *> &objByIds)
+          const std::map<int, FWObject *> &objByIds)
 {
     if (!rule || !rule_old) return; 
     for (int col =0; col < 5; col++)
@@ -433,7 +433,7 @@ void ProjectPanel::restorePolicyRuleRefs(PolicyRule *rule, PolicyRule *rule_old,
 }
 
 void ProjectPanel::restoreRERefs(RuleElement *re_new, RuleElement *re_old, 
-          const std::map<const std::string, FWObject *> &objByIds)
+          const std::map<int, FWObject *> &objByIds)
 {
     if (!re_new || ! re_old) return;
     while((re_new->begin() != re_new->end()) && 
@@ -449,7 +449,7 @@ void ProjectPanel::restoreRERefs(RuleElement *re_new, RuleElement *re_old,
         //qDebug("o_old->getId() = (%s)", o_old->getId().c_str());//).toAscii().constData());// !!!!!
         //for (std::map<const std::string, FWObject *>::const_iterator i = objByIds.begin(); i != objByIds.end(); i++)
             //qDebug("i->first.c_str() = (%s)", i->first.c_str());// !!!!!
-        std::map<const std::string, FWObject *>::const_iterator it = objByIds.find(o_old->getId());
+        std::map<int, FWObject *>::const_iterator it = objByIds.find(o_old->getId());
         if (objByIds.end() != it)
         {
             FWObject *o = it->second;
@@ -1978,12 +1978,14 @@ void ProjectPanel::startupLoad()
     }
 
     QString id = st->getStr("UI/visibleFirewall");
+    int i_id = FWObjectDatabase::getIntId(id.toLatin1().constData());
     FWObject *show_fw=NULL;
-    if ( !id.isEmpty() ) show_fw = db()->getById(id.toLatin1().constData(),true);
+    if ( !id.isEmpty() ) show_fw = db()->getById(i_id, true);
 
     id = st->getStr("UI/visibleObject");
+    i_id = FWObjectDatabase::getIntId(id.toLatin1().constData());
     FWObject *show_obj=NULL;
-    if ( !id.isEmpty() ) show_obj = db()->getById(id.toLatin1().constData(),true);
+    if ( !id.isEmpty() ) show_obj = db()->getById(i_id, true);
 
     showFirewalls( show_fw==NULL );
 
@@ -2078,7 +2080,7 @@ void ProjectPanel::load(QWidget *dialogs_parent)
                 FWObjectDatabase *ndb = new FWObjectDatabase();
                 ndb->load(libfname, &upgrade_predicate,librespath);
                 FWObject *dobj =
-                    ndb->findInIndex( FWObjectDatabase::getDeletedObjectsId());
+                    ndb->findInIndex( FWObjectDatabase::DELETED_OBJECTS_ID);
                 if (dobj) ndb->remove(dobj, false);
 
                 MergeConflictRes mcr(dlgp);
@@ -2187,7 +2189,7 @@ void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs,libfwbuilder::FWObject
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
 /* loadingLib is true if user wants to open a library or master library file */
-        bool loadingLib         = editingLibrary();
+        bool loadingLib = editingLibrary();
 
         /*if (fwbdebug)
         {
@@ -2274,7 +2276,8 @@ void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs,libfwbuilder::FWObject
             for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
             {
                 qDebug("* Library %s %s in the data file",
-                       (*i)->getId().c_str(),(*i)->getName().c_str() );
+                       FWObjectDatabase::getStringId((*i)->getId()).c_str(),
+                       (*i)->getName().c_str() );
             }
         }
 
@@ -2285,7 +2288,7 @@ void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs,libfwbuilder::FWObject
  *
  * However, if I am editing standard library, it should not be read-only.
  */
-        FWObject *slib = objdb->findInIndex("syslib000");
+        FWObject *slib = objdb->findInIndex(FWObjectDatabase::STANDARD_LIB_ID);
         if (fwbdebug)
             qDebug("standard library read-only status: %d, editingStandardLib: %d",
                    slib->isReadOnly(), editingStandardLib);
@@ -2528,7 +2531,8 @@ void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs)
             for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
             {
                 qDebug("* Found library %s %s in the data file",
-                       (*i)->getId().c_str(),(*i)->getName().c_str() );
+                       FWObjectDatabase::getStringId((*i)->getId()).c_str(),
+                       (*i)->getName().c_str() );
             }
         }
 
@@ -2538,8 +2542,10 @@ void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs)
             list<FWObject*> ll = ndb->getByType(Library::TYPENAME);
             for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
             {
-                if ((*i)->getId()==STANDARD_LIB) editingStandardLib=true;
-                if ((*i)->getId()==TEMPLATE_LIB) editingTemplateLib=true;
+                if ((*i)->getId()==FWObjectDatabase::STANDARD_LIB_ID)
+                    editingStandardLib=true;
+                if ((*i)->getId()==FWObjectDatabase::TEMPLATE_LIB_ID)
+                    editingTemplateLib=true;
                 (*i)->setReadOnly( false );
             }
         } else
@@ -2563,9 +2569,9 @@ void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs)
                                libfname.c_str());
                         assert(nlib1!=NULL);
                     }
-                    string nlib1ID = nlib1->getId();
+                    int nlib1ID = nlib1->getId();
                     FWObject *dobj =
-                        ndb1->findInIndex(FWObjectDatabase::getDeletedObjectsId());
+                        ndb1->findInIndex(FWObjectDatabase::DELETED_OBJECTS_ID);
                     if (dobj) ndb1->remove(dobj, false);
 
                     MergeConflictRes mcr(dlgp);
@@ -2609,8 +2615,9 @@ void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs)
             for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
             {
                 qDebug("* Library %s %s in the data file",
-                       (*i)->getId().c_str(),(*i)->getName().c_str() );
-            }
+                       FWObjectDatabase::getStringId((*i)->getId()).c_str(),
+                       (*i)->getName().c_str() );
+            }  
         }
 
 
@@ -2620,12 +2627,15 @@ void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs)
  *
  * However, if I am editing standard library, it should not be read-only.
  */
-        FWObject *slib = objdb->findInIndex("syslib000");
-        if (fwbdebug)
-            qDebug("standard library read-only status: %d, editingStandardLib: %d",
-                   slib->isReadOnly(), editingStandardLib);
+        FWObject *slib = objdb->findInIndex(FWObjectDatabase::STANDARD_LIB_ID);
+        if (slib!=NULL )
+        {
+            if (fwbdebug)
+                qDebug("standard library read-only status: %d, editingStandardLib: %d",
+                       slib->isReadOnly(), editingStandardLib);
 
-        if (slib!=NULL ) slib->setReadOnly(! editingStandardLib);
+            slib->setReadOnly(! editingStandardLib);
+        }
 
 /* if the file name has an old extension .xml, change it to .fwb and
  * warn the user
@@ -2869,9 +2879,9 @@ void ProjectPanel::save()
                             continue;
                         }
 /* skip standard and template libraries unless we edit them */
-                        QString s=(*i)->getId().c_str();
-                        if (s==STANDARD_LIB && !editingStandardLib) continue;
-                        if (s==TEMPLATE_LIB && !editingTemplateLib) continue;
+                        int id = (*i)->getId();
+                        if (id==FWObjectDatabase::STANDARD_LIB_ID && !editingStandardLib) continue;
+                        if (id==FWObjectDatabase::TEMPLATE_LIB_ID && !editingTemplateLib) continue;
 
                         if (fwbdebug) qDebug("                   add");
                         userLibs.push_back( *i );
@@ -2886,8 +2896,8 @@ void ProjectPanel::save()
 /* exported libraries are always read-only */
                         list<FWObject*> ll = ndb->getByType(Library::TYPENAME);
                         for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
-                            if ((*i)->getId()!=STANDARD_LIB &&
-                                (*i)->getId()!=DELETED_LIB) (*i)->setReadOnly( true );
+                            if ((*i)->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
+                                (*i)->getId()!=FWObjectDatabase::DELETED_OBJECTS_ID) (*i)->setReadOnly( true );
                     }
 
                     ndb->resetTimeLastModified( db()->getTimeLastModified() );
@@ -2938,7 +2948,7 @@ void ProjectPanel::loadLibrary(const string &libfpath)
         FWObjectDatabase *ndb = new FWObjectDatabase();
         ndb->load(libfpath,  &upgrade_predicate,  librespath);
 
-        FWObject *dobj = ndb->findInIndex(FWObjectDatabase::getDeletedObjectsId());
+        FWObject *dobj = ndb->findInIndex(FWObjectDatabase::DELETED_OBJECTS_ID);
         if (dobj) ndb->remove(dobj, false);
 
 #if 0
@@ -3050,7 +3060,7 @@ void ProjectPanel::fileCompare()
         db1 = new FWObjectDatabase();
         db1->load(fname1.toLatin1().constData(),  &upgrade_predicate,  librespath);
 
-        dobj = db1->findInIndex(FWObjectDatabase::getDeletedObjectsId());
+        dobj = db1->findInIndex(FWObjectDatabase::DELETED_OBJECTS_ID);
         if (dobj) db1->remove(dobj, false);
     } catch(FWException &ex)
     {
@@ -3068,7 +3078,7 @@ void ProjectPanel::fileCompare()
         db2 = new FWObjectDatabase();
         db2->load(fname2.toLatin1().constData(),  &upgrade_predicate,  librespath);
 
-        dobj = db2->findInIndex(FWObjectDatabase::getDeletedObjectsId());
+        dobj = db2->findInIndex(FWObjectDatabase::DELETED_OBJECTS_ID);
         if (dobj) db2->remove(dobj, false);
     } catch(FWException &ex)
     {
@@ -3162,8 +3172,8 @@ void ProjectPanel::findExternalRefs(FWObject *lib,
     if (ref!=NULL)
     {
         FWObject *plib = ref->getPointer()->getLibrary();
-        if ( plib->getId()!=STANDARD_LIB &&
-             plib->getId()!=DELETED_LIB  &&
+        if ( plib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
+             plib->getId()!=FWObjectDatabase::DELETED_OBJECTS_ID  &&
              plib!=lib )
             extRefs.push_back(ref);
         return;
@@ -3333,7 +3343,7 @@ void ProjectPanel::exportLibraryTo(QString fname,list<FWObject*> &selectedLibs, 
         for (list<FWObject*>::iterator i=selectedLibs.begin(); i!=selectedLibs.end(); ++i)
         {
             FWObject *nlib= ndb->findInIndex( (*i)->getId() );
-            if (nlib && nlib->getId()!=DELETED_LIB)
+            if (nlib && nlib->getId()!=FWObjectDatabase::DELETED_OBJECTS_ID)
                 nlib->setReadOnly( true );
         }
     }
@@ -3834,7 +3844,7 @@ void ProjectPanel::loadState (QString filename)
     }
 }
 
-void ProjectPanel::splitterMoved ( int pos, int index )
+void ProjectPanel::splitterMoved ( int , int )
 {
     saveState();
 }

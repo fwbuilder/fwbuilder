@@ -270,10 +270,10 @@ bool PolicyCompiler_ipfw::separatePortRanges::processNext()
 
 	if ( TCPService::isA(s) || UDPService::isA(s) ) 
         {
-            unsigned srs=s->getInt("src_range_start");
-            unsigned sre=s->getInt("src_range_end");
-            unsigned drs=s->getInt("dst_range_start");
-            unsigned dre=s->getInt("dst_range_end");
+            unsigned srs=TCPUDPService::cast(s)->getSrcRangeStart();
+            unsigned sre=TCPUDPService::cast(s)->getSrcRangeEnd();
+            unsigned drs=TCPUDPService::cast(s)->getDstRangeStart();
+            unsigned dre=TCPUDPService::cast(s)->getDstRangeEnd();
 
             if (srs!=0 && sre==0) sre=srs;
             if (drs!=0 && dre==0) dre=drs;
@@ -343,10 +343,10 @@ bool PolicyCompiler_ipfw::sortTCPUDPServices::processNext()
 	Service *s=Service::cast(o);
 	assert(s!=NULL);
 
-        unsigned srs=s->getInt("src_range_start");
-        unsigned sre=s->getInt("src_range_end");
-        unsigned drs=s->getInt("dst_range_start");
-        unsigned dre=s->getInt("dst_range_end");
+        unsigned srs=TCPUDPService::cast(s)->getSrcRangeStart();
+        unsigned sre=TCPUDPService::cast(s)->getSrcRangeEnd();
+        unsigned drs=TCPUDPService::cast(s)->getDstRangeStart();
+        unsigned dre=TCPUDPService::cast(s)->getDstRangeEnd();
 
         if (srs!=0 && sre==0) sre=srs;
         if (drs!=0 && dre==0) dre=drs;

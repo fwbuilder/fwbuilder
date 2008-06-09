@@ -908,7 +908,7 @@ void newFirewallDialog::finishClicked()
  * TODO: need to add flags to the API to be able to delete objects
  * without placing them in "Deleted objects" automatically
  */
-        FWObject *delObjLib = mw->db()->getById( DELETED_LIB );
+        FWObject *delObjLib = mw->db()->getById( FWObjectDatabase::DELETED_OBJECTS_ID );
         if (delObjLib!=NULL && delObjLib->getById(tlibID)!=NULL)
         {
             if (fwbdebug) qDebug("newFirewallDialog::accept  Delete library of templates from 'Deleted objects'");

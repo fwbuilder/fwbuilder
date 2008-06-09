@@ -171,21 +171,21 @@ bool findDialog::matchAttr(libfwbuilder::FWObject *obj)
             if (m_dialog->useRegexp->isChecked())
             {
                 QString port;
-                port.setNum(obj->getInt("src_range_start"));
+                port.setNum(TCPUDPService::cast(obj)->getSrcRangeStart());
                 res |= ( port.indexOf( QRegExp(s) )!=-1 );
-                port.setNum(obj->getInt("src_range_end"));
+                port.setNum(TCPUDPService::cast(obj)->getSrcRangeEnd());
                 res |= ( port.indexOf( QRegExp(s) )!=-1 );
-                port.setNum(obj->getInt("dst_range_start"));
+                port.setNum(TCPUDPService::cast(obj)->getDstRangeStart());
                 res |= ( port.indexOf( QRegExp(s) )!=-1 );
-                port.setNum(obj->getInt("dst_range_end"));
+                port.setNum(TCPUDPService::cast(obj)->getDstRangeEnd());
                 res |= ( port.indexOf( QRegExp(s) )!=-1 );
             } else
             {
                 int port = s.toInt();
-                res |= (port == obj->getInt("src_range_start"));
-                res |= (port == obj->getInt("src_range_end"));
-                res |= (port == obj->getInt("dst_range_start"));
-                res |= (port == obj->getInt("dst_range_end"));
+                res |= (port == TCPUDPService::cast(obj)->getSrcRangeStart());
+                res |= (port == TCPUDPService::cast(obj)->getSrcRangeEnd());
+                res |= (port == TCPUDPService::cast(obj)->getDstRangeStart());
+                res |= (port == TCPUDPService::cast(obj)->getDstRangeEnd());
             }
             break;
         }
@@ -302,7 +302,10 @@ loop:
     if (fwbdebug)
     {
         qDebug("Found object: o=%p  id=%s  name=%s  type=%s",
-               o, o->getId().c_str(),o->getName().c_str(),o->getTypeName().c_str());
+               o,
+               FWObjectDatabase::getStringId(o->getId()).c_str(),
+               o->getName().c_str(),
+               o->getTypeName().c_str());
     }
 
     m_project->openObject( o );

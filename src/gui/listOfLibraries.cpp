@@ -124,9 +124,9 @@ class findNamePredicate {
 };
 
 class findIdPredicate {
-    QString p;
+    int p;
     public:
-    findIdPredicate(const QString &_p):p(_p){}
+    findIdPredicate(int _p):p(_p){}
     bool operator()(const libData &ld) { return ld.id==p; }
 };
 
@@ -158,7 +158,7 @@ Builder GUI and save back to file again."
 list<libData>::iterator listOfLibraries::add(const QString &path, bool load)
 {
     QString name;
-    QString id;
+    int id = -1;
 
     if ( ! QFile::exists(path) ) return end();
 
@@ -172,10 +172,10 @@ list<libData>::iterator listOfLibraries::add(const QString &path, bool load)
         for (list<FWObject*>::iterator i=libs.begin(); i!=libs.end(); i++)
         {
             name = (*i)->getName().c_str();
-            id   = (*i)->getId().c_str();
-            if ((*i)->getId() == STANDARD_LIB) continue;
-            if ((*i)->getId() == DELETED_LIB)  continue;
-            if ((*i)->getId() == TEMPLATE_LIB) continue;
+            id = (*i)->getId();
+            if (id == FWObjectDatabase::STANDARD_LIB_ID) continue;
+            if (id == FWObjectDatabase::DELETED_OBJECTS_ID)  continue;
+            if (id == FWObjectDatabase::TEMPLATE_LIB_ID) continue;
             break;
         }
 
@@ -192,7 +192,7 @@ list<libData>::iterator listOfLibraries::add(const QString &path, bool load)
         return end();
     }
 
-    if (id.isEmpty()) return end();
+    if (id == -1) return end();
     if (name.isEmpty()) return end();
 
 #if 0
@@ -220,9 +220,9 @@ list<libData>::iterator listOfLibraries::add(const QString &path, bool load)
     }
 #endif
 
-    if (id == STANDARD_LIB) return end();
-    if (id == DELETED_LIB)  return end();
-    if (id == TEMPLATE_LIB) return end();
+    if (id == FWObjectDatabase::STANDARD_LIB_ID) return end();
+    if (id == FWObjectDatabase::DELETED_OBJECTS_ID)  return end();
+    if (id == FWObjectDatabase::TEMPLATE_LIB_ID) return end();
 
     list<libData>::iterator i1=insert(end(),libData( id, name, path, false) );
     i1->load=load;
@@ -255,7 +255,7 @@ bool listOfLibraries::isLoaded(const QString &libName)
     return false;
 }
 
-bool listOfLibraries::isKnown(const QString &id)
+bool listOfLibraries::isKnown(int id)
 {
     list<libData>::iterator it;
     if ( (it=std::find_if(begin(),end(),findIdPredicate(id)))!=end())

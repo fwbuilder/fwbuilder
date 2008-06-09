@@ -55,8 +55,8 @@ class GroupObjectDialog : public QWidget
     std::vector<libfwbuilder::FWObject*> selectedObjects;
 
     libfwbuilder::FWObject *selectedObject;
-    std::map<std::string, ObjectIconViewItem*> allIconViewItems;
-    std::map<std::string, ObjectListViewItem*> allListViewItems;
+    std::map<int, ObjectIconViewItem*> allIconViewItems;
+    std::map<int, ObjectListViewItem*> allListViewItems;
 
     bool init;
 

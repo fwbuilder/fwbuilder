@@ -640,8 +640,8 @@ string PolicyCompiler_ipt::PrintRule::_printSrcPorts(Service *srv)
     std::ostringstream  str;
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
     {
-	int rs=srv->getInt("src_range_start");
-	int re=srv->getInt("src_range_end");
+	int rs=TCPUDPService::cast(srv)->getSrcRangeStart();
+	int re=TCPUDPService::cast(srv)->getSrcRangeEnd();
 	str << _printPorts(rs,re);
     }
     return str.str();
@@ -652,8 +652,8 @@ string PolicyCompiler_ipt::PrintRule::_printDstPorts(Service *srv)
     std::ostringstream  str;
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
     {
-	int rs=srv->getInt("dst_range_start");
-	int re=srv->getInt("dst_range_end");
+	int rs=TCPUDPService::cast(srv)->getDstRangeStart();
+	int re=TCPUDPService::cast(srv)->getDstRangeEnd();
 	str << _printPorts(rs,re);
     }
     return str.str();
@@ -941,7 +941,7 @@ string PolicyCompiler_ipt::PrintRule::_printAddr(Address  *o)
     {
         compiler->warning(
             string("Empty inet address in object ") +
-            o->getId());
+            FWObjectDatabase::getStringId(o->getId()));
         return ostr.str();
     }
 

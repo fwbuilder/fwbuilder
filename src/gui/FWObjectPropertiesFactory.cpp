@@ -202,10 +202,10 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
         {
             int sps,spe,dps,dpe;
 
-            sps=obj->getInt("src_range_start");
-            spe=obj->getInt("src_range_end");
-            dps=obj->getInt("dst_range_start");
-            dpe=obj->getInt("dst_range_end");
+            sps=TCPUDPService::cast(obj)->getSrcRangeStart();
+            spe=TCPUDPService::cast(obj)->getSrcRangeEnd();
+            dps=TCPUDPService::cast(obj)->getDstRangeStart();
+            dpe=TCPUDPService::cast(obj)->getDstRangeEnd();
 
             str << sps << ":" << spe << " / ";
             str << dps << ":" << dpe;
@@ -265,7 +265,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
         if (!tooltip)
         {
             str += QObject::tr("<b>Object Id:</b> ");
-            str += QString(obj->getId().c_str()) + "<br>\n";
+            str += QString(FWObjectDatabase::getStringId(obj->getId()).c_str()) + "<br>\n";
         }
     }
 
@@ -497,10 +497,10 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
         {
             int sps,spe,dps,dpe;
 
-            sps=obj->getInt("src_range_start");
-            spe=obj->getInt("src_range_end");
-            dps=obj->getInt("dst_range_start");
-            dpe=obj->getInt("dst_range_end");
+            sps=TCPUDPService::cast(obj)->getSrcRangeStart();
+            spe=TCPUDPService::cast(obj)->getSrcRangeEnd();
+            dps=TCPUDPService::cast(obj)->getDstRangeStart();
+            dpe=TCPUDPService::cast(obj)->getDstRangeEnd();
 
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
             str += "<table cellspacing=\"0\" cellpadding=\"0\">";

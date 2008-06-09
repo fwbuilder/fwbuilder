@@ -135,7 +135,7 @@ void AddressRangeDialog::validate(bool *res)
     }
 }
 
-void AddressRangeDialog::isChanged(bool *res)
+void AddressRangeDialog::isChanged(bool *)
 {
     //*res=(!init && apply->isEnabled());
 }

@@ -973,7 +973,7 @@ QString RCS::rlog() throw(libfwbuilder::FWException)
     throw( FWException( msg.toLatin1().constData() ) );
 }
 
-QStringList RCS::rcsdiff(const QString &rev) throw(libfwbuilder::FWException)
+QStringList RCS::rcsdiff(const QString&) throw(libfwbuilder::FWException)
 {
     isDiff();
     QString temp = stdoutBuffer;

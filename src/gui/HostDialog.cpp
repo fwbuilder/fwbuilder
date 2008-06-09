@@ -116,7 +116,7 @@ void HostDialog::validate(bool *res)
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
-void HostDialog::isChanged(bool *res)
+void HostDialog::isChanged(bool*)
 {
     //*res=(!init && apply->isEnabled());
 }

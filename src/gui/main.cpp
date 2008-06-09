@@ -697,10 +697,12 @@ int main( int argc, char ** argv )
             if (fwbdebug)
                 qDebug("Main: closing. VisibleFirewall = %p",o);
 
-            if (o) st->setStr("UI/visibleFirewall", o->getId().c_str() );
+            if (o) st->setStr("UI/visibleFirewall",
+                              FWObjectDatabase::getStringId(o->getId()).c_str());
 
             o=mw->getOpened();
-            if (o) st->setStr("UI/visibleObject",   o->getId().c_str() );
+            if (o) st->setStr("UI/visibleObject",
+                              FWObjectDatabase::getStringId(o->getId()).c_str());
         }
 
 

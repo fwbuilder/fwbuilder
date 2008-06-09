@@ -561,7 +561,7 @@ void ObjectEditor::selectObject(FWObject *o)
    ((GroupObjectDialog *) dialogs[ visible ])->selectObject(o);
 }
 
-void ObjectEditor::selectionChanged(FWObject *o)
+void ObjectEditor::selectionChanged(FWObject*)
 {
     /*
     if (visible==-1) return;

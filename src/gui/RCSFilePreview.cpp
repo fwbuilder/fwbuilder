@@ -46,7 +46,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-int RCSViewItem::compare(QTreeWidgetItem *itm, int col, bool ascending) const
+int RCSViewItem::compare(QTreeWidgetItem *itm, int col, bool ) const
 {
     QString rev1 = text(col);
     QString rev2 = itm->text(col);

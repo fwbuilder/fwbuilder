@@ -512,13 +512,15 @@ void ObjectTreeView::dropEvent(QDropEvent *ev)
             if (otvsource!=NULL)
             {
                 FWObjectDatabase* root = otvsource->getCurrentObject()->getRoot();
-                QString id = dragobj->getId().c_str();
-                FWObject * item = root->getById(id.toAscii().data(),true);
-                qDebug(item->getId().c_str());
-                qDebug(item->getTypeName().c_str());
-                qDebug(dragobj->getId().c_str());
-                qDebug(dragobj->getTypeName().c_str());
-                
+                int id = dragobj->getId();
+                FWObject * item = root->getById(id, true);
+                if (fwbdebug)
+                {
+                    qDebug("%d", item->getId());
+                    qDebug(item->getTypeName().c_str());
+                    qDebug("%d", dragobj->getId());
+                    qDebug(dragobj->getTypeName().c_str());
+                }
                 //ProjectPanel * ppsource =  otvsource->m_project ;
             }
             QString n=QString::fromUtf8(dragobj->getName().c_str());
@@ -819,7 +821,8 @@ void ObjectTreeView::setLockFlags()
             FWObject *lib = otvi->getFWObject()->getLibrary();
             // these lbraries are locked anyway, do not let the user
             // lock objects inside because they won't be able to unlock them.
-            if (lib->getId()!=STANDARD_LIB && lib->getId()!=TEMPLATE_LIB)
+            if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
+                lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
             {
                 if (otvi->getFWObject()->getBool("ro"))  Unlockable=true;
                 else                                     Lockable=true;

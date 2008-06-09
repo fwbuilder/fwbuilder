@@ -107,8 +107,10 @@ int ObjConflictResolutionDialog::run(    FWObject *o1,
 
     QString p1, p2;
 
-    FWObject *delObjLib1 = o1->getRoot()->getById( DELETED_LIB );
-    FWObject *delObjLib2 = o2->getRoot()->getById( DELETED_LIB );
+    FWObject *delObjLib1 = o1->getRoot()->getById(
+        FWObjectDatabase::DELETED_OBJECTS_ID );
+    FWObject *delObjLib2 = o2->getRoot()->getById(
+        FWObjectDatabase::DELETED_OBJECTS_ID );
 
     if (delObjLib1!=NULL && o1->isChildOf(delObjLib1))
     {

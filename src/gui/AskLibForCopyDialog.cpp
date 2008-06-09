@@ -61,10 +61,10 @@ void AskLibForCopyDialog::loadObjects()
     {
         FWObject *lib = (*i);
 
-        if ((lib->getId()==DELETED_LIB &&
+        if ((lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID &&
              ! st->getBool("UI/ShowDeletedObjects"))||
-            lib->getId() == STANDARD_LIB ||
-             lib->getId() == TEMPLATE_LIB) 
+            lib->getId() == FWObjectDatabase::STANDARD_LIB_ID ||
+            lib->getId() == FWObjectDatabase::TEMPLATE_LIB_ID) 
              continue;
 
         int ind = addLib( lib );

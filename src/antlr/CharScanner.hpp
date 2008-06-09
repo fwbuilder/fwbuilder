@@ -124,7 +124,8 @@ public:
 	/** called by the generated lexer to do error recovery, override to
 	 * customize the behaviour.
 	 */
-	virtual void recover(const RecognitionException& ex, const BitSet& tokenSet)
+	virtual void recover(const RecognitionException& ,
+                             const BitSet& tokenSet)
 	{
 		consume();
 		consumeUntil(tokenSet);

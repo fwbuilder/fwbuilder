@@ -81,8 +81,8 @@ void findByObjectType(FWObject *o,
 {
     if (skip_system_libs)
     {
-        if (o->getId()==DELETED_LIB) return;
-        if (o->getId()==TEMPLATE_LIB) return;
+        if (o->getId()==FWObjectDatabase::DELETED_OBJECTS_ID) return;
+        if (o->getId()==FWObjectDatabase::TEMPLATE_LIB_ID) return;
     }
 
     for (list<FWObject*>::iterator m=o->begin(); m!=o->end(); m++)

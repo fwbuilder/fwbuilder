@@ -49,7 +49,7 @@ class FindObjectWidget : public QWidget
     libfwbuilder::Firewall* selectedFirewall;
 
     bool matchName(const QString &name);
-    bool matchID(const QString &name);
+    bool matchID(int id);
     bool matchAttr(libfwbuilder::FWObject* obj);
     bool validateReplaceObject();
     libfwbuilder::FWObject* _replaceCurrent();

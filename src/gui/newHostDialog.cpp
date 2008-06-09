@@ -721,7 +721,7 @@ void newHostDialog::finishClicked()
     if (unloadTemplatesLib)
     {
 #if 0
-        FWObject *tlib = mw->db()->getById(TEMPLATE_LIB);
+        FWObject *tlib = mw->db()->getById(FWObjectDatabase::TEMPLATE_LIB_ID);
         assert (tlib!=NULL);
         string tlibID = tlib->getId();
         if (fwbdebug) qDebug("  Delete library of templates");
@@ -734,7 +734,7 @@ void newHostDialog::finishClicked()
  * TODO: need to add flags to the API to be able to delete objects
  * without placing them in "Deleted objects" automatically
  */
-        FWObject *delObjLib = mw->db()->getById( DELETED_LIB );
+        FWObject *delObjLib = mw->db()->getById( FWObjectDatabase::DELETED_OBJECTS_ID );
         if (delObjLib!=NULL && delObjLib->getById(tlibID)!=NULL)
         {
             if (fwbdebug) qDebug("  Delete library of templates from 'Deleted objects'");

@@ -42,14 +42,14 @@ class ObjectIconViewItem : public QListWidgetItem {
 
     libfwbuilder::FWObject  *objptr;
     QMap<QString, QString>   props;
-    std::string                 ID;  
+    int                      ID;  
     
  public:
 
     ObjectIconViewItem(QListWidget *parent) : QListWidgetItem(parent) {
         objptr=NULL;
 //        setDropEnabled(false);
-        ID="";
+        ID=-1;
     }
 
     ObjectIconViewItem(QListWidget *parent, const QString &text, const QPixmap &icon ) : QListWidgetItem(parent) 
@@ -58,11 +58,11 @@ class ObjectIconViewItem : public QListWidgetItem {
         setText(text);
         setIcon(QIcon(icon));
 //        setDropEnabled(false);
-        ID="";
+        ID=-1;
     }
 
     libfwbuilder::FWObject *getFWObject() { return mw->db()->getById(ID,true); }
-    std::string getFWObjectID() {return ID; }
+    int getFWObjectID() {return ID; }
     void setFWObject(libfwbuilder::FWObject *obj) {ID=obj->getId(); }
 
     QString getProperty(const QString &name) { return props[name]; }

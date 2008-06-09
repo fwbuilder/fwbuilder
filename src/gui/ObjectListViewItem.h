@@ -44,31 +44,31 @@ class ObjectListViewItem : public QTreeWidgetItem {
     libfwbuilder::FWObject *objptr;
     QMap<QString, QString>  props;
     QString                 lib;
-    std::string             ID;  
+    int                     ID;  
     
  public:
 
     ObjectListViewItem(QTreeWidget *parent) : QTreeWidgetItem(parent) {
         objptr=NULL;
-        ID="";
+        ID=-1;
     }
 
     ObjectListViewItem(QTreeWidgetItem *parent) : QTreeWidgetItem(parent){
         objptr=NULL;
-        ID="";
+        ID=-1;
     }
 
     libfwbuilder::FWObject *getFWObject() {return mw->db()->getById(ID,true); }
-    std::string getFWObjectID() {return ID; }
+    int getFWObjectID() {return ID; }
     void setFWObject(libfwbuilder::FWObject *obj) { ID=obj->getId(); }
 
     ObjectTreeView* getTree();
 
     QString getLib() { return lib; }
-    void        setLib(const QString &l) { lib=l; }
+    void setLib(const QString &l) { lib=l; }
 
     QString getProperty(const QString &name) { return props[name]; }
-    void        setProperty(const QString &name,const QString &val) {
+    void setProperty(const QString &name,const QString &val) {
         props[name]=val;
     }
 };

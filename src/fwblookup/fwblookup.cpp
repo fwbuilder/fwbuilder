@@ -238,7 +238,7 @@ int main(int argc, char * const *argv)
             }
         } else {
 /* got object ID */
-            obj=objdb->getById(object,true);
+            obj=objdb->getById(FWObjectDatabase::getIntId(object), true);
             if (obj==NULL) 
             {
                 SNPRINTF(errstr,sizeof(errstr),_("Object with ID='%s' not found"),object );
@@ -255,7 +255,7 @@ int main(int argc, char * const *argv)
                 SNPRINTF(errstr,sizeof(errstr),
                          _("Object %s (ID='%s') does not have attribute %s"),
                          obj->getName().c_str(),
-                         obj->getId().c_str(),
+                         FWObjectDatabase::getStringId(obj->getId()).c_str(),
                          attr );
                 throw FWException(errstr);
             }                
@@ -273,9 +273,9 @@ int main(int argc, char * const *argv)
                     } else 
                     {
                         SNPRINTF(errstr,sizeof(errstr),
-                            _("Object %s (ID='%s') has no options"),
-                             obj->getName().c_str(),
-                             obj->getId().c_str() );
+                                 _("Object %s (ID='%s') has no options"),
+                                 obj->getName().c_str(),
+                                 FWObjectDatabase::getStringId(obj->getId()).c_str() );
                         throw FWException(errstr);
                     }
                 } else 
@@ -283,7 +283,7 @@ int main(int argc, char * const *argv)
                     SNPRINTF(errstr,sizeof(errstr),
                              _("Can not print management address for %s (ID='%s'): only Host and Firewall objects have management interface"),
                              obj->getName().c_str(),
-                             obj->getId().c_str() );
+                             FWObjectDatabase::getStringId(obj->getId()).c_str() );
                     throw FWException(errstr);
                 }
 
@@ -297,7 +297,7 @@ int main(int argc, char * const *argv)
                     SNPRINTF(errstr,sizeof(errstr),
                              _("Can not print address for %s (ID='%s'): objects of this type do not have address"),
                              obj->getName().c_str(),
-                             obj->getId().c_str() );
+                             FWObjectDatabase::getStringId(obj->getId()).c_str() );
                     throw FWException(errstr);
                 }
             }
@@ -309,7 +309,7 @@ int main(int argc, char * const *argv)
                     SNPRINTF(errstr,sizeof(errstr),
                              _("Can not print label for %s (ID='%s'): only Interface object has label"),
                              obj->getName().c_str(),
-                             obj->getId().c_str() );
+                             FWObjectDatabase::getStringId(obj->getId()).c_str() );
                     throw FWException(errstr);
                 }
             }
@@ -326,14 +326,14 @@ int main(int argc, char * const *argv)
                         SNPRINTF(errstr,sizeof(errstr),
                             _("Object %s (ID='%s') does not have management interface"),
                              obj->getName().c_str(),
-                             obj->getId().c_str() );
+                                 FWObjectDatabase::getStringId(obj->getId()).c_str() );
                         throw FWException(errstr);
                     }
                 } else {
                     SNPRINTF(errstr,sizeof(errstr),
                              _("Can not print management address for %s (ID='%s'): only Host and Firewall objects have management interface"),
                              obj->getName().c_str(),
-                             obj->getId().c_str() );
+                             FWObjectDatabase::getStringId(obj->getId()).c_str() );
                     throw FWException(errstr);
                 }
             }

@@ -203,8 +203,8 @@ bool PolicyCompiler_pix::PrintObjectGroupsAndClearCommands::processNext()
                 Service *s=Service::cast(obj);
                 assert(s!=NULL);
 
-                int rs=s->getInt("dst_range_start");
-                int re=s->getInt("dst_range_end");
+                int rs=TCPUDPService::cast(s)->getDstRangeStart();
+                int re=TCPUDPService::cast(s)->getDstRangeEnd();
 
                 if (rs<0) rs=0;
                 if (re<0) re=0;
@@ -304,8 +304,8 @@ string PolicyCompiler_pix::PrintRule::_printSrcService(libfwbuilder::Service *sr
 
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
     {
-	int rs=srv->getInt("src_range_start");
-	int re=srv->getInt("src_range_end");
+	int rs=TCPUDPService::cast(srv)->getSrcRangeStart();
+	int re=TCPUDPService::cast(srv)->getSrcRangeEnd();
 
         if (rs<0) rs=0;
         if (re<0) re=0;
@@ -328,8 +328,8 @@ string PolicyCompiler_pix::PrintRule::_printDstService(libfwbuilder::Service *sr
     ostringstream  str;
 
     if (TCPService::isA(srv) || UDPService::isA(srv)) {
-	int rs=srv->getInt("dst_range_start");
-	int re=srv->getInt("dst_range_end");
+	int rs=TCPUDPService::cast(srv)->getDstRangeStart();
+	int re=TCPUDPService::cast(srv)->getDstRangeEnd();
 
         if (rs<0) rs=0;
         if (re<0) re=0;
@@ -472,7 +472,7 @@ string    PolicyCompiler_pix::PrintRule::_printSSHTelnetCommand(PolicyRule *rule
     Interface  *rule_iface = compiler->getCachedFwInterface(rule->getInterfaceId());
     assert(rule_iface);
     
-    port=srv->getInt("dst_range_start");
+    port=TCPUDPService::cast(srv)->getDstRangeStart();
 
     for (FWObject::iterator i=rel->begin(); i!=rel->end(); ++i)
     {

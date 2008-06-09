@@ -50,9 +50,9 @@ struct FWObjectNameCmpPredicate :
 
 class findFWObjectIDPredicate : public std::unary_function<libfwbuilder::FWObject*, bool>
 {
-    std::string _id;
+    int _id;
     public:
-    findFWObjectIDPredicate(const std::string &id):_id(id) {}
+    findFWObjectIDPredicate(int id):_id(id) {}
     bool operator()(const libfwbuilder::FWObject *o) const
     {return o->getId()==_id;}
 };

@@ -59,13 +59,13 @@ namespace libfwbuilder
 
 class HistoryItem {
     ObjectTreeViewItem *itm;
-    QString         objId;
+    int                 objId;
 
  public:
-    HistoryItem(ObjectTreeViewItem *oi,const QString &id) { itm=oi; objId=id; }
+    HistoryItem(ObjectTreeViewItem *oi, int id) { itm=oi; objId=id; }
     ~HistoryItem();
     ObjectTreeViewItem* item() { return itm;   }
-    QString         id()   { return objId; }
+    int  id()   { return objId; }
 };
 
 /*class ObjToolTip : public QToolTip {
@@ -82,8 +82,8 @@ class ObjectManipulator : public QWidget/*ObjectManipulator_q*/ {
     Q_OBJECT
 
     std::vector<libfwbuilder::FWObject*>          idxToLibs;
-    std::vector<QTreeWidget*>                       idxToTrees;
-    QSet <QString> ids ;     
+    std::vector<QTreeWidget*>                     idxToTrees;
+    QSet<int> ids ;     
     std::stack<HistoryItem>                       history;
     int cacheHits;
 

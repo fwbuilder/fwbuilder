@@ -587,10 +587,11 @@ FWObject* Importer::getTCPService(int srs, int sre,
 
     TCPService* s = TCPService::cast(
         createObject(TCPService::TYPENAME, nstr.str()));
-    s->setInt("src_range_start", srs);
-    s->setInt("src_range_end",   sre);
-    s->setInt("dst_range_start", drs);
-    s->setInt("dst_range_end",   dre);
+    s->setSrcRangeStart(srs);
+    s->setSrcRangeEnd(sre);
+    s->setDstRangeStart(drs);
+    s->setDstRangeEnd(dre);
+
 
     if (!flags_mask.empty() && !flags_comp.empty())
     {
@@ -652,10 +653,10 @@ FWObject* Importer::getUDPService(int srs, int sre, int drs, int dre)
          << srs << "-" << sre << ":" << drs << "-" << dre;
 
     UDPService* s = UDPService::cast(createObject(UDPService::TYPENAME, nstr.str()));
-    s->setInt("src_range_start", srs);
-    s->setInt("src_range_end",   sre);
-    s->setInt("dst_range_start", drs);
-    s->setInt("dst_range_end",   dre);
+    s->setSrcRangeStart(srs);
+    s->setSrcRangeEnd(sre);
+    s->setDstRangeStart(drs);
+    s->setDstRangeEnd(dre);
 
     s->setComment(cstr.str());
     all_objects[sstr.str()] = s;

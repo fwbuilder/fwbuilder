@@ -455,8 +455,8 @@ bool NATCompiler_pix::verifyRuleElements::processNext()
 
 	if (TCPService::isA(osrv) || UDPService::isA(osrv))
         {
-	    int drs=osrv->getInt("dst_range_start");
-	    int dre=osrv->getInt("dst_range_end");
+	    int drs=TCPUDPService::cast(osrv)->getDstRangeStart();
+	    int dre=TCPUDPService::cast(osrv)->getDstRangeEnd();
 
 	    if (drs!=dre)
 		compiler->abort("TCP or UDP service with a port range is not "
@@ -464,8 +464,8 @@ bool NATCompiler_pix::verifyRuleElements::processNext()
 	}
 	if (TCPService::isA(tsrv) || UDPService::isA(tsrv))
         {
-	    int drs=tsrv->getInt("dst_range_start");
-	    int dre=tsrv->getInt("dst_range_end");
+	    int drs=TCPUDPService::cast(tsrv)->getDstRangeStart();
+	    int dre=TCPUDPService::cast(tsrv)->getDstRangeEnd();
 
 	    if (drs!=dre)
 		compiler->abort("TCP or UDP service with a port range is not "
@@ -1346,25 +1346,31 @@ bool  NATCompiler_pix::DetectDuplicateNAT::processNext()
                  *(natcmd->o_srv)==*(nc->o_srv)
             )
             {
-                compiler->abort("Duplicate NAT detected: rules "
-                                +rule->getLabel()
-                                +" and "+nc->rule_label
-                                +" : "+natcmd->o_src->getAddressPtr()->toString()
-                                +"/"+natcmd->o_src->getNetmaskPtr()->toString()
-                                + " "
-                                + natcmd->o_srv->getProtocolName()
-                                + natcmd->o_srv->getStr("src_range_start")+":"
-                                + natcmd->o_srv->getStr("src_range_end")+":"
-                                + " "
-                                +"->"+natcmd->o_dst->getAddressPtr()->toString()
-                                +"/"+natcmd->o_dst->getNetmaskPtr()->toString()
-                                + " "
-                                + natcmd->o_srv->getStr("dst_range_start")+"/"
-                                + natcmd->o_srv->getStr("dst_range_end"));
-            }
+                ostringstream str;
+                str << "Duplicate NAT detected: rules "
+                    << rule->getLabel()
+                    << " and "<< nc->rule_label
+                    << " : "<< natcmd->o_src->getAddressPtr()->toString()
+                    << "/"<< natcmd->o_src->getNetmaskPtr()->toString()
+                    <<  " "
+                    <<  natcmd->o_srv->getProtocolName()
+                    << " "
+                    <<  TCPUDPService::cast(natcmd->o_srv)->getSrcRangeStart()
+                    << ":"
+                    <<  TCPUDPService::cast(natcmd->o_srv)->getSrcRangeEnd()
+                    << " "
+                    << "->"<< natcmd->o_dst->getAddressPtr()->toString()
+                    << "/"<< natcmd->o_dst->getNetmaskPtr()->toString()
+                    <<  " "
+                    <<  TCPUDPService::cast(natcmd->o_srv)->getDstRangeStart()
+                    << "/"
+                    <<  TCPUDPService::cast(natcmd->o_srv)->getDstRangeEnd();
+
+            compiler->abort(str.str());
         }
     }
-    return true;
+}
+return true;
 }
 
 bool  NATCompiler_pix::DetectOverlappingStatics::processNext()

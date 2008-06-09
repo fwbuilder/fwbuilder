@@ -132,7 +132,7 @@ void RuleSetDialog::validate(bool *res)
     }
 }
 
-void RuleSetDialog::isChanged(bool *res)
+void RuleSetDialog::isChanged(bool *)
 {
     //*res=(!init && apply->isEnabled());
 }

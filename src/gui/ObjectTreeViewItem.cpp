@@ -92,8 +92,5 @@ bool ObjectTreeViewItem::operator< ( const QTreeWidgetItem & other ) const
     {
         return true ;
     }
-    if (rank1<rank2)
-    {
-        return false ;
-    }
+    return false ;
 }

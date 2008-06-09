@@ -74,10 +74,10 @@ void TCPServiceDialog::loadFWObject(FWObject *o)
     init=true;
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
-    m_dialog->ss->setValue( s->getInt("src_range_start") );
-    m_dialog->se->setValue( s->getInt("src_range_end") );
-    m_dialog->ds->setValue( s->getInt("dst_range_start") );
-    m_dialog->de->setValue( s->getInt("dst_range_end") );
+    m_dialog->ss->setValue( TCPUDPService::cast(s)->getSrcRangeStart() );
+    m_dialog->se->setValue( TCPUDPService::cast(s)->getSrcRangeEnd() );
+    m_dialog->ds->setValue( TCPUDPService::cast(s)->getDstRangeStart() );
+    m_dialog->de->setValue( TCPUDPService::cast(s)->getDstRangeEnd() );
 
     m_dialog->urg_m->setChecked( s->getBool("urg_flag_mask") );
     m_dialog->ack_m->setChecked( s->getBool("ack_flag_mask") );
@@ -220,10 +220,11 @@ void TCPServiceDialog::applyChanges()
     if (m_dialog->ss->value()!=0 && m_dialog->se->value()==0) m_dialog->se->setValue( m_dialog->ss->value() );
     if (m_dialog->ds->value()!=0 && m_dialog->de->value()==0) m_dialog->de->setValue( m_dialog->ds->value() );
 
-    obj->setInt("src_range_start", m_dialog->ss->value() );
-    obj->setInt("src_range_end",   m_dialog->se->value() );
-    obj->setInt("dst_range_start", m_dialog->ds->value() );
-    obj->setInt("dst_range_end",   m_dialog->de->value() );
+
+    TCPUDPService::cast(obj)->setSrcRangeStart(m_dialog->ss->value());
+    TCPUDPService::cast(obj)->setSrcRangeEnd(m_dialog->se->value());
+    TCPUDPService::cast(obj)->setDstRangeStart(m_dialog->ds->value());
+    TCPUDPService::cast(obj)->setDstRangeEnd(m_dialog->de->value());
 
     obj->setBool("urg_flag_mask", m_dialog->urg_m->isChecked() );
     obj->setBool("ack_flag_mask", m_dialog->ack_m->isChecked() );

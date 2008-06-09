@@ -102,7 +102,8 @@ void PolicyCompiler_ipt::optimize1::optimizeForRuleElement(PolicyRule    *rule,
                    if (TCPService::isA(srv))
                    {
                        re->clearChildren();
-                       re->addRef(compiler->dbcopy->findInIndex(ANY_TCP_OBJ_ID));
+                       re->addRef(compiler->dbcopy->findInIndex(
+                                      FWObjectDatabase::getIntId(ANY_TCP_OBJ_ID)));
 /* also leave a flag indicating that further optimization by service
  * is not needed */
                        rule->setBool("do_not_optimize_by_srv",true);

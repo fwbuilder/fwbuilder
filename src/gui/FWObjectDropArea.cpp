@@ -72,7 +72,7 @@ FWObjectDropArea::FWObjectDropArea(QWidget*p, const char * n, Qt::WFlags f):
     helperText =tr("Drop object here.");
 
 }
-void FWObjectDropArea::paintEvent(QPaintEvent *ev)
+void FWObjectDropArea::paintEvent(QPaintEvent *)
 {
     int w=width();
     int h=height();
@@ -215,7 +215,7 @@ void FWObjectDropArea::dragEnterEvent( QDragEnterEvent *ev)
 
 void FWObjectDropArea::pasteObject()
 {
-    vector<string>::iterator i;
+    vector<int>::iterator i;
     for( i= FWObjectClipboard::obj_clipboard->begin();
          i!=FWObjectClipboard::obj_clipboard->end(); ++i)
     {

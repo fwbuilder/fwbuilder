@@ -54,10 +54,10 @@ extern int             fwbdebug;
 extern bool            registered;
 extern bool            gui_experiment1;
 
-#define STANDARD_LIB "syslib000"
-#define USER_LIB     "syslib001"
-#define TEMPLATE_LIB "syslib100"
-#define DELETED_LIB  "sysid99"
+//#define STANDARD_LIB "syslib000"
+//#define USER_LIB     "syslib001"
+//#define TEMPLATE_LIB "syslib100"
+//#define DELETED_LIB  "sysid99"
 
 
 #ifdef NDEBUG

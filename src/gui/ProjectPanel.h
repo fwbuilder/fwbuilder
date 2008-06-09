@@ -103,13 +103,13 @@ class ProjectPanel: public QWidget {
                            const std::list<libfwbuilder::FWObject*> &objList,std::list<libfwbuilder::FWReference*> & refLinfs);
 
     void restorePolicyRefs(libfwbuilder::Policy *pol, libfwbuilder::Policy *pol_old, 
-        const std::map<const std::string, libfwbuilder::FWObject *> &objByIds);
+        const std::map<int, libfwbuilder::FWObject *> &objByIds);
     void restorePolicyRuleRefs(libfwbuilder::PolicyRule *rule, 
         libfwbuilder::PolicyRule *rule_old, 
-        const std::map<const std::string, libfwbuilder::FWObject *> &objByIds);
+        const std::map<int, libfwbuilder::FWObject *> &objByIds);
     void restoreRERefs(libfwbuilder::RuleElement *re_new, 
           libfwbuilder::RuleElement *re_old,
-          const std::map<const std::string, libfwbuilder::FWObject *> &objByIds);
+          const std::map<int, libfwbuilder::FWObject *> &objByIds);
 public:  
     libfwbuilder::RuleSet* getCurrentRuleSet () {return visibleRuleSet;};
     RuleSetView * getCurrentRuleSetView () ;
@@ -279,7 +279,7 @@ public:
        std::list<libfwbuilder::FWObject*> & objList, std::list<libfwbuilder::FWReference*> & refLinfs,
        libfwbuilder::FWObject *lib);
     void restoreDepends(libfwbuilder::FWObject *obj_old, libfwbuilder::FWObject *nobj, 
-       const std::map<const std::string, libfwbuilder::FWObject *> &objByIds);
+       const std::map<int, libfwbuilder::FWObject *> &objByIds);
  public slots:
     void newObject();
     void info();

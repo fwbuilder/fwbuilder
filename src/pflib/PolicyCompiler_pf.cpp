@@ -383,8 +383,9 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
             PolicyRule *r;
             TCPService *ssh =
                 TCPService::cast(dbcopy->create(TCPService::TYPENAME) );
-            ssh->setInt("dst_range_start",22);
-            ssh->setInt("dst_range_end",22);
+            ssh->setDstRangeStart(22);
+            ssh->setDstRangeEnd(22);
+
             ssh->setName("mgmt_ssh");
             dbcopy->add(ssh,false);
             cacheObj(ssh); // to keep cache consistent
@@ -887,8 +888,8 @@ bool PolicyCompiler_pf::separateSrcPort::processNext()
 	assert(s!=NULL);
 
 	if ( TCPService::isA(s) || UDPService::isA(s) ) {
-            int srs=s->getInt("src_range_start");
-            int sre=s->getInt("src_range_end");
+            int srs=TCPUDPService::cast(s)->getSrcRangeStart();
+            int sre=TCPUDPService::cast(s)->getSrcRangeEnd();
 
             compiler->normalizePortRange(srs,sre);
 

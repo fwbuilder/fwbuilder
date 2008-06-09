@@ -129,7 +129,7 @@ void DialogData::loadToWidget( DialogOption &dopt , bool override)
  */
             slist.clear();
 
-            unsigned idx = 0;
+            int idx = 0;
             QStringList::iterator i1 = dopt.mapping.begin();
             QStringList::iterator i2 = dopt.mapping.begin();
             ++i2;

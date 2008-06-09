@@ -331,7 +331,8 @@ FWBTree::FWBTree()
 bool FWBTree::isSystem(FWObject *obj)
 {
     if (Library::isA(obj))
-        return (obj->getId()==STANDARD_LIB || obj->getId()==DELETED_LIB);
+        return (obj->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
+                obj->getId()==FWObjectDatabase::DELETED_OBJECTS_ID);
 
     if (FWObjectDatabase::isA(obj)) return true;
 
@@ -346,7 +347,7 @@ bool FWBTree::isSystem(FWObject *obj)
 
 bool FWBTree::isStandardId(FWObject *obj)
 {
-    return standardIDs[ obj->getId() ];
+    return standardIDs[ FWObjectDatabase::getStringId(obj->getId()).c_str() ];
 }
 
 bool FWBTree::validateForInsertion(FWObject *target, FWObject *obj)

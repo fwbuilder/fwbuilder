@@ -174,7 +174,7 @@ void IPv4Dialog::validate(bool *res)
     }
 }
 
-void IPv4Dialog::isChanged(bool *res)
+void IPv4Dialog::isChanged(bool *)
 {
     //*res=(!init && apply->isEnabled());
 
