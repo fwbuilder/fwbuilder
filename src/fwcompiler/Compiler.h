@@ -237,12 +237,6 @@ namespace fwcompiler {
 
         bool                               test_mode;
 
-        // this map associates IDs of MultiAddress objects with corresponding
-        // MultiAddressRunTime objects
-        std::map<int, int> multi_address_run_time_association;
-        
-        
-        
         void registerIPv6Rule() { countIPv6Rules++; }
         bool haveIPv6Rules() { return countIPv6Rules > 0; }
 

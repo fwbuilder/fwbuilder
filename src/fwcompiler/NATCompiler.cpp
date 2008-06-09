@@ -756,40 +756,54 @@ string NATCompiler::debugPrintRule(libfwbuilder::Rule *r)
         string tdst = " ";
         string tsrv = " ";
 
+        int osrc_id = -1;
+        int odst_id = -1;
+        int osrv_id = -1;
+
+        int tsrc_id = -1;
+        int tdst_id = -1;
+        int tsrv_id = -1;
+
         if (i1!=osrcrel->end()) {
             FWObject *o=*i1;
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             osrc=o->getName();
+            osrc_id=o->getId();
         }
 
         if (i2!=odstrel->end()) {
             FWObject *o=*i2;
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             odst=o->getName();
+            odst_id=o->getId();
         }
 
         if (i3!=osrvrel->end()) {
             FWObject *o=*i3;
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             osrv=o->getName();
+            osrv_id=o->getId();
         }
 
         if (i4!=tsrcrel->end()) {
             FWObject *o=*i4;
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             tsrc=o->getName();
+            tsrc_id=o->getId();
         }
 
         if (i5!=tdstrel->end()) {
             FWObject *o=*i5;
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             tdst=o->getName();
+            tdst_id=o->getId();
         }
 
         if (i6!=tsrvrel->end()) {
             FWObject *o=*i6;
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             tsrv=o->getName();
+            tsrv_id=o->getId();
         }
 
         int w=0;
@@ -798,17 +812,17 @@ string NATCompiler::debugPrintRule(libfwbuilder::Rule *r)
             w=rule->getLabel().length();
         }
         
-        str <<  setw(8-w)  << setfill(' ') << " ";
+        str << setw(8-w)  << setfill(' ') << " ";
 
-        str <<  setw(16) << setfill(' ') << osrc.c_str();
-        str <<  setw(16) << setfill(' ') << odst.c_str();
-        str <<  setw(10) << setfill(' ') << osrv.c_str();
+        str << setw(16) << setfill(' ') << osrc.c_str() << "(" << osrc_id << ")";
+        str << setw(16) << setfill(' ') << odst.c_str() << "(" << odst_id << ")";
+        str << setw(10) << setfill(' ') << osrv.c_str() << "(" << osrv_id << ")";
 //        str <<  endl;
 //
 //        str <<  setw(8)  << setfill(' ') << " ";
-        str <<  setw(16) << setfill(' ') << tsrc.c_str();
-        str <<  setw(16) << setfill(' ') << tdst.c_str();
-        str <<  setw(10) << setfill(' ') << tsrv.c_str();
+        str << setw(16) << setfill(' ') << tsrc.c_str() << "(" << tsrc_id << ")";
+        str << setw(16) << setfill(' ') << tdst.c_str() << "(" << tdst_id << ")";
+        str << setw(10) << setfill(' ') << tsrv.c_str() << "(" << tsrv_id << ")";
 
 
         ++no;

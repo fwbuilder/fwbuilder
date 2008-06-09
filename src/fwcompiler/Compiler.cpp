@@ -90,8 +90,6 @@ void Compiler::cacheObj(libfwbuilder::FWObject *o)
 
 int Compiler::prolog() 
 {
-    multi_address_run_time_association.clear();
-
     temp=new Group();
 
     fw->add(temp,false);
@@ -1265,14 +1263,19 @@ bool Compiler::swapMultiAddressObjectsInRE::processNext()
         {
             MultiAddress *ma = *i;
 
-            //string mart_id = ma->getId()+"_runtime";
-            int mart_id = FWObjectDatabase::generateUniqueId();
+            // Need to make sure the ID of the MultiAddressRunTime
+            // object created here is stable and is always the same
+            // for the same MultiAddress object. In particular this
+            // ensures that we reuse tables between policy and NAT rules
+            // in compiler for PF. There could be other similar cases
+            // (object-group in compielr for pix may be ?)
+            string mart_id_str = FWObjectDatabase::getStringId(ma->getId()) +
+                "_runtime";
+            int mart_id = FWObjectDatabase::registerStringId(mart_id_str);
             MultiAddressRunTime *mart = MultiAddressRunTime::cast(
                 compiler->dbcopy->findInIndex(mart_id));
             if (mart==NULL)
             {
-                compiler->multi_address_run_time_association[ma->getId()] = mart_id;
-
                 mart = new MultiAddressRunTime(ma);
 
                 // need to ensure stable ID for the runtime object, so

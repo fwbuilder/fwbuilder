@@ -1151,6 +1151,10 @@ string PolicyCompiler::debugPrintRule(Rule *r)
         string dst=" ";
         string srv=" ";
 
+        int src_id = -1;
+        int dst_id = -1;
+        int srv_id = -1;
+
         if (srcrel->getNeg()) src="!";
         if (dstrel->getNeg()) dst="!";
         if (srvrel->getNeg()) srv="!";
@@ -1158,21 +1162,22 @@ string PolicyCompiler::debugPrintRule(Rule *r)
         if (i1!=srcrel->end()) {
             FWObject *o=*i1;
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-            src+=o->getName();
-            src+="("+FWObjectDatabase::getStringId(o->getId())+")";
+            src += o->getName();
+            src_id = o->getId();
         }
 
         if (i2!=dstrel->end()) {
             FWObject *o=*i2;
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-            dst+=o->getName();
-            dst+="("+FWObjectDatabase::getStringId(o->getId())+")";
+            dst += o->getName();
+            dst_id = o->getId();
         }
 
         if (i3!=srvrel->end()) {
             FWObject *o=*i3;
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-            srv+=o->getName();
+            srv += o->getName();
+            srv_id = o->getId();
         }
 
         int w=0;
@@ -1183,11 +1188,12 @@ string PolicyCompiler::debugPrintRule(Rule *r)
         
         str <<  setw(10-w)  << setfill(' ') << " ";
 
-        str <<  setw(18) << setfill(' ') << src.c_str();
-        str <<  setw(18) << setfill(' ') << dst.c_str();
-        str <<  setw(12) << setfill(' ') << srv.c_str();
+        str <<  setw(18) << setfill(' ') << src.c_str() << "(" << src_id << ")";
+        str <<  setw(18) << setfill(' ') << dst.c_str() << "(" << dst_id << ")";
+        str <<  setw(12) << setfill(' ') << srv.c_str() << "(" << srv_id << ")";
 
-        if (no==0) {
+        if (no==0)
+        {
             str <<  setw(9)  << setfill(' ') << rule->getActionAsString().c_str();
             str <<  setw(9)  << setfill(' ') << rule->getDirectionAsString().c_str();
             if (rule_iface!=NULL) str << " " << rule_iface->getName();
