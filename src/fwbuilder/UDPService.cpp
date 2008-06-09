@@ -35,68 +35,13 @@ using namespace std;
 
 const char *UDPService::TYPENAME={"UDPService"};
 
-UDPService::UDPService()  
-{
-    setInt("src_range_start", 0);
-    setInt("src_range_end",   0);
-    setInt("dst_range_start", 0);
-    setInt("dst_range_end",   0);
-}
+UDPService::UDPService()  {}
 
-UDPService::UDPService(const FWObject *root,bool prepopulate) : Service(root,prepopulate) 
-{
-    setInt("src_range_start", 0);
-    setInt("src_range_end",   0);
-    setInt("dst_range_start", 0);
-    setInt("dst_range_end",   0);
-}
+UDPService::UDPService(const FWObject *root, bool prepopulate) :
+    TCPUDPService(root, prepopulate) {}
 
 UDPService::~UDPService() {}
 
 string UDPService::getProtocolName()   {    return "udp"; }
 int    UDPService::getProtocolNumber() {    return 17;    }
-
-void UDPService::fromXML(xmlNodePtr root) throw(FWException)
-{
-    FWObject::fromXML(root);
-
-    const char *n;
-
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("src_range_start")));
-    if(n!=NULL)
-    {
-        setStr("src_range_start", n);
-        FREEXMLBUFF(n);
-    }
-
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("src_range_end")));
-    if(n!=NULL)
-    {
-        setStr("src_range_end", n);
-        FREEXMLBUFF(n);
-    }
-
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dst_range_start")));
-    if(n!=NULL)
-    {
-        setStr("dst_range_start", n);
-        FREEXMLBUFF(n);
-    }
-
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dst_range_end")));
-    if(n!=NULL)
-    {
-        setStr("dst_range_end", n);
-        FREEXMLBUFF(n);
-    }
-
-}
-
-
-
-
-
-
-
-
 

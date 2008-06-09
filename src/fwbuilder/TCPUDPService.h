@@ -2,11 +2,11 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2008 NetCitadel, LLC
+                 Copyright (C) 2000 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id$
+  $Id: TCPUDPService.h 35 2008-04-26 19:13:33Z vadim $
 
 
   This program is free software which we release under the GNU General Public
@@ -24,51 +24,60 @@
 
 */
 
-#ifndef __IPV6_HH_FLAG__
-#define __IPV6_HH_FLAG__
 
-#include <string>
+#ifndef __TCPUDPSERVICE_HH_FLAG__
+#define __TCPUDPSERVICE_HH_FLAG__
 
-#include <fwbuilder/InetAddrMask.h>
-#include <fwbuilder/Address.h>
-#include <fwbuilder/FWException.h>
+#include <fwbuilder/Service.h>
 
 namespace libfwbuilder
 {
 
-class IPv6 : public Address
+class TCPUDPService : public Service
 {
-public:
     
-    IPv6();
-    IPv6(const FWObject *root, bool prepopulate);
+    protected:
 
-    virtual ~IPv6();
+    int src_range_start;
+    int src_range_end;
+    int dst_range_start;
+    int dst_range_end;
+    
+    public:
 
+    TCPUDPService();
+    TCPUDPService(const FWObject *root,bool prepopulate);
+    virtual ~TCPUDPService();
+    
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
-
-    virtual unsigned int dimension()  const { return 1; }
-    
-    DECLARE_FWOBJECT_SUBTYPE(IPv6);
 
     virtual FWObject& shallowDuplicate(const FWObject *obj,
                                        bool preserve_id = true)
         throw(FWException);
 
-    virtual const bool hasInetAddress() const { return true; }
+    
+    DECLARE_FWOBJECT_SUBTYPE(TCPUDPService);
+    
+    virtual std::string getProtocolName();
+    virtual int    getProtocolNumber();
 
-    virtual const Address* getAddressObject() const { return this; }
+    int getSrcRangeStart() const { return src_range_start; }
+    int getSrcRangeEnd()   const { return src_range_end; }
+    int getDstRangeStart() const { return dst_range_start; }
+    int getDstRangeEnd()   const { return dst_range_end; }
 
-    virtual void setAddress(const InetAddr &a);
-    virtual void setNetmask(const InetAddr &nm);
-    virtual void setAddressNetmask(const std::string& s);
-
-    virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0);
+    void setSrcRangeStart(int p) { src_range_start = p; }
+    void setSrcRangeEnd(int p) { src_range_end = p; }
+    void setDstRangeStart(int p) { dst_range_start = p; }
+    void setDstRangeEnd(int p) { dst_range_end = p; }
+    
 };
-
+    
 }
 
 #endif
+
+
 
 

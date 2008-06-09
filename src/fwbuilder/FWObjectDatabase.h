@@ -75,17 +75,29 @@ protected:
 
     int                              index_hits;
     int                              index_misses;
-    std::map<std::string,FWObject*>  obj_index;
+    std::map<int, FWObject*>         obj_index;
     int                              searchId;
 
     std::string data_file;
 
     Firewall* _findFirewallByNameRecursive(FWObject* db,const std::string &name) throw(FWException);
+    void init_id_dict();
+    
 
 public:
 
     DECLARE_FWOBJECT_SUBTYPE(FWObjectDatabase);
 
+    enum {ROOT_ID = 0,
+          ANY_ADDRESS_ID = 1,
+          ANY_SERVICE_ID = 2,
+          ANY_INTERVAL_ID = 3,
+          STANDARD_LIB_ID = 4,
+          USER_LIB_ID = 5,
+          TEMPLATE_LIB_ID = 6,
+          DELETED_OBJECTS_ID = 7
+    } standard_ids;
+    
     /**
      * this constructor initializes singleton db
      */
@@ -110,17 +122,17 @@ public:
     /**
      * remove an object from the index
      */
-    void removeFromIndex(const std::string &id);
+    void removeFromIndex(int id);
 
     /**
      * check if an object is present in the index using its ID
      */
-    FWObject* checkIndex(const std::string &id);
+    FWObject* checkIndex(int id);
 
     /**
      * find an object in the index using its ID
      */
-    FWObject* findInIndex(const std::string &id);
+    FWObject* findInIndex(int id);
 
     /**
      * build index
@@ -154,7 +166,7 @@ public:
      * objects using constructor that uses pointer to this as a parameter,
      * otherwise empty constructor is used
      */
-    FWObject *create(const std::string &type, const std::string &id="", bool prepopulate=true);
+    FWObject *create(const std::string &type, int id=-1, bool prepopulate=true);
 
     /**
      * Creates instance of FWObject using its XML representation
@@ -223,16 +235,11 @@ public:
     const std::string& getFileName ();
     const std::string  getFileDir ();
 
-    static std::string generateUniqueId();
-
-    // --- Standard object IDs ---
-
-    static const std::string     getRootId()            { return "root";    }
-    static const std::string     getAnyNetworkId()      { return "sysid0";  }
-    static const std::string     getAnyIPServiceId()    { return "sysid1";  }
-    static const std::string     getAnyIntervalId()     { return "sysid2";  }
-    static const std::string     getDeletedObjectsId()  { return "sysid99"; }
-        
+    static int generateUniqueId();
+    static int registerStringId(const std::string &s_id);
+    static int getIntId(const std::string &s_id);
+    static std::string getStringId(int i_id);
+       
 };
 
 }

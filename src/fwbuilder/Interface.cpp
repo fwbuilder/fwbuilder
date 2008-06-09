@@ -170,7 +170,7 @@ void Interface::fromXML(xmlNodePtr root) throw(FWException)
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("network_zone")));
     if (n!=NULL)
     {
-        setStr("network_zone",n);
+        setStr("network_zone", n);
         FREEXMLBUFF(n);
     }
 }

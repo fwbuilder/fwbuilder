@@ -90,10 +90,10 @@ int NATCompiler::prolog()
 
 	Rule *r= Rule::cast(*i);
 	if (r->isDisabled()) continue;
-	r->setInterfaceId("");
+	r->setInterfaceId(-1);
 	r->setLabel( createRuleLabel(label_prefix, "NAT", r->getPosition()) );
 	r->setAbsRuleNumber(global_num); global_num++;
-        r->setUniqueId( r->getId() );
+        r->setUniqueId( FWObjectDatabase::getStringId(r->getId()) );
 	combined_ruleset->add( r );
     }
 
@@ -104,7 +104,7 @@ int NATCompiler::prolog()
 
 
 
-bool NATCompiler::checkForShadowing(const NATRule &r1,const NATRule &r2)
+bool NATCompiler::checkForShadowing(NATRule &r1, NATRule &r2)
 {
     Address  *osrc1=getFirstOSrc(&r1);
     Address  *odst1=getFirstODst(&r1);
@@ -132,7 +132,7 @@ bool NATCompiler::checkForShadowing(const NATRule &r1,const NATRule &r2)
 /*
  * TODO: implement this
  */
-bool NATCompiler::cmpRules(const NATRule&, const NATRule&)
+bool NATCompiler::cmpRules(NATRule&, NATRule&)
 {
     return false;
 }
@@ -758,37 +758,37 @@ string NATCompiler::debugPrintRule(libfwbuilder::Rule *r)
 
         if (i1!=osrcrel->end()) {
             FWObject *o=*i1;
-            if (FWReference::cast(o)!=NULL) o=objcache[o->getStr("ref")];
+            if (FWReference::cast(o)!=NULL) o=objcache[o->getInt("ref")];
             osrc=o->getName();
         }
 
         if (i2!=odstrel->end()) {
             FWObject *o=*i2;
-            if (FWReference::cast(o)!=NULL) o=objcache[o->getStr("ref")];
+            if (FWReference::cast(o)!=NULL) o=objcache[o->getInt("ref")];
             odst=o->getName();
         }
 
         if (i3!=osrvrel->end()) {
             FWObject *o=*i3;
-            if (FWReference::cast(o)!=NULL) o=objcache[o->getStr("ref")];
+            if (FWReference::cast(o)!=NULL) o=objcache[o->getInt("ref")];
             osrv=o->getName();
         }
 
         if (i4!=tsrcrel->end()) {
             FWObject *o=*i4;
-            if (FWReference::cast(o)!=NULL) o=objcache[o->getStr("ref")];
+            if (FWReference::cast(o)!=NULL) o=objcache[o->getInt("ref")];
             tsrc=o->getName();
         }
 
         if (i5!=tdstrel->end()) {
             FWObject *o=*i5;
-            if (FWReference::cast(o)!=NULL) o=objcache[o->getStr("ref")];
+            if (FWReference::cast(o)!=NULL) o=objcache[o->getInt("ref")];
             tdst=o->getName();
         }
 
         if (i6!=tsrvrel->end()) {
             FWObject *o=*i6;
-            if (FWReference::cast(o)!=NULL) o=objcache[o->getStr("ref")];
+            if (FWReference::cast(o)!=NULL) o=objcache[o->getInt("ref")];
             tsrv=o->getName();
         }
 

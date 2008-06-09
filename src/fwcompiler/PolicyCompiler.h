@@ -96,8 +96,8 @@ namespace fwcompiler {
 	 *
 	 * NOT IMPLEMENTED YET 
 	 */
-	libfwbuilder::Rule* getDifference(const libfwbuilder::PolicyRule &r1,
-					  const libfwbuilder::PolicyRule &r2);
+	libfwbuilder::Rule* getDifference(libfwbuilder::PolicyRule &r1,
+					  libfwbuilder::PolicyRule &r2);
 
         /**
          * detects if rule r2  shades rule r1
@@ -105,8 +105,8 @@ namespace fwcompiler {
          *
          *  true if r2 shades r1 
          */
-        bool checkForShadowing(const libfwbuilder::PolicyRule &r1,
-                             const libfwbuilder::PolicyRule &r2);
+        bool checkForShadowing(libfwbuilder::PolicyRule &r1,
+                               libfwbuilder::PolicyRule &r2);
 
         /**
          * detects if rules r1 and r2 are identical (that is, have the
@@ -116,8 +116,8 @@ namespace fwcompiler {
          *
          *  true if r1 is identical to r2
          */
-        bool cmpRules(const libfwbuilder::PolicyRule &r1,
-                      const libfwbuilder::PolicyRule &r2);
+        bool cmpRules(libfwbuilder::PolicyRule &r1,
+                      libfwbuilder::PolicyRule &r2);
 
 
 	/**

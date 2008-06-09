@@ -220,8 +220,7 @@ bool  Firewall::validateChild(FWObject *o)
  * references to the new one when copying policy of the old one into
  * the new one.
  */
-void Firewall::replaceRef(FWObject *rs,
-                          const string &old_id,const std::string &new_id)
+void Firewall::replaceRef(FWObject *rs, int old_id, int new_id)
 {
     FWReference *ref=FWObjectReference::cast(rs);
     if (ref==NULL)

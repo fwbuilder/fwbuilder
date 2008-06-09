@@ -79,7 +79,7 @@ int RoutingCompiler::prolog()
     {
 	Rule *r= Rule::cast(*j);
 	if (r->isDisabled()) continue;
-	r->setInterfaceId("");
+	r->setInterfaceId(-1);
 	r->setLabel( createRuleLabel("", "main", r->getPosition()) );
 	combined_ruleset->add( r );
     }

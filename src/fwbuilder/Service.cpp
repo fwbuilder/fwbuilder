@@ -57,5 +57,5 @@ FWReference* Service::createRef()
 
 bool Service::isAny() const
 { 
-    return getId()==FWObjectDatabase::getAnyIPServiceId();
+    return getId()==FWObjectDatabase::ANY_SERVICE_ID;
 }

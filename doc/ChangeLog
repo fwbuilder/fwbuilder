@@ -1,3 +1,33 @@
+2008-06-08  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* merged branch "id-experiment" r98:HEAD
+	
+	* Rule.cpp (PolicyRule::getSrc): Caching pointers to rule elements
+	in PolicyRule to avoid calls to getFirsTByType if possible
+
+	* TCPUDPService.h (libfwbuilder): source and destination port
+	ranges are stored as class member variables for tcp and udp
+	services.
+
+2008-06-07  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWReference.h (libfwbuilder): this class uses integer id of
+	objects it points to. It keeps id (and its string representation)
+	as class member variables to avoid access to the attribute map
+	which should speed it up. Using postponed initialization to
+	associate integer id with string id read from XML file (because by
+	the time this class reads itself from XML file not all objects can
+	be loaded yet so it is possible that the id of the object it
+	points to is yet unknown).
+
+	* FWObject.h (libfwbuilder): ID of all objects that inherit
+	FWObject is now represented by an integer. String ID used in XML
+	file is stored in a dictionary and used again when object is
+	stored back in XML. However all internal operations with objects
+	use integer ids
+
+	* Changes to support integer object IDs everywhere.
+
 2008-06-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Compiler_ops.cpp (fwcompiler::checkForShadowing): compilers will

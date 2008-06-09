@@ -222,7 +222,7 @@ bool    Resources::getResourceBool(const string& resource_path)
 string  Resources::getObjResourceStr(const FWObject *obj,
                                      const string& resource_name)
 {
-    string objid   = obj->getId();
+    string objid   = FWObjectDatabase::getStringId(obj->getId());
     string objtype = obj->getTypeName();
     string res;
     string resource="/FWBuilderResources/Object/"+objid+"/"+resource_name;

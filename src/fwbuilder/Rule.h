@@ -80,13 +80,10 @@ class Rule : public Group
     bool isHidden() const { return hidden; }
     void setHidden(bool f) { hidden=f; }
 
-    std::string getInterfaceId() const
-    { return getStr("interface_id"); }
-    void setInterfaceId(const std::string &iface_id)
-    { setStr("interface_id", iface_id); }
+    int getInterfaceId() const { return getInt("interface_id"); }
+    void setInterfaceId(int iface_id) { setInt("interface_id", iface_id); }
 
-    std::string getInterfaceStr() const
-    { return getStr("interface_str"); }
+    std::string getInterfaceStr() const { return getStr("interface_str"); }
     void setInterfaceStr(const std::string &iface_str)
     { setStr("interface_str", iface_str); }
 
@@ -102,7 +99,7 @@ class Rule : public Group
     int  getAbsRuleNumber() const { return abs_rule_number; }
     void setAbsRuleNumber(int rn) { abs_rule_number=rn; }
 
-    virtual bool isEmpty() const;
+    virtual bool isEmpty();
 
     virtual FWObject& shallowDuplicate(const FWObject *obj,
                                        bool preserve_id = true)
@@ -120,6 +117,13 @@ class Rule : public Group
 
 class PolicyRule : public Rule 
 {
+    libfwbuilder::RuleElementSrc*      src_re;
+    libfwbuilder::RuleElementDst*      dst_re;
+    libfwbuilder::RuleElementSrv*      srv_re;
+    libfwbuilder::RuleElementItf*      itf_re;
+    libfwbuilder::RuleElementInterval* when_re;
+    
+    
     public:
 /*
  * Supported policy rule actions:
@@ -192,13 +196,13 @@ class PolicyRule : public Rule
     virtual RuleSet* getBranch();
     virtual void setBranch(RuleSet *ruleset);
 
-    virtual bool isEmpty() const;
+    virtual bool isEmpty();
 
-    libfwbuilder::RuleElementSrc*  getSrc() const;
-    libfwbuilder::RuleElementDst*  getDst() const;
-    libfwbuilder::RuleElementSrv*  getSrv() const;
-    libfwbuilder::RuleElementItf*  getItf() const;
-    libfwbuilder::RuleElementInterval* getWhen() const;
+    libfwbuilder::RuleElementSrc*  getSrc() ;
+    libfwbuilder::RuleElementDst*  getDst() ;
+    libfwbuilder::RuleElementSrv*  getSrv() ;
+    libfwbuilder::RuleElementItf*  getItf() ;
+    libfwbuilder::RuleElementInterval* getWhen() ;
 
     Action getAction() const;
     void   setAction(Action act);
@@ -221,6 +225,14 @@ class PolicyRule : public Rule
 
 class NATRule : public Rule 
 {
+    libfwbuilder::RuleElementOSrc*      osrc_re;
+    libfwbuilder::RuleElementODst*      odst_re;
+    libfwbuilder::RuleElementOSrv*      osrv_re;
+    libfwbuilder::RuleElementTSrc*      tsrc_re;
+    libfwbuilder::RuleElementTDst*      tdst_re;
+    libfwbuilder::RuleElementTSrv*      tsrv_re;
+    libfwbuilder::RuleElementInterval* when_re;
+    
     public:
 
     typedef enum { Unknown, 
@@ -254,15 +266,15 @@ class NATRule : public Rule
     virtual RuleSet* getBranch();
     virtual void setBranch(RuleSet *ruleset);
 
-    virtual bool isEmpty() const;
+    virtual bool isEmpty();
 
-    libfwbuilder::RuleElementOSrc* getOSrc() const;
-    libfwbuilder::RuleElementODst* getODst() const;
-    libfwbuilder::RuleElementOSrv* getOSrv() const;
-    libfwbuilder::RuleElementTSrc* getTSrc() const;
-    libfwbuilder::RuleElementTDst* getTDst() const;
-    libfwbuilder::RuleElementTSrv* getTSrv() const;
-    libfwbuilder::RuleElementInterval* getWhen() const;
+    libfwbuilder::RuleElementOSrc* getOSrc();
+    libfwbuilder::RuleElementODst* getODst();
+    libfwbuilder::RuleElementOSrv* getOSrv();
+    libfwbuilder::RuleElementTSrc* getTSrc();
+    libfwbuilder::RuleElementTDst* getTDst();
+    libfwbuilder::RuleElementTSrv* getTSrv();
+    libfwbuilder::RuleElementInterval* getWhen();
 
     NATRuleTypes getRuleType() const;
     std::string  getRuleTypeAsString() const;

@@ -73,7 +73,7 @@ int        Rule::getPosition() const {    return getInt("position");}
 void       Rule::disable()           {    setBool("disabled",true); }
 void       Rule::enable()            {    setBool("disabled",false);}
 bool       Rule::isDisabled() const  {    return( getBool("disabled") );}
-bool       Rule::isEmpty() const     {    return false;             }
+bool       Rule::isEmpty()           {    return false;             }
 
 void Rule::setBranch(RuleSet*) {};
 
@@ -106,11 +106,23 @@ const char *PolicyRule::TYPENAME={"PolicyRule"};
 PolicyRule::PolicyRule()
 {
     setStr("action","Deny");
+
+    src_re = NULL;
+    dst_re = NULL;
+    srv_re = NULL;
+    itf_re = NULL;
+    when_re = NULL;
 }
 
 PolicyRule::PolicyRule(const FWObject *root,bool prepopulate) : Rule(root,prepopulate)
 {
     setStr("action","Deny");
+
+    src_re = NULL;
+    dst_re = NULL;
+    srv_re = NULL;
+    itf_re = NULL;
+    when_re = NULL;
 
     if (prepopulate)
     {
@@ -118,11 +130,20 @@ PolicyRule::PolicyRule(const FWObject *root,bool prepopulate) : Rule(root,prepop
         FWObjectDatabase *db=(FWObjectDatabase*)root;
         assert(db);
 
-        re=db->create("Src");  assert(re!=NULL); add(re);
-        re=db->create("Dst");  assert(re!=NULL); add(re);
-        re=db->create("Srv");  assert(re!=NULL); add(re);
-        re=db->create("When"); assert(re!=NULL); add(re);
-        re=db->create("Itf");  assert(re!=NULL); add(re);
+        re=db->create("Src");  assert(re!=NULL);
+        add(re); src_re = RuleElementSrc::cast(re);
+
+        re=db->create("Dst");  assert(re!=NULL);
+        add(re); dst_re = RuleElementDst::cast(re);
+
+        re=db->create("Srv");  assert(re!=NULL);
+        add(re); srv_re = RuleElementSrv::cast(re);
+
+        re=db->create("When"); assert(re!=NULL);
+        add(re); when_re = RuleElementInterval::cast(re);
+
+        re=db->create("Itf");  assert(re!=NULL);
+        add(re); itf_re = RuleElementItf::cast(re);
 
         add( db->create(PolicyRuleOptions::TYPENAME) );
     }
@@ -134,37 +155,54 @@ FWObject& PolicyRule::shallowDuplicate(const FWObject *x, bool preserve_id) thro
     setDirection(rx->getDirection());
     setAction(rx->getAction());
     setLogging(rx->getLogging());
+
+    src_re = NULL;
+    dst_re = NULL;
+    srv_re = NULL;
+    itf_re = NULL;
+    when_re = NULL;
+
     return  Rule::shallowDuplicate(x,preserve_id);
 }
 
 
-RuleElementSrc*  PolicyRule::getSrc()  const
+RuleElementSrc*  PolicyRule::getSrc()
 {
-    return RuleElementSrc::cast(getFirstByType(RuleElementSrc::TYPENAME));
+    if (src_re) return src_re;
+    src_re = RuleElementSrc::cast(getFirstByType(RuleElementSrc::TYPENAME));
+    return src_re;
 }
 
-RuleElementDst*  PolicyRule::getDst()  const
+RuleElementDst*  PolicyRule::getDst()
 {
-    return RuleElementDst::cast(getFirstByType(RuleElementDst::TYPENAME));
+    if (dst_re) return dst_re;
+    dst_re = RuleElementDst::cast(getFirstByType(RuleElementDst::TYPENAME));
+    return dst_re;
 }
 
-RuleElementSrv*  PolicyRule::getSrv()  const
+RuleElementSrv*  PolicyRule::getSrv()
 {
-    return RuleElementSrv::cast(getFirstByType(RuleElementSrv::TYPENAME));
+    if (srv_re) return srv_re;
+    srv_re = RuleElementSrv::cast(getFirstByType(RuleElementSrv::TYPENAME));
+    return srv_re;
 }
 
-RuleElementItf*  PolicyRule::getItf()  const
+RuleElementItf*  PolicyRule::getItf()
 {
-    return RuleElementItf::cast(getFirstByType(RuleElementItf::TYPENAME));
+    if (itf_re) return itf_re;
+    itf_re = RuleElementItf::cast(getFirstByType(RuleElementItf::TYPENAME));
+    return itf_re;
 }
 
-RuleElementInterval* PolicyRule::getWhen()  const
+RuleElementInterval* PolicyRule::getWhen()
 {
-    return RuleElementInterval::cast(getFirstByType(RuleElementInterval::TYPENAME));
+    if (when_re) return when_re;
+    when_re = RuleElementInterval::cast(getFirstByType(RuleElementInterval::TYPENAME));
+    return when_re;
 }
 
 
-bool PolicyRule::isEmpty() const
+bool PolicyRule::isEmpty()
 {
   return (getSrc()->isAny() && 
           getDst()->isAny() && 
@@ -358,7 +396,8 @@ RuleSet*   PolicyRule::getBranch()
     string branch_id = getOptionsObject()->getStr("branch_id");
     if (!branch_id.empty())
     {
-        return RuleSet::cast(getRoot()->findInIndex(branch_id));
+        return RuleSet::cast(getRoot()->findInIndex(
+                                 FWObjectDatabase::getIntId(branch_id)));
     } else
     {
         string branch_name = getOptionsObject()->getStr("branch_name");
@@ -373,14 +412,16 @@ RuleSet*   PolicyRule::getBranch()
 
 void PolicyRule::setBranch(RuleSet* ruleset)
 {
-    getOptionsObject()->setStr("branch_id",
-                               (ruleset) ? ruleset->getId() : "");
+    string branch_id = 
+        (ruleset) ? FWObjectDatabase::getStringId(ruleset->getId()) : "";
+    getOptionsObject()->setStr("branch_id", branch_id);
 }
 
 void PolicyRule::setTagObject(FWObject *tag_object)
 {
-    getOptionsObject()->setStr("tagobject_id",
-                               (tag_object) ? tag_object->getId() : "");
+    string tag_id =
+        (tag_object) ? FWObjectDatabase::getStringId(tag_object->getId()) : "";
+    getOptionsObject()->setStr("tagobject_id", tag_id);
 }
 
 FWObject* PolicyRule::getTagObject()
@@ -390,7 +431,8 @@ FWObject* PolicyRule::getTagObject()
         string tagobj_id = getOptionsObject()->getStr("tagobject_id");
         if (!tagobj_id.empty())
         {
-            return getRoot()->findInIndex(tagobj_id);
+            return getRoot()->findInIndex(
+                FWObjectDatabase::getIntId(tagobj_id));
         }
     }
     return NULL;
@@ -414,11 +456,27 @@ const char *NATRule::TYPENAME={"NATRule"};
 NATRule::NATRule() : Rule()
 {
     rule_type=Unknown;
+
+    osrc_re = NULL;
+    odst_re = NULL;
+    osrv_re = NULL;
+    tsrc_re = NULL;
+    tdst_re = NULL;
+    tsrv_re = NULL;
+    when_re = NULL;
 }
 
 NATRule::NATRule(const FWObject *root,bool prepopulate) : Rule(root,prepopulate)
 {
     rule_type=Unknown;
+
+    osrc_re = NULL;
+    odst_re = NULL;
+    osrv_re = NULL;
+    tsrc_re = NULL;
+    tdst_re = NULL;
+    tsrv_re = NULL;
+    when_re = NULL;
 
     if (prepopulate)
     {
@@ -438,42 +496,56 @@ NATRule::NATRule(const FWObject *root,bool prepopulate) : Rule(root,prepopulate)
     }
 }
 
-RuleElementOSrc*  NATRule::getOSrc()  const
+RuleElementOSrc*  NATRule::getOSrc()
 {
-    return RuleElementOSrc::cast(getFirstByType(RuleElementOSrc::TYPENAME));
+    if (osrc_re) return osrc_re;
+    osrc_re = RuleElementOSrc::cast(getFirstByType(RuleElementOSrc::TYPENAME));
+    return osrc_re;
 }
 
-RuleElementODst*  NATRule::getODst()  const
+RuleElementODst*  NATRule::getODst()
 {
-    return RuleElementODst::cast(getFirstByType(RuleElementODst::TYPENAME));
+    if (odst_re) return odst_re;
+    odst_re = RuleElementODst::cast(getFirstByType(RuleElementODst::TYPENAME));
+    return odst_re;
 }
 
-RuleElementOSrv*  NATRule::getOSrv()  const
+RuleElementOSrv*  NATRule::getOSrv()
 {
-    return RuleElementOSrv::cast(getFirstByType(RuleElementOSrv::TYPENAME));
+    if (osrv_re) return osrv_re;
+    osrv_re = RuleElementOSrv::cast(getFirstByType(RuleElementOSrv::TYPENAME));
+    return osrv_re;
 }
 
-RuleElementTSrc*  NATRule::getTSrc()  const
+RuleElementTSrc*  NATRule::getTSrc()
 {
-    return RuleElementTSrc::cast(getFirstByType(RuleElementTSrc::TYPENAME));
+    if (tsrc_re) return tsrc_re;
+    tsrc_re = RuleElementTSrc::cast(getFirstByType(RuleElementTSrc::TYPENAME));
+    return tsrc_re;
 }
 
-RuleElementTDst*  NATRule::getTDst()  const
+RuleElementTDst*  NATRule::getTDst()
 {
-    return RuleElementTDst::cast(getFirstByType(RuleElementTDst::TYPENAME));
+    if (tdst_re) return tdst_re;
+    tdst_re = RuleElementTDst::cast(getFirstByType(RuleElementTDst::TYPENAME));
+    return tdst_re;
 }
 
-RuleElementTSrv*  NATRule::getTSrv()  const
+RuleElementTSrv*  NATRule::getTSrv()
 {
-    return RuleElementTSrv::cast(getFirstByType(RuleElementTSrv::TYPENAME));
+    if (tsrv_re) return tsrv_re;
+    tsrv_re = RuleElementTSrv::cast(getFirstByType(RuleElementTSrv::TYPENAME));
+    return tsrv_re;
 }
 
-RuleElementInterval* NATRule::getWhen()  const
+RuleElementInterval* NATRule::getWhen()
 {
-    return RuleElementInterval::cast(getFirstByType(RuleElementInterval::TYPENAME));
+    if (when_re) return when_re;
+    when_re = RuleElementInterval::cast(getFirstByType(RuleElementInterval::TYPENAME));
+    return when_re;
 }
 
-bool NATRule::isEmpty() const
+bool NATRule::isEmpty()
 {
     RuleElement *osrc=getOSrc();
     RuleElement *odst=getODst();
@@ -562,7 +634,8 @@ RuleSet*   NATRule::getBranch()
     string branch_id = getOptionsObject()->getStr("branch_id");
     if (!branch_id.empty())
     {
-        return RuleSet::cast(getRoot()->findInIndex(branch_id));
+        return RuleSet::cast(getRoot()->findInIndex(
+                                 FWObjectDatabase::getIntId(branch_id)));
     } else
     {
         string branch_name = getOptionsObject()->getStr("branch_name");
@@ -576,8 +649,9 @@ RuleSet*   NATRule::getBranch()
 
 void NATRule::setBranch(RuleSet* ruleset)
 {
-    getOptionsObject()->setStr("branch_id",
-                               (ruleset) ? ruleset->getId() : "");
+    string branch_id = 
+        (ruleset) ? FWObjectDatabase::getStringId(ruleset->getId()) : "";
+    getOptionsObject()->setStr("branch_id", branch_id);
 }
 
 NATRule::NATRuleTypes NATRule::getRuleType() const
@@ -613,6 +687,15 @@ FWObject& NATRule::shallowDuplicate(const FWObject *x, bool preserve_id) throw(F
 {
     const NATRule *rx=NATRule::constcast(x);
     if (rx!=NULL) rule_type=rx->rule_type;
+
+    osrc_re = NULL;
+    odst_re = NULL;
+    osrv_re = NULL;
+    tsrc_re = NULL;
+    tdst_re = NULL;
+    tsrv_re = NULL;
+    when_re = NULL;
+
     return  Rule::shallowDuplicate(x,preserve_id);
 }
 
@@ -765,7 +848,8 @@ RuleSet*   RoutingRule::getBranch()
     string branch_id = getOptionsObject()->getStr("branch_id");
     if (!branch_id.empty())
     {
-        return RuleSet::cast(getRoot()->findInIndex(branch_id));
+        return RuleSet::cast(getRoot()->findInIndex(
+                                 FWObjectDatabase::getIntId(branch_id)));
     } else
     {
         string branch_name = getOptionsObject()->getStr("branch_name");

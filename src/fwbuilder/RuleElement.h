@@ -62,7 +62,7 @@ public:
 
     void      setAnyElement();
     void      reset();
-    virtual   std::string  getAnyElementId();
+    virtual   int getAnyElementId();
     bool      isAny();
 
     /**
@@ -89,7 +89,7 @@ class RuleElementSrc : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementSrc);
     RuleElementSrc();
     RuleElementSrc(const FWObject *root,bool prepopulate);
-    virtual   std::string  getAnyElementId();
+    virtual   int getAnyElementId();
 };
 
 class RuleElementDst : public ObjectGroup, public RuleElement {
@@ -97,7 +97,7 @@ class RuleElementDst : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementDst);
     RuleElementDst();
     RuleElementDst(const FWObject *root,bool prepopulate);
-    virtual   std::string  getAnyElementId();
+    virtual   int getAnyElementId();
 };
 
 class RuleElementSrv : public ServiceGroup, public RuleElement {
@@ -105,7 +105,7 @@ class RuleElementSrv : public ServiceGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementSrv);
     RuleElementSrv();
     RuleElementSrv(const FWObject *root,bool prepopulate);
-    virtual   std::string  getAnyElementId();
+    virtual   int getAnyElementId();
 };
 
 class RuleElementItf : public ObjectGroup, public RuleElement {
@@ -113,7 +113,7 @@ class RuleElementItf : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementItf);
     RuleElementItf();
     RuleElementItf(const FWObject *root,bool prepopulate);
-    virtual   std::string  getAnyElementId();
+    virtual   int getAnyElementId();
     virtual   bool         validateChild(FWObject *o);
     bool checkItfChildOfThisFw(FWObject *o);
 };
@@ -123,7 +123,7 @@ class RuleElementInterval : public IntervalGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementInterval);
     RuleElementInterval();
     RuleElementInterval(const FWObject *root,bool prepopulate);
-    virtual   std::string  getAnyElementId();
+    virtual   int getAnyElementId();
 };
 
 class RuleElementOSrc : public ObjectGroup, public RuleElement {
@@ -131,7 +131,7 @@ class RuleElementOSrc : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementOSrc);
     RuleElementOSrc();
     RuleElementOSrc(const FWObject *root,bool prepopulate);
-    virtual   std::string  getAnyElementId();
+    virtual   int getAnyElementId();
 };
 
 class RuleElementODst : public ObjectGroup, public RuleElement {
@@ -139,7 +139,7 @@ class RuleElementODst : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementODst);
     RuleElementODst();
     RuleElementODst(const FWObject *root,bool prepopulate);
-    virtual   std::string  getAnyElementId();
+    virtual   int getAnyElementId();
 };
 
 class RuleElementOSrv : public ServiceGroup, public RuleElement {
@@ -147,7 +147,7 @@ class RuleElementOSrv : public ServiceGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementOSrv);
     RuleElementOSrv();
     RuleElementOSrv(const FWObject *root,bool prepopulate);
-    virtual   std::string  getAnyElementId();
+    virtual   int getAnyElementId();
 };
 
 class RuleElementTSrc : public ObjectGroup, public RuleElement {
@@ -155,7 +155,7 @@ class RuleElementTSrc : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementTSrc);
     RuleElementTSrc();
     RuleElementTSrc(const FWObject *root,bool prepopulate);
-    virtual   std::string  getAnyElementId();
+    virtual   int getAnyElementId();
 };
 
 class RuleElementTDst : public ObjectGroup, public RuleElement {
@@ -163,7 +163,7 @@ class RuleElementTDst : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementTDst);
     RuleElementTDst();
     RuleElementTDst(const FWObject *root,bool prepopulate);
-    virtual   std::string  getAnyElementId();
+    virtual   int getAnyElementId();
 };
 
 class RuleElementTSrv : public ServiceGroup, public RuleElement {
@@ -171,7 +171,7 @@ class RuleElementTSrv : public ServiceGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementTSrv);
     RuleElementTSrv();
     RuleElementTSrv(const FWObject *root,bool prepopulate);
-    virtual   std::string  getAnyElementId();
+    virtual   int getAnyElementId();
 };
 
 class RuleElementRDst : public ObjectGroup, public RuleElement {
@@ -179,7 +179,7 @@ class RuleElementRDst : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementRDst);
     RuleElementRDst();
     RuleElementRDst(const FWObject *root,bool prepopulate);
-    virtual   std::string  getAnyElementId();
+    virtual   int getAnyElementId();
 };
 
 class RuleElementRGtw : public ObjectGroup, public RuleElement {
@@ -187,7 +187,7 @@ class RuleElementRGtw : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementRGtw);
     RuleElementRGtw();
     RuleElementRGtw(const FWObject *root,bool prepopulate);
-    virtual   std::string  getAnyElementId();
+    virtual   int getAnyElementId();
     virtual   bool         validateChild(FWObject *o);
     bool checkSingleIPAdress(FWObject *o);
     bool checkReachableIPAdress(FWObject *o);

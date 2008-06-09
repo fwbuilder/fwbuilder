@@ -72,8 +72,8 @@ namespace fwcompiler {
          *
          *  true if r2 shades r1 
          */
-        bool checkForShadowing(const libfwbuilder::NATRule    &r1,
-                               const libfwbuilder::NATRule    &r2);
+        bool checkForShadowing(libfwbuilder::NATRule    &r1,
+                               libfwbuilder::NATRule    &r2);
 
         /**
          * detects if rules r1 and r2 are identical (that is, have the
@@ -83,8 +83,8 @@ namespace fwcompiler {
          *
          *  true if r1 is identical to r2
          */
-        bool cmpRules(const libfwbuilder::NATRule &r1,
-                      const libfwbuilder::NATRule &r2);
+        bool cmpRules(libfwbuilder::NATRule &r1,
+                      libfwbuilder::NATRule &r2);
 
 
 

@@ -73,7 +73,7 @@ Compiler::~Compiler() {}
 
 int Compiler::cache_objects(FWObject *o)
 {
-    if ( !o->getId().empty() )  cacheObj(o);
+    if ( o->getId() > -1 )  cacheObj(o);
 
     int n=0;
     for (FWObject::iterator i=o->begin(); i!=o->end(); ++i) {
@@ -329,7 +329,7 @@ void Compiler::_expand_group_recursive(FWObject *o, list<FWObject*> &ol)
 	}
     } else
     {
-        if (o->getId() == FWObjectDatabase::getAnyNetworkId())
+        if (o->getId() == FWObjectDatabase::ANY_ADDRESS_ID)
         {
             o->ref();
             ol.push_back( o );
@@ -407,7 +407,7 @@ void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
             continue;
         }
 
-        if (o->getId() == FWObjectDatabase::getAnyNetworkId() ||
+        if (o->getId() == FWObjectDatabase::ANY_ADDRESS_ID ||
             MultiAddress::cast(o)!=NULL ||
             Interface::cast(o) ||
             physAddress::cast(o))
@@ -672,7 +672,7 @@ bool Compiler::complexMatch(Address *obj1,
                 return false;
         } else
             warning(string("Network object with no InetAddr: id=") +
-                    obj1->getId() +
+                    FWObjectDatabase::getStringId(obj1->getId()) +
                     "  type=" + obj1->getTypeName() +
                     "  name=" + obj1->getName());
     }
@@ -1081,7 +1081,7 @@ bool Compiler::eliminateDuplicatesInRE::processNext()
     return true;
 }
 
-void  Compiler::recursiveGroupsInRE::isRecursiveGroup(const string &grid,FWObject *obj)
+void  Compiler::recursiveGroupsInRE::isRecursiveGroup(int grid, FWObject *obj)
 {
     for (FWObject::iterator i=obj->begin(); i!=obj->end(); i++) 
     {
@@ -1263,7 +1263,8 @@ bool Compiler::swapMultiAddressObjectsInRE::processNext()
         {
             MultiAddress *ma = *i;
 
-            string mart_id = ma->getId()+"_runtime";
+            //string mart_id = ma->getId()+"_runtime";
+            int mart_id = FWObjectDatabase::generateUniqueId();
             MultiAddressRunTime *mart = MultiAddressRunTime::cast(
                 compiler->dbcopy->findInIndex(mart_id));
             if (mart==NULL)
@@ -1326,7 +1327,7 @@ void Compiler::DropAddressFamilyInRE(RuleElement *rel, bool drop_ipv6)
         FWObject *o= *i;
         if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
         // skip "Any"
-        if (o->getId() == FWObjectDatabase::getAnyNetworkId())
+        if (o->getId() == FWObjectDatabase::ANY_ADDRESS_ID)
             continue;
 
         if (drop_ipv6)
@@ -1367,7 +1368,12 @@ bool Compiler::catchUnnumberedIfaceInRE(RuleElement *re)
         if (o==NULL)
         {
             Rule *rule = Rule::cast(re->getParent());
-            string errmsg = "catchUnnumberedIfaceInRE: Can't find object in cache, ID=" + (*i)->getStr("ref") + "  rule " + rule->getLabel();
+            FWReference *refo = FWReference::cast(*i);
+            string errmsg =
+                string("catchUnnumberedIfaceInRE: Can't find object ") +
+                string("in cache, ID=") +
+                FWObjectDatabase::getStringId(refo->getPointerId()) +
+                "  rule " + rule->getLabel();
             abort(errmsg);
         }
         err |= ((iface=Interface::cast(o))!=NULL &&
@@ -1378,7 +1384,7 @@ bool Compiler::catchUnnumberedIfaceInRE(RuleElement *re)
 }
 
 
-Address* Compiler::getFirstSrc(const PolicyRule *rule)
+Address* Compiler::getFirstSrc(PolicyRule *rule)
 {
     RuleElementSrc *src=rule->getSrc();
 
@@ -1389,7 +1395,7 @@ Address* Compiler::getFirstSrc(const PolicyRule *rule)
     return Address::cast(o);
 }
 
-Address* Compiler::getFirstDst(const PolicyRule *rule)
+Address* Compiler::getFirstDst(PolicyRule *rule)
 {
     RuleElementDst *dst=rule->getDst();
 
@@ -1400,7 +1406,7 @@ Address* Compiler::getFirstDst(const PolicyRule *rule)
     return Address::cast(o);
 }
 
-Service* Compiler::getFirstSrv(const PolicyRule *rule)
+Service* Compiler::getFirstSrv(PolicyRule *rule)
 {
     RuleElementSrv *srv=rule->getSrv();
 
@@ -1411,7 +1417,7 @@ Service* Compiler::getFirstSrv(const PolicyRule *rule)
     return Service::cast(o);
 }
 
-Interval* Compiler::getFirstWhen(const PolicyRule *rule)
+Interval* Compiler::getFirstWhen(PolicyRule *rule)
 {
     RuleElementInterval *when=rule->getWhen();
     if (when==NULL) return NULL;  // when is optional element
@@ -1423,7 +1429,7 @@ Interval* Compiler::getFirstWhen(const PolicyRule *rule)
     return Interval::cast(o);
 }
 
-Interface* Compiler::getFirstItf(const PolicyRule *rule)
+Interface* Compiler::getFirstItf(PolicyRule *rule)
 {
     RuleElementItf *itf=rule->getItf();
     if (itf==NULL) return NULL;  // itf is optional element
@@ -1435,7 +1441,7 @@ Interface* Compiler::getFirstItf(const PolicyRule *rule)
     return Interface::cast(o);
 }
 
-Address* Compiler::getFirstOSrc(const NATRule *rule)
+Address* Compiler::getFirstOSrc(NATRule *rule)
 {
     RuleElementOSrc *osrc=rule->getOSrc();
 
@@ -1446,7 +1452,7 @@ Address* Compiler::getFirstOSrc(const NATRule *rule)
     return Address::cast(o);
 }
 
-Address* Compiler::getFirstODst(const NATRule *rule)
+Address* Compiler::getFirstODst(NATRule *rule)
 {
     RuleElementODst *odst=rule->getODst();
 
@@ -1457,7 +1463,7 @@ Address* Compiler::getFirstODst(const NATRule *rule)
     return Address::cast(o);
 }
 
-Service* Compiler::getFirstOSrv(const NATRule *rule)
+Service* Compiler::getFirstOSrv(NATRule *rule)
 {
     RuleElementOSrv *osrv=rule->getOSrv();
 
@@ -1470,7 +1476,7 @@ Service* Compiler::getFirstOSrv(const NATRule *rule)
 
 
 
-Address* Compiler::getFirstTSrc(const NATRule *rule)
+Address* Compiler::getFirstTSrc(NATRule *rule)
 {
     RuleElementTSrc *tsrc=rule->getTSrc();
 
@@ -1481,7 +1487,7 @@ Address* Compiler::getFirstTSrc(const NATRule *rule)
     return Address::cast(o);
 }
 
-Address* Compiler::getFirstTDst(const NATRule *rule)
+Address* Compiler::getFirstTDst(NATRule *rule)
 {
     RuleElementTDst *tdst=rule->getTDst();
 
@@ -1492,7 +1498,7 @@ Address* Compiler::getFirstTDst(const NATRule *rule)
     return Address::cast(o);
 }
 
-Service* Compiler::getFirstTSrv(const NATRule *rule)
+Service* Compiler::getFirstTSrv(NATRule *rule)
 {
     RuleElementTSrv *tsrv=rule->getTSrv();
 

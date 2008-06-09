@@ -28,12 +28,12 @@
 #ifndef __TCPSERVICE_HH_FLAG__
 #define __TCPSERVICE_HH_FLAG__
 
-#include <fwbuilder/Service.h>
+#include <fwbuilder/TCPUDPService.h>
 
 namespace libfwbuilder
 {
 
-class TCPService : public Service
+class TCPService : public TCPUDPService
 {
 
     public:
@@ -43,7 +43,7 @@ class TCPService : public Service
 private:
     static std::map<TCPFlag,std::string> flags;
     static std::map<TCPFlag,std::string> flags_masks;
-
+    
     void init();
 
 public:
@@ -53,6 +53,7 @@ public:
     virtual ~TCPService();
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
 
     DECLARE_FWOBJECT_SUBTYPE(TCPService);
 
@@ -82,6 +83,7 @@ public:
 
     bool    getEstablished();
     void    setEstablished(bool f);
+    
 };
 
 }

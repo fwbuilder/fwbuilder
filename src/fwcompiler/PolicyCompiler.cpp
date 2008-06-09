@@ -112,7 +112,7 @@ int PolicyCompiler::prolog()
                                          interfaces, r->getPosition()) );
         }
 	r->setAbsRuleNumber(global_num); global_num++;
-        r->setUniqueId( r->getId() );
+        r->setUniqueId( FWObjectDatabase::getStringId(r->getId()) );
 	combined_ruleset->add( r );
     }
 
@@ -126,7 +126,8 @@ int PolicyCompiler::prolog()
 /*
  * detects if tule r2 shades rule r1.
  */
-bool PolicyCompiler::checkForShadowing(const PolicyRule &r1,const PolicyRule &r2)
+bool PolicyCompiler::checkForShadowing(PolicyRule &r1,
+                                       PolicyRule &r2)
 {
     if (r1.getSrc()->getNeg()) return false;
     if (r1.getDst()->getNeg()) return false;
@@ -168,13 +169,29 @@ bool PolicyCompiler::checkForShadowing(const PolicyRule &r1,const PolicyRule &r2
         r2.getAction()==PolicyRule::Branch ) return false;
 
 
-    Address  *src1=getFirstSrc(&r1);
-    Address  *dst1=getFirstDst(&r1);
-    Service  *srv1=getFirstSrv(&r1);
+    //Address  *src1=getFirstSrc(&r1);
+    //Address  *dst1=getFirstDst(&r1);
+    //Service  *srv1=getFirstSrv(&r1);
 
-    Address  *src2=getFirstSrc(&r2);
-    Address  *dst2=getFirstDst(&r2);
-    Service  *srv2=getFirstSrv(&r2);
+    //Address  *src2=getFirstSrc(&r2);
+    //Address  *dst2=getFirstDst(&r2);
+    //Service  *srv2=getFirstSrv(&r2);
+
+    Address  *src1 = static_cast<Address*>(
+        static_cast<FWReference*>(r1.getFirstByType(RuleElementSrc::TYPENAME)->front())->getPointer());
+    Address  *dst1 = static_cast<Address*>(
+        static_cast<FWReference*>(r1.getFirstByType(RuleElementDst::TYPENAME)->front())->getPointer());
+    Service  *srv1 = static_cast<Service*>(
+        static_cast<FWReference*>(r1.getFirstByType(RuleElementSrv::TYPENAME)->front())->getPointer());
+
+    Address  *src2 = static_cast<Address*>(
+        static_cast<FWReference*>(r2.getFirstByType(RuleElementSrc::TYPENAME)->front())->getPointer());
+    Address  *dst2 = static_cast<Address*>(
+        static_cast<FWReference*>(r2.getFirstByType(RuleElementDst::TYPENAME)->front())->getPointer());
+    Service  *srv2 = static_cast<Service*>(
+        static_cast<FWReference*>(r2.getFirstByType(RuleElementSrv::TYPENAME)->front())->getPointer());
+
+
 
     if (MultiAddressRunTime::isA(src1) || MultiAddressRunTime::isA(dst1) ||
         MultiAddressRunTime::isA(src2) || MultiAddressRunTime::isA(dst2))
@@ -204,18 +221,19 @@ bool PolicyCompiler::checkForShadowing(const PolicyRule &r1,const PolicyRule &r2
  */
 //    if (srv1->getTypeName()==srv2->getTypeName() || (!srv1->isAny() && srv2->isAny()))
 //    {
-        return ( 
-            fwcompiler::checkForShadowing(*src1, *src2) && 
-            fwcompiler::checkForShadowing(*dst1, *dst2) && 
-            fwcompiler::checkForShadowing(*srv1, *srv2) 
-        );
+    return ( 
+        fwcompiler::checkForShadowing(*src1, *src2) && 
+        fwcompiler::checkForShadowing(*dst1, *dst2) && 
+        fwcompiler::checkForShadowing(*srv1, *srv2) 
+    );
+
 //    }
 
     return false;
 }
 
-bool PolicyCompiler::cmpRules(const PolicyRule &r1,
-                              const PolicyRule &r2)
+bool PolicyCompiler::cmpRules(PolicyRule &r1,
+                              PolicyRule &r2)
 {
     if (r1.getSrc()->getNeg()!=r2.getSrc()->getNeg()) return false;
     if (r1.getDst()->getNeg()!=r2.getDst()->getNeg()) return false;
@@ -262,7 +280,7 @@ bool PolicyCompiler::ItfNegation::processNext()
     if (itfre==NULL)
         compiler->abort("Missing interface RE in rule '" +
                         rule->getLabel() +
-                        "' id=" + rule->getId()
+                        "' id=" + FWObjectDatabase::getStringId(rule->getId())
         );
 
     if (itfre->getNeg())
@@ -292,7 +310,7 @@ bool  PolicyCompiler::InterfacePolicyRules::processNext()
     RuleElementItf *itfre=rule->getItf();   assert(itfre);
     if (itfre->isAny())
     {
-        rule->setInterfaceId("");
+        rule->setInterfaceId(-1);
         tmp_queue.push_back(rule);
         return true;
     }
@@ -398,7 +416,7 @@ bool  PolicyCompiler::addressRanges::processNext()
 
 
 
-Rule* PolicyCompiler::getDifference(const PolicyRule &r1, const PolicyRule &r2)
+Rule* PolicyCompiler::getDifference(PolicyRule &r1, PolicyRule &r2)
 {
     PolicyRule *r = new PolicyRule();
     *r = r1;
@@ -1114,7 +1132,7 @@ string PolicyCompiler::debugPrintRule(Rule *r)
     RuleElementDst *dstrel=rule->getDst();
     RuleElementSrv *srvrel=rule->getSrv();
 
-    string       iface_id = rule->getInterfaceId();
+    int iface_id = rule->getInterfaceId();
     Interface *rule_iface = fw_interfaces[iface_id];
 
     ostringstream str;
@@ -1141,14 +1159,14 @@ string PolicyCompiler::debugPrintRule(Rule *r)
             FWObject *o=*i1;
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             src+=o->getName();
-            src+="("+o->getId()+")";
+            src+="("+FWObjectDatabase::getStringId(o->getId())+")";
         }
 
         if (i2!=dstrel->end()) {
             FWObject *o=*i2;
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             dst+=o->getName();
-            dst+="("+o->getId()+")";
+            dst+="("+FWObjectDatabase::getStringId(o->getId())+")";
         }
 
         if (i3!=srvrel->end()) {

@@ -43,8 +43,7 @@ class Firewall : public Host
     
     protected:
 
-    void replaceRef(FWObject *rs,
-                    const std::string &oldfw_id,const std::string &newfw_id);
+    void replaceRef(FWObject *rs, int oldfw_id, int newfw_id);
 
     public:
     

@@ -74,13 +74,46 @@ void FWReference::fromXML(xmlNodePtr root)  throw(FWException)
     assert(root!=NULL);
     FWObject::fromXML(root);
 
-    const char *n = FROMXMLCAST(xmlGetProp(root,TOXMLCAST("ref")));
+    const char *n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("ref")));
     assert(n!=NULL);
-    setStr("ref", n);
+    str_ref = n;
+    //setInt("ref", n);
+    // if object with id str_ref has not been loaded yet, 
+    // FWObjectDatabase::getIntId returns -1.
+    int_ref = FWObjectDatabase::getIntId(str_ref);
     FREEXMLBUFF(n);
 }
 
-void FWReference::add(FWObject *obj)
+// Note that XML elements represented by FWReference have only one
+// attribute "ref" and no value
+xmlNodePtr FWReference::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = xmlNewChild(parent, NULL, xml_name.empty()?STRTOXMLCAST(getTypeName()):STRTOXMLCAST(xml_name), NULL);
+
+    if (int_ref == -1 && !str_ref.empty())
+        int_ref = FWObjectDatabase::getIntId(str_ref);
+
+    if (int_ref > -1 && str_ref.empty())
+        str_ref = FWObjectDatabase::getStringId(int_ref);
+
+    xmlAttrPtr pr = xmlNewProp(me, 
+                               TOXMLCAST("ref"),
+                               STRTOXMLCAST(str_ref));
+    xmlAddRef(NULL, parent->doc, STRTOXMLCAST(str_ref), pr);
+
+    return me;
+}
+
+FWObject& FWReference::shallowDuplicate(const FWObject *_other,
+                                        bool) throw(FWException)
+{
+    const FWReference *other = FWReference::constcast(_other);
+    int_ref = other->int_ref;
+    str_ref = other->str_ref;
+    return *this;
+}
+
+void FWReference::add(FWObject*)
 {
     throw std::string("Can't add to a reference !");
 }
@@ -88,11 +121,22 @@ void FWReference::add(FWObject *obj)
 void FWReference::setPointer(FWObject *p)
 {
     if(p) setPointerId(p->getId());
+    else
+    {
+        int_ref = -1;
+        str_ref = "";
+    }
 }
 
-void FWReference::setPointerId(const string &ref_id)
+void FWReference::setPointerId(int ref_id)
 {
-    setStr("ref" , ref_id );
+    //setInt("ref" , ref_id );
+    int_ref = ref_id;
+    // if object with id ref_id has not been loaded into database
+    // yet, FWObjectDatabase::getStringId returns empty string.
+    // This works as postponed initialization.
+    // We really need string id only in toXML.
+    str_ref = FWObjectDatabase::getStringId(int_ref);
 }
 
 FWObject *FWReference::getPointer()
@@ -100,9 +144,14 @@ FWObject *FWReference::getPointer()
     return getRoot()->findInIndex( getPointerId() );
 }
 
-const string& FWReference::getPointerId() const
+int FWReference::getPointerId()
 {
-    return getStr("ref");
+    // postponed initialization happens now
+    if (int_ref==-1 && !str_ref.empty())
+        int_ref = FWObjectDatabase::getIntId(str_ref);
+        
+    return int_ref;
+    //return getInt("ref");
 }
 
 

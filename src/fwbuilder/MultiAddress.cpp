@@ -63,7 +63,7 @@ string MultiAddress::getSourceName()
     return "";
 }
 
-void MultiAddress::setSourceName(const std::string& source_name)
+void MultiAddress::setSourceName(const std::string&)
 {
 }
 

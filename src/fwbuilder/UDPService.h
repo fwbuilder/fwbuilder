@@ -28,28 +28,24 @@
 #ifndef __UDPSERVICE_HH_FLAG__
 #define __UDPSERVICE_HH_FLAG__
 
-#include <fwbuilder/Service.h>
+#include <fwbuilder/TCPUDPService.h>
 
 namespace libfwbuilder
 {
 
-class UDPService : public Service
+class UDPService : public TCPUDPService
 {
-    
-    private:
-    
     public:
 
     UDPService();
     UDPService(const FWObject *root,bool prepopulate);
     virtual ~UDPService();
     
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    
     DECLARE_FWOBJECT_SUBTYPE(UDPService);
     
     virtual std::string getProtocolName();
     virtual int    getProtocolNumber();
+    
 };
     
 }

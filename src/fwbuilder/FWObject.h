@@ -128,6 +128,9 @@ protected:
     
     FWObject();
 
+    // special constructor used to create FWObjectDatabase objects
+    FWObject(bool new_id);
+    
     /**
      *  Parameter 'root' is a pointer at the root object of the tree,
      *  we are going to add this newly created object to.
@@ -238,8 +241,9 @@ public:
     const std::string &getComment() const;
     void          setComment(const std::string& c);
 
-    const std::string  &getId() const;
-    void           setId(const std::string& c);
+    int  getId() const;
+    void setId(int);
+    bool haveId() { return exists("id"); }
 
     /**
      * convenience method: returns the name of the library this object belongs to.
@@ -272,7 +276,7 @@ public:
      */
     std::string getPath(bool relative=false) const;
 
-            void addAt(const std::string& where_id, FWObject *obj);
+    void addAt(int where_id, FWObject *obj);
     virtual void add(FWObject *obj,bool validate=true);
     virtual void insert_before(FWObject *o1,FWObject *obj);
     virtual void insert_after(FWObject *o1,FWObject *obj);
@@ -343,8 +347,8 @@ public:
 
     int getChildrenCount();
 
-    virtual void dump(bool recursive,bool brief,int offset=0) const;
-    virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0) const;
+    virtual void dump(bool recursive,bool brief,int offset=0);
+    virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0);
 
     /**
      * returns true if this is either direct child of obj, or a child
@@ -358,7 +362,7 @@ public:
      * and itslef. If it is true, method proceeds to all chidren of all
      * objects starting from current one.
      */
-    virtual FWObject* getById  (const std::string &id, bool recursive=false);
+    virtual FWObject* getById  (int id, bool recursive=false);
 
 
     /**

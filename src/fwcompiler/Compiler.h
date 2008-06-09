@@ -170,8 +170,8 @@ namespace fwcompiler {
          * completely ignores action and other rule options.
          *
          */
-        void  getIntersection(const libfwbuilder::PolicyRule &r1,
-                              const libfwbuilder::PolicyRule &r2,
+        void  getIntersection(libfwbuilder::PolicyRule &r1,
+                              libfwbuilder::PolicyRule &r2,
                               libfwbuilder::PolicyRule &res);
 
         /**
@@ -180,8 +180,8 @@ namespace fwcompiler {
          * function does not calculate intersection, it just verifies that
          * it does exsit.
          */
-        bool  intersect(const libfwbuilder::PolicyRule &r1,
-                        const libfwbuilder::PolicyRule &r2);
+        bool  intersect(libfwbuilder::PolicyRule &r1,
+                        libfwbuilder::PolicyRule &r2);
 
 
         /**
@@ -203,10 +203,10 @@ namespace fwcompiler {
         * the following variables are simply a cache for frequently used
         * objects
         */
-        std::map<const std::string,libfwbuilder::Interface*> fw_interfaces;
-        std::string                                          fw_id;
-        libfwbuilder::FWOptions                             *fwopt;
-        std::map<const std::string,libfwbuilder::FWObject*>  objcache;
+        std::map<int, libfwbuilder::Interface*> fw_interfaces;
+        int                                     fw_id;
+        libfwbuilder::FWOptions                *fwopt;
+        std::map<int, libfwbuilder::FWObject*>  objcache;
 
         /**
          * stores object o and all its children in the cache, recursively
@@ -225,19 +225,19 @@ namespace fwcompiler {
          * reference. Uses cache, therefore is faster than
          * RuleElement::getFirst(true)
          */
-        libfwbuilder::Address*   getFirstSrc(const libfwbuilder::PolicyRule *rule);
-        libfwbuilder::Address*   getFirstDst(const libfwbuilder::PolicyRule *rule);
-        libfwbuilder::Service*   getFirstSrv(const libfwbuilder::PolicyRule *rule);
-        libfwbuilder::Interval*  getFirstWhen(const libfwbuilder::PolicyRule *rule);
-        libfwbuilder::Interface* getFirstItf(const libfwbuilder::PolicyRule *rule);
+        libfwbuilder::Address*   getFirstSrc(libfwbuilder::PolicyRule *rule);
+        libfwbuilder::Address*   getFirstDst(libfwbuilder::PolicyRule *rule);
+        libfwbuilder::Service*   getFirstSrv(libfwbuilder::PolicyRule *rule);
+        libfwbuilder::Interval*  getFirstWhen(libfwbuilder::PolicyRule *rule);
+        libfwbuilder::Interface* getFirstItf(libfwbuilder::PolicyRule *rule);
         
-        libfwbuilder::Address* getFirstOSrc(const libfwbuilder::NATRule *rule);
-        libfwbuilder::Address* getFirstODst(const libfwbuilder::NATRule *rule);
-        libfwbuilder::Service* getFirstOSrv(const libfwbuilder::NATRule *rule);
+        libfwbuilder::Address* getFirstOSrc(libfwbuilder::NATRule *rule);
+        libfwbuilder::Address* getFirstODst(libfwbuilder::NATRule *rule);
+        libfwbuilder::Service* getFirstOSrv(libfwbuilder::NATRule *rule);
                                                          
-        libfwbuilder::Address* getFirstTSrc(const libfwbuilder::NATRule *rule);
-        libfwbuilder::Address* getFirstTDst(const libfwbuilder::NATRule *rule);
-        libfwbuilder::Service* getFirstTSrv(const libfwbuilder::NATRule *rule);
+        libfwbuilder::Address* getFirstTSrc(libfwbuilder::NATRule *rule);
+        libfwbuilder::Address* getFirstTDst(libfwbuilder::NATRule *rule);
+        libfwbuilder::Service* getFirstTSrv(libfwbuilder::NATRule *rule);
 
 
 	/**
@@ -365,7 +365,7 @@ namespace fwcompiler {
         class recursiveGroupsInRE : public BasicRuleProcessor
         {
             std::string re_type;
-            void isRecursiveGroup(const std::string &grid,libfwbuilder::FWObject *gr);
+            void isRecursiveGroup(int grid, libfwbuilder::FWObject *gr);
             public:
             recursiveGroupsInRE(const std::string &n,const std::string &_type) : 
                 BasicRuleProcessor(n) { re_type=_type; }
@@ -438,13 +438,13 @@ namespace fwcompiler {
         /**
          * returns pointer to cached interface
          */
-        libfwbuilder::Interface* getCachedFwInterface(const std::string &id)
+        libfwbuilder::Interface* getCachedFwInterface(int id)
         { return fw_interfaces[id]; }
 
         /**
          * returns cached firewall object ID
          */
-        std::string getFwId() { return fw_id; }
+        int getFwId() { return fw_id; }
 
         /**
          * returns pointer to the cached firewall options object
@@ -459,7 +459,7 @@ namespace fwcompiler {
         /**
          * does cache lookup for object with given ID
          */
-        libfwbuilder::FWObject* getCachedObj(const std::string &id)
+        libfwbuilder::FWObject* getCachedObj(int id)
         {
             return objcache[id];
         }

@@ -145,7 +145,7 @@ void IPv6::setAddressNetmask(const std::string& s)
     inet_addr_mask = new Inet6AddrMask(s);
 }
 
-void IPv6::dump(std::ostream &f,bool recursive,bool brief,int offset) const
+void IPv6::dump(std::ostream &f,bool recursive,bool brief,int offset)
 {
     FWObject::dump(f, recursive, brief, offset);
     f << inet_addr_mask->getAddressPtr()->toString() << endl;

@@ -155,7 +155,7 @@ const int SNMPCrawler::PTP_INTERFACE_TYPES[]={
  * temporary database object, needs this to be able to create
  * interfaces and then add ip addresses to them
  */
-static FWObjectDatabase snmp_tmp_db;
+static FWObjectDatabase *snmp_tmp_db = NULL;
 
 
 #include <iostream>
@@ -185,6 +185,10 @@ void SNMPQuery::init(string h, string c, int retries_, long timeout_)
 
     char *snmp_out_opt = (char*)("n");
     snmp_out_toggle_options(snmp_out_opt);
+
+    if (snmp_tmp_db==NULL)
+        snmp_tmp_db = new FWObjectDatabase();
+
 }
 
 SNMPQuery::~SNMPQuery()
@@ -649,7 +653,7 @@ void SNMPQuery::fetchInterfaces(Logger *logger,SyncFlag *stop_program, SNMPConne
             interfaces[ifindex].setInterfaceType(itype);
             interfaces[ifindex].setExt(false);
 
-            snmp_tmp_db.add( &interfaces[ifindex] );
+            snmp_tmp_db->add( &interfaces[ifindex] );
 
             if (physa!="")
                 interfaces[ifindex].setPhysicalAddress(physa);
@@ -1367,7 +1371,7 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
         << ". Seed host: " << (*(queue.begin())).first.toString() << "\n";
     *logger << str;
     
-    snmp_tmp_db.destroyChildren();
+    snmp_tmp_db->destroyChildren();
 
     SNMP_discover_query q;
     do {
@@ -1720,7 +1724,7 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
     if(do_dns)
         bacresolve_results(logger,stop_program);
     
-    snmp_tmp_db.clear(); // at this point all children have been destroyed anyway
+    snmp_tmp_db->clear(); // at this point all children have been destroyed anyway
 
     now=time(NULL);
     str << "SNMPCrawler - done at " << asctime(localtime(&now)) << "\n";

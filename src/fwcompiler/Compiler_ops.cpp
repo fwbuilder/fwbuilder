@@ -35,6 +35,7 @@
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
+#include "fwbuilder/TCPUDPService.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/CustomService.h"
@@ -139,15 +140,15 @@ vector<FWObject*> fwcompiler::_find_srv_intersection(Service *op1, Service *op2)
 	}
 	if ( TCPService::cast(op1) || UDPService::cast(op1) ) 
         {
-	    int srs1=op1->getInt("src_range_start");
-	    int sre1=op1->getInt("src_range_end");
-	    int drs1=op1->getInt("dst_range_start");
-	    int dre1=op1->getInt("dst_range_end");
+	    int srs1=static_cast<const TCPUDPService*>(op1)->getSrcRangeStart();
+	    int sre1=static_cast<const TCPUDPService*>(op1)->getSrcRangeEnd();
+	    int drs1=static_cast<const TCPUDPService*>(op1)->getDstRangeStart();
+	    int dre1=static_cast<const TCPUDPService*>(op1)->getDstRangeEnd();
 
-	    int srs2=op2->getInt("src_range_start");
-	    int sre2=op2->getInt("src_range_end");
-	    int drs2=op2->getInt("dst_range_start");
-	    int dre2=op2->getInt("dst_range_end");
+	    int srs2=static_cast<const TCPUDPService*>(op2)->getSrcRangeStart();
+	    int sre2=static_cast<const TCPUDPService*>(op2)->getSrcRangeEnd();
+	    int drs2=static_cast<const TCPUDPService*>(op2)->getDstRangeStart();
+	    int dre2=static_cast<const TCPUDPService*>(op2)->getDstRangeEnd();
 
 	    int srsR,sreR,drsR,dreR;
 
@@ -167,10 +168,10 @@ vector<FWObject*> fwcompiler::_find_srv_intersection(Service *op1, Service *op2)
 	    }
 
 	    nserv->setName(op1->getName()+"-"+op2->getName());
-	    nserv->setInt("src_range_start",srsR);
-	    nserv->setInt("src_range_end"  ,sreR);
-	    nserv->setInt("dst_range_start",drsR);
-	    nserv->setInt("dst_range_end"  ,dreR);
+            TCPUDPService::cast(nserv)->setSrcRangeStart(srsR);
+            TCPUDPService::cast(nserv)->setSrcRangeEnd(sreR);
+            TCPUDPService::cast(nserv)->setDstRangeStart(drsR);
+            TCPUDPService::cast(nserv)->setDstRangeEnd(dreR);
 
 	    res.push_back(nserv);
 	    return res;
@@ -232,15 +233,15 @@ bool fwcompiler::checkForShadowing(const Service &o1,const Service &o2)
         }
 	if ( TCPService::constcast(&o1) || UDPService::constcast(&o1) ) 
         {
-	    int srs1=o1.getInt("src_range_start");
-	    int sre1=o1.getInt("src_range_end");
-	    int drs1=o1.getInt("dst_range_start");
-	    int dre1=o1.getInt("dst_range_end");
+	    int srs1=static_cast<const TCPUDPService*>(&o1)->getSrcRangeStart();
+	    int sre1=static_cast<const TCPUDPService*>(&o1)->getSrcRangeEnd();
+	    int drs1=static_cast<const TCPUDPService*>(&o1)->getDstRangeStart();
+	    int dre1=static_cast<const TCPUDPService*>(&o1)->getDstRangeEnd();
 
-	    int srs2=o2.getInt("src_range_start");
-	    int sre2=o2.getInt("src_range_end");
-	    int drs2=o2.getInt("dst_range_start");
-	    int dre2=o2.getInt("dst_range_end");
+	    int srs2=static_cast<const TCPUDPService*>(&o2)->getSrcRangeStart();
+	    int sre2=static_cast<const TCPUDPService*>(&o2)->getSrcRangeEnd();
+	    int drs2=static_cast<const TCPUDPService*>(&o2)->getDstRangeStart();
+	    int dre2=static_cast<const TCPUDPService*>(&o2)->getDstRangeEnd();
 
 	    return (srs1>=srs2 && sre1<=sre2 && drs1>=drs2 && dre1<=dre2);
 	}
@@ -398,30 +399,30 @@ bool fwcompiler::operator==(const Service  &o1,const Service  &o2)
 		(o1.getInt("code")==o2.getInt("code"));
 	}
 	if ( UDPService::constcast(&o1) ) {
-	    int srs1=o1.getInt("src_range_start");
-	    int sre1=o1.getInt("src_range_end");
-	    int drs1=o1.getInt("dst_range_start");
-	    int dre1=o1.getInt("dst_range_end");
+	    int srs1=static_cast<const TCPUDPService*>(&o1)->getSrcRangeStart();
+	    int sre1=static_cast<const TCPUDPService*>(&o1)->getSrcRangeEnd();
+	    int drs1=static_cast<const TCPUDPService*>(&o1)->getDstRangeStart();
+	    int dre1=static_cast<const TCPUDPService*>(&o1)->getDstRangeEnd();
 
-	    int srs2=o2.getInt("src_range_start");
-	    int sre2=o2.getInt("src_range_end");
-	    int drs2=o2.getInt("dst_range_start");
-	    int dre2=o2.getInt("dst_range_end");
+	    int srs2=static_cast<const TCPUDPService*>(&o2)->getSrcRangeStart();
+	    int sre2=static_cast<const TCPUDPService*>(&o2)->getSrcRangeEnd();
+	    int drs2=static_cast<const TCPUDPService*>(&o2)->getDstRangeStart();
+	    int dre2=static_cast<const TCPUDPService*>(&o2)->getDstRangeEnd();
 
             return (srs1==srs2 && sre1==sre2 && drs1==drs2 && dre1==dre2);
 	}
 
 	if ( TCPService::constcast(&o1))
         {
-	    int srs1=o1.getInt("src_range_start");
-	    int sre1=o1.getInt("src_range_end");
-	    int drs1=o1.getInt("dst_range_start");
-	    int dre1=o1.getInt("dst_range_end");
+	    int srs1=static_cast<const TCPUDPService*>(&o1)->getSrcRangeStart();
+	    int sre1=static_cast<const TCPUDPService*>(&o1)->getSrcRangeEnd();
+	    int drs1=static_cast<const TCPUDPService*>(&o1)->getDstRangeStart();
+	    int dre1=static_cast<const TCPUDPService*>(&o1)->getDstRangeEnd();
 
-	    int srs2=o2.getInt("src_range_start");
-	    int sre2=o2.getInt("src_range_end");
-	    int drs2=o2.getInt("dst_range_start");
-	    int dre2=o2.getInt("dst_range_end");
+	    int srs2=static_cast<const TCPUDPService*>(&o2)->getSrcRangeStart();
+	    int sre2=static_cast<const TCPUDPService*>(&o2)->getSrcRangeEnd();
+	    int drs2=static_cast<const TCPUDPService*>(&o2)->getDstRangeStart();
+	    int dre2=static_cast<const TCPUDPService*>(&o2)->getDstRangeEnd();
 
             const TCPService *tcp1=TCPService::constcast(&o1);
             const TCPService *tcp2=TCPService::constcast(&o2);
@@ -536,7 +537,7 @@ bool fwcompiler::operator<=(const Service  &o1,const Service  &o2)
 
 /*************************************************************************/
 
-bool Compiler::intersect(const PolicyRule &r1,const PolicyRule &r2)
+bool Compiler::intersect(PolicyRule &r1, PolicyRule &r2)
 {
     string act1=r1.getActionAsString();
     string act2=r2.getActionAsString();
@@ -545,11 +546,11 @@ bool Compiler::intersect(const PolicyRule &r1,const PolicyRule &r2)
     res_act=(act1=="Continue" || act2=="Continue" || act1==act2);
     if (res_act==false) return false;
 
-    string iface1=r1.getInterfaceId();
-    string iface2=r2.getInterfaceId();
+    int iface1 = r1.getInterfaceId();
+    int iface2 = r2.getInterfaceId();
 
     bool res_iface;
-    res_iface=(iface1=="" || iface2=="" || iface1==iface2);
+    res_iface=(iface1==-1 || iface2==-1 || iface1==iface2);
     if (res_iface==false) return false;
 
     vector<FWObject*> v1=_find_obj_intersection( getFirstSrc(&r1) , getFirstSrc(&r2) );
@@ -565,7 +566,7 @@ bool Compiler::intersect(const PolicyRule &r1,const PolicyRule &r2)
 }
 
 
-void Compiler::getIntersection( const PolicyRule &r1, const PolicyRule &r2, PolicyRule &res)
+void Compiler::getIntersection(PolicyRule &r1, PolicyRule &r2, PolicyRule &res)
 {
     string act1=r1.getActionAsString();
     string act2=r2.getActionAsString();

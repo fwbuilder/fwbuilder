@@ -126,7 +126,7 @@ bool RuleElement::isAny()
 
 void RuleElement::setAnyElement()
 {
-    string any_id=getAnyElementId();
+    int any_id = getAnyElementId();
     
     FWObject *any=getRoot()->findInIndex( any_id );
     if (any)  addRef( any );
@@ -158,15 +158,15 @@ void RuleElement::_initialize(const FWObject *root)
    it is read from the file anyway
 */
 
-    string any_id=getAnyElementId();
+    int any_id = getAnyElementId();
     FWObject *any_obj=((FWObjectDatabase*)root)->checkIndex(any_id);
     if (any_obj)
         FWObject::addRef( any_obj );
 }
 
-string RuleElement::getAnyElementId()
+int RuleElement::getAnyElementId()
 {
-    return "";
+    return -1;
 }
 
 /*
@@ -200,8 +200,8 @@ RuleElementSrc::RuleElementSrc(const FWObject *root,bool prepopulate) :
         _initialize(root);
 }
 
-string RuleElementSrc::getAnyElementId() {
-    return FWObjectDatabase::getAnyNetworkId();
+int RuleElementSrc::getAnyElementId() {
+    return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
 
@@ -215,8 +215,8 @@ RuleElementDst::RuleElementDst(const FWObject *root,bool prepopulate) :
         _initialize(root);
 }
 
-string RuleElementDst::getAnyElementId() {
-    return FWObjectDatabase::getAnyNetworkId();
+int RuleElementDst::getAnyElementId() {
+    return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
 
@@ -231,8 +231,8 @@ RuleElementSrv::RuleElementSrv(const FWObject *root,bool prepopulate) :
 }
 
 
-string RuleElementSrv::getAnyElementId() {
-    return FWObjectDatabase::getAnyIPServiceId();
+int RuleElementSrv::getAnyElementId() {
+    return FWObjectDatabase::ANY_SERVICE_ID;
 }
 
 const char *RuleElementItf::TYPENAME={"Itf"};
@@ -244,9 +244,9 @@ RuleElementItf::RuleElementItf(const FWObject *root,bool prepopulate) :
         _initialize(root);
 }
 
-string RuleElementItf::getAnyElementId()
+int RuleElementItf::getAnyElementId()
 {
-    return FWObjectDatabase::getAnyNetworkId();
+    return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
 bool RuleElementItf::validateChild(FWObject *o)
@@ -319,8 +319,8 @@ RuleElementOSrc::RuleElementOSrc(const FWObject *root,bool prepopulate) :
         _initialize(root);
 }
 
-string RuleElementOSrc::getAnyElementId() {
-    return FWObjectDatabase::getAnyNetworkId();
+int RuleElementOSrc::getAnyElementId() {
+    return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
 
@@ -333,8 +333,8 @@ RuleElementODst::RuleElementODst(const FWObject *root,bool prepopulate) :
         _initialize(root);
 }
 
-string RuleElementODst::getAnyElementId() {
-    return FWObjectDatabase::getAnyNetworkId();
+int RuleElementODst::getAnyElementId() {
+    return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
 
@@ -347,8 +347,8 @@ RuleElementOSrv::RuleElementOSrv(const FWObject *root,bool prepopulate) :
         _initialize(root);
 }
 
-string RuleElementOSrv::getAnyElementId() {
-    return FWObjectDatabase::getAnyIPServiceId();
+int RuleElementOSrv::getAnyElementId() {
+    return FWObjectDatabase::ANY_SERVICE_ID;
 }
 
 
@@ -363,8 +363,8 @@ RuleElementTSrc::RuleElementTSrc(const FWObject *root,bool prepopulate) :
         _initialize(root);
 }
 
-string RuleElementTSrc::getAnyElementId() {
-    return FWObjectDatabase::getAnyNetworkId();
+int RuleElementTSrc::getAnyElementId() {
+    return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
 
@@ -377,8 +377,8 @@ RuleElementTDst::RuleElementTDst(const FWObject *root,bool prepopulate) :
         _initialize(root);
 }
 
-string RuleElementTDst::getAnyElementId() {
-    return FWObjectDatabase::getAnyNetworkId();
+int RuleElementTDst::getAnyElementId() {
+    return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
 
@@ -391,8 +391,8 @@ RuleElementTSrv::RuleElementTSrv(const FWObject *root,bool prepopulate) :
         _initialize(root);
 }
 
-string RuleElementTSrv::getAnyElementId() {
-    return FWObjectDatabase::getAnyIPServiceId();
+int RuleElementTSrv::getAnyElementId() {
+    return FWObjectDatabase::ANY_SERVICE_ID;
 }
 
 
@@ -407,8 +407,8 @@ RuleElementInterval::RuleElementInterval(const FWObject *root,bool prepopulate) 
         _initialize(root);
 }
 
-string RuleElementInterval::getAnyElementId() {
-    return FWObjectDatabase::getAnyIntervalId();
+int RuleElementInterval::getAnyElementId() {
+    return FWObjectDatabase::ANY_INTERVAL_ID;
 }
 
 
@@ -423,8 +423,8 @@ RuleElementRDst::RuleElementRDst(const FWObject *root,bool prepopulate) :
         _initialize(root);
 }
 
-string RuleElementRDst::getAnyElementId() {
-    return FWObjectDatabase::getAnyNetworkId();
+int RuleElementRDst::getAnyElementId() {
+    return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
 const char *RuleElementRGtw::TYPENAME={"RGtw"};
@@ -436,8 +436,8 @@ RuleElementRGtw::RuleElementRGtw(const FWObject *root,bool prepopulate) :
         _initialize(root);
 }
 
-string RuleElementRGtw::getAnyElementId() {
-    return FWObjectDatabase::getAnyNetworkId();
+int RuleElementRGtw::getAnyElementId() {
+    return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
 bool RuleElementRGtw::validateChild(FWObject *o) {

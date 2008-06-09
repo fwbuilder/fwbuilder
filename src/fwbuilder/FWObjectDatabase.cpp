@@ -82,12 +82,21 @@
 using namespace std;
 using namespace libfwbuilder;
 
-IDcounter::IDcounter()
-{
-    cntr=time(NULL);
-}
+// each program invocation tracks its own set of object ids (as int)
+// we just increment this counter to get new id. We also keep a dictionary
+// that maps integer ids to strings. This dictionary is populated when
+// objects are loaded from xml file and then used to write string ids
+// when objects are written back to file. Internally we operate with
+// integer ids all the time, string ids are only used in xml file.
+// "System" objects use ids < 1000.
 
-IDcounter          IDc;
+int id_seed = 1000;
+
+// these two dictionaries must be static to ensure uniqueness of integer
+// ids across multiple FWObjectDatabase objects
+
+map<int, string>       id_dict;
+map<string, int>       id_dict_reverse;
 
 const char*        FWObjectDatabase::TYPENAME  = {"FWObjectDatabase"};
 //long               FWObjectDatabase::IDcounter = 0;
@@ -95,10 +104,11 @@ const char*        FWObjectDatabase::TYPENAME  = {"FWObjectDatabase"};
 const string FWObjectDatabase::DTD_FILE_NAME  = "fwbuilder.dtd"    ;
 
 
-FWObjectDatabase::FWObjectDatabase():FWObject(), data_file()
+FWObjectDatabase::FWObjectDatabase() : FWObject(false), data_file()
 {
     setRoot(this);
     index_hits = index_misses = 0;
+    init_id_dict();
 
 //    if(db==NULL) db=this;
 
@@ -107,14 +117,15 @@ FWObjectDatabase::FWObjectDatabase():FWObject(), data_file()
 
     setName(TYPENAME);
 
-    setId( getRootId() );
+    setId( ROOT_ID );
     setDirty(false);
 }
 
-FWObjectDatabase::FWObjectDatabase(FWObjectDatabase& d):FWObject()
+FWObjectDatabase::FWObjectDatabase(FWObjectDatabase& d) : FWObject(false)
 {
     setRoot(this);
     index_hits = index_misses = 0;
+    init_id_dict();
 
     data_file = d.data_file;
 
@@ -124,7 +135,7 @@ FWObjectDatabase::FWObjectDatabase(FWObjectDatabase& d):FWObject()
 
     init=true;
     *this = d;  // copies entire tree
-    setId( getRootId() );
+    setId( ROOT_ID );
 
 // I do not understand why do I need to reindex the whole database
 // after operator=. It calls FWobject::duplicate, which in turn
@@ -136,6 +147,66 @@ FWObjectDatabase::FWObjectDatabase(FWObjectDatabase& d):FWObject()
     setDirty(false);
     init=false;
 }
+
+void FWObjectDatabase::init_id_dict()
+{
+    if (id_dict.size()==0)
+    {
+        id_dict[ROOT_ID] = "root";
+        id_dict[ANY_ADDRESS_ID] = "sysid0";
+        id_dict[ANY_SERVICE_ID] = "sysid1";
+        id_dict[ANY_INTERVAL_ID] = "sysid2";
+        id_dict[DELETED_OBJECTS_ID] = "sysid99";
+
+        for (map<int,string>::iterator i=id_dict.begin(); i!=id_dict.end(); ++i)
+            id_dict_reverse[i->second] = i->first;
+    }
+}
+
+int FWObjectDatabase::registerStringId(const std::string &s_id)
+{
+    if (id_dict_reverse.count(s_id) > 0) return id_dict_reverse[s_id];
+
+    int i_id = ++id_seed;
+    id_dict[i_id] = s_id;
+    id_dict_reverse[s_id] = i_id;
+    return i_id;
+}
+
+int FWObjectDatabase::getIntId(const std::string &s_id)
+{
+    if (id_dict_reverse.count(s_id) > 0) return id_dict_reverse[s_id];
+    return -1;
+}
+
+string FWObjectDatabase::getStringId(int i_id)
+{
+    if (id_dict.count(i_id) > 0) return id_dict[i_id];
+    return "";
+}
+
+int FWObjectDatabase::generateUniqueId()
+{
+    int i_id = ++id_seed;
+
+    // TODO: Use proper GUID algorithm here
+    char res[20];
+    int pid=0;
+#ifdef _WIN32
+    pid = _getpid();
+#else
+    pid = getpid();
+#endif
+
+    sprintf(res,"id%lX%d", i_id, pid);
+
+    id_dict[i_id] = string(res);
+    id_dict_reverse[string(res)] = i_id;
+
+    return i_id;
+}
+
+
 
 void FWObjectDatabase::setFileName(const string &filename)
 {
@@ -289,13 +360,13 @@ xmlNodePtr FWObjectDatabase::toXML(xmlNodePtr parent) throw(FWException)
                    TOXMLCAST(lmbuf));
     }
 
-    string rootid = getId();
+    int rootid = getId();
 
     xmlAttrPtr pr = xmlNewProp(parent, 
 			       TOXMLCAST("id") , 
-			       STRTOXMLCAST(rootid));
+			       STRTOXMLCAST(id_dict[rootid]));
 
-    xmlAddID(NULL, parent->doc, STRTOXMLCAST(rootid), pr);
+    xmlAddID(NULL, parent->doc, STRTOXMLCAST(id_dict[rootid]), pr);
 
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
@@ -303,29 +374,6 @@ xmlNodePtr FWObjectDatabase::toXML(xmlNodePtr parent) throw(FWException)
             o->toXML(parent);
     
     return parent;
-}
-
-string FWObjectDatabase::generateUniqueId()
-{
-    char res[20];
-
-    //TODO: mutex could not be used since threads
-    // library is not initialized.
-
-//    IDmutex.lock();
-    int pid=0;
-#ifdef _WIN32
-    pid = _getpid();
-#else
-    pid = getpid();
-#endif
-    
-
-    sprintf(res,"id%lX%d",IDc.get(),pid);
-//    IDc++;
-//    IDmutex.unlock();
-    
-    return res;
 }
 
 void  FWObjectDatabase::setDirty(bool f)
@@ -339,22 +387,22 @@ void FWObjectDatabase::addToIndex(FWObject* o)
     if (o)
     {
         o->setRoot( this );
-        if (!o->getId().empty() ) obj_index[o->getId()] = o;
+        if (o->getId() > -1 ) obj_index[o->getId()] = o;
     }
 }
 
-void FWObjectDatabase::removeFromIndex(const string &id)
+void FWObjectDatabase::removeFromIndex(int id)
 {
     obj_index.erase(id);
 }
 
-FWObject* FWObjectDatabase::checkIndex(const std::string &id)
+FWObject* FWObjectDatabase::checkIndex(int id)
 {
     FWObject *o = obj_index[id];
     return o;
 }
 
-FWObject* FWObjectDatabase::findInIndex(const std::string &id)
+FWObject* FWObjectDatabase::findInIndex(int id)
 {
     FWObject *o = checkIndex(id);
     if (o!=NULL) index_hits++;
@@ -412,7 +460,9 @@ void FWObjectDatabase::clearIndex()
     obj_index.clear();
 }
 
-void FWObjectDatabase::getIndexStats(int &index_size, int &hit_counter, int &miss_counter)
+void FWObjectDatabase::getIndexStats(int &index_size,
+                                     int &hit_counter,
+                                     int &miss_counter)
 {
     index_size = obj_index.size();
     hit_counter = index_hits;
@@ -432,7 +482,8 @@ void FWObjectDatabase::addToIndexRecursive(FWObject *o)
 FWObject *FWObjectDatabase::createFromXML(xmlNodePtr data)
 {
     const char *n;
-    string typen, id;
+    string typen;
+    int id = -1;
 
     n=FROMXMLCAST(data->name);
     if(!n)
@@ -442,13 +493,13 @@ FWObject *FWObjectDatabase::createFromXML(xmlNodePtr data)
     n=FROMXMLCAST(xmlGetProp(data,TOXMLCAST("id")));
     if(n)
     {
-        id = n;
-        FREEXMLBUFF(id);
+        id = registerStringId(n);
+        FREEXMLBUFF(n);
     }
 
 // create new object but do not prepopulate objects that
 // automatically create children in constructor
-    return create(typen,id,false);   
+    return create(typen, id, false);
 }
 
 
@@ -456,17 +507,17 @@ FWObject *FWObjectDatabase::createFromXML(xmlNodePtr data)
 if(strcmp(classname::TYPENAME,str)==SAME) \
 { \
   nobj=new classname(this,prepopulate); \
-  if (!id.empty()) nobj->setId(id); \
+  if (id > -1) nobj->setId(id); \
   addToIndex(nobj); \
   return nobj; \
 }
 
 
 FWObject *FWObjectDatabase::create(const string &type_name,
-                                   const std::string &id,
+                                   int id,
                                    bool prepopulate)
 {
-    const char *n=type_name.c_str();
+    const char *n = type_name.c_str();
     FWObject   *nobj;
 
     if (strcmp("comment",n)==SAME) return NULL;
@@ -474,7 +525,7 @@ FWObject *FWObjectDatabase::create(const string &type_name,
     if(strcmp("AnyNetwork"  ,n)==SAME)
     {
         nobj = new Network(this,prepopulate);
-        if (!id.empty()) nobj->setId(id);
+        if (id > -1) nobj->setId(id);
         nobj->setXMLName("AnyNetwork");
         addToIndex(nobj);
         return nobj;
@@ -483,7 +534,7 @@ FWObject *FWObjectDatabase::create(const string &type_name,
     if(strcmp("AnyIPService",n)==SAME)
     {
         nobj = new IPService(this,prepopulate);
-        if (!id.empty()) nobj->setId(id);
+        if (id > -1) nobj->setId(id);
         nobj->setXMLName("AnyIPService");
         addToIndex(nobj);
         return nobj;
@@ -492,7 +543,7 @@ FWObject *FWObjectDatabase::create(const string &type_name,
     if(strcmp("AnyInterval" ,n)==SAME)
     {
         nobj = new Interval(this,prepopulate);
-        if (!id.empty()) nobj->setId(id);
+        if (id > -1) nobj->setId(id);
         nobj->setXMLName("AnyInterval");
         addToIndex(nobj);
         return nobj;
@@ -570,7 +621,7 @@ Firewall* FWObjectDatabase::_findFirewallByNameRecursive(FWObject* db,
 {
     if (Firewall::isA(db) &&
         db->getName()==name &&
-        db->getParent()->getId()!=getDeletedObjectsId())
+        db->getParent()->getId()!=FWObjectDatabase::DELETED_OBJECTS_ID)
         return Firewall::cast(db);
 
     list<FWObject*>::iterator j;
@@ -625,13 +676,13 @@ void FWObjectDatabase::recursivelyRemoveObjFromTree(FWObject* obj,
 
 class FWObjectTreeScanner {
 
-    FWObjectDatabase            *treeRoot;
-    map<string,FWObject*>        srcMap;
-    map<string,FWObject*>        dstMap;
+    FWObjectDatabase         *treeRoot;
+    map<int,FWObject*>        srcMap;
+    map<int,FWObject*>        dstMap;
     FWObjectDatabase::ConflictResolutionPredicate *crp;
     bool                         defaultCrp;
-
-    void walkTree(map<string,FWObject*> &m,FWObject *root);
+    int                          reference_object_id_offset;
+    void walkTree(map<int,FWObject*> &m,FWObject *root);
     void addRecursively(FWObject *src);
 
     public:
@@ -639,6 +690,7 @@ class FWObjectTreeScanner {
     FWObjectTreeScanner(FWObject *r,
                         FWObjectDatabase::ConflictResolutionPredicate *_crp=NULL)
     {
+        reference_object_id_offset = 1000000;
         treeRoot=FWObjectDatabase::cast(r);
         defaultCrp=false;
         if (_crp==NULL)
@@ -661,14 +713,20 @@ class FWObjectTreeScanner {
  *
  * Here, in effect, I am artifically adding IDs to references.
  */
-void FWObjectTreeScanner::walkTree(map<string,FWObject*> &m,FWObject *root)
+void FWObjectTreeScanner::walkTree(map<int,FWObject*> &m,
+                                   FWObject *root)
 {
-    if (root->exists("id"))  m[root->getId()]=root;
+    if (root->haveId())  m[root->getId()]=root;
 
     if (FWReference::cast(root)!=NULL)
     {
         FWReference *r=FWReference::cast(root);
-        m[string("ref_")+r->getPointerId()]=root;
+        // need to add reference to the map, but references do not have
+        // their own Id. Create new id using id of the object reference
+        // points to, plus some offset.
+        // I can not just generate new uniq id because I need to be able
+        // to find this object later, and for that its id must be predictable.
+        m[reference_object_id_offset+r->getPointerId()]=root;
     }
 
     for (FWObject::iterator i=root->begin(); i!=root->end(); i++)
@@ -685,7 +743,7 @@ void FWObjectTreeScanner::addRecursively(FWObject *src)
 
     if (dstMap[src->getId()]==NULL)
     {
-        FWObject *o1=treeRoot->create(src->getTypeName(),"",false);
+        FWObject *o1 = treeRoot->create(src->getTypeName(), -1, false);
         FWObject *pdst = dstMap[src->getParent()->getId()];
         assert(pdst!=NULL);
 
@@ -745,7 +803,7 @@ void FWObjectTreeScanner::scanAndAdd(FWObject *dst,FWObject *source)
         FWObject *o1=*i;
         if (FWReference::cast(o1)!=NULL)
         {
-            string   pid   = FWReference::cast(o1)->getPointerId();
+            int pid   = FWReference::cast(o1)->getPointerId();
             FWObject *o2   = dstMap[pid];
 
             if (o2==NULL)
@@ -756,11 +814,18 @@ void FWObjectTreeScanner::scanAndAdd(FWObject *dst,FWObject *source)
         } else
             scanAndAdd( o1 , source );
     }
+    // TODO: do the same for the objects referenced by
+    // rule actions Branch and Tag - find those objects and add.
+    // Wrap operations with network_zone in methods of class Interface,
+    // setNetworkZone(FWObject*) getNetworkZone()
+    // (Just like Rule::getBranch Rule::setBranch)
+    //
     if (Interface::isA(dst))
     {
-        string   pid = dst->getStr("network_zone");
-        if ( !pid.empty() )
+        string sid = dst->getStr("network_zone");
+        if ( !sid.empty() )
         {
+            int pid = FWObjectDatabase::getIntId(sid);
             FWObject *o2 = dstMap[pid];
             if (o2==NULL)
             {
@@ -775,7 +840,7 @@ void FWObjectTreeScanner::scanAndAdd(FWObject *dst,FWObject *source)
 
 void FWObjectTreeScanner::merge(FWObject *dst,FWObject *src)
 {
-    string dobjId = FWObjectDatabase::getDeletedObjectsId();
+    int dobjId = FWObjectDatabase::DELETED_OBJECTS_ID;
 
     if (dst==NULL)
     {
@@ -788,27 +853,6 @@ void FWObjectTreeScanner::merge(FWObject *dst,FWObject *src)
          * from it is present in dst
          */
         FWObjectDatabase *dstroot = dst->getRoot();
-
-        /* commented out 11/12/04
-         * If src has some deleted objects, we should just ignore them
-         */
-
-#if 0
-        FWObjectDatabase *srcroot = src->getRoot();
-        FWObject *srcdobj = srcroot->getById( dobjId );
-        if (srcdobj)
-        {
-            for (FWObject::iterator i=srcdobj->begin(); i!=srcdobj->end(); i++)
-            {
-                FWObject *dobj = dstMap[ (*i)->getId() ];
-                if(dobj!=NULL && dobj->getParent()->getId()!=dobjId)
-                {
-                    crp->askUser( dobj, *i );
-                    dstroot->recursivelyRemoveObjFromTree(dobj);
-                }
-            }
-        }
-#endif
 
         /*
          * find deleted objects library in dst and delete objects from
@@ -851,7 +895,7 @@ void FWObjectTreeScanner::merge(FWObject *dst,FWObject *src)
         if (FWReference::cast( *i ))
         {
             FWReference *r=FWReference::cast(*i);
-            dobj= dstMap[ string("ref_")+r->getPointerId() ];
+            dobj= dstMap[reference_object_id_offset + r->getPointerId()];
         } else dobj= dstMap[ (*i)->getId() ];
 
         if (dobj==NULL)
@@ -1103,7 +1147,7 @@ bool FWObjectDatabase::_findWhereUsed(FWObject *o,
     FWObject::iterator i1 = p->begin();
     for ( ; i1!=p->end(); ++i1)
     {
-        if ((*i1)->getId()==FWObjectDatabase::getDeletedObjectsId()) continue;
+        if ((*i1)->getId()==FWObjectDatabase::DELETED_OBJECTS_ID) continue;
 
         FWReference  *ref = FWReference::cast(*i1);
         if (ref!=NULL)

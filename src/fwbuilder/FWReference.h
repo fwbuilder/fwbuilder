@@ -40,10 +40,13 @@ class FWReference : public FWObject
 {
     private:
 
+    std::string str_ref;
+    int int_ref;
+
     protected:
     
     FWReference();
-    FWReference(const FWObject *root,bool prepopulate);
+    FWReference(const FWObject *root, bool prepopulate);
 
     public:
     
@@ -52,14 +55,17 @@ class FWReference : public FWObject
     virtual ~FWReference();
     
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
+    virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 
+    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+    
     virtual void add(FWObject *obj);
 
     virtual FWObject *getPointer();
-    virtual const std::string& getPointerId() const;
+    virtual int getPointerId();
 
     void setPointer(FWObject *o);
-    void setPointerId(const std::string& ref_id);
+    void setPointerId(int ref_id);
 
 };
 

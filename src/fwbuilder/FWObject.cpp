@@ -68,7 +68,7 @@ void FWObject::fromXML(xmlNodePtr root) throw(FWException)
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("id")));
     if(n)
     {
-        setId(n);
+        setId(FWObjectDatabase::registerStringId(n));
         FREEXMLBUFF(n);
     }
 
@@ -121,6 +121,8 @@ xmlNodePtr FWObject::toXML(xmlNodePtr xml_parent_node) throw(FWException)
 
 xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children) throw(FWException)
 {
+    string s_id = FWObjectDatabase::getStringId(getId());
+
     xmlNodePtr me = xmlNewChild(parent, NULL, xml_name.empty()?STRTOXMLCAST(getTypeName()):STRTOXMLCAST(xml_name), NULL);
 
     for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i) 
@@ -129,15 +131,18 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children) throw(FWExc
         const string &value = (*i).second;
 
         if (name[0]=='.') continue;
-        xmlAttrPtr pr = xmlNewProp(me, 
-                                   STRTOXMLCAST(name),
-                                   STRTOXMLCAST(value));
+
         if(name=="id")
         {
-            xmlAddID(NULL, parent->doc, STRTOXMLCAST(value), pr);
-        } else if(name=="ref") 
+            xmlAttrPtr pr = xmlNewProp(me, 
+                                       STRTOXMLCAST(name),
+                                       STRTOXMLCAST(s_id));
+            xmlAddID(NULL, parent->doc, STRTOXMLCAST(s_id), pr);
+        } else
         {
-            xmlAddRef(NULL, parent->doc, STRTOXMLCAST(value), pr);
+            xmlAttrPtr pr = xmlNewProp(me, 
+                                       STRTOXMLCAST(name),
+                                       STRTOXMLCAST(value));
         }
     }
 
@@ -164,13 +169,29 @@ FWObject::FWObject()
     setDirty(false);
 }
 
+FWObject::FWObject(bool new_id)
+{
+    init        = false;
+    ref_counter = 0;
+    parent      = NULL;
+    dbroot      = NULL;
+
+    setName("New object");
+
+    // When object created we assign it unique Id
+    if (new_id)
+        setId(FWObjectDatabase::generateUniqueId());
+
+    setDirty(false);
+}
+
 FWObject::FWObject(const FWObject &c) : list<FWObject*>(c)
 {
     init = false;
     *this=c;
 }
 
-FWObject::FWObject(const FWObject *root,bool )
+FWObject::FWObject(const FWObject *root, bool )
 {
     init        = false;
     ref_counter = 0    ;
@@ -329,7 +350,7 @@ FWObject* FWObject::addCopyOf(const FWObject *x, bool preserve_id)
     if (root==NULL) root = x->getRoot();
     // do not prepopulte children for objects that do that automatically
     // in their constructor
-    o1 = root->create(x->getTypeName(),"",false);
+    o1 = root->create(x->getTypeName(), -1, false);
     if(!o1)
         throw FWException(string("Error creating object with type: ")+
                           x->getTypeName());
@@ -353,7 +374,7 @@ FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
 {
     checkReadOnly();
 
-    string id = getId();
+    int id = getId();
 
     data = x->data;
     bool ro_status = getBool("ro");
@@ -364,8 +385,13 @@ FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
     {
         ref_counter = 0           ;
         xml_name    = x->xml_name ;
-    } else if(id!="")   // some objects do not have ID per DTD (e.g. Src, Dst, etc.)
-	setId(id);
+    } else
+    {
+        // some objects do not have ID per DTD (e.g. Src, Dst, etc.)
+        // Those will return -1 from getId()
+        if (id > -1)
+            setId(id);
+    }
 
     if (dbroot==NULL) setRoot(x->getRoot());
     if (dbroot!=NULL) FWObjectDatabase::cast(dbroot)->addToIndex(this);
@@ -439,17 +465,17 @@ void FWObject::setComment(const string &c)
     setDirty(true);
 }
 
-const string &FWObject::getId() const
+int FWObject::getId() const
 { 
-    return getStr("id");
+    return getInt("id");
 }
 
 /*
  * need to update index because ID of the object changes
  */
-void FWObject::setId(const string &c)
+void FWObject::setId(int c)
 {
-    setStr("id",c);
+    setInt("id", c);
     setDirty(true);
     if (dbroot!=NULL)
         FWObjectDatabase::cast(dbroot)->addToIndex(this);
@@ -547,12 +573,12 @@ void FWObject::Hide()
 
 
 
-void FWObject::dump(bool recursive,bool brief,int offset) const
+void FWObject::dump(bool recursive,bool brief,int offset) 
 {
     dump(cerr,recursive,brief,offset);
 }
 
-void FWObject::dump(std::ostream &f,bool recursive,bool brief,int offset) const
+void FWObject::dump(std::ostream &f,bool recursive,bool brief,int offset) 
 {
     FWObject *o;
     string    n;
@@ -561,7 +587,8 @@ void FWObject::dump(std::ostream &f,bool recursive,bool brief,int offset) const
     {
 	f << string(offset,' ');
 	f << " Obj=" << this;
-	f << " ID="  << getId();
+	f << " ID="  << getId()
+          << " (" << FWObjectDatabase::getStringId(getId()) << ")";
 	f << " Name=" << getName();
 	f << " Type=" << getTypeName();
         if (this!=getRoot())
@@ -570,7 +597,7 @@ void FWObject::dump(std::ostream &f,bool recursive,bool brief,int offset) const
         f << " ref_counter=" << ref_counter;
 
 	if (FWReference::constcast(this)!=0)
-	    f << " RefID=" << FWReference::constcast(this)->getPointerId();
+	    f << " RefID=" << FWReference::cast(this)->getPointerId();
 
 	f << endl;
 
@@ -584,7 +611,9 @@ void FWObject::dump(std::ostream &f,bool recursive,bool brief,int offset) const
     {
 	f << string(offset,' ') << string(16,'-') << endl;
 	f << string(offset,' ') << "Obj:    " << this << endl;
-	f << string(offset,' ') << "ID:     " << getId() << endl;
+	f << string(offset,' ') << "ID:     " << getId()
+          << " (" << FWObjectDatabase::getStringId(getId()) << ")"
+          << endl;
 	f << string(offset,' ') << "Name:   " << getName() << endl;
 	f << string(offset,' ') << "Ref.ctr:" << ref_counter << endl;
 	f << string(offset,' ') << "Type:   " << getTypeName() << endl;
@@ -632,7 +661,7 @@ void FWObject::_adopt(FWObject *obj)
     obj->setRoot(getRoot());
 }
 
-void FWObject::addAt(const string& where_id, FWObject *obj)
+void FWObject::addAt(int where_id, FWObject *obj)
 {
     FWObject *p=getRoot()->findInIndex( where_id );
     assert (p!=NULL);
@@ -738,12 +767,12 @@ void FWObject::swapObjects(FWObject *o1, FWObject *o2)
 void FWObject::_moveToDeletedObjects(FWObject *obj)
 {
     FWObjectDatabase *root = getRoot();
-    FWObject *dobj = root->findInIndex( root->getDeletedObjectsId() );
+    FWObject *dobj = root->findInIndex( FWObjectDatabase::DELETED_OBJECTS_ID );
             
     if (dobj==NULL)
     {
         dobj=root->create(Library::TYPENAME);
-        dobj->setId(root->getDeletedObjectsId());
+        dobj->setId(FWObjectDatabase::DELETED_OBJECTS_ID);
         dobj->setName("Deleted Objects");
         dobj->setReadOnly(false);
         root->add(dobj);
@@ -770,7 +799,7 @@ void FWObject::remove(FWObject *obj, bool delete_if_last)
 
         if (delete_if_last &&
             obj->ref_counter==0 &&
-            getId()!=FWObjectDatabase::getDeletedObjectsId())
+            getId()!=FWObjectDatabase::DELETED_OBJECTS_ID)
             _moveToDeletedObjects(obj);
     }
 }
@@ -788,7 +817,7 @@ void FWObject::removeAllInstances(FWObject *rm)
     checkReadOnly();
 
     bool deletedObject =
-        (rm->getParent()->getId()==FWObjectDatabase::getDeletedObjectsId());
+        (rm->getParent()->getId()==FWObjectDatabase::DELETED_OBJECTS_ID);
     removeAllReferences(rm);
     _removeAll(rm);
 
@@ -800,7 +829,7 @@ void FWObject::removeAllInstances(FWObject *rm)
 
 void FWObject::findAllReferences(const FWObject *obj, std::set<FWReference*> &res)
 {
-    string obj_id=obj->getId();
+    int obj_id = obj->getId();
     for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
     {
         FWObject *o=*m;
@@ -825,7 +854,7 @@ set<FWReference*> FWObject::findAllReferences(const FWObject *obj)
 
 void FWObject::removeRef(FWObject *obj)
 {
-    string obj_id=obj->getId();
+    int  obj_id=obj->getId();
     for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
     {
         FWObject *o=*m;
@@ -972,7 +1001,7 @@ bool FWObject::isChildOf(FWObject *obj)
     return (p==obj);
 }
 
-FWObject* FWObject::getById  (const string &id, bool recursive)
+FWObject* FWObject::getById  (int id, bool recursive)
 {
     if(id==getId())  return this;
     
@@ -980,7 +1009,7 @@ FWObject* FWObject::getById  (const string &id, bool recursive)
     for(j=begin(); j!=end(); ++j)     
     {
         FWObject *o=*j;
-        string oid=o->getId();
+        int oid = o->getId();
         if(id==oid) return o;
 
         if(recursive && (o=o->getById(id, true))!=NULL ) return o;

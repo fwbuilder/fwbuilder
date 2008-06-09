@@ -81,7 +81,7 @@ FWReference* Address::createRef()
 
 bool Address::isAny() const
 { 
-    return getId()==FWObjectDatabase::getAnyNetworkId();
+    return getId()==FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
 const Address* Address::getAddressObject() const

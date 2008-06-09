@@ -42,23 +42,14 @@ TCPService::TCPService()
 {
     init();
 
-    setInt("src_range_start", 0);
-    setInt("src_range_end",   0);
-    setInt("dst_range_start", 0);
-    setInt("dst_range_end",   0);
-
     clearAllTCPFlags();
     clearAllTCPFlagMasks();
 }
 
-TCPService::TCPService(const FWObject *root,bool prepopulate) : Service(root,prepopulate) 
+TCPService::TCPService(const FWObject *root, bool prepopulate) :
+    TCPUDPService(root,prepopulate) 
 {
     init();
-
-    setInt("src_range_start", 0);
-    setInt("src_range_end",   0);
-    setInt("dst_range_start", 0);
-    setInt("dst_range_end",   0);
 
     clearAllTCPFlags();
     clearAllTCPFlagMasks();
@@ -94,37 +85,9 @@ void TCPService::init()
 
 void TCPService::fromXML(xmlNodePtr root) throw(FWException)
 {
-    FWObject::fromXML(root);
+    TCPUDPService::fromXML(root);
 
     const char *n;
-
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("src_range_start")));
-    if(n!=NULL)
-    {
-        setStr("src_range_start", n);
-        FREEXMLBUFF(n);
-    }
-
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("src_range_end")));
-    if(n!=NULL)
-    {
-        setStr("src_range_end", n);
-        FREEXMLBUFF(n);
-    }
-
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dst_range_start")));
-    if(n!=NULL)
-    {
-        setStr("dst_range_start", n);
-        FREEXMLBUFF(n);
-    }
-
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dst_range_end")));
-    if(n!=NULL)
-    {
-        setStr("dst_range_end", n);
-        FREEXMLBUFF(n);
-    }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("established")));
     if(n!=NULL)
@@ -155,6 +118,14 @@ void TCPService::fromXML(xmlNodePtr root) throw(FWException)
     }
 
 }
+
+xmlNodePtr TCPService::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+{
+    xmlNodePtr me = TCPUDPService::toXML(xml_parent_node);
+   
+    return me;
+}
+
 
 bool  TCPService::getEstablished()
 {

@@ -309,6 +309,6 @@ FWReference* Interval::createRef()
 
 bool Interval::isAny()
 { 
-    return getId()==FWObjectDatabase::getAnyIntervalId();
+    return getId()==FWObjectDatabase::ANY_INTERVAL_ID;
 }
 

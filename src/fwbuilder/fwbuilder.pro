@@ -59,6 +59,7 @@ SOURCES  = 	inet_net_ntop.c \
 			TCPService.cpp \
 			ThreadTools.cpp \
 			Tools.cpp \
+			TCPUDPService.cpp \
 			UDPService.cpp \
 			UserService.cpp \
             TagService.cpp \
@@ -123,6 +124,7 @@ HEADERS  = 	inet_net.h \
 			TCPService.h \
 			ThreadTools.h \
 			Tools.h \
+			TCPUDPService.h \
 			UDPService.h \
 			UserService.h \
             TagService.h \

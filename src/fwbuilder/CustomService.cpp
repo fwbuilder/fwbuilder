@@ -29,6 +29,7 @@
 
 #include <fwbuilder/libfwbuilder-config.h>
 
+#include <fwbuilder/FWObjectDatabase.h>
 #include <fwbuilder/CustomService.h>
 #include <fwbuilder/XMLTools.h>
 
@@ -68,7 +69,7 @@ void CustomService::fromXML(xmlNodePtr root) throw(FWException)
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("id")));
     if(n)
     {
-        setId(n);
+        setId(FWObjectDatabase::registerStringId(n));
         FREEXMLBUFF(n);
     }
 
