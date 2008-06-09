@@ -349,8 +349,6 @@ loop:
 
     ++treeSeeker;
 
-    showObject(o);
-
     if (fwbdebug)
     {
         qDebug("Found object: o=%p  id=%s  name=%s  type=%s",
@@ -358,6 +356,7 @@ loop:
                FWObjectDatabase::getStringId(o->getId()).c_str(),
                o->getName().c_str(),o->getTypeName().c_str());
     }
+    showObject(o);
 }
 
 bool FindObjectWidget::validateReplaceObject()
