@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>828</width>
-    <height>261</height>
+    <width>931</width>
+    <height>294</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -249,45 +249,12 @@
            <enum>QFrame::Sunken</enum>
           </property>
           <layout class="QVBoxLayout" >
-           <property name="spacing" >
-            <number>2</number>
-           </property>
-           <property name="leftMargin" >
-            <number>2</number>
-           </property>
-           <property name="topMargin" >
-            <number>2</number>
-           </property>
-           <property name="rightMargin" >
-            <number>2</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>2</number>
-           </property>
            <item>
             <widget class="QGroupBox" name="groupBox2" >
              <property name="title" >
               <string/>
              </property>
              <layout class="QGridLayout" >
-              <property name="leftMargin" >
-               <number>2</number>
-              </property>
-              <property name="topMargin" >
-               <number>2</number>
-              </property>
-              <property name="rightMargin" >
-               <number>2</number>
-              </property>
-              <property name="bottomMargin" >
-               <number>2</number>
-              </property>
-              <property name="horizontalSpacing" >
-               <number>2</number>
-              </property>
-              <property name="verticalSpacing" >
-               <number>2</number>
-              </property>
               <item row="0" column="0" >
                <widget class="QCheckBox" name="useStartDate" >
                 <property name="text" >
@@ -359,85 +326,6 @@
                 </property>
                </spacer>
               </item>
-              <item row="2" column="0" colspan="4" >
-               <widget class="QFrame" name="frame" >
-                <property name="frameShape" >
-                 <enum>QFrame::NoFrame</enum>
-                </property>
-                <property name="frameShadow" >
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QGridLayout" >
-                 <property name="leftMargin" >
-                  <number>0</number>
-                 </property>
-                 <property name="topMargin" >
-                  <number>0</number>
-                 </property>
-                 <property name="rightMargin" >
-                  <number>0</number>
-                 </property>
-                 <property name="bottomMargin" >
-                  <number>0</number>
-                 </property>
-                 <property name="horizontalSpacing" >
-                  <number>0</number>
-                 </property>
-                 <property name="verticalSpacing" >
-                  <number>0</number>
-                 </property>
-                 <item row="0" column="0" >
-                  <widget class="QCheckBox" name="cbStart1" >
-                   <property name="text" >
-                    <string>Mon</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1" >
-                  <widget class="QCheckBox" name="cbStart2" >
-                   <property name="text" >
-                    <string>Tue</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="2" >
-                  <widget class="QCheckBox" name="cbStart3" >
-                   <property name="text" >
-                    <string>Wed</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="3" >
-                  <widget class="QCheckBox" name="cbStart4" >
-                   <property name="text" >
-                    <string>Thu</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="4" >
-                  <widget class="QCheckBox" name="cbStart5" >
-                   <property name="text" >
-                    <string>Fri</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="5" >
-                  <widget class="QCheckBox" name="cbStart6" >
-                   <property name="text" >
-                    <string>Sat</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="6" >
-                  <widget class="QCheckBox" name="cbStart7" >
-                   <property name="text" >
-                    <string>Sun</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
              </layout>
             </widget>
            </item>
@@ -447,24 +335,6 @@
               <string/>
              </property>
              <layout class="QGridLayout" >
-              <property name="leftMargin" >
-               <number>2</number>
-              </property>
-              <property name="topMargin" >
-               <number>2</number>
-              </property>
-              <property name="rightMargin" >
-               <number>2</number>
-              </property>
-              <property name="bottomMargin" >
-               <number>2</number>
-              </property>
-              <property name="horizontalSpacing" >
-               <number>2</number>
-              </property>
-              <property name="verticalSpacing" >
-               <number>2</number>
-              </property>
               <item row="0" column="0" >
                <widget class="QCheckBox" name="useEndDate" >
                 <property name="text" >
@@ -529,7 +399,16 @@
                 </property>
                </spacer>
               </item>
-              <item row="2" column="0" colspan="4" >
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox" >
+             <property name="title" >
+              <string/>
+             </property>
+             <layout class="QGridLayout" >
+              <item row="0" column="0" >
                <widget class="QFrame" name="frame_2" >
                 <property name="frameShape" >
                  <enum>QFrame::NoFrame</enum>
@@ -557,49 +436,49 @@
                   <number>0</number>
                  </property>
                  <item row="0" column="0" >
-                  <widget class="QCheckBox" name="cbStop1" >
+                  <widget class="QCheckBox" name="cbStart1_2" >
                    <property name="text" >
                     <string>Mon</string>
                    </property>
                   </widget>
                  </item>
                  <item row="0" column="1" >
-                  <widget class="QCheckBox" name="cbStop2" >
+                  <widget class="QCheckBox" name="cbStart2_2" >
                    <property name="text" >
                     <string>Tue</string>
                    </property>
                   </widget>
                  </item>
                  <item row="0" column="2" >
-                  <widget class="QCheckBox" name="cbStop3" >
+                  <widget class="QCheckBox" name="cbStart3_2" >
                    <property name="text" >
                     <string>Wed</string>
                    </property>
                   </widget>
                  </item>
                  <item row="0" column="3" >
-                  <widget class="QCheckBox" name="cbStop4" >
+                  <widget class="QCheckBox" name="cbStart4_2" >
                    <property name="text" >
                     <string>Thu</string>
                    </property>
                   </widget>
                  </item>
                  <item row="0" column="4" >
-                  <widget class="QCheckBox" name="cbStop5" >
+                  <widget class="QCheckBox" name="cbStart5_2" >
                    <property name="text" >
                     <string>Fri</string>
                    </property>
                   </widget>
                  </item>
                  <item row="0" column="5" >
-                  <widget class="QCheckBox" name="cbStop6" >
+                  <widget class="QCheckBox" name="cbStart6_2" >
                    <property name="text" >
                     <string>Sat</string>
                    </property>
                   </widget>
                  </item>
                  <item row="0" column="6" >
-                  <widget class="QCheckBox" name="cbStop7" >
+                  <widget class="QCheckBox" name="cbStart7_2" >
                    <property name="text" >
                     <string>Sun</string>
                    </property>
@@ -776,230 +655,6 @@
     <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbStart1</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>220</x>
-     <y>126</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>219</x>
-     <y>127</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbStart2</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>282</x>
-     <y>125</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>259</x>
-     <y>116</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbStart3</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>327</x>
-     <y>123</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>296</x>
-     <y>123</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbStart4</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>372</x>
-     <y>131</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>502</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbStart5</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>416</x>
-     <y>125</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>394</x>
-     <y>1</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbStart6</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>478</x>
-     <y>125</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>456</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbStart7</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>517</x>
-     <y>118</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>598</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbStop1</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>221</x>
-     <y>216</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>215</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbStop2</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>279</x>
-     <y>213</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>262</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbStop3</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>327</x>
-     <y>212</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>166</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbStop4</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>378</x>
-     <y>204</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>676</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbStop5</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>432</x>
-     <y>214</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>57</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbStop6</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>462</x>
-     <y>212</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>86</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbStop7</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TimeDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>542</x>
-     <y>214</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>776</x>
-     <y>0</y>
     </hint>
    </hints>
   </connection>

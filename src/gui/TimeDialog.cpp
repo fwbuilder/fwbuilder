@@ -76,21 +76,13 @@ void TimeDialog::loadFWObject(FWObject *o)
 
     init=true;
 
-    m_dialog->cbStart1->setCheckState(Qt::Unchecked);
-    m_dialog->cbStart2->setCheckState(Qt::Unchecked);
-    m_dialog->cbStart3->setCheckState(Qt::Unchecked);
-    m_dialog->cbStart4->setCheckState(Qt::Unchecked);
-    m_dialog->cbStart5->setCheckState(Qt::Unchecked);
-    m_dialog->cbStart6->setCheckState(Qt::Unchecked);
-    m_dialog->cbStart7->setCheckState(Qt::Unchecked);
-
-    m_dialog->cbStop1->setCheckState(Qt::Unchecked);
-    m_dialog->cbStop2->setCheckState(Qt::Unchecked);
-    m_dialog->cbStop3->setCheckState(Qt::Unchecked);
-    m_dialog->cbStop4->setCheckState(Qt::Unchecked);
-    m_dialog->cbStop5->setCheckState(Qt::Unchecked);
-    m_dialog->cbStop6->setCheckState(Qt::Unchecked);
-    m_dialog->cbStop7->setCheckState(Qt::Unchecked);
+    m_dialog->cbStart1_2->setCheckState(Qt::Unchecked);
+    m_dialog->cbStart2_2->setCheckState(Qt::Unchecked);
+    m_dialog->cbStart3_2->setCheckState(Qt::Unchecked);
+    m_dialog->cbStart4_2->setCheckState(Qt::Unchecked);
+    m_dialog->cbStart5_2->setCheckState(Qt::Unchecked);
+    m_dialog->cbStart6_2->setCheckState(Qt::Unchecked);
+    m_dialog->cbStart7_2->setCheckState(Qt::Unchecked);
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->comment->setPlainText( QString::fromUtf8(s->getComment().c_str()) );
@@ -133,25 +125,25 @@ void TimeDialog::loadFWObject(FWObject *o)
 
     // from_weekday is -1 for "All days"
 //    m_dialog->startDOW->setCurrentIndex( obj->getInt("from_weekday") + 1 );
-    QString sFromWeekday = obj->getStr("from_weekday").c_str();
-    qDebug (sFromWeekday.toAscii().data());
+    QString sFromWeekday = s->getDaysOfWeek().c_str();
+
     if (sFromWeekday=="-1")
         sFromWeekday="0,1,2,3,4,5,6";
     // Sunday is cbStart7
     if (sFromWeekday.contains('0'))
-        m_dialog->cbStart7->setCheckState(Qt::Checked);
+        m_dialog->cbStart7_2->setCheckState(Qt::Checked);
     if (sFromWeekday.contains('1'))
-        m_dialog->cbStart1->setCheckState(Qt::Checked);
+        m_dialog->cbStart1_2->setCheckState(Qt::Checked);
     if (sFromWeekday.contains('2'))
-        m_dialog->cbStart2->setCheckState(Qt::Checked);
+        m_dialog->cbStart2_2->setCheckState(Qt::Checked);
     if (sFromWeekday.contains('3'))
-        m_dialog->cbStart3->setCheckState(Qt::Checked);
+        m_dialog->cbStart3_2->setCheckState(Qt::Checked);
     if (sFromWeekday.contains('4'))
-        m_dialog->cbStart4->setCheckState(Qt::Checked);
+        m_dialog->cbStart4_2->setCheckState(Qt::Checked);
     if (sFromWeekday.contains('5'))
-        m_dialog->cbStart5->setCheckState(Qt::Checked);
+        m_dialog->cbStart5_2->setCheckState(Qt::Checked);
     if (sFromWeekday.contains('6'))
-        m_dialog->cbStart6->setCheckState(Qt::Checked);
+        m_dialog->cbStart6_2->setCheckState(Qt::Checked);
 
     int toH = obj->getInt("to_hour");
     int toM = obj->getInt("to_minute");
@@ -165,28 +157,6 @@ void TimeDialog::loadFWObject(FWObject *o)
     bool using_end_date = (y>0 && m>0 && d>0);
     m_dialog->endDate->setDate( (using_end_date)?QDate( y, m, d ):QDate() );
     m_dialog->useEndDate->setChecked(using_end_date);
-
-    // to_weekday is -1 for "All days"
-//    m_dialog->endDOW->setCurrentIndex( obj->getInt("to_weekday") + 1 );
-    QString sToWeekday = obj->getStr("to_weekday").c_str();
-    if (sToWeekday=="-1")
-        sToWeekday="0,1,2,3,4,5,6";
-    // Sunday is cbStop7
-    if (sToWeekday.contains('0'))
-        m_dialog->cbStop7->setCheckState(Qt::Checked);
-    if (sToWeekday.contains('1'))
-        m_dialog->cbStop1->setCheckState(Qt::Checked);
-    if (sToWeekday.contains('2'))
-        m_dialog->cbStop2->setCheckState(Qt::Checked);
-    if (sToWeekday.contains('3'))
-        m_dialog->cbStop3->setCheckState(Qt::Checked);
-    if (sToWeekday.contains('4'))
-        m_dialog->cbStop4->setCheckState(Qt::Checked);
-    if (sToWeekday.contains('5'))
-        m_dialog->cbStop5->setCheckState(Qt::Checked);
-    if (sToWeekday.contains('6'))
-        m_dialog->cbStop6->setCheckState(Qt::Checked);
-
 
     setDisabledPalette(m_dialog->obj_name);
     setDisabledPalette(m_dialog->comment);
@@ -216,24 +186,17 @@ void TimeDialog::enableAllWidgets()
     m_dialog->useStartDate->setEnabled(!obj->isReadOnly());
     m_dialog->startDate->setEnabled(!obj->isReadOnly() && m_dialog->useStartDate->isChecked());
 //    m_dialog->startDOW->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
-    m_dialog->cbStart1->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
-    m_dialog->cbStart2->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
-    m_dialog->cbStart3->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
-    m_dialog->cbStart4->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
-    m_dialog->cbStart5->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
-    m_dialog->cbStart6->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
-    m_dialog->cbStart7->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
+/*    m_dialog->cbStart1_2->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
+    m_dialog->cbStart2_2->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
+    m_dialog->cbStart3_2->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
+    m_dialog->cbStart4_2->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
+    m_dialog->cbStart5_2->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
+    m_dialog->cbStart6_2->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
+    m_dialog->cbStart7_2->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());*/
 
     m_dialog->endTime->setEnabled(!obj->isReadOnly());
     m_dialog->useEndDate->setEnabled(!obj->isReadOnly());
     m_dialog->endDate->setEnabled(!obj->isReadOnly() && m_dialog->useEndDate->isChecked());
-    m_dialog->cbStop1->setEnabled(!obj->isReadOnly() && !m_dialog->useEndDate->isChecked());
-    m_dialog->cbStop2->setEnabled(!obj->isReadOnly() && !m_dialog->useEndDate->isChecked());
-    m_dialog->cbStop3->setEnabled(!obj->isReadOnly() && !m_dialog->useEndDate->isChecked());
-    m_dialog->cbStop4->setEnabled(!obj->isReadOnly() && !m_dialog->useEndDate->isChecked());
-    m_dialog->cbStop5->setEnabled(!obj->isReadOnly() && !m_dialog->useEndDate->isChecked());
-    m_dialog->cbStop6->setEnabled(!obj->isReadOnly() && !m_dialog->useEndDate->isChecked());
-    m_dialog->cbStop7->setEnabled(!obj->isReadOnly() && !m_dialog->useEndDate->isChecked());
 
 //    m_dialog->endDOW->setEnabled(!obj->isReadOnly() && !m_dialog->useEndDate->isChecked());
 }
@@ -268,6 +231,8 @@ void TimeDialog::libChanged()
 void TimeDialog::applyChanges()
 {
     if (!isTreeReadWrite(this,obj)) return;
+    Interval *s = dynamic_cast<Interval*>(obj);
+    assert(s!=NULL);
 
     string oldname=obj->getName();
     obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
@@ -288,26 +253,24 @@ void TimeDialog::applyChanges()
     obj->setInt( "from_hour"  ,      m_dialog->startTime->time().hour()  );
 
     QString sFromWeekday ;
-    if (m_dialog->cbStart1->checkState ()==Qt::Checked)
+    if (m_dialog->cbStart7_2->checkState ()==Qt::Checked)
         sFromWeekday+="0,";
-    if (m_dialog->cbStart2->checkState ()==Qt::Checked)
+    if (m_dialog->cbStart1_2->checkState ()==Qt::Checked)
         sFromWeekday+="1,";
-    if (m_dialog->cbStart3->checkState ()==Qt::Checked)
+    if (m_dialog->cbStart2_2->checkState ()==Qt::Checked)
         sFromWeekday+="2,";
-    if (m_dialog->cbStart4->checkState ()==Qt::Checked)
+    if (m_dialog->cbStart3_2->checkState ()==Qt::Checked)
         sFromWeekday+="3,";
-    if (m_dialog->cbStart5->checkState ()==Qt::Checked)
+    if (m_dialog->cbStart4_2->checkState ()==Qt::Checked)
         sFromWeekday+="4,";
-    if (m_dialog->cbStart6->checkState ()==Qt::Checked)
+    if (m_dialog->cbStart5_2->checkState ()==Qt::Checked)
         sFromWeekday+="5,";
-    if (m_dialog->cbStart7->checkState ()==Qt::Checked)
+    if (m_dialog->cbStart6_2->checkState ()==Qt::Checked)
         sFromWeekday+="6,";
     if (sFromWeekday.length()>0)
         sFromWeekday.remove(sFromWeekday.length()-1,0);
 
-//    obj->setInt( "from_weekday" ,    m_dialog->startDOW->currentIndex() -1);
-    obj->setStr ("from_weekday" , sFromWeekday.toAscii().data());
-
+    s->setDaysOfWeek(sFromWeekday.toAscii().data());
     if (m_dialog->useEndDate->isChecked())
     {
         obj->setInt( "to_day"   ,        m_dialog->endDate->date().day()     );
@@ -321,28 +284,6 @@ void TimeDialog::applyChanges()
     }
     obj->setInt( "to_minute"   ,     m_dialog->endTime->time().minute()  );
     obj->setInt( "to_hour"  ,        m_dialog->endTime->time().hour()    );
-
-    QString sToWeekday ;
-    if (m_dialog->cbStop1->checkState ()==Qt::Checked)
-        sToWeekday+="0,";
-    if (m_dialog->cbStop2->checkState ()==Qt::Checked)
-        sToWeekday+="1,";
-    if (m_dialog->cbStop3->checkState ()==Qt::Checked)
-        sToWeekday+="2,";
-    if (m_dialog->cbStop4->checkState ()==Qt::Checked)
-        sToWeekday+="3,";
-    if (m_dialog->cbStop5->checkState ()==Qt::Checked)
-        sToWeekday+="4,";
-    if (m_dialog->cbStop6->checkState ()==Qt::Checked)
-        sToWeekday+="5,";
-    if (m_dialog->cbStop7->checkState ()==Qt::Checked)
-        sToWeekday+="6,";
-    if (sToWeekday.length()>0)
-        sToWeekday.remove(sFromWeekday.length()-1,0);
-
-
-//    obj->setInt( "to_weekday" ,      m_dialog->endDOW->currentIndex() - 1 );
-    obj->setStr( "to_weekday" ,      sToWeekday.toAscii().data() );
 
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
