@@ -264,11 +264,6 @@ void PrefsDialog::changeTreeFont()
     changeFont(&treeFont);
 }
 
-void PrefsDialog::changeUiFont()
-{
-    changeFont(&uiFont);
-}
-
 void PrefsDialog::changeFont(QFont *font)
 {
     bool ok;

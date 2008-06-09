@@ -104,7 +104,7 @@
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="Widget2" >
       <attribute name="title" >
@@ -965,16 +965,6 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0" >
-        <widget class="QPushButton" name="btUiFont" >
-         <property name="toolTip" >
-          <string>Choose font for the rest of the interface</string>
-         </property>
-         <property name="text" >
-          <string>Interface font</string>
-         </property>
-        </widget>
-       </item>
        <item row="3" column="0" >
         <spacer>
          <property name="orientation" >
@@ -1325,22 +1315,6 @@
    <signal>clicked()</signal>
    <receiver>prefsDialog_q</receiver>
    <slot>changeTreeFont()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btUiFont</sender>
-   <signal>clicked()</signal>
-   <receiver>prefsDialog_q</receiver>
-   <slot>changeUiFont()</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>20</x>

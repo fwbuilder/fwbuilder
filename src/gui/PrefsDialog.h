@@ -80,7 +80,6 @@ public slots:
     virtual void changeShowIcons();
     virtual void changeRulesFont();
     virtual void changeTreeFont();
-    virtual void changeUiFont();
 };
 
 #endif // __PREFSDIALOG_H
