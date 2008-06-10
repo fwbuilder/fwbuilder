@@ -309,7 +309,7 @@ string RoutingCompiler_ipt::PrintRule::_printRItf(RoutingRule *rule)
     ref=itfrel->front();
     Interface *itf=Interface::cast(FWReference::cast(ref)->getPointer());
     
-    if(itf != NULL) return "dev " + itf->getStr("name") + " ";
+    if(itf != NULL) return "dev " + itf->getName() + " ";
     else return "";
 }
 
