@@ -42,27 +42,17 @@ const char *FWReference::TYPENAME={"Ref"};
 FWReference::FWReference(FWObject *p)
 {
     setPointer(p);
-
-    remStr("name");
-    remStr("comment");
-    remStr("id");
 }
 */
 
 
 FWReference::FWReference()
 {
-    remStr("name");
-    remStr("comment");
-    remStr("id");
     setPointer(NULL);
 }
 
 FWReference::FWReference(const FWObject *root,bool prepopulate) : FWObject(root,prepopulate)
 {
-    remStr("name");
-    remStr("comment");
-    remStr("id");
     setPointer(NULL);
 }
 

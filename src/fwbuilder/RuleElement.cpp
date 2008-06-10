@@ -53,19 +53,11 @@ const char *RuleElement::TYPENAME={"RuleElement"};
 
 RuleElement::RuleElement() 
 {
-    remStr("comment");
-    remStr("name");
-    remStr("id");
-
     setBool("neg",false);
 }
 
 RuleElement::RuleElement(const FWObject *root,bool prepopulate) : FWObject(root,prepopulate)
 {
-    remStr("comment");
-    remStr("name");
-    remStr("id");
-
     setBool("neg",false);
 }
 

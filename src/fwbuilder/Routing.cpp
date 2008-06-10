@@ -38,14 +38,12 @@ const char *Routing::TYPENAME={"Routing"};
  
 Routing::Routing() : RuleSet() 
 {
-    setStr("name", "Routing");
-    remStr("comment");
+    setName("Routing");
 }
 
 Routing::Routing(const FWObject *root,bool prepopulate) : RuleSet(root,prepopulate) 
 {
-    setStr("name", "Routing");
-    remStr("comment");
+    setName("Routing");
 }
 
 Routing::~Routing()  {}

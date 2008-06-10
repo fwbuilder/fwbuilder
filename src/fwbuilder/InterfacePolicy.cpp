@@ -39,14 +39,10 @@ const char *InterfacePolicy::TYPENAME={"InterfacePolicy"};
 
 InterfacePolicy::InterfacePolicy()
 {
-    remStr("name");
-    remStr("comment");
 }
 
 InterfacePolicy::InterfacePolicy(const FWObject*,bool )
 {
-    remStr("name");
-    remStr("comment");
 }
 
 InterfacePolicy::~InterfacePolicy() {}

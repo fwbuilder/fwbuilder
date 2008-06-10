@@ -49,7 +49,6 @@ const char *Rule::TYPENAME={"Rule"};
 
 Rule::Rule()
 {
-    remStr("name");
     setInt("position",0);
     enable();
     setFallback(false);
@@ -59,7 +58,6 @@ Rule::Rule()
 
 Rule::Rule(const FWObject *root,bool prepopulate) : Group(root,prepopulate)
 {
-    remStr("name");
     setInt("position",0);
     enable();
     setFallback(false);

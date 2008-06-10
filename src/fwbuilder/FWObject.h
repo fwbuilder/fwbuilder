@@ -90,7 +90,10 @@ private:
      *
      * dbroot is assigned by method FWObjectDatabase::create 
      */
-    FWObject      *dbroot;
+    FWObject *dbroot;
+    int id;
+    std::string name;
+    std::string comment;
 
     static std::string NOT_FOUND;
 
@@ -164,6 +167,10 @@ public:
 
 
     FWObject(const FWObject &copy);
+
+    int  getId() const;
+    void setId(int i);
+    bool haveId() { return (id != -1); }
 
     virtual void       fromXML    (xmlNodePtr xml_parent_node) throw(FWException);
     virtual xmlNodePtr toXML      (xmlNodePtr xml_parent_node) throw(FWException);
@@ -240,10 +247,6 @@ public:
     
     const std::string &getComment() const;
     void          setComment(const std::string& c);
-
-    int  getId() const;
-    void setId(int);
-    bool haveId() { return exists("id"); }
 
     /**
      * convenience method: returns the name of the library this object belongs to.

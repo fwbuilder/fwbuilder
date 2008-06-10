@@ -68,12 +68,7 @@ void IPv4::fromXML(xmlNodePtr root) throw(FWException)
 {
     FWObject::fromXML(root);
 
-    const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("name")));
-    assert(n!=NULL);
-    setName(n);
-    FREEXMLBUFF(n);
-
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
+    const char* n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
     assert(n!=NULL);
     setAddress(InetAddr(n));
     FREEXMLBUFF(n);

@@ -47,18 +47,12 @@ const char *Management::TYPENAME={"Management"};
 Management::Management()
 {
     // This object does not have standard attributes
-    remStr("comment");
-    remStr("name"   );
-    remStr("id"     );
 }
 
 Management::Management(const FWObject *root,bool prepopulate) :
     FWObject(root,prepopulate)
 {
     // This object does not have standard attributes
-    remStr("comment");
-    remStr("name"   );
-    remStr("id"     );
 }
 
 
@@ -177,9 +171,6 @@ const char *PolicyInstallScript::TYPENAME={"PolicyInstallScript"};
 PolicyInstallScript::PolicyInstallScript()
 {
     // This object does not have standard attributes
-    remStr("comment");
-    remStr("name"   );
-    remStr("id"     );
     enabled = false ;
 }
 
@@ -187,9 +178,6 @@ PolicyInstallScript::PolicyInstallScript(const FWObject *root,bool prepopulate) 
     FWObject(root,prepopulate)
 {
     // This object does not have standard attributes
-    remStr("comment");
-    remStr("name"   );
-    remStr("id"     );
     enabled = false ;
 }
 
@@ -282,9 +270,6 @@ const char *SNMPManagement::TYPENAME={"SNMPManagement"};
 SNMPManagement::SNMPManagement()
 {
     // This object does not have standard attributes
-    remStr("comment");
-    remStr("name"   );
-    remStr("id"     );
     enabled = false ;
 }
 
@@ -292,9 +277,6 @@ SNMPManagement::SNMPManagement(const FWObject *root,bool prepopulate) :
     FWObject(root,prepopulate)
 {
     // This object does not have standard attributes
-    remStr("comment");
-    remStr("name"   );
-    remStr("id"     );
     enabled = false ;
 }
 
@@ -391,9 +373,6 @@ FWBDManagement::FWBDManagement()
     enabled = false ;
 
     // This object does not have standard attributes
-    remStr("comment");
-    remStr("name"   );
-    remStr("id"     );
 }
 
 FWBDManagement::FWBDManagement(const FWObject *root,bool prepopulate) :
@@ -403,9 +382,6 @@ FWBDManagement::FWBDManagement(const FWObject *root,bool prepopulate) :
     enabled = false ;
 
     // This object does not have standard attributes
-    remStr("comment");
-    remStr("name"   );
-    remStr("id"     );
 }
 
 

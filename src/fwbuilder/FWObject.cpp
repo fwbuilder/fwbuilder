@@ -125,6 +125,19 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children) throw(FWExc
 
     xmlNodePtr me = xmlNewChild(parent, NULL, xml_name.empty()?STRTOXMLCAST(getTypeName()):STRTOXMLCAST(xml_name), NULL);
 
+    if (id!=-1)
+    {
+        xmlAttrPtr pr = xmlNewProp(me, 
+                                   TOXMLCAST("id"),
+                                   STRTOXMLCAST(s_id));
+        xmlAddID(NULL, parent->doc, STRTOXMLCAST(s_id), pr);
+    }
+
+    if (!name.empty())
+        xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    if (!comment.empty())
+        xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+
     for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i) 
     {
         const string &name  = (*i).first;
@@ -132,18 +145,7 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children) throw(FWExc
 
         if (name[0]=='.') continue;
 
-        if(name=="id")
-        {
-            xmlAttrPtr pr = xmlNewProp(me, 
-                                       STRTOXMLCAST(name),
-                                       STRTOXMLCAST(s_id));
-            xmlAddID(NULL, parent->doc, STRTOXMLCAST(s_id), pr);
-        } else
-        {
-            xmlAttrPtr pr = xmlNewProp(me, 
-                                       STRTOXMLCAST(name),
-                                       STRTOXMLCAST(value));
-        }
+        xmlAttrPtr pr = xmlNewProp(me, STRTOXMLCAST(name), STRTOXMLCAST(value));
     }
 
     if(process_children)
@@ -160,6 +162,9 @@ FWObject::FWObject()
     ref_counter = 0;
     parent      = NULL;
     dbroot      = NULL;
+    name        = "";
+    comment     = "";
+    id          = -1;
 
     setName("New object");
     
@@ -175,6 +180,9 @@ FWObject::FWObject(bool new_id)
     ref_counter = 0;
     parent      = NULL;
     dbroot      = NULL;
+    name        = "";
+    comment     = "";
+    id          = -1;
 
     setName("New object");
 
@@ -188,7 +196,7 @@ FWObject::FWObject(bool new_id)
 FWObject::FWObject(const FWObject &c) : list<FWObject*>(c)
 {
     init = false;
-    *this=c;
+    *this = c;
 }
 
 FWObject::FWObject(const FWObject *root, bool )
@@ -197,6 +205,9 @@ FWObject::FWObject(const FWObject *root, bool )
     ref_counter = 0    ;
     parent      = NULL ;
     dbroot      = (FWObject*)root;
+    name        = "";
+    comment     = "";
+    id          = -1;
     
     setName("New object");
     
@@ -374,9 +385,14 @@ FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
 {
     checkReadOnly();
 
-    int id = getId();
+    int old_id = getId();
+
+    id = x->id;
+    name = x->name;
+    comment = x->comment;
 
     data = x->data;
+
     bool ro_status = getBool("ro");
     if (ro_status) setReadOnly(false);
 
@@ -390,7 +406,7 @@ FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
         // some objects do not have ID per DTD (e.g. Src, Dst, etc.)
         // Those will return -1 from getId()
         if (id > -1)
-            setId(id);
+            setId(old_id);
     }
 
     if (dbroot==NULL) setRoot(x->getRoot());
@@ -405,12 +421,12 @@ FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
 
 const string &FWObject::getName() const 
 { 
-    return getStr("name"); 
+    return name;
 }
 
 void FWObject::setName(const string &n)   
 {
-    setStr("name",n);
+    name = n;
     setDirty(true);
 }
 
@@ -456,18 +472,18 @@ string FWObject::getPath(bool relative) const
 
 const string& FWObject::getComment() const
 { 
-    return getStr("comment"); 
+    return comment;
 }
 
 void FWObject::setComment(const string &c)
 {
-    setStr("comment",c);
+    comment = c;
     setDirty(true);
 }
 
 int FWObject::getId() const
 { 
-    return getInt("id");
+    return id;
 }
 
 /*
@@ -475,7 +491,7 @@ int FWObject::getId() const
  */
 void FWObject::setId(int c)
 {
-    setInt("id", c);
+    id = c;
     setDirty(true);
     if (dbroot!=NULL)
         FWObjectDatabase::cast(dbroot)->addToIndex(this);
@@ -627,8 +643,6 @@ void FWObject::dump(std::ostream &f,bool recursive,bool brief,int offset)
 	map<string, string>::const_iterator d;
 	for (d=data.begin(); d!=data.end(); ++d)
         {
-	    if((*d).first=="name") 
-                continue;
 	    f << string(offset,' ');
 	    f << (*d).first << ": " << (*d).second << endl;
 	}

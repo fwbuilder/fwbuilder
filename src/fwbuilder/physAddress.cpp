@@ -50,12 +50,7 @@ void physAddress::fromXML(xmlNodePtr root) throw(FWException)
 {
     FWObject::fromXML(root);
 
-    const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("name")));
-    assert(n!=NULL);
-    setName(n);
-    FREEXMLBUFF(n);
-
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
+    const char* n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
     assert(n!=NULL);
     setStr("address", n);
     FREEXMLBUFF(n);

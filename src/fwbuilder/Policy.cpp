@@ -42,14 +42,12 @@ const char *Policy::TYPENAME={"Policy"};
 
 Policy::Policy() : RuleSet()
 {
-    setStr("name", "Policy");
-    remStr("comment");
+    setName("Policy");
 }
 
 Policy::Policy(const FWObject *root,bool prepopulate) : RuleSet(root,prepopulate)
 {
-    setStr("name", "Policy");
-    remStr("comment");
+    setName("Policy");
 }
 
 Policy::~Policy() {}

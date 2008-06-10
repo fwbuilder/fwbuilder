@@ -229,8 +229,8 @@ bool RoutingCompiler::emptyRDstAndRItf::processNext()
     RuleElementRGtw *gtwrel=rule->getRGtw();
     RuleElementRItf *itfrel=rule->getRItf();
 
-    if ( (FWReference::cast(itfrel->front())->getPointer())->getStr("name")=="Any" &&\
-         (FWReference::cast(gtwrel->front())->getPointer())->getStr("name")=="Any") {
+    if ( (FWReference::cast(itfrel->front())->getPointer())->getName()=="Any" &&\
+         (FWReference::cast(gtwrel->front())->getPointer())->getName()=="Any") {
         
         string msg;
         msg = "Gateway and interface are both empty in the rule " + rule->getLabel();
@@ -254,7 +254,7 @@ bool RoutingCompiler::singleAdressInRGtw::processNext()
     if( gtwrel->checkSingleIPAdress(o) == false) {
         
         string msg;
-        msg = "The object \"" + o->getStr("name") + "\" used as gateway in the routing rule "\
+        msg = "The object \"" + o->getName() + "\" used as gateway in the routing rule "\
             + rule->getLabel() + " has more than one interface resp. IP adress!";
         compiler->abort( msg.c_str() );
         
@@ -310,7 +310,7 @@ bool RoutingCompiler::validateNetwork::processNext()
     if( checkValidNetwork(o) == false) {
     
         string msg;
-        msg = "The object \"" + o->getStr("name") + "\" used as destination in the routing rule "\
+        msg = "The object \"" + o->getName() + "\" used as destination in the routing rule "\
             + rule->getLabel() + " has an invalid netmask!";
         compiler->abort( msg.c_str() );
         
@@ -333,7 +333,7 @@ bool RoutingCompiler::reachableAdressInRGtw::processNext()
     if( gtwrel->checkReachableIPAdress(o) == false) {
         
         string msg;
-        msg = "The object \"" + o->getStr("name") + "\" used as gateway in the routing rule "\
+        msg = "The object \"" + o->getName() + "\" used as gateway in the routing rule "\
             + rule->getLabel() + " is not reachable, since not in any local network of the firewall!";
         compiler->abort( msg.c_str() );
         
@@ -354,7 +354,7 @@ bool RoutingCompiler::contradictionRGtwAndRItf::processNext()
     FWObject *oRGtw = FWReference::cast(gtwrel->front())->getPointer();
     FWObject *oRItf = FWReference::cast(itfrel->front())->getPointer();
     
-    if (oRItf->getStr("name") == "Any") { return true; }
+    if (oRItf->getName() == "Any") { return true; }
     
     
     if (Host::cast(oRGtw) != NULL ||
@@ -391,8 +391,8 @@ bool RoutingCompiler::contradictionRGtwAndRItf::processNext()
         }
 
         string msg;
-        msg = "The object \"" + oRGtw->getStr("name") + "\" used as gateway in the routing rule "\
-            + rule->getLabel() + " is not in the same local network as the interface " + oRItf->getStr("name") + "!";
+        msg = "The object \"" + oRGtw->getName() + "\" used as gateway in the routing rule "\
+            + rule->getLabel() + " is not in the same local network as the interface " + oRItf->getName() + "!";
         compiler->abort( msg.c_str() );
 
     }
@@ -414,7 +414,7 @@ bool RoutingCompiler::rItfChildOfFw::processNext()
     if( itfrel->checkItfChildOfThisFw(o) == false) {
         
         string msg;
-        msg = "The object \"" + o->getStr("name") + "\" used as interface in the routing rule "\
+        msg = "The object \"" + o->getName() + "\" used as interface in the routing rule "\
             + rule->getLabel() + " is not a child of the firewall the rule belongs to!";
         compiler->abort( msg.c_str() );
         

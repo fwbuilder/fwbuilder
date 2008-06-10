@@ -60,7 +60,6 @@ void FWOptions::fromXML(xmlNodePtr root) throw(FWException)
     {
         if(cur && !xmlIsBlankNode(cur))    
         {
-
             n=FROMXMLCAST(xmlGetProp(cur,TOXMLCAST("name")));
             assert(n!=NULL);
             cont=FROMXMLCAST( xmlNodeGetContent(cur) );
