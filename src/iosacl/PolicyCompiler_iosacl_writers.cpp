@@ -174,7 +174,7 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
 {
     PolicyCompiler_iosacl *iosacl_comp = 
         dynamic_cast<PolicyCompiler_iosacl*>(compiler);
-    FWOptions  *ruleopt =rule->getOptionsObject();
+    //FWOptions  *ruleopt =rule->getOptionsObject();
     bool write_comments =
         compiler->fw->getOptionsObject()->getBool("iosacl_include_comments");
 
@@ -413,13 +413,18 @@ string PolicyCompiler_iosacl::PrintRule::_printAddr(libfwbuilder::Address  *o)
             }
         }
         return str.str();
-    } else
-    {
-        compiler->abort(string("Object ") + o->getName() +
-                        string(" (id=") + o->getId() + string(") ") +
-                        string(" has no ip address and can not be used ") +
-                        string("in the rule."));
     }
+
+    ostringstream errstr;
+    errstr << "Object "
+           << o->getName()
+           << " (id="
+           << o->getId()
+           << ") "
+           << " has no ip address and can not be used "
+           << "in the rule.";
+    compiler->abort(errstr.str());
+    return "";  // to make compiler happy
 }
 
 /*

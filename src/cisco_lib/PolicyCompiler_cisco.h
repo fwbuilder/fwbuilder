@@ -310,8 +310,8 @@ protected:
         class splitByNetworkZonesForRE : public PolicyRuleProcessor
         {
             std::string re_type;
-            std::map<std::string,libfwbuilder::PolicyRule*> rules;
-            void AddToInterface(const std::string &interface_id,
+            std::map<int,libfwbuilder::PolicyRule*> rules;
+            void AddToInterface(int interface_id,
                                 libfwbuilder::Address *addr,
                                 libfwbuilder::PolicyRule *rule);
             public:

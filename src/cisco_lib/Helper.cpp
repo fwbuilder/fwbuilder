@@ -98,48 +98,51 @@ void Helper::expand_group_recursive(FWObject *o,list<FWObject*> &ol)
     }
 }
 
-string  Helper::findInterfaceByAddress(libfwbuilder::Address *obj)
+int  Helper::findInterfaceByAddress(Address *obj)
 {
     return findInterfaceByAddress( obj->getAddressPtr() );
 }
 
-string  Helper::findInterfaceByAddress(const libfwbuilder::InetAddr *addr)
+int  Helper::findInterfaceByAddress(const InetAddr *addr)
 {
-    if (addr==NULL) return "";
+    if (addr==NULL) return -1;
 
     Firewall *fw=compiler->fw;
     list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
-    for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) {
+    for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
+    {
 	Interface *iface=Interface::cast(*i);
 	if ( iface->belongs( *addr ) ) return iface->getId();
     }
-    return "";
+    return -1;
 }
 
-string  Helper::findInterfaceByNetzone(Address *obj)
+int  Helper::findInterfaceByNetzone(Address *obj)
 {
     return findInterfaceByNetzone(obj->getAddressPtr());
 }
 
-string  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
+int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
 {
-    if (addr==NULL) return "";
+    if (addr==NULL) return -1;
 
     Firewall *fw=compiler->fw;
-    map<string,FWObject*> zones;
+    map<int,FWObject*> zones;
     FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
     for ( ; i!=i.end(); ++i)
     {
-        string netzone_id = (*i)->getStr("network_zone");
-        if (netzone_id != "")
+        // NOTE: "network_zone" is globally unique string ID
+        int netzone_id =
+            FWObjectDatabase::getIntId((*i)->getStr("network_zone"));
+        if (netzone_id != -1)
         {
-            FWObject *netzone=fw->getRoot()->findInIndex(netzone_id);
+            FWObject *netzone = fw->getRoot()->findInIndex(netzone_id);
             for (list<FWObject*>::iterator j=netzone->begin();
                  j!=netzone->end(); ++j)
             {
                 assert(Address::cast(*j)!=NULL);
                 if (Address::cast(*j)->belongs(*addr))
-                    zones[(*i)->getId()]=netzone;
+                    zones[(*i)->getId()] = netzone;
             }
         }
     }
@@ -148,13 +151,13 @@ string  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
  * now compare dimensions of all netzones that contain address obj and
  * pick the one with smallest dimension
  */    
-    string  res_id;
+    int  res_id = -1;
     unsigned long res_dim=LONG_MAX;
-    for (map<string,FWObject*>::iterator i=zones.begin(); i!=zones.end(); ++i) 
+    for (map<int,FWObject*>::iterator i=zones.begin(); i!=zones.end(); ++i) 
     {
-        string    iface_id=(*i).first;
-        FWObject *netzone=(*i).second;
-        unsigned long dim=calculateDimension(netzone);
+        int iface_id = (*i).first;
+        FWObject *netzone = (*i).second;
+        unsigned long dim = calculateDimension(netzone);
 
         if (dim<=res_dim) 
         {
@@ -167,18 +170,18 @@ string  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
  * Subnets defined by addresses of interfaces are automatically part
  * of the corresponding network zones
  */
-    if (res_id.empty()) res_id=findInterfaceByAddress( addr );
+    if (res_id == -1) res_id = findInterfaceByAddress( addr );
 
-    if (res_id.empty())
+    if (res_id == -1)
         throw(string("Can not find interface with network zone that includes "
                      "address ") + addr->toString());
     return res_id;
 }
 
-list<string>  Helper::getAllInterfaceIDs()
+list<int> Helper::getAllInterfaceIDs()
 {
-    Firewall *fw=compiler->fw;
-    list<string> intf_id_list;
+    Firewall *fw = compiler->fw;
+    list<int> intf_id_list;
     FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
     for ( ; i!=i.end(); ++i)
     {
@@ -190,10 +193,10 @@ list<string>  Helper::getAllInterfaceIDs()
     return intf_id_list;
 }
 
-list<string>  Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
+list<int> Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
 {
-    Firewall *fw=compiler->fw;
-    list<string> intf_id_list;
+    Firewall *fw = compiler->fw;
+    list<int> intf_id_list;
     if (re->isAny())
     {
         return getAllInterfaceIDs();
@@ -242,7 +245,11 @@ list<string>  Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
 
 string triplet::hash()
 {
-    return src->getAddressPtr()->toString() + "." +
-        dst->getAddressPtr()->toString() + "." +
-        srv->getId();
+    ostringstream ostr;
+    ostr <<  src->getAddressPtr()->toString()
+         << "."
+         << dst->getAddressPtr()->toString() 
+         <<"."
+         << srv->getId();
+    return ostr.str();
 }

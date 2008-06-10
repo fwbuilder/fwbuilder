@@ -107,9 +107,10 @@ void PolicyCompiler_cisco::addDefaultPolicyRule()
          !getCachedFwOpt()->getStr("mgmt_addr").empty() )
     {
         PolicyRule *r;
-        TCPService *ssh=TCPService::cast(dbcopy->create(TCPService::TYPENAME) );
-        ssh->setInt("dst_range_start",22);
-        ssh->setInt("dst_range_end",22);
+        TCPService *ssh = TCPService::cast(
+            dbcopy->create(TCPService::TYPENAME) );
+        ssh->setDstRangeStart(22);
+        ssh->setDstRangeEnd(22);
         dbcopy->add(ssh,false);
         cacheObj(ssh); // to keep cache consistent
 
@@ -225,11 +226,11 @@ bool PolicyCompiler_cisco::splitIfDstAny::processNext()
         if (ICMPService::isA(s))  cl.push_back(s);
 
         if (TCPService::isA(s) && 
-            s->getInt("dst_range_start")==22 && 
-            s->getInt("dst_range_end")==22) cl.push_back(s);
+            TCPUDPService::cast(s)->getDstRangeStart()==22 && 
+            TCPUDPService::cast(s)->getDstRangeEnd()==22) cl.push_back(s);
         if (TCPService::isA(s) && 
-            s->getInt("dst_range_start")==23 && 
-            s->getInt("dst_range_end")==23) cl.push_back(s);
+            TCPUDPService::cast(s)->getDstRangeStart()==23 && 
+            TCPUDPService::cast(s)->getDstRangeEnd()==23) cl.push_back(s);
     }
 
 
@@ -539,8 +540,8 @@ bool PolicyCompiler_cisco::tcpServiceToFW::processNext()
             assert(s!=NULL);
 
             if (TCPService::isA(s) && 
-                s->getInt("dst_range_start")==port && 
-                s->getInt("dst_range_end")==port) cl.push_back(o);
+                TCPUDPService::cast(s)->getDstRangeStart()==port && 
+                TCPUDPService::cast(s)->getDstRangeEnd()==port) cl.push_back(o);
         }
         if (!cl.empty()) 
         {
@@ -635,7 +636,8 @@ bool PolicyCompiler_cisco::replaceFWinDSTPolicy::processNext()
         {
             try
             {
-                string iface_id=helper.findInterfaceByNetzone(compiler->getFirstSrc(rule));
+                int iface_id = helper.findInterfaceByNetzone(
+                    compiler->getFirstSrc(rule));
                 Interface *iface = compiler->getCachedFwInterface(iface_id);
 
                 dst->clearChildren();
@@ -657,17 +659,16 @@ bool PolicyCompiler_cisco::replaceFWinDSTPolicy::processNext()
 }
 
 void PolicyCompiler_cisco::splitByNetworkZonesForRE::AddToInterface(
-    const std::string &interface_id,
-    libfwbuilder::Address *addr,
-    PolicyRule *rule)
+    int interface_id, Address *addr, PolicyRule *rule)
 {
     PolicyRule  *new_rule;
     RuleElement *new_re;
 
-    new_rule=rules[interface_id];
+    new_rule = rules[interface_id];
     if (new_rule==NULL) 
     {
-        new_rule= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+        new_rule = PolicyRule::cast(compiler->dbcopy->create(
+                                        PolicyRule::TYPENAME) );
         compiler->temp_ruleset->add(new_rule);
         new_rule->duplicate(rule);
         rules[interface_id]=new_rule;
@@ -705,7 +706,7 @@ bool PolicyCompiler_cisco::splitByNetworkZonesForRE::processNext()
 
         try
         {
-            string interface_id=helper.findInterfaceByNetzone(a);
+            int interface_id = helper.findInterfaceByNetzone(a);
             AddToInterface(interface_id, a, rule);
         } catch (string err)
         {
@@ -731,7 +732,7 @@ bool PolicyCompiler_cisco::splitByNetworkZonesForRE::processNext()
             }
         }
     }
-    for (std::map<std::string,PolicyRule*>::iterator i=rules.begin();
+    for (std::map<int,PolicyRule*>::iterator i=rules.begin();
          i!=rules.end(); ++i)
     {
         tmp_queue.push_back((*i).second);        

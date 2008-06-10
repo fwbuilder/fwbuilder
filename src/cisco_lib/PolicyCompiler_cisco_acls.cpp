@@ -65,12 +65,12 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionBySrc::processNext()
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     Helper helper(compiler);
 
-    RuleElementItf *itfre=rule->getItf();
-    RuleElementSrc *srcre=rule->getSrc();
+    //RuleElementItf *itfre = rule->getItf();
+    RuleElementSrc *srcre = rule->getSrc();
 
-    list<string> intf_id_list;
+    list<int> intf_id_list;
 
-    if (rule->getInterfaceId().empty())
+    if (rule->getInterfaceId() == -1)
     {
         if (rule->getDirection()==PolicyRule::Both)
             intf_id_list = helper.findInterfaceByNetzoneOrAll( srcre );
@@ -78,9 +78,10 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionBySrc::processNext()
         if (rule->getDirection()==PolicyRule::Inbound)
             intf_id_list = helper.getAllInterfaceIDs();
 
-        for (list<string>::iterator i = intf_id_list.begin(); i!=intf_id_list.end(); ++i)
+        for (list<int>::iterator i = intf_id_list.begin();
+             i!=intf_id_list.end(); ++i)
         {
-            string intf_id = *i;
+            int intf_id = *i;
             Interface *ifs = Interface::cast(
                 rule->getRoot()->findInIndex(intf_id) );
             assert(ifs);
@@ -114,12 +115,12 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionByDst::processNext()
         return true;
     }
 
-    RuleElementItf *itfre=rule->getItf(); 
+    //RuleElementItf *itfre=rule->getItf(); 
     RuleElementDst *dstre=rule->getDst();
 
-    list<string> intf_id_list;
+    list<int> intf_id_list;
 
-    if (rule->getInterfaceId().empty())
+    if (rule->getInterfaceId() == -1)
     {
         if (rule->getDirection()==PolicyRule::Both)
             intf_id_list = helper.findInterfaceByNetzoneOrAll( dstre );
@@ -127,9 +128,9 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionByDst::processNext()
         if (rule->getDirection()==PolicyRule::Outbound)
             intf_id_list = helper.getAllInterfaceIDs();
 
-        for (list<string>::iterator i = intf_id_list.begin(); i!=intf_id_list.end(); ++i)
+        for (list<int>::iterator i = intf_id_list.begin(); i!=intf_id_list.end(); ++i)
         {
-            string intf_id = *i;
+            int intf_id = *i;
             Interface *ifs = Interface::cast(
                 rule->getRoot()->findInIndex(intf_id) );
             assert(ifs);
@@ -153,9 +154,9 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionIfInterfaceSet::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    RuleElementItf *itfre=rule->getItf(); 
+    //RuleElementItf *itfre=rule->getItf(); 
 
-    if (rule->getInterfaceId().empty() ||
+    if (rule->getInterfaceId() == -1 ||
         rule->getBool("interface_and_direction_set_from_src") ||
         rule->getBool("interface_and_direction_set_from_dst"))
     {
@@ -165,9 +166,9 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionIfInterfaceSet::processNext()
 
     PolicyRule *new_rule;
                     
-    if ( ! rule->getInterfaceId().empty() )
+    if ( rule->getInterfaceId() > -1 )
     {
-        string rule_iface_id = rule->getInterfaceId();
+        int rule_iface_id = rule->getInterfaceId();
 
         if (rule->getDirection()==PolicyRule::Both)
         {
