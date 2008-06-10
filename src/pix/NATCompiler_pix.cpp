@@ -104,8 +104,8 @@ string NATCompiler_pix::debugPrintRule(Rule *r)
 {
     NATRule *rule=NATRule::cast(r);
 
-    Interface *iface1 = getCachedFwInterface( rule->getStr("nat_iface_orig") );
-    Interface *iface2 = getCachedFwInterface( rule->getStr("nat_iface_trn")  );
+    Interface *iface1 = getCachedFwInterface( rule->getInt("nat_iface_orig") );
+    Interface *iface2 = getCachedFwInterface( rule->getInt("nat_iface_trn")  );
     string iface1_name=(iface1!=NULL)?iface1->getName():"";
     string iface2_name=(iface2!=NULL)?iface2->getName():"";
 
@@ -114,6 +114,7 @@ string NATCompiler_pix::debugPrintRule(Rule *r)
     switch (rule->getRuleType()) 
     {
     case NATRule::NONAT:
+        os << "NONAT Type: " << rule->getInt("nonat_type");
         break;
 
     case NATRule::SNAT:
@@ -347,19 +348,20 @@ bool NATCompiler_pix::AssignInterface::processNext()
 
     assert(a1!=NULL && a2!=NULL);
 
-    rule->setStr("nat_iface_orig",helper.findInterfaceByNetzone(a1));
-    rule->setStr("nat_iface_trn", helper.findInterfaceByNetzone(a2));
+    rule->setInt("nat_iface_orig",helper.findInterfaceByNetzone(a1));
+    rule->setInt("nat_iface_trn", helper.findInterfaceByNetzone(a2));
 
-    if ( rule->getStr("nat_iface_orig")=="" ) 
+    if ( rule->getInt("nat_iface_orig")==-1 ) 
 	compiler->abort("Object '" + a1->getName() + 
                         "' does not belong to any known network zone. Rule: " +
                         rule->getLabel());
-    if ( rule->getStr("nat_iface_trn")=="" ) 
+
+    if ( rule->getInt("nat_iface_trn")==-1 ) 
 	compiler->abort("Object '" + a2->getName() + 
                         "' does not belong to any known network zone. Rule: " + 
                         rule->getLabel());
 
-//    if ( rule->getStr("nat_iface_orig")==rule->getStr("nat_iface_trn"))
+//    if ( rule->getInt("nat_iface_orig")==rule->getInt("nat_iface_trn"))
 //	compiler->abort("Objects '"+a1->getName()+"' and '"+a2->getName()+"' belong to the same network zone. Can not build NAT configuration. Rule: "+rule->getLabel());
 
     return true;
@@ -371,16 +373,16 @@ bool NATCompiler_pix::verifyInterfaces::processNext()
     tmp_queue.push_back(rule);
 
 #ifdef WRONG_CHECK
-    if ( rule->getStr("nat_iface_orig")!=rule->getStr("nat_iface_trn") )
+    if ( rule->getInt("nat_iface_orig")!=rule->getInt("nat_iface_trn") )
     {
 	if (rule->getRuleType()==NATRule::SNAT)
         {
 	    Interface *iface1=
 		Interface::cast( rule->getRoot()->findInIndex(
-                                     rule->getStr("nat_iface_orig")) );
+                                     rule->getInt("nat_iface_orig")) );
 	    Interface *iface2=
 		Interface::cast( rule->getRoot()->findInIndex(
-                                     rule->getStr("nat_iface_trn")) );
+                                     rule->getInt("nat_iface_trn")) );
 
 	    if ( iface1->getSecurityLevel() <= iface2->getSecurityLevel() )
             {
@@ -722,20 +724,21 @@ bool NATCompiler_pix::processNONATRules::processNext()
  */
         if (osrc_level>odst_level)
         {
-            rule->setInt("nonat_type",NONAT_NAT0);
+            rule->setInt("nonat_type", NONAT_NAT0);
             nonat n0;
-            n0.i_iface=osrc_iface;
-            n0.o_iface=odst_iface;
-            n0.src=osrc;
-            n0.dst=odst;
-            n0.acl_name="nat0."+osrc_iface->getLabel();
-            n0.last=true;
+            n0.i_iface = osrc_iface;
+            n0.o_iface = odst_iface;
+            n0.src = osrc;
+            n0.dst = odst;
+            n0.acl_name = "nat0."+osrc_iface->getLabel();
+            n0.last = true;
 
-            pix_comp->nonat_rules[rule->getId()]= n0;
+            pix_comp->nonat_rules[rule->getId()] = n0;
             pix_comp->registerACL(n0.acl_name);
 
-            if ( pix_comp->first_nonat_rule_id[osrc_iface->getId()].empty() ) 
-                pix_comp->first_nonat_rule_id[osrc_iface->getId()]=rule->getId();
+            if (pix_comp->first_nonat_rule_id.count(osrc_iface->getId()) == 0)
+                pix_comp->first_nonat_rule_id[osrc_iface->getId()] =
+                    rule->getId();
             
         } else
         {
@@ -768,9 +771,11 @@ bool NATCompiler_pix::createNATCmd::processNext()
         natcmd->o_src   = osrc;
         natcmd->o_dst   = odst;
         natcmd->o_srv   = osrv;
-        natcmd->o_iface = compiler->getCachedFwInterface( rule->getStr("nat_iface_orig") );
+        natcmd->o_iface = compiler->getCachedFwInterface(
+            rule->getInt("nat_iface_orig") );
         natcmd->t_addr  = tsrc;
-        natcmd->t_iface = compiler->getCachedFwInterface( rule->getStr("nat_iface_trn" ) );
+        natcmd->t_iface = compiler->getCachedFwInterface(
+            rule->getInt("nat_iface_trn" ) );
 
         natcmd->nat_acl_name = pix_comp->getNATACLname(rule,"");
         pix_comp->registerACL(natcmd->nat_acl_name);
@@ -1058,8 +1063,10 @@ bool  NATCompiler_pix::optimizeDefaultNAT::processNext()
  */    
     FWObject *o=osrc->front();
     string osrc_id;
-    if (FWReference::cast(o)!=NULL) osrc_id=FWReference::cast(o)->getPointerId();
-    else osrc_id=o->getId();
+    if (FWReference::cast(o)!=NULL)
+        osrc_id = FWObjectDatabase::getStringId(FWReference::cast(o)->getPointerId());
+    else
+        osrc_id = FWObjectDatabase::getStringId(o->getId());
 
     if ( ( !tsrc->isAny() && tdst->isAny()) ||
          ( !osrc->isAny() && odst->isAny() && tsrc->isAny() && tdst->isAny() )

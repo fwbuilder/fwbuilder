@@ -91,9 +91,9 @@ namespace fwcompiler {
         };
 
 //  first: rule->getId(), second: nonat object
-        std::map<std::string, nonat>       nonat_rules;
+        std::map<int, nonat> nonat_rules;
 //  first: interface->getId(), second: rule->getId()
-        std::map<std::string,std::string>  first_nonat_rule_id;
+        std::map<int,int> first_nonat_rule_id;
 
         libfwbuilder::RuleSet             *final_ruleset;
 

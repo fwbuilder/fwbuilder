@@ -118,8 +118,8 @@ void NATCompiler_pix::PrintRule::_printNONAT(NATRule *rule)
     {
     case NONAT_NAT0:
     {
-        nonat n0=pix_comp->nonat_rules[rule->getId()];
-        Interface *iface1=n0.i_iface;
+        nonat n0 = pix_comp->nonat_rules[rule->getId()];
+        Interface *iface1 = n0.i_iface;
 //        Interface *iface2=n0.o_iface;
 
         if (rule->getBool("use_nat_0_0"))
@@ -134,7 +134,8 @@ void NATCompiler_pix::PrintRule::_printNONAT(NATRule *rule)
             compiler->output << endl;
 
             if (pix_comp->getACLFlag(n0.acl_name)==0 && 
-                compiler->fw->getOptionsObject()->getBool("pix_acl_substitution"))
+                compiler->fw->getOptionsObject()->getBool(
+                    "pix_acl_substitution"))
             {
                 compiler->output << clearACLcmd <<" " << n0.acl_name << endl;
                 pix_comp->setACLFlag(n0.acl_name,1);
@@ -148,10 +149,11 @@ void NATCompiler_pix::PrintRule::_printNONAT(NATRule *rule)
                              << _printAddress(n0.dst,true)
                              << endl;
 
-            if ( pix_comp->first_nonat_rule_id[iface1->getId()]==rule->getId() )
+            if (pix_comp->first_nonat_rule_id[iface1->getId()]==rule->getId())
             {
                 if (compiler->fw->getStr("platform")=="fwsm" && 
-                    compiler->fw->getOptionsObject()->getBool("pix_use_manual_commit") )
+                    compiler->fw->getOptionsObject()->getBool(
+                        "pix_use_manual_commit") )
                 {
                     compiler->output << "access-list commit" << endl;
                     compiler->output << endl;
@@ -170,8 +172,10 @@ void NATCompiler_pix::PrintRule::_printNONAT(NATRule *rule)
 	Address  *osrc=compiler->getFirstOSrc(rule);  assert(osrc);
 	Address  *odst=compiler->getFirstODst(rule);  assert(odst);
 
-        Interface *osrc_iface=compiler->getCachedFwInterface( helper.findInterfaceByNetzone(osrc ) );
-        Interface *odst_iface=compiler->getCachedFwInterface( helper.findInterfaceByNetzone(odst ) );
+        Interface *osrc_iface = compiler->getCachedFwInterface(
+            helper.findInterfaceByNetzone(osrc ) );
+        Interface *odst_iface = compiler->getCachedFwInterface(
+            helper.findInterfaceByNetzone(odst ) );
 
         string addr=odst->getAddressPtr()->toString();
 	string mask;
@@ -327,8 +331,8 @@ bool NATCompiler_pix::PrintRule::processNext()
     Service  *tsrv=compiler->getFirstTSrv(rule);  assert(tsrv);
 
 
-    Interface *iface_orig = compiler->getCachedFwInterface( rule->getStr("nat_iface_orig") );
-    Interface *iface_trn  = compiler->getCachedFwInterface( rule->getStr("nat_iface_trn" ) );
+    Interface *iface_orig = compiler->getCachedFwInterface( rule->getInt("nat_iface_orig") );
+    Interface *iface_trn  = compiler->getCachedFwInterface( rule->getInt("nat_iface_trn" ) );
 
     switch (rule->getRuleType()) 
     {

@@ -73,15 +73,15 @@ bool PolicyCompiler_pix::InterfaceAndDirection_v6::processNext()
     bool icmp_cmd = rule->getBool("icmp_cmd");
     bool ssh_telnet_cmd = rule->getBool("ssh_telnet_cmd");
 
-    string interface_id = rule->getInterfaceId();
+    int interface_id = rule->getInterfaceId();
 
     if (rule->getDirection()==PolicyRule::Undefined) 
         rule->setDirection( PolicyRule::Both );
 
-    if (interface_id.empty() && rule->getDirection()==PolicyRule::Both)
+    if (interface_id==-1 && rule->getDirection()==PolicyRule::Both)
         return true;
 
-    if (interface_id.empty() && !icmp_cmd && !ssh_telnet_cmd && (
+    if (interface_id==-1 && !icmp_cmd && !ssh_telnet_cmd && (
             rule->getDirection()==PolicyRule::Inbound ||
             rule->getDirection()==PolicyRule::Outbound)
     ) compiler->abort(string("Direction set without interface in rule ")+rule->getLabel());
@@ -188,7 +188,8 @@ bool PolicyCompiler_pix::EmulateOutboundACL_v6::processNext()
             {
                 if (!src->isAny())
                 {
-                    string iface1_id=helper.findInterfaceByNetzone( compiler->getFirstSrc(rule) );
+                    int iface1_id = helper.findInterfaceByNetzone(
+                        compiler->getFirstSrc(rule) );
 
 /* special case: interface detected via comparison of src and the
  * network zone is the same as the one this rule is assigned to, but
@@ -204,8 +205,9 @@ bool PolicyCompiler_pix::EmulateOutboundACL_v6::processNext()
                     tmp_queue.push_back(rule);
                 } else
                 {
-                    string iface2_id;
-                    iface2_id=helper.findInterfaceByNetzone( compiler->getFirstDst(rule) );
+                    int iface2_id;
+                    iface2_id = helper.findInterfaceByNetzone(
+                        compiler->getFirstDst(rule) );
 
                     list<FWObject*> l2=compiler->fw->getByType(Interface::TYPENAME);
                     for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
@@ -279,14 +281,14 @@ bool PolicyCompiler_pix::assignRuleToInterface_v6::processNext()
     RuleElementSrc *src=rule->getSrc();    assert(src);
     RuleElementDst *dst=rule->getDst();    assert(dst);
 
-    if (rule->getInterfaceId()=="") 
+    if (rule->getInterfaceId()==-1) 
     {
         try
         {
             if (! src->isAny() )
             {
                 Address *a=compiler->getFirstSrc(rule);
-                string iface1_id=helper.findInterfaceByNetzone(a);
+                int iface1_id = helper.findInterfaceByNetzone(a);
                 rule->setInterfaceId(iface1_id);
                 tmp_queue.push_back(rule);
             } else {
@@ -294,7 +296,7 @@ bool PolicyCompiler_pix::assignRuleToInterface_v6::processNext()
                 Address *a=compiler->getFirstDst(rule);
                 if ( ! dst->isAny() && compiler->complexMatch(a,compiler->fw))
                 {
-                    string iface2_id=helper.findInterfaceByNetzone( a );
+                    int iface2_id = helper.findInterfaceByNetzone( a );
                     rule->setInterfaceId(iface2_id);
                     rule->setStr("direction","Inbound");
                     tmp_queue.push_back(rule);

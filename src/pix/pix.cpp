@@ -107,14 +107,21 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
     
 
 class sort_by_net_zone {
+    string any_address_id;
     public:
-//    explicit sort_by_net_zone();
-    bool operator()(const FWObject *a, const FWObject *b) {
-	if (Interface::constcast(a) && Interface::constcast(b)) {
+    explicit sort_by_net_zone()
+    {
+        any_address_id = FWObjectDatabase::getStringId(
+            FWObjectDatabase::ANY_ADDRESS_ID);
+    }
+    bool operator()(const FWObject *a, const FWObject *b)
+    {
+	if (Interface::constcast(a) && Interface::constcast(b))
+        {
 	    string netzone_a=a->getStr("network_zone");
 	    string netzone_b=b->getStr("network_zone");
-	    if ( netzone_a==FWObjectDatabase::getAnyNetworkId()) return false;
-	    if ( netzone_b==FWObjectDatabase::getAnyNetworkId()) return true;
+	    if ( netzone_a==any_address_id) return false;
+	    if ( netzone_b==any_address_id) return true;
 	}
 	return false;
     }
@@ -390,7 +397,8 @@ int main(int argc, char * const * argv)
                     "Network zone definition is missing for interface "
                     +iface->getName()+" ("+iface->getLabel()+")");
             }
-            FWObject *netzone=objdb->findInIndex(netzone_id);
+            FWObject *netzone=objdb->findInIndex(
+                FWObjectDatabase::getIntId(netzone_id));
             if (netzone==NULL) 
             {
                 throw FWException(
@@ -433,7 +441,8 @@ int main(int argc, char * const * argv)
                 nz->add(*j);
             }
             iface->setStr("orig_netzone_id", netzone_id );
-            iface->setStr("network_zone", nz->getId() );
+            iface->setStr("network_zone",
+                          FWObjectDatabase::getStringId(nz->getId()) );
         }
 
 /*

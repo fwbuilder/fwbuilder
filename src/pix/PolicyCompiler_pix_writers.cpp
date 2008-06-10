@@ -388,13 +388,17 @@ string PolicyCompiler_pix::PrintRule::_printAddr(libfwbuilder::Address  *o)
             }
         }
         return str.str();
-    } else
-    {
-        compiler->abort(string("Object ") + o->getName() +
-                        string(" (id=") + o->getId() + string(") ") +
-                        string(" has no ip address and can not be used ") +
-                        string("in the rule."));
     }
+    ostringstream errstr;
+    errstr << "Object "
+           << o->getName()
+           << " (id="
+           << o->getId()
+           << ") "
+           << " has no ip address and can not be used "
+           << "in the rule.";
+    compiler->abort(errstr.str());
+    return ""; // to make compiler happy
 }
 
 bool PolicyCompiler_pix::PrintRule::suppressDuplicateICMPCommands(const string &cmd)
