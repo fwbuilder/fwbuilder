@@ -1708,39 +1708,39 @@ void ObjectManipulator::cutObj()
 
 void ObjectManipulator::pasteObj()
 {
-    QVector <ObjectManipulator*> oms = getAllMdiObjectManipulators();
-    for (int i = 0 ; i < oms.size(); i++)
-    {
-        ObjectManipulator* pom = oms[i] ;
+    FWObject *nobj=NULL;
 
-        if (pom->getCurrentObjectTree()->getNumSelected()==0) return;
-        FWObject *obj=pom->getCurrentObjectTree()->getSelectedObjects().front();
-        if (obj==NULL) return;
-        vector<int>::iterator i;
-	int idx = 0;
-        for (i= FWObjectClipboard::obj_clipboard->begin();
-             i!=FWObjectClipboard::obj_clipboard->end(); ++i)
-        {
-            FWObject *co =
-                FWObjectClipboard::obj_clipboard->getObjectByIdx(idx);
-            if (Interface::isA(co) && Firewall::isA(obj))
-            {
-                pasteTo (obj, co, false, false, true);
-                continue ;
-            }
-            pom->copyObjWithDeep(co);
+    if (getCurrentObjectTree()->getNumSelected()==0) return;
+    FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
+    if (obj==NULL) return;
+    vector<int>::iterator i;
+    int idx = 0;
+    for (i= FWObjectClipboard::obj_clipboard->begin();
+            i!=FWObjectClipboard::obj_clipboard->end(); ++i)
+    {
+        FWObject *co = FWObjectClipboard::obj_clipboard->getObjectByIdx(idx);
+        if (Interface::isA(co) && Firewall::isA(obj))
+        {            
+            pasteTo (obj, co, false, false, true);
+            continue ;
         }
+        if (nobj==NULL)
+        {
+            nobj=co->getRoot()->create(co->getTypeName());
+            nobj->duplicate(co,true);
+            nobj->setId(FWObjectDatabase::generateUniqueId());
+            nobj->setRoot(co->getRoot());
+        }
+        copyObjWithDeep(nobj);
     }
+
 }
 
 FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
                                       bool openobj, bool validateOnly,
                                       bool renew_id)
 {
-    QVector <ObjectManipulator*> oms = getAllMdiObjectManipulators();
-    for (int i = 0 ; i < oms.size(); i++)
-    {
-        ObjectManipulator* pom = oms[i] ;
+        FWObject *ret = NULL;
 
         FWObject *ta=target;
         if (IPv4::isA(ta) || IPv6::isA(ta)) ta=ta->getParent();
@@ -1752,9 +1752,9 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
             Host      *hst  = Host::cast(ta);   // works for firewall, too
             Interface *intf = Interface::cast(ta);
 
-            if (pom->m_project->isSystem(ta))
+            if (m_project->isSystem(ta))
             {
-                if (!pom->m_project->validateForInsertion(ta,obj))
+                if (!m_project->validateForInsertion(ta,obj))
                 {
                     if (validateOnly) return NULL;
 
@@ -1771,27 +1771,29 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
                 }
             }
 
-            if ( pom->m_project->isSystem(ta) ||
-                 (hst!=NULL  && hst->validateChild(obj)) ||
-                 (intf!=NULL && intf->validateChild(obj))
+            if ( m_project->isSystem(ta) ||
+                (hst!=NULL  && hst->validateChild(obj)) ||
+                (intf!=NULL && intf->validateChild(obj))
             )
             {
                 if (validateOnly) return obj;
 
 /* add a copy of the object to system group */
-
-                FWObject *nobj=
-                    pom->m_project->db()->create(obj->getTypeName());
+                FWObject *nobj= m_project->db()->create(obj->getTypeName());
                 assert (nobj!=NULL);
                 nobj->ref();
                 nobj->duplicate(obj,renew_id);   //if renew_id == true creates new object ID
 
-                pom->makeNameUnique(ta,nobj);
+                makeNameUnique(ta,nobj);
                 ta->add( nobj );
-                pom->insertSubtree( pom->allItems[ta], nobj);
+                QVector <ObjectManipulator*> oms = getAllMdiObjectManipulators();
 
-                if (openobj) pom->openObject(nobj);
-
+                for (int i = 0 ; i < oms.size(); i++)
+                {
+                    ObjectManipulator* pom = oms[i] ;
+                    pom->insertSubtree( pom->allItems[ta], nobj);
+                    if (openobj) pom->openObject(nobj);
+                }
                 return nobj;
             }
 
@@ -1815,7 +1817,7 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
                 }
 
                 grp->addRef(obj);
-                if (openobj) pom->openObject(grp);
+                if (openobj) openObject(grp);
             }
         }
         catch(FWException &ex)
@@ -1831,8 +1833,8 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
 
         if (validateOnly) return NULL;
         return obj;
-    }
-    return NULL;
+
+    //return ret;
 }
 
 
@@ -2696,7 +2698,11 @@ FWObject* ObjectManipulator::copyObj2Tree(
         FWObject *no  = pasteTo (parent,copyFrom , false, false, true);
         return no;
     }
-    return copyObjWithDeep(copyFrom);
+    FWObject *nobj=copyFrom->getRoot()->create(copyFrom->getTypeName());
+    nobj->duplicate(copyFrom,true);
+    nobj->setId(FWObjectDatabase::generateUniqueId());
+    nobj->setRoot(copyFrom->getRoot());
+    return copyObjWithDeep(nobj);
 }
 
 FWObject * ObjectManipulator::copyObjWithDeep(FWObject *copyFrom)
@@ -2720,7 +2726,7 @@ FWObject * ObjectManipulator::copyObjWithDeep(FWObject *copyFrom)
     FWReference * ref = FWReference::cast(nobj);
     if (ref!=NULL)
     {
-        copyObjWithDeep(ref->getPointer());
+        FWObject * o = copyObjWithDeep(ref->getPointer());
         return ref ;
     }
 
@@ -2778,13 +2784,19 @@ FWObject * ObjectManipulator::copyObjWithDeep(FWObject *copyFrom)
     if (lib->getRoot()->getById(nobj->getId(),true)==NULL)
     {
         FWObject *par = m_project->getFWTree()->getStandardSlotForObject(lib, nobj->getTypeName().c_str());
+            QVector <ObjectManipulator*> oms = getAllMdiObjectManipulators();
+ //   for (int i = 0 ; i < oms.size(); i++)
+ //   {
+ //       ObjectManipulator* pom = oms[i] ;
+
         FWObject *no  = pasteTo (par, nobj, false, false, false);
-        if (no && Firewall::isA(no))
+//    }
+ /*       if (no && Firewall::isA(no))
         {
             m_project->addFirewallToList(no);
             m_project->showFirewall(no);
         }
-
+*/
     }
     return nobj;
 
