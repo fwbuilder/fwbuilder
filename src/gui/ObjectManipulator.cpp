@@ -1724,14 +1724,13 @@ void ObjectManipulator::pasteObj()
             pasteTo (obj, co, false, false, true);
             continue ;
         }
-        if (nobj==NULL)
-        {
-            nobj=co->getRoot()->create(co->getTypeName());
-            nobj->duplicate(co,true);
-            nobj->setId(FWObjectDatabase::generateUniqueId());
-            nobj->setRoot(co->getRoot());
-        }
+
+        nobj=co->getRoot()->create(co->getTypeName());
+        nobj->duplicate(co,true);
+        nobj->setId(FWObjectDatabase::generateUniqueId());
+        nobj->setRoot(co->getRoot());
         copyObjWithDeep(nobj);
+        idx++;
     }
 
 }
