@@ -255,53 +255,6 @@ RuleElement* ProjectPanel::getRE( Rule* r, int col )
     return RuleElement::cast( r->getFirstByType(ret) );
 }
 
-void ProjectPanel::checkRERefs(RuleElement *re, list<FWObject*> &extRefs)
-{
-    for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
-    {
-        FWObject *o1= *i;
-        if (FWReference::cast(o1))
-            o1=FWReference::cast(o1)->getPointer();
-        extRefs.push_back(o1);
-            //objectText(re,o1) );
-    }
-}
-
-void ProjectPanel::checkPolicy4ExtRefs(Firewall *fw, list<FWObject*> &extRefs)
-{
-    Policy *pol=Policy::cast(fw->getFirstByType(Policy::TYPENAME));
-    if (!pol)
-        return;
-    for (libfwbuilder::FWObject::iterator i=pol->begin(); i!=pol->end(); i++)
-    {
-        PolicyRule *rule = PolicyRule::cast(*i);
-        if (!rule)
-            continue;
-        //FWOptions  *ropt = rule->getOptionsObject();
-        //if (ropt)
-        //    extRefs.push_back(ropt);
-        for (int col =0; col < 5; col++)
-        {
-            RuleElement *re = getRE(rule, col);
-            if (!re) continue;
-            checkRERefs(re, extRefs);
-        } 
-    }
-}
-
-void ProjectPanel::check4Depends(FWObject *obj, list<FWObject*>& objList,list<FWReference*> & refLinfs, FWObject *lib)
-//objList - это куда объекты для копирвания складывать
-{
-    copySet.clear();
-    Firewall *fw = Firewall::cast(obj);
-    if(!fw)
-      return;
-    list<FWObject*> externalRefs;
-    checkPolicy4ExtRefs(fw, externalRefs);//ищем ссылки правил фаервола на объекты, записываем в extRefs
-    findIntersectRefs(lib, fw, objList, externalRefs,refLinfs);
-
-}
-
 void ProjectPanel::findIntersectRefs(FWObject *lib,
                                        FWObject *root,
                                        list<FWObject*> &extRefs,
@@ -600,35 +553,10 @@ void ProjectPanel::clearFirewallTabs()
 void ProjectPanel::ensureObjectVisibleInRules(FWReference *obj)
 {
     FWObject *p=obj;
-    while (p && Firewall::cast(p)==NULL ) p=p->getParent();
-    if (p==NULL) return;  // something is broken
-
-    if (p!=getVisibleFirewall()) showFirewall(p);
-
-    p=obj;
-
     while (p && RuleSet::cast(p)==NULL ) p=p->getParent();
     if (p==NULL) return;  // something is broken
-
-    if (fwbdebug)
-        qDebug("ProjectPanel::ensureObjectVisibleInRules: "
-               "RuleSet p=%p id=%s name=%s type=%s",
-               p,
-               FWObjectDatabase::getStringId(p->getId()).c_str(),
-               p->getName().c_str(), p->getTypeName().c_str());
-
-    RuleSetView *rsv = ruleSetViews[p];
-
-    if (rsv==NULL)
-    {
-        if (fwbdebug)
-            qDebug("ProjectPanel::ensureObjectVisible : orphan rule set found");
-        return;
-    }
-
-    m_panel->ruleSets->setCurrentIndex(
-            m_panel->ruleSets->indexOf(rsv));
-    rsv->selectRE( obj );
+    openRuleSet(p);
+    getCurrentRuleSetView()->selectRE( obj );    
 }
 
 /*
@@ -680,48 +608,6 @@ void ProjectPanel::updateTreeViewItemOrder()
     //if we do not reopen parent item, some of child
     //items mix incorrectly (maybe bug of QT?)
     m_panel->om->reopenCurrentItemParent();
-}
-
-void ProjectPanel::setPolicyBranchTabName(libfwbuilder::RuleSet *subset)
-{
-//    assert(subset!=NULL);
-//    RuleSetView *rsv = ruleSetViews[subset];
-//    assert(rsv);
-//    QString branchName = subset->getName().c_str();
-//    m_panel->ruleSets->setTabText(m_panel->ruleSets->indexOf(rsv),
-//                                       tr("%1").arg(branchName) );
-}
-
-void ProjectPanel::addPolicyBranchTab(libfwbuilder::RuleSet *subset)
-{
-/*    assert(subset!=NULL);
-
-    QString branchName = subset->getName().c_str();
-    QStatusBar *sb = mainW->statusBar();
-    sb->showMessage( tr("Building branch policy view '%1'...").arg(branchName) );
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,1000);
-    if (fwbdebug)  qDebug("ProjectPanel::reopenFirewall()   adding branch tab");
-
-//    if (subset==NULL)
-//    {
-//        subset = new Policy();
-//        rule->add(subset);
-//    }
-    if (ruleSetViews.count(subset)==0)
-    {
-        RuleSetView *rsv = new PolicyView(this, Policy::cast(subset),NULL);
-        m_panel->ruleSets->addTab(rsv, "Branch"); // temporary name
-        ruleSetViews[subset]=rsv;
-    }
-    setPolicyBranchTabName(subset);
-
-    for (libfwbuilder::FWObject::iterator i=subset->begin(); i!=subset->end(); i++)
-    {
-        PolicyRule *srule = PolicyRule::cast(*i);
-        if (srule->getAction() == PolicyRule::Branch)
-            addPolicyBranchTab(srule->getBranch());
-    }
-*/
 }
 
 void ProjectPanel::removePolicyBranchTab(libfwbuilder::RuleSet *subset)
@@ -1370,6 +1256,7 @@ bool ProjectPanel::fileOpen()
 void ProjectPanel::fileClose()
 {
     saveState();
+    closing=true ;
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): start");
 
     findObjectWidget->init();

@@ -221,9 +221,7 @@ public slots:
 
     void findWhereUsed(libfwbuilder::FWObject *);
     
-    void addPolicyBranchTab(libfwbuilder::RuleSet *subset);
     void removePolicyBranchTab(libfwbuilder::RuleSet *subset);
-    void setPolicyBranchTabName(libfwbuilder::RuleSet *subset);
 
     /**
      * panel that wants to open an object in the editor

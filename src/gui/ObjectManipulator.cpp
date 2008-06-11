@@ -2699,7 +2699,6 @@ FWObject* ObjectManipulator::copyObj2Tree(
     }
     FWObject *nobj=copyFrom->getRoot()->create(copyFrom->getTypeName());
     nobj->duplicate(copyFrom,true);
-    nobj->setId(FWObjectDatabase::generateUniqueId());
     nobj->setRoot(copyFrom->getRoot());
     return copyObjWithDeep(nobj);
 }
@@ -2721,7 +2720,6 @@ FWObject * ObjectManipulator::copyObjWithDeep(FWObject *copyFrom)
             ids.insert(nobj->getId());
         }
     }
-    //nobj->duplicate(copyFrom,false); 
     FWReference * ref = FWReference::cast(nobj);
     if (ref!=NULL)
     {
@@ -2735,12 +2733,8 @@ FWObject * ObjectManipulator::copyObjWithDeep(FWObject *copyFrom)
         
         for (list<FWObject*>::iterator i=nobj->begin() ; i!=nobj->end(); ++i)
         {
-        //    qDebug((*i)->getTypeName().c_str());
-        //    qDebug((*i)->getName().c_str());
             copyObjWithDeep(*i);
         }
-       
-        //return group;
     }
     Firewall * fw = Firewall::cast(nobj);
     if (fw!=NULL)
@@ -2752,9 +2746,6 @@ FWObject * ObjectManipulator::copyObjWithDeep(FWObject *copyFrom)
             if (rule==NULL)
                 continue;
             copyObjWithDeep(rule);
-            //FWOptions  *ropt = rule->getOptionsObject();
-            //if (ropt)
-            //    extRefs.push_back(ropt);
         }        
     }
     RuleSet * ruleset = RuleSet::cast(nobj);
@@ -2784,18 +2775,7 @@ FWObject * ObjectManipulator::copyObjWithDeep(FWObject *copyFrom)
     {
         FWObject *par = m_project->getFWTree()->getStandardSlotForObject(lib, nobj->getTypeName().c_str());
             QVector <ObjectManipulator*> oms = getAllMdiObjectManipulators();
- //   for (int i = 0 ; i < oms.size(); i++)
- //   {
- //       ObjectManipulator* pom = oms[i] ;
-
         FWObject *no  = pasteTo (par, nobj, false, false, false);
-//    }
- /*       if (no && Firewall::isA(no))
-        {
-            m_project->addFirewallToList(no);
-            m_project->showFirewall(no);
-        }
-*/
     }
     return nobj;
 

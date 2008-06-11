@@ -681,18 +681,6 @@ void FWWindow::deleteFirewall(FWObject *fw)
         activeProject()->deleteFirewall(fw);
 }
 
-void FWWindow::setPolicyBranchTabName(RuleSet *subset)
-{
-    if (activeProject())
-        activeProject()->setPolicyBranchTabName(subset);
-}
-
-void FWWindow::addPolicyBranchTab(RuleSet *subset)
-{
-    if (activeProject())
-        activeProject()->addPolicyBranchTab(subset);
-}
-
 void FWWindow::removePolicyBranchTab(RuleSet *subset)
 {
     if (activeProject())

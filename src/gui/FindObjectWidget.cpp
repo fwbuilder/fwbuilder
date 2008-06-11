@@ -562,7 +562,6 @@ void FindObjectWidget::showObject(FWObject* o)
         mw->closeEditor();
         mw->clearManipulatorFocus();
         mw->ensureObjectVisibleInRules( ref );
-        mw->selectRules();
         return;
     }
 

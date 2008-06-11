@@ -94,10 +94,6 @@ class ProjectPanel: public QWidget {
     QString                                 noFirewalls;
     bool                                    enableAvtoSaveState;
     
-    void checkRERefs(libfwbuilder::RuleElement *re, 
-       std::list<libfwbuilder::FWObject*> &extRefs);
-    void checkPolicy4ExtRefs(libfwbuilder::Firewall *fw, 
-       std::list<libfwbuilder::FWObject*> &extRefs);
     void findIntersectRefs(libfwbuilder::FWObject *lib, libfwbuilder::FWObject *root,
                            std::list<libfwbuilder::FWObject*> &extRefs,
                            const std::list<libfwbuilder::FWObject*> &objList,std::list<libfwbuilder::FWReference*> & refLinfs);
@@ -252,8 +248,6 @@ public:
     void updateRuleOptions();
     void updateTreeViewItemOrder();
     
-    void setPolicyBranchTabName(libfwbuilder::RuleSet *subset);
-    void addPolicyBranchTab(libfwbuilder::RuleSet *subset);
     void removePolicyBranchTab(libfwbuilder::RuleSet *subset);
     
     void showFirewalls(bool open_first_firewall=true);
@@ -275,9 +269,6 @@ public:
     QString getDestDir(const QString &fname);
     QString chooseNewFileName(const QString &fname, bool checkPresence,const QString &title);
     void setFileName(const QString &fname);
-    void check4Depends(libfwbuilder::FWObject *obj, 
-       std::list<libfwbuilder::FWObject*> & objList, std::list<libfwbuilder::FWReference*> & refLinfs,
-       libfwbuilder::FWObject *lib);
     void restoreDepends(libfwbuilder::FWObject *obj_old, libfwbuilder::FWObject *nobj, 
        const std::map<int, libfwbuilder::FWObject *> &objByIds);
  public slots:
