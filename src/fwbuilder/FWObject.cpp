@@ -166,8 +166,6 @@ FWObject::FWObject()
     comment     = "";
     id          = -1;
 
-    setName("New object");
-    
     // When object created we assign it unique Id
     setId(FWObjectDatabase::generateUniqueId());
 
@@ -183,8 +181,6 @@ FWObject::FWObject(bool new_id)
     name        = "";
     comment     = "";
     id          = -1;
-
-    setName("New object");
 
     // When object created we assign it unique Id
     if (new_id)
@@ -208,8 +204,6 @@ FWObject::FWObject(const FWObject *root, bool )
     name        = "";
     comment     = "";
     id          = -1;
-    
-    setName("New object");
     
     // When object created we assign it unique Id
     setId(FWObjectDatabase::generateUniqueId());

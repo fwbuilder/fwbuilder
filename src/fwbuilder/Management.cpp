@@ -47,12 +47,14 @@ const char *Management::TYPENAME={"Management"};
 Management::Management()
 {
     // This object does not have standard attributes
+    setId(-1);
 }
 
 Management::Management(const FWObject *root,bool prepopulate) :
     FWObject(root,prepopulate)
 {
     // This object does not have standard attributes
+    setId(-1);
 }
 
 
@@ -73,7 +75,8 @@ void Management::fromXML(xmlNodePtr root) throw(FWException)
 
 xmlNodePtr Management::toXML(xmlNodePtr parent) throw(FWException)
 {
-    setStr("address",addr.toString());
+    setId(-1);
+    setStr("address", addr.toString());
     xmlNodePtr me = FWObject::toXML(parent, false);
     
     // to ensure right order we convert these nodes manually
@@ -171,13 +174,16 @@ const char *PolicyInstallScript::TYPENAME={"PolicyInstallScript"};
 PolicyInstallScript::PolicyInstallScript()
 {
     // This object does not have standard attributes
+    setId(-1);
     enabled = false ;
 }
 
-PolicyInstallScript::PolicyInstallScript(const FWObject *root,bool prepopulate) :
+PolicyInstallScript::PolicyInstallScript(const FWObject *root,
+                                         bool prepopulate) :
     FWObject(root,prepopulate)
 {
     // This object does not have standard attributes
+    setId(-1);
     enabled = false ;
 }
 
@@ -215,6 +221,7 @@ void PolicyInstallScript::fromXML(xmlNodePtr root) throw(FWException)
 
 xmlNodePtr PolicyInstallScript::toXML(xmlNodePtr parent) throw(FWException)
 {
+    setId(-1);
     setStr("command", command );
     setStr("arguments", arguments);
     setBool("enabled", enabled);
@@ -271,6 +278,7 @@ SNMPManagement::SNMPManagement()
 {
     // This object does not have standard attributes
     enabled = false ;
+    setId(-1);
 }
 
 SNMPManagement::SNMPManagement(const FWObject *root,bool prepopulate) :
@@ -278,6 +286,7 @@ SNMPManagement::SNMPManagement(const FWObject *root,bool prepopulate) :
 {
     // This object does not have standard attributes
     enabled = false ;
+    setId(-1);
 }
 
 bool SNMPManagement::isEmpty() const
@@ -314,6 +323,7 @@ void SNMPManagement::fromXML(xmlNodePtr root) throw(FWException)
 
 xmlNodePtr SNMPManagement::toXML(xmlNodePtr parent) throw(FWException)
 {
+    setId(-1);
     setStr("snmp_read_community", read_community );
     setStr("snmp_write_community", write_community);
     setBool("enabled", enabled);
@@ -373,6 +383,7 @@ FWBDManagement::FWBDManagement()
     enabled = false ;
 
     // This object does not have standard attributes
+    setId(-1);
 }
 
 FWBDManagement::FWBDManagement(const FWObject *root,bool prepopulate) :
@@ -382,6 +393,7 @@ FWBDManagement::FWBDManagement(const FWObject *root,bool prepopulate) :
     enabled = false ;
 
     // This object does not have standard attributes
+    setId(-1);
 }
 
 
@@ -426,6 +438,7 @@ void FWBDManagement::fromXML(xmlNodePtr parent) throw(FWException)
 
 xmlNodePtr FWBDManagement::toXML(xmlNodePtr parent) throw(FWException)
 {
+    setId(-1);
     setInt("port", port);
     setStr("identity", identity_id);
     setBool("enabled", enabled);

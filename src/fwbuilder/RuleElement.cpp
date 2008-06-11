@@ -56,9 +56,11 @@ RuleElement::RuleElement()
     setBool("neg",false);
 }
 
-RuleElement::RuleElement(const FWObject *root,bool prepopulate) : FWObject(root,prepopulate)
+RuleElement::RuleElement(const FWObject *root, bool prepopulate) :
+    FWObject(root,prepopulate)
 {
-    setBool("neg",false);
+    setBool("neg", false);
+    setId(-1);
 }
 
 void RuleElement::fromXML(xmlNodePtr root) throw(FWException)
@@ -68,7 +70,7 @@ void RuleElement::fromXML(xmlNodePtr root) throw(FWException)
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("neg")));
     if(n)
     {
-        setStr("neg",n);
+        setStr("neg", n);
         FREEXMLBUFF(n);
     }
 
