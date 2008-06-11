@@ -252,25 +252,6 @@ void TimeDialog::applyChanges()
     obj->setInt( "from_minute"   ,   m_dialog->startTime->time().minute());
     obj->setInt( "from_hour"  ,      m_dialog->startTime->time().hour()  );
 
-    QString sFromWeekday ;
-    if (m_dialog->cbStart7_2->checkState ()==Qt::Checked)
-        sFromWeekday+="0,";
-    if (m_dialog->cbStart1_2->checkState ()==Qt::Checked)
-        sFromWeekday+="1,";
-    if (m_dialog->cbStart2_2->checkState ()==Qt::Checked)
-        sFromWeekday+="2,";
-    if (m_dialog->cbStart3_2->checkState ()==Qt::Checked)
-        sFromWeekday+="3,";
-    if (m_dialog->cbStart4_2->checkState ()==Qt::Checked)
-        sFromWeekday+="4,";
-    if (m_dialog->cbStart5_2->checkState ()==Qt::Checked)
-        sFromWeekday+="5,";
-    if (m_dialog->cbStart6_2->checkState ()==Qt::Checked)
-        sFromWeekday+="6,";
-    if (sFromWeekday.length()>0)
-        sFromWeekday.remove(sFromWeekday.length()-1,0);
-
-    s->setDaysOfWeek(sFromWeekday.toAscii().data());
     if (m_dialog->useEndDate->isChecked())
     {
         obj->setInt( "to_day"   ,        m_dialog->endDate->date().day()     );
@@ -285,7 +266,25 @@ void TimeDialog::applyChanges()
     obj->setInt( "to_minute"   ,     m_dialog->endTime->time().minute()  );
     obj->setInt( "to_hour"  ,        m_dialog->endTime->time().hour()    );
 
-    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    QStringList weekDays ;
+    if (m_dialog->cbStart7_2->checkState ()==Qt::Checked)
+        weekDays.append("0");
+    if (m_dialog->cbStart1_2->checkState ()==Qt::Checked)
+        weekDays.append("1");
+    if (m_dialog->cbStart2_2->checkState ()==Qt::Checked)
+        weekDays.append("2");
+    if (m_dialog->cbStart3_2->checkState ()==Qt::Checked)
+        weekDays.append("3");
+    if (m_dialog->cbStart4_2->checkState ()==Qt::Checked)
+        weekDays.append("4");
+    if (m_dialog->cbStart5_2->checkState ()==Qt::Checked)
+        weekDays.append("5");
+    if (m_dialog->cbStart6_2->checkState ()==Qt::Checked)
+        weekDays.append("6");
+
+    s->setDaysOfWeek(weekDays.join(",").toAscii().data());
+
+    mw->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
 
     //apply->setEnabled( false );
     mw->updateLastModifiedTimestampForAllFirewalls(obj);

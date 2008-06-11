@@ -1016,6 +1016,8 @@ string PolicyCompiler_ipt::PrintRule::_printTimeInterval(PolicyRule *r)
     if (version == "1.4.0")
     {
         // in 1.4.0 date format has changed, it is now ISO 8601
+        // http://www.w3.org/TR/NOTE-datetime
+
         if (sday>0 && smonth>0 && syear>0)
         {
             ostr << "--datestart " 
@@ -1023,7 +1025,7 @@ string PolicyCompiler_ipt::PrintRule::_printTimeInterval(PolicyRule *r)
                  << setw(2) << setfill('0') << smonth << "-" 
                  << setw(2) << setfill('0') << sday  << "T"
                  << setw(2) << setfill('0') << shour << ":"
-                 << setw(2) << setfill('0') << smin << ":00 ";
+                 << setw(2) << setfill('0') << smin << ":00Z ";
             use_timestart_timestop = false;
         }
 
@@ -1034,10 +1036,9 @@ string PolicyCompiler_ipt::PrintRule::_printTimeInterval(PolicyRule *r)
                  << setw(2) << setfill('0') << smonth << "-"
                  << setw(2) << setfill('0') << sday  << "T"
                  << setw(2) << setfill('0') << ehour << ":"
-                 << setw(2) << setfill('0') << emin << ":00 ";
+                 << setw(2) << setfill('0') << emin << ":00Z ";
             use_timestart_timestop = false;
         }
-
 
         if (use_timestart_timestop )
         {
