@@ -1,0 +1,314 @@
+                            Firewall Builder for PIX
+
+Version 3.0.0
+
+Summary of Features
+
+  Usage:
+
+   Like all Firewall Builder policy compilers, policy compiler for PIX has
+   the following command line options:
+
+ fwb_pix [-vV] [-d wdir] -f data_file.xml object_name
+
+   +------------------------------------------------------------------------+
+   | -f FILE | Specify the name of the data file to be processed.           |
+   |---------+--------------------------------------------------------------|
+   | -d wdir | Specify working directory. Compiler creates file with PIX    |
+   |         | configuration in this directory. If this parameter is        |
+   |         | missing, then PIX configuration will be placed in the        |
+   |         | current working directory.                                   |
+   |---------+--------------------------------------------------------------|
+   | -v      | Be verbose: compiler prints diagnostic messages while it     |
+   |         | works.                                                       |
+   |---------+--------------------------------------------------------------|
+   | -V      | Print version number and quit.                               |
+   +------------------------------------------------------------------------+
+
+   Compiler reads objects definitions and firewall description from the data
+   file specified with '-f' option and generates resultant Cisco PIX
+   configuration file. The configuration is written to the file with the name
+   the same as the name of the firewall object, plus extension '.fw'.
+
+   Normally you won't have to call policy compiler on the command line
+   because Firewall Builder GUI does it automatically when you use main menu
+   item 'Rules/Compile'. The GUI calls compiler with options -f and -d (if
+   working directory is specificed in the GUI Options dialog). Option '-v'
+   can be added in the 'Compile/Install' tab of the firewall object dialog.
+
+  Network Zones
+
+   In order to be able to assign generated access lists to interfaces of the
+   firewall, policy compiler needs information about network topology. This
+   information is relayed to it through the special parameter on firewall's
+   interface called Network Zone. Network Zone is a network object or a group
+   of objects that reflect all networks that are located 'behind' given
+   interface. In other words, it is assumed that only packets with source
+   addresses belonging to the Network Zone can enter this interface. See
+   Users Guide for more detailed explanation of this concept.
+
+  Policy:
+
+   When rule includes services 'telnet' or 'ssh' and destination is firewall
+   itself or one of its interfaces, compiler generates commands 'telnet' or
+   'ssh'.
+
+   When rule includes any ICMP service and destination is firewall or one of
+   its interfaces, compiler generates command 'icmp'
+
+   In all other cases compiler generates 'access-list' and attaches it to one
+   or several interfaces.
+
+   Compiler can emulate outbound ACL. We do not use commands 'outbound/apply'
+   since they are deprecated and Cisco recommends using access lists.
+
+   Compiler supports address range objects; it expands them to the set of
+   individual addresses.
+
+   Since PIX does not support checking for IP options, rules that use IP
+   Service objects with any options will cause compiler to stop processing of
+   the policy and print error message. The same goes for checking TCP options
+   and flags. There is one exception though: for IP object with options 'all
+   fragments' or "'short' fragments" compiler generates command 'sysopt
+   security fragguard'
+
+   Where possible, compiler creates and uses object-groups. In this version
+   different object-groups may contain the same objects, this will be fixed
+   in the future releases.
+
+   Policy compiler can perform check for shadowing rules, this is controlled
+   by an option in the GUI.
+
+  NAT
+
+   Compiler supports global pools; for rules that use network or address
+   range objects in Translated Source, compiler creates global pools with
+   appropriate addresses.
+
+   Dynamic translation rules where Translated Source is a firewall or one of
+   its interfaces generate global pool with option 'interface'
+
+   Dynamic translation rules that create translation going from lower
+   security level interface to the one with higher security level generate
+   command 'nat ... outside'
+
+   Compiler generates 'nat 0 ' commands for rules that require no translation
+
+   NAT compiler can perform the following checks for rule consistency and
+   correctness:
+
+     * check for duplicate 'nat' rules
+     * check for overlapping global pools
+     * check for overlapping 'static' rules
+     * check for 'static' rules overlapping with global pools
+
+  'timeout' commands
+
+   User can configure 'timeout' commands using 'Advanced' dialog in the
+   Firewall tab of the firewall object dialog. Firewall Builder has
+   information about default values of all parameters for 'timeout' commands
+   for PIX v6.1 and 6.2. All configured timeout commands can be reset to
+   their default values with a button 'Set all to defaults'.
+
+  'fixup' commands
+
+   User can configure 'fixup' commands using 'Advanced' dialog in the
+   Firewall tab of the firewall object dialog. Firewall Builder has
+   information about default values for all parameters for 'fixup' commands
+   for PIX v 6.1 and 6.2. All configured fixup commands can be reset to their
+   default values with a button 'Set all to defaults'.
+
+  'logging' commands
+
+   Policy compiler can generate 'logging' commands for syslog, internal
+   buffer and console logging. For syslog user can specify server name or
+   address, syslog message queue size, facility and level. For internal
+   buffer and console logging the level can be specified. User can also
+   enable logging timestamps for syslog logging. All logging parameters are
+   located in the 'Advanced' dialog in the Firewall tab of the firewall
+   object dialog.
+
+  'ntp' commands
+
+   Policy compiler can generate commands to configure NTP protocol. Up to
+   three NTP servers can be spcified, one of which can be marked as
+   preferred.
+
+  'snmp' commands
+
+   Policy compiler can generate commands to configure SNMP agent. SNMP
+   communities can be specified in the GUI. SNMP 'sysinfo' data, such as
+   location and contact can also be defined in the GUI. Two SNMP servers can
+   be configured, each of them can be configured for polling, traps or both.
+   Compiler can also generate command 'snmp-server enable traps' to send log
+   messages as SNMP trap notifications.
+
+  'sysopt' and 'floodguard' commands
+
+   Policy compiler can use the following 'sysopt' commands which are
+   controlled by the GUI elements in the 'Advanced' dialog in the Firewall
+   tab of the firewall object dialog:
+
+     * sysopt connection tcpmss
+     * sysopt connection timewait
+     * sysopt security fragguard
+     * sysopt nodnsalias inbound
+     * sysopt nodnsalias outbound
+     * sysopt route dnat
+
+   Compiler can also generate command 'floodguard enable/disable'.
+
+  Options found in the "Firewall" tab of the firewall dialog and their meaning:
+
+   +------------------------------------------------------------------------+
+   | Version:       | PIX OS version, choices are 6.1 and 6.2               |
+   |----------------+-------------------------------------------------------|
+   | Prolog Script: | this is a list of any PIX configuration commands that |
+   |                | will be included on top of generated configuration    |
+   |                | file. No syntax or other checks are done on commands  |
+   |                | in this list.                                         |
+   |----------------+-------------------------------------------------------|
+   | Epilog Script: | this is a list of any PIX configuration commands that |
+   |                | will be appended at the end of generated              |
+   |                | configuration file. No syntax or other checks are     |
+   |                | done on commands in this list.                        |
+   +------------------------------------------------------------------------+
+
+  Policy Compiler Options:
+
+   +------------------------------------------------------------------------+
+   | Assume firewall  | For all rules where source or destination is 'any', |
+   | is part of Any   | compiler generates PIX commands as if there was one |
+   |                  | more rule with firewall objects in the same rule    |
+   |                  | element. In the case of PIX there is a difference   |
+   |                  | only if service in the rule uses objects            |
+   |                  | representing ssh, telnet and any icmp protocols, in |
+   |                  | which case it generates commands "ssh", "telnet" or |
+   |                  | "icmp" in addition to the regular access list       |
+   |                  | command.                                            |
+   |------------------+-----------------------------------------------------|
+   | Replace NAT'ed   | PIX inspects packet with access lists before it     |
+   | objects with     | performs address translation. Many other firewall   |
+   | their            | platforms do it the other way around. This option   |
+   | translations in  | turns on emulation of the firewall that does NAT    |
+   | policy rules     | first.                                              |
+   |------------------+-----------------------------------------------------|
+   | Emulate outbound | Normally PIX does not support outbound access       |
+   | ACLs             | lists.This option turns on amulation of outbound    |
+   |                  | ACLs.                                               |
+   |------------------+-----------------------------------------------------|
+   | Generate 'clear' | If this option is ON, compiler generates 'clear'    |
+   | commands         | commands to reset any pre-existing access lists,    |
+   |                  | object-group, nat, global, static, telnet, ssh and  |
+   |                  | other commands.                                     |
+   |------------------+-----------------------------------------------------|
+   | Optimize         | simplifies nat rules if object in Original Source   |
+   | 'default nat'    | is the same as the Network zone of one of the       |
+   | rules            | interfaces. Network zone of the interfaces defines  |
+   |                  | all networks that are located "behind" this         |
+   |                  | interface. This means that packets entering the     |
+   |                  | interface may have source address only belonging to |
+   |                  | the Network zone of this interface. Since policy    |
+   |                  | compiler can correctly assign nat rule to the       |
+   |                  | interface using information about its Network Zone, |
+   |                  | explicit specification of the source address can be |
+   |                  | omitted.                                            |
+   |------------------+-----------------------------------------------------|
+   | Ignore empty     | Policy compiler can find and eliminate empty groups |
+   | groups in rules  | if they are used in the policy rules. If this       |
+   |                  | option is OFF, compiler treats empty groups as an   |
+   |                  | error and aborts compilation. If it is ON, then it  |
+   |                  | removes empty groups from rule elements. If rule    |
+   |                  | element becomes empty (that is, becomes 'any')      |
+   |                  | after the last empty group has been removed, then   |
+   |                  | the whole rule is ignored. This may be useful if    |
+   |                  | you need to control access to or from flexible      |
+   |                  | group of hosts and do not want to make changes to   |
+   |                  | the firewall policy rules. In this case you can     |
+   |                  | create a group of hosts or networks and use it in   |
+   |                  | the rule. Any changes to the set of hosts that need |
+   |                  | control can now be made in the group, with the rule |
+   |                  | staying intact. If for some reason the group        |
+   |                  | becomes empty because all hosts have been removed,  |
+   |                  | compiler will ignore the rule instead of treating   |
+   |                  | empty group as 'any'.                               |
+   +------------------------------------------------------------------------+
+
+  Script formatting:
+
+   +------------------------------------------------------------------------+
+   | Comment the code | If this option is activated, compiler adds comments |
+   |                  | to the configuration file                           |
+   |------------------+-----------------------------------------------------|
+   | Group similar    | If this option is activated, compiler groups        |
+   | commands         | similar commands next to each other, just like PIX  |
+   | together         | device does it in the output of "show config"       |
+   |                  | command. Otherwise commands are grouped logically:  |
+   |                  | first go all object-group commands, then all        |
+   |                  | access-lists, then all nat, global and static       |
+   |                  | commands. Commands access-list, nat, global and     |
+   |                  | static are grouped by the rules they were generated |
+   |                  | for, as they appear in the GUI. If one rule         |
+   |                  | requires several access-list commands assigned to   |
+   |                  | different interfaces, these commands are grouped    |
+   |                  | together. Command "show conf" groups access-list    |
+   |                  | commands by their interface.                        |
+   +------------------------------------------------------------------------+
+
+  Verification of Policy Rules:
+
+   +------------------------------------------------------------------------+
+   | Detect rule      | Shadowing happens because a rule is a superset of a |
+   | shadowing in the | subsequent rule and any packets potentially matched |
+   | policy           | by a subsequent rule have already been matched by a |
+   |                  | prior rule. If this option is activated, compiler   |
+   |                  | detects this situation and abort compilation with   |
+   |                  | an error message.                                   |
+   +------------------------------------------------------------------------+
+
+  Verification of NAT rules:
+
+   +------------------------------------------------------------------------+
+   | Check for        | If this option is activated, compiler checks        |
+   | duplicate nat    | generated configuration for duplicate 'nat'         |
+   | rules            | commands                                            |
+   |------------------+-----------------------------------------------------|
+   | Check for        | If this option is activated, compiler checks        |
+   | overlapping      | generated configuration for overlapping 'global'    |
+   | global pools     | address pools                                       |
+   |------------------+-----------------------------------------------------|
+   | Check for        | If this option is activated, compiler checks        |
+   | overlapping      | generated configuration for 'static' commands that  |
+   | statics          | use overlapping address ranges.                     |
+   |------------------+-----------------------------------------------------|
+   | Check for        | If this option is activated, compiler checks        |
+   | overlapping      | generated configuration for 'global' and 'static    |
+   | global pools and | commands using overlapping address ranges.          |
+   | statics          |                                                     |
+   +------------------------------------------------------------------------+
+
+  Caveats:
+
+   PIX does not support filtering by MAC address. Although GUI provides entry
+   field for the MAC address, it is ignored by PIX policy compiler.
+
+   static translation (DNAT) rules create in fact bidirectional translation
+   (not only translation from outside to inside, but also in the opposite
+   direction using the same addresses). This is caused by the behavior of PIX
+   command 'static' and can't be easily fixed.
+
+   GUI option Logging is ignored because PIX can not turn logging on and off,
+   it always logs blocked packets.
+
+   There are no rule options available as of yet.
+
+   Unlike in Linux/iptables and other firewall platforms, PIX inspects packet
+   before it does NAT. Therefore policy rules that control access to NAT'ted
+   hosts should use objects, representing translated addresses instead of
+   objects representing real hosts. Firewall Builder provides an emulation
+   for the mode where NAT happens before the policy (ACL) inspection. Use
+   checkbox "Replace NAT'ed objects with their translations in policy rules"
+   to turn on this emulation. You can use objects representing real servers
+   in the policy rules if this option is on.
+
+   Version 3.0 does not support IPSEC configuration.
