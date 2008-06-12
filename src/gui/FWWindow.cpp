@@ -196,7 +196,7 @@ FWWindow::FWWindow(): m_space(0),
 
     connect( m_mainWindow->ObjectMenu, SIGNAL (aboutToShow() ),
             this,     SLOT( prepareObjectMenu()  ));
-
+    connect( m_space, SIGNAL(subWindowActivated (QMdiSubWindow *)),this, SLOT(changeActiveSubwindow())); 
     if (fwbdebug)
         qDebug("/FWWindow constructor");
 
@@ -1451,20 +1451,12 @@ void FWWindow::selectActiveSubWindow (/*const QString & text*/)
     }
 }
 
-void FWWindow::minimizeAll ()
+void FWWindow::minimize ()
 {
     m_space->activeSubWindow ()->showMinimized ();
-    QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
-    for (int i = 0 ; i < subWindowList.size();i++)
-    {
-        if (!subWindowList[i]->isMinimized())
-        {
-            subWindowList[i]->showMinimized ();
-        }
-    }
 }
 
-void FWWindow::maximizeAll ()
+void FWWindow::maximize ()
 {
     m_space->activeSubWindow()->showMaximized ();
 }
@@ -1474,13 +1466,28 @@ void FWWindow::recreateWindowsMenu ()
     windowsPainters.clear();
     windowsTitles.clear();
     m_mainWindow->menuWindow->clear();
+    QAction * close = m_mainWindow->menuWindow->addAction ("Close");
+    QAction * closeAll = m_mainWindow->menuWindow->addAction ("Close All");
+    QAction * title = m_mainWindow->menuWindow->addAction ("Title");
+    QAction * cascade = m_mainWindow->menuWindow->addAction ("Cascade");
+    QAction * next = m_mainWindow->menuWindow->addAction ("Next");
+    QAction * previous = m_mainWindow->menuWindow->addAction ("Previous");
+
     QAction * minimize = m_mainWindow->menuWindow->addAction ("Minimize");
     QAction * maximize = m_mainWindow->menuWindow->addAction ("Maximize");
     m_mainWindow->menuWindow->addSeparator ();
-    connect(minimize, SIGNAL(triggered()), this, SLOT(minimizeAll()));
-    connect(maximize, SIGNAL(triggered()), this, SLOT(maximizeAll()));
 
+    connect(minimize, SIGNAL(triggered()), this, SLOT(minimize()));
+    connect(maximize, SIGNAL(triggered()), this, SLOT(maximize()));
+    connect(close, SIGNAL(triggered()),m_space, SLOT(closeActiveSubWindow()));
+    connect(closeAll, SIGNAL(triggered()),m_space, SLOT(closeAllSubWindows()));
+    connect(title, SIGNAL(triggered()), m_space, SLOT(tileSubWindows()));
+    connect(cascade, SIGNAL(triggered()), m_space, SLOT(cascadeSubWindows()));
+    connect(next, SIGNAL(triggered()),m_space, SLOT(activateNextSubWindow()));
+    connect(previous, SIGNAL(triggered()),m_space, SLOT(activatePreviousSubWindow()));
     QList<QMdiSubWindow *> subWindowList = getMdiArea()->subWindowList();
+    QActionGroup * ag = new QActionGroup ( this );
+    ag->setExclusive ( true );
     for (int i = 0 ; i < subWindowList.size();i++)
     {
         windowsPainters.push_back (subWindowList[i]);
@@ -1494,8 +1501,17 @@ void FWWindow::recreateWindowsMenu ()
             if (text=="")
                 text = "[Noname]";
             QAction * act = m_mainWindow->menuWindow->addAction (text);
+            ag->addAction(act);
+            act->setCheckable ( true );
+            if (subWindowList[i]==m_space->activeSubWindow ())
+                act->setChecked(true);
             connect(act, SIGNAL(triggered()), this, SLOT(selectActiveSubWindow()));
         }
     }
 
+}
+
+void FWWindow::changeActiveSubwindow (  )
+{
+    recreateWindowsMenu();
 }

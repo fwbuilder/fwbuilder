@@ -86,8 +86,9 @@ public:
 public slots:
     void selectActiveSubWindow (/*const QString & text*/);
 
-    void minimizeAll ();
-    void maximizeAll ();
+    void minimize ();
+    void maximize ();
+    void changeActiveSubwindow (  );
      virtual void search();
 
      virtual void openFirewall( int idx );
