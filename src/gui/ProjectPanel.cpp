@@ -2183,11 +2183,14 @@ void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs,libfwbuilder::FWObject
  * However, if I am editing standard library, it should not be read-only.
  */
         FWObject *slib = objdb->findInIndex(FWObjectDatabase::STANDARD_LIB_ID);
-        if (fwbdebug)
-            qDebug("standard library read-only status: %d, editingStandardLib: %d",
-                   slib->isReadOnly(), editingStandardLib);
+        if (slib!=NULL )
+        {
+            if (fwbdebug)
+                qDebug("standard library read-only status: %d, editingStandardLib: %d",
+                       slib->isReadOnly(), editingStandardLib);
 
-        if (slib!=NULL ) slib->setReadOnly(! editingStandardLib);
+            slib->setReadOnly(! editingStandardLib);
+        }
 
 /* if the file name has an old extension .xml, change it to .fwb and
  * warn the user
@@ -3573,6 +3576,14 @@ void ProjectPanel::showEvent( QShowEvent *ev)
 //    {
 //        loadSplitters();
 //    }
+
+    if (fwbdebug)
+    {
+        qDebug("ProjectPanel::showEvent:  isMaximized=%d", isMaximized());
+        int wf = windowFlags();
+        qDebug("windowFlags=%x", wf);
+    }
+
     QWidget::showEvent(ev);
 }
 
