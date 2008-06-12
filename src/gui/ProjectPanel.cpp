@@ -222,7 +222,6 @@ void ProjectPanel::info(libfwbuilder::FWObject *obj, bool forced)
             m_panel->oi->setText(s);
         }
 
-        m_panel->oi->setFont(st->getUiFont());
         s=QString::fromUtf8(obj->getComment().c_str());
         m_panel->oi->append(s);
         m_panel->oi->moveCursor(QTextCursor::Start);
@@ -3583,7 +3582,6 @@ void ProjectPanel::showEvent( QShowEvent *ev)
         int wf = windowFlags();
         qDebug("windowFlags=%x", wf);
     }
-
     QWidget::showEvent(ev);
 }
 

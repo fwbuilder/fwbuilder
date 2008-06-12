@@ -57,7 +57,6 @@ HostDialog::HostDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent)
 {
     m_dialog = new Ui::HostDialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
     obj=NULL;
 }
 

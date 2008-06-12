@@ -56,7 +56,6 @@ LibraryDialog::LibraryDialog(ProjectPanel *project, QWidget *parent) : QWidget(p
     m_dialog->setupUi(this);
 
     obj=NULL;
-    setFont(st->getUiFont());
     //layout()->setSizeConstraint(QLayout::SetFixedSize);
 
     Qt::WindowFlags flags = windowFlags();

@@ -57,7 +57,6 @@ RuleSetDialog::RuleSetDialog(ProjectPanel *project, QWidget *parent) : QWidget(p
 {
     m_dialog = new Ui::RuleSetDialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
     obj=NULL;
 }
 

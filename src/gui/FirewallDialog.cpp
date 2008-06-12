@@ -74,7 +74,6 @@ FirewallDialog::FirewallDialog(ProjectPanel *project, QWidget *parent) : QWidget
     m_dialog = new Ui::FirewallDialog_q;
     m_dialog->setupUi(this);
     obj=NULL;
-    setFont(st->getUiFont());
 }
 
 void FirewallDialog::loadFWObject(FWObject *o)

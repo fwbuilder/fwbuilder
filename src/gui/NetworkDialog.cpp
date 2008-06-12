@@ -55,7 +55,6 @@ NetworkDialog::NetworkDialog(ProjectPanel *project, QWidget *parent) : QWidget(p
 {
     m_dialog = new Ui::NetworkDialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
     obj=NULL;
 }
 

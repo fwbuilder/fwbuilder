@@ -170,7 +170,6 @@ FWWindow::FWWindow(): m_space(0),
 
     m_mainWindow = new Ui::FWBMainWindow_q();
     m_mainWindow->setupUi(dynamic_cast<QMainWindow*>(this));
-    QApplication::setFont(st->getUiFont());
 
     m_space = new QMdiArea(this);
     setCentralWidget(m_space);
@@ -812,7 +811,6 @@ void FWWindow::editPrefs()
     PrefsDialog pd(this);
     if (QDialog::Accepted == pd.exec())
     {
-        QApplication::setFont(st->getUiFont());
         if (activeProject())
         activeProject()->prefsEdited();
     }

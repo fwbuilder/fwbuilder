@@ -64,7 +64,6 @@ InterfaceDialog::InterfaceDialog(ProjectPanel *project, QWidget *parent) :
 {
     m_dialog = new Ui::InterfaceDialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
 /*
     seclevel->hide();    seclevelLabel->hide();
     netzone->hide();     netzoneLabel->hide();

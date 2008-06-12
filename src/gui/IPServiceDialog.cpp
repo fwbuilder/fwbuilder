@@ -56,7 +56,6 @@ IPServiceDialog::IPServiceDialog(ProjectPanel *project, QWidget *parent) : QWidg
 {
     m_dialog = new Ui::IPServiceDialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
     obj=NULL;
 }
 

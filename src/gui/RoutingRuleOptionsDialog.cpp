@@ -64,7 +64,6 @@ RoutingRuleOptionsDialog::RoutingRuleOptionsDialog(ProjectPanel *project, QWidge
 {
     m_dialog = new Ui::RoutingRuleOptionsDialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
 }
 
 void RoutingRuleOptionsDialog::loadFWObject(FWObject *o)

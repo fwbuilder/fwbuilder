@@ -55,7 +55,6 @@ TCPServiceDialog::TCPServiceDialog(ProjectPanel *project, QWidget *parent) : QWi
 {
     m_dialog = new Ui::TCPServiceDialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
 
     obj=NULL;
 }

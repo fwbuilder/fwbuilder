@@ -59,7 +59,6 @@ NATRuleOptionsDialog::NATRuleOptionsDialog(ProjectPanel *project, QWidget *paren
 {
     m_dialog = new Ui::NATRuleOptionsDialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
 
     init=false;
 }

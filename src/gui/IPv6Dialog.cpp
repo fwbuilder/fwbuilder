@@ -62,7 +62,6 @@ IPv6Dialog::IPv6Dialog(ProjectPanel *project, QWidget *parent) : QWidget(parent)
 {
     m_dialog = new Ui::IPv6Dialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
     obj=NULL;
 }
 

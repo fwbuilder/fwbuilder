@@ -65,7 +65,6 @@ TagServiceDialog::TagServiceDialog(ProjectPanel *project, QWidget *parent) : QWi
 {
     m_dialog = new Ui::TagServiceDialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
     obj=NULL;
 }
 

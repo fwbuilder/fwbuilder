@@ -55,7 +55,6 @@ NetworkDialogIPv6::NetworkDialogIPv6(ProjectPanel *project, QWidget *parent) : Q
 {
     m_dialog = new Ui::NetworkDialogIPv6_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
     obj=NULL;
 }
 

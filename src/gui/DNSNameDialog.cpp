@@ -60,8 +60,6 @@ DNSNameDialog::DNSNameDialog(ProjectPanel *project, QWidget *parent) : QWidget(p
 {
     m_dialog = new Ui::DNSNameDialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
-
     obj=NULL;
 }
 

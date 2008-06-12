@@ -55,7 +55,6 @@ CustomServiceDialog::CustomServiceDialog(ProjectPanel *project, QWidget *parent)
 {
     m_dialog = new Ui::CustomServiceDialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
     obj=NULL;
 }
 

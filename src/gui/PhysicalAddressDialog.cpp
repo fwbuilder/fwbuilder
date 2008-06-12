@@ -58,7 +58,6 @@ PhysicalAddressDialog::PhysicalAddressDialog(ProjectPanel *project, QWidget *par
 {
     m_dialog = new Ui::PhysAddressDialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
     obj=NULL;
 }
 

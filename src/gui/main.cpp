@@ -403,7 +403,6 @@ int main( int argc, char ** argv )
 
 /* initialize preferences */
         st->init();
-        QApplication::setFont(st->getUiFont());
 
         QString sshcmd=st->getSSHPath();
 
@@ -607,7 +606,6 @@ int main( int argc, char ** argv )
 
 /* initialize preferences */
         st->init();
-        QApplication::setFont(st->getUiFont());
         if (fwbdebug) qDebug("done");
 
         QPixmapCache::setCacheLimit(4096);

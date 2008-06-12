@@ -67,7 +67,6 @@ RuleOptionsDialog::RuleOptionsDialog(ProjectPanel *project, QWidget *parent) : Q
 {
     m_dialog = new Ui::RuleOptionsDialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
 
     init=false;
 }

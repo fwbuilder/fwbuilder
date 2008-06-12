@@ -1333,7 +1333,6 @@ int RuleSetView::getColByType(REType type) const
     return -1;
 }
 
-
 QString RuleSetView::objectText(RuleElement *re,FWObject *obj)
 {
     if (re->isAny())

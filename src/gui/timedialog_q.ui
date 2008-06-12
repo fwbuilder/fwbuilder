@@ -670,5 +670,117 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>cbStart1_2</sender>
+   <signal>released()</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>280</x>
+     <y>258</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>284</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStart2_2</sender>
+   <signal>released()</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>314</x>
+     <y>256</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>343</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStart3_2</sender>
+   <signal>released()</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>356</x>
+     <y>255</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>216</x>
+     <y>-9</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStart4_2</sender>
+   <signal>released()</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>414</x>
+     <y>259</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>423</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStart5_2</sender>
+   <signal>released()</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>477</x>
+     <y>259</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>486</x>
+     <y>-6</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStart6_2</sender>
+   <signal>released()</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>505</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>568</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbStart7_2</sender>
+   <signal>released()</signal>
+   <receiver>TimeDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>550</x>
+     <y>259</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>639</x>
+     <y>-5</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
 </ui>

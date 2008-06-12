@@ -67,7 +67,6 @@ AddressTableDialog::AddressTableDialog(ProjectPanel *project, QWidget *parent) :
 {
     m_dialog = new Ui::AddressTableDialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
     obj=NULL;
 }
 

@@ -56,7 +56,6 @@ ICMPServiceDialog::ICMPServiceDialog(ProjectPanel *project, QWidget *parent) :
 {
     m_dialog = new Ui::ICMPServiceDialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
     obj=NULL;
 }
 

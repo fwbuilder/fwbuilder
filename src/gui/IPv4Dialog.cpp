@@ -61,7 +61,7 @@ IPv4Dialog::IPv4Dialog(ProjectPanel *project, QWidget *parent) : QWidget(parent)
 {
     m_dialog = new Ui::IPv4Dialog_q;
     m_dialog->setupUi(this);
-    setFont(st->getUiFont());
+
     obj=NULL;
 }
 
