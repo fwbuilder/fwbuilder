@@ -2152,7 +2152,6 @@ void DiscoveryDruid::createRealObjects()
                         Resources::setDefaultTargetOptions( i->first,
                                                             Firewall::cast(o) );
 
-                    mw->addFirewallToList(o);
                 }
             }else if (type==Network::TYPENAME)
             {

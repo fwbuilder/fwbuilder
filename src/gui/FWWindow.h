@@ -92,12 +92,9 @@ public slots:
     void changeActiveSubwindow (  );
      virtual void search();
 
-     virtual void openFirewall( int idx );
      virtual void reopenFirewall();
      virtual void redrawRuleSets();
-     virtual void deleteFirewall(libfwbuilder::FWObject *fw);
      virtual void changeInfoStyle();
-     virtual void ruleSetTabChanged(int tab);
      virtual void restoreRuleSetTab();
 
      virtual void editFind();
@@ -176,10 +173,6 @@ public slots:
     void loadLibrary(const std::string &libfpath);
     void save();
     bool checkin(bool unlock);
-    void showFirewalls(bool open_first_firewall=true);
-    void showFirewall(libfwbuilder::FWObject *f);
-    void addFirewallToList(libfwbuilder::FWObject *f);
-    void removeFirewallFromList(libfwbuilder::FWObject *f);
     int  findFirewallInList(libfwbuilder::FWObject *f);
     void updateTreeViewItemOrder();
 
@@ -193,8 +186,6 @@ public slots:
     void setFileName(const QString &fname);
     
     bool saveIfModified();
-
-    void showFirewallRuleSets( libfwbuilder::FWObject *fw );
     
     void updateFirewallName(libfwbuilder::FWObject *obj,const QString &oldName);
     void updateRuleSetView();
@@ -223,8 +214,6 @@ public slots:
 
     void findWhereUsed(libfwbuilder::FWObject *);
     
-    void removePolicyBranchTab(libfwbuilder::RuleSet *subset);
-
     /**
      * panel that wants to open an object in the editor
      * uses this method to request permission to do so and

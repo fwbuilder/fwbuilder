@@ -1474,18 +1474,9 @@ void ObjectManipulator::duplicateObj(QAction *action)
     for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
     {
         obj= *i;
-
         if ( m_project->isSystem(obj) || Interface::isA(obj) ) continue;
-
         FWObject *cl   = idxToLibs[libid];
-
         nobj = duplicateObject(cl,obj,"",false);
-
-        if (nobj->getTypeName()==Firewall::TYPENAME)
-        {
-            m_project->addFirewallToList(nobj);
-            m_project->showFirewall(nobj);
-        }
     }
     editObject(nobj);
     ot->freezeSelection(false);
@@ -1514,11 +1505,6 @@ void ObjectManipulator::duplicateObjUnderSameParent()
         if (Host::isA(o) || Firewall::isA(o) || Interface::isA(o))
             autorename(o,false);
 
-        if (Firewall::isA(o))
-        {
-            m_project->addFirewallToList(o);
-            m_project->showFirewall(o);
-        }
     }
     if (o!=NULL)   editObject(o);
     ot->freezeSelection(false);
@@ -1598,17 +1584,7 @@ void ObjectManipulator::moveObject(FWObject *targetLib, FWObject *obj)
         } else
             pom->allItems[grp]->addChild(itm);
 
-        if (Firewall::cast(obj)!=NULL)
-        {
-            pom->m_project->addFirewallToList(obj);
-            pom->m_project->showFirewall(obj);
-        }
     }
-
-//    if (fwbdebug)
-//        qDebug("ObjectManipulator::moveObject  open lib cl %s",
-//               cl->getName().c_str());
-//    openLib(cl);
 
     if (fwbdebug)
         qDebug("ObjectManipulator::moveObject  all done");
@@ -2159,7 +2135,6 @@ void ObjectManipulator::delObj(FWObject *obj,bool openobj)
                         FWObject *first_fw = fwlist.front();
                         if (first_fw!=NULL)
                         {
-                            pom->m_project->showFirewall( first_fw );
                             pom->openObject( first_fw );
                         }
                     }
@@ -2874,17 +2849,10 @@ void ObjectManipulator::newFirewall()
     for (int i = 0 ; i < oms.size(); i++)
     {
         ObjectManipulator* pom = oms[i] ;
-
         pom->openObject(o);
-
-        pom->m_project->addFirewallToList(o);
-        pom->m_project->showFirewall(o);
     }
-//        updateLastModifiedTimestampForAllFirewalls(o);
-
         editObject(o);
     }
-//    }
     
 }
 
@@ -2929,7 +2897,6 @@ void ObjectManipulator::newInterface()
 
     openObject( i );
 
-    if (Firewall::isA(i->getParent())) m_project->showFirewall(i->getParent());
     updateLastModifiedTimestampForAllFirewalls(i);
 
     editObject(i);

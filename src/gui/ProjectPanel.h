@@ -94,18 +94,6 @@ class ProjectPanel: public QWidget {
     QString                                 noFirewalls;
     bool                                    enableAvtoSaveState;
     
-    void findIntersectRefs(libfwbuilder::FWObject *lib, libfwbuilder::FWObject *root,
-                           std::list<libfwbuilder::FWObject*> &extRefs,
-                           const std::list<libfwbuilder::FWObject*> &objList,std::list<libfwbuilder::FWReference*> & refLinfs);
-
-    void restorePolicyRefs(libfwbuilder::Policy *pol, libfwbuilder::Policy *pol_old, 
-        const std::map<int, libfwbuilder::FWObject *> &objByIds);
-    void restorePolicyRuleRefs(libfwbuilder::PolicyRule *rule, 
-        libfwbuilder::PolicyRule *rule_old, 
-        const std::map<int, libfwbuilder::FWObject *> &objByIds);
-    void restoreRERefs(libfwbuilder::RuleElement *re_new, 
-          libfwbuilder::RuleElement *re_old,
-          const std::map<int, libfwbuilder::FWObject *> &objByIds);
 public:  
     libfwbuilder::RuleSet* getCurrentRuleSet () {return visibleRuleSet;};
     RuleSetView * getCurrentRuleSetView () ;
@@ -230,9 +218,7 @@ public:
     //find dialog functions wrapers
     void setFDObject(libfwbuilder::FWObject *o);
     
-    void info(libfwbuilder::FWObject *o, bool forced = false);
-    void prefsEdited();
-    
+    void info(libfwbuilder::FWObject *o, bool forced = false);    
     void resetFD();
     
     void clearFirewallTabs();
@@ -247,16 +233,8 @@ public:
     void updateRuleSetView();
     void updateRuleOptions();
     void updateTreeViewItemOrder();
-    
-    void removePolicyBranchTab(libfwbuilder::RuleSet *subset);
-    
-    void showFirewalls(bool open_first_firewall=true);
-    void showFirewall(libfwbuilder::FWObject *f);
     int  findFirewallInList(libfwbuilder::FWObject *f);
-    void addFirewallToList(libfwbuilder::FWObject *o);
-    void removeFirewallFromList(libfwbuilder::FWObject *o);
     void updateFirewallName(libfwbuilder::FWObject *obj,const QString &str);
-    void showFirewallRuleSets(libfwbuilder::FWObject *fw );
     void scheduleRuleSetRedraw();
     void selectRules();
     void unselectRules();
@@ -291,12 +269,9 @@ public:
     virtual void pasteRuleAbove();
     virtual void pasteRuleBelow();
 
-    virtual void openFirewall( int idx );
     virtual void reopenFirewall();
     virtual void redrawRuleSets();
-    virtual void deleteFirewall(libfwbuilder::FWObject *fw);
     virtual void changeInfoStyle();
-    virtual void ruleSetTabChanged(int tab);
     virtual void restoreRuleSetTab();
 
     virtual void fileProp();

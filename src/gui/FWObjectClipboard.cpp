@@ -97,21 +97,11 @@ size_t FWObjectClipboard::windowsCount ()
     return windows.size();
 }
 
-ProjectPanel * FWObjectClipboard::getWindowByIdx (int idx)
-{
-    if (idx < int(windowsCount()))
-    {
-        return windows[idx];
-    }
-    return NULL;
-}
-
 FWObject* FWObjectClipboard::getObjectByIdx (int idx)
 {
     int s1 = ids[idx];
     ProjectPanel * w1 = windows[idx];
     FWObject *co= w1->db()->findInIndex(s1);
     return co;
-    //w1->db()->FWObject *co= win->db()->findInIndex(*i);
 }
 

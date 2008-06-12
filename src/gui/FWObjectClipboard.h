@@ -38,7 +38,6 @@ class FWObjectClipboard  {
 
     std::vector<int> ids;
     std::vector<ProjectPanel*> windows;
-
 public:
 
     FWObjectClipboard();
@@ -61,7 +60,6 @@ public:
 
     size_t windowsCount ();
 
-    ProjectPanel * getWindowByIdx (int idx);
     libfwbuilder::FWObject* getObjectByIdx (int idx);
 
     std::vector<int>::iterator begin() { return ids.begin(); }

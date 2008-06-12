@@ -173,7 +173,6 @@ void ProjectPanel::initMain(FWWindow *main)
     connect( findWhereUsedWidget, SIGNAL( close() ), this, SLOT( closeAuxiliaryPanel() ) );
 //    connect( m_panel->fwList, SIGNAL( activated(int) ), this, SLOT( openFirewall(int) ) );
     connect( m_panel->infoStyleButton, SIGNAL( clicked() ), this, SLOT( changeInfoStyle() ) );
-//    connect( m_panel->ruleSets, SIGNAL( currentChanged(int) ), this, SLOT( ruleSetTabChanged(int) ) );
     connect(m_panel->mainSplitter, SIGNAL(splitterMoved(int,int)),this,SLOT(splitterMoved(int,int)));
     connect(m_panel->objInfoSplitter, SIGNAL(splitterMoved(int,int)),this,SLOT(splitterMoved(int,int)));
           
@@ -254,180 +253,6 @@ RuleElement* ProjectPanel::getRE( Rule* r, int col )
     return RuleElement::cast( r->getFirstByType(ret) );
 }
 
-void ProjectPanel::findIntersectRefs(FWObject *lib,
-                                       FWObject *root,
-                                       list<FWObject*> &extRefs,
-                                       const list<FWObject*> &objList, list<FWReference*> & refLinfs)
-{
-    
-    FWReference *ref=FWReference::cast(root);
-    if (ref!=NULL)
-    {
-        FWObject *plib = ref->getPointer()->getLibrary();
-        if ( plib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
-             plib->getId()!=FWObjectDatabase::DELETED_OBJECTS_ID  &&
-             plib!=lib )
-        {
-                FWObject* ptr=ref->getPointer();
-
-    cout << string(0,' ') << "Pointer: " << ptr << endl;
-    cout << string(0,' ') << "Name: " << ref->getName() << endl;
-    if (ptr) {
-        cout<< string(0,' ') << "Ptr.name: " << ptr->getName() <<endl;
-        cout<< string(0,' ') << "Ptr.id: "   << ptr->getId() <<endl;
-    }
-            //qDebug (ref->getTypeName().c_str());
-            //qDebug (ref->getPointer()->getTypeName().c_str());
-            //qDebug (QString().setNum(objList.size()).toAscii().data());
-            int counter = 0 ;
-            for (list<FWObject*>::const_iterator i=ptr->begin();i!=ptr->end();i++)
-            {
-                counter++;
-                //qDebug("push_back (%s, %s)", (*i)->getId().c_str(), ref->getId().c_str());
-                //FWObject * obj = *i;
-                FWObject * obj = *i;//ptr;
-                
-                QString name = obj->getName().c_str();
-                if ((obj)->getId() != root->getId())
-                {
-                    //FWObject *nobj= db()->create(obj->getTypeName());
-                    //nobj->ref();
-                    //nobj->duplicate(obj,false);   //if renew_id == true creates new object ID
-                    //obj->setReadOnly(false);
-                    //ref->setPointerId(nobj->getId());
-                    //if (!obj->isReadOnly())
-                    //    obj->setId(nobj->getId());
-                    
-                    //qDebug("HERE");// !!!!!
-                    if (!copySet.contains (name)){
-                        copySet.insert(name);
-                        extRefs.push_back(obj);
-                        refLinfs.push_back (ref);
-                    }
-                }
-             }
-            if (counter==0)
-            {
-               FWObject * obj = ptr;
-                
-                QString name = obj->getName().c_str();
-                if ((obj)->getId() != root->getId())
-                {
-                    //FWObject *nobj= db()->create(obj->getTypeName());
-                    //nobj->ref();
-                    //nobj->duplicate(obj,false);   //if renew_id == true creates new object ID
-                    //obj->setReadOnly(false);
-                    //ref->setPointerId(nobj->getId());
-                    //if (!obj->isReadOnly())
-                    //    obj->setId(nobj->getId());
-                    
-                    //qDebug("HERE");// !!!!!
-                    if (!copySet.contains (name)){
-                        copySet.insert(name);
-                        extRefs.push_back(obj);
-                        refLinfs.push_back (ref);
-                    }
-                }
- 
-            }
-            qDebug (QString().setNum(counter).toAscii().data());
-        }
-        return;
-    } else
-    {
-        //;
-        for (FWObject::iterator i=root->begin(); i!=root->end(); i++)
-            findIntersectRefs(lib, *i, extRefs, objList,refLinfs);
-
-    }
-}
-
-
-void ProjectPanel::restoreDepends(FWObject *obj_old, FWObject *obj, 
-          const std::map<int, FWObject *> &objByIds)
-{
-    Firewall *fw = Firewall::cast(obj);
-    Firewall *fw_old = Firewall::cast(obj_old);
-    if(!fw || !fw_old)
-      return;
-    
-    Policy *pol=Policy::cast(fw->getFirstByType(Policy::TYPENAME));
-    Policy *pol_old=Policy::cast(fw_old->getFirstByType(Policy::TYPENAME));
-    restorePolicyRefs(pol, pol_old, objByIds);
-}
-
-void ProjectPanel::restorePolicyRefs(Policy *pol, Policy *pol_old, 
-        const std::map<int, FWObject *> &objByIds)
-{
-    if (!pol || !pol_old)
-        return;
-    for (libfwbuilder::FWObject::iterator i=pol->begin(),
-         j=pol_old->begin(); 
-         i!=pol->end(); i++, j++)
-    {
-        PolicyRule *rule = PolicyRule::cast(*i);
-        PolicyRule *rule_old = PolicyRule::cast(*j);
-        restorePolicyRuleRefs(rule, rule_old, objByIds);
-    }
-}
-    
-void ProjectPanel::restorePolicyRuleRefs(PolicyRule *rule, PolicyRule *rule_old, 
-          const std::map<int, FWObject *> &objByIds)
-{
-    if (!rule || !rule_old) return; 
-    for (int col =0; col < 5; col++)
-    {
-        RuleElement *re = getRE(rule, col);
-        RuleElement *re_old = getRE(rule_old, col);
-        
-        restoreRERefs(re_old, re, objByIds);
-    }
-}
-
-void ProjectPanel::restoreRERefs(RuleElement *re_new, RuleElement *re_old, 
-          const std::map<int, FWObject *> &objByIds)
-{
-    if (!re_new || ! re_old) return;
-    while((re_new->begin() != re_new->end()) && 
-      (re_new->getAnyElementId() != (*re_new->begin())->getId()))
-    { 
-        FWObject *o = *re_new->begin();
-        re_new->removeRef(o);
-        re_new->erase(re_new->begin());
-    }
-    for (FWObject::iterator i=re_old->begin(); i!=re_old->end(); i++)
-    {
-        FWObject *o_old = *i;
-        //qDebug("o_old->getId() = (%s)", o_old->getId().c_str());//).toAscii().constData());// !!!!!
-        //for (std::map<const std::string, FWObject *>::const_iterator i = objByIds.begin(); i != objByIds.end(); i++)
-            //qDebug("i->first.c_str() = (%s)", i->first.c_str());// !!!!!
-        std::map<int, FWObject *>::const_iterator it = objByIds.find(o_old->getId());
-        if (objByIds.end() != it)
-        {
-            FWObject *o = it->second;
-            if (o)
-                re_new->addRef(o);
-        }
-    }
-}
-
-void ProjectPanel::prefsEdited()
-{
-/*    if (m_panel->ruleSets->count()!=0)
-    {
-        m_panel->oi->setFont(st->getUiFont());
-        if (st->getInfoStyle() != 0)
-            st->setInfoWindowHeight(m_panel->oi->geometry().height());
-        for (int i = 0; i < m_panel->objectEditorStack->count(); i++)
-            m_panel->objectEditorStack->widget(i)->setFont(st->getUiFont());
-
-        for (int i = 0; i < m_panel->ruleSets->count(); i++)
-            dynamic_cast<RuleSetView*>(m_panel->ruleSets->widget(i))->updateAll();
-        getCurrentObjectTree()->updateAfterPrefEdit();
-    }@@@*/
-}
-
-
 /*
  * info styles go like this:
  * 0 - collapsed
@@ -462,42 +287,9 @@ void ProjectPanel::changeInfoStyle()
     info();
 }
 
-void ProjectPanel::ruleSetTabChanged(int tab)
-{
-    QWidget *w = m_panel->ruleSets->widget(tab);
-
-    if (fwbdebug)
-        qDebug("ProjectPanel::ruleSetTabChanged:  w=%p ruleSetTabIndex=%d changingTabs=%d",
-               w,ruleSetTabIndex,changingTabs);
-
-    if (changingTabs) return;
-
-    if (!isEditorVisible())
-    {
-        ruleSetTabIndex = tab;
-        return;
-    }
-
-    RuleSetView* rv=dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
-
-    if ((ruleSetTabIndex != m_panel->ruleSets->indexOf(w)) &&
-        !requestEditorOwnership(rv,NULL,ObjectEditor::optNone,true)) 
-    {
-        // this causes recursive call to ruleSetTabChanged
-        changingTabs = true;
-        m_panel->ruleSets->setCurrentIndex(ruleSetTabIndex);
-        changingTabs = false;
-        return;
-    }
-    ruleSetTabIndex = tab;
-    rv->editSelected();
-//    rollBackSelectionDifferentWidget();  // make widget reopen the same object
-
-}
-
 void ProjectPanel::restoreRuleSetTab()
 {
-    if (fwbdebug) qDebug("ProjectPanel::restoreRuleSetTab()");
+    if (fwbdebug) qDebug("ProjectPanel::()");
     m_panel->ruleSets->setCurrentIndex(ruleSetTabIndex);
 
 }
@@ -607,77 +399,6 @@ void ProjectPanel::updateTreeViewItemOrder()
     //if we do not reopen parent item, some of child
     //items mix incorrectly (maybe bug of QT?)
     m_panel->om->reopenCurrentItemParent();
-}
-
-void ProjectPanel::removePolicyBranchTab(libfwbuilder::RuleSet *subset)
-{
-/*    if (subset==NULL) return;
-    RuleSetView *rsv = ruleSetViews[subset];
-    assert(rsv);
-    m_panel->ruleSets->removeTab(m_panel->ruleSets->indexOf(rsv));
-    ruleSetViews.erase(subset);
-*/
-}
-
-void ProjectPanel::deleteFirewall(libfwbuilder::FWObject *fw)
-{
- /*   if (fwbdebug) qDebug("ProjectPanel::deleteFirewall   - fw %s %s",
-                         fw->getName().c_str(), fw->getId().c_str());
-
-    removeFirewallFromList(fw);
-    if (visibleFirewall==fw)  visibleFirewall=NULL;
-*/
-}
-    
-void ProjectPanel::showFirewalls(bool open_first_firewall)
-{
-/*    if (fwbdebug)  qDebug("ProjectPanel::showFirewalls");
-
-//    list<FWObject*> fl;
-    findFirewalls(db(), fl);
-    fl.sort(FWObjectNameCmpPredicate());
-
-    firewalls.clear();
-//    m_panel->fwList->clear();
-    clearFirewallTabs();
-    m_panel->firewallName->setText("");
-//    if (fl.size()==0)
-//    {
-//        m_panel->fwList->addItem( noFirewalls );
-//        return;
-//    }
-
-//    for (list<FWObject*>::iterator m=fl.begin(); m!=fl.end(); m++)
-//        addFirewallToList( *m );
-
-    if (open_first_firewall)
-    {
-//        m_panel->fwList->setCurrentIndex( 0 );
-        openFirewall( 0 );
-    }
-    mainW->setActionsEnabled(fl.size()!=0);
-    if (fwbdebug)  qDebug("end of ProjectPanel::showFirewalls");
-*/
-}
-
-void ProjectPanel::showFirewall(libfwbuilder::FWObject *obj)
-{
-/*
-    if (firewalls.size()>0)
-    {
-        vector<FWObject*>::iterator i;
-        int n=0;
-        for (i=firewalls.begin(); i!=firewalls.end(); i++,n++)
-        {
-            if ( (*i)->getId()==obj->getId() )
-            {
-                m_panel->fwList->setCurrentIndex( n );
-                openFirewall( n );
-                return;
-            }
-        }
-    }
-*/
 }
 
 RuleSetView * ProjectPanel::getCurrentRuleSetView () 
@@ -815,55 +536,6 @@ int  ProjectPanel::findFirewallInList(libfwbuilder::FWObject *f)
     return -1;
 }
 
-void ProjectPanel::addFirewallToList(libfwbuilder::FWObject *o)
-{
- /*   QString icn_filename =
-        ( ":/Icons/"+o->getTypeName()+"icon-tree" ).c_str();
-
-    int n=m_panel->fwList->count();
-
-    if (fwbdebug) qDebug("ProjectPanel::addFirewallToList %d %p %s",
-                         n, o, o->getName().c_str() );
-
-    if (m_panel->fwList->currentText() == noFirewalls )
-    {
-        m_panel->fwList->removeItem(0);
-    }
-
-    QPixmap pm;
-    if ( ! QPixmapCache::find( icn_filename, pm) )
-    {
-        pm.load( icn_filename );
-        QPixmapCache::insert( icn_filename, pm);
-    }
-    m_panel->fwList->addItem( pm, QString::fromUtf8(o->getName().c_str()) );
-
-    firewalls.push_back(o);
-
-    m_panel->fwList->setCurrentIndex( n );
-//    openFirewall( n );
-*/
-}
-
-void ProjectPanel::removeFirewallFromList(libfwbuilder::FWObject *o)
-{
-/*    if (fwbdebug) qDebug("ProjectPanel::removeFirewallFromList %p %s",
-                         o, o->getName().c_str() );
-
-    vector<FWObject*>::iterator i;
-    int  n=0;
-    for (i=firewalls.begin(); i!=firewalls.end(); i++,n++)
-    {
-        if ( (*i)->getId()==o->getId() )
-        {
-            m_panel->fwList->removeItem(n);
-            firewalls.erase( i );
-            break;
-        }
-    }
-*/
-}
-
 void ProjectPanel::updateFirewallName(libfwbuilder::FWObject *obj,const QString &str)
 {
     if (visibleRuleSet==NULL)
@@ -876,88 +548,13 @@ void ProjectPanel::updateFirewallName(libfwbuilder::FWObject *obj,const QString 
     name += visibleRuleSet->getName().c_str();
     name += "</B>";
     m_panel->rulesetname->setText(name );
-
-/*    updateFirewallName(obj, str);
-    
-    if (fwbdebug) qDebug("ProjectPanel::updateFirewallName ");
-
-    QString icn_filename =
-        Resources::global_res->getObjResourceStr(obj, "icon-tree").c_str();
-
-    vector<FWObject*>::iterator i;
-    int n = 0;
-    for (i=firewalls.begin(); i!=firewalls.end(); i++,n++)
-    {
-        if ( (*i)->getId()==obj->getId())
-        {
-            QPixmap pm;
-            if ( ! QPixmapCache::find( icn_filename, pm) )
-            {
-                pm.load( icn_filename );
-                QPixmapCache::insert( icn_filename, pm);
-            }
-            m_panel->fwList->setItemIcon( n, QIcon(pm) );
-            m_panel->fwList->setItemText( n,
-                QString::fromUtf8(obj->getName().c_str()));
-            if (n==m_panel->fwList->currentIndex ())
-                m_panel->firewallName->setText(QString::fromUtf8(obj->getName().c_str()));
-            return;
-        }
-    }
-*/
 }
 
 void ProjectPanel::openRuleSet (libfwbuilder::FWObject * obj)
 {
-
-        blankEditor();
-        //FWObject *fw = firewalls[idx];
-        //showFirewallRuleSets(fw)
-/*        if (!ruleSetRedrawPending && (getCurrentRuleSet()==visibleRuleSet))
-        {
-            m_panel->om->editObject(obj);
-        }
-*/        visibleRuleSet = RuleSet::cast(obj);
-        //ruleSetRedrawPending = false ;
-        scheduleRuleSetRedraw();
-        //openObject(visibleRuleSet);
-        //lastFirewallIdx=idx;
-}
-
-void ProjectPanel::openFirewall( int idx )
-{
-/*    if (fwbdebug)
-        qDebug("ProjectPanel::openFirewall");
-
-    if (firewalls.size()>0)
-    {
-        if (!isEditorVisible() ||
-            requestEditorOwnership(NULL,NULL,ObjectEditor::optNone,true))
-        {
-            blankEditor();
-            FWObject *fw = firewalls[idx];
-            showFirewallRuleSets(fw);
-            visibleFirewall = fw;
-            openObject(fw);
-            lastFirewallIdx=idx;
-        } else
-            m_panel->fwList->setCurrentIndex( lastFirewallIdx );
-    } else
-        visibleFirewall = NULL;*/
-}
-
-void ProjectPanel::showFirewallRuleSets(libfwbuilder::FWObject *fw )
-{
-/*    if (fwbdebug)
-        qDebug("ProjectPanel::showFirewallRuleSets");
-
-    if (fw==NULL) return;
-
-    visibleFirewall = fw;
-    findObjectWidget->firewallOpened(Firewall::cast(fw));
-    m_panel->firewallName->setText(QString::fromUtf8(fw->getName().c_str()));
+    blankEditor();
+    visibleRuleSet = RuleSet::cast(obj);
     scheduleRuleSetRedraw();
-*/    //reopenFirewall();
 }
 
 void ProjectPanel::selectRules()
@@ -1143,11 +740,7 @@ bool ProjectPanel::fileNew()
 			load(this);
 
         visibleFirewall = NULL;
-        showFirewalls( false );
-
-
         setFileName(nfn);
-
         save();
         setupAutoSave();
     }
@@ -1229,24 +822,13 @@ bool ProjectPanel::fileOpen()
                     load(this, rcs, pp->objdb );
 
                     if (rcs->isTemp()) unlink(rcs->getFileName().toLatin1().constData());
-
-                    showFirewalls( true );
-
-                    //pp->clone (this);
-                    //initMain(mw);
-                    //load (this,this->rcs);
-                    //showFirewalls( true );
-                    
-                    return true ;
+                   return true ;
                 }
             }
         }
         load(this, rcs );
 
         if (rcs->isTemp()) unlink(rcs->getFileName().toLatin1().constData());
-
-        showFirewalls( true );
-
         return true;
     }
     return false;
@@ -1269,7 +851,6 @@ void ProjectPanel::fileClose()
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): clearing widgets");
 
     firewalls.clear();
-//    m_panel->fwList->clear();
     visibleFirewall = NULL;
     visibleRuleSet = NULL;
     clearFirewallTabs();
@@ -1362,7 +943,6 @@ void ProjectPanel::fileCommit()
         load(this);
         return;
     }
-    showFirewalls( true );
 }
 
 /*
@@ -1403,8 +983,6 @@ void ProjectPanel::fileDiscard()
             return;
         }
 /***********************************************************************/
-
-        showFirewalls( true );
     }
 }
 
@@ -1465,8 +1043,6 @@ void ProjectPanel::loadDataFromFw(libfwbuilder::Firewall *fw)
         if (fw)
         {
             m_panel->om->updateObjName(fw,"", false);
-//            addFirewallToList(fw);
-//            showFirewall(fw);
             m_panel->om->editObject(fw);
         }
 }
@@ -1879,23 +1455,18 @@ void ProjectPanel::startupLoad()
     i_id = FWObjectDatabase::getIntId(id.toLatin1().constData());
     FWObject *show_obj=NULL;
     if ( !id.isEmpty() ) show_obj = db()->getById(i_id, true);
-
-    showFirewalls( show_fw==NULL );
-
     if ( sa==1 && !safeMode )
     {
         if (show_fw)
         {
             if (fwbdebug)
                 qDebug("open firewall %s",show_fw->getName().c_str());
-            showFirewall( show_fw );
         }
 
         if (show_obj)
         {
             if (fwbdebug)
                 qDebug("open object %s",show_obj->getName().c_str());
-            openObject( show_obj );
         }
     }
     mw->recreateWindowsMenu();
@@ -2053,104 +1624,21 @@ void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs,libfwbuilder::FWObject
 
     try
     {
-        /* load the data file */
         systemFile=false;
-
         objdb = clone;
-
-// need to drop read-only flag on the database before I load new objects
-        //objdb->setReadOnly( false );
-
-// always loading system objects
         sb->showMessage( tr("Loading system objects...") );
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-
-        //objdb->load( sysfname, &upgrade_predicate, librespath);
-        //objdb->setFileName("");
-
-// objects from a data file are in database ndb
-
         sb->showMessage( tr("Reading and parsing data file...") );
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-        //QApplication::eventLoop()->processEvents(QEventLoop::ExcludeUserInput,100);
-
-        //FWObjectDatabase *ndb = new FWObjectDatabase();
-        //ndb->load(rcs->getFileName().toLatin1().constData(), &upgrade_predicate,librespath);
-        //time_t   oldtimestamp = ndb->getTimeLastModified();
-
         sb->clearMessage();
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
 /* loadingLib is true if user wants to open a library or master library file */
         bool loadingLib         = editingLibrary();
-
-        /*if (fwbdebug)
-        {
-            list<FWObject*> ll = ndb->getByType(Library::TYPENAME);
-            for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
-            {
-                qDebug("* Found library %s %s in the data file",
-                       (*i)->getId().c_str(),(*i)->getName().c_str() );
-            }
-        }*/
-
-/* if user opens library file, clear read-only flag so they can edit it */
-/*        if (loadingLib)
-        {
-            list<FWObject*> ll = ndb->getByType(Library::TYPENAME);
-            for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
-            {
-                if ((*i)->getId()==STANDARD_LIB) editingStandardLib=true;
-                if ((*i)->getId()==TEMPLATE_LIB) editingTemplateLib=true;
-                (*i)->setReadOnly( false );
-            }
-        } else
-        {
-            for (list<libData>::iterator i=addOnLibs->begin();
-                 i!=addOnLibs->end(); ++i)
-            {
-                string libfname = i->path.toLatin1().constData();
-                if (libfname!=sysfname && i->load)
-                {
-                    if (fwbdebug)
-                        qDebug("* Adding library %s",i->name.toLatin1().constData());
-
-                    FWObjectDatabase *ndb1 = new FWObjectDatabase();
-                    ndb1->load(libfname, &upgrade_predicate,librespath);
-                    FWObject  *nlib1 = ndb1->getFirstByType(Library::TYPENAME);
-                    if(nlib1==NULL)
-                    {
-                        qDebug("Error preloading library from file %s",
-                               libfname.c_str());
-                        assert(nlib1!=NULL);
-                    }
-                    string nlib1ID = nlib1->getId();
-                    FWObject *dobj =
-                        ndb1->findInIndex(FWObjectDatabase::getDeletedObjectsId());
-                    if (dobj) ndb1->remove(dobj, false);
-
-                    MergeConflictRes mcr(dlgp);
-                    objdb->merge(ndb1, &mcr);
-
-                    objdb->findInIndex(nlib1ID)->setReadOnly(true);
-
-                    delete ndb1;
-                }
-            }
-        }
-*/
         sb->showMessage( tr("Merging with system objects...") );
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
-        //QApplication::eventLoop()->processEvents(QEventLoop::ExcludeUserInput,100);
 
         MergeConflictRes mcr(dlgp);
-//        objdb->merge(ndb, &mcr);
-
-//        delete ndb;
-
- //       objdb->setFileName(rcs->getFileName().toLatin1().constData());
- //       objdb->resetTimeLastModified(oldtimestamp);
- //       objdb->setDirty(false);
 
         sb->clearMessage();
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
@@ -2368,26 +1856,6 @@ void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs)
     assert(_rcs!=NULL);
 
     rcs = _rcs;
-    /*libfwbuilder::FWObjectDatabase *copy = NULL;
-    QList<QMdiSubWindow *> subWindowList = mw->getMdiArea()->subWindowList();
-        QString fileName = rcs->getFileName();
-        for (int i = 0 ; i < subWindowList.size();i++)
-        {
-            ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
-            if (pp!=NULL)
-            {
-                if (pp->getFileName () == fileName)
-                {
-                    this->objdb = objdb ;
-                    //pp->clone (this);
-                    //initMain(mw);
-                    //load (this,this->rcs);
-                    //showFirewalls( true );
-                    
-                    return true ;
-                }
-            }
-        }*/
     try
     {
         /* load the data file */
@@ -2913,9 +2381,6 @@ void ProjectPanel::fileImport()
     loadLibrary( fname.toLatin1().constData() );
 
     loadObjects();
-    showFirewalls( true );
-
-//    addOnLibs->add( fname.toLatin1().constData() );
 }
 
 

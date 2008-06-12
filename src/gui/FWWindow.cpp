@@ -573,12 +573,6 @@ void FWWindow::fileExport()
         activeProject()->fileExport();
 }
 
-void FWWindow::showFirewalls(bool open_first_firewall)
-{
-    if (activeProject())
-        activeProject()->showFirewalls(open_first_firewall);
-}
-
 void FWWindow::setActionsEnabled(bool en)
 {
     m_mainWindow->insertRuleAction->setEnabled(en);
@@ -601,18 +595,6 @@ int  FWWindow::findFirewallInList(FWObject *f)
     if (activeProject())
         return activeProject()->findFirewallInList(f);
     return -1;
-}
-
-void FWWindow::addFirewallToList(FWObject *o)
-{
-    if (activeProject())
-        activeProject()->addFirewallToList(o);
-}
-
-void FWWindow::removeFirewallFromList(FWObject *o)
-{
-    if (activeProject())
-        activeProject()->removeFirewallFromList(o);
 }
 
 void FWWindow::ensureObjectVisibleInRules(FWReference *obj)
@@ -663,18 +645,6 @@ void FWWindow::updateFirewallName(FWObject *obj,const QString &str)
         activeProject()->updateFirewallName(obj, str);
 }
 
-void FWWindow::deleteFirewall(FWObject *fw)
-{
-    if (activeProject())
-        activeProject()->deleteFirewall(fw);
-}
-
-void FWWindow::removePolicyBranchTab(RuleSet *subset)
-{
-    if (activeProject())
-        activeProject()->removePolicyBranchTab(subset);
-}
-
 void FWWindow::scheduleRuleSetRedraw()
 {
     if (activeProject())
@@ -708,24 +678,6 @@ void FWWindow::setEnabledAfterRF()
 
     m_mainWindow->compileAction->setEnabled( true );
     m_mainWindow->installAction->setEnabled( true );
-}
-
-void FWWindow::showFirewall(FWObject *obj)
-{
-    if (activeProject())
-        activeProject()->showFirewall(obj);
-}
-
-void FWWindow::openFirewall( int idx )
-{
-    if (activeProject())
-        activeProject()->openFirewall(idx);
-}
-
-void FWWindow::showFirewallRuleSets( FWObject *fw )
-{
-    if (activeProject())
-        activeProject()->showFirewallRuleSets(fw);
 }
 
 void FWWindow::selectRules()
@@ -793,16 +745,6 @@ void FWWindow::editPaste()
 {
     if (activeProject())
         activeProject()->editPaste();
-}
-
-void FWWindow::editPrefs()
-{
-    PrefsDialog pd(this);
-    if (QDialog::Accepted == pd.exec())
-    {
-        if (activeProject())
-        activeProject()->prefsEdited();
-    }
 }
 
 void FWWindow::compile()
@@ -1021,11 +963,12 @@ void FWWindow::openEditorPanel()
         activeProject()->openEditorPanel();
 }
 
-void FWWindow::ruleSetTabChanged(int tab)
+void FWWindow::editPrefs()
 {
-    if (activeProject())
-        activeProject()->ruleSetTabChanged(tab);
+    PrefsDialog pd(this);
+    pd.exec();
 }
+
 
 /*
  * reset tab via callback because calling setCurrentPage from
@@ -1526,7 +1469,7 @@ void FWWindow::updateTreeFont ()
         if (pp!=NULL)
         {
             std::vector<QTreeWidget*> trees = pp->m_panel->om->getTreeWidgets();
-            for (int o = 0 ; o < trees.size(); o++)
+            for (unsigned int o = 0 ; o < trees.size(); o++)
             {
                 trees[o]->setFont(font);
             }

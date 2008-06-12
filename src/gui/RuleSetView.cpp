@@ -3137,9 +3137,6 @@ void RuleSetView::changeAction(PolicyRule::Action act)
 
         if (act!=old_act)
         {
-            if (old_act==PolicyRule::Branch)
-                mw->removePolicyBranchTab( subset );
-
             rule->setAction( act );
             if (!changingRules)
                 mw->updateLastModifiedTimestampForOneFirewall(getFirewall());
@@ -3962,9 +3959,6 @@ void RuleSetView::removeRule()
 
             if ( ruleset->deleteRule(rn) )
             {
-                if (delete_branch_tab)
-                    mw->removePolicyBranchTab( subset );
-
                 int lastN=ruleIndex.size()-1;
                 ruleIndex.remove (rn);//erase(rn);
                 rowsInfo.remove(rn);
