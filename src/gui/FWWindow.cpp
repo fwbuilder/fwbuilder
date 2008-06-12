@@ -226,25 +226,14 @@ void FWWindow::showSub(ProjectPanel *projectW)
     m_space->addSubWindow(sub);
     QIcon p(":Icons/Firewall/icon-tree");
     sub->setWindowIcon(p); 
-//    if (projectW->getRCS()!=NULL)
- //   {
-        //QString FileName = projectW->getRCS()->getFileName();
-        if (st->getInt("Window/maximized")==0)
-        {
-            sub->showMaximized();
-        }
-        else
-        {
-            sub->show();
-            //if (projectW->getRCS()!=NULL)
-                projectW->loadState();
-        }
-//    }
-//    else
-//    {
-//        sub->showMaximized();
-//    }
- 
+    if (st->getInt("Window/maximized")!=0)
+    {
+        sub->showMaximized();
+    }
+    else
+    {
+        sub->show();
+    }
 }
 
 ProjectPanel* FWWindow::activeProject()
