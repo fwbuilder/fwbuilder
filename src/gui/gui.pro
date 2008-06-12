@@ -14,7 +14,9 @@ exists(qmake.inc){
 }
 
 PRECOMPILED_HEADER = fwbuilder_ph.h
-CONFIG += debug_and_release precompile_header
+
+# control whether we build debug or release in ../../qmake.inc
+CONFIG += precompile_header
 
 HEADERS += ../../config.h \
     FWWindow.h \
