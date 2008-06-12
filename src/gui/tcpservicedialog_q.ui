@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>739</width>
-    <height>392</height>
+    <width>981</width>
+    <height>262</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -738,22 +738,6 @@
                </layout>
               </item>
               <item row="1" column="0" >
-               <spacer>
-                <property name="orientation" >
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeType" >
-                 <enum>QSizePolicy::Fixed</enum>
-                </property>
-                <property name="sizeHint" >
-                 <size>
-                  <width>235</width>
-                  <height>16</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="2" column="0" >
                <widget class="QCheckBox" name="established" >
                 <property name="sizePolicy" >
                  <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -761,34 +745,16 @@
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="toolTip" >
+                 <string>Option "established" can be used if supported
+by the target firewall platform</string>
+                </property>
                 <property name="text" >
                  <string>Established</string>
                 </property>
                </widget>
               </item>
               <item row="3" column="0" >
-               <widget class="QLabel" name="textLabel1_4" >
-                <property name="sizePolicy" >
-                 <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text" >
-                 <string>Option "established" can be used if supported by the target firewall platform</string>
-                </property>
-                <property name="alignment" >
-                 <set>Qt::AlignVCenter</set>
-                </property>
-                <property name="wordWrap" >
-                 <bool>true</bool>
-                </property>
-                <property name="buddy" >
-                 <cstring>established</cstring>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0" >
                <spacer>
                 <property name="orientation" >
                  <enum>Qt::Vertical</enum>

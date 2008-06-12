@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>693</width>
-    <height>237</height>
+    <width>691</width>
+    <height>222</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -207,24 +207,6 @@
            <enum>QFrame::Sunken</enum>
           </property>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>8</number>
-           </property>
-           <property name="topMargin" >
-            <number>8</number>
-           </property>
-           <property name="rightMargin" >
-            <number>8</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>8</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
-            <number>8</number>
-           </property>
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
              <property name="text" >
@@ -246,12 +228,12 @@
              <property name="minimumSize" >
               <size>
                <width>200</width>
-               <height>0</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
            </item>
-           <item row="2" column="0" >
+           <item row="1" column="0" >
             <widget class="QLabel" name="textLabel2_2" >
              <property name="text" >
               <string>Address:</string>
@@ -261,7 +243,7 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="1" >
+           <item row="1" column="1" >
             <widget class="QLineEdit" name="address" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -269,12 +251,18 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="minimumSize" >
+              <size>
+               <width>0</width>
+               <height>25</height>
+              </size>
+             </property>
              <property name="text" >
               <string/>
              </property>
             </widget>
            </item>
-           <item row="3" column="0" colspan="2" >
+           <item row="2" column="0" colspan="2" >
             <widget class="QFrame" name="frame" >
              <property name="frameShape" >
               <enum>QFrame::NoFrame</enum>
@@ -319,12 +307,18 @@
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="minimumSize" >
+                 <size>
+                  <width>0</width>
+                  <height>25</height>
+                 </size>
+                </property>
                </widget>
               </item>
              </layout>
             </widget>
            </item>
-           <item row="4" column="0" colspan="2" >
+           <item row="3" column="0" colspan="2" >
             <spacer>
              <property name="orientation" >
               <enum>Qt::Vertical</enum>

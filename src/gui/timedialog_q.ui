@@ -407,7 +407,19 @@
              <property name="title" >
               <string/>
              </property>
+             <property name="flat" >
+              <bool>false</bool>
+             </property>
              <layout class="QGridLayout" >
+              <property name="topMargin" >
+               <number>0</number>
+              </property>
+              <property name="bottomMargin" >
+               <number>0</number>
+              </property>
+              <property name="verticalSpacing" >
+               <number>0</number>
+              </property>
               <item row="0" column="0" >
                <widget class="QFrame" name="frame_2" >
                 <property name="frameShape" >

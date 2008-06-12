@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>627</width>
-    <height>456</height>
+    <width>802</width>
+    <height>542</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -305,7 +305,7 @@
           <item row="3" column="0" >
            <widget class="QFrame" name="auxiliaryPanel" >
             <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+             <sizepolicy vsizetype="MinimumExpanding" hsizetype="Preferred" >
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -350,10 +350,16 @@
           <item row="2" column="0" >
            <widget class="QFrame" name="objectEditorFrame" >
             <property name="sizePolicy" >
-             <sizepolicy vsizetype="Minimum" hsizetype="Preferred" >
+             <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>16777215</width>
+              <height>250</height>
+             </size>
             </property>
             <property name="frameShape" >
              <enum>QFrame::NoFrame</enum>
@@ -383,7 +389,7 @@
              <item row="0" column="0" >
               <widget class="QStackedWidget" name="objectEditorStack" >
                <property name="sizePolicy" >
-                <sizepolicy vsizetype="Minimum" hsizetype="Expanding" >
+                <sizepolicy vsizetype="MinimumExpanding" hsizetype="Expanding" >
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
