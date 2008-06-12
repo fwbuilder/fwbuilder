@@ -32,7 +32,6 @@ RuleGroupPanel::RuleGroupPanel (QWidget * parent,RuleSetView * rsv, int row) : Q
     this->setupUi(this);
     setContentsMargins (3,3,3,3);
     showHideRuleGroupButton->hide();
-    //showHideRuleGroupButton->setText("Collapse Group");
     connect (showHideRuleGroupButton, SIGNAL(pressed()),this,SLOT(showHideRuleGroup()));
 }
 
@@ -43,6 +42,12 @@ void RuleGroupPanel::mousePressEvent ( QMouseEvent * event )
         rsv->firstSelectedRule = row;
         rsv->contextMenu (row,0,event->globalPos ());
     }
+}
+
+void RuleGroupPanel::mouseDoubleClickEvent ( QMouseEvent * event )
+{
+    rsv->firstSelectedRule = row ;
+    rsv->renameGroup();
 }
 
 void RuleGroupPanel::showHideRuleGroup()

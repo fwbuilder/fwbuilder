@@ -40,4 +40,5 @@ public slots:
     void showHideRuleGroup();
 public:
     virtual void mousePressEvent ( QMouseEvent * event );
+    virtual void mouseDoubleClickEvent ( QMouseEvent * event) ;
 };

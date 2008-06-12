@@ -902,8 +902,13 @@ void RuleSetView::addRuleGroupPanel (int row)
     if (rri->isBeginRow)
     {
         bool hide = isRowHidden(row+1);
-        RuleGroupPanel * grouppanel = new RuleGroupPanel(NULL,this,row); 
-        grouppanel->ruleGroupName->setText(rri->groupName);
+        RuleGroupPanel * grouppanel = new RuleGroupPanel(NULL,this,row);
+        int count = rulesInGroup[ rri->groupName ];
+        QString groupTitle = rri->groupName;
+        groupTitle += " (" ;
+        groupTitle +=QString().setNum(count);
+        groupTitle += " rules)";
+        grouppanel->ruleGroupName->setText(groupTitle);
         rri->isHide=hide;
         if (!hide)
         {
@@ -920,7 +925,6 @@ void RuleSetView::addRuleGroupPanel (int row)
     else
     {
         this->hideRow(row);
-        //setIndexWidget (model()->index(row,1),new QFrame());
     }
 }
 
@@ -930,10 +934,6 @@ void RuleSetView::refreshGroups ()
 
 void RuleSetView::updateGroups ()
 {
- //   for (int col=1; col<ncols; col++)
- //  {
- //   }
-
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
         setSpan (i,1,0,1);
@@ -969,13 +969,23 @@ void RuleSetView::updateGroups ()
             i--;
         }
     }
-
-
     
-        QString memberRow ;
-
+    QString memberRow ;
     bool beginGroup = false ;
     QString group;
+    rulesInGroup.clear();
+    for (int i = 0 ; i < rowsInfo.size(); i++)
+    {
+        if (ruleIndex[i]!=NULL)
+        {
+            Rule * r ;
+            r = Rule::cast(ruleIndex[i]);
+            QString groupName = r->getRuleGroupName().c_str();
+            int count = rulesInGroup[groupName];
+            count++;
+            rulesInGroup[groupName]=count ;
+        }        
+    }
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
         Rule * r ;
@@ -1013,17 +1023,13 @@ void RuleSetView::updateGroups ()
                 RuleRowInfo * rri = new RuleRowInfo(memberRow,true,false);
                 rri->color = groupColors[memberRow];
                 rowsInfo.insert (i,rri);
-                //QPanel * p = new QPanel(this);
                 addRuleGroupPanel(i);
-
             }
             else
             {
                 insertRuleIndex(i);
                 ruleIndex[i] = NULL ;
                 beginGroup = false ;
-                //setSpan (row,0,0,8);
-                //setIndexWidget (model()->index(row,0),new QFrame());
                 rowsInfo.insert (i,new RuleRowInfo(memberRow,false,false));
                 memberRow = "";
                 addRuleGroupPanel(i);  
@@ -1037,7 +1043,6 @@ void RuleSetView::updateGroups ()
     if (group!="")
     {
         ruleModel->insertRow(rowsInfo.size());
-        //insertRuleIndex(rowsInfo.size());
         ruleIndex[rowsInfo.size()] = NULL ;
         beginGroup = false ;
         rowsInfo.push_back (new RuleRowInfo(memberRow,false,false));
@@ -1050,17 +1055,7 @@ void RuleSetView::updateGroups ()
 
 void RuleSetView::deleteRuleGroupPanel (int row)
 {
- //   RuleRowInfo * rri = rowsInfo[row];
-    
-    /*QWidget * w = indexWidget(*rri->index);
-    if (w!=NULL)
-    {
-        delete w ;
-    }*/
     setIndexWidget (model()->index(row,0),NULL);
-
-    //setSpan (row,0,0,1);
-    //rowSpan(row,8);
 }
 
 QSize RuleSetView::getPMSize()
@@ -1623,7 +1618,7 @@ void RuleSetView::paintCell(QPainter *pntr,
                 mwSelObj = om_selected_objects.front();
 
             if (    (!sel) &&
-                    mwSelObj!= NULL &&
+                      mwSelObj!= NULL &&
                     mwSelObj->getId() != FWObjectDatabase::ANY_ADDRESS_ID &&
                     mwSelObj->getId() != FWObjectDatabase::ANY_SERVICE_ID &&
                     mwSelObj->getId() != FWObjectDatabase::ANY_INTERVAL_ID &&
@@ -1967,14 +1962,14 @@ void RuleSetView::selectRE(libfwbuilder::FWReference *ref)
     int col;
     for (col=0; col<ncols; ++col)
         if (re==getRE(r,col))
-        {
+    {
             selectRE(row, col);
             //setCurrentCell(row,col);
             //scrollTo( ruleModel->index(row,col),
             //          QAbstractItemView::EnsureVisible);
             //updateCell(row,col);
             break;
-        }
+    }
 }
 
 void RuleSetView::itemDoubleClicked(const QModelIndex & index)
@@ -3348,7 +3343,7 @@ void RuleSetView::deleteObject(int row, int col, FWObject *obj)
     {
         qDebug("RuleSetView::deleteObject row=%d col=%d id=%s",
                row, col, FWObjectDatabase::getStringId(id).c_str());
-        qDebug("obj = %p", re->getRoot()->findInIndex(id));
+        qDebug("obj = %p",re->getRoot()->findInIndex(id));
         int rc = obj->ref()-1;  obj->unref();
         qDebug("obj->ref_counter=%d",rc);
     }

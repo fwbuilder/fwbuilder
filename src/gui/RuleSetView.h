@@ -228,7 +228,7 @@ class RuleSetView : public QTableView
  public:
      
      int firstSelectedRow, previousLastSelectedRow;
-
+     QMap <QString,int> rulesInGroup;
      QItemSelectionRange itemSelectionRange;
 
      virtual void paintCell(QPainter *p,int row,int col, const QRect &cr, bool selected, const QPalette &cg);
