@@ -82,6 +82,8 @@ void IPv4::fromXML(xmlNodePtr root) throw(FWException)
 
 xmlNodePtr IPv4::toXML(xmlNodePtr xml_parent_node) throw(FWException)
 {
+    if (getName().empty()) setName(getTypeName());
+
     xmlNodePtr me = FWObject::toXML(xml_parent_node);
     
     xmlNewProp(me, 

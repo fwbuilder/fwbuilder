@@ -82,6 +82,8 @@ void Network::fromXML(xmlNodePtr root) throw(FWException)
 
 xmlNodePtr Network::toXML(xmlNodePtr xml_parent_node) throw(FWException)
 {
+    if (getName().empty()) setName(getTypeName());
+
     xmlNodePtr me = FWObject::toXML(xml_parent_node);
     
     xmlNewProp(me, 
