@@ -1350,62 +1350,62 @@ void ProjectPanel::resetFD()
 
 void ProjectPanel::insertRule()
 {
-    if (visibleFirewall==NULL || m_panel->ruleSets->count()==0) return;
-    dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget())->insertRule();
+    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    getCurrentRuleSetView()->insertRule();
 }
 
 void ProjectPanel::addRuleAfterCurrent()
 {
-    if (visibleFirewall==NULL || m_panel->ruleSets->count()==0) return;
-    dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget())->addRuleAfterCurrent();
+    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    getCurrentRuleSetView()->addRuleAfterCurrent();
 }
 
 void ProjectPanel::removeRule()
 {
-    if (visibleFirewall==NULL || m_panel->ruleSets->count()==0) return;
-    dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget())->removeRule();
+    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    getCurrentRuleSetView()->removeRule();
 }
 
 void ProjectPanel::moveRule()
 {
-    if (visibleFirewall==NULL || m_panel->ruleSets->count()==0) return;
-    dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget())->moveRule();
+    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    getCurrentRuleSetView()->moveRule();
 }
 
 void ProjectPanel::moveRuleUp()
 {
-    if (visibleFirewall==NULL || m_panel->ruleSets->count()==0) return;
-    dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget())->moveRuleUp();
+    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    getCurrentRuleSetView()->moveRuleUp();
 }
 
 void ProjectPanel::moveRuleDown()
 {
-    if (visibleFirewall==NULL || m_panel->ruleSets->count()==0) return;
-    dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget())->moveRuleDown();
+    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    getCurrentRuleSetView()->moveRuleDown();
 }
 
 void ProjectPanel::copyRule()
 {
-    if (visibleFirewall==NULL || m_panel->ruleSets->count()==0) return;
-    dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget())->copyRule();
+    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    getCurrentRuleSetView()->copyRule();
 }
 
 void ProjectPanel::cutRule()
 {
-    if (visibleFirewall==NULL || m_panel->ruleSets->count()==0) return;
-    dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget())->cutRule();
+    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    getCurrentRuleSetView()->cutRule();
 }
 
 void ProjectPanel::pasteRuleAbove()
 {
-    if (visibleFirewall==NULL || m_panel->ruleSets->count()==0) return;
-    dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget())->pasteRuleAbove();
+    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    getCurrentRuleSetView()->pasteRuleAbove();
 }
 
 void ProjectPanel::pasteRuleBelow()
 {
-    if (visibleFirewall==NULL || m_panel->ruleSets->count()==0) return;
-    dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget())->pasteRuleBelow();
+    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    getCurrentRuleSetView()->pasteRuleBelow();
 }
 
 //rcs

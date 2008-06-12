@@ -1715,8 +1715,6 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
                                       bool openobj, bool validateOnly,
                                       bool renew_id)
 {
-        FWObject *ret = NULL;
-
         FWObject *ta=target;
         if (IPv4::isA(ta) || IPv6::isA(ta)) ta=ta->getParent();
         try
@@ -2698,7 +2696,7 @@ FWObject * ObjectManipulator::copyObjWithDeep(FWObject *copyFrom)
     FWReference * ref = FWReference::cast(nobj);
     if (ref!=NULL)
     {
-        FWObject * o = copyObjWithDeep(ref->getPointer());
+        copyObjWithDeep(ref->getPointer());
         return ref ;
     }
 
@@ -2750,7 +2748,7 @@ FWObject * ObjectManipulator::copyObjWithDeep(FWObject *copyFrom)
     {
         FWObject *par = m_project->getFWTree()->getStandardSlotForObject(lib, nobj->getTypeName().c_str());
             QVector <ObjectManipulator*> oms = getAllMdiObjectManipulators();
-        FWObject *no  = pasteTo (par, nobj, false, false, false);
+        pasteTo (par, nobj, false, false, false);
     }
     return nobj;
 
@@ -2808,25 +2806,52 @@ void ObjectManipulator::newLibrary()
 void ObjectManipulator::newPolicyRuleSet ()
 {
     if ( currentObj->isReadOnly() ) return;
-    FWObject *o=createObject(currentObj,Policy::TYPENAME,tr("New Policy"));
+    QString name = "Policy";
+    Firewall * fw = Firewall::cast(currentObj);
+    if (fw!=NULL)
+    {
+        int count = 0;
+        for (FWObjectTypedChildIterator it = fw->findByType(Policy::TYPENAME);it != it.end(); ++it)
+            count++;
+        if (count>0)
+        {
+            name+="_";
+            name+=QString().setNum(count);
+        }
+    }
+    FWObject *o=createObject(currentObj,Policy::TYPENAME,name);
     if (o!=NULL)
     {
         openObject(o);
         editObject(o);
     }
+    this->getCurrentObjectTree()->sortItems(0,Qt::AscendingOrder);
 
 }
 
 void ObjectManipulator::newNATRuleSet ()
 {
     if ( currentObj->isReadOnly() ) return;
-    FWObject *o=createObject(currentObj,NAT::TYPENAME,tr("New NAT"));
+    QString name = "NAT";
+    Firewall * fw = Firewall::cast(currentObj);
+    if (fw!=NULL)
+    {
+        int count = 0;
+        for (FWObjectTypedChildIterator it = fw->findByType(NAT::TYPENAME);it != it.end(); ++it)
+            count++;
+        if (count>0)
+        {
+            name+="_";
+            name+=QString().setNum(count);
+        }
+    }
+    FWObject *o=createObject(currentObj,NAT::TYPENAME,name);
     if (o!=NULL)
     {
         openObject(o);
         editObject(o);
     }
-
+    this->getCurrentObjectTree()->sortItems(0,Qt::AscendingOrder);
 }
 
 

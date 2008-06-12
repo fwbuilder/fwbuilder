@@ -2016,6 +2016,9 @@ void RuleSetView::selectionChanged(const QItemSelection &, const QItemSelection 
     mw->m_mainWindow->editCutAction->setEnabled(true);
     mw->m_mainWindow->editPasteAction->setEnabled(true);
     mw->m_mainWindow->editDeleteAction->setEnabled(true);
+    mw->m_mainWindow->moveRuleAction->setEnabled( true );
+    mw->m_mainWindow->removeRuleAction->setEnabled( true );
+    mw->m_mainWindow->addRuleAfterCurrentAction->setEnabled( true );
 
     mw->m_mainWindow->copyRuleAction->setEnabled( selectionSize==1 );
     mw->m_mainWindow->cutRuleAction->setEnabled( selectionSize==1 );
