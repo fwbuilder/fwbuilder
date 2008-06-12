@@ -452,6 +452,6 @@ void PrefsDialog::accept()
 
     mw->setupAutoSave();
     mw->showDeletedObjects(st->getBool("UI/ShowDeletedObjects"));
-
+    mw->updateTreeFont();
     QDialog::accept();
 }

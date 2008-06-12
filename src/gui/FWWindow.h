@@ -83,6 +83,7 @@ public:
     void updateWindowTitle ();
     QVector <QString> windowsTitles;
     QVector <QMdiSubWindow*> windowsPainters;
+    void updateTreeFont ();
 public slots:
     void selectActiveSubWindow (/*const QString & text*/);
 

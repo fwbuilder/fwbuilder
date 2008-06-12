@@ -1515,3 +1515,21 @@ void FWWindow::changeActiveSubwindow (  )
 {
     recreateWindowsMenu();
 }
+
+void FWWindow::updateTreeFont ()
+{
+    QFont font = st->getTreeFont();
+   QList<QMdiSubWindow *> subWindowList = getMdiArea()->subWindowList();
+    for (int i = 0 ; i < subWindowList.size();i++)
+    {
+        ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
+        if (pp!=NULL)
+        {
+            std::vector<QTreeWidget*> trees = pp->m_panel->om->getTreeWidgets();
+            for (int o = 0 ; o < trees.size(); o++)
+            {
+                trees[o]->setFont(font);
+            }
+        }
+    }
+}

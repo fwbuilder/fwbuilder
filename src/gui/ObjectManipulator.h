@@ -226,6 +226,7 @@ public slots:
 
      
  public:
+    std::vector<QTreeWidget*> getTreeWidgets() { return idxToTrees;};
      Ui::ObjectManipulator_q *m_objectManipulator;
     void filterFirewallsFromSelection(
             std::vector<libfwbuilder::FWObject*> &so,
