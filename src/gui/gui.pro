@@ -69,7 +69,7 @@ HEADERS += ../../config.h \
 	NetworkDialog.h \
 	NetworkDialogIPv6.h \
 	UserDialog.h \
-    	RuleSetDialog.h \
+	RuleSetDialog.h \
 	LibraryDialog.h \
 	CustomServiceDialog.h \
 	IPServiceDialog.h \
