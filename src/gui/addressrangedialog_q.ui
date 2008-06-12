@@ -65,8 +65,75 @@
        <property name="minimumSize" >
         <size>
          <width>16</width>
-         <height>20</height>
+         <height>30</height>
         </size>
+       </property>
+       <property name="palette" >
+        <palette>
+         <active>
+          <colorrole role="Base" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>254</green>
+             <blue>253</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>254</green>
+             <blue>253</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="Base" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>254</green>
+             <blue>253</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>254</green>
+             <blue>253</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
+       <property name="autoFillBackground" >
+        <bool>true</bool>
        </property>
        <property name="frameShape" >
         <enum>QFrame::Box</enum>
@@ -112,6 +179,16 @@
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label" >
+          <property name="text" >
+           <string/>
+          </property>
+          <property name="pixmap" >
+           <pixmap resource="MainRes.qrc" >:/Icons/AddressRange/icon</pixmap>
           </property>
          </widget>
         </item>
@@ -328,7 +405,9 @@
   <tabstop>rangeEnd</tabstop>
   <tabstop>comment</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="MainRes.qrc" />
+ </resources>
  <connections>
   <connection>
    <sender>obj_name</sender>
