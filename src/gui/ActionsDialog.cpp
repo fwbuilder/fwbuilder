@@ -66,49 +66,40 @@ ActionsDialog::ActionsDialog(QWidget *parent) : QWidget(parent)
     m_dialog = new Ui::ActionsDialog_q;
     m_dialog->setupUi(this);
 
-    BranchChainArea =  new FWObjectDropArea(m_dialog->branchChainNameFrame);
-    BranchChainArea->addAcceptedTypes("Policy");
-    BranchChainArea->addAcceptedTypes("NAT");
-    BranchChainArea->addAcceptedTypes("Routing");
-    BranchChainArea->setHelperText("Drop rule set object here");
-    m_dialog->gridLayout17->addWidget(BranchChainArea);
-    connect (BranchChainArea,SIGNAL(objectDeleted()),this,SLOT(changed()));
-    connect (BranchChainArea,SIGNAL(objectInserted()),this,SLOT(changed()));
+    m_dialog->iptBranchDropArea->addAcceptedTypes("Policy");
+    m_dialog->iptBranchDropArea->addAcceptedTypes("NAT");
+    m_dialog->iptBranchDropArea->addAcceptedTypes("Routing");
+    m_dialog->iptBranchDropArea->setHelperText("Drop rule set object here");
+    connect (m_dialog->iptBranchDropArea,
+             SIGNAL(objectDeleted()),this,SLOT(changed()));
+    connect (m_dialog->iptBranchDropArea,
+             SIGNAL(objectInserted()),this,SLOT(changed()));
 
+    m_dialog->pfBranchDropArea->addAcceptedTypes("Policy");
+    m_dialog->pfBranchDropArea->addAcceptedTypes("NAT");
+    m_dialog->pfBranchDropArea->addAcceptedTypes("Routing");
+    m_dialog->pfBranchDropArea->setHelperText("Drop rule set object here");
+    connect (m_dialog->pfBranchDropArea,
+             SIGNAL(objectDeleted()),this,SLOT(changed()));
+    connect (m_dialog->pfBranchDropArea,
+             SIGNAL(objectInserted()),this,SLOT(changed()));
 
-    BranchAnchorArea =  new FWObjectDropArea(m_dialog->BranchAnchorPageFrame);
-    BranchAnchorArea->addAcceptedTypes("Policy");
-    BranchAnchorArea->addAcceptedTypes("NAT");
-    BranchAnchorArea->addAcceptedTypes("Routing");
-    BranchAnchorArea->setHelperText("Drop rule set object here");
-    m_dialog->gridLayout20->addWidget(BranchAnchorArea);
-    connect (BranchAnchorArea,SIGNAL(objectDeleted()),this,SLOT(changed()));
-    connect (BranchAnchorArea,SIGNAL(objectInserted()),this,SLOT(changed()));
+    m_dialog->pfTagDropArea->addAcceptedTypes("TagService");
+    connect (m_dialog->pfTagDropArea,
+             SIGNAL(objectDeleted()),this,SLOT(changed()));
+    connect (m_dialog->pfTagDropArea,
+             SIGNAL(objectInserted()),this,SLOT(changed()));
 
-    TagStrArea =  new FWObjectDropArea(m_dialog->TagStrFrame);
-    TagStrArea->addAcceptedTypes("TagService");
-    m_dialog->gridLayout4->addWidget(TagStrArea);
-    connect (TagStrArea,SIGNAL(objectDeleted()),this,SLOT(changed()));
-    connect (TagStrArea,SIGNAL(objectInserted()),this,SLOT(changed()));
-
-    TagIntArea =  new FWObjectDropArea(m_dialog->TagIntFrame);
-    TagIntArea->addAcceptedTypes("TagService");
-    m_dialog->gridLayout9->addWidget(TagIntArea);
-    connect (TagIntArea,SIGNAL(objectDeleted()),this,SLOT(changed()));
-    connect (TagIntArea,SIGNAL(objectInserted()),this,SLOT(changed()));
-
-
-//        FWObjectDropArea * fwoda =  new FWObjectDropArea(m_dialog->TagIntFrame);
-
+    m_dialog->iptTagDropArea->addAcceptedTypes("TagService");
+    connect (m_dialog->iptTagDropArea,
+             SIGNAL(objectDeleted()),this,SLOT(changed()));
+    connect (m_dialog->iptTagDropArea,
+             SIGNAL(objectInserted()),this,SLOT(changed()));
 };
 
 ActionsDialog::~ActionsDialog() 
 { 
     delete m_dialog; 
-    delete TagIntArea;
-    delete TagStrArea;
-    delete BranchChainArea;
-    delete BranchAnchorArea;
 }
 
 void ActionsDialog::loadFWObject(FWObject *o)
@@ -185,28 +176,28 @@ void ActionsDialog::applyChanges()
 
     if (editor=="TagInt")
     {
-        FWObject *tag_object = TagIntArea->getObject();
+        FWObject *tag_object = m_dialog->iptTagDropArea->getObject();
         // if tag_object==NULL, setTagObject clears setting in the rule
         rule->setTagObject(tag_object);
     }
 
     if (editor=="TagStr")
     {
-        FWObject *tag_object = TagStrArea->getObject();
+        FWObject *tag_object = m_dialog->pfTagDropArea->getObject();
         // if tag_object==NULL, setTagObject clears setting in the rule
         rule->setTagObject(tag_object);
     }
 
     if (editor=="BranchChain")
     {
-        RuleSet *ruleset = RuleSet::cast(BranchChainArea->getObject());
+        RuleSet *ruleset = RuleSet::cast(m_dialog->iptBranchDropArea->getObject());
         // if ruleset==NULL, setBranch clears setting in the rule
         rule->setBranch(ruleset);
     }
 
     if (editor=="BranchAnchor")
     {
-        RuleSet *ruleset = RuleSet::cast(BranchAnchorArea->getObject());
+        RuleSet *ruleset = RuleSet::cast(m_dialog->pfBranchDropArea->getObject());
         // if ruleset==NULL, setBranch clears setting in the rule
         rule->setBranch(ruleset);
     }
@@ -284,26 +275,32 @@ void ActionsDialog::setRule(PolicyRule *r )
 
     if (platform=="iptables")
     {
-        m_dialog->classify_txt_1->show();
+        //m_dialog->classify_txt_1->show();
         m_dialog->classify_terminating->show();
-        m_dialog->tag_txt_1->show();
+        //m_dialog->tag_txt_1->show();
         m_dialog->tag_terminating->show();
 
+        // Keep both variants of this text separate to simplify localization
+        QString emu_state;
         if (firewall->getOptionsObject()->getBool ("classify_mark_terminating"))
         {
-            m_dialog->classify_terminating->setText(tr("Emulation is currently ON, rule will be terminating") );
-            m_dialog->tag_terminating->setText(tr("Emulation is currently ON, rule will be terminating") );
+            emu_state = 
+                tr("Emulation of terminating behavior for MARK and CLASSIFY "
+                   "targets is currently ON, rule will be terminating");
         } else
         {
-            m_dialog->classify_terminating->setText(tr("Emulation is currently OFF, rule will be non-terminating") );
-            m_dialog->tag_terminating->setText(tr("Emulation is currently OFF, rule will be non-terminating") );
+            emu_state = 
+                tr("Emulation of terminating behavior for MARK and CLASSIFY "
+                   "targets is currently OFF, rule will not be terminating");
         }
+        m_dialog->classify_terminating->setText(emu_state);
+        m_dialog->tag_terminating->setText(emu_state);
 
     } else
     {
-        m_dialog->classify_txt_1->hide();
+        //m_dialog->classify_txt_1->hide();
         m_dialog->classify_terminating->hide();
-        m_dialog->tag_txt_1->hide();
+        //m_dialog->tag_txt_1->hide();
         m_dialog->tag_terminating->hide();
     }
 
@@ -356,13 +353,13 @@ void ActionsDialog::setRule(PolicyRule *r )
     {
         w=m_dialog->TagIntPage;
         FWObject *o = rule->getTagObject();
-        TagIntArea->setObject(o);
+        m_dialog->iptTagDropArea->setObject(o);
     }
     else if (editor=="TagStr")
     {
         w=m_dialog->TagStrPage;
         FWObject *o = rule->getTagObject();
-        TagStrArea->setObject(o);
+        m_dialog->pfTagDropArea->setObject(o);
     }
     else if (editor=="AccountingStr")
     {
@@ -388,7 +385,7 @@ void ActionsDialog::setRule(PolicyRule *r )
     {
         w=m_dialog->BranchChainPage;
         RuleSet *ruleset = r->getBranch();
-        BranchChainArea->setObject(ruleset);
+        m_dialog->iptBranchDropArea->setObject(ruleset);
 
         data.registerOption(
             m_dialog->ipt_branch_in_mangle, ropt , "ipt_branch_in_mangle" );
@@ -397,7 +394,7 @@ void ActionsDialog::setRule(PolicyRule *r )
     {
         w=m_dialog->BranchAnchorPage;
         RuleSet *ruleset = r->getBranch();
-        BranchChainArea->setObject(ruleset);
+        m_dialog->iptBranchDropArea->setObject(ruleset);
     }
     else if (editor=="RouteIPT")
     {

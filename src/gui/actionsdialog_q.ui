@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>635</width>
-    <height>211</height>
+    <width>852</width>
+    <height>212</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -106,24 +106,6 @@
         <enum>QFrame::Sunken</enum>
        </property>
        <layout class="QGridLayout" >
-        <property name="leftMargin" >
-         <number>8</number>
-        </property>
-        <property name="topMargin" >
-         <number>8</number>
-        </property>
-        <property name="rightMargin" >
-         <number>8</number>
-        </property>
-        <property name="bottomMargin" >
-         <number>8</number>
-        </property>
-        <property name="horizontalSpacing" >
-         <number>8</number>
-        </property>
-        <property name="verticalSpacing" >
-         <number>8</number>
-        </property>
         <item row="0" column="0" >
          <widget class="QStackedWidget" name="widgetStack" >
           <property name="minimumSize" >
@@ -139,124 +121,66 @@
            <enum>QFrame::Plain</enum>
           </property>
           <property name="currentIndex" >
-           <number>0</number>
+           <number>3</number>
           </property>
           <widget class="QWidget" name="TagStrPage" >
            <layout class="QGridLayout" >
-            <property name="leftMargin" >
-             <number>0</number>
-            </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
-             <number>0</number>
-            </property>
-            <property name="horizontalSpacing" >
-             <number>2</number>
-            </property>
-            <property name="verticalSpacing" >
-             <number>2</number>
-            </property>
-            <item row="1" column="0" >
+            <item row="0" column="0" colspan="2" >
              <widget class="QLabel" name="textLabel4" >
               <property name="text" >
-               <string>Tag string:</string>
+               <string>Tag service object:</string>
               </property>
               <property name="wordWrap" >
                <bool>false</bool>
               </property>
              </widget>
             </item>
-            <item row="0" column="0" >
-             <spacer>
-              <property name="orientation" >
-               <enum>Qt::Vertical</enum>
+            <item row="1" column="0" >
+             <widget class="FWObjectDropArea" native="1" name="pfTagDropArea" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
-              <property name="sizeType" >
-               <enum>QSizePolicy::MinimumExpanding</enum>
-              </property>
-              <property name="sizeHint" >
-               <size>
-                <width>20</width>
-                <height>0</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item row="5" column="0" >
-             <spacer>
-              <property name="orientation" >
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType" >
-               <enum>QSizePolicy::MinimumExpanding</enum>
-              </property>
-              <property name="sizeHint" >
-               <size>
-                <width>20</width>
-                <height>0</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item row="2" column="0" >
-             <widget class="QFrame" name="TagStrFrame" >
               <property name="minimumSize" >
                <size>
-                <width>200</width>
+                <width>100</width>
                 <height>80</height>
                </size>
               </property>
-              <property name="maximumSize" >
-               <size>
-                <width>80</width>
-                <height>16777215</height>
-               </size>
+              <property name="font" >
+               <font>
+                <pointsize>9</pointsize>
+               </font>
               </property>
-              <property name="frameShape" >
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow" >
-               <enum>QFrame::Raised</enum>
-              </property>
-              <layout class="QGridLayout" >
-               <property name="leftMargin" >
-                <number>2</number>
-               </property>
-               <property name="topMargin" >
-                <number>2</number>
-               </property>
-               <property name="rightMargin" >
-                <number>2</number>
-               </property>
-               <property name="bottomMargin" >
-                <number>2</number>
-               </property>
-               <property name="horizontalSpacing" >
-                <number>2</number>
-               </property>
-               <property name="verticalSpacing" >
-                <number>2</number>
-               </property>
-               <item row="0" column="0" >
-                <layout class="QGridLayout" />
-               </item>
-              </layout>
              </widget>
             </item>
-            <item row="2" column="1" >
+            <item row="1" column="1" >
              <spacer>
               <property name="orientation" >
                <enum>Qt::Horizontal</enum>
               </property>
               <property name="sizeHint" >
                <size>
-                <width>40</width>
-                <height>20</height>
+                <width>691</width>
+                <height>58</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="2" column="0" colspan="2" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType" >
+               <enum>QSizePolicy::MinimumExpanding</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>20</width>
+                <height>0</height>
                </size>
               </property>
              </spacer>
@@ -283,22 +207,6 @@
             <property name="verticalSpacing" >
              <number>2</number>
             </property>
-            <item row="0" column="1" >
-             <spacer>
-              <property name="orientation" >
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType" >
-               <enum>QSizePolicy::MinimumExpanding</enum>
-              </property>
-              <property name="sizeHint" >
-               <size>
-                <width>20</width>
-                <height>0</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
             <item row="1" column="0" colspan="3" >
              <widget class="QLabel" name="textLabel3" >
               <property name="text" >
@@ -403,94 +311,54 @@
           </widget>
           <widget class="QWidget" name="TagIntPage" >
            <layout class="QGridLayout" >
-            <property name="leftMargin" >
-             <number>0</number>
-            </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
-             <number>0</number>
-            </property>
-            <property name="horizontalSpacing" >
-             <number>2</number>
-            </property>
-            <property name="verticalSpacing" >
-             <number>2</number>
-            </property>
-            <item row="0" column="0" >
-             <layout class="QHBoxLayout" >
-              <item>
-               <widget class="QLabel" name="textLabel4_2" >
-                <property name="text" >
-                 <string>Tag value:</string>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QFrame" name="TagIntFrame" >
-                <property name="minimumSize" >
-                 <size>
-                  <width>100</width>
-                  <height>50</height>
-                 </size>
-                </property>
-                <property name="frameShape" >
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow" >
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QGridLayout" >
-                 <property name="leftMargin" >
-                  <number>2</number>
-                 </property>
-                 <property name="topMargin" >
-                  <number>2</number>
-                 </property>
-                 <property name="rightMargin" >
-                  <number>2</number>
-                 </property>
-                 <property name="bottomMargin" >
-                  <number>2</number>
-                 </property>
-                 <property name="horizontalSpacing" >
-                  <number>2</number>
-                 </property>
-                 <property name="verticalSpacing" >
-                  <number>2</number>
-                 </property>
-                 <item row="0" column="0" >
-                  <layout class="QGridLayout" />
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <spacer>
-                <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeType" >
-                 <enum>QSizePolicy::Expanding</enum>
-                </property>
-                <property name="sizeHint" >
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
+            <item row="0" column="0" colspan="2" >
+             <widget class="QLabel" name="textLabel4_2" >
+              <property name="text" >
+               <string>Tag service object:</string>
+              </property>
+              <property name="wordWrap" >
+               <bool>false</bool>
+              </property>
+             </widget>
             </item>
-            <item row="1" column="0" >
+            <item rowspan="3" row="0" column="2" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType" >
+               <enum>QSizePolicy::Expanding</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>201</width>
+                <height>81</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item rowspan="3" row="1" column="0" >
+             <widget class="FWObjectDropArea" native="1" name="iptTagDropArea" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize" >
+               <size>
+                <width>100</width>
+                <height>80</height>
+               </size>
+              </property>
+              <property name="font" >
+               <font>
+                <pointsize>9</pointsize>
+               </font>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1" >
              <widget class="QCheckBox" name="ipt_mark_connections" >
               <property name="toolTip" >
                <string>Requires CONNMARK target</string>
@@ -500,7 +368,28 @@
               </property>
              </widget>
             </item>
-            <item row="5" column="0" >
+            <item row="2" column="1" >
+             <widget class="QLabel" name="tag_terminating" >
+              <property name="toolTip" >
+               <string>Note: this action translates into MARK target for iptables.
+Normally this target is non-terminating, that is, other rules
+with Classify or Tag actions below this one will process
+the same packet. However, Firewall Builder can emulate
+terminating behavior for this action. Option in the "compiler"
+tab of the firewall object properties dialog activates emulation.</string>
+              </property>
+              <property name="text" >
+               <string>Emulation of terminating behavior for MARK target is currently ON, the rule will be terminating</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+              <property name="wordWrap" >
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0" colspan="3" >
              <spacer>
               <property name="orientation" >
                <enum>Qt::Vertical</enum>
@@ -510,37 +399,11 @@
               </property>
               <property name="sizeHint" >
                <size>
-                <width>20</width>
-                <height>0</height>
+                <width>609</width>
+                <height>21</height>
                </size>
               </property>
              </spacer>
-            </item>
-            <item row="3" column="0" >
-             <widget class="QLabel" name="tag_txt_1" >
-              <property name="text" >
-               <string>Note: this action translates into MARK target for iptables. Normally this target is non-terminating, that is, other rules with Classify or Tag actions below this one will process the same packet. However, Firewall Builder can emulate terminating behavior for this action. Option in the "compiler" tab of the firewall object properties dialog activates emulation.</string>
-              </property>
-              <property name="alignment" >
-               <set>Qt::AlignVCenter</set>
-              </property>
-              <property name="wordWrap" >
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0" >
-             <widget class="QLabel" name="tag_terminating" >
-              <property name="text" >
-               <string>Emulation is currently ON, the rule will be terminating</string>
-              </property>
-              <property name="alignment" >
-               <set>Qt::AlignCenter</set>
-              </property>
-              <property name="wordWrap" >
-               <bool>false</bool>
-              </property>
-             </widget>
             </item>
            </layout>
           </widget>
@@ -573,22 +436,6 @@
             </item>
             <item row="2" column="0" >
              <widget class="QLineEdit" name="accountingvalue_str" />
-            </item>
-            <item row="0" column="0" >
-             <spacer>
-              <property name="orientation" >
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType" >
-               <enum>QSizePolicy::MinimumExpanding</enum>
-              </property>
-              <property name="sizeHint" >
-               <size>
-                <width>20</width>
-                <height>0</height>
-               </size>
-              </property>
-             </spacer>
             </item>
             <item row="3" column="0" >
              <spacer>
@@ -757,22 +604,6 @@
              <number>0</number>
             </property>
             <item>
-             <spacer>
-              <property name="orientation" >
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType" >
-               <enum>QSizePolicy::MinimumExpanding</enum>
-              </property>
-              <property name="sizeHint" >
-               <size>
-                <width>20</width>
-                <height>0</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
              <widget class="QLabel" name="textLabel1_2" >
               <property name="text" >
                <string>Custom string:</string>
@@ -830,19 +661,6 @@
             <item row="1" column="0" >
              <widget class="QLineEdit" name="classify_str" />
             </item>
-            <item row="2" column="0" >
-             <widget class="QLabel" name="classify_txt_1" >
-              <property name="text" >
-               <string>Note:  CLASSIFY target in iptables is non-terminating, that is other rules with Classify or Mark target below this will process the same packet. However, Firewall Builder can emulate terminating behavior for this action. Emulation is activated by an option in the "compiler" tab of the firewall object properties dialog.</string>
-              </property>
-              <property name="alignment" >
-               <set>Qt::AlignVCenter</set>
-              </property>
-              <property name="wordWrap" >
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
             <item row="4" column="0" >
              <spacer>
               <property name="orientation" >
@@ -861,6 +679,15 @@
             </item>
             <item row="3" column="0" >
              <widget class="QLabel" name="classify_terminating" >
+              <property name="toolTip" >
+               <string>Note:  CLASSIFY target in iptables is non-terminating,
+that is other rules with Classify or Mark
+target below this will process the same packet.
+However, Firewall Builder can emulate terminating
+behavior for this action. Emulation is activated
+by an option in the "compiler" tab of the firewall
+object properties dialog.</string>
+              </property>
               <property name="text" >
                <string>Emulation is currently ON, rule will be terminating</string>
               </property>
@@ -927,22 +754,6 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="0" >
-             <spacer>
-              <property name="orientation" >
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType" >
-               <enum>QSizePolicy::MinimumExpanding</enum>
-              </property>
-              <property name="sizeHint" >
-               <size>
-                <width>20</width>
-                <height>0</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
             <item row="2" column="0" >
              <spacer>
               <property name="orientation" >
@@ -963,110 +774,58 @@
           </widget>
           <widget class="QWidget" name="BranchChainPage" >
            <layout class="QGridLayout" >
-            <property name="leftMargin" >
-             <number>2</number>
-            </property>
-            <property name="topMargin" >
-             <number>2</number>
-            </property>
-            <property name="rightMargin" >
-             <number>2</number>
-            </property>
-            <property name="bottomMargin" >
-             <number>2</number>
-            </property>
-            <property name="horizontalSpacing" >
-             <number>2</number>
-            </property>
-            <property name="verticalSpacing" >
-             <number>2</number>
-            </property>
-            <item row="0" column="1" colspan="2" >
-             <spacer>
-              <property name="orientation" >
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType" >
-               <enum>QSizePolicy::MinimumExpanding</enum>
-              </property>
-              <property name="sizeHint" >
-               <size>
-                <width>589</width>
-                <height>21</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item row="1" column="0" colspan="3" >
+            <item row="0" column="0" colspan="2" >
              <widget class="QLabel" name="textLabel1_3" >
               <property name="text" >
-               <string>User-defined chain name:</string>
+               <string>Policy ruleset object:</string>
               </property>
               <property name="wordWrap" >
                <bool>false</bool>
               </property>
              </widget>
             </item>
-            <item row="2" column="0" colspan="2" >
-             <widget class="QFrame" name="branchChainNameFrame" >
+            <item row="1" column="0" >
+             <widget class="FWObjectDropArea" native="1" name="iptBranchDropArea" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize" >
                <size>
-                <width>80</width>
+                <width>100</width>
                 <height>80</height>
                </size>
               </property>
-              <property name="frameShape" >
-               <enum>QFrame::StyledPanel</enum>
+              <property name="font" >
+               <font>
+                <pointsize>9</pointsize>
+               </font>
               </property>
-              <property name="frameShadow" >
-               <enum>QFrame::Raised</enum>
-              </property>
-              <layout class="QGridLayout" >
-               <property name="leftMargin" >
-                <number>2</number>
-               </property>
-               <property name="topMargin" >
-                <number>2</number>
-               </property>
-               <property name="rightMargin" >
-                <number>2</number>
-               </property>
-               <property name="bottomMargin" >
-                <number>2</number>
-               </property>
-               <property name="horizontalSpacing" >
-                <number>2</number>
-               </property>
-               <property name="verticalSpacing" >
-                <number>2</number>
-               </property>
-               <item row="0" column="0" >
-                <layout class="QGridLayout" />
-               </item>
-              </layout>
              </widget>
             </item>
-            <item row="2" column="2" >
-             <spacer>
-              <property name="orientation" >
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" >
-               <size>
-                <width>531</width>
-                <height>30</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item row="3" column="0" colspan="3" >
+            <item row="1" column="1" >
              <widget class="QCheckBox" name="ipt_branch_in_mangle" >
               <property name="text" >
                <string>In addition to 'filter', create branching rule in 'mangle' table as well</string>
               </property>
              </widget>
             </item>
-            <item row="4" column="0" >
+            <item row="1" column="2" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>41</width>
+                <height>21</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="2" column="1" >
              <spacer>
               <property name="orientation" >
                <enum>Qt::Vertical</enum>
@@ -1086,120 +845,62 @@
           </widget>
           <widget class="QWidget" name="BranchAnchorPage" >
            <layout class="QGridLayout" >
-            <property name="leftMargin" >
-             <number>0</number>
-            </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
-             <number>0</number>
-            </property>
-            <property name="horizontalSpacing" >
-             <number>2</number>
-            </property>
-            <property name="verticalSpacing" >
-             <number>2</number>
-            </property>
-            <item row="1" column="0" >
+            <item row="0" column="0" colspan="2" >
              <widget class="QLabel" name="textLabel2_4" >
               <property name="text" >
-               <string>Anchor name:      </string>
+               <string>Policy rule set object:</string>
               </property>
               <property name="wordWrap" >
                <bool>false</bool>
               </property>
              </widget>
             </item>
-            <item row="0" column="0" >
-             <spacer>
-              <property name="orientation" >
-               <enum>Qt::Vertical</enum>
+            <item row="1" column="0" >
+             <widget class="FWObjectDropArea" native="1" name="pfBranchDropArea" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
-              <property name="sizeType" >
-               <enum>QSizePolicy::MinimumExpanding</enum>
-              </property>
-              <property name="sizeHint" >
-               <size>
-                <width>20</width>
-                <height>0</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item row="2" column="0" >
-             <widget class="QFrame" name="BranchAnchorPageFrame" >
               <property name="minimumSize" >
                <size>
-                <width>200</width>
-                <height>64</height>
+                <width>100</width>
+                <height>80</height>
                </size>
               </property>
-              <property name="maximumSize" >
-               <size>
-                <width>64</width>
-                <height>10000</height>
-               </size>
+              <property name="font" >
+               <font>
+                <pointsize>9</pointsize>
+               </font>
               </property>
-              <property name="frameShape" >
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow" >
-               <enum>QFrame::Raised</enum>
-              </property>
-              <layout class="QGridLayout" >
-               <property name="leftMargin" >
-                <number>2</number>
-               </property>
-               <property name="topMargin" >
-                <number>2</number>
-               </property>
-               <property name="rightMargin" >
-                <number>2</number>
-               </property>
-               <property name="bottomMargin" >
-                <number>2</number>
-               </property>
-               <property name="horizontalSpacing" >
-                <number>2</number>
-               </property>
-               <property name="verticalSpacing" >
-                <number>2</number>
-               </property>
-               <item row="0" column="0" >
-                <layout class="QGridLayout" />
-               </item>
-              </layout>
              </widget>
             </item>
-            <item row="4" column="0" >
-             <spacer>
-              <property name="orientation" >
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType" >
-               <enum>QSizePolicy::MinimumExpanding</enum>
-              </property>
-              <property name="sizeHint" >
-               <size>
-                <width>20</width>
-                <height>0</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item row="2" column="1" >
+            <item row="1" column="1" >
              <spacer>
               <property name="orientation" >
                <enum>Qt::Horizontal</enum>
               </property>
               <property name="sizeHint" >
                <size>
-                <width>40</width>
-                <height>20</height>
+                <width>701</width>
+                <height>64</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="2" column="0" colspan="2" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType" >
+               <enum>QSizePolicy::MinimumExpanding</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>20</width>
+                <height>0</height>
                </size>
               </property>
              </spacer>
@@ -1291,42 +992,10 @@
               </item>
              </layout>
             </item>
-            <item row="0" column="0" >
-             <spacer>
-              <property name="orientation" >
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType" >
-               <enum>QSizePolicy::MinimumExpanding</enum>
-              </property>
-              <property name="sizeHint" >
-               <size>
-                <width>20</width>
-                <height>0</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="RoutePFPage" >
            <layout class="QGridLayout" >
-            <item row="0" column="0" colspan="5" >
-             <spacer>
-              <property name="orientation" >
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType" >
-               <enum>QSizePolicy::MinimumExpanding</enum>
-              </property>
-              <property name="sizeHint" >
-               <size>
-                <width>20</width>
-                <height>0</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
             <item row="1" column="0" colspan="5" >
              <layout class="QHBoxLayout" >
               <item>
@@ -1567,6 +1236,14 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <customwidgets>
+  <customwidget>
+   <class>FWObjectDropArea</class>
+   <extends>QWidget</extends>
+   <header>FWObjectDropArea.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
