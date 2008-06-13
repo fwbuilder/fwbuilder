@@ -553,8 +553,12 @@ void ProjectPanel::updateFirewallName(libfwbuilder::FWObject *obj,const QString 
 void ProjectPanel::openRuleSet (libfwbuilder::FWObject * obj)
 {
     blankEditor();
-    visibleRuleSet = RuleSet::cast(obj);
-    scheduleRuleSetRedraw();
+    RuleSet * rs = RuleSet::cast(obj);
+    if (rs!= visibleRuleSet)
+    {
+         visibleRuleSet = rs;
+        scheduleRuleSetRedraw();
+    }
 }
 
 void ProjectPanel::selectRules()
