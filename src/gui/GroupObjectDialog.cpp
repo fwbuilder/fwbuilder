@@ -336,7 +336,14 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
     obj=o;
     Group *g = Group::cast(obj);
     assert(g!=NULL);
-
+    if (ServiceGroup::cast(obj)!=NULL)
+    {
+        m_dialog->icon->setPixmap(QIcon(":/Icons/ServiceGroup/icon").pixmap(25,25));
+    }
+    else
+    {
+        m_dialog->icon->setPixmap(QIcon(":/Icons/ObjectGroup/icon").pixmap(25,25));
+    }
     init=true;
 
     allIconViewItems.clear();

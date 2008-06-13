@@ -37,7 +37,7 @@ class ProjectPanel ;
 class FWObjectClipboard  {
 
     std::vector<int> ids;
-    std::vector<ProjectPanel*> windows;
+    ProjectPanel* window ;
 public:
 
     FWObjectClipboard();
@@ -57,8 +57,6 @@ public:
      * clear the clipboard
      */
     void clear();
-
-    size_t windowsCount ();
 
     libfwbuilder::FWObject* getObjectByIdx (int idx);
 

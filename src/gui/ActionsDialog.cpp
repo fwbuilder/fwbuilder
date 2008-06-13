@@ -245,7 +245,12 @@ void ActionsDialog::setRule(PolicyRule *r )
     firewall=f;
 
     platform=f->getStr("platform");
-    QString title=QString("%1 / %2 (%3)")
+
+    QString icn = ":/Icons/" ;
+    icn+=r->getActionAsString().c_str();
+    m_dialog->icon->setPixmap(QIcon(icn).pixmap(25,25));
+
+    QString title=QString("%3 %1 / %2")
         .arg(QString::fromUtf8(f->getName().c_str()))
         .arg(rule->getPosition())
         .arg(rule->getActionAsString().c_str());

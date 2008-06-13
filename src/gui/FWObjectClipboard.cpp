@@ -62,7 +62,7 @@ void FWObjectClipboard::clear()
         if (obj) obj->unref();
     }
     ids.clear();
-	windows.clear();
+    window=NULL;
 }
 
 void FWObjectClipboard::add(FWObject *_obj, ProjectPanel * fww)
@@ -78,10 +78,8 @@ void FWObjectClipboard::add(FWObject *_obj, ProjectPanel * fww)
     _obj->ref();
 	
     ids.push_back(_obj->getId());
-	if (fww==NULL)
-		windows.push_back (NULL);
-	else
-		windows.push_back (fww);
+    if (fww!=NULL)
+        window = fww;
 }
 
 FWObject* FWObjectClipboard::getObject()
@@ -92,15 +90,10 @@ FWObject* FWObjectClipboard::getObject()
         return NULL;
 }
 
-size_t FWObjectClipboard::windowsCount ()
-{
-    return windows.size();
-}
-
 FWObject* FWObjectClipboard::getObjectByIdx (int idx)
 {
     int s1 = ids[idx];
-    ProjectPanel * w1 = windows[idx];
+    ProjectPanel * w1 = window;
     FWObject *co= w1->db()->findInIndex(s1);
     return co;
 }

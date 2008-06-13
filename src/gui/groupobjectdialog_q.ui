@@ -199,7 +199,7 @@
          </widget>
         </item>
         <item row="0" column="1" >
-         <widget class="QLabel" name="label" >
+         <widget class="QLabel" name="icon" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
             <horstretch>0</horstretch>
@@ -210,7 +210,7 @@
            <string/>
           </property>
           <property name="pixmap" >
-           <pixmap resource="MainRes.qrc" >:/Icons/ObjectGroup/icon</pixmap>
+           <pixmap resource="MainRes.qrc" >:/Icons/ServiceGroup/icon</pixmap>
           </property>
          </widget>
         </item>

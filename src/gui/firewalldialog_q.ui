@@ -65,7 +65,7 @@
        <property name="minimumSize" >
         <size>
          <width>16</width>
-         <height>20</height>
+         <height>30</height>
         </size>
        </property>
        <property name="palette" >
