@@ -1592,7 +1592,7 @@ void RuleSetView::paintCell(QPainter *pntr,
                     p.setPen( cg.highlightedText().color() );
                 } else
                 {
-                    p.fillRect(rect, cg.brush( QPalette::Base ));//cg.brush( crole ));
+                    p.fillRect(rect, cg.brush( QPalette::Mid ));//cg.brush( crole ));
                     p.setPen( cg.text().color() );
                 }
             } else
