@@ -253,7 +253,7 @@ void FindWhereUsedWidget::showObject(FWObject* o)
         mw->ensureObjectVisibleInRules( ref );
         RuleSetView *rsv = mw->activeProject()->getCurrentRuleSetView();
         rsv->selectRE( ref );
-
+        rsv->setFocus ( Qt::MouseFocusReason );
 //        mw->selectRules();
         if (mw->isEditorVisible())
         {

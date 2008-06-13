@@ -1559,12 +1559,6 @@ void RuleSetView::paintCell(QPainter *pntr,
         p.fillRect(rect, QColor(rclr));
     }
 
-    if (col==currentColumn()&&row==currentRow())
-    {
-        QRect rect(0, 0, cr.width(), cr.height() );
-        p.fillRect(rect,  cg.highlight ().color() );
-    }
-
     p.drawLine( cr.width()-1, 0, cr.width()-1, cr.height()-1 );
     p.drawLine( 0, cr.height()-1, cr.width()-1, cr.height()-1 );
 
