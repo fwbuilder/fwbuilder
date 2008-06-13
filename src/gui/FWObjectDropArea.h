@@ -69,10 +69,13 @@ public:
     void addAcceptedTypes (QString type){acceptedTypes.push_back(type);};
     bool isEmpty() {return object==NULL;};
     void setHelperText (QString text){helperText=text;}
+    virtual void mouseDoubleClickEvent ( QMouseEvent * event );
     public slots:
     void insertObject(libfwbuilder::FWObject *o);
     void deleteObject();
     void pasteObject();
+    void showInTreeObject();
+    void editObject();
     
 signals:
     void objectDeleted();

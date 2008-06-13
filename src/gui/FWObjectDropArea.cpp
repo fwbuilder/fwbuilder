@@ -35,6 +35,7 @@
 #include "FWObjectDrag.h"
 #include "FWObjectClipboard.h"
 #include "FWWindow.h"
+#include "ProjectPanel.h"
 
 #include "fwbuilder/Resources.h"
 
@@ -155,10 +156,17 @@ void FWObjectDropArea::contextMenuEvent (QContextMenuEvent * e)
     QMenu *popup;
 
     popup=new QMenu(this);
+
+    QAction *sitAct = popup->addAction( tr("Show in the tree") ,    this , SLOT( showInTreeObject( )) );
+    QAction *editAct = popup->addAction( tr("Edit") ,    this , SLOT( editObject( )) );
+    popup->addSeparator();
+
     QAction *psAct = popup->addAction( tr("Paste") ,    this , SLOT( pasteObject( )) );
     popup->addSeparator();
     QAction *dlAct = popup->addAction( tr("Delete") ,   this , SLOT( deleteObject( )) );
 
+    sitAct->setEnabled(object!=NULL);
+    editAct->setEnabled(object!=NULL);
     dlAct->setEnabled(object!=NULL);
     psAct->setEnabled(FWObjectClipboard::obj_clipboard->size()>0);
 
@@ -225,4 +233,32 @@ void FWObjectDropArea::pasteObject()
         insertObject(co);
     }
 
+}
+
+void FWObjectDropArea::showInTreeObject()
+{
+    ProjectPanel * pp = mw->activeProject();
+    if (pp!=NULL)
+    {
+        pp->m_panel->om->openObject(object);
+    }
+}
+
+void FWObjectDropArea::editObject()
+{
+    ProjectPanel * pp = mw->activeProject();
+    if (pp!=NULL)
+    {
+        pp->m_panel->om->openObject(object);
+        pp->openEditor(object);
+    }
+
+}
+
+void FWObjectDropArea::mouseDoubleClickEvent ( QMouseEvent * event )
+{
+    if (object!=NULL)
+    {
+        editObject();
+    }
 }
