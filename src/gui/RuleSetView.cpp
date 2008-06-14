@@ -2289,7 +2289,8 @@ void RuleSetView::mousePressEvent( QMouseEvent* ev )
 
     int row=rowAt(ev->y());
     int col=columnAt(ev->x());
-    
+    if (row==-1)
+        return ;    
     if (col==0)
     {
         if (row<rowsInfo.size()&&row>=0)

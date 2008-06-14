@@ -83,23 +83,6 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
 
     Rule      *rule = dynamic_cast<Rule*>(o);
     FWOptions *ropt = rule->getOptionsObject();
-    m_dialog->icon->setVisible(false);
-    PolicyRule  *policyRule  = PolicyRule::cast( rule );
-    NATRule     *natRule     = NATRule::cast( rule );
-    RoutingRule *routingRule = RoutingRule::cast( rule );
-    if (policyRule && policyRule->getLogging())
-    {
-        
-        m_dialog->icon->setVisible(true);
-        m_dialog->icon->setPixmap (QIcon(":/Icons/Log").pixmap (25,25));    
-    }
-    if ((policyRule  && ! isDefaultPolicyRuleOptions( rule->getOptionsObject())) ||
-        (routingRule && ! isDefaultRoutingRuleOptions( rule->getOptionsObject())) ||
-        (natRule     && ! isDefaultNATRuleOptions( rule->getOptionsObject())))
-    {
-        m_dialog->icon->setVisible(true);
-        m_dialog->icon->setPixmap (QIcon(":/Icons/Options").pixmap (25,25));    
-    }
     m_dialog->editorTitle->setText(QString("%1 / %2 / %3 ")
             .arg(QString::fromUtf8(p->getName().c_str()))
             .arg(rule->getTypeName().c_str())

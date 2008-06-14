@@ -117,16 +117,16 @@
      </property>
      <layout class="QGridLayout" >
       <property name="leftMargin" >
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="topMargin" >
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="rightMargin" >
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="bottomMargin" >
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="horizontalSpacing" >
        <number>2</number>
@@ -162,7 +162,7 @@
          <string/>
         </property>
         <property name="pixmap" >
-         <pixmap resource="MainRes.qrc" >:/Icons/Log</pixmap>
+         <pixmap resource="MainRes.qrc" >:/Icons/Options</pixmap>
         </property>
        </widget>
       </item>
