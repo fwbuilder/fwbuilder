@@ -306,6 +306,8 @@ public:
      virtual void rollBackSelectionSameWidget();
      virtual void rollBackSelectionDifferentWidget();
      void splitterMoved ( int pos, int index );
+     void stateChanged(Qt::WindowStates oldState, Qt::WindowStates newState);
+     
  signals:
      void restoreSelection_sign(bool same_widget);
 public:

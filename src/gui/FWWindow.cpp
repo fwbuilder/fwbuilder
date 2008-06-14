@@ -220,20 +220,23 @@ ProjectPanel *FWWindow::newProjectPanel()
 void FWWindow::showSub(ProjectPanel *projectW)
 {
     QMdiSubWindow *sub = new QMdiSubWindow;
-    projectW->mdiWindow=sub;
+    projectW->mdiWindow = sub;
     sub->setWidget(projectW);
     sub->setAttribute(Qt::WA_DeleteOnClose);
     m_space->addSubWindow(sub);
     QIcon p(":Icons/Firewall/icon-tree");
     sub->setWindowIcon(p); 
-    if (st->getInt("Window/maximized")!=0)
-    {
-        sub->showMaximized();
-    }
-    else
-    {
-        sub->show();
-    }
+
+    connect(sub,
+            SIGNAL(windowStateChanged(Qt::WindowStates,Qt::WindowStates)),
+            projectW,
+            SLOT(stateChanged(Qt::WindowStates, Qt::WindowStates )));
+         
+
+    if (st->getInt("Window/maximized"))
+        projectW->setWindowState(Qt::WindowMaximized);
+
+    sub->show();
 }
 
 ProjectPanel* FWWindow::activeProject()
@@ -258,7 +261,7 @@ void FWWindow::updateWindowTitle ()
 {
     if (activeProject())
     {
-       setWindowTitle("Firewall Builder "+activeProject()->getFileName());
+        setWindowTitle("Firewall Builder " + activeProject()->getFileName());
     }
     else
     {
@@ -271,7 +274,7 @@ void FWWindow::startupLoad()
     if (activeProject())
     {
         activeProject()->startupLoad();
-        activeProject()->loadState();
+        //activeProject()->loadState();
     }
 }
 
@@ -335,7 +338,8 @@ void FWWindow::fileNew()
     if (proj->fileNew())
     {
     	showSub(proj);
-	}
+        proj->startupLoad();
+    }
     else
     {
         delete proj ;  
@@ -373,7 +377,7 @@ void FWWindow::fileOpen()
             {
                 if (activeProject()->getRCS()->getFileName()=="")
                 {
-                    m_space->removeSubWindow(m_space->currentSubWindow());                            
+                    m_space->removeSubWindow(m_space->currentSubWindow());
                 }	
             }
             else
@@ -381,7 +385,9 @@ void FWWindow::fileOpen()
                 m_space->removeSubWindow(m_space->currentSubWindow());
             }
         }
-        showSub(proj.release());
+        showSub(proj.get());
+        proj->loadState();
+        proj.release();
     }
     recreateWindowsMenu();
 }
@@ -1367,6 +1373,8 @@ bool FWWindow::isSystem(libfwbuilder::FWObject *obj)
 
 void FWWindow::closeEvent( QCloseEvent*)
 {   
+    st->setInt("Window/maximized", activeProject()->isMaximized());
+
     QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
     for (int i = 0 ; i < subWindowList.size();i++)
     {
@@ -1394,14 +1402,28 @@ void FWWindow::selectActiveSubWindow (/*const QString & text*/)
     }
 }
 
-void FWWindow::minimize ()
+void FWWindow::minimize()
 {
+    if (fwbdebug) qDebug("FWWindow::minimize");
     m_space->activeSubWindow ()->showMinimized ();
+    st->setInt("Window/maximized", 0);
+
+    QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
+    for (int i = 0 ; i < subWindowList.size();i++)
+    {
+        ProjectPanel * pp = dynamic_cast<ProjectPanel *>(subWindowList[i]->widget());
+        if (pp!=NULL)
+        {
+            pp->loadState();
+        }
+    }
 }
 
 void FWWindow::maximize ()
 {
+    if (fwbdebug) qDebug("FWWindow::maximize");
     m_space->activeSubWindow()->showMaximized ();
+    st->setInt("Window/maximized", 1);
 }
 
 void FWWindow::recreateWindowsMenu ()

@@ -175,7 +175,7 @@ void ProjectPanel::initMain(FWWindow *main)
     connect( m_panel->infoStyleButton, SIGNAL( clicked() ), this, SLOT( changeInfoStyle() ) );
     connect(m_panel->mainSplitter, SIGNAL(splitterMoved(int,int)),this,SLOT(splitterMoved(int,int)));
     connect(m_panel->objInfoSplitter, SIGNAL(splitterMoved(int,int)),this,SLOT(splitterMoved(int,int)));
-          
+
     m_panel->auxiliaryPanel->hide();
     initOE();
     initFD();
@@ -233,7 +233,6 @@ void ProjectPanel::info(libfwbuilder::FWObject *obj, bool forced)
 
 void ProjectPanel::setStartupFileName(const QString &fn) 
 { 
-//    enableAvtoSaveState = false;
     startupFileName = fn; 
 }
 
@@ -1415,8 +1414,9 @@ void ProjectPanel::pasteRuleBelow()
 //rcs
 void ProjectPanel::startupLoad()
 {
-    if (fwbdebug) qDebug("startup: load everything ...");
-    firstResize=false;
+    if (fwbdebug) qDebug("ProjectPanel::startupLoad: "
+                         "startup: load everything.");
+
     int sa = st->getStartupAction();
 
     if (safeMode)  load(NULL);
@@ -1431,14 +1431,11 @@ void ProjectPanel::startupLoad()
         {
             try
             {
-                enableAvtoSaveState=false;
-
                 RCS *rcs=new RCS(startupFileName);
                 rcs->co();
                 load(NULL,rcs);
+
                 loadState(startupFileName);
-                loadSplitters(startupFileName);
-                //firstResize=true;
             } catch (FWException &ex)
             {
                 qDebug("Exception: %s",ex.toString().c_str());
@@ -1447,6 +1444,7 @@ void ProjectPanel::startupLoad()
         } else
         {
             load(NULL); // load standard objects
+            loadState("");
         }
     }
 
@@ -1474,7 +1472,6 @@ void ProjectPanel::startupLoad()
         }
     }
     mw->recreateWindowsMenu();
-    enableAvtoSaveState=true ;
 }
 
 
@@ -3039,70 +3036,44 @@ void ProjectPanel::findWhereUsed(FWObject * obj)
 
 void ProjectPanel::showEvent( QShowEvent *ev)
 { 
-//  if (rcs!=NULL)
-//    if (!firstLoad)
-//    {
-//        loadSplitters();
-//    }
-
     if (fwbdebug)
     {
-        qDebug("ProjectPanel::showEvent:  isMaximized=%d", isMaximized());
+        qDebug("ProjectPanel::showEvent");
         int wf = windowFlags();
         qDebug("windowFlags=%x", wf);
     }
     QWidget::showEvent(ev);
 }
 
-void ProjectPanel::loadSplitters(QString filename)
+
+// this slot is called when user hits "maximize" or "minimize" buttons
+// on the title bar of the internal window. Need to restore window
+// geometry and splitter position when window becomes normal (not maximized).
+void ProjectPanel::stateChanged(Qt::WindowStates oldState,
+                                Qt::WindowStates newState)
 {
-    QString FileName = getFileName();
-    if (filename !="")
-        FileName = filename;
-    firstLoad=true ;
-    QString val = st->getStr("Layout/MainWindowSplitter"+FileName);
-    QString out1 = "load Layout/MainWindowSplitter"+FileName;
-    out1+= " " + val;
-    qDebug(out1.toAscii().data());
-    
-        int  w1 = val.section(',',0,0).toInt();
-        int  w2 = val.section(',',1,1).toInt();
-        if (w1==0&&w2==0)
-        {
-            w1=250;
-            w2=mdiWindow->width ()-250;
-        }
-        QList<int> sl;
-        sl.push_back(w1);
-        sl.push_back(w2);
-        if (w1 || w2)
-            m_panel->mainSplitter->setSizes( sl );
-
-    val = st->getStr("Layout/ObjInfoSplitter"+FileName);
-    if (!val.isEmpty())
-    {
-        int  w1 = val.section(',',0,0).toInt();
-        int  w2 = val.section(',',1,1).toInt();
-
-        QList<int> sl;
-        sl.push_back(w1);
-        sl.push_back(w2);
-        if (w1 || w2)
-            m_panel->objInfoSplitter->setSizes( sl );
-    }
-
+    bool is_maximized = ((newState & Qt::WindowMaximized) != 0);
+    if (fwbdebug)
+        qDebug("ProjectPanel::stateChanged newState=%d is_maximized=%d",
+               int(newState), is_maximized);
+    st->setInt("Window/maximized", is_maximized);
+    if (!is_maximized) loadState();
 }
 
 void ProjectPanel::hideEvent( QHideEvent *ev)
 {
+    if (fwbdebug) qDebug("ProjectPanel::hideEvent");
     QWidget::hideEvent(ev);
 }
 
 
 void ProjectPanel::closeEvent( QCloseEvent * ev)
 {   
+    if (fwbdebug) qDebug("ProjectPanel::closeEvent");
+
     if (!closing)
         saveState();
+
     if (saveIfModified() && checkin(true))
     {
         if (rcs)
@@ -3136,124 +3107,143 @@ QString ProjectPanel::getFileName()
 
 void ProjectPanel::saveState ()
 {
-
     QString FileName ;
     if (rcs!=NULL)
     {
         FileName = rcs->getFileName();
-
     }
-    if (mdiWindow->isMaximized ())
+
+    if (fwbdebug)
+        qDebug("ProjectPanel::saveState FileName=%s", FileName.toAscii().data());
+
+    if (mdiWindow->isMaximized())
     {
-        qDebug ("Window/maximized true");
-        st->setInt("Window/maximized",1);
+        if (fwbdebug) qDebug ("Window/maximized true");
+        st->setInt("Window/maximized", 1);
     }
     else
     {
-        qDebug ("Window/maximized false");
-        st->setInt("Window/maximized",0);
+        if (fwbdebug) qDebug ("Window/maximized false");
+        st->setInt("Window/maximized", 0);
     }
 
     if (!mdiWindow->isMaximized ())
     {
-        st->setInt("Window/"+FileName+"/x",mdiWindow->x());
-        st->setInt("Window/"+FileName+"/y",mdiWindow->y());
-        st->setInt("Window/"+FileName+"/width",mdiWindow->width ());
-        st->setInt("Window/"+FileName+"/height",mdiWindow->height ());
+        st->setInt("Window/" + FileName + "/x", mdiWindow->x());
+        st->setInt("Window/" + FileName + "/y", mdiWindow->y());
+        st->setInt("Window/" + FileName + "/width", mdiWindow->width ());
+        st->setInt("Window/" + FileName + "/height", mdiWindow->height ());
+    }
 
-        QList<int> sl = m_panel->mainSplitter->sizes();
-        QString arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
-        if (sl[0] || sl[1])
-            st->setStr("Layout/MainWindowSplitter"+getFileName(), arg );
-        QString out1 = " save Layout/MainWindowSplitter"+getFileName();
+    // Save position of splitters regardless of the window state
+    QList<int> sl = m_panel->mainSplitter->sizes();
+    QString arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
+    if (sl[0] || sl[1])
+        st->setStr("Window/" + FileName + "/MainWindowSplitter", arg );
+
+    if (fwbdebug)
+    {
+        QString out1 = " save Window/" + FileName + "/MainWindowSplitter";
         out1+= " " + arg;
         qDebug(out1.toAscii().data());
-        
-        sl = m_panel->objInfoSplitter->sizes();
-        arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
-        if (sl[0] || sl[1])
-            st->setStr("Layout/ObjInfoSplitter"+getFileName(), arg );
-    }  
-    
+    }
+
+    sl = m_panel->objInfoSplitter->sizes();
+    arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
+    if (sl[0] || sl[1])
+        st->setStr("Window/" + FileName + "/ObjInfoSplitter", arg );
 }
 
-void ProjectPanel::loadState (QString filename)
+void ProjectPanel::loadState(QString filename)
 {
+    if (fwbdebug) qDebug("ProjectPanel::loadState  isMaximized=%d",
+                         isMaximized());
+
     QString FileName ;
-    if (rcs!=NULL) 
-        FileName =rcs->getFileName();
+    if (rcs!=NULL)
+        FileName = rcs->getFileName();
     if (filename!="")
         FileName = filename ;
-//    if (FileName!="")
-//    {
-        if (st->getInt("Window/maximized")==0)
-        {
+
+    int maximized_status = st->getInt("Window/maximized");
+    if (!maximized_status)
+    {
+        if (fwbdebug) qDebug("ProjectPanel::loadState  show normal");
+        setWindowState(0);
         int x = st->getInt("Window/"+FileName+"/x");
         int y = st->getInt("Window/"+FileName+"/y");
         int width = st->getInt("Window/"+FileName+"/width");
         int height = st->getInt("Window/"+FileName+"/height");
-        if (width==0||height==0)
+        if (width==0 || height==0)
         {
             x = 10;
             y = 10;
             width = 600;
             height= 600;
         }
-//        loadSplitters();
-        mdiWindow->setGeometry (x,y,width,height);
-        firstResize=true ;
-        }
-//    }
-    
-/*    if (FileName=="")
-    {
-        if (st->getInt("Window/maximized")==0)
-        {
-            mdiWindow->setGeometry (10,10,600,600);
-            loadSplitters();
-            firstResize=true ;
-        }
+        if (fwbdebug) qDebug("ProjectPanel::loadState  set geometry: %d %d %d %d",
+                             x,y,width,height);
+        
+        mdiWindow->setGeometry(x,y,width,height);
     }
-*/
+    // load splitter position even when window is maximized
+    loadSplitters(filename);
+    if (fwbdebug) qDebug("ProjectPanel::loadState done");
+}
+
+void ProjectPanel::loadSplitters(QString filename)
+{
+    QString FileName = getFileName();
+    if (filename !="")
+        FileName = filename;
+
+    firstLoad = true ;
+    QString val = st->getStr("Window/" + FileName + "/MainWindowSplitter");
+    
+    if (fwbdebug)
+    {
+        QString out1 = "load Window/" + FileName + "/MainWindowSplitter";
+        out1+= " " + val;
+        qDebug(out1.toAscii().data());
+    }
+
+    int  w1 = val.section(',',0,0).toInt();
+    int  w2 = mdiWindow->width() - w1;
+    if (w1 == 0 && w2 == 0)
+    {
+        w1 = 250;
+        w2 = mdiWindow->width() - 250;
+    }
+
+    QList<int> sl;
+    sl.push_back(w1);
+    sl.push_back(w2);
+    if (w1 || w2)
+        m_panel->mainSplitter->setSizes( sl );
+
+    val = st->getStr("Window/" + FileName + "/ObjInfoSplitter");
+    if (!val.isEmpty())
+    {
+        int  w1 = val.section(',',0,0).toInt();
+        int  w2 = val.section(',',1,1).toInt();
+
+        QList<int> sl;
+        sl.push_back(w1);
+        sl.push_back(w2);
+        if (w1 || w2)
+            m_panel->objInfoSplitter->setSizes( sl );
+    }
 }
 
 void ProjectPanel::splitterMoved ( int , int )
 {
-    saveState();
 }
 
 void ProjectPanel::resizeEvent ( QResizeEvent* )
 {
-    /*if (oldState==-1)
-    {
-        if (isMaximized ())
-            oldState=0;
-        return ;
-    }*/
-    if (firstResize&&enableAvtoSaveState)
-    {
-        saveState();
-    }   
-
-    if (!firstResize&&!startupFileName.isEmpty())
-    {
-        loadState(startupFileName);
-        loadSplitters(startupFileName);
-       //firstResize = true ;    
-      //  startupFileName="";
-    }
-
-
-    if (!firstResize/*&&rcs!=NULL*/)
-    {
-        loadState();
-        loadSplitters();
-        if (!isMaximized())
-            firstResize = true ;    
-    } 
 }
 
-ProjectPanel * ProjectPanel::clone (ProjectPanel * cln)
+ProjectPanel * ProjectPanel::clone(ProjectPanel * cln)
 {
     cln->mainW = mainW;
     cln->rcs = rcs;
@@ -3264,7 +3254,6 @@ ProjectPanel * ProjectPanel::clone (ProjectPanel * cln)
     cln->editingStandardLib = editingStandardLib;
     cln->editingTemplateLib = editingTemplateLib;
     cln->ruleSetRedrawPending = ruleSetRedrawPending;
-    cln->firstResize = firstResize;
     cln->startupFileName = startupFileName;
     //cln->objdb = objdb;
     cln->editorOwner = editorOwner;
