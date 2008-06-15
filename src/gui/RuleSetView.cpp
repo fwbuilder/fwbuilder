@@ -1646,7 +1646,7 @@ void RuleSetView::paintCell(QPainter *pntr,
                 p.setPen( cg.highlightedText().color() );
             } else
             {
-                p.fillRect(rect, cg.brush( QPalette::Base )); // crole
+                p.fillRect(rect, cg.brush( QPalette::Mid )); // crole
                 p.setPen( cg.text().color() );
             }
         } else

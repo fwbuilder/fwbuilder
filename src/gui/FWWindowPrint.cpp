@@ -274,7 +274,8 @@ void printFirewall(FWObject *fw,
                    bool newPageForSection,
                    ProjectPanel *project)
 {
-
+    if (Firewall::cast(fw)==NULL)
+        return ;
     list<pixmapOrText> listPT;
 
     QString txt;

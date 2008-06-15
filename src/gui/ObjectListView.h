@@ -54,7 +54,8 @@ class ObjectListView : public QTreeWidget {
  public:
 
     ObjectListView(QWidget* parent = 0, const char * name = 0, Qt::WindowFlags f = 0);
-
+ public slots:
+    void sectionClicked ( int logicalIndex ) ;
  signals:
 
     void delObject_sign();

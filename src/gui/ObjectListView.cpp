@@ -67,6 +67,8 @@ ObjectListView::ObjectListView(QWidget* parent, const char*,
     setItemMargin( 2 );*/
     setFocusPolicy( Qt::StrongFocus  );
     setFocus();
+    header()->setClickable(true);
+    connect (header (),SIGNAL(sectionClicked (int)),this,SLOT(sectionClicked (int)));
 }
 
 bool ObjectListView::event ( QEvent * event )
@@ -191,4 +193,7 @@ void ObjectListView::mouseMoveEvent ( QMouseEvent * event )
     QTreeWidget::mouseMoveEvent(event);
 }
 
-
+void ObjectListView::sectionClicked ( int logicalIndex ) 
+{
+    sortByColumn ( logicalIndex, Qt::AscendingOrder );
+}
