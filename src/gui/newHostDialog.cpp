@@ -693,7 +693,13 @@ void newHostDialog::finishClicked()
             if (dyn)   oi->setDyn(true);
             if (unnum) oi->setUnnumbered(true);
             oi->setSecurityLevel(0);
-
+            if (physaddr != "")
+            {
+                QString addrname=QString("%1:%2:mac")
+                    .arg(m_dialog->obj_name->text()).arg(name);
+                physAddress * pa = physAddress::cast(mw->createObject(oi,physAddress::TYPENAME,addrname));
+                pa->setPhysAddress(physaddr.toLatin1().constData());
+            }
             if (!dyn && !unnum)
             {
                 QString addrname=QString("%1:%2:ip")
