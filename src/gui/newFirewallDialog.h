@@ -77,6 +77,7 @@ class newFirewallDialog : public QDialog, public FakeWizard
     virtual bool appropriate(const int page) const;
     
     void showPage(const int page); //it was "selected(QString)"
+    bool validateAddressAndMask(const QString &addr,const QString &netm);
     
 public slots:
     virtual void addInterface();

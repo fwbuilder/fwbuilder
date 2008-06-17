@@ -68,6 +68,7 @@ ObjectListView::ObjectListView(QWidget* parent, const char*,
     setFocusPolicy( Qt::StrongFocus  );
     setFocus();
     header()->setClickable(true);
+    header()->setMovable(false);
     connect (header (),SIGNAL(sectionClicked (int)),this,SLOT(sectionClicked (int)));
 }
 

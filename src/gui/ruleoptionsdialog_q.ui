@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>910</width>
-    <height>277</height>
+    <width>863</width>
+    <height>281</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -190,7 +190,7 @@
       <number>0</number>
      </property>
      <property name="currentIndex" >
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page0" >
       <layout class="QGridLayout" >
@@ -240,7 +240,7 @@
           <enum>QTabWidget::Triangular</enum>
          </property>
          <property name="currentIndex" >
-          <number>0</number>
+          <number>4</number>
          </property>
          <widget class="QWidget" name="tab1" >
           <attribute name="title" >
@@ -836,22 +836,6 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="15" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::Expanding</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item row="2" column="0" >
             <widget class="QLabel" name="textLabel1_4" >
              <property name="text" >
@@ -956,62 +940,6 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="10" colspan="3" >
-            <widget class="QComboBox" name="ipt_hashlimit_mode" >
-             <item>
-              <property name="text" >
-               <string>dstip</string>
-              </property>
-             </item>
-             <item>
-              <property name="text" >
-               <string>srcip</string>
-              </property>
-             </item>
-             <item>
-              <property name="text" >
-               <string>dstip,dstport</string>
-              </property>
-             </item>
-             <item>
-              <property name="text" >
-               <string>srcip,srcport</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="2" column="13" colspan="3" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::Expanding</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>300</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="0" column="11" colspan="5" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::Expanding</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>360</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item row="3" column="0" colspan="16" >
             <widget class="Line" name="line1" >
              <property name="frameShape" >
@@ -1105,22 +1033,6 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="15" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::Expanding</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>130</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item row="4" column="0" colspan="16" >
             <widget class="QLabel" name="textLabel5_5" >
              <property name="text" >
@@ -1146,6 +1058,80 @@
               <size>
                <width>20</width>
                <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="10" colspan="3" >
+            <widget class="QFrame" name="frame" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="frameShape" >
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow" >
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QHBoxLayout" >
+              <property name="leftMargin" >
+               <number>2</number>
+              </property>
+              <property name="topMargin" >
+               <number>0</number>
+              </property>
+              <property name="rightMargin" >
+               <number>2</number>
+              </property>
+              <property name="bottomMargin" >
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QCheckBox" name="cb_srcip" >
+                <property name="text" >
+                 <string>srcip</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="cb_dstip" >
+                <property name="text" >
+                 <string>dstip</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="cb_srcport" >
+                <property name="text" >
+                 <string>srcport</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="cb_dstport" >
+                <property name="text" >
+                 <string>dstport</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="2" column="13" colspan="3" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>40</width>
+               <height>20</height>
               </size>
              </property>
             </spacer>
@@ -2398,7 +2384,6 @@
   <tabstop>ipt_hashlimit</tabstop>
   <tabstop>ipt_hashlimit_suffix</tabstop>
   <tabstop>ipt_hashlimit_burst</tabstop>
-  <tabstop>ipt_hashlimit_mode</tabstop>
   <tabstop>ipt_hashlimit_size</tabstop>
   <tabstop>ipt_hashlimit_max</tabstop>
   <tabstop>ipt_hashlimit_expire</tabstop>
@@ -2436,8 +2421,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>22</x>
+     <y>59</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2452,8 +2437,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>22</x>
+     <y>59</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2468,8 +2453,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>22</x>
+     <y>59</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2484,8 +2469,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>409</x>
+     <y>59</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2500,8 +2485,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>22</x>
+     <y>59</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2516,8 +2501,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>22</x>
+     <y>59</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2532,8 +2517,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>22</x>
+     <y>59</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2548,8 +2533,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>22</x>
+     <y>174</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2564,8 +2549,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>22</x>
+     <y>59</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2580,8 +2565,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>22</x>
+     <y>59</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2596,8 +2581,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>22</x>
+     <y>79</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2612,8 +2597,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>22</x>
+     <y>105</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2628,8 +2613,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>22</x>
+     <y>59</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2644,8 +2629,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>22</x>
+     <y>59</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2660,8 +2645,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>22</x>
+     <y>131</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2676,8 +2661,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>26</x>
+     <y>82</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2692,8 +2677,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>26</x>
+     <y>82</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2708,8 +2693,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>26</x>
+     <y>82</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2724,8 +2709,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>26</x>
+     <y>82</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2740,8 +2725,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>26</x>
+     <y>82</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2756,8 +2741,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>26</x>
+     <y>82</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2772,8 +2757,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>26</x>
+     <y>82</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2788,8 +2773,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>26</x>
+     <y>82</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2804,8 +2789,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>26</x>
+     <y>130</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2820,8 +2805,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>50</x>
+     <y>119</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2836,8 +2821,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>295</x>
+     <y>119</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2852,24 +2837,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ipt_hashlimit_mode</sender>
-   <signal>activated(int)</signal>
-   <receiver>RuleOptionsDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>26</x>
+     <y>93</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2884,8 +2853,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>131</x>
+     <y>119</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2900,8 +2869,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>26</x>
+     <y>82</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2916,8 +2885,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>409</x>
+     <y>80</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2932,8 +2901,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>254</x>
+     <y>142</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2948,8 +2917,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>316</x>
+     <y>142</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2964,8 +2933,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>115</x>
+     <y>142</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2980,8 +2949,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>409</x>
+     <y>111</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -2996,8 +2965,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>524</x>
+     <y>111</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -3012,8 +2981,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>427</x>
+     <y>173</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -3028,8 +2997,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>757</x>
+     <y>173</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -3044,8 +3013,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>254</x>
+     <y>173</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -3060,8 +3029,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>214</x>
+     <y>82</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -3076,8 +3045,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>91</x>
+     <y>173</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -3092,12 +3061,76 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>22</x>
+     <y>333</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_srcip</sender>
+   <signal>released()</signal>
+   <receiver>RuleOptionsDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>462</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>460</x>
+     <y>-6</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_dstip</sender>
+   <signal>released()</signal>
+   <receiver>RuleOptionsDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>513</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>511</x>
+     <y>-3</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_srcport</sender>
+   <signal>released()</signal>
+   <receiver>RuleOptionsDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>589</x>
+     <y>126</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>579</x>
+     <y>-8</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_dstport</sender>
+   <signal>released()</signal>
+   <receiver>RuleOptionsDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>651</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>642</x>
+     <y>-6</y>
     </hint>
    </hints>
   </connection>

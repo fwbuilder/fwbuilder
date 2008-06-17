@@ -598,6 +598,54 @@ void newFirewallDialog::fillInterfaceData(Interface *intf, QTextBrowser *qte)
     qte->setText(s);
 }
 
+bool newFirewallDialog::validateAddressAndMask(const QString &addr,
+                                           const QString &netm)
+{
+    try
+    {
+        InetAddr(addr.toLatin1().constData());
+    }
+    catch (FWException &ex)
+    {
+        QMessageBox::warning(
+            this,"Firewall Builder",
+            tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+            "&Continue", QString::null, QString::null, 0, 1 );
+        return false;
+    }
+    try
+    {
+        bool ok = false ;
+        int ilen = netm.toInt (&ok);
+        if (ok)
+        {
+            if (ilen < 0 || ilen > 32)
+            {
+                QMessageBox::warning(
+                    this,"Firewall Builder",
+                    tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+                    "&Continue", QString::null, QString::null, 0, 1 );
+                return false;
+            }          
+        }
+        else
+        {
+            InetAddr(netm.toLatin1().constData());
+        }
+
+    }
+    catch (FWException &ex)
+    {
+        QMessageBox::warning(
+            this,"Firewall Builder",
+            tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+            "&Continue", QString::null, QString::null, 0, 1 );
+        return false;
+    }
+    return true;
+}
+
+
 void newFirewallDialog::addInterface()
 {
     QString dn = "";
@@ -619,50 +667,7 @@ void newFirewallDialog::addInterface()
             addr = QString(InetAddr::getAny().toString().c_str());
         if (netm.isEmpty())
             netm = QString(InetAddr::getAny().toString().c_str());
-
-        try
-        {
-            InetAddr(addr.toLatin1().constData());
-        }
-        catch (FWException &ex)
-        {
-            QMessageBox::warning(
-                this,"Firewall Builder",
-                tr("Illegal address '%1/%2'").arg(addr).arg(netm),
-                "&Continue", QString::null, QString::null, 0, 1 );
-            return;
-        }
-        try
-        {
-            bool ok = false ;
-            int ilen = netm.toInt (&ok);
-            if (ok)
-            {
-                  if (ilen>0 && ilen < 32)
-                  {
-                QMessageBox::warning(
-                    this,"Firewall Builder",
-                    tr("Illegal address '%1/%2'").arg(addr).arg(netm),
-                    "&Continue", QString::null, QString::null, 0, 1 );           
-                    return ;
-
-                  }          
-            }
-            else
-            {
-                InetAddr(netm.toLatin1().constData());
-
-            }
-
-        }
-        catch (FWException &ex)
-        {
-                QMessageBox::warning(
-                    this,"Firewall Builder",
-                    tr("Illegal address '%1/%2'").arg(addr).arg(netm),
-                    "&Continue", QString::null, QString::null, 0, 1 );           
-        }
-
+        if (!validateAddressAndMask(addr, netm)) return;
 
     }
     QStringList qsl;
@@ -698,6 +703,9 @@ void newFirewallDialog::updateInterface()
 
     QTreeWidgetItem *itm = m_dialog->iface_list->currentItem();
     if (itm==NULL) return;
+    QString addr = m_dialog->iface_addr->text();
+    QString netm = m_dialog->iface_netmask->text();
+    if (!validateAddressAndMask(addr, netm)) return;
 
     itm->setText( 0 , m_dialog->iface_name->text() );
     itm->setText( 1 , m_dialog->iface_label->text() );
