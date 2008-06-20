@@ -2460,6 +2460,35 @@ void ObjectManipulator::invalidateDialog()
     currentObj=NULL;
 }
 
+void ObjectManipulator::libChangedById(int id)
+{
+    for (int i = 0 ; i < idxToLibs.size(); i++)
+    {
+        if (idxToLibs[i]->getId()==id)
+        {
+            libChanged(i);
+            m_objectManipulator->libs->setCurrentIndex(i);
+            return;
+        }
+    }
+}
+
+void ObjectManipulator::changeFirstNotSystemLib()
+{
+    for (int i = 0 ; i < idxToLibs.size(); i++)
+    {
+        if (idxToLibs[i]->getId()!=FWObjectDatabase::STANDARD_LIB_ID)
+        {
+            if (idxToLibs[i]->getId()!=FWObjectDatabase::DELETED_OBJECTS_ID)
+            {
+                libChanged(i);
+                m_objectManipulator->libs->setCurrentIndex(i);
+                return;
+            }
+        }
+    }
+}
+
 void ObjectManipulator::libChanged(int ln)
 {
     QTreeWidget *lv = idxToTrees[ln];

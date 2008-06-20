@@ -127,7 +127,7 @@ using namespace libfwbuilder;
 using namespace std;
 
 static QString    filename;
-static QString    objid;
+static QString    print_output_file_name;
 
 QApplication      *app        = NULL;
 FWWindow          *mw         = NULL;
@@ -341,7 +341,7 @@ int main( int argc, char ** argv )
     int         i, j;
 
     filename="";
-    objid="";
+    print_output_file_name="";
     fwbdebug=0;
     safemode=false;
     bool pparam=false;
@@ -559,7 +559,7 @@ int main( int argc, char ** argv )
 	    break;
 
 	case 'o':
-	    objid=optarg;
+	    print_output_file_name=optarg;
 	    break;
 
         case 'd':
@@ -620,7 +620,7 @@ int main( int argc, char ** argv )
 #endif
         if (pparam)
         {
-            FWWindow::printFirewallFromFile(filename,pparamValue,objid);
+            FWWindow::printFirewallFromFile(filename,pparamValue,print_output_file_name);
             return 0;
         }
 

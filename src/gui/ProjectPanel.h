@@ -109,6 +109,8 @@ public:
     ProjectPanel(QWidget *parent);
 
     ~ProjectPanel();
+    void storeLastOpenedLib();
+    void loadLastOpenedLib(QString filename="");
     void initMain(FWWindow *main);
     void loadObjects();
     void loadObjects(libfwbuilder::FWObjectDatabase *db);

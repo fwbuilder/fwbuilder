@@ -1611,7 +1611,7 @@ void RuleSetView::paintCell(QPainter *pntr,
                         Qt::AlignLeft|Qt::AlignVCenter, objectText(re,o1) );
 
             FWObject *mwSelObj = selectedObject;
-            std::vector<libfwbuilder::FWObject*> om_selected_objects =
+            std::vector<libfwbuilder::FWObject*> om_selected_objects ;
             if (m_project!=NULL) // For printing without creating ProjectPanel
                 om_selected_objects = m_project->getCurrentObjectTree()->getSelectedObjects();
 

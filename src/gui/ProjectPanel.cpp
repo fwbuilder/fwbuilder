@@ -837,9 +837,44 @@ bool ProjectPanel::fileOpen()
     return false;
 }
 
+void ProjectPanel::storeLastOpenedLib()
+{
+    FWObject*  obj = m_panel->om->getCurrentLib();
+    if (obj!=NULL)
+    {
+        std::string sid = FWObjectDatabase::getStringId(obj->getId());
+        QString FileName ;
+        if (rcs!=NULL)
+        {
+            FileName = rcs->getFileName();
+        }
+        st->setStr("Window/" + FileName + "/LastLib", sid.c_str() );
+        
+    }
+
+}
+    
+void ProjectPanel::loadLastOpenedLib(QString filename)
+{
+    QString FileName = filename;
+    if (rcs!=NULL)
+    {
+        FileName = rcs->getFileName();
+    }
+    QString sid = st->getStr("Window/" + FileName + "/LastLib");
+    if (sid!="")
+    {
+        m_panel->om->libChangedById(FWObjectDatabase::getIntId(sid.toAscii().data()));
+    }        
+    else
+    {
+        m_panel->om->changeFirstNotSystemLib();
+    }
+}
 void ProjectPanel::fileClose()
 {
     saveState();
+    storeLastOpenedLib();
     closing=true ;
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): start");
 
@@ -918,6 +953,7 @@ void ProjectPanel::fileExit()
     if (saveIfModified() && checkin(true))
     {
         saveState();
+        storeLastOpenedLib();
         if (rcs) delete rcs;
         qApp->quit();
     }
@@ -1436,6 +1472,7 @@ void ProjectPanel::startupLoad()
                 load(NULL,rcs);
 
                 loadState(startupFileName);
+                loadLastOpenedLib();
             } catch (FWException &ex)
             {
                 qDebug("Exception: %s",ex.toString().c_str());
@@ -1444,6 +1481,7 @@ void ProjectPanel::startupLoad()
         } else
         {
             load(NULL); // load standard objects
+            loadLastOpenedLib(startupFileName);
             loadState("");
         }
     }
@@ -1829,6 +1867,7 @@ void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs,libfwbuilder::FWObject
     QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 
     setupAutoSave();
+    loadLastOpenedLib();
 }
 
 
@@ -2151,6 +2190,7 @@ void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs)
     QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 
     setupAutoSave();
+    loadLastOpenedLib();
 }
 
 bool ProjectPanel::checkin(bool unlock)
@@ -3073,7 +3113,7 @@ void ProjectPanel::closeEvent( QCloseEvent * ev)
 
     if (!closing)
         saveState();
-
+    storeLastOpenedLib();
     if (saveIfModified() && checkin(true))
     {
         if (rcs)
