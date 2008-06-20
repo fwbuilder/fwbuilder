@@ -344,6 +344,8 @@ int main( int argc, char ** argv )
     objid="";
     fwbdebug=0;
     safemode=false;
+    bool pparam=false;
+    QString pparamValue="";
 
     if(fwbdebug)
         qDebug("main()");
@@ -575,6 +577,9 @@ int main( int argc, char ** argv )
         case 'g':
             gui_experiment1 = true;
             break;
+        case 'p':
+            pparam=true ;
+            pparamValue=optarg;
 	}
 
     if ( (argc-1)==optind)
@@ -613,6 +618,11 @@ int main( int argc, char ** argv )
 #ifdef ELC
         registered=init2(argv0, "Firewall Builder","fwb_gui","FirewallBuilder/2.1",true,true);
 #endif
+        if (pparam)
+        {
+            FWWindow::printFirewallFromFile(filename,pparamValue,objid);
+            return 0;
+        }
 
         string full_res_path = respath+FS_SEPARATOR+"resources.xml";
 

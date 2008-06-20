@@ -166,7 +166,7 @@ public slots:
     ~FWWindow();
     QMdiArea* getMdiArea () {return m_space;}
     RCS * getRCS(); 
-    
+    static int printFirewallFromFile (QString fileName, QString firewallName, QString outputFileName);
     libfwbuilder::FWObject* getVisibleFirewalls();
     void load(QWidget *dialogs_parent,RCS *rcs);
     void load(QWidget *dialogs_parent);

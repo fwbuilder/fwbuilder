@@ -1612,7 +1612,8 @@ void RuleSetView::paintCell(QPainter *pntr,
 
             FWObject *mwSelObj = selectedObject;
             std::vector<libfwbuilder::FWObject*> om_selected_objects =
-                    m_project->getCurrentObjectTree()->getSelectedObjects();
+            if (m_project!=NULL) // For printing without creating ProjectPanel
+                om_selected_objects = m_project->getCurrentObjectTree()->getSelectedObjects();
 
             if (mwSelObj==NULL && om_selected_objects.size()!=0)
                 mwSelObj = om_selected_objects.front();
@@ -3500,8 +3501,10 @@ void RuleSetView::negateRE()
 QVector <ProjectPanel*> RuleSetView::getAllMdiProjectPanel ()
 {
     QVector <ProjectPanel*> ret ;
-    QList<QMdiSubWindow *> subWindowList = mw->getMdiArea()->subWindowList();
-    if (m_project->getRCS()==NULL)
+    QList<QMdiSubWindow *> subWindowList ;
+    if (mw!=NULL)
+        subWindowList = mw->getMdiArea()->subWindowList();
+    if (m_project == NULL || m_project->getRCS()==NULL)
         return ret ;
     ret.push_back (m_project);
     QString fileName = m_project->getRCS()->getFileName();
