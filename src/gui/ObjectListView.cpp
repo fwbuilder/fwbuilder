@@ -69,6 +69,8 @@ ObjectListView::ObjectListView(QWidget* parent, const char*,
     setFocus();
     header()->setClickable(true);
     header()->setMovable(false);
+    setSortingEnabled(true);
+    sortByColumn ( 0, Qt::AscendingOrder );
     connect (header (),SIGNAL(sectionClicked (int)),this,SLOT(sectionClicked (int)));
 }
 
