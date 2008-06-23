@@ -3249,7 +3249,7 @@ void ProjectPanel::loadSplitters(QString filename)
 
     int  w1 = val.section(',',0,0).toInt();
     int  w2 = mdiWindow->width() - w1;
-    if (w1 == 0 && w2 == 0)
+    if (w1 == 0 )
     {
         w1 = 250;
         w2 = mdiWindow->width() - 250;

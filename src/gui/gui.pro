@@ -238,6 +238,7 @@ SOURCES += ProjectPanel.cpp \
 	ConfirmDeleteObjectDialog.cpp \
 	FakeWizard.cpp \
     AskLibForCopyDialog.cpp \
+	ObjectListViewItem.cpp \
 	RuleGroupPanel.cpp 
        
 FORMS = FWBMainWindow_q.ui \

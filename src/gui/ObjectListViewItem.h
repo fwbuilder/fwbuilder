@@ -29,7 +29,7 @@
 #define  OBJECTLISTVIEWITEM_H
 
 #include <qtreewidget.h>
-
+#include "FWWindow.h"
 #include <string>
 #include <map>
 
@@ -58,7 +58,7 @@ class ObjectListViewItem : public QTreeWidgetItem {
         ID=-1;
     }
 
-    libfwbuilder::FWObject *getFWObject() {return mw->db()->getById(ID,true); }
+    libfwbuilder::FWObject *getFWObject() const {return mw->db()->getById(ID,true); }
     int getFWObjectID() {return ID; }
     void setFWObject(libfwbuilder::FWObject *obj) { ID=obj->getId(); }
 
@@ -71,6 +71,7 @@ class ObjectListViewItem : public QTreeWidgetItem {
     void setProperty(const QString &name,const QString &val) {
         props[name]=val;
     }
+    virtual bool operator< ( const QTreeWidgetItem & other ) const;
 };
 
 #endif
