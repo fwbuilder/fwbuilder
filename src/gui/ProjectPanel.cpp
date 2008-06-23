@@ -2422,10 +2422,11 @@ void ProjectPanel::fileImport()
 {
     resetFD();
 
-    QString fname = QFileDialog::getOpenFileName( this,
-            tr("Choose a file to import"),
-            st->getWDir(),
-            "Firewall Builder 4 (2) files (*.fwl);;FWB Files (*.fwb);;All Files (*)");
+    QString fname = QFileDialog::getOpenFileName(
+        mainW,
+        tr("Choose a file to import"),
+        st->getWDir(),
+        "FWB library files (*.fwl);;FWB Files (*.fwb);;All Files (*)");
 
     if (fname.isEmpty()) return;   // Cancel  - keep working with old file
 
@@ -2447,17 +2448,19 @@ void ProjectPanel::fileCompare()
     if (initial_question.exec() != QMessageBox::Yes) return;
 
 
-    QString fname1 = QFileDialog::getOpenFileName( this,
-            tr("Choose the first file"),
-            st->getWDir(),
-            "Firewall Builder 4 (2) files (*.fwb);;FWB Library Files (*.fwl);;All Files (*)");
+    QString fname1 = QFileDialog::getOpenFileName(
+        mainW,
+        tr("Choose the first file"),
+        st->getWDir(),
+        "FWB files (*.fwb);;FWB Library Files (*.fwl);;All Files (*)");
 
     if (fname1.isEmpty()) return;   // Cancel
 
-    QString fname2 = QFileDialog::getOpenFileName( this,
-            tr("Choose the second file"),
-            st->getWDir(),
-            "Firewall Builder 4 (2) files (*.fwb);;FWB Library Files (*.fwl);;All Files (*)");
+    QString fname2 = QFileDialog::getOpenFileName(
+        mainW,
+        tr("Choose the second file"),
+        st->getWDir(),
+        "FWB files (*.fwb);;FWB Library Files (*.fwl);;All Files (*)");
 
     if (fname2.isEmpty()) return;   // Cancel
 
