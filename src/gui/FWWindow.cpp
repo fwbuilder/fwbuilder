@@ -42,8 +42,6 @@
 #include "listOfLibraries.h"
 #include "ObjConflictResolutionDialog.h"
 #include "RuleSetView.h"
-#include "RCSFileDialog.h"
-#include "RCSFilePreview.h"
 #include "ObjectEditor.h"
 #include "execDialog.h"
 #include "PrefsDialog.h"

@@ -30,7 +30,6 @@
 
 #include <RCS.h>
 #include <RCSFilePreview.h>
-#include <RCSFileDialog.h>
 
 #include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/FWException.h"

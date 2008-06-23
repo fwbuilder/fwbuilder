@@ -34,7 +34,6 @@
 
 #include <map>
 
-class RCSFileDialog;
 
 class RCSViewItem : public QTreeWidgetItem {
 

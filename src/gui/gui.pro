@@ -43,7 +43,6 @@ HEADERS += ../../config.h \
 	FWBSettings.h \
 	FWBTree.h \
 	RCS.h \
-	RCSFileDialog.h \
 	RCSFilePreview.h \
 	FWObjectClipboard.h \
 	platforms.h \
@@ -157,7 +156,6 @@ SOURCES += ProjectPanel.cpp \
 	FWBSettings.cpp \
 	FWBTree.cpp \
 	RCS.cpp \
-	RCSFileDialog.cpp \
 	RCSFilePreview.cpp \
 	FWObjectClipboard.cpp \
 	platforms.cpp \

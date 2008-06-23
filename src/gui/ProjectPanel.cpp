@@ -42,7 +42,6 @@
 #include "listOfLibraries.h"
 #include "ObjConflictResolutionDialog.h"
 #include "RuleSetView.h"
-#include "RCSFileDialog.h"
 #include "RCSFilePreview.h"
 #include "ObjectEditor.h"
 #include "execDialog.h"
@@ -679,7 +678,8 @@ QString ProjectPanel::getDestDir(const QString &fname)
 }
 
 QString ProjectPanel::chooseNewFileName(const QString &fname,
-                                    bool checkPresence,const QString &title)
+                                        bool checkPresence,
+                                        const QString &title)
 {
     QString destdir = getDestDir(fname);
 
@@ -766,13 +766,22 @@ bool ProjectPanel::fileOpen()
 {
     if (fwbdebug) qDebug("ProjectPanel::fileOpen(): start");
 
-    RCSFileDialog   fd(this, 0, true);
+    QString dir;
+    dir=st->getWDir();
+    if (dir.isEmpty())  dir=st->getOpenFileDir();
+    if (dir.isEmpty())  dir=userDataDir.c_str();
+
+    QString fileName = QFileDialog::getOpenFileName(
+        mainW,
+        tr("Open File"),
+        dir,
+        tr("FWB files (*.fwb *.fwl *.xml);;All Files (*)"));
+
+    if (fileName.isEmpty()) return false;
+
     RCSFilePreview  fp(this);
 
-    if ( fd.exec() != QDialog::Accepted )
-        return false;
-
-    bool hasRCS = fp.showFileRLog( fd.selectedFiles()[0] );
+    bool hasRCS = fp.showFileRLog(fileName);
 
     if ( (!hasRCS) || (fp.exec() == QDialog::Accepted) )
     {
@@ -782,10 +791,10 @@ bool ProjectPanel::fileOpen()
         //try to get simple rcs instance from RCS preview
         RCS *rcs = fp.getSelectedRev();
 
-        //if (by some matter) preview cannot give RCS,
+        //if preview cannot give RCS,
         //get a new RCS from file dialog
         if (rcs==NULL)
-            rcs = fd.getSelectedRev();
+            rcs = new RCS(fileName);
 
         //if RCS isn't still formed, it's an error
         if (rcs==NULL)
@@ -932,8 +941,9 @@ void ProjectPanel::fileSaveAs()
 
     rcs = new RCS("");
 
-    QString nfn=chooseNewFileName(oldFileName,true,
-                                  tr("Choose name and location for the file"));
+    QString nfn = chooseNewFileName(
+        oldFileName, true,
+        tr("Choose name and location for the file"));
 
     if (!nfn.isEmpty())
     {
