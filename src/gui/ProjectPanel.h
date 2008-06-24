@@ -65,7 +65,7 @@ class ProjectPanel: public QWidget {
     bool                                    editingStandardLib;
     bool                                    editingTemplateLib;
     bool                                    ruleSetRedrawPending;
-    bool                                    firstResize;
+    bool                                    firstTimeNormal;
     bool                                    closing ; 
     QString                                 startupFileName;
     
@@ -321,7 +321,6 @@ public:
     void load(QWidget *dialogs_parent);
     void save();
     void saveState ();
-    bool firstLoad ;
     void loadState (QString filename="");
     void loadSplitters(QString filename="");
     bool checkin(bool unlock);

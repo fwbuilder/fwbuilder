@@ -152,8 +152,6 @@ using namespace Ui;
 void ProjectPanel::initMain(FWWindow *main)
 {
     mainW = main;
-    firstResize = false ;
-    firstLoad = false;
     closing = false ;
     enableAvtoSaveState=true ;
     oldState=-1;
@@ -181,7 +179,7 @@ void ProjectPanel::initMain(FWWindow *main)
 }
 
 ProjectPanel::ProjectPanel(QWidget *parent): 
-    QWidget(parent, Qt::WindowSystemMenuHint|Qt::Window),
+    QWidget(parent), // , Qt::WindowSystemMenuHint|Qt::Window),
     mainW(0),
     rcs(0),
     addOnLibs(new listOfLibraries()), 
@@ -210,6 +208,7 @@ ProjectPanel::ProjectPanel(QWidget *parent):
         qDebug("ProjectPanel constructor");
     m_panel = new Ui::ProjectPanel_q();
     m_panel->setupUi(this);
+    firstTimeNormal = st->getInt("Window/maximized");
 }
 
 
@@ -3121,11 +3120,19 @@ void ProjectPanel::stateChanged(Qt::WindowStates oldState,
                                 Qt::WindowStates newState)
 {
     bool is_maximized = ((newState & Qt::WindowMaximized) != 0);
+    bool was_maximized = ((oldState & Qt::WindowMaximized) != 0);
+    bool is_active = ((newState & Qt::WindowActive) != 0);
     if (fwbdebug)
-        qDebug("ProjectPanel::stateChanged newState=%d is_maximized=%d",
-               int(newState), is_maximized);
+        qDebug("ProjectPanel::stateChanged "
+               "newState=%d was_maximized=%d is_maximized=%d is_active=%d",
+               int(newState), was_maximized, is_maximized, is_active);
     st->setInt("Window/maximized", is_maximized);
-    if (!is_maximized) loadState();
+    if (!was_maximized && is_maximized) saveState();
+    // restore size only if state of the window changes from "maximized"
+    // to "normal" for the first time. After this, MDI keeps track of
+    // window size automatically.
+    //if (was_maximized && !is_maximized && firstTimeNormal) loadState();
+    firstTimeNormal = false;
 }
 
 void ProjectPanel::hideEvent( QHideEvent *ev)
@@ -3224,14 +3231,15 @@ void ProjectPanel::saveState ()
 
 void ProjectPanel::loadState(QString filename)
 {
-    if (fwbdebug) qDebug("ProjectPanel::loadState  isMaximized=%d",
-                         isMaximized());
-
     QString FileName ;
     if (rcs!=NULL)
         FileName = rcs->getFileName();
     if (filename!="")
         FileName = filename ;
+
+    if (fwbdebug)
+        qDebug("ProjectPanel::loadState FileName=%s isMaximized=%d",
+               FileName.toAscii().data(), isMaximized());
 
     int maximized_status = st->getInt("Window/maximized");
     if (!maximized_status)
@@ -3265,7 +3273,6 @@ void ProjectPanel::loadSplitters(QString filename)
     if (filename !="")
         FileName = filename;
 
-    firstLoad = true ;
     QString val = st->getStr("Window/" + FileName + "/MainWindowSplitter");
     
     if (fwbdebug)
