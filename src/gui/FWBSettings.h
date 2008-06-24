@@ -41,7 +41,7 @@ class QWidget;
 #define LoadStandardObjects 0
 #define LoadLastEditedFile  1
     
-#define SETTINGS_PATH_PREFIX  "/FirewallBuilder2_1"
+#define SETTINGS_PATH_PREFIX  "/FirewallBuilder3"
 
 class FWBSettings : public QSettings {
 

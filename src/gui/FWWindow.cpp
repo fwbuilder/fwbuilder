@@ -156,13 +156,17 @@ using namespace libfwbuilder;
 using namespace std;
 using namespace Ui;
 
-FWWindow::FWWindow(): m_space(0),
-  instd(0), autosaveTimer(new QTimer(static_cast<QObject*>(this))), 
-  instDialogOnScreenTimer(new QTimer(static_cast<QObject*>(this))), 
-  printer(0), searchObject(0), replaceObject(0)
+FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
+    m_space(0),
+    instd(0), autosaveTimer(new QTimer(static_cast<QObject*>(this))), 
+    instDialogOnScreenTimer(new QTimer(static_cast<QObject*>(this))), 
+    printer(0), searchObject(0), replaceObject(0)
 {
     if (fwbdebug)
+    {
         qDebug("FWWindow constructor");
+        qDebug("windowFlags=%x", int(windowFlags()));
+    }
 
     setUnifiedTitleAndToolBarOnMac(true);
 

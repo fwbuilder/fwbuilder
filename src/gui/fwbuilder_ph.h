@@ -23,7 +23,6 @@
 
 #include "../../config.h"
 #include "VERSION.h"
-#include "build_num"
 #include "definitions.h"
 #include "global.h"
 #include "utils.h"
