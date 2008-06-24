@@ -447,8 +447,11 @@ void PrefsDialog::accept()
 
     st->setSSHPath( m_dialog->sshPath->text() );
 
-    QDir d;
-    d.mkdir( wd );
+    if (!wd.isEmpty())
+    {
+        QDir d;
+        d.mkdir( wd );
+    }
 
     mw->setupAutoSave();
     mw->showDeletedObjects(st->getBool("UI/ShowDeletedObjects"));
