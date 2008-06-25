@@ -68,6 +68,8 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/NAT.h"
+#include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 
 #ifdef HAVE_GETOPT_H
   #include <getopt.h>
@@ -492,8 +494,11 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             } else
             {
 
-                list<FWObject*> la = iface->getByType(IPv4::TYPENAME);
-                if ( iface->isRegular() && la.empty() )
+                list<FWObject*> all_addr = iface->getByType(IPv4::TYPENAME);
+                list<FWObject*> all_ipv6 = iface->getByType(IPv6::TYPENAME);
+                all_addr.insert(all_addr.begin(),
+                                all_ipv6.begin(), all_ipv6.end());
+                if (iface->isRegular() && all_addr.empty() && all_ipv6.empty())
                 {
                     char errstr[256];
                     sprintf(errstr,_("Missing IP address for interface %s\n"),
@@ -501,12 +506,11 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     throw FWException(errstr);
                 }
 
-                for (list<FWObject*>::iterator j=la.begin(); j!=la.end(); ++j) 
+                for (list<FWObject*>::iterator j = all_addr.begin();
+                     j != all_addr.end(); ++j) 
                 {
-                    //const InetAddrMask *ipv4 = IPv4::cast(*j)->getAddressObjectInetAddrMask();
-                    const InetAddr *ip_addr = IPv4::cast(*j)->getAddressPtr();
-
-                    if ( ip_addr->isAny())
+                    const InetAddr  *ip_addr = IPv4::cast(*j)->getAddressPtr();
+                    if (ip_addr && ip_addr->isAny())
                     {
                         char errstr[256];
                         sprintf(errstr,
