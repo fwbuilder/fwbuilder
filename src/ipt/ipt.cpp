@@ -509,7 +509,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 for (list<FWObject*>::iterator j = all_addr.begin();
                      j != all_addr.end(); ++j) 
                 {
-                    const InetAddr  *ip_addr = IPv4::cast(*j)->getAddressPtr();
+                    const InetAddr  *ip_addr = Address::cast(*j)->getAddressPtr();
                     if (ip_addr && ip_addr->isAny())
                     {
                         char errstr[256];
