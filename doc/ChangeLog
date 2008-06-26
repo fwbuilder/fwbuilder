@@ -1,11 +1,22 @@
+2008-06-26  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_printIP): using
+	"-m frag --fragmore" for IPService objects that should match ip
+	fragments.
+
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_printDstService):
+	compiler uses "--icmpv6-type" and "-m icmp6" options while
+	generating ipv6 script.
+
 2008-06-10  Vadim Kurland  <vadim@vk.crocodile.org>
 
-	* PolicyCompiler_PrintRule.cpp (PrintRule::_printTimeInterval): 
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_printTimeInterval):
+	support for the "new" time module for iptables
 
 2008-06-08  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* merged branch "id-experiment" r233:HEAD
-	
+
 2008-06-07  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* main.cpp (main): support for integer object ids

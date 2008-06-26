@@ -608,7 +608,8 @@ string PolicyCompiler_ipt::PrintRule::_printProtocol(libfwbuilder::Service *srv)
         {
             if (ipt_comp->newIptables(version))
             {
-                s += " -m icmp ";
+                if (ipt_comp->ipv6) s += " -m icmp6";
+                else s += " -m icmp ";
             }
         } else
         {
@@ -662,7 +663,8 @@ string PolicyCompiler_ipt::PrintRule::_printDstPorts(Service *srv)
 string PolicyCompiler_ipt::PrintRule::_printICMP(ICMPService *srv)
 {
     std::ostringstream  str;
-    if (ICMPService::isA(srv) && srv->getInt("type")!=-1) {
+    if (ICMPService::isA(srv) && srv->getInt("type")!=-1)
+    {
 	str << srv->getStr("type");
 	if (srv->getInt("code")!=-1) 
 	    str << "/" << srv->getStr("code") << " ";
@@ -672,20 +674,28 @@ string PolicyCompiler_ipt::PrintRule::_printICMP(ICMPService *srv)
 
 string PolicyCompiler_ipt::PrintRule::_printIP(IPService *srv)
 {
+    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     std::ostringstream  str;
-    if (IPService::isA(srv) ) {
+    if (IPService::isA(srv) )
+    {
 	if (srv->getBool("fragm") || srv->getBool("short_fragm"))
-	    str << " -f ";
+        {
+            if (ipt_comp->ipv6) str << " -m frag --fragmore";
+            else str << " -f ";
+        }
 
-        if  (srv->getBool("lsrr") ||
-             srv->getBool("ssrr") ||
-             srv->getBool("rr") ||
-             srv->getBool("ts") ) str << " -m ipv4options ";
+        if (!ipt_comp->ipv6)
+        {
+            if  (srv->getBool("lsrr") ||
+                 srv->getBool("ssrr") ||
+                 srv->getBool("rr") ||
+                 srv->getBool("ts") ) str << " -m ipv4options ";
 
-        if  (srv->getBool("lsrr")) str << " --lsrr";
-        if  (srv->getBool("ssrr")) str << " --ssrr";
-        if  (srv->getBool("rr"))   str << " --rr";
-        if  (srv->getBool("ts"))   str << " --ts";
+            if  (srv->getBool("lsrr")) str << " --lsrr";
+            if  (srv->getBool("ssrr")) str << " --ssrr";
+            if  (srv->getBool("rr"))   str << " --rr";
+            if  (srv->getBool("ts"))   str << " --ts";
+        }
     }
     return str.str();
 }
@@ -832,14 +842,18 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
 	}
 	if (ICMPService::isA(srv)) 
         {
-	    string str=_printICMP( ICMPService::cast(srv) );
+            string icmp_type_str = 
+                (ipt_comp->ipv6) ? " --icmpv6-type" : " --icmp-type";
+
+	    string str = _printICMP( ICMPService::cast(srv) );
 	    if (str.empty() ) 
             {
                 if (ipt_comp->newIptables(version))
-                    ostr << " --icmp-type any ";
+                    ostr << icmp_type_str << " any ";
             } else
             {
-                ostr << " --icmp-type " 
+                ostr << icmp_type_str 
+                     << " "
                      << _printSingleObjectNegation(rel)
                      << str << " ";
             }
