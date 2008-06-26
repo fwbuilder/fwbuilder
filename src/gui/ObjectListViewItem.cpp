@@ -27,16 +27,16 @@ bool ObjectListViewItem::operator< ( const QTreeWidgetItem & other ) const
             ICMPService * licmp = ICMPService::cast(left);
             if (rtcpudp != NULL && ltcpudp != NULL)
             {
-                int ls = ltcpudp->getSrcRangeStart();
-                int rs = rtcpudp->getSrcRangeStart();
+                int ls = ltcpudp->getDstRangeStart();
+                int rs = rtcpudp->getDstRangeStart();
                 if (ls<rs) 
                     return true ;
                 else
                 {
                     if (ls==rs)
                     {
-                        int le = ltcpudp->getSrcRangeEnd();
-                        int re = rtcpudp->getSrcRangeEnd();
+                        int le = ltcpudp->getDstRangeEnd();
+                        int re = rtcpudp->getDstRangeEnd();
                         if (le<re) 
                             return true ;
                         else

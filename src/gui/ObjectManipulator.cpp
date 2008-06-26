@@ -2475,14 +2475,14 @@ void ObjectManipulator::libChangedById(int id)
 
 void ObjectManipulator::changeFirstNotSystemLib()
 {
+    QString sid2 = "syslib000";
+    QString sid3 = "syslib001";
     for (int i = 0 ; i < idxToLibs.size(); i++)
     {
-        qDebug (QString().setNum(idxToLibs[i]->getId()).toAscii().data());
-        qDebug (QString().setNum(FWObjectDatabase::STANDARD_LIB_ID).toAscii().data());
-
-        if (idxToLibs[i]->getId()!=FWObjectDatabase::STANDARD_LIB_ID)
+        QString sid1 = FWObjectDatabase::getStringId(idxToLibs[i]->getId()).c_str();
+        if ( sid1 != sid2)
         {
-            if (idxToLibs[i]->getId()!=FWObjectDatabase::DELETED_OBJECTS_ID)
+            if (sid1!=sid3)
             {
                 libChanged(i);
                 m_objectManipulator->libs->setCurrentIndex(i);
