@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="9" lastModified="1213152525" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="9" lastModified="1214592406" id="root">
   <Library id="syslib001" name="User" comment="User defined objects" color="#d2ffd0">
     <ObjectGroup id="stdid01_1" name="Objects">
       <ObjectGroup id="stdid01_1_og_ats_1" name="Address Tables">
@@ -24375,7 +24375,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4833F62B6131" name="firewall-ipv6-1" host_OS="linux24" inactive="False" lastCompiled="1212115999" lastInstalled="0" lastModified="1212118783" platform="iptables" ro="False" version="">
+      <Firewall id="id4833F62B6131" name="firewall-ipv6-1" host_OS="linux24" inactive="False" lastCompiled="1212115999" lastInstalled="0" lastModified="1214592406" platform="iptables" ro="False" version="">
         <NAT id="id4833F62F6131" name="NAT"/>
         <Policy id="id483F5B7623190" name="Policy_ipv4"/>
         <Policy id="id4833F62E6131" name="Policy">
@@ -24588,6 +24588,46 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </Dst>
             <Srv neg="False">
               <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id80471535" action="Accept" direction="Both" disabled="False" log="False" position="11">
+            <Src neg="False">
+              <ObjectRef ref="id4833F6316131"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="icmp-ping_request"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id80541535" action="Accept" direction="Both" disabled="False" log="False" position="12">
+            <Src neg="False">
+              <ObjectRef ref="id4833F6346131"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="icmp-ping_request"/>
             </Srv>
             <Itf neg="False">
               <ObjectRef ref="sysid0"/>
@@ -26626,6 +26666,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
     <Interface id="id4848A43B4626" name="ppp0" bridgeport="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False"/>
     <IntervalRef ref="sysid2"/>
     <IntervalRef ref="sysid2"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ServiceRef ref="sysid1"/>
+    <ServiceRef ref="sysid1"/>
   </Library>
   <Library id="id4387B43718346" name="transfer" color="#FFFFFF" ro="False">
     <ObjectGroup id="id4387B43818346" name="Objects">

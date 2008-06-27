@@ -599,13 +599,14 @@ string PolicyCompiler_ipt::PrintRule::_printProtocol(libfwbuilder::Service *srv)
         !UserService::isA(srv)
     )
     {
-        string pn=srv->getProtocolName();
+        string pn = srv->getProtocolName();
         if (pn=="ip") pn="all";
         
-        s= "-p " + pn + " ";
-
         if (pn == "icmp")
         {
+            if (ipt_comp->ipv6) s = "-p ipv6-icmp ";
+            else s = "-p icmp ";
+
             if (ipt_comp->newIptables(version))
             {
                 if (ipt_comp->ipv6) s += " -m icmp6";
@@ -613,6 +614,7 @@ string PolicyCompiler_ipt::PrintRule::_printProtocol(libfwbuilder::Service *srv)
             }
         } else
         {
+            s = "-p " + pn + " ";
             if (pn == "tcp")  s += "-m tcp ";
             if (pn == "udp")  s += "-m udp ";
         }

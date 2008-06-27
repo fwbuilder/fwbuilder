@@ -1,3 +1,8 @@
+2008-06-27  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ../src/ipt/PolicyCompiler_PrintRule.cpp (PrintRule::_printProtocol):
+	should use "-p ipv6-icmp" for ipv6 rules.
+
 2008-06-26  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printIP): using
