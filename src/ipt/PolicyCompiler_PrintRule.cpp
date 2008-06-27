@@ -591,33 +591,40 @@ string PolicyCompiler_ipt::PrintRule::_printLimit(libfwbuilder::PolicyRule *rule
 string PolicyCompiler_ipt::PrintRule::_printProtocol(libfwbuilder::Service *srv)
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    string version=compiler->fw->getStr("version");
+    string version = compiler->fw->getStr("version");
     string s;
-    if (! srv->isAny() &&
-        !CustomService::isA(srv) &&
-        !TagService::isA(srv) &&
-        !UserService::isA(srv)
-    )
+    if (! srv->isAny() && !CustomService::isA(srv) &&
+        !TagService::isA(srv) && !UserService::isA(srv))
     {
         string pn = srv->getProtocolName();
-        if (pn=="ip") pn="all";
-        
-        if (pn == "icmp")
-        {
-            if (ipt_comp->ipv6) s = "-p ipv6-icmp ";
-            else s = "-p icmp ";
+        if (pn=="ip") pn = "all";
 
-            if (ipt_comp->newIptables(version))
+        if (ipt_comp->ipv6)
+        { 
+            if (pn == "icmp")
             {
-                if (ipt_comp->ipv6) s += " -m icmp6";
-                else s += " -m icmp ";
+                s = "-p ipv6-icmp ";
+                if (ipt_comp->newIptables(version)) s += " -m icmp6";
+            } else
+            {
+                // ip6tables issues warning for commands using "-p all"
+                // Warning: never matched protocol: all. use exension match instead
+                // Skip "-p all" if ipv6
+                if (pn!="all") s = "-p " + pn + " ";
             }
         } else
         {
-            s = "-p " + pn + " ";
-            if (pn == "tcp")  s += "-m tcp ";
-            if (pn == "udp")  s += "-m udp ";
+            if (pn == "icmp")
+            {
+                s = "-p icmp ";
+                if (ipt_comp->newIptables(version)) s += " -m icmp ";
+            } else
+            {
+                s = "-p " + pn + " ";
+            }
         }
+        if (pn == "tcp")  s += "-m tcp ";
+        if (pn == "udp")  s += "-m udp ";
     }
     return s;
 }
