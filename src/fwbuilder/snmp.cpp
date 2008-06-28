@@ -1365,6 +1365,9 @@ bool SNMPCrawler::special(const InetAddrMask &n) const
 //TODO: multiple threads (via pool).
 void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWException)
 {
+    if (snmp_tmp_db==NULL)
+        snmp_tmp_db = new FWObjectDatabase();
+
     std::ostringstream str;
     time_t now=time(NULL);
     str << "SNMPCrawler started at " << asctime(localtime(&now))
