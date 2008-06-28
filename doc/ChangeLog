@@ -1,7 +1,18 @@
+2008-06-28  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* configure.in (HAVE_GOODLIBRESOLV): remove checks for thread-safe
+	dns libraries, these are not widely used and the code was hard to
+	maintain.
+
+	* dns.cpp: get rid of compile warnings
+
+	* DNSName.cpp (DNSName::loadFromSource): throw exception if
+	compile-time DNSName object can not resolve dns record.
+
 2008-06-08  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* merged branch "id-experiment" r98:HEAD
-	
+
 	* Rule.cpp (PolicyRule::getSrc): Caching pointers to rule elements
 	in PolicyRule to avoid calls to getFirsTByType if possible
 

@@ -113,8 +113,13 @@ void DNSName::loadFromSource() throw(FWException)
         }
     } catch (const FWException &ex)
     {
-        cerr << "Error resolving dns name " << getStr("dnsrec") << ": '"
-             << ex.toString() << "'" << endl;
+        ostringstream err;
+        err << "DNSName object "
+            << getName()
+            << " (compile time) can not resole dns name \""
+            << getSourceName() << "\": "
+            << ex.toString() << endl;
+        throw(FWException(err.str()));
     }
 }
 

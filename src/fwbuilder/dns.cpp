@@ -184,7 +184,9 @@ DNS::DNS()
 string DNS::getErrorMessage(int rcode)
 {
 #if !defined(HAVE_GOODLIBRESOLV)
-    throw FWException("This feature is not implemented on your OS.");
+    char buf[80];
+    sprintf(buf,"DNS Error '%d'", rcode);
+    return buf;
 #else
     map<int, string> error_messages;
     
@@ -214,14 +216,16 @@ string DNS::getErrorMessage(int rcode)
 #endif
 }
 
+#if !defined(HAVE_GOODLIBRESOLV)
+HostEnt DNS::getHostByAddr(const InetAddr &addr, int , int ) throw(FWException)
+{
+    return getHostByAddr(addr);
+}
+
+#else
+
 HostEnt DNS::getHostByAddr(const InetAddr &addr, int retries_, int timeout_) throw(FWException)
 {
-#if !defined(HAVE_GOODLIBRESOLV)
-#ifndef _WIN32
-# warning "getHostByAddr will use default system timeout because bind library was not found on the system "
-#endif
-    return getHostByAddr(addr);
-#else
     struct __res_state res;
 
     if(res_ninit(&res)==-1)
@@ -286,13 +290,12 @@ HostEnt DNS::getHostByAddr(const InetAddr &addr, int retries_, int timeout_) thr
         } 
     }
     return v;
-#endif
 }
+#endif
 
 
 HostEnt DNS::getHostByAddr(const InetAddr &addr) throw(FWException)
 {
-    struct hostent hostbuf;
     struct hostent *hp;
     int herr;
     
@@ -311,6 +314,7 @@ HostEnt DNS::getHostByAddr(const InetAddr &addr) throw(FWException)
     if (res!=NULL) herr=0;
 
 #elif HAVE_GETHOSTBYADDR_R_8
+    struct hostent hostbuf;
     int res;
 # ifdef GETHOSTBYADDR_FIRST_ARG_CHARPTR
     while((res = gethostbyaddr_r((const char *)&naddr, sizeof(naddr),
@@ -328,6 +332,7 @@ HostEnt DNS::getHostByAddr(const InetAddr &addr) throw(FWException)
         tmphstbuf = (char *)realloc(tmphstbuf, hstbuflen);
     }
 #elif HAVE_GETHOSTBYADDR_R_7
+    struct hostent hostbuf;
     struct hostent *res;
     while((hp = res = gethostbyaddr_r((const char *)&naddr, sizeof(naddr),
                                  AF_INET,
@@ -340,9 +345,6 @@ HostEnt DNS::getHostByAddr(const InetAddr &addr) throw(FWException)
         tmphstbuf = (char *)realloc(tmphstbuf, hstbuflen);
     }
 #else
-#ifndef _WIN32
-# warning "No gethostbyaddr_r(); all DNS calls will be serialized (slow!)"
-#endif
     struct hostent *res;
 
     gethostbyaddr_mutex->lock();
@@ -379,14 +381,12 @@ HostEnt DNS::getHostByAddr(const InetAddr &addr) throw(FWException)
 
 list<InetAddr> DNS::getHostByName(const string &name) throw(FWException)
 {
-    struct hostent hostbuf;
     struct hostent *hp=NULL;
     char  *tmphstbuf=NULL;
-    size_t hstbuflen = 1024;
-    int    herr;
 
 #ifdef HAVE_LWRES_GETIPNODE
 
+    int    herr;
     hp=lwres_getipnodebyname(name.c_str(), AF_INET, AI_V4MAPPED + AF_INET6, &herr);
     if(!hp)
     {
@@ -396,6 +396,9 @@ list<InetAddr> DNS::getHostByName(const string &name) throw(FWException)
 
 #elif HAVE_FUNC_GETHOSTBYNAME_R_6
 
+    struct hostent hostbuf;
+    size_t hstbuflen = 1024;
+    int    herr;
     tmphstbuf = (char *)malloc(hstbuflen);
     int res;
     while((res = gethostbyname_r(name.c_str(), &hostbuf,tmphstbuf,hstbuflen,&hp,&herr))
@@ -411,6 +414,9 @@ list<InetAddr> DNS::getHostByName(const string &name) throw(FWException)
     } 
 #elif HAVE_FUNC_GETHOSTBYNAME_R_5
 
+    struct hostent hostbuf;
+    size_t hstbuflen = 1024;
+    int    herr;
     tmphstbuf = (char *)malloc(hstbuflen);
     while(!(hp = gethostbyname_r(name.c_str(), &hostbuf, tmphstbuf, hstbuflen, &herr))
           && (herr == ERANGE))
@@ -425,10 +431,6 @@ list<InetAddr> DNS::getHostByName(const string &name) throw(FWException)
         throw FWException("Host or network '"+name+"' not found");
     } 
 #else
-#ifndef _WIN32
-# warning "No gethostbyname_r() all DNS calls will be serialized (slow!)"
-#endif
-    
     tmphstbuf = NULL;
     
     gethostbyname_mutex->lock();
@@ -467,6 +469,7 @@ list<InetAddr> DNS::getHostByName(const string &name) throw(FWException)
 #endif
         throw;
     }
+
     if(tmphstbuf)
        free(tmphstbuf);
 
@@ -482,13 +485,20 @@ list<InetAddr> DNS::getHostByName(const string &name) throw(FWException)
     return v;
 }
 
-multimap<string, InetAddr> DNS::getNS(const string &domain, Logger *logger,SyncFlag *stop_program, int retries_, int timeout_) throw(FWException)
+#if !defined(HAVE_GOODLIBRESOLV)
+multimap<string, InetAddr> DNS::getNS(const string&, Logger *,
+                                      SyncFlag *, int , int ) throw(FWException)
+{
+    throw FWException("This feature is not implemented on your OS.");
+}
+
+#else
+multimap<string, InetAddr> DNS::getNS(const string &domain, Logger *logger,
+                                      SyncFlag *stop_program, int retries_,
+                                      int timeout_) throw(FWException)
 {
     std::ostringstream str;
 
-#if !defined(HAVE_GOODLIBRESOLV)
-    throw FWException("This feature is not implemented on your OS.");
-#else
     struct __res_state res;
     
     if(res_ninit(&res)==-1)
@@ -564,20 +574,27 @@ multimap<string, InetAddr> DNS::getNS(const string &domain, Logger *logger,SyncF
     *logger << str;
 
     return v;
-#endif
 }
+#endif
 
 /**
  * 'Retries' applicable only to UPD part of the query (if any).
  * TCP connection to transfer zone established and attempted 
  * only once.
  */
-map<string, set<InetAddr> > DNS::findA(const string &domain, Logger *logger,SyncFlag *stop_program, int retries_, int timeout_) throw(FWException)
+#if !defined(HAVE_GOODLIBRESOLV)
+map<string, set<InetAddr> > DNS::findA(const string&, Logger *,
+                                       SyncFlag *, int, int) throw(FWException)
+{
+    throw FWException("This feature is not implemented on your OS.");
+}
+
+#else
+map<string, set<InetAddr> > DNS::findA(const string &domain, Logger *logger,
+                                       SyncFlag *stop_program, int retries_,
+                                       int timeout_) throw(FWException)
 {
     std::ostringstream str;
-#if !defined(HAVE_GOODLIBRESOLV)
-    throw FWException("This feature is not implemented on your OS.");
-#else
     TimeoutCounter timeout(timeout_, "Getting A records");
 
     *logger << "Looking for authoritative servers" << '\n';
@@ -613,20 +630,28 @@ map<string, set<InetAddr> > DNS::findA(const string &domain, Logger *logger,Sync
     // with no luck.
     // Throw last exception.
     throw *last_err;
-#endif
 }
+#endif
 
 /**
  * 'Retries' applicable only to UDP part of the query (if any).
  * TCP connection to transfer zone established and attempted 
  * only once.
  */
-map<string, set<InetAddr> > DNS::findA(const string &domain, const InetAddr &ns, Logger *logger,SyncFlag *stop_program, int retries_, int timeout_) throw(FWException)
+#if !defined(HAVE_GOODLIBRESOLV)
+map<string, set<InetAddr> > DNS::findA(const string&, const InetAddr &,
+                                       Logger *,SyncFlag *,
+                                       int , int ) throw(FWException)
+{
+    throw FWException("This feature is not implemented on your OS.");
+}
+
+#else
+map<string, set<InetAddr> > DNS::findA(const string &domain, const InetAddr &ns,
+                                       Logger *logger,SyncFlag *stop_program,
+                                       int retries_, int timeout_) throw(FWException)
 {
     std::ostringstream str;
-#if !defined(HAVE_GOODLIBRESOLV)
-    throw FWException("This feature is not implemented on your OS.");
-#else
     TimeoutCounter timeout(timeout_, "Getting A records");
 
     str << "Querying server: " << ns.toString() << '\n';
@@ -828,8 +853,8 @@ map<string, set<InetAddr> > DNS::findA(const string &domain, const InetAddr &ns,
     str << "Succesfuly found " << (int)v.size() << " hosts."  << '\n';
     *logger << str;
     return v;
-#endif
 }
+#endif
 
 DNS_getNS_query::DNS_getNS_query(const string &domain_, int retries_, int timeout_)
 {
