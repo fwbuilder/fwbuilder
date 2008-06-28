@@ -235,7 +235,19 @@ HostEnt DNS::getHostByAddr(const InetAddr &addr, int retries_, int timeout_) thr
     res.retry   = retries_;
 
     char host[NS_MAXDNAME];
-    sprintf(host, "%u.%u.%u.%u.IN-ADDR.ARPA.", addr[3], addr[2], addr[1], addr[0]);
+    string addr_c = addr.toString();
+    string octets[4];
+    size_type p1, p2;
+    int idx = 0;
+    p1 = p2 = 0;
+    while ( (p2=addr_c.find_first_of('.', p1))!=string::npos )
+    {
+        octets[idx] = addr_c.substr(p1,p2);
+        p1 = p2+1;
+        idx++;
+    }
+    sprintf(host, "%u.%u.%u.%u.IN-ADDR.ARPA.",
+            octets[3], octets[2], octets[1], octets[0]);
 
     u_char buf[PACKETSZ];
     int n = res_nmkquery(&res, ns_o_query, host, ns_c_in, ns_t_ptr, NULL, 0, NULL,
