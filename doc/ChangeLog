@@ -1,3 +1,8 @@
+2008-06-28  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* DiscoveryDruid.cpp (DiscoveryDruid::loadDataFromDNS): object
+	"discovery" by DNS zone transfer is not supported anymore.
+
 2008-06-27  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printProtocol):

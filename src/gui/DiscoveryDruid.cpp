@@ -614,47 +614,15 @@ void DiscoveryDruid::updatePrg()
     {
         unBar->setValue(unProg++);
     }
-    
 }
 
 void DiscoveryDruid::getNameServers()
 {
-    multimap<string,libfwbuilder::InetAddr> ns_records;
-
-    string domain_name=m_dialog->domainname->text().toLatin1().constData();
-    DNS_getNS_query *dns=new DNS_getNS_query(domain_name);
-    int              n;
-    try 
-    {
-        NullLogger nl;
-        SyncFlag   stop_program(false);
-        ns_records=dns->getNS(domain_name, &nl, &stop_program);
-        m_dialog->dnsfromlist->setChecked(true);
-
-    } catch (FWException &ex) 
-    {
-        //string(_("Could not find name servers for the domain: '"))+
-        //domain_name+"'  ", ex.toString(), this);
-        delete dns;
-        m_dialog->nameserverlist->setEnabled(false);
-        m_dialog->dnsfromlist->setEnabled(false);
-        m_dialog->dnscustom->setChecked(true);
-        return ;
-    }
-    multimap<string,InetAddr>::iterator i;
-    m_dialog->nameserverlist->clear();
-    NameServers.clear();
-    
-    for (n=0,i=ns_records.begin(); i!=ns_records.end(); ++n,++i) 
-    {
-
-        string s = (*i).first + "  (" + ((*i).second).toString() + ")";
-        QString qs = s.c_str();
-        m_dialog->nameserverlist->addItem(qs);
-    
-        InetAddr *na=new InetAddr( (*i).second );
-        NameServers[qs] = *na;
-    }
+    // this is not supported anymore since all resolver functions
+    // have been removed from class DNS
+    m_dialog->nameserverlist->setEnabled(false);
+    m_dialog->dnsfromlist->setEnabled(false);
+    m_dialog->dnscustom->setChecked(true);
 }
 
 void DiscoveryDruid::setDiscoveryMethod_file()
@@ -865,31 +833,8 @@ InetAddr DiscoveryDruid::getNS()
 
 void DiscoveryDruid::startDNSScan()
 {
-    InetAddr ns=getNS(); 
-    string domain_name=m_dialog->domainname->text().toLatin1().constData();
-    
-    DNS_findA_query *q=new DNS_findA_query();
-    q->init(
-            domain_name, ns,
-            m_dialog->dnsretries->value(),
-            m_dialog->dnstimeout->value()
-            );
-    bop=q;
-    
-    m_dialog->discoveryprogress->setMaximum(0);
-    unBar=m_dialog->discoveryprogress;
-    try
-    {
-        logger=bop->start_operation();
-    
-        m_dialog->discoverylog->append("Reading DNS zone ...");
-
-    } catch(const FWException &ex)
-    {
-        delete q;
-        q=NULL;
-        qDebug(ex.toString().c_str());
-    }
+    // this is not supported since all resolver functions have been
+    // removed from class DNS
 }
 
 InetAddr DiscoveryDruid::getSeedHostAddress()
@@ -1384,34 +1329,8 @@ void DiscoveryDruid::fillTypeChangingList()
 
 void DiscoveryDruid::loadDataFromDNS()
 {
-    DNS_findA_query *q=(DNS_findA_query*)bop;
-    Objects.clear();
-
-    map<string,set<InetAddr> > t = q->getResult();
-    
-    for(map<string,set<InetAddr> >::iterator j = t.begin(); j!=t.end(); ++j)
-    {
-        ObjectDescriptor od;
-        od.addr     = *((*j).second.begin());
-        od.sysname  = (*j).first;
-        if (!m_dialog->uselongname->isChecked())
-        {
-            string::size_type p=od.sysname.rfind(m_dialog->domainname->text().toLatin1().constData());
-            if (p!=string::npos)
-            {
-                od.sysname=od.sysname.substr(0,p-1);
-            }
-        }
-        od.type =IPv4::TYPENAME;
-        od.isSelected=false;
-        
-        if (od.sysname.empty())
-        {
-            od.sysname=string("h-") + od.addr.toString();
-        }
-        
-        Objects[od.toString().c_str()]=od;
-    }
+    // this is not supported since all resolver functions have been
+    // removed from class DNS
 }
 
 void DiscoveryDruid::loadDataFromFile()
