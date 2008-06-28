@@ -24,9 +24,6 @@ XSLT_LIBS="@XSLT_LIBS@"
 LIBSNMP_LIBS="@LIBSNMP_LIBS@"
 LIB_RESOLV="@LIB_RESOLV@"
 
-LWRES_CFLAGS="@LWRES_CFLAGS@"
-LWRES_LIBS="@LWRES_LIBS@"
-
 LIBS="@LIBS@"
 CPPFLAGS="@CPPFLAGS@"
 
@@ -144,8 +141,8 @@ fi
 includedir="${includedir} -I${prefix}/include/fwb-3"
 
 
-the_libs="$the_libs ${LIBFWBUILDER_LIBDIR}  ${LIBS} ${PTHREAD_LIBS} ${XSLT_LIBS} ${XML_LIBS} ${LIBSNMP_LIBS} ${LWRES_LIBS} ${LIB_RESOLV}"
-the_flags="$the_flags ${includedir} ${CPPFLAGS} ${PTHREAD_CFLAGS} ${XML_CFLAGS} ${XSLT_CFLAGS} ${LWRES_CFLAGS} "
+the_libs="$the_libs ${LIBFWBUILDER_LIBDIR}  ${LIBS} ${PTHREAD_LIBS} ${XSLT_LIBS} ${XML_LIBS} ${LIBSNMP_LIBS} ${LIB_RESOLV}"
+the_flags="$the_flags ${includedir} ${CPPFLAGS} ${PTHREAD_CFLAGS} ${XML_CFLAGS} ${XSLT_CFLAGS} "
 
 if $cflags; then
     all_flags="$the_flags"

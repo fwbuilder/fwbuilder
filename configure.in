@@ -316,40 +316,6 @@ AC_CHECK_HEADER(bind/resolv.h, [
 
 LIB_RESOLV=""
 HAVE_RES_NQUERY=""
-
-if test -n "$HAVE_RESOLV_H"; then
-  AC_CHECK_LIB(resolv,   res_nquery, HAVE_RES_NQUERY=1 )
-  AC_CHECK_LIB(resolv, __res_nquery, HAVE_RES_NQUERY=1 )
-
-  if test -n "$HAVE_RES_NQUERY"; then
-    if test -z "$LIB_RESOLV"; then
-      AC_CHECK_LIB(resolv, __ns_parserr, [
-        LIB_RESOLV="-lresolv"
-      HAVE_GOODLIBRESOLV="yes"
-        AC_DEFINE(HAVE_GOODLIBRESOLV)
-      ])
-    fi
-    CFLAGS="$CFLAGS -Wfatal-errors"
-    if test "$build_cpu" = "x86_64"; then
-      if test -z "$LIB_RESOLV"; then
-        AC_CHECK_LIB(c, __ns_parserr, [
-          LIB_RESOLV="/usr/lib64/libresolv.a"
-        HAVE_GOODLIBRESOLV="yes"
-          AC_DEFINE(HAVE_GOODLIBRESOLV)
-        ], , /usr/lib/libresolv.a)
-      fi
-    else
-      if test -z "$LIB_RESOLV"; then
-        AC_CHECK_LIB(c, __ns_parserr, [
-          LIB_RESOLV="/usr/lib/libresolv.a"
-        HAVE_GOODLIBRESOLV="yes"
-          AC_DEFINE(HAVE_GOODLIBRESOLV)
-        ], , /usr/lib/libresolv.a)
-      fi
-    fi
-  fi
-fi
-
 AC_SUBST(LIB_RESOLV) 
 
 
@@ -360,13 +326,11 @@ dnl
 XML_CFLAGS_Q=`echo ${XML_CFLAGS} | sed 's/-I//g'`
 XSLT_CFLAGS_Q=`echo ${XSLT_CFLAGS} | sed 's/-I//g'`
 PTHREAD_CFLAGS_Q=`echo ${PTHREAD_CFLAGS} | sed 's/-I//g'`
-LWRES_CFLAGS_Q=`echo ${LWRES_CFLAGS} | sed 's/-I//g'`
 LIBS_Q=`echo ${LIBS} | sed 's/-I//g'`
 
 AC_SUBST(XML_CFLAGS_Q)
 AC_SUBST(XSLT_CFLAGS_Q)
 AC_SUBST(PTHREAD_CFLAGS_Q)
-AC_SUBST(LWRES_CFLAGS_Q)
 AC_SUBST(LIBS_Q)
 
 
