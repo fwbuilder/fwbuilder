@@ -1731,7 +1731,7 @@ void SNMPCrawler::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWExcept
     *logger << str;
 }
 
-void SNMPCrawler::remove_virtual(Logger *logger,SyncFlag *stop_program) throw(FWException)
+void SNMPCrawler::remove_virtual(Logger *logger, SyncFlag*) throw(FWException)
 {
     *logger << "Removing virtual IPs.\n";
     for(map<InetAddr, CrawlerFind>::iterator j=found.begin(); j!=found.end(); ++j)
@@ -1739,33 +1739,24 @@ void SNMPCrawler::remove_virtual(Logger *logger,SyncFlag *stop_program) throw(FW
             found.erase(j);
 }
 
-void SNMPCrawler::bacresolve_results(Logger *logger,SyncFlag *stop_program) throw(FWException)
+void SNMPCrawler::bacresolve_results(Logger *logger,
+                                     SyncFlag *) throw(FWException)
 {
     *logger << "Resolving names\n";
         
     set<InetAddr> resolv_set;
-    for(map<InetAddr, CrawlerFind>::iterator j=found.begin(); j!=found.end(); ++j)
-        resolv_set.insert((*j).first);
-    DNS_bulkBackResolve_query backresq(resolv_set, dns_threads,
-				       dns_retries,dns_timeout );
-    resolv_set.clear();
-        
-    try
+    for (map<InetAddr, CrawlerFind>::iterator j=found.begin();
+         j!=found.end(); ++j)
     {
-        backresq.run_impl(logger,stop_program);
-    } catch(const FWException &ex)
-    {
-        *logger << "DNS resolver reported errors.\n";
-    }
-    *logger << "Finished.\n";
+        HostEnt he = DNS::getHostByAddr((*j).first);
 
-    map<InetAddr, HostEnt> resolv_res=backresq.getResult();
-    for(map<InetAddr, HostEnt>::iterator j=resolv_res.begin(); j!=resolv_res.end(); ++j)
-    {
         found[(*j).first].dns_ok  = true;
-        found[(*j).first].name    = (*j).second.name;
-        found[(*j).first].aliases = (*j).second.aliases;
+        found[(*j).first].name    = he.name;
+        found[(*j).first].aliases = he.aliases;
+        *logger << ((*j).first).toString() << " : " << he.name << "\n";
     }
+
+    *logger << "Finished.\n";
 }
 
 

@@ -27,7 +27,6 @@
 #include <fwbuilder/libfwbuilder-config.h>
 #include <fwbuilder/Tools.h>
 #include <fwbuilder/XMLTools.h>
-#include <fwbuilder/dns.h>
 
 #include <string.h>
 #include <stdio.h>
@@ -207,9 +206,6 @@ void init()
         return; 
     }
 #endif
-
-    /* Initialize classes which need static initialization */
-    DNS::init();
 
     /* Init XML parser */
     XMLTools::initXMLTools();

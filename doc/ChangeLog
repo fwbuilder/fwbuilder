@@ -1,5 +1,12 @@
 2008-06-28  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* dns.cpp (DNS::getHostByAddr): class DNS has been radically
+	simplified. Hard to support functions to get NS records and DNS
+	zone tranfer have been removed. This class now only provides
+	convenience wrappers around gethostbyname2 and gethostbyaddr
+	functions. Wrapper functions now accept parameter that defines
+	address family type (AF_INET or AF_INET6).
+
 	* configure.in (HAVE_GOODLIBRESOLV): remove checks for thread-safe
 	dns libraries, these are not widely used and the code was hard to
 	maintain.

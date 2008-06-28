@@ -68,9 +68,6 @@
 namespace libfwbuilder
 {
 
-    void init_dns() throw(FWException);
-
-
 class HostEnt
 {
     public:
@@ -82,152 +79,38 @@ class HostEnt
 /**
  * This is abstract class
  */
-class DNS : public BackgroundOp
+class DNS
 {
     public:
 
+    DNS() {}
+    
     /** 
      * Should be called exactly once before this class
      * ever used.
      */
     static void init();
     
-    DNS();
-
     /**
      * Finds IP adddresses of the host with given host name.
      * This operation does not run in backgound.
      * Returned list is sorted.
      */
-    static std::list<InetAddr> getHostByName(const std::string &name) throw(FWException);
+    static std::list<InetAddr> getHostByName(const std::string &name,
+                                             int type=AF_INET) throw(FWException);
 
     /**
      * Find all host names of host with given IP.
      * This operation does not run in backgound.
      */
-    static HostEnt getHostByAddr(const InetAddr &addr) throw(FWException);
+    static HostEnt getHostByAddr(const InetAddr &addr, int type=AF_INET)
+        throw(FWException);
 
-    /**
-     * Return name of host with given IP.
-     */
-    static HostEnt getHostByAddr(const InetAddr &addr, int retries_, int timeout_) throw(FWException);
-
-    /**
-     * Finds NS records for given domain
-     */
-    std::multimap<std::string, InetAddr> getNS(const std::string &domain, Logger *logger,SyncFlag *stop_program, int retries_=RES_DFLRETRY, int timeout_=RES_TIMEOUT) throw(FWException);
-
-    /**
-     * Attempts to fetch zone for given domain for
-     * it's name server. If succeeded, finds all 'A'
-     * records in it and returs hostname/InetAddr pairs.
-     */
-    std::map<std::string, std::set<InetAddr> > findA(const std::string &domain, Logger *logger,SyncFlag *stop_program,  int retries_=RES_DFLRETRY, int timeout_=RES_TIMEOUT) throw(FWException);
-
-    /**
-     * Attempts to fetch zone for given domain for
-     * specific server. If succeeded, finds all 'A'
-     * records in it and returs hostname/InetAddr pairs.
-     */
-    std::map<std::string, std::set<InetAddr> > findA(const std::string &domain, const InetAddr &ns, Logger *logger,SyncFlag *stop_program,  int retries_=RES_DFLRETRY, int timeout_=RES_TIMEOUT) throw(FWException);
-
-    protected:
-
-    static std::string getErrorMessage(int rcode);
     private:
-
-    static const size_t RSP_BUF_SIZE;
 
     static Mutex *gethostbyname_mutex;
     static Mutex *gethostbyaddr_mutex;
     
-};
-
-class DNS_findA_query : public DNS
-{
-    public:
-
-    explicit DNS_findA_query();
-
-    DNS_findA_query(const std::string &domain_, const InetAddr &ns_, int retries_=RES_DFLRETRY, int timeout_=RES_TIMEOUT);
-
-    void init(const std::string &domain_, const InetAddr &ns_, int retries_=RES_DFLRETRY, int timeout_=RES_TIMEOUT);
-    
-    virtual void run_impl(Logger *logger,SyncFlag *stop_program) throw(FWException);
-    
-    std::map<std::string, std::set<InetAddr> > getResult() { return result; }
-
-    private:
-
-    std::map<std::string, std::set<InetAddr> > result;    
-    std::string domain;
-    int retries;
-    int timeout;
-    InetAddr ns;
-};
-
-class DNS_getNS_query : public DNS
-{
-    public:
-
-    DNS_getNS_query(const std::string &domain_, int retries_=RES_DFLRETRY, int timeout_=RES_TIMEOUT);
-    
-    virtual void run_impl(Logger *logger,SyncFlag *stop_program) throw(FWException);
-    
-    std::multimap<std::string, InetAddr> getResult() { return result; }
-    
-    private:
-    
-    std::multimap<std::string, InetAddr> result;    
-    std::string domain;
-    int retries;
-    int timeout;
-};
-
-class DNS_bulkBackResolve_query : public DNS
-{
-    friend void *DNS_bulkBackResolve_Thread(void *);
-
-    public:
-    
-    DNS_bulkBackResolve_query(std::set<InetAddr>, unsigned int nthreads,  
-			      int retries_=RES_DFLRETRY,
-			      int timeout_=RES_TIMEOUT);
-    virtual ~DNS_bulkBackResolve_query();
-    
-    /**
-     * Resolves all hosts in list. If resolving at least of one
-     * of them failed - exception is thrown.
-     * Even when exception is thrown, successfully resolved hosts
-     * are returned.
-     */
-    virtual void run_impl(Logger *logger,SyncFlag *stop_program) throw(FWException);
-    
-    std::map<InetAddr, HostEnt> getResult() { return result; }
-    std::set<InetAddr> getFailed() { return failed; }
-    pthread_attr_t tattr;
-    
-    protected:
-    
-    std::map<InetAddr, HostEnt> result;
-    Mutex failed_mutex;
-    
-    std::set<InetAddr> failed;
-    Mutex result_mutex;
-    
-    std::queue<InetAddr> ips;
-    Mutex queue_mutex;
-
-    int retries;
-    int timeout;
-    
-    private:
-
-    Mutex running_mutex         ;
-    Cond  running_cond          ;
-    unsigned int running_count ;
-    
-    unsigned int nthreads;
 };
 
 }
