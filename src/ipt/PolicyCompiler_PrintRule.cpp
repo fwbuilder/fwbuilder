@@ -604,7 +604,8 @@ string PolicyCompiler_ipt::PrintRule::_printProtocol(libfwbuilder::Service *srv)
             if (pn == "icmp")
             {
                 s = "-p ipv6-icmp ";
-                if (ipt_comp->newIptables(version)) s += " -m icmp6";
+                if (srv->getInt("type")!=-1 &&
+                    ipt_comp->newIptables(version)) s += " -m icmp6";
             } else
             {
                 // ip6tables issues warning for commands using "-p all"
@@ -857,7 +858,8 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
 	    string str = _printICMP( ICMPService::cast(srv) );
 	    if (str.empty() ) 
             {
-                if (ipt_comp->newIptables(version))
+                // module icmp6 does not like "--icmp6-type any"
+                if (ipt_comp->newIptables(version) && !ipt_comp->ipv6)
                     ostr << icmp_type_str << " any ";
             } else
             {
