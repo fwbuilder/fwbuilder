@@ -277,7 +277,7 @@
              </property>
              <property name="minimumSize" >
               <size>
-               <width>130</width>
+               <width>0</width>
                <height>0</height>
               </size>
              </property>
@@ -341,7 +341,7 @@
             <widget class="QLineEdit" name="code" >
              <property name="minimumSize" >
               <size>
-               <width>200</width>
+               <width>0</width>
                <height>0</height>
               </size>
              </property>

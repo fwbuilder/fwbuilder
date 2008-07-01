@@ -373,7 +373,7 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
             <widget class="QLineEdit" name="obj_name" >
              <property name="minimumSize" >
               <size>
-               <width>200</width>
+               <width>0</width>
                <height>0</height>
               </size>
              </property>

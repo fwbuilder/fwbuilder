@@ -468,6 +468,12 @@
            </property>
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text" >
               <string>Name:</string>
              </property>
@@ -486,7 +492,7 @@
              </property>
              <property name="minimumSize" >
               <size>
-               <width>200</width>
+               <width>0</width>
                <height>0</height>
               </size>
              </property>

@@ -292,6 +292,12 @@
           <layout class="QGridLayout" >
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
+             <property name="maximumSize" >
+              <size>
+               <width>55</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="text" >
               <string>Name:</string>
              </property>
@@ -310,7 +316,7 @@
              </property>
              <property name="minimumSize" >
               <size>
-               <width>200</width>
+               <width>0</width>
                <height>25</height>
               </size>
              </property>
@@ -318,6 +324,18 @@
            </item>
            <item row="1" column="0" >
             <widget class="QLabel" name="textLabel2_2" >
+             <property name="minimumSize" >
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>55</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="text" >
               <string>Address:</string>
              </property>
