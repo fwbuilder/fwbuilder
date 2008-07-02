@@ -41,6 +41,7 @@
 #include <fwbuilder/Library.h>
 #include <fwbuilder/Interval.h>
 #include <fwbuilder/ICMPService.h>
+#include <fwbuilder/ICMP6Service.h>
 #include <fwbuilder/IPService.h>
 #include <fwbuilder/TCPService.h>
 #include <fwbuilder/UDPService.h>
@@ -599,6 +600,7 @@ FWObject *FWObjectDatabase::create(const string &type_name,
     CREATE_OBJ(UDPService          ,n, id, prepopulate);
     CREATE_OBJ(TagService          ,n, id, prepopulate);
     CREATE_OBJ(ICMPService         ,n, id, prepopulate);
+    CREATE_OBJ(ICMP6Service        ,n, id, prepopulate);
     CREATE_OBJ(IPService           ,n, id, prepopulate);
     CREATE_OBJ(CustomService       ,n, id, prepopulate);
     CREATE_OBJ(UserService         ,n, id, prepopulate);
