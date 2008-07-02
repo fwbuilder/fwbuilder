@@ -806,29 +806,36 @@ void DiscoveryDruid::startDNSScan()
 
 InetAddr DiscoveryDruid::getSeedHostAddress()
 {
+    if (fwbdebug)
+        qDebug(
+            QString("DiscoveryDruid::getSeedHostAddress(): Seed host name %1").
+            arg(m_dialog->seedhostname->text()).toLatin1().constData());
+
     libfwbuilder::InetAddr   seed_host_addr;
     if (!m_dialog->seedhostname->text().isEmpty())
     {
+        try 
+        {
+            QString a = getAddrByName( m_dialog->seedhostname->text() );
+            if (fwbdebug)
+                qDebug(
+                    QString("DiscoveryDruid::getSeedHostAddress() address: %1").
+                       arg(a).toLatin1().constData());
+
+            return InetAddr( a.toLatin1().constData() );
+        } catch(const FWException &ex) 
+        {
+        }        
+
         try
         {
-            seed_host_addr=InetAddr(m_dialog->seedhostname->text().toLatin1().constData());
+            seed_host_addr = InetAddr(
+                m_dialog->seedhostname->text().toLatin1().constData());
             return seed_host_addr;
         } catch(const FWException &ex) 
         {
         }        
         
-        try 
-        {
-            QString a = getAddrByName( m_dialog->seedhostname->text() );
-            return InetAddr( a.toLatin1().constData() );
-#if 0
-            list<InetAddr> v=DNS::getHostByName( m_dialog->seedhostname->text().toLatin1().constData() );
-            seed_host_addr = v.front();
-            return seed_host_addr;
-#endif
-        } catch(const FWException &ex) 
-        {
-        }        
     }
     return seed_host_addr;
 }
@@ -1739,19 +1746,21 @@ void DiscoveryDruid::updateLog()
 void DiscoveryDruid::changedSeedHost()
 {
     m_dialog->seedhosterror_message->setText(" ");
-    userIsTyping=true;
-    errMessage=m_dialog->seedhosterror_message;
-    HostName=m_dialog->seedhostname->text();
+    userIsTyping = true;
+    errMessage = m_dialog->seedhosterror_message;
+    HostName = m_dialog->seedhostname->text();
     
     if (HostName.isEmpty())
     {
         timer->stop();
         m_dialog->DNSprogress->hide();
         QPalette palette = m_dialog->seedhosterror_message->palette();
-        palette.setColor(m_dialog->seedhosterror_message->foregroundRole(), Qt::darkRed);
+        palette.setColor(
+            m_dialog->seedhosterror_message->foregroundRole(), Qt::darkRed);
         m_dialog->seedhosterror_message->setPalette(palette);
 
-        m_dialog->seedhosterror_message->setText("Enter a valid host name or address.");
+        m_dialog->seedhosterror_message->setText(
+            "Enter a valid host name or address.");
         isSeedHostOK=false;
     }
     else
@@ -1760,26 +1769,36 @@ void DiscoveryDruid::changedSeedHost()
         { // seems to be an IP Address
             m_dialog->DNSprogress->hide();
             timer->stop();
-            QRegExp r=QRegExp("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$",Qt::CaseInsensitive); //non wildcard
+            QRegExp r = QRegExp(
+                "^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$",
+                Qt::CaseInsensitive); //non wildcard
             if (r.exactMatch(HostName))
             {
                 try
                 {
                     InetAddr(HostName.toLatin1().constData());
                     
-                    QPalette palette = m_dialog->seedhosterror_message->palette();
-                    palette.setColor(m_dialog->seedhosterror_message->foregroundRole(), Qt::darkGreen);
+                    QPalette palette =
+                        m_dialog->seedhosterror_message->palette();
+                    palette.setColor(
+                        m_dialog->seedhosterror_message->foregroundRole(),
+                        Qt::darkGreen);
                     m_dialog->seedhosterror_message->setPalette(palette);
 
-                    m_dialog->seedhosterror_message->setText("Address verified");
+                    m_dialog->seedhosterror_message->setText(
+                        "Address verified");
                     isSeedHostOK=true;
                 } catch(const FWException &ex) 
                 {
-                    QPalette palette = m_dialog->seedhosterror_message->palette();
-                    palette.setColor(m_dialog->seedhosterror_message->foregroundRole(), Qt::darkRed);
+                    QPalette palette =
+                        m_dialog->seedhosterror_message->palette();
+                    palette.setColor(
+                        m_dialog->seedhosterror_message->foregroundRole(),
+                        Qt::darkRed);
                     m_dialog->seedhosterror_message->setPalette(palette);
                     
-                    m_dialog->seedhosterror_message->setText(ex.toString().c_str());
+                    m_dialog->seedhosterror_message->setText(
+                        ex.toString().c_str());
                     // need to return focus to the input field in case of error
                     //m_dialog->seedhostname->setFocus();
                     isSeedHostOK=false;
@@ -1788,7 +1807,9 @@ void DiscoveryDruid::changedSeedHost()
             else
             {
                 QPalette palette = m_dialog->seedhosterror_message->palette();
-                palette.setColor(m_dialog->seedhosterror_message->foregroundRole(), Qt::darkRed);
+                palette.setColor(
+                    m_dialog->seedhosterror_message->foregroundRole(),
+                    Qt::darkRed);
                 m_dialog->seedhosterror_message->setPalette(palette);
                 
                 m_dialog->seedhosterror_message->setText("Wrong IPv4 format");
@@ -1798,13 +1819,15 @@ void DiscoveryDruid::changedSeedHost()
         }
         else
         {// it looks like a DNS name
-            isSeedHostOK=false;
+            isSeedHostOK = false;
 
             QPalette palette = m_dialog->seedhosterror_message->palette();
-            palette.setColor(m_dialog->seedhosterror_message->foregroundRole(), Qt::black);
+            palette.setColor(
+                m_dialog->seedhosterror_message->foregroundRole(), Qt::black);
             m_dialog->seedhosterror_message->setPalette(palette);
 
-            m_dialog->seedhosterror_message->setText("DNS resolution in progress...");
+            m_dialog->seedhosterror_message->setText(
+                "DNS resolution in progress...");
             unProg = 0;
             unBar=m_dialog->DNSprogress;
 
