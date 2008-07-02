@@ -1,5 +1,8 @@
 2008-07-01  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_printProtocol):
+	compiler for iptables distinguishes ICMPService and ICMP6Service
+
 	* objects_init.xml.in: Added few standard ICMP6 objects
 
 	* ObjectManipulator.cpp (ObjectManipulator::newICMP6): Added

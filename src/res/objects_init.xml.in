@@ -165,6 +165,8 @@
         <ICMP6Service id="idCFF27650" name="ipv6 time exceeded in reassembly" comment="Time exceeded in reassembly" code="1" type="3"/>
         <ICMP6Service id="idE0B27650" name="ipv6 packet too big" code="-1" type="2"/>
         <ICMP6Service id="idE0D27650" name="ipv6 all dest unreachable" comment="All icmpv6 codes for type &quot;destination unreachable&quot;&#10;" code="-1" type="1"/>
+        <ICMP6Service id="idCFE27660" name="ipv6 any ICMP6" comment="any ICMPv6" code="-1" type="-1"/>
+
       </ServiceGroup>
       <ServiceGroup id="stdid06" name="IP">
         <IPService id="id3CB12797" name="AH" comment="IPSEC Authentication Header Protocol" fragm="False" lsrr="False" protocol_num="51" rr="False" short_fragm="False" ssrr="False" ts="False"/>

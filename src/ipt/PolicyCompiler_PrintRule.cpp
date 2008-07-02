@@ -29,6 +29,7 @@
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
+#include "fwbuilder/ICMP6Service.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/CustomService.h"
@@ -601,7 +602,13 @@ string PolicyCompiler_ipt::PrintRule::_printProtocol(libfwbuilder::Service *srv)
 
         if (ipt_comp->ipv6)
         { 
-            if (pn == "icmp")
+            if (ICMPService::isA(srv))
+            {
+                compiler->abort("Can not use ICMPService in ipv6 rule; "
+                                "use ICMP6Service object instead");
+            }
+
+            if (ICMP6Service::isA(srv))
             {
                 s = "-p ipv6-icmp ";
                 if (srv->getInt("type")!=-1 &&
@@ -615,7 +622,13 @@ string PolicyCompiler_ipt::PrintRule::_printProtocol(libfwbuilder::Service *srv)
             }
         } else
         {
-            if (pn == "icmp")
+            if (ICMP6Service::isA(srv))
+            {
+                compiler->abort("Can not use ICMP6Service in ipv4 rule; "
+                                "use ICMPService object instead");
+            }
+
+            if (ICMPService::isA(srv))
             {
                 s = "-p icmp ";
                 if (ipt_comp->newIptables(version)) s += " -m icmp ";
@@ -673,7 +686,7 @@ string PolicyCompiler_ipt::PrintRule::_printDstPorts(Service *srv)
 string PolicyCompiler_ipt::PrintRule::_printICMP(ICMPService *srv)
 {
     std::ostringstream  str;
-    if (ICMPService::isA(srv) && srv->getInt("type")!=-1)
+    if (ICMPService::cast(srv) && srv->getInt("type")!=-1)
     {
 	str << srv->getStr("type");
 	if (srv->getInt("code")!=-1) 
@@ -850,7 +863,7 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
                       << str << " ";
             }
 	}
-	if (ICMPService::isA(srv)) 
+	if (ICMPService::isA(srv) || ICMP6Service::isA(srv)) 
         {
             string icmp_type_str = 
                 (ipt_comp->ipv6) ? " --icmpv6-type" : " --icmp-type";
