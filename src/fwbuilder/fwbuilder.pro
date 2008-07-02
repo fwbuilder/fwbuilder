@@ -31,6 +31,7 @@ SOURCES  = 	inet_net_ntop.c \
 			ICMPService.cpp \
 			ICMP6Service.cpp \
 			Interface.cpp \
+			InterfaceData.cpp \
 			InterfacePolicy.cpp \
 			Interval.cpp \
 			IntervalGroup.cpp \
@@ -93,6 +94,7 @@ HEADERS  = 	inet_net.h \
 			ICMPService.h \
 			ICMP6Service.h \
 			Interface.h \
+			InterfaceData.h \
 			InterfacePolicy.h \
 			IntervalGroup.h \
 			Interval.h \

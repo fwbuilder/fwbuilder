@@ -63,7 +63,8 @@ Logger &libfwbuilder::end(Logger &l)
 void    Logger::blackhole()
 {
     line_lock.lock();
-    blackhole_mode=true;
+    blackhole_mode = true;
+    copy_to_stderr = false;
     line_lock.unlock();
 }
 
@@ -83,6 +84,7 @@ QueueLogger::QueueLogger() {}
 Logger& QueueLogger::operator<< (char c)            
 { 
     if (blackhole_mode) return *this;
+    if (copy_to_stderr) cerr << c;
 
     std::ostringstream str;
     str << c;
@@ -93,6 +95,7 @@ Logger& QueueLogger::operator<< (char c)
 Logger& QueueLogger::operator<< (char  *str)        
 { 
     if (blackhole_mode) return *this;
+    if (copy_to_stderr) cerr << str;
 
     line_lock.lock();
     linequeue.push(str);
@@ -103,6 +106,7 @@ Logger& QueueLogger::operator<< (char  *str)
 Logger& QueueLogger::operator<< (const char  *str)        
 { 
     if (blackhole_mode) return *this;
+    if (copy_to_stderr) cerr << str;
 
     line_lock.lock();
     linequeue.push(str);
@@ -113,6 +117,7 @@ Logger& QueueLogger::operator<< (const char  *str)
 Logger& QueueLogger::operator<< (const string &str) 
 { 
     if (blackhole_mode) return *this;
+    if (copy_to_stderr) cerr << str;
 
     line_lock.lock();
     linequeue.push(str);
@@ -123,6 +128,7 @@ Logger& QueueLogger::operator<< (const string &str)
 Logger& QueueLogger::operator<< (int    i  )        
 { 
     if (blackhole_mode) return *this;
+    if (copy_to_stderr) cerr << i;
 
     std::ostringstream str;
     str << i;
@@ -133,6 +139,7 @@ Logger& QueueLogger::operator<< (int    i  )
 Logger& QueueLogger::operator<< (long   l  )        
 { 
     if (blackhole_mode) return *this;
+    if (copy_to_stderr) cerr << l;
 
     std::ostringstream str;
     str << l;
@@ -143,6 +150,7 @@ Logger& QueueLogger::operator<< (long   l  )
 Logger& QueueLogger::operator<< (std::ostringstream &sstr)
 {
     if (blackhole_mode) return *this;
+    if (copy_to_stderr) cerr << sstr.str();
 
     line_lock.lock();
     linequeue.push(sstr.str());

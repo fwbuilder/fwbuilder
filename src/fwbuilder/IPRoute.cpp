@@ -28,7 +28,6 @@
 
 #include <fwbuilder/InetAddr.h>
 #include <fwbuilder/IPRoute.h>
-#include <fwbuilder/Interface.h>
 
 #include <stdio.h>
 #include <iostream>
@@ -48,25 +47,24 @@ namespace libfwbuilder
 
 IPRoute::IPRoute(const IPRoute &o)
 {
-    nm     = o.nm     ;
-    dst    = o.dst    ;
-    gw     = o.gw     ;
-    intf   = o.intf?new Interface(*o.intf):NULL ;
-    direct = o.direct ;
+    nm     = o.nm;
+    dst    = o.dst;
+    gw     = o.gw;
+    intf   = o.intf;
+    direct = o.direct;
 }
 
-IPRoute::~IPRoute()
-{
-    delete intf;
-}
+IPRoute::~IPRoute() {}
 
-IPRoute::IPRoute(const InetAddr &_dst, const InetAddr &_nm, const InetAddr &_gw, const Interface *_intf,  bool _direct)
+IPRoute::IPRoute(const InetAddr &_dst, const InetAddr &_nm,
+                 const InetAddr &_gw,
+                 const InterfaceData& _intf,  bool _direct)
 {
-    nm     = _nm     ;
-    dst    = _dst    ;
-    gw     = _gw     ;
-    intf   = _intf?new Interface(*_intf):NULL ;
-    direct = _direct ;
+    nm     = _nm;
+    dst    = _dst;
+    gw     = _gw;
+    intf   = _intf;
+    direct = _direct;
 }
 
 }

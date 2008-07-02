@@ -28,24 +28,14 @@
 #ifndef __LOGGER_HH_FLAG__
 #define __LOGGER_HH_FLAG__
 
-#include <vector>
-#include <iostream>
 #include <sstream>
 
 #include <fwbuilder/FWException.h>
 #include <fwbuilder/Tools.h>
 #include <fwbuilder/ThreadTools.h>
-#include <fwbuilder/Pool.h>
-
-// #include <sigc++/signal_system.h>
 
 namespace libfwbuilder
 {
-
-class Logger;
-
-// extern Logger &start (Logger &);
-// extern Logger &end   (Logger &);
 
 class Logger
 {
@@ -53,13 +43,11 @@ class Logger
 
     Mutex line_lock;
     bool  blackhole_mode;
-
-//    friend Logger &start (Logger &);
-//    friend Logger &end   (Logger &);
+    bool  copy_to_stderr;
 
     public:
 
-    Logger() { blackhole_mode=false; }
+    Logger() { blackhole_mode=false; copy_to_stderr=false; }
     virtual ~Logger() {};
 
     virtual Logger& operator<< (char c)            = 0;
@@ -78,7 +66,8 @@ class Logger
 
     virtual bool   ready()        { return true; }
     virtual std::string getLine() { return std::string(""); }
-    void    blackhole();
+    void blackhole();
+    void copyToStderr() { copy_to_stderr=true; }
 };
 
 class NullLogger:public Logger

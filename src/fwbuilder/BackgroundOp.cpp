@@ -113,7 +113,7 @@ Logger* BackgroundOp::start_operation() throw(FWException)
     stop_program->modify(false);
     stop_program->unlock();
 
-    running      = true;
+    running = true;
 
     Logger *logger  = new QueueLogger();
 
@@ -128,8 +128,10 @@ Logger* BackgroundOp::start_operation() throw(FWException)
     int err=pthread_create(&tid, &tattr, background_thread, void_pair);
     switch (err)
     {
-    case EAGAIN: throw FWException("Not enough system resources to create new thread");
-    case EINVAL: throw FWException("The value specified by attr is invalid.");
+    case EAGAIN:
+        throw FWException("Not enough system resources to create new thread");
+    case EINVAL:
+        throw FWException("The value specified by attr is invalid.");
     }
     return logger;
 }

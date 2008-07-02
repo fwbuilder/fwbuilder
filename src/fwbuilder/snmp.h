@@ -39,6 +39,7 @@
 #include <fwbuilder/BackgroundOp.h>
 #include <fwbuilder/FWException.h>
 #include <fwbuilder/InetAddr.h>
+#include <fwbuilder/InterfaceData.h>
 #include <fwbuilder/IPRoute.h>
 #include <fwbuilder/dns.h>
 
@@ -306,7 +307,7 @@ class SNMPQuery : public BackgroundOp
 
     std::string  hostname, community;
     std::string  descr, contact, location, sysname;
-    std::map<int, Interface> interfaces;
+    std::map<int, InterfaceData> interfaces;
     std::map<InetAddr, std::string> arptable;
     std::vector<IPRoute> routes;
     int  retries;
@@ -328,15 +329,19 @@ class SNMPQuery : public BackgroundOp
 	      int retries_=SNMP_DEFAULT_RETRIES, 
 	      long timeout_=SNMP_DEFAULT_TIMEOUT);
 
-    void fetchArpTable     (Logger *,SyncFlag *stop_program, SNMPConnection *connection=NULL) throw(FWException);
-    void fetchInterfaces   (Logger *,SyncFlag *stop_program, SNMPConnection *connection=NULL) throw(FWException);
-    void fetchSysInfo      (Logger *,SyncFlag *stop_program, SNMPConnection *connection=NULL) throw(FWException);
-    void fetchAll          (Logger *,SyncFlag *stop_program) throw(FWException);
-    void fetchRoutingTable (Logger *,SyncFlag *stop_program, SNMPConnection *connection=NULL) throw(FWException);
+    void fetchArpTable(Logger *,SyncFlag *stop_program,
+                       SNMPConnection *connection=NULL) throw(FWException);
+    void fetchInterfaces(Logger *,SyncFlag *stop_program,
+                         SNMPConnection *connection=NULL) throw(FWException);
+    void fetchSysInfo(Logger *,SyncFlag *stop_program,
+                      SNMPConnection *connection=NULL) throw(FWException);
+    void fetchAll(Logger *,SyncFlag *stop_program) throw(FWException);
+    void fetchRoutingTable(Logger *,SyncFlag *stop_program,
+                           SNMPConnection *connection=NULL) throw(FWException);
     
-    const std::map<int, Interface>    &getInterfaces() ;
+    const std::map<int, InterfaceData> &getInterfaces() ;
     const std::map<InetAddr, std::string> &getArtpTable()  ;
-    const std::vector<IPRoute>        &getRoutes()     ;
+    const std::vector<IPRoute> &getRoutes()     ;
 
     const std::string& getSysname  ();
     const std::string& getDescr    ();
@@ -417,7 +422,7 @@ class CrawlerFind: public HostEnt
 
     bool have_snmpd ;
     std::string  descr, contact, location, sysname;
-    std::map<int, Interface> interfaces;
+    std::map<int, InterfaceData> interfaces;
 
     /**
      * What physical address host had in ARP table when it was found.
@@ -460,11 +465,12 @@ class SNMPCrawler : public BackgroundOp
     bool alreadyseen (const InetAddr &) const ;
     bool special     (const InetAddrMask &) const ;
     bool special     (const InetAddr &) const ;
-    bool point2point (const InetAddrMask &, const Interface *) const ;
-    bool point2point (const Interface *) const ;
+    bool point2point (const InetAddrMask &, const InterfaceData&) const ;
+    bool point2point (const InterfaceData&) const ;
     bool isvirtual   (const InetAddr &, const std::string &) const ;
 
-    std::set<Interface> guessInterface(const IPRoute &r, const std::map<int, Interface> &intf) const;
+    std::list<InterfaceData> guessInterface(
+        const IPRoute &r, const std::map<int, InterfaceData> &intf) const;
 
     public:
 

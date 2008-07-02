@@ -41,6 +41,7 @@
 
 #include <fwbuilder/FWException.h>
 #include <fwbuilder/InetAddr.h>
+#include <fwbuilder/InterfaceData.h>
 
 namespace libfwbuilder
 {
@@ -52,7 +53,7 @@ class IPRoute
 
     IPRoute(const IPRoute &);
     IPRoute(const InetAddr &_dst, const InetAddr &_nm, const InetAddr &_gw,
-            const Interface *_intf,  bool _direct);
+            const InterfaceData &_intf,  bool _direct);
     virtual ~IPRoute();
 
     bool isDirect() const { return direct;}
@@ -64,14 +65,14 @@ class IPRoute
      * @return interface associated with this route, or
      * NULL if none.
      */
-    const Interface *getInterface  () const { return intf; }
+    const InterfaceData& getInterface() const { return intf; }
     
     private:
     
     InetAddr nm     ;
     InetAddr dst    ;
     InetAddr gw     ;
-    const Interface  *intf;
+    InterfaceData intf;
     bool      direct ;
 };
 
