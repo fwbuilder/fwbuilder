@@ -189,6 +189,7 @@ public slots:
      void newCustom();
      void newIP();
      void newICMP();
+     void newICMP6();
      void newTCP();
      void newUDP();
      void newTagService();

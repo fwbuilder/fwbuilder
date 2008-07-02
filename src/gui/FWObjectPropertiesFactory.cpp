@@ -62,6 +62,7 @@
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
+#include "fwbuilder/ICMP6Service.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/TagService.h"
@@ -192,7 +193,7 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
         {
             str << QObject::tr("protocol: %1").arg(obj->getStr("protocol_num").c_str());
 
-        } else if (ICMPService::isA(obj))
+        } else if (ICMPService::isA(obj) || ICMP6Service::isA(obj))
         {
             str << QObject::tr("type: %1").arg(obj->getStr("type").c_str())
                 << "  "
@@ -486,7 +487,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
             str += QObject::tr("protocol ") + obj->getStr("protocol_num").c_str();
 
-        } else if (ICMPService::isA(obj))
+        } else if (ICMPService::isA(obj) || ICMP6Service::isA(obj))
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
             str += QObject::tr("type: ") + obj->getStr("type").c_str()

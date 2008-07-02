@@ -36,6 +36,7 @@
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/ICMPService.h"
+#include "fwbuilder/ICMP6Service.h"
 
 #include <qlineedit.h>
 #include <qspinbox.h>
@@ -69,6 +70,11 @@ void ICMPServiceDialog::loadFWObject(FWObject *o)
     obj=o;
     ICMPService *s = dynamic_cast<ICMPService*>(obj);
     assert(s!=NULL);
+
+    if (ICMP6Service::isA(o))
+        m_dialog->editorTitle->setText("ICMP6 Service");
+    else
+        m_dialog->editorTitle->setText("ICMP Service");
 
     init=true;
 

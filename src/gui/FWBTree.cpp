@@ -50,6 +50,7 @@
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
+#include "fwbuilder/ICMP6Service.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/UserService.h"
@@ -110,6 +111,7 @@ FWBTree::FWBTree()
     systemGroupPaths[CustomService::TYPENAME] = "Services/Custom";
     systemGroupPaths[IPService::TYPENAME]     = "Services/IP";
     systemGroupPaths[ICMPService::TYPENAME]   = "Services/ICMP";
+    systemGroupPaths[ICMP6Service::TYPENAME]  = "Services/ICMP";
     systemGroupPaths[TCPService::TYPENAME]    = "Services/TCP";
     systemGroupPaths[UDPService::TYPENAME]    = "Services/UDP";
     systemGroupPaths[UserService::TYPENAME]   = "Services/Users";
@@ -160,6 +162,9 @@ FWBTree::FWBTree()
 
     systemGroupTypes[ICMPService::TYPENAME]=   ServiceGroup::TYPENAME;
     systemGroupNames[ICMPService::TYPENAME]=   "ICMP"          ;
+
+    systemGroupTypes[ICMP6Service::TYPENAME]=  ServiceGroup::TYPENAME;
+    systemGroupNames[ICMP6Service::TYPENAME]=  "ICMP"          ;
 
     systemGroupTypes[UserService::TYPENAME]=   UserService::TYPENAME;
     systemGroupNames[UserService::TYPENAME]=   "Users"          ;

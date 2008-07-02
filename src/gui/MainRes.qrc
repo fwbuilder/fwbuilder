@@ -175,11 +175,22 @@
         <file alias="Icons/ServiceGroup/icon-ref">Icons/service-group-ref_25.png</file>
         <file alias="Icons/ServiceGroup/icon-tree">Icons/service-group_16.png</file>
         <file alias="Icons/ServiceGroup/icon">Icons/service-group_25.png</file>
+
+
         <file alias="Icons/ICMPService/icon-neg">Icons/service-icmp-neg_25.png</file>
         <file alias="Icons/ICMPService/icon-neg-tree">Icons/service-icmp-neg_16.png</file>
         <file alias="Icons/ICMPService/icon-ref">Icons/service-icmp-ref_25.png</file>
         <file alias="Icons/ICMPService/icon-tree">Icons/service-icmp_16.png</file>
         <file alias="Icons/ICMPService/icon">Icons/service-icmp_25.png</file>
+
+
+        <file alias="Icons/ICMP6Service/icon-neg">Icons/service-icmp-neg_25.png</file>
+        <file alias="Icons/ICMP6Service/icon-neg-tree">Icons/service-icmp-neg_16.png</file>
+        <file alias="Icons/ICMP6Service/icon-ref">Icons/service-icmp-ref_25.png</file>
+        <file alias="Icons/ICMP6Service/icon-tree">Icons/service-icmp_16.png</file>
+        <file alias="Icons/ICMP6Service/icon">Icons/service-icmp_25.png</file>
+
+
         <file alias="Icons/IPService/icon-neg">Icons/service-ip-neg_25.png</file>
         <file alias="Icons/IPService/icon-ref">Icons/service-ip-ref_25.png</file>
         <file alias="Icons/IPService/icon-neg-tree">Icons/service-ip-neg_16.png</file>

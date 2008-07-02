@@ -106,6 +106,7 @@
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
+#include "fwbuilder/ICMP6Service.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/ServiceGroup.h"
@@ -163,28 +164,29 @@ ObjectManipulator::ObjectManipulator( QWidget *parent):
 
     newObjectPopup->addSeparator();
 
-    newObjectPopup->addAction(QIcon(icon_path+Firewall::TYPENAME+"/icon-tree"), tr( "New &Firewall" ), this, SLOT( newFirewall() ));
-    newObjectPopup->addAction(QIcon(icon_path+Host::TYPENAME+"/icon-tree"), tr( "New &Host" ), this, SLOT( newHost() ));
-    newObjectPopup->addAction(QIcon(icon_path+Interface::TYPENAME+"/icon-tree"), tr( "New &Interface" ), this, SLOT( newInterface() ));
-    newObjectPopup->addAction(QIcon(icon_path+Network::TYPENAME+"/icon-tree"), tr( "New &Network" ), this, SLOT( newNetwork() ));
-    newObjectPopup->addAction(QIcon(icon_path+NetworkIPv6::TYPENAME+"/icon-tree"), tr( "New Network IPv&6" ), this, SLOT( newNetworkIPv6() ));    
-    newObjectPopup->addAction(QIcon(icon_path+IPv4::TYPENAME+"/icon-tree"), tr( "New &Address" ), this, SLOT( newAddress() ));
-    newObjectPopup->addAction(QIcon(icon_path+IPv6::TYPENAME+"/icon-tree"), tr( "New Address I&Pv6" ), this, SLOT( newAddressIPv6() ));
-    newObjectPopup->addAction(QIcon(icon_path+DNSName::TYPENAME+"/icon-tree"), tr( "New &DNS Name" ), this, SLOT( newDNSName() ));
-    newObjectPopup->addAction(QIcon(icon_path+AddressTable::TYPENAME+"/icon-tree"), tr( "New A&ddress Table" ), this, SLOT( newAddressTable() ));
-    newObjectPopup->addAction(QIcon(icon_path+AddressRange::TYPENAME+"/icon-tree"), tr( "New Address &Range" ), this, SLOT( newAddressRange() ));
-    newObjectPopup->addAction(QIcon(icon_path+ObjectGroup::TYPENAME+"/icon-tree"), tr( "New &Object Group" ), this, SLOT( newObjectGroup() ));
+    newObjectPopup->addAction(QIcon(icon_path+Firewall::TYPENAME+"/icon-tree"), tr( "New Firewall" ), this, SLOT( newFirewall() ));
+    newObjectPopup->addAction(QIcon(icon_path+Host::TYPENAME+"/icon-tree"), tr( "New Host" ), this, SLOT( newHost() ));
+    newObjectPopup->addAction(QIcon(icon_path+Interface::TYPENAME+"/icon-tree"), tr( "New Interface" ), this, SLOT( newInterface() ));
+    newObjectPopup->addAction(QIcon(icon_path+Network::TYPENAME+"/icon-tree"), tr( "New Network" ), this, SLOT( newNetwork() ));
+    newObjectPopup->addAction(QIcon(icon_path+NetworkIPv6::TYPENAME+"/icon-tree"), tr( "New Network IPv6" ), this, SLOT( newNetworkIPv6() ));    
+    newObjectPopup->addAction(QIcon(icon_path+IPv4::TYPENAME+"/icon-tree"), tr( "New Address" ), this, SLOT( newAddress() ));
+    newObjectPopup->addAction(QIcon(icon_path+IPv6::TYPENAME+"/icon-tree"), tr( "New Address IPv6" ), this, SLOT( newAddressIPv6() ));
+    newObjectPopup->addAction(QIcon(icon_path+DNSName::TYPENAME+"/icon-tree"), tr( "New DNS Name" ), this, SLOT( newDNSName() ));
+    newObjectPopup->addAction(QIcon(icon_path+AddressTable::TYPENAME+"/icon-tree"), tr( "New Address Table" ), this, SLOT( newAddressTable() ));
+    newObjectPopup->addAction(QIcon(icon_path+AddressRange::TYPENAME+"/icon-tree"), tr( "New Address Range" ), this, SLOT( newAddressRange() ));
+    newObjectPopup->addAction(QIcon(icon_path+ObjectGroup::TYPENAME+"/icon-tree"), tr( "New Object Group" ), this, SLOT( newObjectGroup() ));
     newObjectPopup->addSeparator();
-    newObjectPopup->addAction(QIcon(icon_path+CustomService::TYPENAME+"/icon-tree"), tr( "New &Custom Service" ), this, SLOT( newCustom() ));
-    newObjectPopup->addAction(QIcon(icon_path+IPService::TYPENAME+"/icon-tree"), tr( "New &IP Service" ), this, SLOT( newIP() ));
-    newObjectPopup->addAction(QIcon(icon_path+ICMPService::TYPENAME+"/icon-tree"), tr( "New IC&MP Service" ), this, SLOT( newICMP() ));
-    newObjectPopup->addAction(QIcon(icon_path+TCPService::TYPENAME+"/icon-tree"), tr( "New &TCP Serivce" ), this, SLOT( newTCP() ));
-    newObjectPopup->addAction(QIcon(icon_path+UDPService::TYPENAME+"/icon-tree"), tr( "New &UDP Service" ), this, SLOT( newUDP() ));
-    newObjectPopup->addAction(QIcon(icon_path+TagService::TYPENAME+"/icon-tree"), tr( "New &TagService" ), this, SLOT( newTagService() ));
-    newObjectPopup->addAction(QIcon(icon_path+UserService::TYPENAME+"/icon-tree"), tr( "New &User Service" ), this, SLOT( newUserService() ));
-    newObjectPopup->addAction(QIcon(icon_path+ServiceGroup::TYPENAME+"/icon-tree"), tr( "New &Service Group" ), this, SLOT( newServiceGroup() ));
+    newObjectPopup->addAction(QIcon(icon_path+CustomService::TYPENAME+"/icon-tree"), tr( "New Custom Service" ), this, SLOT( newCustom() ));
+    newObjectPopup->addAction(QIcon(icon_path+IPService::TYPENAME+"/icon-tree"), tr( "New IP Service" ), this, SLOT( newIP() ));
+    newObjectPopup->addAction(QIcon(icon_path+ICMPService::TYPENAME+"/icon-tree"), tr( "New ICMP Service" ), this, SLOT( newICMP() ));
+    newObjectPopup->addAction(QIcon(icon_path+ICMP6Service::TYPENAME+"/icon-tree"), tr( "New ICMP6 Service" ), this, SLOT( newICMP6() ));
+    newObjectPopup->addAction(QIcon(icon_path+TCPService::TYPENAME+"/icon-tree"), tr( "New TCP Serivce" ), this, SLOT( newTCP() ));
+    newObjectPopup->addAction(QIcon(icon_path+UDPService::TYPENAME+"/icon-tree"), tr( "New UDP Service" ), this, SLOT( newUDP() ));
+    newObjectPopup->addAction(QIcon(icon_path+TagService::TYPENAME+"/icon-tree"), tr( "New TagService" ), this, SLOT( newTagService() ));
+    newObjectPopup->addAction(QIcon(icon_path+UserService::TYPENAME+"/icon-tree"), tr( "New User Service" ), this, SLOT( newUserService() ));
+    newObjectPopup->addAction(QIcon(icon_path+ServiceGroup::TYPENAME+"/icon-tree"), tr( "New Service Group" ), this, SLOT( newServiceGroup() ));
     newObjectPopup->addSeparator();
-    newObjectPopup->addAction(QIcon(icon_path+Interval::TYPENAME+"/icon-tree"), tr( "New Ti&me Interval" ), this, SLOT( newInterval() ));
+    newObjectPopup->addAction(QIcon(icon_path+Interval::TYPENAME+"/icon-tree"), tr( "New Time Interval" ), this, SLOT( newInterval() ));
 
 //    QToolButton *btn = (QToolButton*)toolBar->child("newObjectAction_action_button");
 
@@ -1135,8 +1137,12 @@ QAction *movID;
                                SLOT( newIP() ) );
 
         if (currentObj->getPath(true)=="Services/ICMP")
+        {
             newID1=popup->addAction( tr("New ICMP Service"),  this ,
                                SLOT( newICMP() ) );
+            newID2=popup->addAction( tr("New ICMP6 Service"), this ,
+                               SLOT( newICMP6() ) );
+        }
 
         if (currentObj->getPath(true)=="Services/TCP")
             newID1=popup->addAction( tr("New TCP Service"),   this ,
@@ -3199,6 +3205,17 @@ void ObjectManipulator::newICMP()
 {
     FWObject *o;
     o=createObject(ICMPService::TYPENAME,tr("New ICMP Service"));
+    if (o!=NULL)
+    {
+        openObject(o);
+        editObject(o);
+    }
+}
+
+void ObjectManipulator::newICMP6()
+{
+    FWObject *o;
+    o=createObject(ICMP6Service::TYPENAME,tr("New ICMP6 Service"));
     if (o!=NULL)
     {
         openObject(o);

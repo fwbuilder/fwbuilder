@@ -344,6 +344,14 @@
       <icon-tree>service-icmp_16.png</icon-tree>
     </ICMPService>
 
+    <ICMP6Service>
+      <description>ICMP6</description>
+      <icon>service-icmp_25.png</icon>
+      <icon-neg>service-icmp-neg_25.png</icon-neg>
+      <icon-ref>service-icmp-ref_25.png</icon-ref>
+      <icon-tree>service-icmp_16.png</icon-tree>
+    </ICMP6Service>
+
     <TCPService>
       <description>TCP</description>
       <icon>service-tcp_25.png</icon>

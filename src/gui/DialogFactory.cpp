@@ -92,6 +92,7 @@
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
+#include "fwbuilder/ICMP6Service.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/ServiceGroup.h"
@@ -147,6 +148,8 @@ QWidget *DialogFactory::createDialog(ProjectPanel *project, QWidget *parent,cons
     if (objType==IPService::TYPENAME)     return new IPServiceDialog(project, parent);
 
     if (objType==ICMPService::TYPENAME)   return new ICMPServiceDialog(project, parent);
+
+    if (objType==ICMP6Service::TYPENAME)  return new ICMPServiceDialog(project, parent);
 
     if (objType==TCPService::TYPENAME)    return new TCPServiceDialog(project, parent);
 

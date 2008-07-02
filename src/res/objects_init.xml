@@ -159,6 +159,9 @@
         <ICMPService code="3" comment="Port unreachable" id="icmp-Port_unreach" name="port unreach" type="3"/>
         <ICMPService code="0" comment="ICMP messages of this type are needed for traceroute" id="icmp-Time_exceeded" name="time exceeded" type="11"/>
         <ICMPService code="1" comment="" id="icmp-Time_exceeded_in_transit" name="time exceeded in transit" type="11"/>
+
+        <ICMP6Service code="0" comment="IPv6 ping request" id="ipv6-icmp-ping_request" name="ipv6 ping request" type="128"/>
+        <ICMP6Service code="0" comment="IPv6 ping reply" id="ipv6-icmp-ping_reply" name="ipv6 ping reply" type="129"/>
       </ServiceGroup>
       <ServiceGroup id="stdid06" name="IP">
         <IPService comment="IPSEC Authentication Header Protocol" fragm="False" id="id3CB12797" lsrr="False" name="AH" protocol_num="51" rr="False" short_fragm="False" ssrr="False" ts="False"/>

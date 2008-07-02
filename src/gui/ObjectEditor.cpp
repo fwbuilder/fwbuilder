@@ -71,6 +71,7 @@
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
+#include "fwbuilder/ICMP6Service.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/ServiceGroup.h"
@@ -173,6 +174,10 @@ ObjectEditor::ObjectEditor( QWidget *parent, ProjectPanel *project):
     w= DialogFactory::createDialog(m_project, parent,ICMPService::TYPENAME);
     stackIds[ICMPService::TYPENAME] = parentWidget->addWidget(w);
     dialogs[stackIds[ICMPService::TYPENAME]] = w;
+
+    w= DialogFactory::createDialog(m_project, parent,ICMP6Service::TYPENAME);
+    stackIds[ICMP6Service::TYPENAME] = parentWidget->addWidget(w);
+    dialogs[stackIds[ICMP6Service::TYPENAME]] = w;
 
     w= DialogFactory::createDialog(m_project, parent,TCPService::TYPENAME);
     stackIds[TCPService::TYPENAME] = parentWidget->addWidget(w);

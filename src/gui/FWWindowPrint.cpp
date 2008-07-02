@@ -68,6 +68,7 @@
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/ObjectGroup.h"
 
@@ -79,6 +80,7 @@
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
+#include "fwbuilder/ICMP6Service.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/ServiceGroup.h"
@@ -98,6 +100,7 @@ QString legendList[] = {
     Firewall::TYPENAME, QObject::tr("Firewall"),
     Host::TYPENAME, QObject::tr("Host"),
     IPv4::TYPENAME, QObject::tr("Address"),
+    IPv6::TYPENAME, QObject::tr("Address"),
     AddressRange::TYPENAME, QObject::tr("Addres Range"),
     Interface::TYPENAME, QObject::tr("Interface"),
     Network::TYPENAME, QObject::tr("Network"),
@@ -105,6 +108,7 @@ QString legendList[] = {
     CustomService::TYPENAME, QObject::tr("Custom Service"),
     IPService::TYPENAME, QObject::tr("IP Service"),
     ICMPService::TYPENAME, QObject::tr("ICMP Service"),
+    ICMP6Service::TYPENAME, QObject::tr("ICMP Service"),
     TCPService::TYPENAME, QObject::tr("TCP Service"),
     UDPService::TYPENAME, QObject::tr("UDP Service"),
     ServiceGroup::TYPENAME, QObject::tr("Group of services"),
@@ -690,7 +694,8 @@ void FWWindow::filePrint()
 
                 objects.clear();
 
-                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),Firewall::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),
+                                  Firewall::TYPENAME);
                 added = addObjectsToTable(objects, &fwObjTbl, row, col);
                 if (fwbdebug) qDebug("Objects table: added %d firewalls",added);
 
@@ -721,7 +726,8 @@ void FWWindow::filePrint()
                 added = 0;
 
                 objects.clear();
-                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),Host::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),
+                                  Host::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
                 if (fwbdebug) qDebug("Objects table: added %d hosts",added);
                 if (added)
@@ -734,9 +740,11 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),Network::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),
+                                  Network::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
-                if (fwbdebug) qDebug("Objects table: added %d networks",added);
+                if (fwbdebug)
+                    qDebug("Objects table: added %d networks",added);
                 if (added)
                 {
                     if (col!=0)
@@ -747,9 +755,11 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),IPv4::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),
+                                  IPv4::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
-                if (fwbdebug) qDebug("Objects table: added %d addresses",added);
+                if (fwbdebug)
+                    qDebug("Objects table: added %d addresses",added);
                 if (added)
                 {
                     if (col!=0)
@@ -760,9 +770,11 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),AddressRange::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),
+                                  IPv6::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
-                if (fwbdebug) qDebug("Objects table: added %d address ranges",added);
+                if (fwbdebug)
+                    qDebug("Objects table: added %d ipv6 addresses",added);
                 if (added)
                 {
                     if (col!=0)
@@ -773,9 +785,26 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),ObjectGroup::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),
+                                  AddressRange::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
-                if (fwbdebug) qDebug("Objects table: added %d obj groups",added);
+                if (fwbdebug)
+                    qDebug("Objects table: added %d address ranges",added);
+                if (added)
+                {
+                    if (col!=0)
+                    {
+                        row++; col=0;
+                        objTbl.insertRow(row);
+                    }
+                }
+
+                objects.clear();
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),
+                                  ObjectGroup::TYPENAME);
+                added=addObjectsToTable(objects,&objTbl,row,col);
+                if (fwbdebug)
+                    qDebug("Objects table: added %d obj groups",added);
                 if (added)
                 {
                     if (col!=0)
@@ -787,9 +816,11 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),IPService::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),
+                                  IPService::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
-                if (fwbdebug) qDebug("Objects table: added %d ip services",added);
+                if (fwbdebug)
+                    qDebug("Objects table: added %d ip services",added);
                 if (added)
                 {
                     if (col!=0)
@@ -800,9 +831,11 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),ICMPService::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),
+                                  ICMPService::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
-                if (fwbdebug) qDebug("Objects table: added %d icmp services",added);
+                if (fwbdebug)
+                    qDebug("Objects table: added %d icmp services",added);
                 if (added)
                 {
                     if (col!=0)
@@ -813,9 +846,11 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),TCPService::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),
+                                  ICMP6Service::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
-                if (fwbdebug) qDebug("Objects table: added %d tcp services",added);
+                if (fwbdebug)
+                    qDebug("Objects table: added %d icmp6 services",added);
                 if (added)
                 {
                     if (col!=0)
@@ -826,9 +861,11 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),UDPService::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),
+                                  TCPService::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
-                if (fwbdebug) qDebug("Objects table: added %d udp services",added);
+                if (fwbdebug)
+                    qDebug("Objects table: added %d tcp services",added);
                 if (added)
                 {
                     if (col!=0)
@@ -839,9 +876,11 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),CustomService::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),
+                                  UDPService::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
-                if (fwbdebug) qDebug("Objects table: added %d custom services",added);
+                if (fwbdebug)
+                    qDebug("Objects table: added %d udp services",added);
                 if (added)
                 {
                     if (col!=0)
@@ -852,9 +891,26 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),ServiceGroup::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),
+                                  CustomService::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
-                if (fwbdebug) qDebug("Objects table: added %d srv groups",added);
+                if (fwbdebug)
+                    qDebug("Objects table: added %d custom services",added);
+                if (added)
+                {
+                    if (col!=0)
+                    {
+                        row++; col=0;
+                        objTbl.insertRow(row);
+                    }
+                }
+
+                objects.clear();
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),
+                                  ServiceGroup::TYPENAME);
+                added=addObjectsToTable(objects,&objTbl,row,col);
+                if (fwbdebug)
+                    qDebug("Objects table: added %d srv groups",added);
                 if (added)
                 {
                     if (col!=0)
@@ -866,9 +922,11 @@ void FWWindow::filePrint()
                 }
 
                 objects.clear();
-                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),Interval::TYPENAME);
+                findAllUsedByType(objects,activeProject()->getVisibleFirewall(),
+                                  Interval::TYPENAME);
                 added=addObjectsToTable(objects,&objTbl,row,col);
-                if (fwbdebug) qDebug("Objects table: added %d time intervals",added);
+                if (fwbdebug)
+                    qDebug("Objects table: added %d time intervals",added);
                 if (added)
                 {
                     if (col!=0)

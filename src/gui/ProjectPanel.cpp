@@ -89,13 +89,6 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/RuleSet.h"
 
-#include "fwbuilder/CustomService.h"
-#include "fwbuilder/IPService.h"
-#include "fwbuilder/ICMPService.h"
-#include "fwbuilder/TCPService.h"
-#include "fwbuilder/UDPService.h"
-#include "fwbuilder/ServiceGroup.h"
-
 #include "fwbuilder/Interval.h"
 #include "fwbuilder/IntervalGroup.h"
 #include "fwbuilder/FWObject.h"
