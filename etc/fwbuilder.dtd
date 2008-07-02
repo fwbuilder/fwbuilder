@@ -88,7 +88,7 @@ TODO:
  id           ID        #REQUIRED
 >
 
-<!ELEMENT Library ((AnyNetwork|AnyIPService|AnyInterval|ObjectGroup|Host|Firewall|Network|NetworkIPv6|IPv4|IPv6|DNSName|AddressTable|physAddress|AddressRange|ObjectRef|ServiceGroup|IPService|ICMPService|TCPService|UDPService|CustomService|ServiceRef|IntervalGroup|Interval|IntervalRef|Interface|Policy|NAT|PolicyRule|NATRule|Library|TagService)*)>
+<!ELEMENT Library ((AnyNetwork|AnyIPService|AnyInterval|ObjectGroup|Host|Firewall|Network|NetworkIPv6|IPv4|IPv6|DNSName|AddressTable|physAddress|AddressRange|ObjectRef|ServiceGroup|IPService|ICMPService|ICMP6Service|TCPService|UDPService|CustomService|ServiceRef|IntervalGroup|Interval|IntervalRef|Interface|Policy|NAT|PolicyRule|NATRule|Library|TagService)*)>
 <!ATTLIST Library
  %STD_ATTRIBUTES;
  color   %STRING;  #IMPLIED
@@ -112,7 +112,7 @@ TODO:
        ref IDREF #REQUIRED
 >
 
-<!ELEMENT ServiceGroup (( ServiceGroup | IPService | ICMPService  | TCPService | UDPService | CustomService | ServiceRef | TagService | UserService)*)>
+<!ELEMENT ServiceGroup (( ServiceGroup | IPService | ICMPService  | ICMP6Service  | TCPService | UDPService | CustomService | ServiceRef | TagService | UserService)*)>
 <!ATTLIST ServiceGroup
  %STD_ATTRIBUTES;
 >
@@ -408,6 +408,13 @@ Interface can have the following attributes:
 
 <!ELEMENT ICMPService EMPTY>
 <!ATTLIST ICMPService
+ %STD_ATTRIBUTES;
+ code %NUMBER; #REQUIRED
+ type %NUMBER; #REQUIRED
+>
+
+<!ELEMENT ICMP6Service EMPTY>
+<!ATTLIST ICMP6Service
  %STD_ATTRIBUTES;
  code %NUMBER; #REQUIRED
  type %NUMBER; #REQUIRED

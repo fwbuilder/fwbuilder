@@ -29,6 +29,7 @@ SOURCES  = 	inet_net_ntop.c \
 			Host.cpp \
 			HostsFile.cpp \
 			ICMPService.cpp \
+			ICMP6Service.cpp \
 			Interface.cpp \
 			InterfacePolicy.cpp \
 			Interval.cpp \
@@ -90,6 +91,7 @@ HEADERS  = 	inet_net.h \
 			Host.h \
 			HostsFile.h \
 			ICMPService.h \
+			ICMP6Service.h \
 			Interface.h \
 			InterfacePolicy.h \
 			IntervalGroup.h \
