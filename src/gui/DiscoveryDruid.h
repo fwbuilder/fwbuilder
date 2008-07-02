@@ -36,6 +36,7 @@
 #include <qhostinfo.h>
 
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/InterfaceData.h"
 #include "fwbuilder/dns.h"
 #include "fwbuilder/snmp.h"
 #include "fwbuilder/InetAddr.h"
@@ -65,7 +66,7 @@ class ObjectDescriptor
     bool isSelected;
     
 
-    map<int, libfwbuilder::Interface> interfaces ;
+    map<int, libfwbuilder::InterfaceData> interfaces ;
 
     string                   MAC_addr ;
     libfwbuilder::HostEnt    dns_info ;
@@ -118,7 +119,7 @@ class DoneEvent : public QEvent
 
 typedef enum {BT_NONE,BT_HOSTS,BT_DNS,BT_SNMP,BT_IMPORT} BackgroundTask;
 
-class WorkerThread : public QThread, QObject 
+class WorkerThread : public QThread
 {
     QWidget *Widget;
 

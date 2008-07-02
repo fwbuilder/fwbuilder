@@ -520,13 +520,15 @@ void ObjectManipulator::updateObjName(FWObject *obj,
     
         itm->setText(0, pom->getTreeLabel( obj ) );
     
-        if (!Library::isA(obj)) itm->parent()->sortChildren(0, Qt::AscendingOrder);
+        if (!Library::isA(obj))
+            itm->parent()->sortChildren(0, Qt::AscendingOrder);
     
-    /* need to update name of the firewall in the drop-down list */
+        /* need to update name of the firewall in the drop-down list */
         if (Firewall::isA(obj))
         {
             pom->m_project->updateFirewallName(obj,oldName);
         }
+
         if (RuleSet::cast(obj)!=NULL)
         {
             pom->m_project->updateFirewallName(obj,oldName);
@@ -571,7 +573,7 @@ void ObjectManipulator::updateObjName(FWObject *obj,
     info();  // need to update info in case user edited comments and other attributes.
 }
 
-void ObjectManipulator::autorename(FWObject *obj,bool ask)
+void ObjectManipulator::autorename(FWObject *obj, bool ask)
 {
     if (Host::isA(obj) || Firewall::isA(obj))
     {
@@ -637,35 +639,36 @@ void ObjectManipulator::autorename(FWObject *obj,
                                    const string &objtype,
                                    const string &namesuffix)
 {
-        QVector <ObjectManipulator*> oms = getAllMdiObjectManipulators();
-        for (int i = 0 ; i < oms.size(); i++)
-        {
-            ObjectManipulator* pom = oms[i] ;
-
-    FWObject      *hst = obj->getParent();
-    list<FWObject*> ol = obj->getByType(objtype);
-    int           sfxn = 1;
-
-    for (list<FWObject*>::iterator j=ol.begin(); j!=ol.end(); ++j,sfxn++)
+    QVector <ObjectManipulator*> oms = getAllMdiObjectManipulators();
+    for (int i = 0 ; i < oms.size(); i++)
     {
-        QString sfx;
-        if (ol.size()==1) sfx="";
-        else              sfx.setNum(sfxn);
-        QString nn = QString("%1:%2:%3%4")
-            .arg(QString::fromUtf8(hst->getName().c_str()))
-            .arg(QString::fromUtf8(obj->getName().c_str()))
-            .arg(namesuffix.c_str())
-            .arg(sfx);
+        ObjectManipulator* pom = oms[i] ;
 
-        (*j)->setName(string(nn.toUtf8()));
-        QTreeWidgetItem *itm1 = pom->allItems[ *j ];
-        assert(itm1!=NULL);
-        itm1->setText(0, getTreeLabel( *j ) );
-        itm1->parent()->sortChildren(0, Qt::AscendingOrder);//();
-    }
-    ol.clear();
-    }
+        FWObject      *hst = obj->getParent();
+        list<FWObject*> ol = obj->getByType(objtype);
+        int           sfxn = 1;
 
+        for (list<FWObject*>::iterator j=ol.begin(); j!=ol.end(); ++j,sfxn++)
+        {
+            QString sfx;
+            if (ol.size()==1) sfx="";
+            else              sfx.setNum(sfxn);
+            QString nn = QString("%1:%2:%3%4")
+                .arg(QString::fromUtf8(hst->getName().c_str()))
+                .arg(QString::fromUtf8(obj->getName().c_str()))
+                .arg(namesuffix.c_str())
+                .arg(sfx);
+
+            (*j)->setName(string(nn.toUtf8()));
+            QTreeWidgetItem *itm1 = pom->allItems[ *j ];
+            if (itm1!=NULL)
+            {
+                itm1->setText(0, getTreeLabel( *j ) );
+                itm1->parent()->sortChildren(0, Qt::AscendingOrder);//();
+            }
+        }
+        ol.clear();
+    }
 }
 
 void ObjectManipulator::clearObjects()
@@ -2468,7 +2471,7 @@ void ObjectManipulator::invalidateDialog()
 
 void ObjectManipulator::libChangedById(int id)
 {
-    for (int i = 0 ; i < idxToLibs.size(); i++)
+    for (vector<FWObject*>::size_type i = 0 ; i < idxToLibs.size(); i++)
     {
         if (idxToLibs[i]->getId()==id)
         {
@@ -2483,7 +2486,7 @@ void ObjectManipulator::changeFirstNotSystemLib()
 {
     QString sid2 = "syslib000";
     QString sid3 = "syslib001";
-    for (int i = 0 ; i < idxToLibs.size(); i++)
+    for (vector<FWObject*>::size_type i = 0 ; i < idxToLibs.size(); i++)
     {
         QString sid1 = FWObjectDatabase::getStringId(idxToLibs[i]->getId()).c_str();
         if ( sid1 != sid2)
@@ -2630,15 +2633,17 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
                    lib->getName().c_str(),
                    FWObjectDatabase::getStringId(lib->getId()).c_str());
             qDebug("lib: isReadOnly=%d isLoaded=%d",
-                   lib->isReadOnly(), m_project->getAddOnLibs()->isLoaded( lib->getName().c_str() ) );
+                   lib->isReadOnly(),
+                   m_project->getAddOnLibs()->isLoaded(lib->getName().c_str()));
         }
         i++;
     }
 
-    FWObject *parent=m_project->getFWTree()->getStandardSlotForObject(lib, objType);
+    FWObject *parent = 
+        m_project->getFWTree()->getStandardSlotForObject(lib, objType);
+
     if (parent==NULL)
     {
-
       QMessageBox::warning(this,"Firewall Builder",
                            QObject::tr(
 "Type '%1': new object can not be created because\n"
@@ -2647,18 +2652,16 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
                            .arg(objType),
                            "&Continue", QString::null, QString::null,
                            0, 1 );
-
-
       return NULL;
     }
+
     return actuallyCreateObject(parent,objType,objName,copyFrom);
-    
 }
 
 FWObject* ObjectManipulator::createObject(FWObject *parent,
-                                       const QString &objType,
-                                       const QString &objName,
-                                       FWObject *copyFrom)
+                                          const QString &objType,
+                                          const QString &objName,
+                                          FWObject *copyFrom)
 {
 
     if (!validateDialog()) return NULL;

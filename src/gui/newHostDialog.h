@@ -30,7 +30,7 @@
 #include "../../config.h"
 #include <ui_newhostdialog_q.h>
 
-#include "InterfaceData.h"
+#include "fwbuilder/InterfaceData.h"
 #include "fakeWizard.h"
 #include <QDialog>
 

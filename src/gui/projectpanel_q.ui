@@ -88,9 +88,15 @@
          <bool>true</bool>
         </property>
         <widget class="QFrame" name="frame16" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="minimumSize" >
           <size>
-           <width>150</width>
+           <width>0</width>
            <height>50</height>
           </size>
          </property>
@@ -121,6 +127,12 @@
           </property>
           <item row="1" column="0" >
            <widget class="QFrame" name="frame21" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="frameShape" >
              <enum>QFrame::StyledPanel</enum>
             </property>
@@ -206,7 +218,7 @@
           <item row="0" column="0" >
            <widget class="QSplitter" name="objInfoSplitter" >
             <property name="sizePolicy" >
-             <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+             <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -266,7 +278,7 @@
         </widget>
         <widget class="QFrame" name="rightFrame" >
          <property name="sizePolicy" >
-          <sizepolicy vsizetype="Preferred" hsizetype="MinimumExpanding" >
+          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>

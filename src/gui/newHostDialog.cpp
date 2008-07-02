@@ -33,7 +33,6 @@
 #include "platforms.h"
 
 #include "newHostDialog.h"
-#include "InterfaceData.h"
 #include "FWWindow.h"
 #include "ObjConflictResolutionDialog.h"
 #include "upgradePredicate.h"
@@ -224,10 +223,11 @@ void  newHostDialog::monitor()
 
     timer->stop();
 
-    const map<int, Interface> &intf = q->getInterfaces();
-    for(map<int, Interface>::const_iterator i=intf.begin();i!=intf.end(); ++i)
+    const map<int, InterfaceData> &intf = q->getInterfaces();
+    map<int, InterfaceData>::const_iterator i;
+    for(i=intf.begin();i!=intf.end(); ++i)
     {
-        if ( i->second.isUp() )
+        if ( i->second.ostatus )
         {
             InterfaceData idata( i->second );
 
@@ -240,10 +240,10 @@ void  newHostDialog::monitor()
             QStringList qsl;
             qsl << idata.name.c_str()
                 << idata.label.c_str()
-                << idata.address.c_str()
-                << idata.netmask.c_str()
+                << idata.addr_mask.getAddressPtr()->toString().c_str()
+                << idata.addr_mask.getNetmaskPtr()->toString().c_str()
                 << dn
-                << idata.physicalAddress.c_str();
+                << idata.mac_addr.c_str();
             new QTreeWidgetItem(m_dialog->iface_list, qsl);
 
 //            cerr << "Added interface " << idata.name << endl;

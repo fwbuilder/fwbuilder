@@ -68,6 +68,7 @@
 
 #include "fwbuilder/dns.h"
 #include "fwbuilder/snmp.h"
+#include "fwbuilder/Logger.h"
 
 #include "FWBSettings.h"
 #include "ObjectManipulator.h"
@@ -98,18 +99,23 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
     dm_method->addButton(m_dialog->dm_usesnmp,2);
     dm_method->addButton(m_dialog->dm_import_config,3);
 
-    connect(dm_method, SIGNAL( buttonClicked(int) ), this, SLOT( changedDiscoveryMethod(int) ) );
-    connect(m_dialog->dnsfromlist, SIGNAL( clicked(bool) ), this, SLOT( changedNameServer() ) );
-    connect(m_dialog->dnscustom, SIGNAL( clicked(bool) ), this, SLOT( changedNameServer() ) );
-    connect(m_dialog->nameserverlist, SIGNAL( editTextChanged(QString) ), this, SLOT( changedNameServer() ) );
-    connect(m_dialog->nameserverline, SIGNAL( textChanged(QString) ), this, SLOT( changedNameServer() ) );
+    connect(dm_method, SIGNAL( buttonClicked(int) ),
+            this, SLOT( changedDiscoveryMethod(int) ) );
+    connect(m_dialog->dnsfromlist, SIGNAL( clicked(bool) ),
+            this, SLOT( changedNameServer() ) );
+    connect(m_dialog->dnscustom, SIGNAL( clicked(bool) ),
+            this, SLOT( changedNameServer() ) );
+    connect(m_dialog->nameserverlist, SIGNAL( editTextChanged(QString) ),
+            this, SLOT( changedNameServer() ) );
+    connect(m_dialog->nameserverline, SIGNAL( textChanged(QString) ),
+            this, SLOT( changedNameServer() ) );
     
-    thread=NULL;
+    thread = NULL;
     
-    timer=new QTimer(this);
-    prg_timer=new QTimer(this);
-    unBar=NULL;
-    unProg=0;
+    timer = new QTimer(this);
+    prg_timer = new QTimer(this);
+    unBar = NULL;
+    unProg = 0;
     
     connect(prg_timer,SIGNAL(timeout()),this,SLOT(updatePrg()));
     
@@ -251,8 +257,9 @@ void DiscoveryDruid::restore()
     m_dialog->dnstimeout->setValue((i)?i:2);
     i=st->getInt(QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_DNSRETRIES);
     m_dialog->dnsretries->setValue((i)?i:1);
-    //m_dialog->seedhostname->setText(st->getStr(
-    //            QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SEEDHOST));
+
+    m_dialog->seedhostname->setText(st->getStr(
+                QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SEEDHOST));
     m_dialog->snmpinaddr->setText(st->getStr(
                 QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SNMPINADDR));
     m_dialog->snmpinmask->setText(st->getStr(
@@ -309,9 +316,9 @@ void DiscoveryDruid::save()
                 QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SNMPDNSTIMEOUT,
                 m_dialog->snmpdnstimeout->value());
     }
-    //st->setStr(
-    //        QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SEEDHOST,
-    //        m_dialog->seedhostname->text());
+    st->setStr(
+            QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SEEDHOST,
+            m_dialog->seedhostname->text());
     st->setStr(
             QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SNMPINADDR,
             m_dialog->snmpinaddr->text());
@@ -472,11 +479,11 @@ void DiscoveryDruid::changedSelected( const int &page )
 
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
 
-        setNextEnabled(page,false);
+        setNextEnabled(page, false);
         cancelButton->hide();
-        setBackEnabled(page,false);
-        disconnect(timer,SIGNAL(timeout()),0,0);
-        connect(timer,SIGNAL(timeout()),this,SLOT(updateLog()));
+        setBackEnabled(page, false);
+        disconnect(timer, SIGNAL(timeout()), 0, 0);
+        connect(timer, SIGNAL(timeout()), this, SLOT(updateLog()));
         timer->setSingleShot(false);
         timer->start(1000);
 
@@ -698,46 +705,6 @@ void DiscoveryDruid::changedDiscoveryMethod(int c)
    }
 }
 
-void DiscoveryDruid::saveScanLog()
-{
-    QString dir;
-    dir=st->getWDir();
-    if (dir.isEmpty())  dir=st->getOpenFileDir();
-    if (dir.isEmpty())  dir="~";
-    
-    QString s = QFileDialog::getSaveFileName(
-                    this,
-                    "Choose a file",
-                    dir,
-                    "Text file (*.txt)");
-    
-    
-    if (!s.isEmpty())
-    {
-        if (s.endsWith(".txt"))
-        {
-            s+=".txt";
-        }
-        QFile f(s);
-        if (f.open(QIODevice::WriteOnly))
-        {
-            if (fwbdebug)
-            {
-                qDebug("Saving crawler log to file: %d chars",
-                       m_dialog->discoverylog->toPlainText().length());
-                qDebug("--------------------------------");
-            }
-            QTextStream strm(&f);
-            QString txt = m_dialog->discoverylog->toPlainText();
-            strm << txt << endl;
-            if (fwbdebug) qDebug("%s",txt.toAscii().constData());
-            if (fwbdebug)
-                qDebug("--------------------------------");
-            f.close();
-        }
-    }    
-}
-    
 void DiscoveryDruid::startHostsScan()
 {
     if (thread!=NULL)
@@ -866,60 +833,6 @@ InetAddr DiscoveryDruid::getSeedHostAddress()
     return seed_host_addr;
 }
 
-void DiscoveryDruid::startSNMPScan()
-{
-#ifdef HAVE_LIBSNMP   
-
-
-    bool use_incl=!m_dialog->snmpinaddr->text().isEmpty() && !m_dialog->snmpinmask->text().isEmpty();
-    if (use_incl)
-    {
-        try
-        {
-            InetAddrMask in(
-                 InetAddr(m_dialog->snmpinaddr->text().toLatin1().constData()),
-                 InetAddr(m_dialog->snmpinmask->text().toLatin1().constData()) 
-                 );
-            include_networks.push_back(in);
-        }
-        catch (const FWException &ex)
-        {
-            //TODO: to do something usefull
-        }
-    }
-    libfwbuilder::SNMPCrawler *q=new SNMPCrawler();
-    q->init(getSeedHostAddress(),
-            m_dialog->snmpcommunity->text().toLatin1().constData(),
-            m_dialog->snmprecursive->isChecked(),
-            ! m_dialog->snmpincludevirt->isChecked(),
-            false,
-            m_dialog->snmpfollowp2p->isChecked(),
-            0,
-            m_dialog->snmpretries->value(),
-            1000000L*m_dialog->snmptimeout->value(),
-            0,
-            0,
-            (use_incl) ? &include_networks : NULL);
-    
-    m_dialog->discoveryprogress->setMaximum(0);
-    unBar=m_dialog->discoveryprogress;
-    
-    bop=q;
-    try
-    {
-        logger=bop->start_operation();
-        m_dialog->discoverylog->append("Collecting data ...");
-        
-    } catch(const FWException &ex)
-    {
-        delete q;
-        q=NULL;
-    }
-            
-    
-#endif
-}
-    
 void DiscoveryDruid::changedDomainName()
 {
     if (m_dialog->domainname->text().isEmpty())
@@ -1387,6 +1300,106 @@ void DiscoveryDruid::loadDataFromImporter()
     }
 }
 
+void DiscoveryDruid::saveScanLog()
+{
+    QString dir;
+    dir=st->getWDir();
+    if (dir.isEmpty())  dir=st->getOpenFileDir();
+    if (dir.isEmpty())  dir="~";
+    
+    QString s = QFileDialog::getSaveFileName(
+                    this,
+                    "Choose a file",
+                    dir,
+                    "Text file (*.txt)");
+    
+    
+    if (!s.isEmpty())
+    {
+        if (s.endsWith(".txt"))
+        {
+            s+=".txt";
+        }
+        QFile f(s);
+        if (f.open(QIODevice::WriteOnly))
+        {
+            if (fwbdebug)
+            {
+                qDebug("Saving crawler log to file: %d chars",
+                       m_dialog->discoverylog->toPlainText().length());
+                qDebug("--------------------------------");
+            }
+            QTextStream strm(&f);
+            QString txt = m_dialog->discoverylog->toPlainText();
+            strm << txt << endl;
+            if (fwbdebug) qDebug("%s",txt.toAscii().constData());
+            if (fwbdebug)
+                qDebug("--------------------------------");
+            f.close();
+        }
+    }    
+}
+    
+void DiscoveryDruid::startSNMPScan()
+{
+#ifdef HAVE_LIBSNMP   
+
+
+    bool use_incl=!m_dialog->snmpinaddr->text().isEmpty() && !m_dialog->snmpinmask->text().isEmpty();
+    if (use_incl)
+    {
+        try
+        {
+            InetAddrMask in(
+                 InetAddr(m_dialog->snmpinaddr->text().toLatin1().constData()),
+                 InetAddr(m_dialog->snmpinmask->text().toLatin1().constData()) 
+                 );
+            include_networks.push_back(in);
+        }
+        catch (const FWException &ex)
+        {
+            //TODO: to do something usefull
+        }
+    }
+    libfwbuilder::SNMPCrawler *q = new SNMPCrawler();
+    q->init(getSeedHostAddress(),
+            m_dialog->snmpcommunity->text().toLatin1().constData(),
+            m_dialog->snmprecursive->isChecked(),
+            ! m_dialog->snmpincludevirt->isChecked(),
+            false,
+            m_dialog->snmpfollowp2p->isChecked(),
+            0,
+            m_dialog->snmpretries->value(),
+            1000000L*m_dialog->snmptimeout->value(),
+            0,
+            0,
+            (use_incl) ? &include_networks : NULL);
+    
+    m_dialog->discoveryprogress->setMaximum(0);
+    unBar = m_dialog->discoveryprogress;
+    
+    bop=q;
+    try
+    {
+        logger = bop->start_operation();
+        if (fwbdebug) logger->copyToStderr();
+        m_dialog->discoverylog->append("Collecting data ...");
+
+        disconnect(timer, SIGNAL(timeout()), 0, 0);
+        connect(timer, SIGNAL(timeout()), this, SLOT(updateLog()));
+        timer->setSingleShot(false);
+        timer->start(100);
+        
+    } catch(const FWException &ex)
+    {
+        delete q;
+        q=NULL;
+    }
+            
+    
+#endif
+}
+    
 void DiscoveryDruid::loadDataFromCrawler()
 {
 #ifdef HAVE_LIBSNMP
@@ -1615,6 +1628,8 @@ void DiscoveryDruid::customEvent(QEvent *event)
 
 void DiscoveryDruid::updateLog()
 {
+    if (fwbdebug) qDebug("DiscoveryDruid::updateLog");
+
     if (current_task==BT_HOSTS || current_task==BT_IMPORT)
     {
         QString buf;
@@ -1981,9 +1996,7 @@ void DiscoveryDruid::createRealObjects()
     m_dialog->lastprogress->setMaximum( Objects.size());
     
     QMap<QString,ObjectDescriptor >::iterator i;
-    for(i=Networks.begin();
-        i!=Networks.end();
-        ++i)
+    for(i=Networks.begin(); i!=Networks.end(); ++i)
     {
         od=i.value();
         if (od.isSelected)
@@ -2003,15 +2016,13 @@ void DiscoveryDruid::createRealObjects()
         }
     }
     
-    for(i=Objects.begin();
-        i!=Objects.end();
-        ++i)
+    for(i=Objects.begin(); i!=Objects.end(); ++i)
     {
-        od=i.value();
-        type=od.type;
+        od = i.value();
+        type = od.type;
         
-        name=od.sysname;
-        a=od.addr.toString();
+        name = od.sysname;
+        a = od.addr.toString();
 
         if(od.isSelected)
         {
@@ -2019,7 +2030,7 @@ void DiscoveryDruid::createRealObjects()
             {
                 FWObject *o=NULL;
 
-                o=mw->createObject(type.c_str(),name.c_str());
+                o = mw->createObject(type.c_str(), name.c_str());
                 o->setName(name);
 
                 if (od.interfaces.size()==0) 
@@ -2036,18 +2047,32 @@ void DiscoveryDruid::createRealObjects()
                     ipv4->setNetmask(InetAddr());
                 } else
                 {
-                    map<int,Interface>::const_iterator i;
+                    map<int,InterfaceData>::const_iterator i;
                     for (i=od.interfaces.begin(); i!=od.interfaces.end(); ++i)
                     {
-                        Interface in=i->second;
-                        Interface *itf=
-                            Interface::cast(mw->createObject(
-                                                o,
-                                                Interface::TYPENAME,
-                                                (i->second).getName().c_str(),
-                                                &in));
-                        mw->autorename(itf,IPv4::TYPENAME,"ip");
-                        mw->autorename(itf,physAddress::TYPENAME,"mac");
+                        InterfaceData in = i->second;
+                        if (in.addr_mask.getAddressPtr()->isAny()) continue;
+
+                        Interface *itf = Interface::cast(
+                            mw->createObject(o,
+                                             QString(Interface::TYPENAME),
+                                             QString(i->second.name.c_str())));
+
+                        itf->setPhysicalAddress(in.mac_addr);
+                        itf->setLabel(in.label);
+                        itf->setExt(in.ext);
+                        itf->setSecurityLevel(in.securityLevel);
+
+                        const InetAddr *addr = in.addr_mask.getAddressPtr();
+                        IPv4 *ipv4= IPv4::cast(
+                            mw->createObject(itf, IPv4::TYPENAME,
+                                             addr->toString().c_str())
+                        );
+                        ipv4->setAddress(*addr);
+                        ipv4->setNetmask(*(in.addr_mask.getNetmaskPtr()));
+
+                        mw->autorename(itf, IPv4::TYPENAME, "ip");
+                        mw->autorename(itf, physAddress::TYPENAME, "mac");
                     }
                 }
                 if (!od.descr.empty())
@@ -2101,14 +2126,14 @@ void DiscoveryDruid::createRealObjects()
 }
 
 void DiscoveryDruid::autorename(FWObject *obj,
-                                   const string &objtype,
-                                   const string &namesuffix)
+                                const string &objtype,
+                                const string &namesuffix)
 {
     FWObject      *hst = obj->getParent();
     list<FWObject*> ol = obj->getByType(objtype);
     int           sfxn = 1;
 
-    for (list<FWObject*>::iterator j=ol.begin(); j!=ol.end(); ++j,sfxn++)
+    for (list<FWObject*>::iterator j=ol.begin(); j!=ol.end(); ++j,++sfxn)
     {
         QString sfx;
         if (ol.size()==1) sfx="";
@@ -2214,7 +2239,7 @@ ObjectDescriptor& ObjectDescriptor::operator=(const ObjectDescriptor& od) {
 
 WorkerThread::WorkerThread() : QThread()
 {
-    Log=new QueueLogger();
+    Log = new QueueLogger();
 }
 
 WorkerThread::~WorkerThread()
@@ -2224,7 +2249,7 @@ WorkerThread::~WorkerThread()
 
 void WorkerThread::setProgress(int p)
 {
-   ProgressEvent *event=new ProgressEvent();
+   ProgressEvent *event = new ProgressEvent();
    event->value=p;
    
    QApplication::postEvent(Widget,event);

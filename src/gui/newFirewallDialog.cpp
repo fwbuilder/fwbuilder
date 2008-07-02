@@ -32,7 +32,6 @@
 #include "platforms.h"
 
 #include "newFirewallDialog.h"
-#include "InterfaceData.h"
 #include "FWWindow.h"
 #include "ObjConflictResolutionDialog.h"
 #include "upgradePredicate.h"
@@ -230,10 +229,11 @@ void  newFirewallDialog::monitor()
 
     timer->stop();
 
-    const map<int, Interface> &intf = q->getInterfaces();
-    for(map<int, Interface>::const_iterator i=intf.begin();i!=intf.end(); ++i)
+    const map<int, InterfaceData> &intf = q->getInterfaces();
+    map<int, InterfaceData>::const_iterator i;
+    for(i=intf.begin();i!=intf.end(); ++i)
     {
-        if ( i->second.isUp() )
+        if ( i->second.ostatus )
         {
             InterfaceData idata( i->second );
 
@@ -247,10 +247,10 @@ void  newFirewallDialog::monitor()
             QStringList qsl;
             qsl << idata.name.c_str()
                 << idata.label.c_str()
-                << idata.address.c_str()
-                << idata.netmask.c_str()
+                << idata.addr_mask.getAddressPtr()->toString().c_str()
+                << idata.addr_mask.getNetmaskPtr()->toString().c_str()
                 << dn
-                << idata.physicalAddress.c_str();
+                << idata.mac_addr.c_str();
             new QTreeWidgetItem(m_dialog->iface_list, qsl);
 
 //            cerr << "Added interface " << idata.name << endl;
@@ -485,9 +485,10 @@ void newFirewallDialog::fillInterfaceSLList()
         idata.isBridgePort =  itm->text(4).indexOf("Bridge")!=-1;
 
         if (!idata.isDyn && !idata.isUnnumbered && !idata.isBridgePort)
-            idata.address  =  itm->text(2).toLatin1().constData();
+            idata.addr_mask.setAddress(itm->text(2).toLatin1().constData());
         else
-            idata.address  =  QObject::tr("dynamic").toLatin1().constData();
+            idata.addr_mask.setAddress(
+                QObject::tr("dynamic").toLatin1().constData());
 
         try
         {
@@ -506,7 +507,7 @@ void newFirewallDialog::fillInterfaceSLList()
         QStringList qsl;
         qsl << idata.name.c_str()
             << idata.label.c_str()
-            << idata.address.c_str()
+            << idata.addr_mask.getAddressPtr()->toString().c_str()
             << QString::number(idata.securityLevel);
         new QTreeWidgetItem(m_dialog->iface_sl_list, qsl);
 

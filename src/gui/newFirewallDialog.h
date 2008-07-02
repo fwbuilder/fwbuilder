@@ -30,7 +30,7 @@
 #include "../../config.h"
 #include <ui_newfirewalldialog_q.h>
 
-#include "InterfaceData.h"
+#include "fwbuilder/InterfaceData.h"
 #include "fakeWizard.h"
 
 #include <map>

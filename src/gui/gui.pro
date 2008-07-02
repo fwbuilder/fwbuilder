@@ -36,7 +36,6 @@ HEADERS += ../../config.h \
 	newGroupDialog.h \
 	filePropDialog.h \
 	DialogData.h \
-	InterfaceData.h \
 	execDialog.h \
 	SimpleTextEditor.h \
 	SimpleIntEditor.h \
@@ -149,7 +148,6 @@ SOURCES += ProjectPanel.cpp \
 	newGroupDialog.cpp \
 	filePropDialog.cpp \
 	DialogData.cpp \
-	InterfaceData.cpp \
 	execDialog.cpp \
 	SimpleTextEditor.cpp \
 	SimpleIntEditor.cpp \
