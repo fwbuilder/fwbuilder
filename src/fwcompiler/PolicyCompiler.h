@@ -240,11 +240,11 @@ namespace fwcompiler {
          * drop rules that have ipv4 or ipv6 addresses  (depending
          * on the argument ipv6 passed to the constructor)
          */
-        class DropRulesByAddressFamily : public PolicyRuleProcessor
+        class DropRulesByAddressFamilyAndServiceType : public PolicyRuleProcessor
         {
             bool drop_ipv6;
             public:
-            DropRulesByAddressFamily(const std::string &n,
+            DropRulesByAddressFamilyAndServiceType(const std::string &n,
                                      bool ipv6) : PolicyRuleProcessor(n)
             { drop_ipv6 = ipv6; }
             virtual bool processNext();
@@ -254,22 +254,22 @@ namespace fwcompiler {
          * Drop rule if any address object in source or destination is
          * ipv4 address.
          */
-        class DropIPv4Rules : public DropRulesByAddressFamily
+        class DropIPv4Rules : public DropRulesByAddressFamilyAndServiceType
         {
             public:
             DropIPv4Rules(const std::string &n) :
-              DropRulesByAddressFamily(n, false) {};
+              DropRulesByAddressFamilyAndServiceType(n, false) {};
         };
 
         /**
          * Drop rule if any address object in source or destination is
          * ipv6 address.
          */
-        class DropIPv6Rules : public DropRulesByAddressFamily
+        class DropIPv6Rules : public DropRulesByAddressFamilyAndServiceType
         {
             public:
             DropIPv6Rules(const std::string &n) :
-              DropRulesByAddressFamily(n, true) {};
+              DropRulesByAddressFamilyAndServiceType(n, true) {};
         };
 
 	/**

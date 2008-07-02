@@ -34,6 +34,7 @@
 #include "fwbuilder/Network.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
+#include "fwbuilder/ICMP6Service.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/CustomService.h"
@@ -1324,10 +1325,6 @@ bool Compiler::FindAddressFamilyInRE(FWObject *parent, bool ipv6)
 
 void Compiler::DropAddressFamilyInRE(RuleElement *rel, bool drop_ipv6)
 {
-    FWObject *r = rel;
-    while (r && Rule::cast(r)==NULL) r = r->getParent();
-    Rule *rule = Rule::cast(r);
-
     list<FWObject*> objects_to_remove;
     for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) 
     {
@@ -1359,9 +1356,34 @@ void Compiler::DropAddressFamilyInRE(RuleElement *rel, bool drop_ipv6)
     for (list<FWObject*>::iterator i = objects_to_remove.begin();
          i != objects_to_remove.end(); ++i)
         rel->removeRef(*i);
-
 }
 
+void Compiler::DropByServiceTypeInRE(RuleElement *rel, bool drop_ipv6)
+{
+    list<FWObject*> objects_to_remove;
+    for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) 
+    {
+        FWObject *o= *i;
+        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        // skip "Any"
+        if (o->getId() == FWObjectDatabase::ANY_SERVICE_ID)
+            continue;
+
+        // Note that all service objects except for ICMPService can be
+        // used in both ipv4 and ipv6 contexts.
+        if (drop_ipv6)
+        {
+            if (ICMP6Service::isA(o)) objects_to_remove.push_back(o);
+        } else
+        {
+            if (ICMPService::isA(o)) objects_to_remove.push_back(o);
+        }
+    }
+
+    for (list<FWObject*>::iterator i = objects_to_remove.begin();
+         i != objects_to_remove.end(); ++i)
+        rel->removeRef(*i);
+}
 
 
 bool Compiler::catchUnnumberedIfaceInRE(RuleElement *re)

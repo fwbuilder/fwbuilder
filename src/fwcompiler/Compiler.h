@@ -279,6 +279,14 @@ namespace fwcompiler {
          */
         void DropAddressFamilyInRE(libfwbuilder::RuleElement *rel,
                                    bool drop_ipv6);
+
+        /**
+         * similarly, remove reference to objects in service rule elements
+         * based on their compatibility with ipv6 context.
+         */
+        void DropByServiceTypeInRE(libfwbuilder::RuleElement *rel,
+                                   bool drop_ipv6);
+        
         /**
          *  rule processor that "injects" rules into the conveyor
          */
