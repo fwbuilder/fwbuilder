@@ -6,7 +6,7 @@
 
   Author:  Illiya Yalovoy <yalovoy@gmail.com>
 
-  $Id: ActionsDialog.h,v 1.8 2006/09/13 15:46:46 vkurland Exp $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms

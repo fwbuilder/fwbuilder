@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id: main.cpp,v 1.121 2007/06/03 03:36:42 vkurland Exp $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public

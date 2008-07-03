@@ -7,7 +7,7 @@
   Author:  Vadim Kurland     vadim@fwbuilder.org
            Illiya Yalovoy    <yalovoy@gmail.com>
 
-  $Id: DiscoveryDruid.cpp,v 1.37 2007/06/13 02:58:48 vkurland Exp $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
