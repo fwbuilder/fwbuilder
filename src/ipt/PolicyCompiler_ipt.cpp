@@ -4183,6 +4183,11 @@ string PolicyCompiler_ipt::flushAndSetDefaultPolicy()
     createPrintRuleProcessor();
     res += printRule->_declareTable();
     res += printRule->_flushAndSetDefaultPolicy();
+
+    string version = fw->getStr("version");
+    if (version != "1.3.0" && version != "1.4.0")
+        res += printRule->_clampTcpToMssRule();
+
     res += printRule->_printOptionalGlobalRules();
 
     return res;

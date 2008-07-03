@@ -412,13 +412,13 @@ int main(int argc, char * const *argv)
         if (slib && slib->isReadOnly()) slib->setReadOnly(false);
 
 	/* Review firewall and OS options and generate commands */
-	Firewall*  fw=objdb->findFirewallByName(fwobjectname);
-	FWOptions* options=fw->getOptionsObject();
+	Firewall*  fw = objdb->findFirewallByName(fwobjectname);
+	FWOptions* options = fw->getOptionsObject();
 	string s;
 
         /* some initial sanity checks */
 
-        list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
+        list<FWObject*> l2 = fw->getByType(Interface::TYPENAME);
         for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) 
         {
             Interface *iface=dynamic_cast<Interface*>(*i);
@@ -532,8 +532,13 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 	string shell_dbg=(debug)?"set -x":"" ;
 	string pfctl_dbg=(debug)?"-v":"";
 
-	OSConfigurator_linux24 *oscnf=NULL;
-        string family=Resources::os_res[fw->getStr("host_OS")]->Resources::getResourceStr("/FWBuilderResources/Target/family");
+	OSConfigurator_linux24 *oscnf = NULL;
+        string family = Resources::os_res[
+            fw->getStr("host_OS")]->Resources::getResourceStr(
+                "/FWBuilderResources/Target/family");
+        string fw_version = fw->getStr("version");
+        if (fw_version.empty()) fw_version = "(any version)";
+
         if ( family=="linux24" )
             oscnf = new OSConfigurator_linux24(objdb , fwobjectname, false);
 
@@ -685,16 +690,17 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 {
                     m.compile();
                     m.epilog();
+                    
+                    if (Compiler::isRootRuleSet(policy))
+                    {
+                        m_str << "# ================ Table 'mangle', "
+                              << "automatic rules"
+                              << endl;
+                        m_str << m.flushAndSetDefaultPolicy();
+                    }
 
                     if (m.getCompiledScriptLength() > 0)
                     {
-                        if (Compiler::isRootRuleSet(policy))
-                        {
-                            m_str
-                                << "# ================ Table 'mangle', automatic rules"
-                                << endl;
-                            m_str << m.flushAndSetDefaultPolicy();
-                        }
                         m_str << "# ================ Table 'mangle', rule set "
                               << branch_name << endl;
                         if (m.haveErrorsAndWarnings())
@@ -838,7 +844,8 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         script << MANIFEST_MARKER << "* " << fw_file_name << endl;
         script << "#" << endl;
         script << "#" << endl;
-
+        script << "# Compiled for iptables " << fw_version << endl;
+        script << "#" << endl;
         if ( !nocomm )
         {
             string fwcomment=fw->getComment();

@@ -1,5 +1,14 @@
 2008-07-03  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ipt.cpp (main): document iptables version settings from the
+	firewall object in generated script (for support and debugging).
+
+	* MangleTableCompiler_ipt.cpp (flushAndSetDefaultPolicy): iptables
+	rule with target TCPMSS generated for option "Clamp MSS to MTU" is
+	valid only in mangle table in iptables 1.3.x and later. Still
+	generate this command in the filter table for earlier versions of
+	iptables
+
 	* PrefsDialog.cpp (PrefsDialog::getFontDescription): Tab "Fonts"
 	of the Preferences dialog shows currently selected fonts for both
 	the tree and rules.

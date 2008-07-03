@@ -352,7 +352,7 @@ string PolicyCompiler_ipt::PrintRule::_printDirectionAndInterface(PolicyRule *ru
     string::size_type n;
     if ( (n=iface_name.find("*"))!=string::npos)    iface_name[n]='+';
 
-    string version=compiler->fw->getStr("version");
+    string version = compiler->fw->getStr("version");
 
     Interface *rule_iface =
         compiler->getCachedFwInterface(rule->getInterfaceId());
@@ -1393,6 +1393,25 @@ string PolicyCompiler_ipt::PrintRule::_commit()
     return "";
 }
 
+string PolicyCompiler_ipt::PrintRule::_clampTcpToMssRule()
+{
+    ostringstream res;
+    bool ipforward = false;
+    string s = compiler->getCachedFwOpt()->getStr("linux24_ip_forward");
+    ipforward= (s.empty() || s=="1" || s=="On" || s=="on");
+
+    if ( compiler->getCachedFwOpt()->getBool("clamp_mss_to_mtu") &&
+         ipforward)
+    {
+        res << _startRuleLine()
+            << "FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu"
+            << _endRuleLine();
+        
+        res << endl;
+    }
+    return res.str();
+}
+
 string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
@@ -1407,15 +1426,6 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
     bool ipforward = false;
     string s = compiler->getCachedFwOpt()->getStr("linux24_ip_forward");
     ipforward= (s.empty() || s=="1" || s=="On" || s=="on");
-
-    if ( compiler->getCachedFwOpt()->getBool("clamp_mss_to_mtu") && ipforward)
-    {
-        res << _startRuleLine()
-            << "FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu"
-            << _endRuleLine();
-
-        res << endl;
-    }
 
     if ( compiler->getCachedFwOpt()->getBool("accept_established") &&
          ipt_comp->my_table=="filter") 

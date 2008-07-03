@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="9" lastModified="1214965576" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="9" lastModified="1215124221" id="root">
   <Library id="sysid99" name="Deleted Objects" ro="False">
     <ICMP6Service id="idE0C27650" name="ipv6 dest unreachable" comment="No route to destination" code="0" type="1"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -581,7 +581,6 @@
     </Interface>
     <IPv4 id="id46EFBE4931183" name="firewall42:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
     <Interface id="id4848A43B4626" name="ppp0" bridgeport="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False"/>
-    <ServiceRef ref="sysid1"/>
   </Library>
   <Library id="syslib001" name="User" comment="User defined objects" color="#d2ffd0">
     <ObjectGroup id="stdid01_1" name="Objects">
@@ -9765,7 +9764,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3D4F0A55" name="firewall10" comment="testing rules with  action-on-reject &quot;TCP reset&quot;&#10;in this firewall, unlike in firewall9, this option is set globally instead of setting it&#10;in the rule options&#10;&#10;" host_OS="linux24" inactive="False" lastCompiled="1188096940" lastInstalled="1142003872" lastModified="1169006607" platform="iptables" ro="False" version="1.2.9">
+      <Firewall id="id3D4F0A55" name="firewall10" comment="testing rules with  action-on-reject &quot;TCP reset&quot;&#10;in this firewall, unlike in firewall9, this option is set globally instead of setting it&#10;in the rule options&#10;&#10;" host_OS="linux24" inactive="False" lastCompiled="1188096940" lastInstalled="1142003872" lastModified="1215123480" platform="iptables" ro="False" version="1.2.9">
         <NAT id="id3D4F0A56" name="NAT"/>
         <Policy id="id3D4F0A57" name="Policy">
           <PolicyRule id="id3D4F0A58" action="Reject" direction="Both" disabled="False" log="True" position="0">
@@ -9990,20 +9989,29 @@
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP host unreachable</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
-          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="clamp_mss_to_mtu">True</Option>
+          <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
+          <Option name="drop_invalid">False</Option>
           <Option name="dyn_addr">False</Option>
+          <Option name="enable_ipv6">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir"></Option>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="inst_cmdline"></Option>
           <Option name="inst_script"></Option>
           <Option name="install_script"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_accept_redirects"></Option>
@@ -10032,6 +10040,7 @@
           <Option name="local_nat">False</Option>
           <Option name="log_all">False</Option>
           <Option name="log_all_dropped">False</Option>
+          <Option name="log_invalid">False</Option>
           <Option name="log_ip_opt">False</Option>
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
@@ -10040,19 +10049,27 @@
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
           <Option name="no_iochains_for_any">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
           <Option name="no_optimisation">False</Option>
+          <Option name="output_file"></Option>
           <Option name="platform">iptables</Option>
+          <Option name="prolog_place">top</Option>
+          <Option name="prolog_script"></Option>
           <Option name="proxy_arp">False</Option>
           <Option name="script_env_path">/bin:/usr/bin:/sbin:/usr/sbin</Option>
           <Option name="snmp_contact"></Option>
           <Option name="snmp_description"></Option>
           <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
           <Option name="use_ULOG">False</Option>
           <Option name="use_ip_tool">False</Option>
+          <Option name="use_iptables_restore">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
@@ -13793,7 +13810,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3FB32E8E" name="firewall23" comment="&#10;This is BRIDGING FIREWALL&#10;&#10;" host_OS="linux24" lastCompiled="1188097036" lastInstalled="1142003872" lastModified="1142003859" platform="iptables" ro="False">
+      <Firewall id="id3FB32E8E" name="firewall23" comment="&#10;This is BRIDGING FIREWALL&#10;&#10;" host_OS="linux24" inactive="False" lastCompiled="1188097036" lastInstalled="1142003872" lastModified="1215123498" platform="iptables" ro="False" version="">
         <NAT id="id3FB32E8F" name="NAT"/>
         <Policy id="id3FB32EAC" name="Policy">
           <PolicyRule id="id3FB33184" action="Accept" direction="Inbound" disabled="False" log="False" position="0">
@@ -14124,20 +14141,29 @@
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="bridging_fw">True</Option>
           <Option name="check_shading">False</Option>
-          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="clamp_mss_to_mtu">True</Option>
+          <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
+          <Option name="drop_invalid">False</Option>
           <Option name="dyn_addr">False</Option>
+          <Option name="enable_ipv6">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir"></Option>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="inst_cmdline"></Option>
           <Option name="inst_script"></Option>
           <Option name="install_script"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_accept_redirects"></Option>
@@ -14166,6 +14192,7 @@
           <Option name="local_nat">False</Option>
           <Option name="log_all">False</Option>
           <Option name="log_all_dropped">False</Option>
+          <Option name="log_invalid">False</Option>
           <Option name="log_ip_opt">False</Option>
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
@@ -14174,19 +14201,27 @@
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
           <Option name="no_iochains_for_any">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
           <Option name="no_optimisation">False</Option>
+          <Option name="output_file"></Option>
           <Option name="platform">iptables</Option>
+          <Option name="prolog_place">top</Option>
+          <Option name="prolog_script"></Option>
           <Option name="proxy_arp">False</Option>
           <Option name="script_env_path"></Option>
           <Option name="snmp_contact"></Option>
           <Option name="snmp_description"></Option>
           <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
           <Option name="use_ULOG">False</Option>
           <Option name="use_ip_tool">False</Option>
+          <Option name="use_iptables_restore">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
@@ -18362,7 +18397,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id439254F225682" name="firewall35" comment="testing AddressTable object&#10;&#10;like firewall34, but uses different script format" host_OS="linux24" lastCompiled="1188097135" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False" version="">
+      <Firewall id="id439254F225682" name="firewall35" comment="testing AddressTable object&#10;&#10;like firewall34, but uses different script format" host_OS="linux24" inactive="False" lastCompiled="1188097135" lastInstalled="1142003872" lastModified="1215124221" platform="iptables" ro="False" version="">
         <NAT id="id4392558E25682" name="NAT">
           <NATRule id="id4392558F25682" disabled="False" position="0">
             <OSrc neg="True">
@@ -18666,13 +18701,15 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
-          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="clamp_mss_to_mtu">True</Option>
+          <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="dyn_addr">False</Option>
+          <Option name="enable_ipv6">False</Option>
           <Option name="epilog_script"></Option>
           <Option name="firewall_dir"></Option>
           <Option name="firewall_is_part_of_any">True</Option>
@@ -18681,6 +18718,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="inst_cmdline"></Option>
           <Option name="inst_script"></Option>
           <Option name="install_script"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_accept_redirects"></Option>
@@ -18721,6 +18759,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="no_iochains_for_any">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
           <Option name="no_optimisation">False</Option>
           <Option name="output_file"></Option>
           <Option name="platform">iptables</Option>
@@ -20142,7 +20181,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id43BBF18E9745" name="firewall38" comment="testing TAG rules&#10;&#10;using  iptables-restore&#10;" host_OS="linux24" lastCompiled="1188097164" lastInstalled="1142003872" lastModified="1177392195" platform="iptables" ro="False" version="">
+      <Firewall id="id43BBF18E9745" name="firewall38" comment="testing TAG rules&#10;&#10;using  iptables-restore&#10;" host_OS="linux24" inactive="False" lastCompiled="1188097164" lastInstalled="1142003872" lastModified="1215124213" platform="iptables" ro="False" version="1.3.0">
         <NAT id="id43BBF1E99745" name="NAT">
           <NATRule id="id43BBF1EA9745" disabled="False" position="0">
             <OSrc neg="False">
@@ -20639,16 +20678,19 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
-          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="clamp_mss_to_mtu">True</Option>
+          <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
+          <Option name="enable_ipv6">False</Option>
           <Option name="epilog_script"></Option>
           <Option name="firewall_dir"></Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="ignore_empty_groups">True</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_accept_redirects"></Option>
@@ -20686,6 +20728,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="manage_virtual_addr">True</Option>
           <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
           <Option name="no_optimisation">False</Option>
           <Option name="output_file"></Option>
           <Option name="prolog_place">top</Option>
@@ -20703,7 +20746,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id440C055614846" name="firewall23-1" comment="&#10;This is BRIDGING FIREWALL&#10;Testing module physdev&#10;" host_OS="linux24" lastCompiled="1188097043" lastInstalled="1142003872" lastModified="1163136879" platform="iptables" ro="False" version="1.3.0">
+      <Firewall id="id440C055614846" name="firewall23-1" comment="&#10;This is BRIDGING FIREWALL&#10;Testing module physdev&#10;" host_OS="linux24" inactive="False" lastCompiled="1188097043" lastInstalled="1142003872" lastModified="1215123502" platform="iptables" ro="False" version="1.3.0">
         <NAT id="id440C062B14846" name="NAT"/>
         <Policy id="id440C055C14846" name="Policy">
           <PolicyRule id="id440C055D14846" action="Accept" direction="Inbound" disabled="False" log="False" position="0">
@@ -21185,20 +21228,29 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="bridging_fw">True</Option>
           <Option name="check_shading">False</Option>
-          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="clamp_mss_to_mtu">True</Option>
+          <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
+          <Option name="drop_invalid">False</Option>
           <Option name="dyn_addr">False</Option>
+          <Option name="enable_ipv6">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir"></Option>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="inst_cmdline"></Option>
           <Option name="inst_script"></Option>
           <Option name="install_script"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_accept_redirects"></Option>
@@ -21227,6 +21279,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="local_nat">False</Option>
           <Option name="log_all">False</Option>
           <Option name="log_all_dropped">False</Option>
+          <Option name="log_invalid">False</Option>
           <Option name="log_ip_opt">False</Option>
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
@@ -21235,19 +21288,27 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
           <Option name="no_iochains_for_any">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
           <Option name="no_optimisation">False</Option>
+          <Option name="output_file"></Option>
           <Option name="platform">iptables</Option>
+          <Option name="prolog_place">top</Option>
+          <Option name="prolog_script"></Option>
           <Option name="proxy_arp">False</Option>
           <Option name="script_env_path"></Option>
           <Option name="snmp_contact"></Option>
           <Option name="snmp_description"></Option>
           <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
           <Option name="use_ULOG">False</Option>
           <Option name="use_ip_tool">False</Option>
+          <Option name="use_iptables_restore">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
@@ -22340,7 +22401,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4492FED324380" name="firewall40" comment="&#10;more complex and realistic combination of Tag and Route rules&#10;" host_OS="linux24" inactive="False" lastCompiled="1188097187" lastInstalled="1142003872" lastModified="1150347460" platform="iptables" ro="False" version="">
+      <Firewall id="id4492FED324380" name="firewall40" comment="&#10;more complex and realistic combination of Tag and Route rules&#10;" host_OS="linux24" inactive="False" lastCompiled="1188097187" lastInstalled="1142003872" lastModified="1215123825" platform="iptables" ro="False" version="1.4.0">
         <NAT id="id4492FF2E24380" name="NAT">
           <NATRule id="id4492FF2F24380" comment="Translate source address&#10;for outgoing connections" disabled="False" position="0">
             <OSrc neg="False">
@@ -22599,19 +22660,22 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
-          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="clamp_mss_to_mtu">True</Option>
+          <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
+          <Option name="enable_ipv6">False</Option>
           <Option name="epilog_script"></Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">true</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
@@ -22629,6 +22693,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="manage_virtual_addr">True</Option>
           <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
           <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
@@ -25613,7 +25678,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4845077415791" name="firewall61" comment="testing time litmiting for iptables 1.4.0&#10;" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1213152525" platform="iptables" ro="False" version="1.4.0">
+      <Firewall id="id4845077415791" name="firewall61" comment="testing time litmiting for iptables 1.4.0&#10;" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1215123525" platform="iptables" ro="False" version="1.4.0">
         <NAT id="id484507B715791" name="NAT"/>
         <Policy id="id4845077A15791" name="Policy">
           <PolicyRule id="id4845077B15791" action="Deny" direction="Both" disabled="False" log="True" position="0">
@@ -25779,7 +25844,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
-          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="clamp_mss_to_mtu">True</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
@@ -26435,7 +26500,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4848F19020246" name="firewall62" comment="testing rules using UserService object&#10;Note that iptables does not allow entering&#10;iptables command that tries to match using module 'owner' in any chain&#10;other than OUTPUT. This includes user defined chains too (it checks&#10;how control passes to user defined chain and blocks command if&#10;it appears that user defined chain gets control not from OUTPUT)&#10;&#10;" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1212717699" platform="iptables" ro="False" version="1.4.0">
+      <Firewall id="id4848F19020246" name="firewall62" comment="testing rules using UserService object&#10;Note that iptables does not allow entering&#10;iptables command that tries to match using module 'owner' in any chain&#10;other than OUTPUT. This includes user defined chains too (it checks&#10;how control passes to user defined chain and blocks command if&#10;it appears that user defined chain gets control not from OUTPUT)&#10;&#10;" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1215123521" platform="iptables" ro="False" version="1.4.0">
         <NAT id="id4848F1D320246" name="NAT"/>
         <Policy id="id4848F19620246" name="Policy">
           <PolicyRule id="id4848F19720246" comment="OUTPUT and INPUT chains" action="Accept" direction="Both" disabled="False" log="False" position="0">
@@ -26684,7 +26749,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
-          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="clamp_mss_to_mtu">True</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>

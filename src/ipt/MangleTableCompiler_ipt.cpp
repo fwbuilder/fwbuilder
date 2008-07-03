@@ -52,7 +52,8 @@ int MangleTableCompiler_ipt::prolog()
     {
 	PolicyRule *r = PolicyRule::cast( *i );
 	if (r->isDisabled()) continue;
-        if (r->getAction() == PolicyRule::Tag || r->getAction() == PolicyRule::Classify) n++;
+        if (r->getAction() == PolicyRule::Tag ||
+            r->getAction() == PolicyRule::Classify) n++;
     }
     return n;
 }
@@ -77,7 +78,7 @@ bool MangleTableCompiler_ipt::keepMangleTableRules::processNext()
             rule->getDirection()==PolicyRule::Both ||
             rule->getDirection()==PolicyRule::Inbound)
         {
-            r = PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             r->setStr("ipt_chain","PREROUTING");
@@ -88,7 +89,7 @@ bool MangleTableCompiler_ipt::keepMangleTableRules::processNext()
             rule->getDirection()==PolicyRule::Both ||
             rule->getDirection()==PolicyRule::Outbound)
         {
-            r = PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             r->setStr("ipt_chain","POSTROUTING");
@@ -109,7 +110,7 @@ bool MangleTableCompiler_ipt::keepMangleTableRules::processNext()
 
 void MangleTableCompiler_ipt::addRuleFilter()
 {
-    add( new keepMangleTableRules(" keep only rules that require mangle table") );
+    add(new keepMangleTableRules("keep only rules that require mangle table"));
 }
 
 string MangleTableCompiler_ipt::flushAndSetDefaultPolicy()
@@ -118,7 +119,6 @@ string MangleTableCompiler_ipt::flushAndSetDefaultPolicy()
 
     PolicyCompiler_ipt::PrintRule *prp = createPrintRuleProcessor();
 
-    res << endl;
     res << prp->_declareTable();
 
     if (have_connmark)
@@ -134,6 +134,10 @@ string MangleTableCompiler_ipt::flushAndSetDefaultPolicy()
             << prp->_endRuleLine();
         res << endl;
     }
+
+    string version = fw->getStr("version");
+    if (version == "1.3.0" || version == "1.4.0")
+        res << prp->_clampTcpToMssRule();
 
     return res.str();
 }

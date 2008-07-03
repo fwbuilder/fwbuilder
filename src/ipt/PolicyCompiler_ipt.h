@@ -868,6 +868,7 @@ namespace fwcompiler {
             virtual std::string _printOptionalGlobalRules();
             virtual std::string _declareTable();
             virtual std::string _flushAndSetDefaultPolicy();
+            virtual std::string _clampTcpToMssRule();
             virtual std::string _commit();
             virtual std::string _quote(const std::string &s);
 
