@@ -1,3 +1,9 @@
+2008-07-03  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* PrefsDialog.cpp (PrefsDialog::getFontDescription): Tab "Fonts"
+	of the Preferences dialog shows currently selected fonts for both
+	the tree and rules.
+
 2008-07-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* instDialog.cpp (instDialog::addToLog): fixes in built-in

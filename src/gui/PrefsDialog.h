@@ -56,10 +56,13 @@ class PrefsDialog : public QDialog
     QFont rulesFont;
     QFont treeFont;
     QFont uiFont;
-    void changeFont(QFont *font);
- public:
+    void changeFont(QFont &font);
+
+public:
     PrefsDialog(QWidget *parent);
     ~PrefsDialog();
+
+    QString getFontDescription(const QFont &font);
     
 public slots:
     virtual void accept();

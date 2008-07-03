@@ -188,7 +188,19 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     rulesFont = st->getRulesFont();
     treeFont = st->getTreeFont();
     uiFont = st->getUiFont();
+
+    m_dialog->rulesFontDescr->setText(getFontDescription(rulesFont));
+    m_dialog->treeFontDescr->setText(getFontDescription(treeFont));
+
     m_dialog->chClipComment->setChecked(st->getClipComment() );
+}
+
+QString PrefsDialog::getFontDescription(const QFont &font)
+{
+    ostringstream str;
+    str << font.family().toLatin1().constData()
+        << " " << font.pointSize();
+    return QString(str.str().c_str());
 }
 
 void PrefsDialog::changeColor(QPushButton *btn,
@@ -256,20 +268,22 @@ void PrefsDialog::changeShowIcons()
 
 void PrefsDialog::changeRulesFont()
 {
-    changeFont(&rulesFont);
+    changeFont(rulesFont);
+    m_dialog->rulesFontDescr->setText(getFontDescription(rulesFont));
 }
 
 void PrefsDialog::changeTreeFont()
 {
-    changeFont(&treeFont);
+    changeFont(treeFont);
+    m_dialog->treeFontDescr->setText(getFontDescription(treeFont));
 }
 
-void PrefsDialog::changeFont(QFont *font)
+void PrefsDialog::changeFont(QFont &font)
 {
     bool ok;
-    QFont f = QFontDialog::getFont(&ok, *font, this);
+    QFont f = QFontDialog::getFont(&ok, font, this);
     if (ok)
-        *font = f;
+        font = f;
 }
 
 void PrefsDialog::findWDir()

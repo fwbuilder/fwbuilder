@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>555</width>
+    <width>639</width>
     <height>396</height>
    </rect>
   </property>
@@ -104,7 +104,7 @@
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="Widget2" >
       <attribute name="title" >
@@ -934,6 +934,18 @@
       <layout class="QGridLayout" >
        <item row="0" column="0" >
         <widget class="QPushButton" name="btRulesFont" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize" >
+          <size>
+           <width>200</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="toolTip" >
           <string>Choose font for rules sets</string>
          </property>
@@ -942,21 +954,33 @@
          </property>
         </widget>
        </item>
-       <item rowspan="3" row="0" column="1" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
+       <item row="0" column="1" >
+        <widget class="QLabel" name="rulesFontDescr" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="sizeHint" >
-          <size>
-           <width>40</width>
-           <height>121</height>
-          </size>
+         <property name="text" >
+          <string>rules font description</string>
          </property>
-        </spacer>
+        </widget>
        </item>
        <item row="1" column="0" >
         <widget class="QPushButton" name="btTreeFont" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize" >
+          <size>
+           <width>200</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="toolTip" >
           <string>Choose font for tree</string>
          </property>
@@ -965,7 +989,20 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0" >
+       <item row="1" column="1" >
+        <widget class="QLabel" name="treeFontDescr" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text" >
+          <string>tree font description</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
