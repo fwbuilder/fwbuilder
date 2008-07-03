@@ -620,7 +620,9 @@ int main( int argc, char ** argv )
 #endif
         if (pparam)
         {
-            FWWindow::printFirewallFromFile(filename,pparamValue,print_output_file_name);
+            FWWindow::printFirewallFromFile(filename,
+                                            pparamValue,
+                                            print_output_file_name);
             return 0;
         }
 
