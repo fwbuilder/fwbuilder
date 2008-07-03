@@ -151,6 +151,7 @@ class instDialog : public QDialog, public FakeWizard
     bool testFirewall(libfwbuilder::Firewall*);
     void finishInstall(bool success=true);
     void fillInstallOpList();
+    void installNext();
     void initInstall();
     void analyseInstallQueue(bool &fPix, bool &fCustInst);
     libfwbuilder::Firewall *findFirewallbyListItem(QTreeWidgetItem* item);
@@ -177,7 +178,7 @@ class instDialog : public QDialog, public FakeWizard
     bool isTableHasChecked();
     void clearReqFirewalls();
     void addReqFirewall(libfwbuilder::Firewall *f);
-    void addToLog(const QString &buf); 
+    void interpretLogLine(const QString &buf);
     
 protected:
 
@@ -203,8 +204,7 @@ protected:
      
     void testRunRequested();
      
-    void append(const QString &line);
-    void appendRich(const QString &line);
+    void addToLog(const QString &buf); 
     void updateProgressBar(int n,bool setsize);
 
     void continueRun();
