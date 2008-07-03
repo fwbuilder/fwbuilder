@@ -193,13 +193,17 @@ void FWBSettings::init()
     if (!ok) setIconsInRulesSize(SIZE25X25);
 
     ok = contains(rulesFont);
-    if (!ok) setRulesFont(QFont("times", 11, QFont::Normal));
+    if (!ok) setRulesFont(QApplication::font());
 
     ok = contains(treeFont);
-    if (!ok) setTreeFont(QFont("times", 11, QFont::Normal));
+    if (!ok) setTreeFont(QApplication::font());
 
     ok = contains(uiFont);
-    if (!ok) setUiFont(QFont("times", 11, QFont::Normal));
+    if (!ok) setUiFont(QApplication::font());
+
+    if (fwbdebug)
+        qDebug("Default application font: %s",
+               QApplication::font().toString().toLatin1().constData());
 
     ok = contains(clipComment);
     if (!ok) setClipComment(true);
@@ -625,7 +629,7 @@ QFont FWBSettings::getFontByType(const char *type)
     bool ok = font.fromString(value(type).toString());
     if (ok)
       return font;
-    return QFont("times", 11, QFont::Normal);
+    return QApplication::font();
 }
 
 bool FWBSettings::getClipComment()
