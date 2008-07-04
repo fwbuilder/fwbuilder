@@ -25,9 +25,9 @@ ACLOCALARG=""
 test -d /sw/share/ && ACLOCALARG=" -I /sw/share/aclocal"
 
 
-libtoolize --force --copy
-acinclude
-aclocal ${ACLOCALARG}
+which libtoolize >/dev/null 2>&1 && libtoolize --force --copy
+which acinclude >/dev/null 2>&1 && acinclude
+which aclocal >/dev/null 2>&1 && aclocal ${ACLOCALARG}
 autoconf
 
 ./configure ${CFGARGS}  $*
