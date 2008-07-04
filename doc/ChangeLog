@@ -66,6 +66,24 @@
 	compiler uses "--icmpv6-type" and "-m icmp6" options while
 	generating ipv6 script.
 
+2008-06-20  <alek@codeminders.com>
+
+	* FWWindowPrint.cpp: fixed bug # 1896771: "printing user defined
+	chains".
+
+	* main.cpp: implemented printing of the firewall object contents
+	from CLI per bug #1996739: "Feature: CLI printing or policy export"
+	
+2008-06-16  <alek@codeminders.com>
+	
+	* newHostDiaog.cpp: fixed bug #1899488: "Unable to set MAC address
+	while adding a host"
+
+2008-06-13  <alek@codeminders.com>
+
+	* GroupObjectDialog.cpp: implemented sorting by name and parameter
+	in group dialogs per bug #646804: "No sort in Group".
+
 2008-06-10  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printTimeInterval):
@@ -97,17 +115,19 @@
 	Support for UserService in compiler for iptables. FR #1948872:
 	"User based rules"
 
-	* IPv4Dialog, NetworkDialog, newHostDialog, newFirewallDialog:
-	netmask can be entered as bit length, in addition to the bit mask
-	format supported before. Both formats are recognized. FR #995452,
-	1617297, 1666016
-
 	* IPv6 suport implemented in the GUI and compilers for iptables
 	and pf: FR #1517015, 1705261, 1706246, 1826325
 
 	* Rules with action Tag reference TagService objects. User drags
 	and drops TagService object into a drop area in the rule action
 	dialog. FR #1696841: "Mark action and TagService"
+
+2008-06-05  <alek@codeminders.com>
+
+	* IPv4Dialog, NetworkDialog, newHostDialog, newFirewallDialog:
+	netmask can be entered as bit length, in addition to the bit mask
+	format supported before. Both formats are recognized. FR #995452,
+	1617297, 1666016
 
 2008-06-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
@@ -186,13 +206,16 @@
 	mangle table in addition to the filter table" and correctly places
 	referenced rule set in both filter and mangle tables.
 	
+2008-05-29  <alek@codeminders.com>
+
 	* ObjectManipulator.cpp: new feature v3: Policy rules can now be
 	arranged in multiple rule sets with names. These rule sets are
 	shown in the tree under the firewall object (next to its
 	interfaces). Each rule set is independent from others, user can
 	add as many as they want. Rules with action "Branch" refer to
 	existing rule sets, user associates them by dragging rule set
-	object into action parameters dialog of the branching rule.
+	object into action parameters dialog of the branching rule.  This
+	also fixes bug #1753297: "duplicate chain tab".
 	
 2008-05-23  Vadim Kurland  <vadim@vk.crocodile.org>
 
@@ -270,13 +293,14 @@
         * RuleOptionsDialog.cpp (RuleOptionsDialog::loadFWObject): (from
 	2.1) fixed bug #1938985: Rate in hashlimit in local language
 
-2008-04-28  Vadim Kurland  <vadim@vk.crocodile.org>
+2008-04-28  <alek@codeminders.com>
 
 	* v3 feature: rules can be grouped in Policy, NAT and
 	Routing. Group of rules can have a name and color and can be
 	collapsed or expanded. Collapsed rule groups take room equivalent
 	to one rule in the ruleset panel. This implements Feature Requests
-	#1961702, 1938992, 1751141, 1602294, 1372620, 1083981, 1017566
+	#1961702, 1938992, 1751141, 1602294, 1372620, 1083981, 1017566,
+	848553, 811542, 
 
 2008-04-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
@@ -310,7 +334,7 @@
 	Compiler.cpp (emptyGroupsInRE::countChildren): (libfwbuilder)
 	fixed bug #1905718: "Group of DNS Name objects considered empty"
 	
-2008-03-06  vadim  <vadim@vk.crocodile.org>
+2008-03-06  <alek@codeminders.com>
 
 	* v3 feature: Firewall Builder v3 GUI redesigned as MDI
 	interfaces. Several data files can be opened simultaneously and
