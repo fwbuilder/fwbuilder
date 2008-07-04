@@ -22,10 +22,9 @@ fi
 
 sys=`uname -s`
 
-libtoolize --force --copy
-# autoheader
-acinclude
-aclocal
+which libtoolize >/dev/null 2>&1 && libtoolize --force --copy
+which acinclude >/dev/null 2>&1 && acinclude
+which aclocal >/dev/null 2>&1 && aclocal
 autoconf
 
 ./configure ${CFGARGS}  $*
