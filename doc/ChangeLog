@@ -1,3 +1,8 @@
+2008-07-05  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* fwbuilder.dtd.in: Added attributes for TOS and DSCP codes to
+	IPService xml element
+
 2008-07-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* InterfaceData.h (libfwbuilder): InterfaceData moved from

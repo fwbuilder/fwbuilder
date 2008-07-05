@@ -113,6 +113,40 @@ void IPService::fromXML(xmlNodePtr root) throw(FWException)
         setStr("ts", n);
         FREEXMLBUFF(n);
     }
+
+    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("tos")));
+    if(n!=NULL)
+    {
+        setStr("tos", n);
+        FREEXMLBUFF(n);
+    }
+
+    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dscp")));
+    if(n!=NULL)
+    {
+        setStr("dscp", n);
+        FREEXMLBUFF(n);
+    }
+}
+
+string IPService::getTOSCode()
+{
+    return getStr("tos");
+}
+
+void IPService::setTOSCode(const string &c)
+{
+    setStr("tos", c);
+}
+
+string IPService::getDSCPCode()
+{
+    return getStr("dscp");
+}
+
+void IPService::setDSCPCode(const string &c)
+{
+    setStr("dscp", c);
 }
 
 

@@ -437,6 +437,8 @@ Interface can have the following attributes:
  short_fragm  %BOOLEAN; #IMPLIED
  ssrr         %BOOLEAN; #IMPLIED
  ts           %BOOLEAN; #IMPLIED
+ tos          %STRING;  #IMPLIED
+ dscp         %STRING;  #IMPLIED
 >
 
 <!ELEMENT TCPService EMPTY>
