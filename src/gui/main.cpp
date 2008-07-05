@@ -693,7 +693,7 @@ int main( int argc, char ** argv )
 
 // setup single shot timer to call loadEverything()
 
-        QTimer::singleShot( 500, mw, SLOT(startupLoad()) );
+        QTimer::singleShot( 0, mw, SLOT(startupLoad()) );
 
         app->exec();
 

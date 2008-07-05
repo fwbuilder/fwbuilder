@@ -164,9 +164,11 @@ public slots:
      
     FWWindow();
     ~FWWindow();
+
+
     QMdiArea* getMdiArea () {return m_space;}
     RCS * getRCS(); 
-    static int printFirewallFromFile (QString fileName, QString firewallName, QString outputFileName);
+
     libfwbuilder::FWObject* getVisibleFirewalls();
     void load(QWidget *dialogs_parent,RCS *rcs);
     void load(QWidget *dialogs_parent);
@@ -338,9 +340,16 @@ public slots:
     void fileDiscardActionSetEn(bool en);
     void fileCommitActionSetEn(bool en);
     void fileSaveActionSetEn(bool en);
+
     QPrinter* getPrinter();
     libfwbuilder::FWObjectDatabase* db();
     QString printHeader();
+
+    static void printFirewallFromFile(QString fileName,
+                                      QString firewallName,
+                                      QString outputFileName);
+
+
     listOfLibraries *getAddOnLibs();
 
     bool isSystem(libfwbuilder::FWObject *obj);

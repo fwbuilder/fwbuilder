@@ -440,17 +440,17 @@ list<QStringPair> getVersionsForPlatform(const QString &platform)
 }
 
 /* currently we return the same list for all platforms */
-const QStringList& getLogLevels(const QString &platform)
+const QStringList& getLogLevels(const QString&)
 {
     return logLevels;
 }
 
-const QStringList& getLogFacilities(const QString &platform)
+const QStringList& getLogFacilities(const QString&)
 {
     return logFacilities;
 }
 
-const QStringList& getActionsOnReject(const QString &platform)
+const QStringList& getActionsOnReject(const QString&)
 {
     return actionsOnReject;
 }
@@ -470,12 +470,12 @@ const QStringList& getActionsOnReject(const QString &platform)
  *  ok in English locale, but breaks XML if the item has been
  *  translated and the program runs under national locale. Sigh.
  */
-const QStringList& getRouteOptions_pf_ipf(const QString &platform)
+const QStringList& getRouteOptions_pf_ipf(const QString&)
 {
     return routeOptions_pf_ipf;
 }
 
-const QStringList& getRouteLoadOptions_pf(const QString &platform)
+const QStringList& getRouteLoadOptions_pf(const QString&)
 {
     return routeLoadOptions_pf;
 }
@@ -488,7 +488,7 @@ const QStringList& getPrologPlaces(const QString &platform)
         return prologPlaces_ipt;
 }
 
-const QStringList& getLimitSuffixes(const QString &platform)
+const QStringList& getLimitSuffixes(const QString&)
 {
     return limitSuffixes;
 }

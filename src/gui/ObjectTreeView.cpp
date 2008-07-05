@@ -640,7 +640,7 @@ void ObjectTreeView::mouseReleaseEvent( QMouseEvent *e )
 
     if (fwbdebug)
         qDebug("ObjectTreeView::mouseReleaseEvent 2 selectedObjects.size()=%d getCurrentObject()=%p current object %s",
-               selectedObjects.size(),
+               int(selectedObjects.size()),
                getCurrentObject(),
                (getCurrentObject()!=NULL)?getCurrentObject()->getName().c_str():"nil");
 

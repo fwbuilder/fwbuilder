@@ -66,7 +66,8 @@ class ProjectPanel: public QWidget {
     bool                                    editingTemplateLib;
     bool                                    ruleSetRedrawPending;
     bool                                    firstTimeNormal;
-    bool                                    closing ; 
+    bool                                    closing ;
+    bool                                    ready;
     QString                                 startupFileName;
     
     libfwbuilder::FWObjectDatabase         *objdb;
@@ -95,6 +96,8 @@ class ProjectPanel: public QWidget {
     bool                                    enableAvtoSaveState;
     
 public:  
+    void readyStatus(bool f) { ready=f; }
+
     libfwbuilder::RuleSet* getCurrentRuleSet () {return visibleRuleSet;};
     RuleSetView * getCurrentRuleSetView () ;
     ProjectPanel * clone (ProjectPanel * cln);
@@ -320,9 +323,8 @@ public:
     void load(QWidget *dialogs_parent,RCS *rcs,libfwbuilder::FWObjectDatabase * clone);
     void load(QWidget *dialogs_parent);
     void save();
-    void saveState ();
-    void loadState (QString filename="");
-    void loadSplitters(QString filename="");
+    void saveState();
+    void loadState();
     bool checkin(bool unlock);
     void loadLibrary(const std::string &libfpath);
     

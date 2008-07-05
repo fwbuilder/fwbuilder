@@ -274,7 +274,7 @@ void findAllGroups(list<FWObject*> &objects,list<FWObject*> &groups)
 
 void printFirewall(FWObject *fw,
                    printerStream &pr,
-                   PrintingProgressDialog *ppd,
+                   PrintingProgressDialog*,
                    bool newPageForSection,
                    ProjectPanel *project)
 {
@@ -1035,7 +1035,9 @@ void FWWindow::filePrint()
 }
 
 
-int FWWindow::printFirewallFromFile (QString fileName, QString firewallName, QString outputFileName)
+void FWWindow::printFirewallFromFile (QString fileName,
+                                      QString firewallName,
+                                      QString outputFileName)
 {
     if (outputFileName=="")
     {
@@ -1043,11 +1045,11 @@ int FWWindow::printFirewallFromFile (QString fileName, QString firewallName, QSt
     }
     if (firewallName=="")
     {
-        return -1;
+        return ;
     }
     if (fileName=="")
     {
-        return -1;
+        return;
     }
     FWObjectDatabase * objdb = new FWObjectDatabase();
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
@@ -1107,7 +1109,7 @@ int FWWindow::printFirewallFromFile (QString fileName, QString firewallName, QSt
 
             if ( !pr.begin())
             {
-                return -1;
+                return;
             }
 
             int leftMargin = printer->paperRect().left() - printer->pageRect().left();
@@ -1220,5 +1222,4 @@ int FWWindow::printFirewallFromFile (QString fileName, QString firewallName, QSt
         errmes += firewallName ;
         qDebug (errmes.toAscii().data());
     }
-    
 }

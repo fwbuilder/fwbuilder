@@ -23,15 +23,15 @@
 
 */
 
-#include "fwbuilder_ph.h"
-
-#include "ProjectPanel.h"
 #include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"
 
 #include "ProjectPanel.h"
+
+#include <ui_rcsfilesavedialog_q.h>
+
 #include "ObjectTreeView.h"
 #include "ObjectManipulator.h"
 #include "FWObjectClipboard.h"
@@ -44,54 +44,32 @@
 #include "RuleSetView.h"
 #include "RCSFilePreview.h"
 #include "ObjectEditor.h"
-#include "execDialog.h"
-#include "PrefsDialog.h"
 #include "LibExportDialog.h"
 #include "findDialog.h"
-#include "DiscoveryDruid.h"
 #include "FindObjectWidget.h"
 #include "FindWhereUsedWidget.h"
 #include "longTextDialog.h"
-
-#include <ui_rcsfilesavedialog_q.h>
-#include "FWBAboutDialog.h"
-#include "debugDialog.h"
+#include "FWWindow.h"
+#include "RCS.h"
 #include "filePropDialog.h"
-
-#include "instConf.h"
-#include "instDialog.h"
 
 #include "fwbuilder/FWReference.h"
 #include "fwbuilder/Policy.h"
-#include "fwbuilder/InterfacePolicy.h"
 #include "fwbuilder/NAT.h"
 #include "fwbuilder/Routing.h"
 #include "fwbuilder/Tools.h"
-#include "fwbuilder/dns.h"
-//#include "fwbuilder/crypto.h"
-#include "fwbuilder/XMLTools.h"
-#include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Management.h"
 #include "fwbuilder/RuleElement.h"
-
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
-#include "fwbuilder/Host.h"
-#include "fwbuilder/Network.h"
-#include "fwbuilder/IPv4.h"
-#include "fwbuilder/AddressRange.h"
-#include "fwbuilder/ObjectGroup.h"
-
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/FWReference.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/RuleSet.h"
-
 #include "fwbuilder/Interval.h"
-#include "fwbuilder/IntervalGroup.h"
 #include "fwbuilder/FWObject.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/RuleElement.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -101,51 +79,29 @@
 
 #include <algorithm>
 
-#include <qaction.h>
-#include <qlistwidget.h>
-#include <qmessagebox.h>
-#include <qapplication.h>
-#include <qfileinfo.h>
-#include <qfile.h>
-#include <qfiledialog.h>
-#include <qpixmap.h>
-#include <qpixmapcache.h>
-#include <qheaderview.h>
-#include <qtabwidget.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qtextedit.h>
-#include <qstringlist.h>
-#include <qmenu.h>
-#include <qtoolbutton.h>
-#include <QMdiArea>
-#include <qlayout.h> 
-#include <qcursor.h>
-#include <qsplitter.h>
-#include <qtimer.h>
-#include <qstatusbar.h>
-#include <qlabel.h>
-#include <qradiobutton.h>
-#include <qprinter.h>
-#include <qstackedwidget.h>
-#include <qlistwidget.h>
-#include <qeventloop.h>
-#include <qtextstream.h>
-#include <QShowEvent>
-#include <QHideEvent>
-#include "FWWindow.h"
-#include "RCS.h"
-#include <QCloseEvent>
 #include <QMdiSubWindow>
-#include "FindObjectWidget.h"
-#include "FindWhereUsedWidget.h"
-#include <QSet>
+#include <QMdiArea>
+
+
 using namespace Ui;
+using namespace libfwbuilder;
+
+#define DEFAULT_H_SPLITTER_POSITION 250
+#define DEFAULT_V_SPLITTER_POSITION 450
+
 
 void ProjectPanel::initMain(FWWindow *main)
 {
     mainW = main;
     closing = false ;
+
+    // mdiWindow changes state several times right after it is opened,
+    // but we call saveState to store splitter position and its geometry
+    // when state changed. Flag "ready" is false after ProjectPanel is created
+    // and until FWWindow decides that ProjectPanel is ready for operation.
+    // Do not load or save state if flag ready is false.
+    ready = false;
+
     enableAvtoSaveState=true ;
     oldState=-1;
     if (st->getInfoStyle()!=0) m_panel->oi->show();
@@ -242,7 +198,7 @@ void ProjectPanel::setStartupFileName(const QString &fn)
     startupFileName = fn; 
 }
 
-RuleElement* ProjectPanel::getRE( Rule* r, int col )
+RuleElement* ProjectPanel::getRE(Rule* r, int col )
 {
     string ret;
     switch (col)
@@ -478,47 +434,7 @@ void ProjectPanel::reopenFirewall()
     {
         m_panel->ruleSets->addWidget( new RoutingView(this, r,NULL) );
     }
-// as of 2.1.5 we have rule branches :-)
-// so far branches are only supported in policy rules because only there
-// we have action which we use to define branching rules
-/*
-    for (libfwbuilder::FWObject::iterator i=pol->begin(); i!=pol->end(); i++)
-    {
-        PolicyRule *rule = PolicyRule::cast(*i);
-        if (rule->getAction() == PolicyRule::Branch)
-            addPolicyBranchTab(rule->getBranch());
-    }
 
-// let the GUI process events to display new tab(s)
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
-
-    if (Resources::getTargetCapabilityBool(visibleFirewall->getStr("platform"),
-                                           "supports_nat"))
-    {
-        sb->showMessage( tr("Building NAT view...") );
-        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
-        if (fwbdebug)  qDebug("ProjectPanel::reopenFirewall()   adding NAT tab");
-
-        NAT *nat  = NAT::cast(visibleFirewall->getFirstByType(NAT::TYPENAME));
-        m_panel->ruleSets->addTab( rsv=new NATView(this, nat,NULL) , tr("NAT") );
-        ruleSetViews[nat]=rsv;
-    }
-
-// let the GUI process events to display new tab
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
-
-    if (Resources::getTargetCapabilityBool(visibleFirewall->getStr("host_OS"),
-                                           "supports_routing"))
-    {
-        sb->showMessage( tr("Building routing view...") );
-        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
-        if (fwbdebug)  qDebug("ProjectPanel::reopenFirewall()   adding Routing tab");
-
-        Routing *r = Routing::cast(visibleFirewall->getFirstByType(Routing::TYPENAME));
-        m_panel->ruleSets->addTab( rsv=new RoutingView(this, r,NULL) , tr("Routing") );
-        ruleSetViews[r]=rsv;
-    }
-*/
     sb->clearMessage();
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
     if (fwbdebug)  qDebug("ProjectPanel::reopenFirewall()   all tabs are done");
@@ -541,7 +457,8 @@ int  ProjectPanel::findFirewallInList(libfwbuilder::FWObject *f)
     return -1;
 }
 
-void ProjectPanel::updateFirewallName(libfwbuilder::FWObject *obj,const QString &str)
+void ProjectPanel::updateFirewallName(libfwbuilder::FWObject *,
+                                      const QString &)
 {
     if (visibleRuleSet==NULL)
         return ;
@@ -1486,9 +1403,8 @@ void ProjectPanel::startupLoad()
             {
                 RCS *rcs=new RCS(startupFileName);
                 rcs->co();
-                load(NULL,rcs);
+                load(NULL, rcs);
 
-                loadState(startupFileName);
                 loadLastOpenedLib();
             } catch (FWException &ex)
             {
@@ -1499,7 +1415,6 @@ void ProjectPanel::startupLoad()
         {
             load(NULL); // load standard objects
             loadLastOpenedLib(startupFileName);
-            loadState("");
         }
     }
 
@@ -1652,7 +1567,9 @@ void ProjectPanel::load(QWidget *dialogs_parent)
 
 }
 
-void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs,libfwbuilder::FWObjectDatabase * clone)
+void ProjectPanel::load(QWidget *dialogs_parent,
+                        RCS *_rcs,
+                        FWObjectDatabase * clone)
 {
     QStatusBar *sb = mainW->statusBar();
 
@@ -1888,7 +1805,7 @@ void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs,libfwbuilder::FWObject
 }
 
 
-void ProjectPanel::load(QWidget *dialogs_parent,RCS *_rcs)
+void ProjectPanel::load(QWidget *dialogs_parent, RCS *_rcs)
 {
     QStatusBar *sb = mainW->statusBar();
 
@@ -2910,11 +2827,6 @@ void ProjectPanel::compile()
 
     fileSave();
     mainW->compile();
-/*
-    std::set<libfwbuilder::Firewall*> emp;
-
-    instd = new instDialog(NULL,BATCH_COMPILE,emp);
-    instd->show();*/
 }
 
 void ProjectPanel::compile(set<Firewall*> vf)
@@ -2925,29 +2837,16 @@ void ProjectPanel::compile(set<Firewall*> vf)
 
     fileSave();
     mainW->compile(vf);
-/*
-    instDialog *id = new instDialog(NULL,BATCH_COMPILE,vf);
-
-    instd = id;
-    instd->show();*/
 }
 
 void ProjectPanel::install(set<Firewall*> vf)
 {
     mainW->install(vf);
-/*    instDialog *id=new instDialog(NULL,BATCH_INSTALL, vf);
-
-    instd = id;
-    instd->show();*/
 }
 
 void ProjectPanel::install()
 {
     mainW->install();
-    /*std::set<libfwbuilder::Firewall*> emp;
-    instd = new instDialog(NULL, BATCH_INSTALL, emp);
-
-    instd->show();*/
 }
 
 void ProjectPanel::rollBackSelectionSameWidget()
@@ -3139,8 +3038,9 @@ void ProjectPanel::closeEvent( QCloseEvent * ev)
 {   
     if (fwbdebug) qDebug("ProjectPanel::closeEvent");
 
-    if (!closing)
-        saveState();
+//    if (!closing)
+    saveState();
+
     storeLastOpenedLib();
     if (saveIfModified() && checkin(true))
     {
@@ -3182,7 +3082,10 @@ void ProjectPanel::saveState ()
     }
 
     if (fwbdebug)
-        qDebug("ProjectPanel::saveState FileName=%s", FileName.toAscii().data());
+        qDebug("ProjectPanel::saveState FileName=%s ready=%d",
+               FileName.toAscii().data(), ready);
+
+    if (!ready) return;
 
     if (mdiWindow->isMaximized())
     {
@@ -3222,27 +3125,35 @@ void ProjectPanel::saveState ()
         st->setStr("Window/" + FileName + "/ObjInfoSplitter", arg );
 }
 
-void ProjectPanel::loadState(QString filename)
+void ProjectPanel::loadState()
 {
-    QString FileName ;
-    if (rcs!=NULL)
-        FileName = rcs->getFileName();
-    if (filename!="")
-        FileName = filename ;
+    int w1 = 0;
+    int w2 = 0;
+    QString w1s, w2s;
+    bool ok = false;
+
+    if (rcs==NULL) return;
+    QString filename = rcs->getFileName();
 
     if (fwbdebug)
-        qDebug("ProjectPanel::loadState FileName=%s isMaximized=%d",
-               FileName.toAscii().data(), isMaximized());
+    {
+        qDebug("ProjectPanel::loadState filename=%s isMaximized=%d",
+               filename.toAscii().data(), isMaximized());
+        qDebug("mdiWindow=%p", mdiWindow);
+        qDebug("ready=%d", ready);
+    }
+
+    if (!ready) return;
 
     int maximized_status = st->getInt("Window/maximized");
-    if (!maximized_status)
+    if (!maximized_status && mdiWindow)
     {
         if (fwbdebug) qDebug("ProjectPanel::loadState  show normal");
         setWindowState(0);
-        int x = st->getInt("Window/"+FileName+"/x");
-        int y = st->getInt("Window/"+FileName+"/y");
-        int width = st->getInt("Window/"+FileName+"/width");
-        int height = st->getInt("Window/"+FileName+"/height");
+        int x = st->getInt("Window/"+filename+"/x");
+        int y = st->getInt("Window/"+filename+"/y");
+        int width = st->getInt("Window/"+filename+"/width");
+        int height = st->getInt("Window/"+filename+"/height");
         if (width==0 || height==0)
         {
             x = 10;
@@ -3250,64 +3161,64 @@ void ProjectPanel::loadState(QString filename)
             width = 600;
             height= 600;
         }
-        if (fwbdebug) qDebug("ProjectPanel::loadState  set geometry: %d %d %d %d",
-                             x,y,width,height);
+        if (fwbdebug)
+            qDebug("ProjectPanel::loadState  set geometry: %d %d %d %d",
+                   x,y,width,height);
         
         mdiWindow->setGeometry(x,y,width,height);
     }
-    // load splitter position even when window is maximized
-    loadSplitters(filename);
-    if (fwbdebug) qDebug("ProjectPanel::loadState done");
-}
 
-void ProjectPanel::loadSplitters(QString filename)
-{
-    QString FileName = getFileName();
-    if (filename !="")
-        FileName = filename;
-
-    QString val = st->getStr("Window/" + FileName + "/MainWindowSplitter");
+    QString h_splitter_setting = "Window/" + filename + "/MainWindowSplitter";
+    QString val = st->getStr(h_splitter_setting);
     
-    if (fwbdebug)
-    {
-        QString out1 = "load Window/" + FileName + "/MainWindowSplitter";
-        out1+= " " + val;
-        qDebug(out1.toAscii().data());
-    }
+    w1s = val.split(',')[0];
+    ok = false;
+    w1 = w1s.toInt(&ok, 10);
+    if (!ok || w1 == 0) w1 = DEFAULT_H_SPLITTER_POSITION;
 
-    int  w1 = val.section(',',0,0).toInt();
-    int  w2 = mdiWindow->width() - w1;
-    if (w1 == 0 )
-    {
-        w1 = 250;
-        w2 = mdiWindow->width() - 250;
-    }
+    w2 = mdiWindow->width() - w1;
+
+    if (fwbdebug)
+        qDebug(QString("%1: %2x%3").arg(h_splitter_setting).
+               arg(w1).arg(w2).toAscii().data());
 
     QList<int> sl;
     sl.push_back(w1);
     sl.push_back(w2);
-    if (w1 || w2)
+    if (w1 && w2)
         m_panel->mainSplitter->setSizes( sl );
 
-    val = st->getStr("Window/" + FileName + "/ObjInfoSplitter");
-    if (!val.isEmpty())
-    {
-        int  w1 = val.section(',',0,0).toInt();
-        int  w2 = val.section(',',1,1).toInt();
+    if (fwbdebug) qDebug("Restore info window splitter position");
 
-        QList<int> sl;
-        sl.push_back(w1);
-        sl.push_back(w2);
-        if (w1 || w2)
-            m_panel->objInfoSplitter->setSizes( sl );
-    }
+    QString v_splitter_setting = "Window/" + filename + "/ObjInfoSplitter";
+    val = st->getStr(v_splitter_setting);
+
+    w1s = val.split(',')[0];
+    ok = false;
+    w1 = w1s.toInt(&ok, 10);
+    if (!ok || w1 == 0) w1 = DEFAULT_V_SPLITTER_POSITION;
+    w2 = mdiWindow->height() - w1;
+
+    if (fwbdebug)
+        qDebug(QString("%1: %2x%3").arg(v_splitter_setting).
+               arg(w1).arg(w2).toAscii().data());
+
+    sl.clear();
+    sl.push_back(w1);
+    sl.push_back(w2);
+    if (w1 && w2)
+        m_panel->objInfoSplitter->setSizes( sl );
+
+
+    if (fwbdebug) qDebug("ProjectPanel::loadState done");
 }
 
-void ProjectPanel::splitterMoved ( int , int )
+
+void ProjectPanel::splitterMoved(int , int)
 {
 }
 
-void ProjectPanel::resizeEvent ( QResizeEvent* )
+void ProjectPanel::resizeEvent(QResizeEvent*)
 {
 }
 

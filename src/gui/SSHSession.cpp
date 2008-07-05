@@ -318,7 +318,8 @@ void SSHSession::sendLine()
         string s = input.front();
         s = s + "\n";
         if (fwbdebug)
-            qDebug("SSHSession::sendLine : %d lines to go -- %s",input.size(),s.c_str());
+            qDebug("SSHSession::sendLine : %d lines to go -- %s",
+                   int(input.size()), s.c_str());
         input.pop_front();
 
         stdoutBuffer="";

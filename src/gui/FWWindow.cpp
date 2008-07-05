@@ -267,7 +267,8 @@ void FWWindow::startupLoad()
     if (activeProject())
     {
         activeProject()->startupLoad();
-        //activeProject()->loadState();
+        activeProject()->readyStatus(true);
+        activeProject()->loadState();
     }
 }
 
@@ -379,6 +380,7 @@ void FWWindow::fileOpen()
             }
         }
         showSub(proj.get());
+        proj->readyStatus(true);
         proj->loadState();
         proj.release();
     }
