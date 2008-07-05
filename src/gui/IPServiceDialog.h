@@ -45,7 +45,10 @@ class IPServiceDialog : public QWidget
     Ui::IPServiceDialog_q *m_dialog;
 
     ProjectPanel *m_project;
- public:
+
+    void setCodeLabel();
+
+public:
     IPServiceDialog(ProjectPanel *project, QWidget *parent);
     ~IPServiceDialog();
     

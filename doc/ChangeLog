@@ -1,5 +1,10 @@
 2008-07-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* IPServiceDialog.cpp (IPServiceDialog::loadFWObject): Added
+	support for attriutes "tos" and "dscp" in IPService object. No
+	support in compilers just yet. FR #1948944: "support for TOS
+	matching".
+
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printModules):
 	Implemented support for combinations of srcip, dstip, srcport,
 	dstport options of the hashlimit module for iptables per bug

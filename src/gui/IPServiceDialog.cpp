@@ -64,6 +64,20 @@ IPServiceDialog::~IPServiceDialog()
     delete m_dialog;
 }
 
+void IPServiceDialog::setCodeLabel()
+{
+    if (m_dialog->use_dscp->isChecked())
+    {
+        m_dialog->code_label->setText(
+            tr("DSCP code or class:"));
+    }
+    else
+    {
+        m_dialog->code_label->setText(
+            tr("TOS code (numeric):"));
+    }
+}
+
 void IPServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;
@@ -80,17 +94,22 @@ void IPServiceDialog::loadFWObject(FWObject *o)
     m_dialog->timestamp->setChecked( s->getBool("ts") );
     m_dialog->all_fragments->setChecked( s->getBool("fragm") );
     m_dialog->short_fragments->setChecked( s->getBool("short_fragm") );
-    if(s->getBool("use_dscp"))
+
+    string tos = s->getTOSCode();
+    string dscp = s->getDSCPCode();
+
+    if (!dscp.empty())
     {
-        m_dialog->use_dscp->setCheckable ( true );  
-        m_dialog->code_label->setText("DSCP code:");
+        m_dialog->use_dscp->setChecked(true);  
+        m_dialog->code->setText(dscp.c_str());
     }
     else
     {
-        m_dialog->use_tos->setCheckable ( true );    
-        m_dialog->code_label->setText("TOS code:");
+        m_dialog->use_tos->setChecked(true);    
+        m_dialog->code->setText(tos.c_str());
     }
-    m_dialog->code->setText(s->getStr("dscp_tos_code").c_str());
+    setCodeLabel();
+
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
 
     //apply->setEnabled( false );
@@ -129,14 +148,7 @@ void IPServiceDialog::loadFWObject(FWObject *o)
 void IPServiceDialog::changed()
 {
     //apply->setEnabled( true );
-    if (m_dialog->use_dscp->isChecked())
-    {
-        m_dialog->code_label->setText("DSCP code:");
-    }
-    else
-    {
-        m_dialog->code_label->setText("TOS code:");
-    }
+    setCodeLabel();
     emit changed_sign();
 }
 
@@ -164,15 +176,24 @@ void IPServiceDialog::applyChanges()
     obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
     obj->setInt("protocol_num", m_dialog->protocolNum->value() );
-    obj->setBool("m_dialog->lsrr", m_dialog->lsrr->isChecked() );
-    obj->setBool("m_dialog->ssrr", m_dialog->ssrr->isChecked() );
-    obj->setBool("m_dialog->rr", m_dialog->rr->isChecked() );
+    obj->setBool("lsrr", m_dialog->lsrr->isChecked() );
+    obj->setBool("ssrr", m_dialog->ssrr->isChecked() );
+    obj->setBool("rr", m_dialog->rr->isChecked() );
     obj->setBool("ts", m_dialog->timestamp->isChecked() );
     obj->setBool("fragm", m_dialog->all_fragments->isChecked() );
     obj->setBool("short_fragm", m_dialog->short_fragments->isChecked() );
-    obj->setBool("use_dscp", m_dialog->use_dscp->isChecked());
-    obj->setBool("use_tos", m_dialog->use_tos->isChecked());
-    obj->setStr("dscp_tos_code", m_dialog->code->text().toUtf8().constData());
+    
+    IPService *ip = IPService::cast(obj);
+    if (m_dialog->use_dscp->isChecked())
+    {
+        ip->setDSCPCode(m_dialog->code->text().toUtf8().constData());
+        ip->setTOSCode("");
+    } else
+    {
+        ip->setTOSCode(m_dialog->code->text().toUtf8().constData());
+        ip->setDSCPCode("");
+    }
+
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     //apply->setEnabled( false );

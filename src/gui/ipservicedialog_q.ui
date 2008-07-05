@@ -245,24 +245,6 @@
            <enum>QFrame::Sunken</enum>
           </property>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>8</number>
-           </property>
-           <property name="topMargin" >
-            <number>8</number>
-           </property>
-           <property name="rightMargin" >
-            <number>8</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>8</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
-            <number>8</number>
-           </property>
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
              <property name="text" >
@@ -283,7 +265,7 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0" colspan="2" >
+           <item row="1" column="0" colspan="2" >
             <widget class="QLabel" name="textLabel3" >
              <property name="text" >
               <string>Protocol number:
@@ -294,12 +276,28 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="2" >
+           <item row="1" column="2" >
             <widget class="QSpinBox" name="protocolNum" >
              <property name="maximum" >
               <number>255</number>
              </property>
             </widget>
+           </item>
+           <item row="2" column="0" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::MinimumExpanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>5</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item row="3" column="0" colspan="3" >
             <widget class="QGroupBox" name="groupBox" >
@@ -327,7 +325,8 @@
               <item row="1" column="0" >
                <widget class="QLabel" name="code_label" >
                 <property name="text" >
-                 <string>DSCP code:</string>
+                 <string>DSCP or TOS code
+(numerical, dec or hex):</string>
                 </property>
                </widget>
               </item>
@@ -336,22 +335,6 @@
               </item>
              </layout>
             </widget>
-           </item>
-           <item row="4" column="0" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::MinimumExpanding</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>20</width>
-               <height>5</height>
-              </size>
-             </property>
-            </spacer>
            </item>
           </layout>
          </widget>
@@ -374,28 +357,17 @@
               <bool>true</bool>
              </property>
              <layout class="QGridLayout" >
-              <property name="leftMargin" >
-               <number>2</number>
-              </property>
-              <property name="topMargin" >
-               <number>2</number>
-              </property>
-              <property name="rightMargin" >
-               <number>2</number>
-              </property>
-              <property name="bottomMargin" >
-               <number>2</number>
-              </property>
-              <property name="horizontalSpacing" >
-               <number>2</number>
-              </property>
-              <property name="verticalSpacing" >
-               <number>8</number>
-              </property>
-              <item row="4" column="0" >
-               <widget class="QCheckBox" name="all_fragments" >
+              <item row="0" column="0" >
+               <widget class="QCheckBox" name="lsrr" >
                 <property name="text" >
-                 <string>all fragments</string>
+                 <string>lsrr (loose source route)</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" >
+               <widget class="QCheckBox" name="ssrr" >
+                <property name="text" >
+                 <string>ssrr (strict source route)</string>
                 </property>
                </widget>
               </item>
@@ -413,10 +385,10 @@
                 </property>
                </widget>
               </item>
-              <item row="1" column="0" >
-               <widget class="QCheckBox" name="ssrr" >
+              <item row="4" column="0" >
+               <widget class="QCheckBox" name="all_fragments" >
                 <property name="text" >
-                 <string>ssrr (strict source route)</string>
+                 <string>all fragments</string>
                 </property>
                </widget>
               </item>
@@ -427,28 +399,8 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="0" >
-               <widget class="QCheckBox" name="lsrr" >
-                <property name="text" >
-                 <string>lsrr (loose source route)</string>
-                </property>
-               </widget>
-              </item>
              </layout>
             </widget>
-           </item>
-           <item row="1" column="0" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
            </item>
           </layout>
          </widget>
@@ -483,6 +435,9 @@
  <tabstops>
   <tabstop>obj_name</tabstop>
   <tabstop>protocolNum</tabstop>
+  <tabstop>use_dscp</tabstop>
+  <tabstop>use_tos</tabstop>
+  <tabstop>code</tabstop>
   <tabstop>lsrr</tabstop>
   <tabstop>ssrr</tabstop>
   <tabstop>rr</tabstop>
@@ -636,6 +591,54 @@
     <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>use_dscp</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>IPServiceDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>use_tos</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>IPServiceDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>code</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>IPServiceDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>271</x>
+     <y>266</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>438</x>
+     <y>158</y>
     </hint>
    </hints>
   </connection>
