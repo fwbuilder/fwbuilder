@@ -49,6 +49,17 @@ namespace libfwbuilder {
 #define TCP_SYN_OBJ_ID   "__tcp_syn_obj__"
 #define BCAST_255_OBJ_ID "__bcast_255_obj__"
 
+// a functor to join list<string> into a string with separator sep
+class join : public std::unary_function<std::string, void>
+{
+    std::string *result;
+    std::string  separator;
+public:
+    join(std::string *res, const std::string &s)
+    { result = res; separator = s; }
+    void operator()(std::string &s);
+};
+    
 
 namespace fwcompiler {
 

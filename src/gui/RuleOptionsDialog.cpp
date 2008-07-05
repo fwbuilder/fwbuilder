@@ -134,10 +134,10 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
         data.registerOption( m_dialog->ipt_hashlimit            , ropt,  "hashlimit_value" );
         data.registerOption( m_dialog->ipt_hashlimit_suffix     , ropt,  "hashlimit_suffix" );
         data.registerOption( m_dialog->ipt_hashlimit_burst      , ropt,  "hashlimit_burst" );
-        data.registerOption( m_dialog->cb_srcip                 , ropt,  "ipt_hashlimit_mode_srcip" );
-        data.registerOption( m_dialog->cb_dstip                 , ropt,  "ipt_hashlimit_mode_dstip" );
-        data.registerOption( m_dialog->cb_srcport               , ropt,  "ipt_hashlimit_mode_srcport" );
-        data.registerOption( m_dialog->cb_dstport               , ropt,  "ipt_hashlimit_mode_dstport" );
+        data.registerOption( m_dialog->cb_srcip                 , ropt,  "hashlimit_mode_srcip" );
+        data.registerOption( m_dialog->cb_dstip                 , ropt,  "hashlimit_mode_dstip" );
+        data.registerOption( m_dialog->cb_srcport               , ropt,  "hashlimit_mode_srcport" );
+        data.registerOption( m_dialog->cb_dstport               , ropt,  "hashlimit_mode_dstport" );
         data.registerOption( m_dialog->ipt_hashlimit_dstlimit   , ropt,  "hashlimit_dstlimit");
         data.registerOption( m_dialog->ipt_hashlimit_name       , ropt,  "hashlimit_name");
         data.registerOption( m_dialog->ipt_hashlimit_size       , ropt,  "hashlimit_size");

@@ -234,8 +234,38 @@ string PolicyCompiler_ipt::PrintRule::_printModules(PolicyRule *rule)
         int lb=ruleopt->getInt("hashlimit_burst");
         if (lb>0) ostr << " --" << module_name << "-burst " << lb;
 
-        ls=ruleopt->getStr("hashlimit_mode");
-        if (!ls.empty()) ostr << " --" << module_name << "-mode " << ls;
+        ls = ruleopt->getStr("hashlimit_mode");
+        if (ls.empty())
+        {
+            /* syntax "--hashlimit-mode srcip,srcport " (i.e. with options
+               separated by commas) tested with iptables 1.3.6
+            */
+            list<string> opts;
+            string sopts;
+            bool f;
+
+            f = ruleopt->getBool("hashlimit_mode_srcip");
+            if (f) opts.push_back("srcip");
+
+            f = ruleopt->getBool("hashlimit_mode_dstip");
+            if (f) opts.push_back("dstip");
+
+            f = ruleopt->getBool("hashlimit_mode_srcport");
+            if (f) opts.push_back("srcport");
+
+            f = ruleopt->getBool("hashlimit_mode_dstport");
+            if (f) opts.push_back("dstport");
+
+            for_each(opts.begin(), opts.end(), join(&sopts, ","));
+            if (!sopts.empty())
+                ostr << " --" << module_name << "-mode " << sopts;
+        } else 
+            // hashlimit_mode is v2.1 option. In v3 we have options
+            // hashlimit_mode_srcip
+            // hashlimit_mode_dstip
+            // hashlimit_mode_srcport
+            // hashlimit_mode_dstport
+            ostr << " --" << module_name << "-mode " << ls;
 
         string hl_name = ruleopt->getStr("hashlimit_name");
         if (hl_name.empty())

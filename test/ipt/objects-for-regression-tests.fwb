@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="9" lastModified="1215124221" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="9" lastModified="1215290981" id="root">
   <Library id="sysid99" name="Deleted Objects" ro="False">
     <ICMP6Service id="idE0C27650" name="ipv6 dest unreachable" comment="No route to destination" code="0" type="1"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -3352,7 +3352,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AF5AA0A" name="firewall1" comment="this object is used to test all kinds of negation in policy and NAT rules" host_OS="linux24" inactive="False" lastCompiled="1210000488" lastInstalled="1142003872" lastModified="1210000492" platform="iptables" ro="False" version="">
+      <Firewall id="id3AF5AA0A" name="firewall1" comment="this object is used to test all kinds of negation in policy and NAT rules" host_OS="linux24" inactive="False" lastCompiled="1210000488" lastInstalled="1142003872" lastModified="1215290981" platform="iptables" ro="False" version="">
         <NAT id="id3AF5AA0D" name="NAT">
           <NATRule id="id3C98491C" disabled="False" position="0">
             <OSrc neg="False">
@@ -3780,7 +3780,29 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="hashlimit_burst">2</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">True</Option>
+              <Option name="hashlimit_mode_srcport">True</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix">/hour</Option>
+              <Option name="hashlimit_value">1</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
               <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3CD34BEF" action="Deny" direction="Both" disabled="False" log="False" position="1">
@@ -3800,7 +3822,29 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="hashlimit_burst">2</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">True</Option>
+              <Option name="hashlimit_mode_dstport">True</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix">/hour</Option>
+              <Option name="hashlimit_value">1</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
               <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3AF5AAB4" comment="Anti-spoofing rule" action="Deny" direction="Inbound" disabled="False" log="True" position="2">

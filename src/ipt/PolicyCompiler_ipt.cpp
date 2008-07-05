@@ -96,6 +96,12 @@ const std::list<std::string>& PolicyCompiler_ipt::getStandardChains()
     return standard_chains;
 }
 
+void join::operator()(std::string &s)
+{
+    if (!result->empty()) *result += separator;
+    *result += s;
+}
+
 string PolicyCompiler_ipt::myPlatformName() { return "iptables"; }
 
 string PolicyCompiler_ipt::getInterfaceVarName(FWObject *iface)
