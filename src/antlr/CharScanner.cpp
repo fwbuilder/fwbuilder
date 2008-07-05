@@ -2,7 +2,7 @@
  * Project led by Terence Parr at http://www.jGuru.com
  * Software rights: http://www.antlr.org/license.html
  *
- * $Id: CharScanner.cpp 1361 2007-06-07 02:34:05Z vkurland $
+ * $Id$
  */
 
 #include <iostream>
