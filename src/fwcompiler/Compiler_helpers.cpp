@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: Compiler_helpers.cpp 808 2004-09-08 05:34:53Z vkurland $
+  $Id$
 
 */
  

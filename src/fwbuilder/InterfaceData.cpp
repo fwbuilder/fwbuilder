@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: InterfaceData.cpp,v 1.2 2006/03/06 03:02:57 vkurland Exp $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public

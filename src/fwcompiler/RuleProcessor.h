@@ -6,7 +6,7 @@
 
   Author:  Vadim Zaliva  <lord@crocodile.org> ,  Vadim Kurland <vadim@vk.crocodile.org>
 
-  $Id: RuleProcessor.h 883 2005-09-26 12:02:23Z vkurland $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms

@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id: ICMP6Service.h 35 2008-04-26 19:13:33Z vadim $
+  $Id$
 
 
   This program is free software which we release under the GNU General Public
