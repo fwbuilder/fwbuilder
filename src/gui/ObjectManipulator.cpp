@@ -158,33 +158,54 @@ ObjectManipulator::ObjectManipulator( QWidget *parent):
 
     QMenu* newObjectPopup = new QMenu( this );
 
-    newObjectPopup->addAction(QIcon(icon_path+Library::TYPENAME+"/icon-tree"), tr( "New &Library" ), this, SLOT( newLibrary() ));
+    newObjectPopup->addAction(QIcon(icon_path+Library::TYPENAME+"/icon-tree"), tr( "New &Library"), this, SLOT( newLibrary() ));
 
     newObjectPopup->addSeparator();
 
-    newObjectPopup->addAction(QIcon(icon_path+Firewall::TYPENAME+"/icon-tree"), tr( "New Firewall" ), this, SLOT( newFirewall() ));
-    newObjectPopup->addAction(QIcon(icon_path+Host::TYPENAME+"/icon-tree"), tr( "New Host" ), this, SLOT( newHost() ));
-    newObjectPopup->addAction(QIcon(icon_path+Interface::TYPENAME+"/icon-tree"), tr( "New Interface" ), this, SLOT( newInterface() ));
-    newObjectPopup->addAction(QIcon(icon_path+Network::TYPENAME+"/icon-tree"), tr( "New Network" ), this, SLOT( newNetwork() ));
-    newObjectPopup->addAction(QIcon(icon_path+NetworkIPv6::TYPENAME+"/icon-tree"), tr( "New Network IPv6" ), this, SLOT( newNetworkIPv6() ));    
-    newObjectPopup->addAction(QIcon(icon_path+IPv4::TYPENAME+"/icon-tree"), tr( "New Address" ), this, SLOT( newAddress() ));
-    newObjectPopup->addAction(QIcon(icon_path+IPv6::TYPENAME+"/icon-tree"), tr( "New Address IPv6" ), this, SLOT( newAddressIPv6() ));
-    newObjectPopup->addAction(QIcon(icon_path+DNSName::TYPENAME+"/icon-tree"), tr( "New DNS Name" ), this, SLOT( newDNSName() ));
-    newObjectPopup->addAction(QIcon(icon_path+AddressTable::TYPENAME+"/icon-tree"), tr( "New Address Table" ), this, SLOT( newAddressTable() ));
-    newObjectPopup->addAction(QIcon(icon_path+AddressRange::TYPENAME+"/icon-tree"), tr( "New Address Range" ), this, SLOT( newAddressRange() ));
-    newObjectPopup->addAction(QIcon(icon_path+ObjectGroup::TYPENAME+"/icon-tree"), tr( "New Object Group" ), this, SLOT( newObjectGroup() ));
+    newObjectPopup->addAction(QIcon(icon_path+Firewall::TYPENAME+"/icon-tree"), 
+                              tr("New Firewall"), this, SLOT( newFirewall()));
+    newObjectPopup->addAction(QIcon(icon_path+Host::TYPENAME+"/icon-tree"),
+                              tr("New Host"), this, SLOT( newHost() ));
+    newObjectPopup->addAction(QIcon(icon_path+Interface::TYPENAME+"/icon-tree"),
+                              tr("New Interface"), this, SLOT(newInterface()));
+    newObjectPopup->addAction(QIcon(icon_path+Network::TYPENAME+"/icon-tree"), 
+                              tr("New Network"), this, SLOT( newNetwork() ));
+    newObjectPopup->addAction(QIcon(icon_path+NetworkIPv6::TYPENAME+"/icon-tree"),
+                              tr("New Network IPv6"), this, SLOT(newNetworkIPv6() ));    
+    newObjectPopup->addAction(QIcon(icon_path+IPv4::TYPENAME+"/icon-tree"),
+                              tr("New Address"), this, SLOT(newAddress() ));
+    newObjectPopup->addAction(QIcon(icon_path+IPv6::TYPENAME+"/icon-tree"),
+                              tr("New Address IPv6"), this, SLOT(newAddressIPv6() ));
+    newObjectPopup->addAction(QIcon(icon_path+DNSName::TYPENAME+"/icon-tree"),
+                              tr("New DNS Name"), this, SLOT(newDNSName() ));
+    newObjectPopup->addAction(QIcon(icon_path+AddressTable::TYPENAME+"/icon-tree"),
+                              tr("New Address Table"), this, SLOT(newAddressTable() ));
+    newObjectPopup->addAction(QIcon(icon_path+AddressRange::TYPENAME+"/icon-tree"),
+                              tr("New Address Range"), this, SLOT(newAddressRange() ));
+    newObjectPopup->addAction(QIcon(icon_path+ObjectGroup::TYPENAME+"/icon-tree"),
+                              tr("New Object Group"), this, SLOT(newObjectGroup() ));
     newObjectPopup->addSeparator();
-    newObjectPopup->addAction(QIcon(icon_path+CustomService::TYPENAME+"/icon-tree"), tr( "New Custom Service" ), this, SLOT( newCustom() ));
-    newObjectPopup->addAction(QIcon(icon_path+IPService::TYPENAME+"/icon-tree"), tr( "New IP Service" ), this, SLOT( newIP() ));
-    newObjectPopup->addAction(QIcon(icon_path+ICMPService::TYPENAME+"/icon-tree"), tr( "New ICMP Service" ), this, SLOT( newICMP() ));
-    newObjectPopup->addAction(QIcon(icon_path+ICMP6Service::TYPENAME+"/icon-tree"), tr( "New ICMP6 Service" ), this, SLOT( newICMP6() ));
-    newObjectPopup->addAction(QIcon(icon_path+TCPService::TYPENAME+"/icon-tree"), tr( "New TCP Serivce" ), this, SLOT( newTCP() ));
-    newObjectPopup->addAction(QIcon(icon_path+UDPService::TYPENAME+"/icon-tree"), tr( "New UDP Service" ), this, SLOT( newUDP() ));
-    newObjectPopup->addAction(QIcon(icon_path+TagService::TYPENAME+"/icon-tree"), tr( "New TagService" ), this, SLOT( newTagService() ));
-    newObjectPopup->addAction(QIcon(icon_path+UserService::TYPENAME+"/icon-tree"), tr( "New User Service" ), this, SLOT( newUserService() ));
-    newObjectPopup->addAction(QIcon(icon_path+ServiceGroup::TYPENAME+"/icon-tree"), tr( "New Service Group" ), this, SLOT( newServiceGroup() ));
+    newObjectPopup->addAction(QIcon(icon_path+CustomService::TYPENAME+"/icon-tree"),
+                              tr("New Custom Service"), this, SLOT(newCustom() ));
+    newObjectPopup->addAction(QIcon(icon_path+IPService::TYPENAME+"/icon-tree"),
+                              tr("New IP Service"), this, SLOT(newIP() ));
+    newObjectPopup->addAction(QIcon(icon_path+ICMPService::TYPENAME+"/icon-tree"),
+                              tr("New ICMP Service"), this, SLOT(newICMP() ));
+    newObjectPopup->addAction(QIcon(icon_path+ICMP6Service::TYPENAME+"/icon-tree"),
+                              tr("New ICMP6 Service"), this, SLOT(newICMP6() ));
+    newObjectPopup->addAction(QIcon(icon_path+TCPService::TYPENAME+"/icon-tree"),
+                              tr("New TCP Serivce"), this, SLOT(newTCP() ));
+    newObjectPopup->addAction(QIcon(icon_path+UDPService::TYPENAME+"/icon-tree"),
+                              tr("New UDP Service"), this, SLOT(newUDP() ));
+    newObjectPopup->addAction(QIcon(icon_path+TagService::TYPENAME+"/icon-tree"),
+                              tr("New TagService"), this, SLOT(newTagService() ));
+    newObjectPopup->addAction(QIcon(icon_path+UserService::TYPENAME+"/icon-tree"),
+                              tr("New User Service"), this, SLOT(newUserService() ));
+    newObjectPopup->addAction(QIcon(icon_path+ServiceGroup::TYPENAME+"/icon-tree"),
+                              tr("New Service Group"), this, SLOT(newServiceGroup() ));
     newObjectPopup->addSeparator();
-    newObjectPopup->addAction(QIcon(icon_path+Interval::TYPENAME+"/icon-tree"), tr( "New Time Interval" ), this, SLOT( newInterval() ));
+    newObjectPopup->addAction(QIcon(icon_path+Interval::TYPENAME+"/icon-tree"),
+                              tr( "New Time Interval"), this, SLOT( newInterval() ));
 
 //    QToolButton *btn = (QToolButton*)toolBar->child("newObjectAction_action_button");
 

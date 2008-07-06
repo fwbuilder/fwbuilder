@@ -216,6 +216,16 @@
 	<file alias="Icons/UserService/icon-ref">Icons/user-ref_25.png</file>
         <file alias="Icons/UserService/icon-tree">Icons/user_16.png</file>
         <file alias="Icons/UserService/icon">Icons/user_25.png</file>
+
+        <file alias="Icons/Policy/icon">Icons/ruleset_25.png</file>
+        <file alias="Icons/Policy/icon-tree">Icons/ruleset_16.png</file>
+
+        <file alias="Icons/NAT/icon">Icons/nat_25.png</file>
+        <file alias="Icons/NAT/icon-tree">Icons/nat_16.png</file>
+
+        <file alias="Icons/Routing/icon">Icons/ruleset_25.png</file>
+        <file alias="Icons/Routing/icon-tree">Icons/ruleset_16.png</file>
+
         <file>Icons/stop.png</file>
         <file>Icons/uncheck.png</file>
         <file>Icons/undo.png</file>
