@@ -184,11 +184,11 @@
         <file alias="Icons/ICMPService/icon">Icons/service-icmp_25.png</file>
 
 
-        <file alias="Icons/ICMP6Service/icon-neg">Icons/service-icmp-neg_25.png</file>
-        <file alias="Icons/ICMP6Service/icon-neg-tree">Icons/service-icmp-neg_16.png</file>
-        <file alias="Icons/ICMP6Service/icon-ref">Icons/service-icmp-ref_25.png</file>
-        <file alias="Icons/ICMP6Service/icon-tree">Icons/service-icmp_16.png</file>
-        <file alias="Icons/ICMP6Service/icon">Icons/service-icmp_25.png</file>
+        <file alias="Icons/ICMP6Service/icon-neg">Icons/service-icmp6-neg_25.png</file>
+        <file alias="Icons/ICMP6Service/icon-neg-tree">Icons/service-icmp6-neg_16.png</file>
+        <file alias="Icons/ICMP6Service/icon-ref">Icons/service-icmp6-ref_25.png</file>
+        <file alias="Icons/ICMP6Service/icon-tree">Icons/service-icmp6_16.png</file>
+        <file alias="Icons/ICMP6Service/icon">Icons/service-icmp6_25.png</file>
 
 
         <file alias="Icons/IPService/icon-neg">Icons/service-ip-neg_25.png</file>

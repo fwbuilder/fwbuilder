@@ -72,9 +72,16 @@ void ICMPServiceDialog::loadFWObject(FWObject *o)
     assert(s!=NULL);
 
     if (ICMP6Service::isA(o))
+    {
         m_dialog->editorTitle->setText("ICMP6 Service");
-    else
+        m_dialog->editorLabel->setPixmap(
+            QPixmap(QString::fromUtf8(":/Icons/ICMP6Service/icon")));
+    } else
+    {
         m_dialog->editorTitle->setText("ICMP Service");
+        m_dialog->editorLabel->setPixmap(
+            QPixmap(QString::fromUtf8(":/Icons/ICMPService/icon")));
+    }
 
     init=true;
 
