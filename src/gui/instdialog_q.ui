@@ -10,9 +10,7 @@
    </rect>
   </property>
   <property name="sizePolicy" >
-   <sizepolicy>
-    <hsizetype>5</hsizetype>
-    <vsizetype>5</vsizetype>
+   <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -21,18 +19,25 @@
    <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
    <property name="spacing" >
     <number>6</number>
+   </property>
+   <property name="leftMargin" >
+    <number>9</number>
+   </property>
+   <property name="topMargin" >
+    <number>9</number>
+   </property>
+   <property name="rightMargin" >
+    <number>9</number>
+   </property>
+   <property name="bottomMargin" >
+    <number>9</number>
    </property>
    <item>
     <widget class="QLabel" name="titleLabel" >
      <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>3</hsizetype>
-       <vsizetype>0</vsizetype>
+      <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -63,21 +68,17 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget" >
      <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>7</hsizetype>
-       <vsizetype>3</vsizetype>
+      <sizepolicy vsizetype="MinimumExpanding" hsizetype="Expanding" >
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="currentIndex" >
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page" >
       <property name="sizePolicy" >
-       <sizepolicy>
-        <hsizetype>3</hsizetype>
-        <vsizetype>3</vsizetype>
+       <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -86,26 +87,45 @@
        <enum>Qt::LeftToRight</enum>
       </property>
       <layout class="QGridLayout" >
-       <property name="margin" >
+       <property name="leftMargin" >
         <number>1</number>
        </property>
-       <property name="spacing" >
+       <property name="topMargin" >
+        <number>1</number>
+       </property>
+       <property name="rightMargin" >
+        <number>1</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>1</number>
+       </property>
+       <property name="horizontalSpacing" >
+        <number>6</number>
+       </property>
+       <property name="verticalSpacing" >
         <number>6</number>
        </property>
        <item row="0" column="0" >
         <layout class="QVBoxLayout" >
-         <property name="margin" >
-          <number>2</number>
-         </property>
          <property name="spacing" >
           <number>6</number>
+         </property>
+         <property name="leftMargin" >
+          <number>2</number>
+         </property>
+         <property name="topMargin" >
+          <number>2</number>
+         </property>
+         <property name="rightMargin" >
+          <number>2</number>
+         </property>
+         <property name="bottomMargin" >
+          <number>2</number>
          </property>
          <item>
           <widget class="QFrame" name="frame10" >
            <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>3</hsizetype>
-             <vsizetype>5</vsizetype>
+            <sizepolicy vsizetype="Preferred" hsizetype="MinimumExpanding" >
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -117,11 +137,20 @@
             <enum>QFrame::Plain</enum>
            </property>
            <layout class="QHBoxLayout" >
-            <property name="margin" >
-             <number>11</number>
-            </property>
             <property name="spacing" >
              <number>6</number>
+            </property>
+            <property name="leftMargin" >
+             <number>11</number>
+            </property>
+            <property name="topMargin" >
+             <number>11</number>
+            </property>
+            <property name="rightMargin" >
+             <number>11</number>
+            </property>
+            <property name="bottomMargin" >
+             <number>11</number>
             </property>
             <item>
              <widget class="QLabel" name="selectInfoLabel" >
@@ -139,9 +168,7 @@
          <item>
           <widget class="QFrame" name="batchInstFlagFrame" >
            <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>3</hsizetype>
-             <vsizetype>5</vsizetype>
+            <sizepolicy vsizetype="Preferred" hsizetype="MinimumExpanding" >
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -153,18 +180,28 @@
             <enum>QFrame::Plain</enum>
            </property>
            <layout class="QGridLayout" >
-            <property name="margin" >
+            <property name="leftMargin" >
              <number>11</number>
             </property>
-            <property name="spacing" >
+            <property name="topMargin" >
+             <number>11</number>
+            </property>
+            <property name="rightMargin" >
+             <number>11</number>
+            </property>
+            <property name="bottomMargin" >
+             <number>11</number>
+            </property>
+            <property name="horizontalSpacing" >
+             <number>6</number>
+            </property>
+            <property name="verticalSpacing" >
              <number>6</number>
             </property>
             <item row="1" column="0" >
              <widget class="QCheckBox" name="batchInstall" >
               <property name="sizePolicy" >
-               <sizepolicy>
-                <hsizetype>1</hsizetype>
-                <vsizetype>0</vsizetype>
+               <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -193,9 +230,7 @@
          <item>
           <widget class="QFrame" name="frame12" >
            <property name="sizePolicy" >
-            <sizepolicy>
-             <hsizetype>3</hsizetype>
-             <vsizetype>5</vsizetype>
+            <sizepolicy vsizetype="Preferred" hsizetype="MinimumExpanding" >
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -207,11 +242,20 @@
             <enum>QFrame::Plain</enum>
            </property>
            <layout class="QVBoxLayout" >
-            <property name="margin" >
-             <number>11</number>
-            </property>
             <property name="spacing" >
              <number>6</number>
+            </property>
+            <property name="leftMargin" >
+             <number>11</number>
+            </property>
+            <property name="topMargin" >
+             <number>11</number>
+            </property>
+            <property name="rightMargin" >
+             <number>11</number>
+            </property>
+            <property name="bottomMargin" >
+             <number>11</number>
             </property>
             <item>
              <widget class="QTableWidget" name="selectTable" >
@@ -264,10 +308,22 @@
                <enum>QFrame::Plain</enum>
               </property>
               <layout class="QGridLayout" >
-               <property name="margin" >
+               <property name="leftMargin" >
                 <number>11</number>
                </property>
-               <property name="spacing" >
+               <property name="topMargin" >
+                <number>11</number>
+               </property>
+               <property name="rightMargin" >
+                <number>11</number>
+               </property>
+               <property name="bottomMargin" >
+                <number>11</number>
+               </property>
+               <property name="horizontalSpacing" >
+                <number>6</number>
+               </property>
+               <property name="verticalSpacing" >
                 <number>6</number>
                </property>
                <item row="0" column="0" >
@@ -319,11 +375,20 @@
      </widget>
      <widget class="QWidget" name="page_2" >
       <layout class="QHBoxLayout" >
-       <property name="margin" >
-        <number>9</number>
-       </property>
        <property name="spacing" >
         <number>6</number>
+       </property>
+       <property name="leftMargin" >
+        <number>9</number>
+       </property>
+       <property name="topMargin" >
+        <number>9</number>
+       </property>
+       <property name="rightMargin" >
+        <number>9</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>9</number>
        </property>
        <item>
         <widget class="QFrame" name="frame18_2" >
@@ -334,10 +399,22 @@
           <enum>QFrame::Plain</enum>
          </property>
          <layout class="QGridLayout" >
-          <property name="margin" >
+          <property name="leftMargin" >
            <number>11</number>
           </property>
-          <property name="spacing" >
+          <property name="topMargin" >
+           <number>11</number>
+          </property>
+          <property name="rightMargin" >
+           <number>11</number>
+          </property>
+          <property name="bottomMargin" >
+           <number>11</number>
+          </property>
+          <property name="horizontalSpacing" >
+           <number>6</number>
+          </property>
+          <property name="verticalSpacing" >
            <number>6</number>
           </property>
           <item row="2" column="1" >
@@ -364,7 +441,7 @@
            </spacer>
           </item>
           <item rowspan="2" row="0" column="0" colspan="2" >
-           <widget class="QTreeWidget" name="listView4" >
+           <widget class="QTreeWidget" name="fwWorkList" >
             <property name="itemsExpandable" >
              <bool>false</bool>
             </property>
@@ -386,9 +463,7 @@
        <item>
         <widget class="QFrame" name="frame18" >
          <property name="sizePolicy" >
-          <sizepolicy>
-           <hsizetype>7</hsizetype>
-           <vsizetype>5</vsizetype>
+          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
            <horstretch>1</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -400,19 +475,37 @@
           <enum>QFrame::Plain</enum>
          </property>
          <layout class="QVBoxLayout" >
-          <property name="margin" >
-           <number>11</number>
-          </property>
           <property name="spacing" >
            <number>6</number>
           </property>
+          <property name="leftMargin" >
+           <number>11</number>
+          </property>
+          <property name="topMargin" >
+           <number>11</number>
+          </property>
+          <property name="rightMargin" >
+           <number>11</number>
+          </property>
+          <property name="bottomMargin" >
+           <number>11</number>
+          </property>
           <item>
            <layout class="QHBoxLayout" >
-            <property name="margin" >
-             <number>0</number>
-            </property>
             <property name="spacing" >
              <number>6</number>
+            </property>
+            <property name="leftMargin" >
+             <number>0</number>
+            </property>
+            <property name="topMargin" >
+             <number>0</number>
+            </property>
+            <property name="rightMargin" >
+             <number>0</number>
+            </property>
+            <property name="bottomMargin" >
+             <number>0</number>
             </property>
             <item>
              <widget class="QLabel" name="textLabel1" >
@@ -427,9 +520,7 @@
             <item>
              <widget class="QLabel" name="fwMCLabel" >
               <property name="sizePolicy" >
-               <sizepolicy>
-                <hsizetype>7</hsizetype>
-                <vsizetype>5</vsizetype>
+               <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -459,11 +550,20 @@
           </item>
           <item>
            <layout class="QHBoxLayout" >
-            <property name="margin" >
-             <number>0</number>
-            </property>
             <property name="spacing" >
              <number>6</number>
+            </property>
+            <property name="leftMargin" >
+             <number>0</number>
+            </property>
+            <property name="topMargin" >
+             <number>0</number>
+            </property>
+            <property name="rightMargin" >
+             <number>0</number>
+            </property>
+            <property name="bottomMargin" >
+             <number>0</number>
             </property>
             <item>
              <widget class="QLabel" name="ProcLabel" >
@@ -478,9 +578,7 @@
             <item>
              <widget class="QLabel" name="infoMCLabel" >
               <property name="sizePolicy" >
-               <sizepolicy>
-                <hsizetype>7</hsizetype>
-                <vsizetype>5</vsizetype>
+               <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -510,11 +608,20 @@
           </item>
           <item>
            <layout class="QHBoxLayout" >
-            <property name="margin" >
-             <number>0</number>
-            </property>
             <property name="spacing" >
              <number>6</number>
+            </property>
+            <property name="leftMargin" >
+             <number>0</number>
+            </property>
+            <property name="topMargin" >
+             <number>0</number>
+            </property>
+            <property name="rightMargin" >
+             <number>0</number>
+            </property>
+            <property name="bottomMargin" >
+             <number>0</number>
             </property>
             <item>
              <spacer>
@@ -562,11 +669,20 @@
           </item>
           <item>
            <layout class="QHBoxLayout" >
-            <property name="margin" >
-             <number>0</number>
-            </property>
             <property name="spacing" >
              <number>6</number>
+            </property>
+            <property name="leftMargin" >
+             <number>0</number>
+            </property>
+            <property name="topMargin" >
+             <number>0</number>
+            </property>
+            <property name="rightMargin" >
+             <number>0</number>
+            </property>
+            <property name="bottomMargin" >
+             <number>0</number>
             </property>
             <item>
              <widget class="QGroupBox" name="detailMCframe" >
@@ -574,10 +690,22 @@
                <string>Process log</string>
               </property>
               <layout class="QGridLayout" >
-               <property name="margin" >
+               <property name="leftMargin" >
                 <number>0</number>
                </property>
-               <property name="spacing" >
+               <property name="topMargin" >
+                <number>0</number>
+               </property>
+               <property name="rightMargin" >
+                <number>0</number>
+               </property>
+               <property name="bottomMargin" >
+                <number>0</number>
+               </property>
+               <property name="horizontalSpacing" >
+                <number>6</number>
+               </property>
+               <property name="verticalSpacing" >
                 <number>6</number>
                </property>
                <item row="0" column="0" >
@@ -638,10 +766,22 @@
      </widget>
      <widget class="QWidget" name="page_3" >
       <layout class="QGridLayout" >
-       <property name="margin" >
+       <property name="leftMargin" >
         <number>9</number>
        </property>
-       <property name="spacing" >
+       <property name="topMargin" >
+        <number>9</number>
+       </property>
+       <property name="rightMargin" >
+        <number>9</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>9</number>
+       </property>
+       <property name="horizontalSpacing" >
+        <number>6</number>
+       </property>
+       <property name="verticalSpacing" >
         <number>6</number>
        </property>
        <item row="1" column="0" >
@@ -679,9 +819,7 @@
    <item>
     <widget class="QFrame" name="frame" >
      <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>3</hsizetype>
-       <vsizetype>0</vsizetype>
+      <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
        <horstretch>1</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -699,11 +837,20 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
       <property name="spacing" >
        <number>6</number>
+      </property>
+      <property name="leftMargin" >
+       <number>9</number>
+      </property>
+      <property name="topMargin" >
+       <number>9</number>
+      </property>
+      <property name="rightMargin" >
+       <number>9</number>
+      </property>
+      <property name="bottomMargin" >
+       <number>9</number>
       </property>
       <item>
        <spacer>
@@ -793,7 +940,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>listView4</sender>
+   <sender>fwWorkList</sender>
    <signal>itemActivated(QTreeWidgetItem*, int)</signal>
    <receiver>instDialog_q</receiver>
    <slot>findFirewallInCompileLog(QTreeWidgetItem*)</slot>

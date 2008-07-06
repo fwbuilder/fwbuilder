@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="9" lastModified="1215305900" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="9" lastModified="1215369952" id="root">
   <Library id="sysid99" name="Deleted Objects" ro="False">
     <ICMP6Service id="idE0C27650" name="ipv6 dest unreachable" comment="No route to destination" code="0" type="1"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -588,9 +588,6 @@
     <IntervalRef ref="int-workhours"/>
     <IntervalRef ref="id3D6864D0"/>
     <IntervalRef ref="id45F8C4E013056"/>
-    <ServiceRef ref="sysid1"/>
-    <ServiceRef ref="sysid1"/>
-    <ServiceRef ref="sysid1"/>
   </Library>
   <Library id="syslib001" name="User" comment="User defined objects" color="#d2ffd0">
     <ObjectGroup id="stdid01_1" name="Objects">
@@ -1621,7 +1618,7 @@
       </ServiceGroup>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls">
-      <Firewall id="fw-firewall2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" host_OS="linux24" inactive="False" lastCompiled="1210000429" lastInstalled="1142003872" lastModified="1210000442" platform="iptables" ro="False" version="">
+      <Firewall id="fw-firewall2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" host_OS="linux24" inactive="False" lastCompiled="1215369952" lastInstalled="1142003872" lastModified="1210000442" platform="iptables" ro="False" version="">
         <NAT id="nat-firewall2" name="NAT">
           <NATRule id="nat-firewall2-0" disabled="False" position="0">
             <OSrc neg="False">
@@ -3365,7 +3362,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AF5AA0A" name="firewall1" comment="this object is used to test all kinds of negation in policy and NAT rules" host_OS="linux24" inactive="False" lastCompiled="1210000488" lastInstalled="1142003872" lastModified="1215290981" platform="iptables" ro="False" version="">
+      <Firewall id="id3AF5AA0A" name="firewall1" comment="this object is used to test all kinds of negation in policy and NAT rules" host_OS="linux24" inactive="False" lastCompiled="1215360871" lastInstalled="1142003872" lastModified="1215290981" platform="iptables" ro="False" version="">
         <NAT id="id3AF5AA0D" name="NAT">
           <NATRule id="id3C98491C" disabled="False" position="0">
             <OSrc neg="False">
@@ -4794,7 +4791,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AFB66C6" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " host_OS="linux24" inactive="False" lastCompiled="1188315148" lastInstalled="1142003872" lastModified="1211435422" platform="iptables" ro="False" version="">
+      <Firewall id="id3AFB66C6" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " host_OS="linux24" inactive="False" lastCompiled="1215360886" lastInstalled="1142003872" lastModified="1211435422" platform="iptables" ro="False" version="">
         <NAT id="id3AFB66C7" name="NAT">
           <NATRule id="id3AFB66C8" disabled="False" position="0">
             <OSrc neg="False">
@@ -6388,7 +6385,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3B0226B6" name="firewall3" comment="this object is used to test negation in policy rules with &quot;Assume firewall is part of 'Any'&quot; turned OFF" host_OS="linux24" inactive="False" lastCompiled="1196093755" lastInstalled="1142003872" lastModified="1196093903" platform="iptables" ro="False" version="">
+      <Firewall id="id3B0226B6" name="firewall3" comment="this object is used to test negation in policy rules with &quot;Assume firewall is part of 'Any'&quot; turned OFF" host_OS="linux24" inactive="False" lastCompiled="1215360255" lastInstalled="1142003872" lastModified="1196093903" platform="iptables" ro="False" version="">
         <NAT id="id3B0226B7" name="NAT">
           <NATRule id="id3B0226B8" disabled="False" position="0">
             <OSrc neg="False">
@@ -7041,7 +7038,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3B0C6380" name="firewall4" comment="this object is used to test a configuration where firewall has dynamic address " host_OS="linux24" inactive="False" lastCompiled="1188097179" lastInstalled="1142003872" lastModified="1184801731" platform="iptables" ro="False" version="">
+      <Firewall id="id3B0C6380" name="firewall4" comment="this object is used to test a configuration where firewall has dynamic address " host_OS="linux24" inactive="False" lastCompiled="1215360278" lastInstalled="1142003872" lastModified="1184801731" platform="iptables" ro="False" version="">
         <NAT id="id3B0C6381" name="NAT">
           <NATRule id="id3B0C6382" disabled="False" position="0">
             <OSrc neg="False">
@@ -7828,7 +7825,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3B19BEE6" name="firewall5" comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface&#10;has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it&#10;(interface used to be static and had an address, then got&#10;converted to dynamic but address object is still there). Compiler&#10;should ignore this address object and issue a warning.&#10;" host_OS="linux24" lastCompiled="1204560061" lastInstalled="1142003872" lastModified="1204560033" platform="iptables" ro="False">
+      <Firewall id="id3B19BEE6" name="firewall5" comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface&#10;has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it&#10;(interface used to be static and had an address, then got&#10;converted to dynamic but address object is still there). Compiler&#10;should ignore this address object and issue a warning.&#10;" host_OS="linux24" lastCompiled="1215360284" lastInstalled="1142003872" lastModified="1204560033" platform="iptables" ro="False">
         <NAT id="id3B19BEE7" name="NAT">
           <NATRule id="id3CFD9EE2" disabled="False" position="0">
             <OSrc neg="False">
@@ -8272,7 +8269,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AF5A2BA" name="host" comment="firewall protects host it is running on" host_OS="linux24" lastCompiled="1188097239" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False" version="">
+      <Firewall id="id3AF5A2BA" name="host" comment="firewall protects host it is running on" host_OS="linux24" lastCompiled="1215360302" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False" version="">
         <NAT id="id3AF5A2BD" name="NAT"/>
         <Policy id="id3AF5A2BC" name="Policy">
           <PolicyRule id="id3BD8ECD0" action="Deny" direction="Inbound" disabled="False" log="True" position="0">
@@ -8538,7 +8535,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3C698F1D" name="firewall6" comment="testing rule with firewall in dst and negation&#10;also testing &quot;Destination NAT Onto the Same Network&quot; per Turorial chapter 3.5&#10;testing a rule with src=dst=firewall6 in the global policy (should use all interfaces including loopback)" host_OS="linux24" lastCompiled="1188097212" lastInstalled="1142003872" lastModified="1142003913" platform="iptables" ro="False">
+      <Firewall id="id3C698F1D" name="firewall6" comment="testing rule with firewall in dst and negation&#10;also testing &quot;Destination NAT Onto the Same Network&quot; per Turorial chapter 3.5&#10;testing a rule with src=dst=firewall6 in the global policy (should use all interfaces including loopback)" host_OS="linux24" lastCompiled="1215360290" lastInstalled="1142003872" lastModified="1142003913" platform="iptables" ro="False">
         <NAT id="id3C698F1E" name="NAT">
           <NATRule id="id3D5C25BE" disabled="False" position="0">
             <OSrc neg="False">
@@ -8924,7 +8921,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3C69BD4F" name="firewall7" comment="testing rules with broadcasts and multicasts and action-on-reject &quot;TCP reset&quot;&#10;&#10;testing rules used for DHCP relay running on the firewall between interfaces eth0 and eth2" host_OS="linux24" lastCompiled="1188097218" lastInstalled="1142003872" lastModified="1171611268" platform="iptables" ro="False" version="">
+      <Firewall id="id3C69BD4F" name="firewall7" comment="testing rules with broadcasts and multicasts and action-on-reject &quot;TCP reset&quot;&#10;&#10;testing rules used for DHCP relay running on the firewall between interfaces eth0 and eth2" host_OS="linux24" lastCompiled="1215360297" lastInstalled="1142003872" lastModified="1171611268" platform="iptables" ro="False" version="">
         <NAT id="id3C69BD50" name="NAT">
           <NATRule id="id3D6BE398" comment="this is incorrect rule which should &#10;be refused by compiler" disabled="True" position="0">
             <OSrc neg="False">
@@ -9334,7 +9331,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3D0C1E6E" name="firewall8" comment="this firewall is used to test a rule in the global policy of object &quot;firewall&quot;&#10;" host_OS="linux24" lastCompiled="1188097225" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
+      <Firewall id="id3D0C1E6E" name="firewall8" comment="this firewall is used to test a rule in the global policy of object &quot;firewall&quot;&#10;" host_OS="linux24" lastCompiled="1215360299" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
         <NAT id="id3D0C1E72" name="NAT"/>
         <Policy id="id3D0C1E71" name="Policy"/>
         <Routing id="id3D0C1E6E-routing" name="Routing"/>
@@ -9414,7 +9411,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3D4DF34B" name="firewall9" comment="testing rules with  action-on-reject &quot;TCP reset&quot;&#10;" host_OS="linux24" lastCompiled="1188097232" lastInstalled="1142003872" lastModified="1142003913" platform="iptables" ro="False">
+      <Firewall id="id3D4DF34B" name="firewall9" comment="testing rules with  action-on-reject &quot;TCP reset&quot;&#10;" host_OS="linux24" lastCompiled="1215360300" lastInstalled="1142003872" lastModified="1142003913" platform="iptables" ro="False">
         <NAT id="id3D4DF34C" name="NAT"/>
         <Policy id="id3D4DF34D" name="Policy">
           <PolicyRule id="id3D4DF362" action="Reject" direction="Both" disabled="False" log="True" position="0">
@@ -9821,7 +9818,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3D4F0A55" name="firewall10" comment="testing rules with  action-on-reject &quot;TCP reset&quot;&#10;in this firewall, unlike in firewall9, this option is set globally instead of setting it&#10;in the rule options&#10;&#10;" host_OS="linux24" inactive="False" lastCompiled="1188096940" lastInstalled="1142003872" lastModified="1215123480" platform="iptables" ro="False" version="1.2.9">
+      <Firewall id="id3D4F0A55" name="firewall10" comment="testing rules with  action-on-reject &quot;TCP reset&quot;&#10;in this firewall, unlike in firewall9, this option is set globally instead of setting it&#10;in the rule options&#10;&#10;" host_OS="linux24" inactive="False" lastCompiled="1215360872" lastInstalled="1142003872" lastModified="1215123480" platform="iptables" ro="False" version="1.2.9">
         <NAT id="id3D4F0A56" name="NAT"/>
         <Policy id="id3D4F0A57" name="Policy">
           <PolicyRule id="id3D4F0A58" action="Reject" direction="Both" disabled="False" log="True" position="0">
@@ -10131,7 +10128,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3D94D4F8" name="firewall11" comment="testing rules with broadcasts and multicasts and action-on-reject 'TCP reset'. &#10;&#10;This is BRIDGING FIREWALL &#10;Firewall is part of any is OFF&#10;&#10;Interfaces eth0 and eth1 are parts of the bridge; Interface eth2 is external interface (doing NAT and routing on this interface) Interface eth3 is connected to protected network and is used to manage firewall. This is rather realistic configuration for the bridging firewall " host_OS="linux24" inactive="False" lastCompiled="1188096947" lastInstalled="1142003872" lastModified="1171611400" platform="iptables" ro="False" version="">
+      <Firewall id="id3D94D4F8" name="firewall11" comment="testing rules with broadcasts and multicasts and action-on-reject 'TCP reset'. &#10;&#10;This is BRIDGING FIREWALL &#10;Firewall is part of any is OFF&#10;&#10;Interfaces eth0 and eth1 are parts of the bridge; Interface eth2 is external interface (doing NAT and routing on this interface) Interface eth3 is connected to protected network and is used to manage firewall. This is rather realistic configuration for the bridging firewall " host_OS="linux24" inactive="False" lastCompiled="1215360874" lastInstalled="1142003872" lastModified="1171611400" platform="iptables" ro="False" version="">
         <NAT id="id3D94D4F9" name="NAT">
           <NATRule id="id3E854D22" disabled="True" position="0">
             <OSrc neg="False">
@@ -10665,7 +10662,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3DDDE6C3" name="firewall12" comment="This firewall does not do NAT for addresses, but translates port for a server&#10;" host_OS="linux24" lastCompiled="1188096954" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
+      <Firewall id="id3DDDE6C3" name="firewall12" comment="This firewall does not do NAT for addresses, but translates port for a server&#10;" host_OS="linux24" lastCompiled="1215360875" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
         <NAT id="id3DDDE6C7" name="NAT">
           <NATRule id="id3DDDE6D6" disabled="False" position="0">
             <OSrc neg="False">
@@ -10989,7 +10986,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3DE68A18" name="firewall13" comment="Testing empty groups thing&#10;" host_OS="linux24" lastCompiled="1188096961" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
+      <Firewall id="id3DE68A18" name="firewall13" comment="Testing empty groups thing&#10;" host_OS="linux24" lastCompiled="1215360876" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
         <NAT id="id3DE68A19" name="NAT">
           <NATRule id="id3DE68AFA" disabled="False" position="0">
             <OSrc neg="False">
@@ -11163,7 +11160,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3DE71215" name="firewall14" comment="special configuration with overlapping subnets on external and dmz interfaces&#10;testing NAT rules (especially choice of interfaces for -o )" host_OS="linux24" lastCompiled="1188096967" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
+      <Firewall id="id3DE71215" name="firewall14" comment="special configuration with overlapping subnets on external and dmz interfaces&#10;testing NAT rules (especially choice of interfaces for -o )" host_OS="linux24" lastCompiled="1215360878" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
         <NAT id="id3DE71216" name="NAT">
           <NATRule id="id3DE71217" disabled="False" position="0">
             <OSrc neg="False">
@@ -11389,7 +11386,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3DE9128A" name="firewall15" comment="Testing &quot;Accept TCP sessions opened prior to firewall restart flag&quot;&#10;in combination with &quot;Assume firewall is part of any&quot; - both&#10;flags are OFF here" host_OS="linux24" lastCompiled="1188096974" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
+      <Firewall id="id3DE9128A" name="firewall15" comment="Testing &quot;Accept TCP sessions opened prior to firewall restart flag&quot;&#10;in combination with &quot;Assume firewall is part of any&quot; - both&#10;flags are OFF here" host_OS="linux24" lastCompiled="1215360879" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
         <NAT id="id3DE9128B" name="NAT"/>
         <Policy id="id3DE912E0" name="Policy">
           <PolicyRule id="id3E587D17" comment="option 'assume firewall is part of any'&#10;is off, but this rule should go into &#10;INPUT/OUTPUT chains anyway" action="Accept" direction="Both" disabled="False" log="False" position="0">
@@ -11505,7 +11502,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3E189481" name="firewall16" comment="testing translation from outside to the web server on DMZ, need to see what happens if clients on internal net connect to the NATted address of this server. This is a kind of &quot;NAT back to the same subnet&quot; with a twist.&#10;&#10;This firewall also has option &quot;local NAT&quot; enabled. NAT rules 0,2-7 should generate code in the OUTPUT and POSTROUTING chains.&#10;" host_OS="linux24" lastCompiled="1188096980" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False" version="">
+      <Firewall id="id3E189481" name="firewall16" comment="testing translation from outside to the web server on DMZ, need to see what happens if clients on internal net connect to the NATted address of this server. This is a kind of &quot;NAT back to the same subnet&quot; with a twist.&#10;&#10;This firewall also has option &quot;local NAT&quot; enabled. NAT rules 0,2-7 should generate code in the OUTPUT and POSTROUTING chains.&#10;" host_OS="linux24" lastCompiled="1215360880" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False" version="">
         <NAT id="id3E189482" name="NAT">
           <NATRule id="id3E189483" comment="should generate code in both PREROUTING&#10;and OUTPUT chain because option &quot;local NAT&quot;&#10;is enabled" disabled="False" position="0">
             <OSrc neg="False">
@@ -11932,7 +11929,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3E1C6B9C" name="firewall17" comment="doing SNAT with virtual addresses of two external interface&#10;" host_OS="linux24" lastCompiled="1188096987" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
+      <Firewall id="id3E1C6B9C" name="firewall17" comment="doing SNAT with virtual addresses of two external interface&#10;" host_OS="linux24" lastCompiled="1215360882" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
         <NAT id="id3E1C6B9D" name="NAT">
           <NATRule id="id3E1C6B9E" comment="compiler should add &quot;-o eth2&quot;" disabled="False" position="0">
             <OSrc neg="False">
@@ -12239,7 +12236,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3EE4CB81" name="firewall18" comment="this firewall translates outgoing connections using address of the particular interface (not external one). Also testing different cmbinations of objects in the policy rules on loopback interface. Finally, testing for a situation when dynamic interface &quot;shades&quot; a rule with old broadcast" host_OS="linux24" lastCompiled="1188096994" lastInstalled="1142003872" lastModified="1142003885" platform="iptables" ro="False" version="">
+      <Firewall id="id3EE4CB81" name="firewall18" comment="this firewall translates outgoing connections using address of the particular interface (not external one). Also testing different cmbinations of objects in the policy rules on loopback interface. Finally, testing for a situation when dynamic interface &quot;shades&quot; a rule with old broadcast" host_OS="linux24" lastCompiled="1215360883" lastInstalled="1142003872" lastModified="1142003885" platform="iptables" ro="False" version="">
         <NAT id="id3EE4CB85" name="NAT">
           <NATRule id="id3EE4CB98" disabled="False" position="0">
             <OSrc neg="False">
@@ -12569,7 +12566,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3EF7F809" name="firewall19" comment="testing different cmbinations of objects in the policy rules on loopback interface" host_OS="linux24" lastCompiled="1188097001" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
+      <Firewall id="id3EF7F809" name="firewall19" comment="testing different cmbinations of objects in the policy rules on loopback interface" host_OS="linux24" lastCompiled="1215360885" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
         <NAT id="id3EF7F80A" name="NAT"/>
         <Policy id="id3EF7F86D" name="Policy">
           <PolicyRule id="id3EF7F884" action="Accept" direction="Both" disabled="False" log="False" position="0">
@@ -12943,7 +12940,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3EFBC648" name="firewall20" comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface&#10;has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it&#10;(interface used to be static and had an address, then got&#10;converted to dynamic but address object is still there). Compiler&#10;should ignore this address object and issue a warning.&#10;" host_OS="linux24" lastCompiled="1188097016" lastInstalled="1142003872" lastModified="1142003913" platform="iptables" ro="False" version="">
+      <Firewall id="id3EFBC648" name="firewall20" comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface&#10;has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it&#10;(interface used to be static and had an address, then got&#10;converted to dynamic but address object is still there). Compiler&#10;should ignore this address object and issue a warning.&#10;" host_OS="linux24" lastCompiled="1215360888" lastInstalled="1142003872" lastModified="1142003913" platform="iptables" ro="False" version="">
         <NAT id="id3EFBC649" name="NAT">
           <NATRule id="id3EFBC64A" disabled="False" position="0">
             <OSrc neg="False">
@@ -13482,7 +13479,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3F29FAAD" name="firewall21" comment="two dynamic interfaces in the same policy or NAT rule&#10;" host_OS="linux24" lastCompiled="1188097023" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
+      <Firewall id="id3F29FAAD" name="firewall21" comment="two dynamic interfaces in the same policy or NAT rule&#10;" host_OS="linux24" lastCompiled="1215360889" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
         <NAT id="id3F29FAAE" name="NAT">
           <NATRule id="id3F2A008C" disabled="False" position="0">
             <OSrc neg="False">
@@ -13671,7 +13668,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3FADB89A" name="firewall22" comment="testing NAT rules using custom services&#10;" host_OS="linux24" lastCompiled="1188097029" lastInstalled="1142003872" lastModified="1142003913" platform="iptables" ro="False" version="1.2.9">
+      <Firewall id="id3FADB89A" name="firewall22" comment="testing NAT rules using custom services&#10;" host_OS="linux24" lastCompiled="1215360891" lastInstalled="1142003872" lastModified="1142003913" platform="iptables" ro="False" version="1.2.9">
         <NAT id="id3FADB89B" name="NAT">
           <NATRule id="id3FADBAA3" disabled="False" position="0">
             <OSrc neg="False">
@@ -13867,7 +13864,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3FB32E8E" name="firewall23" comment="&#10;This is BRIDGING FIREWALL&#10;&#10;" host_OS="linux24" inactive="False" lastCompiled="1188097036" lastInstalled="1142003872" lastModified="1215123498" platform="iptables" ro="False" version="">
+      <Firewall id="id3FB32E8E" name="firewall23" comment="&#10;This is BRIDGING FIREWALL&#10;&#10;" host_OS="linux24" inactive="False" lastCompiled="1215360892" lastInstalled="1142003872" lastModified="1215123498" platform="iptables" ro="False" version="">
         <NAT id="id3FB32E8F" name="NAT"/>
         <Policy id="id3FB32EAC" name="Policy">
           <PolicyRule id="id3FB33184" action="Accept" direction="Inbound" disabled="False" log="False" position="0">
@@ -14283,7 +14280,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id402B23A8" name="firewall24" comment="testing rules on unnumbered interface tun*&#10;" host_OS="linux24" lastCompiled="1188097050" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
+      <Firewall id="id402B23A8" name="firewall24" comment="testing rules on unnumbered interface tun*&#10;" host_OS="linux24" lastCompiled="1215360895" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False">
         <NAT id="id402B23A9" name="NAT"/>
         <Policy id="id402B23AA" name="Policy">
           <PolicyRule id="id402B2413" action="Accept" direction="Inbound" disabled="False" log="False" position="0">
@@ -14753,7 +14750,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id41528C2C" name="rh90" comment="This is an example of a firewall protecting a host ( a server or a workstation). Only SSH access to the host is permitted. Host has dynamic address." host_OS="linux24" lastCompiled="1188097246" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False" version="">
+      <Firewall id="id41528C2C" name="rh90" comment="This is an example of a firewall protecting a host ( a server or a workstation). Only SSH access to the host is permitted. Host has dynamic address." host_OS="linux24" lastCompiled="1215360303" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False" version="">
         <NAT id="id41528C52" name="NAT"/>
         <Policy id="id41528C31" name="Policy">
           <PolicyRule id="id41528C60" comment="anti spoofing rule" action="Deny" direction="Inbound" disabled="False" log="True" position="0">
@@ -14965,7 +14962,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id417C680B" name="firewall25" comment="this firewall uses iptables-restore format. Firewall has wildcard interface ppp*; script is generated dynamically and then piped to iptables-restore&#10;" host_OS="linux24" lastCompiled="1188097057" lastInstalled="1142003872" lastModified="1142003913" platform="iptables" ro="False" version="">
+      <Firewall id="id417C680B" name="firewall25" comment="this firewall uses iptables-restore format. Firewall has wildcard interface ppp*; script is generated dynamically and then piped to iptables-restore&#10;" host_OS="linux24" lastCompiled="1215360897" lastInstalled="1142003872" lastModified="1142003913" platform="iptables" ro="False" version="">
         <NAT id="id417C688D" name="NAT">
           <NATRule id="id417C688E" disabled="False" position="0">
             <OSrc neg="False">
@@ -15498,7 +15495,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id418C4609" name="firewall26" comment="this firewall uses iptables-restore format&#10;One interface has dynamic address, script uses echo to generated iptables commands and then pipes them to iptables-restore" host_OS="linux24" lastCompiled="1188097064" lastInstalled="1142003872" lastModified="1142003913" platform="iptables" ro="False" version="">
+      <Firewall id="id418C4609" name="firewall26" comment="this firewall uses iptables-restore format&#10;One interface has dynamic address, script uses echo to generated iptables commands and then pipes them to iptables-restore" host_OS="linux24" lastCompiled="1215360898" lastInstalled="1142003872" lastModified="1142003913" platform="iptables" ro="False" version="">
         <NAT id="id418C468B" name="NAT">
           <NATRule id="id418C468C" disabled="False" position="0">
             <OSrc neg="False">
@@ -16029,7 +16026,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4183D041" name="firewall27" comment="this firewall uses iptables-restore format&#10;all interfaces have static addresses, script pipes iptables commands straight to iptables-restore" host_OS="linux24" inactive="False" lastCompiled="1197477543" lastInstalled="1142003872" lastModified="1197477519" platform="iptables" ro="False" version="">
+      <Firewall id="id4183D041" name="firewall27" comment="this firewall uses iptables-restore format&#10;all interfaces have static addresses, script pipes iptables commands straight to iptables-restore" host_OS="linux24" inactive="False" lastCompiled="1215360251" lastInstalled="1142003872" lastModified="1197477519" platform="iptables" ro="False" version="">
         <NAT id="id4183D0C3" name="NAT">
           <NATRule id="id4183D0C4" disabled="False" position="0">
             <OSrc neg="False">
@@ -16748,7 +16745,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id41D2945B" name="firewall29" comment="two dynamic interfaces in the same policy or NAT rule. Interfaces have a dot in their names&#10;" host_OS="linux24" lastCompiled="1188097084" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False" version="">
+      <Firewall id="id41D2945B" name="firewall29" comment="two dynamic interfaces in the same policy or NAT rule. Interfaces have a dot in their names&#10;" host_OS="linux24" lastCompiled="1215360254" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False" version="">
         <NAT id="id41D29482" name="NAT">
           <NATRule id="id41D29483" disabled="False" position="0">
             <OSrc neg="False">
@@ -16937,7 +16934,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id41F62B80" name="firewall30" comment="testing shading of rules using MAC addresses" host_OS="linux24" lastCompiled="1188097099" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False" version="">
+      <Firewall id="id41F62B80" name="firewall30" comment="testing shading of rules using MAC addresses" host_OS="linux24" lastCompiled="1215360257" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False" version="">
         <NAT id="id41F62BA4" name="NAT"/>
         <Policy id="id41F62B85" name="Policy">
           <PolicyRule id="id41F62B86" action="Accept" direction="Both" disabled="False" log="False" position="0">
@@ -17083,7 +17080,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id429910D5" name="firewall31" comment="used to test time matching rules" host_OS="linux24" lastCompiled="1188097105" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False" version="">
+      <Firewall id="id429910D5" name="firewall31" comment="used to test time matching rules" host_OS="linux24" lastCompiled="1215360258" lastInstalled="1142003872" lastModified="0" platform="iptables" ro="False" version="">
         <NAT id="id429910DB" name="NAT"/>
         <Policy id="id429910DA" name="Policy">
           <PolicyRule id="id4299E22F" action="Deny" direction="Both" disabled="False" log="True" position="0">
@@ -17306,7 +17303,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id43868A331434" name="firewall32" comment="testing AddressTable" host_OS="linux24" lastCompiled="1188097112" lastInstalled="1142003872" lastModified="1212717910" platform="iptables" ro="False" version="">
+      <Firewall id="id43868A331434" name="firewall32" comment="testing AddressTable" host_OS="linux24" lastCompiled="1215360260" lastInstalled="1142003872" lastModified="1212717910" platform="iptables" ro="False" version="">
         <NAT id="id43868A6D1434" name="NAT">
           <NATRule id="id43868A6E1434" disabled="False" position="0">
             <OSrc neg="False">
@@ -17507,7 +17504,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id43867C1018346" name="firewall33" comment="testing DNSName object" host_OS="linux24" lastCompiled="1188097121" lastInstalled="1142003872" lastModified="1205119254" platform="iptables" ro="False" version="">
+      <Firewall id="id43867C1018346" name="firewall33" comment="testing DNSName object" host_OS="linux24" lastCompiled="1215360262" lastInstalled="1142003872" lastModified="1205119254" platform="iptables" ro="False" version="">
         <NAT id="id43867C4818346" name="NAT">
           <NATRule id="id43867C4918346" disabled="False" position="0">
             <OSrc neg="False">
@@ -17984,7 +17981,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4389EDAE18346" name="firewall34" comment="testing AddressTable object" host_OS="linux24" inactive="False" lastCompiled="1188097128" lastInstalled="1142003872" lastModified="1212620367" platform="iptables" ro="False" version="">
+      <Firewall id="id4389EDAE18346" name="firewall34" comment="testing AddressTable object" host_OS="linux24" inactive="False" lastCompiled="1215360263" lastInstalled="1142003872" lastModified="1212620367" platform="iptables" ro="False" version="">
         <NAT id="id4389EE4818346" name="NAT">
           <NATRule id="id4389EEB018346" disabled="False" position="0">
             <OSrc neg="True">
@@ -18454,7 +18451,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id439254F225682" name="firewall35" comment="testing AddressTable object&#10;&#10;like firewall34, but uses different script format" host_OS="linux24" inactive="False" lastCompiled="1188097135" lastInstalled="1142003872" lastModified="1215124221" platform="iptables" ro="False" version="">
+      <Firewall id="id439254F225682" name="firewall35" comment="testing AddressTable object&#10;&#10;like firewall34, but uses different script format" host_OS="linux24" inactive="False" lastCompiled="1215360265" lastInstalled="1142003872" lastModified="1215124221" platform="iptables" ro="False" version="">
         <NAT id="id4392558E25682" name="NAT">
           <NATRule id="id4392558F25682" disabled="False" position="0">
             <OSrc neg="True">
@@ -18838,7 +18835,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id43A2BF7416451" name="firewall36" comment="&#10;testing routing rules - both actually routing  and ROUTE target&#10;" host_OS="linux24" inactive="False" lastCompiled="1188097142" lastInstalled="1142003872" lastModified="1150347820" platform="iptables" ro="False" version="">
+      <Firewall id="id43A2BF7416451" name="firewall36" comment="&#10;testing routing rules - both actually routing  and ROUTE target&#10;" host_OS="linux24" inactive="False" lastCompiled="1215360266" lastInstalled="1142003872" lastModified="1150347820" platform="iptables" ro="False" version="">
         <NAT id="id43A2C00E16451" name="NAT">
           <NATRule id="id43A2C01D16451" comment="Translate source address&#10;for outgoing connections" disabled="False" position="0">
             <OSrc neg="False">
@@ -19229,7 +19226,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id43BB80919745" name="firewall37" comment="testing TAG and CLASSIFY rules&#10;&#10;normal script mode (not using  iptables-restore)" host_OS="linux24" inactive="False" lastCompiled="1211407377" lastInstalled="1142003872" lastModified="1211407366" platform="iptables" ro="False" version="">
+      <Firewall id="id43BB80919745" name="firewall37" comment="testing TAG and CLASSIFY rules&#10;&#10;normal script mode (not using  iptables-restore)" host_OS="linux24" inactive="False" lastCompiled="1215360268" lastInstalled="1142003872" lastModified="1211407366" platform="iptables" ro="False" version="">
         <NAT id="id43BB80B09745" name="NAT">
           <NATRule id="id43BB814D9745" disabled="False" position="0">
             <OSrc neg="False">
@@ -20238,7 +20235,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id43BBF18E9745" name="firewall38" comment="testing TAG rules&#10;&#10;using  iptables-restore&#10;" host_OS="linux24" inactive="False" lastCompiled="1188097164" lastInstalled="1142003872" lastModified="1215124213" platform="iptables" ro="False" version="1.3.0">
+      <Firewall id="id43BBF18E9745" name="firewall38" comment="testing TAG rules&#10;&#10;using  iptables-restore&#10;" host_OS="linux24" inactive="False" lastCompiled="1215360271" lastInstalled="1142003872" lastModified="1215124213" platform="iptables" ro="False" version="1.3.0">
         <NAT id="id43BBF1E99745" name="NAT">
           <NATRule id="id43BBF1EA9745" disabled="False" position="0">
             <OSrc neg="False">
@@ -20803,7 +20800,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id440C055614846" name="firewall23-1" comment="&#10;This is BRIDGING FIREWALL&#10;Testing module physdev&#10;" host_OS="linux24" inactive="False" lastCompiled="1188097043" lastInstalled="1142003872" lastModified="1215123502" platform="iptables" ro="False" version="1.3.0">
+      <Firewall id="id440C055614846" name="firewall23-1" comment="&#10;This is BRIDGING FIREWALL&#10;Testing module physdev&#10;" host_OS="linux24" inactive="False" lastCompiled="1215360894" lastInstalled="1142003872" lastModified="1215123502" platform="iptables" ro="False" version="1.3.0">
         <NAT id="id440C062B14846" name="NAT"/>
         <Policy id="id440C055C14846" name="Policy">
           <PolicyRule id="id440C055D14846" action="Accept" direction="Inbound" disabled="False" log="False" position="0">
@@ -21370,7 +21367,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id445DA2F330753" name="firewall39" comment="testing branching rules&#10;&#10;normal script mode (not using  iptables-restore)" host_OS="linux24" inactive="False" lastCompiled="1188097172" lastInstalled="1146967632" lastModified="1208753886" platform="iptables" ro="False" version="">
+      <Firewall id="id445DA2F330753" name="firewall39" comment="testing branching rules&#10;&#10;normal script mode (not using  iptables-restore)" host_OS="linux24" inactive="False" lastCompiled="1215360277" lastInstalled="1146967632" lastModified="1208753886" platform="iptables" ro="False" version="">
         <NAT id="id445DA35A30753" name="NAT">
           <NATRule id="id445DA35B30753" disabled="False" position="0">
             <OSrc neg="False">
@@ -22458,7 +22455,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4492FED324380" name="firewall40" comment="&#10;more complex and realistic combination of Tag and Route rules&#10;" host_OS="linux24" inactive="False" lastCompiled="1188097187" lastInstalled="1142003872" lastModified="1215123825" platform="iptables" ro="False" version="1.4.0">
+      <Firewall id="id4492FED324380" name="firewall40" comment="&#10;more complex and realistic combination of Tag and Route rules&#10;" host_OS="linux24" inactive="False" lastCompiled="1215360280" lastInstalled="1142003872" lastModified="1215123825" platform="iptables" ro="False" version="1.4.0">
         <NAT id="id4492FF2E24380" name="NAT">
           <NATRule id="id4492FF2F24380" comment="Translate source address&#10;for outgoing connections" disabled="False" position="0">
             <OSrc neg="False">
@@ -22786,7 +22783,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id44EC18128791" name="firewall41" comment="testing rule shadowing with run-time objects, rules with such objects should be ignored&#10;&#10;" host_OS="linux24" inactive="False" lastCompiled="1188097194" lastInstalled="0" lastModified="1168820241" platform="iptables" ro="False" version="">
+      <Firewall id="id44EC18128791" name="firewall41" comment="testing rule shadowing with run-time objects, rules with such objects should be ignored&#10;&#10;" host_OS="linux24" inactive="False" lastCompiled="1215360281" lastInstalled="0" lastModified="1168820241" platform="iptables" ro="False" version="">
         <NAT id="id44EC18168791" name="NAT"/>
         <Policy id="id44EC18158791" name="Policy">
           <PolicyRule id="id44EC181E8791" action="Accept" direction="Both" disabled="False" log="True" position="0">
@@ -22901,7 +22898,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4513DEA62143" name="test-shadowing-1" comment="testing shadowing detection&#10;compiler runs with -xt flag&#10;firewall is assumed to be part of any" host_OS="linux24" inactive="False" lastCompiled="1188097253" lastInstalled="0" lastModified="1158818614" platform="iptables" ro="False" version="">
+      <Firewall id="id4513DEA62143" name="test-shadowing-1" comment="testing shadowing detection&#10;compiler runs with -xt flag&#10;firewall is assumed to be part of any" host_OS="linux24" inactive="False" lastCompiled="1215360305" lastInstalled="0" lastModified="1158818614" platform="iptables" ro="False" version="">
         <NAT id="id4513DEAA2143" name="NAT"/>
         <Policy id="id4513DEA92143" name="Policy">
           <PolicyRule id="id4513DECC2143" comment="shades rule below" action="Accept" direction="Outbound" disabled="False" log="False" position="0">
@@ -23184,7 +23181,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id451488C42143" name="test-shadowing-2" comment="testing shadowing detection&#10;compiler runs with -xt flag&#10;firewall is NOT assumed to be part of any" host_OS="linux24" inactive="False" lastCompiled="1188097259" lastInstalled="0" lastModified="1158818614" platform="iptables" ro="False" version="">
+      <Firewall id="id451488C42143" name="test-shadowing-2" comment="testing shadowing detection&#10;compiler runs with -xt flag&#10;firewall is NOT assumed to be part of any" host_OS="linux24" inactive="False" lastCompiled="1215360306" lastInstalled="0" lastModified="1158818614" platform="iptables" ro="False" version="">
         <NAT id="id451489072143" name="NAT"/>
         <Policy id="id451488CA2143" name="Policy">
           <PolicyRule id="id451488CB2143" comment="shades rule below" action="Accept" direction="Outbound" disabled="False" log="False" position="0">
@@ -23427,7 +23424,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id45AB5A2C25451" name="firewall37-1" comment="testing TAG and CLASSIFY rules&#10;&#10;same as firewall37 except rules are made to be terminating" host_OS="linux24" inactive="False" lastCompiled="1188097157" lastInstalled="1142003872" lastModified="1178579501" platform="iptables" ro="False" version="">
+      <Firewall id="id45AB5A2C25451" name="firewall37-1" comment="testing TAG and CLASSIFY rules&#10;&#10;same as firewall37 except rules are made to be terminating" host_OS="linux24" inactive="False" lastCompiled="1215360269" lastInstalled="1142003872" lastModified="1178579501" platform="iptables" ro="False" version="">
         <NAT id="id45AB5C5225451" name="NAT">
           <NATRule id="id45AB5C5325451" disabled="False" position="0">
             <OSrc neg="False">
@@ -24648,7 +24645,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id46EFBD7031183" name="firewall42" comment="simple test for a rule that matches local broadcast and should go into INPUT chain, but internal interface of the firewall is dynamic so compiler can not determine that given address is broadcast. Using fake interface to make this address match.&#10;&#10;" host_OS="linux24" inactive="False" lastCompiled="1188097218" lastInstalled="1142003872" lastModified="1190091778" platform="iptables" ro="False" version="">
+      <Firewall id="id46EFBD7031183" name="firewall42" comment="simple test for a rule that matches local broadcast and should go into INPUT chain, but internal interface of the firewall is dynamic so compiler can not determine that given address is broadcast. Using fake interface to make this address match.&#10;&#10;" host_OS="linux24" inactive="False" lastCompiled="1215360283" lastInstalled="1142003872" lastModified="1190091778" platform="iptables" ro="False" version="">
         <NAT id="id46EFBE3731183" name="NAT"/>
         <Policy id="id46EFBD7631183" name="Policy">
           <PolicyRule id="id46EFBD7731183" action="Accept" direction="Inbound" disabled="False" log="False" position="0">
@@ -24843,7 +24840,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id47339E9919714" name="firewall50" comment="testing action 'Continue'&#10;" host_OS="linux24" inactive="False" lastCompiled="1188097218" lastInstalled="1142003872" lastModified="1194539763" platform="iptables" ro="False" version="">
+      <Firewall id="id47339E9919714" name="firewall50" comment="testing action 'Continue'&#10;" host_OS="linux24" inactive="False" lastCompiled="1215360286" lastInstalled="1142003872" lastModified="1194539763" platform="iptables" ro="False" version="">
         <NAT id="id47339EDC19714" name="NAT"/>
         <Policy id="id47339E9F19714" name="Policy">
           <PolicyRule id="id47339EFA19714" action="Continue" direction="Both" disabled="False" log="False" position="0">
@@ -25079,7 +25076,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4833F62B6131" name="firewall-ipv6-1" host_OS="linux24" inactive="False" lastCompiled="1214965576" lastInstalled="0" lastModified="1214965563" platform="iptables" ro="False" version="">
+      <Firewall id="id4833F62B6131" name="firewall-ipv6-1" host_OS="linux24" inactive="False" lastCompiled="1215360869" lastInstalled="0" lastModified="1214965563" platform="iptables" ro="False" version="">
         <NAT id="id4833F62F6131" name="NAT"/>
         <Policy id="id483F5B7623190" name="Policy_ipv4"/>
         <Policy id="id4833F62E6131" name="Policy">
@@ -25537,7 +25534,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4844C0A114522" name="firewall60" comment="testing time litmiting for iptables &lt; 1.4.0&#10;" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1212443911" platform="iptables" ro="False" version="">
+      <Firewall id="id4844C0A114522" name="firewall60" comment="testing time litmiting for iptables &lt; 1.4.0&#10;" host_OS="linux24" inactive="False" lastCompiled="1215360292" lastInstalled="0" lastModified="1212443911" platform="iptables" ro="False" version="">
         <NAT id="id4844C0A514522" name="NAT"/>
         <Policy id="id4844C0A414522" name="Policy">
           <PolicyRule id="id484523F114522" action="Deny" direction="Both" disabled="False" log="True" position="0">
@@ -25735,7 +25732,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4845077415791" name="firewall61" comment="testing time litmiting for iptables 1.4.0&#10;" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1215123525" platform="iptables" ro="False" version="1.4.0">
+      <Firewall id="id4845077415791" name="firewall61" comment="testing time litmiting for iptables 1.4.0&#10;" host_OS="linux24" inactive="False" lastCompiled="1215360293" lastInstalled="0" lastModified="1215123525" platform="iptables" ro="False" version="1.4.0">
         <NAT id="id484507B715791" name="NAT"/>
         <Policy id="id4845077A15791" name="Policy">
           <PolicyRule id="id4845077B15791" action="Deny" direction="Both" disabled="False" log="True" position="0">
@@ -25973,7 +25970,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4848A4294626" name="firewall-base-rulesets" comment="this firewall is used to test a rule in the global policy of object &quot;firewall&quot;&#10;" host_OS="linux24" inactive="False" lastCompiled="1188097225" lastInstalled="1142003872" lastModified="1212696562" platform="iptables" ro="False" version="">
+      <Firewall id="id4848A4294626" name="firewall-base-rulesets" comment="this firewall is used to test a rule in the global policy of object &quot;firewall&quot;&#10;" host_OS="linux24" inactive="False" lastCompiled="1215360866" lastInstalled="1142003872" lastModified="1212696562" platform="iptables" ro="False" version="">
         <NAT id="id4848A4304626" name="NAT"/>
         <Policy id="id4848A42F4626" name="Policy"/>
         <Policy id="id4848A4414626" name="web_server_inbound" comment="Basic rules for web servers.&#10;">
@@ -26225,7 +26222,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id484A05C44626" name="firewall51" comment="testing branching rules that point&#10;at rule sets defined in object&#10;firewall-base-rulesets" host_OS="linux24" inactive="False" lastCompiled="1188097218" lastInstalled="1142003872" lastModified="1212694117" platform="iptables" ro="False" version="">
+      <Firewall id="id484A05C44626" name="firewall51" comment="testing branching rules that point&#10;at rule sets defined in object&#10;firewall-base-rulesets" host_OS="linux24" inactive="False" lastCompiled="1215360289" lastInstalled="1142003872" lastModified="1212694117" platform="iptables" ro="False" version="">
         <NAT id="id484A06174626" name="NAT"/>
         <Policy id="id484A05CA4626" name="Policy">
           <PolicyRule id="id484A05CB4626" action="Branch" direction="Both" disabled="False" log="False" position="0">
@@ -26878,7 +26875,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id7A6218769" name="firewall63" comment="testing TOS and DSCP matching&#10;" host_OS="linux24" inactive="False" lastCompiled="1215305900" lastInstalled="0" lastModified="1215305401" platform="iptables" ro="False" version="1.4.0">
+      <Firewall id="id7A6218769" name="firewall63" comment="testing TOS and DSCP matching&#10;" host_OS="linux24" inactive="False" lastCompiled="1215360296" lastInstalled="0" lastModified="1215305401" platform="iptables" ro="False" version="1.4.0">
         <NAT id="id7ABD18769" name="NAT"/>
         <Policy id="id7A6818769" name="Policy">
           <PolicyRule id="id7A6918769" action="Accept" direction="Both" disabled="False" log="False" position="0">

@@ -127,7 +127,7 @@ instDialog::instDialog(QWidget* p,
 
     proc.setProcessChannelMode(QProcess::MergedChannels);
 
-    m_dialog->listView4->setSortingEnabled(true);
+    m_dialog->fwWorkList->setSortingEnabled(true);
 
     setFinishEnabled(pageCount()-1, true);
 
@@ -155,30 +155,31 @@ instDialog::instDialog(QWidget* p,
 
     switch(op)
     {
-        case BATCH_COMPILE:
-            { // only compilation's requested
-                m_dialog->selectInfoLabel->setText(tr("<p align=\"center\"><b><font size=\"+2\">Select firewalls for compilation.</font></b></p>"));
-                m_dialog->batchInstFlagFrame->hide();
-                setAppropriate(2,false);
+    case BATCH_COMPILE:
+    { // only compilation's requested
+        m_dialog->selectInfoLabel->setText(tr("<p align=\"center\"><b><font size=\"+2\">Select firewalls for compilation.</font></b></p>"));
+        m_dialog->batchInstFlagFrame->hide();
+        setAppropriate(2,false);
 
 
-                m_dialog->selectTable->hideColumn(1);
-                break;
-            }
-        case BATCH_INSTALL:
-            { // full cycle's requested
-                break;
-            }
-        default :
-            {
-                setTitle( pageCount()-1, tr("Unknown operation.") );
-                for (int i=0;i<pageCount()-1;i++)
-                {
-                    setAppropriate(i,false);
-                }
-                showPage(pageCount()-1);
-            }
+        m_dialog->selectTable->hideColumn(1);
+        break;
     }
+    case BATCH_INSTALL:
+    { // full cycle's requested
+        break;
+    }
+    default :
+    {
+        setTitle( pageCount()-1, tr("Unknown operation.") );
+        for (int i=0;i<pageCount()-1;i++)
+        {
+            setAppropriate(i,false);
+        }
+        showPage(pageCount()-1);
+    }
+    }
+
     //hide all details
     bool fs=st->value("/FirewallBuilder2/Installer/ShowDetails"    ).toBool();
     if (fs)
@@ -187,7 +188,6 @@ instDialog::instDialog(QWidget* p,
         m_dialog->detailMCframe->hide();
 
     togleDetailMC();
-
 }
 
 instDialog::~instDialog()
@@ -1415,7 +1415,7 @@ void instDialog::runSSH(SSHSession *s)
     session->startSession();
 }
 
-void instDialog::updateProgressBar(int n,bool setsize)
+void instDialog::updateProgressBar(int n, bool setsize)
 {
     if (fwbdebug)
         qDebug("instDialog::updateProgressBar  n=%d setsize=%d",n,setsize);
@@ -1480,8 +1480,8 @@ void instDialog::saveLog()
      adding text from each paragraph separately.
      */
     QString logText;
-    //logText = currentLog->toPlainText();
-    logText = currentLog->toHtml();
+    logText = currentLog->toPlainText();
+    //logText = currentLog->toHtml();
 
     QString s = QFileDialog::getSaveFileName(
                     this,
@@ -1527,15 +1527,14 @@ bool instDialog::runCompile(Firewall *fw)
     }
 
     addToLog("\n");
-    addToLog( QObject::tr("Compiling rule sets for firewall: %1\n").arg(
-                  fw->getName().c_str()
-              )
+    addToLog(
+        QObject::tr("Compiling rule sets for firewall: %1\n").
+        arg(fw->getName().c_str())
     );
 
     prepareArgForCompiler(fw);
 
-    currentLog->insertHtml( args.join(" ") );
-    currentLog->insertHtml("\n");
+    addToLog( args.join(" ") + "\n" );
 
     QString path = args.at(0);
     args.pop_front();
@@ -1746,6 +1745,7 @@ Can't compile firewall policy."),
     QString qs = fwopt->getStr("cmdline").c_str();
     args += qs.split(" ", QString::SkipEmptyParts);
 
+    args.push_back("-v");
     args.push_back("-f");
     args.push_back(mw->db()->getFileName().c_str());
 
@@ -1803,19 +1803,36 @@ void instDialog::addToLog(const QString &line)
 
 void instDialog::interpretLogLine(const QString &line)
 {
-    QStringList words = line.split(" ");
+    if (fwbdebug)
+        qDebug("instDialog::interpretLogLine %s", line.toAscii().constData() );
+
+    QStringList words = line.trimmed().split(" ");
+
+    if (fwbdebug)
+        qDebug("instDialog::interpretLogLine words[0]='%s' words[1]='%s'",
+               words[0].toAscii().constData(),
+               words[1].toAscii().constData() );
 
     if (words.first().indexOf("rule")>=0)
     {
-        currentProgressBar->setValue(++processedRules);
+        processedRules = words[1].toInt();
+        currentProgressBar->setValue(processedRules);
+
+        if (fwbdebug)
+            qDebug("instDialog::interpretLogLine set progress bar current=%d",
+                   processedRules);
     } else
     {
         if (words.first().indexOf("processing")>=0)
         {
             currentProgressBar->reset();
-            totalRules=words[1].toInt();
+            totalRules = words[1].toInt();
             currentProgressBar->setMaximum(totalRules);
-            processedRules=0;
+            processedRules = 0;
+
+            if (fwbdebug)
+                qDebug("instDialog::interpretLogLine set progress bar max=%d",
+                       totalRules);
         } else
         {
             if (words.first().indexOf("Compiling")>=0)
@@ -1833,35 +1850,24 @@ void instDialog::interpretLogLine(const QString &line)
         }
     }
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,1);
-
-    if (fwbdebug)
-        qDebug(QString("instDialog::interpretLogLine Current log buffer "
-                       "contents %1").
-               arg(currentLog->toPlainText()).toAscii().constData() );
 }
 
 void instDialog::readFromStdout()
 {
     QString buf = proc.readAllStandardOutput();
 
+    if (fwbdebug) qDebug("instDialog::readFromStdout: %s",
+                         buf.toAscii().constData());
+
     addToLog(buf);
 
     bool endsWithLF = buf.endsWith("\n");
     QString lastLine = "";
 
-    if (buf.isEmpty())
-    {
-        interpretLogLine( pendingLogLine );
-        pendingLogLine = "";
-        return;
-    }
-
-    if (buf.isEmpty()) return;
+    if (pendingLogLine.isEmpty() && buf.isEmpty()) return;
 
     // split on LF
     QStringList bufLines = buf.split("\n");
-
-    if (bufLines.empty()) return;
 
     if (fwbdebug)
     {
@@ -2042,7 +2048,7 @@ void instDialog::processExited(int res)
         currentFWLabel->setText(QString::fromUtf8(f->getName().c_str()));
 
 
-        m_dialog->listView4->scrollToItem( opListMapping[f]  );
+        m_dialog->fwWorkList->scrollToItem( opListMapping[f]  );
 
         if(runCompile(f))
         {
@@ -2125,7 +2131,7 @@ void instDialog::deselectAll(t_tableMap &mapping)
 }
 void instDialog::fillCompileOpList()
 {
-    m_dialog->listView4->clear();
+    m_dialog->fwWorkList->clear();
     opList.clear();
     processedFirewalls.clear();
     opListMapping.clear();
@@ -2139,18 +2145,20 @@ void instDialog::fillCompileOpList()
         {
             f=(*i);
             opList.push_front(f);
-            item=new InstallFirewallViewItem(NULL,//m_dialog->listView4,
+            item=new InstallFirewallViewItem(NULL,//m_dialog->fwWorkList,
                                      QString::fromUtf8(f->getName().c_str()),
                                      false);
-            m_dialog->listView4->insertTopLevelItem(0, item);
+            m_dialog->fwWorkList->insertTopLevelItem(0, item);
 
             opListMapping[f]=item;
 
             processedFirewalls[f]=make_pair("","");
         }
     }
-
+    m_dialog->fwWorkList->resizeColumnToContents(0);
+    m_dialog->fwWorkList->sortByColumn(0, Qt::AscendingOrder);
 }
+
 void instDialog::compileSelected()
 {
     if (fwbdebug) qDebug("instDialog::compileSelected");
@@ -2171,6 +2179,8 @@ void instDialog::compileSelected()
     compileFlag=true;
 
     currentProgressBar->reset();
+    currentProgressBar->setFormat("%v/%m");
+
     currentFirewallsBar->reset();
     currentFirewallsBar->setMaximum(opList.size());
     progress=0;
@@ -2204,7 +2214,7 @@ void instDialog::compileSelected()
         currentFWLabel->setText(QString::fromUtf8(f->getName().c_str()));
 
 
-        m_dialog->listView4->scrollToItem( opListMapping[f]  );
+        m_dialog->fwWorkList->scrollToItem( opListMapping[f]  );
 
         if(runCompile(f))
         {
@@ -2220,8 +2230,8 @@ void instDialog::compileSelected()
         }
         ++opListIterator;
 
-        m_dialog->listView4->update();
-        /*m_dialog->listView4->dataChanged ( m_dialog->listView4->indexFromItem(item,0), m_dialog->listView4->indexFromItem(item,1) );*/
+        m_dialog->fwWorkList->update();
+        /*m_dialog->fwWorkList->dataChanged ( m_dialog->fwWorkList->indexFromItem(item,0), m_dialog->fwWorkList->indexFromItem(item,1) );*/
     }
 
 }
@@ -2250,23 +2260,22 @@ void instDialog::fillLastList()
     Firewall* f;
     t_procMess m;
 
-    for (map<libfwbuilder::Firewall *, t_procMess>::iterator i=processedFirewalls.begin();
+    for (map<Firewall*, t_procMess>::iterator i=processedFirewalls.begin();
             i!=processedFirewalls.end(); ++i)
     {
         f=(*i).first;
         m=(*i).second;
 
-        item=new QTreeWidgetItem(m_dialog->lastListView,
-                QStringList(QString::fromUtf8(f->getName().c_str())));
+        item = new QTreeWidgetItem(
+            m_dialog->lastListView,
+            QStringList(QString::fromUtf8(f->getName().c_str())));
 
-
-        item->setText(1,m.first);
-        item->setText(2,m.second);
-
+        item->setText(1, m.first);
+        item->setText(2, m.second);
     }
 
     m_dialog->lastListView->setSortingEnabled(true);
-    m_dialog->lastListView->sortByColumn(0, Qt::AscendingOrder);
+    m_dialog->lastListView->sortByColumn(0, Qt::DescendingOrder);
 }
 
 bool instDialog::runInstall(Firewall *fw)
@@ -2302,7 +2311,7 @@ bool instDialog::runInstall(Firewall *fw)
 void instDialog::fillInstallOpList()
 {
     if (fwbdebug) qDebug("instDialog::fillInstallOpList");
-    m_dialog->listView4->clear();
+    m_dialog->fwWorkList->clear();
     opListMapping.clear();
     opList.clear();
 
@@ -2321,13 +2330,15 @@ void instDialog::fillInstallOpList()
                                      QString::fromUtf8(f->getName().c_str()),
                                      false);
 
-            m_dialog->listView4->insertTopLevelItem(0, item);
+            m_dialog->fwWorkList->insertTopLevelItem(0, item);
 
             opListMapping[f]=item;
             if (processedFirewalls.find(f)==processedFirewalls.end())
                 processedFirewalls[f]=make_pair("","");
         }
     }
+    m_dialog->fwWorkList->resizeColumnToContents(0);
+    m_dialog->fwWorkList->sortByColumn(0, Qt::AscendingOrder);
 }
 
 void instDialog::initInstall()
@@ -2380,6 +2391,7 @@ void instDialog::installSelected()
         currentSaveButton->setEnabled(true);
         currentProgressBar->reset();
         currentProgressBar->setMaximum(100);
+        currentProgressBar->setFormat("%p%");
 
         currentLabel->setText(QString::fromUtf8((*opListIterator)->getName().c_str()));
         compileFlag=false;
