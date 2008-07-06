@@ -32,11 +32,11 @@
         <file alias="Icons/IPv4/icon-tree">Icons/address_16.png</file>
         <file alias="Icons/IPv4/icon">Icons/address_25.png</file>
 
-        <file alias="Icons/IPv6/icon-neg">Icons/addressIPv6-neg_25.png</file>
-        <file alias="Icons/IPv6/icon-neg-tree">Icons/addressIPv6-neg_16.png</file>
-        <file alias="Icons/IPv6/icon-ref">Icons/addressIPv6-ref_25.png</file>
-        <file alias="Icons/IPv6/icon-tree">Icons/addressIPv6_16.png</file>
-        <file alias="Icons/IPv6/icon">Icons/addressIPv6_25.png</file>
+        <file alias="Icons/IPv6/icon-neg">Icons/address6-neg_25.png</file>
+        <file alias="Icons/IPv6/icon-neg-tree">Icons/address6-neg_16.png</file>
+        <file alias="Icons/IPv6/icon-ref">Icons/address6-ref_25.png</file>
+        <file alias="Icons/IPv6/icon-tree">Icons/address6_16.png</file>
+        <file alias="Icons/IPv6/icon">Icons/address6_25.png</file>
         
         <file alias="Icons/AddressTable/icon-neg">Icons/addresstable-neg_25.png</file>
 	<file alias="Icons/AddressTable/icon-neg-tree">Icons/addresstable-neg_16.png</file>
@@ -122,11 +122,11 @@
         <file alias="Icons/Network/icon-tree">Icons/network_16.png</file>
         <file alias="Icons/Network/icon">Icons/network_25.png</file>
 
-        <file alias="Icons/NetworkIPv6/icon-neg">Icons/networkIPv6-neg_25.png</file>
-        <file alias="Icons/NetworkIPv6/icon-neg-tree">Icons/networkIPv6-neg_16.png</file>
-        <file alias="Icons/NetworkIPv6/icon-ref">Icons/networkIPv6-ref_25.png</file>
-        <file alias="Icons/NetworkIPv6/icon-tree">Icons/networkIPv6_16.png</file>
-        <file alias="Icons/NetworkIPv6/icon">Icons/networkIPv6_25.png</file>
+        <file alias="Icons/NetworkIPv6/icon-neg">Icons/network6-neg_25.png</file>
+        <file alias="Icons/NetworkIPv6/icon-neg-tree">Icons/network6-neg_16.png</file>
+        <file alias="Icons/NetworkIPv6/icon-ref">Icons/network6-ref_25.png</file>
+        <file alias="Icons/NetworkIPv6/icon-tree">Icons/network6_16.png</file>
+        <file alias="Icons/NetworkIPv6/icon">Icons/network6_25.png</file>
 
         
         <file>Icons/newfile_25.png</file>
