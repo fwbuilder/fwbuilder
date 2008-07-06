@@ -1,3 +1,9 @@
+2008-07-06  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* instDialog.cpp (instDialog::installSelected): minor fixed in
+	installer dialog (fixed progress bar and buffering of the compiler
+	output)
+
 2008-07-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printTOS):
