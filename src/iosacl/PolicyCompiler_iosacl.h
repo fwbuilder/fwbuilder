@@ -195,6 +195,7 @@ namespace fwcompiler {
             std::string _printACL(libfwbuilder::PolicyRule *r);
             std::string _printLog(libfwbuilder::PolicyRule *r);
             std::string _printFragm(libfwbuilder::Service *srv);
+            std::string _printTOS(libfwbuilder::Service *srv);
 
             std::string _printRule(libfwbuilder::PolicyRule *rule);
 

@@ -262,6 +262,7 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
     aclstr << _printLog( rule );
     // "fragments" should be the last option in the access-list command
     aclstr << _printFragm( compiler->getFirstSrv(rule) );
+    aclstr << _printTOS( compiler->getFirstSrv(rule) );
 
 //    aclstr << endl;
 
@@ -331,9 +332,24 @@ string PolicyCompiler_iosacl::PrintRule::_printSrcService(libfwbuilder::Service 
 
 string PolicyCompiler_iosacl::PrintRule::_printFragm(Service *srv)
 {
-    if (IPService::isA(srv) && (srv->getBool("fragm") || srv->getBool("short_fragm")))
+    if (IPService::isA(srv) && (
+            srv->getBool("fragm") || srv->getBool("short_fragm")))
         return "fragments ";
     
+    return "";
+}
+
+string PolicyCompiler_iosacl::PrintRule::_printTOS(Service *srv)
+{
+    const IPService *ip;
+    if ((ip=IPService::constcast(srv))!=NULL)
+    {
+        string tos = ip->getTOSCode();
+        string dscp = ip->getDSCPCode();
+        if (!dscp.empty()) return string("dscp ") + dscp;
+        else
+            if (!tos.empty()) return string("tos ") + tos;
+    }
     return "";
 }
 

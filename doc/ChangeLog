@@ -1,7 +1,11 @@
 2008-07-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printTOS):
+	Support for TOS and DSCP matching in IOS access lists.
+
 	* PolicyCompiler_pf_writers.cpp (PrintRule::_printDstService):
-	Support for tos matching in compiler for pf.
+	Support for tos matching in compiler for pf. PF does not support
+	DSCP matching.
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printIP): Support for
 	TOS and DSCP matching in compiler for iptables.
