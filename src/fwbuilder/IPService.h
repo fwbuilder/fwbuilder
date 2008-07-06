@@ -51,10 +51,10 @@ class IPService : public Service
     virtual std::string getProtocolName();
     virtual int    getProtocolNumber();
 
-    std::string getTOSCode();
+    std::string getTOSCode() const;
     void setTOSCode(const std::string &c);
 
-    std::string getDSCPCode();
+    std::string getDSCPCode() const;
     void setDSCPCode(const std::string &c);
 };
 

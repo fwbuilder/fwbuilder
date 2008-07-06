@@ -187,7 +187,7 @@ vector<FWObject*> fwcompiler::_find_srv_intersection(Service *op1, Service *op2)
 }
 
 
-bool fwcompiler::checkForShadowing(const Service &o1,const Service &o2)
+bool fwcompiler::checkForShadowing(const Service &o1, const Service &o2)
 {
     if (o1.getId()==o2.getId()) return true;
     if (o1.isAny() && o2.isAny()) return false;
@@ -196,8 +196,11 @@ bool fwcompiler::checkForShadowing(const Service &o1,const Service &o2)
 
     if (o1.getTypeName()==o2.getTypeName()) 
     {
-	if ( IPService::constcast(&o1)) 
+        const IPService *ip1;
+        const IPService *ip2;
+	if ((ip1=IPService::constcast(&o1))!=NULL) 
         {
+            ip2 = IPService::constcast(&o2);
 /* 
  * Both objects are IPService
  *
@@ -212,8 +215,15 @@ bool fwcompiler::checkForShadowing(const Service &o1,const Service &o2)
                 o1.getStr("rr")!=o2.getStr("rr") ||
                 o1.getStr("ts")!=o2.getStr("ts") ) return false;
 
-	    if (o1.getInt("protocol_num")==o2.getInt("protocol_num")) return true;
-	    if (o1.getInt("protocol_num")!=0 && o2.getInt("protocol_num")==0) return true;
+            if (ip1->getTOSCode()!=ip2->getTOSCode() ||
+                ip1->getDSCPCode()!=ip2->getDSCPCode()) return false;
+
+	    if (o1.getInt("protocol_num")==o2.getInt("protocol_num"))
+                return true;
+
+	    if (o1.getInt("protocol_num")!=0 && o2.getInt("protocol_num")==0)
+                return true;
+
             return false;
 	}
 	if ( ICMPService::constcast(&o1)) 

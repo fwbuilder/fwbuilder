@@ -129,7 +129,7 @@ void IPService::fromXML(xmlNodePtr root) throw(FWException)
     }
 }
 
-string IPService::getTOSCode()
+string IPService::getTOSCode() const
 {
     return getStr("tos");
 }
@@ -139,7 +139,7 @@ void IPService::setTOSCode(const string &c)
     setStr("tos", c);
 }
 
-string IPService::getDSCPCode()
+string IPService::getDSCPCode() const
 {
     return getStr("dscp");
 }

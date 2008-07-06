@@ -1,5 +1,9 @@
 2008-07-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* Compiler_ops.cpp (fwcompiler::checkForShadowing): taking into
+	account attributes "tos" and "dscp" while considering IPService
+	objects for shadowing.
+
 	* fwbuilder.dtd.in: Added attributes for TOS and DSCP codes to
 	IPService xml element
 
