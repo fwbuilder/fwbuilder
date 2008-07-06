@@ -102,10 +102,13 @@ int QMIN(int a, int b)
 }
 
 
-RuleTableModel::RuleTableModel(const int rows, const int columns, RuleSetView *ruleView):
-        QAbstractTableModel(static_cast<QWidget*>(ruleView)), m_rowCount(rows), m_columnCount(columns),
-        ruleSetView(ruleView)
+RuleTableModel::RuleTableModel(const int rows, const int columns,
+                               RuleSetView *ruleView) :
+    QAbstractTableModel(static_cast<QWidget*>(ruleView)),
+    m_rowCount(rows), m_columnCount(columns),
+    ruleSetView(ruleView)
 {};
+
 RuleTableModel::~RuleTableModel() {};
 
 int RuleTableModel::rowCount ( const QModelIndex & ) const
@@ -137,7 +140,9 @@ QVariant RuleTableModel::data ( const QModelIndex &, int /*role*/) const
     return QVariant();
 }
 
-QVariant RuleTableModel::headerData(int section, Qt::Orientation orientation, int role ) const
+QVariant RuleTableModel::headerData(int section,
+                                    Qt::Orientation orientation,
+                                    int role ) const
 {
     if (orientation == Qt::Horizontal)
     {
@@ -200,14 +205,16 @@ void RuleTableModel::insertRow( const int before_pos )
     ruleSetView->freezeRowSizing();
 
     ruleSetView->rowHeights.push_back(0);
-    for (int i = static_cast<int>(ruleSetView->rowHeights.size())-1; i >= before_pos; i--)
+    for (int i = static_cast<int>(ruleSetView->rowHeights.size())-1;
+         i >= before_pos; i--)
         ruleSetView->rowHeights[i+1] = ruleSetView->rowHeights[i];
     ruleSetView->rowHeights[before_pos] = 30; //standard size
 
     //we add a row here and system resets below rows' sizes
     //so we had to freeze our sizes for restoring them later
 
-    QAbstractTableModel::beginInsertRows( QModelIndex(), before_pos, before_pos );
+    QAbstractTableModel::beginInsertRows(QModelIndex(),
+                                         before_pos, before_pos );
     QAbstractTableModel::insertRow(before_pos);
     QAbstractTableModel::endInsertRows();
 
@@ -244,7 +251,9 @@ void RuleTableModel::removeRows ( const int row1, const int row2 )
 
     ruleSetView->freezeRowSizing();
 
-    for (int i = row1; i < static_cast<int>(ruleSetView->rowHeights.size())-((row2-row1)+1); i++)
+    for (int i = row1;
+         i < static_cast<int>(ruleSetView->rowHeights.size())-((row2-row1)+1);
+         i++)
         ruleSetView->rowHeights[i] = ruleSetView->rowHeights[i+1+(row2-row1)];
     for (int i = row1; i <= row2; i++)
         ruleSetView->rowHeights.pop_back();
@@ -787,7 +796,7 @@ void RuleSetView::fixRulePosition(Rule *rule, FWObject *parent, int pos)
 RuleRowInfo* RuleSetView::getRuleRowInfoByGroupName (QString name)
 {
     if (name=="")
-        name="New Group";
+        name = "New Group";
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
         if (rowsInfo[i]->groupName==name)
@@ -892,13 +901,15 @@ void RuleSetView::init()
     QApplication::restoreOverrideCursor();
 }
 
-void RuleSetView::addRuleGroupPanel (int row)
+void RuleSetView::addRuleGroupPanel(int row)
 {
     RuleRowInfo * rri = rowsInfo[row];
     if (rri==NULL)
         return ;
+
     setSpan (row,1,0,ruleModel->columnCount(this->model()->index(row,0))-1);
  //   rri->index = &model()->index(row,0);
+
     if (rri->isBeginRow)
     {
         bool hide = isRowHidden(row+1);
@@ -909,7 +920,7 @@ void RuleSetView::addRuleGroupPanel (int row)
         groupTitle +=QString().setNum(count);
         groupTitle += " rules)";
         grouppanel->ruleGroupName->setText(groupTitle);
-        rri->isHide=hide;
+        rri->collapsedGroup = hide;
         if (!hide)
         {
             grouppanel->showHideRuleGroupButton->setCheckState(Qt::Unchecked);
@@ -2512,7 +2523,11 @@ void RuleSetView::addToGroupAbove ()
     int row = firstSelectedRule;
     int count = lastSelectedRule - firstSelectedRule +1;
     int top = getUpNullRuleIndex(row);
-    RuleRowInfo * ru = rowsInfo[top];
+    RuleRowInfo *ru = rowsInfo[top];
+
+    if (fwbdebug)
+        qDebug("RuleSetView::addToGroupAbove  row=%d", row);
+
     if (!ru->isBeginRow)
     {
         top = getUpNullRuleIndex(top-1);
@@ -2520,11 +2535,11 @@ void RuleSetView::addToGroupAbove ()
     }
     for (int i = 0; i< count ; i++)
     {
-        Rule * r = Rule::cast(ruleIndex[row+i]);
+        Rule *r = Rule::cast(ruleIndex[row+i]);
         r->setRuleGroupName (ru->groupName.toAscii().data());
-        ruleIndex[row+i] =r ;
-        if (ru->isHide)
-            showHideRuleGroup(dynamic_cast<RuleGroupPanel*>(indexWidget(model()->index(top,1))));
+        //ruleIndex[row+i] =r ;
+        if (ru->collapsedGroup) showHideRuleGroup(
+            dynamic_cast<RuleGroupPanel*>(indexWidget(model()->index(top,1))));
     }
     updateGroups();
 }
@@ -2533,15 +2548,19 @@ void RuleSetView::addToGroupBelow()
 {
     int row = firstSelectedRule;
     int bottom = getDownNullRuleIndex(row);
-    RuleRowInfo * ru = rowsInfo[bottom];
+    RuleRowInfo *ru = rowsInfo[bottom];
     int count = lastSelectedRule - firstSelectedRule +1;
+
+    if (fwbdebug)
+        qDebug("RuleSetView::addToGroupBelow  row=%d", row);
+
     for (int i = 0; i< count ; i++)
     {
-        Rule * r = Rule::cast(ruleIndex[row+i]);
+        Rule *r = Rule::cast(ruleIndex[row+i]);
         r->setRuleGroupName (ru->groupName.toAscii().data());
-        ruleIndex[row+i] =r ;
-        if (ru->isHide)
-            showHideRuleGroup(dynamic_cast<RuleGroupPanel*>(indexWidget(model()->index(bottom,1))));
+        //ruleIndex[row+i] =r ;
+        if (ru->collapsedGroup) showHideRuleGroup(
+            dynamic_cast<RuleGroupPanel*>(indexWidget(model()->index(bottom,1))));
     }
     updateGroups();
 }
@@ -2561,7 +2580,7 @@ void RuleSetView::showHideRuleGroup(RuleGroupPanel * rgp)
         {
             hideRow(i);
         }
-        rrf->isHide=true;
+        rrf->collapsedGroup=true;
         //rgp->showHideRuleGroupButton->setText("Expand Group");
     }
 
@@ -2574,7 +2593,7 @@ void RuleSetView::showHideRuleGroup(RuleGroupPanel * rgp)
             //setRowHeight(i,rowHeights[i]);
             dataChanged (model()->index(i,0),model()->index(i,8));
         }
-        rrf->isHide=false;
+        rrf->collapsedGroup=false;
         //rgp->showHideRuleGroupButton->setText("Collapse Group");
     }
  //   refreshGroups();

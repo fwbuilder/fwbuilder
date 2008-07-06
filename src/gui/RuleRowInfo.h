@@ -2,9 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2004 NetCitadel, LLC
+                 Copyright (C) 2008 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@fwbuilder.org
+  Author:  alek@codeminders.com
 
   $Id$
 
@@ -22,33 +22,38 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
 #include <qtableview.h>
 
 class RuleRowInfo 
 {
 public:
-    RuleRowInfo (RuleRowInfo & r)
-    {
-        this->operator =(r);
-    }
-    RuleRowInfo (QString groupName, bool begin,bool hide)
-    {
-        isBeginRow = begin ;
-        this->groupName=groupName;
-        index=NULL;
-        isHide = hide ;
-    }
+
     QString groupName ;
     QString color ;
     bool isBeginRow;
-    bool isHide ; 
-    QModelIndex * index ;
-    RuleRowInfo & operator = (RuleRowInfo & r)
+    bool collapsedGroup ; 
+    QModelIndex* index ;
+
+    RuleRowInfo(RuleRowInfo & r)
+    {
+        this->operator =(r);
+    }
+
+    RuleRowInfo(QString groupName, bool begin, bool collapsed)
+    {
+        isBeginRow = begin ;
+        this->groupName = groupName;
+        collapsedGroup = collapsed ;
+        index = NULL;
+    }
+    
+    RuleRowInfo& operator=(RuleRowInfo& r)
     {
         this->isBeginRow = r.isBeginRow;
         this->groupName = r.groupName;
         this->index = r.index;
-        this->isHide = r.isHide ;
+        this->collapsedGroup = r.collapsedGroup ;
         return *this;
     }
 
