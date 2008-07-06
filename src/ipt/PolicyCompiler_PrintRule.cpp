@@ -729,13 +729,31 @@ string PolicyCompiler_ipt::PrintRule::_printIP(IPService *srv)
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     std::ostringstream  str;
-    if (IPService::isA(srv) )
+    IPService *ip;
+    if ((ip=IPService::cast(srv))!=NULL)
     {
 	if (srv->getBool("fragm") || srv->getBool("short_fragm"))
         {
             if (ipt_comp->ipv6) str << " -m frag --fragmore";
             else str << " -f ";
         }
+
+        string tos = ip->getTOSCode();
+        string dscp = ip->getDSCPCode();
+        if (!tos.empty())
+            str << " -m tos --tos " << tos;
+        else
+            if (!dscp.empty())
+            {
+                if (dscp.find("BE")==0 || 
+                    dscp.find("EF")==0 || 
+                    dscp.find("AF")==0 || 
+                    dscp.find("CS")==0)
+                    str << " -m dscp --dscp-class " << dscp;
+                else
+                    str << " -m dscp --dscp " << dscp;
+            }
+        
 
         if (!ipt_comp->ipv6)
         {

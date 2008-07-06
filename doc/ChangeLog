@@ -1,9 +1,11 @@
 2008-07-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_printIP): Support for
+	TOS and DSCP matching in compiler for iptables.
+
 	* IPServiceDialog.cpp (IPServiceDialog::loadFWObject): Added
-	support for attriutes "tos" and "dscp" in IPService object. No
-	support in compilers just yet. FR #1948944: "support for TOS
-	matching".
+	support for attriutes "tos" and "dscp" in IPService object. FR
+	#1948944: "support for TOS matching".
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printModules):
 	Implemented support for combinations of srcip, dstip, srcport,
