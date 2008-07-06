@@ -2,9 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2003 NetCitadel, LLC
+                 Copyright (C) 2008 NetCitadel, LLC
 
-  Author:  Illiya Yalovoy <yalovoy@gmail.com>
+  Author:  alek@codeminders.com
 
   $Id$
 
@@ -23,8 +23,6 @@
 
 */
 
-
-
 #ifndef  INSTALLFIREWALLVIEWITEM_H
 #define  INSTALLFIREWALLVIEWITEM_H
 
@@ -40,7 +38,8 @@ namespace libfwbuilder {
 class InstallFirewallViewItem : public QTreeWidgetItem
 {
 public:
-    InstallFirewallViewItem(QTreeWidget * parent, const QString & text, bool slt );
+    InstallFirewallViewItem(QTreeWidget * parent,
+                            const QString & text, bool slt );
     
     bool showLastTimes;
     QVariant data (int column, int role) const;

@@ -22,11 +22,7 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-#include "fwbuilder_ph.h"
-
-#include "stdio.h"
-
-#include "config.h"
+#include "../../config.h"
 #include "global.h"
 #include "platforms.h"
 

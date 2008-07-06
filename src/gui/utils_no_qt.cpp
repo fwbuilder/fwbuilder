@@ -24,7 +24,6 @@
 */
 
 //#include "config.h" <- TAPIR: wasn't commented
-#include "fwbuilder_ph.h"
 
 #include "global.h"
 #include "utils_no_qt.h"

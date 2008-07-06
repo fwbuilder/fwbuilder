@@ -23,8 +23,6 @@
 
 */
 
-#include "fwbuilder_ph.h"
-
 #include "AskLibForCopyDialog.h"
 #include "FWBSettings.h"
 

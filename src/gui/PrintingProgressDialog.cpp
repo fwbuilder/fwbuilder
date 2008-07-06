@@ -24,8 +24,6 @@
 */
 
 
-#include "fwbuilder_ph.h"
-
 #include "PrintingProgressDialog.h"
 
 #include <qstring.h>

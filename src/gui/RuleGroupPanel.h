@@ -2,9 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2004 NetCitadel, LLC
+                 Copyright (C) 2008 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@fwbuilder.org
+  Author:  alek@codeminders.com
 
   $Id$
 
@@ -22,6 +22,7 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+
 #include <ui_rulegrouppanel.h>
 #include <qframe.h>
 
@@ -36,8 +37,10 @@ public:
     int row  ;
     RuleSetView * rsv ;
     RuleGroupPanel (QWidget * parent,RuleSetView * rsv, int row) ;
+
 public slots:
     void showHideRuleGroup();
+
 public:
     virtual void mousePressEvent ( QMouseEvent * event );
     virtual void mouseDoubleClickEvent ( QMouseEvent * event) ;

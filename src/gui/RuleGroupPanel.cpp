@@ -2,9 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2003 NetCitadel, LLC
+                 Copyright (C) 2008 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@fwbuilder.org
+  Author:  alek@codeminders.com
 
   $Id$
 
@@ -25,14 +25,17 @@
 
 #include "RuleGroupPanel.h"
 #include "RuleSetView.h"
-RuleGroupPanel::RuleGroupPanel (QWidget * parent,RuleSetView * rsv, int row) : QFrame(parent)
+
+RuleGroupPanel::RuleGroupPanel(QWidget * parent,
+                               RuleSetView * rsv, int row) : QFrame(parent)
 {
     this->row= row;
     this->rsv = rsv;
     this->setupUi(this);
     setContentsMargins (3,3,3,3);
     showHideRuleGroupButton->hide();
-    connect (showHideRuleGroupButton, SIGNAL(pressed()),this,SLOT(showHideRuleGroup()));
+    connect(showHideRuleGroupButton, SIGNAL(pressed()),
+            this,SLOT(showHideRuleGroup()));
 }
 
 void RuleGroupPanel::mousePressEvent ( QMouseEvent * event )

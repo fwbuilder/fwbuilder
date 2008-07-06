@@ -80,7 +80,6 @@ HEADERS += ../../config.h \
 	ObjectIconViewItem.h \
 	TimeDialog.h \
 	RuleSetView.h \
-	inplaceComboBox.h \
 	iptAdvancedDialog.h \
 	ipfAdvancedDialog.h \
 	ipfwAdvancedDialog.h \
@@ -124,7 +123,6 @@ HEADERS += ../../config.h \
 	FakeWizard.h \
 	AskLibForCopyDialog.h \
 	FWBAboutDialog.h \
-	fwbuilder_ph.h \
 	RuleGroupPanel.h \
 	RuleRowInfo.h
 
@@ -189,7 +187,6 @@ SOURCES += ProjectPanel.cpp \
 	TimeDialog.cpp \
 	RuleSetDialog.cpp \
 	RuleSetView.cpp \
-	inplaceComboBox.cpp \
 	iptAdvancedDialog.cpp \
 	ipfAdvancedDialog.cpp \
 	ipfwAdvancedDialog.cpp \

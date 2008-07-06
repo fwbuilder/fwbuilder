@@ -23,12 +23,11 @@
 
 */
 
-#include "fwbuilder_ph.h"
-
-#include "SimpleTextView.h"
-#include "config.h"
+#include "../../config.h"
 #include "global.h"
 #include "utils.h"
+
+#include "SimpleTextView.h"
 
 #include <qvariant.h>
 #include <qframe.h>

@@ -4,7 +4,7 @@
 
                  Copyright (C) 2008 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@fwbuilder.org
+  Author:  alek@codeminders.com
 
   $Id$
 
@@ -22,8 +22,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-
-#include "fwbuilder_ph.h"
 
 #include "config.h"
 #include "global.h"
@@ -53,7 +51,9 @@
 using namespace std;
 using namespace libfwbuilder;
 
-RuleSetDialog::RuleSetDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+RuleSetDialog::RuleSetDialog(ProjectPanel *project,
+                             QWidget *parent) : QWidget(parent),
+                                                m_project(project)
 {
     m_dialog = new Ui::RuleSetDialog_q;
     m_dialog->setupUi(this);
@@ -73,36 +73,8 @@ void RuleSetDialog::loadFWObject(FWObject *o)
 
     init=true;
 
-//    fillLibraries(m_dialog->libs,obj);
-
-//    Management *mgmt=s->getManagementObject();
-//    assert(mgmt!=NULL);
-
-//    FWOptions  *opt =s->getOptionsObject();
-
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
-//    snmpCommunity->setText( mgmt->getSNMPManagement()->getReadCommunity().c_str() );
-//    m_dialog->MACmatching->setChecked( opt->getBool("use_mac_addr_filter") );
-
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
-
-    //apply->setEnabled( false );
-
-//    m_dialog->obj_name->setEnabled(!o->isReadOnly());
-//    setDisabledPalette(m_dialog->obj_name);
-
-//    m_dialog->libs->setEnabled(!o->isReadOnly());
-//    setDisabledPalette(m_dialog->libs);
-
-//    snmpCommunity->setEnabled(!o->isReadOnly());
-//    setDisabledPalette(snmpCommunity);
-
-//    m_dialog->MACmatching->setEnabled(!o->isReadOnly());
-//    setDisabledPalette(m_dialog->MACmatching);
-
-//    m_dialog->comment->setReadOnly(o->isReadOnly());
-//    setDisabledPalette(m_dialog->comment);
-
 
     init=false;
 }
@@ -133,7 +105,6 @@ void RuleSetDialog::validate(bool *res)
 
 void RuleSetDialog::isChanged(bool *)
 {
-    //*res=(!init && apply->isEnabled());
 }
 
 void RuleSetDialog::libChanged()
@@ -146,11 +117,6 @@ void RuleSetDialog::applyChanges()
     RuleSet *s = dynamic_cast<RuleSet*>(obj);
     assert(s!=NULL);
 
-//    Management *mgmt=s->getManagementObject();
-//    assert(mgmt!=NULL);
-
-//    FWOptions  *opt =s->getOptionsObject();
-
     string oldname=obj->getName();
     obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
@@ -159,14 +125,8 @@ void RuleSetDialog::applyChanges()
 
     init=true;
 
-/* move to another lib if we have to */
-//    if (! m_project->isSystem(obj) &&
-//	m_dialog->libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-//        mw->moveObject(m_dialog->libs->currentText(), obj);
-
     init=false;
 
-    //apply->setEnabled( false );
     mw->updateLastModifiedTimestampForAllFirewalls(obj);
 }
 
