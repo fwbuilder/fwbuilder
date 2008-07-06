@@ -21,8 +21,6 @@
 
 #if defined __cplusplus
 
-#include "../../config.h"
-#include "VERSION.h"
 #include "definitions.h"
 #include "global.h"
 #include "utils.h"

@@ -13,6 +13,12 @@ exists(qmake.inc){
     include( qmake.inc)
 }
 
+# This makes gcc compile this header file and store result in
+# .obj/fwbuilder.gch/c++. Generated Makefile will also add
+# "-include .obj/fwbuilder " to the command line for the compiler
+# for every module. There is no need to #include file fwbuilder_ph.h
+# in each module since it will be included by means of -include option.
+#
 PRECOMPILED_HEADER = fwbuilder_ph.h
 
 # control whether we build debug or release in ../../qmake.inc
