@@ -23,8 +23,6 @@
 
 */
 
-#include "fwbuilder_ph.h"
-
 #include "inplaceComboBox.h"
 
 #include <qvariant.h>
