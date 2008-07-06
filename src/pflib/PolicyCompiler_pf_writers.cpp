@@ -30,6 +30,7 @@
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
+#include "fwbuilder/ICMP6Service.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/CustomService.h"
@@ -543,7 +544,10 @@ void PolicyCompiler_pf::PrintRule::_printDstService(RuleElementSrv  *rel)
                 if (ICMPService::isA(srv)) 
                     compiler->output << "icmp-type " << str << " ";
                 else
-                    compiler->output << str << " ";
+                    if (ICMP6Service::isA(srv)) 
+                        compiler->output << "icmp6-type " << str << " ";
+                    else
+                        compiler->output << str << " ";
             }
 	}
 	if (TCPService::isA(srv)) 
@@ -551,9 +555,17 @@ void PolicyCompiler_pf::PrintRule::_printDstService(RuleElementSrv  *rel)
 	    str=_printTCPFlags(TCPService::cast(srv));
 	    if (!str.empty()) compiler->output << "flags " << str << " ";
 	}
-        if (IPService::isA(srv) &&
-            (srv->getBool("fragm") || srv->getBool("short_fragm")) )
+        if (IPService::isA(srv))
+        {
+            if (srv->getBool("fragm") || srv->getBool("short_fragm"))
                 compiler->output << " fragment ";
+            const IPService *ip = IPService::constcast(srv);
+            string tos = ip->getTOSCode();
+            string dscp = ip->getDSCPCode();
+            if (!tos.empty()) compiler->output << " tos " << tos;
+            if (!dscp.empty())
+                compiler->abort("PF does not support DSCP matching");
+        }
     } else 
     {
 	string str;
@@ -577,7 +589,10 @@ void PolicyCompiler_pf::PrintRule::_printDstService(RuleElementSrv  *rel)
                     compiler->output << "icmp-type { " << str << " } ";
                 else
                 {
-                    compiler->output << str << " " << endl;
+                    if (ICMP6Service::isA(srv)) 
+                        compiler->output << "icmp6-type { " << str << " } ";
+                    else
+                        compiler->output << str << " " << endl;
                 }
             }
 	}

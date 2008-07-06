@@ -34,6 +34,7 @@
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
+#include "fwbuilder/TagService.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Firewall.h"
@@ -875,53 +876,6 @@ bool PolicyCompiler_pf::splitIfInterfaceInRE::processNext()
     return true;
 }
 
-bool PolicyCompiler_pf::separateSrcPort::processNext()
-{
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-
-    RuleElementSrv *rel= rule->getSrv();
-
-    if (rel->size()==1) {
-	tmp_queue.push_back(rule);
-	return true;
-    }
-
-    list<Service*> services;
-    for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) {
-	    
-	FWObject *o= *i;
-	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-	Service *s=Service::cast(o);
-	assert(s!=NULL);
-
-	if ( TCPService::isA(s) || UDPService::isA(s) ) {
-            int srs=TCPUDPService::cast(s)->getSrcRangeStart();
-            int sre=TCPUDPService::cast(s)->getSrcRangeEnd();
-
-            compiler->normalizePortRange(srs,sre);
-
-            if (srs!=0 || sre!=0) {
-                PolicyRule *r= PolicyRule::cast(
-                    compiler->dbcopy->create(PolicyRule::TYPENAME) );
-                compiler->temp_ruleset->add(r);
-                r->duplicate(rule);
-                RuleElementSrv *nsrv=r->getSrv();
-                nsrv->clearChildren();
-                nsrv->addRef( s );
-                tmp_queue.push_back(r);
-                services.push_back(s);
-            } 
-        }
-    }
-    for (list<Service*>::iterator i=services.begin(); i!=services.end(); i++) 
-	rel->removeRef( (*i) );
-
-    if (!rel->isAny())
-	tmp_queue.push_back(rule);
-
-    return true;
-}
-
 bool PolicyCompiler_pf::createTables::processNext()
 {
     PolicyCompiler_pf *pf_comp=dynamic_cast<PolicyCompiler_pf*>(compiler);
@@ -956,6 +910,83 @@ bool PolicyCompiler_pf::printScrubRule::processNext()
 
     tmp_queue.push_back(rule);
     return true;
+}
+
+
+
+
+
+
+PolicyCompiler_pf::separateServiceObject::separateServiceObject(
+    const string &name) : PolicyRuleProcessor(name)
+{
+}
+
+bool PolicyCompiler_pf::separateServiceObject::processNext()
+{
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+
+    RuleElementSrv *rel= rule->getSrv();
+
+    if (rel->size()==1) {
+	tmp_queue.push_back(rule);
+	return true;
+    }
+
+    list<Service*> services;
+    for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++)
+    {
+	FWObject *o= *i;
+	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+	Service *s=Service::cast(o);
+	assert(s!=NULL);
+
+	if (condition(s))
+        {
+            PolicyRule *r= PolicyRule::cast(
+                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            compiler->temp_ruleset->add(r);
+            r->duplicate(rule);
+            RuleElementSrv *nsrv=r->getSrv();
+            nsrv->clearChildren();
+            nsrv->addRef( s );
+            tmp_queue.push_back(r);
+            services.push_back(s);
+        }
+    }
+    for (list<Service*>::iterator i=services.begin(); i!=services.end(); i++) 
+	rel->removeRef( (*i) );
+
+    if (!rel->isAny())
+	tmp_queue.push_back(rule);
+
+    return true;
+}
+
+
+bool PolicyCompiler_pf::separateSrcPort::condition(const Service *srv)
+{
+    if ( TCPService::isA(srv) || UDPService::isA(srv) )
+    {
+        int srs = TCPUDPService::constcast(srv)->getSrcRangeStart();
+        int sre = TCPUDPService::constcast(srv)->getSrcRangeEnd();
+
+        compiler->normalizePortRange(srs,sre);
+
+        return (srs!=0 || sre!=0);
+    }
+    return false;
+}
+
+bool PolicyCompiler_pf::separateTagged::condition(const Service *srv)
+{
+    return ( TagService::isA(srv));
+}
+
+bool PolicyCompiler_pf::separateTOS::condition(const Service *srv)
+{
+    const IPService *ip = IPService::constcast(srv);
+    return (ip && !ip->getTOSCode().empty());
 }
 
 void PolicyCompiler_pf::compile()
@@ -1066,10 +1097,10 @@ void PolicyCompiler_pf::compile()
         add( new InterfacePolicyRules(
                  "process interface policy rules and store interface ids") );
 
-	add( new splitIfFirewallInSrc(  "split rule if firewall is in Src"   ));
-	add( new splitIfFirewallInDst(  "split rule if firewall is in Dst"   ));
-	add( new fillDirection(         "determine directions"               ));
-	add( new SplitDirection(        "split rules with direction 'both'"  ));
+	add( new splitIfFirewallInSrc("split rule if firewall is in Src"   ));
+	add( new splitIfFirewallInDst("split rule if firewall is in Dst"   ));
+	add( new fillDirection("determine directions"               ));
+	add( new SplitDirection("split rules with direction 'both'"  ));
         add( new addLoopbackForRedirect(
                  "add loopback to rules that permit redirected services" ) );
 	add( new ExpandMultipleAddresses(
@@ -1077,12 +1108,15 @@ void PolicyCompiler_pf::compile()
         add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
         add( new checkForDynamicInterfacesOfOtherObjects(
                  "check for dynamic interfaces of other hosts and firewalls" ));
-        add( new MACFiltering(          "verify for MAC address filtering"   ));
-        add( new checkForUnnumbered(    "check for unnumbered interfaces"    ));
-	add( new addressRanges(         "expand address range objects"       ));
-	add( new splitServices(       "split rules with different protocols"));
+        add( new MACFiltering("verify for MAC address filtering"   ));
+        add( new checkForUnnumbered("check for unnumbered interfaces"    ));
+	add( new addressRanges("expand address range objects"       ));
+	add( new splitServices("split rules with different protocols"));
 	add( new separateTCPWithFlags("separate TCP services with flags"    ));
         add( new separateSrcPort("split on TCP and UDP with source ports"));
+        add( new separateTagged("split on TagService"));
+        add( new separateTOS("split on IPService with TOS"));
+
 	add( new verifyCustomServices(
                  "verify custom services for this platform"));
 //	add( new ProcessScrubOption(    "process 'scrub' option"         ));

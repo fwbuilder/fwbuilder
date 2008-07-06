@@ -1,5 +1,8 @@
 2008-07-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_pf_writers.cpp (PrintRule::_printDstService):
+	Support for tos matching in compiler for pf.
+
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printIP): Support for
 	TOS and DSCP matching in compiler for iptables.
 

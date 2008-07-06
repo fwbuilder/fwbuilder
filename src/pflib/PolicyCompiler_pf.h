@@ -354,12 +354,55 @@ namespace fwcompiler {
                 eliminateDuplicatesInRE(n,libfwbuilder::RuleElementSrv::TYPENAME) {}
         };
 
+        /**
+	 * separate service object that satisfies condition
+	 * implemented in the virtual method "condition" so we have
+	 * exactly one such object per rule.
+	 */
+        class separateServiceObject : public PolicyRuleProcessor
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv) =0;
+            public:
+            separateServiceObject(const std::string &name);
+            virtual bool processNext();
+        };
+
 	/**
 	 * separate TCP/UDP services that specify source port (can
 	 * not be used in combination with destination port with
 	 * multiport)
 	 */
-        DECLARE_POLICY_RULE_PROCESSOR(separateSrcPort);
+        class separateSrcPort : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separateSrcPort(const std::string &name) : separateServiceObject(name) {}
+        };
+        
+        /**
+	 * separate Tag services so we have exactly one per rule.
+	 */
+        class separateTagged : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separateTagged(const std::string &name) : separateServiceObject(name) {}
+        };
+
+        /**
+	 * separate IPService objects with tos attrubute so we have
+	 * exactly one per rule.
+	 */
+        class separateTOS : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separateTOS(const std::string &name) : separateServiceObject(name) {}
+        };
 
 
         class printScrubRule : public PolicyRuleProcessor
