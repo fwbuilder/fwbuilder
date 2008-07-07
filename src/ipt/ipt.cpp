@@ -151,7 +151,7 @@ void assignRuleSetChain(RuleSet *ruleset)
 
         //rule->setStr("parent_rule_num", parentRuleNum);
 
-        if (!Compiler::isRootRuleSet(ruleset))
+        if (!ruleset->isTop())
             rule->setStr("ipt_chain", branch_name);
         rule->setUniqueId( FWObjectDatabase::getStringId(rule->getId()) );
     }
@@ -644,7 +644,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                         n_str << n.getErrors("# ");
                     }
 
-                    if (Compiler::isRootRuleSet(nat))
+                    if (nat->isTop())
                         n_str << n.flushAndSetDefaultPolicy();
 
                     n_str << n.getCompiledScript();
@@ -666,7 +666,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 MangleTableCompiler_ipt m(
                     objdb , fwobjectname, ipv6_policy , oscnf );
 
-                if (!Compiler::isRootRuleSet(policy))
+                if (!policy->isTop())
                     m.registerRuleSetChain(branch_name);
 
                 m.setSourceRuleSet( policy );
@@ -683,7 +683,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     m.compile();
                     m.epilog();
                     
-                    if (Compiler::isRootRuleSet(policy))
+                    if (policy->isTop())
                     {
                         m_str << "# ================ Table 'mangle', "
                               << "automatic rules"
@@ -712,7 +712,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
                 PolicyCompiler_ipt c(objdb, fwobjectname, ipv6_policy, oscnf);
 
-                if (!Compiler::isRootRuleSet(policy))
+                if (!policy->isTop())
                     c.registerRuleSetChain(branch_name);
 
                 c.setSourceRuleSet( policy );
@@ -746,7 +746,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     }
                 }
 
-                if (Compiler::isRootRuleSet(policy))
+                if (policy->isTop())
                 {
                     reset_rules
                         << "# ================ Table 'filter', automatic rules"

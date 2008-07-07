@@ -253,7 +253,7 @@ bool PolicyCompiler_cisco::pickACL::processNext()
      */
     string acl_name = rule_iface->getLabel();
     if (acl_name.empty()) acl_name = rule_iface->getName();
-    acl_name = cisco_comp->mangleInterfaceName(acl_name) + "_acl";
+    acl_name = cisco_comp->mangleInterfaceName(acl_name);
     string dir = "in";
     if (rule->getDirection() == PolicyRule::Inbound)
     {
@@ -263,6 +263,10 @@ bool PolicyCompiler_cisco::pickACL::processNext()
     {
         acl_name += "_out"; dir="out";
     }
+
+    // if this is not the "main" rule set, use its name for the acl name
+    if (!compiler->getSourceRuleSet()->isTop())
+        acl_name = compiler->getSourceRuleSet()->getName() + "_" + acl_name;
 
     if (cisco_comp->ipv6) acl_name = "ipv6_" + acl_name;
 

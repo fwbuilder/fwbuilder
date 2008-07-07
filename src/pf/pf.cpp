@@ -714,7 +714,7 @@ int main(int argc, char * const *argv)
                 if (nat->isV6()!=ipv6_policy) continue;
 
                 string ruleset_name = nat->getName();
-                if (Compiler::isRootRuleSet(nat))
+                if (nat->isTop())
                     ruleset_name = "__main__";
 
                 if (!table_factories.count(ruleset_name))
@@ -739,7 +739,7 @@ int main(int argc, char * const *argv)
                 }
                 have_nat = (have_nat || (nat_rules_count > 0));
 
-                if (Compiler::isRootRuleSet(nat))
+                if (nat->isTop())
                 {
                     generated_scripts[ruleset_name] = main_str;
                 } else
@@ -777,7 +777,7 @@ int main(int argc, char * const *argv)
                 if (policy->isV6()!=ipv6_policy) continue;
 
                 string ruleset_name = policy->getName();
-                if (Compiler::isRootRuleSet(policy))
+                if (policy->isTop())
                     ruleset_name = "__main__";
 
                 if (!table_factories.count(ruleset_name))
@@ -803,7 +803,7 @@ int main(int argc, char * const *argv)
                 }
                 have_pf = (have_pf || (pf_rules_count > 0));
 
-                if (Compiler::isRootRuleSet(policy))
+                if (policy->isTop())
                 {
                     generated_scripts[ruleset_name] = main_str;
                 } else

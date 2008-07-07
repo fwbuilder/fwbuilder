@@ -84,7 +84,7 @@ int PolicyCompiler_pf::prolog()
     if (tables)
     {
         tables->init(dbcopy);
-        if (!isRootRuleSet(getSourceRuleSet()))
+        if (!getSourceRuleSet()->isTop())
             tables->setRuleSetName(getRuleSetName());
     }
 
@@ -359,7 +359,7 @@ bool PolicyCompiler_pf::fillDirection::processNext()
 
 	    Address  *src = compiler->getFirstSrc(rule);
 	    Address  *dst = compiler->getFirstDst(rule);
-	    int fwid = compiler->getFwId();
+	    //int fwid = compiler->getFwId();
 
             if (src==NULL || dst==NULL)
                 compiler->abort("Broken src or dst in rule "+rule->getLabel());
@@ -383,7 +383,7 @@ bool PolicyCompiler_pf::fillDirection::processNext()
  */
 void PolicyCompiler_pf::addDefaultPolicyRule()
 {
-    if (isRootRuleSet(getSourceRuleSet()))
+    if (getSourceRuleSet()->isTop())
     {
         if ( getCachedFwOpt()->getBool("mgmt_ssh") &&
              !getCachedFwOpt()->getStr("mgmt_addr").empty() )

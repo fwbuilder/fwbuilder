@@ -248,7 +248,7 @@ bool PolicyCompiler_iosacl::SpecialServices::processNext()
 void PolicyCompiler_iosacl::compile()
 {
     cout << endl;
-    cout << " Compiling ruleset " << getRuleSetName();
+    cout << " Compiling ruleset " << getSourceRuleSet()->getName();
     if (ipv6) cout << ", IPv6";
     cout <<  endl << flush;
 
@@ -399,13 +399,21 @@ void PolicyCompiler_iosacl::compile()
 string PolicyCompiler_iosacl::printAccessGroupCmd(ciscoACL *acl)
 {
     ostringstream str;
-    string dir;
-    if (acl->direction()=="in"  || acl->direction()=="Inbound")  dir="in";
-    if (acl->direction()=="out" || acl->direction()=="Outbound") dir="out";
 
-    str << "interface " << acl->getInterface()->getName() << endl;
-    str << "  ip access-group " << acl->workName() << " " << dir << endl;
-    str << "exit" << endl;
+    string addr_family_prefix = "ip";
+    if (ipv6) addr_family_prefix = "ipv6";
+
+    if (getSourceRuleSet()->isTop())
+    {
+        string dir;
+        if (acl->direction()=="in"  || acl->direction()=="Inbound")  dir="in";
+        if (acl->direction()=="out" || acl->direction()=="Outbound") dir="out";
+
+        str << "interface " << acl->getInterface()->getName() << endl;
+        str << "  " << addr_family_prefix
+            << " access-group " << acl->workName() << " " << dir << endl;
+        str << "exit" << endl;
+    }
     return str.str();
 }
 

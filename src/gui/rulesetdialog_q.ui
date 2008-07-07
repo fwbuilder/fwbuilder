@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>660</width>
-    <height>209</height>
+    <width>679</width>
+    <height>289</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -190,7 +190,21 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="1" >
+           <item row="3" column="0" colspan="2" >
+            <widget class="Line" name="line" >
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0" colspan="2" >
+            <widget class="QCheckBox" name="top_rule_set" >
+             <property name="text" >
+              <string>Top ruleset</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1" >
             <spacer>
              <property name="orientation" >
               <enum>Qt::Vertical</enum>
@@ -201,7 +215,7 @@
              <property name="sizeHint" >
               <size>
                <width>127</width>
-               <height>21</height>
+               <height>20</height>
               </size>
              </property>
             </spacer>
@@ -303,6 +317,22 @@
     <hint type="destinationlabel" >
      <x>329</x>
      <y>104</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>top_rule_set</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>RuleSetDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>110</x>
+     <y>187</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>339</x>
+     <y>144</y>
     </hint>
    </hints>
   </connection>

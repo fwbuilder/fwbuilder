@@ -606,7 +606,10 @@ bool PolicyCompiler_pix::CreateObjectGroups::processNext()
 
 void PolicyCompiler_pix::compile()
 {
-    cout << " Compiling policy for " << fw->getName() << " ..." <<  endl << flush;
+    cout << endl;
+    cout << " Compiling ruleset " << getSourceRuleSet()->getName();
+    if (ipv6) cout << ", IPv6";
+    cout <<  endl << flush;
 
     try 
     {
@@ -810,12 +813,16 @@ void PolicyCompiler_pix::compile()
 
 string PolicyCompiler_pix::printAccessGroupCmd(ciscoACL *acl)
 {
-    string dir;
-    if (acl->direction()=="in" || acl->direction()=="Inbound") dir="in";
-    if (acl->direction()=="out" || acl->direction()=="Outbound") dir="out";
-    return string("access-group ") + acl->workName() +
-        " " + dir + 
-        " interface " + acl->getInterface()->getLabel() + "\n";
+    if (getSourceRuleSet()->isTop())
+    {
+        string dir;
+        if (acl->direction()=="in" || acl->direction()=="Inbound") dir="in";
+        if (acl->direction()=="out" || acl->direction()=="Outbound") dir="out";
+        return string("access-group ") + acl->workName() +
+            " " + dir + 
+            " interface " + acl->getInterface()->getLabel() + "\n";
+    }
+    return "";
 }
 
 void PolicyCompiler_pix::epilog()

@@ -105,7 +105,7 @@ int NATCompiler_pf::prolog()
     if (tables)
     {
         tables->init(dbcopy);
-        if (!isRootRuleSet(getSourceRuleSet()))
+        if (!getSourceRuleSet()->isTop())
             tables->setRuleSetName(getRuleSetName());
     }
 

@@ -57,7 +57,7 @@ RuleSetDialog::RuleSetDialog(ProjectPanel *project,
 {
     m_dialog = new Ui::RuleSetDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj = NULL;
 }
 
 RuleSetDialog::~RuleSetDialog()
@@ -67,7 +67,7 @@ RuleSetDialog::~RuleSetDialog()
 
 void RuleSetDialog::loadFWObject(FWObject *o)
 {
-    obj=o;
+    obj = o;
     RuleSet *s = dynamic_cast<RuleSet*>(obj);
     assert(s!=NULL);
 
@@ -77,6 +77,47 @@ void RuleSetDialog::loadFWObject(FWObject *o)
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
     m_dialog->ipv4_rule_set->setChecked(!s->isV6());
     m_dialog->ipv6_rule_set->setChecked(s->isV6());
+    m_dialog->top_rule_set->setChecked(s->isTop());
+
+    string platform = "";
+    FWObject *fw = o;
+    while (fw && fw->getTypeName()!="Firewall") fw = fw->getParent();
+    if (fw) platform = fw->getStr("platform");
+
+    if (platform == "iptables")
+        m_dialog->top_rule_set->setToolTip(
+            QApplication::translate("RuleSetDialog_q",
+                                    "On iptables \"top\" rule set goes into \n"
+                                    "the built-in chains INPUT, OUTPUT,\n"
+                                    "FORWARD; if this flag is unchecked,\n"
+                                    "rules go into user-defined chain \n"
+                                    "with the name the same as the name of \n"
+                                    "the rule set.",
+                                    0, QApplication::UnicodeUTF8));
+
+    if (platform == "pf")
+        m_dialog->top_rule_set->setToolTip(
+            QApplication::translate("RuleSetDialog_q",
+                                    "If this flag is unchecked, rules go \n"
+                                    "into anchor with the name the same as\n"
+                                    "the name of the rule set.",
+                                    0, QApplication::UnicodeUTF8));
+
+    if (platform == "iosacl" || platform == "pix" || platform=="fwsm")
+        m_dialog->top_rule_set->setToolTip(
+            QApplication::translate("RuleSetDialog_q",
+                                    "If this flag is unchecked, generated\n"
+                                    "access list will not be assigned to\n"
+                                    "interfaces with \"ip access-group\"\n"
+                                    "command. The name of the rule set will\n"
+                                    "be used as a prefix for names of\n"
+                                    "access access lists generated for it.",
+                                    0, QApplication::UnicodeUTF8));
+
+    if (platform == "ipf" || platform == "ipfw")
+        m_dialog->top_rule_set->hide();
+    else
+        m_dialog->top_rule_set->show();
 
     init=false;
 }
@@ -121,8 +162,10 @@ void RuleSetDialog::applyChanges()
 
     string oldname=obj->getName();
     obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    obj->setComment(
+        string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     s->setV6(m_dialog->ipv6_rule_set->isChecked());
+    s->setTop(m_dialog->top_rule_set->isChecked());
 
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
