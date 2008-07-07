@@ -172,8 +172,8 @@ public:
     void setId(int i);
     bool haveId() { return (id != -1); }
 
-    virtual void       fromXML    (xmlNodePtr xml_parent_node) throw(FWException);
-    virtual xmlNodePtr toXML      (xmlNodePtr xml_parent_node) throw(FWException);
+    virtual void fromXML(xmlNodePtr xml_parent_node) throw(FWException);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
     xmlNodePtr toXML(xmlNodePtr xml_parent_node, bool process_children) throw(FWException);
 
     /**

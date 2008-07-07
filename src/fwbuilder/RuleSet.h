@@ -38,7 +38,9 @@ namespace libfwbuilder
 class RuleSet : public FWObject  
 {
     private:
-    
+
+    bool ipv6;
+
     protected:
     
     void   renumberRules();
@@ -50,6 +52,16 @@ class RuleSet : public FWObject
     virtual ~RuleSet();
     
     DECLARE_FWOBJECT_SUBTYPE(RuleSet);
+
+    virtual void fromXML(xmlNodePtr parent) throw(FWException);
+    virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
+
+    virtual FWObject& shallowDuplicate(const FWObject *obj,
+                                       bool preserve_id = true)
+        throw(FWException);
+    
+    bool isV6() const { return ipv6; }
+    void setV6(bool f) { ipv6=f; }
     
     Rule* getRuleByNum(int n);
     

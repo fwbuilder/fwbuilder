@@ -72,7 +72,7 @@ public:
 
 
         virtual void fromXML(xmlNodePtr parent) throw(FWException);
-        virtual xmlNodePtr toXML      (xmlNodePtr parent) throw(FWException);
+        virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 
         virtual bool  validateChild(FWObject *o);
 

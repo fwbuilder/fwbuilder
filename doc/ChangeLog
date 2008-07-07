@@ -1,3 +1,11 @@
+2008-07-06  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RuleSet.cpp (RuleSet::fromXML): added support for attribute
+	ipv6_rule_set in class RuleSet
+
+	* fwbuilder.dtd.in: Added attribute "ipv6_rule_set" to elements
+	Policy, NAT and Routing
+
 2008-07-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Compiler_ops.cpp (fwcompiler::checkForShadowing): taking into

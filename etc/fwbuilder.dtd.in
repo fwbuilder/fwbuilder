@@ -510,16 +510,19 @@ Interface can have the following attributes:
 <!ELEMENT NAT (NATRule*)>
 <!ATTLIST NAT
  %STD_ATTRIBUTES;
+ ipv6_rule_set       %BOOLEAN; #IMPLIED
 >
 
 <!ELEMENT Policy (PolicyRule*)>
 <!ATTLIST Policy
  %STD_ATTRIBUTES;
+ ipv6_rule_set       %BOOLEAN; #IMPLIED
 >
 
 <!ELEMENT Routing (RoutingRule*)>
 <!ATTLIST Routing
  %STD_ATTRIBUTES;
+ ipv6_rule_set       %BOOLEAN; #IMPLIED
 >
 
 

@@ -32,6 +32,8 @@
 #include <fwbuilder/FWOptions.h>
 #include <fwbuilder/XMLTools.h>
 
+#include <iostream>
+
 using namespace std;
 using namespace libfwbuilder;
  
@@ -45,9 +47,55 @@ RuleSet::RuleSet()
 RuleSet::RuleSet(const FWObject*,bool)
 {
     setName("RuleSet");
+    ipv6 = false;
 }
 
 RuleSet::~RuleSet() {}
+
+void RuleSet::fromXML(xmlNodePtr root) throw(FWException)
+{
+    FWObject::fromXML(root);
+
+    const char *n;
+
+    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("ipv6_rule_set")));
+    if (n!=NULL)
+    {
+        ipv6 = (string(n)=="True" || string(n)=="true");
+        FREEXMLBUFF(n);
+    }
+}
+
+xmlNodePtr RuleSet::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+    string ipv6_s = (ipv6)?"True":"False";
+    xmlNewProp(me, 
+               TOXMLCAST("ipv6_rule_set"),
+               STRTOXMLCAST(ipv6_s));
+
+    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
+    {
+        (*j)->toXML(me);
+    }
+    return me;
+}
+
+FWObject& RuleSet::shallowDuplicate(const FWObject *o, bool preserve_id)
+    throw(FWException)
+{
+    const RuleSet *other = RuleSet::constcast(o);
+
+    FWObject::shallowDuplicate(o,preserve_id);
+
+    ipv6 = other->ipv6;
+
+    return *this;
+}
+
+
+
+
 
 Rule* RuleSet::insertRuleAtTop() 
 {
