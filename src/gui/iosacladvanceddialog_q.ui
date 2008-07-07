@@ -118,7 +118,7 @@
    <item row="0" column="0" >
     <widget class="QTabWidget" name="notebook304" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="TabPage" >
       <attribute name="title" >
@@ -1215,13 +1215,6 @@ First, create temporary access list to permit connections from the management su
        <string>IPv6</string>
       </attribute>
       <layout class="QGridLayout" >
-       <item row="0" column="0" >
-        <widget class="QCheckBox" name="ipv6_2" >
-         <property name="text" >
-          <string>Enable IPv6 support</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="0" >
         <widget class="QLabel" name="label_2" >
          <property name="text" >

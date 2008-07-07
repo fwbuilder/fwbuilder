@@ -38,6 +38,7 @@
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
@@ -156,13 +157,19 @@ bool PolicyCompiler_iosacl::PrintCompleteACLs::processNext()
         compiler->output << endl;
     }
 
+    string addr_family_prefix = "ip";
+    if (iosacl_comp->ipv6) addr_family_prefix = "ipv6";
+
     for (map<string,ciscoACL*>::iterator i=iosacl_comp->acls.begin();
          i!=iosacl_comp->acls.end(); ++i) 
     {
         ciscoACL *acl=(*i).second;
-        compiler->output << "ip access-list extended " << acl->workName() << endl;
+        compiler->output << addr_family_prefix
+                         << " access-list extended "
+                         << acl->workName() << endl;
         std::for_each(tmp_queue.begin(), tmp_queue.end(),
-                      printRulesForACL(iosacl_comp, this, acl, &(compiler->output)));
+                      printRulesForACL(iosacl_comp,
+                                       this, acl, &(compiler->output)));
         compiler->output << "exit" << endl;
         compiler->output << endl;
     }
@@ -253,8 +260,7 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
 
     aclstr << _printAction(rule);
 
-    aclstr << Service::cast(srvobj)->getProtocolName();
-    aclstr << " ";
+    aclstr << _printProtocol(Service::cast(srvobj));
     aclstr << _printAddr( compiler->getFirstSrc(rule) );
     aclstr << _printSrcService( compiler->getFirstSrv(rule) );
     aclstr << _printAddr( compiler->getFirstDst(rule) );
@@ -383,8 +389,21 @@ string PolicyCompiler_iosacl::PrintRule::_printDstService(Service *srv)
     return str.str();
 }
 
-string PolicyCompiler_iosacl::PrintRule::_printAddr(libfwbuilder::Address  *o)
+string PolicyCompiler_iosacl::PrintRule::_printProtocol(Service *srv)
 {
+    PolicyCompiler_iosacl *iosacl_comp = dynamic_cast<PolicyCompiler_iosacl*>(
+        compiler);
+    string addr_family_prefix = "ip ";
+    if (iosacl_comp->ipv6) addr_family_prefix = "ipv6 ";
+
+    string proto = srv->getProtocolName();
+    if (proto=="ip") return addr_family_prefix;
+    return proto + " ";
+}
+
+string PolicyCompiler_iosacl::PrintRule::_printAddr(Address  *o)
+{
+    PolicyCompiler_iosacl *iosacl_comp=dynamic_cast<PolicyCompiler_iosacl*>(compiler);
     if (Interface::cast(o)!=NULL)
     {
 	Interface *interface_=Interface::cast(o);
@@ -399,33 +418,35 @@ string PolicyCompiler_iosacl::PrintRule::_printAddr(libfwbuilder::Address  *o)
     const InetAddr *srcaddr = o->getAddressPtr();
     if (srcaddr)
     {
-        InetAddr srcmask = *(o->getNetmaskPtr());
-
-        if (Interface::cast(o)!=NULL)
-            srcmask = InetAddr(InetAddr::getAllOnes());
-
-        if (IPv4::cast(o)!=NULL)
-            srcmask = InetAddr(InetAddr::getAllOnes());
+        const InetAddr srcmask = *(o->getNetmaskPtr());
 
         if (srcaddr->isAny() && srcmask.isAny())
         {
-            str << "any ";
-        } else {
-            if (srcmask.isHostMask())
+            str << "any  ";
+        } else 
+        {
+            if (Interface::cast(o)==NULL &&
+                Interface::cast(o->getParent())==NULL &&
+                !srcmask.isHostMask())
             {
-                str << "host " << srcaddr->toString() << " ";
+                if (iosacl_comp->ipv6)
+                {
+                    str << srcaddr->toString()
+                        << "/"
+                        << srcmask.getLength() << " ";
+                } else
+                {
+                    str << srcaddr->toString() << " ";
+                    // cisco uses "wildcards" instead of netmasks
+                    //long nm = srcmask.to32BitInt();
+                    //struct in_addr na;
+                    //na.s_addr = ~nm;
+                    InetAddr nnm( ~srcmask );
+                    str << nnm.toString() << " ";                    
+                }
             } else
             {
-                str << srcaddr->toString() << " ";
-
-                // cisco uses "wildcards" instead of netmasks
-
-                //long nm = srcmask.to32BitInt();
-                //struct in_addr na;
-                //na.s_addr = ~nm;
-                InetAddr nnm( ~srcmask );
-
-                str << nnm.toString() << " ";
+                str << "host " << srcaddr->toString() << " ";
             }
         }
         return str.str();

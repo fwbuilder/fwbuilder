@@ -33,9 +33,11 @@
 #include <fwbuilder/RuleElement.h>
 #include <fwbuilder/Rule.h>
 #include "fwbuilder/Resources.h"
+#include <fwbuilder/IPv6.h>
 
 #include <assert.h>
 #include <limits.h>
+#include <iostream>
 
 using namespace libfwbuilder;
 using namespace fwcompiler;
@@ -112,7 +114,13 @@ int  Helper::findInterfaceByAddress(const InetAddr *addr)
     for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
     {
 	Interface *iface=Interface::cast(*i);
-	if ( iface->belongs( *addr ) ) return iface->getId();
+        FWObjectTypedChildIterator j =
+            iface->findByType((addr->isV4())?IPv4::TYPENAME:IPv6::TYPENAME);
+        for (; j!=j.end(); ++j)
+        {
+            const Address *i_addr = Address::constcast(*j);
+            if ( i_addr->belongs(*addr) ) return iface->getId();
+        }
     }
     return -1;
 }

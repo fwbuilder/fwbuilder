@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1106</width>
-    <height>719</height>
+    <width>691</width>
+    <height>713</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -82,7 +82,7 @@
    <item row="0" column="0" >
     <widget class="QTabWidget" name="notebook304" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>8</number>
      </property>
      <widget class="QWidget" name="TabPage1" >
       <attribute name="title" >
@@ -4505,16 +4505,9 @@ the packet should go to, and which is the next hop
      </widget>
      <widget class="QWidget" name="tab" >
       <attribute name="title" >
-       <string>Page</string>
+       <string>IPv6</string>
       </attribute>
       <layout class="QGridLayout" >
-       <item row="0" column="0" >
-        <widget class="QCheckBox" name="ipv6_2" >
-         <property name="text" >
-          <string>Enable IPv6 support</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="0" >
         <widget class="QLabel" name="label_2" >
          <property name="text" >

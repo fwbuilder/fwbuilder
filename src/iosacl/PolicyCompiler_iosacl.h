@@ -191,6 +191,7 @@ namespace fwcompiler {
             std::string _printSrcService(libfwbuilder::Service *srv);
             std::string _printDstService(libfwbuilder::Service *srv);
             std::string _printAddr(libfwbuilder::Address  *o);
+            std::string _printProtocol(libfwbuilder::Service *srv);
             std::string _printAction(libfwbuilder::PolicyRule *r);
             std::string _printACL(libfwbuilder::PolicyRule *r);
             std::string _printLog(libfwbuilder::PolicyRule *r);

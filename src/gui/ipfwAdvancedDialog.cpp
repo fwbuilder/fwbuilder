@@ -82,7 +82,6 @@ ipfwAdvancedDialog::ipfwAdvancedDialog(QWidget *parent,FWObject *o)
 
     m_dialog->tabWidget3->setTabEnabled(4,false); //Disable tab
     data.registerOption(m_dialog->ipv4before_2,    fwopt, "ipv4_6_order", QStringList() <<  "IPv4 before IPv6" <<"ipv4_first" << "IPv6 before IPv4" << "ipv6_first"      );
-    data.registerOption(m_dialog->ipv6_2,    fwopt, "enable_ipv6"        );
 
     data.registerOption( m_dialog->ipfw_add_check_state_rule  ,fwopt, "add_check_state_rule");
     data.registerOption( m_dialog->ipfw_check_shadowing       ,fwopt, "check_shading"       );

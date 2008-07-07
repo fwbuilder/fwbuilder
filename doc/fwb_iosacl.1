@@ -10,6 +10,8 @@ fwb_ipt \- Policy compiler for Cisco IOS ACL
 .B fwb_iosacl
 .B [-vV]
 .B [-d wdir]
+.B [-4]
+.B [-6]
 .B -f data_file.xml
 object_name
 
@@ -32,6 +34,20 @@ The data file and the name of the firewall objects must be specified
 on the command line. Other command line parameters are optional.
 
 .SH OPTIONS
+
+.IP "-4"
+Generate iptables script for IPv4 part of the policy. If any rules of
+the firewall refer to IPv6 addresses, compiler will skip these rules.
+Options "-4" and "-6" are exclusive. If neither option is used, compiler
+tries to generate both parts of the script, although generation of
+the IPv6 part is controlled by the option "Enable IPv6 support"
+in the "IPv6" tab of the firewall object advanced settings dialog.
+This option is off by default.
+
+.IP "-6"
+Generate iptables script for IPv6 part of the policy. If any rules of
+the firewall refer to IPv6 addresses, compiler will skip these rules.
+
 .IP "-f FILE"
 Specify the name of the data file to be processed.
 

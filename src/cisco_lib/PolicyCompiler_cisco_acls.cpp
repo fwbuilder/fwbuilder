@@ -87,7 +87,8 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionBySrc::processNext()
             assert(ifs);
             if (ifs->isUnprotected()) continue;   // skip!
 
-            PolicyRule *new_rule= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *new_rule = PolicyRule::cast(
+                compiler->dbcopy->create(PolicyRule::TYPENAME) );
             compiler->temp_ruleset->add(new_rule);
             new_rule->duplicate(rule);
             new_rule->setInterfaceId(intf_id);
@@ -128,7 +129,9 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionByDst::processNext()
         if (rule->getDirection()==PolicyRule::Outbound)
             intf_id_list = helper.getAllInterfaceIDs();
 
-        for (list<int>::iterator i = intf_id_list.begin(); i!=intf_id_list.end(); ++i)
+
+        for (list<int>::iterator i = intf_id_list.begin();
+             i!=intf_id_list.end(); ++i)
         {
             int intf_id = *i;
             Interface *ifs = Interface::cast(
@@ -136,7 +139,8 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionByDst::processNext()
             assert(ifs);
             if (ifs->isUnprotected()) continue;   // skip!
 
-            PolicyRule *new_rule= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *new_rule = PolicyRule::cast(
+                compiler->dbcopy->create(PolicyRule::TYPENAME) );
             compiler->temp_ruleset->add(new_rule);
             new_rule->duplicate(rule);
             new_rule->setInterfaceId(intf_id);
@@ -173,7 +177,7 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionIfInterfaceSet::processNext()
         if (rule->getDirection()==PolicyRule::Both)
         {
             new_rule =
-                PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+                PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
             compiler->temp_ruleset->add(new_rule);
             new_rule->duplicate(rule);
             new_rule->setInterfaceId( rule_iface_id );
@@ -182,7 +186,7 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionIfInterfaceSet::processNext()
             tmp_queue.push_back(new_rule);
 
             new_rule =
-                PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+                PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
             compiler->temp_ruleset->add(new_rule);
             new_rule->duplicate(rule);
             new_rule->setInterfaceId( rule_iface_id );
@@ -192,7 +196,7 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionIfInterfaceSet::processNext()
         } else
         {
             new_rule =
-                PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+                PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
             compiler->temp_ruleset->add(new_rule);
             new_rule->duplicate(rule);
             new_rule->setInterfaceId( rule_iface_id );
@@ -206,13 +210,16 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionIfInterfaceSet::processNext()
 
 bool PolicyCompiler_cisco::pickACL::processNext()
 {
-    PolicyCompiler_cisco *cisco_comp=dynamic_cast<PolicyCompiler_cisco*>(compiler);
+    PolicyCompiler_cisco *cisco_comp=dynamic_cast<PolicyCompiler_cisco*>(
+        compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     
-    Interface  *rule_iface = compiler->getCachedFwInterface(rule->getInterfaceId());
+    Interface  *rule_iface = compiler->getCachedFwInterface(
+        rule->getInterfaceId());
     if(rule_iface==NULL)
     {
-        compiler->abort("Missing interface assignment for rule "+rule->getLabel());
+        compiler->abort("Missing interface assignment for rule " + 
+                        rule->getLabel());
     }
 
     /*
@@ -248,8 +255,17 @@ bool PolicyCompiler_cisco::pickACL::processNext()
     if (acl_name.empty()) acl_name = rule_iface->getName();
     acl_name = cisco_comp->mangleInterfaceName(acl_name) + "_acl";
     string dir = "in";
-    if (rule->getDirection() == PolicyRule::Inbound)  { acl_name += "_in"; dir="in"; }
-    if (rule->getDirection() == PolicyRule::Outbound) { acl_name += "_out"; dir="out"; }
+    if (rule->getDirection() == PolicyRule::Inbound)
+    {
+        acl_name += "_in"; dir="in";
+    }
+    if (rule->getDirection() == PolicyRule::Outbound)
+    {
+        acl_name += "_out"; dir="out";
+    }
+
+    if (cisco_comp->ipv6) acl_name = "ipv6_" + acl_name;
+
     rule->setStr("acl",acl_name);
 
     ciscoACL *acl = new ciscoACL(acl_name, rule_iface, dir, using_named_acl);
@@ -267,7 +283,8 @@ bool PolicyCompiler_cisco::pickACL::processNext()
  * in a human-readable way.
  */
 
-std::string PolicyCompiler_cisco::mangleInterfaceName(const string &interface_name)
+std::string PolicyCompiler_cisco::mangleInterfaceName(
+    const string &interface_name)
 {
     string::size_type n;
     string s = interface_name;

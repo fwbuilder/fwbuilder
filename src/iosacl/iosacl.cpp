@@ -56,7 +56,9 @@
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/Policy.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Tools.h"
@@ -87,6 +89,8 @@ static int              drp            = -1;
 static int              drn            = -1;
 static int              verbose        = 0;
 static int              test_mode      = 0;
+static bool             ipv4_run       = true;
+static bool             ipv6_run       = true;
 
 FWObjectDatabase       *objdb = NULL;
 
@@ -124,10 +128,18 @@ int main(int argc, char * const * argv)
 
     int   opt;
 
-    while( (opt=getopt(argc,argv,"x:vVf:d:r:tLo:")) != EOF )
+    while( (opt=getopt(argc,argv,"x:vVf:d:r:tLo:46")) != EOF )
     {
         switch(opt)
         {
+        case '4':
+            ipv4_run = true;
+            ipv6_run = false;
+            break;
+        case '6':
+            ipv4_run = false;
+            ipv6_run = true;
+            break;
         case 'd':
             wdir = strdup(optarg);
             break;
@@ -318,36 +330,99 @@ int main(int argc, char * const * argv)
         if (user_name==NULL) 
             throw FWException("Can't figure out your user name, aborting");
 
-        Preprocessor* prep=new Preprocessor(objdb , fwobjectname, false);
-        prep->compile();
 
-/*
- * Process firewall options, build OS network configuration script
- */
+
+
         OSConfigurator *oscnf=NULL;
         oscnf=new OSConfigurator_ios(objdb , fwobjectname, false);
 
         oscnf->prolog();
         oscnf->processFirewallOptions();
 
-/* create compilers and run the whole thing */
 
-        PolicyCompiler_iosacl *c = new PolicyCompiler_iosacl(objdb,
-                                                             fwobjectname,
-                                                             false,
-                                                             oscnf);
 
-        if (test_mode) c->setTestMode();
-        c->setDebugLevel( dl );
-        c->setDebugRule(  drp );
-        c->setVerbose( verbose );
 
-        if ( c->prolog() > 0 ) {
-            c->compile();
-            c->epilog();
-        } else
-            cout << " Nothing to compile in Policy \n" << flush;
 
+        list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
+
+        int policy_rules_count  = 0;
+
+        vector<bool> ipv4_6_runs;
+        string generated_script;
+
+        // command line options -4 and -6 control address family for which
+        // script will be generated. If "-4" is used, only ipv4 part will 
+        // be generated. If "-6" is used, only ipv6 part will be generated.
+        // If neither is used, both parts will be done.
+
+        if (options->getStr("ipv4_6_order").empty() ||
+            options->getStr("ipv4_6_order") == "ipv4_first")
+        {
+            if (ipv4_run) ipv4_6_runs.push_back(false);
+            if (ipv6_run) ipv4_6_runs.push_back(true);
+        }
+
+        if (options->getStr("ipv4_6_order") == "ipv6_first")
+        {
+            if (ipv6_run) ipv4_6_runs.push_back(true);
+            if (ipv4_run) ipv4_6_runs.push_back(false);
+        }
+
+        for (vector<bool>::iterator i=ipv4_6_runs.begin(); 
+             i!=ipv4_6_runs.end(); ++i)
+        {
+            bool ipv6_policy = *i;
+
+            Preprocessor* prep = new Preprocessor(objdb , fwobjectname, false);
+            prep->compile();
+
+            for (list<FWObject*>::iterator p=all_policies.begin();
+                 p!=all_policies.end(); ++p )
+            {
+                Policy *policy = Policy::cast(*p);
+
+                if (policy->isV6()!=ipv6_policy) continue;
+
+                PolicyCompiler_iosacl c(objdb, fwobjectname,
+                                        ipv6_policy, oscnf);
+
+                c.setSourceRuleSet( policy );
+
+                if (test_mode) c.setTestMode();
+                c.setDebugLevel( dl );
+                c.setDebugRule(  drp );
+                c.setVerbose( verbose );
+
+                if ( c.prolog() > 0 )
+                {
+                    c.compile();
+                    c.epilog();
+
+                    if (c.haveErrorsAndWarnings())
+                    {
+                        if (ipv6_policy)
+                        {
+                            generated_script += "\n\n";
+                            generated_script += "! ================ IPv6\n";
+                            generated_script += "\n\n";
+                        } else
+                        {
+                            generated_script += "\n\n";
+                            generated_script += "! ================ IPv4\n";
+                            generated_script += "\n\n";
+                        }
+
+                        generated_script +=
+                            "! Policy compiler errors and warnings:";
+                        generated_script += "\n";
+                        generated_script +=  c.getErrors("! ");
+                    }
+                    generated_script +=  c.getCompiledScript();
+
+                } else
+                    cout << " Nothing to compile in Policy \n" << flush;
+            }
+        }
 
 #ifdef _WIN32
         ofstream ofile(ofname.c_str(), ios::out|ios::binary);
@@ -394,14 +469,8 @@ int main(int argc, char * const * argv)
         ofile << oscnf->getCompiledScript();
         ofile << endl;
 
-        if (c->haveErrorsAndWarnings())
-        {
-            ofile << "! Policy compiler errors and warnings:"
-                    << endl;
-            ofile << c->getErrors("! ");
-        }
+        ofile << generated_script;
 
-        ofile << c->getCompiledScript();
         ofile << endl;
         
         ofile << endl;

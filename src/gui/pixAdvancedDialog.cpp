@@ -243,8 +243,6 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
 
     m_dialog->notebook304->setTabEnabled(8,false); //Disable tab
     data.registerOption(m_dialog->ipv4before_2,    fwoptions, "ipv4_6_order", QStringList() <<  "IPv4 before IPv6" <<"ipv4_first" << "IPv6 before IPv4" << "ipv6_first"      );
-    data.registerOption(m_dialog->ipv6_2,    fwoptions, "enable_ipv6"        );
-
 
 
     data.registerOption( m_dialog->outputFileName       , fwoptions,

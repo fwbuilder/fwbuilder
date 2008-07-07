@@ -1,5 +1,36 @@
 2008-07-06  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printAddr):
+	Support for IPv6 in Cisco IOS ACL compiler fwb_iosacl.
+
+	* iptAdvancedDialog.cpp (iptAdvancedDialog::iptAdvancedDialog):
+	Removed option "Enable IPv6 support" in the "advanced" dialog for
+	all platforms. Now user needs to explicitly declare rule sets as
+	ipv6. Since by default all rule sets are ipv4, there is no need
+	in yet another parameter to enable ipv6 support.
+
+	* RuleSetDialog.cpp (RuleSetDialog::applyChanges): Objects Policy,
+	NAT and Routing now have attribute that tells compiler that
+	corresponding rule set is ipv4 or ipv6. The attribute is
+	controlled by radio-buttons in corresponding object dialog. Every
+	policy or nat rule set is treated as exclusively either ipv4 or
+	ipv6 by compilers, however the user can put objects of both
+	address families in rules. This allows for creation of object
+	groups that include objects of both address families. Such groups
+	can be used in both ipv4 and ipv6 rule sets. Compilers pick
+	objects that match address family declared for the rule set and drop
+	others.
+
+	One of the reasons why this attribute was added is to avoid
+	generation of unwanted iptables or acl lines for rules that can
+	not be unambiguously attributed to particular address
+	family. Example of such rule is rule with "any" in both source and
+	destination (e.g. "catch all and deny" rule typically found at the
+	bottom of the policy). Without this attribute compilers tried to
+	process every rule set for both ipv4 and ipv6. This way rule "any
+	any any deny" found in ipv4 policy yielded corresponding line in
+	the ipv6 policy, which was wrong.
+	
 	* instDialog.cpp (instDialog::installSelected): minor fixed in
 	installer dialog (fixed progress bar and buffering of the compiler
 	output)

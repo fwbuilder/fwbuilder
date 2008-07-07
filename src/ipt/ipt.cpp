@@ -577,14 +577,12 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             options->getStr("ipv4_6_order") == "ipv4_first")
         {
             if (ipv4_run) ipv4_6_runs.push_back(false);
-            if (ipv6_run && options->getBool("enable_ipv6"))
-                ipv4_6_runs.push_back(true);
+            if (ipv6_run) ipv4_6_runs.push_back(true);
         }
 
         if (options->getStr("ipv4_6_order") == "ipv6_first")
         {
-            if (ipv6_run && options->getBool("enable_ipv6"))
-                ipv4_6_runs.push_back(true);
+            if (ipv6_run) ipv4_6_runs.push_back(true);
             if (ipv4_run) ipv4_6_runs.push_back(false);
         }
 
@@ -592,18 +590,6 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
              i!=ipv4_6_runs.end(); ++i)
         {
             bool ipv6_policy = *i;
-
-            if (ipv6_policy)
-            {
-                generated_script += "\n\n";
-                generated_script += "# ================ IPv6\n";
-                generated_script += "\n\n";
-            } else
-            {
-                generated_script += "\n\n";
-                generated_script += "# ================ IPv4\n";
-                generated_script += "\n\n";
-            }
 
             Preprocessor* prep = new Preprocessor(
                 objdb , fwobjectname, ipv6_policy);
@@ -614,6 +600,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             ostringstream c_str;
             ostringstream m_str;
             ostringstream n_str;
+            bool empty_output = true;
 
             for (list<FWObject*>::iterator p=all_nat.begin();
                  p!=all_nat.end(); ++p )
@@ -621,6 +608,8 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 NAT *nat = NAT::cast(*p);
                 assignRuleSetChain(nat);
                 string branch_name = nat->getName();
+                
+                if (nat->isV6()!=ipv6_policy) continue;
 
                 // compile NAT rules before policy rules because policy
                 // compiler needs to know the number of virtual addresses
@@ -661,6 +650,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     n_str << n.getCompiledScript();
                     n_str << n.commit();
                     n_str << endl;
+                    empty_output = false;
                 }
             }
 
@@ -670,6 +660,8 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 Policy *policy = Policy::cast(*p);
                 assignRuleSetChain(policy);
                 string branch_name = policy->getName();
+
+                if (policy->isV6()!=ipv6_policy) continue;
 
                 MangleTableCompiler_ipt m(
                     objdb , fwobjectname, ipv6_policy , oscnf );
@@ -713,6 +705,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                         m_str << m.getCompiledScript();
                         m_str << m.commit();
                         m_str << endl;
+                        empty_output = false;
                     }
                 }
 
@@ -749,6 +742,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                         c_str << c.getCompiledScript();
                         c_str << c.commit();
                         c_str << endl;
+                        empty_output = false;
                     }
                 }
 
@@ -758,8 +752,24 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                         << "# ================ Table 'filter', automatic rules"
                         << endl;
                     reset_rules << c.flushAndSetDefaultPolicy();
+                    empty_output = false;
                 }
 
+            }
+
+            if (!empty_output)
+            {
+                if (ipv6_policy)
+                {
+                    generated_script += "\n\n";
+                    generated_script += "# ================ IPv6\n";
+                    generated_script += "\n\n";
+                } else
+                {
+                    generated_script += "\n\n";
+                    generated_script += "# ================ IPv4\n";
+                    generated_script += "\n\n";
+                }
             }
 
             generated_script += dumpScript(nocomm, fw,

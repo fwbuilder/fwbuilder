@@ -149,10 +149,16 @@ int PolicyCompiler_iosacl::prolog()
         //na.s_addr = ~nm;
         InetAddr nnm( ~(InetAddr(netmask)) );
 
+        string addr_family_prefix = "ip";
+        if (ipv6) addr_family_prefix = "ipv6";
+
         output << clearACLcmd << " " << temp_acl << endl;
-        output << "ip access-list extended " << temp_acl << endl;
-        output << "  permit ip " << addr << " " << nnm.toString() << " any " << endl;
-        output << "  deny ip any any " << endl;
+        output << addr_family_prefix
+               << " access-list extended " << temp_acl << endl;
+        output << "  permit ip "
+               << addr << " " << nnm.toString() << " any " << endl;
+        output << "  deny " << addr_family_prefix
+               << " any any " << endl;
         output << "exit" << endl;
         output << endl;
 
@@ -166,9 +172,12 @@ int PolicyCompiler_iosacl::prolog()
             {
                 nmi++;
                 output << "interface " << intf->getName() << endl;
-                output << "  no ip access-group in" << endl;
-                output << "  no ip access-group out" << endl;
-                output << "  ip access-group " << temp_acl << " in" << endl;
+                output << "  no " << addr_family_prefix
+                       << " access-group in" << endl;
+                output << "  no " << addr_family_prefix
+                       << " access-group out" << endl;
+                output << "  " << addr_family_prefix
+                       << " access-group " << temp_acl << " in" << endl;
                 output << "exit" << endl;
             }
         }
@@ -238,7 +247,10 @@ bool PolicyCompiler_iosacl::SpecialServices::processNext()
 
 void PolicyCompiler_iosacl::compile()
 {
-    cout << " Compiling policy for " << fw->getName() << " ..." <<  endl << flush;
+    cout << endl;
+    cout << " Compiling ruleset " << getRuleSetName();
+    if (ipv6) cout << ", IPv6";
+    cout <<  endl << flush;
 
     try 
     {
@@ -251,10 +263,10 @@ void PolicyCompiler_iosacl::compile()
 
         if ( fw->getOptionsObject()->getBool ("check_shading") ) 
         {
-            add( new Begin                       ("Detecting rule shadowing"               ) );
-            add( new printTotalNumberOfRules     (                                         ) );
+            add( new Begin("Detecting rule shadowing"               ) );
+            add( new printTotalNumberOfRules());
 
-            add( new ItfNegation(            "process negation in Itf"  ) );
+            add( new ItfNegation("process negation in Itf"  ) );
             add( new InterfacePolicyRules(
                      "process interface policy rules and store interface ids"));
 
@@ -262,7 +274,9 @@ void PolicyCompiler_iosacl::compile()
             add( new recursiveGroupsInDst("check for recursive groups in DST"));
             add( new recursiveGroupsInSrv("check for recursive groups in SRV"));
 
-            add( new ExpandGroups                ("expand groups"));
+            add( new ExpandGroups("expand groups"));
+            add( new dropRuleWithEmptyRE(
+                     "drop rules with empty rule elements"));
             add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC"));
             add( new eliminateDuplicatesInDST("eliminate duplicates in DST"));
             add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV"));
@@ -270,6 +284,8 @@ void PolicyCompiler_iosacl::compile()
                      "expand objects with multiple addresses in SRC" ) );
             add( new ExpandMultipleAddressesInDST(
                      "expand objects with multiple addresses in DST" ) );
+            add( new dropRuleWithEmptyRE(
+                     "drop rules with empty rule elements"));
             add( new ConvertToAtomic("convert to atomic rules"       ) );
             add( new DetectShadowing("Detect shadowing"              ) );
             add( new simplePrintProgress() );
@@ -291,6 +307,8 @@ void PolicyCompiler_iosacl::compile()
         add( new emptyGroupsInSrv( "check for empty groups in SRV" ) );
 
         add( new ExpandGroups ("expand groups" ) );
+        add( new dropRuleWithEmptyRE(
+                 "drop rules with empty rule elements"));
         add( new eliminateDuplicatesInSRC( "eliminate duplicates in SRC" ) );
         add( new eliminateDuplicatesInDST( "eliminate duplicates in DST" ) );
         add( new eliminateDuplicatesInSRV( "eliminate duplicates in SRV" ) );
@@ -316,12 +334,16 @@ void PolicyCompiler_iosacl::compile()
                  "expand objects with multiple addresses in DST" ) );
         add( new MACFiltering(
                  "check for MAC address filtering" ) );
+        add( new dropRuleWithEmptyRE(
+                 "drop rules with empty rule elements"));
 //        add( new splitByNetworkZonesForDst ("split rule if objects in Dst belong to different network zones " ) );
 
         add( new checkForUnnumbered(
                  "check for unnumbered interfaces" ) );
 
         add( new addressRanges ("process address ranges" ) );
+        add( new dropRuleWithEmptyRE(
+                 "drop rules with empty rule elements"));
 
         add( new setInterfaceAndDirectionBySrc(
     "Set interface and direction for rules with interface 'all' using SRC"));

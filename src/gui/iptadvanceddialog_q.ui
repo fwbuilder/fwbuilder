@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>677</width>
+    <width>687</width>
     <height>719</height>
    </rect>
   </property>
@@ -49,7 +49,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex" >
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="tab0" >
       <attribute name="title" >
@@ -1364,13 +1364,6 @@ with this address:</string>
        <string>IPv6</string>
       </attribute>
       <layout class="QGridLayout" >
-       <item row="0" column="0" >
-        <widget class="QCheckBox" name="ipv6" >
-         <property name="text" >
-          <string>Enable IPv6 support</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="0" >
         <widget class="QLabel" name="label" >
          <property name="text" >

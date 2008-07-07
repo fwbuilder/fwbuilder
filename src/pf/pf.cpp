@@ -684,14 +684,12 @@ int main(int argc, char * const *argv)
             options->getStr("ipv4_6_order") == "ipv4_first")
         {
             if (ipv4_run) ipv4_6_runs.push_back(false);
-            if (ipv6_run && options->getBool("enable_ipv6"))
-                ipv4_6_runs.push_back(true);
+            if (ipv6_run) ipv4_6_runs.push_back(true);
         }
 
         if (options->getStr("ipv4_6_order") == "ipv6_first")
         {
-            if (ipv6_run && options->getBool("enable_ipv6"))
-                ipv4_6_runs.push_back(true);
+            if (ipv6_run) ipv4_6_runs.push_back(true);
             if (ipv4_run) ipv4_6_runs.push_back(false);
         }
 
@@ -712,6 +710,9 @@ int main(int argc, char * const *argv)
                  p!=all_nat.end(); ++p )
             {
                 NAT *nat = NAT::cast(*p);
+
+                if (nat->isV6()!=ipv6_policy) continue;
+
                 string ruleset_name = nat->getName();
                 if (Compiler::isRootRuleSet(nat))
                     ruleset_name = "__main__";
@@ -772,6 +773,9 @@ int main(int argc, char * const *argv)
                  p!=all_policies.end(); ++p )
             {
                 Policy *policy = Policy::cast(*p);
+
+                if (policy->isV6()!=ipv6_policy) continue;
+
                 string ruleset_name = policy->getName();
                 if (Compiler::isRootRuleSet(policy))
                     ruleset_name = "__main__";

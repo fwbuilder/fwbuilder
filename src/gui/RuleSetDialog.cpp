@@ -75,6 +75,8 @@ void RuleSetDialog::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+    m_dialog->ipv4_rule_set->setChecked(!s->isV6());
+    m_dialog->ipv6_rule_set->setChecked(s->isV6());
 
     init=false;
 }
@@ -120,6 +122,7 @@ void RuleSetDialog::applyChanges()
     string oldname=obj->getName();
     obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    s->setV6(m_dialog->ipv6_rule_set->isChecked());
 
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
