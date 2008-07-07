@@ -78,9 +78,16 @@ Firewall::Firewall(const FWObject *root,bool prepopulate) : Host(root,prepopulat
     if (prepopulate)
     {
         add( getRoot()->create(FirewallOptions::TYPENAME) );
-        add( getRoot()->create(Policy::TYPENAME) );
-        add( getRoot()->create(NAT::TYPENAME) );
-        add( getRoot()->create(Routing::TYPENAME) );
+        RuleSet *p;
+        p = RuleSet::cast(getRoot()->create(Policy::TYPENAME));
+        p->setTop(true);
+        add(p);
+        p = RuleSet::cast(getRoot()->create(NAT::TYPENAME));
+        p->setTop(true);
+        add(p);
+        p = RuleSet::cast(getRoot()->create(Routing::TYPENAME));
+        p->setTop(true);
+        add(p);
     }
 }
 
