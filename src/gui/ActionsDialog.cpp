@@ -278,14 +278,12 @@ void ActionsDialog::setRule(PolicyRule *r )
 
     if (platform=="iptables")
     {
-        //m_dialog->classify_txt_1->show();
         m_dialog->classify_terminating->show();
-        //m_dialog->tag_txt_1->show();
         m_dialog->tag_terminating->show();
 
         // Keep both variants of this text separate to simplify localization
         QString emu_state;
-        if (firewall->getOptionsObject()->getBool ("classify_mark_terminating"))
+        if (firewall->getOptionsObject()->getBool("classify_mark_terminating"))
         {
             emu_state = 
                 tr("Emulation of terminating behavior for MARK and CLASSIFY "
@@ -301,51 +299,53 @@ void ActionsDialog::setRule(PolicyRule *r )
 
     } else
     {
-        //m_dialog->classify_txt_1->hide();
         m_dialog->classify_terminating->hide();
-        //m_dialog->tag_txt_1->hide();
         m_dialog->tag_terminating->hide();
     }
 
     data.clear();
 
-    data.registerOption ( m_dialog->ipt_mark_connections, ropt , "ipt_mark_connections");
-//    data.registerOption ( ipt_mark_prerouting , ropt , "ipt_mark_prerouting");
-    data.registerOption ( m_dialog->accountingvalue_str , ropt , "rule_name_accounting");
-    data.registerOption ( m_dialog->usePortNum          , ropt , "ipfw_pipe_queue_num");
-    data.registerOption ( m_dialog->divertPortNum       , ropt , "ipfw_pipe_port_num");
-    data.registerOption ( m_dialog->classify_str        , ropt , "classify_str");
-    data.registerOption ( m_dialog->custom_str          , ropt , "custom_str");
+    data.registerOption(m_dialog->ipt_mark_connections, ropt,
+                        "ipt_mark_connections");
+//    data.registerOption(ipt_mark_prerouting, ropt, "ipt_mark_prerouting");
+    data.registerOption(m_dialog->accountingvalue_str, ropt,
+                        "rule_name_accounting");
+    data.registerOption(m_dialog->usePortNum, ropt, "ipfw_pipe_queue_num");
+    data.registerOption(m_dialog->divertPortNum, ropt, "ipfw_pipe_port_num");
+    data.registerOption(m_dialog->classify_str, ropt, "classify_str");
+    data.registerOption(m_dialog->custom_str, ropt, "custom_str");
 
     // ROUTE action:
 
     // build a map for combobox so visible combobox items can be localized
-    QStringList route_options = getRouteOptions_pf_ipf( platform.c_str() );
-    QStringList route_load_options = getRouteLoadOptions_pf( platform.c_str() );
+    QStringList route_options = getRouteOptions_pf_ipf(platform.c_str() );
+    QStringList route_load_options = getRouteLoadOptions_pf(platform.c_str() );
 
     // iptables
-    data.registerOption ( m_dialog->ipt_iif             , ropt , "ipt_iif" );
-    data.registerOption ( m_dialog->ipt_oif             , ropt , "ipt_oif" );
-    data.registerOption ( m_dialog->ipt_gw              , ropt , "ipt_gw" );
-    data.registerOption ( m_dialog->ipt_continue        , ropt , "ipt_continue" );
-    data.registerOption ( m_dialog->ipt_tee             , ropt , "ipt_tee");
+    data.registerOption(m_dialog->ipt_iif, ropt, "ipt_iif" );
+    data.registerOption(m_dialog->ipt_oif, ropt, "ipt_oif" );
+    data.registerOption(m_dialog->ipt_gw, ropt, "ipt_gw" );
+    data.registerOption(m_dialog->ipt_continue, ropt, "ipt_continue" );
+    data.registerOption(m_dialog->ipt_tee, ropt, "ipt_tee");
 
     // ipfilter
-    data.registerOption ( m_dialog->ipf_route_option    , ropt , "ipf_route_option",
+    data.registerOption(m_dialog->ipf_route_option, ropt, "ipf_route_option",
                           route_options);
-    data.registerOption ( m_dialog->ipf_route_opt_if    , ropt , "ipf_route_opt_if");
-    data.registerOption ( m_dialog->ipf_route_opt_addr  , ropt , "ipf_route_opt_addr");
+    data.registerOption(m_dialog->ipf_route_opt_if, ropt, "ipf_route_opt_if");
+    data.registerOption(m_dialog->ipf_route_opt_addr, ropt,
+                        "ipf_route_opt_addr");
 
     // pf
-    data.registerOption ( m_dialog->pf_fastroute        , ropt , "pf_fastroute"     );
-    data.registerOption( m_dialog->pf_route_load_option , ropt , "pf_route_load_option", route_load_options );
-    data.registerOption ( m_dialog->pf_route_option     , ropt , "pf_route_option",
+    data.registerOption(m_dialog->pf_fastroute, ropt, "pf_fastroute"     );
+    data.registerOption(m_dialog->pf_route_load_option, ropt,
+                        "pf_route_load_option", route_load_options );
+    data.registerOption(m_dialog->pf_route_option, ropt, "pf_route_option",
                           route_options);
-    data.registerOption ( m_dialog->pf_route_opt_if     , ropt , "pf_route_opt_if"  );
-    data.registerOption ( m_dialog->pf_route_opt_addr   , ropt , "pf_route_opt_addr");
+    data.registerOption(m_dialog->pf_route_opt_if, ropt, "pf_route_opt_if"  );
+    data.registerOption(m_dialog->pf_route_opt_addr, ropt, "pf_route_opt_addr");
 
     // REJECT action:
-    data.registerOption ( m_dialog->rejectvalue         , ropt , "action_on_reject");
+    data.registerOption(m_dialog->rejectvalue, ropt, "action_on_reject");
 
     QWidget *w=m_dialog->NonePage;
     if (editor=="Reject")
@@ -391,7 +391,7 @@ void ActionsDialog::setRule(PolicyRule *r )
         m_dialog->iptBranchDropArea->setObject(ruleset);
 
         data.registerOption(
-            m_dialog->ipt_branch_in_mangle, ropt , "ipt_branch_in_mangle" );
+            m_dialog->ipt_branch_in_mangle, ropt, "ipt_branch_in_mangle" );
     }
     else if (editor=="BranchAnchor")
     {
@@ -412,9 +412,9 @@ void ActionsDialog::setRule(PolicyRule *r )
         w=m_dialog->RoutePFPage;
     }
 
-    m_dialog->widgetStack->setCurrentWidget ( w );
+    m_dialog->widgetStack->setCurrentWidget(w);
 
-    //rejectvalue->setCurrentText( ropt->getStr("action_on_reject") );
+    //rejectvalue->setCurrentText(ropt->getStr("action_on_reject") );
     data.loadAll();
 
     iptRouteContinueToggled();
@@ -426,9 +426,9 @@ void ActionsDialog::fillInterfaces(QComboBox* cb)
     cb->addItem("");
 
     FWObjectTypedChildIterator j=firewall->findByType(Interface::TYPENAME);
-    for ( ; j!=j.end(); ++j )
+    for (; j!=j.end(); ++j )
     {
-        cb->addItem(QString::fromUtf8( (*j)->getName().c_str()) );
+        cb->addItem(QString::fromUtf8((*j)->getName().c_str()) );
     }
 
 }

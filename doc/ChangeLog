@@ -1,5 +1,8 @@
 2008-07-07  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_pf_writers.cpp: Support for "synproxy state"
+	option for PF per FR #1098098: "Per-rule Synproxy"
+
 	* templates.xml.in: Updated template firewall objects to include
 	"top_rule_set" attribute.
 	

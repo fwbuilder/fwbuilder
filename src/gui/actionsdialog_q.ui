@@ -198,7 +198,7 @@
            <enum>QFrame::Plain</enum>
           </property>
           <property name="currentIndex" >
-           <number>3</number>
+           <number>7</number>
           </property>
           <widget class="QWidget" name="TagStrPage" >
            <layout class="QGridLayout" >

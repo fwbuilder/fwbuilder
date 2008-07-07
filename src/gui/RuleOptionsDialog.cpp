@@ -119,84 +119,116 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
 
     if (platform=="iptables")
     {
-        data.registerOption( m_dialog->ipt_logPrefix            , ropt,  "log_prefix" );
-        data.registerOption( m_dialog->ipt_logLevel             , ropt,  "log_level", logLevels );
-        data.registerOption( m_dialog->ipt_nlgroup              , ropt,  "ulog_nlgroup" );
-        data.registerOption( m_dialog->ipt_limit                , ropt,  "limit_value" );
-        data.registerOption( m_dialog->ipt_limitSuffix          , ropt,  "limit_suffix", limitSuffixes);
-        data.registerOption( m_dialog->ipt_burst                , ropt,  "limit_burst" );
+        data.registerOption(m_dialog->ipt_logPrefix, ropt,  "log_prefix");
+        data.registerOption(m_dialog->ipt_logLevel, ropt,
+                             "log_level", logLevels);
+        data.registerOption(m_dialog->ipt_nlgroup, ropt,  "ulog_nlgroup");
+        data.registerOption(m_dialog->ipt_limit, ropt,  "limit_value");
+        data.registerOption(m_dialog->ipt_limitSuffix, ropt,
+                             "limit_suffix", limitSuffixes);
+        data.registerOption(m_dialog->ipt_burst, ropt,  "limit_burst");
 
-        data.registerOption( m_dialog->ipt_connlimit            , ropt,  "connlimit_value" );
-        data.registerOption( m_dialog->ipt_connlimit_masklen    , ropt,  "connlimit_masklen" );
+        data.registerOption(m_dialog->ipt_connlimit, ropt,  "connlimit_value");
+        data.registerOption(m_dialog->ipt_connlimit_masklen, ropt,
+                            "connlimit_masklen");
 
-        data.registerOption( m_dialog->ipt_hashlimit            , ropt,  "hashlimit_value" );
-        data.registerOption( m_dialog->ipt_hashlimit_suffix     , ropt,  "hashlimit_suffix" );
-        data.registerOption( m_dialog->ipt_hashlimit_burst      , ropt,  "hashlimit_burst" );
-        data.registerOption( m_dialog->cb_srcip                 , ropt,  "hashlimit_mode_srcip" );
-        data.registerOption( m_dialog->cb_dstip                 , ropt,  "hashlimit_mode_dstip" );
-        data.registerOption( m_dialog->cb_srcport               , ropt,  "hashlimit_mode_srcport" );
-        data.registerOption( m_dialog->cb_dstport               , ropt,  "hashlimit_mode_dstport" );
-        data.registerOption( m_dialog->ipt_hashlimit_dstlimit   , ropt,  "hashlimit_dstlimit");
-        data.registerOption( m_dialog->ipt_hashlimit_name       , ropt,  "hashlimit_name");
-        data.registerOption( m_dialog->ipt_hashlimit_size       , ropt,  "hashlimit_size");
-        data.registerOption( m_dialog->ipt_hashlimit_max        , ropt,  "hashlimit_max");
-        data.registerOption( m_dialog->ipt_hashlimit_expire     , ropt,  "hashlimit_expire");
-        data.registerOption( m_dialog->ipt_hashlimit_gcinterval , ropt,  "hashlimit_gcinterval");
+        data.registerOption(m_dialog->ipt_hashlimit, ropt,  "hashlimit_value");
+        data.registerOption(m_dialog->ipt_hashlimit_suffix, ropt,
+                            "hashlimit_suffix");
+        data.registerOption(m_dialog->ipt_hashlimit_burst, ropt,
+                            "hashlimit_burst");
+        data.registerOption(m_dialog->cb_srcip, ropt,  "hashlimit_mode_srcip");
+        data.registerOption(m_dialog->cb_dstip, ropt,  "hashlimit_mode_dstip");
+        data.registerOption(m_dialog->cb_srcport, ropt,
+                            "hashlimit_mode_srcport");
+        data.registerOption(m_dialog->cb_dstport, ropt,
+                            "hashlimit_mode_dstport");
+        data.registerOption(m_dialog->ipt_hashlimit_dstlimit, ropt,
+                            "hashlimit_dstlimit");
+        data.registerOption(m_dialog->ipt_hashlimit_name, ropt,
+                            "hashlimit_name");
+        data.registerOption(m_dialog->ipt_hashlimit_size, ropt,
+                            "hashlimit_size");
+        data.registerOption(m_dialog->ipt_hashlimit_max, ropt,
+                            "hashlimit_max");
+        data.registerOption(m_dialog->ipt_hashlimit_expire, ropt,
+                            "hashlimit_expire");
+        data.registerOption(m_dialog->ipt_hashlimit_gcinterval, ropt,
+                            "hashlimit_gcinterval");
 
-        data.registerOption( m_dialog->ipt_assumeFwIsPartOfAny  , ropt,  "firewall_is_part_of_any_and_networks" );
-        data.registerOption( m_dialog->ipt_stateless            , ropt,  "stateless" );
+        data.registerOption(m_dialog->ipt_assumeFwIsPartOfAny, ropt,
+                            "firewall_is_part_of_any_and_networks");
+        data.registerOption(m_dialog->ipt_stateless, ropt,  "stateless");
     }
 
 
     if (platform=="ipf")
     {
-        data.registerOption( m_dialog->ipf_logFacility     , ropt,  "ipf_log_facility", logFacilities);
-        data.registerOption( m_dialog->ipf_logLevel        , ropt,  "log_level" , logLevels);
-        data.registerOption( m_dialog->ipf_masq_icmp       , ropt,  "ipf_return_icmp_as_dest");
-        data.registerOption( m_dialog->ipf_stateless       , ropt,  "stateless" );
-        data.registerOption( m_dialog->ipf_keep_frags      , ropt,  "ipf_keep_frags" );
+        data.registerOption(m_dialog->ipf_logFacility, ropt,
+                            "ipf_log_facility", logFacilities);
+        data.registerOption(m_dialog->ipf_logLevel, ropt,
+                            "log_level", logLevels);
+        data.registerOption(m_dialog->ipf_masq_icmp, ropt,
+                            "ipf_return_icmp_as_dest");
+        data.registerOption(m_dialog->ipf_stateless, ropt,  "stateless");
+        data.registerOption(m_dialog->ipf_keep_frags, ropt,  "ipf_keep_frags");
     }
 
     if (platform=="pf")
     {
-        data.registerOption( m_dialog->pf_logPrefix        , ropt,  "log_prefix" );
-        data.registerOption( m_dialog->pf_stateless        , ropt,  "stateless" );
-        data.registerOption( m_dialog->pf_keep_state       , ropt,  "pf_keep_state" );
-        data.registerOption( m_dialog->pf_rule_max_state   , ropt,  "pf_rule_max_state" );
-        data.registerOption( m_dialog->pf_source_tracking  , ropt,  "pf_source_tracking" );
-        data.registerOption( m_dialog->pf_max_src_nodes    , ropt,  "pf_max_src_nodes" );
-        data.registerOption( m_dialog->pf_max_src_states   , ropt,  "pf_max_src_states" );
+        data.registerOption(m_dialog->pf_logPrefix, ropt,  "log_prefix");
+        data.registerOption(m_dialog->pf_stateless, ropt,  "stateless");
+        data.registerOption(m_dialog->pf_keep_state, ropt,  "pf_keep_state");
+        data.registerOption(m_dialog->pf_rule_max_state, ropt,
+                            "pf_rule_max_state");
+        data.registerOption(m_dialog->pf_source_tracking, ropt,
+                            "pf_source_tracking");
+        data.registerOption(m_dialog->pf_max_src_nodes, ropt,
+                            "pf_max_src_nodes");
+        data.registerOption(m_dialog->pf_max_src_states, ropt,
+                            "pf_max_src_states");
 
-        data.registerOption( m_dialog->pf_max_src_conn     , ropt,  "pf_max_src_conn" );
-        data.registerOption( m_dialog->pf_overload_table   , ropt,
-                             "pf_max_src_conn_overload_table" );
-        data.registerOption( m_dialog->pf_flush, ropt,  "pf_max_src_conn_flush" );
-        data.registerOption( m_dialog->pf_global, ropt, "pf_max_src_conn_global" );
+        data.registerOption(m_dialog->pf_max_src_conn, ropt,
+                            "pf_max_src_conn");
+        data.registerOption(m_dialog->pf_overload_table, ropt,
+                             "pf_max_src_conn_overload_table");
+        data.registerOption(m_dialog->pf_flush, ropt,
+                            "pf_max_src_conn_flush");
+        data.registerOption(m_dialog->pf_global, ropt,
+                            "pf_max_src_conn_global");
 
-        data.registerOption( m_dialog->pf_max_src_conn_rate_num     , ropt,
-                             "pf_max_src_conn_rate_num" );
-        data.registerOption( m_dialog->pf_max_src_conn_rate_seconds , ropt,
-                             "pf_max_src_conn_rate_seconds" );
+        data.registerOption(m_dialog->pf_max_src_conn_rate_num, ropt,
+                             "pf_max_src_conn_rate_num");
+        data.registerOption(m_dialog->pf_max_src_conn_rate_seconds, ropt,
+                             "pf_max_src_conn_rate_seconds");
+
+        data.registerOption(m_dialog->pf_modulate, ropt,
+                             "pf_modulate_state");
+        data.registerOption(m_dialog->pf_synproxy, ropt,
+                             "pf_synproxy");
     }
 
     if (platform=="ipfw")
     {
-        data.registerOption( m_dialog->ipfw_stateless      , ropt,"stateless" );
+        data.registerOption(m_dialog->ipfw_stateless, ropt,"stateless");
     }
 
     if (platform=="pix" || platform=="fwsm")
     {
         string vers="version_"+p->getStr("version");
-        if ( Resources::platform_res[platform.toAscii().constData()]->getResourceBool(
+        if (Resources::platform_res[platform.toAscii().constData()]->getResourceBool(
               "/FWBuilderResources/Target/options/"+vers+"/pix_rule_syslog_settings"))
         {
             m_dialog->pix_disable_rule_log->setEnabled(true);
             m_dialog->pix_logLevel->setEnabled(true);
             m_dialog->pix_log_interval->setEnabled(true);
 
-            data.registerOption( m_dialog->pix_disable_rule_log, ropt,"disable_logging_for_this_rule" );
-            data.registerOption( m_dialog->pix_logLevel        , ropt,"log_level" ,logLevels);
-            data.registerOption( m_dialog->pix_log_interval    , ropt,"log_interval" );
+            data.registerOption(m_dialog->pix_disable_rule_log, ropt,
+                                "disable_logging_for_this_rule");
+            data.registerOption(m_dialog->pix_logLevel, ropt,
+                                "log_level",logLevels);
+            data.registerOption(m_dialog->pix_log_interval, ropt,
+                                "log_interval");
         } else
         {
             m_dialog->pix_disable_rule_log->setEnabled(false);
@@ -209,27 +241,29 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
     init=true;
     data.loadAll();
 
-    m_dialog->pf_max_src_nodes->setEnabled( m_dialog->pf_source_tracking->isChecked() );
-    m_dialog->pf_max_src_states->setEnabled( m_dialog->pf_source_tracking->isChecked() );
+    m_dialog->pf_max_src_nodes->setEnabled(
+        m_dialog->pf_source_tracking->isChecked());
+    m_dialog->pf_max_src_states->setEnabled(
+        m_dialog->pf_source_tracking->isChecked());
 
-    //apply->setEnabled( false );
+    //apply->setEnabled(false);
     init=false;
 }
 
 void RuleOptionsDialog::changed()
 {
-    //apply->setEnabled( true );
+    //apply->setEnabled(true);
 
     m_dialog->pf_max_src_nodes->setEnabled(
-        m_dialog->pf_source_tracking->isChecked() );
+        m_dialog->pf_source_tracking->isChecked());
     m_dialog->pf_max_src_states->setEnabled(
-        m_dialog->pf_source_tracking->isChecked() );
+        m_dialog->pf_source_tracking->isChecked());
 
     bool enable_overload_options = (
         m_dialog->pf_max_src_conn->value()>0 || (
             m_dialog->pf_max_src_conn_rate_num->value()>0 &&
             m_dialog->pf_max_src_conn_rate_seconds->value()>0)
-    );
+   );
 
     m_dialog->pf_overload_table->setEnabled(enable_overload_options);
     m_dialog->pf_flush->setEnabled(enable_overload_options);
@@ -263,13 +297,13 @@ void RuleOptionsDialog::applyChanges()
 
     mw->updateRuleOptions();
 
-    //apply->setEnabled( false );
+    //apply->setEnabled(false);
     mw->updateLastModifiedTimestampForAllFirewalls(obj);
 }
 
 void RuleOptionsDialog::cancelChanges()
 {
-    //apply->setEnabled( false );
+    //apply->setEnabled(false);
     close();
 }
 

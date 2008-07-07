@@ -921,34 +921,45 @@ bool PolicyCompiler_pf::PrintRule::processNext()
             }
         }
 
-	if (compiler->getCachedFwOpt()->getBool("modulate_state") &&
+        // in PF "modulate state", "synproxy state", "keep state" are mutually
+        // exclusive
+        // "keep state" can be used with any protocol, while "modulate state"
+        // and "synproxy state" can only be used with tcp.
+
+	if (compiler->getCachedFwOpt()->getBool("pf_synproxy") &&
             tcpsrv!=NULL)
-	    compiler->output << "modulate state ";
-	else
+	    compiler->output << "synproxy state ";
+        else
         {
-            /*
-             * "flags S/SA keep state" is implicit in 4.x
-             * However see section "1.2. Operational changes" in
-             *  http://www.openbsd.org/faq/upgrade41.html
-             *
-             * Quote:
-             *
-             * In particular care should be taken with the enc0
-             * interface, as floating states are a potential problem
-             * for filtering IPsec traffic: states need to be
-             * interface bound, to avoid permitting unencrypted
-             * traffic should isakmpd(8) exit. Therefore all rules on
-             * the enc0 interface should explicitly set keep state
-             * (if-bound).
-             *
-             * This seems to imply that even though "keep state" is
-             * the default, it should be explicitly used with enc0
-             * interface. Adding rule option "Set 'keep state'
-             * explicitly" to cope with this.
-             */
-            if ( version != "4.x" ||
-                 compiler->getCachedFwOpt()->getBool("pf_keep_state"))
-                compiler->output << "keep state ";
+            if (compiler->getCachedFwOpt()->getBool("pf_modulate_state") &&
+                tcpsrv!=NULL)
+                compiler->output << "modulate state ";
+            else
+            {
+                /*
+                 * "flags S/SA keep state" is implicit in 4.x
+                 * However see section "1.2. Operational changes" in
+                 *  http://www.openbsd.org/faq/upgrade41.html
+                 *
+                 * Quote:
+                 *
+                 * In particular care should be taken with the enc0
+                 * interface, as floating states are a potential problem
+                 * for filtering IPsec traffic: states need to be
+                 * interface bound, to avoid permitting unencrypted
+                 * traffic should isakmpd(8) exit. Therefore all rules on
+                 * the enc0 interface should explicitly set keep state
+                 * (if-bound).
+                 *
+                 * This seems to imply that even though "keep state" is
+                 * the default, it should be explicitly used with enc0
+                 * interface. Adding rule option "Set 'keep state'
+                 * explicitly" to cope with this.
+                 */
+                if ( version != "4.x" ||
+                     compiler->getCachedFwOpt()->getBool("pf_keep_state"))
+                    compiler->output << "keep state ";
+            }
         }
 
         int nopt=0;
