@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="9" lastModified="1215308407" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="9" lastModified="1215405080" id="root">
   <Library id="sysid99" name="Deleted Objects" ro="False">
     <ICMP6Service id="idE0C27650" name="ipv6 dest unreachable" comment="No route to destination" code="0" type="1"/>
     <Library id="id40E233F3" name="West Coast" color="#FFFFFF" ro="False">
@@ -95,14 +95,9 @@
     </Interface>
     <Interface id="id4848A43B4626" name="ppp0" bridgeport="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False"/>
     <ServiceRef ref="ip-IP_Fragments"/>
-    <ServiceRef ref="ip-IPSEC"/>
-    <ServiceRef ref="ip-IP_Fragments"/>
     <ServiceRef ref="id3B58E3F1"/>
     <ServiceRef ref="sysid1"/>
-    <ServiceRef ref="sysid1"/>
     <ServiceRef ref="id3C6820443"/>
-    <ServiceRef ref="sysid1"/>
-    <ServiceRef ref="sysid1"/>
   </Library>
   <Library id="syslib001" name="User" comment="User defined objects" color="#d2ffd0" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects">
@@ -629,7 +624,7 @@
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls">
       <Firewall id="fw-firewall2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" host_OS="openbsd" inactive="False" lastCompiled="1157930800" lastInstalled="0" lastModified="1202682308" platform="pf" ro="False" version="">
-        <NAT id="nat-firewall2" name="NAT">
+        <NAT id="nat-firewall2" name="NAT" ipv6_rule_set="False">
           <NATRule id="nat-firewall2-0" disabled="False" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -715,7 +710,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="pol-firewall2" name="Policy">
+        <Policy id="pol-firewall2" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id3B09D29D" action="Deny" direction="Inbound" disabled="False" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -1186,7 +1181,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="fw-firewall2-routing" name="Routing"/>
+        <Routing id="fw-firewall2-routing" name="Routing" ipv6_rule_set="False"/>
         <Interface id="if-FW-firewall2-eth1" name="eth1" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False">
           <IPv4 id="if-FW-firewall2-eth1-ipv4" name="address" address="222.222.222.222" netmask="255.255.255.0"/>
         </Interface>
@@ -1323,7 +1318,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3AF5AA0A" name="firewall1" comment="this object is used to test all kinds of negation in policy rules&#10;Also using interface policy on eth1 to test specific case with negation and&#10;rule shading depection&#10;" host_OS="openbsd" inactive="False" lastCompiled="1157930802" lastInstalled="0" lastModified="1200415171" platform="pf" ro="False" version="">
-        <NAT id="id3AF5AA0D" name="NAT">
+        <NAT id="id3AF5AA0D" name="NAT" ipv6_rule_set="False">
           <NATRule id="id3C98491C" disabled="False" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -1643,7 +1638,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id3AF5AA0C" name="Policy">
+        <Policy id="id3AF5AA0C" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id3C5987DC" action="Deny" direction="Both" disabled="False" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="id3B4572B5"/>
@@ -2030,7 +2025,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id3AF5AA0A-routing" name="Routing"/>
+        <Routing id="id3AF5AA0A-routing" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id3AF5AA96" name="eth0" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id3AF5AA96-ipv4" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -2170,7 +2165,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3DE69291" name="firewall13" comment="testing detection of empty groups" host_OS="openbsd" inactive="False" lastCompiled="1157930804" lastInstalled="0" lastModified="1193632387" platform="pf" ro="False" version="">
-        <NAT id="id3DE69292" name="NAT">
+        <NAT id="id3DE69292" name="NAT" ipv6_rule_set="False">
           <NATRule id="id3DE69752" disabled="False" position="0">
             <OSrc neg="False">
               <ObjectRef ref="id3DE69469"/>
@@ -2236,7 +2231,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id3DE692BD" name="Policy">
+        <Policy id="id3DE692BD" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id3DE6946F" action="Accept" direction="Both" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="id3DE6946A"/>
@@ -2295,7 +2290,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id3DE69291-routing" name="Routing"/>
+        <Routing id="id3DE69291-routing" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id3DE6935E" name="eth1" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False">
           <IPv4 id="id3DE6935F" name="address" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
@@ -2375,7 +2370,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3AFB66C6" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " host_OS="openbsd" inactive="False" lastCompiled="1157930805" lastInstalled="0" lastModified="1210452316" platform="pf" ro="False" version="">
-        <NAT id="id3AFB66C7" name="NAT">
+        <NAT id="id3AFB66C7" name="NAT" ipv6_rule_set="False">
           <NATRule id="id3AFB66C8" disabled="False" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -3022,7 +3017,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id3AFB66E4" name="Policy">
+        <Policy id="id3AFB66E4" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id41451D62" action="Deny" direction="Inbound" disabled="False" log="True" position="0">
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
@@ -3328,7 +3323,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id3AFB66C6-routing" name="Routing"/>
+        <Routing id="id3AFB66C6-routing" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id3AFB6703" name="eth0" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id3AFB6703-ipv4" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -3477,7 +3472,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3B0C6380" name="firewall4" comment="this object is used to test a configuration where firewall has dynamic address " host_OS="openbsd" inactive="False" lastCompiled="1157930815" lastInstalled="0" lastModified="1200415196" platform="pf" ro="False" version="">
-        <NAT id="id3B0C6381" name="NAT">
+        <NAT id="id3B0C6381" name="NAT" ipv6_rule_set="False">
           <NATRule id="id3B0C6382" disabled="False" position="0">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
@@ -3567,7 +3562,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id3B0C639E" name="Policy">
+        <Policy id="id3B0C639E" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id3B54F071" action="Deny" direction="Both" disabled="False" log="True" position="0">
             <Src neg="True">
               <ObjectRef ref="id3B022266"/>
@@ -3750,7 +3745,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id3B0C6380-routing" name="Routing"/>
+        <Routing id="id3B0C6380-routing" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id3B0C63DF" name="eth0" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id3B0C63DF-ipv4" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -3885,7 +3880,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3E1FC43C" name="firewall5" comment="testing IP fragments and scrub" host_OS="openbsd" inactive="False" lastCompiled="1157930819" lastInstalled="0" lastModified="1200415199" platform="pf" ro="False" version="">
-        <NAT id="id3E1FC43D" name="NAT">
+        <NAT id="id3E1FC43D" name="NAT" ipv6_rule_set="False">
           <NATRule id="id3E1FC8FC" disabled="True" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -3908,7 +3903,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id3E1FC469" name="Policy">
+        <Policy id="id3E1FC469" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id3E1FC62E" action="Deny" direction="Both" disabled="False" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -3980,7 +3975,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id3E1FC43C-routing" name="Routing"/>
+        <Routing id="id3E1FC43C-routing" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id3E1FC489" name="eth1" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False">
           <IPv4 id="id3E1FC48A" name="address" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
@@ -4066,8 +4061,8 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3C698F1D" name="firewall6" comment="testing rule with firewall in dst and negation" host_OS="openbsd" inactive="False" lastCompiled="1157930821" lastInstalled="0" lastModified="1200415203" platform="pf" ro="False" version="">
-        <NAT id="id3C698F1E" name="NAT"/>
-        <Policy id="id3C698F9D" name="Policy">
+        <NAT id="id3C698F1E" name="NAT" ipv6_rule_set="False"/>
+        <Policy id="id3C698F9D" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id3C699028" action="Deny" direction="Inbound" disabled="False" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -4106,7 +4101,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id3C698F1D-routing" name="Routing"/>
+        <Routing id="id3C698F1D-routing" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id3C699013" name="eth0" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id3C699013-ipv4" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -4193,8 +4188,8 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3C69BD4F" name="firewall7" comment="testing rules with broadcasts" host_OS="openbsd" inactive="False" lastCompiled="1157930822" lastInstalled="0" lastModified="1200415209" platform="pf" ro="False" version="">
-        <NAT id="id3C69BD50" name="NAT"/>
-        <Policy id="id3C69BD51" name="Policy">
+        <NAT id="id3C69BD50" name="NAT" ipv6_rule_set="False"/>
+        <Policy id="id3C69BD51" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id3C69BDE1" action="Deny" direction="Inbound" disabled="False" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -4234,7 +4229,7 @@
             <PolicyRuleOptions/>
           </PolicyRule>
         </Policy>
-        <Routing id="id3C69BD4F-routing" name="Routing"/>
+        <Routing id="id3C69BD4F-routing" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id3C69BD5C" name="eth0" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id3C69BD5C-ipv4" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -4321,7 +4316,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3D581152" name="firewall8" host_OS="openbsd" inactive="False" lastCompiled="1157930823" lastInstalled="0" lastModified="1200415211" platform="pf" ro="False" version="">
-        <NAT id="id3D581156" name="NAT">
+        <NAT id="id3D581156" name="NAT" ipv6_rule_set="False">
           <NATRule id="id3D58164E" disabled="False" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -4512,7 +4507,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id3D581155" name="Policy">
+        <Policy id="id3D581155" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id3E5F239B" action="Accounting" direction="Both" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -4628,7 +4623,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id3D581152-routing" name="Routing"/>
+        <Routing id="id3D581152-routing" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id3D58115B" name="eth1" bridgeport="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False">
           <IPv4 id="id3D58115D" name="firewall8:eth1:1" address="33.33.33.34" netmask="255.255.255.0"/>
           <IPv4 id="id3D58115E" name="firewall8:eth1:0" address="33.33.33.33" netmask="255.255.255.0"/>
@@ -4683,7 +4678,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3E853CBE" name="firewall9" comment="testing rules with broadcasts" host_OS="freebsd" inactive="False" lastCompiled="1157930825" lastInstalled="0" lastModified="1200415214" platform="pf" ro="False" version="">
-        <NAT id="id3E853CBF" name="NAT">
+        <NAT id="id3E853CBF" name="NAT" ipv6_rule_set="False">
           <NATRule id="id3E853EF8" disabled="True" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -4727,7 +4722,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id3E853CC0" name="Policy">
+        <Policy id="id3E853CC0" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id3E853CCE" action="Deny" direction="Inbound" disabled="False" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -4823,7 +4818,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id3E853CBE-routing" name="Routing"/>
+        <Routing id="id3E853CBE-routing" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id3E853CCB" name="eth0" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id3E853CCC" name="address" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -4905,7 +4900,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id43867C1018346" name="firewall33" comment="testing DNSName object" host_OS="freebsd" inactive="False" lastCompiled="1157930808" lastInstalled="0" lastModified="1193632397" platform="pf" ro="False" version="">
-        <NAT id="id43867C4818346" name="NAT">
+        <NAT id="id43867C4818346" name="NAT" ipv6_rule_set="False">
           <NATRule id="id43876E2618346" disabled="False" position="0">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
@@ -4993,7 +4988,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id43867C1618346" name="Policy">
+        <Policy id="id43867C1618346" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id43867C2418346" action="Accept" direction="Both" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="id43869E8C18346"/>
@@ -5220,7 +5215,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id43867C5718346" name="Routing"/>
+        <Routing id="id43867C5718346" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id43867C5818346" name="eth0.100" comment="VLAN interface" bridgeport="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False"/>
         <Interface id="id43867C5918346" name="lo" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id43867C5B18346" name="firewall33:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
@@ -5319,7 +5314,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id4389EDAE18346" name="firewall34" comment="testing AddressTable object" host_OS="openbsd" inactive="False" lastCompiled="1210047001" lastInstalled="0" lastModified="1210046836" platform="pf" ro="False" version="">
-        <NAT id="id4389EE4818346" name="NAT">
+        <NAT id="id4389EE4818346" name="NAT" ipv6_rule_set="False">
           <NATRule id="id4389EEB018346" disabled="False" position="0">
             <OSrc neg="True">
               <ObjectRef ref="id4389EE9118346"/>
@@ -5468,7 +5463,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id4389EDB418346" name="Policy">
+        <Policy id="id4389EDB418346" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id4389EDB518346" action="Accept" direction="Both" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -5722,7 +5717,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id4389EE8318346" name="Routing"/>
+        <Routing id="id4389EE8318346" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id4389EE8418346" name="eth0.100" comment="VLAN interface" bridgeport="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False"/>
         <Interface id="id4389EE8518346" name="lo" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id4389EE8718346" name="firewall34:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
@@ -5821,7 +5816,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id43EC5DDC2355" name="firewall38" comment="testing rules with tag service" host_OS="freebsd" inactive="False" lastCompiled="1215308407" lastInstalled="0" lastModified="1215308308" platform="pf" ro="False" version="">
-        <NAT id="id43EC5E1F2355" name="NAT">
+        <NAT id="id43EC5E1F2355" name="NAT" ipv6_rule_set="False">
           <NATRule id="id43EC5E2E2355" disabled="False" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -5865,7 +5860,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id43EC5DE22355" name="Policy">
+        <Policy id="id43EC5DE22355" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id43EC5DE32355" action="Tag" direction="Inbound" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -6105,7 +6100,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id43EC5E3C2355" name="Routing"/>
+        <Routing id="id43EC5E3C2355" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id43EC5E3D2355" name="le0" bridgeport="False" dyn="False" label="int_if" mgmt="False" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id43EC5E3F2355" name="firewall38:le0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -6236,7 +6231,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id43F7DBEE31316" name="firewall3" comment="testing NAT rules with multiple objects in TSrc and TDst and NAT rule options" host_OS="openbsd" inactive="False" lastCompiled="1157930807" lastInstalled="0" lastModified="1200415192" platform="pf" ro="False" version="">
-        <NAT id="id43F7DC6531316" name="NAT">
+        <NAT id="id43F7DC6531316" name="NAT" ipv6_rule_set="False">
           <NATRule id="id43F7DC6631316" disabled="False" position="0">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -6384,7 +6379,7 @@
             </NATRuleOptions>
           </NATRule>
         </NAT>
-        <Policy id="id43F7DBF431316" name="Policy">
+        <Policy id="id43F7DBF431316" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id43F7DC4131316" comment="All other attempts to connect to&#10;the firewall are denied and logged" action="Deny" direction="Both" disabled="False" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -6431,7 +6426,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id43F7DC7431316" name="Routing"/>
+        <Routing id="id43F7DC7431316" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id43F7DC7531316" name="le0" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False">
           <IPv4 id="id43F7DCEB31316" name="firewall3:le0:ip-1" address="22.22.22.21" netmask="255.255.255.0"/>
           <IPv4 id="id43F7DCEC31316" name="firewall3:le0:ip-2" address="22.22.22.22" netmask="255.255.255.0"/>
@@ -6556,7 +6551,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id445DB34232739" name="firewall39" comment="testing branching rules" host_OS="freebsd" inactive="False" lastCompiled="1157930813" lastInstalled="0" lastModified="1190517710" platform="pf" ro="False" version="">
-        <NAT id="id445DB3CF32739" name="NAT">
+        <NAT id="id445DB3CF32739" name="NAT" ipv6_rule_set="False">
           <NATRule id="id445DB3D032739" disabled="False" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -6600,7 +6595,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id445DB34832739" name="Policy">
+        <Policy id="id445DB34832739" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id445DB34932739" action="Tag" direction="Inbound" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -6830,7 +6825,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Policy id="id445DB3FE32739" name="rule2_branch">
+        <Policy id="id445DB3FE32739" name="rule2_branch" ipv6_rule_set="False">
           <PolicyRule id="id445DB40A32739" action="Accept" direction="Both" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -6870,7 +6865,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Policy id="id445DB3FF32739" name="rule3_branch">
+        <Policy id="id445DB3FF32739" name="rule3_branch" ipv6_rule_set="False">
           <PolicyRule id="id445DB41632739" action="Accept" direction="Inbound" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -6929,8 +6924,8 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Policy id="id445DB40032739" name="rule5_branch"/>
-        <Routing id="id445DB3EC32739" name="Routing"/>
+        <Policy id="id445DB40032739" name="rule5_branch" ipv6_rule_set="False"/>
+        <Routing id="id445DB3EC32739" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id445DB3ED32739" name="le0" bridgeport="False" dyn="False" label="int_if" mgmt="False" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id445DB3EF32739" name="firewall39:le0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -7061,7 +7056,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id44948F9F2976" name="firewall40" comment="testing Route action&#10;" host_OS="openbsd" inactive="False" lastCompiled="1157930816" lastInstalled="0" lastModified="1193632410" platform="pf" ro="False" version="">
-        <NAT id="id449490392976" name="NAT">
+        <NAT id="id449490392976" name="NAT" ipv6_rule_set="False">
           <NATRule id="id449490482976" comment="Translate source address&#10;for outgoing connections" disabled="False" position="0">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -7105,7 +7100,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id44948FA52976" name="Policy">
+        <Policy id="id44948FA52976" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id44957E2D3539" action="Accept" direction="Both" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -7280,7 +7275,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id449490652976" name="Routing"/>
+        <Routing id="id449490652976" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id449490662976" name="le1" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False">
           <IPv4 id="id449490682976" name="firewall40:le1:ip" comment="This is a test address, change it to your real one" address="192.0.2.1" netmask="255.255.255.0"/>
         </Interface>
@@ -7404,8 +7399,8 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id44EC18128791" name="firewall41" comment="testing rule shadowing with run-time objects, rules with such objects should be ignored&#10;&#10;" host_OS="freebsd" inactive="False" lastCompiled="1157930818" lastInstalled="0" lastModified="1193632413" platform="pf" ro="False" version="">
-        <NAT id="id44EC18168791" name="NAT"/>
-        <Policy id="id44EC18158791" name="Policy">
+        <NAT id="id44EC18168791" name="NAT" ipv6_rule_set="False"/>
+        <Policy id="id44EC18158791" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id44EC181E8791" action="Accept" direction="Both" disabled="False" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="id44EC18128791"/>
@@ -7461,7 +7456,7 @@
             <PolicyRuleOptions/>
           </PolicyRule>
         </Policy>
-        <Routing id="id44EC18178791" name="Routing"/>
+        <Routing id="id44EC18178791" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id44EC18188791" name="eth0" bridgeport="False" dyn="False" label="ext" security_level="0" unnum="False" unprotected="False">
           <IPv4 id="id44EC18198791" name="firewall41:eth0:ip" address="1.1.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -7519,7 +7514,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id4699449021967" name="firewall10-1" comment="PF 3.x, testing &#10;&quot;flags S/SA keep state&quot;" host_OS="openbsd" inactive="False" lastCompiled="1202682006" lastInstalled="0" lastModified="1202681966" platform="pf" ro="False" version="3.x">
-        <NAT id="id469944D321967" name="NAT">
+        <NAT id="id469944D321967" name="NAT" ipv6_rule_set="False">
           <NATRule id="id469944D421967" disabled="True" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -7563,7 +7558,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id4699449621967" name="Policy">
+        <Policy id="id4699449621967" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id4699449721967" action="Accept" direction="Inbound" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -7676,7 +7671,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id469944F021967" name="Routing"/>
+        <Routing id="id469944F021967" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id469944F121967" name="eth0" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id469944F321967" name="firewall10-1:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -7811,7 +7806,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id4699570022254" name="firewall10-2" comment="PF 4.x, testing &#10;&quot;flags S/SA keep state&quot;" host_OS="openbsd" inactive="False" lastCompiled="1202682007" lastInstalled="0" lastModified="1202682031" platform="pf" ro="False" version="4.x">
-        <NAT id="id4699573822254" name="NAT">
+        <NAT id="id4699573822254" name="NAT" ipv6_rule_set="False">
           <NATRule id="id4699573922254" disabled="True" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -7855,7 +7850,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id4699570622254" name="Policy">
+        <Policy id="id4699570622254" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id4699570722254" action="Accept" direction="Inbound" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -7968,7 +7963,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id4699575522254" name="Routing"/>
+        <Routing id="id4699575522254" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id4699575622254" name="eth0" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id4699575822254" name="firewall10-2:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -8103,7 +8098,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id469948EA22616" name="firewall10-3" comment="PF 3.x, testing &#10;&quot;flags S/SA keep state&quot;&#10;&quot;Accept tcp sessions opened&#10;prior to restart&quot; ON&#10;" host_OS="openbsd" inactive="False" lastCompiled="1202682008" lastInstalled="0" lastModified="1202681977" platform="pf" ro="False" version="3.x">
-        <NAT id="id4699492222616" name="NAT">
+        <NAT id="id4699492222616" name="NAT" ipv6_rule_set="False">
           <NATRule id="id4699492322616" disabled="True" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -8147,7 +8142,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id469948F022616" name="Policy">
+        <Policy id="id469948F022616" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id469948F122616" action="Accept" direction="Inbound" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -8260,7 +8255,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id4699493F22616" name="Routing"/>
+        <Routing id="id4699493F22616" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id4699494022616" name="eth0" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id4699494222616" name="firewall10-3:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -8395,7 +8390,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id4699494C22616" name="firewall10-4" comment="PF 4.x, testing &#10;&quot;flags S/SA keep state&quot;&#10;&quot;Accept tcp sessions opened&#10;prior to restart&quot; is ON&#10;" host_OS="openbsd" inactive="False" lastCompiled="1202682010" lastInstalled="0" lastModified="1202681983" platform="pf" ro="False" version="4.x">
-        <NAT id="id4699498422616" name="NAT">
+        <NAT id="id4699498422616" name="NAT" ipv6_rule_set="False">
           <NATRule id="id4699498522616" disabled="True" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -8439,7 +8434,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id4699495222616" name="Policy">
+        <Policy id="id4699495222616" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id4699495322616" action="Accept" direction="Inbound" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -8552,7 +8547,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id469949A122616" name="Routing"/>
+        <Routing id="id469949A122616" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id469949A222616" name="eth0" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id469949A422616" name="firewall10-4:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -8687,7 +8682,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id46F605DE10002" name="firewall10-5" comment="PF 3.x, testing &#10;&quot;flags S/SA keep state&quot;&#10;&quot;Accept tcp sessions opened&#10;prior to restart&quot; ON&#10;Using &quot;pass all outgoing&quot;&#10;" host_OS="openbsd" inactive="False" lastCompiled="1202682011" lastInstalled="0" lastModified="1202681989" platform="pf" ro="False" version="3.x">
-        <NAT id="id46F6061610002" name="NAT">
+        <NAT id="id46F6061610002" name="NAT" ipv6_rule_set="False">
           <NATRule id="id46F6061710002" disabled="True" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -8731,7 +8726,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id46F605E410002" name="Policy">
+        <Policy id="id46F605E410002" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id46F6520210002" comment="This adds &quot;pass  out ... keep state&quot; &#10;rule that compiler 2.1.14&#10;does not add automatically for pf 3.x&#10;Note that checkbox &quot;add 'keep state'&quot;&#10;is on in options&#10;" action="Accept" direction="Outbound" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -8879,7 +8874,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id46F6063310002" name="Routing"/>
+        <Routing id="id46F6063310002" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id46F6063410002" name="eth0" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id46F6063610002" name="firewall10-5:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -9014,7 +9009,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id46F6064010002" name="firewall10-6" comment="PF 4.x, testing &#10;&quot;flags S/SA keep state&quot;&#10;&quot;Accept tcp sessions opened&#10;prior to restart&quot; is ON&#10;Using &quot;pass all outgoing&quot;&#10;" host_OS="openbsd" inactive="False" lastCompiled="1202682012" lastInstalled="0" lastModified="1202681995" platform="pf" ro="False" version="4.x">
-        <NAT id="id46F6067810002" name="NAT">
+        <NAT id="id46F6067810002" name="NAT" ipv6_rule_set="False">
           <NATRule id="id46F6067910002" disabled="True" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -9058,7 +9053,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id46F6064610002" name="Policy">
+        <Policy id="id46F6064610002" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id46F6064710002" action="Accept" direction="Inbound" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -9171,7 +9166,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id46F6069510002" name="Routing"/>
+        <Routing id="id46F6069510002" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id46F6069610002" name="eth0" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id46F6069810002" name="firewall10-6:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -9306,7 +9301,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id476458AA9697" name="firewall40-1" comment="testing Route action&#10;with load balancing&#10;" host_OS="openbsd" inactive="False" lastCompiled="1157930816" lastInstalled="0" lastModified="1197750649" platform="pf" ro="False" version="">
-        <NAT id="id476458FA9697" name="NAT">
+        <NAT id="id476458FA9697" name="NAT" ipv6_rule_set="False">
           <NATRule id="id476458FB9697" comment="Translate source address&#10;for outgoing connections" disabled="False" position="0">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -9350,7 +9345,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id476458B09697" name="Policy">
+        <Policy id="id476458B09697" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id47646C979697" action="Route" direction="Inbound" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -10060,7 +10055,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id476459179697" name="Routing"/>
+        <Routing id="id476459179697" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id476459189697" name="le1" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False">
           <IPv4 id="id4764591A9697" name="firewall40-1:le1:ip" comment="This is a test address, change it to your real one" address="192.0.2.1" netmask="255.255.255.0"/>
         </Interface>
@@ -10183,10 +10178,10 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4833F62B6131" name="firewall-ipv6-1" host_OS="freebsd" inactive="False" lastCompiled="1212115999" lastInstalled="0" lastModified="1212272477" platform="pf" ro="False" version="">
-        <NAT id="id4833F62F6131" name="NAT"/>
-        <Policy id="id483F5B7623190" name="Policy_ipv4"/>
-        <Policy id="id4833F62E6131" name="Policy">
+      <Firewall id="id4833F62B6131" name="firewall-ipv6-1" host_OS="freebsd" inactive="False" lastCompiled="1212115999" lastInstalled="0" lastModified="1215405080" platform="pf" ro="False" version="">
+        <NAT id="id4833F62F6131" name="NAT" ipv6_rule_set="False"/>
+        <Policy id="id483F5B7623190" name="Policy_ipv4" ipv6_rule_set="False"/>
+        <Policy id="id4833F62E6131" name="Policy" ipv6_rule_set="True">
           <PolicyRule id="id4841FADE30813" action="Accept" direction="Both" disabled="False" group="" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -10428,7 +10423,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id4833F6306131" name="Routing"/>
+        <Routing id="id4833F6306131" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id4833F6316131" name="eth0" bridgeport="False" dyn="False" label="" security_level="50" unnum="False" unprotected="False">
           <IPv4 id="id4833F6326131" name="firewall-ipv6-1:eth0:ip" address="1.1.1.1" netmask="255.255.255.0"/>
           <IPv6 id="id4833F6346131" name="firewall-ipv6-1:eth0:ipv6" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
@@ -10578,9 +10573,9 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id4848A4294626" name="firewall-base-rulesets" comment="this firewall is used to test a rule in the global policy of object &quot;firewall&quot;&#10;" host_OS="openbsd" inactive="False" lastCompiled="1188097225" lastInstalled="1142003872" lastModified="1212696462" platform="pf" ro="False" version="">
-        <NAT id="id4848A4304626" name="NAT"/>
-        <Policy id="id4848A42F4626" name="Policy"/>
-        <Policy id="id4848A4414626" name="web_server_inbound" comment="Basic rules for web servers.&#10;">
+        <NAT id="id4848A4304626" name="NAT" ipv6_rule_set="False"/>
+        <Policy id="id4848A42F4626" name="Policy" ipv6_rule_set="False"/>
+        <Policy id="id4848A4414626" name="web_server_inbound" comment="Basic rules for web servers.&#10;" ipv6_rule_set="False">
           <PolicyRule id="id4848A4424626" action="Accept" direction="Inbound" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -10623,7 +10618,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Policy id="id48493B6E4626" name="mail_server_inbound" comment="Basic rules for mail servers">
+        <Policy id="id48493B6E4626" name="mail_server_inbound" comment="Basic rules for mail servers" ipv6_rule_set="False">
           <PolicyRule id="id48493B6F4626" action="Accept" direction="Inbound" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -10666,7 +10661,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Policy id="id484B0A134626" name="mail_server_outbound" comment="Basic rules for mail servers">
+        <Policy id="id484B0A134626" name="mail_server_outbound" comment="Basic rules for mail servers" ipv6_rule_set="False">
           <PolicyRule id="id484B0A2D4626" action="Accept" direction="Outbound" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -10710,7 +10705,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Policy id="id484B3D324626" name="web_server_outbound" comment="Basic rules for web servers.&#10;">
+        <Policy id="id484B3D324626" name="web_server_outbound" comment="Basic rules for web servers.&#10;" ipv6_rule_set="False">
           <PolicyRule id="id484B3D3F4626" action="Accept" direction="Outbound" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -10753,7 +10748,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id4848A4314626" name="Routing"/>
+        <Routing id="id4848A4314626" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id4848A4324626" name="en0" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False">
           <IPv4 id="id4848A4344626" name="firewall-base-rulesets:en0:ip" address="33.33.33.33" netmask="255.255.255.0"/>
         </Interface>
@@ -10830,8 +10825,8 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id484A05C44626" name="firewall51" comment="testing branching rules that point&#10;at rule sets defined in object&#10;firewall-base-rulesets" host_OS="openbsd" inactive="False" lastCompiled="1188097218" lastInstalled="1142003872" lastModified="1212696679" platform="pf" ro="False" version="">
-        <NAT id="id484A06174626" name="NAT"/>
-        <Policy id="id484A05CA4626" name="Policy">
+        <NAT id="id484A06174626" name="NAT" ipv6_rule_set="False"/>
+        <Policy id="id484A05CA4626" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id484A05CB4626" action="Branch" direction="Both" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -11035,7 +11030,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Policy id="id484A06094626" name="rule2_branch">
+        <Policy id="id484A06094626" name="rule2_branch" ipv6_rule_set="False">
           <PolicyRule id="id484A060A4626" action="Deny" direction="Both" disabled="False" log="True" position="0">
             <Src neg="True">
               <ObjectRef ref="id3CEBFDFC"/>
@@ -11058,7 +11053,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id484A06184626" name="Routing"/>
+        <Routing id="id484A06184626" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id484A06194626" name="en0" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id484A061B4626" name="firewall51:en0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -11162,8 +11157,8 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id4848F19020246" name="firewall62" comment="testing rules using UserService object&#10;Note that iptables does not allow entering&#10;iptables command that tries to match using module 'owner' in any chain&#10;other than OUTPUT. This includes user defined chains too (it checks&#10;how control passes to user defined chain and blocks command if&#10;it appears that user defined chain gets control not from OUTPUT)&#10;&#10;" host_OS="openbsd" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1212808094" platform="pf" ro="False" version="4.x">
-        <NAT id="id4848F1D320246" name="NAT"/>
-        <Policy id="id4848F19620246" name="Policy">
+        <NAT id="id4848F1D320246" name="NAT" ipv6_rule_set="False"/>
+        <Policy id="id4848F19620246" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id484A6C465896" comment="rule from FR 1948872&#10;should generate&#10;pass in quick on en0 user proxy&#10;" action="Accept" direction="Inbound" disabled="False" group="" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -11450,7 +11445,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id4848F1D420246" name="Routing"/>
+        <Routing id="id4848F1D420246" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id4848F1D520246" name="en0" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False">
           <IPv4 id="id4848F1D720246" name="firewall62:en0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
@@ -11545,7 +11540,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id530B20443" name="firewall63" comment="testing tos matching" host_OS="openbsd" inactive="False" lastCompiled="1215308098" lastInstalled="0" lastModified="1215308090" platform="pf" ro="False" version="">
-        <NAT id="id533820443" name="NAT">
+        <NAT id="id533820443" name="NAT" ipv6_rule_set="False">
           <NATRule id="id533920443" disabled="True" position="0">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
@@ -11568,7 +11563,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id531120443" name="Policy">
+        <Policy id="id531120443" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id531220443" action="Deny" direction="Both" disabled="False" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -11683,7 +11678,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id534720443" name="Routing"/>
+        <Routing id="id534720443" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id534820443" name="eth1" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False">
           <IPv4 id="id534A20443" name="firewall63:eth1:ip" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
@@ -11874,7 +11869,7 @@
     </ServiceGroup>
     <ObjectGroup id="id415276D6" name="Firewalls">
       <Firewall id="id3AF5A2BA" name="labfw-openbsd" comment="firewall protects host it is running on&#10;&#10;Note that we set output file name to  /tmp/labfw.fw to test what compiler is going to do (since it generates three files rather than one), as well as to test installer in this case&#10;" host_OS="openbsd" inactive="False" lastCompiled="1172032243" lastInstalled="1172032344" lastModified="1212609898" platform="pf" ro="False" version="">
-        <NAT id="id3AF5A2BD" name="NAT">
+        <NAT id="id3AF5A2BD" name="NAT" ipv6_rule_set="False">
           <NATRule id="id414E693E" disabled="False" position="0">
             <OSrc neg="False">
               <ObjectRef ref="id414C70BE"/>
@@ -11920,7 +11915,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id3AF5A2BC" name="Policy">
+        <Policy id="id3AF5A2BC" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id48472A0C23126" action="Tag" direction="Both" disabled="False" group="" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -12105,7 +12100,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Policy id="id445E76D326850" name="rule3_branch">
+        <Policy id="id445E76D326850" name="rule3_branch" ipv6_rule_set="False">
           <PolicyRule id="id445E77D326850" comment="block fragments" action="Deny" direction="Both" disabled="False" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -12152,7 +12147,7 @@
             <PolicyRuleOptions/>
           </PolicyRule>
         </Policy>
-        <Routing id="id3AF5A2BA-routing" name="Routing"/>
+        <Routing id="id3AF5A2BA-routing" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id3AF5A2CB" name="pcn0" bridgeport="False" dyn="False" label="" mgmt="True" security_level="0" unnum="False" unprotected="False">
           <IPv4 id="id3AF5A2CB-ipv4" name="labfw-openbsd:pcn0:ip" address="10.3.14.120" netmask="255.255.255.0"/>
         </Interface>
@@ -12283,7 +12278,7 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id42B5D8FC" name="labfw-fbsd" host_OS="freebsd" inactive="True" lastCompiled="1157930826" lastInstalled="0" lastModified="1147032998" platform="pf" ro="False" version="">
-        <NAT id="id42B5D93E" name="NAT">
+        <NAT id="id42B5D93E" name="NAT" ipv6_rule_set="False">
           <NATRule id="id42B5D93F" disabled="False" position="0">
             <OSrc neg="False">
               <ObjectRef ref="id414C70BE"/>
@@ -12306,7 +12301,7 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id42B5D901" name="Policy">
+        <Policy id="id42B5D901" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id42B5D977" action="Deny" direction="Inbound" disabled="False" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="id414C70BE"/>
@@ -12444,7 +12439,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id42B5D8FC-routing" name="Routing"/>
+        <Routing id="id42B5D8FC-routing" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id42B5D95D" name="lnc0" bridgeport="False" dyn="False" label="" mgmt="True" security_level="0" unnum="False" unprotected="False">
           <IPv4 id="id42B5D98D" name="labfw-fbsd:lnc0:ip" address="10.3.14.121" netmask="255.255.255.0"/>
         </Interface>
@@ -12581,8 +12576,8 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id45DE9C5B2560" name="openbsd-4.0" comment="firewall protects host it is running on&#10;&#10;Note that we set output file name to  /tmp/labfw.fw to test what compiler is going to do (since it generates three files rather than one), as well as to test installer in this case&#10;" host_OS="openbsd" inactive="False" lastCompiled="1202683169" lastInstalled="1202683190" lastModified="1202683163" platform="pf" ro="False" version="ge_3.7">
-        <NAT id="id45DE9CDB2560" name="NAT"/>
-        <Policy id="id45DE9C612560" name="Policy">
+        <NAT id="id45DE9CDB2560" name="NAT" ipv6_rule_set="False"/>
+        <Policy id="id45DE9C612560" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id47B0069F19082" action="Accept" direction="Both" disabled="True" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="id4144D5A0"/>
@@ -12702,7 +12697,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Policy id="id45DE9C942560" name="rule3_branch">
+        <Policy id="id45DE9C942560" name="rule3_branch" ipv6_rule_set="False">
           <PolicyRule id="id45DE9C952560" comment="block fragments" action="Deny" direction="Both" disabled="False" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -12749,7 +12744,7 @@
             <PolicyRuleOptions/>
           </PolicyRule>
         </Policy>
-        <Routing id="id45DE9CFA2560" name="Routing"/>
+        <Routing id="id45DE9CFA2560" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id45DE9CFB2560" name="pcn0" bridgeport="False" dyn="False" label="" mgmt="True" security_level="0" unnum="False" unprotected="False">
           <IPv4 id="id45DE9CFD2560" name="openbsd-4.0:pcn0:ip" address="10.3.14.54" netmask="255.255.255.0"/>
         </Interface>
@@ -12877,8 +12872,8 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id47B07CD419082" name="openbsd-4.2" comment="firewall protects host it is running on&#10;&#10;Note that we set output file name to  /tmp/labfw.fw to test what compiler is going to do (since it generates three files rather than one), as well as to test installer in this case&#10;" host_OS="openbsd" inactive="False" lastCompiled="1202686003" lastInstalled="1202686020" lastModified="1202685992" platform="pf" ro="False" version="4.x">
-        <NAT id="id47B07D4319082" name="NAT"/>
-        <Policy id="id47B07CDA19082" name="Policy">
+        <NAT id="id47B07D4319082" name="NAT" ipv6_rule_set="False"/>
+        <Policy id="id47B07CDA19082" name="Policy" ipv6_rule_set="False">
           <PolicyRule id="id47B07CDB19082" action="Accept" direction="Both" disabled="True" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="id4144D5A0"/>
@@ -12998,7 +12993,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Policy id="id47B07D0B19082" name="rule3_branch">
+        <Policy id="id47B07D0B19082" name="rule3_branch" ipv6_rule_set="False">
           <PolicyRule id="id47B07D0C19082" comment="block fragments" action="Deny" direction="Both" disabled="False" log="True" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
@@ -13045,7 +13040,7 @@
             <PolicyRuleOptions/>
           </PolicyRule>
         </Policy>
-        <Routing id="id47B07D4419082" name="Routing"/>
+        <Routing id="id47B07D4419082" name="Routing" ipv6_rule_set="False"/>
         <Interface id="id47B07D4519082" name="pcn0" bridgeport="False" dyn="False" label="" mgmt="True" security_level="0" unnum="False" unprotected="False">
           <IPv4 id="id47B07D4719082" name="openbsd-4.2:pcn0:ip" address="10.3.14.50" netmask="255.255.255.0"/>
         </Interface>

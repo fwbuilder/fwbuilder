@@ -153,7 +153,9 @@ int main(int argc, char * const * argv)
             ofname = string(optarg);
             break;
         case 'x':
-            if (*optarg=='p') {
+            if (*optarg=='t') {
+                test_mode = true;
+            } else if (*optarg=='p') {
                 ++optarg;
                 drp  = atoi(optarg);
             } else {
@@ -168,9 +170,6 @@ int main(int argc, char * const * argv)
                     }
                 }
             }
-            break;
-        case 't':
-            test_mode++;
             break;
         case 'v':
             verbose++;
