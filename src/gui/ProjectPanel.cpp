@@ -107,20 +107,26 @@ void ProjectPanel::initMain(FWWindow *main)
     if (st->getInfoStyle()!=0) m_panel->oi->show();
     else m_panel->oi->hide();
     
-    findObjectWidget = new FindObjectWidget( m_panel->auxiliaryPanel, "findObjectWidget" );
+    findObjectWidget = new FindObjectWidget(
+        m_panel->auxiliaryPanel, "findObjectWidget" );
     findObjectWidget->setFocusPolicy( Qt::NoFocus );
     m_panel->auxiliaryPanel->layout()->addWidget( findObjectWidget );
-    connect( findObjectWidget, SIGNAL( close() ), this, SLOT( closeAuxiliaryPanel() ) );
+    connect( findObjectWidget, SIGNAL( close() ),
+             this, SLOT( closeAuxiliaryPanel() ) );
 
-    findWhereUsedWidget = new FindWhereUsedWidget(m_panel->auxiliaryPanel, "findWhereUsedWidget");
+    findWhereUsedWidget = new FindWhereUsedWidget(
+        m_panel->auxiliaryPanel, "findWhereUsedWidget");
     findWhereUsedWidget->setFocusPolicy( Qt::NoFocus );
     m_panel->auxiliaryPanel->layout()->addWidget( findWhereUsedWidget );
     findWhereUsedWidget->hide();
-    connect( findWhereUsedWidget, SIGNAL( close() ), this, SLOT( closeAuxiliaryPanel() ) );
-//    connect( m_panel->fwList, SIGNAL( activated(int) ), this, SLOT( openFirewall(int) ) );
-    connect( m_panel->infoStyleButton, SIGNAL( clicked() ), this, SLOT( changeInfoStyle() ) );
-    connect(m_panel->mainSplitter, SIGNAL(splitterMoved(int,int)),this,SLOT(splitterMoved(int,int)));
-    connect(m_panel->objInfoSplitter, SIGNAL(splitterMoved(int,int)),this,SLOT(splitterMoved(int,int)));
+    connect( findWhereUsedWidget, SIGNAL( close() ),
+             this, SLOT( closeAuxiliaryPanel() ) );
+    connect( m_panel->infoStyleButton, SIGNAL( clicked() ),
+             this, SLOT( changeInfoStyle() ) );
+    connect(m_panel->mainSplitter, SIGNAL(splitterMoved(int,int)),
+            this,SLOT(splitterMoved(int,int)));
+    connect(m_panel->objInfoSplitter, SIGNAL(splitterMoved(int,int)),
+            this,SLOT(splitterMoved(int,int)));
 
     m_panel->auxiliaryPanel->hide();
     initOE();
@@ -1494,15 +1500,20 @@ void ProjectPanel::load(QWidget *dialogs_parent)
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
 
 // always loading system objects
-        if (fwbdebug) qDebug("ProjectPanel::load(): sysfname = %s",sysfname.c_str());
+        if (fwbdebug)
+            qDebug("ProjectPanel::load(): sysfname = %s", sysfname.c_str());
+
         objdb->load( sysfname, &upgrade_predicate, librespath);
         objdb->setFileName("");
 
         if (fwbdebug) qDebug("ProjectPanel::load(): create User library");
 
-        FWObject *userLib=createNewLibrary( objdb );
+        FWObject *userLib = createNewLibrary( objdb );
         userLib->setName("User");
         userLib->setStr("color","#d2ffd0");
+
+        // NOTE: add-on libraries are obsolete in v3.0.0
+        // TODO: remove this.
 
         if (fwbdebug) qDebug("ProjectPanel::load(): loading libraries");
 
@@ -1888,6 +1899,10 @@ void ProjectPanel::load(QWidget *dialogs_parent, RCS *_rcs)
             }
         } else
         {
+
+            // NOTE: add-on libraries are obsolete in v3.0.0
+            // TODO: remove this.
+
 /* preload libraries only if we do not edit a library file */
             for (list<libData>::iterator i=addOnLibs->begin();
                  i!=addOnLibs->end(); ++i)
@@ -2210,6 +2225,10 @@ void ProjectPanel::save()
                     {
                         if (fwbdebug) qDebug("ProjectPanel::save()  lib %s",
                                              (*i)->getName().c_str() );
+
+                        // NOTE: add-on libraries are obsolete in v3.0.0
+                        // TODO: remove this.
+
 /* if we are not editing a library file, skip preloaded libraries */
                         if (!editingLibfile &&
                             addOnLibs->isLoaded((*i)->getName().c_str()))
@@ -2922,6 +2941,8 @@ bool ProjectPanel::requestEditorOwnership(QWidget *w,
     return true;
 }
 
+// NOTE: add-on libraries are obsolete in v3.0.0
+// TODO: remove this.
 listOfLibraries *ProjectPanel::getAddOnLibs()
 {
     return addOnLibs;

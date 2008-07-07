@@ -50,6 +50,11 @@ listOfLibraries::listOfLibraries()
 {
 // build list of available libraries
 
+
+    // Trying to obsolete this feature in v3.0.0
+    return;
+
+
 /* first read user's preferences. User may want to load some libraries
  * that we usually find but do not load by default (e.g. templates)
  */

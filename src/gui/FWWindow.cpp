@@ -1348,6 +1348,8 @@ QString FWWindow::printHeader()
     return "";
 }
 
+// NOTE: add-on libraries are obsolete in v3.0.0
+// TODO: remove this.
 listOfLibraries *FWWindow::getAddOnLibs()
 {
     if (activeProject())

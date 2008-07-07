@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>518</width>
-    <height>609</height>
+    <width>586</width>
+    <height>591</height>
    </rect>
   </property>
   <layout class="QGridLayout" >
@@ -1120,7 +1120,7 @@
          </property>
          <property name="minimumSize" >
           <size>
-           <width>280</width>
+           <width>310</width>
            <height>210</height>
           </size>
          </property>
@@ -1130,212 +1130,220 @@
          <property name="frameShadow" >
           <enum>QFrame::Sunken</enum>
          </property>
-         <layout class="QGridLayout" >
-          <item row="0" column="0" >
-           <spacer>
-            <property name="orientation" >
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType" >
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" >
-             <size>
-              <width>25</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="1" >
-           <widget class="Line" name="intfOutsideLine" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Minimum" hsizetype="Fixed" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize" >
-             <size>
-              <width>20</width>
-              <height>20</height>
-             </size>
-            </property>
-            <property name="frameShape" >
-             <enum>QFrame::VLine</enum>
-            </property>
-            <property name="frameShadow" >
-             <enum>QFrame::Sunken</enum>
-            </property>
-            <property name="orientation" >
-             <enum>Qt::Vertical</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2" colspan="2" >
-           <widget class="QTextBrowser" name="intfOutsideText" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="maximumSize" >
-             <size>
-              <width>16777215</width>
-              <height>55</height>
-             </size>
-            </property>
-            <property name="frameShape" >
-             <enum>QFrame::Panel</enum>
-            </property>
-            <property name="frameShadow" >
-             <enum>QFrame::Raised</enum>
-            </property>
-            <property name="verticalScrollBarPolicy" >
-             <enum>Qt::ScrollBarAlwaysOff</enum>
-            </property>
-            <property name="horizontalScrollBarPolicy" >
-             <enum>Qt::ScrollBarAlwaysOff</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" colspan="2" >
-           <widget class="QLabel" name="pixmapLabel1" >
-            <property name="pixmap" >
-             <pixmap resource="MainRes.qrc" >:/Icons/firewall_64.png</pixmap>
-            </property>
-            <property name="scaledContents" >
-             <bool>false</bool>
-            </property>
-            <property name="wordWrap" >
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2" >
-           <widget class="Line" name="intfDMZLine" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize" >
-             <size>
-              <width>20</width>
-              <height>20</height>
-             </size>
-            </property>
-            <property name="frameShape" >
-             <enum>QFrame::HLine</enum>
-            </property>
-            <property name="frameShadow" >
-             <enum>QFrame::Sunken</enum>
-            </property>
-            <property name="orientation" >
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3" >
-           <widget class="QTextBrowser" name="intfDMZText" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="maximumSize" >
-             <size>
-              <width>16777215</width>
-              <height>55</height>
-             </size>
-            </property>
-            <property name="frameShape" >
-             <enum>QFrame::Panel</enum>
-            </property>
-            <property name="frameShadow" >
-             <enum>QFrame::Raised</enum>
-            </property>
-            <property name="verticalScrollBarPolicy" >
-             <enum>Qt::ScrollBarAlwaysOff</enum>
-            </property>
-            <property name="horizontalScrollBarPolicy" >
-             <enum>Qt::ScrollBarAlwaysOff</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" >
-           <spacer>
-            <property name="orientation" >
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType" >
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" >
-             <size>
-              <width>25</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="2" column="1" >
-           <widget class="Line" name="intfInsideLine" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Minimum" hsizetype="Fixed" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize" >
-             <size>
-              <width>20</width>
-              <height>20</height>
-             </size>
-            </property>
-            <property name="frameShape" >
-             <enum>QFrame::VLine</enum>
-            </property>
-            <property name="frameShadow" >
-             <enum>QFrame::Sunken</enum>
-            </property>
-            <property name="orientation" >
-             <enum>Qt::Vertical</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2" colspan="2" >
-           <widget class="QTextBrowser" name="intfInsideText" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="maximumSize" >
-             <size>
-              <width>16777215</width>
-              <height>55</height>
-             </size>
-            </property>
-            <property name="frameShape" >
-             <enum>QFrame::Panel</enum>
-            </property>
-            <property name="frameShadow" >
-             <enum>QFrame::Raised</enum>
-            </property>
-            <property name="verticalScrollBarPolicy" >
-             <enum>Qt::ScrollBarAlwaysOff</enum>
-            </property>
-            <property name="horizontalScrollBarPolicy" >
-             <enum>Qt::ScrollBarAlwaysOff</enum>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         <widget class="Line" name="intfOutsideLine" >
+          <property name="geometry" >
+           <rect>
+            <x>30</x>
+            <y>11</y>
+            <width>20</width>
+            <height>55</height>
+           </rect>
+          </property>
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Minimum" hsizetype="Fixed" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="frameShape" >
+           <enum>QFrame::VLine</enum>
+          </property>
+          <property name="frameShadow" >
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <property name="orientation" >
+           <enum>Qt::Vertical</enum>
+          </property>
+         </widget>
+         <widget class="QTextBrowser" name="intfOutsideText" >
+          <property name="geometry" >
+           <rect>
+            <x>81</x>
+            <y>11</y>
+            <width>217</width>
+            <height>55</height>
+           </rect>
+          </property>
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>16777215</width>
+            <height>55</height>
+           </size>
+          </property>
+          <property name="frameShape" >
+           <enum>QFrame::Panel</enum>
+          </property>
+          <property name="frameShadow" >
+           <enum>QFrame::Raised</enum>
+          </property>
+          <property name="verticalScrollBarPolicy" >
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy" >
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
+         <widget class="QLabel" name="pixmapLabel1" >
+          <property name="geometry" >
+           <rect>
+            <x>11</x>
+            <y>72</y>
+            <width>64</width>
+            <height>64</height>
+           </rect>
+          </property>
+          <property name="pixmap" >
+           <pixmap resource="MainRes.qrc" >:/Icons/firewall_64.png</pixmap>
+          </property>
+          <property name="scaledContents" >
+           <bool>false</bool>
+          </property>
+          <property name="wordWrap" >
+           <bool>false</bool>
+          </property>
+         </widget>
+         <widget class="Line" name="intfDMZLine" >
+          <property name="geometry" >
+           <rect>
+            <x>81</x>
+            <y>94</y>
+            <width>20</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="frameShape" >
+           <enum>QFrame::HLine</enum>
+          </property>
+          <property name="frameShadow" >
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+         <widget class="QTextBrowser" name="intfDMZText" >
+          <property name="geometry" >
+           <rect>
+            <x>107</x>
+            <y>76</y>
+            <width>191</width>
+            <height>55</height>
+           </rect>
+          </property>
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>16777215</width>
+            <height>55</height>
+           </size>
+          </property>
+          <property name="frameShape" >
+           <enum>QFrame::Panel</enum>
+          </property>
+          <property name="frameShadow" >
+           <enum>QFrame::Raised</enum>
+          </property>
+          <property name="verticalScrollBarPolicy" >
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy" >
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
+         <widget class="Line" name="intfInsideLine" >
+          <property name="geometry" >
+           <rect>
+            <x>30</x>
+            <y>142</y>
+            <width>20</width>
+            <height>55</height>
+           </rect>
+          </property>
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Minimum" hsizetype="Fixed" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="frameShape" >
+           <enum>QFrame::VLine</enum>
+          </property>
+          <property name="frameShadow" >
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <property name="orientation" >
+           <enum>Qt::Vertical</enum>
+          </property>
+         </widget>
+         <widget class="QTextBrowser" name="intfInsideText" >
+          <property name="geometry" >
+           <rect>
+            <x>81</x>
+            <y>142</y>
+            <width>217</width>
+            <height>55</height>
+           </rect>
+          </property>
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>16777215</width>
+            <height>55</height>
+           </size>
+          </property>
+          <property name="frameShape" >
+           <enum>QFrame::Panel</enum>
+          </property>
+          <property name="frameShadow" >
+           <enum>QFrame::Raised</enum>
+          </property>
+          <property name="verticalScrollBarPolicy" >
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy" >
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </widget>
        </item>
        <item row="0" column="0" colspan="2" >

@@ -88,12 +88,12 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog = new Ui::prefsDialog_q;
     m_dialog->setupUi(this);
 
+    m_dialog->tabWidget->removeTab(6);
+    m_dialog->tabWidget->setCurrentIndex(0);
+
+
+
     m_dialog->wDir->setText( st->getWDir() );
-    int sa_itm = st->getStartupAction();
-    if (sa_itm < 0 || sa_itm > 1) sa_itm = 0;
-    m_dialog->startupAction->setCurrentIndex( sa_itm );
-    m_dialog->expandTree->setChecked( st->getExpandTree() );
-//    mergeLibs->setChecked( st->getMergeLibs() );
 
     m_dialog->objTooltips->setChecked( st->getObjTooltips() );
     m_dialog->tooltipDelay->setValue( st->getTooltipDelay() );
@@ -410,9 +410,6 @@ void PrefsDialog::accept()
 /* check if the default working directory does not exist yet */
 
     st->setWDir( wd );
-    st->setStartupAction( m_dialog->startupAction->currentIndex() );
-    st->setExpandTree( m_dialog->expandTree->isChecked() );
-//    st->setMergeLibs( mergeLibs->isChecked() );
 
     st->setObjTooltips( m_dialog->objTooltips->isChecked() );
     st->setTooltipDelay( m_dialog->tooltipDelay->value() );

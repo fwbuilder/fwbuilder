@@ -1,5 +1,13 @@
 2008-07-07  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* listOfLibraries.cpp (listOfLibraries::listOfLibraries): Removed
+	support for add-on libraries in the GUI. User can now open their
+	working file and external library file simultaneously and copy
+	objects from one to another. This removes the need for the
+	cumbersome add-on libraries feature. Will keep module
+	listOfLibraries and corresponding code fragments in ProjectPanel
+	and FWWindow until removal of this feature is validated by users.
+
 	* PolicyCompiler_pf_writers.cpp: Support for "synproxy state"
 	option for PF per FR #1098098: "Per-rule Synproxy"
 

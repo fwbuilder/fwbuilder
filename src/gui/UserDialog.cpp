@@ -116,7 +116,7 @@ void UserDialog::applyChanges()
 {
     UserService *s = dynamic_cast<UserService*>(obj);
     assert(s!=NULL);
-    s->dump(false,false);
+
     string oldname=obj->getName();
     s->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     s->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
