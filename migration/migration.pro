@@ -79,6 +79,7 @@ target.files  = FWObjectDatabase_0.8.7.xslt \
                 FWObjectDatabase_6.xslt  \
                 FWObjectDatabase_7.xslt  \
                 FWObjectDatabase_8.xslt  \
+                FWObjectDatabase_9.xslt  \
 
 
 #INSTALLS   -= target

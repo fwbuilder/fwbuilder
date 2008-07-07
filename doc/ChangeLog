@@ -1,3 +1,11 @@
+2008-07-07  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RuleSet.cpp (RuleSet::shallowDuplicate): Added support for
+	attribute top_rule_set in class RuleSet 
+
+	* fwbuilder.dtd.in: Added attribute "top_rule_set" to Policy, NAT
+	and Routing elements
+
 2008-07-06  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* RuleSet.cpp (RuleSet::fromXML): added support for attribute

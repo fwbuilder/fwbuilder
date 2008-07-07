@@ -40,6 +40,7 @@ class RuleSet : public FWObject
     private:
 
     bool ipv6;
+    bool top;
 
     protected:
     
@@ -62,6 +63,9 @@ class RuleSet : public FWObject
     
     bool isV6() const { return ipv6; }
     void setV6(bool f) { ipv6=f; }
+    
+    bool isTop() const { return top; }
+    void setTop(bool f) { top=f; }
     
     Rule* getRuleByNum(int n);
     

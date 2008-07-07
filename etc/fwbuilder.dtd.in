@@ -511,18 +511,21 @@ Interface can have the following attributes:
 <!ATTLIST NAT
  %STD_ATTRIBUTES;
  ipv6_rule_set       %BOOLEAN; #IMPLIED
+ top_rule_set        %BOOLEAN; #IMPLIED
 >
 
 <!ELEMENT Policy (PolicyRule*)>
 <!ATTLIST Policy
  %STD_ATTRIBUTES;
  ipv6_rule_set       %BOOLEAN; #IMPLIED
+ top_rule_set        %BOOLEAN; #IMPLIED
 >
 
 <!ELEMENT Routing (RoutingRule*)>
 <!ATTLIST Routing
  %STD_ATTRIBUTES;
  ipv6_rule_set       %BOOLEAN; #IMPLIED
+ top_rule_set        %BOOLEAN; #IMPLIED
 >
 
 

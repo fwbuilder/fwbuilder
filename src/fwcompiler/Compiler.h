@@ -637,13 +637,6 @@ namespace fwcompiler {
 	 */
         void debugRule();
 
-        /**
-         * determine if given rule set is "root" rule set, as opposed
-         * to branch.
-         */ 
-        static bool isRootRuleSet(libfwbuilder::RuleSet*);
-
-        
     };
 
 

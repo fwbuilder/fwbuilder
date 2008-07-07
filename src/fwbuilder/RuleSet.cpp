@@ -48,6 +48,7 @@ RuleSet::RuleSet(const FWObject*,bool)
 {
     setName("RuleSet");
     ipv6 = false;
+    top = false;
 }
 
 RuleSet::~RuleSet() {}
@@ -64,15 +65,26 @@ void RuleSet::fromXML(xmlNodePtr root) throw(FWException)
         ipv6 = (string(n)=="True" || string(n)=="true");
         FREEXMLBUFF(n);
     }
+
+    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("top_rule_set")));
+    if (n!=NULL)
+    {
+        top = (string(n)=="True" || string(n)=="true");
+        FREEXMLBUFF(n);
+    }
 }
 
 xmlNodePtr RuleSet::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
     string ipv6_s = (ipv6)?"True":"False";
+    string top_s = (top)?"True":"False";
     xmlNewProp(me, 
                TOXMLCAST("ipv6_rule_set"),
                STRTOXMLCAST(ipv6_s));
+    xmlNewProp(me, 
+               TOXMLCAST("top_rule_set"),
+               STRTOXMLCAST(top_s));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
     {
@@ -89,6 +101,7 @@ FWObject& RuleSet::shallowDuplicate(const FWObject *o, bool preserve_id)
     FWObject::shallowDuplicate(o,preserve_id);
 
     ipv6 = other->ipv6;
+    top = other->top;
 
     return *this;
 }

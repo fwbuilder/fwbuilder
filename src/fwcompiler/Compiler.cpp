@@ -1538,17 +1538,3 @@ Service* Compiler::getFirstTSrv(NATRule *rule)
     return Service::cast(o);
 }
 
-/*
- * Currently (as of v3.0) we just rely on ruleset name to determine
- * that it is "root" policy or nat. We may add an attribute for that 
- * in the future.
- */
-bool Compiler::isRootRuleSet(libfwbuilder::RuleSet* ruleset)
-{
-    string ruleset_name = ruleset->getName();
-    return (ruleset_name.empty() || 
-            ruleset_name == "Policy" ||
-            ruleset_name == "NAT" ||
-            ruleset_name == "__main__");
-}
-
