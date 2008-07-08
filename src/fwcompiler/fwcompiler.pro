@@ -24,7 +24,7 @@ HEADERS  = 	Compiler.h \
 headers.files =$$HEADERS
 headers.path  =$$prefix/include/fwb-3/fwcompiler
 
-macx {
+unix {
         LIBS += -L../fwbuilder -lfwbuilder
 }
 

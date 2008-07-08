@@ -1,3 +1,10 @@
+2008-07-08  vadim  <vadim@vk.crocodile.org>
+
+	* fwcompiler.pro (LIBS): need to include -lfwbuilder while linking
+	fwcompiler library on all Unix platforms because of the linker
+	option  -Wl,-Bsymbolic-functions . Discovered this on Ubuntu
+	Hardy where libsnmp adds this option via net-snmp-config --libs
+
 2008-07-07  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* RuleSet.cpp (RuleSet::shallowDuplicate): Added support for
