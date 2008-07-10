@@ -12,6 +12,8 @@ QMAKE_COPY_FILE = ../../install.sh -c -m 0755
 
 TARGET          = libfwbuilder-config-3
 
+CONFIG         -= embed_manifest_exe
+
 !macx {
 	target.path   = $$prefix/bin
 }

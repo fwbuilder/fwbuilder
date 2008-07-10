@@ -36,14 +36,16 @@ unix {
 }
 
 unix {
-	INCLUDEPATH            += /usr/include @XML_CFLAGS_Q@ @XSLT_CFLAGS_Q@ @PTHREAD_CFLAGS_Q@ 
-	LIBS                   += @PTHREAD_LIBS@ @XML_LIBS@ @XSLT_LIBS@ @LIBSNMP_LIBS@ @LIB_RESOLV@ @LIBS@
+	INCLUDEPATH += /usr/include @XML_CFLAGS_Q@ @XSLT_CFLAGS_Q@ \
+				   @PTHREAD_CFLAGS_Q@ 
+	LIBS += @PTHREAD_LIBS@ @XML_LIBS@ @XSLT_LIBS@ @LIBSNMP_LIBS@ \
+				   @LIB_RESOLV@ @LIBS@
 }
 
 exists(qmake2.inc) {
   include( qmake2.inc)
 }
 
-CONFIG     -= qt
+CONFIG -= qt
 
-INSTALLS   += target
+INSTALLS += target

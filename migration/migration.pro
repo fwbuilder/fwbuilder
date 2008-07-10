@@ -9,7 +9,9 @@ QMAKE_RUN_CC  = @echo
 QMAKE_RUN_CXX = @echo
 QMAKE_LINK    = @echo
 
-TARGET        = etc
+TARGET        = migration
+
+CONFIG       -= embed_manifest_exe
 
 target.path   =$${migration.path}
 
