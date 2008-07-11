@@ -80,26 +80,33 @@ HostEnt DNS::getHostByAddr(const InetAddr &addr, int type) throw(FWException)
     size_t hstbuflen = 1024; 
     char *tmphstbuf = (char *)malloc(hstbuflen);
 
-    struct in_addr naddr;
-    inet_aton(addr.toString().c_str(), &naddr);
-
     gethostbyaddr_mutex->lock();
-    hp = gethostbyaddr((const char *)&naddr, sizeof(naddr), type);
+    if (type==AF_INET)
+    {
+        hp = gethostbyaddr((const char *)addr.getV4(),
+                           sizeof(struct in_addr),
+                           type);
+    } else
+    {
+        hp = gethostbyaddr((const char *)addr.getV6(),
+                           sizeof(struct in_addr),
+                           type);
+    }
 
     if(hp==NULL)
     {
         gethostbyaddr_mutex->unlock();
         free(tmphstbuf);
         throw FWException(string("Hostname of address: '") + 
-                          InetAddr(&naddr).toString() + "' not found");
+                          addr.toString() + "' not found");
     } 
-    
     HostEnt v;
     v.name = hp->h_name;
     if (hp->h_aliases)
         for(char **p = hp->h_aliases; *p; p++) v.aliases.insert(string(*p));
 
     free(tmphstbuf);
+
     gethostbyaddr_mutex->unlock();
     return v;
 }
@@ -113,7 +120,11 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
     char  *tmphstbuf=NULL;
     
     gethostbyname_mutex->lock();
+#ifdef _WIN32
+    hp = gethostbyname(name.c_str());
+#else
     hp = gethostbyname2(name.c_str(), type);
+#endif
     if(!hp)
     {
         gethostbyname_mutex->unlock();

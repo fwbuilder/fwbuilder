@@ -4,9 +4,7 @@ include(../../qmake.inc)
 #
 VERSION = $$SO_VERSION
 #
-SOURCES  = 	inet_net_ntop.c \
-			inet_net_pton.c \
-			InetAddr.cpp \
+SOURCES  = 	InetAddr.cpp \
 			InetAddrMask.cpp \
 			Inet6AddrMask.cpp \
 			IPRoute.cpp \
@@ -65,8 +63,9 @@ SOURCES  = 	inet_net_ntop.c \
 			UDPService.cpp \
 			UserService.cpp \
             TagService.cpp \
-			XMLTools.cpp 
-
+			XMLTools.cpp \
+			inet_net_ntop.c \
+			inet_net_pton.c
 
 HEADERS  = 	inet_net.h \
 			InetAddr.h \

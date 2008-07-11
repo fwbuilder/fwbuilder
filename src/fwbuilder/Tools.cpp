@@ -31,6 +31,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#include <iostream>
+
 /*
  * this is workaround, by some reason dirent.h defines DIR as a typedef
  * for struct __dirstream which is not defined anywhere.  07/12/02  vk
@@ -45,7 +47,7 @@ struct __dirstream {};
 #else
 #  include <basetsd.h>
 #  include <io.h>
-#  include <windows.h>
+//#  include <windows.h>
 #  include <winsock2.h>
 #endif
 
@@ -139,7 +141,7 @@ string substituteMacros(const string &source, const map<string, string> &macros,
 
 char *cxx_strtok_r(char *s, const char *delim, char **save_ptr)
 {
-#ifndef HAVE_STRTOK_R
+#if !defined(HAVE_STRTOK_R) && !defined(HAVE_STRTOK_S)
     char *token;
 
     token = 0;     /* Initialize to no token. */
@@ -164,8 +166,12 @@ char *cxx_strtok_r(char *s, const char *delim, char **save_ptr)
     
     return token;
 #else
+#ifdef HAVE_STRTOK_S
+    return strtok_s(s, delim, save_ptr);
+#else
 //    return ::strtok_r(s, delim, save_ptr);
     return strtok_r(s, delim, save_ptr);
+#endif
 #endif
 }
 

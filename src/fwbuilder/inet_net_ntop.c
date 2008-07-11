@@ -42,6 +42,34 @@ static char *inet_cidr_ntop_ipv6(const u_char *src, int bits,
 
 /*
  * char *
+ * inet_net_ntop(af, src, bits, dst, size)
+ *  convert host/network address from network to presentation format.
+ *  "src"'s size is determined from its "af".
+ * return:
+ *  pointer to dst, or NULL if an error occurred (check errno).
+ * note:
+ *  192.5.5.1/28 has a nonzero host part, which means it isn't a network
+ *  as called for by inet_net_pton() but it can be a host address with
+ *  an included netmask.
+ * author:
+ *  Paul Vixie (ISC), October 1998
+ */
+char* inet_net_ntop(int af, const void *src, int bits, char *dst, size_t size)
+{
+    switch (af)
+    {
+        case PGSQL_AF_INET:
+            return (inet_net_ntop_ipv4(src, bits, dst, size));
+        case PGSQL_AF_INET6:
+            return (inet_net_ntop_ipv6(src, bits, dst, size));
+        default:
+            errno = EAFNOSUPPORT;
+            return (NULL);
+    }
+}
+
+/*
+ * char *
  * inet_cidr_ntop(af, src, bits, dst, size)
  *  convert network number from network to presentation format.
  *  generates CIDR style result always.
@@ -50,8 +78,7 @@ static char *inet_cidr_ntop_ipv6(const u_char *src, int bits,
  * author:
  *  Paul Vixie (ISC), July 1996
  */
-char *
-inet_cidr_ntop(int af, const void *src, int bits, char *dst, size_t size)
+char* inet_cidr_ntop(int af, const void *src, int bits, char *dst, size_t size)
 {
     switch (af)
     {
@@ -291,35 +318,6 @@ emsgsize:
     return (NULL);
 }
 
-
-/*
- * char *
- * inet_net_ntop(af, src, bits, dst, size)
- *  convert host/network address from network to presentation format.
- *  "src"'s size is determined from its "af".
- * return:
- *  pointer to dst, or NULL if an error occurred (check errno).
- * note:
- *  192.5.5.1/28 has a nonzero host part, which means it isn't a network
- *  as called for by inet_net_pton() but it can be a host address with
- *  an included netmask.
- * author:
- *  Paul Vixie (ISC), October 1998
- */
-char *
-inet_net_ntop(int af, const void *src, int bits, char *dst, size_t size)
-{
-    switch (af)
-    {
-        case PGSQL_AF_INET:
-            return (inet_net_ntop_ipv4(src, bits, dst, size));
-        case PGSQL_AF_INET6:
-            return (inet_net_ntop_ipv6(src, bits, dst, size));
-        default:
-            errno = EAFNOSUPPORT;
-            return (NULL);
-    }
-}
 
 /*
  * static char *

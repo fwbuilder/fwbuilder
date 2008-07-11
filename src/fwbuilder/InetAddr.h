@@ -119,6 +119,9 @@ class InetAddr
     
     bool isV4() const { return (address_family==AF_INET); }
     bool isV6() const { return (address_family==AF_INET6); }
+
+    const struct in_addr* getV4() const { return &ipv4; }
+    const struct in6_addr* getV6() const { return &ipv6; }
     
     static inline InetAddr getAny()
     {

@@ -52,7 +52,7 @@
  * author:
  *  Paul Vixie (ISC), October 1998
  */
-extern char *inet_net_ntop(int af, const void *src, int bits, char *dst, size_t size);
+char* inet_net_ntop(int af, const void *src, int bits, char *dst, int size);
 
 /*
  * int
@@ -72,6 +72,6 @@ extern char *inet_net_ntop(int af, const void *src, int bits, char *dst, size_t 
  *  the names to reflect their current use.
  *
  */
-extern int inet_net_pton(int af, const char *src, void *dst, size_t size);
+int inet_net_pton(int af, const char *src, void *dst, int size);
 
 
