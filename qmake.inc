@@ -36,14 +36,16 @@ unix {
 }
 
 unix {
-	INCLUDEPATH            += /usr/include /usr/include/libxml2  -pthread 
-	LIBS                   += -pthread -L/usr/lib -lxml2  -lxslt -L/usr/lib -lnetsnmp -lm -lwrap -lwrap  -L/usr/lib -lnetsnmp -lm -lwrap -lwrap 
+	INCLUDEPATH += /usr/include /usr/include/libxml2  \
+				   -pthread 
+	LIBS += -pthread -L/usr/lib -lxml2  -lxslt -L/usr/lib -lnetsnmp -lm -lwrap -lwrap \
+				    -L/usr/lib -lnetsnmp -lm -lwrap -lwrap 
 }
 
 exists(qmake2.inc) {
   include( qmake2.inc)
 }
 
-CONFIG     -= qt
+CONFIG -= qt
 
-INSTALLS   += target
+INSTALLS += target
