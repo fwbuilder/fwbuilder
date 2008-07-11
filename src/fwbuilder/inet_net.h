@@ -16,8 +16,23 @@
  *
  */
 
-#include <netinet/in.h>
-#include <arpa/inet.h>
+#ifdef _WIN32
+
+#  include <winsock2.h>
+
+// missing errno definitions:
+#define EMSGSIZE     40 /* Message too long */
+#define EAFNOSUPPORT 47 /* Address family not supported by protocol family */
+
+#else
+
+#  include <sys/types.h>
+#  include <netinet/in.h>
+#  include <arpa/inet.h>
+#  include <sys/types.h>
+#  include <sys/socket.h>
+#endif
+
 #include <errno.h>
 
 #define PGSQL_AF_INET   (AF_INET + 0)

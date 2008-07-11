@@ -256,7 +256,7 @@ bool libfwbuilder::_convert_range_to_networks(const InetAddr &start,
             mask_bits++;
             nnm = InetAddr(mask_bits);
             tn1 = InetAddrMask(nstart, nnm);
-        } while (start != *(tn1.getAddressPtr()) and mask_bits>0);
+        } while (start != *(tn1.getAddressPtr()) && mask_bits>0);
         nend = nstart;
         nend = nend | (~nnm);
     } else 

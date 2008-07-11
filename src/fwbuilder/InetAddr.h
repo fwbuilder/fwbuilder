@@ -39,6 +39,11 @@
 #  include <arpa/inet.h>
 #else
 #  include <winsock2.h>
+#  include <wtypes.h>
+#  include <ws2tcpip.h>
+
+typedef unsigned int uint32_t;
+
 #endif
 
 #include <fwbuilder/FWException.h>

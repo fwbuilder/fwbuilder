@@ -18,16 +18,8 @@
 
 #include "inet_net.h"
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-
 #include <stdio.h>
 #include <string.h>
-
-//#include "utils/builtins.h"
-//#include "utils/inet.h"
 
 
 #define NS_IN6ADDRSZ 16

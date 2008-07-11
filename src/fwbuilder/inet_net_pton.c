@@ -18,18 +18,11 @@
 
 #include "inet_net.h"
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <assert.h>
-#include <ctype.h>
-
 #include <stdio.h>
 #include <string.h>
 
-//#include "utils/builtins.h"
-//#include "utils/inet.h"
+#include <stdio.h>
+#include <string.h>
 
 
 static int  inet_net_pton_ipv4(const char *src, u_char *dst);
