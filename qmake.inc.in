@@ -1,6 +1,6 @@
 #-*- mode: makefile; tab-width: 4; -*-
 #
-######### libfwbuilder/qmake.inc.in
+######### fwbuilder/qmake.inc.in
 #
 QTDIR         = $$(QTDIR)
 

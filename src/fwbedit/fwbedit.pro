@@ -3,6 +3,9 @@
 include(../../qmake.inc)
 #
 #
+
+TEMPLATE = app
+
 SOURCES	 = fwbedit.cpp
 HEADERS	 = ../../config.h
 
