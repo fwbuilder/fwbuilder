@@ -134,9 +134,10 @@ HEADERS  = 	inet_net.h \
             TagService.h \
 			XMLTools.h
 
-headers.files =$$HEADERS
-headers.path  =$$prefix/include/fwb-3/fwbuilder
+headers.files = $$HEADERS
+headers.path  = "$$prefix/include/fwb-3/fwbuilder"
 
 TARGET    = fwbuilder
+target.path = "$$prefix/lib"
 
 INSTALLS += headers

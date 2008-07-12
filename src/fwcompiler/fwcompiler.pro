@@ -21,13 +21,14 @@ HEADERS  = 	Compiler.h \
 			RuleProcessor.h \
 			RoutingCompiler.h
 
-headers.files =$$HEADERS
-headers.path  =$$prefix/include/fwb-3/fwcompiler
+headers.files = $$HEADERS
+headers.path  = "$$prefix/include/fwb-3/fwcompiler"
 
 unix {
         LIBS += -L../fwbuilder -lfwbuilder
 }
 
 TARGET    = fwcompiler
+target.path = "$$prefix/lib"
 
 INSTALLS += headers
