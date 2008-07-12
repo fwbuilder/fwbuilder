@@ -22,7 +22,6 @@
 #include <string.h>
 #include <errno.h>
 
-
 #define NS_IN6ADDRSZ 16
 #define NS_INT16SZ 2
 

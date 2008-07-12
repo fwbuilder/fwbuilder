@@ -3,18 +3,18 @@
 
 include(../qmake.inc)
 
-TEMPLATE = app
+TEMPLATE = lib
 
-CONFIG       -= embed_manifest_exe
+CONFIG -= embed_manifest_exe
 
-QMAKE_RUN_CC  = @echo
-QMAKE_RUN_CXX = @echo
-QMAKE_LINK    = @echo
+QMAKE_RUN_CC  = echo
+QMAKE_RUN_CXX = echo
+QMAKE_LINK    = echo
 
 TARGET        = etc
 
 dtd.files     = fwbuilder.dtd
-dtd.path      = "./"
+dtd.path      = ""
 
 INSTALLS   -= target
 INSTALLS   += dtd

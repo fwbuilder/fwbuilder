@@ -79,6 +79,7 @@
 #include <fwbuilder/UserService.h>
 
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -191,18 +192,19 @@ int FWObjectDatabase::generateUniqueId()
     int i_id = ++id_seed;
 
     // TODO: Use proper GUID algorithm here
-    char res[20];
     int pid=0;
 #ifdef _WIN32
     pid = _getpid();
 #else
     pid = getpid();
 #endif
+    ostringstream str;
+    str << "id" << i_id << "X" << pid;
+    //char res[20];
+    //sprintf(res,"id%lX%d", i_id, pid);
 
-    sprintf(res,"id%lX%d", i_id, pid);
-
-    id_dict[i_id] = string(res);
-    id_dict_reverse[string(res)] = i_id;
+    id_dict[i_id] = string(str.str());
+    id_dict_reverse[string(str.str())] = i_id;
 
     return i_id;
 }
@@ -334,9 +336,11 @@ void FWObjectDatabase::fromXML(xmlNodePtr root) throw(FWException)
     
     const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("lastModified")));
     if(n!=NULL)
-    {
+    {        
         int i=0;
-        sscanf(n,"%d",&i);
+        istringstream str(n);
+        str >> i;
+        //sscanf(n,"%d",&i);
         lastModified=i;
         FREEXMLBUFF(n);
     }
@@ -354,11 +358,13 @@ xmlNodePtr FWObjectDatabase::toXML(xmlNodePtr parent) throw(FWException)
 
     if (lastModified!=0)
     {
-        char lmbuf[32];
-        sprintf(lmbuf,"%ld",lastModified);
+        ostringstream str;
+        str << lastModified;
+        //char lmbuf[32];
+        //sprintf(lmbuf,"%ld",lastModified);
         xmlNewProp(parent, 
                    TOXMLCAST("lastModified"),
-                   TOXMLCAST(lmbuf));
+                   TOXMLCAST(str.str().c_str()));
     }
 
     int rootid = getId();

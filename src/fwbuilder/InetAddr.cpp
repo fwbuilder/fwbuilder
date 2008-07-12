@@ -29,11 +29,11 @@
 #include <fwbuilder/InetAddr.h>
 #include <fwbuilder/Interface.h>
 
-#ifdef _WIN32
-
+extern "C" {
 #  include <fwbuilder/inet_net.h>
+}
 
-#else
+#ifndef _WIN32
 
 #  include <sys/types.h>
 #  include <netinet/in.h>
@@ -42,7 +42,6 @@
 #  include <sys/socket.h>
 
 #endif
-
 
 #include <errno.h>
 #include <stdio.h>

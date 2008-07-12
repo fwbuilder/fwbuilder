@@ -25,6 +25,8 @@
 */
 
 
+#include <fwbuilder/libfwbuilder-config.h>
+
 #include "InterfaceData.h"
 
 #include "fwbuilder/Resources.h"

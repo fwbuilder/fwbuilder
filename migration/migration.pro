@@ -3,7 +3,7 @@
 
 include(../qmake.inc)
 
-TEMPLATE = app
+TEMPLATE = lib
 
 QMAKE_RUN_CC  = @echo
 QMAKE_RUN_CXX = @echo

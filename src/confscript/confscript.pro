@@ -2,7 +2,7 @@
 #
 include(../../qmake.inc)
 #
-TEMPLATE = app
+TEMPLATE = lib
 
 QMAKE_RUN_CC    = @echo
 QMAKE_RUN_CXX   = @echo
@@ -10,9 +10,9 @@ QMAKE_LINK      = @echo
 QMAKE_COPY      = ../../install.sh -c -m 0755
 QMAKE_COPY_FILE = ../../install.sh -c -m 0755
 
-TARGET          = libfwbuilder-config-3
+TARGET = libfwbuilder-config-3
 
-CONFIG         -= embed_manifest_exe
+CONFIG -= embed_manifest_exe
 
 !macx {
 	target.path   = $$prefix/bin

@@ -39,6 +39,7 @@
 #include <fcntl.h>
 
 #include <iostream>
+#include <sstream>
 #include <algorithm>
 #include <functional>
 #include <stack>
@@ -542,9 +543,9 @@ int FWObject::getInt(const string &name) const
 
 void FWObject::setInt(const string &name, int val)
 {
-    char str[128];
-    sprintf(str,"%d",val);
-    setStr(name, str);
+    ostringstream str;
+    str << val;
+    setStr(name, str.str());
     setDirty(true);
 }
 

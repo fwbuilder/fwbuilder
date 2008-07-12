@@ -29,7 +29,10 @@
 #include <fwbuilder/libfwbuilder-config.h>
 
 #include <fwbuilder/Inet6AddrMask.h>
+
+extern "C" {
 #include <fwbuilder/inet_net.h>
+}
 
 #include <stdio.h>
 #include <iostream>

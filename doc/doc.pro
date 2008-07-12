@@ -3,15 +3,15 @@
 
 include(../qmake.inc)
 
-TEMPLATE = app
+TEMPLATE = lib
 
-CONFIG       -= embed_manifest_exe
+CONFIG -= embed_manifest_exe
 
-QMAKE_RUN_CC  = @echo
-QMAKE_RUN_CXX = @echo
-QMAKE_LINK    = @echo
+QMAKE_RUN_CC  = echo
+QMAKE_RUN_CXX = echo
+QMAKE_LINK    = echo
 
-TARGET        = 
+TARGET = 
 
 target.files  = AUTHORS                 \
                 ChangeLog               \
@@ -20,7 +20,7 @@ target.files  = AUTHORS                 \
 			    INSTALL                 \
                 PatchAcceptancePolicy.txt
 
-target.path   =$$doc.path
+target.path   = $$doc.path
 
 #INSTALLS     -= target
 #INSTALLS     += doc
