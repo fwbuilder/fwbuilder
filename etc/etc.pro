@@ -5,7 +5,9 @@ include(../qmake.inc)
 
 TEMPLATE = lib
 
-CONFIG -= embed_manifest_exe
+win32 {
+	CONFIG -= embed_manifest_exe
+}
 
 QMAKE_RUN_CC  = echo
 QMAKE_RUN_CXX = echo

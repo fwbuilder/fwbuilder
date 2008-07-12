@@ -3,17 +3,17 @@
 
 include(../qmake.inc)
 
-TEMPLATE = app
-
-QMAKE_RUN_CC  = @echo
-QMAKE_RUN_CXX = @echo
-QMAKE_LINK = @echo
+TEMPLATE = lib
 
 TARGET = migration
 
 win32 {
 	CONFIG -= embed_manifest_exe
 }
+
+QMAKE_RUN_CC  = "@echo"
+QMAKE_RUN_CXX = "@echo"
+QMAKE_LINK = "@echo"
 
 target.path = $${migration.path}
 
