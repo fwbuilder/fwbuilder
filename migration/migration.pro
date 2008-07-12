@@ -3,17 +3,19 @@
 
 include(../qmake.inc)
 
-TEMPLATE = lib
+TEMPLATE = app
 
 QMAKE_RUN_CC  = @echo
 QMAKE_RUN_CXX = @echo
-QMAKE_LINK    = @echo
+QMAKE_LINK = @echo
 
-TARGET        = migration
+TARGET = migration
 
-CONFIG       -= embed_manifest_exe
+win32 {
+	CONFIG -= embed_manifest_exe
+}
 
-target.path   =$${migration.path}
+target.path = $${migration.path}
 
 target.files  = FWObjectDatabase_0.8.7.xslt \
 				FWObjectDatabase_0.9.0.xslt \
@@ -84,5 +86,3 @@ target.files  = FWObjectDatabase_0.8.7.xslt \
                 FWObjectDatabase_9.xslt  \
 
 
-#INSTALLS   -= target
-#INSTALLS   += migration
