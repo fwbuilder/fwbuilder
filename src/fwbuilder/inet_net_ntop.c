@@ -20,6 +20,8 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
+
 
 
 #define NS_IN6ADDRSZ 16
@@ -58,9 +60,9 @@ char* inet_net_ntop(int af, const void *src, int bits, char *dst, size_t size)
 {
     switch (af)
     {
-        case PGSQL_AF_INET:
+        case AF_INET:
             return (inet_net_ntop_ipv4(src, bits, dst, size));
-        case PGSQL_AF_INET6:
+        case AF_INET6:
             return (inet_net_ntop_ipv6(src, bits, dst, size));
         default:
             errno = EAFNOSUPPORT;
@@ -82,9 +84,9 @@ char* inet_cidr_ntop(int af, const void *src, int bits, char *dst, size_t size)
 {
     switch (af)
     {
-        case PGSQL_AF_INET:
+        case AF_INET:
             return (inet_cidr_ntop_ipv4(src, bits, dst, size));
-        case PGSQL_AF_INET6:
+        case AF_INET6:
             return (inet_cidr_ntop_ipv6(src, bits, dst, size));
         default:
             errno = EAFNOSUPPORT;

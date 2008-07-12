@@ -43,6 +43,8 @@
 #  include <winsock2.h>
 #endif
 
+#include <errno.h>
+
 using namespace std;
 using namespace libfwbuilder;
 
@@ -58,7 +60,7 @@ Inet6AddrMask::Inet6AddrMask(const string &s) throw(FWException) :
 {
     struct in6_addr a_ipv6;
     int nbits;
-    nbits = inet_net_pton(PGSQL_AF_INET6, s.c_str(), &a_ipv6, sizeof(a_ipv6));
+    nbits = inet_net_pton(AF_INET6, s.c_str(), &a_ipv6, sizeof(a_ipv6));
     if (nbits < 0)
         throw FWException(string("Invalid IP address: '") + s + "'");
 
@@ -85,7 +87,7 @@ std::string Inet6AddrMask::toString() const
 {
     char ntop_buf[sizeof "ffff:ffff:ffff:ffff:ffff:ffff:255.255.255.255/128"];
     char *cp;
-    cp = inet_net_ntop(PGSQL_AF_INET6, (const void*)(&(address->ipv6)),
+    cp = inet_net_ntop(AF_INET6, (const void*)(&(address->ipv6)),
                        netmask->getLength(),
                        ntop_buf, sizeof(ntop_buf));
     if (cp==NULL)

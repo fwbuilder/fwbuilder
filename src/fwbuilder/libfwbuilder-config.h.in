@@ -16,6 +16,8 @@
 #undef UCD_SNMP
 #undef NET_SNMP
 
+#undef HAVE_INET_NET_NTOP
+
 #undef HAVE_GOODLIBRESOLV
 
 #undef HAVE_LWRES

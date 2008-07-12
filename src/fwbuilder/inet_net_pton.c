@@ -20,10 +20,9 @@
 
 #include <stdio.h>
 #include <string.h>
-
-#include <stdio.h>
-#include <string.h>
 #include <assert.h>
+#include <errno.h>
+
 
 static int  inet_net_pton_ipv4(const char *src, u_char *dst);
 static int  inet_cidr_pton_ipv4(const char *src, u_char *dst, size_t size);
@@ -49,15 +48,15 @@ static int  inet_cidr_pton_ipv6(const char *src, u_char *dst, size_t size);
  *  the names to reflect their current use.
  *
  */
-int inet_net_pton(int af, const char *src, void *dst, int size)
+int inet_net_pton(int af, const char *src, void *dst, size_t size)
 {
     switch (af)
     {
-        case PGSQL_AF_INET:
+        case AF_INET:
             return size == -1 ?
                 inet_net_pton_ipv4(src, dst) :
                 inet_cidr_pton_ipv4(src, dst, size);
-        case PGSQL_AF_INET6:
+        case AF_INET6:
             return size == -1 ?
                 inet_net_pton_ipv6(src, dst) :
                 inet_cidr_pton_ipv6(src, dst, size);

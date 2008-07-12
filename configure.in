@@ -289,6 +289,16 @@ dnl
 fi
 AC_SUBST(LIBSNMP_LIBS) 
 
+AC_CHECK_LIB(c, inet_net_ntop, [
+  AC_DEFINE_UNQUOTED(HAVE_INET_NET_NTOP, 1, [inet_net_ntop])
+  ],[
+    AC_CHECK_LIB(bind, inet_net_ntop, [
+      AC_DEFINE_UNQUOTED(HAVE_INET_NET_NTOP, 1, [inet_net_ntop])
+      LIBS="-lbind $LIBS"
+      ])
+],[])
+
+
 
 AC_LANG_CPLUSPLUS
 

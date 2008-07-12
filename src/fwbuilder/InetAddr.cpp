@@ -29,8 +29,22 @@
 #include <fwbuilder/InetAddr.h>
 #include <fwbuilder/Interface.h>
 
-#include <fwbuilder/inet_net.h>
+#ifdef _WIN32
 
+#  include <fwbuilder/inet_net.h>
+
+#else
+
+#  include <sys/types.h>
+#  include <netinet/in.h>
+#  include <arpa/inet.h>
+#  include <sys/types.h>
+#  include <sys/socket.h>
+
+#endif
+
+
+#include <errno.h>
 #include <stdio.h>
 #include <iostream>
 #include <sstream>
@@ -59,12 +73,12 @@ void InetAddr::init_from_string(const char* data)
     {
         if (address_family == AF_INET)
         {
-            if (inet_net_pton(PGSQL_AF_INET, data, &ipv4, sizeof(ipv4)) < 0)
+            if (inet_net_pton(AF_INET, data, &ipv4, sizeof(ipv4)) < 0)
                 throw FWException(string("Invalid IP address: '") +
                                   string(data)+"'");
         } else
         {
-            if (inet_net_pton(PGSQL_AF_INET6, data, &ipv6, sizeof(ipv6)) < 0)
+            if (inet_net_pton(AF_INET6, data, &ipv6, sizeof(ipv6)) < 0)
                 throw FWException(string("Invalid IPv6 address: '") +
                                   string(data)+"'");
         }
@@ -234,7 +248,7 @@ string InetAddr::toString() const
         char ntop_buf[sizeof
                       "ffff:ffff:ffff:ffff:ffff:ffff:255.255.255.255/128"];
         char *cp;
-        cp = inet_net_ntop(PGSQL_AF_INET6, (const void*)(&ipv6),
+        cp = inet_net_ntop(AF_INET6, (const void*)(&ipv6),
                            -1, ntop_buf, sizeof(ntop_buf));
         if (cp==NULL)
         {

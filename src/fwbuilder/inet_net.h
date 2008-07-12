@@ -28,15 +28,10 @@
 
 #  include <sys/types.h>
 #  include <netinet/in.h>
-#  include <arpa/inet.h>
+//#  include <arpa/inet.h>
 #  include <sys/types.h>
 #  include <sys/socket.h>
 #endif
-
-#include <errno.h>
-
-#define PGSQL_AF_INET   (AF_INET + 0)
-#define PGSQL_AF_INET6  (AF_INET + 1)
 
 /*
  * char *
@@ -52,7 +47,7 @@
  * author:
  *  Paul Vixie (ISC), October 1998
  */
-char* inet_net_ntop(int af, const void *src, int bits, char *dst, int size);
+extern char* inet_net_ntop(int af, const void *src, int bits, char *dst, size_t size);
 
 /*
  * int
@@ -72,6 +67,6 @@ char* inet_net_ntop(int af, const void *src, int bits, char *dst, int size);
  *  the names to reflect their current use.
  *
  */
-int inet_net_pton(int af, const char *src, void *dst, int size);
+extern int inet_net_pton(int af, const char *src, void *dst, size_t size);
 
 
