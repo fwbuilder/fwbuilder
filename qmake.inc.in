@@ -74,4 +74,4 @@ exists(qmake2.inc) {
   include( qmake2.inc)
 }
 
-INSTALLS   += target
+INSTALLS += target
