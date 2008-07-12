@@ -162,6 +162,7 @@ AC_CHECK_LIB(c,cfmakeraw,[
   AC_DEFINE_UNQUOTED(HAVE_CFMAKERAW, 1, [cfmakeraw])
 ])
 
+
 dnl standard LIBTOOL fragment
 dnl
 dnl     commented out 12/20 - we now use qmake and do not need libtool 
