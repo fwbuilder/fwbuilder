@@ -16,10 +16,13 @@
  *
  */
 
+#ifndef INET_NET_H
+#define INET_NET_H
+
+#include <fwbuilder/libfwbuilder-config.h>
+
 #ifdef _WIN32
-
 #  include <winsock2.h>
-
 // missing errno definitions:
 #define EMSGSIZE     40 /* Message too long */
 #define EAFNOSUPPORT 47 /* Address family not supported by protocol family */
@@ -69,4 +72,5 @@ extern char* inet_net_ntop(int af, const void *src, int bits, char *dst, size_t 
  */
 extern int inet_net_pton(int af, const char *src, void *dst, size_t size);
 
+#endif
 

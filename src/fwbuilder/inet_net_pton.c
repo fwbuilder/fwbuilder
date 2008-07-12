@@ -23,7 +23,6 @@
 #include <assert.h>
 #include <errno.h>
 
-
 static int  inet_net_pton_ipv4(const char *src, u_char *dst);
 static int  inet_cidr_pton_ipv4(const char *src, u_char *dst, size_t size);
 static int  inet_net_pton_ipv6(const char *src, u_char *dst);
@@ -551,3 +550,4 @@ emsgsize:
     errno = EMSGSIZE;
     return (-1);
 }
+

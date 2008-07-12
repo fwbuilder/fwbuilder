@@ -23,7 +23,6 @@
 #include <errno.h>
 
 
-
 #define NS_IN6ADDRSZ 16
 #define NS_INT16SZ 2
 
@@ -518,3 +517,4 @@ inet_net_ntop_ipv6(const u_char *src, int bits, char *dst, size_t size)
     strcpy(dst, tmp);
     return (dst);
 }
+
