@@ -28,7 +28,7 @@
 #ifndef __METRICEDITORPANEL_H__
 #define __METRICEDITORPANEL_H__
 
-#include "config.h"
+#include "../../config.h"
 #include <ui_metriceditorpanel_q.h>
 
 #include "fwbuilder/FWObject.h"

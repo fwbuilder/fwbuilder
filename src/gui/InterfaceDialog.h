@@ -27,7 +27,7 @@
 #ifndef __INTERFACEDIALOG_H_
 #define __INTERFACEDIALOG_H_
 
-#include "config.h"
+#include "../../config.h"
 #include <ui_interfacedialog_q.h>
 #include <QWidget>
 

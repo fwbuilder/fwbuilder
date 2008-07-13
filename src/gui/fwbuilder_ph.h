@@ -1,17 +1,4 @@
 
-#if 0
-#if defined(_WIN32)
-#  include <stdio.h>
-#  include <sys/timeb.h>
-#  include <windows.h>
-#  include <direct.h>
-#  include <io.h>
-#else
-#  include <unistd.h>
-#  include <pwd.h>
-#endif
-#endif
-
 #include <errno.h>
 #include <fcntl.h>
 #include <assert.h>
@@ -19,11 +6,10 @@
 #include <sys/types.h>
 #include <time.h>
 #include <stdlib.h>
-#include <libxml/xmlmemory.h>
 
 #if defined __cplusplus
 
-#include "definitions.h"
+#include "../../definitions.h"
 #include "global.h"
 #include "utils.h"
 

@@ -27,7 +27,7 @@
 #ifndef __FINDOBJECTWIDGET_H_
 #define __FINDOBJECTWIDGET_H_
 
-#include "config.h"
+#include "../../config.h"
 #include <ui_findobjectwidget_q.h>
 
 #include "fwbuilder/FWObject.h"

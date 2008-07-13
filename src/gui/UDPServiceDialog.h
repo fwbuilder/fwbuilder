@@ -27,7 +27,7 @@
 #ifndef __UDPSERVICEDIALOG_H_
 #define __UDPSERVICEDIALOG_H_
 
-#include "config.h"
+#include "../../config.h"
 #include <ui_udpservicedialog_q.h>
 #include <QWidget>
 

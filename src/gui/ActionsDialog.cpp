@@ -23,11 +23,11 @@
 
 */
 
-#include "config.h"
+#include "../../config.h"
+#include "../../definitions.h"
 #include "global.h"
 #include "utils.h"
 #include "platforms.h"
-#include "definitions.h"
 
 #include "ActionsDialog.h"
 #include "FWWindow.h"

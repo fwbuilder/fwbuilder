@@ -26,7 +26,7 @@
 #ifndef _PLATFORMS_HH
 #define _PLATFORMS_HH
 
-#include "config.h"
+#include "../../config.h"
 
 // among other things, utils.h defines list<QStringPair> which we need here
 #include "utils.h"

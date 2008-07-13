@@ -27,7 +27,7 @@
 #ifndef __ACTIONSDIALOG_H_
 #define __ACTIONSDIALOG_H_
 
-#include "config.h"
+#include "../../config.h"
 #include <ui_actionsdialog_q.h>
 #include "DialogData.h"
 #include <QWidget>

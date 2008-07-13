@@ -27,7 +27,7 @@
 #ifndef __RULESETDIALOG_H_
 #define __RULESETDIALOG_H_
 
-#include "config.h"
+#include "../../config.h"
 #include <ui_rulesetdialog_q.h>
 #include <QWidget>
 

@@ -23,7 +23,7 @@
 
 */
 
-#include "config.h"
+#include "../../config.h"
 #include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Constants.h"
 

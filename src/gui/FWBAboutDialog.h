@@ -2,9 +2,11 @@
 *****************************************************************************/
 
 #include <ui_aboutdialog_q.h>
+
 #include "fwbuilder/Constants.h"
-#include "VERSION.h"
-#include "build_num"
+
+#include "../../VERSION.h"
+#include "../../build_num"
 
 class FWBAboutDialog: public QDialog {
     Q_OBJECT

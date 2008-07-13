@@ -27,7 +27,7 @@
 #ifndef __PHYSICALADDRESSDIALOG_H_
 #define __PHYSICALADDRESSDIALOG_H_
 
-#include "config.h"
+#include "../../config.h"
 #include <ui_physaddressdialog_q.h>
 #include <QWidget>
 

@@ -26,7 +26,7 @@
 #ifndef __LISTOFLIBRARIES_H_
 #define __LISTOFLIBRARIES_H_
 
-#include "config.h"
+#include "../../config.h"
 
 #include <list>
 #include <qstring.h>

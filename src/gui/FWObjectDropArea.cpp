@@ -24,10 +24,10 @@
 */
 
 #include "../../config.h"
+#include "../../definitions.h"
 #include "global.h"
 #include "utils.h"
 #include "platforms.h"
-#include "definitions.h"
 
 #include "FWObjectDropArea.h"
 #include "FWObjectDrag.h"
