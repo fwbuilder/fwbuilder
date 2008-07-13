@@ -28,7 +28,7 @@
 
 #include <fwbuilder/libfwbuilder-config.h>
 
-#include <combinedAddress.h>
+#include "combinedAddress.h"
 
 #include <fwbuilder/FWException.h>
 #include <fwbuilder/FWObjectReference.h>
