@@ -28,7 +28,8 @@
 #define __INSTBATCHOPTIONSDIALOG_H_
 
 #include "config.h"
-#include <instOptionsDialog.h>
+
+#include "instOptionsDialog.h"
 
 class instConf;
 

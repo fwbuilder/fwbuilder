@@ -26,8 +26,8 @@
 #include "../../config.h"
 #include "global.h"
 
-#include <RCS.h>
-#include <RCSFilePreview.h>
+#include "RCS.h"
+#include "RCSFilePreview.h"
 
 #include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/FWException.h"

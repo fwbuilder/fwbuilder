@@ -29,7 +29,8 @@
 
 #include "config.h"
 #include <ui_confirmdeleteobjectdialog_q.h>
-#include <FindWhereUsedWidget.h>
+
+#include "FindWhereUsedWidget.h"
 
 #include  <vector>
 #include  <map>

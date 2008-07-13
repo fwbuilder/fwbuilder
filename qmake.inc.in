@@ -9,7 +9,6 @@ TEMPLATE      = app
 SO_VERSION    = @LIBFWBUILDER_SOLIB_VERSION@
 
 DEFINES      += $$(DEFINES)
-INCLUDEPATH  += .. ../.. $$(INCLUDEPATH) @LIBFWBUILDER_INCLUDEPATH@
 LANGUAGE      = C++
 UI_DIR        = ui
 MANDIR        = @MANDIR@
@@ -34,6 +33,8 @@ unix {
 	PREFIX                  = @PREFIX@
 	exec_prefix             = @EXEC_PREFIX@
 	DESTDIR                 =
+
+    INCLUDEPATH  += .. ../.. $$(INCLUDEPATH) @LIBFWBUILDER_INCLUDEPATH@
 
     LIBS_FWCOMPILER         = @LIBFWBUILDER_LIBS_FWCOMPILER@
     LIBS_FWBUILDER          = @LIBFWBUILDER_LIBS_FWBUILDER@
@@ -71,7 +72,7 @@ unix {
 }
 
 exists(qmake2.inc) {
-  include( qmake2.inc)
+  include(qmake2.inc)
 }
 
 INSTALLS += target

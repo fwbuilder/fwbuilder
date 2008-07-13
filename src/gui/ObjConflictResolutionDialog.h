@@ -102,7 +102,7 @@ class CompareObjectsDialog :
     std::list<QString> report;
     QStringList        report_attributes;
     int                num_conflicts;
-    int                column_width[];
+    int                column_width[4];
     
     void writeColumn(std::ostringstream &sstr,
                      int column_num,

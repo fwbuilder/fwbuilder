@@ -27,13 +27,14 @@
 #include "global.h"
 #include "utils.h"
 
+#include "RCS.h"
+
 // need this for FS_SEPARATOR
 #include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Tools.h"
 
 //#include "FWWindow.h"
 
-#include <RCS.h>
 #include <qdir.h>
 #include <qregexp.h>
 #include <qmessagebox.h>

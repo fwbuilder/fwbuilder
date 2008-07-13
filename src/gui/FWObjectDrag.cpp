@@ -26,7 +26,7 @@
 #include "../../config.h"
 #include "global.h"
 
-#include <FWObjectDrag.h>
+#include "FWObjectDrag.h"
 
 #include <fwbuilder/FWObject.h>
 //Added by qt3to4:

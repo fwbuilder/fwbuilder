@@ -1,5 +1,6 @@
 
-#if defined(Q_OS_WIN32)
+#if 0
+#if defined(_WIN32)
 #  include <stdio.h>
 #  include <sys/timeb.h>
 #  include <windows.h>
@@ -8,6 +9,7 @@
 #else
 #  include <unistd.h>
 #  include <pwd.h>
+#endif
 #endif
 
 #include <errno.h>
@@ -24,6 +26,8 @@
 #include "definitions.h"
 #include "global.h"
 #include "utils.h"
+
+#include "fwbuilder/libfwbuilder-config.h"
 
 #include "fwbuilder/Address.h"
 #include "fwbuilder/AddressRange.h"
@@ -67,7 +71,6 @@
 #include "fwbuilder/Tools.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/XMLTools.h"
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/physAddress.h"
 
 // QT
