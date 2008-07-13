@@ -29,7 +29,9 @@ HEADERS	 = ../../config.h \
 			OSConfigurator_linux24.h \
 			OSData.h
 
-QMAKE_COPY    = ../../install.sh -m 0755 -s
+!win32 {
+	QMAKE_COPY    = ../../install.sh -m 0755 -s
+}
 
 win32:CONFIG += console
 

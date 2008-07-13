@@ -71,6 +71,10 @@ unix {
 }
 }
 
+win32 {
+    CONFIG -= debug
+}
+
 exists(qmake2.inc) {
   include( qmake2.inc)
 }

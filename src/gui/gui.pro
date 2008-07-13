@@ -323,7 +323,9 @@ contains( HAVE_ANTLR_RUNTIME, 1 ){
     DEFINES += $$ANTLR_DEFINES
 }
 
-QMAKE_COPY = ../../install.sh -m 0755 -s
+!win32 {
+    QMAKE_COPY = ../../install.sh -m 0755 -s
+}
 
 RESOURCES += MainRes.qrc
 

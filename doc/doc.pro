@@ -4,10 +4,15 @@
 include(../qmake.inc)
 
 win32 {
-  QMAKE_RUN_CC  = @echo
-  QMAKE_RUN_CXX = @echo
-  QMAKE_LINK    = @echo
+	CONFIG -= embed_manifest_exe
 }
+
+win32 {
+  QMAKE_RUN_CC  = echo
+  QMAKE_RUN_CXX = echo
+  QMAKE_LINK    = echo
+}
+
 !win32 {
   QMAKE_RUN_CC  = @echo > /dev/null
   QMAKE_RUN_CXX = @echo > /dev/null

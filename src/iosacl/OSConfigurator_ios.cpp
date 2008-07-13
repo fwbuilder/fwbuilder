@@ -218,13 +218,11 @@ string OSConfigurator_ios::_printLogging()
     return str.str();
 }
 
-void OSConfigurator_ios::addVirtualAddressForNAT(const Address *addr)
+void OSConfigurator_ios::addVirtualAddressForNAT(const Address*)
 {
-    if (addr==NULL) ;
 }
 
-void OSConfigurator_ios::addVirtualAddressForNAT(const Network *nw)
+void OSConfigurator_ios::addVirtualAddressForNAT(const Network*)
 {
-    if (nw==NULL) ;
 }
 
