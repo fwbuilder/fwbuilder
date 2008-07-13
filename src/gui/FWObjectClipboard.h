@@ -32,7 +32,8 @@
 #include <vector>
 #include <string>
 
-class libfwbuilder::FWObject;
+#include "fwbuilder/FWObject.h"
+
 class ProjectPanel ;
 class FWObjectClipboard  {
 

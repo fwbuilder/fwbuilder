@@ -516,18 +516,30 @@ void FWBSettings::setSSHPath(const QString &path)
     setValue(SSHPath,path);
 }
 
-void    FWBSettings::getPrinterOptions(QPrinter *printer,int &pageWidth,int &pageHeight)
+void FWBSettings::getPrinterOptions(QPrinter *printer,
+                                    int &pageWidth,
+                                    int &pageHeight)
 {
-    printer->setPrinterName(getStr("PrintSetup/printerName"));
-    printer->setPrinterSelectionOption(getStr("PrintSetup/printerSelectionOption"));
-    printer->setOutputFileName(getStr("PrintSetup/outputFileName"));
-    printer->setOrientation(QPrinter::Orientation(getInt("PrintSetup/orientation")));
-    printer->setPageSize(QPrinter::PageSize(getInt("PrintSetup/pageSize")));
-    printer->setPageOrder(QPrinter::PageOrder(getInt("PrintSetup/pageOrder")));
+    printer->setPrinterName(
+        getStr("PrintSetup/printerName"));
+#ifndef _WIN32
+    printer->setPrinterSelectionOption(
+        getStr("PrintSetup/printerSelectionOption"));
+#endif
+    printer->setOutputFileName(
+        getStr("PrintSetup/outputFileName"));
+    printer->setOrientation(
+        QPrinter::Orientation(getInt("PrintSetup/orientation")));
+    printer->setPageSize(
+        QPrinter::PageSize(getInt("PrintSetup/pageSize")));
+    printer->setPageOrder(
+        QPrinter::PageOrder(getInt("PrintSetup/pageOrder")));
 //    int res = getInt("PrintSetup/resolution");
 //    if (res>0) printer->setResolution(res);
-    printer->setColorMode(QPrinter::ColorMode(getInt("PrintSetup/colorMode")));
-    printer->setFullPage(getBool("PrintSetup/fullPage"));
+    printer->setColorMode(
+        QPrinter::ColorMode(getInt("PrintSetup/colorMode")));
+    printer->setFullPage(
+        getBool("PrintSetup/fullPage"));
 //    printer->setFromTo(getInt("PrintSetup/fromPage"),getInt("PrintSetup/toPage"));
 //    printer->setNumCopies(getInt("PrintSetup/numCopies"));
 
@@ -535,10 +547,15 @@ void    FWBSettings::getPrinterOptions(QPrinter *printer,int &pageWidth,int &pag
     pageHeight = getInt("PrintSetup/pageHeight");
 }
 
-void    FWBSettings::setPrinterOptions(QPrinter *printer,int pageWidth,int pageHeight)
+void FWBSettings::setPrinterOptions(QPrinter *printer,
+                                    int pageWidth,
+                                    int pageHeight)
 {
     setStr("PrintSetup/printerName",printer->printerName());
-    setStr("PrintSetup/printerSelectionOption",printer->printerSelectionOption());
+#ifndef _WIN32
+    setStr("PrintSetup/printerSelectionOption",
+           printer->printerSelectionOption());
+#endif
     setStr("PrintSetup/outputFileName",printer->outputFileName());
     setInt("PrintSetup/orientation",printer->orientation());
     setInt("PrintSetup/pageSize",printer->pageSize());
