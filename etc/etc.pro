@@ -16,7 +16,6 @@ QMAKE_LINK    = echo
 TARGET        = etc
 
 dtd.files     = fwbuilder.dtd
-dtd.path      = ""
 
 INSTALLS   -= target
 INSTALLS   += dtd

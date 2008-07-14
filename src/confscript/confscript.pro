@@ -2,13 +2,18 @@
 #
 include(../../qmake.inc)
 #
-TEMPLATE = app
+
+# TEMPLATE = app
 
 QMAKE_RUN_CC    = @echo
 QMAKE_RUN_CXX   = @echo
 QMAKE_LINK      = @echo
-QMAKE_COPY      = ../../install.sh -c -m 0755
-QMAKE_COPY_FILE = ../../install.sh -c -m 0755
+QMAKE_LIB       = @echo
+
+!win32 {
+	QMAKE_COPY      = ../../install.sh -c -m 0755
+	QMAKE_COPY_FILE = ../../install.sh -c -m 0755
+}
 
 TARGET = libfwbuilder-config-3
 
