@@ -18,14 +18,15 @@ unix {
 	MOC_DIR = .moc
 	OBJECTS_DIR = .obj
 
-    prefix                  =@prefix@
-	exec_prefix             =@EXEC_PREFIX@
-	DESTDIR                 =
+    prefix = @prefix@
+	exec_prefix = @EXEC_PREFIX@
+	DESTDIR =
 
-	target.path             =@LIBDIR@
-	dtd.path                =@TEMPLATE_DIR@/
-	migration.path          =@TEMPLATE_DIR@/migration
-	doc.path                =@DOCDIR@
+	target.path = @LIBDIR@
+	dtd.path = @TEMPLATE_DIR@/
+	migration.path = @TEMPLATE_DIR@/migration
+	doc.path = @DOCDIR@
+    script.path = $$prefix/bin
 
 	CONFIG                 += warn_on debug
 	QMAKE_CFLAGS_DEBUG     += -Wno-unused-parameter

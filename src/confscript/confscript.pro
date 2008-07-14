@@ -5,30 +5,18 @@ include(../../qmake.inc)
 
 # TEMPLATE = app
 
-QMAKE_RUN_CC    = @echo
-QMAKE_RUN_CXX   = @echo
-QMAKE_LINK      = @echo
-QMAKE_LIB       = @echo
-
-!win32 {
-	QMAKE_COPY      = ../../install.sh -c -m 0755
-	QMAKE_COPY_FILE = ../../install.sh -c -m 0755
-}
-
-TARGET = libfwbuilder-config-3
-
 win32 {
 	CONFIG -= embed_manifest_exe
 }
 
-!macx {
-	target.path = $$prefix/bin
-}
+QMAKE_RUN_CC = @echo
+QMAKE_RUN_CXX = @echo
+QMAKE_LINK = @echo
+QMAKE_LIB = @echo
 
-macx {
-	script.path   =$$prefix/bin
-	script.files  =libfwbuilder-config-3
+TARGET = confscript
 
-	INSTALLS     -= target
-	INSTALLS     += script
-}
+script.files = libfwbuilder-config-3
+
+INSTALLS -= target
+INSTALLS += script
