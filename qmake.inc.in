@@ -26,7 +26,6 @@ unix {
 	dtd.path = @TEMPLATE_DIR@/
 	migration.path = @TEMPLATE_DIR@/migration
 	doc.path = @DOCDIR@
-    script.path = $$prefix/bin
 
 	CONFIG                 += warn_on debug
 	QMAKE_CFLAGS_DEBUG     += -Wno-unused-parameter
