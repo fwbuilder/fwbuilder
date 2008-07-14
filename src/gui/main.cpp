@@ -118,7 +118,7 @@ extern bool init2(const std::string &a1,
                   const std::string &moduleName,
                   const std::string &rp,
                   const std::string &rp1,
-                  bool f1, bool f2);
+                  bool f1, bool f2, bool d);
 #endif
 
 using namespace libfwbuilder;
@@ -587,13 +587,13 @@ int main( int argc, char ** argv )
     try
     {
 
-        if (fwbdebug) qDebug("initializing ...");
+        if (fwbdebug) qDebug("Initializing ...");
 
 /* need to initialize in order to be able to use FWBSettings */
         init(argv);
         init_platforms();
 
-        if (fwbdebug) qDebug("creating app ...");
+        if (fwbdebug) qDebug("Creating app ...");
 
         //QApplication::setDesktopSettingsAware(desktopaware);
         app = new QApplication( argc, argv );
@@ -602,21 +602,23 @@ int main( int argc, char ** argv )
 
         Q_INIT_RESOURCE(MainRes);
 
-        if (fwbdebug) qDebug("reading settings ...");
-
+        if (fwbdebug) qDebug("Reading settings ...");
         st = new FWBSettings();
-
-        if (fwbdebug) qDebug("creating pixmap factory ...");
-
-/* initialize preferences */
         st->init();
         if (fwbdebug) qDebug("done");
 
+        if (fwbdebug) qDebug("Setting QPixmapCache cache limit");
         QPixmapCache::setCacheLimit(4096);
+        if (fwbdebug) qDebug("done");
 
 #ifdef ELC
-        registered=init2(argv0, "Firewall Builder","fwb_gui","FirewallBuilder/2.1",true,true);
+        registered = init2(argv0,
+                           "Firewall Builder",
+                           "fwb_gui30",
+                           "FirewallBuilder/3.0",
+                           true, true, fwbdebug);
 #endif
+
         if (pparam)
         {
             FWWindow::printFirewallFromFile(filename,

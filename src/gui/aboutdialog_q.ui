@@ -549,7 +549,7 @@
       </sizepolicy>
      </property>
      <property name="text" >
-      <string>Copyright 2002-2006  NetCitadel, LLC</string>
+      <string>Copyright 2002-2008  NetCitadel, LLC</string>
      </property>
      <property name="alignment" >
       <set>Qt::AlignCenter</set>
