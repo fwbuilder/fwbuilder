@@ -46,6 +46,7 @@ typedef unsigned int uint32_t;
 
 #endif
 
+#include <fwbuilder/libfwbuilder-config.h>
 #include <fwbuilder/FWException.h>
 
 namespace libfwbuilder

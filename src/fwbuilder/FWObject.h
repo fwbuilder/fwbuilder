@@ -38,6 +38,7 @@
 #include <fstream>
 #include <cstdlib>
 
+#include <fwbuilder/libfwbuilder-config.h>
 #include <fwbuilder/FWException.h>
 
 namespace libfwbuilder
