@@ -72,43 +72,44 @@ using namespace libfwbuilder;
  * reading key Install_Dir under HKLM Software\NetCitadel\FirewallBuilder
  */
 
-const char* DTDSetpath           = SETTINGS_PATH_PREFIX "/System/DTDPath";
-const char* ResSetpath           = SETTINGS_PATH_PREFIX "/System/ResPath";
-const char* wdirSetpath          = SETTINGS_PATH_PREFIX "/Environment/WDir";
-const char* ofdirSetpath         = SETTINGS_PATH_PREFIX "/Environment/OpenFileDir";
-const char* sfdirSetpath         = SETTINGS_PATH_PREFIX "/Environment/SaveFileDir";
+const char* DTDSetpath = SETTINGS_PATH_PREFIX "/System/DTDPath";
+const char* ResSetpath = SETTINGS_PATH_PREFIX "/System/ResPath";
+const char* wdirSetpath = SETTINGS_PATH_PREFIX "/Environment/WDir";
+const char* ofdirSetpath = SETTINGS_PATH_PREFIX "/Environment/OpenFileDir";
+const char* sfdirSetpath = SETTINGS_PATH_PREFIX "/Environment/SaveFileDir";
 const char* startupActionSetpath = SETTINGS_PATH_PREFIX "/Environment/StartupAction";
-const char* labelColorPath       = SETTINGS_PATH_PREFIX "/ColorLabels/color_";
-const char* labelTextPath        = SETTINGS_PATH_PREFIX "/ColorLabels/text_";
-const char* lastEditedSetpath    = SETTINGS_PATH_PREFIX "/Environment/LastEdited";
-const char* autoSave             = SETTINGS_PATH_PREFIX "/Environment/autoSave";
-const char* expandTreeSetpath    = SETTINGS_PATH_PREFIX "/UI/ExpandTree";
-const char* MergeLibsSetpath     = SETTINGS_PATH_PREFIX "/UI/MergeLibraries";
-const char* infoStyleSetpath     = SETTINGS_PATH_PREFIX "/UI/InfoWindowStyle";
-const char* infoWindowHSetpath   = SETTINGS_PATH_PREFIX "/UI/InfoWindowHeight";
-const char* groupModeSetpath     = SETTINGS_PATH_PREFIX "/UI/GroupViewMode";
-const char* groupColsSetpath     = SETTINGS_PATH_PREFIX "/UI/GroupViewColumns";
-const char* objTooltips          = SETTINGS_PATH_PREFIX "/UI/objTooltips";
-const char* tooltipDelay         = SETTINGS_PATH_PREFIX "/UI/tooltipDelay";
-const char* emptyRCSLog          = SETTINGS_PATH_PREFIX "/RCS/emptyLog";
-const char* dontSaveStdLib       = SETTINGS_PATH_PREFIX "/DataFormat/dontSaveStdLib";
+const char* labelColorPath = SETTINGS_PATH_PREFIX "/ColorLabels/color_";
+const char* labelTextPath = SETTINGS_PATH_PREFIX "/ColorLabels/text_";
+const char* lastEditedSetpath = SETTINGS_PATH_PREFIX "/Environment/LastEdited";
+const char* autoSave = SETTINGS_PATH_PREFIX "/Environment/autoSave";
+const char* expandTreeSetpath = SETTINGS_PATH_PREFIX "/UI/ExpandTree";
+const char* MergeLibsSetpath = SETTINGS_PATH_PREFIX "/UI/MergeLibraries";
+const char* infoStyleSetpath = SETTINGS_PATH_PREFIX "/UI/InfoWindowStyle";
+const char* infoWindowHSetpath = SETTINGS_PATH_PREFIX "/UI/InfoWindowHeight";
+const char* groupModeSetpath = SETTINGS_PATH_PREFIX "/UI/GroupViewMode";
+const char* groupColsSetpath = SETTINGS_PATH_PREFIX "/UI/GroupViewColumns";
+const char* objTooltips = SETTINGS_PATH_PREFIX "/UI/objTooltips";
+const char* tooltipDelay = SETTINGS_PATH_PREFIX "/UI/tooltipDelay";
+const char* emptyRCSLog = SETTINGS_PATH_PREFIX "/RCS/emptyLog";
+const char* dontSaveStdLib = SETTINGS_PATH_PREFIX "/DataFormat/dontSaveStdLib";
 const char* WindowGeometrySetpath= SETTINGS_PATH_PREFIX "/Layout/";
 const char* screenPositionSetpath= SETTINGS_PATH_PREFIX "/ScreenPos/";
 
-const char* SSHPath              = SETTINGS_PATH_PREFIX "/SSH/SSHPath";
-const char* showIconsInRules     = SETTINGS_PATH_PREFIX "/UI/Icons/ShowIconsInRules";
-const char* showDirectionText    = SETTINGS_PATH_PREFIX "/UI/Icons/ShowDirectionTextInRules";
-const char* iconsInRulesSize     = SETTINGS_PATH_PREFIX "/UI/Icons/IconsInRulesSize";
-const char* rulesFont            = SETTINGS_PATH_PREFIX "/UI/Fonts/RulesFont";
-const char* treeFont             = SETTINGS_PATH_PREFIX "/UI/Fonts/TreeFont";
-const char* uiFont               = SETTINGS_PATH_PREFIX "/UI/Fonts/UiFont";
+const char* SSHPath = SETTINGS_PATH_PREFIX "/SSH/SSHPath";
+const char* showIconsInRules = SETTINGS_PATH_PREFIX "/UI/Icons/ShowIconsInRules";
+const char* showDirectionText = SETTINGS_PATH_PREFIX "/UI/Icons/ShowDirectionTextInRules";
+const char* iconsInRulesSize = SETTINGS_PATH_PREFIX "/UI/Icons/IconsInRulesSize";
+const char* rulesFont = SETTINGS_PATH_PREFIX "/UI/Fonts/RulesFont";
+const char* treeFont = SETTINGS_PATH_PREFIX "/UI/Fonts/TreeFont";
+const char* uiFont = SETTINGS_PATH_PREFIX "/UI/Fonts/UiFont";
 
-const char* clipComment       = SETTINGS_PATH_PREFIX "/UI/ClipComment";
+const char* clipComment = SETTINGS_PATH_PREFIX "/UI/ClipComment";
 
-FWBSettings::FWBSettings() : QSettings(QSettings::UserScope, "netcitadel.com", "Firewall Builder")
+FWBSettings::FWBSettings() :
+    QSettings(QSettings::UserScope, "netcitadel.com", "Firewall Builder")
 {
 //    writeEntry( DTDSetpath, librespath.c_str() );
-//    writeEntry( ResSetpath, respath.c_str()   );
+//    writeEntry( ResSetpath, respath.c_str() );
 }
 
 /**

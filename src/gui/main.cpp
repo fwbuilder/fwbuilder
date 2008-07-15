@@ -607,9 +607,7 @@ int main( int argc, char ** argv )
         st->init();
         if (fwbdebug) qDebug("done");
 
-        if (fwbdebug) qDebug("Setting QPixmapCache cache limit");
         QPixmapCache::setCacheLimit(4096);
-        if (fwbdebug) qDebug("done");
 
 #ifdef ELC
         registered = init2(argv0,
