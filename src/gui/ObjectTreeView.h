@@ -70,8 +70,10 @@ class ObjectTreeView : public QTreeWidget {
     std::vector<libfwbuilder::FWObject*>          selectedObjects;
     ProjectPanel* m_project;
     bool isCurrReadOnly(QDragMoveEvent *ev);
-    libfwbuilder::FWObject *getDropTarget(QDropEvent *ev, libfwbuilder::FWObject* dragobj);
- protected:
+    libfwbuilder::FWObject *getDropTarget(
+        QDropEvent *ev, libfwbuilder::FWObject* dragobj);
+
+protected:
 
     bool event( QEvent *event );
 
@@ -83,7 +85,7 @@ class ObjectTreeView : public QTreeWidget {
     virtual void keyPressEvent( QKeyEvent* ev );
     virtual void mousePressEvent( QMouseEvent *e );
     virtual void mouseReleaseEvent( QMouseEvent *e );
-    virtual void mouseDoubleClickEvent( QMouseEvent *e );
+    //virtual void mouseDoubleClickEvent( QMouseEvent *e );
     virtual void mouseMoveEvent( QMouseEvent *e );
 
     virtual void keyReleaseEvent( QKeyEvent* ev );
@@ -132,13 +134,14 @@ class ObjectTreeView : public QTreeWidget {
     
  public slots:
 
-     void itemSelectionChanged();
-     void resetSelection();
-     void currentItemChanged(QTreeWidgetItem *cur);
-     void itemCollapsed(QTreeWidgetItem *itm);
-     void itemExpanded(QTreeWidgetItem *itm);
-     void itemOpened ();
-     virtual void updateTreeItems();
+    void edit(const QModelIndex & index);
+    void itemSelectionChanged();
+    void resetSelection();
+    void currentItemChanged(QTreeWidgetItem *cur);
+    void itemCollapsed(QTreeWidgetItem *itm);
+    void itemExpanded(QTreeWidgetItem *itm);
+    void itemOpened ();
+    virtual void updateTreeItems();
 
  signals:
 

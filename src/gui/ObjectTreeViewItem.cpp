@@ -36,7 +36,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-QVariant ObjectTreeViewItem::data (int column, int role) const
+QVariant ObjectTreeViewItem::data(int column, int role) const
 {
     if (role == Qt::FontRole)
     {
@@ -62,11 +62,13 @@ QVariant ObjectTreeViewItem::data (int column, int role) const
         return QTreeWidgetItem::data(column, role);
 }
 
-bool ObjectTreeViewItem::operator< ( const QTreeWidgetItem & other ) const 
+bool ObjectTreeViewItem::operator<( const QTreeWidgetItem & other ) const 
 {
     int rank1 = -1 ;
     int rank2 = -1;
-    const ObjectTreeViewItem * otvi = dynamic_cast<const ObjectTreeViewItem*>(& other);
+    const ObjectTreeViewItem * otvi =
+        dynamic_cast<const ObjectTreeViewItem*>(& other);
+
     if (otvi->objptr==NULL)
         return true ;
     if (objptr==NULL)

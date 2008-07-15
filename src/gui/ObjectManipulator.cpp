@@ -828,28 +828,30 @@ void ObjectManipulator::addTreePage( FWObject *lib)
     //objTreeView->setContextMenuPolicy( Qt::CustomContextMenu );
 
     connect(m_objectManipulator->widgetStack, SIGNAL( currentChanged(int) ),
-             this,        SLOT( currentTreePageChanged(int) ) );
+             this, SLOT( currentTreePageChanged(int) ) );
 
-    connect(objTreeView,SIGNAL( editCurrentObject_sign() ),
-            this,        SLOT( editSelectedObject()) );
+    connect(objTreeView, SIGNAL( editCurrentObject_sign() ),
+            this, SLOT( editSelectedObject()) );
 
 //    connect(objTreeView,SIGNAL( editCurrentObject_sign() ),
-//             this,        SLOT( editSelectedObject()) );
+//             this, SLOT( editSelectedObject()) );
 
-    connect(objTreeView,SIGNAL( switchObjectInEditor_sign(libfwbuilder::FWObject*) ),
-             this,        SLOT( switchObjectInEditor(libfwbuilder::FWObject*)) );
+    connect(objTreeView,
+            SIGNAL( switchObjectInEditor_sign(libfwbuilder::FWObject*) ),
+            this, SLOT( switchObjectInEditor(libfwbuilder::FWObject*)) );
 
     connect(objTreeView, SIGNAL( deleteObject_sign(libfwbuilder::FWObject*) ),
-             this,        SLOT( deleteObj() ) );
+             this, SLOT( deleteObj() ) );
 
     connect(objTreeView, SIGNAL( objectDropped_sign(libfwbuilder::FWObject*) ),
-             this,        SLOT( openObject(libfwbuilder::FWObject*) ) );
+             this, SLOT( openObject(libfwbuilder::FWObject*) ) );
 
     connect(objTreeView, SIGNAL( contextMenuRequested_sign(const QPoint&) ),
-             this,        SLOT( contextMenuRequested(const QPoint&) ) );
+             this, SLOT( contextMenuRequested(const QPoint&) ) );
 
-    connect(objTreeView, SIGNAL( currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*) ),
-             this,        SLOT( selectionChanged(QTreeWidgetItem*) ) );
+    connect(objTreeView,
+            SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*) ),
+            this, SLOT(selectionChanged(QTreeWidgetItem*)));
 
 
     ObjectTreeViewItem *itm1=new ObjectTreeViewItem( objTreeView );
@@ -862,7 +864,7 @@ void ObjectManipulator::addTreePage( FWObject *lib)
 
     itm1->setFlags(itm1->flags() | Qt::ItemIsDragEnabled);
 
-    itm1->setText( 0 , getTreeLabel( lib ) );
+    itm1->setText( 0, getTreeLabel( lib ) );
     if (lib->isReadOnly())
     {
         QPixmap pm;
@@ -885,7 +887,7 @@ void ObjectManipulator::addTreePage( FWObject *lib)
         itm1->setIcon( 0, pm);
     }
 
-    //itm1->setProperty("id",   lib->getId().c_str()   );
+    //itm1->setProperty("id", lib->getId().c_str()   );
     itm1->setProperty("type", lib->getTypeName().c_str() );
     itm1->setFWObject( lib );
     allItems[lib] = itm1;
@@ -989,7 +991,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     if (otvi==NULL)  return;  // happens when user clicks outside an item
 
     if (!getCurrentObjectTree()->isSelected(otvi->getFWObject()))
-        openObject( otvi , true );
+        openObject( otvi, true );
 
     if (currentObj==NULL)  currentObj=otvi->getFWObject();
 
@@ -1055,7 +1057,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     duptargets->addAction(tr("place here"), this, SLOT( duplicateObjUnderSameParent()));
 
     //QAction *dupID = duptargets->addAction( tr("Duplicate ...") ); // BUGFIX-2346
-QAction *dupID = popup->addAction( tr("Duplicate ...") ,this, SLOT (duplicateObjUnderSameParent()));//popup->    
+QAction *dupID = popup->addAction( tr("Duplicate ..."),this, SLOT (duplicateObjUnderSameParent()));//popup->    
 QAction *movID;
 
     if (moveTargets!=0)
@@ -1070,16 +1072,16 @@ QAction *movID;
 
     popup->addSeparator();
 
-    QAction *copyID = popup->addAction( tr("Copy") ,      this ,
+    QAction *copyID = popup->addAction( tr("Copy"), this,
                                   SLOT( copyObj() ) );
-    QAction *cutID =popup->addAction( tr("Cut") ,       this ,
+    QAction *cutID =popup->addAction( tr("Cut"), this,
                                   SLOT( cutObj() ) );
-    QAction *pasteID =popup->addAction( tr("Paste") ,     this ,
+    QAction *pasteID =popup->addAction( tr("Paste"), this,
                                     SLOT( pasteObj() ) );
 
     popup->addSeparator();
 
-    QAction * delID =popup->addAction( tr("Delete") ,    this ,
+    QAction * delID =popup->addAction( tr("Delete"), this,
                                   SLOT( deleteObj() ) );
 
     QAction *newID1=NULL;
@@ -1092,115 +1094,115 @@ QAction *movID;
         if ( (Firewall::isA(currentObj) || Host::isA(currentObj)) &&
              ! currentObj->isReadOnly() )
         {
-            newID1=popup->addAction( tr("Add Interface"),     this ,
+            newID1=popup->addAction( tr("Add Interface"), this,
                                SLOT( newInterface() ) );
 
         }
         if ((Firewall::isA(currentObj)  &&! currentObj->isReadOnly()))
         {
-            newID1=popup->addAction( tr("Add Policy Rule Set"),     this ,
+            newID1=popup->addAction( tr("Add Policy Rule Set"), this,
                                SLOT( newPolicyRuleSet() ) );
-            newID1=popup->addAction( tr("Add NAT Rule Set"),     this ,
+            newID1=popup->addAction( tr("Add NAT Rule Set"), this,
                                SLOT( newNATRuleSet() ) );
         }
         if (Interface::isA(currentObj) && ! currentObj->isReadOnly())
         {
-            newID1=popup->addAction( tr("Add IP Address"),    this ,
+            newID1=popup->addAction( tr("Add IP Address"), this,
                                SLOT( newInterfaceAddress() ) );
-            newID1=popup->addAction( tr("Add IPv6 Address"),    this ,
+            newID1=popup->addAction( tr("Add IPv6 Address"), this,
                                SLOT( newInterfaceAddressIPv6() ) );
-            newID2=popup->addAction( tr("Add MAC Address"),   this ,
+            newID2=popup->addAction( tr("Add MAC Address"), this,
                                SLOT( newPhysicalAddress() ) );
         }
 
         if (currentObj->getPath(true)=="Firewalls")
-            newID1=popup->addAction( tr("New Firewall"),      this ,
+            newID1=popup->addAction( tr("New Firewall"), this,
                                SLOT( newFirewall() ) );
 
         if (currentObj->getPath(true)=="Objects/Addresses")
         {
-            newID1=popup->addAction( tr("New Address"),       this ,
+            newID1=popup->addAction( tr("New Address"), this,
                                SLOT( newAddress() ) );
         }
         if (currentObj->getPath(true)=="Objects/DNS Names")
         {
-            newID1=popup->addAction( tr("New DNS Name"),       this ,
+            newID1=popup->addAction( tr("New DNS Name"), this,
                                SLOT( newDNSName() ) );
         }
 
         if (currentObj->getPath(true)=="Objects/Address Tables")
         {
-            newID1=popup->addAction( tr("New Address Table"),  this ,
+            newID1=popup->addAction( tr("New Address Table"), this,
                                SLOT( newAddressTable() ) );
         }
 
         if (currentObj->getPath(true)=="Objects/Address Ranges")
-            newID1=popup->addAction( tr("New Address Range"), this ,
+            newID1=popup->addAction( tr("New Address Range"), this,
                                SLOT( newAddressRange() ) );
 
         if (currentObj->getPath(true)=="Objects/Hosts")
-            newID1=popup->addAction( tr("New Host"),          this ,
+            newID1=popup->addAction( tr("New Host"), this,
                                SLOT( newHost() ) );
 
         if (currentObj->getPath(true)=="Objects/Networks")
-            newID1=popup->addAction( tr("New Network"),       this ,
+            newID1=popup->addAction( tr("New Network"), this,
                                SLOT( newNetwork() ) );
 
         if (currentObj->getPath(true)=="Objects/Groups")
-            newID1=popup->addAction( tr("New Group"),         this ,
+            newID1=popup->addAction( tr("New Group"), this,
                                SLOT( newObjectGroup() ) );
 
         if (currentObj->getPath(true)=="Services/Custom")
-            newID1=popup->addAction( tr("New Custom Service"),this ,
+            newID1=popup->addAction( tr("New Custom Service"),this,
                                SLOT( newCustom() ) );
 
         if (currentObj->getPath(true)=="Services/IP")
-            newID1=popup->addAction( tr("New IP Service"),    this ,
+            newID1=popup->addAction( tr("New IP Service"), this,
                                SLOT( newIP() ) );
 
         if (currentObj->getPath(true)=="Services/ICMP")
         {
-            newID1=popup->addAction( tr("New ICMP Service"),  this ,
+            newID1=popup->addAction( tr("New ICMP Service"), this,
                                SLOT( newICMP() ) );
-            newID2=popup->addAction( tr("New ICMP6 Service"), this ,
+            newID2=popup->addAction( tr("New ICMP6 Service"), this,
                                SLOT( newICMP6() ) );
         }
 
         if (currentObj->getPath(true)=="Services/TCP")
-            newID1=popup->addAction( tr("New TCP Service"),   this ,
+            newID1=popup->addAction( tr("New TCP Service"), this,
                                SLOT( newTCP() ) );
 
         if (currentObj->getPath(true)=="Services/UDP")
-            newID1=popup->addAction( tr("New UDP Service"),   this ,
+            newID1=popup->addAction( tr("New UDP Service"), this,
                                SLOT( newUDP() ) );
 
         if (currentObj->getPath(true)=="Services/TagServices")
-            newID1=popup->addAction( tr("New TagService"),   this ,
+            newID1=popup->addAction( tr("New TagService"), this,
                                SLOT( newTagService() ) );
 
         if (currentObj->getPath(true)=="Services/Groups")
-            newID1=popup->addAction( tr("New Group"),         this ,
+            newID1=popup->addAction( tr("New Group"), this,
                                SLOT( newServiceGroup() ) );
 
         if (currentObj->getPath(true)=="Time")
-            newID1=popup->addAction( tr("New Time Interval"), this ,
+            newID1=popup->addAction( tr("New Time Interval"), this,
                                SLOT( newInterval() ) );
 
         popup->addSeparator();
-        popup->addAction( tr("Find") , this , SLOT( findObject()));
-        popup->addAction( tr("Where used") , this , SLOT( findWhereUsedSlot()));
+        popup->addAction( tr("Find"), this, SLOT( findObject()));
+        popup->addAction( tr("Where used"), this, SLOT( findWhereUsedSlot()));
 /*
         if (Firewall::cast(currentObj)!=NULL)
         {
             popup->addSeparator();
-            popup->addAction( tr("Compile") , this , SLOT( compile()));
-            popup->addAction( tr("Install") , this , SLOT( install()));
+            popup->addAction( tr("Compile"), this, SLOT( compile()));
+            popup->addAction( tr("Install"), this, SLOT( install()));
         }
         */
     } else
     {
 
-        popup->addAction( tr("Group"), this ,
+        popup->addAction( tr("Group"), this,
                            SLOT( groupObjects() ) );
 
     }
@@ -1208,17 +1210,17 @@ QAction *movID;
     if (Firewall::cast(currentObj)!=NULL || ObjectGroup::cast(currentObj)!=NULL)
     {
         popup->addSeparator();
-        popup->addAction( tr("Compile") , this , SLOT( compile()));
-        popup->addAction( tr("Install") , this , SLOT( install()));
+        popup->addAction( tr("Compile"), this, SLOT( compile()));
+        popup->addAction( tr("Install"), this, SLOT( install()));
 
 //        popup->addSeparator();
-//        popup->addAction( tr("Simulate install") , this , SLOT( simulateInstall()));
+//        popup->addAction( tr("Simulate install"), this, SLOT( simulateInstall()));
     }
 
     popup->addSeparator();
-    QAction* lcID=popup->addAction( tr("Lock"), this ,
+    QAction* lcID=popup->addAction( tr("Lock"), this,
                        SLOT( lockObject() ) );
-    QAction* unlcID=popup->addAction( tr("Unlock"), this ,
+    QAction* unlcID=popup->addAction( tr("Unlock"), this,
                        SLOT( unlockObject() ) );
     lcID->setEnabled(getCurrentObjectTree()->isLockable());
     unlcID->setEnabled(getCurrentObjectTree()->isUnlockable());
@@ -1227,7 +1229,7 @@ QAction *movID;
     {
 /* keep this for debugging  */
         popup->addSeparator();
-        popup->addAction( tr("dump") , this , SLOT( dumpObj()));
+        popup->addAction( tr("dump"), this, SLOT( dumpObj()));
     }
 
     if (getCurrentObjectTree()->getNumSelected()==1)
@@ -1317,7 +1319,7 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
 					//QString s2 = obj->getTypeName().c_str();
 				}
 QString s3 = obj->getTypeName().c_str();
-                FWObject *nobj=pasteTo( obj , co , false, true);
+                FWObject *nobj=pasteTo( obj, co, false, true);
                 pasteMenuItem = pasteMenuItem && (nobj!=NULL);
             }
         }
@@ -2257,6 +2259,8 @@ void ObjectManipulator::info()
 
     if (currentObj)
     {
+        if (fwbdebug) qDebug("currentObj=%s", currentObj->getName().c_str());
+
         m_project->info(currentObj, true); //forcing info window update
         active=true;
     }
@@ -2275,6 +2279,8 @@ void ObjectManipulator::restoreSelection(bool same_widget)
 
 void ObjectManipulator::editSelectedObject()
 {
+    if (fwbdebug) qDebug("ObjectManipulator::editSelectedObject");
+
     if (getCurrentObjectTree()->getNumSelected()==0) return;
 
     FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
@@ -2293,6 +2299,8 @@ void ObjectManipulator::editSelectedObject()
 
 bool ObjectManipulator::editObject(FWObject *obj)
 {
+    if (fwbdebug) qDebug("ObjectManipulator::editObject");
+
  /*   if (RuleSet::isA (obj))
     {
 //        if (m_project->getCurrentRuleSet()!=obj)
@@ -2300,6 +2308,7 @@ bool ObjectManipulator::editObject(FWObject *obj)
     }
 */
     if (!m_project->isEditorVisible()) m_project->showEditor();
+
 /*
 QList<QMdiSubWindow *> subWindowList = mw->getMdiArea()->subWindowList();
         QString fileName = m_project->getRCS()->getFileName();
@@ -2328,37 +2337,47 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
 {
     if (fwbdebug) qDebug("ObjectManipulator::switchObjectInEditor");
 
+    if (obj && fwbdebug)
+    {
+        qDebug("obj: %s", obj->getName().c_str());
+        FWObject *edt_obj = m_project->getOpenedEditor();
+        if (edt_obj)
+            qDebug("in editor: %s", edt_obj->getName().c_str());
+    }
+
     m_project->unselectRules();
     if (RuleSet::cast(obj)!=NULL)
-        {
-//        qDebug("!2");
+    {
         if (obj!=m_project->getCurrentRuleSet()) 
         {           
-//            if (m_project->getCurrentRuleSet()!=NULL)
-                m_project->openRuleSet(obj);
+            m_project->openRuleSet(obj);
         }
     
-        }
+    }
     if (!m_project->isEditorVisible()) return false;
 
-    if (!m_project->requestEditorOwnership(this,
-                                    obj,
-                                    ObjectEditor::optNone,
-                                    true))
+    if (!m_project->requestEditorOwnership(
+            this, obj, ObjectEditor::optNone, true))
+    {
+        if (fwbdebug) qDebug("Can not get editor panel ownership");
         return false;
+    }
+
+    if (fwbdebug) qDebug("Calling select");
 
     select();
     
-    if (obj!=m_project->getOpenedEditor())
+    if (obj != m_project->getOpenedEditor())
     {
-        
+        if (fwbdebug) qDebug("Open object in editor");
         m_project->openEditor(obj);
-        currentObj=obj;
-        active=true;
+        currentObj = obj;
+        active = true;
         openObject(obj);  // position the tree so that obj is visible
-//        qDebug("!1");
-
+        if (fwbdebug) qDebug("Done");
     }
+
+    if (fwbdebug) qDebug("ObjectManipulator::switchObjectInEditor done");
     
     return true;      // successfully (re)opened obj in the editor
 }
@@ -2406,7 +2425,7 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
 
     if (otvi==NULL) return;
 
-    FWObject *obj=otvi->getFWObject();
+    FWObject *obj = otvi->getFWObject();
     if (obj==NULL) return;
 
     FWObject *o=obj;
@@ -2727,7 +2746,7 @@ FWObject* ObjectManipulator::copyObj2Tree(
     ids.clear();
     if (Interface::isA(copyFrom) && Firewall::isA(parent))
     {
-        FWObject *no  = pasteTo (parent,copyFrom , false, false, true);
+        FWObject *no  = pasteTo (parent,copyFrom, false, false, true);
         return no;
     }
     FWObject *nobj=copyFrom->getRoot()->create(copyFrom->getTypeName());
@@ -3301,23 +3320,25 @@ bool ObjectManipulator::validateDialog()
 
 void ObjectManipulator::select()
 {
-    if (fwbdebug)
-        qDebug("ObjectManipulator::select()");
+    if (fwbdebug) qDebug("ObjectManipulator::select()");
 
     if (currentObj==NULL) return;
-    ObjectTreeViewItem *otvi=allItems[currentObj];
+
+    if (fwbdebug) qDebug("currentObj=%s", currentObj->getName().c_str());
+
+    ObjectTreeViewItem *otvi = allItems[currentObj];
     if (otvi)
     {
-        otvi->setSelected(true);
-        active=true;
-        otvi->treeWidget()->setFocus();
-        otvi->treeWidget()->update();
+// Commented out 07/15/08 --vk
+//        otvi->setSelected(true);
+        active = true;
+//        otvi->treeWidget()->setFocus();
+//        otvi->treeWidget()->update();
     }
 
     m_project->updateRuleSetViewSelection();
     
-    if (fwbdebug)
-        qDebug("/ObjectManipulator::select()");
+    if (fwbdebug) qDebug("ObjectManipulator::select() done");
 }
 
 void ObjectManipulator::unselect()

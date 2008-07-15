@@ -74,9 +74,13 @@ ObjectTreeView* ObjectTreeViewItem::getTree()
  *
  ****************************************************************************/
 
-ObjectTreeView::ObjectTreeView(ProjectPanel* project, QWidget* parent, const char * name, Qt::WFlags f) :
+ObjectTreeView::ObjectTreeView(ProjectPanel* project,
+                               QWidget* parent,
+                               const char * name,
+                               Qt::WFlags f) :
     QTreeWidget(parent), 
-    singleClickTimer(this), m_project(project)
+    singleClickTimer(this),
+    m_project(project)
 {
     setObjectName(name);
     this->setParent(parent, f);
@@ -108,23 +112,23 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project, QWidget* parent, const cha
      */
     process_mouse_release_event = true;
 
-    connect( this, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-             this, SLOT(currentItemChanged(QTreeWidgetItem*)) );
+    connect(this, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)),
+            this, SLOT(currentItemChanged(QTreeWidgetItem*)));
 
-    connect( this, SIGNAL( itemSelectionChanged() ),
-             this, SLOT( itemSelectionChanged() ) );
+    connect(this, SIGNAL(itemSelectionChanged()),
+            this, SLOT(itemSelectionChanged()));
 
-    connect(this, SIGNAL( itemCollapsed(QTreeWidgetItem*)),
-            this, SLOT( itemCollapsed(QTreeWidgetItem*)) );
+    connect(this, SIGNAL(itemCollapsed(QTreeWidgetItem*)),
+            this, SLOT(itemCollapsed(QTreeWidgetItem*)));
 
-    connect(this, SIGNAL( itemExpanded(QTreeWidgetItem*)),
-            this, SLOT( itemExpanded(QTreeWidgetItem*)) );
+    connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)),
+            this, SLOT(itemExpanded(QTreeWidgetItem*)));
 
-    connect( &singleClickTimer, SIGNAL( timeout() ),
-             this, SLOT( resetSelection() ) );
+    connect(&singleClickTimer, SIGNAL(timeout()),
+            this, SLOT(resetSelection()));
 
-    connect( this, SIGNAL( itemActivated(QTreeWidgetItem *, int)),
-             this, SLOT( itemOpened() ));
+    connect(this, SIGNAL(itemActivated(QTreeWidgetItem *, int)),
+            this, SLOT(itemOpened()));
 
     setColumnCount(1);
 
@@ -166,7 +170,7 @@ bool ObjectTreeView::event( QEvent *event )
             FWObject  *obj=NULL;
             QRect      cr;
 
-            QTreeWidgetItem      *itm   = itemAt( QPoint(cx,cy - header()->height()) );
+            QTreeWidgetItem *itm = itemAt(QPoint(cx, cy - header()->height()));
             if (itm==NULL) return false;
             ObjectTreeViewItem *oivi  = dynamic_cast<ObjectTreeViewItem*>(itm);
             assert(oivi!=NULL);
@@ -177,14 +181,17 @@ bool ObjectTreeView::event( QEvent *event )
             cr = visualItemRect(itm);
 
             QRect global = QRect(
-                viewport()->mapToGlobal(cr.topLeft()), viewport()->mapToGlobal(cr.bottomRight()));
+                viewport()->mapToGlobal(cr.topLeft()),
+                viewport()->mapToGlobal(cr.bottomRight()));
 
             //finally stretch rect up to component's width and even more
             //(it fixes bug with horizontal scroll)
             global.setWidth(width() + horizontalOffset());
 
             QToolTip::showText(mapToGlobal( he->pos() ),
-                FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj,true,true),
+                FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj,
+                                                                       true,
+                                                                       true),
                 this, global);
         }
 
@@ -197,8 +204,8 @@ bool ObjectTreeView::event( QEvent *event )
 
 void ObjectTreeView::currentItemChanged(QTreeWidgetItem *cur)
 {
-    if (fwbdebug)
-        qDebug("ObjectTreeView::currentChanged  itm=%s",cur->text(0).toAscii().constData());
+    if (fwbdebug) qDebug("ObjectTreeView::currentChanged  itm=%s",
+                         cur->text(0).toAscii().constData());
     expandOrCollapse = false;
 
 //    lastSelected = ovi;
@@ -208,14 +215,16 @@ void ObjectTreeView::currentItemChanged(QTreeWidgetItem *cur)
 void ObjectTreeView::itemCollapsed(QTreeWidgetItem* itm)
 {
     if (fwbdebug)
-        qDebug("ObjectTreeView::collapsed  itm=%s",itm->text(0).toAscii().constData());
+        qDebug("ObjectTreeView::collapsed  itm=%s",
+               itm->text(0).toAscii().constData());
     expandOrCollapse = true;
 }
 
 void ObjectTreeView::itemExpanded(QTreeWidgetItem* itm)
 {
     if (fwbdebug)
-        qDebug("ObjectTreeView::expanded  itm=%s",itm->text(0).toAscii().constData());
+        qDebug("ObjectTreeView::expanded  itm=%s",
+               itm->text(0).toAscii().constData());
     expandOrCollapse = true;
 }
 
@@ -338,6 +347,9 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
 
     FWObject *current_obj = getCurrentObject();
 
+    if (fwbdebug) qDebug("ObjectTreeView::startDrag: this: %p current_obj: %s",
+                         this, current_obj->getName().c_str());
+
 /* can't drag system folders
 
     in fact, I have to allow to drag system folders because otherwise
@@ -357,6 +369,11 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
     for (vector<FWObject*>::iterator v=so.begin(); v!=so.end(); v++)
     {   
         //m_project->check4Depends(*v, dragobj);
+
+        if (fwbdebug)
+            qDebug("ObjectTreeView::startDrag: adding object to drag list: %s",
+                   (*v)->getName().c_str());
+
         dragobj.push_back( *v );
     }
     FWObjectDrag *drag = new FWObjectDrag(dragobj, this);
@@ -474,7 +491,7 @@ void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
     if (isCurrReadOnly(ev) ||
           !ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE))
     {
-        qDebug("ObjectTreeView::itemOpened");
+        qDebug("ObjectTreeView::dragMoveEvent");
         ev->setAccepted(false);
         return;
     }
@@ -627,7 +644,6 @@ void ObjectTreeView::mouseReleaseEvent( QMouseEvent *e )
 
     QTreeWidget::mouseReleaseEvent(e);
 
-
     if (!process_mouse_release_event)
     {
         // just do not switch object in the editor, otherwise
@@ -666,21 +682,32 @@ void ObjectTreeView::mouseReleaseEvent( QMouseEvent *e )
  */
 void ObjectTreeView::editCurrentObject()
 {
-    if (fwbdebug)
-        qDebug("ObjectTreeView::editCurrentObject");
-
+    if (fwbdebug) qDebug("ObjectTreeView::editCurrentObject");
     emit editCurrentObject_sign();
-
-    if (fwbdebug)
-        qDebug("ObjectTreeView::editCurrentObject done");
+    if (fwbdebug) qDebug("ObjectTreeView::editCurrentObject done");
 }
 
+// QAbstractItemView (base class of QTreeWidget) calls this when
+// element is double-clicked
+void ObjectTreeView::edit(const QModelIndex & index)
+{
+    if (fwbdebug) qDebug("ObjectTreeView::edit ");
+
+    FWObject *obj = getCurrentObject();
+
+/* system folders open on doubleclick, while for regular objects it
+ * opens an editor
+ */
+    if (m_project->isSystem(obj)) QTreeWidget::edit(index);
+    else editCurrentObject();
+}
+
+#if 0
 void ObjectTreeView::mouseDoubleClickEvent( QMouseEvent *e )
 {
-    if (fwbdebug)
-        qDebug("ObjectTreeView::mouseDoubleClickEvent");
+    if (fwbdebug) qDebug("ObjectTreeView::mouseDoubleClickEvent");
 
-    second_click=true;
+    second_click = true;
     singleClickTimer.stop();
 
     FWObject *obj = getCurrentObject();
@@ -693,6 +720,7 @@ void ObjectTreeView::mouseDoubleClickEvent( QMouseEvent *e )
     else
         editCurrentObject();
 }
+#endif
 
 void ObjectTreeView::keyPressEvent( QKeyEvent* ev )
 {
@@ -749,9 +777,7 @@ void ObjectTreeView::keyReleaseEvent( QKeyEvent* ev )
 
 void ObjectTreeView::itemOpened ()
 {
-    if (fwbdebug)
-        qDebug("ObjectTreeView::itemOpened");
-
+    if (fwbdebug) qDebug("ObjectTreeView::itemOpened");
     editCurrentObject();
 }
 
@@ -782,20 +808,24 @@ void ObjectTreeView::itemSelectionChanged()
 
     selectedObjects.clear();
 
-    QTreeWidgetItemIterator it(this);
-    while ( *it )
+    QList<QTreeWidgetItem*> selected = selectedItems();
+    QList<QTreeWidgetItem*>::Iterator it;
+//    QTreeWidgetItemIterator it(this);
+//    while ( *it )
+    for (it=selected.begin(); it!=selected.end(); it++)
     {
-        if ((*it)->isSelected())
-        {
-            QTreeWidgetItem *itm= (*it);
-            ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(itm);
+//        if ((*it)->isSelected())
+//        {
+            QTreeWidgetItem *itm = (*it);
+            ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem*>(itm);
 
             selectedObjects.push_back(otvi->getFWObject());
 
-            if (fwbdebug)
-                qDebug("ObjectTreeView::selectionChanged: selected otvi=%p object %s", otvi, otvi->getFWObject()->getName().c_str());
-        }
-        ++it;
+            if (fwbdebug) qDebug(
+                "ObjectTreeView::selectionChanged: selected otvi=%p object %s",
+                otvi, otvi->getFWObject()->getName().c_str());
+//        }
+//        ++it;
     }
     setLockFlags();
 

@@ -813,10 +813,6 @@ void ProjectPanel::fileClose()
 {
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): start");
 
-//  These are called from closeEvent()
-//    saveState();
-//    storeLastOpenedLib();
-
     closing=true ;
 
     findObjectWidget->init();
@@ -829,14 +825,7 @@ void ProjectPanel::fileClose()
 
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): clearing widgets");
 
-#if 0
-    firewalls.clear();
-    visibleFirewall = NULL;
-    visibleRuleSet = NULL;
-    clearFirewallTabs();
-    clearObjects();
     FWObjectClipboard::obj_clipboard->clear();
-#endif
 
     mdiWindow->close();
 
@@ -845,7 +834,6 @@ void ProjectPanel::fileClose()
     visibleRuleSet = NULL;
     clearFirewallTabs();
     clearObjects();
-    FWObjectClipboard::obj_clipboard->clear();
 
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): done");
 }
@@ -3048,10 +3036,12 @@ void ProjectPanel::stateChanged(Qt::WindowStates oldState,
     bool is_maximized = ((newState & Qt::WindowMaximized) != 0);
     bool was_maximized = ((oldState & Qt::WindowMaximized) != 0);
     bool is_active = ((newState & Qt::WindowActive) != 0);
+#if 0
     if (fwbdebug)
         qDebug("ProjectPanel::stateChanged "
                "newState=%d was_maximized=%d is_maximized=%d is_active=%d",
                int(newState), was_maximized, is_maximized, is_active);
+#endif
     st->setInt("Window/maximized", is_maximized);
     if (!was_maximized && is_maximized) saveState();
     // restore size only if state of the window changes from "maximized"

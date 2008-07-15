@@ -57,7 +57,14 @@ void FWObjectClipboard::clear()
     for (vector<int>::iterator i=ids.begin(); i!=ids.end(); ++i)
     {
         FWObject *obj = mw->db()->findInIndex(*i);
-        if (obj) obj->unref();
+        if (obj)
+        {
+            if (fwbdebug)
+                qDebug("FWObjectClipboard::clear  unref obj=%p (%s)",
+                       obj, obj->getName().c_str());
+
+            obj->unref();
+        }
     }
     ids.clear();
     window=NULL;

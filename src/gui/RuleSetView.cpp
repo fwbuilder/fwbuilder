@@ -3810,8 +3810,8 @@ void RuleSetView::dragEnterEvent( QDragEnterEvent *ev)
 
 void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
 {
-    if (fwbdebug)
-        qDebug("RuleSetView::dragMoveEvent");
+//    if (fwbdebug) qDebug("RuleSetView::dragMoveEvent");
+
     QWidget *fromWidget = ev->source();
 
     // The source of DnD object must be the same instance of fwbuilder
@@ -3883,10 +3883,10 @@ void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
 }
 
 
-void RuleSetView::dropEvent( QDropEvent *ev)
+void RuleSetView::dropEvent(QDropEvent *ev)
 {
-    if (fwbdebug)
-        qDebug("RuleSetView::dropEvent");
+    if (fwbdebug) qDebug("RuleSetView::dropEvent");
+
     if (!isTreeReadWrite(this,ruleset)) return;
 
     int  row = rowAt( ev->pos().y() );
@@ -3906,7 +3906,8 @@ void RuleSetView::dropEvent( QDropEvent *ev)
 
     if (fwbdebug)
     {
-        qDebug("RuleSetView::dropEvent  drop event mode=%d", ev->proposedAction());
+        qDebug("RuleSetView::dropEvent  drop event mode=%d",
+               ev->proposedAction());
         qDebug("                        src widget = %p", ev->source());
         qDebug("                              this = %p", this   );
     }
@@ -3919,6 +3920,10 @@ void RuleSetView::dropEvent( QDropEvent *ev)
     {
         FWObject *dragobj = *i;
         assert(dragobj!=NULL);
+
+        if (fwbdebug)
+            qDebug("RuleSetView::dropEvent dragobj=%s",
+                   dragobj->getName().c_str());
 
         if (ev->source()!=this)
         {
