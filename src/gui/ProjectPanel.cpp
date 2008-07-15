@@ -790,7 +790,6 @@ void ProjectPanel::storeLastOpenedLib()
         st->setStr("Window/" + FileName + "/LastLib", sid.c_str() );
         
     }
-
 }
     
 void ProjectPanel::loadLastOpenedLib(QString filename)
@@ -812,10 +811,13 @@ void ProjectPanel::loadLastOpenedLib(QString filename)
 }
 void ProjectPanel::fileClose()
 {
-    saveState();
-    storeLastOpenedLib();
-    closing=true ;
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): start");
+
+//  These are called from closeEvent()
+//    saveState();
+//    storeLastOpenedLib();
+
+    closing=true ;
 
     findObjectWidget->init();
     if (isEditorVisible()) hideEditor();
@@ -827,14 +829,25 @@ void ProjectPanel::fileClose()
 
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): clearing widgets");
 
+#if 0
     firewalls.clear();
     visibleFirewall = NULL;
     visibleRuleSet = NULL;
     clearFirewallTabs();
     clearObjects();
     FWObjectClipboard::obj_clipboard->clear();
+#endif
+
     mdiWindow->close();
-    mw->recreateWindowsMenu();
+
+    firewalls.clear();
+    visibleFirewall = NULL;
+    visibleRuleSet = NULL;
+    clearFirewallTabs();
+    clearObjects();
+    FWObjectClipboard::obj_clipboard->clear();
+
+    if (fwbdebug) qDebug("ProjectPanel::fileClose(): done");
 }
 
 void ProjectPanel::fileSave()
@@ -3061,8 +3074,11 @@ void ProjectPanel::closeEvent( QCloseEvent * ev)
 
 //    if (!closing)
     saveState();
-
     storeLastOpenedLib();
+
+    if (fwbdebug)
+        qDebug("ProjectPanel::closeEvent check in and delete RCS object");
+
     if (saveIfModified() && checkin(true))
     {
         if (rcs)
@@ -3077,8 +3093,15 @@ void ProjectPanel::closeEvent( QCloseEvent * ev)
     }
     closing = true ;
     QWidget::closeEvent(ev);
+
+    if (fwbdebug)
+        qDebug("ProjectPanel::closeEvent main window houskeeping tasks");
+
     mw->updateWindowTitle();
     mw->recreateWindowsMenu();
+
+    if (fwbdebug) qDebug("ProjectPanel::closeEvent all done");
+
 //    emit closed();
 }
 
@@ -3094,7 +3117,7 @@ QString ProjectPanel::getFileName()
 }
 
 
-void ProjectPanel::saveState ()
+void ProjectPanel::saveState()
 {
     QString FileName ;
     if (rcs!=NULL)
@@ -3119,7 +3142,7 @@ void ProjectPanel::saveState ()
         st->setInt("Window/maximized", 0);
     }
 
-    if (!mdiWindow->isMaximized ())
+    if (!mdiWindow->isMaximized())
     {
         st->setInt("Window/" + FileName + "/x", mdiWindow->x());
         st->setInt("Window/" + FileName + "/y", mdiWindow->y());

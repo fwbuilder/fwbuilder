@@ -411,16 +411,22 @@ void FWWindow::fileExit()
         QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
         for (int i = 0 ; i < subWindowList.size(); i++)
         {
-            ProjectPanel * project = dynamic_cast<ProjectPanel*>(subWindowList[i]->widget ());
+            ProjectPanel * project =
+                dynamic_cast<ProjectPanel*>(subWindowList[i]->widget ());
             if (project!=NULL)
             {
+                if (fwbdebug) qDebug("Calling project->fileClose()");
                 project->fileClose();
             }
         }
  //       activeProject()->fileExit();
     }
  //   else
-        qApp->quit();
+
+    if (fwbdebug) qDebug("Calling QCoreApplication::exit(0)");
+
+    QCoreApplication::exit(0);
+//    qApp->quit();
 }
 
 void FWWindow::fileCommit()
