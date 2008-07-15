@@ -615,7 +615,7 @@ int main( int argc, char ** argv )
         registered = init2(argv0,
                            "Firewall Builder",
                            "fwb_gui30",
-                           "FirewallBuilder/3.0",
+                           "3.0",
                            true, true, fwbdebug);
 #endif
 

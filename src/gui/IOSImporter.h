@@ -34,6 +34,8 @@
 #include <sstream>
 
 #include "Importer.h"
+
+#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Logger.h"
 
 class IOSImporter : public Importer {
