@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>835</width>
-    <height>277</height>
+    <width>824</width>
+    <height>227</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -222,23 +222,14 @@
        <property name="frameShadow" >
         <enum>QFrame::Sunken</enum>
        </property>
-       <layout class="QHBoxLayout" >
-        <property name="spacing" >
+       <layout class="QGridLayout" >
+        <property name="horizontalSpacing" >
          <number>8</number>
         </property>
-        <property name="leftMargin" >
-         <number>0</number>
+        <property name="verticalSpacing" >
+         <number>8</number>
         </property>
-        <property name="topMargin" >
-         <number>0</number>
-        </property>
-        <property name="rightMargin" >
-         <number>0</number>
-        </property>
-        <property name="bottomMargin" >
-         <number>0</number>
-        </property>
-        <item>
+        <item rowspan="4" row="0" column="0" >
          <widget class="QFrame" name="frame7_2" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
@@ -308,7 +299,7 @@
                </property>
                <property name="minimumSize" >
                 <size>
-                 <width>0</width>
+                 <width>200</width>
                  <height>0</height>
                 </size>
                </property>
@@ -431,106 +422,32 @@
           </layout>
          </widget>
         </item>
-        <item>
-         <layout class="QVBoxLayout" >
-          <property name="spacing" >
-           <number>0</number>
+        <item row="0" column="1" >
+         <widget class="QPushButton" name="osAdvanced" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Minimum" hsizetype="Fixed" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
-          <property name="topMargin" >
-           <number>8</number>
+          <property name="minimumSize" >
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
           </property>
-          <item>
-           <layout class="QVBoxLayout" >
-            <property name="spacing" >
-             <number>4</number>
-            </property>
-            <item>
-             <widget class="QPushButton" name="osAdvanced" >
-              <property name="sizePolicy" >
-               <sizepolicy vsizetype="Minimum" hsizetype="Fixed" >
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize" >
-               <size>
-                <width>200</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize" >
-               <size>
-                <width>32767</width>
-                <height>32767</height>
-               </size>
-              </property>
-              <property name="text" >
-               <string>Host OS Settings ...</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="fwAdvanced" >
-              <property name="sizePolicy" >
-               <sizepolicy vsizetype="Minimum" hsizetype="Fixed" >
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize" >
-               <size>
-                <width>200</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize" >
-               <size>
-                <width>32767</width>
-                <height>32767</height>
-               </size>
-              </property>
-              <property name="text" >
-               <string>Firewall Settings ...</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="inactive" >
-              <property name="sizePolicy" >
-               <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="toolTip" >
-               <string>Skip this firewall for batch compile and install operations</string>
-              </property>
-              <property name="text" >
-               <string>Inactive firewall</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <spacer>
-            <property name="orientation" >
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeType" >
-             <enum>QSizePolicy::MinimumExpanding</enum>
-            </property>
-            <property name="sizeHint" >
-             <size>
-              <width>200</width>
-              <height>10</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
+          <property name="maximumSize" >
+           <size>
+            <width>32767</width>
+            <height>32767</height>
+           </size>
+          </property>
+          <property name="text" >
+           <string>Host OS Settings ...</string>
+          </property>
+         </widget>
         </item>
-        <item>
+        <item rowspan="4" row="0" column="2" >
          <layout class="QVBoxLayout" >
           <property name="spacing" >
            <number>2</number>
@@ -571,6 +488,63 @@
            </widget>
           </item>
          </layout>
+        </item>
+        <item row="1" column="1" >
+         <widget class="QPushButton" name="fwAdvanced" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Minimum" hsizetype="Fixed" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>32767</width>
+            <height>32767</height>
+           </size>
+          </property>
+          <property name="text" >
+           <string>Firewall Settings ...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1" >
+         <widget class="QCheckBox" name="inactive" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip" >
+           <string>Skip this firewall for batch compile and install operations</string>
+          </property>
+          <property name="text" >
+           <string>Inactive firewall</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1" >
+         <spacer>
+          <property name="orientation" >
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType" >
+           <enum>QSizePolicy::MinimumExpanding</enum>
+          </property>
+          <property name="sizeHint" >
+           <size>
+            <width>203</width>
+            <height>81</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>

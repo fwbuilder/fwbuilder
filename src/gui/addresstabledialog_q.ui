@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>757</width>
-    <height>261</height>
+    <width>556</width>
+    <height>283</height>
    </rect>
   </property>
   <property name="baseSize" >
@@ -226,36 +226,20 @@
         <enum>QFrame::Sunken</enum>
        </property>
        <layout class="QGridLayout" >
-        <property name="leftMargin" >
-         <number>2</number>
-        </property>
-        <property name="topMargin" >
-         <number>2</number>
-        </property>
-        <property name="rightMargin" >
-         <number>2</number>
-        </property>
-        <property name="bottomMargin" >
-         <number>2</number>
-        </property>
-        <property name="horizontalSpacing" >
-         <number>2</number>
-        </property>
-        <property name="verticalSpacing" >
-         <number>2</number>
-        </property>
-        <item row="0" column="1" >
-         <widget class="QLabel" name="textLabel2" >
-          <property name="text" >
-           <string>Comment:</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" >
+        <item rowspan="2" row="0" column="0" >
          <widget class="QFrame" name="frame10" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>300</width>
+            <height>16</height>
+           </size>
+          </property>
           <property name="frameShape" >
            <enum>QFrame::Box</enum>
           </property>
@@ -280,6 +264,12 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>200</width>
+               <height>0</height>
+              </size>
              </property>
             </widget>
            </item>
@@ -329,7 +319,7 @@
              </property>
              <property name="minimumSize" >
               <size>
-               <width>0</width>
+               <width>250</width>
                <height>0</height>
               </size>
              </property>
@@ -410,6 +400,22 @@
             </spacer>
            </item>
           </layout>
+         </widget>
+        </item>
+        <item row="0" column="1" >
+         <widget class="QLabel" name="textLabel2" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text" >
+           <string>Comment:</string>
+          </property>
+          <property name="wordWrap" >
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
         <item row="1" column="1" >

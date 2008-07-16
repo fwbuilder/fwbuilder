@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>622</width>
-    <height>252</height>
+    <width>638</width>
+    <height>215</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -217,36 +217,14 @@
         <enum>QFrame::Sunken</enum>
        </property>
        <layout class="QGridLayout" >
-        <property name="leftMargin" >
-         <number>2</number>
-        </property>
-        <property name="topMargin" >
-         <number>2</number>
-        </property>
-        <property name="rightMargin" >
-         <number>2</number>
-        </property>
-        <property name="bottomMargin" >
-         <number>2</number>
-        </property>
-        <property name="horizontalSpacing" >
-         <number>8</number>
-        </property>
-        <property name="verticalSpacing" >
-         <number>2</number>
-        </property>
-        <item row="0" column="1" >
-         <widget class="QLabel" name="textLabel2" >
-          <property name="text" >
-           <string>Comment:</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" >
+        <item rowspan="2" row="0" column="0" >
          <widget class="QFrame" name="frame17" >
+          <property name="minimumSize" >
+           <size>
+            <width>200</width>
+            <height>16</height>
+           </size>
+          </property>
           <property name="frameShape" >
            <enum>QFrame::Box</enum>
           </property>
@@ -254,12 +232,6 @@
            <enum>QFrame::Sunken</enum>
           </property>
           <layout class="QGridLayout" >
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
-            <number>8</number>
-           </property>
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
              <property name="text" >
@@ -270,7 +242,7 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1" colspan="2" >
+           <item row="0" column="1" >
             <widget class="QLineEdit" name="obj_name" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -280,13 +252,13 @@
              </property>
              <property name="minimumSize" >
               <size>
-               <width>0</width>
+               <width>200</width>
                <height>0</height>
               </size>
              </property>
             </widget>
            </item>
-           <item row="2" column="0" >
+           <item row="1" column="0" >
             <widget class="QLabel" name="textLabel2_2" >
              <property name="text" >
               <string>DNS Record:</string>
@@ -296,7 +268,7 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="1" colspan="2" >
+           <item row="1" column="1" >
             <widget class="QLineEdit" name="dnsrec" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -304,39 +276,45 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="minimumSize" >
+              <size>
+               <width>200</width>
+               <height>0</height>
+              </size>
+             </property>
             </widget>
            </item>
-           <item row="3" column="0" colspan="2" >
+           <item row="2" column="0" colspan="2" >
             <widget class="QRadioButton" name="r_compiletime" >
              <property name="text" >
               <string>Compile Time</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="0" colspan="3" >
+           <item row="3" column="0" colspan="2" >
             <widget class="QRadioButton" name="r_runtime" >
              <property name="text" >
               <string>Run Time</string>
              </property>
             </widget>
            </item>
-           <item row="5" column="0" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::MinimumExpanding</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>20</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
           </layout>
+         </widget>
+        </item>
+        <item row="0" column="1" >
+         <widget class="QLabel" name="textLabel2" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text" >
+           <string>Comment:</string>
+          </property>
+          <property name="wordWrap" >
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
         <item row="1" column="1" >

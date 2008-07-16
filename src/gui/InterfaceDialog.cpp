@@ -102,11 +102,11 @@ void InterfaceDialog::loadFWObject(FWObject *o)
     if (Host::isA( f ))
     {
         m_dialog->ext->setEnabled( false );
-        m_dialog->ext->hide();
-        m_dialog->seclevel->hide();
-        m_dialog->seclevelLabel->hide();
-        m_dialog->netzone->hide();
-        m_dialog->netzoneLabel->hide();
+        m_dialog->ext->setEnabled(false);
+        m_dialog->seclevel->setEnabled(false);
+        m_dialog->seclevelLabel->setEnabled(false);
+        m_dialog->netzone->setEnabled(false);
+        m_dialog->netzoneLabel->setEnabled(false);
     }
 
     bool supports_security_levels = false;
@@ -127,31 +127,31 @@ void InterfaceDialog::loadFWObject(FWObject *o)
     {
         if (supports_security_levels)
         {
-            m_dialog->seclevel->show();
-            m_dialog->seclevelLabel->show();
-            m_dialog->ext->hide();
+            m_dialog->seclevel->setEnabled(true);
+            m_dialog->seclevelLabel->setEnabled(true);
+            m_dialog->ext->setEnabled(false);
             m_dialog->seclevel->setValue( obj->getInt("security_level") );
         } else
         {
-            m_dialog->seclevel->hide();
-            m_dialog->seclevelLabel->hide();
-            m_dialog->ext->show();
+            m_dialog->seclevel->setEnabled(false);
+            m_dialog->seclevelLabel->setEnabled(false);
+            m_dialog->ext->setEnabled(true);
             m_dialog->ext->setChecked( obj->getInt("security_level")==0 );
         }
 
         if (supports_unprotected)
         {
-            m_dialog->unprotected->show();
+            m_dialog->unprotected->setEnabled(true);
             m_dialog->unprotected->setChecked( obj->getBool("unprotected") );
         } else
         {
-            m_dialog->unprotected->hide();
+            m_dialog->unprotected->setEnabled(false);
         }
 
         if (supports_network_zones)
         {
-            m_dialog->netzone->show();
-            m_dialog->netzoneLabel->show();
+            m_dialog->netzone->setEnabled(true);
+            m_dialog->netzoneLabel->setEnabled(true);
 
             netzoneObjectIDs.clear();
             netzoneObjectNos.clear();
@@ -225,8 +225,8 @@ void InterfaceDialog::loadFWObject(FWObject *o)
         }
         else
         {
-            m_dialog->netzone->hide();
-            m_dialog->netzoneLabel->hide();
+            m_dialog->netzone->setEnabled(false);
+            m_dialog->netzoneLabel->setEnabled(false);
         }
     }
 

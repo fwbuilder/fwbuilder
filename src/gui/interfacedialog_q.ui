@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>859</width>
-    <height>297</height>
+    <width>936</width>
+    <height>268</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -226,55 +226,14 @@
         <enum>QFrame::Sunken</enum>
        </property>
        <layout class="QGridLayout" >
-        <property name="leftMargin" >
-         <number>1</number>
-        </property>
-        <property name="topMargin" >
-         <number>1</number>
-        </property>
-        <property name="rightMargin" >
-         <number>1</number>
-        </property>
-        <property name="bottomMargin" >
-         <number>1</number>
-        </property>
-        <property name="horizontalSpacing" >
-         <number>8</number>
-        </property>
-        <property name="verticalSpacing" >
-         <number>2</number>
-        </property>
-        <item row="0" column="3" >
-         <widget class="QLabel" name="textLabel2" >
-          <property name="text" >
-           <string>Comment:</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item rowspan="3" row="1" column="3" >
-         <widget class="QTextEdit" name="comment" >
+        <item rowspan="2" row="0" column="0" colspan="2" >
+         <widget class="QFrame" name="frame26" >
           <property name="sizePolicy" >
-           <sizepolicy vsizetype="MinimumExpanding" hsizetype="Expanding" >
+           <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
             <horstretch>0</horstretch>
-            <verstretch>100</verstretch>
+            <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize" >
-           <size>
-            <width>200</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="tabChangesFocus" >
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="2" >
-         <widget class="QFrame" name="frame26" >
           <property name="frameShape" >
            <enum>QFrame::Box</enum>
           </property>
@@ -373,7 +332,7 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
             <widget class="QLineEdit" name="obj_name" >
              <property name="minimumSize" >
               <size>
-               <width>0</width>
+               <width>200</width>
                <height>0</height>
               </size>
              </property>
@@ -398,34 +357,10 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
           </layout>
          </widget>
         </item>
-        <item row="2" column="1" colspan="2" >
-         <widget class="QComboBox" name="netzone" >
-          <property name="toolTip" >
-           <string>&lt;p>Network zone consists of hosts and networks that can be reached through this interface of the firewall. Subnet to which this interface is directly attached must be part of its network zone. Other subnets reachable by means of routing should alse be added to the network zone.
-&lt;br>
-If network zone for this interface consists of only one subnet, you can simply choose that network's object in the pull-down below. If your network zone should include multiple subnets, you need to create an Object Group, then put all hosts and networks which are going to be part of the network zone into that group and finally choose this group in the pull-down below.&lt;/p></string>
-          </property>
-          <property name="whatsThis" >
-           <string>&lt;p>Network zone consists of hosts and networks that can be reached through this interface of the firewall. Subnet to which this interface is directly attached must be part of its network zone. Other subnets reachable by means of routing should alse be added to the network zone.
-&lt;br>
-If network zone for this interface consists of only one subnet, you can simply choose that network's object in the pull-down below. If your network zone should include multiple subnets, you need to create an Object Group, then put all hosts and networks which are going to be part of the network zone into that group and finally choose this group in the pull-down below.&lt;/p></string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0" >
-         <widget class="QLabel" name="netzoneLabel" >
-          <property name="text" >
-           <string>Network zone:</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2" >
+        <item rowspan="2" row="0" column="2" >
          <widget class="QGroupBox" name="buttonGroup1" >
           <property name="sizePolicy" >
-           <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+           <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -447,7 +382,7 @@ If network zone for this interface consists of only one subnet, you can simply c
             <number>8</number>
            </property>
            <property name="horizontalSpacing" >
-            <number>1</number>
+            <number>8</number>
            </property>
            <property name="verticalSpacing" >
             <number>8</number>
@@ -514,6 +449,65 @@ If network zone for this interface consists of only one subnet, you can simply c
             </widget>
            </item>
           </layout>
+         </widget>
+        </item>
+        <item row="0" column="3" >
+         <widget class="QLabel" name="textLabel2" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text" >
+           <string>Comment:</string>
+          </property>
+          <property name="wordWrap" >
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item rowspan="2" row="1" column="3" >
+         <widget class="QTextEdit" name="comment" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+            <horstretch>0</horstretch>
+            <verstretch>100</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="tabChangesFocus" >
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" >
+         <widget class="QLabel" name="netzoneLabel" >
+          <property name="text" >
+           <string>Network zone:</string>
+          </property>
+          <property name="wordWrap" >
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1" colspan="2" >
+         <widget class="QComboBox" name="netzone" >
+          <property name="toolTip" >
+           <string>&lt;p>Network zone consists of hosts and networks that can be reached through this interface of the firewall. Subnet to which this interface is directly attached must be part of its network zone. Other subnets reachable by means of routing should alse be added to the network zone.
+&lt;br>
+If network zone for this interface consists of only one subnet, you can simply choose that network's object in the pull-down below. If your network zone should include multiple subnets, you need to create an Object Group, then put all hosts and networks which are going to be part of the network zone into that group and finally choose this group in the pull-down below.&lt;/p></string>
+          </property>
+          <property name="whatsThis" >
+           <string>&lt;p>Network zone consists of hosts and networks that can be reached through this interface of the firewall. Subnet to which this interface is directly attached must be part of its network zone. Other subnets reachable by means of routing should alse be added to the network zone.
+&lt;br>
+If network zone for this interface consists of only one subnet, you can simply choose that network's object in the pull-down below. If your network zone should include multiple subnets, you need to create an Object Group, then put all hosts and networks which are going to be part of the network zone into that group and finally choose this group in the pull-down below.&lt;/p></string>
+          </property>
          </widget>
         </item>
        </layout>

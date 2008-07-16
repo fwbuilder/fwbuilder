@@ -223,217 +223,7 @@
         <enum>QFrame::Sunken</enum>
        </property>
        <layout class="QGridLayout" >
-        <property name="leftMargin" >
-         <number>2</number>
-        </property>
-        <property name="topMargin" >
-         <number>2</number>
-        </property>
-        <property name="rightMargin" >
-         <number>2</number>
-        </property>
-        <property name="bottomMargin" >
-         <number>2</number>
-        </property>
-        <property name="horizontalSpacing" >
-         <number>8</number>
-        </property>
-        <property name="verticalSpacing" >
-         <number>2</number>
-        </property>
-        <item row="1" column="1" >
-         <widget class="QFrame" name="frame36" >
-          <property name="frameShape" >
-           <enum>QFrame::Box</enum>
-          </property>
-          <property name="frameShadow" >
-           <enum>QFrame::Sunken</enum>
-          </property>
-          <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>8</number>
-           </property>
-           <property name="topMargin" >
-            <number>8</number>
-           </property>
-           <property name="rightMargin" >
-            <number>8</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>8</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
-            <number>8</number>
-           </property>
-           <item row="0" column="0" >
-            <widget class="QGroupBox" name="groupBox1" >
-             <property name="title" >
-              <string>Source Port Range</string>
-             </property>
-             <layout class="QGridLayout" >
-              <property name="leftMargin" >
-               <number>2</number>
-              </property>
-              <property name="topMargin" >
-               <number>2</number>
-              </property>
-              <property name="rightMargin" >
-               <number>2</number>
-              </property>
-              <property name="bottomMargin" >
-               <number>2</number>
-              </property>
-              <property name="horizontalSpacing" >
-               <number>2</number>
-              </property>
-              <property name="verticalSpacing" >
-               <number>2</number>
-              </property>
-              <item row="0" column="1" >
-               <widget class="QSpinBox" name="ss" >
-                <property name="buttonSymbols" >
-                 <enum>QAbstractSpinBox::UpDownArrows</enum>
-                </property>
-                <property name="maximum" >
-                 <number>65535</number>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1" >
-               <widget class="QSpinBox" name="se" >
-                <property name="buttonSymbols" >
-                 <enum>QAbstractSpinBox::UpDownArrows</enum>
-                </property>
-                <property name="maximum" >
-                 <number>65535</number>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0" >
-               <widget class="QLabel" name="textLabel3" >
-                <property name="text" >
-                 <string>Start:</string>
-                </property>
-                <property name="alignment" >
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0" >
-               <widget class="QLabel" name="textLabel3_2" >
-                <property name="text" >
-                 <string>End:</string>
-                </property>
-                <property name="alignment" >
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item row="1" column="0" >
-            <widget class="QGroupBox" name="groupBox1_2" >
-             <property name="title" >
-              <string>Destination Port Range</string>
-             </property>
-             <layout class="QGridLayout" >
-              <property name="leftMargin" >
-               <number>2</number>
-              </property>
-              <property name="topMargin" >
-               <number>2</number>
-              </property>
-              <property name="rightMargin" >
-               <number>2</number>
-              </property>
-              <property name="bottomMargin" >
-               <number>2</number>
-              </property>
-              <property name="horizontalSpacing" >
-               <number>2</number>
-              </property>
-              <property name="verticalSpacing" >
-               <number>2</number>
-              </property>
-              <item row="0" column="1" >
-               <widget class="QSpinBox" name="ds" >
-                <property name="buttonSymbols" >
-                 <enum>QAbstractSpinBox::UpDownArrows</enum>
-                </property>
-                <property name="maximum" >
-                 <number>65535</number>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1" >
-               <widget class="QSpinBox" name="de" >
-                <property name="buttonSymbols" >
-                 <enum>QAbstractSpinBox::UpDownArrows</enum>
-                </property>
-                <property name="maximum" >
-                 <number>65535</number>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0" >
-               <widget class="QLabel" name="textLabel3_3" >
-                <property name="text" >
-                 <string>Start:</string>
-                </property>
-                <property name="alignment" >
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0" >
-               <widget class="QLabel" name="textLabel3_2_2" >
-                <property name="text" >
-                 <string>End:</string>
-                </property>
-                <property name="alignment" >
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item row="2" column="0" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::MinimumExpanding</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>20</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="1" column="0" >
+        <item rowspan="2" row="0" column="0" >
          <widget class="QFrame" name="frame35" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
@@ -492,7 +282,7 @@
              </property>
              <property name="minimumSize" >
               <size>
-               <width>0</width>
+               <width>200</width>
                <height>0</height>
               </size>
              </property>
@@ -525,7 +315,7 @@
                  <number>0</number>
                 </property>
                 <property name="horizontalSpacing" >
-                 <number>4</number>
+                 <number>10</number>
                 </property>
                 <property name="verticalSpacing" >
                  <number>4</number>
@@ -843,7 +633,7 @@ by the target firewall platform</string>
                 </property>
                </widget>
               </item>
-              <item row="3" column="0" >
+              <item row="2" column="0" >
                <spacer>
                 <property name="orientation" >
                  <enum>Qt::Vertical</enum>
@@ -853,8 +643,8 @@ by the target firewall platform</string>
                 </property>
                 <property name="sizeHint" >
                  <size>
-                  <width>91</width>
-                  <height>8</height>
+                  <width>172</width>
+                  <height>16</height>
                  </size>
                 </property>
                </spacer>
@@ -865,8 +655,206 @@ by the target firewall platform</string>
           </layout>
          </widget>
         </item>
+        <item rowspan="2" row="0" column="1" >
+         <widget class="QFrame" name="frame36" >
+          <property name="frameShape" >
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow" >
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <layout class="QGridLayout" >
+           <property name="leftMargin" >
+            <number>8</number>
+           </property>
+           <property name="topMargin" >
+            <number>8</number>
+           </property>
+           <property name="rightMargin" >
+            <number>8</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>8</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>2</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>8</number>
+           </property>
+           <item row="0" column="0" >
+            <widget class="QGroupBox" name="groupBox1" >
+             <property name="title" >
+              <string>Source Port Range</string>
+             </property>
+             <layout class="QGridLayout" >
+              <property name="leftMargin" >
+               <number>2</number>
+              </property>
+              <property name="topMargin" >
+               <number>2</number>
+              </property>
+              <property name="rightMargin" >
+               <number>2</number>
+              </property>
+              <property name="bottomMargin" >
+               <number>2</number>
+              </property>
+              <property name="horizontalSpacing" >
+               <number>2</number>
+              </property>
+              <property name="verticalSpacing" >
+               <number>2</number>
+              </property>
+              <item row="0" column="1" >
+               <widget class="QSpinBox" name="ss" >
+                <property name="buttonSymbols" >
+                 <enum>QAbstractSpinBox::UpDownArrows</enum>
+                </property>
+                <property name="maximum" >
+                 <number>65535</number>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1" >
+               <widget class="QSpinBox" name="se" >
+                <property name="buttonSymbols" >
+                 <enum>QAbstractSpinBox::UpDownArrows</enum>
+                </property>
+                <property name="maximum" >
+                 <number>65535</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" >
+               <widget class="QLabel" name="textLabel3" >
+                <property name="text" >
+                 <string>Start:</string>
+                </property>
+                <property name="alignment" >
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+                <property name="wordWrap" >
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" >
+               <widget class="QLabel" name="textLabel3_2" >
+                <property name="text" >
+                 <string>End:</string>
+                </property>
+                <property name="alignment" >
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+                <property name="wordWrap" >
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="1" column="0" >
+            <widget class="QGroupBox" name="groupBox1_2" >
+             <property name="title" >
+              <string>Destination Port Range</string>
+             </property>
+             <layout class="QGridLayout" >
+              <property name="leftMargin" >
+               <number>2</number>
+              </property>
+              <property name="topMargin" >
+               <number>2</number>
+              </property>
+              <property name="rightMargin" >
+               <number>2</number>
+              </property>
+              <property name="bottomMargin" >
+               <number>2</number>
+              </property>
+              <property name="horizontalSpacing" >
+               <number>2</number>
+              </property>
+              <property name="verticalSpacing" >
+               <number>2</number>
+              </property>
+              <item row="0" column="1" >
+               <widget class="QSpinBox" name="ds" >
+                <property name="buttonSymbols" >
+                 <enum>QAbstractSpinBox::UpDownArrows</enum>
+                </property>
+                <property name="maximum" >
+                 <number>65535</number>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1" >
+               <widget class="QSpinBox" name="de" >
+                <property name="buttonSymbols" >
+                 <enum>QAbstractSpinBox::UpDownArrows</enum>
+                </property>
+                <property name="maximum" >
+                 <number>65535</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" >
+               <widget class="QLabel" name="textLabel3_3" >
+                <property name="text" >
+                 <string>Start:</string>
+                </property>
+                <property name="alignment" >
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+                <property name="wordWrap" >
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" >
+               <widget class="QLabel" name="textLabel3_2_2" >
+                <property name="text" >
+                 <string>End:</string>
+                </property>
+                <property name="alignment" >
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+                <property name="wordWrap" >
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="2" column="0" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::MinimumExpanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
         <item row="0" column="2" >
          <widget class="QLabel" name="textLabel2" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text" >
            <string>Comment:</string>
           </property>

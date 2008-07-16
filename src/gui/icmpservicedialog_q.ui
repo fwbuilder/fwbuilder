@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>655</width>
-    <height>240</height>
+    <width>636</width>
+    <height>230</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -226,58 +226,11 @@
         <enum>QFrame::Sunken</enum>
        </property>
        <layout class="QGridLayout" >
-        <property name="leftMargin" >
-         <number>2</number>
-        </property>
-        <property name="topMargin" >
-         <number>2</number>
-        </property>
-        <property name="rightMargin" >
-         <number>2</number>
-        </property>
-        <property name="bottomMargin" >
-         <number>2</number>
-        </property>
-        <property name="horizontalSpacing" >
-         <number>2</number>
-        </property>
-        <property name="verticalSpacing" >
-         <number>2</number>
-        </property>
-        <item row="1" column="1" >
-         <widget class="QTextEdit" name="comment" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>200</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="tabChangesFocus" >
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" >
-         <widget class="QLabel" name="textLabel2" >
-          <property name="text" >
-           <string>Comment:</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" >
+        <item rowspan="2" row="0" column="0" >
          <widget class="QFrame" name="frame30" >
           <property name="maximumSize" >
            <size>
-            <width>200</width>
+            <width>16777215</width>
             <height>16777215</height>
            </size>
           </property>
@@ -288,40 +241,12 @@
            <enum>QFrame::Sunken</enum>
           </property>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>8</number>
-           </property>
-           <property name="topMargin" >
-            <number>8</number>
-           </property>
-           <property name="rightMargin" >
-            <number>8</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>8</number>
-           </property>
            <property name="horizontalSpacing" >
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="verticalSpacing" >
             <number>8</number>
            </property>
-           <item row="4" column="2" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::MinimumExpanding</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>20</width>
-               <height>5</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
              <property name="sizePolicy" >
@@ -340,15 +265,21 @@
            </item>
            <item row="0" column="1" colspan="3" >
             <widget class="QLineEdit" name="obj_name" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="minimumSize" >
               <size>
-               <width>0</width>
+               <width>200</width>
                <height>0</height>
               </size>
              </property>
             </widget>
            </item>
-           <item row="2" column="0" colspan="2" >
+           <item row="1" column="0" colspan="2" >
             <widget class="QLabel" name="textLabel3" >
              <property name="text" >
               <string>ICMP Type:</string>
@@ -358,23 +289,7 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="2" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::Expanding</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>55</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="2" column="3" >
+           <item row="1" column="2" >
             <widget class="QSpinBox" name="icmpType" >
              <property name="specialValueText" >
               <string>any</string>
@@ -387,7 +302,7 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="0" colspan="2" >
+           <item row="2" column="0" colspan="2" >
             <widget class="QLabel" name="textLabel4" >
              <property name="text" >
               <string>ICMP Code:</string>
@@ -397,23 +312,7 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="2" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::Expanding</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>53</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="3" column="3" >
+           <item row="2" column="2" >
             <widget class="QSpinBox" name="icmpCode" >
              <property name="specialValueText" >
               <string>any</string>
@@ -426,7 +325,58 @@
              </property>
             </widget>
            </item>
+           <item row="3" column="2" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::MinimumExpanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>5</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
           </layout>
+         </widget>
+        </item>
+        <item row="0" column="1" >
+         <widget class="QLabel" name="textLabel2" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text" >
+           <string>Comment:</string>
+          </property>
+          <property name="wordWrap" >
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1" >
+         <widget class="QTextEdit" name="comment" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="tabChangesFocus" >
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
        </layout>
