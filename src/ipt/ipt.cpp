@@ -224,13 +224,12 @@ string dumpScript(bool nocomm, Firewall *fw,
                   const string& filter_script,
                   bool ipv6_policy)
 {
+    ostringstream res;
     ostringstream script;
     string prolog_place= fw->getOptionsObject()->getStr("prolog_place");
 
     if (fw->getOptionsObject()->getBool("use_iptables_restore"))
     {
-        script << "(" << endl;
-
         script << reset_script;
 
         if (prolog_place == "after_flush")
@@ -243,28 +242,35 @@ string dumpScript(bool nocomm, Firewall *fw,
         if (!mangle_script.empty()) script << mangle_script;
         if (!nat_script.empty()) script << nat_script;
 
-        script << "#" << endl;
-        if (ipv6_policy)
-            script << ") | $IP6TABLES_RESTORE; IPTABLES_RESTORE_RES=$?" << endl;
-        else
-            script << ") | $IPTABLES_RESTORE; IPTABLES_RESTORE_RES=$?" << endl;
+        if (script.tellp() > 0)
+        {
+            res << "(" << endl;
+            res << script.str();
+            res << "#" << endl;
+            if (ipv6_policy)
+                res << ") | $IP6TABLES_RESTORE; IPTABLES_RESTORE_RES=$?"
+                    << endl;
+            else
+                res << ") | $IPTABLES_RESTORE; IPTABLES_RESTORE_RES=$?"
+                    << endl;
+        }
+        return res.str();
     } else
     {
-
-        script << reset_script;
+        res << reset_script;
 
         if (prolog_place == "after_flush")
         {
-            script << addPrologScript(
+            res << addPrologScript(
                 nocomm, fw->getOptionsObject()->getStr("prolog_script"));
         }
 
-        if (!nat_script.empty()) script << nat_script;
-        if (!mangle_script.empty()) script << mangle_script;
-        if (!filter_script.empty())  script << filter_script;
+        if (!nat_script.empty()) res << nat_script;
+        if (!mangle_script.empty()) res << mangle_script;
+        if (!filter_script.empty())  res << filter_script;
     }
 
-    return script.str();
+    return res.str();
 }
 
 void usage(const char *name)

@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>723</width>
-    <height>253</height>
+    <width>643</width>
+    <height>290</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -290,6 +290,12 @@
            </item>
            <item row="2" column="1" >
             <widget class="QLineEdit" name="code" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="minimumSize" >
               <size>
                <width>0</width>
@@ -318,7 +324,14 @@
             </widget>
            </item>
            <item row="3" column="1" >
-            <widget class="QLineEdit" name="protocol_string" />
+            <widget class="QLineEdit" name="protocol_string" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
            </item>
            <item row="4" column="1" >
             <spacer>
