@@ -1,3 +1,9 @@
+2008-07-16  vadim  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::addToGroupAbove): Additional check
+	for a bug where adding very long list of rules to a rule group
+	caused crash once. Bug is hard to reproduce.
+
 2008-07-15  vadim  <vadim@vk.crocodile.org>
 
 	* testing and bug fixes with QT 4.4.

@@ -2524,20 +2524,26 @@ void RuleSetView::addToGroupAbove ()
     RuleRowInfo *ru = rowsInfo[top];
 
     if (fwbdebug)
-        qDebug("RuleSetView::addToGroupAbove  row=%d", row);
+        qDebug("RuleSetView::addToGroupAbove  row=%d count=%d", row, count);
 
     if (!ru->isBeginRow)
     {
         top = getUpNullRuleIndex(top-1);
         ru = rowsInfo[top];
     }
+
     for (int i = 0; i< count ; i++)
     {
         Rule *r = Rule::cast(ruleIndex[row+i]);
-        r->setRuleGroupName (ru->groupName.toAscii().data());
-        //ruleIndex[row+i] =r ;
-        if (ru->collapsedGroup) showHideRuleGroup(
-            dynamic_cast<RuleGroupPanel*>(indexWidget(model()->index(top,1))));
+        if (r)
+        {
+            r->setRuleGroupName (ru->groupName.toAscii().data());
+            //ruleIndex[row+i] =r ;
+            if (ru->collapsedGroup)
+                showHideRuleGroup(
+                    dynamic_cast<RuleGroupPanel*>(
+                        indexWidget(model()->index(top,1))));
+        }
     }
     updateGroups();
 }
@@ -2555,10 +2561,15 @@ void RuleSetView::addToGroupBelow()
     for (int i = 0; i< count ; i++)
     {
         Rule *r = Rule::cast(ruleIndex[row+i]);
-        r->setRuleGroupName (ru->groupName.toAscii().data());
-        //ruleIndex[row+i] =r ;
-        if (ru->collapsedGroup) showHideRuleGroup(
-            dynamic_cast<RuleGroupPanel*>(indexWidget(model()->index(bottom,1))));
+        if (r)
+        {
+            r->setRuleGroupName (ru->groupName.toAscii().data());
+            //ruleIndex[row+i] =r ;
+            if (ru->collapsedGroup)
+                showHideRuleGroup(
+                    dynamic_cast<RuleGroupPanel*>(
+                        indexWidget(model()->index(bottom,1))));
+        }
     }
     updateGroups();
 }
