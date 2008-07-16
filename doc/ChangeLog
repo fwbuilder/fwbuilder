@@ -1,4 +1,11 @@
+2008-07-15  vadim  <vadim@vk.crocodile.org>
+
+	* testing and bug fixes with QT 4.4.
+
+	* Testing on Mac OS X and Windows Vista.
+
 2008-07-08  vadim  <vadim@vk.crocodile.org>
+
 
 	* fwcompiler.pro (LIBS): fixed build errors on Ubuntu Hardy.
 	Background info: need to include -lfwbuilder while linking
@@ -21,11 +28,11 @@
 
 	* templates.xml.in: Updated template firewall objects to include
 	"top_rule_set" attribute.
-	
+
 	* RuleSetDialog.cpp (RuleSetDialog::loadFWObject): Added attribute
 	"top_rule_set" to Policy, NAT and Routing objects. This attribute
 	is controlled by a checkbox "Top rule set" in the corresponding
-	object dialog. 
+	object dialog.
 
 	The attribute has platform-specific meanning. On iptables, "top"
 	rule set goes into the built-in chains INPUT, OUTPUT, FORWARD; if
@@ -50,7 +57,7 @@
 	to Policy objects with name "Policy", NAT objects with name "NAT"
 	and Routing objects with name "Routing". This provides for
 	consistent backwards-compatible behaviour after upgrade from v2.1
-	
+
 2008-07-06  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printAddr):
