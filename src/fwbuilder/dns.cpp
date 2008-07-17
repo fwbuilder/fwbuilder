@@ -116,30 +116,60 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
 {
     DNS::init();
 
+    list<InetAddr> v;
+
+#ifdef _WIN32
+    
+    struct addrinfo aiHints;
+    struct addrinfo *aiList = NULL;
+    int retVal;
+
+    memset(&aiHints, 0, sizeof(aiHints));
+    aiHints.ai_family = type;
+    aiHints.ai_socktype = SOCK_DGRAM;
+    aiHints.ai_protocol = 0;
+
+    if ((retVal = getaddrinfo(name.c_str(), "", &aiHints, &aiList)) != 0)
+    {
+        std::ostringstream strerr;
+        strerr << "Host or network '" + name + "' not found; last error: ";
+        strerr << WSAGetLastError();
+        throw FWException(strerr.str());
+    }
+
+    struct addrinfo *ai_ptr;
+    try
+    {
+        for (ai_ptr=aiList; ai_ptr!=NULL; ai_ptr=ai_ptr->next)
+        {
+            v.push_back(
+                InetAddr((struct in_addr *)(&(ai_ptr->ai_addr->sa_data))));
+        }
+    } catch(const FWException &e)
+    {
+        freeaddrinfo(&aiList);
+        throw;
+    }
+
+    freeaddrinfo(&aiList);
+
+#else
     struct hostent *hp=NULL;
     char  *tmphstbuf=NULL;
     
+
     gethostbyname_mutex->lock();
-#ifdef _WIN32
-    hp = gethostbyname(name.c_str());
-#else
     hp = gethostbyname2(name.c_str(), type);
-#endif
     if(!hp)
     {
         gethostbyname_mutex->unlock();
 
         std::ostringstream strerr;
         strerr << "Host or network '"+name+"' not found; last error: ";
-#ifndef _WIN32
         strerr << strerror(errno);
-#else
-        strerr << WSAGetLastError();
-#endif
         throw FWException(strerr.str());
     }
 
-    list<InetAddr> v;
     try
     {
         for(char **p = hp->h_addr_list; *p != 0; p++) 
@@ -156,6 +186,8 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
 
     v.sort();
     return v;
+
+#endif
 }
 
 
