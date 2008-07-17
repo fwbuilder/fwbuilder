@@ -117,18 +117,18 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
     DNS::init();
 
     list<InetAddr> v;
-
     
     struct addrinfo aiHints;
     struct addrinfo *aiList = NULL;
     int retVal;
 
     memset(&aiHints, 0, sizeof(aiHints));
+    aiHints.ai_flags = AI_PASSIVE;
     aiHints.ai_family = type;
-    aiHints.ai_socktype = SOCK_DGRAM;
-    aiHints.ai_protocol = 0;
+//    aiHints.ai_socktype = SOCK_DGRAM;
+//    aiHints.ai_protocol = 0;
 
-    if ((retVal = getaddrinfo(name.c_str(), "", &aiHints, &aiList)) != 0)
+    if ((retVal = getaddrinfo(name.c_str(), NULL, &aiHints, &aiList)) != 0)
     {
         std::ostringstream strerr;
         strerr << "Host or network '" + name + "' not found; last error: ";
@@ -145,6 +145,8 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
     {
         for (ai=aiList; ai!=NULL; ai=ai->ai_next)
         {
+            if (ai->ai_family!=type) continue;
+
             switch (ai->ai_family)
             {
             case AF_INET:
