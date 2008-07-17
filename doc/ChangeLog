@@ -3,7 +3,7 @@
 	* IPv6Dialog.cpp (IPv6Dialog::DNSlookup): Added "DNS Looup" button
 	to the IPv6 object dialog.
 
-	* dns.cpp (list): (libfwbuilder) Using getaddrinfo on Windows to
+	* dns.cpp (list): (libfwbuilder) Using getaddrinfo on all OS to
 	perform dns lookup for different address families (AF_INET or
 	AF_INET6).
 	
