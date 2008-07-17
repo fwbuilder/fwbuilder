@@ -415,17 +415,7 @@ QString getAddrByName(const QString &name, int af_type)
     try
     {
         if (results.size()>0)
-        {
-            list<InetAddr>::iterator i;
-            for (i=results.begin(); i!=results.end(); ++i)
-            {
-                qDebug("Result: af_type=%d result->isV6()=%d result->addr=%s",
-                       af_type,
-                       i->isV6(),
-                       i->toString().c_str());
-            }
             return QString(results.front().toString().c_str());
-        }
     } catch (FWException &e)
     {
         qDebug("utils::getAddrByName: Can not convert address to string");

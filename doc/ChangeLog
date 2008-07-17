@@ -1,5 +1,15 @@
 2008-07-17  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* utils.cpp (getAddrByName): getAddrByName() works on all
+	platforms and gets ipv4 and ipv6 addresses as requested. It looks
+	like for it to work on Windows Vista machine needs to be
+	configured with routable ipv6 addresses. When machine only had
+	Link-local address on fe80:: net, even when ipv6 was enabled,
+	getaddrinfo sent proper dns request for AAAA record, got reply but
+	did not pass it back to the application. Once machine was
+	configured with routable ipv6 address, getaddrinfo started working
+	as expected. This problem was not observed on Linux and Mac OS X.
+
 	* IPv6Dialog.cpp (IPv6Dialog::DNSlookup): Added "DNS Looup" button
 	to the IPv6 object dialog.
 
