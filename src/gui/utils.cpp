@@ -399,33 +399,37 @@ void setDisabledPalette(QWidget *w)
 
 QString getAddrByName(const QString &name, int af_type)
 {
-    if (fwbdebug)
-        qDebug("DNS::getAddrByName: start lookup for %s, af %d",
-               name.toAscii().constData(), af_type);
-
     list<InetAddr> results;
     try
     {
         results = DNS::getHostByName(name.toAscii().constData(), af_type);
+        if (fwbdebug) qDebug("utils::getAddrByName: obtained %d addresses",
+                             results.size());
     } catch (FWException &e)
     {
-        if (fwbdebug)
-            qDebug("DNS::getAddrByName: DNS lookup error: %s", e.toString());
+        if (fwbdebug) qDebug("utils::getAddrByName: DNS lookup error: %s",
+                             e.toString().c_str());
         return "";
-    }
-
-    if (fwbdebug)
-    {
-        qDebug("DNS::getAddrByName: got %d addresses", results.size());
     }
 
     try
     {
         if (results.size()>0)
+        {
+            list<InetAddr>::iterator i;
+            for (i=results.begin(); i!=results.end(); ++i)
+            {
+                qDebug("Result: af_type=%d result->isV6()=%d result->addr=%s",
+                       af_type,
+                       i->isV6(),
+                       i->toString().c_str());
+            }
             return QString(results.front().toString().c_str());
+        }
     } catch (FWException &e)
     {
-        qDebug("DNS::getAddrByName: Can not convert address to string");
+        qDebug("utils::getAddrByName: Can not convert address to string");
+        qDebug(e.toString().c_str());
     }
     return "";
 
