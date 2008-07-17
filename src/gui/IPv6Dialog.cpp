@@ -29,7 +29,8 @@
 
 #include "IPv6Dialog.h"
 
-#include "ProjectPanel.h"
+//#include "ProjectPanel.h"
+
 #include "fwbuilder/Library.h"
 #include "fwbuilder/IPv6.h"
 #include "fwbuilder/InetAddr.h"
@@ -235,12 +236,18 @@ void IPv6Dialog::DNSlookup()
     if (!dnsBusy)
     {
         QString name = m_dialog->obj_name->text();
-        if (fwbdebug) qDebug("IPv6Dialog::DNSlookup()  name=%s", name.toAscii().constData());
+        if (fwbdebug)
+            qDebug("IPv6Dialog::DNSlookup()  name=%s",
+                   name.toAscii().constData());
+
         dnsBusy=true;
         QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
-        QString addr = getAddrByName(name);
+
+        QString addr = getAddrByName(name, AF_INET6);
+
         QApplication::restoreOverrideCursor();
         dnsBusy=false;
+
         if (fwbdebug) qDebug("IPv6Dialog::DNSlookup()  done");
 
         if (! addr.isEmpty())
@@ -259,7 +266,9 @@ void IPv6Dialog::DNSlookup()
                 name.toAscii().constData());
             dnsBusy=true;
             QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
-            QString addr = getAddrByName(name);
+
+            QString addr = getAddrByName(name, AF_INET6);
+
             QApplication::restoreOverrideCursor();
             dnsBusy=false;
             if (fwbdebug) qDebug("IPv6Dialog::DNSlookup()  done");

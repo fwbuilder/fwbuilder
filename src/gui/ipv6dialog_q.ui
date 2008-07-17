@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>717</width>
-    <height>226</height>
+    <width>724</width>
+    <height>254</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -392,17 +392,28 @@
             </widget>
            </item>
            <item row="3" column="0" colspan="2" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>232</width>
-               <height>10</height>
-              </size>
-             </property>
-            </spacer>
+            <layout class="QHBoxLayout" >
+             <item>
+              <spacer>
+               <property name="orientation" >
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" >
+                <size>
+                 <width>81</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="dnsLookup" >
+               <property name="text" >
+                <string>DNS Lookup...</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
@@ -504,6 +515,22 @@
     <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dnsLookup</sender>
+   <signal>clicked()</signal>
+   <receiver>IPv6Dialog_q</receiver>
+   <slot>DNSlookup()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>227</x>
+     <y>194</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>361</x>
+     <y>126</y>
     </hint>
    </hints>
   </connection>

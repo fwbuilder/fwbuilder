@@ -816,7 +816,7 @@ InetAddr DiscoveryDruid::getSeedHostAddress()
     {
         try 
         {
-            QString a = getAddrByName( m_dialog->seedhostname->text() );
+            QString a = getAddrByName( m_dialog->seedhostname->text(), AF_INET);
             if (fwbdebug)
                 qDebug(
                     QString("DiscoveryDruid::getSeedHostAddress() address: %1").

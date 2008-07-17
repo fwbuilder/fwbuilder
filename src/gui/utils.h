@@ -126,7 +126,7 @@ extern void setHostOS(QComboBox *hostOS,const QString &os);
 
 extern void setDisabledPalette(QWidget *w);
 
-extern QString getAddrByName(const QString &name);
+extern QString getAddrByName(const QString &name, int af_type);
 extern QString getNameByAddr(const QString &addr);
 extern QString wordWrap(const QString& ,int);
 

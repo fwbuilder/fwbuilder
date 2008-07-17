@@ -1,3 +1,16 @@
+2008-07-17  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* IPv6Dialog.cpp (IPv6Dialog::DNSlookup): Added "DNS Looup" button
+	to the IPv6 object dialog.
+
+	* dns.cpp (list): (libfwbuilder) Using getaddrinfo on Windows to
+	perform dns lookup for different address families (AF_INET or
+	AF_INET6).
+	
+	* utils.cpp (getAddrByName): using DNS::getHostByName instead of
+	QT functions to perform host name lookup. This should allow us to
+	do it for both AF_INET and AF_INET6 address families. Needs more
+	testing.
 
 2008-07-16  Vadim Kurland  <vadim@vk.crocodile.org>
 

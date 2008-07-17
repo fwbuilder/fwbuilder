@@ -293,7 +293,7 @@ void newFirewallDialog::getInterfacesViaSNMP()
     try
     {
         QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
-        QString a = getAddrByName(name);
+        QString a = getAddrByName(name, AF_INET);
         QApplication::restoreOverrideCursor();
         addr = InetAddr(a.toAscii().constData());
     } catch (FWException &ex)

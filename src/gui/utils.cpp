@@ -43,6 +43,7 @@
 #include <QList>
 #include <QPixmap>
 
+#include "fwbuilder/dns.h"
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/FWReference.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -396,22 +397,26 @@ void setDisabledPalette(QWidget *w)
     w->setPalette( pal );
 }
 
-QString getAddrByName(const QString &name)
+QString getAddrByName(const QString &name, int af_type)
 {
+    try
+    {
+        list<InetAddr> results = DNS::getHostByName(
+            name.toAscii().data(), af_type);
+        return QString(results.front().toString().c_str());
+    } catch (FWException&)
+    {
+    }
+    return "";
+
+#if 0
     QHostInfo a = QHostInfo::fromName(name);
 
     QList<QHostAddress> alist = a.addresses();
 
-    /*while (a.isWorking())
-    {
-        app->processEvents(200);
-    }
-    alist = a.addresses();*/
-    //we're using the blocking-type function
-    //"fromName" so we don't have to wait
-
     if (alist.empty()) return "";
     return alist.front().toString();
+#endif
 }
 
 QString getNameByAddr(const QString &addr)

@@ -230,7 +230,7 @@ void IPv4Dialog::DNSlookup()
         if (fwbdebug) qDebug("IPv4Dialog::DNSlookup()  name=%s", name.toAscii().constData());
         dnsBusy=true;
         QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
-        QString addr = getAddrByName(name);
+        QString addr = getAddrByName(name, AF_INET);
         QApplication::restoreOverrideCursor();
         dnsBusy=false;
         if (fwbdebug) qDebug("IPv4Dialog::DNSlookup()  done");
@@ -251,7 +251,7 @@ void IPv4Dialog::DNSlookup()
                 name.toAscii().constData());
             dnsBusy=true;
             QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
-            QString addr = getAddrByName(name);
+            QString addr = getAddrByName(name, AF_INET);
             QApplication::restoreOverrideCursor();
             dnsBusy=false;
             if (fwbdebug) qDebug("IPv4Dialog::DNSlookup()  done");
