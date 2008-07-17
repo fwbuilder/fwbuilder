@@ -399,13 +399,33 @@ void setDisabledPalette(QWidget *w)
 
 QString getAddrByName(const QString &name, int af_type)
 {
+    if (fwbdebug)
+        qDebug("DNS::getAddrByName: start lookup for %s, af %d",
+               name.toAscii().constData(), af_type);
+
+    list<InetAddr> results;
     try
     {
-        list<InetAddr> results = DNS::getHostByName(
-            name.toAscii().data(), af_type);
-        return QString(results.front().toString().c_str());
-    } catch (FWException&)
+        results = DNS::getHostByName(name.toAscii().constData(), af_type);
+    } catch (FWException &e)
     {
+        if (fwbdebug)
+            qDebug("DNS::getAddrByName: DNS lookup error: %s", e.toString());
+        return "";
+    }
+
+    if (fwbdebug)
+    {
+        qDebug("DNS::getAddrByName: got %d addresses", results.size());
+    }
+
+    try
+    {
+        if (results.size()>0)
+            return QString(results.front().toString().c_str());
+    } catch (FWException &e)
+    {
+        qDebug("DNS::getAddrByName: Can not convert address to string");
     }
     return "";
 
