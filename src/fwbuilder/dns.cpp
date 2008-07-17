@@ -167,7 +167,7 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
     } catch(const FWException &e)
     {
         freeaddrinfo(aiList);
-        throw;
+        throw e;
     }
 
     freeaddrinfo(aiList);
