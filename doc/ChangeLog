@@ -1,7 +1,7 @@
 2008-07-17  Vadim Kurland  <vadim@vk.crocodile.org>
 
-	* dns.cpp (list): Using getaddrinfo on Windows to perform dns
-	lookup for different address families (AF_INET or AF_INET6).
+	* dns.cpp (list): Using getaddrinfo on all platforms to perform
+	dns lookup for different address families (AF_INET or AF_INET6).
 
 2008-07-08  vadim  <vadim@vk.crocodile.org>
 

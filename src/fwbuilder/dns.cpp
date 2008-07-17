@@ -118,7 +118,6 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
 
     list<InetAddr> v;
 
-#ifdef _WIN32
     
     struct addrinfo aiHints;
     struct addrinfo *aiList = NULL;
@@ -133,27 +132,51 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
     {
         std::ostringstream strerr;
         strerr << "Host or network '" + name + "' not found; last error: ";
+#ifdef _WIN32
         strerr << WSAGetLastError();
+#else
+        strerr << gai_strerror(errno);
+#endif
         throw FWException(strerr.str());
     }
 
-    struct addrinfo *ai_ptr;
+    struct addrinfo *ai;
     try
     {
-        for (ai_ptr=aiList; ai_ptr!=NULL; ai_ptr=ai_ptr->next)
+        for (ai=aiList; ai!=NULL; ai=ai->ai_next)
         {
-            v.push_back(
-                InetAddr((struct in_addr *)(&(ai_ptr->ai_addr->sa_data))));
+            switch (ai->ai_family)
+            {
+            case AF_INET:
+            {
+                struct sockaddr_in *sa = (struct sockaddr_in *) ai->ai_addr;
+                v.push_back(
+                    InetAddr((struct in_addr *)(&(sa->sin_addr))));
+            }
+            break;
+                    
+            case AF_INET6:
+            {
+                struct sockaddr_in6 *sa = (struct sockaddr_in6 *) ai->ai_addr;
+                v.push_back(
+                    InetAddr((struct in6_addr *)(&(sa->sin6_addr))));
+            }
+            break;
+            }
         }
     } catch(const FWException &e)
     {
-        freeaddrinfo(&aiList);
+        freeaddrinfo(aiList);
         throw;
     }
 
-    freeaddrinfo(&aiList);
+    freeaddrinfo(aiList);
 
-#else
+    v.sort();
+    return v;
+
+#if 0
+
     struct hostent *hp=NULL;
     char  *tmphstbuf=NULL;
     
