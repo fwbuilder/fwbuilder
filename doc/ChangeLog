@@ -1,3 +1,12 @@
+2008-07-18  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* InetAddrMask.cpp (InetAddrMask::dimension):
+	InetAddrMask::dimension returns MAXINT for netmask==0 and netmasks
+	with length > 32 (in case of ipv6). Need double long and special
+	integer arithmetics to calculate real dimension for ipv6
+	address/mask combinations with "short" masks. MAXINT should be
+	good enough for our purposes for now.
+
 2008-07-17  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* dns.cpp (list): Using getaddrinfo on all platforms to perform
