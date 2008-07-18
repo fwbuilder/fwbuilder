@@ -1,5 +1,8 @@
 2008-07-18  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* instDialog.cpp (instDialog::installerError): fixed crash in the
+	installer that happened when policy activation ended with an error
+
 	* ipt.cpp (main): fixed bug (no #): if generated script used
 	iptables-restore and if there were automatically generated rules
 	in the magle table, for example for the "clamp MSS to MTU" rule,

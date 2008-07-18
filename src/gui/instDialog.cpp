@@ -1901,7 +1901,8 @@ void instDialog::installerError()
     // before calling finishInstall to properly terminate and clean up
     // session. This should be done  before calling installSelected
     // which is scheduled inside finishInstall()
-    QTimer::singleShot( 0, this, SLOT(stopSessionAndDisconnectSignals()));
+    //QTimer::singleShot( 0, this, SLOT(stopSessionAndDisconnectSignals()));
+    stopSessionAndDisconnectSignals();
 
     finishInstall(false);
 }

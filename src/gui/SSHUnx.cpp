@@ -81,12 +81,16 @@ SSHUnx::~SSHUnx()
 bool SSHUnx::checkForErrors(QStringList *errptr)
 {
     if (fwbdebug)
-        qDebug(QString("SSHUnx::stateMachine:  Checking for errors. Buffer='%1'").arg(stdoutBuffer).toAscii().constData());
+        qDebug(
+            QString("SSHUnx::stateMachine:  Checking for errors. Buffer='%1'").
+            arg(stdoutBuffer).toAscii().constData());
 
     for (QStringList::const_iterator i=errptr->begin(); i!=errptr->end(); ++i)
     {
         if (fwbdebug)
-            qDebug(QString("SSHUnx::stateMachine:  error='%1'").arg(*i).toAscii().constData());
+            qDebug(
+                QString("SSHUnx::stateMachine:  error='%1'").
+                arg(*i).toAscii().constData());
 
         if ( stdoutBuffer.lastIndexOf(QRegExp(*i),-1)!=-1 )
         {
