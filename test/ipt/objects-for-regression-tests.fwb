@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1216230146" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1216410065" id="root">
   <Library id="syslib000" name="Standard" comment="Standard objects" color="#d4f8ff" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" name="Any" comment="Any IP Service" protocol_num="0"/>
@@ -18,7 +18,7 @@
       </ObjectGroup>
       <ObjectGroup id="stdid02" name="Hosts">
         <Host id="id3D84EECE" name="internal server" comment="This host is used in examples and template objects">
-          <Interface id="id3D85EED2" name="eth0" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False">
+          <Interface id="id3D84EED2" name="eth0" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False">
             <IPv4 id="id3D84EED3" name="ip" address="192.168.1.10" netmask="255.255.255.0"/>
           </Interface>
           <Management address="192.168.1.10">
@@ -161,6 +161,11 @@
         <ICMPService id="icmp-Time_exceeded_in_transit" name="time exceeded in transit" code="1" type="11"/>
         <ICMP6Service id="ipv6-icmp-ping_request" name="ipv6 ping request" comment="IPv6 ping request" code="0" type="128"/>
         <ICMP6Service id="ipv6-icmp-ping_reply" name="ipv6 ping reply" comment="IPv6 ping reply" code="0" type="129"/>
+        <ICMP6Service id="ipv6-icmp-routersol" name="ipv6 routersol" comment="IPv6 router solicitation" code="0" type="133"/>
+        <ICMP6Service id="ipv6-icmp-routeradv" name="ipv6 routeradv" comment="IPv6 router advertisement" code="0" type="134"/>
+        <ICMP6Service id="ipv6-icmp-neighbrsol" name="ipv6 neighbrsol" comment="IPv6 neighbor solicitation" code="0" type="135"/>
+        <ICMP6Service id="ipv6-icmp-neighbradv" name="ipv6 neighbradv" comment="IPv6 neighbor advertisement" code="0" type="136"/>
+        <ICMP6Service id="ipv6-icmp-redir" name="ipv6 redir" comment="IPv6 redirect: shorter route exists" code="0" type="137"/>
         <ICMP6Service id="idCFE27650" name="ipv6 time exceeded" comment="Time exceeded in transit" code="0" type="3"/>
         <ICMP6Service id="idCFF27650" name="ipv6 time exceeded in reassembly" comment="Time exceeded in reassembly" code="1" type="3"/>
         <ICMP6Service id="idE0B27650" name="ipv6 packet too big" code="-1" type="2"/>
@@ -955,9 +960,6 @@
     <IntervalRef ref="int-workhours"/>
     <IntervalRef ref="id3D6864D0"/>
     <IntervalRef ref="id45F8C4E013056"/>
-    <ServiceRef ref="sysid1"/>
-    <ObjectRef ref="sysid0"/>
-    <ServiceRef ref="sysid1"/>
     <ServiceRef ref="id43EC877332486"/>
     <ServiceRef ref="id449328D924380"/>
   </Library>
@@ -1085,7 +1087,7 @@
       </ObjectGroup>
       <ObjectGroup id="stdid02_1" name="Hosts">
         <Host id="id3A84EECE" name="DHCP-Servers (multicast)" comment="multicast address which is _not_ local link multicast&#10;">
-          <Interface id="id3D84EED2" name="interface1" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False">
+          <Interface id="id3D8ZEED2" name="interface1" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False">
             <IPv4 id="id3D84EEDA" name="DHCP-Servers (multicast)" address="224.0.1.141" netmask="255.255.255.0"/>
           </Interface>
           <Management address="224.0.1.141">
@@ -15334,7 +15336,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id417C680B" name="firewall25" comment="this firewall uses iptables-restore format. Firewall has wildcard interface ppp*; script is generated dynamically and then piped to iptables-restore&#10;" host_OS="linux24" lastCompiled="1215360897" lastInstalled="1142003872" lastModified="1142003913" platform="iptables" ro="False" version="">
+      <Firewall id="id417C680B" name="firewall25" comment="this firewall uses iptables-restore format. Firewall has wildcard interface ppp*; script is generated dynamically and then piped to iptables-restore&#10;" host_OS="linux24" inactive="False" lastCompiled="1216410061" lastInstalled="1142003872" lastModified="1216410036" platform="iptables" ro="False" version="1.4.0">
         <NAT id="id417C688D" name="NAT" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id417C688E" disabled="False" position="0">
             <OSrc neg="False">
@@ -15796,7 +15798,8 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
-          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="clamp_mss_to_mtu">True</Option>
+          <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
@@ -15810,6 +15813,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="id"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="install_script"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_accept_redirects"></Option>
@@ -15850,14 +15854,17 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="mgmt_addr">192.168.1.1</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="no_iochains_for_any">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
           <Option name="no_optimisation">False</Option>
           <Option name="output_file"></Option>
           <Option name="platform">iptables</Option>
+          <Option name="prolog_place">top</Option>
           <Option name="prolog_script"></Option>
           <Option name="script_env_path"></Option>
           <Option name="snmp_contact"></Option>
           <Option name="snmp_description"></Option>
           <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -15867,7 +15874,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id418C4609" name="firewall26" comment="this firewall uses iptables-restore format&#10;One interface has dynamic address, script uses echo to generated iptables commands and then pipes them to iptables-restore" host_OS="linux24" lastCompiled="1215360898" lastInstalled="1142003872" lastModified="1142003913" platform="iptables" ro="False" version="">
+      <Firewall id="id418C4609" name="firewall26" comment="this firewall uses iptables-restore format&#10;One interface has dynamic address, script uses echo to generated iptables commands and then pipes them to iptables-restore" host_OS="linux24" inactive="False" lastCompiled="1216410063" lastInstalled="1142003872" lastModified="1216410040" platform="iptables" ro="False" version="1.4.0">
         <NAT id="id418C468B" name="NAT" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id418C468C" disabled="False" position="0">
             <OSrc neg="False">
@@ -16327,7 +16334,8 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
-          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="clamp_mss_to_mtu">True</Option>
+          <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
@@ -16341,6 +16349,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="id"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="install_script"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_accept_redirects"></Option>
@@ -16381,14 +16390,17 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="mgmt_addr">192.168.1.1</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="no_iochains_for_any">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
           <Option name="no_optimisation">False</Option>
           <Option name="output_file"></Option>
           <Option name="platform">iptables</Option>
+          <Option name="prolog_place">top</Option>
           <Option name="prolog_script"></Option>
           <Option name="script_env_path"></Option>
           <Option name="snmp_contact"></Option>
           <Option name="snmp_description"></Option>
           <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -16398,7 +16410,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4183D041" name="firewall27" comment="this firewall uses iptables-restore format&#10;all interfaces have static addresses, script pipes iptables commands straight to iptables-restore" host_OS="linux24" inactive="False" lastCompiled="1215360251" lastInstalled="1142003872" lastModified="1197477519" platform="iptables" ro="False" version="">
+      <Firewall id="id4183D041" name="firewall27" comment="this firewall uses iptables-restore format&#10;all interfaces have static addresses, script pipes iptables commands straight to iptables-restore" host_OS="linux24" inactive="False" lastCompiled="1216410065" lastInstalled="1142003872" lastModified="1216410045" platform="iptables" ro="False" version="1.4.0">
         <NAT id="id4183D0C3" name="NAT" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id4183D0C4" disabled="False" position="0">
             <OSrc neg="False">
@@ -16860,7 +16872,8 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
-          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="clamp_mss_to_mtu">True</Option>
+          <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
@@ -16874,6 +16887,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="id"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="install_script"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_accept_redirects"></Option>
@@ -16914,14 +16928,17 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="mgmt_addr">192.168.1.1</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="no_iochains_for_any">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
           <Option name="no_optimisation">False</Option>
           <Option name="output_file"></Option>
           <Option name="platform">iptables</Option>
+          <Option name="prolog_place">top</Option>
           <Option name="prolog_script"></Option>
           <Option name="script_env_path"></Option>
           <Option name="snmp_contact"></Option>
           <Option name="snmp_description"></Option>
           <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
