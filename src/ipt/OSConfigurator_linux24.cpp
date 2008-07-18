@@ -766,7 +766,7 @@ string  OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
 
 void OSConfigurator_linux24::epilog()
 {
-    FWOptions* options=fw->getOptionsObject();
+    FWOptions* options = fw->getOptionsObject();
 
     try {
 	output << "#" << endl;
@@ -774,13 +774,24 @@ void OSConfigurator_linux24::epilog()
 
 /* Turn on packet forwarding if we have to */
 
-        string s=options->getStr("linux24_ip_forward");
+        string s = options->getStr("linux24_ip_forward");
         if (!s.empty())
         {
             if (s=="1" || s=="On" || s=="on") s="1";
             else                              s="0";
-            output << "echo " << s << " > /proc/sys/net/ipv4/ip_forward\n\n";
+            output << "echo " << s
+                   << " > /proc/sys/net/ipv4/ip_forward\n\n";
         }
+
+        s = options->getStr("linux24_ipv6_forward");
+        if (!s.empty())
+        {
+            if (s=="1" || s=="On" || s=="on") s="1";
+            else                              s="0";
+            output << "echo " << s
+                   << " > /proc/sys/net/ipv6/conf/all/forwarding\n\n";
+        }
+
 //        else
 //            output << "echo \"$FWD\" > /proc/sys/net/ipv4/ip_forward\n\n";
 

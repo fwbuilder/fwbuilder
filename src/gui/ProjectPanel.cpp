@@ -423,10 +423,7 @@ void ProjectPanel::reopenFirewall()
 
     if (rule!=NULL)
     {
-       // if (rule->getAction() == PolicyRule::Branch)
-            m_panel->ruleSets->addWidget( new PolicyView(this, rule,NULL) );
-           
-    // addPolicyBranchTab(rule);
+        m_panel->ruleSets->addWidget( new PolicyView(this, rule,NULL) );
     }
 
     NAT *nat  = NAT::cast(visibleRuleSet);
@@ -452,7 +449,7 @@ void ProjectPanel::reopenFirewall()
     m_panel->ruleSets->show();
 }
 
-int  ProjectPanel::findFirewallInList(libfwbuilder::FWObject *f)
+int  ProjectPanel::findFirewallInList(FWObject *f)
 {
     vector<FWObject*>::iterator i;
     int n=0;
@@ -463,8 +460,7 @@ int  ProjectPanel::findFirewallInList(libfwbuilder::FWObject *f)
     return -1;
 }
 
-void ProjectPanel::updateFirewallName(libfwbuilder::FWObject *,
-                                      const QString &)
+void ProjectPanel::updateFirewallName(FWObject *, const QString &)
 {
     if (visibleRuleSet==NULL)
         return ;
@@ -478,7 +474,7 @@ void ProjectPanel::updateFirewallName(libfwbuilder::FWObject *,
     m_panel->rulesetname->setText(name );
 }
 
-void ProjectPanel::openRuleSet (libfwbuilder::FWObject * obj)
+void ProjectPanel::openRuleSet(FWObject * obj)
 {
     blankEditor();
     RuleSet * rs = RuleSet::cast(obj);
@@ -809,6 +805,7 @@ void ProjectPanel::loadLastOpenedLib(QString filename)
         m_panel->om->changeFirstNotSystemLib();
     }
 }
+
 void ProjectPanel::fileClose()
 {
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): start");

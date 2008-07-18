@@ -1278,6 +1278,18 @@ First, create temporary access list to permit connections from the management su
   <tabstop>mgmt_addr</tabstop>
   <tabstop>ok_button</tabstop>
   <tabstop>cancel_button</tabstop>
+  <tabstop>iosacl_acl_basic</tabstop>
+  <tabstop>textLabel3</tabstop>
+  <tabstop>iosacl_acl_no_clear</tabstop>
+  <tabstop>iosacl_acl_substitution</tabstop>
+  <tabstop>iosacl_acl_temp_addr</tabstop>
+  <tabstop>iosacl_include_comments</tabstop>
+  <tabstop>iosacl_regroup_commands</tabstop>
+  <tabstop>user</tabstop>
+  <tabstop>altAddress</tabstop>
+  <tabstop>sshArgs</tabstop>
+  <tabstop>installScript</tabstop>
+  <tabstop>installScriptArgs</tabstop>
   <tabstop>iosacl_prolog_script</tabstop>
   <tabstop>edit_prolog_button</tabstop>
   <tabstop>iosacl_epilog_script</tabstop>
@@ -1290,18 +1302,7 @@ First, create temporary access list to permit connections from the management su
   <tabstop>logging_buffered_level</tabstop>
   <tabstop>logging_console</tabstop>
   <tabstop>logging_console_level</tabstop>
-  <tabstop>iosacl_include_comments</tabstop>
-  <tabstop>iosacl_regroup_commands</tabstop>
-  <tabstop>textLabel3</tabstop>
-  <tabstop>iosacl_acl_temp_addr</tabstop>
-  <tabstop>iosacl_acl_basic</tabstop>
-  <tabstop>iosacl_acl_no_clear</tabstop>
-  <tabstop>iosacl_acl_substitution</tabstop>
-  <tabstop>installScript</tabstop>
-  <tabstop>installScriptArgs</tabstop>
-  <tabstop>user</tabstop>
-  <tabstop>altAddress</tabstop>
-  <tabstop>sshArgs</tabstop>
+  <tabstop>ipv4before_2</tabstop>
  </tabstops>
  <resources/>
  <connections>

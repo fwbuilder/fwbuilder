@@ -101,7 +101,7 @@
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget3" >
      <property name="currentIndex" >
-      <number>4</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab" >
       <attribute name="title" >
@@ -940,15 +940,28 @@ with this address:</string>
   <tabstop>compiler</tabstop>
   <tabstop>compilerArgs</tabstop>
   <tabstop>outputFileName</tabstop>
+  <tabstop>ipfw_add_check_state_rule</tabstop>
   <tabstop>ipfw_check_shadowing</tabstop>
   <tabstop>ipfw_ignore_empty_groups</tabstop>
   <tabstop>mgmt_ssh</tabstop>
   <tabstop>mgmt_addr</tabstop>
   <tabstop>buttonOk</tabstop>
   <tabstop>buttonCancel</tabstop>
+  <tabstop>ipfw_fw_dir</tabstop>
+  <tabstop>ipfw_user</tabstop>
+  <tabstop>altAddress</tabstop>
+  <tabstop>activationCmd</tabstop>
+  <tabstop>sshArgs</tabstop>
+  <tabstop>installScript</tabstop>
+  <tabstop>installScriptArgs</tabstop>
+  <tabstop>prolog_script</tabstop>
+  <tabstop>edit_prolog_button</tabstop>
+  <tabstop>epilog_script</tabstop>
+  <tabstop>edit_epilog_button</tabstop>
   <tabstop>ipfw_debug</tabstop>
   <tabstop>ipfw_configure_interfaces</tabstop>
   <tabstop>ipfw_manage_virtual_addr</tabstop>
+  <tabstop>ipv4before_2</tabstop>
  </tabstops>
  <resources/>
  <connections>

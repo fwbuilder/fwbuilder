@@ -49,7 +49,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex" >
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab0" >
       <attribute name="title" >
@@ -1497,16 +1497,27 @@ with this address:</string>
   <tabstop>emptyGroups</tabstop>
   <tabstop>localNAT</tabstop>
   <tabstop>clampMSStoMTU</tabstop>
+  <tabstop>makeTagClassifyTerminating</tabstop>
+  <tabstop>skipIPv6</tabstop>
   <tabstop>actionOnReject</tabstop>
   <tabstop>mgmt_ssh</tabstop>
   <tabstop>mgmt_addr</tabstop>
   <tabstop>buttonOk</tabstop>
   <tabstop>buttonCancel</tabstop>
+  <tabstop>ipt_fw_dir</tabstop>
+  <tabstop>ipt_user</tabstop>
+  <tabstop>altAddress</tabstop>
+  <tabstop>activationCmd</tabstop>
+  <tabstop>sshArgs</tabstop>
+  <tabstop>installScript</tabstop>
+  <tabstop>installScriptArgs</tabstop>
+  <tabstop>prolog_script</tabstop>
+  <tabstop>prologPlace</tabstop>
+  <tabstop>edit_prolog_button</tabstop>
+  <tabstop>epilog_script</tabstop>
+  <tabstop>edit_epilog_button</tabstop>
   <tabstop>useLOG</tabstop>
   <tabstop>useULOG</tabstop>
-  <tabstop>cprange</tabstop>
-  <tabstop>qthreshold</tabstop>
-  <tabstop>nlgroup</tabstop>
   <tabstop>logTCPseq</tabstop>
   <tabstop>logTCPopt</tabstop>
   <tabstop>logIPopt</tabstop>
@@ -1521,6 +1532,11 @@ with this address:</string>
   <tabstop>iptDebug</tabstop>
   <tabstop>configureInterfaces</tabstop>
   <tabstop>addVirtualsforNAT</tabstop>
+  <tabstop>iptablesRestoreActivation</tabstop>
+  <tabstop>ipv4before</tabstop>
+  <tabstop>cprange</tabstop>
+  <tabstop>nlgroup</tabstop>
+  <tabstop>qthreshold</tabstop>
  </tabstops>
  <resources/>
  <connections>

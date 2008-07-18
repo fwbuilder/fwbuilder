@@ -63,6 +63,14 @@ void OSConfigurator_openbsd::processFirewallOptions()
 	output << "$SYSCTL -w net.inet.ip.forwarding=" << s << endl;
     }
 
+    s=options->getStr("openbsd_ipv6_forward");
+    if (!s.empty()) {
+        if (s=="1" || s=="On" || s=="on") s="1";
+        else                              s="0";
+
+	output << "$SYSCTL -w net.inet.ip6.forwarding=" << s << endl;
+    }
+
     s=options->getStr("openbsd_ip_sourceroute");
     if (!s.empty()) {
 	if (s!="0" && s!="1")

@@ -1,5 +1,12 @@
 2008-07-17  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ObjectManipulator.cpp (ObjectManipulator::delObj): fixed bug (no
+	#): GUI crashed when user deleted one of the rule set objects of
+	a firewall.
+
+	* many dialogs: adjusted shape and size of many dialogs that used
+	to be too big.
+
 	* utils.cpp (getAddrByName): getAddrByName() works on all
 	platforms and gets ipv4 and ipv6 addresses as requested. It looks
 	like for it to work on Windows Vista machine needs to be

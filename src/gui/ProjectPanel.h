@@ -95,13 +95,19 @@ class ProjectPanel: public QWidget {
     QString                                 noFirewalls;
     bool                                    enableAvtoSaveState;
     
-public:  
+public:
+    
     void readyStatus(bool f) { ready=f; }
 
     libfwbuilder::RuleSet* getCurrentRuleSet () {return visibleRuleSet;};
-    RuleSetView * getCurrentRuleSetView () ;
-    ProjectPanel * clone (ProjectPanel * cln);
-    void openRuleSet (libfwbuilder::FWObject * obj);
+    RuleSetView* getCurrentRuleSetView() ;
+
+    ProjectPanel* clone(ProjectPanel * cln);
+
+    void openRuleSet(libfwbuilder::FWObject * obj);
+    void closeRuleSet(libfwbuilder::FWObject * obj)
+    { if (visibleRuleSet==obj) visibleRuleSet=NULL; }
+    
     FWBTree * getFWTree () {return objectTreeFormat;}
     bool isClosing (){return closing;}
     QMdiSubWindow *mdiWindow;
@@ -119,7 +125,9 @@ public:
     void loadObjects(libfwbuilder::FWObjectDatabase *db);
     void clearObjects();
     libfwbuilder::FWObjectDatabase* db() { return objdb; }
-    bool hasObject(libfwbuilder::FWObject* obj) { return objdb->findInIndex(obj->getId()); };
+    bool hasObject(libfwbuilder::FWObject* obj)
+    { return objdb->findInIndex(obj->getId()); };
+
     libfwbuilder::RuleElement* getRE(libfwbuilder::Rule* r, int col );
 
     //wrapers for some ObjectManipulator functions
@@ -141,6 +149,7 @@ public:
                                          libfwbuilder::FWObject *copyFrom=NULL,
                                          libfwbuilder::FWObject *parent=NULL,
                                          bool ask4Lib = true);
+
     FWWindow* getWindow (){ return mainW;}     
     void moveObject(libfwbuilder::FWObject *target,
                     libfwbuilder::FWObject *obj);

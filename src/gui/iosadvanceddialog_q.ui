@@ -117,13 +117,12 @@
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <tabstops>
-  <tabstop>notebook305</tabstop>
   <tabstop>ios_set_host_name</tabstop>
+  <tabstop>notebook305</tabstop>
   <tabstop>ios_ip_address</tabstop>
   <tabstop>ok_button</tabstop>
   <tabstop>cancel_button</tabstop>
  </tabstops>
- <includes/>
  <resources/>
  <connections>
   <connection>

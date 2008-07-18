@@ -2050,32 +2050,34 @@ void ObjectManipulator::deleteObj()
 
 }
 
-void ObjectManipulator::delObj(FWObject *obj,bool openobj)
+void ObjectManipulator::delObj(FWObject *obj, bool openobj)
 {
     bool firstAction = true ;
     QVector <ObjectManipulator*> oms = getAllMdiObjectManipulators();
 
-        if (fwbdebug)
-            qDebug("ObjectManipulator::delObj  delete obj %p %s openobj=%d",
-                obj,obj->getName().c_str(),openobj);
+    if (fwbdebug)
+        qDebug("ObjectManipulator::delObj  delete obj %p %s openobj=%d",
+               obj,obj->getName().c_str(),openobj);
 
-        FWObject *parent=obj->getParent();
-        FWObject *delObjLib = m_project->db()->findInIndex( FWObjectDatabase::DELETED_OBJECTS_ID );
+    FWObject *parent=obj->getParent();
+    FWObject *delObjLib = m_project->db()->findInIndex( FWObjectDatabase::DELETED_OBJECTS_ID );
 
-        if (fwbdebug)
-            qDebug("ObjectManipulator::delObj  deleted obj lib %p",
-                delObjLib);
+    if (fwbdebug)
+        qDebug("ObjectManipulator::delObj  deleted obj lib %p",
+               delObjLib);
 
-        bool islib  = Library::isA(obj);
+    bool islib  = Library::isA(obj);
 //        bool isintf = (Interface::isA(obj) && Firewall::isA(parent));
-        bool isfw   = Firewall::isA(obj);
-        bool isDelObj = (delObjLib!=NULL && obj->isChildOf(delObjLib));
+    bool isfw   = Firewall::isA(obj);
+    bool isDelObj = (delObjLib!=NULL && obj->isChildOf(delObjLib));
 
 
     for (int i = 0 ; i < oms.size(); i++)
     {
         ObjectManipulator* pom = oms[i] ;
-        if (obj->getId()==FWObjectDatabase::STANDARD_LIB_ID || obj->getId()==FWObjectDatabase::DELETED_OBJECTS_ID) return;
+
+        if (obj->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
+            obj->getId()==FWObjectDatabase::DELETED_OBJECTS_ID) return;
     
         pom->m_project->findObjectWidget->reset();
         try
@@ -2105,42 +2107,35 @@ void ObjectManipulator::delObj(FWObject *obj,bool openobj)
                 pom->removeLib(idx);
     
                 list<FWObject*> fl;
-                //pom->findFirewalls(obj, fl);
-                //for (list<FWObject*>::iterator i=fl.begin(); i!=fl.end(); i++)
-                //    pom->m_project->deleteFirewall( *i );
             }
-    
-            //if (isfw && !isDelObj) pom->m_project->deleteFirewall(obj);
-    
-    
-    //        removeObjectFromTreeView(obj);
     
             QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
     
             if (islib && obj->isReadOnly()) obj->setReadOnly(false);
- //           if (firstAction)
- //           {
-                if (obj->getId()==FWObjectDatabase::TEMPLATE_LIB_ID) // special case
-                {
-                    if (fwbdebug)
-                        qDebug("ObjectManipulator::delObj:   "
-                               "special case: deleting template library");
-                    pom->m_project->db()->removeAllInstances(obj);
-                } else
-                {
-                    if (fwbdebug)
-                        qDebug("ObjectManipulator::delObj:   "
-                               "recursively deleting library and all its objects");
-                    pom->m_project->db()->recursivelyRemoveObjFromTree(obj,
-                                                                       false);
-                    if (islib)
-                        parent=pom->m_project->db()->getFirstByType(
-                            Library::TYPENAME);
-                }
+            if (obj->getId()==FWObjectDatabase::TEMPLATE_LIB_ID) // special case
+            {
+                if (fwbdebug)
+                    qDebug("ObjectManipulator::delObj:   "
+                           "special case: deleting template library");
+                pom->m_project->db()->removeAllInstances(obj);
+            } else
+            {
+                if (fwbdebug)
+                    qDebug("ObjectManipulator::delObj:   "
+                           "recursively deleting library and all its objects");
+                pom->m_project->db()->recursivelyRemoveObjFromTree(obj,
+                                                                   false);
+                if (islib)
+                    parent=pom->m_project->db()->getFirstByType(
+                        Library::TYPENAME);
+            }
         
-                QApplication::restoreOverrideCursor();
-                if (fwbdebug) qDebug("ObjectManipulator::delObj:   done");
-//            }
+            QApplication::restoreOverrideCursor();
+            if (fwbdebug) qDebug("ObjectManipulator::delObj:   done");
+
+            if (RuleSet::cast(obj)!=NULL)
+                pom->m_project->closeRuleSet(obj);
+
             pom->removeObjectFromTreeView(obj);
             if (pom==this)
                 pom->m_project->scheduleRuleSetRedraw();
@@ -2152,7 +2147,7 @@ void ObjectManipulator::delObj(FWObject *obj,bool openobj)
             } else
                 FWObjectClipboard::obj_clipboard->clear();
     
-            if (openobj&&pom==this)
+            if (openobj && pom==this)
             {
                 if (isfw && !isDelObj)
                 {

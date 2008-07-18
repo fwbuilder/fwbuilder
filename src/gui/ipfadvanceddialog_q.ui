@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>708</width>
+    <width>709</width>
     <height>719</height>
    </rect>
   </property>
@@ -101,7 +101,7 @@
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget3" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="tab0" >
       <attribute name="title" >
@@ -1430,10 +1430,12 @@ with this address:</string>
   <tabstop>ipf_eliminate_duplicates</tabstop>
   <tabstop>ipf_check_shadowing</tabstop>
   <tabstop>ipf_ignore_empty_groups</tabstop>
-  <tabstop>actionOnReject</tabstop>
   <tabstop>ipf_return_icmp_as_dest</tabstop>
+  <tabstop>actionOnReject</tabstop>
   <tabstop>mgmt_ssh</tabstop>
   <tabstop>mgmt_addr</tabstop>
+  <tabstop>buttonOk</tabstop>
+  <tabstop>buttonCancel</tabstop>
   <tabstop>ipf_fw_dir</tabstop>
   <tabstop>ipf_user</tabstop>
   <tabstop>altAddress</tabstop>
@@ -1454,8 +1456,8 @@ with this address:</string>
   <tabstop>ipf_manage_virtual_addr</tabstop>
   <tabstop>ipf_optimize</tabstop>
   <tabstop>ipf_dynAddr</tabstop>
-  <tabstop>buttonOk</tabstop>
-  <tabstop>buttonCancel</tabstop>
+  <tabstop>ipv6_2</tabstop>
+  <tabstop>ipv4before_2</tabstop>
  </tabstops>
  <resources/>
  <connections>

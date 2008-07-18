@@ -80,7 +80,7 @@
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget3" >
      <property name="currentIndex" >
-      <number>8</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab1" >
       <attribute name="title" >
@@ -2480,12 +2480,6 @@ with this address:</string>
   <tabstop>pf_tcp_finwait</tabstop>
   <tabstop>pf_set_tcp_closed</tabstop>
   <tabstop>pf_tcp_closed</tabstop>
-  <tabstop>pf_set_udp_first</tabstop>
-  <tabstop>pf_udp_first</tabstop>
-  <tabstop>pf_set_udp_single</tabstop>
-  <tabstop>pf_udp_single</tabstop>
-  <tabstop>pf_set_udp_multiple</tabstop>
-  <tabstop>pf_udp_multiple</tabstop>
   <tabstop>pf_set_icmp_first</tabstop>
   <tabstop>pf_icmp_first</tabstop>
   <tabstop>pf_set_icmp_error</tabstop>
@@ -2496,6 +2490,12 @@ with this address:</string>
   <tabstop>pf_other_single</tabstop>
   <tabstop>pf_set_other_multiple</tabstop>
   <tabstop>pf_other_multiple</tabstop>
+  <tabstop>pf_set_udp_first</tabstop>
+  <tabstop>pf_udp_first</tabstop>
+  <tabstop>pf_set_udp_single</tabstop>
+  <tabstop>pf_udp_single</tabstop>
+  <tabstop>pf_set_udp_multiple</tabstop>
+  <tabstop>pf_udp_multiple</tabstop>
   <tabstop>pf_do_timeout_interval</tabstop>
   <tabstop>pf_timeout_interval</tabstop>
   <tabstop>pf_do_timeout_frag</tabstop>
@@ -2520,6 +2520,7 @@ with this address:</string>
   <tabstop>pf_debug</tabstop>
   <tabstop>pf_configure_interfaces</tabstop>
   <tabstop>pf_manage_virtual_addr</tabstop>
+  <tabstop>ipv4before</tabstop>
  </tabstops>
  <resources/>
  <connections>

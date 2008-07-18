@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>392</width>
-    <height>448</height>
+    <width>412</width>
+    <height>465</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -108,174 +108,33 @@
        <string>Options</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
-       </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>6</number>
-       </property>
-       <property name="verticalSpacing" >
-        <number>6</number>
-       </property>
-       <item row="9" column="2" >
-        <widget class="QComboBox" name="linux24_log_martians" >
-         <item>
-          <property name="text" >
-           <string>No change</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>On</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Off</string>
-          </property>
-         </item>
-        </widget>
+       <item row="0" column="0" colspan="2" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
-       <item row="6" column="2" >
-        <widget class="QComboBox" name="linux24_accept_redirects" >
-         <item>
-          <property name="text" >
-           <string>No change</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>On</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Off</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="4" column="2" >
-        <widget class="QComboBox" name="linux24_icmp_echo_ignore_all" >
-         <item>
-          <property name="text" >
-           <string>No change</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>On</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Off</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="3" column="2" >
-        <widget class="QComboBox" name="linux24_icmp_echo_ignore_broadcasts" >
-         <item>
-          <property name="text" >
-           <string>No change</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>On</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Off</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="7" column="2" >
-        <widget class="QComboBox" name="linux24_icmp_ignore_bogus_error_responses" >
-         <item>
-          <property name="text" >
-           <string>No change</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>On</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Off</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="8" column="2" >
-        <widget class="QComboBox" name="linux24_ip_dynaddr" >
-         <item>
-          <property name="text" >
-           <string>No change</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>On</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Off</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="2" column="2" >
-        <widget class="QComboBox" name="linux24_rp_filter" >
-         <item>
-          <property name="text" >
-           <string>No change</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>On</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Off</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="5" column="2" >
-        <widget class="QComboBox" name="linux24_accept_source_route" >
-         <item>
-          <property name="text" >
-           <string>No change</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>On</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Off</string>
-          </property>
-         </item>
+       <item row="1" column="0" colspan="2" >
+        <widget class="QLabel" name="label368" >
+         <property name="text" >
+          <string>IPv4 Packet forwarding</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
         </widget>
        </item>
        <item row="1" column="2" >
@@ -297,139 +156,6 @@
          </item>
         </widget>
        </item>
-       <item row="1" column="1" >
-        <widget class="QLabel" name="label368" >
-         <property name="text" >
-          <string>Packet forwarding</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" >
-        <widget class="QLabel" name="label369" >
-         <property name="text" >
-          <string>Kernel anti-spoofing protection</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1" >
-        <widget class="QLabel" name="label370" >
-         <property name="text" >
-          <string>Ignore broadcast pings</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1" >
-        <widget class="QLabel" name="label386" >
-         <property name="text" >
-          <string>Ignore all pings</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1" >
-        <widget class="QLabel" name="label371" >
-         <property name="text" >
-          <string>Accept source route</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1" >
-        <widget class="QLabel" name="label373" >
-         <property name="text" >
-          <string>Accept ICMP redirects</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1" >
-        <widget class="QLabel" name="label374" >
-         <property name="text" >
-          <string>Ignore bogus ICMP errors</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1" >
-        <widget class="QLabel" name="label375" >
-         <property name="text" >
-          <string>Allow dynamic addresses</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="1" >
-        <widget class="QLabel" name="label380" >
-         <property name="text" >
-          <string>Log martians</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item rowspan="7" row="1" column="3" >
         <spacer>
          <property name="orientation" >
@@ -446,23 +172,263 @@
          </property>
         </spacer>
        </item>
-       <item row="10" column="2" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
+       <item row="2" column="0" colspan="2" >
+        <widget class="QLabel" name="label368_2" >
+         <property name="text" >
+          <string>IPv6 Packet forwarding</string>
          </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="sizeHint" >
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
+         <property name="wordWrap" >
+          <bool>false</bool>
          </property>
-        </spacer>
+        </widget>
        </item>
-       <item row="10" column="0" colspan="2" >
+       <item row="2" column="2" >
+        <widget class="QComboBox" name="linux24_ipv6_forward" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2" >
+        <widget class="QLabel" name="label369" >
+         <property name="text" >
+          <string>Kernel anti-spoofing protection</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2" >
+        <widget class="QComboBox" name="linux24_rp_filter" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="2" >
+        <widget class="QLabel" name="label370" >
+         <property name="text" >
+          <string>Ignore broadcast pings</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2" >
+        <widget class="QComboBox" name="linux24_icmp_echo_ignore_broadcasts" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2" >
+        <widget class="QLabel" name="label386" >
+         <property name="text" >
+          <string>Ignore all pings</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2" >
+        <widget class="QComboBox" name="linux24_icmp_echo_ignore_all" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="6" column="0" colspan="2" >
+        <widget class="QLabel" name="label371" >
+         <property name="text" >
+          <string>Accept source route</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2" >
+        <widget class="QComboBox" name="linux24_accept_source_route" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="7" column="0" colspan="2" >
+        <widget class="QLabel" name="label373" >
+         <property name="text" >
+          <string>Accept ICMP redirects</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="2" >
+        <widget class="QComboBox" name="linux24_accept_redirects" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="8" column="0" colspan="2" >
+        <widget class="QLabel" name="label374" >
+         <property name="text" >
+          <string>Ignore bogus ICMP errors</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="2" >
+        <widget class="QComboBox" name="linux24_icmp_ignore_bogus_error_responses" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="9" column="0" colspan="2" >
+        <widget class="QLabel" name="label375" >
+         <property name="text" >
+          <string>Allow dynamic addresses</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item rowspan="2" row="9" column="2" >
+        <widget class="QComboBox" name="linux24_ip_dynaddr" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item rowspan="3" row="10" column="0" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
@@ -474,6 +440,54 @@
           <size>
            <width>151</width>
            <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="11" column="1" >
+        <widget class="QLabel" name="label380" >
+         <property name="text" >
+          <string>Log martians</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="2" >
+        <widget class="QComboBox" name="linux24_log_martians" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="12" column="2" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>93</width>
+           <height>21</height>
           </size>
          </property>
         </spacer>
@@ -1057,6 +1071,7 @@
  <layoutdefault spacing="6" margin="11" />
  <tabstops>
   <tabstop>linux24_ip_forward</tabstop>
+  <tabstop>linux24_ipv6_forward</tabstop>
   <tabstop>linux24_rp_filter</tabstop>
   <tabstop>linux24_icmp_echo_ignore_broadcasts</tabstop>
   <tabstop>linux24_icmp_echo_ignore_all</tabstop>
@@ -1076,10 +1091,13 @@
   <tabstop>linux24_tcp_syncookies</tabstop>
   <tabstop>linux24_tcp_timestamps</tabstop>
   <tabstop>linux24_path_iptables</tabstop>
+  <tabstop>linux24_path_ip6tables</tabstop>
   <tabstop>linux24_path_ip</tabstop>
   <tabstop>linux24_path_logger</tabstop>
   <tabstop>linux24_path_modprobe</tabstop>
   <tabstop>linux24_path_lsmod</tabstop>
+  <tabstop>linux24_path_iptables_restore</tabstop>
+  <tabstop>linux24_path_ip6tables_restore</tabstop>
   <tabstop>tabWidget3</tabstop>
  </tabstops>
  <resources/>
