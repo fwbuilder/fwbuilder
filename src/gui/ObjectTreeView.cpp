@@ -491,7 +491,6 @@ void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
     if (isCurrReadOnly(ev) ||
           !ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE))
     {
-        qDebug("ObjectTreeView::dragMoveEvent");
         ev->setAccepted(false);
         return;
     }
