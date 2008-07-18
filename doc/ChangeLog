@@ -1,4 +1,9 @@
-2008-07-17  vadim  <vadim@vk.crocodile.org>
+2008-07-17  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt.cpp (prepareForMultiport::processNext): fixed
+	bug (no #) where compiler for iptables ignored ICMP6 Service
+	objects used in ne rule combination with tcp or udp service
+	objects.
 
 	* objects_init.xml.in: Added few more ICMPv6 objects to the Standard
 	objects library:

@@ -32,6 +32,7 @@
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
+#include "fwbuilder/ICMP6Service.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/CustomService.h"
@@ -3333,6 +3334,7 @@ bool PolicyCompiler_ipt::prepareForMultiport::processNext()
 
     if (IPService::isA(srv) ||
         ICMPService::isA(srv) ||
+        ICMP6Service::isA(srv) ||
         CustomService::isA(srv) ||
         TagService::isA(srv))
     {
