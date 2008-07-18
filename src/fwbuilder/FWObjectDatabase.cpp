@@ -167,9 +167,12 @@ void FWObjectDatabase::init_id_dict()
 
 int FWObjectDatabase::registerStringId(const std::string &s_id)
 {
-    if (id_dict_reverse.count(s_id) > 0) return id_dict_reverse[s_id];
+    int i_id = -1;
 
-    int i_id = ++id_seed;
+    if (id_dict_reverse.count(s_id) > 0)
+        return id_dict_reverse[s_id];
+
+    i_id = ++id_seed;
     id_dict[i_id] = s_id;
     id_dict_reverse[s_id] = i_id;
     return i_id;
@@ -200,8 +203,6 @@ int FWObjectDatabase::generateUniqueId()
 #endif
     ostringstream str;
     str << "id" << i_id << "X" << pid;
-    //char res[20];
-    //sprintf(res,"id%lX%d", i_id, pid);
 
     id_dict[i_id] = string(str.str());
     id_dict_reverse[string(str.str())] = i_id;
