@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>402</height>
+    <width>465</width>
+    <height>188</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -74,14 +74,11 @@
      <item>
       <spacer>
        <property name="orientation" >
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeType" >
-        <enum>QSizePolicy::Expanding</enum>
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeHint" >
         <size>
-         <width>20</width>
+         <width>151</width>
          <height>20</height>
         </size>
        </property>
@@ -91,16 +88,6 @@
       <widget class="QPushButton" name="ok_button" >
        <property name="text" >
         <string>OK</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label590" >
-       <property name="alignment" >
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="wordWrap" >
-        <bool>false</bool>
        </property>
       </widget>
      </item>

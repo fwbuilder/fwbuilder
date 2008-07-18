@@ -118,7 +118,7 @@
    <item row="0" column="0" >
     <widget class="QTabWidget" name="notebook304" >
      <property name="currentIndex" >
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="TabPage" >
       <attribute name="title" >
