@@ -688,7 +688,9 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 {
                     m.compile();
                     m.epilog();
-                    
+
+                    long m_str_pos = m_str.tellp();
+
                     if (policy->isTop())
                     {
                         m_str << "# ================ Table 'mangle', "
@@ -709,6 +711,10 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                         }
 
                         m_str << m.getCompiledScript();
+                    }
+
+                    if (m_str_pos!=m_str.tellp())
+                    {
                         m_str << m.commit();
                         m_str << endl;
                         empty_output = false;

@@ -1,3 +1,11 @@
+2008-07-18  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ipt.cpp (main): fixed bug (no #): if generated script used
+	iptables-restore and if there were automatically generated rules
+	in the magle table, for example for the "clamp MSS to MTU" rule,
+	but no other rules in the mangle table, compiler would not add
+	COMMIT.
+
 2008-07-17  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (prepareForMultiport::processNext): fixed
