@@ -207,7 +207,6 @@ protected:
     void addToLog(const QString &buf); 
     void updateProgressBar(int n,bool setsize);
 
-    void continueRun();
     virtual void saveLog();
     virtual void togleDetailMC();
 
@@ -220,6 +219,8 @@ protected:
     virtual void backClicked();
 
     void stopSessionAndDisconnectSignals();
+    void continueRun();
+    void restartSession();
     
     void compileSelected();
     void stopCompile();

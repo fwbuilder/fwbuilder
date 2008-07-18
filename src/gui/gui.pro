@@ -42,7 +42,6 @@ HEADERS += ../../config.h \
 	newGroupDialog.h \
 	filePropDialog.h \
 	DialogData.h \
-	execDialog.h \
 	SimpleTextEditor.h \
 	SimpleIntEditor.h \
 	FWBSettings.h \
@@ -152,7 +151,6 @@ SOURCES += ProjectPanel.cpp \
 	newGroupDialog.cpp \
 	filePropDialog.cpp \
 	DialogData.cpp \
-	execDialog.cpp \
 	SimpleTextEditor.cpp \
 	SimpleIntEditor.cpp \
 	FWBSettings.cpp \
@@ -239,9 +237,8 @@ SOURCES += ProjectPanel.cpp \
     AskLibForCopyDialog.cpp \
 	ObjectListViewItem.cpp \
 	RuleGroupPanel.cpp 
-       
+
 FORMS = FWBMainWindow_q.ui \
-	execdialog_q.ui \
 	customservicedialog_q.ui \
 	ipservicedialog_q.ui \
 	icmpservicedialog_q.ui \

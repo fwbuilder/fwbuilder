@@ -41,7 +41,6 @@
 #include "ObjConflictResolutionDialog.h"
 #include "RuleSetView.h"
 #include "ObjectEditor.h"
-#include "execDialog.h"
 #include "PrefsDialog.h"
 #include "LibExportDialog.h"
 #include "findDialog.h"

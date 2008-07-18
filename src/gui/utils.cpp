@@ -403,7 +403,7 @@ QString getAddrByName(const QString &name, int af_type)
     try
     {
         results = DNS::getHostByName(name.toAscii().constData(), af_type);
-        if (fwbdebug) qDebug("utils::getAddrByName: obtained %d addresses",
+        if (fwbdebug) qDebug("utils::getAddrByName: obtained %ld addresses",
                              results.size());
     } catch (FWException &e)
     {

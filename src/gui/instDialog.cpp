@@ -1660,12 +1660,6 @@ bool instDialog::testFirewall(Firewall *fw)
         args.push_back( QString("/%1/%2")
                         .arg(QString::fromUtf8(fw->getLibrary()->getName().c_str()))
                         .arg(fw->getPath(true).c_str() ) );
-
-        //execDialog dlg(this, args );
-
-        //int exec_result=dlg.run();
-        //qDebug(QString("Result: %1").arg(exec_result));
-        //if (exec_result==0) mw->updateLastInstalledTimestamp(fw);
     }
     return true;
 }
@@ -1941,14 +1935,33 @@ void instDialog::installerFinished()
     if( fwbdebug) qDebug("instDialog::installerFinished");
 
     if (session->getErrorStatus())
+    {
         installerError();
-    else
+    } else
     {
         // session object is destroyed in stopSessionAndDisconnectSignals()
-        QTimer::singleShot( 0, this, SLOT(stopSessionAndDisconnectSignals()));
+        // restartSession() calls stopSessionAndDisconnectSignals(),
+        // then continueRun(). It seems the order in which slots are
+        // called when we schedule two timer events with time =0
+        // is different on different OS. On Linux (and windows?) slots
+        // are called in the order they were scheduled, but on Mac
+        // the order is reverse. Use slot restartSession to make
+        // sure stopSessionAndDisconnectSignals() and  continueRun()
+        // are called in the right order.
+        
+        if (fwbdebug) qDebug("schedule call to restartSession()");
+        QTimer::singleShot( 0, this, SLOT(restartSession()));
+        return;
     }
 
+    if (fwbdebug) qDebug("schedule call to continueRun()");
     QTimer::singleShot( 0, this, SLOT(continueRun()) );
+}
+
+void instDialog::restartSession()
+{
+    stopSessionAndDisconnectSignals();
+    continueRun();
 }
 
 void instDialog::processExited(int res)

@@ -1,4 +1,14 @@
-2008-07-17  Vadim Kurland  <vadim@vk.crocodile.org>
+2008-07-17  vadim  <vadim@vk.crocodile.org>
+
+	* objects_init.xml.in: Added few more ICMPv6 objects to the Standard
+	objects library:
+
+	 type   name            comment
+           133  routersol       Router solicitation
+           134  routeradv       Router advertisement
+           135  neighbrsol      Neighbor solicitation
+           136  neighbradv      Neighbor advertisement
+           137  redir           Shorter route exists
 
 	* ObjectManipulator.cpp (ObjectManipulator::delObj): fixed bug (no
 	#): GUI crashed when user deleted one of the rule set objects of
@@ -23,7 +33,7 @@
 	* dns.cpp (list): (libfwbuilder) Using getaddrinfo on all OS to
 	perform dns lookup for different address families (AF_INET or
 	AF_INET6).
-	
+
 	* utils.cpp (getAddrByName): using DNS::getHostByName instead of
 	QT functions to perform host name lookup. This should allow us to
 	do it for both AF_INET and AF_INET6 address families. Needs more

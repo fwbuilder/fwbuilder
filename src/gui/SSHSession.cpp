@@ -253,10 +253,11 @@ void SSHSession::terminate()
 
     if (proc!=NULL)
     {
-        disconnect(proc,SIGNAL(readyReadStdout()),
-                   this,SLOT(readFromStdout() ) );
-        disconnect(proc,SIGNAL(readyReadStderr()),
-                   this,SLOT(readFromStderr() ) );
+//        disconnect(proc,SIGNAL(readyReadStdout()),
+//                   this,SLOT(readFromStdout() ) );
+//        disconnect(proc,SIGNAL(readyReadStderr()),
+//                   this,SLOT(readFromStderr() ) );
+
         disconnect(proc,SIGNAL(finished(int, QProcess::ExitStatus)),
                    this,SLOT(finished(int) ) );
 
@@ -315,9 +316,11 @@ void SSHSession::sendLine()
     {
         string s = input.front();
         s = s + "\n";
+#if 0
         if (fwbdebug)
             qDebug("SSHSession::sendLine : %d lines to go -- %s",
                    int(input.size()), s.c_str());
+#endif
         input.pop_front();
 
         stdoutBuffer="";
