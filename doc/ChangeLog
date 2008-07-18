@@ -2,8 +2,8 @@
 
 	* PolicyCompiler_ipt.cpp (prepareForMultiport::processNext): fixed
 	bug (no #) where compiler for iptables ignored ICMP6 Service
-	objects used in ne rule combination with tcp or udp service
-	objects.
+	objects used in the same rule in combination with tcp or udp
+	service objects.
 
 	* objects_init.xml.in: Added few more ICMPv6 objects to the Standard
 	objects library:
