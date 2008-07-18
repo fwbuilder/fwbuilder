@@ -427,8 +427,10 @@ string NATCompiler_ipt::PrintRule::_printDstService(RuleElementOSrv  *rel)
     return ostr.str();
 }
 
+// Note print_mask is true by default, print_range is false by default.
 string NATCompiler_ipt::PrintRule::_printAddr(Address  *o,
-                                              bool print_mask, bool print_range)
+                                              bool print_mask,
+                                              bool print_range)
 {
     NATCompiler_ipt *ipt_comp=dynamic_cast<NATCompiler_ipt*>(compiler);
     std::ostringstream  ostr;
@@ -470,28 +472,30 @@ string NATCompiler_ipt::PrintRule::_printAddr(Address  *o,
 
         const InetAddr* addr = o->getAddressPtr();
         const InetAddr* mask = o->getNetmaskPtr();
-        if (addr && mask)
+
+        if (addr==NULL)
         {
-            if (iface!=NULL)
-            {
-                ostr << addr->toString();
-                return ostr.str();
-            }
+            compiler->warning(
+                string("Empty inet address in object ") +
+                FWObjectDatabase::getStringId(o->getId()));
+            return ostr.str();
+        }
 
-            if (addr->isAny() && mask->isAny())
-            {
-                ostr << "0/0";
-            } else
-            {	
-                ostr << addr->toString();
+        if (addr->isAny() && mask->isAny())
+        {
+            ostr << "0/0 ";
+        } else 
+        {
+            ostr << addr->toString();
 
-                if (print_mask &&
-                    Address::cast(o)->dimension()!=1 &&
-                    !mask->isHostMask())
-                {
-                    ostr << "/" << mask->getLength();
-                }
+            if (Interface::cast(o)==NULL &&
+                Address::cast(o)->dimension() > 1 &&
+                !mask->isHostMask())
+            {
+                ostr << "/" << mask->getLength();
             }
+            // do not add space after address because there might be
+            // :port spec coming right after it.
         }
     }
     return ostr.str();

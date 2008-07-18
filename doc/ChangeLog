@@ -1,5 +1,9 @@
 2008-07-18  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* NATCompiler_PrintRule.cpp (PrintRule::_printAddr): fixed bugs in
+	compiler for iptables where it sometimes would not print netmasks
+	in ipv6 network objects in policy and nat rules.
+
 	* Added control for IPv6 forwarding setting in "host settings"
 	dialogs for Linux, OpenBSD and FreeBSD. This is in addition to the
 	old ip forwarding control. Corresponding policy compilers add

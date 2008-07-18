@@ -465,7 +465,9 @@ namespace fwcompiler {
             virtual std::string _printDNATPorts(libfwbuilder::Service *srv);
 
             virtual std::string _printMultiport(libfwbuilder::NATRule *r);
-            virtual std::string _printAddr(libfwbuilder::Address  *o,bool print_mask=true,bool print_range=false);
+            virtual std::string _printAddr(libfwbuilder::Address  *o,
+                                           bool print_mask=true,
+                                           bool print_range=false);
             virtual std::string _printChainDirectionAndInterface(libfwbuilder::NATRule *r);
 
             public:

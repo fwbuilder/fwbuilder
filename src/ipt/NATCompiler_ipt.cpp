@@ -2175,15 +2175,15 @@ void NATCompiler_ipt::compile()
         add( new recursiveGroupsInTDst("check for recursive groups in TDST"));
         add( new recursiveGroupsInTSrv("check for recursive groups in TSRV"));
 
-        add( new emptyGroupsInOSrc("check for empty groups in OSRC"      ));
-        add( new emptyGroupsInODst("check for empty groups in ODST"      ));
-        add( new emptyGroupsInOSrv("check for empty groups in OSRV"      ));
+        add( new emptyGroupsInOSrc("check for empty groups in OSRC" ));
+        add( new emptyGroupsInODst("check for empty groups in ODST" ));
+        add( new emptyGroupsInOSrv("check for empty groups in OSRV" ));
 
-        add( new emptyGroupsInTSrc("check for empty groups in TSRC"      ));
-        add( new emptyGroupsInTDst("check for empty groups in TDST"      ));
-        add( new emptyGroupsInTSrv("check for empty groups in TSRV"      ));
+        add( new emptyGroupsInTSrc("check for empty groups in TSRC" ));
+        add( new emptyGroupsInTDst("check for empty groups in TDST" ));
+        add( new emptyGroupsInTSrv("check for empty groups in TSRV"));
 
-	add( new ExpandGroups(            "Expand groups"                ));
+	add( new ExpandGroups("Expand groups"));
 
         // processors that expand objects with multiple addresses
         // check addresses against current address family using member
@@ -2210,39 +2210,39 @@ void NATCompiler_ipt::compile()
         add( new processMultiAddressObjectsInODst(
                  "process MultiAddress objects in ODst") );
 
-        add( new doOSrvNegation(   "process negation in OSrv"            ));
+        add( new doOSrvNegation( "process negation in OSrv" ));
 
         add( new convertToAtomicportForOSrv("convert to atomic rules in OSrv"));
 
-        add( new classifyNATRule(           "classify NAT rule"           ));
-        add( new splitSDNATRule(            "split SDNAT rules"           ));
-        add( new classifyNATRule(           "reclassify rules"            ));
+        add( new classifyNATRule( "classify NAT rule" ));
+        add( new splitSDNATRule( "split SDNAT rules" ));
+        add( new classifyNATRule( "reclassify rules" ));
         add( new ConvertLoadBalancingRules( "convert load balancing rules"));
-        add( new VerifyRules(               "verify rules"                ));
+        add( new VerifyRules( "verify rules" ));
 
-        add( new doOSrcNegation(            "process negation in OSrc"    ));
-        add( new doODstNegation(            "process negation in ODst"    ));
+        add( new doOSrcNegation( "process negation in OSrc" ));
+        add( new doODstNegation( "process negation in ODst" ));
 
 /* call splitOnODst after processing negation */
-        add( new splitOnODst(            "split on ODst"                  ));
+        add( new splitOnODst( "split on ODst" ));
 
-        add( new portTranslationRules(   "port translation rules"         ));
+        add( new portTranslationRules( "port translation rules" ));
         add( new specialCaseWithRedirect(
                  "special case with redirecting port translation rules" ) );
 
         if (fwopt->getBool("local_nat") )
         {
             if ( fwopt->getBool("firewall_is_part_of_any_and_networks") )
-                add( new splitIfOSrcAny(  "split rule if OSrc is any"     ));
+                add( new splitIfOSrcAny( "split rule if OSrc is any" ));
 
             add( new splitIfOSrcMatchesFw("split rule if OSrc matches FW" ));
         }
 
         add( new splitNONATRule("NAT rules that request no translation"));
         add( new localNATRule("process local NAT rules"));
-//        add( new DNATforFW("process DNAT rules for packets originated on the firewall"));
-        add( new decideOnChain(    "decide on chain"                    ) );
-        add( new decideOnTarget(   "decide on target"                   ) );
+// add( new DNATforFW("process DNAT rules for packets originated on the firewall"));
+        add( new decideOnChain( "decide on chain" ) );
+        add( new decideOnTarget( "decide on target" ) );
 
         add( new splitODstForSNAT(
                  "split rule if objects in ODst belong to different subnets") );
