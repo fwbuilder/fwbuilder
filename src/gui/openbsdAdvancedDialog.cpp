@@ -76,16 +76,19 @@ openbsdAdvancedDialog::openbsdAdvancedDialog(QWidget *parent,FWObject *o)
 
     data.registerOption( m_dialog->openbsd_ip_sourceroute,
                           fwopt,
-                          "openbsd_ip_sourceroute",        threeStateMapping);
+                          "openbsd_ip_sourceroute", threeStateMapping);
     data.registerOption( m_dialog->openbsd_ip_redirect,
                           fwopt,
-                          "openbsd_ip_redirect",           threeStateMapping);
+                          "openbsd_ip_redirect", threeStateMapping);
     data.registerOption( m_dialog->openbsd_ip_directed_broadcast,
                           fwopt,
                           "openbsd_ip_directed_broadcast", threeStateMapping);
     data.registerOption( m_dialog->openbsd_ip_forward,
                           fwopt,
-                          "openbsd_ip_forward",            threeStateMapping);
+                          "openbsd_ip_forward", threeStateMapping);
+    data.registerOption( m_dialog->openbsd_ipv6_forward,
+                          fwopt,
+                          "openbsd_ipv6_forward", threeStateMapping);
     data.registerOption( m_dialog->openbsd_path_pfctl,
                           fwopt,
                           "openbsd_path_pfctl");

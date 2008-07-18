@@ -75,21 +75,24 @@ freebsdAdvancedDialog::freebsdAdvancedDialog(QWidget *parent,FWObject *o)
     threeStateMapping.push_back("0");
 
 
-    data.registerOption(  m_dialog->freebsd_ip_sourceroute,
-                          fwopt, "freebsd_ip_sourceroute",  threeStateMapping);
-    data.registerOption(  m_dialog->freebsd_ip_redirect,
-                          fwopt, "freebsd_ip_redirect",  threeStateMapping);
-    data.registerOption(  m_dialog->freebsd_ip_forward,
-                          fwopt, "freebsd_ip_forward",  threeStateMapping);
+    data.registerOption(m_dialog->freebsd_ip_sourceroute,
+                        fwopt, "freebsd_ip_sourceroute",  threeStateMapping);
+    data.registerOption(m_dialog->freebsd_ip_redirect,
+                        fwopt, "freebsd_ip_redirect",  threeStateMapping);
+    data.registerOption(m_dialog->freebsd_ip_forward,
+                        fwopt, "freebsd_ip_forward",  threeStateMapping);
+    data.registerOption(m_dialog->freebsd_ipv6_forward,
+                        fwopt,
+                        "freebsd_ipv6_forward", threeStateMapping);
 
-    data.registerOption(  m_dialog->freebsd_path_ipnat,
-                          fwopt, "freebsd_path_ipnat");
-    data.registerOption(  m_dialog->freebsd_path_sysctl,
-                          fwopt,"freebsd_path_sysctl");
-    data.registerOption(  m_dialog->freebsd_path_ipf,
-                          fwopt, "freebsd_path_ipf");
-    data.registerOption(  m_dialog->freebsd_path_ipfw,
-                          fwopt, "freebsd_path_ipfw");
+    data.registerOption(m_dialog->freebsd_path_ipnat,
+                        fwopt, "freebsd_path_ipnat");
+    data.registerOption(m_dialog->freebsd_path_sysctl,
+                        fwopt,"freebsd_path_sysctl");
+    data.registerOption(m_dialog->freebsd_path_ipf,
+                        fwopt, "freebsd_path_ipf");
+    data.registerOption(m_dialog->freebsd_path_ipfw,
+                        fwopt, "freebsd_path_ipfw");
 
 
     data.loadAll();

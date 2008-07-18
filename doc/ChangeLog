@@ -1,5 +1,11 @@
 2008-07-18  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* Added control for IPv6 forwarding setting in "host settings"
+	dialogs for Linux, OpenBSD and FreeBSD. This is in addition to the
+	old ip forwarding control. Corresponding policy compilers add
+	proper commands to generated scripts to turn ipv6 forwarding on or
+	off in the kernel.
+
 	* ipt.cpp (main): compiler for iptables puts build number in
 	addition to the version number into "Generated with ..." comment
 	in the produced script

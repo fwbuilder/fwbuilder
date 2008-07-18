@@ -74,8 +74,6 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
     threeStateMapping.push_back(QObject::tr("Off"));
     threeStateMapping.push_back("0");
 
-
-
     data.registerOption( m_dialog->linux24_log_martians,
                          fwopt,
                          "linux24_log_martians", threeStateMapping);
@@ -87,10 +85,12 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
                          "linux24_icmp_echo_ignore_all", threeStateMapping);
     data.registerOption( m_dialog->linux24_icmp_echo_ignore_broadcasts,
                          fwopt,
-                         "linux24_icmp_echo_ignore_broadcasts", threeStateMapping);
+                         "linux24_icmp_echo_ignore_broadcasts",
+                         threeStateMapping);
     data.registerOption( m_dialog->linux24_icmp_ignore_bogus_error_responses,
                          fwopt,
-                         "linux24_icmp_ignore_bogus_error_responses", threeStateMapping);
+                         "linux24_icmp_ignore_bogus_error_responses",
+                         threeStateMapping);
     data.registerOption( m_dialog->linux24_ip_dynaddr,
                          fwopt,
                          "linux24_ip_dynaddr", threeStateMapping);
@@ -103,6 +103,9 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->linux24_ip_forward,
                          fwopt,
                          "linux24_ip_forward", threeStateMapping);
+    data.registerOption( m_dialog->linux24_ipv6_forward,
+                         fwopt,
+                         "linux24_ipv6_forward", threeStateMapping);
     data.registerOption( m_dialog->linux24_tcp_fin_timeout,
                          fwopt,
                          "linux24_tcp_fin_timeout" );
@@ -135,22 +138,22 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
                          "linux24_path_ip6tables" );
     data.registerOption( m_dialog->linux24_path_ip,
                          fwopt,
-                         "linux24_path_ip"       );
+                         "linux24_path_ip");
     data.registerOption( m_dialog->linux24_path_lsmod,
                          fwopt,
-                         "linux24_path_lsmod"    );
+                         "linux24_path_lsmod");
     data.registerOption( m_dialog->linux24_path_logger,
                          fwopt,
-                         "linux24_path_logger"   );
+                         "linux24_path_logger");
     data.registerOption( m_dialog->linux24_path_modprobe,
                          fwopt,
-                         "linux24_path_modprobe" );
+                         "linux24_path_modprobe");
     data.registerOption( m_dialog->linux24_path_iptables_restore,
                          fwopt,
-                         "linux24_path_iptables_restore" );
+                         "linux24_path_iptables_restore");
     data.registerOption( m_dialog->linux24_path_ip6tables_restore,
                          fwopt,
-                         "linux24_path_ip6tables_restore" );
+                         "linux24_path_ip6tables_restore");
 
 
     data.loadAll();

@@ -61,6 +61,14 @@ void OSConfigurator_freebsd::processFirewallOptions()
 	output << "$SYSCTL -w net.inet.ip.forwarding=" << s << endl;
     }
 
+    s=options->getStr("freebsd_ipv6_forward");
+    if (!s.empty()) {
+        if (s=="1" || s=="On" || s=="on") s="1";
+        else                              s="0";
+        // by the way, this is different from OpenBSD
+	output << "$SYSCTL -w net.inet6.ip6.forwarding=" << s << endl;
+    }
+
     s=options->getStr("freebsd_ip_sourceroute");
     if (!s.empty()) {
 	if (s!="0" && s!="1")

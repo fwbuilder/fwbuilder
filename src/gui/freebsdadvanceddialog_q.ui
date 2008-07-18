@@ -101,56 +101,28 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex" >
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab0" >
       <attribute name="title" >
        <string>Options</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
-       </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>6</number>
-       </property>
-       <property name="verticalSpacing" >
-        <number>6</number>
-       </property>
-       <item row="2" column="0" >
-        <widget class="QLabel" name="label546" >
-         <property name="text" >
-          <string>Forward source routed packets</string>
+       <item row="0" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
          </property>
-         <property name="alignment" >
-          <set>Qt::AlignCenter</set>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="wordWrap" >
-          <bool>false</bool>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
          </property>
-        </widget>
-       </item>
-       <item row="3" column="0" >
-        <widget class="QLabel" name="label547" >
-         <property name="text" >
-          <string>Generate ICMP redirects</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>false</bool>
-         </property>
-        </widget>
+        </spacer>
        </item>
        <item row="1" column="0" >
         <widget class="QLabel" name="label544" >
@@ -164,60 +136,6 @@
           <bool>false</bool>
          </property>
         </widget>
-       </item>
-       <item row="2" column="1" >
-        <widget class="QComboBox" name="freebsd_ip_sourceroute" >
-         <item>
-          <property name="text" >
-           <string>No change</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>On</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Off</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="3" column="1" >
-        <widget class="QComboBox" name="freebsd_ip_redirect" >
-         <item>
-          <property name="text" >
-           <string>No change</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>On</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Off</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="4" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>151</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
        </item>
        <item row="1" column="1" >
         <widget class="QComboBox" name="freebsd_ip_forward" >
@@ -238,22 +156,6 @@
          </item>
         </widget>
        </item>
-       <item row="0" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item rowspan="2" row="1" column="2" >
         <spacer>
          <property name="orientation" >
@@ -270,7 +172,119 @@
          </property>
         </spacer>
        </item>
+       <item row="2" column="0" >
+        <widget class="QLabel" name="label544_2" >
+         <property name="text" >
+          <string>Packet forwarding</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" >
+        <widget class="QComboBox" name="freebsd_ipv6_forward" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="3" column="0" >
+        <widget class="QLabel" name="label546" >
+         <property name="text" >
+          <string>Forward source routed packets</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" >
+        <widget class="QComboBox" name="freebsd_ip_sourceroute" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="4" column="0" >
+        <widget class="QLabel" name="label547" >
+         <property name="text" >
+          <string>Generate ICMP redirects</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
        <item row="4" column="1" >
+        <widget class="QComboBox" name="freebsd_ip_redirect" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="5" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>151</width>
+           <height>51</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="5" column="1" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -280,8 +294,8 @@
          </property>
          <property name="sizeHint" >
           <size>
-           <width>20</width>
-           <height>40</height>
+           <width>93</width>
+           <height>41</height>
           </size>
          </property>
         </spacer>

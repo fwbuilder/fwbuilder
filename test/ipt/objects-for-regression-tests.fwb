@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1216410065" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1216420816" id="root">
   <Library id="syslib000" name="Standard" comment="Standard objects" color="#d4f8ff" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" name="Any" comment="Any IP Service" protocol_num="0"/>
@@ -25598,7 +25598,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4833F62B6131" name="firewall-ipv6-1" host_OS="linux24" inactive="False" lastCompiled="1215360869" lastInstalled="0" lastModified="1214965563" platform="iptables" ro="False" version="">
+      <Firewall id="id4833F62B6131" name="firewall-ipv6-1" host_OS="linux24" inactive="False" lastCompiled="1216420816" lastInstalled="0" lastModified="1216420808" platform="iptables" ro="False" version="">
         <NAT id="id4833F62F6131" name="NAT" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id483F5B7623190" name="Policy_ipv4" ipv6_rule_set="False" top_rule_set="False"/>
         <Policy id="id4833F62E6131" name="Policy" ipv6_rule_set="False" top_rule_set="True">
@@ -26005,7 +26005,32 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>
+          <Option name="linux24_accept_redirects"></Option>
+          <Option name="linux24_accept_source_route"></Option>
+          <Option name="linux24_icmp_echo_ignore_all"></Option>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
+          <Option name="linux24_ip_dynaddr"></Option>
           <Option name="linux24_ip_forward">1</Option>
+          <Option name="linux24_ipv6_forward">1</Option>
+          <Option name="linux24_log_martians"></Option>
+          <Option name="linux24_path_ip"></Option>
+          <Option name="linux24_path_ip6tables"></Option>
+          <Option name="linux24_path_ip6tables_restore"></Option>
+          <Option name="linux24_path_iptables"></Option>
+          <Option name="linux24_path_iptables_restore"></Option>
+          <Option name="linux24_path_logger"></Option>
+          <Option name="linux24_path_lsmod"></Option>
+          <Option name="linux24_path_modprobe"></Option>
+          <Option name="linux24_rp_filter"></Option>
+          <Option name="linux24_tcp_ecn"></Option>
+          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_tcp_fin_timeout">0</Option>
+          <Option name="linux24_tcp_keepalive_interval">0</Option>
+          <Option name="linux24_tcp_sack"></Option>
+          <Option name="linux24_tcp_syncookies"></Option>
+          <Option name="linux24_tcp_timestamps"></Option>
+          <Option name="linux24_tcp_window_scaling"></Option>
           <Option name="load_modules">True</Option>
           <Option name="local_nat">False</Option>
           <Option name="log_all">False</Option>
