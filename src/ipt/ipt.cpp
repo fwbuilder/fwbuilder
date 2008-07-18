@@ -24,6 +24,7 @@
 */
 
 #include "../../config.h"
+#include "../../build_num"
 
 #include <qsettings.h>
 
@@ -854,7 +855,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         script << _("#\n\
 #  This is automatically generated file. DO NOT MODIFY !\n\
 #\n\
-#  Firewall Builder  fwb_ipt v") << VERSION << "-" << RELEASE_NUM << _(" \n");
+#  Firewall Builder  fwb_ipt v") << VERSION << "-" << BUILD_NUM << _(" \n");
 
         if (!omit_timestamp)
         {

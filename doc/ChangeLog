@@ -1,5 +1,9 @@
 2008-07-18  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ipt.cpp (main): compiler for iptables puts build number in
+	addition to the version number into "Generated with ..." comment
+	in the produced script
+
 	* instDialog.cpp (instDialog::installerError): fixed crash in the
 	installer that happened when policy activation ended with an error
 
