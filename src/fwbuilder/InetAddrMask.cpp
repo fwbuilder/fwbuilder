@@ -32,11 +32,11 @@
 #include <iostream>
 #include <string>
 #include <assert.h>
-#include <values.h>
 
 #ifndef _WIN32
 #  include <sys/types.h>
 #  include <netinet/in.h>
+#  include <values.h>
 #else
 #  include <winsock2.h>
 #endif
@@ -160,9 +160,8 @@ unsigned int InetAddrMask::dimension()  const
  * maximum length of netmask  
  */
     int masklength = netmask->getLength();
-
-    if (masklength==0) return MAXINT;
-    if (masklength>32) return MAXINT;
+    if (masklength==0) return INT_MAX;
+    if (masklength>32) return INT_MAX;
 
     unsigned int u = 1;
     for (int i=0; i<32-masklength; ++i) u<<=1;
