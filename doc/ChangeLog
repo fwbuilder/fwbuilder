@@ -282,10 +282,11 @@
 	chains".
 
 	* main.cpp: implemented printing of the firewall object contents
-	from CLI per bug #1996739: "Feature: CLI printing or policy export"
-	
+	from CLI per bug #1996739: "Feature: CLI printing or policy export".
+	Use command line flag "-P <firewall_name>" to print and exit.
+
 2008-06-16  <alek@codeminders.com>
-	
+
 	* newHostDiaog.cpp: fixed bug #1899488: "Unable to set MAC address
 	while adding a host"
 

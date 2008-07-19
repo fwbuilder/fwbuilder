@@ -97,7 +97,7 @@ debugDialog::debugDialog(QWidget *parent) : QDialog(parent)
     m_dialog->debugText->append( QString("Versions:") );
     m_dialog->debugText->append( QString("  Firewall Builder %1")
         .arg(VERSION) );
-    m_dialog->debugText->append( QString("  Release %1  Build %2")
+    m_dialog->debugText->append( QString("  Revision %1  Build %2")
         .arg(RELEASE_NUM).arg(BUILD_NUM) );
     m_dialog->debugText->append( QString("  Using libfwbuilder %1")
         .arg( libfwbuilder::Constants::getLibraryVersion().c_str() ) );

@@ -11,8 +11,10 @@
 #endif
 
 #ifdef Q_OS_MACX
-#  include <CoreFoundation/CFURL.h>
-#  include <CoreFoundation/CFBundle.h>
+#  include <QDir>
+#  include <QApplication>
+//#  include <CoreFoundation/CFURL.h>
+//#  include <CoreFoundation/CFBundle.h>
 #endif
 
 #include <string>
@@ -42,20 +44,9 @@ string guessExecPath(const char *argv0)
 {
 
 #ifdef Q_OS_MACX
-// see http://doc.trolltech.com/3.3/mac-differences.html#7-1
-// except that article explains how to get path to bundle, while 
-// we need path to executable here. Using CFBundleCopyExecutableURL
-// instead of CFBundleCopyBundleURL
-//
-    CFURLRef bundleURL = CFBundleCopyExecutableURL(CFBundleGetMainBundle());
-    CFStringRef macPath = CFURLCopyFileSystemPath(bundleURL, 
-                                                  kCFURLPOSIXPathStyle);
-    const char *pathPtr = CFStringGetCStringPtr(macPath, 
-                                                CFStringGetSystemEncoding());
-    CFRelease(bundleURL);
-    CFRelease(macPath);
 
-    return pathPtr;
+    QDir dir(QApplication::applicationDirPath());
+    return string(dir.absolutePath().toAscii().constData());
 
 #else
 
@@ -71,7 +62,8 @@ string guessExecPath(const char *argv0)
     while ( !(s=path.section(':',i1,i1)).isEmpty() )
     {
         s=s+"/"+argv0;
-        if (access(s.toLatin1().constData(),F_OK|X_OK)==0) return s.toLatin1().constData();
+        if (access(s.toLatin1().constData(),F_OK|X_OK)==0)
+            return s.toLatin1().constData();
         i1++;
     }
     return argv0;
@@ -111,11 +103,11 @@ http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dllproc/base/ge
 
 void init(char * const *argv)
 {
-    argv0=findExecutable(argv[0]);
+    argv0 = findExecutable(argv[0]);
 
-    string::size_type n0=argv0.find_last_of("/\\");
-    if (n0!=string::npos)    appRootDir=argv0.substr(0,n0) + FS_SEPARATOR;
-    else                     appRootDir="";
+    string::size_type n0 = argv0.find_last_of("/\\");
+    if (n0!=string::npos)    appRootDir = argv0.substr(0,n0) + FS_SEPARATOR;
+    else                     appRootDir = "";
 
     libfwbuilder::init();
 
@@ -124,12 +116,12 @@ void init(char * const *argv)
 /* On windows and mac we install API resources (DTD etc) in the 
  * dir right above the one where we install resources for the GUI and compilers
  */
-    if (respath=="") respath    = appRootDir+RES_DIR; 
-    n0=respath.find_last_of("/\\");
+    if (respath=="") respath = appRootDir + RES_DIR; 
+    n0 = respath.find_last_of("/\\");
     librespath = respath.substr(0,n0);
 
-    sysfname = respath+FS_SEPARATOR+"objects_init.xml";
-    tempfname = respath+FS_SEPARATOR+"templates.xml";
+    sysfname = respath + FS_SEPARATOR+"objects_init.xml";
+    tempfname = respath + FS_SEPARATOR+"templates.xml";
 
 #else
 

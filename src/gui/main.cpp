@@ -134,6 +134,8 @@ int                fwbdebug   = 0;
 bool               safemode   = false;
 bool               registered = false;
 bool               gui_experiment1 = false;
+bool               cli_print        = false;
+QString            cli_print_fwname = "";
 
 #ifndef _WIN32
 
@@ -331,7 +333,7 @@ void usage()
 }
 
 
-int main( int argc, char ** argv )
+int main( int argc, char *argv[] )
 {
 
 
@@ -343,8 +345,6 @@ int main( int argc, char ** argv )
     print_output_file_name="";
     fwbdebug=0;
     safemode=false;
-    bool pparam=false;
-    QString pparamValue="";
 
     if(fwbdebug)
         qDebug("main()");
@@ -544,10 +544,19 @@ int main( int argc, char ** argv )
     }
 #endif
 
+    if (fwbdebug)
+    {
+        qDebug("Command line:  argc=%d", argc);
+        for (int i=0; i<argc; ++i)
+            qDebug(argv[i]);
+    }
 
+    // can not use "-p" for command line printing because
+    // Mac OS X supplies switch "-psnXXXXX" when program is
+    // started via Finder.
 
     int c;
-    while ((c = getopt (argc , argv , "hvf:o:p:dxsg")) != EOF )
+    while ((c = getopt (argc , argv , "hvf:o:P:dxsg")) != EOF )
 	switch (c) {
 	case 'h':
 	    usage();
@@ -576,9 +585,9 @@ int main( int argc, char ** argv )
         case 'g':
             gui_experiment1 = true;
             break;
-        case 'p':
-            pparam=true ;
-            pparamValue=optarg;
+        case 'P':
+            cli_print = true ;
+            cli_print_fwname = optarg;
 	}
 
     if ( (argc-1)==optind)
@@ -586,19 +595,26 @@ int main( int argc, char ** argv )
 
     try
     {
-
         if (fwbdebug) qDebug("Initializing ...");
+
+        if (fwbdebug) qDebug("Creating app ...");
+        //QApplication::setDesktopSettingsAware(desktopaware);
+        app = new QApplication( argc, argv );
+        app->setOrganizationName(QLatin1String("NetCitadel LLC"));
+        app->setApplicationName(QLatin1String("Firewall Builder"));
+
 
 /* need to initialize in order to be able to use FWBSettings */
         init(argv);
         init_platforms();
 
+#if 0
         if (fwbdebug) qDebug("Creating app ...");
-
         //QApplication::setDesktopSettingsAware(desktopaware);
         app = new QApplication( argc, argv );
         app->setOrganizationName(QLatin1String("NetCitadel LLC"));
         app->setApplicationName(QLatin1String("Firewall Builder"));
+#endif
 
         Q_INIT_RESOURCE(MainRes);
 
@@ -617,10 +633,11 @@ int main( int argc, char ** argv )
                            true, true, fwbdebug);
 #endif
 
-        if (pparam)
+        if (cli_print)
         {
+            if (fwbdebug) qDebug("Print from command line");
             FWWindow::printFirewallFromFile(filename,
-                                            pparamValue,
+                                            cli_print_fwname,
                                             print_output_file_name);
             return 0;
         }
