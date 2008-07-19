@@ -19,18 +19,17 @@ win32 {
   QMAKE_LINK    = @echo > /dev/null
 }
 
-TARGET        = res
+TARGET = res
 
-win32:target.path    = $$PREFIX/
-unix:target.path     = $$PREFIX/share/fwbuilder/
-macx:target.path     = $$PREFIX/
+win32:target.path = $$PREFIX/
+unix:target.path = $$PREFIX/share/fwbuilder/
+macx:target.path = $$PREFIX/
 
-res.files            = objects_init.xml templates.xml resources.xml
-res_os.files         = os/*.xml
-res_platform.files   = platform/*.xml
+res.files = objects_init.xml templates.xml resources.xml
+res_os.files = os/*.xml
+res_platform.files = platform/*.xml
 
-INSTALLS   -= target
-INSTALLS   += res 
-INSTALLS   += res_os
-INSTALLS   += res_platform
-INSTALLS   += icns
+INSTALLS -= target
+INSTALLS += res 
+INSTALLS += res_os
+INSTALLS += res_platform
