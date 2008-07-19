@@ -1,3 +1,11 @@
+2008-07-18    <vadim@vk.crocodile.org>
+
+	* instDialog.cpp (instDialog::installerSuccess): bugfixes in the
+	built-in installer on Windows in case of successfull and
+	unsuccessfull termination of the process. Tests for when plink.exe
+	asks whether user wants to accept new ssh host key from the
+	firewall.
+
 2008-07-18  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* NATCompiler_PrintRule.cpp (PrintRule::_printAddr): fixed bugs in

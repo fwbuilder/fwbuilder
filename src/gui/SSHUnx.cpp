@@ -129,6 +129,9 @@ void SSHUnx::stateMachine()
 {
     if (checkForErrors()) return;
 
+    if (fwbdebug)
+        qDebug("SSHUnx::stateMachine: state=%d",state);
+
     //entry:
     switch (state)
     {
@@ -160,6 +163,8 @@ void SSHUnx::stateMachine()
 //            stdoutBuffer="";
             goto push_files;
         }
+
+        if (fwbdebug) qDebug(stdoutBuffer.toAscii().constData());
 
         QString fingerprint;
         //int n1,n2;

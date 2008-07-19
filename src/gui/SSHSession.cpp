@@ -484,6 +484,12 @@ void SSHSession::readFromStdout()
     }
 }
 
+/*
+ * note: we set qprocess channel mode to "merged" but despite that
+ * QProcess does not seem to merge stdout and stderr on Windows 
+ * (QT 4.4.0)
+ * Will merge them here
+ */
 void SSHSession::readFromStderr()
 {
     if (proc)
@@ -492,16 +498,18 @@ void SSHSession::readFromStderr()
         if (ba.size()!=0)
         {
             QString s=QString(ba);
+            if (fwbdebug) qDebug("SSHSession::readFromStderr  buf=%s",
+                                 s.toAscii().constData());
             emit printStdout_sign(s);
-            stderrBuffer=stderrBuffer + QString(s);
+            stdoutBuffer.append(s);
+            stateMachine();
         }
     }
 }
 
 void SSHSession::sessionComplete(bool err)
 {
-    if (fwbdebug)
-        qDebug(QString("SSHSession::sessionComplete  err=%1").arg(err).toAscii().constData());
+    if (fwbdebug) qDebug("SSHSession::sessionComplete  err=%d", err);
 
     error = err;
     if (error)

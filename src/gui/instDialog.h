@@ -194,7 +194,7 @@ protected:
 
  protected slots:
     void processExited(int code);
-    void installerFinished();
+    void installerSuccess();
     void installerError();
     void installSelected();
     void showPage(const int page);
@@ -221,6 +221,7 @@ protected:
     void stopSessionAndDisconnectSignals();
     void continueRun();
     void restartSession();
+    void sessionCleanupOnError();
     
     void compileSelected();
     void stopCompile();

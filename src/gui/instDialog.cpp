@@ -123,6 +123,8 @@ instDialog::instDialog(QWidget* p,
     connect(&proc, SIGNAL(finished(int,QProcess::ExitStatus)),
             this, SLOT(processExited(int)) );
 
+    // even though we set channel mode to "merged", QProcess
+    // seems to not merge them on windows.
     proc.setProcessChannelMode(QProcess::MergedChannels);
 
     m_dialog->fwWorkList->setSortingEnabled(true);
@@ -1025,7 +1027,7 @@ void instDialog::stopSessionAndDisconnectSignals()
                    this,SLOT(addToLog(const QString&)));
 
         disconnect(session,SIGNAL(sessionFinished_sign()),
-                   this,SLOT(installerFinished()));
+                   this,SLOT(installerSuccess()));
 
         disconnect(session,SIGNAL(sessionFatalError_sign()),
                    this,SLOT(installerError()));
@@ -1296,7 +1298,7 @@ void instDialog::installNext()
  * is destroyed in stopSessionAndDisconnectSignals.
  *
  * Various methods call resetInstallSSHSession, which schedules call
- * to stopSessionAndDisconnectSignals. installerFinished() also
+ * to stopSessionAndDisconnectSignals. installerSuccess() also
  * schedules call to continueRun() right after that. So continueRun()
  * is always called when we have no active session object.
  */
@@ -1402,7 +1404,7 @@ void instDialog::runSSH(SSHSession *s)
             this, SLOT(addToLog(const QString&)));
 
     connect(session,SIGNAL(sessionFinished_sign()),
-            this, SLOT(installerFinished()));
+            this, SLOT(installerSuccess()));
 
     connect(session,SIGNAL(sessionFatalError_sign()),
             this, SLOT(installerError()));
@@ -1890,50 +1892,12 @@ void instDialog::readFromStdout()
     pendingLogLine += lastLine;
 }
 
-void instDialog::installerError()
+/*
+ * slot called by SSHSession in case of successfull termination
+ */
+void instDialog::installerSuccess()
 {
-    if (fwbdebug) qDebug("instDialog::installerError  session=%p", session);
-
-    addToLog( tr("Error: Terminating install sequence\n") );
-
-    // session object is destroyed in stopSessionAndDisconnectSignals()
-    // schedule call to stopSessionAndDisconnectSignals()
-    // before calling finishInstall to properly terminate and clean up
-    // session. This should be done  before calling installSelected
-    // which is scheduled inside finishInstall()
-    //QTimer::singleShot( 0, this, SLOT(stopSessionAndDisconnectSignals()));
-    stopSessionAndDisconnectSignals();
-
-    finishInstall(false);
-}
-
-void instDialog::finishInstall(bool success)
-{
-    if (fwbdebug) qDebug("instDialog::finishInstall");
-
-    if (success)
-    {
-        mw->updateLastInstalledTimestamp(*opListIterator);
-        opListMapping[*opListIterator]->setText(1,tr("Success"));
-        processedFirewalls[*opListIterator].second=tr("Success");
-        setSuccessState(opListMapping[*opListIterator]);
-    }
-    else
-    {
-        opListMapping[*opListIterator]->setText(1,tr("Error"));
-        processedFirewalls[*opListIterator].second=tr("Error");
-        setErrorState(opListMapping[*opListIterator]);
-    }
-
-    installNext();
-
-    setNextEnabled(1, false);
-    setFinishEnabled(1, true);
-}
-
-void instDialog::installerFinished()
-{
-    if( fwbdebug) qDebug("instDialog::installerFinished");
+    if( fwbdebug) qDebug("instDialog::installerSuccess");
 
     if (session->getErrorStatus())
     {
@@ -1950,6 +1914,22 @@ void instDialog::installerFinished()
         // sure stopSessionAndDisconnectSignals() and  continueRun()
         // are called in the right order.
         
+        // first, disconnect signals so that when session really
+        // terminates it does not call any slots. (this happens
+        // because SSHSession can emit one of two signals it uses to
+        // indicate the end of the session even before the child
+        // process finishes. So we get the signal, do our work here,
+        // and then later get signal again. This is especially bad
+        // because signal we get second time may indicate "success"
+        // even though the session detected error and reported it via
+        // signal before.
+        
+        disconnect(session,SIGNAL(sessionFinished_sign()),
+                   this,SLOT(installerSuccess()));
+
+        disconnect(session,SIGNAL(sessionFatalError_sign()),
+                   this,SLOT(installerError()));
+
         if (fwbdebug) qDebug("schedule call to restartSession()");
         QTimer::singleShot( 0, this, SLOT(restartSession()));
         return;
@@ -1957,6 +1937,81 @@ void instDialog::installerFinished()
 
     if (fwbdebug) qDebug("schedule call to continueRun()");
     QTimer::singleShot( 0, this, SLOT(continueRun()) );
+}
+
+/*
+ * slot called by SSHSession in case of fatal error
+ */
+void instDialog::installerError()
+{
+    if (fwbdebug) qDebug("instDialog::installerError  session=%p", session);
+
+    // installerError is a slot that is called when SSHSession
+    // detects fatal error. Since we need to destroy session in this case
+    // and session object is destroyed in stopSessionAndDisconnectSignals(),
+    // we can not call stopSessionAndDisconnectSignals() from the slot called
+    // by signal emitted by the object we are about to destroy. Schedule
+    // call to slot sessionCleanupOnError which will do this.
+
+    // first, disconnect signals so that when session really
+    // terminates it does not call any slots. (this happens
+    // because SSHSession can emit one of two signals it uses to
+    // indicate the end of the session even before the child
+    // process finishes. So we get the signal, do our work here,
+    // and then later get signal again. This is especially bad
+    // because signal we get second time may indicate "success"
+    // even though the session detected error and reported it via
+    // signal before.
+        
+    disconnect(session,SIGNAL(sessionFinished_sign()),
+               this,SLOT(installerSuccess()));
+
+    disconnect(session,SIGNAL(sessionFatalError_sign()),
+               this,SLOT(installerError()));
+
+    QTimer::singleShot( 0, this, SLOT(sessionCleanupOnError()));
+}
+
+void instDialog::sessionCleanupOnError()
+{
+    addToLog( tr("Error: Terminating install sequence\n") );
+
+    // session object is destroyed in stopSessionAndDisconnectSignals()
+    // schedule call to stopSessionAndDisconnectSignals()
+    // before calling finishInstall to properly terminate and clean up
+    // session. This should be done  before calling installSelected
+    // which is scheduled inside finishInstall()
+    //QTimer::singleShot( 0, this, SLOT(stopSessionAndDisconnectSignals()));
+    stopSessionAndDisconnectSignals();
+    finishInstall(false);
+}
+
+void instDialog::finishInstall(bool success)
+{
+    if (fwbdebug) qDebug("instDialog::finishInstall success=%d", success);
+
+    if (success)
+    {
+        mw->updateLastInstalledTimestamp(*opListIterator);
+        opListMapping[*opListIterator]->setText(1,tr("Success"));
+        processedFirewalls[*opListIterator].second=tr("Success");
+        setSuccessState(opListMapping[*opListIterator]);
+    }
+    else
+    {
+        opListMapping[*opListIterator]->setText(1,tr("Error"));
+        processedFirewalls[*opListIterator].second=tr("Error");
+        setErrorState(opListMapping[*opListIterator]);
+    }
+
+    if (fwbdebug) qDebug("instDialog::finishInstall calling installNext()");
+
+    installNext();
+
+    if (fwbdebug) qDebug("instDialog::finishInstall done");
+
+    setNextEnabled(1, false);
+    setFinishEnabled(1, true);
 }
 
 void instDialog::restartSession()
