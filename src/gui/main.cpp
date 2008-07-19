@@ -704,7 +704,7 @@ int main( int argc, char *argv[] )
 
         mw->show();
 
-        app->connect( app, SIGNAL( lastWindowClosed() ), app, SLOT( quit() ) );
+        app->connect(app, SIGNAL( lastWindowClosed() ), app, SLOT( quit()));
 
 // setup single shot timer to call loadEverything()
 
@@ -720,17 +720,18 @@ int main( int argc, char *argv[] )
         {
 /* save the state of the GUI (opened firewall, opened object tree page, etc */
             FWObject *o=mw->getVisibleFirewalls();
-            if (fwbdebug)
-                qDebug("Main: closing. VisibleFirewall = %p",o);
+
+            if (fwbdebug) qDebug("Main: closing. VisibleFirewall = %p",o);
 
             if (o) st->setStr("UI/visibleFirewall",
-                              FWObjectDatabase::getStringId(o->getId()).c_str());
+                              FWObjectDatabase::getStringId(
+                                  o->getId()).c_str());
 
             o=mw->getOpened();
             if (o) st->setStr("UI/visibleObject",
-                              FWObjectDatabase::getStringId(o->getId()).c_str());
+                              FWObjectDatabase::getStringId(
+                                  o->getId()).c_str());
         }
-
 
         st->save();
         delete st;
