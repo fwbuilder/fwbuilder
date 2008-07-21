@@ -80,7 +80,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
     Interface *s = dynamic_cast<Interface*>(obj);
     assert(s!=NULL);
 
-    init=true;
+    init = true;
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->label->setText( QString::fromUtf8(s->getLabel().c_str()) );
@@ -96,13 +96,52 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
 
+    m_dialog->obj_name->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->obj_name);
+
+    m_dialog->comment->setReadOnly(o->isReadOnly());
+    setDisabledPalette(m_dialog->comment);
+
+    m_dialog->label->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->label);
+
+    m_dialog->regular->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->regular);
+
+    m_dialog->dynamic->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->dynamic);
+
+    m_dialog->unnumbered->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->unnumbered);
+
+    m_dialog->bridgeport->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->bridgeport);
+
+    m_dialog->management->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->management);
+
+    m_dialog->unprotected->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->unprotected);
+
+    m_dialog->ext->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->ext);
+
+    m_dialog->seclevel->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->seclevel);
+
+    m_dialog->netzone->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->netzone);
+
+
+
     FWObject *f=obj->getParent();
 
 /* if parent is a host, hide checkbox 'external', security level and netzone */
     if (Host::isA( f ))
     {
-        m_dialog->ext->setEnabled( false );
         m_dialog->ext->setEnabled(false);
+        m_dialog->management->setEnabled(false);
+        m_dialog->unprotected->setEnabled(false);
         m_dialog->seclevel->setEnabled(false);
         m_dialog->seclevelLabel->setEnabled(false);
         m_dialog->netzone->setEnabled(false);
@@ -232,43 +271,6 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
     //apply->setEnabled( false );
 
-    m_dialog->obj_name->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->obj_name);
-
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
-
-    m_dialog->label->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->label);
-
-    m_dialog->regular->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->regular);
-
-    m_dialog->dynamic->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->dynamic);
-
-    m_dialog->unnumbered->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->unnumbered);
-
-    m_dialog->bridgeport->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->bridgeport);
-
-    m_dialog->management->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->management);
-
-    m_dialog->unprotected->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->unprotected);
-
-    m_dialog->ext->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->ext);
-
-    m_dialog->seclevel->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->seclevel);
-
-    m_dialog->netzone->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->netzone);
-
-
     init=false;
 }
 
@@ -345,7 +347,6 @@ void InterfaceDialog::applyChanges()
                                 m_dialog->netzone->currentIndex() ]));
 
         s->setManagement( m_dialog->management->isChecked() );
-
     }
 
     mw->updateObjName(obj,

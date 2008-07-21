@@ -89,9 +89,12 @@ using namespace libfwbuilder;
 
 
 ObjectEditor::ObjectEditor( QWidget *parent, ProjectPanel *project):
-  QObject(parent), opened(0), visible(-1),
-  parentWidget(dynamic_cast<QStackedWidget*>(parent)), closeButton(0), applyButton(0),
-    m_project(project), openedOpt(optNone)
+    QObject(parent), opened(0), visible(-1),
+    parentWidget(dynamic_cast<QStackedWidget*>(parent)),
+    closeButton(0),
+    applyButton(0),
+    m_project(project),
+    openedOpt(optNone)
 {
 
 #if defined(Q_WS_X11)
@@ -534,14 +537,16 @@ void ObjectEditor::close()
 
 void ObjectEditor::apply()
 {
+    if (fwbdebug) qDebug("ObjectEditor::apply");
+
     bool isgood=true;
     emit validate_sign( &isgood );
+
     if (isgood)
     {
         emit applyChanges_sign();
         applyButton->setEnabled(false);
         m_project->updateRuleSetView( );
-
         m_project->updateTreeViewItemOrder();
     }
 }

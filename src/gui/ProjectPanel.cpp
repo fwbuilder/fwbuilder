@@ -342,7 +342,8 @@ void ProjectPanel::ensureRuleIsVisible(Rule *rule, int col)
 
 void ProjectPanel::updateRuleSetViewSelection()
 {
-    RuleSetView* rv=dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
+    RuleSetView* rv = dynamic_cast<RuleSetView*>(
+        m_panel->ruleSets->currentWidget());
     if (rv!=NULL)
         rv->repaintSelection();
 }
@@ -350,13 +351,15 @@ void ProjectPanel::updateRuleSetViewSelection()
 void ProjectPanel::updateRuleSetView()
 {
 //    ruleSets->repaint();
-    RuleSetView* rv=dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
+    RuleSetView* rv=dynamic_cast<RuleSetView*>(
+        m_panel->ruleSets->currentWidget());
     if (rv!=NULL) rv->updateAll();
 }
 
 void ProjectPanel::updateRuleOptions()
 {
-    RuleSetView* rv=dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
+    RuleSetView* rv = dynamic_cast<RuleSetView*>(
+        m_panel->ruleSets->currentWidget());
     if (rv!=NULL) rv->updateCurrentCell();
 }
 

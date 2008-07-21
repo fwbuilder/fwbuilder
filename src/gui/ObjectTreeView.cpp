@@ -272,20 +272,16 @@ bool ObjectTreeView::isUnlockable()
 
 void ObjectTreeView::focusInEvent(QFocusEvent* ev)
 {
-    if (fwbdebug) qDebug("ObjectTreeView::focusInEvent 1");
     QTreeWidget::focusInEvent(ev);
     QTreeWidgetItem *ci = currentItem();
     if (ci) repaint();
-    if (fwbdebug) qDebug("ObjectTreeView::focusInEvent 2");
 }
 
 void ObjectTreeView::focusOutEvent(QFocusEvent* ev)
 {
-    if (fwbdebug) qDebug("ObjectTreeView::focusOutEvent 1");
     QTreeWidget::focusOutEvent(ev);
     QTreeWidgetItem *ci = currentItem();
     if (ci) repaint();
-    if (fwbdebug) qDebug("ObjectTreeView::focusOutEvent 2");
 }
 
 void ObjectTreeView::updateTreeItems()

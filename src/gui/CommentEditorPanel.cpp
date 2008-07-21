@@ -105,16 +105,22 @@ void CommentEditorPanel::loadFromFile()
         }
     }
 }
+
 void CommentEditorPanel::changed()
 {
     emit changed_sign();
 }
+
 void CommentEditorPanel::applyChanges()
 {
-    mw->updateLastModifiedTimestampForAllFirewalls(rule);
-    rule->setComment( string(m_widget->editor->toPlainText().toUtf8().constData()) );
+    if (fwbdebug) qDebug("CommentEditorPanel::applyChanges()");
 
+    mw->updateLastModifiedTimestampForAllFirewalls(rule);
+    rule->setComment(
+        string(m_widget->editor->toPlainText().toUtf8().constData())
+    );
 }
+
 void CommentEditorPanel::loadFWObject(FWObject *obj)
 {
     Rule *r=Rule::cast(obj);
@@ -132,19 +138,22 @@ void CommentEditorPanel::loadFWObject(FWObject *obj)
             .arg(r->getTypeName().c_str())
             .arg(r->getPosition()));
 }
+
 void CommentEditorPanel::discardChanges()
 {
 }
+
 void CommentEditorPanel::validate(bool* b)
 {
     *b=true;
 }
+
 void CommentEditorPanel::isChanged(bool*)
 {
 
 }
+
 void CommentEditorPanel::closeEvent(QCloseEvent *e)
 {
     emit close_sign(e);
-
 }

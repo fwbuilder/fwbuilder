@@ -108,6 +108,7 @@ private:
     RuleSetView *ruleSetView;
 };
 
+
 class RuleTableModel : public QAbstractTableModel
 {
     friend class RuleSetView;
@@ -139,6 +140,7 @@ protected:
     RuleSetView *ruleSetView;
 };
 
+
 class RuleSetView : public QTableView
 {
     friend class headerMouseEventInterceptor;
@@ -147,7 +149,8 @@ class RuleSetView : public QTableView
     
     Q_OBJECT
     QVector <ProjectPanel*> getAllMdiProjectPanel ();
- public slots:
+
+public slots:
     
     void selectionChanged(const QItemSelection&, const QItemSelection&);
     void restoreSelection(bool same_widget);
@@ -225,23 +228,24 @@ class RuleSetView : public QTableView
     void horzSectionResized ( int logicalIndex, int oldSize, int newSize );
     void vertSectionResized ( int logicalIndex, int oldSize, int newSize );
 
- public:
+public:
      
-     int firstSelectedRow, previousLastSelectedRow;
-     QMap <QString,int> rulesInGroup;
+     libfwbuilder::RuleSet *ruleset;
+
+     QMap<QString,int> rulesInGroup;
      QItemSelectionRange itemSelectionRange;
 
-     virtual void paintCell(QPainter *p,int row,int col, const QRect &cr, bool selected, const QPalette &cg);
-
-     libfwbuilder::RuleSet                *ruleset;
+     virtual void paintCell(QPainter *p,int row, int col,
+                            const QRect &cr, bool selected, const QPalette &cg);
 
      void setName(QString qs);
      void setCurrentCell(const int row, const int col);
-     void changeCurrentCell(const int row, const int col, bool fullrefresh = false);
+     void changeCurrentCell(const int row, const int col,
+                            bool fullrefresh = false);
+
      //set new current cell and update new and old cells
      //fullrefresh forces method to change QTableView's currentIndex
      //which interrupts any kind of selection (with shift and others)
-     
      
      int currentRow() const;
      int currentColumn() const;
@@ -250,49 +254,53 @@ class RuleSetView : public QTableView
      void setCurrentColumn(const int value);
 
 
-    enum REType          { RuleOp,
-                           Object,
-                           Action,
-                           Direction,
-                           Options,
-                           Time,
-                           Comment,
-                           Metric };
+    enum REType{ RuleOp,
+                 Object,
+                 Action,
+                 Direction,
+                 Options,
+                 Time,
+                 Comment,
+                 Metric };
 
  protected:
      
-     //these functions are added in the porting process
-     //they are needed to work with stored cell sizes (columnWidths,
-     //rowHeights)
-     void freezeRowSizing();
-     void unfreezeRowSizing();
+    //these functions are added in the porting process
+    //they are needed to work with stored cell sizes (columnWidths,
+    //rowHeights)
+    void freezeRowSizing();
+    void unfreezeRowSizing();
      
-     bool rowSizingFrozen; //is vertical sizing freezed?
-                           //it is needed when we insert a row to the table
+    bool rowSizingFrozen; //is vertical sizing freezed?
+    //it is needed when we insert a row to the table
      
-     int getColumnWidth( const int col ) const;
-     int getRowHeight( const int row ) const;
+    int getColumnWidth( const int col ) const;
+    int getRowHeight( const int row ) const;
+    
+    void setColumnWidth( const int col, const int width );
+    void setRowHeight( const int row, const int height );
 
-     void setColumnWidth( const int col, const int width );
-     void setRowHeight( const int row, const int height );
-
-     bool event ( QEvent * event );
+    bool event ( QEvent * event );
      
-     vector<int> columnWidths;
-     vector<int> rowHeights;
-     map<int,bool> rulesDisabled;
-     QIcon negIcon;
+    vector<int> columnWidths;
+    vector<int> rowHeights;
+    map<int,bool> rulesDisabled;
+    QIcon negIcon;
      
     int m_currentRow, m_currentColumn;
 
     enum PixmapAttr      { Normal,  Neg,     Ref,       Tree, NegTree };
     enum PopupMenuAction { None,    EditObj, EditRE,    NegateRE };
 
-    headerMouseEventInterceptor           hme;
+    headerMouseEventInterceptor hme;
 
     
 
 /*
+ * ruleIndex maps row number to rule object.
+ * Note that the index is not rule number but row number. These become
+ * different when we use rule groups.
+ *
  * ruleIndex should provide for a fast direct access to elements, as
  * well as for a reasonably fast adding and removal in an arbitrary
  * place so that all element would shift up or down correspondingly. A
@@ -301,7 +309,47 @@ class RuleSetView : public QTableView
  * loop).
  */
     //std::map<int,libfwbuilder::FWObject*> ruleIndex;
-    QMap<int,libfwbuilder::FWObject*> ruleIndex;
+    QMap<int, libfwbuilder::Rule*> ruleIndex;
+    QVector<RuleRowInfo*> rowsInfo ;
+
+    int ncols;
+
+    //this bool var is needed for starting drag when user moves the mouse
+    //but not when he just clicks selected record
+    bool startingDrag;
+ 
+    bool supports_time;
+    bool supports_logging;
+    bool supports_rule_options;
+ 
+    int RuleElementSpacing;
+
+    int pixmap_h;
+    int pixmap_w;
+    int text_h;
+    int item_h;
+    std::map<int,int> dirtyRows;
+
+    std::map<int,REType> colTypes;
+
+    libfwbuilder::FWObject *selectedObject;
+    int selectedObjectRow;
+    int selectedObjectCol;
+    
+    libfwbuilder::FWObject *prevSelectedObject;
+    int prevSelectedObjectRow;
+    int prevSelectedObjectCol;
+
+    bool kbdGoingUp;
+    bool changingSelection;
+    bool changingRules;
+
+    PopupMenuAction lastPopupMenuAction;
+
+
+
+    void iinit();
+    QString settingsKey();
 
     void addRuleGroupPanel (int row);
     void deleteRuleGroupPanel (int row);
@@ -313,52 +361,15 @@ class RuleSetView : public QTableView
     int getUpNullRuleIndex (int idx);
     int getDownNullRuleIndex (int idx);
 
-    QVector <RuleRowInfo*> rowsInfo ;
-    RuleRowInfo* getRuleRowInfoByGroupName (QString name);
-    int getRuleRowInfoIndexByGroupName (QString name);
+    RuleRowInfo* getRuleRowInfoByGroupName(QString name);
+    int getRuleRowInfoIndexByGroupName(QString name);
 
-    void createGroup (int row, int count, QString groupName);
-    void removeFromGroup (int row,int count);
-    void addToUpGroup (int row);
-    void addToDownGroup (int row);
+    void createGroup(int row, int count, QString groupName);
+    void removeFromGroup(int row, int count);
+    void addToUpGroup(int row);
+    void addToDownGroup(int row);
     
-    int                                   ncols;
-
-    //this bool var is needed for starting drag when user moves the mouse
-    //but not when he just clicks selected record
-    bool                                  startingDrag;
     
-    bool                                  supports_time;
-    bool                                  supports_logging;
-    bool                                  supports_rule_options;
-    
-    int                                   RuleElementSpacing;
-
-    int                                   pixmap_h;
-    int                                   pixmap_w;
-    int                                   text_h;
-    int                                   item_h;
-    std::map<int,int>                     dirtyRows;
-
-    std::map<int,REType>                  colTypes;
-
-    libfwbuilder::FWObject               *selectedObject;
-    int                                   selectedObjectRow;
-    int                                   selectedObjectCol;
-    
-    libfwbuilder::FWObject               *prevSelectedObject;
-    int                                   prevSelectedObjectRow;
-    int                                   prevSelectedObjectCol;
-
-    bool                                  kbdGoingUp;
-    bool                                  changingSelection;
-    bool                                  changingRules;
- 
-    PopupMenuAction                       lastPopupMenuAction;
-
-    void    iinit();
-    QString settingsKey();
-
     void adjustRow_int( int row, int h );
 
     virtual void mousePressEvent( QMouseEvent* ev );
@@ -400,8 +411,8 @@ class RuleSetView : public QTableView
     virtual ~RuleSetView();
     virtual void init();
     
-    int firstSelectedRule;
-    int lastSelectedRule;
+    int firstSelectedRow;
+    int lastSelectedRow;
     
     RuleTableModel *ruleModel;
     RuleDelegate *ruleDelegate;

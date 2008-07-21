@@ -1,3 +1,18 @@
+2008-07-20  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* InterfaceDialog.cpp (InterfaceDialog::loadFWObject): fixed bug
+	#2023141: "Can't set interface options". The GUI kept all controls
+	in the interface object editor enabled when interface was child of
+	a Host object, even though some controls do not apply to
+	interfaces of a host. These controls were not saved into interface
+	objects and the whoile behavior of the GUI was rather
+	confusing. Now only proper controls are enabled when interface is
+	a child of a host object.
+
+	* RuleSetView.cpp (RuleSetView::removeRule): Fixed bug (no #):
+	"remove rule" function used to remove wrong rule in the rule set
+	if rule groups were used.
+
 2008-07-18    <vadim@vk.crocodile.org>
 
 	* instDialog.cpp (instDialog::installerSuccess): bugfixes in the

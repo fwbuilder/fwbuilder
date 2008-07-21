@@ -42,14 +42,14 @@ void RuleGroupPanel::mousePressEvent ( QMouseEvent * event )
 {
     if (event->buttons () == Qt::RightButton)
     {
-        rsv->firstSelectedRule = row;
+        rsv->firstSelectedRow = row;
         rsv->contextMenu (row,0,event->globalPos ());
     }
 }
 
 void RuleGroupPanel::mouseDoubleClickEvent ( QMouseEvent * event )
 {
-    rsv->firstSelectedRule = row ;
+    rsv->firstSelectedRow = row ;
     rsv->renameGroup();
 }
 
