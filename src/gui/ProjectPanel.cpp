@@ -69,7 +69,6 @@
 #include "fwbuilder/Interval.h"
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Rule.h"
-#include "fwbuilder/RuleElement.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>

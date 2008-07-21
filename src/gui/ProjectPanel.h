@@ -34,6 +34,7 @@ namespace libfwbuilder {
     class Firewall;
     class PolicyRule;
     class RuleSet;
+    class RuleElement;
     class FWObject;
     class FWReference;
 };
