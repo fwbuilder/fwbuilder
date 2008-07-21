@@ -199,12 +199,14 @@ bool RuleTableModel::setHeader ( QStringList qsl )
 
 void RuleTableModel::insertRow( const int before_pos )
 {
+    if (fwbdebug) qDebug("RuleTableModel::insertRow before_pos=%d", before_pos);
+
     m_rowCount++;
 
     ruleSetView->freezeRowSizing();
 
     ruleSetView->rowHeights.push_back(0);
-    for (int i = static_cast<int>(ruleSetView->rowHeights.size())-1;
+    for (int i = ruleSetView->rowHeights.size()-2;
          i >= before_pos; i--)
         ruleSetView->rowHeights[i+1] = ruleSetView->rowHeights[i];
     ruleSetView->rowHeights[before_pos] = 30; //standard size
@@ -220,14 +222,14 @@ void RuleTableModel::insertRow( const int before_pos )
     //somehow QAbstractItemModel breaks all the sizes after "before_pos" row
     //so we restore them
     if (before_pos > 0)
-    for (int i = before_pos-1; i < m_rowCount; i++)
-        //step back a little because of another QTableView bug
-        ruleSetView->verticalHeader()->resizeSection(i,
-            ruleSetView->rowHeights[i]);
+        for (int i = before_pos-1; i < m_rowCount; i++)
+            //step back a little because of another QTableView bug
+            ruleSetView->verticalHeader()->resizeSection(
+                i, ruleSetView->rowHeights[i]);
     else
-    for (int i = before_pos; i < m_rowCount; i++)
-        ruleSetView->verticalHeader()->resizeSection(i,
-            ruleSetView->rowHeights[i]);
+        for (int i = before_pos; i < m_rowCount; i++)
+            ruleSetView->verticalHeader()->resizeSection(
+                i, ruleSetView->rowHeights[i]);
 
     ruleSetView->unfreezeRowSizing();
     //after this all we have to do is to set final size for row
@@ -445,9 +447,8 @@ void LoadPixmap(const QString path, QPixmap &where)
     if ( ! QPixmapCache::find( path, where ) )
     {
         where.load( path );
-        if (fwbdebug) qDebug("Loading pixmap %s", path.toAscii().constData());
         if (where.width() == 0)
-            if (fwbdebug) qDebug("Loading failed");
+            qDebug("pixmap load failed: %s", path.toAscii().constData());
         QPixmapCache::insert( path, where );
     }
 }
@@ -646,15 +647,11 @@ bool RuleSetView::event( QEvent * event )
 
 void RuleSetView::contextMenuRequested ( const QPoint &p )
 {
-    if (fwbdebug)
-        qDebug("RuleSetView::contextMenuRequested at %d x %d",p.x(),p.y());
     contextMenu(rowAt(p.y()), columnAt(p.x()), viewport()->mapToGlobal(p));
 }
 
 void RuleSetView::currentChanged( const QModelIndex &current )
 {
-    if (fwbdebug)
-        qDebug("RuleSetView::currentChanged to row %d, col %d",current.row(),current.column());
     changeCurrentCell(current.row(), current.column());
 }
 
@@ -829,6 +826,8 @@ int RuleSetView::getRuleRowInfoIndexByGroupName (QString name)
 
 void RuleSetView::init()
 {
+    if (fwbdebug) qDebug("RuleSetView::init()");
+
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
     resetRuleModel();
@@ -928,6 +927,8 @@ void RuleSetView::init()
     update();
 
     QApplication::restoreOverrideCursor();
+
+    if (fwbdebug) qDebug("RuleSetView::init() done");
 }
 
 void RuleSetView::debugPrintRows()
@@ -1001,18 +1002,21 @@ void RuleSetView::addRuleGroupPanel(int row)
     }
 }
 
-void RuleSetView::refreshGroups ()
+void RuleSetView::refreshGroups()
 {
 }
 
-void RuleSetView::updateGroups ()
+void RuleSetView::updateGroups()
 {
+    if (fwbdebug) qDebug("RuleSetView::updateGroups");
+
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
         setSpan(i,1,0,1);
     }
 
     reset();
+
     setColumnWidth(0,20);
     horizontalHeader()->setResizeMode (0, QHeaderView::Fixed);
     horizontalHeader()->resizeSection(0, 20);
@@ -1045,7 +1049,9 @@ void RuleSetView::updateGroups ()
         }
     }
     
-    QString memberRow ;
+    if (fwbdebug) qDebug("RuleSetView::updateGroups checkpoint 1");
+
+    QString memberRow = "";
     bool beginGroup = false ;
     QString group;
     rulesInGroup.clear();
@@ -1053,14 +1059,19 @@ void RuleSetView::updateGroups ()
     {
         if (ruleIndex[i]!=NULL)
         {
-            Rule * r ;
-            r = ruleIndex[i];
+            Rule * r = ruleIndex[i];
             QString groupName = r->getRuleGroupName().c_str();
+
+            if (fwbdebug) qDebug("row %d: group %s",
+                                 i, groupName.toAscii().constData());
+
             int count = rulesInGroup[groupName];
             count++;
             rulesInGroup[groupName]=count ;
         }        
     }
+
+    if (fwbdebug) qDebug("RuleSetView::updateGroups checkpoint 2");
 
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
@@ -1070,7 +1081,7 @@ void RuleSetView::updateGroups ()
         if (color!="")
         {
             FWOptions *ropt = r->getOptionsObject();
-            ropt->setStr("color",color.toLatin1().constData());
+            ropt->setStr("color", color.toLatin1().constData());
         }
         else
         {
@@ -1080,10 +1091,11 @@ void RuleSetView::updateGroups ()
                 if (color!="")
                 {
                     if (color=="#FFFFFF") color="";
-                    groupColors[group]=color;
+                    groupColors[group] = color;
                 }
             }
-        }    
+        }
+
         if (group!=memberRow)
         {
             ruleModel->insertRow(i);
@@ -1093,9 +1105,9 @@ void RuleSetView::updateGroups ()
                 ruleIndex[i] = NULL ;
                 beginGroup = true ;
                 memberRow = group;
-                RuleRowInfo * rri = new RuleRowInfo(memberRow,true,false);
+                RuleRowInfo *rri = new RuleRowInfo(memberRow, true, false);
                 rri->color = groupColors[memberRow];
-                rowsInfo.insert (i,rri);
+                rowsInfo.insert(i, rri);
                 addRuleGroupPanel(i);
             }
             else
@@ -1103,7 +1115,7 @@ void RuleSetView::updateGroups ()
                 insertRuleIndex(i);
                 ruleIndex[i] = NULL ;
                 beginGroup = false ;
-                rowsInfo.insert (i,new RuleRowInfo(memberRow,false,false));
+                rowsInfo.insert (i, new RuleRowInfo(memberRow, false, false));
                 memberRow = "";
                 addRuleGroupPanel(i);  
                 i--;              
@@ -1122,6 +1134,8 @@ void RuleSetView::updateGroups ()
         memberRow = group;
         addRuleGroupPanel(rowsInfo.size()-1);
     }
+
+    if (fwbdebug) qDebug("RuleSetView::updateGroups done");
 }
 
 void RuleSetView::deleteRuleGroupPanel (int row)
@@ -1225,9 +1239,6 @@ QRect RuleSetView::calculateCellSize( int row, int col )
     int h = 16;
     int re_size;
     getPMSize();
-//    if (fwbdebug)
-//        qDebug("RuleSetView::calculateCellSize: row=%d col=%d",
-//               row,col);
 
     //QPainter p(this);
     QFontMetrics p(st->getRulesFont());
@@ -1465,7 +1476,6 @@ QPixmap RuleSetView::getPixmap(FWObject *obj, PixmapAttr pmattr) const
 
 void RuleSetView::repaintSelection()
 {
-    if (fwbdebug) qDebug("set dirty: %d,%d", width(), height() );
     setDirtyRegion( QRegion( 0, 0, width(), height() ) );
 }
 
@@ -2079,8 +2089,6 @@ void RuleSetView::selectionChanged(const QItemSelection &,
 {
     if (selectionModel()->selection().empty())
     {
-        if (fwbdebug) qDebug("RuleSetView::selectionChanged We've just got an empty selection :(");
-
         firstSelectedRow = -1;
         lastSelectedRow = -1;
 
@@ -2382,9 +2390,6 @@ void RuleSetView::mouseMoveEvent( QMouseEvent* ev )
 
 void RuleSetView::mousePressEvent( QMouseEvent* ev )
 {
-    if (fwbdebug)
-        qDebug("RuleSetView::contentsMousePressEvent");
-
     int row=rowAt(ev->y());
     int col=columnAt(ev->x());
     if (row==-1)
@@ -2521,9 +2526,6 @@ int RuleSetView::getDownNullRuleIndex (int idx)
 
 void RuleSetView::openObjectInTree(FWObject *obj)
 {
-    if (fwbdebug)
-        qDebug("RuleSetView::openObjectInTree happens");
-
     if (gui_experiment1) return;
 
     FWObject *oo = obj;
@@ -2545,10 +2547,11 @@ void RuleSetView::openObjectInTree(FWObject *obj)
 void RuleSetView::newGroup()
 {
     bool ok = false ;
-    QString text = QInputDialog::getText(this, tr(""),
-                                          tr("Enter group name:"), QLineEdit::Normal,
-                                          "New Group", &ok);
-     if (ok && !text.isEmpty())
+    QString text = QInputDialog::getText(
+        this, tr(""), tr("Enter group name:"),
+        QLineEdit::Normal, "New Group", &ok);
+
+    if (ok && !text.isEmpty())
     {
         QString postfix = "";
         int counter = 0 ;
@@ -2557,7 +2560,7 @@ void RuleSetView::newGroup()
             RuleRowInfo * rri = rowsInfo[i];
             if (rri!=NULL)
             {
-                if (text+postfix==rri->groupName)
+                if (text+postfix == rri->groupName)
                 {
                     counter++;
                     postfix = "-"+QString().setNum(counter);
@@ -2566,8 +2569,18 @@ void RuleSetView::newGroup()
         }
         int row = firstSelectedRow;
         int count = lastSelectedRow - firstSelectedRow +1;
-        createGroup(row,count,text+postfix);   
+        createGroup(row, count, text+postfix);   
     } 
+}
+
+void RuleSetView::createGroup(int row, int count, QString groupName)
+{
+    for (int idx=0 ; idx<count; idx++)
+        ruleIndex[row + idx]->setRuleGroupName(groupName.toAscii().data());
+
+    QTimer::singleShot( 0, m_project, SLOT(reopenFirewall()) );
+
+//    updateGroups();
 }
 
 void RuleSetView::renameGroup()
@@ -2579,9 +2592,10 @@ void RuleSetView::renameGroup()
         oldGroup = rowsInfo[ firstSelectedRow  ]->groupName;
     }
     
-    QString text = QInputDialog::getText(this, "Rename group",
-                                          tr("Enter group name:"), QLineEdit::Normal,
-                                          oldGroup, &ok);
+    QString text = QInputDialog::getText(
+        this, "Rename group",
+        tr("Enter group name:"), QLineEdit::Normal,
+        oldGroup, &ok);
      if (ok && !text.isEmpty())
     {
         if (oldGroup==""||text=="")
@@ -2599,7 +2613,6 @@ void RuleSetView::renameGroup()
             }
         }
         updateGroups();
-   
     } 
 }
 
@@ -2633,7 +2646,9 @@ void RuleSetView::addToGroupAbove ()
                         indexWidget(model()->index(top,1))));
         }
     }
-    updateGroups();
+    QTimer::singleShot( 0, m_project, SLOT(reopenFirewall()) );
+
+//    updateGroups();
 }
 
 void RuleSetView::addToGroupBelow()
@@ -2659,7 +2674,9 @@ void RuleSetView::addToGroupBelow()
                         indexWidget(model()->index(bottom,1))));
         }
     }
-    updateGroups();
+    QTimer::singleShot( 0, m_project, SLOT(reopenFirewall()) );
+
+//    updateGroups();
 }
 
 void RuleSetView::showHideRuleGroup(RuleGroupPanel * rgp)
@@ -2705,13 +2722,6 @@ void RuleSetView::removeFromGroup()
     removeFromGroup(row,count);
 }
 
-void RuleSetView::createGroup (int row, int count, QString groupName)
-{
-    for (int i =0 ; i<count; i++)
-        ruleIndex[row+i]->setRuleGroupName(groupName.toAscii().data());
-    updateGroups();
-}
-
 void RuleSetView::removeFromGroup (int row, int count)
 {
     for (int i = row ; i < row+count ; i++)
@@ -2726,17 +2736,14 @@ void RuleSetView::removeFromGroup (int row, int count)
             ruleIndex[i]=r;
         }
     }
-    updateGroups();
+    QTimer::singleShot( 0, m_project, SLOT(reopenFirewall()) );
+
+//    updateGroups();
 }
 
 
 void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
 {
-    if (fwbdebug)
-        qDebug("RuleSetView::contextMenu() at row=%d, col=%d", row, col);
-
-    if (fwbdebug)
-        qDebug("RuleSetView::contextMenu() selected rows: %d - %d", firstSelectedRow, lastSelectedRow);
 
     if (col > 0)
         setCurrentCell(row,col);
@@ -2816,7 +2823,8 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
         }
         else
         {
-            popup->addAction( tr("Remove from the group"), this, SLOT( removeFromGroup() ));
+            popup->addAction( tr("Remove from the group"), this,
+                              SLOT( removeFromGroup() ));
         }
         popup->addSeparator ();
     }
@@ -3292,7 +3300,6 @@ void RuleSetView::changeActionToAccept()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall action: changeActionToAccept");
     changeAction( PolicyRule::Accept );
 }
 
@@ -3300,7 +3307,6 @@ void RuleSetView::changeActionToDeny()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToDeny");
     changeAction( PolicyRule::Deny );
 }
 
@@ -3308,7 +3314,6 @@ void RuleSetView::changeActionToReject()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToReject");
     changeAction( PolicyRule::Reject );
 }
 
@@ -3316,7 +3321,6 @@ void RuleSetView::changeActionToAccounting()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToAccounting");
     changeAction( PolicyRule::Accounting );
 }
 
@@ -3324,7 +3328,6 @@ void RuleSetView::changeActionToPipe()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToPipe");
     changeAction( PolicyRule::Pipe );
 }
 
@@ -3332,7 +3335,6 @@ void RuleSetView::changeActionToTag()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToTag");
     changeAction( PolicyRule::Tag );
 }
 
@@ -3340,7 +3342,6 @@ void RuleSetView::changeActionToClassify()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToClassify");
     changeAction( PolicyRule::Classify );
 }
 
@@ -3348,7 +3349,6 @@ void RuleSetView::changeActionToCustom()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToCustom");
     changeAction( PolicyRule::Custom );
 }
 
@@ -3356,7 +3356,6 @@ void RuleSetView::changeActionToRoute()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToRoute");
     changeAction( PolicyRule::Route );
 }
 
@@ -3364,14 +3363,12 @@ void RuleSetView::changeActionToContinue()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    if (fwbdebug) qDebug("Firewall changed: changeActionToContinue");
     changeAction( PolicyRule::Continue );
 }
 
 void RuleSetView::changeActionToBranch()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
-    if (fwbdebug) qDebug("Firewall action: changeActionToBranch");
     changeAction( PolicyRule::Branch );
 }
 
@@ -3394,19 +3391,16 @@ void RuleSetView::changeDitection(PolicyRule::Direction dir)
 
 void RuleSetView::changeDirectionToIn()
 {
-    if (fwbdebug) qDebug("Firewall changed: changeDirectionToIn");
     changeDitection( PolicyRule::Inbound );
 }
 
 void RuleSetView::changeDirectionToOut()
 {
-    if (fwbdebug) qDebug("Firewall changed: changeDirectionToOut");
     changeDitection( PolicyRule::Outbound );
 }
 
 void RuleSetView::changeDirectionToBoth()
 {
-    if (fwbdebug) qDebug("Firewall changed: changeDirectionToBoth");
     changeDitection( PolicyRule::Both );
 }
 
@@ -3417,7 +3411,6 @@ void RuleSetView::changeLogToOn()
     if ( currentRow()!=-1 && currentColumn()!=-1 )
     {
         PolicyRule *rule = PolicyRule::cast( ruleIndex[currentRow()] );
-        if (fwbdebug) qDebug("Firewall changed: changeLogToOn");
         if (!changingRules)
             mw->updateLastModifiedTimestampForOneFirewall(getFirewall());
         rule->setLogging( true );
@@ -3431,7 +3424,6 @@ void RuleSetView::changeLogToOff()
     if ( currentRow()!=-1 && currentColumn()!=-1 )
     {
         PolicyRule *rule = PolicyRule::cast( ruleIndex[currentRow()] );
-        if (fwbdebug) qDebug("Firewall changed: changeLogToOff");
         if (!changingRules)
             mw->updateLastModifiedTimestampForOneFirewall(getFirewall());
         rule->setLogging( false );
@@ -3624,7 +3616,6 @@ void RuleSetView::negateRE()
     {
         RuleElement *re = getRE(currentRow(),currentColumn());
         if (re==NULL) return;
-        if (fwbdebug) qDebug("Firewall changed: negateRE");
         re->toggleNeg();
         if (!changingRules)
             m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
@@ -3663,10 +3654,6 @@ QVector <ProjectPanel*> RuleSetView::getAllMdiProjectPanel ()
 void RuleSetView::editRE()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
-
-    if (fwbdebug)
-        qDebug("RuleSetView::editRE  no special editor found for current cell");
-
     openPersistentEditor ( ruleModel->index(currentRow(),currentColumn()) );
 }
 
@@ -3921,15 +3908,12 @@ QDrag* RuleSetView::dragObject()
 
 void RuleSetView::dragEnterEvent( QDragEnterEvent *ev)
 {
-    if (fwbdebug)
-        qDebug("RuleSetView::dragEnterEvent");
+    if (fwbdebug) qDebug("RuleSetView::dragEnterEvent");
     ev->setAccepted( ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) );
 }
 
 void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
 {
-//    if (fwbdebug) qDebug("RuleSetView::dragMoveEvent");
-
     QWidget *fromWidget = ev->source();
 
     // The source of DnD object must be the same instance of fwbuilder
@@ -4614,6 +4598,8 @@ PolicyView::PolicyView(ProjectPanel *project, Policy *p, QWidget *parent) :
     ruleset=p;
     iinit();
     init();
+
+    if (fwbdebug) qDebug("PolicyView constructor: done");
 }
 
 void PolicyView::init()
