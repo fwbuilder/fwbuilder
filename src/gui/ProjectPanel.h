@@ -4,7 +4,7 @@
 
                  Copyright (C) 2008 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@fwbuilder.org
+  Author:  alek@codeminders.com
 
   $Id$
 
@@ -34,6 +34,7 @@ namespace libfwbuilder {
     class Firewall;
     class PolicyRule;
     class RuleSet;
+    class Rule;
     class RuleElement;
     class FWObject;
     class FWReference;
@@ -97,6 +98,13 @@ class ProjectPanel: public QWidget {
     bool                                    enableAvtoSaveState;
     
 public:
+
+    QMdiSubWindow *mdiWindow;
+    Ui::ProjectPanel_q *m_panel;
+    FindObjectWidget *findObjectWidget;
+    FindWhereUsedWidget *findWhereUsedWidget;
+    QSet<QString> copySet;
+
     
     void readyStatus(bool f) { ready=f; }
 
@@ -105,27 +113,25 @@ public:
 
     ProjectPanel* clone(ProjectPanel * cln);
 
-    void openRuleSet(libfwbuilder::FWObject * obj);
-    void closeRuleSet(libfwbuilder::FWObject * obj)
-    { if (visibleRuleSet==obj) visibleRuleSet=NULL; }
+    void openRuleSet(libfwbuilder::FWObject *obj);
+    void closeRuleSet(libfwbuilder::FWObject *obj)
+    { if ((libfwbuilder::FWObject*)(visibleRuleSet)==obj) visibleRuleSet=NULL;};
     
-    FWBTree * getFWTree () {return objectTreeFormat;}
-    bool isClosing (){return closing;}
-    QMdiSubWindow *mdiWindow;
-    Ui::ProjectPanel_q *m_panel;
-    FindObjectWidget *findObjectWidget;
-    FindWhereUsedWidget *findWhereUsedWidget;
-    QSet<QString> copySet;
-    ProjectPanel(QWidget *parent);
+    FWBTree * getFWTree () {return objectTreeFormat;};
+    bool isClosing (){return closing;};
 
+
+    ProjectPanel(QWidget *parent);
     ~ProjectPanel();
+
+
     void storeLastOpenedLib();
     void loadLastOpenedLib(QString filename="");
     void initMain(FWWindow *main);
     void loadObjects();
     void loadObjects(libfwbuilder::FWObjectDatabase *db);
     void clearObjects();
-    libfwbuilder::FWObjectDatabase* db() { return objdb; }
+    libfwbuilder::FWObjectDatabase* db() { return objdb; };
     bool hasObject(libfwbuilder::FWObject* obj)
     { return objdb->findInIndex(obj->getId()); };
 
@@ -137,13 +143,13 @@ public:
     libfwbuilder::FWObject*  getCurrentLib();
 
     libfwbuilder::FWObject* createObject(const QString &objType,
-                                          const QString &objName,
-                                          libfwbuilder::FWObject *copyFrom=NULL);
+                                         const QString &objName,
+                                         libfwbuilder::FWObject *copyFrom=NULL);
 
     libfwbuilder::FWObject* createObject(libfwbuilder::FWObject *parent,
-                                          const QString &objType,
-                                          const QString &objName,
-                                          libfwbuilder::FWObject *copyFrom=NULL);
+                                         const QString &objType,
+                                         const QString &objName,
+                                         libfwbuilder::FWObject *copyFrom=NULL);
 
     libfwbuilder::FWObject* copyObj2Tree(const QString &objType,
                                          const QString &objName,
