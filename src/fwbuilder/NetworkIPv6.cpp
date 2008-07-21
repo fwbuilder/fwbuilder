@@ -44,13 +44,15 @@ NetworkIPv6::NetworkIPv6() : Address()
 {
     delete inet_addr_mask;
     inet_addr_mask = new Inet6AddrMask();
+    setNetmask(InetAddr(AF_INET6, 64));
 }
 
-NetworkIPv6::NetworkIPv6(const FWObject *root,bool prepopulate) :
+NetworkIPv6::NetworkIPv6(const FWObject *root, bool prepopulate) :
     Address(root, prepopulate)
 {
     delete inet_addr_mask;
     inet_addr_mask = new Inet6AddrMask();
+    setNetmask(InetAddr(AF_INET6, 64));
 }
 
 NetworkIPv6::NetworkIPv6(NetworkIPv6 &other) : Address(other)
