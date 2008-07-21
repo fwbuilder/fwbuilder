@@ -23,7 +23,9 @@
 
 */
 
-#include <qtableview.h>
+
+#include <QString>
+#include <QTextStream>
 
 class RuleRowInfo 
 {
@@ -56,5 +58,4 @@ public:
         this->collapsedGroup = r.collapsedGroup ;
         return *this;
     }
-
 };

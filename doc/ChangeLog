@@ -1,5 +1,9 @@
 2008-07-20  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* RuleSetView.cpp (RuleSetView::moveRule): fixed bug (no #): if
+	rule set had several rule groups, moving rules within rule set did
+	not work and caused weird effects.
+
 	* NetworkIPv6.cpp (NetworkIPv6::NetworkIPv6): per bug #2023140:
 	"Default prefix for IPv6 addresses" setting default netmask to /64
 	for NetworkIPv6 object.

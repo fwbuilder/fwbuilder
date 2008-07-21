@@ -455,8 +455,7 @@ bool ObjectEditor::validateAndSave()
 /* if nothing changed or tree is read-only, just close dialog */
     if (!ischanged || !isTreeReadWrite(dialogs[ visible ],m_project->db()))
     {
-        if (fwbdebug)
-            qDebug("ObjectEditor::validateAndSave: no changes");
+        if (fwbdebug) qDebug("ObjectEditor::validateAndSave: no changes");
         return true;
     }
 
@@ -465,22 +464,27 @@ bool ObjectEditor::validateAndSave()
     emit validate_sign( &isgood );
     if (!isgood)
     {
-        switch ( QMessageBox::warning(dialogs[ visible ],
-                                      "Firewall Builder",
-                                      tr("Modifications done to this object can not be saved.\nDo you want to continue editing it ?"),
-                                      tr("&Continue editing"),
-                                      tr("&Discard changes"),
-                                      QString::null,
-                                      0, 1 ) )
+        switch (
+            QMessageBox::warning(
+                dialogs[ visible ],
+                "Firewall Builder",
+                tr("Modifications done to this object can not be saved.\n"
+                   "Do you want to continue editing it ?"),
+                tr("&Continue editing"),
+                tr("&Discard changes"),
+                QString::null,
+                0, 1 ) )
         {
         case 0:
             if (fwbdebug)
-                qDebug("ObjectEditor::validateAndSave:  return false, can not switch to another object");
+                qDebug("ObjectEditor::validateAndSave:  return false, "
+                       "can not switch to another object");
             return false;
 
         default:
             if (fwbdebug)
-                qDebug("ObjectEditor::validateAndSave  return true, discard changes, can switch to another object");
+                qDebug("ObjectEditor::validateAndSave  return true, "
+                       "discard changes, can switch to another object");
             discard();
             return true;
         }
@@ -493,11 +497,14 @@ bool ObjectEditor::validateAndSave()
         emit applyChanges_sign();
     } else
     {
-        switch ( QMessageBox::warning(dialogs[ visible ],
-                                      "Firewall Builder",
-                                      tr("This object has been modified but not saved.\nDo you want to save it ?"),
-                                      tr("&Save"), tr("&Discard"), tr("&Continue editing"),
-                                      0, 2 ) )
+        switch (
+            QMessageBox::warning(
+                dialogs[ visible ],
+                "Firewall Builder",
+                tr("This object has been modified but not saved.\n"
+                   "Do you want to save it ?"),
+                tr("&Save"), tr("&Discard"), tr("&Continue editing"),
+                0, 2 ) )
         {
         case 0:
             apply();

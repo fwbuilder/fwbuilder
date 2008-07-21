@@ -264,7 +264,12 @@ public:
                  Metric };
 
  protected:
-     
+
+    void debugPrintRows();
+
+    void resetRuleModel();
+    void createRuleModel();
+    
     //these functions are added in the porting process
     //they are needed to work with stored cell sizes (columnWidths,
     //rowHeights)

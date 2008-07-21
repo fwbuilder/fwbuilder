@@ -102,7 +102,8 @@ int QMIN(int a, int b)
 RuleTableModel::RuleTableModel(const int rows, const int columns,
                                RuleSetView *ruleView) :
     QAbstractTableModel(static_cast<QWidget*>(ruleView)),
-    m_rowCount(rows), m_columnCount(columns),
+    m_rowCount(rows),
+    m_columnCount(columns),
     ruleSetView(ruleView)
 {};
 
@@ -303,7 +304,8 @@ QRect RuleDelegate::cellRect(const int row, const int col) const
     return QRect(QPoint(0,0),cellGeometry(row,col).size());
 }
 
-void RuleDelegate::paint(QPainter *painter, const QStyleOptionViewItem &,
+void RuleDelegate::paint(QPainter *painter,
+                         const QStyleOptionViewItem &,
                          const QModelIndex &index) const
 {
     if (ruleSetView->ruleIndex[index.row()]==NULL && index.column()==1)
@@ -470,14 +472,14 @@ RuleSetView::RuleSetView(ProjectPanel *project, int r, int c, QWidget *parent):
               changingRules(false),
               firstSelectedRow(-1),
               lastSelectedRow(-1),
-              ruleModel(new RuleTableModel(r, c, this)), 
-        ruleDelegate(new RuleDelegate(this)), m_project(project)
+              m_project(project)
 {
     setFont(st->getRulesFont());
     rowSizingFrozen = false;
 
-    setModel(ruleModel);
-    setItemDelegate(ruleDelegate);
+    ruleModel = NULL;
+    ruleDelegate = NULL;
+    createRuleModel();
 
     setCurrentCell(0,0);
 
@@ -524,7 +526,7 @@ RuleSetView::RuleSetView(ProjectPanel *project, int r, int c, QWidget *parent):
              this, SLOT( itemDoubleClicked(const QModelIndex&) ) );
 
     verticalHeader()->installEventFilter( &hme );
-    unselect();
+//    unselect();
 }
 
 RuleSetView::~RuleSetView()
@@ -536,7 +538,8 @@ bool RuleSetView::showCommentTip(QPoint pos, QHelpEvent *he)
     if (!st->getClipComment())
         return false;
     int col = columnAt(pos.x() - verticalHeader()->width());
-    if((pos.y() >= horizontalHeader()->height()) && RuleSetView::Comment == getColType(col))
+    if((pos.y() >= horizontalHeader()->height()) &&
+       RuleSetView::Comment == getColType(col))
     {
 
         QString t="";
@@ -544,7 +547,7 @@ bool RuleSetView::showCommentTip(QPoint pos, QHelpEvent *he)
 
         QRect   cr;
 
-        cr=ruleDelegate->cellGeometry(row,col);
+        cr = ruleDelegate->cellGeometry(row, col);
         PolicyRule *rule = PolicyRule::cast( getRule(row) );
         if (rule!=NULL)
         {
@@ -558,14 +561,15 @@ bool RuleSetView::showCommentTip(QPoint pos, QHelpEvent *he)
                 cr.height() + 4);
 
         QRect global = QRect(
-            viewport()->mapToGlobal(cr.topLeft()), viewport()->mapToGlobal(cr.bottomRight()));
+            viewport()->mapToGlobal(cr.topLeft()),
+            viewport()->mapToGlobal(cr.bottomRight()));
         QToolTip::showText(mapToGlobal( he->pos() ), t, this, global);
         return true;
     }
     return false;
 }
 
-bool RuleSetView::event ( QEvent * event )
+bool RuleSetView::event( QEvent * event )
 {
     if (event->type() == QEvent::ToolTip)
     {
@@ -586,7 +590,7 @@ bool RuleSetView::event ( QEvent * event )
             QPoint contentsMouse = viewport()->mapFromGlobal(mapToGlobal(pos));
             contentsMouse.setY(contentsMouse.y() + verticalOffset() + 3);//+3 for fitting purposed
 
-            cr=ruleDelegate->cellGeometry(row,col);
+            cr = ruleDelegate->cellGeometry(row, col);
 
             if ( RuleSetView::Options == getColType(col) )
             {
@@ -664,7 +668,7 @@ void RuleSetView::updateCell( const int row, const int col )
                               r.right() - horizontalOffset(), r.bottom() - verticalOffset() ) );
     update();*/
 
-    QModelIndex ind = ruleModel->index(row,col);
+    QModelIndex ind = ruleModel->index(row, col);
     setCurrentCell(row, col);
     dataChanged(ind, ind);
     QVector <ProjectPanel*> pps = getAllMdiProjectPanel();
@@ -710,9 +714,10 @@ void RuleSetView::setCurrentCell(const int row, const int col)
     setCurrentColumn(col);
 }
 
-void RuleSetView::changeCurrentCell(const int row, const int col, bool fullrefresh)
+void RuleSetView::changeCurrentCell(const int row, const int col,
+                                    bool fullrefresh)
 {
-    QModelIndex ind = ruleModel->index(currentRow(),currentColumn());
+    QModelIndex ind = ruleModel->index(currentRow(), currentColumn());
     setCurrentCell(row, col);
     dataChanged(ind, ind);
 
@@ -824,29 +829,34 @@ int RuleSetView::getRuleRowInfoIndexByGroupName (QString name)
 
 void RuleSetView::init()
 {
-    QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    resetRuleModel();
 
     //horizontalHeader()->adjustSize();
 
-    int          row=0;
+    int row = 0;
     map<int,int> colW;
-    bool         userColWidth=false;
-    rowsInfo.clear();
-    QFontMetrics p(st->getRulesFont());
+    bool userColWidth = false;
 
+    ruleIndex.clear();
+    rowsInfo.clear();
+
+    QFontMetrics p(st->getRulesFont());
     QString k = settingsKey();
     QString v = st->getStr(k);
     if (!v.isEmpty())
     {
         userColWidth=true;
         for (int col=0; col<ncols; col++)
-            colW[col]=v.section(' ',col,col).toInt();
+            colW[col] = v.section(' ',col,col).toInt();
     } else
     {
         for (int col=0; col<ncols; col++)
         {
-            QString lbl = ruleModel->headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();//horzHeaderLabels->stringList()[col];
-
+            QString lbl = ruleModel->headerData(col,
+                                                Qt::Horizontal,
+                                                Qt::DisplayRole).toString();
 
             QRect br=p.boundingRect(QRect(0,0,1000,1000),
                                     Qt::AlignLeft|Qt::AlignVCenter,
@@ -859,15 +869,15 @@ void RuleSetView::init()
             colW[col]=br.width() + 10;
         }
     }
-   row=0;
+    row=0;
     QString memberRow ;
 
-    for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++,row++)
+    for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++, row++)
     {
         Rule *r = Rule::cast( *i );
 
         ruleIndex[row] = r;
-        rowsInfo.push_back (NULL);
+        rowsInfo.push_back(NULL);
         setRuleNumber(row, r);
         if (Rule::cast( *i )->getPosition()!=row)
         {
@@ -900,11 +910,57 @@ void RuleSetView::init()
         horizontalHeader()->resizeSection(col, colW[col]);
     }
 
+    if (fwbdebug)
+    {
+        qDebug("End of init:");
+        debugPrintRows();
+    }
+
     //updateContents();
     updateGroups();
+
+    if (fwbdebug)
+    {
+        qDebug("After updateGroups:");
+        debugPrintRows();
+    }
+
     update();
 
     QApplication::restoreOverrideCursor();
+}
+
+void RuleSetView::debugPrintRows()
+{
+    for (int i1=0; i1<ruleIndex.size(); i1++)
+        qDebug("ruleIndex[%d]=%p", i1, ruleIndex[i1]);
+
+    qDebug(" ");
+        
+    for (int i = 0 ; i < rowsInfo.size(); i++)
+    {
+        if (rowsInfo[i]!=NULL)
+        {
+            QString output;
+            QTextStream res(&output, QIODevice::WriteOnly);
+        
+            res << "groupName=";
+            res << rowsInfo[i]->groupName;
+            res << " ";
+            res << "isBeginning=";
+            res << rowsInfo[i]->isBeginRow;
+            res << " ";
+            res << "collapsed=";
+            res << rowsInfo[i]->collapsedGroup;
+
+            qDebug("rowsInfo[%d]: %s", i, output.toAscii().constData());
+        } else
+            qDebug("rowsInfo[%d]: NULL", i);
+
+    }
+    qDebug(" ");
+    qDebug("ruleModel->rowCount()=%d", ruleModel->rowCount());
+    qDebug(" ");
 }
 
 void RuleSetView::addRuleGroupPanel(int row)
@@ -913,7 +969,7 @@ void RuleSetView::addRuleGroupPanel(int row)
     if (rri==NULL)
         return ;
 
-    setSpan (row,1,0,ruleModel->columnCount(this->model()->index(row,0))-1);
+    setSpan(row, 1, 0, ruleModel->columnCount(this->model()->index(row,0))-1);
  //   rri->index = &model()->index(row,0);
 
     if (rri->isBeginRow)
@@ -953,26 +1009,28 @@ void RuleSetView::updateGroups ()
 {
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
-        setSpan (i,1,0,1);
+        setSpan(i,1,0,1);
     }
 
-    reset ();
+    reset();
     setColumnWidth(0,20);
     horizontalHeader()->setResizeMode (0, QHeaderView::Fixed);
     horizontalHeader()->resizeSection(0, 20);
+
     QMap <QString, QString> groupColors ;
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
-        setSpan (i,1,0,1);
+        setSpan(i,1,0,1);
         if (ruleIndex[i]==NULL)
         {        
             if (rowsInfo[i]->isBeginRow)
             {
-                groupColors[rowsInfo[i]->groupName]=rowsInfo[i]->color ;
+                groupColors[rowsInfo[i]->groupName] = rowsInfo[i]->color ;
                 if (groupColors[rowsInfo[i]->groupName]=="")
                 {
                     Rule * r = ruleIndex[i+1];
-                    QString color = r->getOptionsObject()->getStr("color").c_str();
+                    QString color = 
+                        r->getOptionsObject()->getStr("color").c_str();
                     if (color!="")
                     {
                         if (color=="#FFFFFF") color = "";
@@ -981,8 +1039,8 @@ void RuleSetView::updateGroups ()
                 }
             }
             removeRuleIndex(i);
-            rowsInfo.remove (i);
-            ruleModel->removeRows(i,i);
+            rowsInfo.remove(i);
+            ruleModel->removeRows(i, i);
             i--;
         }
     }
@@ -1003,6 +1061,7 @@ void RuleSetView::updateGroups ()
             rulesInGroup[groupName]=count ;
         }        
     }
+
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
         Rule * r = ruleIndex[i];
@@ -1010,22 +1069,20 @@ void RuleSetView::updateGroups ()
         QString color = groupColors[group];
         if (color!="")
         {
-
-                FWOptions *ropt = r->getOptionsObject();
-                ropt->setStr("color",color.toLatin1().constData());
-    
+            FWOptions *ropt = r->getOptionsObject();
+            ropt->setStr("color",color.toLatin1().constData());
         }
         else
         {
-                if (group!="")
+            if (group!="")
+            {
+                color = r->getOptionsObject()->getStr("color").c_str();
+                if (color!="")
                 {
-                    color = r->getOptionsObject()->getStr("color").c_str();
-                    if (color!="")
-                    {
-                        if (color=="#FFFFFF") color="";
-                        groupColors[group]=color;
-                    }
+                    if (color=="#FFFFFF") color="";
+                    groupColors[group]=color;
                 }
+            }
         }    
         if (group!=memberRow)
         {
@@ -1065,8 +1122,6 @@ void RuleSetView::updateGroups ()
         memberRow = group;
         addRuleGroupPanel(rowsInfo.size()-1);
     }
-
-
 }
 
 void RuleSetView::deleteRuleGroupPanel (int row)
@@ -1097,8 +1152,32 @@ QSize RuleSetView::getPMSize()
     return pm.size();
 }
 
+void RuleSetView::resetRuleModel()
+{
+#if 0
+    if (ruleModel) delete ruleModel;
+    ruleModel = NULL;
+    if (ruleDelegate) delete ruleDelegate;
+    ruleDelegate = NULL;
+    createRuleModel();
+#endif
+}
+
+void RuleSetView::createRuleModel()
+{
+    if (ruleModel==NULL && ruleDelegate==NULL) 
+    {
+        ruleModel = new RuleTableModel(1, 1, this);
+        setModel(ruleModel);
+        ruleDelegate = new RuleDelegate(this);
+        setItemDelegate(ruleDelegate);
+    }
+}
+
 void RuleSetView::iinit()
 {
+    createRuleModel();
+
     ruleModel->setRowCount( ruleset->size() );
 
     QSize sz = getPMSize();
@@ -1386,6 +1465,7 @@ QPixmap RuleSetView::getPixmap(FWObject *obj, PixmapAttr pmattr) const
 
 void RuleSetView::repaintSelection()
 {
+    if (fwbdebug) qDebug("set dirty: %d,%d", width(), height() );
     setDirtyRegion( QRegion( 0, 0, width(), height() ) );
 }
 
@@ -1551,8 +1631,6 @@ void RuleSetView::paintCell(QPainter *pntr,
     QPainter p( &bufferpixmap );
     QFont font = st->getRulesFont();
     p.setFont(font);
-
-
 
     QRect r = ruleDelegate->cellRect(row,col);
 
@@ -1847,7 +1925,8 @@ void RuleSetView::paintCell(QPainter *pntr,
 
 void RuleSetView::drawComment(QPainter &p, int row, int col, const QRect &cr)
 {
-    /* comments are found in both policy and nat rules, so we cast to Rule here */
+    /* comments are found in both policy and nat rules, so we cast to
+     * Rule here */
     Rule *rule = ruleIndex[row];
     if (rule==NULL) return;
 
@@ -2246,7 +2325,7 @@ FWObject* RuleSetView::getObj(int row, int col, int mouse_y_pos, QRect *objr)
     RuleElement *re = getRE(row,col);
     if (re==NULL) return NULL;
 
-    QRect cr=ruleDelegate->cellGeometry(row,col);
+    QRect cr = ruleDelegate->cellGeometry(row,col);
 
 /*
     * n     is the number of objects in the cell
@@ -4034,7 +4113,7 @@ void RuleSetView::removeRule()
             }
         }
 
-        ruleModel->removeRows( firstSelectedRow, lastSelectedRow );
+        ruleModel->removeRows(firstSelectedRow, lastSelectedRow);
         
         setUpdatesEnabled(true);
 
@@ -4080,63 +4159,54 @@ void RuleSetView::moveRule()
     {
         int newN = d.newRuleNum->value();
         int nn   = newN;
-        if (firstSelectedRow==nn) return;
+        int old_first_rule_n = ruleIndex[firstSelectedRow]->getPosition();
+        
+        if (old_first_rule_n==nn) return;
 
         setUpdatesEnabled(false);
 
-        if (firstSelectedRow>nn)
+        /* nn is new rule number
+         * old_first_rule_n is old rule number
+         * Remember the difference between rule numbers and row numbers!
+         */
+        if (fwbdebug)
+            qDebug("Moving rules #%d(+%d) to position %d",
+                   old_first_rule_n, selectionSize, nn);
+
+        if (old_first_rule_n > nn)
         {  // moving block of rules up
             for (int i=firstSelectedRow; i<=lastSelectedRow; i++)
             {
-                int j=i;
-                while (j!=nn)
+                int rule_n = ruleIndex[i]->getPosition();
+                int current_rule_num = rule_n;
+
+                if (fwbdebug)
+                    qDebug("Row %d: Moving rule #%d up to position %d",
+                           i, rule_n, nn);
+
+                while (current_rule_num != nn)
                 {
-                    if (!ruleset->moveRuleUp(j)) return;
-
-                    Rule *r = ruleIndex[j];
-                    ruleIndex[j] = ruleIndex[j-1];
-                    ruleIndex[j-1] = r;
-
-                    //swapping row sizes j-1 and j
-                    int t = verticalHeader()->sectionSize(j);
-                    verticalHeader()->resizeSection(j,
-                        verticalHeader()->sectionSize(j-1));
-                    verticalHeader()->resizeSection(j-1, t);
-
-                    Rule *rule = ruleIndex[j-1];
-                    setRuleNumber(j-1, rule);
-                    rule = ruleIndex[j];
-                    setRuleNumber(j, rule);
-
-                    --j;
+                    if (!ruleset->moveRuleUp(current_rule_num)) return;
+                    --current_rule_num;
                 }
                 nn++;
             }
         } else
         {   // moving block of rules down
+
             for (int i=lastSelectedRow; i>=firstSelectedRow; i--)
             {
-                int j=i;
-                while (j!=nn+selectionSize-1)
+                int rule_n = ruleIndex[i]->getPosition();
+                int current_rule_num = rule_n;
+
+                if (fwbdebug)
+                    qDebug("Row %d: Moving rule #%d down to position %d",
+                           i, rule_n, nn+selectionSize-1);
+
+                while (current_rule_num != nn+selectionSize-1)
                 {
-                    if (!ruleset->moveRuleDown(j)) return;
-
-                    Rule *r=ruleIndex[j];
-                    ruleIndex[j]=ruleIndex[j+1];
-                    ruleIndex[j+1]=r;
-
-                    //swapping row sizes j+1 and j
-                    int t = verticalHeader()->sectionSize(j+1);
-                    verticalHeader()->resizeSection(j+1,
-                        verticalHeader()->sectionSize(j));
-                    verticalHeader()->resizeSection(j, t);
-
-                    Rule *rule = ruleIndex[j+1];
-                    setRuleNumber(j+1,rule);
-                    rule = ruleIndex[j];
-                    setRuleNumber(j,rule);
-
-                    ++j;
+                    if (!ruleset->moveRuleDown(current_rule_num)) return;
+                    ++current_rule_num;
                 }
                 nn--;
             }
@@ -4144,9 +4214,21 @@ void RuleSetView::moveRule()
 
         setUpdatesEnabled(true);
 
-        selectRE( newN , currentColumn() );
-        changeCurrentCell( newN, currentColumn(), true );
-        updateGroups();
+        clearSelection();
+
+        /* when we move rules, especially when we move a block of *
+         rules and when rule groups are used, data structures
+         ruleIndex, rowsInfo and other get really screwed up. This is
+         because in the current design beginning and end of a rule
+         group are indicated by NULL entries in ruleIndex, which was a
+         bad idea. Under circumstances, it is easier to schedule
+         complete refresh of the rule set view.
+        */
+
+        QTimer::singleShot( 0, m_project, SLOT(reopenFirewall()) );
+
+        //update();
+        //updateGroups();
         changingRules = false;
         m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
     }
@@ -4473,7 +4555,9 @@ void RuleSetView::restoreSelection(bool same_widget)
     if (fwbdebug)
     {
         if (prevSelectedObject)
-            qDebug("RuleSetView::restoreSelection()  same_widget=%d prevSelectedObject=%s prevSelectedObjectRow=%d prevSelectedObjectCol=%d",
+            qDebug("RuleSetView::restoreSelection()  "
+                   "same_widget=%d prevSelectedObject=%s "
+                   "prevSelectedObjectRow=%d prevSelectedObjectCol=%d",
                    same_widget,
                    prevSelectedObject->getName().c_str(),
                    prevSelectedObjectRow,
@@ -4500,19 +4584,21 @@ void RuleSetView::updateAll()
 {
     if (fwbdebug) qDebug("RuleSetView::updateAll()");
 
-    int r=0;
-    init();
+    int r = 0;
+//    init();
+
     QFontMetrics p(st->getRulesFont());
     QRect br = p.boundingRect(QRect(0, 0, 1000, 1000),
                               Qt::AlignLeft|Qt::AlignVCenter,"WMWM" );
     text_h   = br.height();
+
     for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++,r++)
         adjustRow(r);
         //dirtyRows[r] = 1;
 
     repaint();
+
     updateGroups();
-//    update();
 }
 
 void RuleSetView::updateCurrentCell()
