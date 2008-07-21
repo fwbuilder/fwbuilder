@@ -48,7 +48,8 @@
 
 #include <memory>
 #include <sstream>
-
+#include <cstdlib>
+#include <cstring>
 #include <fwbuilder/dns.h>
 #include <fwbuilder/ThreadTools.h>
 

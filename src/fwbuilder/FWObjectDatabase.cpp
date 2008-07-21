@@ -30,6 +30,7 @@
 #include <time.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <cstring>
 #include <signal.h>
 
 #include <fwbuilder/libfwbuilder-config.h>

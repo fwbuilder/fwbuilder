@@ -38,6 +38,7 @@ extern "C" {
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <cstring>
 
 #ifndef _WIN32
 #  include <sys/types.h>

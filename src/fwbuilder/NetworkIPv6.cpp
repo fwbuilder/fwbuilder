@@ -33,6 +33,7 @@
 
 #include <string>
 #include <sstream>
+#include <cstring>
 
 using namespace libfwbuilder;
 using namespace std;

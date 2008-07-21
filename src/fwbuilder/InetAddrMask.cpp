@@ -31,6 +31,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <cstdlib>
+#include <climits>
 #include <assert.h>
 
 #ifndef _WIN32

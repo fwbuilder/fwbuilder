@@ -47,6 +47,8 @@ extern "C" {
 #include <stdio.h>
 #include <iostream>
 #include <sstream>
+#include <cstring>
+#include <cstdlib>
 #include <assert.h>
 
 #ifndef _WIN32

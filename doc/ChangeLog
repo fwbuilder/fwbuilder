@@ -1,3 +1,8 @@
+2008-07-21  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Applied patch for gcc 4.3 per bug #2023676: "libfwbuilder does
+	not build against gcc 4.3".
+	
 2008-07-20  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* NetworkIPv6.cpp (NetworkIPv6::NetworkIPv6): per bug #2023140:

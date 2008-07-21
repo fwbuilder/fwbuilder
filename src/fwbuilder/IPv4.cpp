@@ -40,7 +40,7 @@
 
 #include <assert.h>
 #include <iostream>
-
+#include <cstring>
 #include <fwbuilder/libfwbuilder-config.h>
 
 #include <fwbuilder/IPv4.h>

@@ -41,6 +41,7 @@
 #include <assert.h>
 #include <iostream>
 #include <sstream>
+#include <cstring>
 
 #include <fwbuilder/libfwbuilder-config.h>
 #include <fwbuilder/Inet6AddrMask.h>

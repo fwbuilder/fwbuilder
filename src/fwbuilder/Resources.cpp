@@ -40,7 +40,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
-
+#include <cstring>
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Constants.h"
