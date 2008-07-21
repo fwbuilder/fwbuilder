@@ -1,5 +1,9 @@
 2008-07-20  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* NetworkIPv6.cpp (NetworkIPv6::NetworkIPv6): per bug #2023140:
+	"Default prefix for IPv6 addresses" setting default netmask to /64
+	for NetworkIPv6 object.
+
 	* InterfaceDialog.cpp (InterfaceDialog::loadFWObject): fixed bug
 	#2023141: "Can't set interface options". The GUI kept all controls
 	in the interface object editor enabled when interface was child of
