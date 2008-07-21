@@ -245,7 +245,7 @@
          <widget class="QFrame" name="frame14" >
           <property name="minimumSize" >
            <size>
-            <width>16</width>
+            <width>300</width>
             <height>16</height>
            </size>
           </property>
@@ -288,7 +288,7 @@
              </property>
              <property name="minimumSize" >
               <size>
-               <width>200</width>
+               <width>250</width>
                <height>25</height>
               </size>
              </property>
@@ -326,7 +326,7 @@
              </property>
              <property name="minimumSize" >
               <size>
-               <width>0</width>
+               <width>250</width>
                <height>25</height>
               </size>
              </property>

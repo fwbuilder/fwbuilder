@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>604</width>
-    <height>198</height>
+    <width>732</width>
+    <height>205</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -295,7 +295,7 @@
          <widget class="QFrame" name="frame50" >
           <property name="minimumSize" >
            <size>
-            <width>250</width>
+            <width>300</width>
             <height>16</height>
            </size>
           </property>
@@ -326,7 +326,7 @@
              </property>
              <property name="minimumSize" >
               <size>
-               <width>200</width>
+               <width>250</width>
                <height>0</height>
               </size>
              </property>
@@ -352,7 +352,7 @@
              </property>
              <property name="minimumSize" >
               <size>
-               <width>0</width>
+               <width>250</width>
                <height>0</height>
               </size>
              </property>
