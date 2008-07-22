@@ -1,5 +1,8 @@
 2008-07-21  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* fwbuilder.pro: removed unnecessary override in target.path to
+	make it install in a proper place on 64 bit machines'
+
 	* Applied patch for gcc 4.3 per bug #2023676: "libfwbuilder does
 	not build against gcc 4.3".
 	
