@@ -53,6 +53,7 @@
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <cstring>
 
 #include <assert.h>
 #include <ctype.h>

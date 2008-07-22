@@ -92,7 +92,7 @@
 #include <errno.h>
 #include <time.h>
 #include <memory.h>
-
+#include <memory>
 #include <algorithm>
 
 #ifndef _WIN32

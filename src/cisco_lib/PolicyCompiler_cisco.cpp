@@ -51,7 +51,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <functional>
-
+#include <cstring>
 #include <assert.h>
 
 using namespace libfwbuilder;

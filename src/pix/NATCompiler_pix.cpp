@@ -44,6 +44,7 @@
 #include <algorithm>
 #include <functional>
 #include <iostream>
+#include <cstring>
 #include <assert.h>
 
 using namespace libfwbuilder;

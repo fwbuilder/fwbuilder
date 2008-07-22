@@ -64,6 +64,8 @@
 #include <iomanip>
 #include <fstream>
 #include <sstream>
+#include <cstring>
+#include <algorithm>
 
 #include <assert.h>
 
