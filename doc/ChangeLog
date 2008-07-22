@@ -6,6 +6,10 @@
 	* (libfwbuilder) Applied patch for gcc 4.3 per bug #2023676:
 	"libfwbuilder does not build against gcc 4.3".
 	
+	* (libfwbuilder) fwbuilder.pro: removed unnecessary override in
+	target.path to make it install in a proper place on 64 bit
+	machines'
+
 	
 2008-07-20    <vadim@vk.crocodile.org>
 
