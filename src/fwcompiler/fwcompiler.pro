@@ -29,6 +29,6 @@ unix {
 }
 
 TARGET    = fwcompiler
-target.path = "$$prefix/lib"
+# target.path = "$$prefix/lib"
 
 INSTALLS += headers
