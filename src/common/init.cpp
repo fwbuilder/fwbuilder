@@ -102,11 +102,19 @@ void init(char * const *argv)
     librespath = respath.substr(0, n0);
 
 #else
+
 /* On Unix RES_DIR and LIBFWBUILDER_TEMPLATE_DIR are absolute paths */
 
     if (respath=="") respath = RES_DIR;
     librespath = LIBFWBUILDER_TEMPLATE_DIR;
 
+#endif
+
+#if defined(Q_OS_WIN32)
+    argv0 = appRootDir + FS_SEPARATOR + "fwbuilder.exe";
+#else
+/* need argv0 for built-in installer on unix and mac */
+    argv0 = appRootDir + FS_SEPARATOR + "fwbuilder";
 #endif
 
     sysfname = respath + FS_SEPARATOR  + "objects_init.xml";
