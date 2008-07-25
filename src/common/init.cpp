@@ -57,10 +57,9 @@ string findExecutable(const char *argv0)
  * /proc/self/exec.
  */
     char buf[PATH_MAX];
-    if ( readlink( "/proc/self/exec", buf, sizeof(buf) )<0 )
+    if ( readlink( "/proc/self/exe", buf, sizeof(buf) )<0 )
     {
-        // Can do better: use a macro defined in configure via PREFIX 
-        return "";
+        return string(PREFIX) + FS_SEPARATOR + "bin";
     } else
     {
         // /proc/self/exec points at full path to the executable, including

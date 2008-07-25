@@ -133,9 +133,5 @@ void join::operator()(string &s)
 
 string getPathToBinary(const string &pgm_name)
 {
-#if defined(Q_OS_MACX)
-    return appRootDir + FS_SEPARATOR + "MacOS" + FS_SEPARATOR + pgm_name;
-#else
     return appRootDir + FS_SEPARATOR + pgm_name;
-#endif
 }

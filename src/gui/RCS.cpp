@@ -110,7 +110,7 @@ void Revision::operator=(const Revision &r)
     log        = r.log      ;
 }
 
-bool Revision::operator<(const Revision &r)
+bool Revision::operator<(const Revision &r) const
 {
     for(int i=1; ; i++)
     {
@@ -127,12 +127,12 @@ bool Revision::operator<(const Revision &r)
     return true;
 }
 
-bool Revision::operator==(const Revision &r)
+bool Revision::operator==(const Revision &r) const
 {
     return rev==r.rev;
 }
 
-bool Revision::operator!=(const Revision &r)
+bool Revision::operator!=(const Revision &r) const
 {
     return rev!=r.rev;
 }
@@ -365,10 +365,15 @@ RCS::RCS(const QString &file)
             if (r.rev != "")
             {
                 revisions.push_back(r);
-                if (fwbdebug) qDebug("revision %s: '%s'",r.rev.toAscii().constData(),r.log.toAscii().constData());
+                if (fwbdebug)
+                    qDebug("revision %s: '%s'",
+                           r.rev.toAscii().constData(),
+                           r.log.toAscii().constData());
             }
-
         }
+        // sort list revisions; its defined like this:
+        // QList<Revision> revisions
+        qSort(revisions);
 
 #if 0
         for ()

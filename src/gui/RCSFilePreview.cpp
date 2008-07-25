@@ -138,8 +138,9 @@ bool RCSFilePreview::showFileRLog( const QString &filename )
     }
 //    addToRCS->setEnabled(false);
 
-    QTreeWidgetItem *rootItm=new QTreeWidgetItem( m_widget->RCSTreeView );
-    rootItm->setText(0, filename.right( filename.length()-filename.lastIndexOf("/")-1 ) );
+    QTreeWidgetItem *rootItm = new QTreeWidgetItem( m_widget->RCSTreeView );
+    rootItm->setText(
+        0, filename.right( filename.length()-filename.lastIndexOf("/")-1 ) );
     rootItm->setExpanded(true);
 
     rcsComments.clear();
@@ -155,7 +156,7 @@ bool RCSFilePreview::showFileRLog( const QString &filename )
 
         if ((*i).rev.indexOf(QRegExp("^[0-9]+\\.[0-9]+$"))!=-1)
         {
-            RCSViewItem *itm=new RCSViewItem( rootItm );
+            RCSViewItem *itm = new RCSViewItem( rootItm );
             itm->setText( 0, (*i).rev       );
             itm->setText( 1, (*i).date      );
             itm->setText( 2, (*i).author    );

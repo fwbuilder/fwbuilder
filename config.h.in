@@ -44,7 +44,7 @@
 #undef DISTRO
 
 /* prefix dir    */
-/* #undef PREFIX */
+#undef PREFIX
 
 /* init dir */
 #undef RES_DIR

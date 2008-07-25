@@ -55,10 +55,9 @@ class Revision {
     Revision(const Revision &r);
     Revision(const QString &file, const QString &rev="");
 
-    bool operator<(const Revision &r);
-    bool operator==(const Revision &r);
-    bool operator!=(const Revision &r);
-
+    bool operator<(const Revision &r) const;
+    bool operator==(const Revision &r) const;
+    bool operator!=(const Revision &r) const;
     void operator=(const Revision &r);
 };
 
