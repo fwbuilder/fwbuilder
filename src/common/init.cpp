@@ -5,10 +5,8 @@
 #  include <qsettings.h>
 #  include <QDir>
 #  include <QApplication>
-#  include <QCoreApplication>
+//#  include <QCoreApplication>
 #  include <QString>
-//#  include <CoreFoundation/CFURL.h>
-//#  include <CoreFoundation/CFBundle.h>
 #else
 #  include <limits.h>
 #  include <unistd.h>
@@ -21,58 +19,40 @@
 #include "fwbuilder/Resources.h"
 #include "commoninit.h"
 
-std::string      appRootDir;
-std::string      userDataDir;
-std::string      respath; 
-std::string      localepath;
-std::string      librespath;
-std::string      sysfname;
-std::string      tempfname;
-std::string      argv0;
-std::string      ee;
+std::string appRootDir;
+std::string userDataDir;
+std::string respath; 
+std::string localepath;
+std::string librespath;
+std::string sysfname;
+std::string tempfname;
+std::string argv0;
+std::string ee;
 
-extern int             fwbdebug;
+extern int fwbdebug;
 
 using namespace std;
 using namespace libfwbuilder;
 
 
+
+void init(char * const *argv)
+{
+
+
 /*
- * We do all these different hacks on different OS in order to be able
- * to avoid dependency on QT on Linux and BSD, so people can
+ * We do it in a different way on different OS in order to be able to
+ * avoid dependency on QT on Linux and BSD, so people can
  * (theoretically) build and install compilers on the firewall machine
  * where they do not have X11 and QT. It may not be easy but should be
  * possible. (Unless I broke it in 3.0)
  *
- * Note findExecutable returns path to the directory where fwbuilder binary
- * is installed (on Mac it is  <wherever>/fwbuilder3.app/Contents/MacOS , 
- * On Windows it is c:\FWBuilder30, on Linux it is something like /usr/bin
- * or /usr/local/bin and so on.
+ * Note appRootDir is the path to the directory where fwbuilder binary
+ * is installed (on Mac it is <wherever>/fwbuilder3.app/Contents/MacOS
+ * , On Windows it is c:\FWBuilder30, on Linux it is something like
+ * /usr/bin or /usr/local/bin and so on.
  */
-string findExecutable(const char *argv0)
-{
-#ifdef OS_LINUX
-/*
- * on modern Linux systems full path to the executable is available in
- * /proc/self/exec.
- */
-    char buf[PATH_MAX];
-    if ( readlink( "/proc/self/exe", buf, sizeof(buf) )<0 )
-    {
-        return string(PREFIX) + FS_SEPARATOR + "bin";
-    } else
-    {
-        // /proc/self/exec points at full path to the executable, including
-        // name of the program. Remove the latter and return only path
-        // to the directory.
-        string exe_path(buf);
-        string::size_type n0 = exe_path.find_last_of("/\\");
-        if (n0!=string::npos) 
-            return exe_path.substr(0,n0) + FS_SEPARATOR;
-        else
-            return exe_path;
-    }
-#else
+#if defined(Q_OS_WIN32) || defined(Q_OS_MACX)
     if (QCoreApplication::instance()==NULL)
     {
         int ac = 0;
@@ -80,20 +60,8 @@ string findExecutable(const char *argv0)
         new QApplication( ac, av );
     }
     QDir dir(QApplication::applicationDirPath());
-    return string(dir.absolutePath().toAscii().constData());
-#endif
-//#endif
-}
+    appRootDir = string(dir.absolutePath().toAscii().constData());
 
-
-
-void init(char * const *argv)
-{
-    appRootDir = findExecutable(argv[0]);
-
-    libfwbuilder::init();
-
-#if defined(Q_OS_WIN32) || defined(Q_OS_MACX)
 /* On windows and mac we install API resources (DTD etc) in the 
  * dir right above the one where we install resources for the GUI and compilers
  */
@@ -102,13 +70,17 @@ void init(char * const *argv)
     librespath = respath.substr(0, n0);
 
 #else
+    appRootDir = string(PREFIX) + FS_SEPARATOR + "bin";
 
 /* On Unix RES_DIR and LIBFWBUILDER_TEMPLATE_DIR are absolute paths */
 
     if (respath=="") respath = RES_DIR;
     librespath = LIBFWBUILDER_TEMPLATE_DIR;
-
 #endif
+
+
+    libfwbuilder::init();
+
 
 #if defined(Q_OS_WIN32)
     argv0 = appRootDir + FS_SEPARATOR + "fwbuilder.exe";

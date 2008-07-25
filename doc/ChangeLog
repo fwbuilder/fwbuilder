@@ -1,3 +1,8 @@
+2008-07-25  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* init.cpp: removed #include <QCoreApplication>, trying to fix bug
+	#2027918: "Cannot compile fwbuilder-3.0.0-b413 on x86_64"
+
 2008-07-24  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* RCS.cpp (RCS::RCS): If data file has been added to RCS, show its
