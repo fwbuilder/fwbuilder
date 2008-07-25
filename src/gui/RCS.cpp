@@ -210,7 +210,8 @@ RCSEnvFix::RCSEnvFix()
  * everything works. When the program is started with some other
  * directory as current dir, RCS tools fail without any error message.
  */
-    env.push_back( QString("PATH=%1;%2").arg(appRootDir.c_str()).arg(getenv("PATH")) );
+    env.push_back(
+        QString("PATH=%1;%2").arg(getPathToBinary("").c_str()).arg(getenv("PATH")) );
 #endif
 
 /* also need to set env variable USER for rcs tools, but if the user name
@@ -245,19 +246,19 @@ RCS::RCS(const QString &file)
     {
 #ifdef _WIN32
         string ts;
-        ts     = appRootDir+FS_SEPARATOR+RCS_FILE_NAME      ;
+        ts = getPathToBinary(RCS_FILE_NAME);
         rcs_file_name     = ts.c_str();
 
-        ts    = appRootDir+FS_SEPARATOR+RLOG_FILE_NAME     ;
+        ts = getPathToBinary(RLOG_FILE_NAME);
         rlog_file_name    = ts.c_str();
 
-        ts = appRootDir+FS_SEPARATOR+RCSDIFF_FILE_NAME  ;
+        ts = getPathToBinary(RCSDIFF_FILE_NAME);
         rcsdiff_file_name = ts.c_str();
 
-        ts      = appRootDir+FS_SEPARATOR+CI_FILE_NAME       ;
+        ts = getPathToBinary(CI_FILE_NAME);
         ci_file_name      = ts.c_str();
 
-        ts      = appRootDir+FS_SEPARATOR+CO_FILE_NAME       ;
+        ts = getPathToBinary(CO_FILE_NAME);
         co_file_name      = ts.c_str();
 #else
         rcs_file_name     = RCS_FILE_NAME      ;

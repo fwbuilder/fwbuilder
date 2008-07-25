@@ -75,7 +75,9 @@ extern libfwbuilder::FWReference* findRef(libfwbuilder::FWObject *o,
 
 // helper: strip whitespaces from the beginning and end of a string
 extern std::string strip(const std::string &s);
-  
+
+extern std::string getPathToBinary(const std::string &pgm_name);
+
 // a functor to join list<string> into a string with separator sep
 class join : public std::unary_function<std::string, void>
 {

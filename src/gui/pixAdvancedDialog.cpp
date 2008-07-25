@@ -28,6 +28,7 @@
 #include "../../config.h"
 #include "global.h"
 #include "utils.h"
+#include "utils_no_qt.h"
 
 #include "pixAdvancedDialog.h"
 #include "SimpleTextEditor.h"
@@ -95,9 +96,9 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
         else
         {
             /* try to find compiler in appRootDir. */
-            string ts =  appRootDir + FS_SEPARATOR + compiler;
+            string ts =  getPathToBinary(compiler);
             if ( QFile::exists( ts.c_str() ) )
-                compiler = appRootDir + FS_SEPARATOR + compiler;
+                compiler = ts;
         }
     }
 #endif

@@ -45,6 +45,12 @@ string guessExecPath(const char *argv0)
 
 #ifdef Q_OS_MACX
 
+    if (QCoreApplication::instance()==NULL)
+    {
+        int ac = 0;
+        char **av = { NULL };
+        new QApplication( ac, av );
+    }
     QDir dir(QApplication::applicationDirPath());
     return string(dir.absolutePath().toAscii().constData());
 
@@ -70,18 +76,24 @@ string guessExecPath(const char *argv0)
 #endif
 }
 
-
+/*
+ * We do all these different hacks on different OS in order to be able
+ * to avoid dependency on QT on Linux and BSD, so people can
+ * (theoretically) build and install compilers on the firewall machine
+ * where they do not have X11 and QT. It may not be easy but should be
+ * possible. (Unless I broke it in 3.0)
+ */
 string findExecutable(const char *argv0)
 {
-#ifdef _WIN32
-/* see explanation about _pgmptr here:
-http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dllproc/base/getmodulefilename.asp
-*/
-    string res;
-
-    res = _pgmptr;
-    return res;
-#else
+//#ifdef _WIN32
+///* see explanation about _pgmptr here:
+//http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dllproc/base/getmodulefilename.asp
+//*/
+//    string res;
+//
+//    res = _pgmptr;
+//    return res;
+//#else
 
 #ifdef OS_LINUX
 /* on modern Linux systems full path to the executable is available in
@@ -96,7 +108,7 @@ http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dllproc/base/ge
 #else
     return guessExecPath(argv0);
 #endif
-#endif
+//#endif
 }
 
 

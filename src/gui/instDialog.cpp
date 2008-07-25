@@ -1627,7 +1627,8 @@ bool instDialog::testFirewall(Firewall *fw)
         cnf.fwdir     = s;
 */
 
-        cnf.diff_pgm = QString(appRootDir.c_str()) + cnf.diff_pgm;
+        cnf.diff_pgm = getPathToBinary(
+            cnf.diff_pgm.toAscii().constData()).c_str();
 
 #ifdef _WIN32
 	cnf.diff_pgm = cnf.diff_pgm + ".exe";
@@ -1710,9 +1711,13 @@ Can't compile firewall policy."),
         else
         {
             /* try to find compiler in appRootDir. */
-            string ts =  appRootDir + FS_SEPARATOR + compiler;
+            string ts =  getPathToBinary(compiler);
+
+            if (fwbdebug)
+                qDebug("Checking compiler in %s", ts.c_str());
+
             if ( QFile::exists( ts.c_str() ) )
-                compiler = appRootDir + FS_SEPARATOR + compiler;
+                compiler = ts;
         }
     }
 #endif

@@ -28,6 +28,7 @@
 #include "../../config.h"
 #include "global.h"
 #include "utils.h"
+#include "utils_no_qt.h"
 
 #include "iosaclAdvancedDialog.h"
 #include "SimpleTextEditor.h"
@@ -101,9 +102,9 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
         else
         {
             /* try to find compiler in appRootDir. */
-            string ts =  appRootDir + FS_SEPARATOR + compiler;
+            string ts =  getPathToBinary(compiler);
             if ( QFile::exists( ts.c_str() ) )
-                compiler = appRootDir + FS_SEPARATOR + compiler;
+                compiler = ts;
         }
     }
 #endif
