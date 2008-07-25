@@ -80,7 +80,7 @@ RCSFilePreview::RCSFilePreview(QWidget *parent): QDialog(parent)
     m_widget->RCSTreeView->setAllColumnsShowFocus( true );
     m_widget->RCSTreeView->setSelectionMode( QAbstractItemView::SingleSelection );
     m_widget->RCSTreeView->setRootIsDecorated( FALSE );
-    m_widget->RCSTreeView->sortByColumn( 0, Qt::AscendingOrder );
+//    m_widget->RCSTreeView->sortByColumn( 0, Qt::AscendingOrder );
 
     if (fwbdebug) qDebug("RCSFilePreview: constructor done");
 
@@ -114,7 +114,8 @@ void RCSFilePreview::selectedRevision(QTreeWidgetItem *itm)
     assert(rcs!=NULL);
     rcs->setSelectedRev(rev);
     m_widget->comment->setText( rcsComments[rev] );
-    if (fwbdebug) qDebug("RCSFilePreview::selectedRevision : %s",rev.toAscii().constData());
+    if (fwbdebug)
+        qDebug("RCSFilePreview::selectedRevision : %s",rev.toAscii().constData());
 }
 
 bool RCSFilePreview::showFileRLog( const QString &filename )
@@ -163,8 +164,7 @@ bool RCSFilePreview::showFileRLog( const QString &filename )
             itm->setText( 3, QString("    ")+(*i).locked_by );
 
             itemList.push_back(itm);
-            if (!lastItem)
-                lastItem = itm;
+            lastItem = itm;
         }
 
         if ((*i).rev.indexOf(QRegExp("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+"))!=-1)
@@ -189,7 +189,7 @@ bool RCSFilePreview::showFileRLog( const QString &filename )
     m_widget->RCSTreeView->scrollToItem( lastItem );
 
     m_widget->RCSTreeView->expandAll();
-    m_widget->RCSTreeView->sortByColumn(0, Qt::AscendingOrder);
+//    m_widget->RCSTreeView->sortByColumn(0, Qt::AscendingOrder);
     m_widget->RCSTreeView->resizeColumnToContents ( 0 );
     m_widget->RCSTreeView->resizeColumnToContents ( 1 );
 

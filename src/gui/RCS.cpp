@@ -122,7 +122,7 @@ bool Revision::operator<(const Revision &r) const
         if (v1!="" && v2=="") return false;
         if (v1.toInt()>v2.toInt()) return false;
         if (v1.toInt()<v2.toInt()) return true;
-        i++;
+//        i++;
     }
     return true;
 }
@@ -374,58 +374,6 @@ RCS::RCS(const QString &file)
         // sort list revisions; its defined like this:
         // QList<Revision> revisions
         qSort(revisions);
-
-#if 0
-        for ()
-        {
-            if ( (*i).find("head: ")==0)
-            {
-                head=(*i).section(QRegExp("\\s+"),1,1);
-                continue;
-            }
-
-            if ( (*i).find(QRegExp("^=========="))==0 ) break;
-
-            if ((*i).find(QRegExp("^revision\\s+[0-9\\.]+"))==0)
-            {
-                if (fwbdebug) qDebug("revision '%s'",(*i).ascii());
-
-                Revision r(filename);
-
-                r.rev       = (*i).section(QRegExp("\\s+"),1,1);
-                QString lb  = (*i).section(QRegExp("[\\s;]+"),4,4);
-                if (lb!="")
-                {
-                    r.locked_by = lb;
-                    locked      = true;
-                    locked_by   = lb;
-                    locked_rev  = r.rev;
-                }
-
-                r.log="";
-
-                for ( ;   (*i).find(QRegExp("^=========="))==-1 &&
-                          (*i).find(QRegExp("^----------"))==-1 &&
-                          i!=rcslog.end(); ++i )
-                {
-                    if ((*i).find(QRegExp("^date:.*author:.*state:"))==0)
-                    {
-                        r.date      = (*i).section(QRegExp("[\\s;]+"),1,2);
-                        r.author    = QString("    ")+(*i).section(QRegExp("[\\s;]+"),4,4);
-                        continue;
-                    }
-                    if ((*i).find(QRegExp("^branches:"))==0) continue;
-                    r.log= r.log + *i + "\n";
-                }
-                r.log.replace('\r',"");
-                revisions.push_back(r);
-                if (fwbdebug) qDebug("revision %s: '%s'",r.rev.ascii(),r.log.ascii());
-
-                if (i==rcslog.end()) break;
-            }
-        }
-//        qBubbleSort( revisions.begin() , revisions.end() );
-#endif
 
         inrcs         = true;
         tracking_file = true;
@@ -1020,7 +968,8 @@ bool        RCS::isDiff(const QString &rev) throw(libfwbuilder::FWException)
 //    while (proc->state() == QProcess::Running) ; // cxx_sleep(1);
 
     if (proc->state() == QProcess::NotRunning) return (proc->exitCode()!=0);
-    QString msg=QObject::tr("Fatal error running rcsdiff for file %1").arg(filename);
+    QString msg = QObject::tr(
+        "Fatal error running rcsdiff for file %1").arg(filename);
     throw( FWException( msg.toLatin1().constData() ) );
 }
 

@@ -1,3 +1,10 @@
+2008-07-24  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RCS.cpp (RCS::RCS): If data file has been added to RCS, show its
+	revision history properly sorted by the revision number in
+	ascending order and automatically select the latest revision in
+	the dialog
+
 2008-07-24  vadim  <vadim@vk.crocodile.org>
 
 	* init.cpp (guessExecPath): properly managing path to the bundle

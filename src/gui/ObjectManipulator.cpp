@@ -700,7 +700,7 @@ void ObjectManipulator::clearObjects()
     if (fwbdebug) qDebug("ObjectManipulator::clearObjects  history size: %d",
                          int(history.size()));
 
-    int N=m_objectManipulator->libs->count();
+    int N = m_objectManipulator->libs->count();
 
     if (fwbdebug) qDebug("ObjectManipulator::clearObjects  %d libs", N);
 
@@ -919,20 +919,19 @@ void ObjectManipulator::removeLib(int id)
     for (int i = 0 ; i < oms.size(); i++)
     {
         ObjectManipulator* pom = oms[i] ;
-
-    int              N = pom->m_objectManipulator->libs->count();
-    int            idx = 0;
-    vector<FWObject*>::iterator  i1=pom->idxToLibs.begin();
-    vector<QTreeWidget*>::iterator i2=pom->idxToTrees.begin();
-    for ( ; idx<N; ++idx,++i1,++i2)
-    {
-        if ( idx==id )
+        int N = pom->m_objectManipulator->libs->count();
+        int idx = 0;
+        vector<FWObject*>::iterator  i1 = pom->idxToLibs.begin();
+        vector<QTreeWidget*>::iterator i2 = pom->idxToTrees.begin();
+        for ( ; idx<N; ++idx,++i1,++i2)
         {
-            pom->m_objectManipulator->libs->removeItem( idx );
-            pom->idxToLibs.erase(i1);
-            pom->idxToTrees.erase(i2);
+            if ( idx==id )
+            {
+                pom->m_objectManipulator->libs->removeItem( idx );
+                pom->idxToLibs.erase(i1);
+                pom->idxToTrees.erase(i2);
+            }
         }
-    }
     }
 }
 
