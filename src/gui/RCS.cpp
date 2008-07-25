@@ -26,6 +26,7 @@
 #include "../../config.h"
 #include "global.h"
 #include "utils.h"
+#include "utils_no_qt.h"
 
 #include "RCS.h"
 

@@ -1713,8 +1713,7 @@ Can't compile firewall policy."),
             /* try to find compiler in appRootDir. */
             string ts =  getPathToBinary(compiler);
 
-            if (fwbdebug)
-                qDebug("Checking compiler in %s", ts.c_str());
+            if (fwbdebug) qDebug("Checking compiler in %s", ts.c_str());
 
             if ( QFile::exists( ts.c_str() ) )
                 compiler = ts;
