@@ -172,7 +172,7 @@ ProjectPanel::~ProjectPanel()
     delete m_panel;
 }
 
-void ProjectPanel::info(libfwbuilder::FWObject *obj, bool forced)
+void ProjectPanel::info(FWObject *obj, bool forced)
 {
     if (obj==NULL)
         return ;
@@ -265,7 +265,7 @@ void ProjectPanel::loadObjects()
     m_panel->om->loadObjects();
 }
 
-void ProjectPanel::loadObjects(libfwbuilder::FWObjectDatabase *db)
+void ProjectPanel::loadObjects(FWObjectDatabase *db)
 {
     m_panel->om->loadObjects(db);
 }
@@ -711,6 +711,15 @@ bool ProjectPanel::fileOpen()
 
     if (fileName.isEmpty()) return false;
 
+    return loadFile(fileName);
+}
+
+bool ProjectPanel::loadFile(const QString &fileName)
+{
+    if (fwbdebug)
+        qDebug("ProjectPanel::loadFile  fileName=%s",
+               fileName.toAscii().constData());
+
     RCSFilePreview  fp(this);
 
     bool hasRCS = fp.showFileRLog(fileName);
@@ -721,15 +730,15 @@ bool ProjectPanel::fileOpen()
         if (!systemFile && rcs!=NULL) fileClose();
 
         //try to get simple rcs instance from RCS preview
-        RCS *rcs = fp.getSelectedRev();
+        RCS *new_rcs = fp.getSelectedRev();
 
         //if preview cannot give RCS,
         //get a new RCS from file dialog
-        if (rcs==NULL)
-            rcs = new RCS(fileName);
+        if (new_rcs==NULL)
+            new_rcs = new RCS(fileName);
 
         //if RCS isn't still formed, it's an error
-        if (rcs==NULL)
+        if (new_rcs==NULL)
             return false;
 
 /***********************************************************************
@@ -740,7 +749,7 @@ bool ProjectPanel::fileOpen()
  */
         try
         {
-            rcs->co();
+            new_rcs->co();
 
         } catch (FWException &ex)
         {
@@ -750,28 +759,29 @@ bool ProjectPanel::fileOpen()
         }
 /***********************************************************************/
 
+        QList<QMdiSubWindow*> subWindowList = mw->getMdiArea()->subWindowList();
 
-
-        
-
-        QList<QMdiSubWindow *> subWindowList = mw->getMdiArea()->subWindowList();
-        QString fileName = rcs->getFileName();
+        QString fileName = new_rcs->getFileName();
         for (int i = 0 ; i < subWindowList.size();i++)
         {
             ProjectPanel * pp = dynamic_cast<ProjectPanel*>(
                 subWindowList[i]->widget());
             if (pp!=NULL && pp->getFileName() == fileName)
             {
-                load(this, rcs, pp->objdb );
+                load(this, new_rcs, pp->objdb );
 
-                if (rcs->isTemp())
-                    unlink(rcs->getFileName().toLatin1().constData());
+                if (new_rcs->isTemp())
+                    unlink(new_rcs->getFileName().toLatin1().constData());
                 return true ;
             }
         }
-        load(this, rcs );
+        load(this, new_rcs );
 
-        if (rcs->isTemp()) unlink(rcs->getFileName().toLatin1().constData());
+        if (new_rcs->isTemp())
+            unlink(new_rcs->getFileName().toLatin1().constData());
+
+        if (fwbdebug) qDebug("ProjectPanel::loadFile  done");
+
         return true;
     }
     return false;
@@ -884,9 +894,12 @@ void ProjectPanel::fileSaveAs()
 
         save();
 
-        mainW->addToRCSActionSetEn( !rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
-        mainW->fileDiscardActionSetEn( rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
-        mainW->fileCommitActionSetEn( rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
+        mainW->addToRCSActionSetEn(
+            !rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
+        mainW->fileDiscardActionSetEn(
+            rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
+        mainW->fileCommitActionSetEn(
+            rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
         mainW->fileSaveActionSetEn( !rcs->isRO() && !rcs->isTemp() );
     }
 }
@@ -925,28 +938,36 @@ void ProjectPanel::fileDiscard()
       tr("&Cancel"), QString::null,
       1 )==0 )
     {
-/* need to close the file without asking and saving, then reopen it again */
+        /* need to close the file without asking and saving, then
+         * reopen it again
+         */
 
         QString fname = rcs->getFileName();
 
         db()->setDirty(false);  // so it wont ask if user wants to save
         rcs->abandon();
-        fileClose();
 
-        try
-        {
-            RCS *rcs = new RCS(fname);
-            if (rcs==NULL) return;
-            rcs->co();
-            load(this, rcs );
-        } catch (FWException &ex)
-        {
-/* if there was an exception, abort operation. E.g. RCS::co may throw
- * exception */
-            load(this);
-            return;
-        }
-/***********************************************************************/
+        /* do everything fileClose() does except do not close mdiWindow
+         * because we'll need it again to reopen the file into
+         */
+        findObjectWidget->init();
+        if (isEditorVisible()) hideEditor();
+
+        if (rcs) delete rcs;
+        rcs=NULL;
+
+        FWObjectClipboard::obj_clipboard->clear();
+
+        firewalls.clear();
+        visibleFirewall = NULL;
+        visibleRuleSet = NULL;
+        clearFirewallTabs();
+        clearObjects();
+
+        /* loadFile calls fileClose, but only if file is currently
+         * open, which it isn't because we reset rcs to NULL
+         */
+        loadFile(fname);
     }
 }
 
@@ -984,131 +1005,137 @@ void ProjectPanel::fileAddToRCS()
     setWindowTitle( QString("Firewall Builder: ")+caption );
 
     mainW->addToRCSActionSetEn( !rcs->isInRCS() && !rcs->isRO());
-    mainW->fileDiscardActionSetEn( rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
-    mainW->fileCommitActionSetEn( rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
+    mainW->fileDiscardActionSetEn(
+        rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
+    mainW->fileCommitActionSetEn(
+        rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
 }
 
 //wrapers for some ObjectManipulator functions
-libfwbuilder::FWObject* ProjectPanel::getOpened()
+FWObject* ProjectPanel::getOpened()
 {
     return m_panel->om->getOpened();
 }
 
-libfwbuilder::FWObject* ProjectPanel::getCurrentLib()
+FWObject* ProjectPanel::getCurrentLib()
 {
     return m_panel->om->getCurrentLib();
 }
 
 
-void ProjectPanel::loadDataFromFw(libfwbuilder::Firewall *fw)
+void ProjectPanel::loadDataFromFw(Firewall *fw)
 {
-        m_panel->om->loadObjects();
+    m_panel->om->loadObjects();
 
-        if (fw)
-        {
-            m_panel->om->updateObjName(fw,"", false);
-            m_panel->om->editObject(fw);
-        }
+    if (fw)
+    {
+        m_panel->om->updateObjName(fw,"", false);
+        m_panel->om->editObject(fw);
+    }
 }
 
-libfwbuilder::FWObject* ProjectPanel::createObject(const QString &objType,
-                                          const QString &objName,
-                                          libfwbuilder::FWObject *copyFrom)
+FWObject* ProjectPanel::createObject(const QString &objType,
+                                     const QString &objName,
+                                     FWObject *copyFrom)
 {
     return m_panel->om->createObject(objType, objName, copyFrom);
 }
 
-libfwbuilder::FWObject* ProjectPanel::createObject(libfwbuilder::FWObject *parent,
-                                      const QString &objType,
-                                      const QString &objName,
-                                      libfwbuilder::FWObject *copyFrom)
+FWObject* ProjectPanel::createObject(FWObject *parent,
+                                     const QString &objType,
+                                     const QString &objName,
+                                     FWObject *copyFrom)
 {
     return m_panel->om->createObject(parent, objType, objName, copyFrom);
 }
 
 
-FWObject* ProjectPanel::copyObj2Tree(const QString &objType, const QString &objName,
-         FWObject *copyFrom, FWObject *parent, bool ask4Lib)
+FWObject* ProjectPanel::copyObj2Tree(const QString &objType,
+                                     const QString &objName,
+                                     FWObject *copyFrom,
+                                     FWObject *parent,
+                                     bool ask4Lib)
 {
-    return m_panel->om->copyObj2Tree(objType, objName, copyFrom, parent, ask4Lib);
+    return m_panel->om->copyObj2Tree(
+        objType, objName, copyFrom, parent, ask4Lib);
 }
 
-void ProjectPanel::moveObject(libfwbuilder::FWObject *target,
-                    libfwbuilder::FWObject *obj)
+void ProjectPanel::moveObject(FWObject *target,
+                              FWObject *obj)
 {
     m_panel->om->moveObject(target, obj);
 }
 
 void ProjectPanel::moveObject(const QString &targetLibName,
-                    libfwbuilder::FWObject *obj)
+                              FWObject *obj)
 {
     m_panel->om->moveObject(targetLibName, obj);
 }
 
-void ProjectPanel::autorename(libfwbuilder::FWObject *obj,
-                    const std::string &objtype,
-                    const std::string &namesuffix)
+void ProjectPanel::autorename(FWObject *obj,
+                              const std::string &objtype,
+                              const std::string &namesuffix)
 {
     m_panel->om->autorename(obj, objtype, namesuffix);
 }
 
 
-void ProjectPanel::updateLibColor(libfwbuilder::FWObject *lib)
+void ProjectPanel::updateLibColor(FWObject *lib)
 {
     m_panel->om->updateLibColor(lib);
 }
 
-void ProjectPanel::updateLibName(libfwbuilder::FWObject *lib)
+void ProjectPanel::updateLibName(FWObject *lib)
 {
     m_panel->om->updateLibName(lib);
 }
 
-void ProjectPanel::updateObjName(libfwbuilder::FWObject *obj,
-                       const QString &oldName,
-                       bool  askForAutorename)
+void ProjectPanel::updateObjName(FWObject *obj,
+                                 const QString &oldName,
+                                 bool  askForAutorename)
 {
     m_panel->om->updateObjName(obj, oldName, askForAutorename);
 }
 
-void ProjectPanel::updateObjName(libfwbuilder::FWObject *obj,
-                       const QString &oldName,
-                       const QString &oldLabel,
-                       bool  askForAutorename)
+void ProjectPanel::updateObjName(FWObject *obj,
+                                 const QString &oldName,
+                                 const QString &oldLabel,
+                                 bool  askForAutorename)
 {
     m_panel->om->updateObjName(obj, oldName, oldLabel, askForAutorename);
 }
 
 
-void ProjectPanel::updateLastModifiedTimestampForOneFirewall(libfwbuilder::FWObject *o)
+void ProjectPanel::updateLastModifiedTimestampForOneFirewall(FWObject *o)
 {
     m_panel->om->updateLastModifiedTimestampForOneFirewall(o);
 }
 
-void ProjectPanel::updateLastModifiedTimestampForAllFirewalls(libfwbuilder::FWObject *o)
+void ProjectPanel::updateLastModifiedTimestampForAllFirewalls(FWObject *o)
 {
     m_panel->om->updateLastModifiedTimestampForAllFirewalls(o);
 }
 
-void ProjectPanel::updateLastInstalledTimestamp(libfwbuilder::FWObject *o)
+void ProjectPanel::updateLastInstalledTimestamp(FWObject *o)
 {
     m_panel->om->updateLastInstalledTimestamp(o);
 }
 
-void ProjectPanel::updateLastCompiledTimestamp(libfwbuilder::FWObject *o)
+void ProjectPanel::updateLastCompiledTimestamp(FWObject *o)
 {
     m_panel->om->updateLastCompiledTimestamp(o);
 }
 
 
-libfwbuilder::FWObject* ProjectPanel::pasteTo(libfwbuilder::FWObject *target,
-                                    libfwbuilder::FWObject *obj,
-                                    bool openobj,
-                                    bool validateOnly)
+FWObject* ProjectPanel::pasteTo(FWObject *target,
+                                FWObject *obj,
+                                bool openobj,
+                                bool validateOnly)
 {
     return m_panel->om->pasteTo(target, obj, openobj, validateOnly);
 }
 
-void ProjectPanel::delObj(libfwbuilder::FWObject *obj,bool openobj)
+void ProjectPanel::delObj(FWObject *obj,bool openobj)
 {
     m_panel->om->delObj(obj, openobj);
 }
@@ -1123,25 +1150,25 @@ void ProjectPanel::openObject(QTreeWidgetItem *otvi)
     m_panel->om->openObject(otvi);
 }
 
-void ProjectPanel::openObject(libfwbuilder::FWObject *obj)
+void ProjectPanel::openObject(FWObject *obj)
 {
     m_panel->om->openObject(obj);
 }
 
-bool ProjectPanel::editObject(libfwbuilder::FWObject *obj)
+bool ProjectPanel::editObject(FWObject *obj)
 {
     return m_panel->om->editObject(obj);
 }
 
-void ProjectPanel::findAllFirewalls (std::list<libfwbuilder::Firewall *> &fws)
+void ProjectPanel::findAllFirewalls (std::list<Firewall *> &fws)
 {
     m_panel->om->findAllFirewalls (fws);
 }
 
-libfwbuilder::FWObject* ProjectPanel::duplicateObject(libfwbuilder::FWObject *target,
-                                            libfwbuilder::FWObject *obj,
-                                            const QString &name,
-                                            bool  askForAutorename)
+FWObject* ProjectPanel::duplicateObject(FWObject *target,
+                                        FWObject *obj,
+                                        const QString &name,
+                                        bool  askForAutorename)
 {
     return m_panel->om->duplicateObject(target, obj, name, askForAutorename);
 }
@@ -1207,7 +1234,7 @@ void ProjectPanel::deleteObj()
     m_panel->om->deleteObj();
 }
 
-libfwbuilder::FWObject* ProjectPanel::getSelectedObject()
+FWObject* ProjectPanel::getSelectedObject()
 {
     return m_panel->om->getSelectedObject();
 }
@@ -1260,12 +1287,12 @@ void ProjectPanel::closeEditor()
     oe->close();
 }
 
-void ProjectPanel::openEditor(libfwbuilder::FWObject *o)
+void ProjectPanel::openEditor(FWObject *o)
 {
     oe->open(o);
 }
 
-void ProjectPanel::openOptEditor(libfwbuilder::FWObject *o, ObjectEditor::OptType t)
+void ProjectPanel::openOptEditor(FWObject *o, ObjectEditor::OptType t)
 {
     oe->openOpt(o, t);
 }
@@ -1276,7 +1303,7 @@ void ProjectPanel::blankEditor()
 }
 
 
-libfwbuilder::FWObject* ProjectPanel::getOpenedEditor()
+FWObject* ProjectPanel::getOpenedEditor()
 {
     return oe->getOpened();
 }
@@ -1286,12 +1313,12 @@ ObjectEditor::OptType ProjectPanel::getOpenedOptEditor()
     return oe->getOpenedOpt();
 }
 
-void ProjectPanel::selectObjectInEditor(libfwbuilder::FWObject *o)
+void ProjectPanel::selectObjectInEditor(FWObject *o)
 {
     oe->selectObject(o);
 }
 
-void ProjectPanel::actionChangedEditor(libfwbuilder::FWObject *o)
+void ProjectPanel::actionChangedEditor(FWObject *o)
 {
     oe->actionChanged(o);
 }
@@ -1301,7 +1328,7 @@ bool ProjectPanel::validateAndSaveEditor()
     return oe->validateAndSave();
 }
 
-void ProjectPanel::setFDObject(libfwbuilder::FWObject *o)
+void ProjectPanel::setFDObject(FWObject *o)
 {
     fd->setObject(o);
     fd->show();
@@ -2933,18 +2960,18 @@ listOfLibraries *ProjectPanel::getAddOnLibs()
     return addOnLibs;
 }
 
-bool ProjectPanel::isSystem(libfwbuilder::FWObject *obj)
+bool ProjectPanel::isSystem(FWObject *obj)
 {
     return objectTreeFormat->isSystem(obj);
 }
 
-bool ProjectPanel::isStandardId(libfwbuilder::FWObject *obj)
+bool ProjectPanel::isStandardId(FWObject *obj)
 {
     return objectTreeFormat->isStandardId(obj);
 }
     
-bool ProjectPanel::validateForInsertion(libfwbuilder::FWObject *target,
-                                        libfwbuilder::FWObject *obj)
+bool ProjectPanel::validateForInsertion(FWObject *target,
+                                        FWObject *obj)
 {
     return objectTreeFormat->validateForInsertion(target, obj);
 }
@@ -2969,7 +2996,7 @@ bool ProjectPanel::getDeleteMenuState(const QString &objPath)
     return objectTreeFormat->getDeleteMenuState(objPath);
 }
 
-libfwbuilder::FWObject* ProjectPanel::createNewLibrary(libfwbuilder::FWObjectDatabase *db)
+FWObject* ProjectPanel::createNewLibrary(FWObjectDatabase *db)
 {
     return objectTreeFormat->createNewLibrary(db);
 }

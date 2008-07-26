@@ -266,10 +266,15 @@ public:
     
     bool saveIfModified();
     QString getDestDir(const QString &fname);
-    QString chooseNewFileName(const QString &fname, bool checkPresence,const QString &title);
+    QString chooseNewFileName(const QString &fname,
+                              bool checkPresence,
+                              const QString &title);
     void setFileName(const QString &fname);
-    void restoreDepends(libfwbuilder::FWObject *obj_old, libfwbuilder::FWObject *nobj, 
-       const std::map<int, libfwbuilder::FWObject *> &objByIds);
+    void restoreDepends(libfwbuilder::FWObject *obj_old,
+                        libfwbuilder::FWObject *nobj, 
+                        const std::map<int,
+                        libfwbuilder::FWObject *> &objByIds);
+    
  public slots:
     void newObject();
     void info();
@@ -331,6 +336,8 @@ public:
      
  signals:
      void restoreSelection_sign(bool same_widget);
+
+
 public:
     QString getFileName();
     bool editingLibrary();
@@ -384,6 +391,8 @@ protected:
     virtual void hideEvent( QHideEvent *ev);
     virtual void closeEvent( QCloseEvent * );
     virtual void resizeEvent ( QResizeEvent * event );
+
+    bool loadFile(const QString &fileName);
 };
 
 #endif

@@ -1,5 +1,9 @@
 2008-07-25  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWWindow.cpp (FWWindow::closeEvent): properly checking for
+	unsaved modifications when user hits File/Exit or tries to close
+	main window. 
+
 	* ProjectPanel.cpp (ProjectPanel::fileCommit): fixed bug (no #):
 	crash while doing File/Commit.
 

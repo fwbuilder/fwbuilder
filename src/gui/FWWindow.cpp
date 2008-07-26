@@ -414,18 +414,14 @@ void FWWindow::fileExit()
                 dynamic_cast<ProjectPanel*>(subWindowList[i]->widget ());
             if (project!=NULL)
             {
-                if (fwbdebug) qDebug("Calling project->fileClose()");
+                if (!project->saveIfModified()) return;  // abort operation
+                project->saveState();
                 project->fileClose();
             }
         }
- //       activeProject()->fileExit();
     }
- //   else
-
-    if (fwbdebug) qDebug("Calling QCoreApplication::exit(0)");
 
     QCoreApplication::exit(0);
-//    qApp->quit();
 }
 
 void FWWindow::fileCommit()
@@ -877,13 +873,13 @@ void FWWindow::findWhereUsed(FWObject * obj)
         activeProject()->findWhereUsed(obj);
 }
 
-void FWWindow::showEvent( QShowEvent *ev)
+void FWWindow::showEvent(QShowEvent *ev)
 {
     st->restoreGeometry(this, QRect(100,100,750,600) );
     QMainWindow::showEvent(ev);
 }
 
-void FWWindow::hideEvent( QHideEvent *ev)
+void FWWindow::hideEvent(QHideEvent *ev)
 {
     st->saveGeometry(this);
     QMainWindow::hideEvent(ev);
@@ -1371,17 +1367,25 @@ bool FWWindow::isSystem(libfwbuilder::FWObject *obj)
 }
 
 
-void FWWindow::closeEvent( QCloseEvent*)
+void FWWindow::closeEvent(QCloseEvent* ev)
 {   
     st->setInt("Window/maximized", activeProject()->isMaximized());
 
     QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
     for (int i = 0 ; i < subWindowList.size();i++)
     {
-        ProjectPanel * pp = dynamic_cast<ProjectPanel *>(subWindowList[i]->widget());
+        ProjectPanel * pp = dynamic_cast<ProjectPanel *>(
+            subWindowList[i]->widget());
+
         if (pp!=NULL)
         {
+            if (!pp->saveIfModified())
+            {
+                ev->ignore();
+                return;
+            }
             pp->saveState();
+            pp->fileClose();
         }
     }
 }
