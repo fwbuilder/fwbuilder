@@ -1,5 +1,8 @@
 2008-07-25  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ProjectPanel.cpp (ProjectPanel::fileCommit): fixed bug (no #):
+	crash while doing File/Commit.
+
 	* PolicyCompiler_ipt.cpp (checkForMatchingBroadcastAndMulticast):
 	fixed bug (no #): crash in fwb_ipt when interface object is used
 	in destination and chain is INPUT.

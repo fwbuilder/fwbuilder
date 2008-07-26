@@ -659,33 +659,38 @@ void ProjectPanel::fileProp()
 
 bool ProjectPanel::fileNew()
 {
-    QString nfn=chooseNewFileName(st->getWDir(),true,
-                                  tr("Choose name and location for the new file"));
+    QString nfn = chooseNewFileName(
+        st->getWDir(),true,
+        tr("Choose name and location for the new file"));
+
     if ( !nfn.isEmpty() )
     {
         //if (!saveIfModified() || !checkin(true)) return;
         if (!systemFile && rcs!=NULL) 
-			fileClose();       // fileClose calls load(this)
+            fileClose();       // fileClose calls load(this)
         else  
-			load(this);
+            load(this);
 
         visibleFirewall = NULL;
         setFileName(nfn);
         save();
         setupAutoSave();
     }
-	if (rcs!=NULL)
-	{
-    	mainW->addToRCSActionSetEn( !rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
-    	mainW->fileDiscardActionSetEn( rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
-    	mainW->fileCommitActionSetEn( rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
+    if (rcs!=NULL)
+    {
+    	mainW->addToRCSActionSetEn(
+            !rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
+    	mainW->fileDiscardActionSetEn(
+            rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
+    	mainW->fileCommitActionSetEn(
+            rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
     	mainW->fileSaveActionSetEn( !rcs->isRO() && !rcs->isTemp() );
-		return true ;
-	}
-	else
-	{
-		return false ;
-	}
+        return true ;
+    }
+    else
+    {
+        return false ;
+    }
 
 }
 
@@ -753,16 +758,15 @@ bool ProjectPanel::fileOpen()
         QString fileName = rcs->getFileName();
         for (int i = 0 ; i < subWindowList.size();i++)
         {
-            ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
-            if (pp!=NULL)
+            ProjectPanel * pp = dynamic_cast<ProjectPanel*>(
+                subWindowList[i]->widget());
+            if (pp!=NULL && pp->getFileName() == fileName)
             {
-                if (pp->getFileName () == fileName)
-                {
-                    load(this, rcs, pp->objdb );
+                load(this, rcs, pp->objdb );
 
-                    if (rcs->isTemp()) unlink(rcs->getFileName().toLatin1().constData());
-                   return true ;
-                }
+                if (rcs->isTemp())
+                    unlink(rcs->getFileName().toLatin1().constData());
+                return true ;
             }
         }
         load(this, rcs );
@@ -900,27 +904,9 @@ void ProjectPanel::fileExit()
 
 void ProjectPanel::fileCommit()
 {
-    // Steps:
-    // 1.save the file
-    // 2.checkin (checkin() returns false when user hits Cancel)
-    // 3. close file
-    // 4. reopen it
-
-    QString fname = rcs->getFileName();
     save();
     if (!checkin(true))  return;
-    fileClose();
-    try
-    {
-        RCS *rcs = new RCS(fname);
-        if (rcs==NULL) return;
-        rcs->co();
-        load(this,rcs);
-    } catch (FWException &ex)
-    {
-        load(this);
-        return;
-    }
+    rcs->co();
 }
 
 /*
