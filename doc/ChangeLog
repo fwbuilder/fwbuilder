@@ -1,5 +1,9 @@
 2008-07-25  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipt.cpp (checkForMatchingBroadcastAndMulticast):
+	fixed bug (no #): crash in fwb_ipt when interface object is used
+	in destination and chain is INPUT.
+
 	* init.cpp: removed #include <QCoreApplication>, trying to fix bug
 	#2027918: "Cannot compile fwbuilder-3.0.0-b413 on x86_64"
 

@@ -1704,9 +1704,18 @@ bool PolicyCompiler_ipt::splitIfIfaceAndDirectionBoth::processNext()
     return true;
 }
 
+/*
+ * Check if ip address of the object passed as argument "addr" matches
+ * broadcast address defined by an address/mask of one of the
+ * interfaces of the firewall or is a broadcast or multicast address
+ * itself, such as 255.255.255.255.
+ */
 bool PolicyCompiler_ipt::bridgingFw::checkForMatchingBroadcastAndMulticast(
     Address *addr)
 {
+    // addr can be interface, in which case it does not own ip address
+    // and can not match broadcast or multicast
+    if (!addr->hasInetAddress()) return false;
 
     const InetAddr *obj1_addr = addr->getAddressPtr();
     if (!obj1_addr->isAny() &&
@@ -1773,14 +1782,19 @@ bool PolicyCompiler_ipt::bridgingFw::processNext()
     {
         if ( checkForMatchingBroadcastAndMulticast(dst) )
         {
-/* bug #1101910: "Samba problem with Bridged Firewall"
- * need to split rule to take care of broadcasts forwarded by the bridge, as well 
- * as broadcasts that are accepted by the firewall itself. Need to do this only if
- * the rule is not associated with any bridging interfaces
- */
-            RuleElementItf *itfre=rule->getItf();   assert(itfre);
 
-            Interface *rule_iface = compiler->getCachedFwInterface(rule->getInterfaceId());
+/* bug #1101910: "Samba problem with Bridged Firewall" need to split
+ * rule to take care of broadcasts forwarded by the bridge, as well as
+ * broadcasts that are accepted by the firewall itself. Need to do
+ * this only if the rule is not associated with any bridging
+ * interfaces
+ */
+            RuleElementItf *itfre = rule->getItf();
+            assert(itfre);
+
+            Interface *rule_iface =
+                compiler->getCachedFwInterface(rule->getInterfaceId());
+
             if (rule_iface!=NULL && 
                 (rule_iface->isUnnumbered() ||
                  rule_iface->isBridgePort() )
@@ -1796,7 +1810,6 @@ bool PolicyCompiler_ipt::bridgingFw::processNext()
             }
         }
     }
-
 
     tmp_queue.push_back(rule);
 
