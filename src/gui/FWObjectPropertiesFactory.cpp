@@ -545,7 +545,8 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(PolicyRule *rule)
         
         FWObject *o = rule;
         while (o!=NULL && Firewall::cast(o)==NULL) o=o->getParent();
-        assert(o!=NULL);
+        if (o==NULL) return "";
+
         Firewall *f=Firewall::cast(o);
         string platform=f->getStr("platform");
         

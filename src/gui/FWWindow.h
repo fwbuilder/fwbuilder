@@ -44,7 +44,6 @@ namespace libfwbuilder {
     class PolicyRule;
     class RuleSet;
     class FWObject;
-
 };
 
 class QMdiSubWindow;
@@ -178,6 +177,10 @@ public slots:
     int  findFirewallInList(libfwbuilder::FWObject *f);
     void updateTreeViewItemOrder();
 
+    void reloadAllWindowsWithFile(ProjectPanel *pp);
+    void closeRuleSetInAllWindowsWhereOpen(libfwbuilder::RuleSet *rs);
+    void closeObjectInAllWindowsWhereOpen(libfwbuilder::FWObject *obj);
+    
     bool editingLibrary();
 
     void ensureObjectVisibleInRules(libfwbuilder::FWReference *obj);
@@ -353,6 +356,8 @@ public slots:
     listOfLibraries *getAddOnLibs();
 
     bool isSystem(libfwbuilder::FWObject *obj);
+
+
  protected:
 
     virtual void showEvent( QShowEvent *ev);

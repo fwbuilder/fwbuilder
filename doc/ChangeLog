@@ -1,3 +1,16 @@
+2008-07-26  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::moveObj): code
+	refactoring and cleaning up. Movig all loops over mdi child
+	windows from ObjectManipulator class to the FWWindow class that
+	owns all children windows. Along the way fixed few bugs, such as
+	restored functions "Duplicate to .. " and "Move to ..." that are
+	available via context menu associated with an object in the tree.
+
+	* ProjectPanel_file_ops.cpp (ProjectPanel::saveIfModified):
+	refactored class ProjectPanel to keep code more organized in
+	several modules.
+
 2008-07-25  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWWindow.cpp (FWWindow::closeEvent): properly checking for

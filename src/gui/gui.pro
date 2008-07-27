@@ -132,6 +132,8 @@ HEADERS += ../../config.h \
 	RuleRowInfo.h
 
 SOURCES += ProjectPanel.cpp \
+	ProjectPanel_file_ops.cpp \
+	ProjectPanel_state_ops.cpp \
     FWWindow.cpp \
     main.cpp \
 	utils.cpp \

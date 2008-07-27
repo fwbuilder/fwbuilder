@@ -452,8 +452,13 @@ bool ObjectEditor::validateAndSave()
     ischanged = isModified();
     //emit isChanged_sign(&ischanged);
 
+    if (fwbdebug)
+        qDebug("ObjectEditor::validateAndSave  "
+               "ischanged=%d db->isReadOnly()=%d",
+               ischanged, m_project->db()->isReadOnly());
+
 /* if nothing changed or tree is read-only, just close dialog */
-    if (!ischanged || !isTreeReadWrite(dialogs[ visible ],m_project->db()))
+    if (!ischanged || !isTreeReadWrite(dialogs[visible], m_project->db()))
     {
         if (fwbdebug) qDebug("ObjectEditor::validateAndSave: no changes");
         return true;

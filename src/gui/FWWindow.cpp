@@ -140,6 +140,8 @@
 #include <QMdiSubWindow>
 #include <QSignalMapper>
 #include "ProjectPanel.h"
+
+
 using namespace libfwbuilder;
 using namespace std;
 using namespace Ui;
@@ -203,7 +205,6 @@ ProjectPanel *FWWindow::newProjectPanel()
 {
     ProjectPanel *projectW = new ProjectPanel(m_space);
     projectW->initMain(this);
-    
     return projectW;
 }
 
@@ -232,8 +233,7 @@ void FWWindow::showSub(ProjectPanel *projectW)
 ProjectPanel* FWWindow::activeProject()
 {
     QMdiSubWindow *w = m_space->currentSubWindow();
-    if (w)
-        return dynamic_cast<ProjectPanel*>(w->widget());
+    if (w) return dynamic_cast<ProjectPanel*>(w->widget());
     return 0;
 }
 
@@ -283,23 +283,19 @@ void FWWindow::debug()
 
 void FWWindow::info(FWObject *obj, bool forced)
 {
-    if (fwbdebug)
-        qDebug("FWWindow::info called");
-    if (activeProject())
-        activeProject()->info(obj, forced);
+    if (fwbdebug) qDebug("FWWindow::info called");
+    if (activeProject()) activeProject()->info(obj, forced);
 }
 
 bool FWWindow::saveIfModified()
 {
-    if (activeProject())
-        return activeProject()->saveIfModified();
+    if (activeProject()) return activeProject()->saveIfModified();
     return false;
 }
 
 QString FWWindow::getDestDir(const QString &fname)
 {
-   if (activeProject())
-       return activeProject()->getDestDir(fname);
+   if (activeProject()) return activeProject()->getDestDir(fname);
    return "";
 }
 
@@ -313,14 +309,12 @@ QString FWWindow::chooseNewFileName(const QString &fname,
 
 void FWWindow::setFileName(const QString &fname)
 {
-    if (activeProject())
-        activeProject()->setFileName(fname);
+    if (activeProject()) activeProject()->setFileName(fname);
 }
 
 void FWWindow::fileProp()
 {
-    if (activeProject())
-        activeProject()->fileProp();
+    if (activeProject()) activeProject()->fileProp();
 }
 
 void FWWindow::fileNew()
@@ -362,20 +356,6 @@ void FWWindow::fileOpen()
     std::auto_ptr<ProjectPanel> proj(newProjectPanel());
     if (proj->fileOpen())
     {
-        if (activeProject()!=NULL)
-        {
-            if (activeProject()->getRCS()!=NULL)
-            {
-                if (activeProject()->getRCS()->getFileName()=="")
-                {
-                    m_space->removeSubWindow(m_space->currentSubWindow());
-                }	
-            }
-            else
-            {
-                m_space->removeSubWindow(m_space->currentSubWindow());
-            }
-        }
         showSub(proj.get());
         proj->readyStatus(true);
         proj->loadState();
@@ -386,21 +366,18 @@ void FWWindow::fileOpen()
 
 void FWWindow::fileClose()
 {
-    if (activeProject())
-        activeProject()->fileClose();
+    if (activeProject()) activeProject()->fileClose();
     recreateWindowsMenu();
 }
 
 void FWWindow::fileSave()
 {
-    if (activeProject())
-        activeProject()->fileSave();
+    if (activeProject()) activeProject()->fileSave();
 }
 
 void FWWindow::fileSaveAs()
 {
-    if (activeProject())
-        activeProject()->fileSaveAs();
+    if (activeProject()) activeProject()->fileSaveAs();
 }
 
 void FWWindow::fileExit()
@@ -426,8 +403,7 @@ void FWWindow::fileExit()
 
 void FWWindow::fileCommit()
 {
-    if (activeProject())
-        activeProject()->fileCommit();
+    if (activeProject()) activeProject()->fileCommit();
 }
 
 /*
@@ -436,20 +412,17 @@ void FWWindow::fileCommit()
  */
 void FWWindow::fileDiscard()
 {
-    if (activeProject())
-        activeProject()->fileDiscard();
+    if (activeProject()) activeProject()->fileDiscard();
 }
 
 void FWWindow::fileAddToRCS()
 {
-    if (activeProject())
-        activeProject()->fileAddToRCS();
+    if (activeProject()) activeProject()->fileAddToRCS();
 }
 
 bool FWWindow::editingLibrary()
 {
-    if (activeProject())
-        return activeProject()->editingLibrary();
+    if (activeProject()) return activeProject()->editingLibrary();
     return false;
 }
 
@@ -471,7 +444,7 @@ void FWWindow::load(QWidget *dialogs_parent)
         activeProject()->load(dialogs_parent);
 }
 
-libfwbuilder::FWObject* FWWindow::getVisibleFirewalls()
+FWObject* FWWindow::getVisibleFirewalls()
 { 
     if (activeProject())
         return activeProject()->getVisibleFirewall(); 
@@ -749,7 +722,7 @@ void FWWindow::editPaste()
 
 void FWWindow::compile()
 {
-    std::set<libfwbuilder::Firewall*> emp;
+    std::set<Firewall*> emp;
 
     instd = new instDialog(NULL,BATCH_COMPILE,emp);
     instd->show();
@@ -786,7 +759,7 @@ void FWWindow::install(set<Firewall*> vf)
 
 void FWWindow::install()
 {
-    std::set<libfwbuilder::Firewall*> emp;
+    std::set<Firewall*> emp;
     instd = new instDialog(NULL, BATCH_INSTALL, emp);
 
     instd->show();
@@ -976,8 +949,7 @@ void FWWindow::editPrefs()
  */
 void FWWindow::restoreRuleSetTab()
 {
-    if (activeProject())
-        activeProject()->restoreRuleSetTab();
+    if (activeProject()) activeProject()->restoreRuleSetTab();
 }
 
 /*
@@ -1026,15 +998,76 @@ void FWWindow::helpIndex()
 {
 }
 
+/* 
+ * find all windows that represent the same file as ProjectPanel pp
+ * and reload objects (except for the window attached to pp)
+ */
+void FWWindow::reloadAllWindowsWithFile(ProjectPanel *pp)
+{
+    if (fwbdebug)
+        qDebug("FWWindow::reloadAllWindowsWithFile pp=%p file=%s",
+               pp, pp->getRCS()->getFileName().toAscii().constData());
+
+    QList<QMdiSubWindow*> subWindowList = getMdiArea()->subWindowList();
+    QString fileName = pp->getRCS()->getFileName();
+    for (int i = 0 ; i < subWindowList.size(); i++)
+    {
+        ProjectPanel * other_pp = dynamic_cast<ProjectPanel*>(
+            subWindowList[i]->widget());
+        if (pp==other_pp) continue;
+        if (other_pp->getRCS()->getFileName()==fileName)
+        {
+            FWObject *obj = other_pp->m_panel->om->getOpened();
+
+            if (fwbdebug)
+                qDebug("FWWindow::reloadAllWindowsWithFile "
+                       "Object %p is opened in the other window", obj);
+
+            other_pp->m_panel->om->loadObjects();
+
+            if (fwbdebug)
+                qDebug("FWWindow::reloadAllWindowsWithFile "
+                       "Reopen object %p in the other window", obj);
+
+            other_pp->m_panel->om->openObject(obj, false);
+            other_pp->mdiWindow->update();
+        }
+    }
+}
+
+void FWWindow::closeRuleSetInAllWindowsWhereOpen(RuleSet *rs)
+{
+    QList<QMdiSubWindow*> subWindowList = getMdiArea()->subWindowList();
+    for (int i = 0 ; i < subWindowList.size(); i++)
+    {
+        ProjectPanel * pp = dynamic_cast<ProjectPanel*>(
+            subWindowList[i]->widget());
+        pp->clearFirewallTabs();
+        pp->closeRuleSet(rs);
+    }
+}
+
+void FWWindow::closeObjectInAllWindowsWhereOpen(FWObject *obj)
+{
+    QList<QMdiSubWindow*> subWindowList = getMdiArea()->subWindowList();
+    for (int i = 0 ; i < subWindowList.size(); i++)
+    {
+        ProjectPanel * pp = dynamic_cast<ProjectPanel*>(
+            subWindowList[i]->widget());
+        pp->m_panel->om->closeObject();
+        pp->mdiWindow->update();
+    }
+}
+
 //wrapers for some ObjectManipulator functions
-libfwbuilder::FWObject* FWWindow::getOpened()
+FWObject* FWWindow::getOpened()
 {
     if (activeProject())
         return activeProject()->getOpened();
     return 0;
 }
 
-libfwbuilder::FWObject* FWWindow::getCurrentLib()
+FWObject* FWWindow::getCurrentLib()
 {
     if (activeProject())
         return activeProject()->getCurrentLib();
@@ -1042,123 +1075,151 @@ libfwbuilder::FWObject* FWWindow::getCurrentLib()
 }
 
 
-void FWWindow::loadDataFromFw(libfwbuilder::Firewall *fw)
+void FWWindow::loadDataFromFw(Firewall *fw)
 {
     if (activeProject())
         activeProject()->loadDataFromFw(fw);
 }
 
-libfwbuilder::FWObject* FWWindow::createObject(const QString &objType,
-                                          const QString &objName,
-                                          libfwbuilder::FWObject *copyFrom)
+FWObject* FWWindow::createObject(const QString &objType,
+                                               const QString &objName,
+                                               FWObject *copyFrom)
 {
+    FWObject *res = NULL;
     if (activeProject())
-        return activeProject()->createObject(objType, objName, copyFrom);
-    return 0;
+    {
+        res = activeProject()->createObject(objType, objName, copyFrom);
+        reloadAllWindowsWithFile(activeProject());
+    }
+    return res;
 }
 
-libfwbuilder::FWObject* FWWindow::createObject(libfwbuilder::FWObject *parent,
-                                      const QString &objType,
-                                      const QString &objName,
-                                      libfwbuilder::FWObject *copyFrom)
+FWObject* FWWindow::createObject(FWObject *parent,
+                                               const QString &objType,
+                                               const QString &objName,
+                                               FWObject *copyFrom)
 {
+    FWObject *res = NULL;
     if (activeProject())
-        return activeProject()->createObject(parent, objType, objName, copyFrom);
-    return 0;
+    {
+        res =  activeProject()->createObject(parent, objType,
+                                             objName, copyFrom);
+        reloadAllWindowsWithFile(activeProject());
+    }
+    return res;
 }
 
-void FWWindow::moveObject(libfwbuilder::FWObject *target,
-                    libfwbuilder::FWObject *obj)
+void FWWindow::moveObject(FWObject *target, FWObject *obj)
 {
     if (activeProject())
+    {
         activeProject()->moveObject(target, obj);
+        reloadAllWindowsWithFile(activeProject());
+    }
 }
 
-void FWWindow::moveObject(const QString &targetLibName,
-                    libfwbuilder::FWObject *obj)
+void FWWindow::moveObject(const QString &targetLibName, FWObject *obj)
 {
     if (activeProject())
+    {
         activeProject()->moveObject(targetLibName, obj);
+        reloadAllWindowsWithFile(activeProject());
+    }
 }
 
-void FWWindow::autorename(libfwbuilder::FWObject *obj,
-                    const std::string &objtype,
-                    const std::string &namesuffix)
+void FWWindow::autorename(FWObject *obj,
+                          const std::string &objtype,
+                          const std::string &namesuffix)
 {
-    if (activeProject())
-        activeProject()->autorename(obj, objtype, namesuffix);
+    if (activeProject()) activeProject()->autorename(obj, objtype, namesuffix);
 }
 
 
-void FWWindow::updateLibColor(libfwbuilder::FWObject *lib)
+void FWWindow::updateLibColor(FWObject *lib)
 {
     if (activeProject())
+    {
         activeProject()->updateLibColor(lib);
+        reloadAllWindowsWithFile(activeProject());
+    }
 }
 
-void FWWindow::updateLibName(libfwbuilder::FWObject *lib)
+void FWWindow::updateLibName(FWObject *lib)
 {
     if (activeProject())
+    {
         activeProject()->updateLibName(lib);
+        reloadAllWindowsWithFile(activeProject());
+    }
 }
 
-void FWWindow::updateObjName(libfwbuilder::FWObject *obj,
-                       const QString &oldName,
-                       bool  askForAutorename)
+void FWWindow::updateObjName(FWObject *obj,
+                             const QString &oldName,
+                             bool  askForAutorename)
 {
     if (activeProject())
+    {
         activeProject()->updateObjName(obj, oldName, askForAutorename);
+        reloadAllWindowsWithFile(activeProject());
+    }
 }
 
-void FWWindow::updateObjName(libfwbuilder::FWObject *obj,
-                       const QString &oldName,
-                       const QString &oldLabel,
-                       bool  askForAutorename)
+void FWWindow::updateObjName(FWObject *obj,
+                             const QString &oldName,
+                             const QString &oldLabel,
+                             bool  askForAutorename)
 {
     if (activeProject())
-        activeProject()->updateObjName(obj, oldName, oldLabel, askForAutorename);
+    {
+        activeProject()->updateObjName(obj, 
+                                       oldName, oldLabel, askForAutorename);
+        reloadAllWindowsWithFile(activeProject());
+    }
 }
 
 
-void FWWindow::updateLastModifiedTimestampForOneFirewall(libfwbuilder::FWObject *o)
+void FWWindow::updateLastModifiedTimestampForOneFirewall(FWObject *o)
 {
     if (activeProject())
         activeProject()->updateLastModifiedTimestampForOneFirewall(o);
 }
 
-void FWWindow::updateLastModifiedTimestampForAllFirewalls(libfwbuilder::FWObject *o)
+void FWWindow::updateLastModifiedTimestampForAllFirewalls(FWObject *o)
 {
     if (activeProject())
         activeProject()->updateLastModifiedTimestampForAllFirewalls(o);
 }
 
-void FWWindow::updateLastInstalledTimestamp(libfwbuilder::FWObject *o)
+void FWWindow::updateLastInstalledTimestamp(FWObject *o)
 {
     if (activeProject())
         activeProject()->updateLastInstalledTimestamp(o);
 }
 
-void FWWindow::updateLastCompiledTimestamp(libfwbuilder::FWObject *o)
+void FWWindow::updateLastCompiledTimestamp(FWObject *o)
 {
     if (activeProject())
         activeProject()->updateLastCompiledTimestamp(o);
 }
 
 
-libfwbuilder::FWObject* FWWindow::pasteTo(libfwbuilder::FWObject *target,
-                                    libfwbuilder::FWObject *obj,
-                                    bool openobj,
-                                    bool validateOnly)
+FWObject* FWWindow::pasteTo(FWObject *target,
+                            FWObject *obj,
+                            bool openobj,
+                            bool validateOnly)
 {
     if (activeProject())
         return activeProject()->pasteTo(target, obj, openobj, validateOnly);
     return 0;
 }
 
-void FWWindow::delObj(libfwbuilder::FWObject *obj,bool openobj)
+void FWWindow::delObj(FWObject *obj,bool openobj)
 {
     if (activeProject())
+    {
         activeProject()->delObj(obj, openobj);
+        reloadAllWindowsWithFile(activeProject());
+    }
 }
 
 ObjectTreeView* FWWindow::getCurrentObjectTree()
@@ -1174,27 +1235,27 @@ void FWWindow::openObject(QTreeWidgetItem *otvi)
         activeProject()->openObject(otvi);
 }
 
-void FWWindow::openObject(libfwbuilder::FWObject *obj)
+void FWWindow::openObject(FWObject *obj)
 {
     if (activeProject())
         activeProject()->openObject(obj);
 }
 
-bool FWWindow::editObject(libfwbuilder::FWObject *obj)
+bool FWWindow::editObject(FWObject *obj)
 {
     if (activeProject())
         return activeProject()->editObject(obj);
     return false;
 }
 
-void FWWindow::findAllFirewalls (std::list<libfwbuilder::Firewall *> &fws)
+void FWWindow::findAllFirewalls (std::list<Firewall *> &fws)
 {
     if (activeProject())
         activeProject()->findAllFirewalls (fws);
 }
 
-libfwbuilder::FWObject* FWWindow::duplicateObject(libfwbuilder::FWObject *target,
-                                            libfwbuilder::FWObject *obj,
+FWObject* FWWindow::duplicateObject(FWObject *target,
+                                            FWObject *obj,
                                             const QString &name,
                                             bool  askForAutorename)
 {
@@ -1272,13 +1333,13 @@ void FWWindow::closeEditor()
         activeProject()->closeEditor();
 }
 
-void FWWindow::openEditor(libfwbuilder::FWObject *o)
+void FWWindow::openEditor(FWObject *o)
 {
     if (activeProject())
         activeProject()->openEditor(o);
 }
 
-void FWWindow::openOptEditor(libfwbuilder::FWObject *o, ObjectEditor::OptType t)
+void FWWindow::openOptEditor(FWObject *o, ObjectEditor::OptType t)
 {
     if (activeProject())
         activeProject()->openOptEditor(o, t);
@@ -1291,7 +1352,7 @@ void FWWindow::blankEditor()
 }
 
 
-libfwbuilder::FWObject* FWWindow::getOpenedEditor()
+FWObject* FWWindow::getOpenedEditor()
 {
     if (activeProject())
         return activeProject()->getOpenedEditor();
@@ -1305,13 +1366,13 @@ ObjectEditor::OptType FWWindow::getOpenedOptEditor()
     return ObjectEditor::optNone;
 }
 
-void FWWindow::selectObjectInEditor(libfwbuilder::FWObject *o)
+void FWWindow::selectObjectInEditor(FWObject *o)
 {
     if (activeProject())
         activeProject()->selectObjectInEditor(o);
 }
 
-void FWWindow::actionChangedEditor(libfwbuilder::FWObject *o)
+void FWWindow::actionChangedEditor(FWObject *o)
 {
     if (activeProject())
         activeProject()->actionChangedEditor(o);
@@ -1324,7 +1385,7 @@ bool FWWindow::validateAndSaveEditor()
     return false;
 }
 
-void FWWindow::setFDObject(libfwbuilder::FWObject *o)
+void FWWindow::setFDObject(FWObject *o)
 {
     if (activeProject())
         activeProject()->setFDObject(o);
@@ -1335,7 +1396,7 @@ QPrinter* FWWindow::getPrinter()
     return printer;
 }
 
-libfwbuilder::FWObjectDatabase* FWWindow::db() 
+FWObjectDatabase* FWWindow::db() 
 { 
     if (activeProject())
         return activeProject()->db(); 
@@ -1359,7 +1420,7 @@ listOfLibraries *FWWindow::getAddOnLibs()
 }
 
 
-bool FWWindow::isSystem(libfwbuilder::FWObject *obj)
+bool FWWindow::isSystem(FWObject *obj)
 {
     if (activeProject())
         return activeProject()->isSystem(obj);

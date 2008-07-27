@@ -45,8 +45,11 @@
 #include "FWBSettings.h"
 
 #include "FWWindow.h"
+
+
 using namespace std;
 using namespace libfwbuilder;
+
 
 LibraryDialog::LibraryDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
 {

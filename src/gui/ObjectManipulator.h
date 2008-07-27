@@ -101,7 +101,8 @@ class ObjectManipulator : public QWidget/*ObjectManipulator_q*/ {
     std::map<libfwbuilder::FWObject*, ObjectTreeViewItem*> allItems;
     QVector <ObjectManipulator*> getAllMdiObjectManipulators ();
     
-    ObjectTreeViewItem* insertObject( ObjectTreeViewItem *itm,libfwbuilder::FWObject *obj );
+    ObjectTreeViewItem* insertObject( ObjectTreeViewItem *itm,
+                                      libfwbuilder::FWObject *obj );
     void insertSubtree( ObjectTreeViewItem *itm,libfwbuilder::FWObject *obj );
 
     void removeObjectFromTreeView(libfwbuilder::FWObject *obj );
@@ -122,12 +123,15 @@ class ObjectManipulator : public QWidget/*ObjectManipulator_q*/ {
                                                  const QString &objType,
                                                  const QString &objName,
                                                  libfwbuilder::FWObject *copyFrom=NULL);
+
     void autorename(libfwbuilder::FWObject *obj,bool ask=true);
     void extractFirewallsFromGroup(
             libfwbuilder::ObjectGroup *gr,
             std::set<libfwbuilder::Firewall*> &fo);
 
     ProjectPanel *m_project;
+
+    
 public slots:
      virtual void libChanged(int l);
      virtual void switchingTrees(QWidget* w);
@@ -150,6 +154,11 @@ public slots:
       */
      bool editObject(libfwbuilder::FWObject *obj);
 
+     /*
+      * forget about currently opened object; close editor panel if it is open
+      */
+     void closeObject();
+
      void editSelectedObject();
      
      void contextMenuRequested(const QPoint &pos);
@@ -163,8 +172,11 @@ public slots:
                                           const QString &objType,
                                           const QString &objName,
                                           libfwbuilder::FWObject *copyFrom=NULL);
-     libfwbuilder::FWObject * copyObj2Tree(const QString &objType, const QString &objName,
-         libfwbuilder::FWObject *copyFrom, libfwbuilder::FWObject *parent=NULL, bool ask4Lib=true);
+     libfwbuilder::FWObject * copyObj2Tree(const QString &objType,
+                                           const QString &objName,
+                                           libfwbuilder::FWObject *copyFrom,
+                                           libfwbuilder::FWObject *parent=NULL,
+                                           bool ask4Lib=true);
 
      libfwbuilder::FWObject * copyObjWithDeep(libfwbuilder::FWObject *copyFrom);
      
@@ -199,9 +211,6 @@ public slots:
      void newInterval();
      void newPolicyRuleSet ();
      void newNATRuleSet ();
-     void duplicateObj(QAction*);
-     void duplicateObjUnderSameParent();
-     void moveObj(QAction*);
      void copyObj();
      void cutObj();
      void pasteObj();
@@ -210,6 +219,9 @@ public slots:
      void compile();
      void install();
 
+     void duplicateObj(QAction*);
+     void moveObj(QAction*);
+     
      void groupObjects();
      
      void openObject(QTreeWidgetItem *otvi);
@@ -226,152 +238,154 @@ public slots:
      virtual void findWhereUsedSlot();
 
      
- public:
-    void libChangedById(int id);
-    void changeFirstNotSystemLib();
-    std::vector<QTreeWidget*> getTreeWidgets() { return idxToTrees;};
+public:
+
+     void libChangedById(int id);
+     void changeFirstNotSystemLib();
+     std::vector<QTreeWidget*> getTreeWidgets() { return idxToTrees;};
      Ui::ObjectManipulator_q *m_objectManipulator;
-    void filterFirewallsFromSelection(
-            std::vector<libfwbuilder::FWObject*> &so,
-            std::set<libfwbuilder::Firewall*> &fo);
-    void autorename(libfwbuilder::FWObject *obj,
-                    const std::string &objtype,
-                    const std::string &namesuffix);
+     void filterFirewallsFromSelection(
+         std::vector<libfwbuilder::FWObject*> &so,
+         std::set<libfwbuilder::Firewall*> &fo);
+     void autorename(libfwbuilder::FWObject *obj,
+                     const std::string &objtype,
+                     const std::string &namesuffix);
     
-    ObjectManipulator( QWidget *parent);
-    ~ObjectManipulator();
-    void loadObjects();
-    void loadObjects(libfwbuilder::FWObjectDatabase *db);
-    void clearObjects();
+     ObjectManipulator( QWidget *parent);
+     ~ObjectManipulator();
+
+     void loadObjects();
+     void clearObjects();
     
-    bool validateDialog();
-    void invalidateDialog();
+     bool validateDialog();
+     void invalidateDialog();
 
-    void reopenCurrentItemParent();
+     void reopenCurrentItemParent();
 
-    void openObject(libfwbuilder::FWObject *obj, bool register_in_history);
-    void openObject(ObjectTreeViewItem *otvi,    bool register_in_history);
+     void openObject(libfwbuilder::FWObject *obj, bool register_in_history);
+     void openObject(ObjectTreeViewItem *otvi,    bool register_in_history);
 
-    libfwbuilder::FWObject* duplicateObject(libfwbuilder::FWObject *target,
-                                            libfwbuilder::FWObject *obj,
-                                            const QString &name = QString::null,
-                                            bool  askForAutorename=true);
-    void moveObject(libfwbuilder::FWObject *target,
-                    libfwbuilder::FWObject *obj);
+     libfwbuilder::FWObject* duplicateObject(libfwbuilder::FWObject *target,
+                                             libfwbuilder::FWObject *obj,
+                                             const QString &name = QString::null,
+                                             bool  askForAutorename=true);
+     void moveObject(libfwbuilder::FWObject *target,
+                     libfwbuilder::FWObject *obj);
 
-    void moveObject(const QString &targetLibName,
-                    libfwbuilder::FWObject *obj);
+     void moveObject(const QString &targetLibName, libfwbuilder::FWObject *obj);
     
-    libfwbuilder::FWObject* getOpened() { return currentObj; }
+     libfwbuilder::FWObject* getOpened() { return currentObj; }
 
-    void updateLibColor(libfwbuilder::FWObject *lib);
-    void updateLibName(libfwbuilder::FWObject *lib);
+     void updateLibColor(libfwbuilder::FWObject *lib);
+     void updateLibName(libfwbuilder::FWObject *lib);
 
-    void updateObjName(libfwbuilder::FWObject *obj,
-                       const QString &oldName,
-                       bool  askForAutorename=true);
-    void updateObjName(libfwbuilder::FWObject *obj,
-                       const QString &oldName,
-                       const QString &oldLabel,
-                       bool  askForAutorename=true);
+     void updateObjName(libfwbuilder::FWObject *obj,
+                        const QString &oldName,
+                        bool  askForAutorename=true);
+     void updateObjName(libfwbuilder::FWObject *obj,
+                        const QString &oldName,
+                        const QString &oldLabel,
+                        bool  askForAutorename=true);
     
-    ObjectTreeView* getCurrentObjectTree();
-    libfwbuilder::FWObject* getSelectedObject();
+     ObjectTreeView* getCurrentObjectTree();
+     libfwbuilder::FWObject* getSelectedObject();
 
-    /**
-     *  this method opens given library in the tree
-     */
-    void openLib(libfwbuilder::FWObject *lib);
+     /**
+      *  this method opens given library in the tree
+      */
+     void openLib(libfwbuilder::FWObject *lib);
 
-    /**
-     * returns pointer at a library that is currently opened in the tree
-     */
-    libfwbuilder::FWObject*  getCurrentLib();
+     /**
+      * returns pointer at a library that is currently opened in the tree
+      */
+     libfwbuilder::FWObject*  getCurrentLib();
 
-    /**
-     *  this method makes sure the system library is NOT opened in the
-     *  tree. If it is, it switches to the 'User' library. If one of
-     *  the user's libraries is already opened, it does nothing.
-     */
-    void closeSystemLib();
+     /**
+      *  this method makes sure the system library is NOT opened in the
+      *  tree. If it is, it switches to the 'User' library. If one of
+      *  the user's libraries is already opened, it does nothing.
+      */
+     void closeSystemLib();
 
-    libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
-                                    libfwbuilder::FWObject *obj,
-                                    bool openobj=true,
-                                    bool validateOnly=false, bool renew_id=true);
-
-
-    void delObj(libfwbuilder::FWObject *obj,bool openobj=true);
-
-    /**
-     * select whatever object is current in the tree (used to restore
-     * selected state of the tree item after it was unselected)
-     */
-    void select();
-
-    /**
-     * unselect whatever object is currently selected
-     */
-    void unselect();
-
-    /**
-     * returns true if anything is selected in the tree
-     */
-    bool isSelected();
-
-    /**
-     * controls whether "Deleted Objects" library is shown
-     */
-    void showDeletedObjects(bool f);
+     libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
+                                     libfwbuilder::FWObject *obj,
+                                     bool openobj=true,
+                                     bool validateOnly=false,
+                                     bool renew_id=true);
 
 
-    /**
-     * get boolean flags that describe state of the menu items.
-     * Can be used for both pop-up context menu and the main menu.
-     */ 
-    void getMenuState(bool haveMoveTargets,
-                      bool &dupMenuItem,
-                      bool &moveMenuItem,
-                      bool &copyMenuItem,
-                      bool &pasteMenuItem,
-                      bool &delMenuItem,
-                      bool &newMenuItem,
-                      bool &inDeletedObjects);
+     void delObj(libfwbuilder::FWObject *obj,bool openobj=true);
+
+     /**
+      * select whatever object is current in the tree (used to restore
+      * selected state of the tree item after it was unselected)
+      */
+     void select();
+
+     /**
+      * unselect whatever object is currently selected
+      */
+     void unselect();
+
+     /**
+      * returns true if anything is selected in the tree
+      */
+     bool isSelected();
+
+     /**
+      * controls whether "Deleted Objects" library is shown
+      */
+     void showDeletedObjects(bool f);
+
+
+     /**
+      * get boolean flags that describe state of the menu items.
+      * Can be used for both pop-up context menu and the main menu.
+      */ 
+     void getMenuState(bool haveMoveTargets,
+                       bool &dupMenuItem,
+                       bool &moveMenuItem,
+                       bool &copyMenuItem,
+                       bool &pasteMenuItem,
+                       bool &delMenuItem,
+                       bool &newMenuItem,
+                       bool &inDeletedObjects);
     
-    void updateLastModifiedTimestampForOneFirewall(libfwbuilder::FWObject *o);
-    void updateLastModifiedTimestampForAllFirewalls(libfwbuilder::FWObject *o);   
-    void updateLastInstalledTimestamp(libfwbuilder::FWObject *o);
-    void updateLastCompiledTimestamp(libfwbuilder::FWObject *o);
+     void updateLastModifiedTimestampForOneFirewall(libfwbuilder::FWObject *o);
+     void updateLastModifiedTimestampForAllFirewalls(libfwbuilder::FWObject *o);
+     void updateLastInstalledTimestamp(libfwbuilder::FWObject *o);
+     void updateLastCompiledTimestamp(libfwbuilder::FWObject *o);
     
-    std::list<libfwbuilder::Firewall * > findFirewallsForObject(libfwbuilder::FWObject *o);
-    void findAllFirewalls (std::list<libfwbuilder::Firewall *> &fws);
+     std::list<libfwbuilder::Firewall*> findFirewallsForObject(
+         libfwbuilder::FWObject *o);
+     void findAllFirewalls (std::list<libfwbuilder::Firewall *> &fws);
 
     
- signals:
+signals:
 /**
  * the dialog class should have a slot that can load object's data
  * into dialog elements when ObjectManipulator emits this signal
  */
-    void loadObject_sign(libfwbuilder::FWObject *);
+     void loadObject_sign(libfwbuilder::FWObject *);
 
 /**
  * the dialog class should have a slot that can verify data entered by
  * user in the dialog elements when ObjectManipulator emits this
  * signal. The validation result is returned in variable "bool *res"
  */
-    void validate_sign(bool *res);
+     void validate_sign(bool *res);
 
 /**
  * the dialog class should have a slot that can verify if the data in
  * dialog has been edited.
  */
-    void isChanged_sign(bool *res);
+     void isChanged_sign(bool *res);
 
 /**
  * the dialog class should have a slot that applies changes made by
  * the user and saves data in the object.
  */
-    void applyChanges_sign();
+     void applyChanges_sign();
 
 };
 
