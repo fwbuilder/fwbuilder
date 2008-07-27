@@ -705,19 +705,28 @@ void FWWindow::editCopy()
 void FWWindow::editCut()
 {
     if (activeProject())
+    {
         activeProject()->editCut();
+        reloadAllWindowsWithFile(activeProject());
+    }
 }
 
 void FWWindow::editDelete()
 {
     if (activeProject())
+    {
         activeProject()->editDelete();
+        reloadAllWindowsWithFile(activeProject());
+    }
 }
 
 void FWWindow::editPaste()
 {
     if (activeProject())
+    {
         activeProject()->editPaste();
+        reloadAllWindowsWithFile(activeProject());
+    }
 }
 
 void FWWindow::compile()
@@ -870,12 +879,18 @@ void FWWindow::newObject()
         activeProject()->newObject();
 }
 
+// ObjectManipulator::lockObject calls
+// mw->reloadAllWindowsWithFile(activeProject()) to update
+// other windows
 void FWWindow::lockObject()
 {
     if (activeProject())
         activeProject()->lockObject();
 }
 
+// ObjectManipulator::unlockObject calls
+// mw->reloadAllWindowsWithFile(activeProject()) to update
+// other windows
 void FWWindow::unlockObject()
 {
     if (activeProject())
@@ -1255,12 +1270,13 @@ void FWWindow::findAllFirewalls (std::list<Firewall *> &fws)
 }
 
 FWObject* FWWindow::duplicateObject(FWObject *target,
-                                            FWObject *obj,
-                                            const QString &name,
-                                            bool  askForAutorename)
+                                    FWObject *obj,
+                                    const QString &name,
+                                    bool  askForAutorename)
 {
     if (activeProject())
-        return activeProject()->duplicateObject(target, obj, name, askForAutorename);
+        return activeProject()->duplicateObject(target,
+                                                obj, name, askForAutorename);
     return 0;
 }
 

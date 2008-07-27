@@ -143,7 +143,11 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
 
         } else if (Host::isA(obj))
         {
-            str <<  Address::cast(obj)->getAddressPtr()->toString().c_str();
+            const InetAddr *addr = Address::cast(obj)->getAddressPtr();
+            if (addr)
+                str <<  addr->toString().c_str();
+            else
+                str << "(no ip address)";
 
             FWObject *co=obj->getFirstByType("Interface");
             if (co!=NULL) 

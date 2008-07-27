@@ -223,11 +223,11 @@ void FWObjectDropArea::dragEnterEvent( QDragEnterEvent *ev)
 
 void FWObjectDropArea::pasteObject()
 {
-    vector<int>::iterator i;
+    vector<std::pair<int,ProjectPanel*> >::iterator i;
     for( i= FWObjectClipboard::obj_clipboard->begin();
          i!=FWObjectClipboard::obj_clipboard->end(); ++i)
     {
-        FWObject *co= mw->db()->findInIndex(*i);
+        FWObject *co= mw->db()->findInIndex(i->first);
         insertObject(co);
     }
 
@@ -253,7 +253,7 @@ void FWObjectDropArea::editObject()
 
 }
 
-void FWObjectDropArea::mouseDoubleClickEvent ( QMouseEvent * event )
+void FWObjectDropArea::mouseDoubleClickEvent ( QMouseEvent * )
 {
     if (object!=NULL)
     {

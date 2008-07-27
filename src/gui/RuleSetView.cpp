@@ -460,7 +460,7 @@ QPixmap LoadPixmap(const QString path)
     return p;
 }
 
-RuleSetView::RuleSetView(ProjectPanel *project, int r, int c, QWidget *parent): 
+RuleSetView::RuleSetView(ProjectPanel *project, int , int c, QWidget *parent): 
               QTableView( /*r, c,*/ parent ),
               hme(this),
               ncols(c),
@@ -3588,11 +3588,11 @@ void RuleSetView::pasteObject()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    vector<int>::iterator i;
+    vector<std::pair<int,ProjectPanel*> >::iterator i;
     for (i= FWObjectClipboard::obj_clipboard->begin();
          i!=FWObjectClipboard::obj_clipboard->end(); ++i)
     {
-        FWObject *co= m_project->db()->findInIndex(*i);
+        FWObject *co= m_project->db()->findInIndex(i->first);
         if (Rule::cast(co)!=NULL)  pasteRuleAbove();
         else
         {
@@ -4322,11 +4322,11 @@ void RuleSetView::pasteRuleAbove()
     if (fwbdebug) qDebug("Firewall: pasteRuleAbove");
 
     /* pick rules in reverse order */
-    vector<int>::reverse_iterator i;
+    vector<std::pair<int,ProjectPanel*> >::reverse_iterator i;
     for (i= FWObjectClipboard::obj_clipboard->rbegin();
          i!=FWObjectClipboard::obj_clipboard->rend(); ++i)
     {
-        FWObject *co= m_project->db()->findInIndex(*i);
+        FWObject *co= m_project->db()->findInIndex(i->first);
         if (!Rule::cast(co)) continue;
         insertRule( firstSelectedRow, co);
     }
@@ -4366,11 +4366,11 @@ void RuleSetView::pasteRuleBelow()
         position = currentRow();
 
     int n=0;
-    vector<int>::iterator i;
+    vector<std::pair<int,ProjectPanel*> >::iterator i;
     for (i= FWObjectClipboard::obj_clipboard->begin();
          i!=FWObjectClipboard::obj_clipboard->end(); ++i,++n)
     {
-        FWObject *co= m_project->db()->findInIndex(*i);
+        FWObject *co= m_project->db()->findInIndex(i->first);
         if (!Rule::cast(co)) continue;
         insertRule( position+1+n, co);
     }

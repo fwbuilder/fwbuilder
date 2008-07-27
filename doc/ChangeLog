@@ -1,3 +1,11 @@
+2008-07-27  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::duplicateWithDependencies):
+	duplicate object that references other objects and create copies
+	of these other objects. Examples: firewall (rules reference other
+	object) and groups. This method is used in "Paste" operation. Will
+	use it for d&d as well.
+
 2008-07-26  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ObjectManipulator.cpp (ObjectManipulator::moveObj): code

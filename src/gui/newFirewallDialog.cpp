@@ -803,14 +803,16 @@ void newFirewallDialog::finishClicked()
         map<string,string> platforms = Resources::getPlatforms();
         map<string,string>::iterator i;
         for (i=platforms.begin(); i!=platforms.end(); i++)
-            Resources::setDefaultTargetOptions( i->first , Firewall::cast(no) );
+            Resources::setDefaultTargetOptions(i->first, Firewall::cast(no) );
 
         map<string,string> OSs = Resources::getOS();
         for (i=OSs.begin(); i!=OSs.end(); i++)
-            Resources::setDefaultTargetOptions( i->first  , Firewall::cast(no) );
+            Resources::setDefaultTargetOptions(i->first, Firewall::cast(no) );
 
-        no->setStr("platform", readPlatform(m_dialog->platform).toLatin1().constData() );
-        no->setStr("host_OS",  readHostOS(m_dialog->hostOS).toLatin1().constData() );
+        no->setStr("platform",
+                   readPlatform(m_dialog->platform).toLatin1().constData() );
+        no->setStr("host_OS",
+                   readHostOS(m_dialog->hostOS).toLatin1().constData() );
 
         nfw=Firewall::cast(no);
     } else
@@ -833,8 +835,10 @@ void newFirewallDialog::finishClicked()
         for (i=OSs.begin(); i!=OSs.end(); i++)
             Resources::setDefaultTargetOptions( i->first  , Firewall::cast(o) );
 
-        o->setStr("platform", readPlatform(m_dialog->platform).toLatin1().constData() );
-        o->setStr("host_OS",  readHostOS(m_dialog->hostOS).toLatin1().constData() );
+        o->setStr("platform",
+                  readPlatform(m_dialog->platform).toLatin1().constData() );
+        o->setStr("host_OS",
+                  readHostOS(m_dialog->hostOS).toLatin1().constData() );
 
         nfw=Firewall::cast(o);
 
@@ -854,18 +858,18 @@ void newFirewallDialog::finishClicked()
             bool    bridgeport =  itm->text(4).indexOf("Bridge")!=-1;
             QString physaddr=  itm->text(5);
 
-            QList<QTreeWidgetItem*> ltwi = m_dialog->iface_sl_list->findItems( name , Qt::MatchExactly );
+            QList<QTreeWidgetItem*> ltwi = m_dialog->iface_sl_list->findItems(
+                name , Qt::MatchExactly );
             assert(!ltwi.empty());
             QTreeWidgetItem *itm2 = ltwi[0];
             assert(itm2!=NULL);
 
             int     sl = itm2->text(3).toInt();
 
-            Interface *oi = Interface::cast(mw->createObject(nfw,Interface::TYPENAME,
-                                                             name));
-#ifdef USE_INTERFACE_POLICY
-            oi->add(new InterfacePolicy());
-#endif
+            Interface *oi = Interface::cast(mw->createObject(
+                                                nfw,
+                                                Interface::TYPENAME,
+                                                name));
             oi->setLabel( label.toLatin1().constData() );
 
             oi->setDyn(dyn);
@@ -875,8 +879,10 @@ void newFirewallDialog::finishClicked()
 
             if (!dyn && !unnum && !bridgeport)
             {
-                QString addrname=QString("%1:%2:ip").arg(m_dialog->obj_name->text()).arg(name);
-                IPv4 *oa = IPv4::cast(mw->createObject(oi, IPv4::TYPENAME,addrname));
+                QString addrname = QString("%1:%2:ip").arg(
+                    m_dialog->obj_name->text()).arg(name);
+                IPv4 *oa = IPv4::cast(mw->createObject(oi,
+                                                      IPv4::TYPENAME,addrname));
                 oa->setAddress( InetAddr(addr.toLatin1().constData()) );
 
                 bool ok = false ;

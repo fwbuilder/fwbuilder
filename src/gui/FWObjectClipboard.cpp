@@ -54,9 +54,10 @@ FWObjectClipboard::~FWObjectClipboard()
 
 void FWObjectClipboard::clear()
 {
-    for (vector<int>::iterator i=ids.begin(); i!=ids.end(); ++i)
+    for (vector<std::pair<int,ProjectPanel*> >::iterator i=ids.begin();
+         i!=ids.end(); ++i)
     {
-        FWObject *obj = mw->db()->findInIndex(*i);
+        FWObject *obj = i->second->db()->findInIndex(i->first);
         if (obj)
         {
             if (fwbdebug)
@@ -67,7 +68,6 @@ void FWObjectClipboard::clear()
         }
     }
     ids.clear();
-    window=NULL;
 }
 
 void FWObjectClipboard::add(FWObject *_obj, ProjectPanel * fww)
@@ -82,24 +82,26 @@ void FWObjectClipboard::add(FWObject *_obj, ProjectPanel * fww)
 
     _obj->ref();
 	
-    ids.push_back(_obj->getId());
-    if (fww!=NULL)
-        window = fww;
+    ids.push_back( pair<int,ProjectPanel*>(_obj->getId(), fww) );
 }
 
 FWObject* FWObjectClipboard::getObject()
 {
     if (ids.size()>0)
-        return mw->db()->findInIndex( ids.back() );
-    else
+    {
+        pair<int,ProjectPanel*> p = ids.back();
+        return p.second->db()->findInIndex( p.first );
+    } else
         return NULL;
 }
 
 FWObject* FWObjectClipboard::getObjectByIdx (int idx)
 {
-    int s1 = ids[idx];
-    ProjectPanel * w1 = window;
-    FWObject *co= w1->db()->findInIndex(s1);
-    return co;
+    if (idx < ids.size())
+    {
+        pair<int,ProjectPanel*> p = ids[idx];
+        return p.second->db()->findInIndex( p.first );
+    } else
+        return NULL;
 }
 

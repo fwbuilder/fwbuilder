@@ -37,8 +37,8 @@
 class ProjectPanel ;
 class FWObjectClipboard  {
 
-    std::vector<int> ids;
-    ProjectPanel* window ;
+    std::vector<std::pair<int,ProjectPanel*> > ids;
+
 public:
 
     FWObjectClipboard();
@@ -61,10 +61,15 @@ public:
 
     libfwbuilder::FWObject* getObjectByIdx (int idx);
 
-    std::vector<int>::iterator begin() { return ids.begin(); }
-    std::vector<int>::iterator end() { return ids.end(); }
-    std::vector<int>::reverse_iterator rbegin() { return ids.rbegin(); }
-    std::vector<int>::reverse_iterator rend() { return ids.rend(); }
+    std::vector<std::pair<int,ProjectPanel*> >::iterator begin()
+    { return ids.begin(); }
+    std::vector<std::pair<int,ProjectPanel*> >::iterator end()
+    { return ids.end(); }
+    std::vector<std::pair<int,ProjectPanel*> >::reverse_iterator rbegin()
+    { return ids.rbegin(); }
+    std::vector<std::pair<int,ProjectPanel*> >::reverse_iterator rend()
+    { return ids.rend(); }
+
     int size() { return ids.size(); }
     
     static FWObjectClipboard  *obj_clipboard;

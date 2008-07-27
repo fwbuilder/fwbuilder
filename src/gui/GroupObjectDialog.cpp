@@ -651,12 +651,12 @@ void GroupObjectDialog::cutObj()
 
 void GroupObjectDialog::pasteObj()
 {
-    vector<int>::iterator i;
+    vector<std::pair<int,ProjectPanel*> >::iterator i;
 
     for (i= FWObjectClipboard::obj_clipboard->begin();
          i!=FWObjectClipboard::obj_clipboard->end(); ++i)
     {
-        insertObject( mw->db()->findInIndex(*i) );
+        insertObject( mw->db()->findInIndex(i->first) );
     }
 
 //    if (FWObjectClipboard::obj_clipboard->getObject()==NULL) return;
