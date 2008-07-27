@@ -410,8 +410,8 @@ void FWObjectDatabase::removeFromIndex(int id)
 
 FWObject* FWObjectDatabase::checkIndex(int id)
 {
-    FWObject *o = obj_index[id];
-    return o;
+    if (obj_index.count(id)==0) return NULL;
+    return obj_index[id];
 }
 
 FWObject* FWObjectDatabase::findInIndex(int id)
@@ -822,7 +822,10 @@ void FWObjectTreeScanner::scanAndAdd(FWObject *dst,FWObject *source)
             if (o2==NULL)
             {
                 FWObject *osrc = srcMap[ pid ];
-                addRecursively( osrc);
+                if (osrc==NULL)
+                    cerr << "Object with ID=" << pid << " disappeared" << endl;
+                else
+                    addRecursively( osrc);
             }
         } else
             scanAndAdd( o1 , source );
@@ -1180,5 +1183,4 @@ bool FWObjectDatabase::_findWhereUsed(FWObject *o,
     if (res) resset.insert(p);
     return res;
 }
-
 

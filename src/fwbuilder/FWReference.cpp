@@ -145,17 +145,17 @@ int FWReference::getPointerId()
 }
 
 
-#ifdef _REF_DUMP_
-void   FWReference::dump(int offset)
+void   FWReference::dump(std::ostream &f,bool recursive,bool brief,int offset)
 {
-    FWObject::dump(offset);
+    FWObject::dump(f, recursive, brief, offset);
 
     FWObject* ptr=getPointer();
 
-    cout << string(offset,' ') << "Pointer: " << ptr << endl;
-    if (ptr) {
-	cout<< string(offset,' ') << "Ptr.name: " << ptr->getName() <<endl;
-	cout<< string(offset,' ') << "Ptr.id: "   << ptr->getId() <<endl;
+    f << string(offset,' ') << "PointerId: " << getPointerId() << endl;
+    f << string(offset,' ') << "Pointer: " << ptr << endl;
+    if (ptr)
+    {
+	f << string(offset,' ') << "Ptr.name: " << ptr->getName() <<endl;
+	f << string(offset,' ') << "Ptr.id: "   << ptr->getId() <<endl;
     }
 }
-#endif

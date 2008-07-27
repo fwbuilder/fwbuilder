@@ -1,3 +1,13 @@
+2008-07-27  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWObject.cpp (FWObject::replaceRef): moved replaceRef method
+	from Firewall to FWObject so it can be used for both firewalls and
+	groups.
+
+	* FWObject.cpp (FWObject::findDependencies): method that generates
+	list of pointers to the objects referenced by <this>, such
+	asobjects used in rules and groups.
+
 2008-07-26  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWObjectDatabase.cpp (FWObjectDatabase::init_id_dict):

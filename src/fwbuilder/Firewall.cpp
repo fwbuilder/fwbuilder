@@ -64,7 +64,7 @@ Firewall::Firewall()
     setInt("lastModified" ,0);
     setInt("lastInstalled" ,0);
     setInt("lastCompiled" ,0);
-    
+   
 }
 
 Firewall::Firewall(const FWObject *root,bool prepopulate) : Host(root,prepopulate)
@@ -220,27 +220,6 @@ bool  Firewall::validateChild(FWObject *o)
 	     otype==FirewallOptions::TYPENAME ));
 }
 
-/*
- * find all references to object with id "old_id" in objects in rs
- * (recursively) and replace them with references to object with id
- * "new_id" Use this to find all references to old firewall with
- * references to the new one when copying policy of the old one into
- * the new one.
- */
-void Firewall::replaceRef(FWObject *rs, int old_id, int new_id)
-{
-    FWReference *ref=FWObjectReference::cast(rs);
-    if (ref==NULL)
-    {
-        for (FWObject::iterator j1=rs->begin(); j1!=rs->end(); ++j1)
-            replaceRef( *j1, old_id, new_id);
-    } else
-    { 
-        if (ref->getPointerId()==old_id)
-            ref->setPointerId(new_id);
-    }
-}
-
 FWObject& Firewall::duplicate(const FWObject *obj,
                               bool preserve_id) throw(FWException)
 {
@@ -272,7 +251,7 @@ FWObject& Firewall::duplicate(const FWObject *obj,
         addCopyOf(*it, preserve_id);
     }
 
-    replaceRef(this, obj->getId(), getId() );
+    replaceRef(obj->getId(), getId() );
 
     for (FWObjectTypedChildIterator m = obj->findByType(Interface::TYPENAME);
          m!=m.end(); ++m ) 
@@ -280,7 +259,7 @@ FWObject& Firewall::duplicate(const FWObject *obj,
         FWObject *o   = *m;
         FWObject *o1  = addCopyOf(o,preserve_id);
 
-        replaceRef(this, o->getId(),   o1->getId()   );
+        replaceRef(o->getId(),   o1->getId()   );
 
         o1->destroyChildren();
 
@@ -291,7 +270,7 @@ FWObject& Firewall::duplicate(const FWObject *obj,
             FWObject *oa1= o1->addCopyOf(oa,preserve_id);
 
             if (oa!=NULL && oa1!=NULL)
-                replaceRef(this, oa->getId(),  oa1->getId() );
+                replaceRef(oa->getId(),  oa1->getId() );
         }
 
         for (FWObjectTypedChildIterator k=o->findByType(IPv6::TYPENAME);
@@ -301,7 +280,7 @@ FWObject& Firewall::duplicate(const FWObject *obj,
             FWObject *oa1= o1->addCopyOf(oa,preserve_id);
 
             if (oa!=NULL && oa1!=NULL)
-                replaceRef(this, oa->getId(),  oa1->getId() );
+                replaceRef(oa->getId(),  oa1->getId() );
         }
 
         for (FWObjectTypedChildIterator k = o->findByType(physAddress::TYPENAME);
@@ -311,7 +290,7 @@ FWObject& Firewall::duplicate(const FWObject *obj,
             FWObject *opa1= o1->addCopyOf(opa,preserve_id);
 
             if (opa!=NULL && opa1!=NULL)
-                replaceRef(this, opa->getId(),  opa1->getId() );
+                replaceRef(opa->getId(),  opa1->getId() );
         }
     }
 
@@ -331,29 +310,35 @@ void   Firewall::updateLastInstalledTimestamp()
 {
     setInt("lastInstalled",time(NULL));
 }
+
 void Firewall::updateLastModifiedTimestamp()
 {
     setInt("lastModified",time(NULL));
 }
+
 bool Firewall::needsInstall()
 {
     if (getLastInstalled()==0 || getLastCompiled()==0) return true;
     return !(getLastModified()<=getLastCompiled() && 
             getLastCompiled()<=getLastInstalled());
 }
+
 bool Firewall::needsCompile()
 {
     return getLastModified()>getLastCompiled() || getLastCompiled()==0;
 }
+
 time_t Firewall::getLastModified()
 {
     return getInt("lastModified");
     
 }
+
 time_t Firewall::getLastInstalled()
 {
     return getInt("lastInstalled");
 }
+
 time_t Firewall::getLastCompiled()
 {
     return getInt("lastCompiled");
@@ -363,11 +348,14 @@ void   Firewall::updateLastCompiledTimestamp()
 {
     setInt("lastCompiled",time(NULL));
 }
+
 bool   Firewall::getInactive()
 {
     return getBool("inactive");
 }
+
 void   Firewall::setInactive(bool b)
 {
     setBool("inactive",b);
 }
+

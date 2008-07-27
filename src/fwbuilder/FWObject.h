@@ -108,10 +108,14 @@ protected:
 
     void clearRefCounter() { ref_counter=0; }
     
-    void      _removeAll(FWObject *rm);
-    void      _removeAllRef(FWObject *rm);
-    void      _adopt(FWObject *obj);   // increments reference
-    void      _moveToDeletedObjects(FWObject *obj);
+    void _removeAll(FWObject *rm);
+    void _removeAllRef(FWObject *rm);
+    void _adopt(FWObject *obj);   // increments reference
+    void _moveToDeletedObjects(FWObject *obj);
+    void _replaceRef(FWObject *rs, int oldfw_id, int newfw_id, int &counter);
+    void _findDependencies_internal(FWObject *obj,
+                                    std::list<FWObject*> &deps,
+                                    int anti_loop_id);
     
     /**
      * deletes all objects in the tree regardless of their usage counter
@@ -394,6 +398,26 @@ public:
      */
     FWObject* findObjectByName(const std::string &type,
                                const std::string &name) throw(FWException);
+
+    /**
+     * finds a child object of a given type with an attribute attr
+     */
+    FWObject* findObjectByAttribute(const std::string &attr,
+                                    const std::string &val) throw(FWException);
+
+    /**
+     * if this object has any references as its children, replace IDs these
+     * references point to.
+     */
+    int replaceRef(int oldfw_id, int newfw_id);
+
+    /**
+     * recursively find all FWReference objects that are children of
+     * this and generate list of pointers to the objects these
+     * references point to.
+     */
+    void findDependencies(std::list<FWObject*> &deps);
+
     
     virtual void    setDirty(bool f);
     virtual bool    isDirty();

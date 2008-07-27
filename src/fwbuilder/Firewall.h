@@ -30,6 +30,8 @@
 #include <fwbuilder/Host.h>
 #include <time.h>   // for time_t
 
+#include <list>
+
 namespace libfwbuilder
 {
 
@@ -40,12 +42,8 @@ namespace libfwbuilder
 
 class Firewall : public Host 
 {
-    
-    protected:
 
-    void replaceRef(FWObject *rs, int oldfw_id, int newfw_id);
-
-    public:
+public:
     
     Firewall();
     Firewall(const FWObject *root,bool prepopulate);
@@ -71,7 +69,8 @@ class Firewall : public Host
      * replaces references to the old firewall in all policy and NAT
      * rules with references to 'this'
      */
-    virtual FWObject& duplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+    virtual FWObject& duplicate(const FWObject *obj,
+                                bool preserve_id = true) throw(FWException);
 
     Policy  *getPolicy();
     NAT     *getNAT();
@@ -87,7 +86,7 @@ class Firewall : public Host
     bool   needsCompile();
     bool   getInactive();
     void   setInactive(bool b);
-    
+
 };
 
 }

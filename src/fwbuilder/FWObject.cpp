@@ -33,6 +33,12 @@
 #include <fwbuilder/FWObjectReference.h>
 #include <fwbuilder/Library.h>
 
+#include <fwbuilder/FWOptions.h>
+#include <fwbuilder/RuleSet.h>
+#include <fwbuilder/RuleElement.h>
+#include <fwbuilder/Rule.h>
+#include <fwbuilder/Host.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 // #include <unistd.h>
@@ -251,6 +257,24 @@ FWObject* FWObject::findObjectByName(const string &type,
         FWObject *o=*j;
 
         o=o->findObjectByName(type,name);
+        if(o) return o;
+    }
+
+    return NULL; // not found
+}
+
+FWObject* FWObject::findObjectByAttribute(const std::string &attr,
+                                          const std::string &val)
+    throw(FWException)
+{
+    if (getStr(attr)==val) return this;
+
+    list<FWObject*>::iterator j;
+    for(j=begin(); j!=end(); ++j)     
+    {
+        FWObject *o=*j;
+
+        o=o->findObjectByAttribute(attr, val);
         if(o) return o;
     }
 
@@ -1262,5 +1286,72 @@ FWObject::tree_iterator FWObject::tree_begin()
 FWObject::tree_iterator FWObject::tree_end()
 {
     return FWObject::tree_iterator( (FWObject*)(-1) );
+}
+
+/*
+ * find all references to object with id "old_id" in objects in rs
+ * (recursively) and replace them with references to object with id
+ * "new_id" Use this to find all references to old firewall with
+ * references to the new one when copying policy of the old one into
+ * the new one.
+ */
+int FWObject::replaceRef(int old_id, int new_id)
+{
+    int ref_replacement_counter = 0;
+    _replaceRef(this, old_id, new_id, ref_replacement_counter);
+    return ref_replacement_counter;
+}
+
+void FWObject::_replaceRef(FWObject *rs, int old_id, int new_id,
+                           int &counter)
+{
+    FWReference *ref = FWReference::cast(rs);
+    if (ref==NULL)
+    {
+        for (FWObject::iterator j1=rs->begin(); j1!=rs->end(); ++j1)
+            _replaceRef( *j1, old_id, new_id, counter);
+    } else
+    { 
+        if (ref->getPointerId()==old_id)
+        {
+            ref->setPointerId(new_id);
+            counter++;
+        }
+    }
+}
+
+void FWObject::findDependencies(list<FWObject*> &deps)
+{
+    int loop_id = time(NULL);
+    _findDependencies_internal(this, deps, loop_id);
+}
+
+void FWObject::_findDependencies_internal(FWObject *obj,
+                                          list<FWObject*> &deps,
+                                          int anti_loop_id)
+{
+    if (obj==NULL) return;
+    if (FWOptions::cast(obj)) return;
+    if (FWReference::cast(obj)!=NULL)
+    {
+        _findDependencies_internal(FWReference::cast(obj)->getPointer(),
+                                   deps, anti_loop_id);
+    } else
+    {
+        if (obj->getInt(".anti_loop")==anti_loop_id) return;
+        obj->setInt(".anti_loop", anti_loop_id);
+
+        if (!RuleElement::cast(obj) && !Rule::cast(obj) && !RuleSet::cast(obj))
+            deps.push_back(obj);
+
+        if (Group::cast(obj) || RuleSet::cast(obj) || Host::cast(obj))
+        {
+            for (FWObject::iterator j1=obj->begin(); j1!=obj->end(); ++j1)
+            {
+                FWObject *o = *j1;
+                _findDependencies_internal(o, deps, anti_loop_id);
+            }
+        }
+    }
 }
 
