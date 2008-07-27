@@ -160,6 +160,9 @@ void FWObjectDatabase::init_id_dict()
         id_dict[ANY_SERVICE_ID] = "sysid1";
         id_dict[ANY_INTERVAL_ID] = "sysid2";
         id_dict[DELETED_OBJECTS_ID] = "sysid99";
+        id_dict[STANDARD_LIB_ID] = "syslib000";
+        id_dict[TEMPLATE_LIB_ID] = "syslib100";
+        id_dict[DELETED_OBJECTS_ID] = "sysid99";
 
         for (map<int,string>::iterator i=id_dict.begin(); i!=id_dict.end(); ++i)
             id_dict_reverse[i->second] = i->first;

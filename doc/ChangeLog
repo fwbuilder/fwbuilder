@@ -1,3 +1,9 @@
+2008-07-26  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWObjectDatabase.cpp (FWObjectDatabase::init_id_dict):
+	registering standard string ids for standard objects, deleted
+	objects and templates libraries.
+
 2008-07-21  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* fwbuilder.pro: removed unnecessary override in target.path to
