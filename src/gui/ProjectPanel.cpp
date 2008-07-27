@@ -702,12 +702,9 @@ void ProjectPanel::updateLastCompiledTimestamp(FWObject *o)
 }
 
 
-FWObject* ProjectPanel::pasteTo(FWObject *target,
-                                FWObject *obj,
-                                bool openobj,
-                                bool validateOnly)
+FWObject* ProjectPanel::pasteTo(FWObject *target, FWObject *obj)
 {
-    return m_panel->om->pasteTo(target, obj, openobj, validateOnly);
+    return m_panel->om->pasteTo(target, obj, true);
 }
 
 void ProjectPanel::delObj(FWObject *obj,bool openobj)

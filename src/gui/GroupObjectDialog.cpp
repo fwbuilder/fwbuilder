@@ -469,7 +469,7 @@ void GroupObjectDialog::applyChanges()
 
     for (set<FWObject*>::iterator k1=diff.begin(); k1!=diff.end(); ++k1)
     {
-        if (m_project->isSystem(obj))  mw->pasteTo(obj,*k1, false);
+        if (m_project->isSystem(obj))  mw->pasteTo(obj, *k1);
         else                obj->addRef( *k1);
     }
 

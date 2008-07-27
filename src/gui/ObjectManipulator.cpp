@@ -1184,6 +1184,8 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
                                      bool &newMenuItem,
                                      bool &inDeletedObjects)
 {
+    if (fwbdebug) qDebug("ObjectManipulator::getMenuState");
+
     dupMenuItem=true;
     moveMenuItem=true;
     copyMenuItem=true;
@@ -1225,8 +1227,9 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
                     //QString s2 = obj->getTypeName().c_str();
                 }
                 QString s3 = obj->getTypeName().c_str();
-                FWObject *nobj=pasteTo( obj, co, false, true);
-                pasteMenuItem = pasteMenuItem && (nobj!=NULL);
+                
+                bool validated = validateForPaste(obj, co);
+                pasteMenuItem = pasteMenuItem && validated;
             }
         }
 
@@ -1277,6 +1280,7 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
             newMenuItem = false;
 
     }
+    if (fwbdebug) qDebug("ObjectManipulator::getMenuState done");
 }
 
 void ObjectManipulator::find()
@@ -1597,35 +1601,64 @@ void ObjectManipulator::pasteObj()
         FWObject *co = FWObjectClipboard::obj_clipboard->getObjectByIdx(idx);
         if (Interface::isA(co) && (Firewall::isA(obj) || Host::isA(obj)))
         {            
-            pasteTo (obj, co, false, false, true);
+            pasteTo(obj, co, true);
             continue ;
         }
 
         if ((IPv4::isA(co) || IPv6::isA(co) || physAddress::isA(co)) &&
             Interface::isA(obj))
         {            
-            pasteTo (obj, co, false, false, true);
+            pasteTo(obj, co, true);
             continue ;
         }
 
-        nobj = pasteTo(obj, co);
-#if 0
-        nobj=co->getRoot()->create(co->getTypeName());
-        nobj->duplicate(co,true);
-        nobj->setId(FWObjectDatabase::generateUniqueId());
-        nobj->setRoot(co->getRoot());
-        copyObjWithDeep(nobj);
-#endif
+        nobj = pasteTo(obj, co, true);
+        openObject(nobj);
+
         idx++;
     }
     mw->reloadAllWindowsWithFile(m_project);
 }
 
-FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
-                                      bool openobj, bool validateOnly,
-                                      bool renew_id)
+bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj)
 {
     FWObject *ta=target;
+    if (IPv4::isA(ta) || IPv6::isA(ta)) ta=ta->getParent();
+
+    if (m_project->isSystem(ta))
+        return m_project->validateForInsertion(ta,obj);
+
+    Host      *hst  = Host::cast(ta);   // works for firewall, too
+    Interface *intf = Interface::cast(ta);
+
+    if (hst!=NULL)  return (hst->validateChild(obj));
+    if (intf!=NULL) return (intf->validateChild(obj));
+
+    Group *grp=Group::cast(ta);
+    if (grp!=NULL) return grp->validateChild(obj);
+    
+    return false;
+}
+
+FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
+                                      bool renew_id)
+{
+    if (!validateForPaste(target, obj))
+    {
+        QMessageBox::warning(
+            this,"Firewall Builder",
+            QObject::tr("Impossible to insert object %1 (type %2) into %3\n"
+                        "because of incompatible type.")
+            .arg(obj->getName().c_str())
+            .arg(obj->getTypeName().c_str())
+            .arg(target->getName().c_str()),
+            "&Continue", QString::null, QString::null,
+            0, 1 );
+
+        return NULL;
+    }
+
+    FWObject *ta = target;
 
     openLib(ta->getLibrary());
 
@@ -1636,44 +1669,20 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
     {
 /* clipboard holds a copy of the object */
 
-        if (m_project->isSystem(ta))
-        {
-            if (!m_project->validateForInsertion(ta,obj))
-            {
-                if (validateOnly) return NULL;
-
-                QMessageBox::warning(
-                    this,"Firewall Builder",
-                    QObject::tr("Impossible to insert object %1 (type %2) into %3\nbecause of incompatible type.")
-                    .arg(obj->getName().c_str())
-                    .arg(obj->getTypeName().c_str())
-                    .arg(target->getName().c_str()),
-                    "&Continue", QString::null, QString::null,
-                    0, 1 );
-
-                return obj;
-            }
-        }
-
         if (m_project->isSystem(ta) &&
             (Firewall::isA(obj) || Group::cast(obj)) &&
             obj->getRoot()!=ta->getRoot())
         {
             FWObject *nobj = duplicateWithDependencies(target, obj);
             insertSubtree( allItems[ta], nobj);
-            if (openobj) openObject(nobj);
             return nobj;
         }
 
         Host      *hst  = Host::cast(ta);   // works for firewall, too
         Interface *intf = Interface::cast(ta);
 
-        if ( m_project->isSystem(ta) ||
-             (hst!=NULL  && hst->validateChild(obj)) ||
-             (intf!=NULL && intf->validateChild(obj))
-        )
+        if ( m_project->isSystem(ta))
         {
-            if (validateOnly) return obj;
 /* add a copy of the object to system group */
 
             FWObject *nobj= m_project->db()->create(obj->getTypeName());
@@ -1685,15 +1694,13 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
             ta->add( nobj );
 
             insertSubtree( allItems[ta], nobj);
-            if (openobj) openObject(nobj);
             return nobj;
         }
 
         Group *grp=Group::cast(ta);
 
-        if (grp!=NULL && grp->validateChild(obj))
+        if (grp!=NULL)
         {
-            if (validateOnly) return obj;
 
 /* check for duplicates. We just won't add an object if it is already there */
             int cp_id = obj->getId();
@@ -1709,13 +1716,10 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
             }
 
             grp->addRef(obj);
-            if (openobj) openObject(grp);
         }
     }
     catch(FWException &ex)
     {
-        if (validateOnly) return NULL;
-
         QMessageBox::warning(
             this,"Firewall Builder",
             ex.toString().c_str(),
@@ -1723,7 +1727,6 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
             0, 1 );
     }
 
-    if (validateOnly) return NULL;
     return obj;
 
     //return ret;
@@ -2397,46 +2400,22 @@ void ObjectManipulator::openObject(ObjectTreeViewItem *otvi,
     openObject(otvi->getFWObject(),register_in_history);
 }
 
-/* This method is called from the GroupObjectDialog when user double
- * clicks on the object in a group, so first we should check if this
- * object is shown in the tree and if not, find and open it.
- */
-void ObjectManipulator::openObject(FWObject *obj, bool /*register_in_history*/)
-{
-    if (fwbdebug)
-        qDebug("ObjectManipulator::openObject   obj=%s",
-               (obj)?obj->getName().c_str():"NULL");
-
-    if (obj==NULL) return;
-
-    raise();
-    FWObject *o=obj;
-    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-
-    ObjectTreeViewItem *otvi = allItems[o];
-
-// this changes selection and thus calls slot slectionChanged
-    showObjectInTree(otvi);
-
-    m_objectManipulator->libs->setCurrentIndex(
-        getIdxForLib( obj->getLibrary()));
-    updateCreateObjectMenu(obj->getLibrary());
-}
-
 void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
 {
-    if (fwbdebug)
-        qDebug("ObjectManipulator::selectionChanged");
+    if (fwbdebug) qDebug("ObjectManipulator::selectionChanged");
 
-    QTreeWidget *qlv= getCurrentObjectTree();
+    QTreeWidget *qlv = getCurrentObjectTree();
     if (qlv==NULL) return;
 
-    ObjectTreeViewItem* otvi=dynamic_cast<ObjectTreeViewItem*>(cur);
+    ObjectTreeViewItem* otvi = dynamic_cast<ObjectTreeViewItem*>(cur);
 
     if (otvi==NULL) return;
 
     FWObject *obj = otvi->getFWObject();
     if (obj==NULL) return;
+
+    if (fwbdebug) qDebug("ObjectManipulator::selectionChanged obj=%s",
+                         obj->getName().c_str());
 
     FWObject *o=obj;
 //    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
@@ -2468,15 +2447,10 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
 
     active=true;
 
-/*
-  m_project->unselectRules();
-  if (m_project->validateAndSaveEditor())
-  {
-  //oe->selectionChanged(obj);
-  }
-*/
     info();
     select();
+
+    if (fwbdebug) qDebug("ObjectManipulator::selectionChanged done");
 }
 
 /*
@@ -2492,6 +2466,32 @@ void ObjectManipulator::openObject(QTreeWidgetItem *item)
 void ObjectManipulator::openObject(FWObject *obj)
 {
     openObject(obj,true);
+}
+
+/* This method is called from the GroupObjectDialog when user double
+ * clicks on the object in a group, so first we should check if this
+ * object is shown in the tree and if not, find and open it.
+ */
+void ObjectManipulator::openObject(FWObject *obj, bool /*register_in_history*/)
+{
+    if (fwbdebug)
+        qDebug("ObjectManipulator::openObject   obj=%s",
+               (obj)?obj->getName().c_str():"NULL");
+
+    if (obj==NULL) return;
+
+    raise();
+    FWObject *o=obj;
+    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+
+    ObjectTreeViewItem *otvi = allItems[o];
+
+// this changes selection and thus calls slot slectionChanged
+    showObjectInTree(otvi);
+
+    m_objectManipulator->libs->setCurrentIndex(
+        getIdxForLib( obj->getLibrary()));
+    updateCreateObjectMenu(obj->getLibrary());
 }
 
 void ObjectManipulator::showObjectInTree(ObjectTreeViewItem *otvi)
@@ -2775,7 +2775,7 @@ FWObject* ObjectManipulator::copyObj2Tree(
     ids.clear();
     if (Interface::isA(copyFrom) && Firewall::isA(parent))
     {
-        FWObject *no = pasteTo (parent,copyFrom, false, false, true);
+        FWObject *no = pasteTo (parent,copyFrom, true);
         return no;
     }
     FWObject *nobj = copyFrom->getRoot()->create(copyFrom->getTypeName());
@@ -2856,7 +2856,7 @@ FWObject * ObjectManipulator::copyObjWithDeep(FWObject *copyFrom)
     {
         FWObject *par = m_project->getFWTree()->getStandardSlotForObject(
             lib, nobj->getTypeName().c_str());
-        pasteTo (par, nobj, false, false, false);
+        pasteTo (par, nobj, false);
     }
     return nobj;
 }

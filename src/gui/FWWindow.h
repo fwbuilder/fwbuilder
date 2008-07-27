@@ -294,9 +294,7 @@ public slots:
     void loadDataFromFw(libfwbuilder::Firewall *fw);
 
     libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
-                                    libfwbuilder::FWObject *obj,
-                                    bool openobj=true,
-                                    bool validateOnly=false);
+                                    libfwbuilder::FWObject *obj);
     void delObj(libfwbuilder::FWObject *obj,bool openobj=true);
     ObjectTreeView* getCurrentObjectTree();
     void openObject(QTreeWidgetItem *otvi);

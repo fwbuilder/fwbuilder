@@ -1218,13 +1218,9 @@ void FWWindow::updateLastCompiledTimestamp(FWObject *o)
 }
 
 
-FWObject* FWWindow::pasteTo(FWObject *target,
-                            FWObject *obj,
-                            bool openobj,
-                            bool validateOnly)
+FWObject* FWWindow::pasteTo(FWObject *target, FWObject *obj)
 {
-    if (activeProject())
-        return activeProject()->pasteTo(target, obj, openobj, validateOnly);
+    if (activeProject()) return activeProject()->pasteTo(target, obj);
     return 0;
 }
 

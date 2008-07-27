@@ -313,10 +313,10 @@ public:
 
      libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
                                      libfwbuilder::FWObject *obj,
-                                     bool openobj=true,
-                                     bool validateOnly=false,
-                                     bool renew_id=true);
+                                     bool renew_id);
 
+     bool validateForPaste(libfwbuilder::FWObject *target,
+                           libfwbuilder::FWObject *obj);
 
      void delObj(libfwbuilder::FWObject *obj,bool openobj=true);
 
