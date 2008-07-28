@@ -823,7 +823,9 @@ void FWObjectTreeScanner::scanAndAdd(FWObject *dst,FWObject *source)
             {
                 FWObject *osrc = srcMap[ pid ];
                 if (osrc==NULL)
-                    cerr << "Object with ID=" << pid << " disappeared" << endl;
+                    cerr << "Object with ID=" << pid
+                         << " (" << FWObjectDatabase::getStringId(pid) << ") "
+                         << " disappeared" << endl;
                 else
                     addRecursively( osrc);
             }
