@@ -1,5 +1,13 @@
 2008-07-27  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ObjectManipulator.h (class ObjectManipulator): removed strange
+	methods copyObjWithDeep and copyObj2Tree. Fixed drag&drop between
+	different data files. Copy/Paste and D&D between different data
+	files properly copy all dependencies and fix references in rules
+	and groups. Tested with recursive groups (group references itself)
+	and firewalls with rules referencing other firewalls with groups
+	and other objects.
+
 	* ObjectManipulator.cpp (ObjectManipulator::duplicateWithDependencies):
 	duplicate object that references other objects and create copies
 	of these other objects. Examples: firewall (rules reference other

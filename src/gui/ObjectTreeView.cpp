@@ -510,18 +510,23 @@ void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
 
 void ObjectTreeView::dropEvent(QDropEvent *ev)
 {
+    if (fwbdebug) qDebug("ObjectTreeView::dropEvent");
+
     list<FWObject*> dragol;
     if (FWObjectDrag::decode(ev, dragol))
     {
-        for (list<FWObject*>::iterator i=dragol.begin();
-         i!=dragol.end(); ++i)
+        for (list<FWObject*>::iterator i=dragol.begin(); i!=dragol.end(); ++i)
         {
             FWObject *dragobj = *i;
             assert(dragobj);
-            ObjectTreeView * otvsource = dynamic_cast<ObjectTreeView *>(ev->source());
+
+            ObjectTreeView * otvsource =
+                dynamic_cast<ObjectTreeView *>(ev->source());
             if (otvsource!=NULL)
             {
-                FWObjectDatabase* root = otvsource->getCurrentObject()->getRoot();
+                FWObjectDatabase* root =
+                    otvsource->getCurrentObject()->getRoot();
+
                 int id = dragobj->getId();
                 FWObject * item = root->getById(id, true);
                 if (fwbdebug)
@@ -533,24 +538,24 @@ void ObjectTreeView::dropEvent(QDropEvent *ev)
                 }
                 //ProjectPanel * ppsource =  otvsource->m_project ;
             }
-            QString n=QString::fromUtf8(dragobj->getName().c_str());
-            m_project->copyObj2Tree(dragobj->getTypeName().c_str(), n, dragobj, 
-              getDropTarget(ev, dragobj), false);
+
+            FWObject *target = getDropTarget(ev, dragobj);
+            if (fwbdebug)
+                qDebug("ObjectTreeView::dropEvent  paste %s -> %s",
+                       dragobj->getName().c_str(), target->getName().c_str());
+
+            m_project->pasteTo(target, dragobj);
         }
     }
+    if (fwbdebug) qDebug("ObjectTreeView::dropEvent done");
 }
 
 FWObject *ObjectTreeView::getDropTarget(QDropEvent *ev, FWObject* dragobj)
-{//If dag object is an interface or IPv4 object it should be paste to node on which it is dropped
+{
     QTreeWidgetItem *ovi = itemAt(ev->pos());
 
-    ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(ovi);
-    FWObject *trobj;
-    if (otvi && (trobj = otvi->getFWObject()) && !trobj->isReadOnly() &&
-      (Interface::isA(dragobj) //Firewall::isA(trobj) && 
-          || (Interface::isA(trobj) && IPv4::isA(dragobj))))
-        return trobj;
-    return 0;
+    ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem*>(ovi);
+    return otvi->getFWObject();
 }
 
 void ObjectTreeView::dragLeaveEvent( QDragLeaveEvent *ev)
@@ -562,21 +567,13 @@ void ObjectTreeView::dragLeaveEvent( QDragLeaveEvent *ev)
 
 void ObjectTreeView::mouseMoveEvent( QMouseEvent * e )
 {
-    /*if (startingDrag)
-    {
-        QDrag *drag = dragObject();
-        drag->start();
-    }
-    else*/
     QTreeWidget::mouseMoveEvent(e);
-
     if (e==NULL)  return;
 }
 
 void ObjectTreeView::mousePressEvent( QMouseEvent *e )
 {
-    if (fwbdebug)
-        qDebug("ObjectTreeView::mousePressEvent");
+    if (fwbdebug) qDebug("ObjectTreeView::mousePressEvent");
 
     second_click = false;
     process_mouse_release_event = true;

@@ -151,11 +151,6 @@ public:
                                          const QString &objName,
                                          libfwbuilder::FWObject *copyFrom=NULL);
 
-    libfwbuilder::FWObject* copyObj2Tree(const QString &objType,
-                                         const QString &objName,
-                                         libfwbuilder::FWObject *copyFrom=NULL,
-                                         libfwbuilder::FWObject *parent=NULL,
-                                         bool ask4Lib = true);
 
     FWWindow* getWindow (){ return mainW;}     
     void moveObject(libfwbuilder::FWObject *target,

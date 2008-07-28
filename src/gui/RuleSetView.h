@@ -464,28 +464,31 @@ public:
 
 private:
     ProjectPanel *m_project;
-    virtual libfwbuilder::RuleElement* getRE( int row, int col )  = 0;
-    virtual libfwbuilder::RuleElement* getRE( libfwbuilder::Rule* r, int col )  = 0;
+    virtual libfwbuilder::RuleElement* getRE(int row, int col ) = 0;
+    virtual libfwbuilder::RuleElement* getRE(libfwbuilder::Rule* r, int col) =0;
     
-    QPixmap getPixmap(libfwbuilder::FWObject *obj, PixmapAttr pmattr = Normal) const;
-    QString objectText(libfwbuilder::RuleElement *re,libfwbuilder::FWObject *obj); 
+    QPixmap getPixmap(libfwbuilder::FWObject *obj,
+                      PixmapAttr pmattr = Normal) const;
+    QString objectText(libfwbuilder::RuleElement *re,
+                       libfwbuilder::FWObject *obj); 
  
     QSize getPMSize();
 
-    void fixRulePosition(libfwbuilder::Rule *r, libfwbuilder::FWObject *parent, int pos); 
-    QSize drawIconInRule(QPainter &p, int x, int y, libfwbuilder::RuleElement *re, 
+    void fixRulePosition(libfwbuilder::Rule *r,
+                         libfwbuilder::FWObject *parent, int pos); 
+    QSize drawIconInRule(QPainter &p, int x, int y,
+                         libfwbuilder::RuleElement *re, 
                          libfwbuilder::FWObject *o1);
     QString chooseIcon(QString icn);
     bool showCommentTip(QPoint pos, QHelpEvent *he);
     void drawComment(QPainter &p, int row, int col, const QRect &cr);
-    bool insertObjectFromOther(int row, int col, libfwbuilder::FWObject *obj);
 };
 
 
 class PolicyView : public RuleSetView
 {
-    virtual libfwbuilder::RuleElement* getRE( int row, int col ) ;
-    virtual libfwbuilder::RuleElement* getRE( libfwbuilder::Rule* r, int col ) ;
+    virtual libfwbuilder::RuleElement* getRE(int row, int col);
+    virtual libfwbuilder::RuleElement* getRE(libfwbuilder::Rule* r, int col);
 
  public:
 
@@ -498,12 +501,13 @@ class PolicyView : public RuleSetView
 
 class InterfacePolicyView : public RuleSetView
 {
-    virtual libfwbuilder::RuleElement* getRE( int row, int col ) ;
-    virtual libfwbuilder::RuleElement* getRE( libfwbuilder::Rule* r, int col ) ;
+    virtual libfwbuilder::RuleElement* getRE(int row, int col ) ;
+    virtual libfwbuilder::RuleElement* getRE(libfwbuilder::Rule* r, int col ) ;
 
  public:
 
-    InterfacePolicyView(ProjectPanel *project, libfwbuilder::InterfacePolicy *p, QWidget *parent);
+    InterfacePolicyView(ProjectPanel *project,
+                        libfwbuilder::InterfacePolicy *p, QWidget *parent);
     virtual ~InterfacePolicyView() {}
 
     virtual void init();
@@ -513,8 +517,8 @@ class InterfacePolicyView : public RuleSetView
 
 class NATView : public RuleSetView
 {
-    virtual libfwbuilder::RuleElement* getRE( int row, int col ) ;
-    virtual libfwbuilder::RuleElement* getRE( libfwbuilder::Rule* r, int col ) ;
+    virtual libfwbuilder::RuleElement* getRE(int row, int col ) ;
+    virtual libfwbuilder::RuleElement* getRE(libfwbuilder::Rule* r, int col);
 
  public:
 
@@ -528,12 +532,13 @@ class NATView : public RuleSetView
 
 class RoutingView : public RuleSetView
 {
-    virtual libfwbuilder::RuleElement* getRE( int row, int col ) ;
-    virtual libfwbuilder::RuleElement* getRE( libfwbuilder::Rule* r, int col ) ;
+    virtual libfwbuilder::RuleElement* getRE(int row, int col);
+    virtual libfwbuilder::RuleElement* getRE(libfwbuilder::Rule* r, int col);
 
  public:
 
-    RoutingView(ProjectPanel *project, libfwbuilder::Routing *p, QWidget *parent);
+    RoutingView(ProjectPanel *project,
+                libfwbuilder::Routing *p, QWidget *parent);
     virtual ~RoutingView() {}
 
     virtual void init();

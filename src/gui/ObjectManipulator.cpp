@@ -1660,8 +1660,6 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
 
     FWObject *ta = target;
 
-    openLib(ta->getLibrary());
-
 
     if (IPv4::isA(ta) || IPv6::isA(ta)) ta=ta->getParent();
 
@@ -1677,9 +1675,6 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
             insertSubtree( allItems[ta], nobj);
             return nobj;
         }
-
-        Host      *hst  = Host::cast(ta);   // works for firewall, too
-        Interface *intf = Interface::cast(ta);
 
         if ( m_project->isSystem(ta))
         {
@@ -1753,7 +1748,7 @@ FWObject* ObjectManipulator::duplicateWithDependencies(FWObject *target,
 
     if (fwbdebug)
         qDebug("pasteTo: object %s has %d dependencies",
-               obj->getName().c_str(), deps.size());
+               obj->getName().c_str(), int(deps.size()));
 
     for (list<FWObject*>::iterator i=deps.begin(); i!=deps.end(); ++i)
     {
@@ -1825,12 +1820,6 @@ FWObject* ObjectManipulator::duplicateWithDependencies(FWObject *target,
                 ".dedup_marker", dedup_marker);
             assert(new_obj!=NULL);
             map_ids[old_obj->getId()] = new_obj->getId();
-
-            if (fwbdebug) qDebug("Replace IDs: %d -> %d",
-                                 old_obj->getId(), new_obj->getId());
-
-            repl_counter = nobj->replaceRef(old_obj->getId(), new_obj->getId());
-
         } else
         {
             FWObject *copy_obj;
@@ -1843,43 +1832,52 @@ FWObject* ObjectManipulator::duplicateWithDependencies(FWObject *target,
             } else
                 copy_obj = m_project->db()->findInIndex(
                     map_ids[old_obj->getId()]);
-
-            if (fwbdebug) qDebug("Replace IDs: %d -> %d",
-                                 old_obj->getId(), copy_obj->getId());
-
-            repl_counter = nobj->replaceRef(old_obj->getId(),copy_obj->getId());
         }
-
-        if (fwbdebug) qDebug("Replaced %d references in rules", repl_counter);
     }
 
-    // one more pass to copy groups
-    // Do it separately to avoid collisions on the ".dedup_marker" value
+    if (fwbdebug)
+    {
+        for (map<int,int>::iterator it=map_ids.begin(); it!=map_ids.end(); ++it)
+            qDebug("ID mapping %d -> %d", it->first, it->second);
+    }
+    
+    int repl_counter = fixReferences(nobj, map_ids);
+    if (fwbdebug) qDebug("Replaced %d references in object %s",
+                         repl_counter, nobj->getName().c_str());
+
+    // one more pass to fix ferences in other firewalls we might have
+    // copied and groups.
     for (list<FWObject*>::iterator i=deps.begin(); i!=deps.end(); ++i)
     {
         FWObject *old_obj = *i;
         //if (map_ids.count(old_obj->getId()) > 0) continue;
-        if (Group::cast(old_obj))
+        if (Firewall::cast(old_obj) || Group::cast(old_obj))
         {
-            if (fwbdebug) qDebug("Group %s", old_obj->getName().c_str());
-
-            FWObject *ngrp = m_project->db()->findInIndex(
+            FWObject *other_new_obj = m_project->db()->findInIndex(
                 map_ids[old_obj->getId()]);
-            assert(ngrp);
+            assert(other_new_obj);
 
-            for (FWObject::iterator j1=old_obj->begin(); j1!=old_obj->end(); ++j1)
-            {
-                if (FWReference::cast(*j1)==NULL) continue;
-                int old_id = FWReference::cast(*j1)->getPointerId();
-                int repl_counter = ngrp->replaceRef(old_id, map_ids[old_id]);
-                if (fwbdebug) qDebug("Replaced %d references", repl_counter);
-            }
+            repl_counter = fixReferences(other_new_obj, map_ids);
+            if (fwbdebug)
+                qDebug("Replaced %d references in object %s",
+                       repl_counter, other_new_obj->getName().c_str());
         }
     }
 
     return nobj;
 }     
 
+/*
+ * fix references in children of obj according to the map_ids which
+ * maps old IDs to the new ones. Return the number of fixed references.
+ */
+int ObjectManipulator::fixReferences(FWObject *obj, map<int,int> &map_ids)
+{
+    int total_counter = 0;
+    for (map<int,int>::iterator it=map_ids.begin(); it!=map_ids.end(); ++it)
+        total_counter += obj->replaceRef(it->first, it->second);
+    return total_counter;
+}
 
 void ObjectManipulator::lockObject()
 {
@@ -2766,101 +2764,6 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
     mw->reloadAllWindowsWithFile(m_project);
     return nobj;
 }
-
-FWObject* ObjectManipulator::copyObj2Tree(
-    const QString &/*objType*/, const QString &/*objName*/,
-    FWObject *copyFrom, FWObject *parent, bool /*askLib*/)
-{
-    if (!validateDialog()) return NULL;
-    ids.clear();
-    if (Interface::isA(copyFrom) && Firewall::isA(parent))
-    {
-        FWObject *no = pasteTo (parent,copyFrom, true);
-        return no;
-    }
-    FWObject *nobj = copyFrom->getRoot()->create(copyFrom->getTypeName());
-    nobj->duplicate(copyFrom, true);
-    nobj->setRoot(copyFrom->getRoot());
-    return copyObjWithDeep(nobj);
-}
-
-FWObject * ObjectManipulator::copyObjWithDeep(FWObject *copyFrom)
-{
-    if (copyFrom==NULL) return NULL;
-
-    FWObject *nobj= copyFrom;
-    if (nobj->getId() > -1)
-    {
-        if (ids.contains(nobj->getId()))
-        {
-            
-            return nobj;
-        }
-        else
-        {
-            ids.insert(nobj->getId());
-        }
-    }
-    FWReference * ref = FWReference::cast(nobj);
-    if (ref!=NULL)
-    {
-        copyObjWithDeep(ref->getPointer());
-        return ref ;
-    }
-
-    Group * group = Group::cast(nobj);
-    if (group!=NULL)
-    {
-        
-        for (list<FWObject*>::iterator i=nobj->begin() ; i!=nobj->end(); ++i)
-        {
-            copyObjWithDeep(*i);
-        }
-    }
-    Firewall * fw = Firewall::cast(nobj);
-    if (fw!=NULL)
-    {
-        for (libfwbuilder::FWObject::iterator i=fw->begin(); i!=fw->end(); i++)
-        {
-            
-            RuleSet *rule = RuleSet::cast(*i);
-            if (rule==NULL)
-                continue;
-            copyObjWithDeep(rule);
-        }        
-    }
-    RuleSet * ruleset = RuleSet::cast(nobj);
-    if (ruleset!=NULL)
-    {
-        
-        for (list<FWObject*>::iterator i=ruleset->begin() ; i!=ruleset->end(); ++i)
-        {
-            copyObjWithDeep(*i);
-        }
-    }
-
-    Rule * rule = Rule::cast(nobj);
-    if (rule!=NULL)
-    {
-        for (int col =0; col < 5; col++)
-        {
-            RuleElement *re = m_project->getRE(rule, col);
-            if (!re) continue;
-            copyObjWithDeep(re);
-        } 
-        return rule;
-    }
-    FWObject * lib = getCurrentLib();
-
-    if (lib->getRoot()->getById(nobj->getId(),true)==NULL)
-    {
-        FWObject *par = m_project->getFWTree()->getStandardSlotForObject(
-            lib, nobj->getTypeName().c_str());
-        pasteTo (par, nobj, false);
-    }
-    return nobj;
-}
-
 
 void ObjectManipulator::newLibrary()
 {

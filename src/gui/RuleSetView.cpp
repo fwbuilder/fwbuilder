@@ -3498,17 +3498,6 @@ void RuleSetView::deleteObject(int row, int col, FWObject *obj)
     m_project->findObjectWidget->reset();
 }
 
-bool RuleSetView::insertObjectFromOther(int row, int col, FWObject *obj)
-{
-    QString n=QString::fromUtf8(obj->getName().c_str());
-    if (!m_project->hasObject(obj))
-    {
-        obj = m_project->copyObj2Tree(obj->getTypeName().c_str(), n, obj);
-        if (!obj) return false;
-    }
-    return insertObject(row, col, obj);
-}
-
 bool RuleSetView::insertObject(int row, int col, FWObject *obj)
 {
     if (fwbdebug)
@@ -3948,21 +3937,14 @@ void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
             /*
             * See bug 1226069  Segfault: Drag&Drop between two instances
             *
-            * There is a problem with this code: Since we pass "live" pointer to
-            * FWObject* object in the drag event, drag&drop should not be used to
-            * pass objects between different instances of the GUI running at the
-            * same time. Trying to do so causes receiving program to crash
-            * because it tries to access an object using memory pointer that it
-            * obtained from another program. Apparently C++ standard does not
-            * define behavior of the program in case it tries to access memory
-            * using bad pointer, so it does not throw any exception we could
-            * catch. Real solution, of course, is to pass object's ID together
-            * with some identification for the data file in the drag event and
-            * then on receiving end scan the tree looking for this
-            * object. Unfortunately this is too slow with our current API desing.
-            *
-            * TODO: The problem requires more detailed investigation, possibly
-            * including API redesign.
+            * v3.0: we do not permit d&d of an object from one data
+            * file to another. mostly just to avoid confusing side
+            * effects because such operation requires copy of all
+            * object's dependencies. This means simple d&d operation
+            * can in fact silently copy whole bunch of objects into
+            * the tree, which is may not be even visible for the user
+            * if parts of the tree are collapsed or obscured by other
+            * windows.
             */
 
             if (FWObjectDrag::decode(ev, dragol))
@@ -3973,7 +3955,10 @@ void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
                     FWObject *dragobj = NULL;
                     dragobj = dynamic_cast<FWObject*>(*i);
                     if(dragobj!=NULL)
+                    {
+                        acceptE &= (dragobj->getRoot()==ruleset->getRoot());
                         acceptE &= re->validateChild(dragobj);
+                    }
                 }
                 ev->setAccepted( acceptE );
                 return;
@@ -4017,37 +4002,43 @@ void RuleSetView::dropEvent(QDropEvent *ev)
     list<FWObject*> dragol;
     if (!FWObjectDrag::decode(ev, dragol)) return;
 
-    for (list<FWObject*>::iterator i=dragol.begin();
-            i!=dragol.end(); ++i)
+    for (list<FWObject*>::iterator i=dragol.begin(); i!=dragol.end(); ++i)
     {
         FWObject *dragobj = *i;
         assert(dragobj!=NULL);
 
-        if (fwbdebug)
-            qDebug("RuleSetView::dropEvent dragobj=%s",
-                   dragobj->getName().c_str());
+        if (fwbdebug) qDebug("RuleSetView::dropEvent dragobj=%s",
+                             dragobj->getName().c_str());
 
         if (ev->source()!=this)
         {
-            insertObjectFromOther(row, col, dragobj);
+            // since ev->source()!=this, this is d&d of an object from
+            // the tree into rule.  Do not allow d&d from a different
+            // file since it requires copying of the dependencies
+            // which is a side-effect and might be confusing for the
+            // user.
+            if (ruleset->getRoot()!=dragobj->getRoot()) return;
+            if (insertObject(row, col, dragobj))
+                changeCurrentCell(row, col, true);
         } else
         {
+            // since ev->source()==this, this is d&d of an object from
+            // one rule to another.
+            
             clearSelection();
             if (ev->keyboardModifiers() & Qt::ControlModifier)
             {
-                if (insertObject(row,col,dragobj)) //copy
+                if (insertObject(row, col, dragobj)) //copy
                     changeCurrentCell(row, col, true);
             }
             else //move
             {
-                if (insertObject(row,col,dragobj) )
+                if (insertObject(row, col, dragobj) )
                 {
-                    deleteObject(oldRow,oldCol,dragobj);
-
+                    deleteObject(oldRow, oldCol, dragobj);
                     changeCurrentCell(row, col, true);
                 }
             }
-
         }
     }
     ev->accept();
