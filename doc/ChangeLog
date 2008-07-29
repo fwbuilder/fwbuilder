@@ -1,3 +1,10 @@
+2008-07-28    <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::removeLib): fixed
+	crash that happened upon exit on some platforms. Need to break
+	away from the loop after lists were modified because iterators
+	become undefined.
+
 2008-07-28  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* New application icon

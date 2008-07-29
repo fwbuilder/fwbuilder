@@ -654,7 +654,13 @@ void ObjectManipulator::clearObjects()
 
     int N = m_objectManipulator->libs->count();
 
-    if (fwbdebug) qDebug("ObjectManipulator::clearObjects %d libs", N);
+    if (fwbdebug)
+    {
+        qDebug("ObjectManipulator::clearObjects %d libs, "
+               "idxToLibs size: %d, idxToTrees size: %d", N, 
+               int(idxToLibs.size()), 
+               int(idxToTrees.size()));
+    }
 
     for (int i=N-1; i>=0; i--)
     {
@@ -662,17 +668,11 @@ void ObjectManipulator::clearObjects()
         assert(otv!=NULL);
         m_objectManipulator->widgetStack->removeWidget( otv );
        // delete otv;
+
         removeLib(i);
     }
-
-    if (fwbdebug) qDebug("ObjectManipulator::clearObjects idxToLibs size: %d",
-                         int(idxToLibs.size()));
-    if (fwbdebug) qDebug("ObjectManipulator::clearObjects idxToTrees size: %d",
-                         int(idxToTrees.size()));
-
     idxToLibs.clear();
     idxToTrees.clear();
-
     m_objectManipulator->libs->clear();
 
     if (fwbdebug) qDebug("ObjectManipulator::clearObjects done");
@@ -863,6 +863,7 @@ void ObjectManipulator::removeLib(int id)
             m_objectManipulator->libs->removeItem( idx );
             idxToLibs.erase(i1);
             idxToTrees.erase(i2);
+            break;
         }
     }
 }
