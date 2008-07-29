@@ -215,8 +215,9 @@ void FWWindow::showSub(ProjectPanel *projectW)
     sub->setWidget(projectW);
     sub->setAttribute(Qt::WA_DeleteOnClose);
     m_space->addSubWindow(sub);
-    QIcon p(":Icons/Firewall/icon-tree");
-    sub->setWindowIcon(p); 
+
+//    QIcon p(":Icons/Firewall/icon-tree");
+//    sub->setWindowIcon(p); 
 
     connect(sub,
             SIGNAL(windowStateChanged(Qt::WindowStates,Qt::WindowStates)),

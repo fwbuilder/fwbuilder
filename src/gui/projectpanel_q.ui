@@ -12,6 +12,9 @@
   <property name="windowTitle" >
    <string>Form</string>
   </property>
+  <property name="windowIcon" >
+   <iconset resource="MainRes.qrc" >:/Images/fwbuilder3.png</iconset>
+  </property>
   <layout class="QGridLayout" >
    <property name="leftMargin" >
     <number>2</number>
@@ -585,6 +588,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="MainRes.qrc" />
+ </resources>
  <connections/>
 </ui>
