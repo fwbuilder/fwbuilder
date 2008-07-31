@@ -1,3 +1,23 @@
+2008-07-30  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* fwbedit.cpp: fixes for the bug #2030331: fwbedit/fwblookup
+	issues: added option "-c" for fwbedit, with this option user can
+	specify comment for the object being created; fixed both fwblookup
+	and fwbedit to properly handle objects with duplicate names when
+	operations are performed on objects specified by their path in the
+	tree. Now, if several objects have the same name, operation will
+	be performed on all such objects. Note that this includes
+	deletion, that is, command 
+
+	"fwbedit -f file.fwb -l /User/Objects/Addresses/TestAddress"
+
+	deletes all objects with name "TestAddress" if there are several.
+
+	Added ability to create IPv6 and NetworkIPv6 objects in fwbedit.
+	New command line option "-c text" can be used to set comment for
+	the object created via "-t type -n name".
+	
+
 2008-07-30  vadim  <vadim@vk.crocodile.org>
 
 	* fwbedit.cpp (main): fixed bug #1997475: "Adding Interface via

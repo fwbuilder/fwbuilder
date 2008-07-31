@@ -42,7 +42,7 @@ Prints version number and quit.
 
 .SH EXAMPLES
 .PP
-fwbedit -f x.xml -a /Objects/Hosts/A,/Objects/Groups/B
+fwbedit -f x.xml -a /User/Objects/Hosts/A,/User/Objects/Groups/B
 .PP
 Adds reference to the Host object 'A' to the group 'B'.
 .PP
@@ -54,7 +54,7 @@ id3D151943. If objects with given IDs do not exist, fwbedit prints an
 error message and does not make any changes in the data file.
 .PP
 .PP
-fwbedit -f x.xml -a id3D71A1BA,/Objects/Groups/testgroup
+fwbedit -f x.xml -a id3D71A1BA,/User/Objects/Groups/testgroup
 .PP
 Adds reference to the object with ID id3D71A1BA to the group 'testgroup'.
 .PP
@@ -62,10 +62,10 @@ Adds reference to the object with ID id3D71A1BA to the group 'testgroup'.
 fwbedit can be used in combination with fwblookup to execute
 operations on many objects:
 .LP
-  fwblookup -f x.xml -lP /Objects/Hosts | \\
+  fwblookup -f x.xml -lP /User/Objects/Hosts | \\
   grep domain.com | \\
   while read h; do \\
-    fwbedit -f x.xml -a $h,/Objects/Groups/domainGRP; \\
+    fwbedit -f x.xml -a $h,/User/Objects/Groups/domainGRP; \\
   done
 .PP
 first, this script uses fwblookup to print full path of all Host

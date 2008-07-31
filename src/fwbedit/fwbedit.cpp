@@ -35,6 +35,7 @@
 #endif
 
 #include <fstream>
+#include <sstream>
 #include <iostream>
 #include <algorithm>
 #include <functional>
@@ -74,7 +75,9 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AddressRange.h"
@@ -88,6 +91,8 @@
 #include "fwbuilder/ServiceGroup.h"
 #include "fwbuilder/Interval.h"
 #include "fwbuilder/IntervalGroup.h"
+#include "fwbuilder/TagService.h"
+#include "fwbuilder/UserService.h"
 
 #include "../common/init.cpp"
 #include <assert.h>
@@ -115,6 +120,7 @@ string addr2;
 string dnsrec;
 string runtime;
 string name;
+string comment_txt;
 string path;
 string lib;
 string time1;
@@ -169,81 +175,130 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
 };
 void initConstants ( void)
 {
-    systemGroupPaths[Library::TYPENAME]       = "";
+    systemGroupPaths[Library::TYPENAME] = "";
 
-    systemGroupPaths[IPv4::TYPENAME]          = "Objects/Addresses";
-    systemGroupPaths[DNSName::TYPENAME]       = "Objects/DNS Names";
-    systemGroupPaths[AddressTable::TYPENAME]  = "Objects/Address Tables";
-    systemGroupPaths[AddressRange::TYPENAME]  = "Objects/Address Ranges";
-    systemGroupPaths[ObjectGroup::TYPENAME]   = "Objects/Groups";
-    systemGroupPaths[Host::TYPENAME]          = "Objects/Hosts";
-    systemGroupPaths[Network::TYPENAME]       = "Objects/Networks";
+    systemGroupPaths[IPv4::TYPENAME] = "Objects/Addresses";
+    systemGroupPaths[IPv6::TYPENAME] = "Objects/Addresses";
+    systemGroupPaths[DNSName::TYPENAME] = "Objects/DNS Names";
+    systemGroupPaths[AddressTable::TYPENAME] = "Objects/Address Tables";
+    systemGroupPaths[AddressRange::TYPENAME] = "Objects/Address Ranges";
+    systemGroupPaths[ObjectGroup::TYPENAME] = "Objects/Groups";
+    systemGroupPaths[Host::TYPENAME] = "Objects/Hosts";
+    systemGroupPaths[Network::TYPENAME] = "Objects/Networks";
+    systemGroupPaths[NetworkIPv6::TYPENAME] = "Objects/Networks";
 
-    systemGroupPaths[ServiceGroup::TYPENAME]  = "Services/Groups";
+    systemGroupPaths[ServiceGroup::TYPENAME] = "Services/Groups";
     systemGroupPaths[CustomService::TYPENAME] = "Services/Custom";
-    systemGroupPaths[IPService::TYPENAME]     = "Services/IP";
-    systemGroupPaths[ICMPService::TYPENAME]   = "Services/ICMP";
-    systemGroupPaths[TCPService::TYPENAME]    = "Services/TCP";
-    systemGroupPaths[UDPService::TYPENAME]    = "Services/UDP";
+    systemGroupPaths[IPService::TYPENAME] = "Services/IP";
+    systemGroupPaths[ICMPService::TYPENAME] = "Services/ICMP";
+    systemGroupPaths[TCPService::TYPENAME] = "Services/TCP";
+    systemGroupPaths[UDPService::TYPENAME] = "Services/UDP";
+    systemGroupPaths[TagService::TYPENAME] = "Services/TagServices";
+    systemGroupPaths[UserService::TYPENAME] = "Services/Users";
 
-    systemGroupPaths[Firewall::TYPENAME]      = "Firewalls";
+    systemGroupPaths[Firewall::TYPENAME] = "Firewalls";
 
-    systemGroupPaths[Interval::TYPENAME]      = "Time";
+    systemGroupPaths[Interval::TYPENAME] = "Time";
 }
+
+
 void usage(const char *name)
 {
-    cout << _("Firewall Builder:  general purpose object tree editing tool") << endl;
-    cout << _("Version ") << VERSION << "-" << RELEASE_NUM << endl;
-    cout << _("Usage: ") << name
-         << _(" -f filename.fwb -u [-a obj,grp] [-r obj,grp] [-d obj] [-s] [-l path] [(-p parent|-L library) -t objtype -n objname [-o object attributes]] ") << endl;
+    cout << "Firewall Builder:  general purpose object tree editing tool"
+         << endl;
+    cout << "Version " << VERSION << "-" << RELEASE_NUM << endl;
+    cout << "Usage: " << name
+         << " -f filename.fwb -u [-a obj,grp] [-r obj,grp] [-d obj] [-s] "
+        "[-l path] [(-p parent|-L library -t objtype -n objname "
+        "[-c comment] [-o object attributes]] " << endl;
     cout << endl;
-    cout << "      " << _("-t objtype : create an object of this type") << endl;
-    cout << "      " << _("-L library : specify library when creating a new object") << endl;
-    cout << "      " << _("-p obj     : specify parent object when creating a new object") << endl;
-    cout << "      " << _("-n name    : specify a name of the new object") << endl;
-    cout << "      " << _("-o attribute1[,attribute2...]  :  specify attributes when creating a new object") << endl;
-    cout << "      " << _("-a obj,grp :  create reference to object 'obj' in the group 'grp'") << endl;
-    cout << "      " << _("-r obj,grp :  remove reference to object 'obj' from the group 'grp'") << endl;
-    cout << "      " << _("-d obj     :  delete object 'obj' and remove references to it from") << endl;
-    cout << "      " << _("              all rules and groups") << endl;
-    cout << "      " << _("-l path    :  print list of objects for 'path'") << endl;
-    cout << "      " << _("-s         :  test and repair object tree structure") << endl;
-    cout << "      " << _("-u         : autoupgrade of file") << endl;
+    cout << "      "
+         << "-t objtype : create an object of this type" << endl;
+    cout << "      "
+         << "-L library : specify library when creating a new object"
+         << endl;
+    cout << "      "
+         << "-p obj     : specify parent object when creating a new "
+        "object (full path to the parent in the object tree)" << endl;
+    cout << "      "
+         << "-n name    : specify a name of the new object" << endl;
+    cout << "      "
+         << "-c comment : specify comment for the new object" << endl;
+    cout << "      "
+         << "-o attribute1[,attribute2...]  :  specify attributes when "
+              "creating a new object" << endl;
+    cout << "      "
+         << "-a obj,grp :  create reference to object 'obj' in the group "
+              "'grp'" << endl;
+    cout << "      "
+         << "-r obj,grp :  remove reference to object 'obj' from the group "
+              "'grp'" << endl;
+    cout << "      "
+         << "-d obj     :  delete object 'obj' and remove references to "
+              "it from" << endl;
+    cout << "      "
+         << "              all rules and groups" << endl;
+    cout << "      "
+         << "-l path    :  print list of objects for 'path'" << endl;
+    cout << "      "
+         << "-s         :  test and repair object tree structure" << endl;
+    cout << "      "
+         << "-u         : autoupgrade of file" << endl;
     cout << endl;
-    cout << _("An object and a group can be defined by their ID or ") <<  endl;
-    cout << _("by the full path and name in the XML tree") << endl;
+    cout << "An object and a group can be defined by their ID or " <<  endl;
+    cout << "by the full path and name in the XML tree" << endl;
     cout << endl;
-    cout << _("Object creation syntax:") << endl;
+    cout << "Object creation syntax:" << endl;
     cout << endl;
-    cout << "      " << "-t " <<Firewall::TYPENAME      << " -n obj_name -L User -o platform, host OS" << endl;
-    cout << "      " << "-t " <<IPv4::TYPENAME          << " -n obj_name -L User -o IP address" << endl;
-    cout << "      " << "-t " <<DNSName::TYPENAME       << " -n obj_name -L User -o DNS record,run time" << endl;
-    cout << "      " << "-t " <<AddressRange::TYPENAME  << " -n obj_name -L User -o start address, end address" << endl;
-    cout << "      " << "-t " <<ObjectGroup::TYPENAME   <<  endl;
-    cout << "      " << "-t " <<Network::TYPENAME       << " -n obj_name -L User -o address,netmask" << endl;
-    cout << "      " << "-t " <<Interval::TYPENAME      << " -n obj_name -L User -o start time,start date,start day,end time, end date, end day" << endl;
-    cout << "      " << "-t " <<Interface::TYPENAME     << " -n obj_name -L User -o security level,address type (dynamic or unnumbered),management" << endl;
-    cout << "      " << "-t " <<Host::TYPENAME          <<  endl;
-    cout << "      " << "-t " <<TCPService::TYPENAME    << " -n obj_name -L User -o source port range start,end,Destination port range start,end,UAPRSF,UAPRSF" << endl;
-    cout << "      " << "-t " <<UDPService::TYPENAME    << " -n obj_name -L User -o source port range start,end,Destination port range start,end" << endl;
-    cout << "      " << "-t " <<ICMPService::TYPENAME   << " -n obj_name -L User -o ICMP type,ICMP code" << endl;
-    cout << "      " << "-t " <<IPService::TYPENAME     << " -n obj_name -L User -o protocol number,lsrr/ssrr/rr/ts/fragm/short_fragm" << endl;
+    cout << "      "
+         << "-t " <<Firewall::TYPENAME
+         << " -n obj_name -L User -o platform, host OS" << endl;
+    cout << "      "
+         << "-t " <<IPv4::TYPENAME
+         << " -n obj_name -L User -o IP address" << endl;
+    cout << "      "
+         << "-t " <<IPv6::TYPENAME
+         << " -n obj_name -L User -o IPv6 address" << endl;
+    cout << "      "
+         << "-t " <<DNSName::TYPENAME
+         << " -n obj_name -L User -o DNS record,run time" << endl;
+    cout << "      "
+         << "-t " <<AddressRange::TYPENAME
+         << " -n obj_name -L User -o start address, end address" << endl;
+    cout << "      "
+         << "-t " <<ObjectGroup::TYPENAME
+         <<  endl;
+    cout << "      "
+         << "-t " <<Network::TYPENAME
+         << " -n obj_name -L User -o address,netmask" << endl;
+    cout << "      "
+         << "-t " <<NetworkIPv6::TYPENAME
+         << " -n obj_name -L User -o ipv6_address,netmask_length" << endl;
+    cout << "      "
+         << "-t " <<Interval::TYPENAME
+         << " -n obj_name -L User -o start time,start date,start day,end time, end date, end day" << endl;
+    cout << "      "
+         << "-t " <<Interface::TYPENAME
+         << " -n obj_name -L User -o security level,address type "
+        "(dynamic or unnumbered),management" << endl;
+    cout << "      "
+         << "-t " <<Host::TYPENAME
+         <<  endl;
+    cout << "      "
+         << "-t " <<TCPService::TYPENAME
+         << " -n obj_name -L User -o source port range start,end,Destination port range start,end,UAPRSF,UAPRSF" << endl;
+    cout << "      "
+         << "-t " <<UDPService::TYPENAME
+         << " -n obj_name -L User -o source port range start,end,Destination port range start,end" << endl;
+    cout << "      "
+         << "-t " <<ICMPService::TYPENAME
+         << " -n obj_name -L User -o ICMP type,ICMP code" << endl;
+    cout << "      "
+         << "-t " <<IPService::TYPENAME
+         << " -n obj_name -L User -o protocol "
+        "number,lsrr/ssrr/rr/ts/fragm/short_fragm" << endl;
 }
 
-FWObject *find_object(const string &obj_path,
-                      FWObject *root=objdb)
-{
-    string path=obj_path;
-    if (path=="") return root;
-    string::size_type n=path.find("/",0);
-    string tree_node=path.substr(0,n);
-
-    FWObject::iterator j=std::find_if(root->begin(), root->end(), 
-                                      FWObjectNameEQPredicate(tree_node));
-    if (j==root->end()) return NULL;
-    if ((*j)->getName()==obj_path) return (*j);
-    else    return find_object( path.substr(n+1) , (*j) );
-}
 
 bool testIPv4(string s)
 {
@@ -257,37 +312,44 @@ bool testIPv4(string s)
     return res;
 }
 
-FWObject *getObject(const char *objstr) throw (FWException)
+bool testIPv6(string s)
 {
-    char errstr[128];
-    FWObject *obj=NULL;
-    if (strchr(objstr,'/')!=NULL)
+    bool res=false;
+    try
     {
-/* got full path to the object */
-        string path=objstr;
-        string::size_type n=path.find("/",0);
-        if (n==0 || 
-            path.substr(0,n)=="FWObjectDatabase" || 
-            path.substr(0,n)=="User")
-            obj= find_object( path.substr(n+1) );
-        else
-            obj= find_object( path );
-        if (obj==NULL)
-        {
-            SNPRINTF(errstr,sizeof(errstr),_("Object %s not found"),objstr );
-            throw FWException(errstr);
-        }
-    } else {
-/* got object ID */
-        obj=objdb->getById(FWObjectDatabase::getIntId(objstr), true);
-        if (obj==NULL) 
-        {
-            SNPRINTF(errstr,sizeof(errstr),_("Object with ID='%s' not found"),objstr );
-            throw FWException(errstr);
-        }
-    }
-    return obj;
+        InetAddr(AF_INET6, s.c_str());
+        res=true;
+    } catch (FWException &ex)
+    {    }
+    return res;
 }
+
+void findObjects(const string &obj_path, FWObject *obj, list<FWObject*> &res)
+{
+    if (obj->getPath()==obj_path) res.push_back(obj);
+    for (FWObject::iterator it=obj->begin(); it!=obj->end(); ++it)
+    {
+        if (FWReference::cast(*it)) continue;
+        findObjects(obj_path, *it, res);
+    }
+}
+
+string fixPath(const string &obj_path)
+{
+    string res = obj_path;
+    // add leading "/" if it is not there
+    if (res[0]!='/') res = string("/") + res;
+            
+    // strip trailing "/"
+    if (res[res.length()-1] == '/')
+        res = res.substr(0, res.length()-1);
+
+    if (res.find("/FWObjectDatabase")!=0)
+        res = string("/FWObjectDatabase") + res;
+
+    return res;
+}
+
 int splitStr(char ch,string s, operands * ops)
 {
    int res=0;
@@ -307,22 +369,31 @@ int splitStr(char ch,string s, operands * ops)
            
    return res;
 }
-FWObject* createObject(string type,string path)
+
+FWObject* createObject(string type, string path)
 {
-    FWObject* obj=objdb->create(type);
-    FWObject* parent=getObject(path.c_str());
-    if (parent != NULL)
+    FWObject* obj = NULL;
+
+    list<FWObject*> parents;
+    findObjects(fixPath(path), objdb, parents);
+
+    if (parents.size())
     {
-        parent->add(obj);    
+        FWObject *parent = parents.front();
+        obj = objdb->create(type);
+        if (parent != NULL) parent->add(obj);    
+
     }
     return obj;
 }
+
 string getNextOpt(operands &ops)
 {
     string s=*ops.begin();
     ops.pop_front();
     return s;    
 }
+
 bool testPlatform(string pl,string os)
 {
     platforms=Resources::getListOfPlatforms();
@@ -360,27 +431,28 @@ bool getBool(string s)
     return (s.find("y")!=string::npos) || (s.find("Y")!=string::npos) || (s.find("1")!=string::npos);
 }
 
-FWObject* testAndFix(string n,string t,FWObject *root)
+void testAndFix(const string &path, const string &type, FWObject *root)
 {
-    FWObject *res;
-    cout  << n << _(" - ");
-    assert(root != NULL);
-    res=find_object(n,root);
-    if (res==NULL)
+    string fixed_path = fixPath(path);
+    list<FWObject*> objects;
+    findObjects(fixed_path, root, objects);
+    if (objects.size()==0)
     {
-        cout << _("Absent ");
-        
-        res =objdb->create(t.c_str());
-        res->setName(n);
-        root->add(res);
-        cout << _("( Fixed )");
-    }
-    else
-    {
-        cout << _("Ok");
-    }
-    cout << endl;
-    return res;
+        string::size_type n = fixed_path.rfind('/');
+        string obj_name = fixed_path.substr(n+1);
+        string parent_path = fixed_path.substr(0, n);
+        findObjects(parent_path, root, objects);
+        assert(objects.size()==1);
+        FWObject *parent = objects.front();
+
+        cout << path <<  " is missing ";
+       
+        FWObject *new_obj = objdb->create(type);
+        new_obj->setName(obj_name);
+        parent->add(new_obj);
+        cout << "( Fixed )" << endl;
+    } else
+        cout << path << " ok" << endl;
 }
 
 void invalidIPv4(string s)
@@ -393,20 +465,20 @@ void invalidIPv4(string s)
     }
 }
 
+void invalidIPv6(string s)
+{
+    if (!testIPv6(s))
+    {
+        cout << "\"" << s << "\" - invalid IPv6 address." << endl;
+        
+        exit(0);
+    }
+}
+
 int main(int argc, char * const *argv)
 {   
     operands ops;
 
-#ifdef ENABLE_NLS
-    setlocale (LC_ALL, "");
-
-    bindtextdomain (PACKAGE, LOCALEDIR);
-    textdomain (PACKAGE);
-#else
-#  ifdef HAVE_SETLOCALE
-    setlocale (LC_ALL, "");
-#  endif
-#endif
     initConstants();
     if (argc<=1)
     {
@@ -416,7 +488,7 @@ int main(int argc, char * const *argv)
 
     int   opt;
 
-    while( (opt=getopt(argc,argv,"f:a:r:d:o:l:L:p:t:n:su")) != EOF )
+    while( (opt=getopt(argc,argv,"c:f:a:r:d:o:l:L:p:t:n:su")) != EOF )
     {
         int num=0;
         if (optarg!=NULL)
@@ -426,24 +498,26 @@ int main(int argc, char * const *argv)
         }
         switch(opt)
         {
-        case 'f':     filename=getNextOpt(ops); break;
-        case 'L':     lib=getNextOpt(ops); break;
-        case 'p':     parent=getNextOpt(ops); break;
-        case 't':     objtype=getNextOpt(ops);cmd=OBJECT; break;
-        case 'n':     name=getNextOpt(ops); break;
-        case 'a':     cmd=ADDGRP;      break;
-        case 'r':     cmd=REMGRP;      break;
-        case 'd':     cmd=DELOBJECT;   break;
-        case 'o':     cmd=ATTR;        break;
-        case 'l':     cmd=LIST;        break;  
-        case 's':     cmd=STRUCT;      break;
+        case 'f':     filename = getNextOpt(ops); break;
+        case 'L':     lib = getNextOpt(ops); break;
+        case 'p':     parent = getNextOpt(ops); break;
+        case 't':     objtype = getNextOpt(ops); cmd = OBJECT; break;
+        case 'n':     name = getNextOpt(ops); break;
+        case 'c':     comment_txt = getNextOpt(ops); break;
+        case 'a':     cmd = ADDGRP;      break;
+        case 'r':     cmd = REMGRP;      break;
+        case 'd':     cmd = DELOBJECT;   break;
+        case 'o':     cmd = ATTR;        break;
+        case 'l':     cmd = LIST;        break;  
+        case 's':     cmd = STRUCT;      break;
         case 'u':     
-                      {
-                          cmd=(cmd==NONE)?UPGRADE:cmd;
-                          autoupgrade_flag=true;  break;
-                      }
-        default :     usage(argv[0]);  exit(1);
-                      
+        {
+            cmd = (cmd==NONE)?UPGRADE:cmd;
+            autoupgrade_flag = true;  break;
+        }
+        default :
+            usage(argv[0]);
+            exit(1);
         }
                 
         if (cmd==ADDGRP || cmd==REMGRP)
@@ -489,7 +563,11 @@ int main(int argc, char * const *argv)
             {
                 addr1=getNextOpt(ops);
                 invalidIPv4(addr1);
-
+            }
+            else if (objtype==IPv6::TYPENAME && num==1)
+            {
+                addr1=getNextOpt(ops);
+                invalidIPv6(addr1);
             }
             else if (objtype==DNSName::TYPENAME && num==2)
             {
@@ -498,8 +576,13 @@ int main(int argc, char * const *argv)
             }
             else if ((objtype==AddressRange::TYPENAME || objtype==Network::TYPENAME) && num==2)
             {
-                addr1=getNextOpt(ops);invalidIPv4(addr1);
-                addr2=getNextOpt(ops);invalidIPv4(addr2);
+                addr1=getNextOpt(ops); invalidIPv4(addr1);
+                addr2=getNextOpt(ops); invalidIPv4(addr2);
+            }
+            else if (objtype==NetworkIPv6::TYPENAME && num==2)
+            {
+                addr1=getNextOpt(ops); invalidIPv6(addr1);
+                addr2=getNextOpt(ops); invalidIPv6(addr2);
             }
             else if (objtype==ObjectGroup::TYPENAME &&       num==0)
             {}
@@ -555,7 +638,8 @@ int main(int argc, char * const *argv)
             
             else
             {
-                cout << "Adding objects of the type '" << objtype << "' is not supported or object's attributes are invalid." << endl;
+                cout << "Adding objects of the type '" << objtype
+                     << "' is not supported or object's attributes are invalid." << endl;
                 cmd=NONE;
             }     
             break;
@@ -587,45 +671,66 @@ int main(int argc, char * const *argv)
     
         if (cmd == STRUCT)
         {
-            cout << _("Test/repair the structure:") << endl;
+            cout << _("Check and repair tree structure:") << endl;
             FWObject *root=objdb;
             FWObject *nlib;
-            FWObject *grp;
-            string lib;
+            string lib_name;
             bool ro_flag;
             
-            for (FWObject::iterator i=root->begin();
-                    i!=root->end();
-                    ++i)
+            for (FWObject::iterator i=root->begin(); i!=root->end(); ++i)
             {
-                nlib=*i;
-                lib=nlib->getName();
+                nlib = *i;
+                lib_name = nlib->getName();
                 if (nlib->getId()!=FWObjectDatabase::DELETED_OBJECTS_ID)
                 {
-                    ro_flag=nlib->isReadOnly();
-                    cout << _("Library: ") << lib << ((ro_flag)?"(Read only)":" ") << endl;
+                    ro_flag = nlib->isReadOnly();
+                    cout << "Library: " << lib_name
+                         << ((ro_flag)?"(Read only)":" ") << endl;
+
                     nlib->setReadOnly(false);
                     
-                    grp=testAndFix("Objects",       ObjectGroup::TYPENAME,nlib);
-                        testAndFix("Addresses",     ObjectGroup::TYPENAME,grp);
-                        testAndFix("DNS Names",     ObjectGroup::TYPENAME,grp);
-                        testAndFix("Address Tables",ObjectGroup::TYPENAME,grp);
-                        testAndFix("Groups",        ObjectGroup::TYPENAME,grp);
-                        testAndFix("Hosts",         ObjectGroup::TYPENAME,grp);
-                        testAndFix("Networks",      ObjectGroup::TYPENAME,grp);
-                        testAndFix("Address Ranges",ObjectGroup::TYPENAME,grp);
+                    testAndFix(lib_name + "/Objects",
+                               ObjectGroup::TYPENAME, root);
+                    testAndFix(lib_name + "/Objects/Address Ranges",
+                               ObjectGroup::TYPENAME, root);
+                    testAndFix(lib_name + "/Objects/Address Tables",
+                               ObjectGroup::TYPENAME, root);
+                    testAndFix(lib_name + "/Objects/Addresses",
+                               ObjectGroup::TYPENAME,  root);
+                    testAndFix(lib_name + "/Objects/DNS Names",
+                               ObjectGroup::TYPENAME, root);
+                    testAndFix(lib_name + "/Objects/Groups",
+                               ObjectGroup::TYPENAME, root);
+                    testAndFix(lib_name + "/Objects/Hosts",
+                               ObjectGroup::TYPENAME, root);
+                    testAndFix(lib_name + "/Objects/Networks",
+                               ObjectGroup::TYPENAME, root);
                         
-                    grp=testAndFix("Services",      ServiceGroup::TYPENAME,nlib);
-                        testAndFix("Groups",        ServiceGroup::TYPENAME,grp);
-                        testAndFix("ICMP",          ServiceGroup::TYPENAME,grp);
-                        testAndFix("IP",            ServiceGroup::TYPENAME,grp);
-                        testAndFix("TCP",           ServiceGroup::TYPENAME,grp);
-                        testAndFix("UDP",           ServiceGroup::TYPENAME,grp);
-                        testAndFix("Custom",        ServiceGroup::TYPENAME,grp);
-                        testAndFix("TagServices",   ServiceGroup::TYPENAME,grp);
+                    testAndFix(lib_name + "/Services",
+                               ServiceGroup::TYPENAME,nlib);
+                    testAndFix(lib_name + "/Services/Custom",
+                               ServiceGroup::TYPENAME, root);
+                    testAndFix(lib_name + "/Services/Groups",
+                               ServiceGroup::TYPENAME, root);
+                    testAndFix(lib_name + "/Services/ICMP",
+                               ServiceGroup::TYPENAME, root);
+                    testAndFix(lib_name + "/Services/IP",
+                               ServiceGroup::TYPENAME, root);
+                    testAndFix(lib_name + "/Services/TCP",
+                               ServiceGroup::TYPENAME, root);
+                    testAndFix(lib_name + "/Services/UDP",
+                               ServiceGroup::TYPENAME, root);
+                    testAndFix(lib_name + "/Services/Custom",
+                               ServiceGroup::TYPENAME, root);
+                    testAndFix(lib_name + "/Services/TagServices",
+                               ServiceGroup::TYPENAME, root);
+                    testAndFix(lib_name + "/Services/Users",
+                               ServiceGroup::TYPENAME, root);
                         
-                        testAndFix("Firewalls",     ObjectGroup::TYPENAME,nlib);
-                        testAndFix("Time",          IntervalGroup::TYPENAME,nlib);
+                    testAndFix(lib_name + "/Firewalls",
+                               ObjectGroup::TYPENAME,nlib);
+                    testAndFix(lib_name + "/Time",
+                               IntervalGroup::TYPENAME,nlib);
 
                     nlib->setReadOnly(ro_flag);    
                 }
@@ -633,42 +738,50 @@ int main(int argc, char * const *argv)
         }
         else if (cmd == LIST)
         {
-            FWObject *root=getObject(path.c_str());
-            
-            cout << _("Objects list for '"<< path << "' :") << endl;
-            for(FWObject::iterator i=root->begin(); 
-                         i!=root->end();
-                         ++i)
+            list<FWObject*> objects;
+            findObjects(fixPath(path), objdb, objects);
+            for (list<FWObject*>::iterator it=objects.begin();
+                 it!=objects.end(); ++it)
             {
-               cout << (*i)->getName() << _(" ( ") << (*i)->getId() <<  _(" ) ") << endl;
+                FWObject *obj = *it;
+                for(FWObject::iterator i=obj->begin(); i!=obj->end(); ++i)
+                {
+                    cout << (*i)->getName() << _(" ( ")
+                         << (*i)->getId() <<  _(" ) ") << endl;
+                }
             }
             return(0);
         }
         else if (cmd == UPGRADE)
         {
-            cout << _("File upgraded; current version: ") << libfwbuilder::Constants::getLibraryVersion() << endl;
+            cout << _("File upgraded; current version: ")
+                 << libfwbuilder::Constants::getLibraryVersion() << endl;
         }
         else  if (cmd == OBJECT)
         {
-            cout << _("Adding a new object into '"<< ((lib!="")?lib:parent) <<"': ") << endl
+            cout << "Adding a new object to '"
+                 << ((lib!="")?lib:parent) <<"': " << endl
                  << _("Type: ") << objtype << endl
                  << _("Name: ") << name << endl;
-            if (objtype==IPv4::TYPENAME)
+
+            if (objtype==IPv4::TYPENAME || objtype==IPv6::TYPENAME)
             {
                 cout << _("Address: ") << addr1 << endl;
                 FWObject *nobj = NULL;
                 if (lib!="")
                 {
-                    nobj=createObject(objtype,"/"+lib+"/"+systemGroupPaths[objtype]);
+                    nobj = createObject(objtype,
+                                        "/"+lib+"/"+systemGroupPaths[objtype]);
                 }
                 else if (parent!="")
                 {
-                    FWObject *target = getObject(parent.c_str());
-
-                    if (Interface::isA(target))
+                    list<FWObject*> parents;
+                    findObjects(fixPath(parent), objdb, parents);
+                    FWObject *parent_obj = parents.front();
+                    if (Interface::isA(parent_obj))
                     {
                         nobj = objdb->create(objtype);   
-                        target->add(nobj);
+                        parent_obj->add(nobj);
                     }
                 }
                 else
@@ -679,9 +792,14 @@ int main(int argc, char * const *argv)
                 
                 if (nobj!=NULL)
                 {
-                    IPv4 *o=IPv4::cast(nobj);
+                    Address *o = Address::cast(nobj);
                     o->setName(name);
-                    o->setAddress(InetAddr(addr1));
+                    if (!comment_txt.empty()) o->setComment(comment_txt);
+
+                    if (objtype==IPv6::TYPENAME)
+                        o->setAddress(InetAddr(AF_INET6, addr1));
+                    else
+                        o->setAddress(InetAddr(addr1));
                 }
                 
             }
@@ -690,40 +808,62 @@ int main(int argc, char * const *argv)
                 cout << _("DNS Record: ") << dnsrec << endl;
                 cout << _("Run time: ") << runtime << endl;
                 
-                FWObject *nobj=createObject(objtype,"/"+lib+"/"+systemGroupPaths[objtype]);
+                FWObject *nobj=createObject(objtype,"/"+lib+
+                                            "/"+systemGroupPaths[objtype]);
                 DNSName *o=DNSName::cast(nobj);
                 o->setName(name);
+                if (!comment_txt.empty()) o->setComment(comment_txt);
                 o->setSourceName(dnsrec);
                 o->setRunTime(getBool(runtime));
                 
             }
             else if (objtype==AddressRange::TYPENAME)
             {
-                 cout   << _("Range start: ") << addr1 << endl
-                        << _("Range end: ") << addr2 << endl;
-                 FWObject *nobj=createObject(objtype,"/"+lib+"/"+systemGroupPaths[objtype]);
-                 AddressRange *o=AddressRange::cast(nobj);
-                 o->setName(name);
-                 o->setRangeStart(InetAddr(addr1));
-                 o->setRangeEnd(InetAddr(addr2));
-
+                cout   << _("Range start: ") << addr1 << endl
+                       << _("Range end: ") << addr2 << endl;
+                FWObject *nobj=createObject(objtype,"/"+lib+
+                                            "/"+systemGroupPaths[objtype]);
+                AddressRange *o=AddressRange::cast(nobj);
+                o->setName(name);
+                if (!comment_txt.empty()) o->setComment(comment_txt);
+                o->setRangeStart(InetAddr(addr1));
+                o->setRangeEnd(InetAddr(addr2));
             }
             else if (objtype==ObjectGroup::TYPENAME)
             {
-                 FWObject *nobj=createObject(objtype,"/"+lib+"/"+systemGroupPaths[objtype]);
-                 ObjectGroup *o=ObjectGroup::cast(nobj);
-                 o->setName(name);
+                FWObject *nobj=createObject(objtype,"/"+lib+
+                                            "/"+systemGroupPaths[objtype]);
+                ObjectGroup *o=ObjectGroup::cast(nobj);
+                o->setName(name);
+                if (!comment_txt.empty()) o->setComment(comment_txt);
                 
             }
             else if (objtype==Network::TYPENAME)
             {
-                 cout   << _("Address: ") << addr1 << endl
-                        << _("Netmask: ") << addr2 << endl;
-                 FWObject *nobj=createObject(objtype,"/"+lib+"/"+systemGroupPaths[objtype]);
-                 Network *o=Network::cast(nobj);
-                 o->setName(name);
-                 o->setAddress(InetAddr(addr1));
-                 o->setNetmask(InetAddr(addr2));
+                cout   << _("Address: ") << addr1 << endl
+                       << _("Netmask: ") << addr2 << endl;
+                FWObject *nobj=createObject(objtype,"/"+lib+
+                                            "/"+systemGroupPaths[objtype]);
+                Network *o=Network::cast(nobj);
+                o->setName(name);
+                if (!comment_txt.empty()) o->setComment(comment_txt);
+                o->setAddress(InetAddr(addr1));
+                o->setNetmask(InetAddr(addr2));
+            }
+            else if (objtype==NetworkIPv6::TYPENAME)
+            {
+                cout   << _("Address: ") << addr1 << endl
+                       << _("Netmask: ") << addr2 << endl;
+                FWObject *nobj=createObject(objtype,"/"+lib+
+                                            "/"+systemGroupPaths[objtype]);
+                NetworkIPv6 *o=NetworkIPv6::cast(nobj);
+                o->setName(name);
+                if (!comment_txt.empty()) o->setComment(comment_txt);
+                o->setAddress(InetAddr(AF_INET6, addr1));
+                istringstream istr(addr2);
+                int masklen;
+                istr >> masklen;
+                o->setNetmask(InetAddr(AF_INET6, masklen));
             }
             else if (objtype==Firewall::TYPENAME)
             {
@@ -731,15 +871,18 @@ int main(int argc, char * const *argv)
                         << _("Host OS: ") << hostOS << endl;
                 if (testPlatform(platform,hostOS))
                 {
-                    FWObject *nobj=createObject(objtype,"/"+lib+"/"+systemGroupPaths[objtype]);
+                    FWObject *nobj=createObject(objtype,"/"+lib+
+                                                "/"+systemGroupPaths[objtype]);
                     Firewall *o=Firewall::cast(nobj);
                     o->setName(name);
+                    if (!comment_txt.empty()) o->setComment(comment_txt);
                     o->setStr("platform",platform);
                     o->setStr("host_OS",hostOS);
                 }
                 else
                 {
-                    cout << _("Platform and Host OS combination is invalid.") << endl;
+                    cout << "Platform and Host OS combination is invalid."
+                         << endl;
                 }
                 
             }
@@ -760,6 +903,7 @@ int main(int argc, char * const *argv)
                 FWObject *nobj=createObject(objtype,"/"+lib+"/"+systemGroupPaths[objtype]);
                 Interval *o=Interval::cast(nobj);
                 o->setName(name);
+                if (!comment_txt.empty()) o->setComment(comment_txt);
                 if (time1 == "")
                 {
                     m=0; h=0;
@@ -826,30 +970,36 @@ int main(int argc, char * const *argv)
             {
                 if (security=="")
                 {
-                    cout << _("Security level is an obligatory attribute.") << endl;
+                    cout << _("Security level is mandatory attribute.") << endl;
                 }
                 else
                 {
                     cout    << _("Security level: ") << security << endl
                             << _("Address type: ") << addrtype << endl
                             << _("Management interface: ") << management << endl;
-                    FWObject *target = getObject(parent.c_str());
-                    if (Host::isA(target) ||  Firewall::isA(target))
+
+                    list<FWObject*> parents;
+                    findObjects(fixPath(parent), objdb, parents);
+                    FWObject *parent_obj = parents.front();
+
+                    if (Host::isA(parent_obj) ||  Firewall::isA(parent_obj))
                     {
                         FWObject *nobj = objdb->create(objtype);   
-                        Interface *o=Interface::cast(nobj);
+                        Interface *o = Interface::cast(nobj);
                         o->setName(name);
-                        int sl=atoi(security.c_str());
+                        if (!comment_txt.empty()) o->setComment(comment_txt);
+                        int sl = atoi(security.c_str());
                         o->setSecurityLevel(sl);
                         o->setExt((sl==0)?true:false);
                         o->setDyn(addrtype=="dynamic");
                         o->setUnnumbered(addrtype=="unnumbered");
                         o->setManagement(getBool(management));
-                        target->add(o);
+                        parent_obj->add(o);
                     }
                     else
                     {
-                        cout << lib << " - " << "invalid parent for an Interface" << endl;
+                        cout << lib << " - "
+                             << "invalid parent for an Interface" << endl;
                     }
                 }
             }
@@ -858,6 +1008,7 @@ int main(int argc, char * const *argv)
                 FWObject *nobj=createObject(objtype,"/"+lib+"/"+systemGroupPaths[objtype]);
                 Host *o=Host::cast(nobj);
                 o->setName(name);
+                if (!comment_txt.empty()) o->setComment(comment_txt);
             }
             else if (objtype==TCPService::TYPENAME)
             {
@@ -873,6 +1024,7 @@ int main(int argc, char * const *argv)
                 FWObject *nobj=createObject(objtype,"/"+lib+"/"+systemGroupPaths[objtype]);
                 TCPService *o=TCPService::cast(nobj);
                 o->setName(name);
+                if (!comment_txt.empty()) o->setComment(comment_txt);
 
                 o->setSrcRangeStart(atoi(addr1.c_str()));
                 o->setSrcRangeEnd(  atoi(addr2.c_str()));
@@ -904,6 +1056,7 @@ int main(int argc, char * const *argv)
                 FWObject *nobj=createObject(objtype,"/"+lib+"/"+systemGroupPaths[objtype]);
                 UDPService *o=UDPService::cast(nobj);
                 o->setName(name);
+                if (!comment_txt.empty()) o->setComment(comment_txt);
 
                 o->setSrcRangeStart(atoi(addr1.c_str()));
                 o->setSrcRangeEnd(  atoi(addr2.c_str()));
@@ -918,6 +1071,7 @@ int main(int argc, char * const *argv)
                 FWObject *nobj=createObject(objtype,"/"+lib+"/"+systemGroupPaths[objtype]);
                 ICMPService *o=ICMPService::cast(nobj);
                 o->setName(name);
+                if (!comment_txt.empty()) o->setComment(comment_txt);
                 o->setInt("type",atoi(ICMPtype.c_str()));
                 o->setInt("code",atoi(ICMPcode.c_str()));
             }
@@ -928,6 +1082,7 @@ int main(int argc, char * const *argv)
                 FWObject *nobj=createObject(objtype,"/"+lib+"/"+systemGroupPaths[objtype]);
                 IPService *o=IPService::cast(nobj);
                 o->setName(name);
+                if (!comment_txt.empty()) o->setComment(comment_txt);
                 o->setInt("protocol_num",atoi(protocol.c_str()));
 
                 o->setBool("lsrr",false);
@@ -970,28 +1125,40 @@ int main(int argc, char * const *argv)
         }
         else
         {
-            FWObject *obj=getObject(object.c_str());
-            if (cmd==DELOBJECT)
+
+            list<FWObject*> objects;
+            findObjects(fixPath(object), objdb, objects);
+            for (list<FWObject*>::iterator it=objects.begin();
+                 it!=objects.end(); ++it)
             {
-                cout << _("Removing object '") << obj->getName()
-                 << _("' from the tree.") << endl;
-                objdb->removeAllInstances(obj);
-            }
-            if (cmd==ADDGRP)
-            {
-                Group *grp=Group::cast(getObject(group.c_str()));
-                cout << _("Adding object '") << obj->getName()
-                 << _("' to the group '") << grp->getName()
-                 << "'" << endl;
-                grp->addRef(obj);
-            }
-            if (cmd==REMGRP)
-            {
-                Group *grp=Group::cast(getObject(group.c_str()));
-                cout << _("Removing object '") << obj->getName()
-                 << _("' from the group '") << grp->getName()
-                 << "'" << endl;
-                grp->removeRef(obj);
+                FWObject *obj = *it;
+
+                if (cmd==DELOBJECT)
+                {
+                    cout << _("Removing object '") << obj->getName()
+                         << _("' from the tree.") << endl;
+                    objdb->removeAllInstances(obj);
+                }
+                if (cmd==ADDGRP)
+                {
+                    list<FWObject*> groups;
+                    findObjects(fixPath(group), objdb, groups);
+                    FWObject *grp = groups.front();
+                    cout << _("Adding object '") << obj->getName()
+                         << _("' to the group '") << grp->getName()
+                         << "'" << endl;
+                    grp->addRef(obj);
+                }
+                if (cmd==REMGRP)
+                {
+                    list<FWObject*> groups;
+                    findObjects(fixPath(group), objdb, groups);
+                    FWObject *grp = groups.front();
+                    cout << _("Removing object '") << obj->getName()
+                         << _("' from the group '") << grp->getName()
+                         << "'" << endl;
+                    grp->removeRef(obj);
+                }
             }
         }
 

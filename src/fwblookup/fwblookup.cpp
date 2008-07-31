@@ -34,6 +34,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <algorithm>
 #include <functional>
 
@@ -69,7 +70,6 @@ using namespace libfwbuilder;
 using namespace std;
 
 static char      *filename          = NULL;
-static char      *object            = NULL;
 static char      *attr              = NULL;
 static char      *optn              = NULL;
 static bool       dump              = false;  /* -D */
@@ -105,19 +105,14 @@ void usage(const char *name)
          << _(" [-V] -f filename.xml [-a attribute] [-o option_name] [-rADIlLMNPT] object_id | full_path_to_object") << endl;
 }
 
-FWObject *find_object(const string &obj_path,
-                      FWObject *root=objdb)
+void find_objects(const string &obj_path, FWObject *obj, list<FWObject*> &res)
 {
-    string path=obj_path;
-    string::size_type n=path.find("/",0);
-    string tree_node=path.substr(0,n);
-
-    FWObject::iterator j=std::find_if(root->begin(), root->end(), 
-                                      FWObjectNameEQPredicate(tree_node));
-
-    if (j==root->end()) return NULL;
-    if ((*j)->getName()==obj_path) return (*j);
-    else    return find_object( path.substr(n+1) , (*j) );
+    if (obj->getPath()==obj_path) res.push_back(obj);
+    for (FWObject::iterator it=obj->begin(); it!=obj->end(); ++it)
+    {
+        if (FWReference::cast(*it)) continue;
+        find_objects(obj_path, *it, res);
+    }
 }
 
 void simplePrint(FWObject *o)
@@ -129,11 +124,14 @@ void simplePrint(FWObject *o)
         FWObject *o1=o;
         string path=o1->getName();
         if (path.empty()) path=o1->getTypeName();
-        while (o1->getParent()!=NULL)
+        while (o1->getParent()!=NULL && o1->getParent()!=o1->getRoot())
         {
-            path=o1->getParent()->getName()+"/"+path;
+            string pp = o1->getParent()->getName();
+            if (pp.empty()) pp = o1->getParent()->getTypeName();
+            path = pp + "/" + path;
             o1=o1->getParent();
         }
+        path = "/" + path;
         cout << path << "\t";
     }
     if ( print_type ) cout << o->getTypeName() << "\t";
@@ -153,20 +151,124 @@ void listObject(FWObject *obj,bool recursive)
     }
 }
 
+string printObjectNameAndId(FWObject *obj)
+{
+    ostringstream strm;
+    strm << obj->getName()
+         << " (ID='"
+         << FWObjectDatabase::getStringId(obj->getId())
+         << "')";
+    return strm.str();
+}
+
+void performOperation(FWObject *obj)
+{
+    if (attr!=NULL)
+    {
+        if (obj->exists(attr))
+            cout << obj->getStr(attr) << endl;
+        else 
+        {
+            ostringstream err;
+            err << "Object " << printObjectNameAndId(obj)
+                << " does not have attribute " << attr;
+            throw FWException(err.str());
+        }                
+        exit(0);
+    } else
+    {
+        if (optn!=NULL)
+        {
+            if (Host::isA(obj) || Firewall::isA(obj))
+            {
+                FWOptions *opt=Host::cast(obj)->getOptionsObject();
+                if (opt!=NULL)
+                {
+                    cout << opt->getStr(optn);
+                } else 
+                {
+                    ostringstream err;
+                    err << "Object " << printObjectNameAndId(obj)
+                        << " has no options";
+                    throw FWException(err.str());
+                }
+            } else 
+            {
+                ostringstream err;
+                err << "Can not print management address for "
+                    << printObjectNameAndId(obj)
+                    << ": only Host and Firewall objects have "
+                    "management interface";
+                throw FWException(err.str());
+            }
+
+        }
+        if ( print_addr ) 
+        {
+            if (Address::cast(obj)!=NULL)
+                cout << Address::cast(obj)->getAddressPtr()->toString()
+                     << endl;
+            else
+            {
+                ostringstream err;
+                err << "Can not print address for  "
+                    << printObjectNameAndId(obj)
+                    << ": objects of this type do not have address";
+                throw FWException(err.str());
+            }
+        }
+        if ( print_label ) 
+        {
+            if (Interface::isA(obj))
+                cout << Interface::cast(obj)->getLabel() << endl;
+            else 
+            {
+                ostringstream err;
+                err << "Can not print label for  "
+                    << printObjectNameAndId(obj)
+                    << ":  only Interface object has label";
+                throw FWException(err.str());
+            }
+        }
+        if ( print_mgmt_addr )
+        {
+            if (Host::isA(obj) || Firewall::isA(obj))
+            {
+                const InetAddr *ma = Host::cast(obj)->getManagementAddress();
+                if (ma && (*ma) != InetAddr::getAny())
+                {
+                    cout << ma->toString() << endl;
+                } else
+                {
+                    ostringstream err;
+                    err << "Object " << printObjectNameAndId(obj)
+                        << " does not have management interface";
+                    throw FWException(err.str());
+                }
+            } else {
+                ostringstream err;
+                err << "Can not print management address for  "
+                    << printObjectNameAndId(obj)
+                    << ": only Host and Firewall objects have "
+                    "management interface";
+                throw FWException(err.str());
+            }
+        }
+        if ( list_children )
+        {
+            simplePrint(obj);
+            listObject(obj,recursive);
+            exit(0);
+        }
+        simplePrint(obj);
+        if (dump ) obj->dump(cout,recursive,false);
+    }
+}
+
 int main(int argc, char * const *argv)
 {   
-    char errstr[1024];
+    string object;
 
-#ifdef ENABLE_NLS
-    setlocale (LC_ALL, "");
-
-    bindtextdomain (PACKAGE, LOCALEDIR);
-    textdomain (PACKAGE);
-#else
-#  ifdef HAVE_SETLOCALE
-    setlocale (LC_ALL, "");
-#  endif
-#endif
     
     if (argc<=1)
     {
@@ -217,134 +319,52 @@ int main(int argc, char * const *argv)
         /* load the data file */
         UpgradePredicate upgrade_predicate; 
 
-        objdb->load(filename,  &upgrade_predicate, librespath);
-        FWObject *obj;
+        objdb->load(filename, &upgrade_predicate, librespath);
+        FWObject *obj = NULL;
+        list<FWObject*> work_objects;
 
-        if (strchr(object,'/')!=NULL)
+        if (object.find('/')!=string::npos)
         {
-/* got full path to the object */
-            string path=object;
-            string::size_type n=path.find("/",0);
-            if (n==0 || 
-                path.substr(0,n)=="FWObjectDatabase" || 
-                path.substr(0,n)=="User")
-                obj= find_object( path.substr(n+1) );
-            else
-                obj= find_object( path );
-            if (obj==NULL)
-            {
-                SNPRINTF(errstr,sizeof(errstr),_("Object %s not found"),object );
-                throw FWException(errstr);
-            }
-        } else {
-/* got object ID */
-            obj=objdb->getById(FWObjectDatabase::getIntId(object), true);
-            if (obj==NULL) 
-            {
-                SNPRINTF(errstr,sizeof(errstr),_("Object with ID='%s' not found"),object );
-                throw FWException(errstr);
-            }
-        }
+            /* 
+             * got full path to the object. Since name of the object is
+             * not necessarily unique, this path could designate
+             * several objects. To find all these objects take one
+             * step up the tree and then loop over all children
+             * objects, comparing the name.
+             */
 
-        if (attr!=NULL)
-        {
-            if (obj->exists(attr))
-                cout << obj->getStr(attr) << endl;
-            else 
+            // add leading "/" if it is not there
+            if (object[0]!='/') object = string("/") + object;
+            
+            // strip trailing "/"
+            if (object[object.length()-1] == '/')
+                object = object.substr(0, object.length()-1);
+
+            if (object.find("/FWObjectDatabase")!=0)
+                object = string("/FWObjectDatabase") + object;
+
+            find_objects( object, objdb, work_objects );
+
+            if (work_objects.size()==0) throw FWException(
+                string("Object ") + object + string(" not found"));
+
+            for (list<FWObject*>::iterator it=work_objects.begin();
+                 it!=work_objects.end(); ++it)
             {
-                SNPRINTF(errstr,sizeof(errstr),
-                         _("Object %s (ID='%s') does not have attribute %s"),
-                         obj->getName().c_str(),
-                         FWObjectDatabase::getStringId(obj->getId()).c_str(),
-                         attr );
-                throw FWException(errstr);
-            }                
-            exit(0);
+                performOperation(*it);
+            }
+
+
         } else
         {
-            if (optn!=NULL)
-            {
-                if (Host::isA(obj) || Firewall::isA(obj))
-                {
-                    FWOptions *opt=Host::cast(obj)->getOptionsObject();
-                    if (opt!=NULL)
-                    {
-                        cout << opt->getStr(optn);
-                    } else 
-                    {
-                        SNPRINTF(errstr,sizeof(errstr),
-                                 _("Object %s (ID='%s') has no options"),
-                                 obj->getName().c_str(),
-                                 FWObjectDatabase::getStringId(obj->getId()).c_str() );
-                        throw FWException(errstr);
-                    }
-                } else 
-                {
-                    SNPRINTF(errstr,sizeof(errstr),
-                             _("Can not print management address for %s (ID='%s'): only Host and Firewall objects have management interface"),
-                             obj->getName().c_str(),
-                             FWObjectDatabase::getStringId(obj->getId()).c_str() );
-                    throw FWException(errstr);
-                }
+/* got object ID */
+            obj=objdb->getById(FWObjectDatabase::getIntId(object), true);
+            if (obj==NULL) throw FWException(
+                string("Object ") +
+                printObjectNameAndId(obj) + string(" not found"));
+            else
+                performOperation(obj);
 
-            }
-            if ( print_addr ) 
-            {
-                if (Address::cast(obj)!=NULL)
-                    cout << Address::cast(obj)->getAddressPtr()->toString()
-                         << endl;
-                else {
-                    SNPRINTF(errstr,sizeof(errstr),
-                             _("Can not print address for %s (ID='%s'): objects of this type do not have address"),
-                             obj->getName().c_str(),
-                             FWObjectDatabase::getStringId(obj->getId()).c_str() );
-                    throw FWException(errstr);
-                }
-            }
-            if ( print_label ) 
-            {
-                if (Interface::isA(obj))
-                    cout << Interface::cast(obj)->getLabel() << endl;
-                else {
-                    SNPRINTF(errstr,sizeof(errstr),
-                             _("Can not print label for %s (ID='%s'): only Interface object has label"),
-                             obj->getName().c_str(),
-                             FWObjectDatabase::getStringId(obj->getId()).c_str() );
-                    throw FWException(errstr);
-                }
-            }
-            if ( print_mgmt_addr )
-            {
-                if (Host::isA(obj) || Firewall::isA(obj))
-                {
-                    const InetAddr *ma = Host::cast(obj)->getManagementAddress();
-                    if (ma && (*ma) != InetAddr::getAny())
-                    {
-                        cout << ma->toString() << endl;
-                    } else
-                    {
-                        SNPRINTF(errstr,sizeof(errstr),
-                            _("Object %s (ID='%s') does not have management interface"),
-                             obj->getName().c_str(),
-                                 FWObjectDatabase::getStringId(obj->getId()).c_str() );
-                        throw FWException(errstr);
-                    }
-                } else {
-                    SNPRINTF(errstr,sizeof(errstr),
-                             _("Can not print management address for %s (ID='%s'): only Host and Firewall objects have management interface"),
-                             obj->getName().c_str(),
-                             FWObjectDatabase::getStringId(obj->getId()).c_str() );
-                    throw FWException(errstr);
-                }
-            }
-            if ( list_children )
-            {
-                simplePrint(obj);
-                listObject(obj,recursive);
-                exit(0);
-            }
-            simplePrint(obj);
-            if (dump ) obj->dump(cout,recursive,false);
         }
 
     } catch(FWException &ex)  {

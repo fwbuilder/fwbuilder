@@ -36,7 +36,7 @@ using namespace libfwbuilder;
 
 
 
-void init(char * const *argv)
+void init(char * const*)
 {
 
 
