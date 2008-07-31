@@ -1,3 +1,8 @@
+2008-07-30  vadim  <vadim@vk.crocodile.org>
+
+	* fwbedit.cpp (main): fixed bug #1997475: "Adding Interface via
+	fwbedit breaks .fwb file"
+
 2008-07-28    <vadim@vk.crocodile.org>
 
 	* ObjectManipulator.cpp (ObjectManipulator::removeLib): fixed

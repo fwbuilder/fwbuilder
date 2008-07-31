@@ -88,7 +88,6 @@
 #include "fwbuilder/ServiceGroup.h"
 #include "fwbuilder/Interval.h"
 #include "fwbuilder/IntervalGroup.h"
-#include "fwbuilder/InterfacePolicy.h"
 
 #include "../common/init.cpp"
 #include <assert.h>
@@ -846,13 +845,7 @@ int main(int argc, char * const *argv)
                         o->setDyn(addrtype=="dynamic");
                         o->setUnnumbered(addrtype=="unnumbered");
                         o->setManagement(getBool(management));
-                        
                         target->add(o);
-                        if (Firewall::isA(target))
-                        {
-                            o->add(new InterfacePolicy());
-
-                        }
                     }
                     else
                     {
