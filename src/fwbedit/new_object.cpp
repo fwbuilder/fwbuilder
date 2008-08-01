@@ -236,7 +236,7 @@ FWObject* createObject(FWObjectDatabase *objdb,
         path = parent;
 
     list<FWObject*> parents;
-    findObjects(fixPath(path), objdb, parents);
+    findObjects(path, objdb, parents);
     if (parents.size())
     {
         FWObject *parent_obj = parents.front();
@@ -785,7 +785,7 @@ void modObject(FWObjectDatabase *objdb,
                operands &ops)
 {
     list<FWObject*> objects;
-    findObjects(fixPath(object), objdb, objects);
+    findObjects(object, objdb, objects);
     if (objects.size()==0)
     {
         cout << "Object " << object << " not found" << endl;
@@ -803,7 +803,7 @@ void modObject(FWObjectDatabase *objdb,
 void delObject(FWObjectDatabase *objdb, const string &object)
 {
     list<FWObject*> objects;
-    findObjects(fixPath(object), objdb, objects);
+    findObjects(object, objdb, objects);
     if (objects.size()==0)
     {
         cout << "Object " << object << " not found" << endl;

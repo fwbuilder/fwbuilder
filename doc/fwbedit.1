@@ -27,7 +27,7 @@ below).
 
 .SH COMMANDS AND OPTIONS:
 
-.B new
+.B new -f file.fwb -t objtype -n name -c comment -p parent [-a attrs]
 
 Creates new object.
 
@@ -45,7 +45,7 @@ Creates new object.
 
 
 
-.B delete
+.B delete -f file.fwb -o object
 
 Deletes object specified by its full path in the tree or object ID.
 
@@ -56,7 +56,7 @@ Deletes object specified by its full path in the tree or object ID.
 
 
 
-.B modify
+.B modify -f file.fwb -o object -c comment [-a attrs]
 
 Modifies object specified by its full path in the tree or object ID. 
 Object can not be renamed using this operation.
@@ -73,7 +73,7 @@ Object can not be renamed using this operation.
 
 
 
-.B list
+.B list -f file.fwb -o object [-r|-c] [-d|-Fformat]
 
 Prints name and ID of an object.
 
@@ -81,10 +81,28 @@ Prints name and ID of an object.
  -f file.fwb: data file
 .PP
  -o object: object to print, full path or ID
+.PP
+-r  print specified object and all objects under it in the tree
+.PP
+-c  print only children objects of the given object but do not
+    print the object itself.
+.PP
+-d  print full dump of all object's attributes including internal debugging
+information if available, this can be very verbose.
+.PP
+-Fformat_string Program recognizes macros in the format string and
+replaces them with values of corresponding object's attributes. Macro
+is the name of the attribute surrounded with '%', such as '%name%'
+or '%address%'. Here is the list of some attribute names: "id",
+"name", "path", "comment", "type", "address", "netmask",
+"dnsname". TCP and UDP service objects provide attributes
+"src_range_start", "src_range_end", "dst_range_start", "dst_range_end"
+for the source and destination port ranges. ICMP and ICMP6 service
+objects have attributes "icmp_type" and "icmp_code".
 
 
 
-.B add
+.B add -f file.fwb -p group -o object
 
 Adds object specified by path or ID to a group, also specified by its
 path or ID.
@@ -99,7 +117,7 @@ path or ID.
 
 
 
-.B remove
+.B remove -f file.fwb -p group -o object
 
 Removes object from a group.
 
@@ -113,14 +131,14 @@ Removes object from a group.
 
 
 
-.B upgrade
+.B upgrade -f file.fwb
 
 Upgrades data file to the latest data format version.
 
           -f file.fwb: data file
 
 
-.B checktree
+.B checktree -f file.fwb
 
 Checks consistency and correctness of the object tree in the given
 data file and repairs it if necessary.
@@ -167,6 +185,73 @@ data file and repairs it if necessary.
 .SH EXAMPLES
 
 .PP
+Print contents of the object /User/Firewalls/firewall/eth0 according
+to the provided format. Note that object of the type "Interface" does not have
+attribute that would define its address, IP address is defined by its child 
+object of the type IPv4 or IPv6.
+.PP
+fwbedit list -f x.fwb  -o /User/Firewalls/firewall/eth0 -F "type=%type% name=%name% id=%id% %comment%"
+
+
+.PP
+Print contents of the object /User/Firewalls/firewall/eth0 and all its
+child objects. This is the way to see addresses and
+netmasks. Interface object does not have attribiute "address" so the program
+ignores macro "%address%" when it prints interface.
+.PP
+fwbedit list -f x.fwb  -o /User/Firewalls/firewall/eth0 -F "type=%type% name=%name% id=%id% %comment% %address%" -r
+
+
+.PP
+Print group object /User/Objects/Addresses
+.PP
+fwbedit list -f x.fwb  -o /User/Objects/Addresses -F "type=%type% name=%name% id=%id% %comment%"
+
+
+.PP
+Print group object /User/Objects/Addresses and all address objects inside of it:
+.PP
+fwbedit list -f x.fwb  -o /User/Objects/Addresses -F "type=%type% name=%name% id=%id% %comment%" -r
+
+
+.PP
+Print address objects inside group /User/Objects/Addresses but do not print
+the group object itself:
+.PP
+fwbedit list -f x.fwb  -o /User/Objects/Addresses -F "type=%type% name=%name% id=%id% %comment%" -c
+
+
+.PP
+Print addresses and netmasks of all interfaces of all firewalls in the
+form of their full object tree path, followed by the type, id, address
+and netmask:
+.PP
+fwbedit list -f x.fwb  -o /User/Firewalls -F "%path% %type% %id% %address% %netmask%" -r | grep IP
+
+
+.PP
+Print names, platform and version information for all firewall objects defined
+in the data file:
+.PP
+fwbedit list -f x.fwb  -o /User/Firewalls -F "%name% platform: %platform% version:  %version%" -c 
+
+
+.PP
+Print name, source and destination port ranges for all TCP services in
+the folder TCP of the user-defined group User:
+.PP
+fwbedit list -f x.fwb  -o /User/Services/TCP -c -F "name='%name%' est=%established% \t %src_range_start%-%src_range_end% : %dst_range_start%-%dst_range_end%"
+
+
+.PP
+Print icmp type and code for all ICMP services in the folder ICMP of
+the user-defined group User:
+.PP
+fwbedit list -f x.fwb  -o /User/Services/ICMP -c -F "name='%name%' icmp_type=%icmp_type% icmp_code=%icmp_code%"
+
+
+
+.PP
 Add IPv6 address to one of the interfaces of firewall object "firewall":
 .PP
 fwbedit new  -f x.fwb -p /User/Firewalls/firewall/eth3 -t IPv6 -n eth3-v6-addr -o 2001:470:1f05:590::2,64
@@ -193,21 +278,32 @@ fwbedit add -f x.fwb -o id3D71A1BA -g /User/Objects/Groups/testgroup
 
 
 .PP
-fwbedit can be used in combination with fwblookup to execute
-operations on many objects.
-.PP
-First, the following script uses fwblookup to print full path of all
-Host objects (option -l in combination with option -P prints full path
-for all children objects of /Objects/Hosts), then uses grep to filter
-only those hosts that have 'domain.com' in their name, then cycles
-through the obtained list and uses fwbedit to add them to the
-group 'domainGRP'.
+The following script uses fwbedit "list" command to print IDs of all
+Address objects in the folder /User/Objects/Addresses , then cycles
+through the obtained list and uses fwbedit to add them to the group
+"group1".
+
 .LP
-  fwblookup -f x.fwb -lP /User/Objects/Hosts | \\
-  grep domain.com | \\
-  while read h; do \\
-    fwbedit add -f x.fwb -o $h -g /User/Objects/Groups/domainGRP; \\
-  done
+  fwbedit list -f x.fwb -o /User/Objects/Addresses -F "%id%" -c  | \\
+    while read id; do \\
+      fwbedit add -f x.fwb -g /User/Objects/Groups/group1 -o $id; \\
+    done
+
+
+.PP
+Here is slightly more complex example. The following script uses
+fwbedit "list" command to print types and IDs of all Address objects
+in the folder /User/Objects/Addresses , then filters them using grep
+to get only IPv6 objects and finally cycles through the obtained list
+and uses fwbedit to add them to the group "group1".
+
+.LP
+  fwbedit list -f x.fwb  -o /User/Objects/Addresses -F "%type% %id%" -c | \\
+    grep IPv6 | \\
+    while read type id; do \\
+      fwbedit add -f x.fwb  -g /User/Objects/Groups/group1 -o $id; \\
+    done
+
 
 
 .SH URL

@@ -18,7 +18,6 @@ for d in src/ \
     doc/ \
     src/antlr/ \
     src/gui/ \
-    src/fwblookup/ \
     src/fwbedit/ \
     src/ipt/ \
     src/pflib/ \

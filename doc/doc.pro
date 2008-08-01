@@ -40,7 +40,6 @@ doc.files   = AUTHORS                 \
 doc.path    = $$DOCDIR
 
 man.files   = fwbedit.1             \
-              fwblookup.1           \
               fwbuilder.1           \
               fwb_iosacl.1          \
               fwb_ipf.1             \

@@ -1,3 +1,20 @@
+2008-08-01  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* list_object.cpp (getAttributeValue): added command "list" to
+	fwbedit. This command can print contents of one object, an object
+	and all objects below it in the tree or contents of a
+	group. Object's attributes can be arranged in the output according
+	to the provided format string where attributes are represented by
+	macros of the format "%attr_name%" where attr_name is the name of
+	the attribute.
+
+	* fwbedit.1: Man page fwbedit.1 has been updated with the list of
+	commands, options, supported attributes and examples.
+
+	* with addition of the "list" command to fwbedit, utility
+	fwblookup has been deprecated and removed from the package and
+	source code tree.
+
 2008-07-31  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* fwbedit.cpp (usage): Redesigned command line interface for

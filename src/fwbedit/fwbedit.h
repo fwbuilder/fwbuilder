@@ -45,6 +45,13 @@ class OperandsError : public std::exception {};
 // to make it compile on windows
 typedef std::deque<std::string> operands;
 
+extern void listObject(libfwbuilder::FWObjectDatabase *objdb,
+                       const std::string &path,
+                       bool list_children,
+                       bool recursive,
+                       const std::string &list_format,
+                       bool full_dump);
+
 extern void newObject(libfwbuilder::FWObjectDatabase *objdb,
                       const std::string &objtype,
                       const std::string &name,

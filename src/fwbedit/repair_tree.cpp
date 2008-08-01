@@ -41,14 +41,13 @@ using namespace std;
 void testAndFix(FWObjectDatabase *objdb,
                 const string &path, const string &type, FWObject *root)
 {
-    string fixed_path = fixPath(path);
     list<FWObject*> objects;
-    findObjects(fixed_path, root, objects);
+    findObjects(path, root, objects);
     if (objects.size()==0)
     {
-        string::size_type n = fixed_path.rfind('/');
-        string obj_name = fixed_path.substr(n+1);
-        string parent_path = fixed_path.substr(0, n);
+        string::size_type n = path.rfind('/');
+        string obj_name = path.substr(n+1);
+        string parent_path = path.substr(0, n);
         findObjects(parent_path, root, objects);
         assert(objects.size()==1);
         FWObject *parent = objects.front();

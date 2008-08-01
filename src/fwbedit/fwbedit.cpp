@@ -182,10 +182,17 @@ void usage()
     cout << endl;
 
     cout <<
-        "      list -f file.fwb -o object\n"
+        "      list -f file.fwb -o object [-r|-c] [-d|-Fformat]\n"
         "\n"
         "           -f file.fwb: data file\n"
-        "           -o object: object to print, full path or ID\n";
+        "           -o object: object to print, full path or ID\n"
+        "           -r print given object and all object below it in the tree\n"
+        "           -c print all children of given object but not the object\n"
+        "              itself\n"
+        "           -d print full dump of all object's attributes including\n"
+        "              internal debugging information if available\n"
+        "           -F format_string print according to the format; see\n"
+        "              man fwbedit(1) for the list of macros and examples\n";
     cout << endl;
 
     cout <<
@@ -270,13 +277,14 @@ void usage()
 }
 
 
-void findObjects(const string &obj_path, FWObject *obj, list<FWObject*> &res)
+void _findObjects(const string &obj_path, FWObject *obj, list<FWObject*> &res)
 {
-    if (obj->getPath()==obj_path) res.push_back(obj);
+    string path = fixPath(obj_path);
+    if (obj->getPath()==path) res.push_back(obj);
     for (FWObject::iterator it=obj->begin(); it!=obj->end(); ++it)
     {
         if (FWReference::cast(*it)) continue;
-        findObjects(obj_path, *it, res);
+        _findObjects(path, *it, res);
     }
 }
 
@@ -294,6 +302,26 @@ string fixPath(const string &obj_path)
         res = string("/FWObjectDatabase") + res;
 
     return res;
+}
+
+void findObjects(const string &obj_path, FWObject *obj, list<FWObject*> &res)
+{
+    if (obj_path.find('/')==string::npos)
+    {
+        int id = FWObjectDatabase::getIntId(obj_path);
+        if (id>=0)
+        {
+            FWObject *o = obj->getRoot()->findInIndex(id);
+            if (o)
+            {
+                res.push_back(o);
+                return;
+            }
+        }
+    }
+
+    string path = fixPath(obj_path);
+    _findObjects(path, obj, res);
 }
 
 int splitStr(char ch,string s, operands * ops)
@@ -334,27 +362,6 @@ bool getBool(string s)
 
 
 
-void listObject(FWObjectDatabase *objdb, const string &path)
-{
-    list<FWObject*> objects;
-    findObjects(fixPath(path), objdb, objects);
-    if (objects.size()==0)
-    {
-        cout << "Object " << path << " not found" << endl;
-        exit(-1);
-    }
-
-    for (list<FWObject*>::iterator it=objects.begin();
-         it!=objects.end(); ++it)
-    {
-        FWObject *obj = *it;
-        cout << obj->getName() << _(" ( ")
-             << FWObjectDatabase::getStringId(obj->getId()) <<  _(" ) ")
-             << endl;
-    }
-}
-
-
 int main(int argc, char * const *argv)
 {   
     operands ops;
@@ -365,6 +372,10 @@ int main(int argc, char * const *argv)
     string group;
     string parent;
     string comment_txt;
+    bool list_children = false;
+    bool recursive = false;
+    string list_format;
+    bool full_dump = false;
 
     if (argc<=2)
     {
@@ -476,14 +487,18 @@ int main(int argc, char * const *argv)
         break;
 
     case LIST:
-        // -f file.fwb -o object
+        // -f file.fwb -o object [-r] [-Fformat_string] [-d]
         // object can be either path or ID
-        while( (opt=getopt(argc, args, "f:o:")) != EOF )
+        while( (opt=getopt(argc, args, "f:o:crdF:")) != EOF )
         {
             switch(opt)
             {
             case 'f': filename = optarg; break;
             case 'o': object = optarg; break;
+            case 'c': list_children = true; break;
+            case 'r': recursive = true; break;
+            case 'F': list_format = optarg; break;
+            case 'd': full_dump = true; break;
             }
         }
         break;
@@ -544,13 +559,14 @@ int main(int argc, char * const *argv)
         }
         else if (cmd == LIST)
         {
-            listObject(objdb, object);
+            listObject(objdb, object, list_children, recursive,
+                       list_format, full_dump);
             return(0);
         }
         else if (cmd == UPGRADE)
         {
-            cout << _("File upgraded; current version: ")
-                 << libfwbuilder::Constants::getLibraryVersion() << endl;
+            cout << _("File upgraded; current data format version: ")
+                 << libfwbuilder::Constants::getDataFormatVersion() << endl;
         }
         else  if (cmd == NEWOBJECT)
         {
@@ -568,7 +584,7 @@ int main(int argc, char * const *argv)
         {
 
             list<FWObject*> objects;
-            findObjects(fixPath(object), objdb, objects);
+            findObjects(object, objdb, objects);
             if (objects.size()==0)
             {
                 cout << "Object " << object << " not found" << endl;
@@ -583,7 +599,7 @@ int main(int argc, char * const *argv)
                 if (cmd==ADDGRP)
                 {
                     list<FWObject*> groups;
-                    findObjects(fixPath(group), objdb, groups);
+                    findObjects(group, objdb, groups);
                     if (groups.size()==0)
                     {
                         cout << "Group " << group << " not found" << endl;
@@ -598,7 +614,7 @@ int main(int argc, char * const *argv)
                 if (cmd==REMGRP)
                 {
                     list<FWObject*> groups;
-                    findObjects(fixPath(group), objdb, groups);
+                    findObjects(group, objdb, groups);
                     if (groups.size()==0)
                     {
                         cout << "Group " << group << " not found" << endl;
