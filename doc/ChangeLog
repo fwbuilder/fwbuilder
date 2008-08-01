@@ -1,3 +1,13 @@
+2008-07-31  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* fwbedit.cpp (usage): Redesigned command line interface for
+	fwbedit. The first command line argument is a command (one of
+	"new", "delete", "modify", "list", "add", "remove", "upgrade" or
+	"checktree") followed by options. Now fwbedit can be used not only
+	to add or remove objects, but also to modify object
+	attributes. The CLI is lot more consistent and can be extended
+	with new commands in the future.
+
 2008-07-30  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* fwbedit.cpp: fixes for the bug #2030331: fwbedit/fwblookup
