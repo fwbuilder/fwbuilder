@@ -27,6 +27,4 @@ win32:LIBS  += ../pflib/release/fwbpf.lib
 
 LIBS  += $$LIBS_FWCOMPILER
 
-unix: CONFIG -= qt
-
 TARGET      = fwb_ipf

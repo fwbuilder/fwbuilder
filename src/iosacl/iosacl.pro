@@ -33,7 +33,5 @@ win32:LIBS  += ../cisco_lib/release/fwbcisco.lib
 
 LIBS  += $$LIBS_FWCOMPILER
 
-unix: CONFIG -= qt
-
 TARGET      = fwb_iosacl
 
