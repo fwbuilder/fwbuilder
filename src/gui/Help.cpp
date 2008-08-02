@@ -45,7 +45,7 @@ Help::Help(QWidget *parent, const QString &help_file, const QString &title) :
 
     QFile f;
     QTextStream ts;
-    f.setFileName(QString(RES_DIR) + "/help/" + help_file);
+    f.setFileName(QString(respath.c_str()) + "/help/" + help_file);
 
     if (f.exists())
     {
