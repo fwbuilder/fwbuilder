@@ -25,8 +25,6 @@
 
 #include "../../config.h"
 
-#include <qsettings.h>
-
 #include <fstream>
 #include <iostream>
 #include <sstream>

@@ -27,7 +27,6 @@ HEADERS	 = ../../config.h                   \
 			../cisco_lib/ACL.h 				\
 			../cisco_lib/Helper.h 
 
-# CONFIG     -= qt
 !win32 {
 	QMAKE_COPY    = /usr/bin/install -m 0755 -s
 }
@@ -40,6 +39,8 @@ win32:LIBS  += ../cisco_lib/release/fwbcisco.lib
 !win32:LIBS += ../cisco_lib/libfwbcisco.a
 
 LIBS  += $$LIBS_FWCOMPILER
+
+unix: CONFIG -= qt
 
 TARGET      = fwb_pix
 

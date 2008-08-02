@@ -1,4 +1,7 @@
-2008-08-01  vadim  <vadim@vk.crocodile.org>
+2008-08-01  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ipt.pro: Eliminated dependency on QT in all policy compilers.
+	Compiler binaries can be deployed on machines without QT and X11.
 
 	* ObjectManipulator.cpp (ObjectManipulator::contextMenuRequested):
 	fixed bug #2023243: "IPv6 - Some objects missing from context

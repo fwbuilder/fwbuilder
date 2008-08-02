@@ -35,6 +35,8 @@ HEADERS	 = ../../config.h \
 
 win32:CONFIG += console
 
+unix: CONFIG -= qt
+
 TARGET      = fwb_ipt
 
 LIBS  += $$LIBS_FWCOMPILER
