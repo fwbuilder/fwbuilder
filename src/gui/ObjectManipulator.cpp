@@ -1030,6 +1030,8 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         {
             newID1=popup->addAction( tr("New Address"), this,
                                SLOT( newAddress() ) );
+            newID1=popup->addAction( tr("New Address IPv6"), this,
+                               SLOT( newAddressIPv6() ) );
         }
         if (currentObj->getPath(true)=="Objects/DNS Names")
         {
@@ -1052,9 +1054,12 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                                SLOT( newHost() ) );
 
         if (currentObj->getPath(true)=="Objects/Networks")
+        {
             newID1=popup->addAction( tr("New Network"), this,
                                SLOT( newNetwork() ) );
-
+            newID1=popup->addAction( tr("New Network IPv6"), this,
+                               SLOT( newNetworkIPv6() ) );
+        }
         if (currentObj->getPath(true)=="Objects/Groups")
             newID1=popup->addAction( tr("New Group"), this,
                                SLOT( newObjectGroup() ) );

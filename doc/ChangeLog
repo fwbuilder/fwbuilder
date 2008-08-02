@@ -1,3 +1,11 @@
+2008-08-01  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::contextMenuRequested):
+	fixed bug #2023243: "IPv6 - Some objects missing from context
+	menus". Added items "New Address IPv6" and "New Network IPv6" to
+	context menus associated with folders "Addresses" and "Networks"
+	in the tree.
+
 2008-08-01  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Fixed build on Mac, starting with rev 433 code is built with QT
