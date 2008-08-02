@@ -16,6 +16,8 @@ HEADERS	 = ../../config.h \
 
 win32:CONFIG += console
 
+unix { !macx: CONFIG -= qt }
+
 INCLUDEPATH += "../pflib"
 
 win32:LIBS  += ../pflib/release/fwbpf.lib

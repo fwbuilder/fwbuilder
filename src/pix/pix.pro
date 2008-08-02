@@ -33,6 +33,8 @@ HEADERS	 = ../../config.h                   \
 
 win32:CONFIG += console
 
+unix { !macx: CONFIG -= qt }
+
 INCLUDEPATH += ../cisco_lib/
 
 win32:LIBS  += ../cisco_lib/release/fwbcisco.lib

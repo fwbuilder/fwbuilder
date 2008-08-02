@@ -19,6 +19,8 @@ HEADERS	 = ../../config.h \
 
 win32:CONFIG += console
 
+unix { !macx: CONFIG -= qt }
+
 INCLUDEPATH += "../pflib"
 DEPENDPATH   = "../pflib"
 
