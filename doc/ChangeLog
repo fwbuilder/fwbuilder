@@ -1,5 +1,8 @@
 2008-08-01  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* Fixed build on Mac, starting with rev 433 code is built with QT
+	4.4.1 and works on both Leopard and Tiger.
+
 	* list_object.cpp (getAttributeValue): added command "list" to
 	fwbedit. This command can print contents of one object, an object
 	and all objects below it in the tree or contents of a
@@ -34,7 +37,7 @@
 	operations are performed on objects specified by their path in the
 	tree. Now, if several objects have the same name, operation will
 	be performed on all such objects. Note that this includes
-	deletion, that is, command 
+	deletion, that is, command
 
 	"fwbedit -f file.fwb -l /User/Objects/Addresses/TestAddress"
 
@@ -43,7 +46,7 @@
 	Added ability to create IPv6 and NetworkIPv6 objects in fwbedit.
 	New command line option "-c text" can be used to set comment for
 	the object created via "-t type -n name".
-	
+
 
 2008-07-30  vadim  <vadim@vk.crocodile.org>
 
