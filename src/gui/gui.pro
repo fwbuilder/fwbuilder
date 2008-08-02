@@ -129,7 +129,8 @@ HEADERS += ../../config.h \
 	AskLibForCopyDialog.h \
 	FWBAboutDialog.h \
 	RuleGroupPanel.h \
-	RuleRowInfo.h
+	RuleRowInfo.h \
+	Help.h
 
 SOURCES += ProjectPanel.cpp \
 	ProjectPanel_file_ops.cpp \
@@ -238,7 +239,8 @@ SOURCES += ProjectPanel.cpp \
 	FakeWizard.cpp \
     AskLibForCopyDialog.cpp \
 	ObjectListViewItem.cpp \
-	RuleGroupPanel.cpp 
+	RuleGroupPanel.cpp \
+	Help.cpp
 
 FORMS = FWBMainWindow_q.ui \
 	customservicedialog_q.ui \

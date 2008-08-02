@@ -41,6 +41,7 @@
 #include <qregexp.h>
 
 #include "FWWindow.h"
+#include "Help.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -180,5 +181,13 @@ void linux24AdvancedDialog::reject()
 {
     QDialog::reject();
 }
+
+void linux24AdvancedDialog::help()
+{
+    Help *h = new Help(this, "linux24AdvancedDialog.html",
+                       "Host type Linux 2.4/2.6");
+    h->show();
+}
+
 
 

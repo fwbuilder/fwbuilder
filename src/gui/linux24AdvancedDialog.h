@@ -51,6 +51,7 @@ protected slots:
 
     virtual void accept();
     virtual void reject();
+    virtual void help();
 
 
 };

@@ -2,11 +2,11 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2005 NetCitadel, LLC
+                 Copyright (C) 2008 NetCitadel, LLC
 
-  Author:  Illiya Yalovoy <yalovoy@gmail.com>
+  Author:  Vadim Kurland <vadim@fwbuilder.org>
 
-  $Id$
+  $Id: SimpleTextView.h 353 2008-07-13 01:26:39Z vadim $
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -24,38 +24,23 @@
 */
 
 
-#ifndef __SIMPLETEXTVIEW_H_
-#define __SIMPLETEXTVIEW_H_
+#ifndef __HELP_H_
+#define __HELP_H_
 
 #include "../../config.h"
-#include <ui_simpletextview_q.h>
-#include <QDialog>
+#include "SimpleTextView.h"
 
 
 
-class SimpleTextView : public QDialog
+class Help : public SimpleTextView
 {
-    Q_OBJECT
- private:
- 
- public:
-    Ui::SimpleTextView_q *m_dialog;
-     
-    SimpleTextView(QWidget *parent) : QDialog(parent)
-    {
-        m_dialog = new Ui::SimpleTextView_q;
-        m_dialog->setupUi(this);
-    };
     
-    virtual ~SimpleTextView() { delete m_dialog; };
-    virtual void setText(QString s);
-    virtual void setName(QString s);
+public:
+    
+    Help(QWidget *parent, const QString &_file, const QString &title);
+    
+    virtual ~Help() {};
 
-
-public slots:
-    
- signals:
-    
 };
 
 #endif 

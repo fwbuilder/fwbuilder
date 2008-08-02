@@ -28,8 +28,10 @@ macx:target.path = $$PREFIX/
 res.files = objects_init.xml templates.xml resources.xml
 res_os.files = os/*.xml
 res_platform.files = platform/*.xml
+res_help.files = help/*.html
 
 INSTALLS -= target
 INSTALLS += res 
 INSTALLS += res_os
 INSTALLS += res_platform
+INSTALLS += res_help

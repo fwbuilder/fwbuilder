@@ -54,6 +54,8 @@ unix {
 	res_os.path 		= @RES_DIR@/os/
 	res_platform.files  = src/res/platform/*.xml
 	res_platform.path 	= @RES_DIR@/platform/
+	res_help.files      = src/res/help/*.html
+	res_help.path 	    = @RES_DIR@/help/
 
     INSTALLS		   += res 
     INSTALLS		   += res_os
