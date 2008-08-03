@@ -29,6 +29,7 @@
 #include "iptAdvancedDialog.h"
 #include "SimpleTextEditor.h"
 #include "FWWindow.h"
+#include "Help.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
@@ -121,8 +122,6 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption(m_dialog->clampMSStoMTU,        fwoptions, "clamp_mss_to_mtu");
     data.registerOption(m_dialog->makeTagClassifyTerminating,
                         fwoptions, "classify_mark_terminating");
-    data.registerOption(m_dialog->skipIPv6,
-                        fwoptions, "no_ipv6_default_policy");
     slm=getActionsOnReject( obj->getStr("platform").c_str() );
     m_dialog->actionOnReject->clear();
     m_dialog->actionOnReject->addItems(getScreenNames(slm));
@@ -155,47 +154,30 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
 
     /* page "Prolog/Epilog" */
 
-    data.registerOption(m_dialog->prolog_script    ,fwoptions, "prolog_script"    );
+    data.registerOption(m_dialog->prolog_script, fwoptions,
+                        "prolog_script"    );
 
     slm = getPrologPlaces( obj->getStr("platform").c_str() );
     m_dialog->prologPlace->clear();
     m_dialog->prologPlace->addItems(getScreenNames(slm));
-    data.registerOption(m_dialog-> prologPlace,   fwoptions,   "prolog_place", slm);
+    data.registerOption(m_dialog-> prologPlace, fwoptions,
+                        "prolog_place", slm);
 
-    data.registerOption(m_dialog->epilog_script    ,fwoptions, "epilog_script"    );
+    data.registerOption(m_dialog->epilog_script, fwoptions,
+                        "epilog_script"    );
 
     data.loadAll();
     switchLOG_ULOG();
-
-#ifdef HAVE_LIBSSL
-
-//    int port=fwbdm->getPort();
-//    if (port==-1)
-//        port= Resources::global_res->getResourceInt("/FWBuilderResources/FWBD/port");
-//    mgmt_fwbd_port->set_value( port );
-//
-//    fillListOfCertificates();
-//
-//    const Key *key=fwbdm->getPublicKey();
-//    if (key) mgmt_fw_key->set_text( key->getFingerprint() );
-//
-//    if (pis->isEnabled()) mgmt_use_install_script->set_active(true);
-//    else                  mgmt_use_fwbd->set_active(true);
-
-#else
-//    mgmt_use_fwbd->set_sensitive(false);
-//    mgmt_use_install_script->set_active(true);
-//
-//    disableFWBDoptions();
-#endif
-
 }
 
 void iptAdvancedDialog::switchLOG_ULOG()
 {
     m_dialog->useLOG->setChecked(!m_dialog->useULOG->isChecked());
-    if (m_dialog->useLOG->isChecked())  m_dialog->logTargetStack->setCurrentIndex(0);
-    else                      m_dialog->logTargetStack->setCurrentIndex(1);
+
+    if (m_dialog->useLOG->isChecked())
+        m_dialog->logTargetStack->setCurrentIndex(0);
+    else
+        m_dialog->logTargetStack->setCurrentIndex(1);
 }
 /*
  * store all data in the object
@@ -247,5 +229,14 @@ void iptAdvancedDialog::editEpilog()
     if ( edt.exec() == QDialog::Accepted )
         m_dialog->epilog_script->setText( edt.text() );
 }
+
+void iptAdvancedDialog::help()
+{
+    Help *h = new Help(this, "iptAdvancedDialog.html",
+                       "Firewall platform: iptables");
+    h->show();
+}
+
+
 
 

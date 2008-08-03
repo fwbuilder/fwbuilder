@@ -24,23 +24,8 @@
   <property name="sizeGripEnabled" >
    <bool>false</bool>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="spacing" >
-    <number>6</number>
-   </property>
-   <property name="leftMargin" >
-    <number>9</number>
-   </property>
-   <property name="topMargin" >
-    <number>9</number>
-   </property>
-   <property name="rightMargin" >
-    <number>9</number>
-   </property>
-   <property name="bottomMargin" >
-    <number>9</number>
-   </property>
-   <item>
+  <layout class="QGridLayout" >
+   <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget2" >
      <property name="sizePolicy" >
       <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
@@ -49,7 +34,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex" >
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab0" >
       <attribute name="title" >
@@ -422,13 +407,6 @@ with this address:</string>
         <widget class="QCheckBox" name="makeTagClassifyTerminating" >
          <property name="text" >
           <string>Make Tag and Classify actions terminating</string>
-         </property>
-        </widget>
-       </item>
-       <item row="14" column="1" colspan="4" >
-        <widget class="QCheckBox" name="skipIPv6" >
-         <property name="text" >
-          <string>Do not set default policy for ipv6</string>
          </property>
         </widget>
        </item>
@@ -957,6 +935,9 @@ with this address:</string>
           </item>
           <item row="1" column="0" colspan="2" >
            <widget class="QStackedWidget" name="logTargetStack" >
+            <property name="currentIndex" >
+             <number>0</number>
+            </property>
             <widget class="QWidget" name="WStackPage0" >
              <layout class="QGridLayout" >
               <property name="leftMargin" >
@@ -1415,23 +1396,15 @@ with this address:</string>
      </widget>
     </widget>
    </item>
-   <item>
+   <item row="1" column="0" >
     <layout class="QHBoxLayout" >
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <property name="leftMargin" >
-      <number>0</number>
-     </property>
-     <property name="topMargin" >
-      <number>0</number>
-     </property>
-     <property name="rightMargin" >
-      <number>0</number>
-     </property>
-     <property name="bottomMargin" >
-      <number>0</number>
-     </property>
+     <item>
+      <widget class="QPushButton" name="buttonHelp" >
+       <property name="text" >
+        <string>Help</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer>
        <property name="orientation" >
@@ -1442,8 +1415,8 @@ with this address:</string>
        </property>
        <property name="sizeHint" >
         <size>
-         <width>20</width>
-         <height>20</height>
+         <width>351</width>
+         <height>27</height>
         </size>
        </property>
       </spacer>
@@ -1498,7 +1471,6 @@ with this address:</string>
   <tabstop>localNAT</tabstop>
   <tabstop>clampMSStoMTU</tabstop>
   <tabstop>makeTagClassifyTerminating</tabstop>
-  <tabstop>skipIPv6</tabstop>
   <tabstop>actionOnReject</tabstop>
   <tabstop>mgmt_ssh</tabstop>
   <tabstop>mgmt_addr</tabstop>
@@ -1574,7 +1546,7 @@ with this address:</string>
   </connection>
   <connection>
    <sender>useLOG</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>iptAdvancedDialog_q</receiver>
    <slot>switchLOG_ULOG()</slot>
    <hints>
@@ -1609,6 +1581,22 @@ with this address:</string>
    <signal>clicked()</signal>
    <receiver>iptAdvancedDialog_q</receiver>
    <slot>editEpilog()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonHelp</sender>
+   <signal>clicked()</signal>
+   <receiver>iptAdvancedDialog_q</receiver>
+   <slot>help()</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>20</x>

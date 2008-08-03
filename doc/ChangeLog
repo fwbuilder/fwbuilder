@@ -1,4 +1,7 @@
-2008-08-02  vadim  <vadim@vk.crocodile.org>
+2008-08-02  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* iptAdvancedDialog.html: Added help file for the firewall
+	settings dialog for iptables firewalls
 
 	* Help.cpp (Help::Help): generic built-in help framework. Help
 	files are created in .html format in src/res/help directory. First

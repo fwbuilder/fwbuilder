@@ -50,6 +50,7 @@ protected slots:
 
     virtual void accept();
     virtual void reject();
+    virtual void help();
 
     virtual void editProlog();
     virtual void editEpilog();
