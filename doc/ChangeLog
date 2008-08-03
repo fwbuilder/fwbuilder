@@ -1,5 +1,7 @@
 2008-08-03  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* res.pro: Now installing fwbuilder.desktop file on Linux.
+
 	* bug #2036912 "fwbuilder b442 does not build". Added missing
 	forward declarations and #include for gcc 4.3
 

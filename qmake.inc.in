@@ -43,19 +43,17 @@ unix {
 	dtd.path                = @TEMPLATE_DIR@/
 	migration.path          = @TEMPLATE_DIR@/migration
 	doc.path                = @DOCDIR@
+	datadir.path		    = @DATADIR@
 
 #	win32:target.path    = $$PREFIX/
 #	unix:target.path     = $$PREFIX/share/fwbuilder/
 #	macx:target.path     = $$PREFIX/
 
-	res.files           = src/res/objects_init.xml src/res/templates.xml src/res/resources.xml
 	res.path			= @RES_DIR@
-	res_os.files        = src/res/os/*.xml
 	res_os.path 		= @RES_DIR@/os/
-	res_platform.files  = src/res/platform/*.xml
 	res_platform.path 	= @RES_DIR@/platform/
-	res_help.files      = src/res/help/*.html
 	res_help.path 	    = @RES_DIR@/help/
+	res_desktop.path	= @DATADIR@/applications/
 
     INSTALLS		   += res 
     INSTALLS		   += res_os

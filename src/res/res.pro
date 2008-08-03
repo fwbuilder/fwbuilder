@@ -35,3 +35,10 @@ INSTALLS += res
 INSTALLS += res_os
 INSTALLS += res_platform
 INSTALLS += res_help
+
+unix {
+!macx {
+	res_desktop.files = fwbuilder.desktop
+	INSTALLS += res_desktop
+}
+}

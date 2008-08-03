@@ -66,6 +66,8 @@ esac
 AC_ARG_WITH(templatedir, [  --with-templatedir=DIR  Specify directory path for fwbuilder template files ])
 AC_ARG_WITH(docdir,      [  --with-docdir=DIR       Specify directory path for fwbuilder 
                           documentation files  ])
+AC_ARG_WITH(datadir,     [  --with-datadir=DIR      Specify directory path for fwbuilder 
+                          data files  ])
 
 
 
@@ -389,26 +391,33 @@ else
 fi
 DOCDIRPATH=`dirname ${DOCDIR}`
 
+if test "x$with_datadir" != "x"; then
+  DATADIR="${with_datadir}"
+else
+  DATADIR="${PREFIX}/share/"
+fi
+
 AC_SUBST(OS)
-AC_DEFINE_UNQUOTED(OS,               "${OS}", [os])
-test -n "$OS_CYGWIN"  && AC_DEFINE_UNQUOTED(OS_CYGWIN,        "${OS_CYGWIN}", [cygwin])
-test -n "$OS_MINGW"   && AC_DEFINE_UNQUOTED(OS_MINGW,         "${OS_MINGW}", [mingw])
-test -n "$OS_MACOSX"  && AC_DEFINE_UNQUOTED(OS_MACOSX,        "${OS_MACOSX}", [macosx])
-test -n "$OS_SOLARIS" && AC_DEFINE_UNQUOTED(OS_SOLARIS,       "${OS_SOLARIS}", [solaris])
-test -n "$OS_FREEBSD" && AC_DEFINE_UNQUOTED(OS_FREEBSD,       "${OS_FREEBSD}", [freebsd])
-test -n "$OS_OPENBSD" && AC_DEFINE_UNQUOTED(OS_OPENBSD,       "${OS_OPENBSD}", [openbsd])
-test -n "$OS_LINUX"   && AC_DEFINE_UNQUOTED(OS_LINUX,         "${OS_LINUX}", [linux])
-test -n "$OS_UNKNOWN" && AC_DEFINE_UNQUOTED(OS_UNKNOWN,       "${OS_UNKNOWN}", [unknown])
+AC_DEFINE_UNQUOTED(OS, "${OS}", [os])
+test -n "$OS_CYGWIN" && AC_DEFINE_UNQUOTED(OS_CYGWIN, "${OS_CYGWIN}", [cygwin])
+test -n "$OS_MINGW" && AC_DEFINE_UNQUOTED(OS_MINGW, "${OS_MINGW}", [mingw])
+test -n "$OS_MACOSX" && AC_DEFINE_UNQUOTED(OS_MACOSX, "${OS_MACOSX}", [macosx])
+test -n "$OS_SOLARIS" && AC_DEFINE_UNQUOTED(OS_SOLARIS,"${OS_SOLARIS}",[solaris])
+test -n "$OS_FREEBSD" && AC_DEFINE_UNQUOTED(OS_FREEBSD,"${OS_FREEBSD}",[freebsd])
+test -n "$OS_OPENBSD" && AC_DEFINE_UNQUOTED(OS_OPENBSD,"${OS_OPENBSD}",[openbsd])
+test -n "$OS_LINUX" && AC_DEFINE_UNQUOTED(OS_LINUX, "${OS_LINUX}", [linux])
+test -n "$OS_UNKNOWN" && AC_DEFINE_UNQUOTED(OS_UNKNOWN,"${OS_UNKNOWN}",[unknown])
 
 AC_SUBST(DISTRO)
-AC_DEFINE_UNQUOTED(DISTRO,           "${DISTRO}", [distro])
+AC_DEFINE_UNQUOTED(DISTRO, "${DISTRO}", [distro])
 
 AC_SUBST(DOCDIRPATH)
-AC_DEFINE_UNQUOTED(DOCDIRPATH,       "${DOCDIRPATH}", [docdirpath])
+AC_DEFINE_UNQUOTED(DOCDIRPATH, "${DOCDIRPATH}", [docdirpath])
 
 AC_SUBST(DOCDIR)
-AC_DEFINE_UNQUOTED(DOCDIR,           "${DOCDIR}", [docdir])
+AC_DEFINE_UNQUOTED(DOCDIR, "${DOCDIR}", [docdir])
 
+AC_SUBST(DATADIR)
 AC_SUBST(MANDIR)
 
 AC_PATH_PROG(CCACHE, ccache, , )
