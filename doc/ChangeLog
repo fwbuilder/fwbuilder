@@ -1,11 +1,14 @@
 2008-08-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
-	* iptAdvancedDialog.html: Added help file for the firewall
+	* iptAdvancedDialog_en_US.html: Added help file for the firewall
 	settings dialog for iptables firewalls
 
 	* Help.cpp (Help::Help): generic built-in help framework. Help
-	files are created in .html format in src/res/help directory. First
-	dialog to get associated help panel that can be activated by
+	files are created in .html format in src/res/help directory. Help
+	files can be localized, locale name is part of the file name; we
+	need to create separate file for each supported language.
+
+	First dialog to get associated help panel that can be activated by
 	clicking "Help" button is Linux 2.4/2.6 firewall host settings
 	dialog.
 

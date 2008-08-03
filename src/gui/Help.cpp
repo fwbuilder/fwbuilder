@@ -32,6 +32,8 @@
 #include <QFile>
 #include <QDir>
 #include <QTextStream>
+#include <QLocale>
+
 
 using namespace std;
 
@@ -43,9 +45,12 @@ Help::Help(QWidget *parent, const QString &help_file, const QString &title) :
     resize(500, 600);
     raise();
 
+    QString locale = QLocale::system().name(); //"en_US";
+
     QFile f;
     QTextStream ts;
-    f.setFileName(QString(respath.c_str()) + "/help/" + help_file);
+    f.setFileName(QString(respath.c_str()) + "/help/" + help_file +
+                  "_" + locale + ".html");
 
     if (f.exists())
     {

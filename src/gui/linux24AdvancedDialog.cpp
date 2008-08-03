@@ -184,8 +184,7 @@ void linux24AdvancedDialog::reject()
 
 void linux24AdvancedDialog::help()
 {
-    Help *h = new Help(this, "linux24AdvancedDialog.html",
-                       "Host type Linux 2.4/2.6");
+    Help *h = new Help(this, "linux24AdvancedDialog", "Host type Linux 2.4/2.6");
     h->show();
 }
 

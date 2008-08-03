@@ -44,7 +44,6 @@
 #include <qregexp.h>
 #include <qtextedit.h>
 
-
 using namespace std;
 using namespace libfwbuilder;
 
@@ -232,8 +231,7 @@ void iptAdvancedDialog::editEpilog()
 
 void iptAdvancedDialog::help()
 {
-    Help *h = new Help(this, "iptAdvancedDialog.html",
-                       "Firewall platform: iptables");
+    Help *h = new Help(this, "iptAdvancedDialog", "Firewall platform: iptables");
     h->show();
 }
 
