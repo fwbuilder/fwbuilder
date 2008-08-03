@@ -29,21 +29,27 @@
 #include "utils.h"
 #include "utils_no_qt.h"
 
-#include "ProjectPanel.h"
+#include <fwbuilder/RuleSet.h>
+#include <fwbuilder/Policy.h>
+#include <fwbuilder/NAT.h>
+#include <fwbuilder/Routing.h>
 
 #include "FWBSettings.h"
+#include "FWBTree.h"
+#include "FWObjectPropertiesFactory.h"
+#include "FWWindow.h"
 #include "FindObjectWidget.h"
 #include "FindWhereUsedWidget.h"
-#include "listOfLibraries.h"
-#include "FWBTree.h"
+#include "ProjectPanel.h"
 #include "RCS.h"
-#include "FWObjectPropertiesFactory.h"
-#include "findDialog.h"
 #include "RuleSetView.h"
-#include "FWWindow.h"
+#include "findDialog.h"
+#include "listOfLibraries.h"
 
 #include <QMdiSubWindow>
 #include <QMdiArea>
+#include <QTimer>
+#include <QStatusBar>
 
 
 using namespace Ui;

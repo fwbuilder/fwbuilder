@@ -43,20 +43,23 @@ namespace libfwbuilder {
     class Firewall;
     class PolicyRule;
     class RuleSet;
+    class Rule;
     class FWObject;
 };
 
-class QMdiSubWindow;
-class QTabWidget;
-class RuleSetView;
-class QTimer;
-class QPrinter;
-class QTextEdit;
-class ObjectTreeView;
 class ObjectManipulator;
-class findDialog;
+class ObjectTreeView;
 class ProjectPanel;
+
 class QMdiArea;
+class QMdiSubWindow;
+class QPrinter;
+class QTabWidget;
+class QTextEdit;
+class QTimer;
+class QTreeWidgetItem;
+class RuleSetView;
+class findDialog;
 
 class FWWindow : public QMainWindow {
 

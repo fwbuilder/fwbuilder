@@ -29,6 +29,14 @@
 #include "utils.h"
 #include "utils_no_qt.h"
 
+#include <fwbuilder/RuleSet.h>
+#include <fwbuilder/Policy.h>
+#include <fwbuilder/NAT.h>
+#include <fwbuilder/Routing.h>
+#include <fwbuilder/Rule.h>
+#include <fwbuilder/Interface.h>
+#include <fwbuilder/Library.h>
+
 #include "ProjectPanel.h"
 
 #include <ui_rcsfilesavedialog_q.h>
@@ -49,6 +57,10 @@
 
 #include <QMdiSubWindow>
 #include <QMdiArea>
+#include <QStatusBar>
+#include <QTextStream>
+#include <QFile>
+#include <QTimer>
 
 #include <list>
 

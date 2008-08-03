@@ -1,5 +1,8 @@
 2008-08-03  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* bug #2036912 "fwbuilder b442 does not build". Added missing
+	forward declarations and #include for gcc 4.3
+
 	* Applied patch for gcc 4.3 per bug #2036881 "gcc 4.3 patch for
 	b442", Mandriva Cooker patch
 	http://svn.mandriva.com/cgi-bin/viewvc.cgi/packages/cooker/fwbuilder/current/SOURCES/fwbuilder-3.0.0-gcc4.3.patch
