@@ -336,3 +336,4 @@ ru.path = $$PKGLOCALEDIR
 ru.files = fwbuilder_ru.qm
 
 INSTALLS += ru
+

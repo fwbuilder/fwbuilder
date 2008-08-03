@@ -40,5 +40,41 @@ unix {
 !macx {
 	res_desktop.files = fwbuilder.desktop
 	INSTALLS += res_desktop
+
+	app_icon_16x16.files = Icons/16x16/fwbuilder.png
+	app_icon_16x16.path = $$ICONSDIR/16x16/apps
+	INSTALLS += app_icon_16x16
+
+	app_icon_24x24.files = Icons/24x24/fwbuilder.png
+	app_icon_24x24.path = $$ICONSDIR/24x24/apps
+	INSTALLS += app_icon_24x24
+
+	app_icon_32x32.files = Icons/32x32/fwbuilder.png
+	app_icon_32x32.path = $$ICONSDIR/32x32/apps
+	INSTALLS += app_icon_32x32
+
+	app_icon_48x48.files = Icons/48x48/fwbuilder.png
+	app_icon_48x48.path = $$ICONSDIR/48x48/apps
+	INSTALLS += app_icon_48x48
+
+	app_icon_72x72.files = Icons/72x72/fwbuilder.png
+	app_icon_72x72.path = $$ICONSDIR/72x72/apps
+	INSTALLS += app_icon_72x72
+
+	app_icon_128x128.files = Icons/128x128/fwbuilder.png
+	app_icon_128x128.path = $$ICONSDIR/128x128/apps
+	INSTALLS += app_icon_128x128
+
+	app_icon_256x256.files = Icons/256x256/fwbuilder.png
+	app_icon_256x256.path = $$ICONSDIR/256x256/apps
+	INSTALLS += app_icon_256x256
+
+	app_icon_512x512.files = Icons/512x512/fwbuilder.png
+	app_icon_512x512.path = $$ICONSDIR/512x512/apps
+	INSTALLS += app_icon_512x512
+
 }
 }
+
+
+

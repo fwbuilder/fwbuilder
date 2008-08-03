@@ -1,6 +1,8 @@
 2008-08-03  Vadim Kurland  <vadim@vk.crocodile.org>
 
-	* res.pro: Now installing fwbuilder.desktop file on Linux.
+	* res.pro: Now installing fwbuilder.desktop file on Linux and
+	application icons under $DATADIR/icons/hicolor/ (sizes 128x128
+	16x16 24x24 256x256 32x32 48x48 512x512 72x72)
 
 	* bug #2036912 "fwbuilder b442 does not build". Added missing
 	forward declarations and #include for gcc 4.3

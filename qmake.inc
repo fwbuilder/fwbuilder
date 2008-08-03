@@ -11,8 +11,8 @@ SO_VERSION    = @LIBFWBUILDER_SOLIB_VERSION@
 DEFINES      += $$(DEFINES)
 LANGUAGE      = C++
 UI_DIR        = ui
-MANDIR        = /home/vadim/src/fwb3-branch-v3/install_root/share/man/
-DOCDIR        = /home/vadim/src/fwb3-branch-v3/install_root/share/doc/fwbuilder-3.0.0
+MANDIR        = /home/vadim/src/fwb3-branch-v3/install_root//share/man/
+DOCDIR        = /home/vadim/src/fwb3-branch-v3/install_root//share/doc/fwbuilder-3.0.0
 
 HAVE_ANTLR_RUNTIME = 1
 HAVE_EXTERNAL_ANTLR = 0
@@ -30,9 +30,10 @@ unix {
 	MOC_DIR = .moc
 	OBJECTS_DIR = .obj
 
-	PREFIX                  = /home/vadim/src/fwb3-branch-v3/install_root
+	PREFIX                  = /home/vadim/src/fwb3-branch-v3/install_root/
 	exec_prefix             = @EXEC_PREFIX@
 	DESTDIR                 =
+	ICONSDIR                = /home/vadim/src/fwb3-branch-v3/install_root//share//icons/hicolor/
 
     INCLUDEPATH  += .. ../.. $$(INCLUDEPATH) /home/vadim/src/fwb3-branch-v3/install_root/include/ /home/vadim/src/fwb3-branch-v3/install_root/include/fwb-3 /usr/include/libxml2
 
@@ -42,18 +43,19 @@ unix {
 	target.path             = $$PREFIX/bin
 	dtd.path                = @TEMPLATE_DIR@/
 	migration.path          = @TEMPLATE_DIR@/migration
-	doc.path                = /home/vadim/src/fwb3-branch-v3/install_root/share/doc/fwbuilder-3.0.0
-	datadir.path		    = /home/vadim/src/fwb3-branch-v3/install_root/share/
+	doc.path                = /home/vadim/src/fwb3-branch-v3/install_root//share/doc/fwbuilder-3.0.0
+	datadir.path		    = /home/vadim/src/fwb3-branch-v3/install_root//share/
+
 
 #	win32:target.path    = $$PREFIX/
 #	unix:target.path     = $$PREFIX/share/fwbuilder/
 #	macx:target.path     = $$PREFIX/
 
-	res.path			= /home/vadim/src/fwb3-branch-v3/install_root/share/fwbuilder-3.0.0
-	res_os.path 		= /home/vadim/src/fwb3-branch-v3/install_root/share/fwbuilder-3.0.0/os/
-	res_platform.path 	= /home/vadim/src/fwb3-branch-v3/install_root/share/fwbuilder-3.0.0/platform/
-	res_help.path 	    = /home/vadim/src/fwb3-branch-v3/install_root/share/fwbuilder-3.0.0/help/
-	res_desktop.path	= /home/vadim/src/fwb3-branch-v3/install_root/share//applications/
+	res.path			= /home/vadim/src/fwb3-branch-v3/install_root//share/fwbuilder-3.0.0
+	res_os.path 		= /home/vadim/src/fwb3-branch-v3/install_root//share/fwbuilder-3.0.0/os/
+	res_platform.path 	= /home/vadim/src/fwb3-branch-v3/install_root//share/fwbuilder-3.0.0/platform/
+	res_help.path 	    = /home/vadim/src/fwb3-branch-v3/install_root//share/fwbuilder-3.0.0/help/
+	res_desktop.path	= /home/vadim/src/fwb3-branch-v3/install_root//share//applications/
 
     INSTALLS		   += res 
     INSTALLS		   += res_os

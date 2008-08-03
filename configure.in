@@ -270,6 +270,23 @@ AC_SUBST(ANTLR_INCLUDEPATH)
 
 dnl ********************************************************************
 
+
+if test "x$with_docdir" != "x"; then
+  DOCDIR="${with_docdir}"
+else
+  DOCDIR="${PREFIX}/share/doc/fwbuilder-${VERSION}"
+fi
+DOCDIRPATH=`dirname ${DOCDIR}`
+
+if test "x$with_datadir" != "x"; then
+  DATADIR="${with_datadir}"
+else
+  DATADIR="${PREFIX}/share/"
+fi
+
+
+ICONSDIR=""
+
 if test -z ${RELEASE_NUM}; then
   RPMRELEASE="1"
 else
@@ -361,6 +378,7 @@ case ${host} in
 	DISTRO="Unknown"
     fi
     MANDIR="${PREFIX}/share/man/"
+    ICONSDIR="${DATADIR}/icons/hicolor/"
     AC_MSG_RESULT($DISTRO Linux)
     ;;
 
@@ -382,20 +400,6 @@ fi
 
 AC_DEFINE_UNQUOTED(RES_DIR, "$RES_DIR", [res_dir])
 AC_SUBST(RES_DIR)
-
-
-if test "x$with_docdir" != "x"; then
-  DOCDIR="${with_docdir}"
-else
-  DOCDIR="${PREFIX}/share/doc/fwbuilder-${VERSION}"
-fi
-DOCDIRPATH=`dirname ${DOCDIR}`
-
-if test "x$with_datadir" != "x"; then
-  DATADIR="${with_datadir}"
-else
-  DATADIR="${PREFIX}/share/"
-fi
 
 AC_SUBST(OS)
 AC_DEFINE_UNQUOTED(OS, "${OS}", [os])
@@ -419,6 +423,7 @@ AC_DEFINE_UNQUOTED(DOCDIR, "${DOCDIR}", [docdir])
 
 AC_SUBST(DATADIR)
 AC_SUBST(MANDIR)
+AC_SUBST(ICONSDIR)
 
 AC_PATH_PROG(CCACHE, ccache, , )
 

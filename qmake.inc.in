@@ -33,6 +33,7 @@ unix {
 	PREFIX                  = @PREFIX@
 	exec_prefix             = @EXEC_PREFIX@
 	DESTDIR                 =
+	ICONSDIR                = @ICONSDIR@
 
     INCLUDEPATH  += .. ../.. $$(INCLUDEPATH) @LIBFWBUILDER_INCLUDEPATH@
 
@@ -44,6 +45,7 @@ unix {
 	migration.path          = @TEMPLATE_DIR@/migration
 	doc.path                = @DOCDIR@
 	datadir.path		    = @DATADIR@
+
 
 #	win32:target.path    = $$PREFIX/
 #	unix:target.path     = $$PREFIX/share/fwbuilder/
