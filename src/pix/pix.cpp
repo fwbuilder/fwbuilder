@@ -44,6 +44,7 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include <assert.h>
+#include <cstring>
 
 #include "PolicyCompiler_pix.h"
 #include "NATCompiler_pix.h"

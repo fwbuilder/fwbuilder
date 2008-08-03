@@ -49,6 +49,7 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include <assert.h>
+#include <cstring>
 
 #include "PolicyCompiler_ipf.h"
 #include "NATCompiler_ipf.h"

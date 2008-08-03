@@ -51,6 +51,7 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include <assert.h>
+#include <cstring>
 
 #include "PolicyCompiler_pf.h"
 #include "NATCompiler_pf.h"

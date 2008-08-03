@@ -44,6 +44,7 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include <assert.h>
+#include <cstring>
 
 #include "PolicyCompiler_iosacl.h"
 #include "OSConfigurator_ios.h"

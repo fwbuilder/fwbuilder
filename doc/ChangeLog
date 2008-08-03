@@ -1,3 +1,9 @@
+2008-08-03  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Applied patch for gcc 4.3 per bug #2036881 "gcc 4.3 patch for
+	b442", Mandriva Cooker patch
+	http://svn.mandriva.com/cgi-bin/viewvc.cgi/packages/cooker/fwbuilder/current/SOURCES/fwbuilder-3.0.0-gcc4.3.patch
+	
 2008-08-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* iptAdvancedDialog_en_US.html: Added help file for the firewall

@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1018</width>
-    <height>298</height>
+    <width>1012</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -164,25 +164,6 @@
           </property>
           <property name="text" >
            <string>Time Interval</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" >
-         <widget class="QLabel" name="pixmapLabel1" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="pixmap" >
-           <pixmap/>
-          </property>
-          <property name="scaledContents" >
-           <bool>true</bool>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>

@@ -50,6 +50,7 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include <assert.h>
+#include <cstring>
 
 #include "PolicyCompiler_ipt.h"
 #include "MangleTableCompiler_ipt.h"

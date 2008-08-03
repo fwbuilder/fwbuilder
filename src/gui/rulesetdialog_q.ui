@@ -50,8 +50,75 @@
        <property name="minimumSize" >
         <size>
          <width>16</width>
-         <height>20</height>
+         <height>35</height>
         </size>
+       </property>
+       <property name="palette" >
+        <palette>
+         <active>
+          <colorrole role="Base" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="Base" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
+       <property name="autoFillBackground" >
+        <bool>true</bool>
        </property>
        <property name="frameShape" >
         <enum>QFrame::Box</enum>
@@ -78,6 +145,25 @@
         <property name="verticalSpacing" >
          <number>2</number>
         </property>
+        <item row="0" column="0" >
+         <widget class="QLabel" name="pixmapLabel1" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="pixmap" >
+           <pixmap resource="MainRes.qrc" >:/Icons/Routing/icon</pixmap>
+          </property>
+          <property name="scaledContents" >
+           <bool>true</bool>
+          </property>
+          <property name="wordWrap" >
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="1" >
          <widget class="QLabel" name="editorTitle" >
           <property name="sizePolicy" >
@@ -94,25 +180,6 @@
           </property>
           <property name="text" >
            <string>Rule set</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" >
-         <widget class="QLabel" name="pixmapLabel1" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="pixmap" >
-           <pixmap/>
-          </property>
-          <property name="scaledContents" >
-           <bool>true</bool>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
@@ -247,7 +314,9 @@
   <tabstop>obj_name</tabstop>
   <tabstop>comment</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="MainRes.qrc" />
+ </resources>
  <connections>
   <connection>
    <sender>obj_name</sender>

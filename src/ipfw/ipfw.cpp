@@ -48,7 +48,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <ctype.h>
-
+#include <cstring>
 #include <assert.h>
 
 #include "PolicyCompiler_ipfw.h"
