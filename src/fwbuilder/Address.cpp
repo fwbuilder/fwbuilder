@@ -96,7 +96,7 @@ const InetAddrMask* Address::getInetAddrMaskObjectPtr() const
     return NULL;
 }
 
-const bool Address::hasInetAddress() const
+bool Address::hasInetAddress() const
 {
     return false;
 }

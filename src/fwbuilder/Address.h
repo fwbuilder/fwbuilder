@@ -73,7 +73,7 @@ public:
      * Interface do not "own" ip address, whereas IPv4, Network, IPv6
      * NetworkIPv6 do.
      */
-    virtual const bool hasInetAddress() const;
+    virtual bool hasInetAddress() const;
 
     /**
      * returns const pointer to internal InetAddr object. Some objects

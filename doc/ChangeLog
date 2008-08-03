@@ -1,3 +1,9 @@
+2008-08-03  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Address.h (libfwbuilder): removed return type qualifier "const"
+	from bool HasInetAddress() (no point in making it "const
+	bool"). Gcc 4.3 issued warning on this
+
 2008-07-27  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWObject.cpp (FWObject::replaceRef): moved replaceRef method

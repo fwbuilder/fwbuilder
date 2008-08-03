@@ -56,7 +56,7 @@ public:
                                        bool preserve_id = true)
         throw(FWException);
 
-    virtual const bool hasInetAddress() const { return true; }
+    virtual bool hasInetAddress() const { return true; }
 
     virtual const Address* getAddressObject() const { return this; }
 
