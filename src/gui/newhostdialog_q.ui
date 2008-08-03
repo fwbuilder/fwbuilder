@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>488</width>
-    <height>701</height>
+    <width>486</width>
+    <height>585</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" >
@@ -201,7 +201,7 @@
          </layout>
         </widget>
        </item>
-       <item row="5" column="1" >
+       <item row="5" column="0" colspan="2" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -212,7 +212,7 @@
          <property name="sizeHint" >
           <size>
            <width>144</width>
-           <height>341</height>
+           <height>161</height>
           </size>
          </property>
         </spacer>

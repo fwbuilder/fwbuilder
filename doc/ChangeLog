@@ -1,5 +1,9 @@
 2008-08-03  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* newhostdialog_q.ui: fixed bug # 2036963 "Add new Host Object on
+	MacOSX". The "new host" dialog was too big and did not fit on low
+	resolution screen
+
 	* res.pro: Now installing fwbuilder.desktop file on Linux and
 	application icons under $DATADIR/icons/hicolor/ (sizes 128x128
 	16x16 24x24 256x256 32x32 48x48 512x512 72x72)
