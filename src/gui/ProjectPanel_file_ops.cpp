@@ -63,6 +63,9 @@
 #include <QTimer>
 
 #include <list>
+#include <algorithm>
+
+#include <errno.h>
 
 
 using namespace Ui;
@@ -767,16 +770,6 @@ bool ProjectPanel::exportLibraryTest(list<FWObject*> &selectedLibs)
    QObject::tr("Library %1: Firewall '%2' (global policy rule #%3) uses object '%4' from library '%5'")
                         .arg(selLib->getName().c_str())
                         .arg(fw->getName().c_str())
-                        .arg(Rule::cast(rule)->getPosition())
-                        .arg(tgt->getName().c_str())
-                        .arg(tgtlib->getName().c_str());
-                }
-                if (InterfacePolicy::cast(ruleset)!=NULL)
-                {
-   QObject::tr("Library %1: Firewall '%2' (interface %3 policy rule #%4) uses object '%5' from library '%6'")
-                        .arg(selLib->getName().c_str())
-                        .arg(fw->getName().c_str())
-                        .arg(iface->getName().c_str())
                         .arg(Rule::cast(rule)->getPosition())
                         .arg(tgt->getName().c_str())
                         .arg(tgtlib->getName().c_str());

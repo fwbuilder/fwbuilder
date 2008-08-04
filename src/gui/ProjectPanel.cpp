@@ -50,6 +50,7 @@
 #include <QMdiArea>
 #include <QTimer>
 #include <QStatusBar>
+#include <QFileInfo>
 
 
 using namespace Ui;
