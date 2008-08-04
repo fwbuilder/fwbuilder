@@ -48,7 +48,7 @@
 #include <qpixmapcache.h>
 #include <QTextCodec>
 #include <QLocale>
-
+#include <QDir>
 #include <QTranslator>
 #include <QLibraryInfo>
 
