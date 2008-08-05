@@ -628,6 +628,7 @@ string  OSConfigurator_linux24::printPathForAllTools(const string &os)
     res += "IPTABLES=\""+path_iptables+"\"\n";
     res += "IP6TABLES=\""+path_ip6tables+"\"\n";
     res += "IPTABLES_RESTORE=\""+path_iptables_restore+"\"\n";
+    res += "IP6TABLES_RESTORE=\""+path_ip6tables_restore+"\"\n";
     res += "IP=\""      +path_ip+"\"\n";
     res += "LOGGER=\""  +path_logger+"\"\n";
     res += "\n";

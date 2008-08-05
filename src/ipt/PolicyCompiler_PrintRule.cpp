@@ -432,28 +432,46 @@ string PolicyCompiler_ipt::PrintRule::_printActionOnReject(libfwbuilder::PolicyR
 
 	if (s.find("ICMP")!=string::npos) 
         {
-	    if (s.find("unreachable")!=string::npos) 
+            if (ipt_comp->ipv6)
             {
-		if (s.find("net")!=string::npos)
-                    str << " --reject-with icmp-net-unreachable";
-		if (s.find("host")!=string::npos)
-                    str << " --reject-with icmp-host-unreachable";
-		if (s.find("port")!=string::npos)
-                    str << " --reject-with icmp-port-unreachable";
-		if (s.find("proto")!=string::npos)
-                    str << " --reject-with icmp-proto-unreachable";
-	    }
-	    if (s.find("prohibited")!=string::npos) 
+                if (s.find("unreachable")!=string::npos) 
+                {
+                    if (s.find("net")!=string::npos ||
+                        s.find("host")!=string::npos)
+                        str << " --reject-with icmp6-addr-unreachable";
+                    if (s.find("port")!=string::npos ||
+                        s.find("proto")!=string::npos)
+                        str << " --reject-with icmp6-port-unreachable";
+                }
+                if (s.find("prohibited")!=string::npos) 
+                {
+                    str << " --reject-with icmp6-adm-prohibited";
+                }
+            } else
             {
-		if (s.find("net")!=string::npos)
-                    str << " --reject-with icmp-net-prohibited";
-		if (s.find("host")!=string::npos)
-                    str << " --reject-with icmp-host-prohibited";
-                if (ipt_comp->newIptables(version) &&
-                    s.find("admin")!=string::npos)
-                    str << " --reject-with icmp-admin-prohibited";
-	    }
-	}
+                if (s.find("unreachable")!=string::npos) 
+                {
+                    if (s.find("net")!=string::npos)
+                        str << " --reject-with icmp-net-unreachable";
+                    if (s.find("host")!=string::npos)
+                        str << " --reject-with icmp-host-unreachable";
+                    if (s.find("port")!=string::npos)
+                        str << " --reject-with icmp-port-unreachable";
+                    if (s.find("proto")!=string::npos)
+                        str << " --reject-with icmp-proto-unreachable";
+                }
+                if (s.find("prohibited")!=string::npos) 
+                {
+                    if (s.find("net")!=string::npos)
+                        str << " --reject-with icmp-net-prohibited";
+                    if (s.find("host")!=string::npos)
+                        str << " --reject-with icmp-host-prohibited";
+                    if (ipt_comp->newIptables(version) &&
+                        s.find("admin")!=string::npos)
+                        str << " --reject-with icmp-admin-prohibited";
+                }
+            }
+        }
     }
     str << " ";
     return str.str();
