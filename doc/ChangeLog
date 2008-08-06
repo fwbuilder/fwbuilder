@@ -1,3 +1,8 @@
+2008-08-05  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* pfAdvancedDialog_en_US.html: Help page for the advanced settings
+	dialog for PF firewall
+
 2008-08-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printActionOnReject):

@@ -30,6 +30,7 @@
 #include "pfAdvancedDialog.h"
 #include "SimpleTextEditor.h"
 #include "FWWindow.h"
+#include "Help.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
@@ -294,6 +295,12 @@ void pfAdvancedDialog::editEpilog()
                           true, tr( "Script Editor" ) );
     if ( edt.exec() == QDialog::Accepted )
         m_dialog->epilog_script->setText( edt.text() );
+}
+
+void pfAdvancedDialog::help()
+{
+    Help *h = new Help(this, "pfAdvancedDialog", "Firewall platform: pf");
+    h->show();
 }
 
 
