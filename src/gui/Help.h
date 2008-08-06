@@ -41,6 +41,7 @@ public:
     
     virtual ~Help() {};
 
+    void scrollToAnchor(const QString &anchor);
 };
 
 #endif 

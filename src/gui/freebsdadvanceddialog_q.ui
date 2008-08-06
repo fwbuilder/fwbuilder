@@ -96,7 +96,7 @@
     </layout>
    </item>
    <item row="0" column="0" >
-    <widget class="QTabWidget" name="tabWidget5" >
+    <widget class="QTabWidget" name="tabWidget" >
      <property name="tabShape" >
       <enum>QTabWidget::Rounded</enum>
      </property>
@@ -504,7 +504,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <tabstops>
-  <tabstop>tabWidget5</tabstop>
+  <tabstop>tabWidget</tabstop>
   <tabstop>freebsd_ip_forward</tabstop>
   <tabstop>freebsd_ip_sourceroute</tabstop>
   <tabstop>freebsd_ip_redirect</tabstop>

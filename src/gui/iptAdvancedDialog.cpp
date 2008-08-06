@@ -233,6 +233,9 @@ void iptAdvancedDialog::help()
 {
     Help *h = new Help(this, "iptAdvancedDialog", "Firewall platform: iptables");
     h->show();
+    QString tab_title = m_dialog->tabWidget->tabText(
+        m_dialog->tabWidget->currentIndex());
+    h->scrollToAnchor(tab_title.replace('/', '-').replace(' ', '-').toLower());
 }
 
 

@@ -66,6 +66,10 @@ Help::Help(QWidget *parent, const QString &help_file, const QString &title) :
 };
 
 
+void Help::scrollToAnchor(const QString &anchor)
+{
+    m_dialog->textview->scrollToAnchor(anchor);
+}
 
 
 

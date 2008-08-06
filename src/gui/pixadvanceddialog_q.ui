@@ -80,7 +80,7 @@
     </layout>
    </item>
    <item row="0" column="0" >
-    <widget class="QTabWidget" name="notebook304" >
+    <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
       <number>0</number>
      </property>
@@ -4563,7 +4563,7 @@ the packet should go to, and which is the next hop
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <tabstops>
-  <tabstop>notebook304</tabstop>
+  <tabstop>tabWidget</tabstop>
   <tabstop>outputFileName</tabstop>
   <tabstop>pix_assume_fw_part_of_any</tabstop>
   <tabstop>pix_replace_natted_objects</tabstop>

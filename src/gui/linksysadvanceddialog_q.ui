@@ -96,7 +96,7 @@
     </layout>
    </item>
    <item row="0" column="0" >
-    <widget class="QTabWidget" name="tabWidget3" >
+    <widget class="QTabWidget" name="tabWidget" >
      <property name="tabShape" >
       <enum>QTabWidget::Rounded</enum>
      </property>
@@ -447,7 +447,7 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</string>
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <tabstops>
-  <tabstop>tabWidget3</tabstop>
+  <tabstop>tabWidget</tabstop>
   <tabstop>linksys_path_iptables</tabstop>
   <tabstop>linksys_path_ip</tabstop>
   <tabstop>linksys_path_logger</tabstop>

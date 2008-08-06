@@ -14,7 +14,7 @@
   </property>
   <layout class="QGridLayout" >
    <item row="0" column="0" >
-    <widget class="QTabWidget" name="tabWidget3" >
+    <widget class="QTabWidget" name="tabWidget" >
      <property name="tabShape" >
       <enum>QTabWidget::Rounded</enum>
      </property>
@@ -1041,7 +1041,7 @@
   <tabstop>linux24_path_lsmod</tabstop>
   <tabstop>linux24_path_iptables_restore</tabstop>
   <tabstop>linux24_path_ip6tables_restore</tabstop>
-  <tabstop>tabWidget3</tabstop>
+  <tabstop>tabWidget</tabstop>
  </tabstops>
  <resources/>
  <connections>

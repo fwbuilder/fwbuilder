@@ -17,7 +17,7 @@
   </property>
   <layout class="QGridLayout" >
    <item row="0" column="0" >
-    <widget class="QTabWidget" name="tabWidget3" >
+    <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
       <number>0</number>
      </property>
@@ -2428,7 +2428,7 @@ with this address:</string>
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <tabstops>
-  <tabstop>tabWidget3</tabstop>
+  <tabstop>tabWidget</tabstop>
   <tabstop>compiler</tabstop>
   <tabstop>compilerArgs</tabstop>
   <tabstop>outputFileName</tabstop>

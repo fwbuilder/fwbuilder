@@ -116,7 +116,7 @@
     </layout>
    </item>
    <item row="0" column="0" >
-    <widget class="QTabWidget" name="notebook304" >
+    <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
       <number>0</number>
      </property>
@@ -1270,7 +1270,7 @@ First, create temporary access list to permit connections from the management su
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <tabstops>
-  <tabstop>notebook304</tabstop>
+  <tabstop>tabWidget</tabstop>
   <tabstop>outputFileName</tabstop>
   <tabstop>iosacl_ignore_empty_groups</tabstop>
   <tabstop>iosacl_check_shadowing</tabstop>

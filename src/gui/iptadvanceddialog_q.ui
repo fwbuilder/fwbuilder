@@ -26,7 +26,7 @@
   </property>
   <layout class="QGridLayout" >
    <item row="0" column="0" >
-    <widget class="QTabWidget" name="tabWidget2" >
+    <widget class="QTabWidget" name="tabWidget" >
      <property name="sizePolicy" >
       <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
        <horstretch>0</horstretch>
@@ -34,7 +34,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex" >
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab0" >
       <attribute name="title" >
@@ -1456,7 +1456,7 @@ with this address:</string>
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <tabstops>
-  <tabstop>tabWidget2</tabstop>
+  <tabstop>tabWidget</tabstop>
   <tabstop>compiler</tabstop>
   <tabstop>compilerArgs</tabstop>
   <tabstop>outputFileName</tabstop>

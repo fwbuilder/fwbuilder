@@ -96,7 +96,7 @@
     </layout>
    </item>
    <item row="0" column="0" >
-    <widget class="QTabWidget" name="tabWidget9" >
+    <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
       <number>0</number>
      </property>
@@ -475,7 +475,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <tabstops>
-  <tabstop>tabWidget9</tabstop>
+  <tabstop>tabWidget</tabstop>
   <tabstop>openbsd_ip_forward</tabstop>
   <tabstop>openbsd_ipv6_forward</tabstop>
   <tabstop>openbsd_ip_directed_broadcast</tabstop>

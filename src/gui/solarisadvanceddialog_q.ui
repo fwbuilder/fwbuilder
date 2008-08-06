@@ -96,7 +96,7 @@
     </layout>
    </item>
    <item row="0" column="0" >
-    <widget class="QTabWidget" name="tabWidget11" >
+    <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
       <number>0</number>
      </property>
@@ -487,7 +487,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <tabstops>
-  <tabstop>tabWidget11</tabstop>
+  <tabstop>tabWidget</tabstop>
   <tabstop>solaris_ip_forward</tabstop>
   <tabstop>solaris_ip_forward_src_routed</tabstop>
   <tabstop>solaris_ip_forward_directed_broadcasts</tabstop>

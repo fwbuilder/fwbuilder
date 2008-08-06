@@ -67,7 +67,7 @@ linksysAdvancedDialog::linksysAdvancedDialog(QWidget *parent,FWObject *o)
  * since v2.0.3 we do not need to know shell prompt on linksys. Will
  * remove the page completely when code becomes stable.
  */
-    m_dialog->tabWidget3->removeTab( 1 );
+    m_dialog->tabWidget->removeTab( 1 );
 
     QStringList threeStateMapping;
 
