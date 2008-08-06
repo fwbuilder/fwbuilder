@@ -27,14 +27,23 @@ below).
 
 .SH COMMANDS AND OPTIONS:
 
-.B new -f file.fwb -t objtype -n name -c comment -p parent [-a attrs]
+.B new -f file.fwb -t objtype -n name -p parent [-c comment] [-a attrs]
 
 Creates new object.
 
 .PP
  -f file.fwb: data file
 .PP
- -t objtype: create a new object of this type
+ -t objtype: create new object of this type
+.PP
+-p parent: create new object as a child of this object. This parameter
+is mandatory. If you are adding an address to an interface,
+corresponding interface onkect must be specified as the
+parent. Similarly if you need to add an interface to a host or a
+firewall, corresponding host or firewall object is the parent. If you
+are adding an object to one of the standard folders, the parent is the
+library you want to add the object to or correct full path to the
+folder in the tree.
 .PP
  -n name: the name of the new object
 .PP

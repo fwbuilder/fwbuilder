@@ -78,6 +78,8 @@
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/Interface.h"
+
+#include "fwbuilder/ServiceGroup.h"
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
@@ -260,6 +262,9 @@ void usage()
         "(dynamic or unnumbered),management" << endl;
     cout << "      "
          << " -t " <<Host::TYPENAME
+         <<  endl;
+    cout << "      "
+         << " -t " <<ServiceGroup::TYPENAME
          <<  endl;
     cout << "      "
          << " -t " <<TCPService::TYPENAME
