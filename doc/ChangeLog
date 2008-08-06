@@ -1,3 +1,9 @@
+2008-08-06  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* new_object.cpp (newObject): fixed bug # 1997469: "Create a new
+	User library via fwbedit". Fwbedit creates new library and
+	populates it with correct set of standard folders.
+
 2008-08-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* pfAdvancedDialog_en_US.html: Help page for the advanced settings

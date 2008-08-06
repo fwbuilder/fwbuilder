@@ -104,6 +104,7 @@ using namespace std;
 
 
 std::map<string,string>  systemGroupPaths;
+std::map<string,string>  systemGroupTypes;
 
 
 void initConstants()
@@ -132,6 +133,31 @@ void initConstants()
     systemGroupPaths[Firewall::TYPENAME] = "Firewalls";
 
     systemGroupPaths[Interval::TYPENAME] = "Time";
+
+
+    systemGroupTypes["Objects/Addresses"] = ObjectGroup::TYPENAME;
+    systemGroupTypes["Objects/Addresses"] = ObjectGroup::TYPENAME;
+    systemGroupTypes["Objects/DNS Names"] = ObjectGroup::TYPENAME;
+    systemGroupTypes["Objects/Address Tables"] = ObjectGroup::TYPENAME;
+    systemGroupTypes["Objects/Address Ranges"] = ObjectGroup::TYPENAME;
+    systemGroupTypes["Objects/Groups"] = ObjectGroup::TYPENAME;
+    systemGroupTypes["Objects/Hosts"] = ObjectGroup::TYPENAME;
+    systemGroupTypes["Objects/Networks"] = ObjectGroup::TYPENAME;
+    systemGroupTypes["Objects/Networks"] = ObjectGroup::TYPENAME;
+
+    systemGroupTypes["Services/Groups"] = ServiceGroup::TYPENAME;
+    systemGroupTypes["Services/Custom"] = ServiceGroup::TYPENAME;
+    systemGroupTypes["Services/IP"] = ServiceGroup::TYPENAME;
+    systemGroupTypes["Services/ICMP"] = ServiceGroup::TYPENAME;
+    systemGroupTypes["Services/TCP"] = ServiceGroup::TYPENAME;
+    systemGroupTypes["Services/UDP"] = ServiceGroup::TYPENAME;
+    systemGroupTypes["Services/TagServices"] = ServiceGroup::TYPENAME;
+    systemGroupTypes["Services/Users"] = ServiceGroup::TYPENAME;
+
+    systemGroupTypes["Firewalls"] = ObjectGroup::TYPENAME;
+
+    systemGroupTypes["Time"] = IntervalGroup::TYPENAME;
+
 }
 
 void notEnoughAttributesError()
@@ -775,6 +801,38 @@ void newObject(FWObjectDatabase *objdb,
     nobj->setName(name);
 
     _modObject(nobj, comment_txt, ops);
+
+
+    if (objtype==Library::TYPENAME)
+    {
+        FWObject *new_child = createObject(objdb,
+                                           ObjectGroup::TYPENAME,
+                                           nobj->getPath());
+        new_child->setName("Objects");
+        cout << new_child->getPath() << endl;
+
+        new_child = createObject(objdb, ServiceGroup::TYPENAME, nobj->getPath());
+        new_child->setName("Services");
+        cout << new_child->getPath() << endl;
+
+        std::map<string,string>::iterator it;
+        for (it=systemGroupPaths.begin(); it!=systemGroupPaths.end(); ++it)
+        {
+            string path = it->second;
+            if (path.empty()) continue;
+            string t = systemGroupTypes[path];
+
+            string::size_type n = path.find("/");
+            string parent_obj = path.substr(0,n);
+            string obj_name = path.substr(n+1);
+            if (n==string::npos) parent_obj = "";
+
+            new_child = createObject(
+                objdb, t, nobj->getName() + "/" + parent_obj);
+            new_child->setName(obj_name);
+            cout << new_child->getPath() << endl;
+        }
+    }
 
     cout  << endl;
 }
