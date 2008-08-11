@@ -1,3 +1,15 @@
+2008-08-10  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWWindow.cpp (FWWindow::checkForUpgrade): the GUI checks if
+	updated version is available on startup by making simple HTTP GET
+	request to the web site at http://www.fwbuilder.org. This can be
+	turned off in the Preferences dialog. Preferences dialog also
+	provides a button to perform this query at any time. If function
+	is enabled in Preferences, it is performed at every time the GUI
+	is launched. The query does not transmit any data to the server,
+	but the URL of the query includes the version of the Firewall
+	Builder.
+
 2008-08-06  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* new_object.cpp (newObject): fixed bug # 1997469: "Create a new

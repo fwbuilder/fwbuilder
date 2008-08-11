@@ -105,6 +105,8 @@ const char* uiFont = SETTINGS_PATH_PREFIX "/UI/Fonts/UiFont";
 
 const char* clipComment = SETTINGS_PATH_PREFIX "/UI/ClipComment";
 
+const char* checkUpdates = SETTINGS_PATH_PREFIX "/UI/CheckUpdates";
+
 FWBSettings::FWBSettings() :
     QSettings(QSettings::UserScope, "netcitadel.com", "Firewall Builder")
 {
@@ -206,6 +208,10 @@ void FWBSettings::init()
 
     ok = contains(clipComment);
     if (!ok) setClipComment(true);
+
+    ok = contains(checkUpdates);
+    if (!ok) setCheckUpdates(true);
+
 
 #ifndef _WIN32
     if (getSSHPath().isEmpty())  setSSHPath("ssh");
@@ -657,3 +663,15 @@ void FWBSettings::setClipComment(bool clip)
 {
     setValue(clipComment, clip);
 }
+
+bool FWBSettings::getCheckUpdates()
+{
+    return value(checkUpdates).toBool();
+}
+
+void FWBSettings::setCheckUpdates(bool f)
+{
+    setValue(checkUpdates, f);
+}
+
+

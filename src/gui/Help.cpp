@@ -40,6 +40,8 @@ using namespace std;
 Help::Help(QWidget *parent, const QString &help_file, const QString &title) :
     SimpleTextView(parent)
 {
+    setAttribute(Qt::WA_DeleteOnClose);
+
     setModal(false);
     setName(title);
     resize(500, 600);

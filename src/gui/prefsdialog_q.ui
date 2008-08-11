@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>588</width>
-    <height>358</height>
+    <width>620</width>
+    <height>368</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -19,92 +19,10 @@
    <bool>true</bool>
   </property>
   <layout class="QGridLayout" >
-   <property name="leftMargin" >
-    <number>4</number>
-   </property>
-   <property name="topMargin" >
-    <number>4</number>
-   </property>
-   <property name="rightMargin" >
-    <number>4</number>
-   </property>
-   <property name="bottomMargin" >
-    <number>4</number>
-   </property>
-   <property name="horizontalSpacing" >
-    <number>6</number>
-   </property>
-   <property name="verticalSpacing" >
-    <number>6</number>
-   </property>
-   <item row="1" column="0" >
-    <layout class="QHBoxLayout" >
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <property name="leftMargin" >
-      <number>0</number>
-     </property>
-     <property name="topMargin" >
-      <number>0</number>
-     </property>
-     <property name="rightMargin" >
-      <number>0</number>
-     </property>
-     <property name="bottomMargin" >
-      <number>0</number>
-     </property>
-     <item>
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType" >
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" >
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonOk" >
-       <property name="text" >
-        <string>&amp;OK</string>
-       </property>
-       <property name="shortcut" >
-        <string/>
-       </property>
-       <property name="autoDefault" >
-        <bool>true</bool>
-       </property>
-       <property name="default" >
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonCancel" >
-       <property name="text" >
-        <string>&amp;Cancel</string>
-       </property>
-       <property name="shortcut" >
-        <string/>
-       </property>
-       <property name="autoDefault" >
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>6</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="Widget2" >
       <attribute name="title" >
@@ -137,7 +55,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="5" colspan="2" >
+       <item row="0" column="5" colspan="3" >
         <widget class="QPushButton" name="browseWDir" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -156,7 +74,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="7" >
+       <item row="0" column="8" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
@@ -172,23 +90,7 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="4" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>20</width>
-           <height>16</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item rowspan="2" row="2" column="0" >
+       <item rowspan="2" row="1" column="0" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
@@ -204,14 +106,14 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="1" colspan="5" >
+       <item row="1" column="1" colspan="6" >
         <widget class="QCheckBox" name="autosave" >
          <property name="text" >
           <string>Automatically save data in dialogs when switching between objects</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="6" colspan="2" >
+       <item row="1" column="7" colspan="2" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
@@ -227,14 +129,14 @@
          </property>
         </spacer>
        </item>
-       <item row="3" column="1" colspan="3" >
+       <item row="2" column="1" colspan="3" >
         <widget class="QCheckBox" name="autosaveFile" >
          <property name="text" >
           <string>Periodically save data to file every </string>
          </property>
         </widget>
        </item>
-       <item row="3" column="4" >
+       <item row="2" column="4" >
         <widget class="QSpinBox" name="autosaveInterval" >
          <property name="minimum" >
           <number>1</number>
@@ -244,7 +146,7 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="5" >
+       <item row="2" column="5" colspan="2" >
         <widget class="QLabel" name="textLabel1_3" >
          <property name="text" >
           <string>minutes</string>
@@ -254,14 +156,14 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="1" colspan="2" >
+       <item row="3" column="1" colspan="2" >
         <widget class="QCheckBox" name="objTooltips" >
          <property name="text" >
           <string>Enable object tooltips</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="3" >
+       <item row="3" column="3" >
         <widget class="QLabel" name="textLabel1_6" >
          <property name="text" >
           <string>Tooltip delay:</string>
@@ -271,14 +173,14 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="4" >
+       <item row="3" column="4" >
         <widget class="QSpinBox" name="tooltipDelay" >
          <property name="minimum" >
           <number>1</number>
          </property>
         </widget>
        </item>
-       <item row="4" column="5" colspan="3" >
+       <item row="3" column="5" colspan="4" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
@@ -294,21 +196,61 @@
          </property>
         </spacer>
        </item>
-       <item row="5" column="1" colspan="5" >
+       <item row="4" column="1" colspan="6" >
         <widget class="QCheckBox" name="deletedObj" >
          <property name="text" >
           <string>Show deleted objects</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1" colspan="5" >
+       <item row="5" column="1" colspan="6" >
         <widget class="QCheckBox" name="chClipComment" >
          <property name="text" >
           <string>Clip comments in rules</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="4" >
+       <item row="6" column="1" colspan="6" >
+        <widget class="QLabel" name="label" >
+         <property name="font" >
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text" >
+          <string>Software Updates:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1" colspan="3" >
+        <widget class="QCheckBox" name="checkUpdates" >
+         <property name="text" >
+          <string>Check for updates automatically</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="4" colspan="2" >
+        <widget class="QPushButton" name="checkUpdatesNow" >
+         <property name="text" >
+          <string>Check Now</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="6" colspan="3" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>91</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="8" column="4" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -318,7 +260,7 @@
          </property>
          <property name="sizeHint" >
           <size>
-           <width>20</width>
+           <width>86</width>
            <height>20</height>
           </size>
          </property>
@@ -882,6 +824,70 @@
      </widget>
     </widget>
    </item>
+   <item row="1" column="0" >
+    <layout class="QHBoxLayout" >
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <property name="leftMargin" >
+      <number>0</number>
+     </property>
+     <property name="topMargin" >
+      <number>0</number>
+     </property>
+     <property name="rightMargin" >
+      <number>0</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>0</number>
+     </property>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType" >
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOk" >
+       <property name="text" >
+        <string>&amp;OK</string>
+       </property>
+       <property name="shortcut" >
+        <string/>
+       </property>
+       <property name="autoDefault" >
+        <bool>true</bool>
+       </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCancel" >
+       <property name="text" >
+        <string>&amp;Cancel</string>
+       </property>
+       <property name="shortcut" >
+        <string/>
+       </property>
+       <property name="autoDefault" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
@@ -1221,6 +1227,22 @@
     <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkUpdatesNow</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>checkSwUpdates()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>412</x>
+     <y>263</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>309</x>
+     <y>183</y>
     </hint>
    </hints>
   </connection>

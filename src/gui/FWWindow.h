@@ -30,6 +30,7 @@
 #include <ui_FWBMainWindow_q.h>
 #include "RCS.h"
 #include "ObjectEditor.h"
+#include "HttpGet.h"
 
 #include <qstring.h>
 #include <QShowEvent>
@@ -65,20 +66,22 @@ class FWWindow : public QMainWindow {
 
     Q_OBJECT
 
-    QMdiArea                               *m_space;
-    QWidget                                *instd;
+    QMdiArea *m_space;
+    QWidget *instd;
+    HttpGet *curent_version_http_getter;
     
-    QTimer                                 *autosaveTimer;
-    QTimer                                 *instDialogOnScreenTimer;
-    QString                                 noFirewalls;
-    QPrinter                               *printer;
-    libfwbuilder::FWObject                 *searchObject;
-    libfwbuilder::FWObject                 *replaceObject;
+    QTimer *autosaveTimer;
+    QTimer *instDialogOnScreenTimer;
+    QString noFirewalls;
+    QPrinter *printer;
+    libfwbuilder::FWObject *searchObject;
+    libfwbuilder::FWObject *replaceObject;
     //int                                    lastFirewallIdx;
     
     void clearFirewallTabs();
     ProjectPanel *newProjectPanel();
     void showSub(ProjectPanel *projectW);
+    
 public:
     ProjectPanel* activeProject();
     void recreateWindowsMenu ();
@@ -86,83 +89,86 @@ public:
     QVector <QString> windowsTitles;
     QVector <QMdiSubWindow*> windowsPainters;
     void updateTreeFont ();
+    
 public slots:
     void selectActiveSubWindow (/*const QString & text*/);
 
     void minimize ();
     void maximize ();
     void changeActiveSubwindow (  );
-     virtual void search();
+    virtual void search();
 
-     virtual void reopenFirewall();
-     virtual void redrawRuleSets();
-     virtual void changeInfoStyle();
-     virtual void restoreRuleSetTab();
+    virtual void reopenFirewall();
+    virtual void redrawRuleSets();
+    virtual void changeInfoStyle();
+    virtual void restoreRuleSetTab();
 
-     virtual void editFind();
-     virtual void editRedo();
-     virtual void editUndo();
-     virtual void helpContents();
-     virtual void helpContentsAction();
-     virtual void helpIndex();
+    virtual void editFind();
+    virtual void editRedo();
+    virtual void editUndo();
+    virtual void helpContents();
+    virtual void helpContentsAction();
+    virtual void helpIndex();
      
-     virtual void fileNew();
-     virtual void fileOpen();
-     virtual void fileClose();
-     virtual void fileSave();
-     virtual void fileSaveAs();
-     virtual void fileDiscard();
-     virtual void fileCommit();
-     virtual void fileImport();
-     virtual void fileExport();
-     virtual void filePrint();
-     virtual void fileExit();
-     virtual void fileProp();
-     virtual void fileAddToRCS();
-     virtual void fileCompare();
-     virtual void editCopy();
-     virtual void editCut();
-     virtual void editDelete();
-     virtual void editPaste();
-     virtual void editPrefs();
-     virtual void importPolicy();
+    virtual void fileNew();
+    virtual void fileOpen();
+    virtual void fileClose();
+    virtual void fileSave();
+    virtual void fileSaveAs();
+    virtual void fileDiscard();
+    virtual void fileCommit();
+    virtual void fileImport();
+    virtual void fileExport();
+    virtual void filePrint();
+    virtual void fileExit();
+    virtual void fileProp();
+    virtual void fileAddToRCS();
+    virtual void fileCompare();
+    virtual void editCopy();
+    virtual void editCut();
+    virtual void editDelete();
+    virtual void editPaste();
+    virtual void editPrefs();
+    virtual void importPolicy();
 
-     virtual void startupLoad();
+    virtual void startupLoad();
 
-     virtual void helpAbout();
-     virtual void debug();
+    virtual void helpAbout();
+    virtual void debug();
      
-     virtual void compile(std::set<libfwbuilder::Firewall * > vf);
-     virtual void compile();
-     virtual void install(std::set<libfwbuilder::Firewall * > vf);
-     virtual void install();
+    virtual void compile(std::set<libfwbuilder::Firewall * > vf);
+    virtual void compile();
+    virtual void install(std::set<libfwbuilder::Firewall * > vf);
+    virtual void install();
 
-     virtual void insertRule();
-     virtual void addRuleAfterCurrent();
-     virtual void moveRule();
-     virtual void moveRuleUp();
-     virtual void moveRuleDown();
-     virtual void removeRule(); 
+    virtual void insertRule();
+    virtual void addRuleAfterCurrent();
+    virtual void moveRule();
+    virtual void moveRuleUp();
+    virtual void moveRuleDown();
+    virtual void removeRule(); 
 
-     virtual void copyRule();
-     virtual void cutRule();
-     virtual void pasteRuleAbove();
-     virtual void pasteRuleBelow();
+    virtual void copyRule();
+    virtual void cutRule();
+    virtual void pasteRuleAbove();
+    virtual void pasteRuleBelow();
 
-     virtual void back();
-     virtual void newObject();
-     virtual void lockObject();
-     virtual void unlockObject();
-     virtual void prepareObjectMenu();
-     virtual void toolsDiscoveryDruid();
-     virtual void closeAuxiliaryPanel();
-     virtual void closeEditorPanel();
-     virtual void openEditorPanel();
+    virtual void back();
+    virtual void newObject();
+    virtual void lockObject();
+    virtual void unlockObject();
+    virtual void prepareObjectMenu();
+    virtual void toolsDiscoveryDruid();
+    virtual void closeAuxiliaryPanel();
+    virtual void closeEditorPanel();
+    virtual void openEditorPanel();
 
-     virtual void killInstDialog();
+    virtual void killInstDialog();
 
+    virtual void checkForUpgrade(const QString&);
+ 
  public:
-     Ui::FWBMainWindow_q *m_mainWindow;
+    Ui::FWBMainWindow_q *m_mainWindow;
      
     FWWindow();
     ~FWWindow();

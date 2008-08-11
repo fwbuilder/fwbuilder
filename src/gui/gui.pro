@@ -130,7 +130,9 @@ HEADERS += ../../config.h \
 	FWBAboutDialog.h \
 	RuleGroupPanel.h \
 	RuleRowInfo.h \
-	Help.h
+	Help.h \
+	HttpGet.h \
+	check_update_url.h
 
 SOURCES += ProjectPanel.cpp \
 	ProjectPanel_file_ops.cpp \
@@ -240,7 +242,8 @@ SOURCES += ProjectPanel.cpp \
     AskLibForCopyDialog.cpp \
 	ObjectListViewItem.cpp \
 	RuleGroupPanel.cpp \
-	Help.cpp
+	Help.cpp \
+	HttpGet.cpp
 
 FORMS = FWBMainWindow_q.ui \
 	customservicedialog_q.ui \

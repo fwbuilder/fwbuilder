@@ -27,11 +27,13 @@
 #include "../../config.h"
 #include "global.h"
 #include "utils.h"
+#include "check_update_url.h"
 
 #include "PrefsDialog.h"
 #include "FWBSettings.h"
 #include "listOfLibraries.h"
 #include "FWWindow.h"
+#include "HttpGet.h"
 
 #include <qlineedit.h>
 #include <qfiledialog.h>
@@ -49,6 +51,8 @@
 #include <qcolor.h>
 #include <qpixmapcache.h>
 #include <qfontdialog.h>
+#include <QUrl>
+
 /*
 
 #include <sys/types.h>
@@ -80,6 +84,9 @@ void PrefsDialog::setButtonColor(QPushButton *btn,const QString &colorCode)
 
 PrefsDialog::~PrefsDialog()
 {
+    disconnect(&curent_version_http_getter, SIGNAL(done(const QString&)),
+               this, SLOT(checkForUpgrade(const QString&)));
+
     delete m_dialog;
 }
 
@@ -191,6 +198,9 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->treeFontDescr->setText(getFontDescription(treeFont));
 
     m_dialog->chClipComment->setChecked(st->getClipComment() );
+
+    m_dialog->checkUpdates->setChecked(st->getCheckUpdates() );
+
 }
 
 QString PrefsDialog::getFontDescription(const QFont &font)
@@ -453,6 +463,7 @@ void PrefsDialog::accept()
     st->setUiFont(uiFont);
 
     st->setClipComment(m_dialog->chClipComment->isChecked());
+    st->setCheckUpdates(m_dialog->checkUpdates->isChecked());
 
     st->setSSHPath( m_dialog->sshPath->text() );
 
@@ -467,3 +478,41 @@ void PrefsDialog::accept()
     mw->updateTreeFont();
     QDialog::accept();
 }
+
+void PrefsDialog::checkSwUpdates()
+{
+    connect(&curent_version_http_getter, SIGNAL(done(const QString&)),
+            this, SLOT(checkForUpgrade(const QString&)));
+    curent_version_http_getter.get(QUrl(CHECK_UPDATE_URL));
+}
+
+void PrefsDialog::checkForUpgrade(const QString& server_response)
+{
+    disconnect(&curent_version_http_getter, SIGNAL(done(const QString&)),
+               this, SLOT(checkForUpgrade(const QString&)));
+
+    if (curent_version_http_getter.getStatus())
+    {
+
+        if (server_response.trimmed().isEmpty())
+        {
+            QMessageBox::information(
+                this,"Firewall Builder",
+                tr("Your version of Firewall Builder is up to date."));
+        } else
+        {
+            QMessageBox::warning(
+                this,"Firewall Builder",
+                tr("A new version of Firewall Builder is available at"
+                   " http://www.fwbuilder.org"));
+        }
+    } else
+    {
+        QMessageBox::critical(
+            this,"Firewall Builder",
+            tr("Error checking for software updates:\n%1").
+            arg(curent_version_http_getter.getLastError()));
+    }
+}
+
+

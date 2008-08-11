@@ -706,6 +706,9 @@ int main( int argc, char *argv[] )
 
         app->connect(app, SIGNAL( lastWindowClosed() ), app, SLOT( quit()));
 
+
+        if (fwbdebug) qDebug("Checking for new version ...");
+
 // setup single shot timer to call loadEverything()
 
         QTimer::singleShot( 0, mw, SLOT(startupLoad()) );

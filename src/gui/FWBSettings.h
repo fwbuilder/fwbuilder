@@ -157,6 +157,10 @@ class FWBSettings : public QSettings {
 
     bool getClipComment();
     void setClipComment(bool);
+
+    bool getCheckUpdates();
+    void setCheckUpdates(bool);
+
 private:
     QFont getFontByType(const char*type);
 };

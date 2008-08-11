@@ -32,6 +32,7 @@
 
 #include "FWBSettings.h"
 #include "listOfLibraries.h"
+#include "HttpGet.h"
 
 #include <list>
 #include <string>
@@ -53,6 +54,8 @@ class PrefsDialog : public QDialog
     std::map<int,QString> colors;
     Ui::prefsDialog_q *m_dialog;
 
+    HttpGet curent_version_http_getter;
+    
     QFont rulesFont;
     QFont treeFont;
     QFont uiFont;
@@ -83,6 +86,8 @@ public slots:
     virtual void changeShowIcons();
     virtual void changeRulesFont();
     virtual void changeTreeFont();
+    virtual void checkSwUpdates();
+    virtual void checkForUpgrade(const QString&);
 };
 
 #endif // __PREFSDIALOG_H

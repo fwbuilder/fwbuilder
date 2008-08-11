@@ -26,10 +26,12 @@
 
 #include "../../config.h"
 #include "global.h"
+#include "check_update_url.h"
 #include "utils.h"
 #include "utils_no_qt.h"
 
 #include "FWWindow.h"
+#include "ProjectPanel.h"
 #include "ObjectTreeView.h"
 #include "ObjectManipulator.h"
 #include "FWObjectClipboard.h"
@@ -55,6 +57,7 @@
 
 #include "instConf.h"
 #include "instDialog.h"
+#include "HttpGet.h"
 
 #include "fwbuilder/FWReference.h"
 #include "fwbuilder/Policy.h"
@@ -139,7 +142,7 @@
 #include <QMdiArea>
 #include <QMdiSubWindow>
 #include <QSignalMapper>
-#include "ProjectPanel.h"
+#include <QUrl>
 
 
 using namespace libfwbuilder;
@@ -173,7 +176,13 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 
     printer = new QPrinter(QPrinter::HighResolution);
 
-    connect(instDialogOnScreenTimer, SIGNAL(timeout()), this, SLOT(killInstDialog()));
+    curent_version_http_getter = new HttpGet();
+    connect(curent_version_http_getter, SIGNAL(done(const QString&)),
+            this, SLOT(checkForUpgrade(const QString&)));
+
+    connect(instDialogOnScreenTimer, SIGNAL(timeout()),
+            this, SLOT(killInstDialog()));
+
     instDialogOnScreenTimer->start(1000);
 
 
@@ -188,7 +197,8 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 
     connect( m_mainWindow->ObjectMenu, SIGNAL (aboutToShow() ),
             this,     SLOT( prepareObjectMenu()  ));
-    connect( m_space, SIGNAL(subWindowActivated (QMdiSubWindow *)),this, SLOT(changeActiveSubwindow())); 
+    connect( m_space, SIGNAL(subWindowActivated (QMdiSubWindow *)),
+             this, SLOT(changeActiveSubwindow())); 
     if (fwbdebug)
         qDebug("/FWWindow constructor");
 
@@ -262,6 +272,13 @@ void FWWindow::updateWindowTitle ()
 
 void FWWindow::startupLoad()
 {
+    if (st->getCheckUpdates())
+    {
+        // start http query to get latest version from the web site
+        curent_version_http_getter->get(QUrl(CHECK_UPDATE_URL));
+    }
+
+
     if (activeProject())
     {
         activeProject()->startupLoad();
@@ -1576,3 +1593,25 @@ void FWWindow::updateTreeFont ()
         }
     }
 }
+
+void FWWindow::checkForUpgrade(const QString& server_response)
+{
+    if (curent_version_http_getter->getStatus())
+    {
+        if (!server_response.trimmed().isEmpty())
+        {
+            QMessageBox::warning(
+                this,"Firewall Builder",
+                tr("A new version of Firewall Builder is available at"
+                   " http://www.fwbuilder.org"));
+        }
+    } else
+    {
+        if (fwbdebug)
+            qDebug("Update check error:  %s", 
+                   curent_version_http_getter->getLastError().
+                   toLatin1().constData());
+    }
+}
+
+

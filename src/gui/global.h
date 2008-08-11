@@ -26,6 +26,7 @@
 #ifndef __GLOBAL_DEFS_
 #define __GLOBAL_DEFS_
 
+#include "../../VERSION.h"
 #include <string>
 
 class  QApplication;
@@ -58,7 +59,6 @@ extern bool            gui_experiment1;
 //#define USER_LIB     "syslib001"
 //#define TEMPLATE_LIB "syslib100"
 //#define DELETED_LIB  "sysid99"
-
 
 #ifdef NDEBUG
 #  undef NDEBUG
