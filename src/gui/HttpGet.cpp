@@ -75,7 +75,19 @@ bool HttpGet::get(const QUrl &url)
     }
 
     http.setHost(url.host(), url.port(80));
-    request_id = http.get(url.toString(), &strm);
+    QHttpRequestHeader hdr(QLatin1String("GET"), url.toString());
+    hdr.setValue("Host", url.host());
+    QString agent = "fwbuilder "VERSION" ";
+
+#if defined(Q_WS_MAC)
+    agent += " MacOSX";
+#endif
+#if defined(Q_WS_WIN)
+    agent += " Windows";
+#endif
+
+    hdr.setValue("User-Agent", agent);
+    request_id = http.request(hdr, NULL, &strm);
     return true;
 }
 
