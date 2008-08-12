@@ -1,3 +1,10 @@
+2008-08-11  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RoutingCompiler_ipt_writers.cpp (PrintRule::processNext):
+	Applied a one-line patch from <jringle@users.sourceforge.net> to
+	fix problem in the generated iptables script where it would
+	delete default route if routing rules were used.
+
 2008-08-10  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWWindow.cpp (FWWindow::checkForUpgrade): the GUI checks if

@@ -163,7 +163,7 @@ bool RoutingCompiler_ipt::PrintRule::processNext()
         compiler->output << "oldRoutes=$($IP route show | sort -k 2)" << endl << endl;
         
         compiler->output << "echo \"Deleting routing rules previously set by user space processes...\"" << endl;
-        compiler->output << "$IP route show | grep -v ' proto kernel ' | while read route ; do $IP route del $route ; done\n" << endl;
+        compiler->output << "$IP route show | grep -v '\\( proto kernel \\)\\|\\(default via \\)'  | while read route ; do $IP route del $route ; done\n" << endl;
         
         compiler->output << "echo \"Activating non-ecmp routing rules...\"" << endl << endl;
                 
