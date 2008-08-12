@@ -132,8 +132,6 @@ int  Helper::findInterfaceByNetzone(Address *obj)
 
 int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
 {
-    if (addr==NULL) return -1;
-
     Firewall *fw=compiler->fw;
     map<int,FWObject*> zones;
     FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
@@ -142,6 +140,14 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
         // NOTE: "network_zone" is globally unique string ID
         int netzone_id =
             FWObjectDatabase::getIntId((*i)->getStr("network_zone"));
+
+        FWObject *netzone = fw->getRoot()->findInIndex(netzone_id);
+#if 0
+        cerr << "netzone_id=" << netzone_id
+             << "  " << (*i)->getStr("network_zone")
+             << "  " << netzone->getName()
+             << endl;
+#endif
         if (netzone_id != -1)
         {
             FWObject *netzone = fw->getRoot()->findInIndex(netzone_id);
@@ -149,8 +155,18 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
                  j!=netzone->end(); ++j)
             {
                 assert(Address::cast(*j)!=NULL);
-                if (Address::cast(*j)->belongs(*addr))
-                    zones[(*i)->getId()] = netzone;
+
+                // if addr==NULL, return id of the interfacce that has
+                // net_zone=="any"
+                if (addr==NULL)
+                {
+                    if ((*j)->getId()==FWObjectDatabase::ANY_ADDRESS_ID)
+                        return (*i)->getId(); // id of the interface
+                } else
+                {
+                    if (Address::cast(*j)->belongs(*addr))
+                        zones[(*i)->getId()] = netzone;
+                }
             }
         }
     }
@@ -182,7 +198,7 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
 
     if (res_id == -1)
         throw(string("Can not find interface with network zone that includes "
-                     "address ") + addr->toString());
+                     "address ") + string((addr)?addr->toString():"NULL"));
     return res_id;
 }
 

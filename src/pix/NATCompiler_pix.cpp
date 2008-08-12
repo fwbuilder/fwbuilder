@@ -349,8 +349,8 @@ bool NATCompiler_pix::AssignInterface::processNext()
 
     assert(a1!=NULL && a2!=NULL);
 
-    rule->setInt("nat_iface_orig",helper.findInterfaceByNetzone(a1));
-    rule->setInt("nat_iface_trn", helper.findInterfaceByNetzone(a2));
+    rule->setInt("nat_iface_orig", helper.findInterfaceByNetzone(a1));
+    rule->setInt("nat_iface_trn",  helper.findInterfaceByNetzone(a2));
 
     if ( rule->getInt("nat_iface_orig")==-1 ) 
 	compiler->abort("Object '" + a1->getName() + 
