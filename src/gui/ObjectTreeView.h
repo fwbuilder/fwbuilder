@@ -54,7 +54,6 @@ class ObjectTreeView : public QTreeWidget {
     QTreeWidgetItem   *item_before_drag_started;
     QTreeWidgetItem   *lastSelected;
     QItemSelection     lastSelection;
-    QTimer           singleClickTimer;
     bool             second_click;
 
     bool             selectionFrozen;
@@ -93,6 +92,9 @@ protected:
     virtual void focusInEvent(QFocusEvent*);
     virtual void focusOutEvent(QFocusEvent*);
 
+    virtual bool edit(const QModelIndex &index,
+                      EditTrigger trigger, QEvent *event);
+    
     void startDrag(Qt::DropActions supportedActions);
     
  public:
@@ -134,7 +136,6 @@ protected:
     
  public slots:
 
-    void edit(const QModelIndex & index);
     void itemSelectionChanged();
     void resetSelection();
     void currentItemChanged(QTreeWidgetItem *cur);

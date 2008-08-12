@@ -1,5 +1,11 @@
 2008-08-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ObjectTreeView.cpp (ObjectTreeView::edit): double-clicking on an
+	object in the tree opens it in the editor panel. Normally,
+	QTreeWidget also expands or collapses tree branch on double click
+	if the object has children. This was confusing. This change makes
+	tree not expand and collapse branches on double click.
+
 	* RoutingCompiler_ipt_writers.cpp (PrintRule::processNext):
 	Applied a one-line patch from <jringle@users.sourceforge.net> to
 	fix problem in the generated iptables script where it would

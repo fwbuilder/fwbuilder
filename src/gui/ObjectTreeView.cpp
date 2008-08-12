@@ -79,7 +79,6 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
                                const char * name,
                                Qt::WFlags f) :
     QTreeWidget(parent), 
-    singleClickTimer(this),
     m_project(project)
 {
     setObjectName(name);
@@ -123,12 +122,6 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
 
     connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)),
             this, SLOT(itemExpanded(QTreeWidgetItem*)));
-
-    connect(&singleClickTimer, SIGNAL(timeout()),
-            this, SLOT(resetSelection()));
-
-    connect(this, SIGNAL(itemActivated(QTreeWidgetItem *, int)),
-            this, SLOT(itemOpened()));
 
     setColumnCount(1);
 
@@ -668,6 +661,24 @@ void ObjectTreeView::mouseReleaseEvent( QMouseEvent *e )
 }
 
 /*
+ * normally QAbstractItemView::edit starts in-place editing. WE use
+ * double click to open object in a separate editor panel, but use
+ * this virtual method to tell unerlying class that editing has
+ * started, which prevents it from expanding/collapsing tree branch.
+ */
+bool ObjectTreeView::edit(const QModelIndex &index,
+                          EditTrigger trigger, QEvent *event)
+{
+    if (fwbdebug) qDebug("ObjectTreeView::edit");
+    if (trigger==QAbstractItemView::DoubleClicked)
+    {
+        editCurrentObject();
+        return true;
+    }
+    return QTreeWidget::edit(index, trigger, event);
+}
+
+/*
  * sends signal that should be connected to a slot in
  * ObjectManipulator which opens editor panel if it is closed and then
  * opens current object in it
@@ -678,41 +689,6 @@ void ObjectTreeView::editCurrentObject()
     emit editCurrentObject_sign();
     if (fwbdebug) qDebug("ObjectTreeView::editCurrentObject done");
 }
-
-// QAbstractItemView (base class of QTreeWidget) calls this when
-// element is double-clicked
-void ObjectTreeView::edit(const QModelIndex & index)
-{
-    if (fwbdebug) qDebug("ObjectTreeView::edit ");
-
-    FWObject *obj = getCurrentObject();
-
-/* system folders open on doubleclick, while for regular objects it
- * opens an editor
- */
-    if (m_project->isSystem(obj)) QTreeWidget::edit(index);
-    else editCurrentObject();
-}
-
-#if 0
-void ObjectTreeView::mouseDoubleClickEvent( QMouseEvent *e )
-{
-    if (fwbdebug) qDebug("ObjectTreeView::mouseDoubleClickEvent");
-
-    second_click = true;
-    singleClickTimer.stop();
-
-    FWObject *obj = getCurrentObject();
-
-/* system folders open on doubleclick, while for regular objects it
- * opens an editor
- */
-    if (m_project->isSystem(obj))
-        QTreeWidget::mouseDoubleClickEvent(e);
-    else
-        editCurrentObject();
-}
-#endif
 
 void ObjectTreeView::keyPressEvent( QKeyEvent* ev )
 {
