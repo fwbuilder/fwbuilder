@@ -563,11 +563,16 @@
            <widget class="QLabel" name="rulesetname" >
             <property name="font" >
              <font>
-              <pointsize>11</pointsize>
+              <pointsize>14</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
              </font>
             </property>
             <property name="text" >
-             <string/>
+             <string>Firewall / ruleset</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>

@@ -696,8 +696,11 @@
    </property>
   </action>
   <action name="policyImportAction" >
-   <property name="iconText" >
+   <property name="text" >
     <string>Import Po&amp;licy</string>
+   </property>
+   <property name="iconText" >
+    <string>Import Policy</string>
    </property>
   </action>
  </widget>
