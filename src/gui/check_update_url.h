@@ -28,6 +28,7 @@
 #define CHECK_UPDATE_URL_HH
 
 #include "../../VERSION.h"
+#include "../../build_num"
 
 #define CHECK_UPDATE_URL "http://www.fwbuilder.org/update_checks/check.cgi?v="VERSION
 

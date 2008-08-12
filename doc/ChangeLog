@@ -1,3 +1,11 @@
+2008-08-12  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::contextMenuRequested):
+	fixed bug #2047992: "segfault cloning policies in version
+	3". "Duplicate" and "Move" context menu items should not be
+	presented if an object for which context menu is called is policy
+	or interface.
+
 2008-08-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ObjectTreeView.cpp (ObjectTreeView::edit): double-clicking on an

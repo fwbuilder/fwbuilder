@@ -927,53 +927,60 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     QAction *edtID = popup->addAction(
         tr("Edit"), this, SLOT( editSelectedObject()));
 
-    QMenu *duptargets  = popup->addMenu( tr("Duplicate ...") );
-    QMenu *movetargets = popup->addMenu( tr("Move ...") );
+    QMenu *duptargets  = NULL;
+    QMenu *movetargets = NULL;
+    int moveTargetsCounter = 0;
 
-    connect ( duptargets, SIGNAL ( triggered(QAction*) ),
-              this, SLOT( duplicateObj(QAction*) ) );
-    connect ( movetargets, SIGNAL ( triggered(QAction*) ),
-              this, SLOT( moveObj(QAction*) ) );
+    if (!Interface::isA(currentObj) && RuleSet::cast(currentObj)==NULL)
+    {
+        duptargets = popup->addMenu( tr("Duplicate ...") );
+        movetargets = popup->addMenu( tr("Move ...") );
+
+        connect ( duptargets, SIGNAL ( triggered(QAction*) ),
+                  this, SLOT( duplicateObj(QAction*) ) );
+        connect ( movetargets, SIGNAL ( triggered(QAction*) ),
+                  this, SLOT( moveObj(QAction*) ) );
 
 /* we add " ... to library ..." submenu to the "Move " menu item only
  * if user did not select a library, or if they selected several
  * objects. Method moveObj knows that library should not be moved
  * into another library.
  */
-    bool libSelected =
-        (getCurrentObjectTree()->getNumSelected()==1 &&
-         Library::isA(getCurrentObjectTree()->getSelectedObjects().front()));
+        bool libSelected =
+            (getCurrentObjectTree()->getNumSelected()==1 &&
+             Library::isA(getCurrentObjectTree()->getSelectedObjects().front()));
 
-    int libid = 0;
+        int libid = 0;
 
-    FWObject *cl = getCurrentLib();
-    int moveTargetsCounter = 0;
-    vector<FWObject*>::iterator i;
+        FWObject *cl = getCurrentLib();
+        vector<FWObject*>::iterator i;
 
-    for (i=idxToLibs.begin(); i!=idxToLibs.end(); ++i,++libid)
-    {
-        FWObject *lib   = *i;
+        for (i=idxToLibs.begin(); i!=idxToLibs.end(); ++i,++libid)
+        {
+            FWObject *lib   = *i;
 
-        if ( lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
-             lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
-             lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
-             lib->isReadOnly())
-            continue;
+            if ( lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
+                 lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
+                 lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
+                 lib->isReadOnly())
+                continue;
 
-        QAction* dact = duptargets->addAction(
+            QAction* dact = duptargets->addAction(
                 tr("place in library %1").arg(
                     QString::fromUtf8(lib->getName().c_str())));
-        dact->setData(libid);
+            dact->setData(libid);
 
-        /* can't move to the same library or if selected object is a library
-         */
-        if (!libSelected && lib!=cl)
-        {
-            moveTargetsCounter++;
-            QAction* mact = movetargets->addAction(
+            /* can't move to the same library or if selected object is
+             * a library
+             */
+            if (!libSelected && lib!=cl)
+            {
+                moveTargetsCounter++;
+                QAction* mact = movetargets->addAction(
                     tr("to library %1").arg(
                         QString::fromUtf8(lib->getName().c_str())));
-            mact->setData(libid);
+                mact->setData(libid);
+            }
         }
     }
 
@@ -1102,15 +1109,9 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
         popup->addSeparator();
         popup->addAction( tr("Find"), this, SLOT( findObject()));
-        popup->addAction( tr("Where used"), this, SLOT( findWhereUsedSlot()));
-/*
-        if (Firewall::cast(currentObj)!=NULL)
-        {
-            popup->addSeparator();
-            popup->addAction( tr("Compile"), this, SLOT( compile()));
-            popup->addAction( tr("Install"), this, SLOT( install()));
-        }
-        */
+
+        if (RuleSet::cast(currentObj)==NULL)
+            popup->addAction( tr("Where used"), this, SLOT( findWhereUsedSlot()));
     } else
     {
 
@@ -1119,7 +1120,9 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
     }
 
-    if (Firewall::cast(currentObj)!=NULL || ObjectGroup::cast(currentObj)!=NULL)
+    if (Firewall::cast(currentObj)!=NULL ||
+        (ObjectGroup::cast(currentObj)!=NULL &&
+         currentObj->getName()=="Firewalls"))
     {
         popup->addSeparator();
         popup->addAction( tr("Compile"), this, SLOT( compile()));
