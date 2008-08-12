@@ -198,6 +198,12 @@ class PolicyRule : public Rule
 
     virtual bool isEmpty();
 
+    /**
+     * Removes reference to given object among
+     * children of 'this'.
+     */
+    virtual void removeRef(FWObject *obj);
+    
     libfwbuilder::RuleElementSrc*  getSrc() ;
     libfwbuilder::RuleElementDst*  getDst() ;
     libfwbuilder::RuleElementSrv*  getSrv() ;

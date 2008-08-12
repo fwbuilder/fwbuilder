@@ -1,3 +1,15 @@
+2008-08-12  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Rule.cpp (PolicyRule::removeRef): fixed bug #2047991 "Drag &
+	Drop in CHAIN actions, version 3". THe bug report consits of 3
+	parts, part 3 is "When I change the Action from CHAIN to ACCEPT
+	and switch it back to CHAIN it still shows the last policy target
+	I used. EVEN WHEN I DELETED this object meanwhile. I manually have
+	to remove the policy object from the properties of the CHAIN
+	action.". PolicyRule::removeRef removes references to RuleSets and
+	TagSErvice objects from rule options when corresponding RuleSet or
+	TagService object is deleted.
+
 2008-08-03  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Address.h (libfwbuilder): removed return type qualifier "const"

@@ -447,6 +447,35 @@ string PolicyRule::getTagValue()
     return "";
 }
 
+/**
+ * Removes reference to given object among children of 'this'. In case
+ * of PolicyRule we should also clear reference to it if action is
+ * Branch. Caveat: clear reference to it even if action is not branch
+ * right now but was in the past and reference got stuck in options.
+ *
+ * Do the same for the TagService
+ */
+void PolicyRule::removeRef(FWObject *obj)
+{
+    if (RuleSet::cast(obj))
+    {
+        string branch_id = FWObjectDatabase::getStringId(obj->getId());
+        string rule_branch_id = getOptionsObject()->getStr("branch_id");
+        if (branch_id == rule_branch_id)
+            getOptionsObject()->setStr("branch_id", "");
+    }
+
+    if (TagService::cast(obj))
+    {
+        string tag_id = FWObjectDatabase::getStringId(obj->getId());
+        string rule_tag_id = getOptionsObject()->getStr("tagobject_id");
+        if (tag_id == rule_tag_id)
+            getOptionsObject()->setStr("tagobject_id", "");
+    }
+
+    FWObject::removeRef(obj);
+}
+
 /***************************************************************************/
 
 const char *NATRule::TYPENAME={"NATRule"};
