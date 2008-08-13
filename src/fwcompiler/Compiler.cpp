@@ -860,7 +860,7 @@ void Compiler::runRuleProcessors()
         j=i;
     }
 
-    while( (*j)->processNext() );
+    while ((*j)->processNext()) ;
 }
 
 void Compiler::deleteRuleProcessors()

@@ -283,13 +283,13 @@ bool libfwbuilder::_convert_range_to_networks(const InetAddr &start,
     if (!(nstart == start))
     {
 /* there are some addresses between start and nstart */
-        while ( libfwbuilder::_convert_range_to_networks(start,nstart-1,res) );
+        while (libfwbuilder::_convert_range_to_networks(start,nstart-1,res)) ;
     }
 
     if (!(nend == end))
     {
 /* the remainder of the original range is nend+1 - end */
-        while ( libfwbuilder::_convert_range_to_networks(nend+1,end,res) );
+        while (libfwbuilder::_convert_range_to_networks(nend+1,end,res)) ;
     }
 
     return false;
