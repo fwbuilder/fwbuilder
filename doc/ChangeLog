@@ -1,5 +1,7 @@
 2008-08-12  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* Tools.cpp: Getting rid of sprintf, using ostringstream
+
 	* Rule.cpp (PolicyRule::removeRef): fixed bug #2047991 "Drag &
 	Drop in CHAIN actions, version 3". THe bug report consits of 3
 	parts, part 3 is "When I change the Action from CHAIN to ACCEPT

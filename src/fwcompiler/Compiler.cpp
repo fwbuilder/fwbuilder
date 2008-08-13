@@ -267,10 +267,10 @@ void Compiler::warning(const string &warnstr)
 
 string Compiler::getUniqueRuleLabel()
 {
-    char str[64];
-    sprintf(str,"R_%d",_cntr_);
+    ostringstream str;
+    str << "R_" << _cntr_;
     _cntr_++;
-    return str;
+    return str.str();
 }
 
 void Compiler::compile()

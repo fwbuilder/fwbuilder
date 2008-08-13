@@ -31,6 +31,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -85,7 +86,9 @@ void HostsFile::parse(istream &from) throw(FWException)
         case s_ip:
             if(c=='#')
             {
-                throw FWException("Comment started in IP address field at line "+int2string(ln));
+                ostringstream err;
+                err << "Comment started in IP address field at line " << ln;
+                throw FWException(err.str());
             } else if(c==' ' || c=='\t')
             {
                 // if IP address is invalid, it will 
@@ -113,8 +116,12 @@ void HostsFile::parse(istream &from) throw(FWException)
             {
                 // IP ends with comment without name
                 if(names.empty())
-                    throw FWException("Address: '"+name+"' without host name at line "+int2string(ln));
-                else
+                {
+                    ostringstream err;
+                    err << "Address: '" << name
+                        << "' without host name at line " << ln;
+                    throw FWException(err.str());
+                } else
                 {
                     state=s_rest;
                     break;
@@ -125,7 +132,12 @@ void HostsFile::parse(istream &from) throw(FWException)
             } else if(c=='\n')
             {
                 if(names.empty())
-                    throw FWException("Address: '"+name+"' without host name at line "+int2string(ln));
+                {
+                    ostringstream err;
+                    err << "Address: '" << name
+                        << "' without host name at line " << ln;
+                    throw FWException(err.str());
+                }
             } else
             {
                 state=s_name;

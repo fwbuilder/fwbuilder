@@ -32,6 +32,7 @@
 #include <stdio.h>
 
 #include <iostream>
+#include <sstream>
 
 /*
  * this is workaround, by some reason dirent.h defines DIR as a typedef
@@ -74,13 +75,6 @@ char *cxx_strdup(const char *x)
     return res;
 }
 
-string int2string(int n)
-{
-    char x[32];
-    sprintf(x,"%d", n);
-    return x;
-}
-
 string substituteMacros(const string &source, const map<string, string> &macros, bool strict) throw(libfwbuilder::FWException)
 {
     string name;
@@ -115,7 +109,11 @@ string substituteMacros(const string &source, const map<string, string> &macros,
                     m    = MODE_NAME;
                     name = "";
                 } else
-                    throw FWException(string("Unexpected symbol after '$' at postion ")+int2string(i));
+                {
+                    ostringstream err;
+                    err << "Unexpected symbol after '$' at postion " << i;
+                    throw FWException(err.str());
+                }
             }
             break;
         case MODE_NAME:
