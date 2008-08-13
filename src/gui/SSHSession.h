@@ -137,12 +137,12 @@ class SSHSession : public QObject {
     QString epwd;
     QString host;
 
-    static char* newKeyOpenSSH;
-    static char* newKeyPlink;
-    static char* newKeyVsh;
-    static char* newKeySSHComm;
-    static char* fingerprintPrompt1;
-    static char* fingerprintPrompt2;
+    static const char* newKeyOpenSSH;
+    static const char* newKeyPlink;
+    static const char* newKeyVsh;
+    static const char* newKeySSHComm;
+    static const char* fingerprintPrompt1;
+    static const char* fingerprintPrompt2;
     
     QString newKeyMsg;
 

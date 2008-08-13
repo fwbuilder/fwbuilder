@@ -52,14 +52,14 @@
 
 using namespace std;
 
-char  *SSHSession::newKeyOpenSSH  ="Are you sure you want to continue connecting (yes/no)?";
-char  *SSHSession::newKeyPlink    ="Store key in cache? (y/n)";
-char  *SSHSession::newKeyVsh      ="Accept and save? (y/n)";
-char  *SSHSession::newKeySSHComm  ="You can get a public key's fingerprint by running";
+const char  *SSHSession::newKeyOpenSSH  ="Are you sure you want to continue connecting (yes/no)?";
+const char  *SSHSession::newKeyPlink    ="Store key in cache? (y/n)";
+const char  *SSHSession::newKeyVsh      ="Accept and save? (y/n)";
+const char  *SSHSession::newKeySSHComm  ="You can get a public key's fingerprint by running";
 
 
-char  *SSHSession::fingerprintPrompt1="key fingerprint is";
-char  *SSHSession::fingerprintPrompt2="Key fingerprint:";
+const char  *SSHSession::fingerprintPrompt1="key fingerprint is";
+const char  *SSHSession::fingerprintPrompt2="Key fingerprint:";
 
 
 
@@ -109,7 +109,7 @@ SSHSession::SSHSession(QWidget *_par,
 
 QString SSHSession::findKeyFingerprint(QString &buffer)
 {
-    char *fp = fingerprintPrompt1;
+    const char *fp = fingerprintPrompt1;
     int n1,n2;
 
     if ( (n1=buffer.indexOf(fp))==-1)
