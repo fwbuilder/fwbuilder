@@ -403,8 +403,6 @@ QString getAddrByName(const QString &name, int af_type)
     try
     {
         results = DNS::getHostByName(name.toAscii().constData(), af_type);
-        if (fwbdebug) qDebug("utils::getAddrByName: obtained %ld addresses",
-                             results.size());
     } catch (FWException &e)
     {
         if (fwbdebug) qDebug("utils::getAddrByName: DNS lookup error: %s",
@@ -499,7 +497,7 @@ QString wordWrap(const QString& s, int maxchinline)
             else
             {
                 res.append(s.mid(linestart,pos-linestart));
-                while (++pos< s.length() && s.at(pos).isSpace());
+                while (++pos< s.length() && s.at(pos).isSpace()) ;
                 if (pos<s.length())
                 {
                     linestart=pos--;

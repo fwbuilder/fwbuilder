@@ -97,7 +97,7 @@ FWObject* FWObjectClipboard::getObject()
 
 FWObject* FWObjectClipboard::getObjectByIdx (int idx)
 {
-    if (idx < ids.size())
+    if (idx < int(ids.size()))
     {
         pair<int,ProjectPanel*> p = ids[idx];
         return p.second->db()->findInIndex( p.first );

@@ -229,7 +229,7 @@ void listObject(FWObject *obj, bool list_children, bool recursive,
         else
         {
             string format = list_format;
-            while (replaceFirstMacroInString(format, obj));
+            while (replaceFirstMacroInString(format, obj)) ;
 
             string::size_type n;
             while ( (n=format.find("\\t"))!=string::npos )

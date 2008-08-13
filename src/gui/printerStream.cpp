@@ -254,7 +254,8 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin, bool top_marg
     int tblHeight = tbl->horizontalHeader()->height();
 
     int columnsWidth = 0;
-    for (int i = 0; i < tbl->model()->columnCount(); columnsWidth += tbl->columnWidth(i), i++);
+    for (int i = 0; i < tbl->model()->columnCount();
+         columnsWidth += tbl->columnWidth(i), i++) ;
 
     if ( tblHeight + tbl->rowHeight(0) > getYSpace() )
     {

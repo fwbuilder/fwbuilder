@@ -181,10 +181,12 @@ QVariant RuleTableModel::headerData(int section,
             return f;
         }
         if (role == Qt::DecorationRole)
+        {
             if (ruleSetView->rulesDisabled[section])
                 return QVariant(ruleSetView->negIcon);
             else
                 return QVariant(QIcon());
+        }
     }
 
     return QAbstractTableModel::headerData(section, orientation, role );

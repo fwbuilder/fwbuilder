@@ -156,6 +156,7 @@ void FakeWizard::showPage(const int page)
                            (previousRelevant(page) > -1) );
 
     if (titleLabel)
+    {
         if (!pageTitles[page].isEmpty())
         {
             titleLabel->setText(pageTitles[page]);
@@ -163,7 +164,7 @@ void FakeWizard::showPage(const int page)
         }
         else
             titleLabel->hide();
-
+    }
     setCurrentPage(page);
 
     stackedWidget->setCurrentIndex(page);

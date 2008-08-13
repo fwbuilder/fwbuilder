@@ -1,5 +1,9 @@
 2008-08-12  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ObjectListViewItem.cpp (ObjectListViewItem::operator<): (and
+	several other places): code fixes to address warnings issued by
+	gcc 4.3
+
 	* Helper.cpp (Helper::findInterfaceByNetzone): fixed bug in policy
 	compiler for pix - it could not properly identify interface with
 	network zone "any"

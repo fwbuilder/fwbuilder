@@ -2564,11 +2564,13 @@ void ObjectManipulator::libChanged(int ln)
     ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(lv->currentItem());
 
     if (otvi == NULL)
+    {
         if (lv->invisibleRootItem()->childCount() > 0)
-            otvi = dynamic_cast<ObjectTreeViewItem*>(lv->invisibleRootItem()->child(0));
+            otvi = dynamic_cast<ObjectTreeViewItem*>(
+                lv->invisibleRootItem()->child(0));
         else
             assert(FALSE);
-
+    }
     currentObj=otvi->getFWObject();
     showObjectInTree( otvi );
 

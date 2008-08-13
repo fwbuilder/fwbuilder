@@ -175,8 +175,10 @@ string OSConfigurator_pix_os::_printFixups()
  * ********************************************************************/
 
 class InspectionProtocol;
+typedef enum { FIXUP_ENABLE=0, FIXUP_DISABLE=1, FIXUP_SKIP=2 } FixupTypes;
+
 std::map<std::string,InspectionProtocol*> protocols;
-enum { FIXUP_ENABLE=0, FIXUP_DISABLE=1, FIXUP_SKIP=2 } fixupStatus;
+FixupTypes fixupStatus;
 
 /*
  * par1 and par2 are parameters for the inspection protocol. These are
