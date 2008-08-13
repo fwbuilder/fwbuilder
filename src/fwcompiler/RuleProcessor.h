@@ -110,7 +110,7 @@ namespace fwcompiler
          */
         libfwbuilder::Rule *getNextRule()
         {
-            while(tmp_queue.empty() && processNext());
+            while(tmp_queue.empty() && processNext()) ;
 
             if(tmp_queue.empty())
             {
