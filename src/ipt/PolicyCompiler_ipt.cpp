@@ -105,7 +105,7 @@ void join::operator()(std::string &s)
 
 string PolicyCompiler_ipt::myPlatformName() { return "iptables"; }
 
-string PolicyCompiler_ipt::getInterfaceVarName(FWObject *iface)
+string PolicyCompiler_ipt::getInterfaceVarName(FWObject *iface, bool v6)
 {
     ostringstream  ostr;
     string iname = iface->getName();
@@ -113,6 +113,7 @@ string PolicyCompiler_ipt::getInterfaceVarName(FWObject *iface)
     while ( (p1=iname.find("."))!=string::npos)
         iname=iname.replace(p1,1,"_");
     ostr << "i_" << iname;
+    if (v6) ostr << "_v6";
     return ostr.str();
 }
 

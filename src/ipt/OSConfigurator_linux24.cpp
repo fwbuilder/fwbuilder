@@ -67,7 +67,7 @@ OSConfigurator_linux24::OSConfigurator_linux24(FWObjectDatabase *_db,
 {
 }
 
-string OSConfigurator_linux24::getInterfaceVarName(FWObject *iface)
+string OSConfigurator_linux24::getInterfaceVarName(FWObject *iface, bool v6)
 {
     ostringstream  ostr;
     string iname=iface->getName();
@@ -75,9 +75,9 @@ string OSConfigurator_linux24::getInterfaceVarName(FWObject *iface)
     while ( (p1=iname.find("."))!=string::npos)
         iname=iname.replace(p1,1,"_");
     ostr << "i_" << iname;
+    if (v6) ostr << "_v6";
     return ostr.str();
 }
-
 
 void OSConfigurator_linux24::processFirewallOptions() 
 {
@@ -402,11 +402,18 @@ void OSConfigurator_linux24::configureInterfaces()
 /* if interface name ends with '*', this is a wildcard interface. Do
  * not get its address at this time. */
             if (iface->getName().find("*")==string::npos)
+            {
                 output << "getaddr "
                        << iface->getName()
                        << "  "
-                       << getInterfaceVarName(iface)
+                       << getInterfaceVarName(iface, false)
                        << endl;
+                output << "getaddr6 "
+                       << iface->getName()
+                       << "  "
+                       << getInterfaceVarName(iface, true)
+                       << endl;
+            }
         }
     }
     output << endl;
@@ -494,10 +501,12 @@ void  OSConfigurator_linux24::printShellFunctions()
     output << "  fi"                                        << endl;
     output << "}"                                           << endl;
     output << endl;
+
     output << "getInterfaceVarName() {"                     << endl;
     output << "  echo $1 | sed 's/\\./_/'"                  << endl;
     output << "}"                                           << endl;
     output << endl;
+
     output << "getaddr() {"                                 << endl;
     output << "  dev=$1"                                    << endl;
     output << "  name=$2"                                   << endl;
@@ -514,7 +523,8 @@ void  OSConfigurator_linux24::printShellFunctions()
  *  support for regular expressions. Using "grep -v :" seems to be an
  *  easy way to filter out secondary addresses without using regex
  */
-    output << "  L=`$IP -4 addr show dev $dev | grep inet | grep -v :`"   << endl;
+    output << "  L=`$IP -4 addr show dev $dev | grep inet | grep -v :`"
+           << endl;
     output << "  test -z \"$L\" && { "                      << endl;
     output << "    eval \"$name=''\""                       << endl;
     output << "    return"                                  << endl;
@@ -526,6 +536,25 @@ void  OSConfigurator_linux24::printShellFunctions()
     output << "  IFS=$OIFS"                                 << endl;
     output << "}"                                           << endl;
     output << endl;
+
+
+    output << "getaddr6() {"                                 << endl;
+    output << "  dev=$1"                                    << endl;
+    output << "  name=$2"                                   << endl;
+    output << "  L=`$IP -6 addr show dev $dev | grep inet6 | grep -v :`"
+           << endl;
+    output << "  test -z \"$L\" && { "                      << endl;
+    output << "    eval \"$name=''\""                       << endl;
+    output << "    return"                                  << endl;
+    output << "  }"                                         << endl;
+    output << "  OIFS=$IFS"                                 << endl;
+    output << "  IFS=\" /\""                                << endl;
+    output << "  set $L"                                    << endl;
+    output << "  eval \"$name=$2\""                         << endl;
+    output << "  IFS=$OIFS"                                 << endl;
+    output << "}"                                           << endl;
+    output << endl;
+
     output << endl;
 
 /* we use function getinterfaces to process wildcard interfaces */
@@ -666,7 +695,8 @@ void OSConfigurator_linux24::generateCodeForProtocolHandlers(bool have_nat)
 }
 
 string  OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
-                                                     const string &command)
+                                                     const string &command,
+                                                     bool ipv6)
 {
     string command_line = command;
     ostringstream  ext_command_line;
@@ -710,6 +740,9 @@ string  OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
  */
     if (command_line.find("$i_")==string::npos) return command_line;
 
+    string getaddr_function_name = "getaddr";
+    if (ipv6) getaddr_function_name = "getaddr6";
+
     ostringstream  res;
     bool wildcard_interfaces = false;
     p1=0;
@@ -732,7 +765,7 @@ string  OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
             string iface_family_name=iface_name.substr(0,p4);
             res << "getinterfaces " << iface_family_name << " | while read I; do" << endl;
             res << "  ivar=`getInterfaceVarName $I`" << endl;
-            res << "  getaddr $I $ivar" << endl;
+            res << "  " << getaddr_function_name << " $I $ivar" << endl;
             res << "  cmd=\"$\"$ivar"   << endl;
             res << "  eval \"addr=$cmd\""          << endl;
             cmdline.replace(p1,p2-p1,"$addr");

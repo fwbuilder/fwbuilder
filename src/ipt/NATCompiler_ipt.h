@@ -61,7 +61,8 @@ namespace fwcompiler {
         std::map<std::string, int> chain_usage_counter;
 
         static const std::list<std::string>& getStandardChains();
-        std::string getInterfaceVarName(libfwbuilder::FWObject *iface);
+        std::string getInterfaceVarName(libfwbuilder::FWObject *iface,
+                                        bool v6=false);
         std::string getAddressTableVarName(libfwbuilder::FWObject *iface);
 
         /**

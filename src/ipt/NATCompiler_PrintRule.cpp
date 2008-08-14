@@ -466,7 +466,8 @@ string NATCompiler_ipt::PrintRule::_printAddr(Address  *o,
         Interface *iface = Interface::cast(o);
         if (iface!=NULL && iface->isDyn() && iface->getBool("use_var_address"))
         {
-            ostr << "$" << ipt_comp->getInterfaceVarName(iface) << " ";
+            ostr << "$" << ipt_comp->getInterfaceVarName(iface, ipt_comp->ipv6)
+                 << " ";
             return ostr.str();
         }
 
@@ -661,7 +662,8 @@ bool NATCompiler_ipt::PrintRule::processNext()
 //    cmdout  << endl;
 
     compiler->output 
-        << dynamic_cast<OSConfigurator_linux24*>(compiler->osconfigurator)->printRunTimeWrappers( rule, cmdout.str());
+        << dynamic_cast<OSConfigurator_linux24*>(compiler->osconfigurator)->
+        printRunTimeWrappers( rule, cmdout.str(), ipt_comp->ipv6);
 
     return true;
 }

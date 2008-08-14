@@ -1,3 +1,13 @@
+2008-08-13  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* NATCompiler_ipt.cpp (NATCompiler_ipt::getInterfaceVarName):
+	fixed bug 2047082: "Beta 3.0 Build 456: IPv4 & IPv6 mixed
+	firewall". Compiler used ipv4 address of a dynamic interface in
+	the ipv6 policy rules if interface address was determined
+	dynamically at run time. This change makes compiler properly
+	determine ipv4 address for ipv4 rules and ipv6 address for ipv6
+	rules.
+
 2008-08-12  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ObjectListViewItem.cpp (ObjectListViewItem::operator<): (and

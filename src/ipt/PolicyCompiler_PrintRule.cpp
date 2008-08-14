@@ -1036,7 +1036,8 @@ string PolicyCompiler_ipt::PrintRule::_printAddr(Address  *o)
     {
         Interface *iface=Interface::cast(o);
         if (iface->isDyn())
-            ostr << "$" << ipt_comp->getInterfaceVarName(iface) << " ";
+            ostr << "$" << ipt_comp->getInterfaceVarName(iface, ipt_comp->ipv6)
+                 << " ";
         return ostr.str();
     }
 
@@ -1267,7 +1268,8 @@ bool  PolicyCompiler_ipt::PrintRule::processNext()
         compiler->output << _createChain(rule->getStr("ipt_chain"));
         compiler->output << _createChain(rule->getStr("ipt_target"));
         compiler->output 
-            << dynamic_cast<OSConfigurator_linux24*>(compiler->osconfigurator)->printRunTimeWrappers( rule, PolicyRuleToString(rule) );
+            << dynamic_cast<OSConfigurator_linux24*>(compiler->osconfigurator)->
+            printRunTimeWrappers(rule, PolicyRuleToString(rule), ipt_comp->ipv6);
     }
     return true;
 }

@@ -84,7 +84,8 @@ namespace fwcompiler {
         
         PolicyCompiler_ipt::PrintRule* createPrintRuleProcessor();
 
-        std::string getInterfaceVarName(libfwbuilder::FWObject *iface);
+        std::string getInterfaceVarName(libfwbuilder::FWObject *iface,
+                                        bool v6=false);
         std::string getAddressTableVarName(libfwbuilder::FWObject *iface);
 
         bool newIptables(const std::string &version);

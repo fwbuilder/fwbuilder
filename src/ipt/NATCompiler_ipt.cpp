@@ -103,14 +103,14 @@ const std::list<std::string>& NATCompiler_ipt::getStandardChains()
 
 string NATCompiler_ipt::myPlatformName() { return "iptables"; }
 
-string NATCompiler_ipt::getInterfaceVarName(FWObject *iface)
+string NATCompiler_ipt::getInterfaceVarName(FWObject *iface, bool v6)
 {
     ostringstream  ostr;
     string iname=iface->getName();
     string::size_type p1;
-    while ( (p1=iname.find("."))!=string::npos)
-        iname=iname.replace(p1,1,"_");
+    while ( (p1=iname.find("."))!=string::npos) iname=iname.replace(p1,1,"_");
     ostr << "i_" << iname;
+    if (v6) ostr << "_v6";
     return ostr.str();
 }
 

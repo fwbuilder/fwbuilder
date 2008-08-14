@@ -46,7 +46,8 @@ namespace fwcompiler {
 	std::vector<libfwbuilder::InetAddr> virtual_addresses;
         std::list<std::string>              commands_to_add_virtual_addresses;
 
-        std::string getInterfaceVarName(libfwbuilder::FWObject *iface);
+        std::string getInterfaceVarName(libfwbuilder::FWObject *iface,
+                                        bool v6=false);
         
 	public:
 
@@ -73,7 +74,8 @@ namespace fwcompiler {
         void printCommandsToAddVirtualAddressesForNAT();
         
         std::string  printRunTimeWrappers(libfwbuilder::FWObject *rule,
-                                          const std::string &command);
+                                          const std::string &command,
+                                          bool ipv6=false);
 
     };
 };
