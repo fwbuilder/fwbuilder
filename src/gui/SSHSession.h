@@ -120,6 +120,7 @@ class SSHSession : public QObject {
     QString     pwd_prompt;
     QString     putty_pwd_prompt;
     QString     ssh_pwd_prompt;
+    QString     thinkfinger_pwd_prompt;
     QString     ssoft_prompt1;
     QString     ssoft_prompt2;
     QString     ssoft_config_prompt;

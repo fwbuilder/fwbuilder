@@ -1,3 +1,16 @@
+2008-08-14  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* SSHUnx.cpp (SSHUnx::SSHUnx): fixed bug #2051005: "install to
+	localhost fails with pam_thinkfinger". Built-in installer
+	recognizes password prompt produced by pam_thinkfinger module that
+	accepts both password or asks user to swipe finger against
+	fingerprint reader device. Note that installer is likely to not
+	work with fingerprint authentication because it will not wait once
+	it gets to the point where pam_thinkfinger module asks for the
+	password or fingerprint and will try to enter password. However
+	with this change password prompt from pam_thinkfiger is recognized
+	and password authentication becomes possible.
+
 2008-08-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* NATCompiler_ipt.cpp (NATCompiler_ipt::getInterfaceVarName):

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1218679117" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1218778321" id="root">
   <Library id="sysid99" name="Deleted Objects" ro="False">
     <ICMP6Service id="idE0C27650" name="ipv6 dest unreachable" comment="No route to destination" code="0" type="1"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -594,6 +594,9 @@
     <ObjectRef ref="id43BB80919745"/>
     <ObjectRef ref="id43BB817C9745"/>
     <IPv4 id="id30492X26784" name="firewall20-ipv6:ppp*:ip" address="192.168.1.1" netmask="255.255.255.0"/>
+    <ObjectRef ref="id43869E8D18346"/>
+    <ObjectRef ref="id4387287A18346"/>
+    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" name="User" comment="User defined objects" color="#d2ffd0">
     <ObjectGroup id="stdid01_1" name="Objects">
@@ -715,6 +718,10 @@
           <ObjectRef ref="id4388C37D674"/>
           <ObjectRef ref="id48416A7216880"/>
           <ObjectRef ref="id48416A7116880"/>
+        </ObjectGroup>
+        <ObjectGroup id="id30841X361" name="DNS objects compile time" comment="a group of run-time dns objects">
+          <ObjectRef ref="id43869E8C18346"/>
+          <ObjectRef ref="id4387287918346"/>
         </ObjectGroup>
       </ObjectGroup>
       <ObjectGroup id="stdid02_1" name="Hosts">
@@ -17525,7 +17532,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id43867C1018346" name="firewall33" comment="testing DNSName object" host_OS="linux24" lastCompiled="1215360262" lastInstalled="1142003872" lastModified="1205119254" platform="iptables" ro="False" version="">
+      <Firewall id="id43867C1018346" name="firewall33" comment="testing DNSName object" host_OS="linux24" lastCompiled="1215360262" lastInstalled="1142003872" lastModified="1218778321" platform="iptables" ro="False" version="">
         <NAT id="id43867C4818346" name="NAT" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id43867C4918346" disabled="False" position="0">
             <OSrc neg="False">
@@ -17883,7 +17890,27 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id43867C3C18346" action="Deny" direction="Both" disabled="False" log="True" position="13">
+          <PolicyRule id="id44703X361" action="Accept" direction="Both" disabled="False" group="" log="False" position="13">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id30841X361"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id43867C3C18346" action="Deny" direction="Both" disabled="False" log="True" position="14">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>

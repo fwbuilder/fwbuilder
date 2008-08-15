@@ -52,6 +52,7 @@ SSHUnx::SSHUnx(QWidget *_par,
     normal_prompt="> ";
     enable_prompt="# ";
     pwd_prompt="'s password: ";
+    thinkfinger_pwd_prompt="Password or swipe finger:";
     epwd_prompt="Password: ";
     ssh_pwd_prompt="'s password: ";
     ssoft_config_prompt="> ";
@@ -137,12 +138,13 @@ void SSHUnx::stateMachine()
     {
     case NONE:
     {
-        if ( cmpPrompt(stdoutBuffer,ssh_pwd_prompt) ||
-             cmpPrompt(stdoutBuffer,putty_pwd_prompt) ||
-             stdoutBuffer.lastIndexOf(passphrase_prompt,-1)!=-1 ||
+        if ( cmpPrompt(stdoutBuffer, ssh_pwd_prompt) ||
+             cmpPrompt(stdoutBuffer, putty_pwd_prompt) ||
+             cmpPrompt(stdoutBuffer, thinkfinger_pwd_prompt) ||
+             stdoutBuffer.lastIndexOf(passphrase_prompt, -1)!=-1 ||
 
-             cmpPrompt(stdoutBuffer,sudo_pwd_prompt) ||
-             cmpPrompt(stderrBuffer,sudo_pwd_prompt) )
+             cmpPrompt(stdoutBuffer, sudo_pwd_prompt) ||
+             cmpPrompt(stderrBuffer, sudo_pwd_prompt) )
         {
             stdoutBuffer="";
             proc->write( pwd.toAscii() );
@@ -212,8 +214,8 @@ void SSHUnx::stateMachine()
 /* in this state we may need to enter sudo password */
     case PUSHING_CONFIG:
  push_files:
-        if ( cmpPrompt(stdoutBuffer,sudo_pwd_prompt) ||
-             cmpPrompt(stderrBuffer,sudo_pwd_prompt) )
+        if ( cmpPrompt(stdoutBuffer, sudo_pwd_prompt) ||
+             cmpPrompt(stderrBuffer, sudo_pwd_prompt) )
         {
             stdoutBuffer="";
             proc->write( pwd.toAscii() );
