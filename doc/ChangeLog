@@ -1,5 +1,15 @@
 2008-08-15  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* AddressTable.cpp (AddressTable::loadFromSource): when
+	AddressTable object loads addresses from external file that
+	contains mixed set of ipv4 and ipv6 addresses, it picks only
+	addresses that belong to the same address family as that of the
+	policy being compiled. So, if it compiles ipv4 policy, it loads
+	only lines that look like ipv4 address (have a "." in them). If it
+	compiles ipv6 policy, it loads only lines that look like ipv6
+	address (have a ":" in them). Lins that contain addresses that do
+	not match address family are ignored.
+
 	* Preprocessor.cpp (Preprocessor::isUsedByThisFirewall): fixed bug
 	#2051629: "group with dns names are handled as empty". This bug
 	triggered when object group that consisted of DNSName objects set

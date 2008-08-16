@@ -91,6 +91,9 @@ void AddressTable::loadFromSource(bool ipv6) throw(FWException)
     size_type pos;
     int line = 1;
     int cntr = 0;
+
+    Address *new_addr;
+
     if(fs)
     {
        while(!fs.eof())
@@ -109,42 +112,58 @@ void AddressTable::loadFromSource(bool ipv6) throw(FWException)
             }
             if (!buf.empty())
             {
-                try
+                new_addr = NULL;
+                if (ipv6 && buf.find(":")!=string::npos)
                 {
-                    if (buf.find(":")!=string::npos)
+                    try
                     {
+                        InetAddr(AF_INET6, buf); // to test address
+
                         NetworkIPv6 *net;
                         net = NetworkIPv6::cast(getRoot()->create(
                                                     NetworkIPv6::TYPENAME));
                         net->setAddressNetmask(buf);
-                        root->add(net);
-                        net->setName(buf);
-                        if (validateChild(net))
-                        {
-                            addRef(net);
-                            cntr++;
-                        }
-                    } else
+                        new_addr = net;
+                    } catch (FWException &ex)
                     {
+                        exmess << "Invalid address: "
+                               << getStr("filename") << ":"
+                               << line
+                               << " \"" << buf << "\"";
+                        throw FWException(exmess.str());
+                    }
+                }
+
+                if (!ipv6 && buf.find(".")!=string::npos)
+                {
+                    try
+                    {
+                        InetAddr(AF_INET, buf); // to test address
+
                         Network *net;
                         net = Network::cast(getRoot()->create(
                                                 Network::TYPENAME));
                         net->setAddressNetmask(buf);
-                        root->add(net);
-                        net->setName(buf);
-                        if (validateChild(net))
-                        {
-                            addRef(net);
-                            cntr++;
-                        }
+                        new_addr = net;
+                    } catch (FWException &ex)
+                    {
+                        exmess << "Invalid address: "
+                               << getStr("filename") << ":"
+                               << line
+                               << " \"" << buf << "\"";
+                        throw FWException(exmess.str());
                     }
-                } catch (FWException &ex) 
+                }
+
+                if (new_addr)
                 {
-                    exmess << "Invalid address: "
-                           << getStr("filename") << ":"
-                           << line
-                           << " \"" << buf << "\"";
-                    throw FWException(exmess.str());
+                    root->add(new_addr);
+                    new_addr->setName(buf);
+                    if (validateChild(new_addr))
+                    {
+                        addRef(new_addr);
+                        cntr++;
+                    }
                 }
             }
             line++;
