@@ -9,6 +9,8 @@
 192.168.2.128/25
 192.168.1.200/32   # comment again
   192.168.1.201/32 # this should work, too
-
+# ipv6 addresses
+2001:458:20:100:250:b7ff:fe00:2af/128
+fe80::21d:9ff:fe8b:8e94/64
 
 

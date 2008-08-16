@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1218856340" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1218859060" id="root">
   <Library id="sysid99" name="Deleted Objects" ro="False">
     <ICMP6Service id="idE0C27650" name="ipv6 dest unreachable" comment="No route to destination" code="0" type="1"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -598,8 +598,6 @@
     <ObjectRef ref="id4387287A18346"/>
     <ObjectRef ref="id43869E8C18346"/>
     <ObjectRef ref="id4387287918346"/>
-    <ObjectRef ref="id43869E8D18346"/>
-    <ObjectRef ref="id4387287A18346"/>
   </Library>
   <Library id="syslib001" name="User" comment="User defined objects" color="#d2ffd0">
     <ObjectGroup id="stdid01_1" name="Objects">
@@ -620,8 +618,8 @@
         <DNSName id="id44EC181D8791" name="heise" dnsrec="www.heise.de" dnsrectype="A" run_time="True"/>
         <DNSName id="id30878X4903" name="6bone.net (ct)" comment="there are both A and AAAA records for this name&#10;" dnsrec="6bone.net" dnsrectype="A" run_time="False"/>
         <DNSName id="id44749X4903" name="6bone.net (rt)" comment="there are both A and AAAA records for this name&#10;" dnsrec="6bone.net" dnsrectype="A" run_time="True"/>
-        <DNSName id="id44910X6795" name="ny6ix.net (ct)" dnsrec="ny6ix.net" run_time="False"/>
-        <DNSName id="id44911X6795" name="ny6ix.net (rt)" dnsrec="ny6ix.net" run_time="True"/>
+        <DNSName id="id44910X6795" name="ny6ix.net (ct)" dnsrec="ny6ix.net" dnsrectype="A" run_time="False"/>
+        <DNSName id="id44911X6795" name="ny6ix.net (rt)" dnsrec="ny6ix.net" dnsrectype="A" run_time="True"/>
       </ObjectGroup>
       <ObjectGroup id="stdid16_1" name="Addresses">
         <IPv4 id="id417B3641" name="net_address" address="192.168.1.0" netmask="255.255.255.255"/>
@@ -18036,7 +18034,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4389EDAE18346" name="firewall34" comment="testing AddressTable object" host_OS="linux24" inactive="False" lastCompiled="1215360263" lastInstalled="1142003872" lastModified="1212620367" platform="iptables" ro="False" version="">
+      <Firewall id="id4389EDAE18346" name="firewall34" comment="testing AddressTable object" host_OS="linux24" inactive="False" lastCompiled="1215360263" lastInstalled="1142003872" lastModified="1218859060" platform="iptables" ro="False" version="">
         <NAT id="id4389EE4818346" name="NAT" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id4389EEB018346" disabled="False" position="0">
             <OSrc neg="True">
@@ -18405,6 +18403,62 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="log_prefix"></Option>
               <Option name="stateless">False</Option>
               <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Policy id="id30995X8792" name="Policy_ipv6" ipv6_rule_set="True" top_rule_set="True">
+          <PolicyRule id="id31008X8792" action="Accept" direction="Both" disabled="False" group="" log="False" position="0">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id4389EE9018346"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_mode">dstip</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">False</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id30996X8792" action="Deny" direction="Both" disabled="False" log="True" position="1">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
