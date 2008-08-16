@@ -103,7 +103,7 @@ void AddressTable::loadFromSource(bool ipv6) throw(FWException)
             if (pos!=string::npos)
             {
                 buf = buf.substr(pos);
-                pos = buf.find_first_not_of("0123456789/.");
+                pos = buf.find_first_not_of("0123456789abcdef:/.");
                 buf = buf.substr(0,pos);
             }
             else
