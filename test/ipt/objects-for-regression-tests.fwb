@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1218778321" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1218856340" id="root">
   <Library id="sysid99" name="Deleted Objects" ro="False">
     <ICMP6Service id="idE0C27650" name="ipv6 dest unreachable" comment="No route to destination" code="0" type="1"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -596,7 +596,10 @@
     <IPv4 id="id30492X26784" name="firewall20-ipv6:ppp*:ip" address="192.168.1.1" netmask="255.255.255.0"/>
     <ObjectRef ref="id43869E8D18346"/>
     <ObjectRef ref="id4387287A18346"/>
-    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="id43869E8C18346"/>
+    <ObjectRef ref="id4387287918346"/>
+    <ObjectRef ref="id43869E8D18346"/>
+    <ObjectRef ref="id4387287A18346"/>
   </Library>
   <Library id="syslib001" name="User" comment="User defined objects" color="#d2ffd0">
     <ObjectGroup id="stdid01_1" name="Objects">
@@ -615,6 +618,10 @@
         <DNSName id="id4387287918346" name="google (ct)" dnsrec="www.google.com" dnsrectype="A" run_time="False"/>
         <DNSName id="id4387287A18346" name="google (rt)" dnsrec="www.google.com" dnsrectype="A" run_time="True"/>
         <DNSName id="id44EC181D8791" name="heise" dnsrec="www.heise.de" dnsrectype="A" run_time="True"/>
+        <DNSName id="id30878X4903" name="6bone.net (ct)" comment="there are both A and AAAA records for this name&#10;" dnsrec="6bone.net" dnsrectype="A" run_time="False"/>
+        <DNSName id="id44749X4903" name="6bone.net (rt)" comment="there are both A and AAAA records for this name&#10;" dnsrec="6bone.net" dnsrectype="A" run_time="True"/>
+        <DNSName id="id44910X6795" name="ny6ix.net (ct)" dnsrec="ny6ix.net" run_time="False"/>
+        <DNSName id="id44911X6795" name="ny6ix.net (rt)" dnsrec="ny6ix.net" run_time="True"/>
       </ObjectGroup>
       <ObjectGroup id="stdid16_1" name="Addresses">
         <IPv4 id="id417B3641" name="net_address" address="192.168.1.0" netmask="255.255.255.255"/>
@@ -704,9 +711,9 @@
           <ObjectRef ref="id3AFB6706"/>
           <ObjectRef ref="id3AFB68D2"/>
         </ObjectGroup>
-        <ObjectGroup id="id47CBF5D129252" name="DNS objects" comment="a group of run-time dns objects">
-          <ObjectRef ref="id43869E8D18346"/>
-          <ObjectRef ref="id4387287A18346"/>
+        <ObjectGroup id="id47CBF5D129252" name="DNS objects" comment="a group of run-time dns objects&#10;that have both A and AAAA records">
+          <ObjectRef ref="id44749X4903"/>
+          <ObjectRef ref="id44911X6795"/>
         </ObjectGroup>
         <ObjectGroup id="id4834A2238571" name="ipv6 addresses">
           <ObjectRef ref="id48416A7016880"/>
@@ -719,9 +726,9 @@
           <ObjectRef ref="id48416A7216880"/>
           <ObjectRef ref="id48416A7116880"/>
         </ObjectGroup>
-        <ObjectGroup id="id30841X361" name="DNS objects compile time" comment="a group of run-time dns objects">
-          <ObjectRef ref="id43869E8C18346"/>
-          <ObjectRef ref="id4387287918346"/>
+        <ObjectGroup id="id30841X361" name="DNS objects compile time" comment="a group of run-time dns objects&#10;that have both A and AAAA records">
+          <ObjectRef ref="id30878X4903"/>
+          <ObjectRef ref="id44910X6795"/>
         </ObjectGroup>
       </ObjectGroup>
       <ObjectGroup id="stdid02_1" name="Hosts">
@@ -17532,7 +17539,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id43867C1018346" name="firewall33" comment="testing DNSName object" host_OS="linux24" lastCompiled="1215360262" lastInstalled="1142003872" lastModified="1218778321" platform="iptables" ro="False" version="">
+      <Firewall id="id43867C1018346" name="firewall33" comment="testing DNSName object" host_OS="linux24" inactive="False" lastCompiled="1215360262" lastInstalled="1142003872" lastModified="1218856268" platform="iptables" ro="False" version="">
         <NAT id="id43867C4818346" name="NAT" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id43867C4918346" disabled="False" position="0">
             <OSrc neg="False">
@@ -25487,9 +25494,9 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4833F62B6131" name="firewall-ipv6-1" host_OS="linux24" inactive="False" lastCompiled="1216420816" lastInstalled="0" lastModified="1218514743" platform="iptables" ro="False" version="">
+      <Firewall id="id4833F62B6131" name="firewall-ipv6-1" host_OS="linux24" inactive="False" lastCompiled="1216420816" lastInstalled="0" lastModified="1218856340" platform="iptables" ro="False" version="">
         <NAT id="id4833F62F6131" name="NAT" ipv6_rule_set="False" top_rule_set="True"/>
-        <Policy id="id483F5B7623190" name="Policy_ipv6" ipv6_rule_set="True" top_rule_set="False">
+        <Policy id="id483F5B7623190" name="Policy_ipv6" ipv6_rule_set="True" top_rule_set="True">
           <PolicyRule id="id30141X31704" comment="for bug 2047082&#10;&#10;" action="Accept" direction="Outbound" disabled="False" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="id4833F62B6131"/>
@@ -25510,7 +25517,47 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id43597X31704" action="Accept" direction="Outbound" disabled="False" log="False" position="1">
+          <PolicyRule id="id72496X4903" action="Accept" direction="Both" disabled="False" group="" log="False" position="1">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id47CBF5D129252"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id72509X4903" action="Deny" direction="Both" disabled="False" group="" log="True" position="2">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id30841X361"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id43597X31704" action="Accept" direction="Outbound" disabled="False" log="False" position="3">
             <Src neg="False">
               <ObjectRef ref="id4833F6316131"/>
             </Src>
@@ -25891,6 +25938,46 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id86421X4903" action="Accept" direction="Both" disabled="False" group="" log="False" position="18">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id47CBF5D129252"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id86438X4903" action="Deny" direction="Both" disabled="False" group="" log="True" position="19">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id30841X361"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>

@@ -599,6 +599,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
             Preprocessor* prep = new Preprocessor(
                 objdb , fwobjectname, ipv6_policy);
+            if (test_mode) prep->setTestMode();
             prep->compile();
 
 
