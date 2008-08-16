@@ -52,7 +52,7 @@ class DNSName : public MultiAddress
     std::string getDNSRecordType();
     void setDNSRecordType(const std::string& rectype);
     
-    virtual void loadFromSource() throw(FWException);
+    virtual void loadFromSource(bool ipv6) throw(FWException);
 };
 
 }

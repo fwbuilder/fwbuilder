@@ -33,6 +33,7 @@
 #include <fwbuilder/FWObjectDatabase.h>
 #include <fwbuilder/InetAddr.h>
 #include <fwbuilder/IPv4.h>
+#include <fwbuilder/IPv6.h>
 #include <fwbuilder/dns.h>
 
 #include <iostream>
@@ -100,25 +101,33 @@ void DNSName::fromXML(xmlNodePtr root) throw(FWException)
 }
 
 
-void DNSName::loadFromSource() throw(FWException)
+void DNSName::loadFromSource(bool ipv6) throw(FWException)
 {
+    int af_type = (ipv6)?AF_INET6:AF_INET;
     try
     {
-        list<InetAddr> v = DNS::getHostByName(getSourceName());
+        list<InetAddr> v = DNS::getHostByName(getSourceName(), af_type);
         for (list<InetAddr>::iterator i=v.begin(); i!=v.end(); ++i)
         {
-            IPv4 *a = IPv4::cast(getRoot()->create(IPv4::TYPENAME));
+            Address *a = Address::cast(getRoot()->create(
+                                         (ipv6)?IPv6::TYPENAME:IPv4::TYPENAME));
             a->setAddress( *i );
             addRef(a);
         }
     } catch (const FWException &ex)
     {
         ostringstream err;
-        err << "DNSName object "
+        string af_type_name = (ipv6)?string("AF_INET6"):string("AF_INET");
+
+        err << "DNSName object \""
             << getName()
-            << " (compile time) can not resole dns name \""
-            << getSourceName() << "\": "
-            << ex.toString() << endl;
+            << "\" (compile time) can not resole dns name \""
+            << getSourceName()
+            << "\" "
+            << "(" << af_type_name << ")"
+            << ": "
+            << ex.toString()
+            << endl;
         throw(FWException(err.str()));
     }
 }

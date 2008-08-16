@@ -45,6 +45,8 @@ namespace fwcompiler {
 
     class Preprocessor : public Compiler {
 
+        bool isUsedByThisFirewall(libfwbuilder::FWObject *obj);
+
 public:
 	virtual std::string myPlatformName();
 

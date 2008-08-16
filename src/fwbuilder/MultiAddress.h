@@ -51,7 +51,7 @@ class MultiAddress : public ObjectGroup
 
     virtual std::string getSourceName();
     virtual void setSourceName(const std::string& source_name);
-    virtual void loadFromSource() throw(FWException);
+    virtual void loadFromSource(bool ipv6) throw(FWException);
 
     bool isCompileTime() const;
     bool isRunTime() const;

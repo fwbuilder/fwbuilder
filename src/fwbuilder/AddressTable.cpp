@@ -82,7 +82,7 @@ void AddressTable::fromXML(xmlNodePtr root) throw(FWException)
     FREEXMLBUFF(n);
 }
 
-void AddressTable::loadFromSource() throw(FWException)
+void AddressTable::loadFromSource(bool ipv6) throw(FWException)
 {
     ifstream fs(getStr("filename").c_str());
     ostringstream exmess;

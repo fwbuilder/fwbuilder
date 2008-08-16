@@ -29,6 +29,8 @@
 #include "fwbuilder/MultiAddress.h"
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/ObjectGroup.h"
+#include "fwbuilder/ServiceGroup.h"
 
 #include <iostream>
 
@@ -54,34 +56,48 @@ Preprocessor::Preprocessor(FWObjectDatabase *_db,
 void Preprocessor::convertObject(FWObject *obj)
 {
     MultiAddress *adt=MultiAddress::cast(obj);
-    if (adt!=NULL)
+    if (adt!=NULL && adt->isCompileTime() && isUsedByThisFirewall(obj))
     {
-        if (adt->isCompileTime())
+        try
         {
-            // check if this object is used anywhere
-            set<FWObject*> resset;
-            obj->getRoot()->findWhereUsed(obj,obj->getRoot(),resset);
-            
-            set<FWObject*>::iterator i;
-            for (i=resset.begin(); i!=resset.end(); ++i)
-            {
-                FWObject *p = (*i);
-                while (p && !Firewall::isA(p)) p = p->getParent();
-
-                if (p && p->getId()==fw->getId())
-                {
-                    try
-                    {
-                        adt->loadFromSource();
-                        break;
-                    } catch (FWException &ex)
-                    {
-                        abort(ex.toString());
-                    }
-                }
-            }
+            adt->loadFromSource(ipv6);
+        } catch (FWException &ex)
+        {
+            abort(ex.toString());
         }
     }
+}
+
+/*
+ * Check if object obj is used in any rules of the firewall we compile.
+ * Tricky part: object might be used by a group and then the group used
+ * in a rule
+ */
+bool Preprocessor::isUsedByThisFirewall(FWObject *obj)
+{
+    set<FWObject*> resset;
+    obj->getRoot()->findWhereUsed(obj,obj->getRoot(),resset);
+
+    set<FWObject*>::iterator i;
+    for (i=resset.begin(); i!=resset.end(); ++i)
+    {
+        FWObject *p = (*i);
+
+        if (ObjectGroup::isA(p) || ServiceGroup::isA(p))
+        {
+            // object (*i) is used in a group. Check if the group
+            // is used in any rule
+            if (isUsedByThisFirewall(p)) return true;
+            // but if this group is not used in any rule of this firewall
+            // we should keep scanning objects in resset
+            continue;
+        }
+
+
+        while (p && !Firewall::isA(p)) p = p->getParent();
+        if (p && p->getId()==fw->getId()) return true;
+    }
+    return false;
 }
 
 void Preprocessor::convertObjectsRecursively(FWObject *o)

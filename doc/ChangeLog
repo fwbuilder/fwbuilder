@@ -1,3 +1,14 @@
+2008-08-15  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Preprocessor.cpp (Preprocessor::isUsedByThisFirewall): fixed bug
+	#2051629: "group with dns names are handled as empty". This bug
+	triggered when object group that consisted of DNSName objects set
+	to resolve at compile time was used in policy rule and at the same
+	none of these DNSName objects were used in rules. If an object
+	from the group was itself used in a rule, compiler properly
+	converted it to address. But object was never used in rules by
+	itself, it was not converted.
+
 2008-08-12  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Tools.cpp: Getting rid of sprintf, using ostringstream
