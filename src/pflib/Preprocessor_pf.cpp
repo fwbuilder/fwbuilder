@@ -36,10 +36,5 @@ using namespace std;
 void Preprocessor_pf::convertObject(FWObject *obj)
 {
     Preprocessor::convertObject(obj);
-
-    AddressTable *adt = AddressTable::cast(obj);
-    if (adt!=NULL && adt->isCompileTime())
-        adt->setRunTime(true);
-
 }
 

@@ -701,6 +701,7 @@ int main(int argc, char * const *argv)
 
             Preprocessor_pf* prep = new Preprocessor_pf(
                 objdb , fwobjectname, ipv6_policy);
+            if (test_mode) prep->setTestMode();
             prep->compile();
 
             list<NATCompiler_pf::redirectRuleInfo> redirect_rules_info;

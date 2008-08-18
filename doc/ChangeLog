@@ -1,5 +1,11 @@
 2008-08-17  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* Preprocessor_pf.cpp (Preprocessor_pf::convertObject): fixed bug
+	#2056510 "Compile time" address tables objects dont
+	work. Preprocessor in compiler for PF for some reason used to
+	convert all compile time AddressTable objects to run-time. There
+	was no mention of this in changelog and no comment in the module.
+
 	* RuleSetView.cpp (RuleSetView::copySelectedObject): fixed bug
 	#2055984: "Negate Objects not work". the problem really was not
 	related to negated objects, instead, user could not copy an object
