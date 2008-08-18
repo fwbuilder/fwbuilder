@@ -68,16 +68,35 @@ using namespace std;
  *-----------------------------------------------------------------------
  *                    Methods for printing
  */
+
+void NATCompiler_ipt::PrintRule::InitializeMinusNTracker()
+{
+    NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
+    for (list<string>::const_iterator i =
+             NATCompiler_ipt::getStandardChains().begin();
+         i != NATCompiler_ipt::getStandardChains().end(); ++i)
+    {
+        (*(ipt_comp->minus_n_commands))[*i] = true;
+    }
+    minus_n_tracker_initialized = true;
+}
+            
+
+
 /*
  *  check and create new chain if needed
  */
 string NATCompiler_ipt::PrintRule::_createChain(const string &chain)
 {
+    NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
     ostringstream  res;
-    if ( ! chains[chain] )
+
+    if (!minus_n_tracker_initialized) InitializeMinusNTracker();
+
+    if ( ipt_comp->minus_n_commands->count(chain)==0 )
     {
 	res << "$IPTABLES -t nat -N " << chain << endl;
-	chains[chain]=true;
+	(*(ipt_comp->minus_n_commands))[chain] = true;
     }
     return res.str();
 }
@@ -502,19 +521,12 @@ string NATCompiler_ipt::PrintRule::_printAddr(Address  *o,
     return ostr.str();
 }
 
-
 NATCompiler_ipt::PrintRule::PrintRule(const std::string &name) : 
     NATRuleProcessor(name)
 {
-    init=true; 
-    print_once_on_top=true;
-
-    for (list<string>::const_iterator i =
-             NATCompiler_ipt::getStandardChains().begin();
-         i != NATCompiler_ipt::getStandardChains().end(); ++i)
-    {
-        chains[*i] = true;
-    }
+    init = true; 
+    print_once_on_top = true;
+    minus_n_tracker_initialized = false;
 }
 
 bool NATCompiler_ipt::PrintRule::processNext()

@@ -568,6 +568,17 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         int routing_rules_count = 0;
         bool have_nat = false;
 
+        // track chains in each table separately. Can we have the same
+        // chain in filter and mangle tables ? Would it be the same
+        // chain, i.e. do we need to create it only once or do we create
+        // it twice, in each table separately ? 
+        // Using separate trackers we track and create chain in each
+        // table separately.
+        std::map<const std::string, bool> minus_n_commands_filter;
+        std::map<const std::string, bool> minus_n_commands_mangle;
+        std::map<const std::string, bool> minus_n_commands_nat;
+
+
         vector<bool> ipv4_6_runs;
         string generated_script;
 
@@ -597,6 +608,13 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         {
             bool ipv6_policy = *i;
 
+            // clear chain tracker map only between ipv4/ipv6 runs
+            // Don't clear it between compiler runs for different
+            // policy or nat objects for the same address family.
+            minus_n_commands_filter.clear();
+            minus_n_commands_mangle.clear();
+            minus_n_commands_nat.clear();
+
             Preprocessor* prep = new Preprocessor(
                 objdb , fwobjectname, ipv6_policy);
             if (test_mode) prep->setTestMode();
@@ -621,7 +639,8 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 // compile NAT rules before policy rules because policy
                 // compiler needs to know the number of virtual addresses
                 // being created for NAT
-                NATCompiler_ipt n(objdb, fwobjectname, ipv6_policy, oscnf);
+                NATCompiler_ipt n(objdb, fwobjectname, ipv6_policy, oscnf,
+                                  &minus_n_commands_nat);
                 n.setSourceRuleSet( nat );
                 n.setRuleSetName(branch_name);
 
@@ -671,7 +690,8 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 if (policy->isV6()!=ipv6_policy) continue;
 
                 MangleTableCompiler_ipt m(
-                    objdb , fwobjectname, ipv6_policy , oscnf );
+                    objdb , fwobjectname, ipv6_policy , oscnf,
+                    &minus_n_commands_mangle );
 
                 if (!policy->isTop())
                     m.registerRuleSetChain(branch_name);
@@ -723,7 +743,8 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 }
 
 
-                PolicyCompiler_ipt c(objdb, fwobjectname, ipv6_policy, oscnf);
+                PolicyCompiler_ipt c(objdb, fwobjectname, ipv6_policy, oscnf,
+                                     &minus_n_commands_filter);
 
                 if (!policy->isTop())
                     c.registerRuleSetChain(branch_name);

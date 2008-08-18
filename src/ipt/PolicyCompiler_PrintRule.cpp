@@ -80,6 +80,19 @@ using namespace std;
  *                    Methods for printing
  */
 
+void PolicyCompiler_ipt::PrintRule::InitializeMinusNTracker()
+{
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    for (list<string>::const_iterator i =
+             PolicyCompiler_ipt::getStandardChains().begin();
+         i != PolicyCompiler_ipt::getStandardChains().end(); ++i)
+    {
+        (*(ipt_comp->minus_n_commands))[*i] = true;
+    }
+    minus_n_tracker_initialized = true;
+}
+            
+
 /*
  *  check and create new chain if needed
  */
@@ -88,13 +101,15 @@ string PolicyCompiler_ipt::PrintRule::_createChain(const string &chain)
     string res;
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
 
-    if ( ! chains[chain] )
+    if (!minus_n_tracker_initialized) InitializeMinusNTracker();
+
+    if ( ipt_comp->minus_n_commands->count(chain)==0 )
     {
 	res = string((ipt_comp->ipv6) ? "$IP6TABLES -N " : "$IPTABLES -N ") +
             chain;
         if (ipt_comp->my_table != "filter") res += " -t " + ipt_comp->my_table;
         res += "\n";
-	chains[chain]=true;
+	(*(ipt_comp->minus_n_commands))[chain] = true;
     }
     return res;
 }
@@ -1239,17 +1254,15 @@ string PolicyCompiler_ipt::PrintRule::_printTimeInterval(PolicyRule *r)
     return ostr.str();
 }
 
-PolicyCompiler_ipt::PrintRule::PrintRule(const std::string &name) : PolicyRuleProcessor(name) 
+PolicyCompiler_ipt::PrintRule::PrintRule(const std::string &name) :
+    PolicyRuleProcessor(name) 
 { 
-    init=true; 
-    print_once_on_top=true;
-
-    for (list<string>::const_iterator i =
-             PolicyCompiler_ipt::getStandardChains().begin();
-         i != PolicyCompiler_ipt::getStandardChains().end(); ++i)
-    {
-        chains[*i] = true;
-    }
+    init = true; 
+    print_once_on_top = true;
+    // use delayed initialization for ipt_comp->minus_n_commands
+    // because it requires pointer to the compiler which has not been
+    // initialized yet when this constructor is executed.
+    minus_n_tracker_initialized = false;
 }
 
 bool  PolicyCompiler_ipt::PrintRule::processNext()
@@ -1261,7 +1274,6 @@ bool  PolicyCompiler_ipt::PrintRule::processNext()
     string chain = rule->getStr("ipt_chain");
     if (ipt_comp->chain_usage_counter[chain] > 0)
     {
-
         tmp_queue.push_back(rule);
 
         compiler->output << _printRuleLabel(rule);

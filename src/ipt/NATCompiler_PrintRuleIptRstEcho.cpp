@@ -59,10 +59,14 @@ using namespace std;
 string NATCompiler_ipt::PrintRuleIptRstEcho::_createChain(const string &chain)
 {
     string res;
-    if ( ! chains[chain] )
+    NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
+
+    if (!minus_n_tracker_initialized) InitializeMinusNTracker();
+
+    if ( ipt_comp->minus_n_commands->count(chain)==0 )
     {
 	res = "echo \":" + chain + " - [0:0]\"\n";
-	chains[chain]=true;
+	(*(ipt_comp->minus_n_commands))[chain] = true;
     }
     return res;
 }

@@ -60,10 +60,14 @@ using namespace std;
 string PolicyCompiler_ipt::PrintRuleIptRst::_createChain(const string &chain)
 {
     string res;
-    if ( ! chains[chain] )
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+
+    if (!minus_n_tracker_initialized) InitializeMinusNTracker();
+
+    if ( ipt_comp->minus_n_commands->count(chain)==0 )
     {
 	res = ":" + chain + " - [0:0]\n";
-	chains[chain]=true;
+	(*(ipt_comp->minus_n_commands))[chain] = true;
     }
     return res;
 }

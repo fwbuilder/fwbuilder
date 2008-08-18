@@ -79,6 +79,11 @@ namespace fwcompiler {
         std::map<std::string, int>     tmp_chain_no;
         std::map<std::string, int>     chain_usage_counter;
 
+        // use minus_n_commands map to track creation of chains.
+        // Using external map object for this to be able to track
+        // new chains across different compiler runs (used to process
+        // rules in different policy or nat objects)
+        std::map<const std::string, bool> *minus_n_commands;
 
         static const std::list<std::string>& getStandardChains();
         
@@ -832,9 +837,11 @@ namespace fwcompiler {
             
             bool                             init;
             bool                             print_once_on_top;
+            bool                             minus_n_tracker_initialized;
             std::string                      current_rule_label;
-            std::map<const std::string,bool> chains;
 
+            void InitializeMinusNTracker();
+            
             virtual std::string _createChain(const std::string &chain);
             virtual std::string _printRuleLabel(libfwbuilder::PolicyRule *r);
 
@@ -946,7 +953,9 @@ namespace fwcompiler {
 	PolicyCompiler_ipt(libfwbuilder::FWObjectDatabase *_db,
                            const std::string &fwname,
                            bool ipv6_policy,
-                           fwcompiler::OSConfigurator *_oscnf) :
+                           fwcompiler::OSConfigurator *_oscnf,
+                           std::map<const std::string, bool> *m_n_commands_map
+        ) :
         PolicyCompiler(_db, fwname, ipv6_policy, _oscnf)
         {
             have_dynamic_interfaces = false;
@@ -954,6 +963,7 @@ namespace fwcompiler {
             have_connmark_in_output = false;
             printRule = NULL;
             my_table = "filter";
+            minus_n_commands = m_n_commands_map;
         }
 
 

@@ -4192,7 +4192,9 @@ PolicyCompiler_ipt::PrintRule* PolicyCompiler_ipt::createPrintRuleProcessor()
             printRule = new PrintRuleIptRstEcho(
                 "generate code for iptables-restore using echo");
         } else
-            printRule = new PrintRule("generate shell script"    );
+        {
+            printRule = new PrintRule("generate shell script");
+        }
         printRule->setContext(this);
     }
     return printRule;

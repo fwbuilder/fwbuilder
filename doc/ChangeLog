@@ -1,5 +1,9 @@
 2008-08-17  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ipt.cpp (main): fixed bug #2054755: "Duplicate Chain". Compiler
+	for iptables used to generate duplicate "iptables -N chain"
+	commands for the same chain in some cases.
+
 	* Preprocessor_pf.cpp (Preprocessor_pf::convertObject): fixed bug
 	#2056510 "Compile time" address tables objects dont
 	work. Preprocessor in compiler for PF for some reason used to
