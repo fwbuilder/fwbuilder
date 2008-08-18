@@ -1,3 +1,12 @@
+2008-08-17  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::copySelectedObject): fixed bug
+	#2055984: "Negate Objects not work". the problem really was not
+	related to negated objects, instead, user could not copy an object
+	from rule element into clipboard more than once. Copying whole
+	rule into clipboard worked fine, but individual object inside the
+	rule could be placed in clipboard only one time.
+
 2008-08-15  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Preprocessor.cpp (Preprocessor::isUsedByThisFirewall): fixed bug

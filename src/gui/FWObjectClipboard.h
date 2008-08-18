@@ -47,7 +47,7 @@ public:
     /**
      *  adds an object to the clipboard
      */
-    void add(libfwbuilder::FWObject*, ProjectPanel * fww=NULL);
+    void add(libfwbuilder::FWObject*, ProjectPanel *proj_p);
 
     /**
      * returns the last added object

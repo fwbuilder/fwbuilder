@@ -54,10 +54,17 @@ FWObjectClipboard::~FWObjectClipboard()
 
 void FWObjectClipboard::clear()
 {
+    if (fwbdebug) qDebug("FWObjectClipboard::clear  size()=%d",
+                         int(size()));
+
     for (vector<std::pair<int,ProjectPanel*> >::iterator i=ids.begin();
          i!=ids.end(); ++i)
     {
-        FWObject *obj = i->second->db()->findInIndex(i->first);
+        int obj_id = i->first;
+        ProjectPanel *proj_p = i->second;
+        assert(proj_p);
+
+        FWObject *obj = proj_p->db()->findInIndex(obj_id);
         if (obj)
         {
             if (fwbdebug)
@@ -70,19 +77,21 @@ void FWObjectClipboard::clear()
     ids.clear();
 }
 
-void FWObjectClipboard::add(FWObject *_obj, ProjectPanel * fww)
+void FWObjectClipboard::add(FWObject *obj, ProjectPanel * proj_p)
 {
     if (fwbdebug)
     {
-	qDebug("FWObjectClipboard::add  adding _obj=%p (id=%s)",
-               _obj,
-               FWObjectDatabase::getStringId(_obj->getId()).c_str()
+	qDebug("FWObjectClipboard::add  obj=%p (id=%d %s) proj_p=%p",
+               obj,
+               obj->getId(),
+               FWObjectDatabase::getStringId(obj->getId()).c_str(),
+               proj_p
         );
     }
 
-    _obj->ref();
+    obj->ref();
 	
-    ids.push_back( pair<int,ProjectPanel*>(_obj->getId(), fww) );
+    ids.push_back( pair<int,ProjectPanel*>(obj->getId(), proj_p) );
 }
 
 FWObject* FWObjectClipboard::getObject()

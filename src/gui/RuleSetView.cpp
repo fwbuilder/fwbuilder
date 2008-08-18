@@ -3437,7 +3437,7 @@ void RuleSetView::copySelectedObject()
     if ( selectedObject!=NULL)
     {
         FWObjectClipboard::obj_clipboard->clear();
-        FWObjectClipboard::obj_clipboard->add( selectedObject );
+        FWObjectClipboard::obj_clipboard->add( selectedObject, m_project );
     }
 }
 
