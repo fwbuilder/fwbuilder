@@ -1,5 +1,12 @@
 2008-08-19  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* NATCompiler_PrintRule.cpp (PrintRule::_printSrcService): fixed
+	bug (no #): policy compielr for iptables used multiport module
+	option "--destination-port" instead of "--dports" when version was
+	set to 1.4.0. Option "--destination-port" is only for very old
+	versions of iptables (<1.2.6). This change makes compiler properly
+	compare version numbers rather than compare them as strings.
+
 	* RuleSetView.cpp (RuleSetView::pasteRuleAbove): Permit copy/paste
 	of individual rules between two data files. When a rule is copied
 	this way, all objects used in this rule are copied as well.

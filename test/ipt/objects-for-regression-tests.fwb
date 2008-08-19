@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1219116070" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1219171107" id="root">
   <Library id="sysid99" name="Deleted Objects" ro="False">
     <ICMP6Service id="idE0C27650" name="ipv6 dest unreachable" comment="No route to destination" code="0" type="1"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -598,12 +598,7 @@
     <ObjectRef ref="id4387287A18346"/>
     <ObjectRef ref="id43869E8C18346"/>
     <ObjectRef ref="id4387287918346"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
     <ObjectRef ref="id4834B9206131"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
     <ObjectRef ref="id86936X27543"/>
   </Library>
   <Library id="syslib001" name="User" comment="User defined objects" color="#d2ffd0">
@@ -28276,6 +28271,4788 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="use_ULOG">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id31158X1798" name="firewall2-1" comment="copy of firewall2 but old iptables version" host_OS="linux24" inactive="False" lastCompiled="1215360886" lastInstalled="1142003872" lastModified="1219170691" platform="iptables" ro="False" version="lt_1.2.6">
+        <NAT id="id31415X1798" name="NAT" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id31416X1798" disabled="False" position="0">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id31158X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id31430X1798" disabled="False" position="1">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="sg-Useful_ICMP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id31158X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id31445X1798" disabled="False" position="2">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="sg-Useful_ICMP"/>
+              <ServiceRef ref="ip-IPSEC"/>
+              <ServiceRef ref="id3F3E9EFC"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id31158X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id31462X1798" disabled="False" position="3">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id32096X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id31476X1798" disabled="False" position="4">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id32100X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id31490X1798" disabled="False" position="5">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id48356E0A14854"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id31504X1798" disabled="False" position="6">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id31518X1798" disabled="False" position="7">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3DE47B6C"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id31532X1798" disabled="False" position="8">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="host-hostA"/>
+              <ObjectRef ref="id3D8FC56A"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3AFC191C"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31547X1798" disabled="False" position="9">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+              <ObjectRef ref="host-hostB"/>
+              <ObjectRef ref="id31158X1798"/>
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3D151943"/>
+              <ObjectRef ref="id3D151947"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31565X1798" disabled="False" position="10">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+              <ObjectRef ref="host-hostB"/>
+            </OSrc>
+            <ODst neg="True">
+              <ObjectRef ref="id3D151943"/>
+              <ObjectRef ref="id3D151947"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31581X1798" disabled="False" position="11">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="tcp-NNTP"/>
+              <ServiceRef ref="sg-Useful_ICMP"/>
+              <ServiceRef ref="ip-IPSEC"/>
+              <ServiceRef ref="id3F3E9EFC"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31599X1798" disabled="False" position="12">
+            <OSrc neg="False">
+              <ObjectRef ref="id31158X1798"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="tcp-NNTP"/>
+              <ServiceRef ref="sg-Useful_ICMP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31615X1798" disabled="False" position="13">
+            <OSrc neg="False">
+              <ObjectRef ref="id32096X1798"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="tcp-NNTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31630X1798" disabled="False" position="14">
+            <OSrc neg="False">
+              <ObjectRef ref="id31158X1798"/>
+              <ObjectRef ref="id3B19C5EB"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="tcp-NNTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31646X1798" disabled="True" position="15">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+              <ObjectRef ref="host-hostB"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31661X1798" disabled="False" position="16">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3DE47B6C"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="tcp-NNTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31676X1798" disabled="False" position="17">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFC0F70"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-NNTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31690X1798" disabled="False" position="18">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostB"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3BD6736B"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id31704X1798" disabled="False" position="19">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3BD6736B"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostB"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31718X1798" disabled="False" position="20">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id4368AD8615884"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31732X1798" comment="NETMAP " disabled="False" position="21">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3B665641"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31746X1798" comment="NETMAP" disabled="False" position="22">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3B665641"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31760X1798" disabled="False" position="23">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id31158X1798"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3B20468D"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B20468D"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31774X1798" disabled="False" position="24">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id32093X1798"/>
+              <ObjectRef ref="id32096X1798"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id32090X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31789X1798" disabled="False" position="25">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="tcp-SMTP"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31803X1798" disabled="False" position="26">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id31158X1798"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="id3B4FED69"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31818X1798" disabled="False" position="27">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id32093X1798"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3DDDE4E4"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id3CEBFF26"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31832X1798" disabled="False" position="28">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id32093X1798"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3DDDE4E4"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id3CD87A5E"/>
+              <ObjectRef ref="id3CD87A6D"/>
+              <ObjectRef ref="id3CD87A8B"/>
+              <ObjectRef ref="id3CD87A7C"/>
+              <ObjectRef ref="id3CD87A53"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31850X1798" comment="transparent proxy rule" disabled="False" position="29">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="True">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id3D151943"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31864X1798" disabled="True" position="30">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id32093X1798"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3DDDE4E4"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+              <ObjectRef ref="host-hostB"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31879X1798" disabled="False" position="31">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3DDDE4E4"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31893X1798" disabled="False" position="32">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3DDDE4E4"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31907X1798" disabled="False" position="33">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id32093X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31921X1798" disabled="False" position="34">
+            <OSrc neg="True">
+              <ObjectRef ref="host-hostA"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id32090X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31935X1798" disabled="False" position="35">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="True">
+              <ObjectRef ref="id40F195D2"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id40F195D2"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31949X1798" disabled="False" position="36">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="True">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id32090X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31963X1798" disabled="False" position="37">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id32090X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id31977X1798" comment="this is the &quot;exception&quot; rule&#10;used in support req. originally" disabled="False" position="38">
+            <OSrc neg="False">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id32095X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C08B5A</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id31991X1798" disabled="False" position="39">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id32092X1798"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C08B5A</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32005X1798" comment="&quot;exception&quot; rule in the pair&#10;from a support req." disabled="False" position="40">
+            <OSrc neg="False">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id32095X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32019X1798" comment="testing transparent proxy&#10;roules for a support req." disabled="False" position="41">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id32092X1798"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32033X1798" comment="testing transparent proxy&#10;roules for a support req." disabled="False" position="42">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id32090X1798"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32047X1798" comment="testing transparent proxy&#10;roules for a support req." disabled="False" position="43">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id31158X1798"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32061X1798" comment="&quot;exception&quot; rule in the pair&#10;from a support req." disabled="False" position="44">
+            <OSrc neg="False">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id32095X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C0BA44</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32075X1798" comment="testing transparent proxy&#10;roules for a support req." disabled="False" position="45">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id40F195D2"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C0BA44</Option>
+            </NATRuleOptions>
+          </NATRule>
+        </NAT>
+        <Policy id="id31164X1798" name="Policy" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id31165X1798" comment="Anti-spoofing rule" action="Deny" direction="Inbound" disabled="False" log="True" position="0">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id31158X1798"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id32093X1798"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_prefix">Iface: %I RULE %N -- %A **</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id31178X1798" comment="Anti-spoofing rule" action="Deny" direction="Outbound" disabled="False" log="True" position="1">
+            <Src neg="True">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id31158X1798"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id32093X1798"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_prefix">Iface: %I RULE %N -- %A **</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id31191X1798" comment="testing group in &quot;interface&quot;&#10;this rule should be identical to rule 3&#10;" action="Deny" direction="Inbound" disabled="False" log="True" position="2">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-DHCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4653B4A820440"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_mode">dstip</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id31203X1798" action="Deny" direction="Inbound" disabled="False" log="True" position="3">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-DHCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id32093X1798"/>
+              <ObjectRef ref="id32096X1798"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_mode">dstip</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id31216X1798" comment="testing choice of chains in case when several&#10;interfaces are used and rule matches 'any' or&#10;broadcast &#10;" action="Accept" direction="Both" disabled="False" log="False" position="4">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3F6D115C"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-DHCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id32093X1798"/>
+              <ObjectRef ref="id32096X1798"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id31229X1798" action="Accept" direction="Inbound" disabled="False" log="False" position="5">
+            <Src neg="False">
+              <ObjectRef ref="id44C0695713221"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3F6D115C"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-DHCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id32093X1798"/>
+              <ObjectRef ref="id32096X1798"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id31242X1798" action="Accept" direction="Outbound" disabled="False" log="False" position="6">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3F6D115C"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-DHCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id32093X1798"/>
+              <ObjectRef ref="id32096X1798"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id31255X1798" action="Deny" direction="Both" disabled="False" log="True" position="7">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="True">
+              <ServiceRef ref="tcp-TCP-SYN"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id31267X1798" comment="block fragments" action="Deny" direction="Both" disabled="False" log="True" position="8">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="ip-IP_Fragments"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="id"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id31279X1798" comment="sends TCP RST and makes custom record&#10;in the log" action="Reject" direction="Both" disabled="False" log="True" position="9">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-Auth"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject">TCP RST</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_prefix">IDENT</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id31291X1798" action="Reject" direction="Both" disabled="False" log="True" position="10">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="udp-SNMP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject">TCP RST</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id31303X1798" action="Accept" direction="Both" disabled="False" log="True" position="11">
+            <Src neg="False">
+              <ObjectRef ref="id3B022266"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id32101X1798"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id3C1A5D46"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id31315X1798" action="Accept" direction="Both" disabled="False" log="False" position="12">
+            <Src neg="False">
+              <ObjectRef ref="id3B4572AF"/>
+              <ObjectRef ref="id3D8FC56A"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="host-secondary1-com"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id31328X1798" action="Accept" direction="Both" disabled="False" log="False" position="13">
+            <Src neg="False">
+              <ObjectRef ref="host-secondary1-com"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3B4572AF"/>
+              <ObjectRef ref="id3D8FC56A"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id31341X1798" action="Reject" direction="Both" disabled="False" log="False" position="14">
+            <Src neg="True">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id3B022266"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id31354X1798" action="Accept" direction="Both" disabled="False" log="False" position="15">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id3B022266"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id31367X1798" action="Deny" direction="Both" disabled="False" log="True" position="16">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id31379X1798" comment="host-fw2 has the same address as &#10;        one of the firewall's interfaces" action="Accept" direction="Both" disabled="False" log="True" position="17">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3AFC0F70"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-FTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_burst">10</Option>
+              <Option name="limit_suffix">/minute</Option>
+              <Option name="limit_value">5</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id31391X1798" action="Accept" direction="Both" disabled="False" log="True" position="18">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id31158X1798"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-FTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id31403X1798" comment="'catch all' rule" action="Deny" direction="Both" disabled="False" log="True" position="19">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="id"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Routing id="id32089X1798" name="Routing" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id32090X1798" name="eth0" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False">
+          <IPv4 id="id32092X1798" name="firewall2-1:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id32093X1798" name="eth1" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False">
+          <IPv4 id="id32095X1798" name="firewall2-1:eth1:ip" address="22.22.22.22" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id32096X1798" name="eth3" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False">
+          <IPv4 id="id32099X1798" name="firewall2-1:eth3:ip1" address="22.22.23.23" netmask="255.255.255.0"/>
+          <IPv4 id="id32100X1798" name="firewall2-1:eth3:ip2" address="22.22.25.50" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id32101X1798" name="eth2" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
+          <IPv4 id="id32104X1798" name="firewall2-1:eth2:ip1" address="192.168.2.1" netmask="255.255.255.0"/>
+          <IPv4 id="id32105X1798" name="firewall2-1:eth2:ip2" address="192.168.2.40" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id32106X1798" name="lo" bridgeport="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False">
+          <IPv4 id="id32108X1798" name="firewall2-1:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
+        </Interface>
+        <Management address="192.168.1.1">
+          <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
+          <FWBDManagement enabled="True" identity="" port="9999"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">True</Option>
+          <Option name="accept_new_tcp_with_no_syn">False</Option>
+          <Option name="action_on_reject">ICMP net unreachable</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="bridging_fw">False</Option>
+          <Option name="check_shading">False</Option>
+          <Option name="clamp_mss_to_mtu">True</Option>
+          <Option name="classify_mark_terminating">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="debug">False</Option>
+          <Option name="drop_invalid">True</Option>
+          <Option name="dyn_addr">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir"></Option>
+          <Option name="firewall_is_part_of_any">True</Option>
+          <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="id"></Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="inst_cmdline"></Option>
+          <Option name="inst_script"></Option>
+          <Option name="install_script"></Option>
+          <Option name="limit_suffix">/second</Option>
+          <Option name="limit_value">5</Option>
+          <Option name="linux24_accept_redirects">0</Option>
+          <Option name="linux24_accept_source_route">0</Option>
+          <Option name="linux24_icmp_echo_ignore_all">1</Option>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
+          <Option name="linux24_icmp_ignore_bogus_error_responses">1</Option>
+          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="linux24_log_martians">1</Option>
+          <Option name="linux24_path_ip"></Option>
+          <Option name="linux24_path_iptables"></Option>
+          <Option name="linux24_path_logger"></Option>
+          <Option name="linux24_path_lsmod"></Option>
+          <Option name="linux24_path_modprobe"></Option>
+          <Option name="linux24_rp_filter">1</Option>
+          <Option name="linux24_tcp_ecn"></Option>
+          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_tcp_fin_timeout">30</Option>
+          <Option name="linux24_tcp_keepalive_interval">1800</Option>
+          <Option name="linux24_tcp_sack"></Option>
+          <Option name="linux24_tcp_syncookies"></Option>
+          <Option name="linux24_tcp_timestamps"></Option>
+          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="load_modules">False</Option>
+          <Option name="local_nat">True</Option>
+          <Option name="log_all">False</Option>
+          <Option name="log_all_dropped">True</Option>
+          <Option name="log_invalid">True</Option>
+          <Option name="log_ip_opt">False</Option>
+          <Option name="log_level">debug</Option>
+          <Option name="log_limit_suffix">/second</Option>
+          <Option name="log_limit_value">0</Option>
+          <Option name="log_prefix">RULE %N - %A **</Option>
+          <Option name="log_tcp_opt">False</Option>
+          <Option name="log_tcp_seq">False</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="no_iochains_for_any">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
+          <Option name="no_optimisation">False</Option>
+          <Option name="output_file"></Option>
+          <Option name="platform">iptables</Option>
+          <Option name="prolog_place">after_flush</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="proxy_arp">True</Option>
+          <Option name="script_env_path"></Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_cprange">0</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="ulog_qthreshold">1</Option>
+          <Option name="useULOG">False</Option>
+          <Option name="use_ULOG">True</Option>
+          <Option name="use_ip_tool">True</Option>
+          <Option name="use_iptables_restore">False</Option>
+          <Option name="use_numeric_log_levels">False</Option>
+          <Option name="verify_interfaces">False</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id32114X1798" name="firewall2-2" comment="another copy of firewall2 but new iptables version" host_OS="linux24" inactive="False" lastCompiled="1215360886" lastInstalled="1142003872" lastModified="1219170687" platform="iptables" ro="False" version="1.4.0">
+        <NAT id="id32371X1798" name="NAT" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id32372X1798" disabled="False" position="0">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id32114X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32386X1798" disabled="False" position="1">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="sg-Useful_ICMP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id32114X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32401X1798" disabled="False" position="2">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="sg-Useful_ICMP"/>
+              <ServiceRef ref="ip-IPSEC"/>
+              <ServiceRef ref="id3F3E9EFC"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id32114X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32418X1798" disabled="False" position="3">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id33052X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32432X1798" disabled="False" position="4">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id33056X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32446X1798" disabled="False" position="5">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id48356E0A14854"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32460X1798" disabled="False" position="6">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32474X1798" disabled="False" position="7">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3DE47B6C"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32488X1798" disabled="False" position="8">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="host-hostA"/>
+              <ObjectRef ref="id3D8FC56A"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3AFC191C"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32503X1798" disabled="False" position="9">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+              <ObjectRef ref="host-hostB"/>
+              <ObjectRef ref="id32114X1798"/>
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3D151943"/>
+              <ObjectRef ref="id3D151947"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32521X1798" disabled="False" position="10">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+              <ObjectRef ref="host-hostB"/>
+            </OSrc>
+            <ODst neg="True">
+              <ObjectRef ref="id3D151943"/>
+              <ObjectRef ref="id3D151947"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32537X1798" disabled="False" position="11">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="tcp-NNTP"/>
+              <ServiceRef ref="sg-Useful_ICMP"/>
+              <ServiceRef ref="ip-IPSEC"/>
+              <ServiceRef ref="id3F3E9EFC"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32555X1798" disabled="False" position="12">
+            <OSrc neg="False">
+              <ObjectRef ref="id32114X1798"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="tcp-NNTP"/>
+              <ServiceRef ref="sg-Useful_ICMP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32571X1798" disabled="False" position="13">
+            <OSrc neg="False">
+              <ObjectRef ref="id33052X1798"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="tcp-NNTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32586X1798" disabled="False" position="14">
+            <OSrc neg="False">
+              <ObjectRef ref="id32114X1798"/>
+              <ObjectRef ref="id3B19C5EB"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="tcp-NNTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32602X1798" disabled="True" position="15">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+              <ObjectRef ref="host-hostB"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32617X1798" disabled="False" position="16">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3DE47B6C"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="tcp-NNTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32632X1798" disabled="False" position="17">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFC0F70"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-NNTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32646X1798" disabled="False" position="18">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostB"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3BD6736B"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32660X1798" disabled="False" position="19">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3BD6736B"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostB"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32674X1798" disabled="False" position="20">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id4368AD8615884"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32688X1798" comment="NETMAP " disabled="False" position="21">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3B665641"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32702X1798" comment="NETMAP" disabled="False" position="22">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3B665641"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32716X1798" disabled="False" position="23">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id32114X1798"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3B20468D"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B20468D"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32730X1798" disabled="False" position="24">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id33049X1798"/>
+              <ObjectRef ref="id33052X1798"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id33046X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32745X1798" disabled="False" position="25">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="tcp-SMTP"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32759X1798" disabled="False" position="26">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id32114X1798"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="id3B4FED69"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32774X1798" disabled="False" position="27">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id33049X1798"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3DDDE4E4"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id3CEBFF26"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32788X1798" disabled="False" position="28">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id33049X1798"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3DDDE4E4"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id3CD87A5E"/>
+              <ObjectRef ref="id3CD87A6D"/>
+              <ObjectRef ref="id3CD87A8B"/>
+              <ObjectRef ref="id3CD87A7C"/>
+              <ObjectRef ref="id3CD87A53"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32806X1798" comment="transparent proxy rule" disabled="False" position="29">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="True">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id3D151943"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32820X1798" disabled="True" position="30">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id33049X1798"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3DDDE4E4"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+              <ObjectRef ref="host-hostB"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32835X1798" disabled="False" position="31">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3DDDE4E4"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32849X1798" disabled="False" position="32">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3DDDE4E4"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32863X1798" disabled="False" position="33">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id33049X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32877X1798" disabled="False" position="34">
+            <OSrc neg="True">
+              <ObjectRef ref="host-hostA"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id33046X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32891X1798" disabled="False" position="35">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="True">
+              <ObjectRef ref="id40F195D2"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id40F195D2"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32905X1798" disabled="False" position="36">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="True">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id33046X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32919X1798" disabled="False" position="37">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id33046X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id32933X1798" comment="this is the &quot;exception&quot; rule&#10;used in support req. originally" disabled="False" position="38">
+            <OSrc neg="False">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id33051X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C08B5A</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32947X1798" disabled="False" position="39">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id33048X1798"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C08B5A</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32961X1798" comment="&quot;exception&quot; rule in the pair&#10;from a support req." disabled="False" position="40">
+            <OSrc neg="False">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id33051X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32975X1798" comment="testing transparent proxy&#10;roules for a support req." disabled="False" position="41">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id33048X1798"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id32989X1798" comment="testing transparent proxy&#10;roules for a support req." disabled="False" position="42">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id33046X1798"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id33003X1798" comment="testing transparent proxy&#10;roules for a support req." disabled="False" position="43">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id32114X1798"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id33017X1798" comment="&quot;exception&quot; rule in the pair&#10;from a support req." disabled="False" position="44">
+            <OSrc neg="False">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id33051X1798"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C0BA44</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id33031X1798" comment="testing transparent proxy&#10;roules for a support req." disabled="False" position="45">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id40F195D2"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C0BA44</Option>
+            </NATRuleOptions>
+          </NATRule>
+        </NAT>
+        <Policy id="id32120X1798" name="Policy" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id32121X1798" comment="Anti-spoofing rule" action="Deny" direction="Inbound" disabled="False" log="True" position="0">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id32114X1798"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id33049X1798"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_prefix">Iface: %I RULE %N -- %A **</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id32134X1798" comment="Anti-spoofing rule" action="Deny" direction="Outbound" disabled="False" log="True" position="1">
+            <Src neg="True">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id32114X1798"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id33049X1798"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_prefix">Iface: %I RULE %N -- %A **</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id32147X1798" comment="testing group in &quot;interface&quot;&#10;this rule should be identical to rule 3&#10;" action="Deny" direction="Inbound" disabled="False" log="True" position="2">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-DHCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4653B4A820440"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_mode">dstip</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id32159X1798" action="Deny" direction="Inbound" disabled="False" log="True" position="3">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-DHCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id33049X1798"/>
+              <ObjectRef ref="id33052X1798"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_mode">dstip</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id32172X1798" comment="testing choice of chains in case when several&#10;interfaces are used and rule matches 'any' or&#10;broadcast &#10;" action="Accept" direction="Both" disabled="False" log="False" position="4">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3F6D115C"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-DHCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id33049X1798"/>
+              <ObjectRef ref="id33052X1798"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id32185X1798" action="Accept" direction="Inbound" disabled="False" log="False" position="5">
+            <Src neg="False">
+              <ObjectRef ref="id44C0695713221"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3F6D115C"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-DHCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id33049X1798"/>
+              <ObjectRef ref="id33052X1798"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id32198X1798" action="Accept" direction="Outbound" disabled="False" log="False" position="6">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3F6D115C"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-DHCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id33049X1798"/>
+              <ObjectRef ref="id33052X1798"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id32211X1798" action="Deny" direction="Both" disabled="False" log="True" position="7">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="True">
+              <ServiceRef ref="tcp-TCP-SYN"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id32223X1798" comment="block fragments" action="Deny" direction="Both" disabled="False" log="True" position="8">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="ip-IP_Fragments"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="id"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id32235X1798" comment="sends TCP RST and makes custom record&#10;in the log" action="Reject" direction="Both" disabled="False" log="True" position="9">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-Auth"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject">TCP RST</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_prefix">IDENT</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id32247X1798" action="Reject" direction="Both" disabled="False" log="True" position="10">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="udp-SNMP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject">TCP RST</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id32259X1798" action="Accept" direction="Both" disabled="False" log="True" position="11">
+            <Src neg="False">
+              <ObjectRef ref="id3B022266"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id33057X1798"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id3C1A5D46"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id32271X1798" action="Accept" direction="Both" disabled="False" log="False" position="12">
+            <Src neg="False">
+              <ObjectRef ref="id3B4572AF"/>
+              <ObjectRef ref="id3D8FC56A"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="host-secondary1-com"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id32284X1798" action="Accept" direction="Both" disabled="False" log="False" position="13">
+            <Src neg="False">
+              <ObjectRef ref="host-secondary1-com"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3B4572AF"/>
+              <ObjectRef ref="id3D8FC56A"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id32297X1798" action="Reject" direction="Both" disabled="False" log="False" position="14">
+            <Src neg="True">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id3B022266"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id32310X1798" action="Accept" direction="Both" disabled="False" log="False" position="15">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id3B022266"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id32323X1798" action="Deny" direction="Both" disabled="False" log="True" position="16">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id32335X1798" comment="host-fw2 has the same address as &#10;        one of the firewall's interfaces" action="Accept" direction="Both" disabled="False" log="True" position="17">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3AFC0F70"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-FTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_burst">10</Option>
+              <Option name="limit_suffix">/minute</Option>
+              <Option name="limit_value">5</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id32347X1798" action="Accept" direction="Both" disabled="False" log="True" position="18">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id32114X1798"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-FTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id32359X1798" comment="'catch all' rule" action="Deny" direction="Both" disabled="False" log="True" position="19">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="id"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Routing id="id33045X1798" name="Routing" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id33046X1798" name="eth0" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False">
+          <IPv4 id="id33048X1798" name="firewall2-2:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id33049X1798" name="eth1" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False">
+          <IPv4 id="id33051X1798" name="firewall2-2:eth1:ip" address="22.22.22.22" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id33052X1798" name="eth3" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False">
+          <IPv4 id="id33055X1798" name="firewall2-2:eth3:ip1" address="22.22.23.23" netmask="255.255.255.0"/>
+          <IPv4 id="id33056X1798" name="firewall2-2:eth3:ip2" address="22.22.25.50" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id33057X1798" name="eth2" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
+          <IPv4 id="id33060X1798" name="firewall2-2:eth2:ip1" address="192.168.2.1" netmask="255.255.255.0"/>
+          <IPv4 id="id33061X1798" name="firewall2-2:eth2:ip2" address="192.168.2.40" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id33062X1798" name="lo" bridgeport="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False">
+          <IPv4 id="id33064X1798" name="firewall2-2:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
+        </Interface>
+        <Management address="192.168.1.1">
+          <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
+          <FWBDManagement enabled="True" identity="" port="9999"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">True</Option>
+          <Option name="accept_new_tcp_with_no_syn">False</Option>
+          <Option name="action_on_reject">ICMP net unreachable</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="bridging_fw">False</Option>
+          <Option name="check_shading">False</Option>
+          <Option name="clamp_mss_to_mtu">True</Option>
+          <Option name="classify_mark_terminating">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="debug">False</Option>
+          <Option name="drop_invalid">True</Option>
+          <Option name="dyn_addr">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir"></Option>
+          <Option name="firewall_is_part_of_any">True</Option>
+          <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="id"></Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="inst_cmdline"></Option>
+          <Option name="inst_script"></Option>
+          <Option name="install_script"></Option>
+          <Option name="limit_suffix">/second</Option>
+          <Option name="limit_value">5</Option>
+          <Option name="linux24_accept_redirects">0</Option>
+          <Option name="linux24_accept_source_route">0</Option>
+          <Option name="linux24_icmp_echo_ignore_all">1</Option>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
+          <Option name="linux24_icmp_ignore_bogus_error_responses">1</Option>
+          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="linux24_log_martians">1</Option>
+          <Option name="linux24_path_ip"></Option>
+          <Option name="linux24_path_iptables"></Option>
+          <Option name="linux24_path_logger"></Option>
+          <Option name="linux24_path_lsmod"></Option>
+          <Option name="linux24_path_modprobe"></Option>
+          <Option name="linux24_rp_filter">1</Option>
+          <Option name="linux24_tcp_ecn"></Option>
+          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_tcp_fin_timeout">30</Option>
+          <Option name="linux24_tcp_keepalive_interval">1800</Option>
+          <Option name="linux24_tcp_sack"></Option>
+          <Option name="linux24_tcp_syncookies"></Option>
+          <Option name="linux24_tcp_timestamps"></Option>
+          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="load_modules">False</Option>
+          <Option name="local_nat">True</Option>
+          <Option name="log_all">False</Option>
+          <Option name="log_all_dropped">True</Option>
+          <Option name="log_invalid">True</Option>
+          <Option name="log_ip_opt">False</Option>
+          <Option name="log_level">debug</Option>
+          <Option name="log_limit_suffix">/second</Option>
+          <Option name="log_limit_value">0</Option>
+          <Option name="log_prefix">RULE %N - %A **</Option>
+          <Option name="log_tcp_opt">False</Option>
+          <Option name="log_tcp_seq">False</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="no_iochains_for_any">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
+          <Option name="no_optimisation">False</Option>
+          <Option name="output_file"></Option>
+          <Option name="platform">iptables</Option>
+          <Option name="prolog_place">after_flush</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="proxy_arp">True</Option>
+          <Option name="script_env_path"></Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_cprange">0</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="ulog_qthreshold">1</Option>
+          <Option name="useULOG">False</Option>
+          <Option name="use_ULOG">True</Option>
+          <Option name="use_ip_tool">True</Option>
+          <Option name="use_iptables_restore">False</Option>
+          <Option name="use_numeric_log_levels">False</Option>
+          <Option name="verify_interfaces">False</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id35107X1833" name="firewall2-3" comment="copy of firewall2, version &gt;= 1.2.6 " host_OS="linux24" inactive="False" lastCompiled="1215360886" lastInstalled="1142003872" lastModified="1219171107" platform="iptables" ro="False" version="ge_1.2.6">
+        <NAT id="id35364X1833" name="NAT" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id35365X1833" disabled="False" position="0">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id35107X1833"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id35379X1833" disabled="False" position="1">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="sg-Useful_ICMP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id35107X1833"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id35394X1833" disabled="False" position="2">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="sg-Useful_ICMP"/>
+              <ServiceRef ref="ip-IPSEC"/>
+              <ServiceRef ref="id3F3E9EFC"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id35107X1833"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id35411X1833" disabled="False" position="3">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id36045X1833"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id35425X1833" disabled="False" position="4">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id36049X1833"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id35439X1833" disabled="False" position="5">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id48356E0A14854"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id35453X1833" disabled="False" position="6">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id35467X1833" disabled="False" position="7">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3DE47B6C"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id35481X1833" disabled="False" position="8">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="host-hostA"/>
+              <ObjectRef ref="id3D8FC56A"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3AFC191C"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35496X1833" disabled="False" position="9">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+              <ObjectRef ref="host-hostB"/>
+              <ObjectRef ref="id35107X1833"/>
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3D151943"/>
+              <ObjectRef ref="id3D151947"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35514X1833" disabled="False" position="10">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+              <ObjectRef ref="host-hostB"/>
+            </OSrc>
+            <ODst neg="True">
+              <ObjectRef ref="id3D151943"/>
+              <ObjectRef ref="id3D151947"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35530X1833" disabled="False" position="11">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="tcp-NNTP"/>
+              <ServiceRef ref="sg-Useful_ICMP"/>
+              <ServiceRef ref="ip-IPSEC"/>
+              <ServiceRef ref="id3F3E9EFC"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35548X1833" disabled="False" position="12">
+            <OSrc neg="False">
+              <ObjectRef ref="id35107X1833"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="tcp-NNTP"/>
+              <ServiceRef ref="sg-Useful_ICMP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35564X1833" disabled="False" position="13">
+            <OSrc neg="False">
+              <ObjectRef ref="id36045X1833"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="tcp-NNTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35579X1833" disabled="False" position="14">
+            <OSrc neg="False">
+              <ObjectRef ref="id35107X1833"/>
+              <ObjectRef ref="id3B19C5EB"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="tcp-NNTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35595X1833" disabled="True" position="15">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+              <ObjectRef ref="host-hostB"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35610X1833" disabled="False" position="16">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3DE47B6C"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="tcp-NNTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35625X1833" disabled="False" position="17">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFC0F70"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-NNTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35639X1833" disabled="False" position="18">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostB"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3BD6736B"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id35653X1833" disabled="False" position="19">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3BD6736B"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostB"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35667X1833" disabled="False" position="20">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id4368AD8615884"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35681X1833" comment="NETMAP " disabled="False" position="21">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3B665641"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35695X1833" comment="NETMAP" disabled="False" position="22">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3B665641"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35709X1833" disabled="False" position="23">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id35107X1833"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3B20468D"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B20468D"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35723X1833" disabled="False" position="24">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id36042X1833"/>
+              <ObjectRef ref="id36045X1833"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id36039X1833"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35738X1833" disabled="False" position="25">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="tcp-SMTP"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35752X1833" disabled="False" position="26">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id35107X1833"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="id3B4FED69"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35767X1833" disabled="False" position="27">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id36042X1833"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3DDDE4E4"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id3CEBFF26"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35781X1833" disabled="False" position="28">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id36042X1833"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3DDDE4E4"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id3CD87A5E"/>
+              <ObjectRef ref="id3CD87A6D"/>
+              <ObjectRef ref="id3CD87A8B"/>
+              <ObjectRef ref="id3CD87A7C"/>
+              <ObjectRef ref="id3CD87A53"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35799X1833" comment="transparent proxy rule" disabled="False" position="29">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="True">
+              <ObjectRef ref="id3AFADBF9"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id3D151943"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35813X1833" disabled="True" position="30">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id36042X1833"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3DDDE4E4"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+              <ObjectRef ref="host-hostB"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35828X1833" disabled="False" position="31">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3DDDE4E4"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35842X1833" disabled="False" position="32">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3DDDE4E4"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35856X1833" disabled="False" position="33">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id36042X1833"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35870X1833" disabled="False" position="34">
+            <OSrc neg="True">
+              <ObjectRef ref="host-hostA"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id36039X1833"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35884X1833" disabled="False" position="35">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="True">
+              <ObjectRef ref="id40F195D2"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id40F195D2"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35898X1833" disabled="False" position="36">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="True">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id36039X1833"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35912X1833" disabled="False" position="37">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id36039X1833"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id35926X1833" comment="this is the &quot;exception&quot; rule&#10;used in support req. originally" disabled="False" position="38">
+            <OSrc neg="False">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id36044X1833"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C08B5A</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id35940X1833" disabled="False" position="39">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id36041X1833"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C08B5A</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id35954X1833" comment="&quot;exception&quot; rule in the pair&#10;from a support req." disabled="False" position="40">
+            <OSrc neg="False">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id36044X1833"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id35968X1833" comment="testing transparent proxy&#10;roules for a support req." disabled="False" position="41">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id36041X1833"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id35982X1833" comment="testing transparent proxy&#10;roules for a support req." disabled="False" position="42">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id36039X1833"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id35996X1833" comment="testing transparent proxy&#10;roules for a support req." disabled="False" position="43">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id35107X1833"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id36010X1833" comment="&quot;exception&quot; rule in the pair&#10;from a support req." disabled="False" position="44">
+            <OSrc neg="False">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id36044X1833"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C0BA44</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id36024X1833" comment="testing transparent proxy&#10;roules for a support req." disabled="False" position="45">
+            <OSrc neg="True">
+              <ObjectRef ref="id3B4572AF"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id40F195D2"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C0BA44</Option>
+            </NATRuleOptions>
+          </NATRule>
+        </NAT>
+        <Policy id="id35113X1833" name="Policy" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id35114X1833" comment="Anti-spoofing rule" action="Deny" direction="Inbound" disabled="False" log="True" position="0">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id35107X1833"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id36042X1833"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_prefix">Iface: %I RULE %N -- %A **</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id35127X1833" comment="Anti-spoofing rule" action="Deny" direction="Outbound" disabled="False" log="True" position="1">
+            <Src neg="True">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id35107X1833"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id36042X1833"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_prefix">Iface: %I RULE %N -- %A **</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id35140X1833" comment="testing group in &quot;interface&quot;&#10;this rule should be identical to rule 3&#10;" action="Deny" direction="Inbound" disabled="False" log="True" position="2">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-DHCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4653B4A820440"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_mode">dstip</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id35152X1833" action="Deny" direction="Inbound" disabled="False" log="True" position="3">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-DHCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id36042X1833"/>
+              <ObjectRef ref="id36045X1833"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_mode">dstip</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id35165X1833" comment="testing choice of chains in case when several&#10;interfaces are used and rule matches 'any' or&#10;broadcast &#10;" action="Accept" direction="Both" disabled="False" log="False" position="4">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3F6D115C"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-DHCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id36042X1833"/>
+              <ObjectRef ref="id36045X1833"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id35178X1833" action="Accept" direction="Inbound" disabled="False" log="False" position="5">
+            <Src neg="False">
+              <ObjectRef ref="id44C0695713221"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3F6D115C"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-DHCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id36042X1833"/>
+              <ObjectRef ref="id36045X1833"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id35191X1833" action="Accept" direction="Outbound" disabled="False" log="False" position="6">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3F6D115C"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-DHCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id36042X1833"/>
+              <ObjectRef ref="id36045X1833"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id35204X1833" action="Deny" direction="Both" disabled="False" log="True" position="7">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="True">
+              <ServiceRef ref="tcp-TCP-SYN"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id35216X1833" comment="block fragments" action="Deny" direction="Both" disabled="False" log="True" position="8">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="ip-IP_Fragments"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="id"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id35228X1833" comment="sends TCP RST and makes custom record&#10;in the log" action="Reject" direction="Both" disabled="False" log="True" position="9">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-Auth"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject">TCP RST</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_prefix">IDENT</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id35240X1833" action="Reject" direction="Both" disabled="False" log="True" position="10">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="udp-SNMP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject">TCP RST</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id35252X1833" action="Accept" direction="Both" disabled="False" log="True" position="11">
+            <Src neg="False">
+              <ObjectRef ref="id3B022266"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id36050X1833"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id3C1A5D46"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id35264X1833" action="Accept" direction="Both" disabled="False" log="False" position="12">
+            <Src neg="False">
+              <ObjectRef ref="id3B4572AF"/>
+              <ObjectRef ref="id3D8FC56A"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="host-secondary1-com"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id35277X1833" action="Accept" direction="Both" disabled="False" log="False" position="13">
+            <Src neg="False">
+              <ObjectRef ref="host-secondary1-com"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3B4572AF"/>
+              <ObjectRef ref="id3D8FC56A"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id35290X1833" action="Reject" direction="Both" disabled="False" log="False" position="14">
+            <Src neg="True">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id3B022266"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id35303X1833" action="Accept" direction="Both" disabled="False" log="False" position="15">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id3B022266"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id35316X1833" action="Deny" direction="Both" disabled="False" log="True" position="16">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id35328X1833" comment="host-fw2 has the same address as &#10;        one of the firewall's interfaces" action="Accept" direction="Both" disabled="False" log="True" position="17">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3AFC0F70"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-FTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_burst">10</Option>
+              <Option name="limit_suffix">/minute</Option>
+              <Option name="limit_value">5</Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id35340X1833" action="Accept" direction="Both" disabled="False" log="True" position="18">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id35107X1833"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-FTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id35352X1833" comment="'catch all' rule" action="Deny" direction="Both" disabled="False" log="True" position="19">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="id"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Routing id="id36038X1833" name="Routing" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id36039X1833" name="eth0" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False">
+          <IPv4 id="id36041X1833" name="firewall2-3:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id36042X1833" name="eth1" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False">
+          <IPv4 id="id36044X1833" name="firewall2-3:eth1:ip" address="22.22.22.22" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id36045X1833" name="eth3" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False">
+          <IPv4 id="id36048X1833" name="firewall2-3:eth3:ip1" address="22.22.23.23" netmask="255.255.255.0"/>
+          <IPv4 id="id36049X1833" name="firewall2-3:eth3:ip2" address="22.22.25.50" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id36050X1833" name="eth2" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False">
+          <IPv4 id="id36053X1833" name="firewall2-3:eth2:ip1" address="192.168.2.1" netmask="255.255.255.0"/>
+          <IPv4 id="id36054X1833" name="firewall2-3:eth2:ip2" address="192.168.2.40" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id36055X1833" name="lo" bridgeport="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False">
+          <IPv4 id="id36057X1833" name="firewall2-3:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
+        </Interface>
+        <Management address="192.168.1.1">
+          <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
+          <FWBDManagement enabled="True" identity="" port="9999"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">True</Option>
+          <Option name="accept_new_tcp_with_no_syn">False</Option>
+          <Option name="action_on_reject">ICMP net unreachable</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="bridging_fw">False</Option>
+          <Option name="check_shading">False</Option>
+          <Option name="clamp_mss_to_mtu">True</Option>
+          <Option name="classify_mark_terminating">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="debug">False</Option>
+          <Option name="drop_invalid">True</Option>
+          <Option name="dyn_addr">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir"></Option>
+          <Option name="firewall_is_part_of_any">True</Option>
+          <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="id"></Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="inst_cmdline"></Option>
+          <Option name="inst_script"></Option>
+          <Option name="install_script"></Option>
+          <Option name="limit_suffix">/second</Option>
+          <Option name="limit_value">5</Option>
+          <Option name="linux24_accept_redirects">0</Option>
+          <Option name="linux24_accept_source_route">0</Option>
+          <Option name="linux24_icmp_echo_ignore_all">1</Option>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
+          <Option name="linux24_icmp_ignore_bogus_error_responses">1</Option>
+          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="linux24_log_martians">1</Option>
+          <Option name="linux24_path_ip"></Option>
+          <Option name="linux24_path_iptables"></Option>
+          <Option name="linux24_path_logger"></Option>
+          <Option name="linux24_path_lsmod"></Option>
+          <Option name="linux24_path_modprobe"></Option>
+          <Option name="linux24_rp_filter">1</Option>
+          <Option name="linux24_tcp_ecn"></Option>
+          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_tcp_fin_timeout">30</Option>
+          <Option name="linux24_tcp_keepalive_interval">1800</Option>
+          <Option name="linux24_tcp_sack"></Option>
+          <Option name="linux24_tcp_syncookies"></Option>
+          <Option name="linux24_tcp_timestamps"></Option>
+          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="load_modules">False</Option>
+          <Option name="local_nat">True</Option>
+          <Option name="log_all">False</Option>
+          <Option name="log_all_dropped">True</Option>
+          <Option name="log_invalid">True</Option>
+          <Option name="log_ip_opt">False</Option>
+          <Option name="log_level">debug</Option>
+          <Option name="log_limit_suffix">/second</Option>
+          <Option name="log_limit_value">0</Option>
+          <Option name="log_prefix">RULE %N - %A **</Option>
+          <Option name="log_tcp_opt">False</Option>
+          <Option name="log_tcp_seq">False</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="no_iochains_for_any">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
+          <Option name="no_optimisation">False</Option>
+          <Option name="output_file"></Option>
+          <Option name="platform">iptables</Option>
+          <Option name="prolog_place">after_flush</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="proxy_arp">True</Option>
+          <Option name="script_env_path"></Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_cprange">0</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="ulog_qthreshold">1</Option>
+          <Option name="useULOG">False</Option>
+          <Option name="use_ULOG">True</Option>
+          <Option name="use_ip_tool">True</Option>
+          <Option name="use_iptables_restore">False</Option>
+          <Option name="use_numeric_log_levels">False</Option>
+          <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>

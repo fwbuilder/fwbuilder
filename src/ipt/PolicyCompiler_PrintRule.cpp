@@ -405,7 +405,7 @@ string PolicyCompiler_ipt::PrintRule::_printDirectionAndInterface(PolicyRule *ru
         compiler->getCachedFwInterface(rule->getInterfaceId());
 
     if (rule_iface && rule_iface->isBridgePort() &&
-        (version == "1.3.0" || version == "1.4.0"))
+        XMLTools::version_compare(version, "1.3.0")>=0)
     {
         if (rule->getDirection()==PolicyRule::Inbound)   
             ostr << " -m physdev --physdev-in "  << iface_name; 
@@ -1135,7 +1135,9 @@ string PolicyCompiler_ipt::PrintRule::_printTimeInterval(PolicyRule *r)
 
 
     string version=compiler->fw->getStr("version");
-    if (version == "1.4.0")
+
+//    if (version == "1.4.0")
+    if (XMLTools::version_compare(version, "1.4.0")>=0)
     {
         // in 1.4.0 date format has changed, it is now ISO 8601
         // http://www.w3.org/TR/NOTE-datetime

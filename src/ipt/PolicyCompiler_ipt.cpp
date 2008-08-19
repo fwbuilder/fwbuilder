@@ -47,6 +47,7 @@
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/UserService.h"
+#include "fwbuilder/XMLTools.h"
 
 #include "combinedAddress.h"
 
@@ -4211,7 +4212,8 @@ string PolicyCompiler_ipt::flushAndSetDefaultPolicy()
     res += printRule->_flushAndSetDefaultPolicy();
 
     string version = fw->getStr("version");
-    if (version != "1.3.0" && version != "1.4.0")
+//  if (version != "1.3.0" && version != "1.4.0")
+    if (XMLTools::version_compare(version, "1.3.0")<0)
         res += printRule->_clampTcpToMssRule();
 
     res += printRule->_printOptionalGlobalRules();
@@ -4226,11 +4228,8 @@ string PolicyCompiler_ipt::commit()
 
 bool PolicyCompiler_ipt::newIptables(const string &version)
 {
-    return (version.empty() || 
-            version == "ge_1.2.6" ||
-            version == "1.2.9" ||
-            version == "1.3.0" ||
-            version == "1.4.0");
+    return (version.empty() || version=="ge_1.2.6" ||
+            XMLTools::version_compare(version, "1.2.6")>=0);
 }
 
 

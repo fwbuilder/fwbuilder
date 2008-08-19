@@ -41,6 +41,7 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/XMLTools.h"
 
 #include "combinedAddress.h"
 
@@ -367,7 +368,8 @@ string NATCompiler_ipt::PrintRule::_printSrcService(RuleElementOSrv  *rel)
 	if ( !str.empty() )
         {
             string v = compiler->fw->getStr("version");
-            if (v.empty() || v=="ge_1.2.6" || v=="1.2.9" || v=="1.3.0")
+            if (v.empty() || v=="ge_1.2.6" ||
+                XMLTools::version_compare(v, "1.2.6")>=0)
                 ostr << "--sports ";
             else
                 ostr << "--source-port ";
@@ -436,7 +438,9 @@ string NATCompiler_ipt::PrintRule::_printDstService(RuleElementOSrv  *rel)
 	if ( !str.empty() )
         {
             string v = compiler->fw->getStr("version");
-            if (v.empty() || v=="ge_1.2.6" || v=="1.2.9" || v=="1.3.0")
+//            if (v.empty() || v=="ge_1.2.6" || v=="1.2.9" || v=="1.3.0")
+            if (v.empty() || v=="ge_1.2.6" ||
+                XMLTools::version_compare(v, "1.2.6")>=0)
                 ostr << "--dports ";
             else
                 ostr << "--destination-port ";
