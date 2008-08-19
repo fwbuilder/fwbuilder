@@ -1772,8 +1772,11 @@ FWObject* ObjectManipulator::duplicateWithDependencies(FWObject *target,
     nobj->ref();
     //if renew_id == true creates new object ID
     nobj->duplicate(obj, true);
-    makeNameUnique(target, nobj);
-    target->add( nobj );
+    if (target)
+    {
+        makeNameUnique(target, nobj);
+        target->add( nobj );
+    }
 
     map_ids[obj->getId()] = nobj->getId();
 

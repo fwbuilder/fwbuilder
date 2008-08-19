@@ -4319,9 +4319,18 @@ void RuleSetView::pasteRuleAbove()
     for (i= FWObjectClipboard::obj_clipboard->rbegin();
          i!=FWObjectClipboard::obj_clipboard->rend(); ++i)
     {
-        FWObject *co= m_project->db()->findInIndex(i->first);
+        ProjectPanel *proj_p = i->second;
+        FWObject *co = proj_p->db()->findInIndex(i->first);
         if (!Rule::cast(co)) continue;
-        insertRule( firstSelectedRow, co);
+        if (proj_p==m_project)
+        {
+            insertRule( firstSelectedRow, co);
+        } else 
+        {
+            // rule is being copied from another project file
+            co = m_project->m_panel->om->duplicateWithDependencies(NULL, co);
+            insertRule( firstSelectedRow, co);
+        }
     }
 
     changingRules = false;

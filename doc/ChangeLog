@@ -1,3 +1,12 @@
+2008-08-19  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::pasteRuleAbove): Permit copy/paste
+	of individual rules between two data files. When a rule is copied
+	this way, all objects used in this rule are copied as well.
+
+	* FWWindow.cpp (FWWindow::recreateWindowsMenu): fixed typo in the
+	main menu item name
+
 2008-08-18  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Compiler.cpp (Compiler::complexMatch): (change in libfwbuilder)

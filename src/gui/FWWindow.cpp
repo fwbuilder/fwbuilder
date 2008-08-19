@@ -1528,7 +1528,7 @@ void FWWindow::recreateWindowsMenu ()
     m_mainWindow->menuWindow->clear();
     QAction * close = m_mainWindow->menuWindow->addAction ("Close");
     QAction * closeAll = m_mainWindow->menuWindow->addAction ("Close All");
-    QAction * title = m_mainWindow->menuWindow->addAction ("Title");
+    QAction * title = m_mainWindow->menuWindow->addAction ("Tile");
     QAction * cascade = m_mainWindow->menuWindow->addAction ("Cascade");
     QAction * next = m_mainWindow->menuWindow->addAction ("Next");
     QAction * previous = m_mainWindow->menuWindow->addAction ("Previous");
