@@ -4,6 +4,10 @@
 	compiler for iptables used chain OUTPUT instead of FORWARD if
 	NetworkIPv6 was used in "source".
 
+	* Compiler.cpp (Compiler::checkIfAddressesMatch): comparing both
+	ipv4 and ipv6 addresses while searching for interface that matches
+	given address.
+
 2008-08-15  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* AddressTable.cpp (AddressTable::loadFromSource): when

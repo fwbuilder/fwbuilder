@@ -709,6 +709,7 @@ bool Compiler::complexMatch(Address *obj1,
     // TODO: this can be expensive since we create and return temporary
     // list object only to get its size. Need method FWObject::countByType
     if ((obj1->getByType(IPv4::TYPENAME)).size()>1) return false;
+    if ((obj1->getByType(IPv6::TYPENAME)).size()>1) return false;
 
     const InetAddr *obj1_addr = obj1->getAddressPtr();
     // obj1_addr may be NULL if obj1 does not have any real address,
@@ -757,21 +758,25 @@ Interface* Compiler::findInterfaceFor(const Address *obj1, const Address *obj2)
 
         if ( iface->isRegular() && obj1->getAddressPtr() != NULL)
         {
-            FWObjectTypedChildIterator k=iface->findByType(IPv4::TYPENAME);
-            for ( ; k!=k.end(); ++k ) 
+            if (obj1->getAddressPtr()->isV4())
             {
-                Address *addr = Address::cast(*k);
-                assert(addr);
-
-                if ((*k)->getId() == obj1->getId() ) return iface;
-
-                if (*(addr->getAddressPtr()) == *(obj1->getAddressPtr()) )
-                    return iface;
-
-                if (Network::constcast(obj1)!=NULL && 
-                    obj1->belongs(*(addr->getAddressPtr()))) return iface; 
-
-                if ( addr->belongs( *(obj1->getAddressPtr()) ) ) return iface;
+                FWObjectTypedChildIterator k= iface->findByType(IPv4::TYPENAME);
+                for ( ; k!=k.end(); ++k ) 
+                {
+                    Address *addr = Address::cast(*k);
+                    assert(addr);
+                    if (checkIfAddressesMatch(addr, obj1)) return iface;
+                }
+            }
+            if (obj1->getAddressPtr()->isV6())
+            {
+                FWObjectTypedChildIterator k= iface->findByType(IPv6::TYPENAME);
+                for ( ; k!=k.end(); ++k ) 
+                {
+                    Address *addr = Address::cast(*k);
+                    assert(addr);
+                    if (checkIfAddressesMatch(addr, obj1)) return iface;
+                }
             }
         }
     }
@@ -786,31 +791,45 @@ FWObject* Compiler::findAddressFor(const Address *obj1,const Address *obj2)
 	Interface *iface=Interface::cast(*j);
 	assert(iface);
 
-        if (iface->getId()      == obj1->getId() )      return iface;
+        if (iface->getId() == obj1->getId() )      return iface;
 
         if ( iface->isRegular() )
         {
-            FWObjectTypedChildIterator k=iface->findByType(IPv4::TYPENAME);
-            for ( ; k!=k.end(); ++k ) 
+            if (obj1->getAddressPtr()->isV4())
             {
-                Address *addr = Address::cast(*k);
-                assert(addr);
-
-                if ((*k)->getId() == obj1->getId()) return (*k);
-
-                if (*(addr->getAddressPtr()) == *(obj1->getAddressPtr()) )
-                    return (*k);
-
-                if (Network::constcast(obj1)!=NULL &&
-                    obj1->belongs(*(addr->getAddressPtr()))) return (*k);
-
-                if (addr->belongs( *(obj1->getAddressPtr()))) return (*k);
+                FWObjectTypedChildIterator k= iface->findByType(IPv4::TYPENAME);
+                for ( ; k!=k.end(); ++k ) 
+                {
+                    Address *addr = Address::cast(*k);
+                    assert(addr);
+                    if (checkIfAddressesMatch(addr, obj1)) return (*k);
+                }
+            }
+            if (obj1->getAddressPtr()->isV6())
+            {
+                FWObjectTypedChildIterator k= iface->findByType(IPv6::TYPENAME);
+                for ( ; k!=k.end(); ++k ) 
+                {
+                    Address *addr = Address::cast(*k);
+                    assert(addr);
+                    if (checkIfAddressesMatch(addr, obj1)) return (*k);
+                }
             }
         }
     }
     return NULL;
 }
         
+bool Compiler::checkIfAddressesMatch(const Address *a1, const Address *a2)
+{
+    if (a1->getId() == a2->getId()) return true;
+    if (*(a1->getAddressPtr()) == *(a2->getAddressPtr()) ) return true;
+    if ((Network::constcast(a2)!=NULL || NetworkIPv6::constcast(a2)!=NULL) &&
+        a2->belongs(*(a1->getAddressPtr()))) return true;
+    if ((Network::constcast(a1)!=NULL || NetworkIPv6::constcast(a1)!=NULL) &&
+        a1->belongs(*(a2->getAddressPtr()))) return true;
+    return false;
+}
 
 
 void Compiler::debugRule()

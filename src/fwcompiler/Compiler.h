@@ -139,6 +139,10 @@ namespace fwcompiler {
                                       libfwbuilder::Interface *iface,
                                       const std::string &address_type,
                                       bool recognize_broadcasts);
+
+        bool checkIfAddressesMatch(const libfwbuilder::Address *a1,
+                                   const libfwbuilder::Address *a2);
+
 	protected:
 
         int  _cntr_;
