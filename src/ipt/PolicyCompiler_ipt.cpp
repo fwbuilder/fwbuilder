@@ -43,6 +43,7 @@
 #include "fwbuilder/physAddress.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/UserService.h"
@@ -2209,7 +2210,7 @@ bool PolicyCompiler_ipt::splitIfSrcFWNetwork::processNext()
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             Address *a = Address::cast(o);
             FWObject *na;
-            if (Network::isA(a) &&
+            if ((Network::isA(o) || NetworkIPv6::isA(o)) &&
                 (na=compiler->findAddressFor(a, compiler->fw ))!=NULL)
             {
                 obj_subst[a]=na;
@@ -2281,7 +2282,7 @@ bool PolicyCompiler_ipt::splitIfDstFWNetwork::processNext()
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             Address *a = Address::cast(o);
             FWObject *na;
-            if (Network::isA(a) &&
+            if ((Network::isA(a) || NetworkIPv6::isA(a)) &&
                 (na=compiler->findAddressFor(a, compiler->fw))!=NULL)
             {
                 obj_subst[a]=na;
@@ -2617,7 +2618,8 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
         return true;
     }
 
-    Address        *src   =compiler->getFirstSrc(rule);  assert(src);
+    Address *src = compiler->getFirstSrc(rule);
+    assert(src);
 
 /* Bug 811860: "IPTables Compiler Firewall IP to Input Chain".
  * on a bridging firewall rules not associated with interfaces should
@@ -2663,14 +2665,14 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
     {
     case PolicyRule::Outbound:
 /* if direction is "Outbound", chain can never be INPUT, but could be FORWARD */
-        if (!src->isAny() && compiler->complexMatch(src,compiler->fw,b,m))
+        if (!src->isAny() && compiler->complexMatch(src, compiler->fw, b, m))
             rule->setStr("ipt_chain","OUTPUT");
         break;
 
     case PolicyRule::Both:
 /* direction == Both
  */
-        if (!src->isAny() && compiler->complexMatch(src,compiler->fw,b,m)) 
+        if (!src->isAny() && compiler->complexMatch(src, compiler->fw, b, m)) 
         {
             rule->setStr("ipt_chain","OUTPUT");
             rule->setDirection( PolicyRule::Outbound );
