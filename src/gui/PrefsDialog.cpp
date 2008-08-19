@@ -98,8 +98,6 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->tabWidget->removeTab(6);
     m_dialog->tabWidget->setCurrentIndex(0);
 
-
-
     m_dialog->wDir->setText( st->getWDir() );
 
     m_dialog->objTooltips->setChecked( st->getObjTooltips() );
@@ -201,6 +199,9 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
 
     m_dialog->checkUpdates->setChecked(st->getCheckUpdates() );
 
+#if !defined(Q_OS_WIN32)
+    m_dialog->plink_hint->hide();
+#endif
 }
 
 QString PrefsDialog::getFontDescription(const QFont &font)

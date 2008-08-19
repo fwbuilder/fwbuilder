@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>620</width>
+    <width>626</width>
     <height>368</height>
    </rect>
   </property>
@@ -22,7 +22,7 @@
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="Widget2" >
       <attribute name="title" >
@@ -321,44 +321,7 @@
        <string>SSH</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
-       </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>6</number>
-       </property>
-       <property name="verticalSpacing" >
-        <number>6</number>
-       </property>
-       <item row="3" column="0" colspan="2" >
-        <widget class="QLineEdit" name="sshPath" />
-       </item>
-       <item row="4" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="2" column="0" >
+       <item row="0" column="0" >
         <widget class="QLabel" name="textLabel1_5_2" >
          <property name="text" >
           <string>A full path to the Secure Shell utility (remote command execution; for example ssh on Unix or plink.exe or vsh.exe on Windows):</string>
@@ -371,7 +334,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="1" >
+       <item row="0" column="1" >
         <widget class="QPushButton" name="browseForSSH" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
@@ -383,6 +346,48 @@
           <string>Browse...</string>
          </property>
         </widget>
+       </item>
+       <item row="1" column="0" colspan="2" >
+        <widget class="QLineEdit" name="sshPath" />
+       </item>
+       <item row="2" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="3" column="0" colspan="2" >
+        <widget class="QLabel" name="plink_hint" >
+         <property name="text" >
+          <string>Download plink.exe from the web site at http://www.chiark.greenend.org.uk/~sgtatham/putty/</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>505</width>
+           <height>61</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
