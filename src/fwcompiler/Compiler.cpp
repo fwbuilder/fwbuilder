@@ -824,9 +824,13 @@ bool Compiler::checkIfAddressesMatch(const Address *a1, const Address *a2)
 {
     if (a1->getId() == a2->getId()) return true;
     if (*(a1->getAddressPtr()) == *(a2->getAddressPtr()) ) return true;
-    if ((Network::constcast(a2)!=NULL || NetworkIPv6::constcast(a2)!=NULL) &&
+    if ((Network::constcast(a2)!=NULL ||
+         NetworkIPv6::constcast(a2)!=NULL ||
+         Interface::constcast(a2->getParent())) &&
         a2->belongs(*(a1->getAddressPtr()))) return true;
-    if ((Network::constcast(a1)!=NULL || NetworkIPv6::constcast(a1)!=NULL) &&
+    if ((Network::constcast(a1)!=NULL ||
+         NetworkIPv6::constcast(a1)!=NULL ||
+         Interface::constcast(a1->getParent())) &&
         a1->belongs(*(a2->getAddressPtr()))) return true;
     return false;
 }
