@@ -1,3 +1,9 @@
+2008-08-18  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Compiler.cpp (Compiler::complexMatch): fixed bug (no #): policy
+	compiler for iptables used chain OUTPUT instead of FORWARD if
+	NetworkIPv6 was used in "source".
+
 2008-08-15  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* AddressTable.cpp (AddressTable::loadFromSource): when

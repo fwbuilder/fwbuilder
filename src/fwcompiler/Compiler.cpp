@@ -32,6 +32,7 @@
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/ICMP6Service.h"
@@ -649,27 +650,26 @@ bool Compiler::complexMatch(Address *obj1,
                             bool recognize_broadcasts,
                             bool recognize_multicasts)
 {
-    if (Network::isA(obj1))
+    if (Network::isA(obj1) || NetworkIPv6::isA(obj1))
     {
         /*
          * bug #1055937: "Any->all_multicasts not in INPUT Chain"
          * Need to check for multicast networks. We assume they always
          * match if obj2 is firewall
          */
-        Network *nobj1 = Network::cast(obj1);
-        const InetAddr *inet_addr = nobj1->getAddressPtr();
+        //Network *nobj1 = Network::cast(obj1);
+        const InetAddr *inet_addr = obj1->getAddressPtr();
         if (inet_addr)
         {
             if (inet_addr->isMulticast() && Firewall::isA(obj2))
                 return true;
-
             /*
              * need to check for network object with mask 255.255.255.255
              * Such objects are created by the method that expands address
              * ranges, and some often used ranges trigger that (like
              * "255.255.255.255-255.255.255.255" or "0.0.0.0-0.0.0.0")
              */
-            if (!nobj1->getNetmaskPtr()->isHostMask())
+            if (!obj1->getNetmaskPtr()->isHostMask())
                 return false;
         } else
             warning(string("Network object with no InetAddr: id=") +
