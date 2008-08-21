@@ -1,3 +1,14 @@
+2008-08-20  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectTreeView.cpp (ObjectTreeView::ObjectTreeView): Fixed GUI
+	crash on Ubuntu Hardy that happened b/c of a bug in QT
+	4.3.4. Crash happened when user added second object to any branch
+	of the tree. When second object was added to the tree, the program
+	terminated with assertion "ASSERT: "left.level > right.level" in
+	file itemviews/qtreeview.cpp". This did not happen with QT 4.4.1
+	and 4.3.2 (could not test with 4.3.5). The fix was to disable
+	sorting in the QTreeView widget used to represent object tree.
+
 2008-08-19  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* NATCompiler_PrintRule.cpp (PrintRule::_printSrcService): fixed

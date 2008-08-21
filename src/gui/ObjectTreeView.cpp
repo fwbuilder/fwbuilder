@@ -133,20 +133,18 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
 
     setMinimumSize( QSize( 100, 0 ) );
 
-//    QFont objTreeView_font(  font() );
-//    setFont( objTreeView_font );
-//    setCursor( QCursor( 0 ) );
-
-//  setColumnWidthMode(0, QTreeWidget::Maximum);
-//  setItemMargin( 2 );
-
     setAutoScroll( TRUE );
     setAllColumnsShowFocus( TRUE );
     setSelectionMode( ExtendedSelection );
     setAcceptDrops( true );
     setDragDropMode( QAbstractItemView::DragDrop );
     setRootIsDecorated( TRUE );
-    setSortingEnabled(true);
+
+// disable sorting, otherwise gui crashes when built with
+// QT 4.3.4 (discovered on Ubuntu Hardy). Crash happened when
+// second object was added to any branch of the tree.
+//
+//    setSortingEnabled(true);
 }
 
 bool ObjectTreeView::event( QEvent *event )

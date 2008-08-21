@@ -289,6 +289,8 @@ ObjectTreeViewItem* ObjectManipulator::insertObject( ObjectTreeViewItem *itm,
             obj->getTypeName() + "/hidden") ) return NULL;
 
     nitm = new ObjectTreeViewItem( itm );
+
+
     nitm->setLib("");
     nitm->setText( 0, getTreeLabel(obj) );
     QPixmap pm;
@@ -2773,7 +2775,13 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
     nobj->setName( string(objName.toUtf8().constData()) );
     makeNameUnique(parent, nobj);
     parent->add(nobj);
-    insertSubtree(allItems[parent], nobj);
+
+    ObjectTreeViewItem* parent_item = allItems[parent];
+    if (fwbdebug)
+        qDebug("insertSubtree: parent=%s  allItems[parent]=%p",
+               parent->getName().c_str(), parent_item);
+
+    insertSubtree(parent_item, nobj);
     m_project->db()->setDirty(true);
     mw->reloadAllWindowsWithFile(m_project);
     return nobj;
