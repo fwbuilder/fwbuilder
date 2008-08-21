@@ -67,6 +67,7 @@
 
 #include <errno.h>
 
+#define LONG_ERROR_CUTOFF 1024
 
 using namespace Ui;
 using namespace libfwbuilder;
@@ -524,7 +525,7 @@ void ProjectPanel::fileCompare()
         if (dobj) db1->remove(dobj, false);
     } catch(FWException &ex)
     {
-        QMessageBox::warning(
+        QMessageBox::critical(
             this,"Firewall Builder",
             tr("Error loading file %1:\n%2").
                  arg(fname1).arg(ex.toString().c_str()),
@@ -543,7 +544,7 @@ void ProjectPanel::fileCompare()
         if (dobj) db2->remove(dobj, false);
     } catch(FWException &ex)
     {
-        QMessageBox::warning(
+        QMessageBox::critical(
             this,"Firewall Builder",
             tr("Error loading file %1:\n%2").
                  arg(fname2).arg(ex.toString().c_str()),
@@ -615,7 +616,7 @@ void ProjectPanel::fileCompare()
 
     } catch(FWException &ex)
     {
-        QMessageBox::warning(
+        QMessageBox::critical(
             this,"Firewall Builder",
             tr("Unexpected error comparing files %1 and %2:\n%3").
                  arg(fname1).arg(fname2).arg(ex.toString().c_str()),
@@ -845,7 +846,7 @@ void ProjectPanel::exportLibraryTo(QString fname,list<FWObject*> &selectedLibs, 
         if (access( fname.toLatin1().constData(), W_OK)!=0 && errno==EACCES)
             err=QObject::tr("File is read-only");
 
-        QMessageBox::warning(
+        QMessageBox::critical(
             this,"Firewall Builder",
             QObject::tr("Error saving file %1: %2")
             .arg(fname).arg(err),
@@ -942,11 +943,17 @@ void ProjectPanel::loadLibrary(const string &libfpath)
 
     } catch(FWException &ex)
     {
-        QMessageBox::warning(
+        QString error_txt = ex.toString().c_str();
+        if (error_txt.length() > LONG_ERROR_CUTOFF) 
+        {
+            error_txt.truncate(LONG_ERROR_CUTOFF);
+            error_txt += "\n\n" + tr("(Long error message was truncated)");
+        }
+        QMessageBox::critical(
             this,"Firewall Builder",
             tr("The program encountered error trying to load file %1.\n"
                "The file has not been loaded. Error:\n%2").
-                 arg(libfpath.c_str()).arg(ex.toString().c_str()),
+                 arg(libfpath.c_str()).arg(error_txt),
             tr("&Continue"), QString::null,QString::null,
             0, 1 );
     }
@@ -1010,7 +1017,7 @@ void ProjectPanel::load(QWidget*)
 
     } catch(FWException &ex)
     {
-        QMessageBox::warning(
+        QMessageBox::critical(
             this,"Firewall Builder",
             tr("Error loading file:\n%1").arg(ex.toString().c_str()),
             tr("&Continue"), QString::null,QString::null,
@@ -1205,32 +1212,45 @@ void ProjectPanel::load(QWidget*,
 
     } catch(FWException &ex)
     {
-        string trans = ex.getProperties()["failed_transformation"];
-        string elem  = ex.getProperties()["failed_element"];
+        QString trans = ex.getProperties()["failed_transformation"].c_str();
+        QString elem  = ex.getProperties()["failed_element"].c_str();
 
-        if(!trans.empty() || !elem.empty())
+        if(!trans.isEmpty() || !elem.isEmpty())
         {
             QString msg = tr("Exception: %1").arg(ex.toString().c_str());
-            if (!trans.empty())
-        msg+="\n"+tr("Failed transformation : %1").arg(trans.c_str());
-            if (!elem.empty())
-        msg+="\n"+tr("XML element : %1").arg(elem.c_str());
-
-             QMessageBox::warning(
-                 this,"Firewall Builder",
-                 tr("The program encountered error trying to load data file.\n"
-                    "The file has not been loaded. Error:\n%1").arg(msg),
-                 tr("&Continue"), QString::null,QString::null,
-                 0, 1 );
+            if (!trans.isEmpty())
+            {
+                trans.truncate(LONG_ERROR_CUTOFF);
+                msg+="\n"+tr("Failed transformation : %1").arg(trans);
+            }
+            if (!elem.isEmpty())
+            {
+                elem.truncate(LONG_ERROR_CUTOFF);
+                msg+="\n"+tr("XML element : %1").arg(elem);
+            }
+            QMessageBox::critical(
+                this,"Firewall Builder",
+                tr("The program encountered error trying to load data file.\n"
+                   "The file has not been loaded. Error:\n%1").arg(msg),
+                tr("&Continue"), QString::null,QString::null,
+                0, 1 );
         } else
-             QMessageBox::warning(
-                 this,"Firewall Builder",
-                 tr("The program encountered error trying to load data file.\n"
-                    "The file has not been loaded. Error:\n%1").arg(
-                        ex.toString().c_str()),
-                 tr("&Continue"), QString::null,QString::null,
-                 0, 1 );
+        {
+            QString error_txt = ex.toString().c_str();
+            if (error_txt.length() > LONG_ERROR_CUTOFF) 
+            {
+                error_txt.truncate(LONG_ERROR_CUTOFF);
+                error_txt += "\n\n" + tr("(Long error message was truncated)");
+            }
 
+            QMessageBox::critical(
+                this,"Firewall Builder",
+                tr("The program encountered error trying to load data file.\n"
+                   "The file has not been loaded. Error:\n%1").arg(
+                       error_txt),
+                tr("&Continue"), QString::null,QString::null,
+                0, 1 );
+        }
         load(this);
         return;
     }
@@ -1498,31 +1518,45 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
 
     } catch(FWException &ex)
     {
-        string trans = ex.getProperties()["failed_transformation"];
-        string elem  = ex.getProperties()["failed_element"];
+        QString trans = ex.getProperties()["failed_transformation"].c_str();
+        QString elem  = ex.getProperties()["failed_element"].c_str();
 
-        if(!trans.empty() || !elem.empty())
+        if(!trans.isEmpty() || !elem.isEmpty())
         {
             QString msg = tr("Exception: %1").arg(ex.toString().c_str());
-            if (!trans.empty())
-        msg+="\n"+tr("Failed transformation : %1").arg(trans.c_str());
-            if (!elem.empty())
-        msg+="\n"+tr("XML element : %1").arg(elem.c_str());
-
-             QMessageBox::warning(
+            if (!trans.isEmpty())
+            {
+                trans.truncate(LONG_ERROR_CUTOFF);
+                msg+="\n"+tr("Failed transformation : %1").arg(trans);
+            }
+            if (!elem.isEmpty())
+            {
+                elem.truncate(LONG_ERROR_CUTOFF);
+                msg+="\n"+tr("XML element : %1").arg(elem);
+            }
+             QMessageBox::critical(
                  this,"Firewall Builder",
                  tr("The program encountered error trying to load data file.\n"
                     "The file has not been loaded. Error:\n%1").arg(msg),
                  tr("&Continue"), QString::null,QString::null,
                  0, 1 );
         } else
-             QMessageBox::warning(
+        {
+            QString error_txt = ex.toString().c_str();
+            if (error_txt.length() > LONG_ERROR_CUTOFF) 
+            {
+                error_txt.truncate(LONG_ERROR_CUTOFF);
+                error_txt += "\n\n" + tr("(Long error message was truncated)");
+            }
+
+             QMessageBox::critical(
                  this,"Firewall Builder",
                  tr("The program encountered error trying to load data file.\n"
                     "The file has not been loaded. Error:\n%1").arg(
-                        ex.toString().c_str()),
+                        error_txt),
                  tr("&Continue"), QString::null,QString::null,
                  0, 1 );
+        }
         // load standard objects so the window does not remain empty
         load(this);
         return;
@@ -1597,7 +1631,7 @@ bool ProjectPanel::checkin(bool unlock)
     }
     catch (FWException &ex)
     {
-        QMessageBox::warning(
+        QMessageBox::critical(
             this,"Firewall Builder",
             tr("Error checking in file %1:\n%2")
             .arg(rcs->getFileName()).arg(ex.toString().c_str()),
@@ -1687,7 +1721,7 @@ void ProjectPanel::save()
             else
                 err=ex.toString().c_str();
 
-            QMessageBox::warning(
+            QMessageBox::critical(
                 this,"Firewall Builder",
                 tr("Error saving file %1: %2")
                 .arg(rcs->getFileName()).arg(err),

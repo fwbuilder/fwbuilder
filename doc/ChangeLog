@@ -1,3 +1,12 @@
+2008-08-21  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ProjectPanel_file_ops.cpp (ProjectPanel::load): truncating very
+	long error messages that happen when GUI tries to load broken .fwb
+	file. These error messages contain complete output of the XML
+	parser which can be very long and does not fit in the normal error
+	dialog. Message will be cut off at 1000 characters which is enough
+	to see the topmost part of the parser output.
+
 2008-08-20  vadim  <vadim@vk.crocodile.org>
 
 	* ObjectTreeView.cpp (ObjectTreeView::ObjectTreeView): Fixed GUI
