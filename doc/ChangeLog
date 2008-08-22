@@ -1,3 +1,11 @@
+2008-08-22  vadim  <vadim@vk.crocodile.org>
+
+	* ipt.cpp (main): additional fix for the bug #2051629 "group with
+	dns names are handled as empty": Compiler should check if any
+	rules of given address family exists before running
+	preprocessor. This is to prevent it from trying to resolve DNSName
+	objects for IPv6 when there are no ipv6 rules.
+
 2008-08-21  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ProjectPanel_file_ops.cpp (ProjectPanel::load): truncating very

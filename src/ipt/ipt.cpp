@@ -608,18 +608,47 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         {
             bool ipv6_policy = *i;
 
-            // clear chain tracker map only between ipv4/ipv6 runs
-            // Don't clear it between compiler runs for different
-            // policy or nat objects for the same address family.
+            /*
+              clear chain tracker map only between ipv4/ipv6 runs
+              Don't clear it between compiler runs for different
+              policy or nat objects for the same address family.
+            */
             minus_n_commands_filter.clear();
             minus_n_commands_mangle.clear();
             minus_n_commands_nat.clear();
 
-            Preprocessor* prep = new Preprocessor(
-                objdb , fwobjectname, ipv6_policy);
-            if (test_mode) prep->setTestMode();
-            prep->compile();
+            /*
+              We need to create and run preprocessor for this address
+              family before nat and policy compilers, but if there are
+              no nat / policy rules for this address family, we do not
+              need preprocessor either.
+            */
 
+            // Count rules for each address family
+            int nat_count = 0;
+            int policy_count = 0;
+
+            for (list<FWObject*>::iterator p=all_nat.begin();
+                 p!=all_nat.end(); ++p)
+            {
+                NAT *nat = NAT::cast(*p);
+                if (nat->isV6()==ipv6_policy) nat_count++;
+            }
+
+            for (list<FWObject*>::iterator p=all_policies.begin();
+                 p!=all_policies.end(); ++p)
+            {
+                Policy *policy = Policy::cast(*p);
+                if (policy->isV6()==ipv6_policy) policy_count++;
+            }
+
+            if (nat_count || policy_count)
+            {
+                Preprocessor* prep = new Preprocessor(
+                    objdb , fwobjectname, ipv6_policy);
+                if (test_mode) prep->setTestMode();
+                prep->compile();
+            }
 
             ostringstream reset_rules;
             ostringstream c_str;

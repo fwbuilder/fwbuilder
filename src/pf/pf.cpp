@@ -699,10 +699,31 @@ int main(int argc, char * const *argv)
         {
             bool ipv6_policy = *i;
 
-            Preprocessor_pf* prep = new Preprocessor_pf(
-                objdb , fwobjectname, ipv6_policy);
-            if (test_mode) prep->setTestMode();
-            prep->compile();
+            // Count rules for each address family
+            int nat_count = 0;
+            int policy_count = 0;
+
+            for (list<FWObject*>::iterator p=all_nat.begin();
+                 p!=all_nat.end(); ++p)
+            {
+                NAT *nat = NAT::cast(*p);
+                if (nat->isV6()==ipv6_policy) nat_count++;
+            }
+
+            for (list<FWObject*>::iterator p=all_policies.begin();
+                 p!=all_policies.end(); ++p)
+            {
+                Policy *policy = Policy::cast(*p);
+                if (policy->isV6()==ipv6_policy) policy_count++;
+            }
+
+            if (nat_count || policy_count)
+            {
+                Preprocessor_pf* prep = new Preprocessor_pf(
+                    objdb , fwobjectname, ipv6_policy);
+                if (test_mode) prep->setTestMode();
+                prep->compile();
+            }
 
             list<NATCompiler_pf::redirectRuleInfo> redirect_rules_info;
 

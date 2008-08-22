@@ -371,8 +371,21 @@ int main(int argc, char * const * argv)
         {
             bool ipv6_policy = *i;
 
-            Preprocessor* prep = new Preprocessor(objdb , fwobjectname, false);
-            prep->compile();
+            // Count rules for each address family
+            int policy_count = 0;
+
+            for (list<FWObject*>::iterator p=all_policies.begin();
+                 p!=all_policies.end(); ++p)
+            {
+                Policy *policy = Policy::cast(*p);
+                if (policy->isV6()==ipv6_policy) policy_count++;
+            }
+            if (policy_count)
+            {
+                Preprocessor* prep = new Preprocessor(objdb,
+                                                      fwobjectname, false);
+                prep->compile();
+            }
 
             for (list<FWObject*>::iterator p=all_policies.begin();
                  p!=all_policies.end(); ++p )

@@ -608,14 +608,6 @@ int main( int argc, char *argv[] )
         init(argv);
         init_platforms();
 
-#if 0
-        if (fwbdebug) qDebug("Creating app ...");
-        //QApplication::setDesktopSettingsAware(desktopaware);
-        app = new QApplication( argc, argv );
-        app->setOrganizationName(QLatin1String("NetCitadel LLC"));
-        app->setApplicationName(QLatin1String("Firewall Builder"));
-#endif
-
         Q_INIT_RESOURCE(MainRes);
 
         if (fwbdebug) qDebug("Reading settings ...");
@@ -632,7 +624,6 @@ int main( int argc, char *argv[] )
                            "3.0",
                            true, true, fwbdebug);
 #endif
-
         if (cli_print)
         {
             if (fwbdebug) qDebug("Print from command line");
@@ -642,7 +633,7 @@ int main( int argc, char *argv[] )
             return 0;
         }
 
-        string full_res_path = respath+FS_SEPARATOR+"resources.xml";
+        string full_res_path = respath + FS_SEPARATOR + "resources.xml";
 
         if (fwbdebug)
         {
@@ -653,13 +644,9 @@ int main( int argc, char *argv[] )
         new Resources(full_res_path);
         if (fwbdebug) qDebug("done");
 
-#if 0
-        QApplication::setDesktopSettingsAware(desktopaware);
-        app = new QApplication( argc, argv );
-#endif
-
         vector<std::string> platforms=Resources::getListOfPlatforms();
-        if (platforms.empty() || ( platforms.size()==1 && platforms.front()=="unknown" ))
+        if (platforms.empty() || (
+                platforms.size()==1 && platforms.front()=="unknown" ))
         {
             qDebug("Failed to load list of supported platforms");
             exit(1);
