@@ -129,6 +129,16 @@ void IPService::fromXML(xmlNodePtr root) throw(FWException)
     }
 }
 
+xmlNodePtr IPService::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+
+    return me;
+}
+
 string IPService::getTOSCode() const
 {
     return getStr("tos");

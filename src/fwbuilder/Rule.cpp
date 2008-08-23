@@ -355,6 +355,9 @@ void PolicyRule::fromXML(xmlNodePtr root) throw(FWException)
 xmlNodePtr PolicyRule::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+//    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+
     FWObject *o;
     
     if ( (o=getFirstByType( RuleElementSrc::TYPENAME ))!=NULL )
@@ -617,6 +620,9 @@ void NATRule::fromXML(xmlNodePtr root) throw(FWException)
 xmlNodePtr NATRule::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+//    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+
     FWObject *o;
 
     if ( (o=getFirstByType( RuleElementOSrc::TYPENAME ))!=NULL )
@@ -843,6 +849,9 @@ void RoutingRule::fromXML(xmlNodePtr root) throw(FWException)
 xmlNodePtr RoutingRule::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+//    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+
     FWObject *o;
 
     if ( (o=getFirstByType( RuleElementRDst::TYPENAME ))!=NULL )

@@ -77,6 +77,9 @@ void RuleSet::fromXML(xmlNodePtr root) throw(FWException)
 xmlNodePtr RuleSet::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+
     string ipv6_s = (ipv6)?"True":"False";
     string top_s = (top)?"True":"False";
     xmlNewProp(me, 
@@ -87,9 +90,8 @@ xmlNodePtr RuleSet::toXML(xmlNodePtr parent) throw(FWException)
                STRTOXMLCAST(top_s));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
-    {
         (*j)->toXML(me);
-    }
+
     return me;
 }
 

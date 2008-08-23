@@ -45,6 +45,7 @@ class DNSName : public MultiAddress
     DNSName(const FWObject *root,bool prepopulate);
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
     
     virtual std::string getSourceName();
     virtual void setSourceName(const std::string& source_name);

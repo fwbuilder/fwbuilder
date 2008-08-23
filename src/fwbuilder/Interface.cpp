@@ -180,6 +180,9 @@ xmlNodePtr Interface::toXML(xmlNodePtr parent) throw(FWException)
     xmlNodePtr me = FWObject::toXML(parent, false);
     FWObject *o;
 
+    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+
     for(FWObjectTypedChildIterator j1=findByType(IPv4::TYPENAME);
         j1!=j1.end(); ++j1)
     {

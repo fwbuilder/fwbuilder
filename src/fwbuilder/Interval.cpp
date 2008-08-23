@@ -299,6 +299,16 @@ void Interval::fromXML(xmlNodePtr root) throw(FWException)
     }
 }
 
+xmlNodePtr Interval::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+
+    return me;
+}
+
 FWReference* Interval::createRef()
 {
 //    FWIntervalReference *ref=new FWIntervalReference();

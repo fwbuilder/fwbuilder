@@ -120,6 +120,9 @@ void AddressRange::fromXML(xmlNodePtr root) throw(FWException)
 xmlNodePtr AddressRange::toXML(xmlNodePtr xml_parent_node) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(xml_parent_node);
+
+    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
     
     xmlNewProp(me, 
                TOXMLCAST("start_address"),

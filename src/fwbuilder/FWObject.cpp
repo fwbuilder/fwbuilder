@@ -130,20 +130,20 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children) throw(FWExc
 {
     string s_id = FWObjectDatabase::getStringId(getId());
 
-    xmlNodePtr me = xmlNewChild(parent, NULL, xml_name.empty()?STRTOXMLCAST(getTypeName()):STRTOXMLCAST(xml_name), NULL);
+    xmlNodePtr me = xmlNewChild(
+        parent,
+        NULL,
+        xml_name.empty() ? STRTOXMLCAST(getTypeName()) : STRTOXMLCAST(xml_name),
+        NULL);
 
     if (id!=-1)
     {
-        xmlAttrPtr pr = xmlNewProp(me, 
-                                   TOXMLCAST("id"),
-                                   STRTOXMLCAST(s_id));
+        xmlAttrPtr pr = xmlNewProp(
+            me, 
+            TOXMLCAST("id"),
+            STRTOXMLCAST(s_id));
         xmlAddID(NULL, parent->doc, STRTOXMLCAST(s_id), pr);
     }
-
-    if (!name.empty())
-        xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    if (!comment.empty())
-        xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
 
     for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i) 
     {
@@ -152,7 +152,7 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children) throw(FWExc
 
         if (name[0]=='.') continue;
 
-        xmlAttrPtr pr = xmlNewProp(me, STRTOXMLCAST(name), STRTOXMLCAST(value));
+        xmlNewProp(me, STRTOXMLCAST(name), STRTOXMLCAST(value));
     }
 
     if(process_children)
@@ -173,7 +173,7 @@ FWObject::FWObject()
     comment     = "";
     id          = -1;
 
-    // When object created we assign it unique Id
+    // When object is created we assign it unique Id
     setId(FWObjectDatabase::generateUniqueId());
 
     setDirty(false);

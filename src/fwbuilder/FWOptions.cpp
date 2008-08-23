@@ -77,10 +77,10 @@ xmlNodePtr FWOptions::toXML(xmlNodePtr root) throw(FWException)
 {
     xmlNodePtr opt;
 
-    xmlNodePtr me = xmlNewChild(root, NULL, 
-		xml_name.empty()?STRTOXMLCAST(getTypeName()):STRTOXMLCAST(xml_name), 
-				NULL);
-
+    xmlNodePtr me = xmlNewChild(
+        root, NULL, 
+        xml_name.empty() ? STRTOXMLCAST(getTypeName()) : STRTOXMLCAST(xml_name),
+        NULL);
 
     map<string, string>::iterator i;
     for(i=data.begin(); i!=data.end(); ++i)  

@@ -49,6 +49,7 @@ class Library : public Group
     DECLARE_FWOBJECT_SUBTYPE(Library);
 
     virtual void fromXML (xmlNodePtr xml_parent_node) throw(FWException);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
 
     /*
      * verify whether given object type is approppriate as a child

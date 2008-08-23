@@ -39,12 +39,13 @@ class physAddress : public Address
     
     public:
 
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-
     DECLARE_FWOBJECT_SUBTYPE(physAddress);
 
     physAddress() {}
     physAddress(const FWObject *root,bool prepopulate);
+
+    virtual void fromXML(xmlNodePtr parent) throw(FWException);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
 
     std::string getPhysAddress() const;
     void setPhysAddress(const std::string &s);

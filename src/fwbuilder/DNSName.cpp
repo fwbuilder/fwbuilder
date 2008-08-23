@@ -100,6 +100,16 @@ void DNSName::fromXML(xmlNodePtr root) throw(FWException)
     FREEXMLBUFF(n);
 }
 
+xmlNodePtr DNSName::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+
+    return me;
+}
+
 
 void DNSName::loadFromSource(bool ipv6) throw(FWException)
 {

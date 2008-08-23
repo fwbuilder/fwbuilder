@@ -28,14 +28,10 @@
 
 
 #include <fwbuilder/ObjectGroup.h>
-#include <fwbuilder/FWObjectReference.h>
-#include <fwbuilder/Address.h>
-#include <fwbuilder/AddressRange.h>
-#include <fwbuilder/DNSName.h>
-#include <fwbuilder/AddressTable.h>
 #include <fwbuilder/Service.h>
 #include <fwbuilder/ServiceGroup.h>
 #include <fwbuilder/FWServiceReference.h>
+#include <fwbuilder/FWObjectDatabase.h>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -56,6 +52,18 @@ bool ObjectGroup::validateChild(FWObject *o)
             Service::cast(o)==NULL &&
             ServiceGroup::cast(o)==NULL &&
             FWServiceReference::cast(o)==NULL);
+}
+
+xmlNodePtr ObjectGroup::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+
+    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j)
+        (*j)->toXML(me);
+
+    return me;
 }
 
 

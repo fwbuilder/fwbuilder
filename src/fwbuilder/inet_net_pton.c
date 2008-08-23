@@ -22,6 +22,7 @@
 #include <string.h>
 #include <assert.h>
 #include <errno.h>
+#include <ctype.h>
 
 static int  inet_net_pton_ipv4(const char *src, u_char *dst);
 static int  inet_cidr_pton_ipv4(const char *src, u_char *dst, size_t size);

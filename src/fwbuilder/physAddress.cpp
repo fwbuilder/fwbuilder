@@ -56,6 +56,14 @@ void physAddress::fromXML(xmlNodePtr root) throw(FWException)
     FREEXMLBUFF(n);
 }
 
+xmlNodePtr physAddress::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+
+    return me;
+}
 
 std::string physAddress::getPhysAddress() const
 {

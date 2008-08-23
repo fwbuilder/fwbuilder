@@ -44,6 +44,8 @@ class IntervalGroup : public Group
 
     DECLARE_FWOBJECT_SUBTYPE(IntervalGroup);
 
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
+
     /*
      * verify whether given object type is approppriate as a child
      */

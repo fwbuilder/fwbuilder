@@ -56,6 +56,7 @@ public:
     std::string getDaysOfWeek();
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
 
     DECLARE_FWOBJECT_SUBTYPE(Interval);
 

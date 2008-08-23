@@ -43,6 +43,8 @@ class ServiceGroup : public Group
 
     DECLARE_FWOBJECT_SUBTYPE(ServiceGroup);
 
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
+
     /*
      * verify whether given object type is approppriate as a child
      */

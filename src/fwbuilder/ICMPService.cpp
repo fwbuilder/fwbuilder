@@ -70,10 +70,13 @@ void ICMPService::fromXML(xmlNodePtr root) throw(FWException)
     }
 }
 
+xmlNodePtr ICMPService::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
 
+    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
 
-
-
-
-
+    return me;
+}
 

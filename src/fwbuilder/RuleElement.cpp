@@ -198,6 +198,16 @@ int RuleElementSrc::getAnyElementId() {
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
+xmlNodePtr RuleElementSrc::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
+        (*j)->toXML(me);
+
+    return me;
+}
+
 
 
 const char *RuleElementDst::TYPENAME={"Dst"};
@@ -211,6 +221,16 @@ RuleElementDst::RuleElementDst(const FWObject *root,bool prepopulate) :
 
 int RuleElementDst::getAnyElementId() {
     return FWObjectDatabase::ANY_ADDRESS_ID;
+}
+
+xmlNodePtr RuleElementDst::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
+        (*j)->toXML(me);
+
+    return me;
 }
 
 
@@ -229,6 +249,17 @@ int RuleElementSrv::getAnyElementId() {
     return FWObjectDatabase::ANY_SERVICE_ID;
 }
 
+xmlNodePtr RuleElementSrv::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
+        (*j)->toXML(me);
+
+    return me;
+}
+
+
 const char *RuleElementItf::TYPENAME={"Itf"};
 RuleElementItf::RuleElementItf() {}
 RuleElementItf::RuleElementItf(const FWObject *root,bool prepopulate) :
@@ -242,6 +273,17 @@ int RuleElementItf::getAnyElementId()
 {
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
+
+xmlNodePtr RuleElementItf::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
+        (*j)->toXML(me);
+
+    return me;
+}
+
 
 bool RuleElementItf::validateChild(FWObject *o)
 {
@@ -318,6 +360,17 @@ int RuleElementOSrc::getAnyElementId() {
 }
 
 
+xmlNodePtr RuleElementOSrc::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
+        (*j)->toXML(me);
+
+    return me;
+}
+
+
 const char *RuleElementODst::TYPENAME={"ODst"};
 RuleElementODst::RuleElementODst() {}
 RuleElementODst::RuleElementODst(const FWObject *root,bool prepopulate) :
@@ -332,6 +385,17 @@ int RuleElementODst::getAnyElementId() {
 }
 
 
+xmlNodePtr RuleElementODst::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
+        (*j)->toXML(me);
+
+    return me;
+}
+
+
 const char *RuleElementOSrv::TYPENAME={"OSrv"};
 RuleElementOSrv::RuleElementOSrv() {}
 RuleElementOSrv::RuleElementOSrv(const FWObject *root,bool prepopulate) :
@@ -343,6 +407,17 @@ RuleElementOSrv::RuleElementOSrv(const FWObject *root,bool prepopulate) :
 
 int RuleElementOSrv::getAnyElementId() {
     return FWObjectDatabase::ANY_SERVICE_ID;
+}
+
+
+xmlNodePtr RuleElementOSrv::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
+        (*j)->toXML(me);
+
+    return me;
 }
 
 
@@ -362,6 +437,17 @@ int RuleElementTSrc::getAnyElementId() {
 }
 
 
+xmlNodePtr RuleElementTSrc::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
+        (*j)->toXML(me);
+
+    return me;
+}
+
+
 const char *RuleElementTDst::TYPENAME={"TDst"};
 RuleElementTDst::RuleElementTDst() {}
 RuleElementTDst::RuleElementTDst(const FWObject *root,bool prepopulate) :
@@ -376,6 +462,17 @@ int RuleElementTDst::getAnyElementId() {
 }
 
 
+xmlNodePtr RuleElementTDst::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
+        (*j)->toXML(me);
+
+    return me;
+}
+
+
 const char *RuleElementTSrv::TYPENAME={"TSrv"};
 RuleElementTSrv::RuleElementTSrv()  {}
 RuleElementTSrv::RuleElementTSrv(const FWObject *root,bool prepopulate) :
@@ -387,6 +484,17 @@ RuleElementTSrv::RuleElementTSrv(const FWObject *root,bool prepopulate) :
 
 int RuleElementTSrv::getAnyElementId() {
     return FWObjectDatabase::ANY_SERVICE_ID;
+}
+
+
+xmlNodePtr RuleElementTSrv::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
+        (*j)->toXML(me);
+
+    return me;
 }
 
 
@@ -406,6 +514,17 @@ int RuleElementInterval::getAnyElementId() {
 }
 
 
+xmlNodePtr RuleElementInterval::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
+        (*j)->toXML(me);
+
+    return me;
+}
+
+
 
 
 const char *RuleElementRDst::TYPENAME={"RDst"};
@@ -421,6 +540,17 @@ int RuleElementRDst::getAnyElementId() {
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
+xmlNodePtr RuleElementRDst::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
+        (*j)->toXML(me);
+
+    return me;
+}
+
+
 const char *RuleElementRGtw::TYPENAME={"RGtw"};
 RuleElementRGtw::RuleElementRGtw() {}
 RuleElementRGtw::RuleElementRGtw(const FWObject *root,bool prepopulate) :
@@ -433,6 +563,17 @@ RuleElementRGtw::RuleElementRGtw(const FWObject *root,bool prepopulate) :
 int RuleElementRGtw::getAnyElementId() {
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
+
+xmlNodePtr RuleElementRGtw::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
+        (*j)->toXML(me);
+
+    return me;
+}
+
 
 bool RuleElementRGtw::validateChild(FWObject *o) {
 

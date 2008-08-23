@@ -1,3 +1,21 @@
+2008-08-23  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWObject.cpp (FWObject::toXML): moved saving of XML attributes
+	name and comment from FWObject::toXML to implementations of this
+	virtual method in all classes that are supposed to have name and
+	comment. Reason: name was initialized to empty string and
+	FWObject::toXML did not save it to XML file if it was empty. This
+	was done because some objects do not have name attribute per DTD,
+	but all classes called FWObject::toXML (their base class) as part
+	of their implementation of toXML. There were several classes that
+	did not have their own implementation of this method and solely
+	relied on FWObject::toXML. This caused problems when user created
+	an object with empty name because it was saved into XML file w/o
+	attribute name which violated DTD. Now each class that must have
+	name or comment takes care of saving these attributes, and those
+	that do not have it simply do not save it in their implementation
+	of toXML.
+
 2008-08-18  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Compiler.cpp (Compiler::complexMatch): fixed bug (no #): policy

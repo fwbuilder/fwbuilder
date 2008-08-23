@@ -78,7 +78,11 @@ void FWReference::fromXML(xmlNodePtr root)  throw(FWException)
 // attribute "ref" and no value
 xmlNodePtr FWReference::toXML(xmlNodePtr parent) throw(FWException)
 {
-    xmlNodePtr me = xmlNewChild(parent, NULL, xml_name.empty()?STRTOXMLCAST(getTypeName()):STRTOXMLCAST(xml_name), NULL);
+    xmlNodePtr me = xmlNewChild(
+        parent,
+        NULL,
+        xml_name.empty() ? STRTOXMLCAST(getTypeName()) : STRTOXMLCAST(xml_name),
+        NULL);
 
     if (int_ref == -1 && !str_ref.empty())
         int_ref = FWObjectDatabase::getIntId(str_ref);

@@ -82,6 +82,16 @@ void AddressTable::fromXML(xmlNodePtr root) throw(FWException)
     FREEXMLBUFF(n);
 }
 
+xmlNodePtr AddressTable::toXML(xmlNodePtr parent) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(parent, false);
+
+    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+
+    return me;
+}
+
 void AddressTable::loadFromSource(bool ipv6) throw(FWException)
 {
     ifstream fs(getStr("filename").c_str());

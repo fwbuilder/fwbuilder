@@ -114,6 +114,8 @@ xmlNodePtr IPv6::toXML(xmlNodePtr xml_parent_node) throw(FWException)
     if (getName().empty()) setName(getTypeName());
 
     xmlNodePtr me = FWObject::toXML(xml_parent_node);
+    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
     
     xmlNewProp(me, 
                TOXMLCAST("address"),
