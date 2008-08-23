@@ -328,7 +328,7 @@ char* strndup(const char* s,int n)
 
 void usage()
 {
-    cerr << "Usage: fwbuilder [-hv] [-p object_name] [-o file_name] [ [-f] filename]\n";
+    cerr << "Usage: fwbuilder [-hv] [-P object_name] [-o file_name] [ [-f] filename]\n";
     cerr << endl;
 }
 

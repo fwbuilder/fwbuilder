@@ -1,3 +1,12 @@
+2008-08-23  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWObject.cpp (FWObject::toXML): (change in libfwbuilder) moved
+	saving of XML attributes name and comment from FWObject::toXML()
+	to implementations of this virtual method in all classes that are
+	supposed to have name and comment. When user created an object
+	with empty name, the old code used to save such object into XML
+	file w/o attribute "name" which violated DTD. This is fixed now.
+
 2008-08-22  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* RuleSetView.cpp (RuleSetView::keyPressEvent): fixed bug (no #):
