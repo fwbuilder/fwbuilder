@@ -1,4 +1,9 @@
-2008-08-22  vadim  <vadim@vk.crocodile.org>
+2008-08-22  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::keyPressEvent): fixed bug (no #):
+	while navigating between rule elements using keyboard, it was not
+	possible to reach the very last rule if ruleset contained rule
+	groups
 
 	* ipt.cpp (main): additional fix for the bug #2051629 "group with
 	dns names are handled as empty": Compiler should check if any
@@ -12,8 +17,8 @@
 	long error messages that happen when GUI tries to load broken .fwb
 	file. These error messages contain complete output of the XML
 	parser which can be very long and does not fit in the normal error
-	dialog. Message will be cut off at 1000 characters which is enough
-	to see the topmost part of the parser output.
+	dialog. Message will be cut off at 1000 characters, which is
+	enough to see the topmost part of the parser output.
 
 2008-08-20  vadim  <vadim@vk.crocodile.org>
 

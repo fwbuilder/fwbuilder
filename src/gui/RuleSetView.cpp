@@ -3832,7 +3832,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         if (ev->key()==Qt::Key_Down && i==re->end())
         {
             /* keyboard 'Down',  switch to the first object in the cell below */
-            if (currentRow()+1>=int(ruleset->size()))
+            if ((currentRow()+1) >= int(ruleModel->rowCount()))
             {
                 return;
             }
