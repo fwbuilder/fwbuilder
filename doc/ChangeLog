@@ -4,6 +4,11 @@
 	while navigating between rule elements using keyboard, it was not
 	possible to reach the very last rule if ruleset contained rule
 	groups
+	
+	* RuleSetView.cpp (RuleSetView::paintCell): do not draw green
+	frame around rule group; draw black bracket line in the column #0
+	longer, almost to the bottom of the last rule row. Draw rule group
+	head row grey to make it visually stand out.
 
 	* ipt.cpp (main): additional fix for the bug #2051629 "group with
 	dns names are handled as empty": Compiler should check if any

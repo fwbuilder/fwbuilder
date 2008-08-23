@@ -33,7 +33,7 @@ public:
 
     QString groupName ;
     QString color ;
-    bool isBeginRow;
+    bool isFirstRow;
     bool collapsedGroup ; 
     QModelIndex* index ;
 
@@ -42,9 +42,9 @@ public:
         this->operator =(r);
     }
 
-    RuleRowInfo(QString groupName, bool begin, bool collapsed)
+    RuleRowInfo(QString groupName, bool first_row, bool collapsed)
     {
-        isBeginRow = begin ;
+        isFirstRow = first_row ;
         this->groupName = groupName;
         collapsedGroup = collapsed ;
         index = NULL;
@@ -52,7 +52,7 @@ public:
     
     RuleRowInfo& operator=(RuleRowInfo& r)
     {
-        this->isBeginRow = r.isBeginRow;
+        this->isFirstRow = r.isFirstRow;
         this->groupName = r.groupName;
         this->index = r.index;
         this->collapsedGroup = r.collapsedGroup ;
