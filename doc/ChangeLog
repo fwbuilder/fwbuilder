@@ -1,5 +1,10 @@
 2008-08-23  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PrefsDialog.cpp (PrefsDialog::checkSwUpdates): Added setting for
+	http proxy used with automatic checks for the new version of the
+	program. Proxy can be defined by "host:port" pair; if port is not
+	specified, port 80 is assumed.
+
 	* FWObject.cpp (FWObject::toXML): (change in libfwbuilder) moved
 	saving of XML attributes name and comment from FWObject::toXML()
 	to implementations of this virtual method in all classes that are

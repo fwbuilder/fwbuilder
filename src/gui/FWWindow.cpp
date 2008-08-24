@@ -176,8 +176,8 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 
     printer = new QPrinter(QPrinter::HighResolution);
 
-    curent_version_http_getter = new HttpGet();
-    connect(curent_version_http_getter, SIGNAL(done(const QString&)),
+    current_version_http_getter = new HttpGet();
+    connect(current_version_http_getter, SIGNAL(done(const QString&)),
             this, SLOT(checkForUpgrade(const QString&)));
 
     connect(instDialogOnScreenTimer, SIGNAL(timeout()),
@@ -275,7 +275,7 @@ void FWWindow::startupLoad()
     if (st->getCheckUpdates())
     {
         // start http query to get latest version from the web site
-        curent_version_http_getter->get(QUrl(CHECK_UPDATE_URL));
+        current_version_http_getter->get(QUrl(CHECK_UPDATE_URL));
     }
 
 
@@ -1596,7 +1596,7 @@ void FWWindow::updateTreeFont ()
 
 void FWWindow::checkForUpgrade(const QString& server_response)
 {
-    if (curent_version_http_getter->getStatus())
+    if (current_version_http_getter->getStatus())
     {
         if (!server_response.trimmed().isEmpty())
         {
@@ -1609,7 +1609,7 @@ void FWWindow::checkForUpgrade(const QString& server_response)
     {
         if (fwbdebug)
             qDebug("Update check error:  %s", 
-                   curent_version_http_getter->getLastError().
+                   current_version_http_getter->getLastError().
                    toLatin1().constData());
     }
 }

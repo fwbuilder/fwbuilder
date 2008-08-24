@@ -84,7 +84,7 @@ void PrefsDialog::setButtonColor(QPushButton *btn,const QString &colorCode)
 
 PrefsDialog::~PrefsDialog()
 {
-    disconnect(&curent_version_http_getter, SIGNAL(done(const QString&)),
+    disconnect(&current_version_http_getter, SIGNAL(done(const QString&)),
                this, SLOT(checkForUpgrade(const QString&)));
 
     delete m_dialog;
@@ -198,6 +198,8 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->chClipComment->setChecked(st->getClipComment() );
 
     m_dialog->checkUpdates->setChecked(st->getCheckUpdates() );
+
+    m_dialog->checkUpdatesProxy->setText(st->getCheckUpdatesProxy() );
 
 #if !defined(Q_OS_WIN32)
     m_dialog->plink_hint->hide();
@@ -465,6 +467,7 @@ void PrefsDialog::accept()
 
     st->setClipComment(m_dialog->chClipComment->isChecked());
     st->setCheckUpdates(m_dialog->checkUpdates->isChecked());
+    st->setCheckUpdatesProxy(m_dialog->checkUpdatesProxy->text());
 
     st->setSSHPath( m_dialog->sshPath->text() );
 
@@ -482,17 +485,19 @@ void PrefsDialog::accept()
 
 void PrefsDialog::checkSwUpdates()
 {
-    connect(&curent_version_http_getter, SIGNAL(done(const QString&)),
+    st->setCheckUpdatesProxy(m_dialog->checkUpdatesProxy->text());
+
+    connect(&current_version_http_getter, SIGNAL(done(const QString&)),
             this, SLOT(checkForUpgrade(const QString&)));
-    curent_version_http_getter.get(QUrl(CHECK_UPDATE_URL));
+    current_version_http_getter.get(QUrl(CHECK_UPDATE_URL));
 }
 
 void PrefsDialog::checkForUpgrade(const QString& server_response)
 {
-    disconnect(&curent_version_http_getter, SIGNAL(done(const QString&)),
+    disconnect(&current_version_http_getter, SIGNAL(done(const QString&)),
                this, SLOT(checkForUpgrade(const QString&)));
 
-    if (curent_version_http_getter.getStatus())
+    if (current_version_http_getter.getStatus())
     {
 
         if (server_response.trimmed().isEmpty())
@@ -512,7 +517,7 @@ void PrefsDialog::checkForUpgrade(const QString& server_response)
         QMessageBox::critical(
             this,"Firewall Builder",
             tr("Error checking for software updates:\n%1").
-            arg(curent_version_http_getter.getLastError()));
+            arg(current_version_http_getter.getLastError()));
     }
 }
 

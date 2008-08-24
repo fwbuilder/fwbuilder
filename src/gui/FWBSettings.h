@@ -161,6 +161,9 @@ class FWBSettings : public QSettings {
     bool getCheckUpdates();
     void setCheckUpdates(bool);
 
+    QString getCheckUpdatesProxy();
+    void setCheckUpdatesProxy(const QString &proxy_line);
+
 private:
     QFont getFontByType(const char*type);
 };

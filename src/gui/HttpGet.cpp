@@ -31,7 +31,7 @@
 #include <QHttpResponseHeader>
 
 #include "HttpGet.h"
-
+#include "FWBSettings.h"
 
 using namespace std;
 
@@ -74,6 +74,17 @@ bool HttpGet::get(const QUrl &url)
         return false;
     }
 
+    QString proxy = st->getCheckUpdatesProxy();
+    if (!proxy.isEmpty())
+    {
+        QStringList parsed_proxy = proxy.split(':');
+        QString proxy_host = parsed_proxy[0];
+        QString proxy_port = "80";
+        if (parsed_proxy.size()>1) proxy_port = parsed_proxy[1];
+        if (proxy_port.isEmpty()) proxy_port = "80";
+        http.setProxy(proxy_host, proxy_port.toInt());
+    }
+
     http.setHost(url.host(), url.port(80));
     QHttpRequestHeader hdr(QLatin1String("GET"), url.toString());
     hdr.setValue("Host", url.host());
@@ -95,6 +106,7 @@ void HttpGet::httpDone(int id, bool error)
 {
     if (request_id == id)
     {
+        status = true;
         QHttpResponseHeader resp = http.lastResponse();
         QTextStream err(&last_error,  QIODevice::WriteOnly);
         if (error)

@@ -68,7 +68,7 @@ class FWWindow : public QMainWindow {
 
     QMdiArea *m_space;
     QWidget *instd;
-    HttpGet *curent_version_http_getter;
+    HttpGet *current_version_http_getter;
     
     QTimer *autosaveTimer;
     QTimer *instDialogOnScreenTimer;

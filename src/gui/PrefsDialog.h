@@ -54,7 +54,7 @@ class PrefsDialog : public QDialog
     std::map<int,QString> colors;
     Ui::prefsDialog_q *m_dialog;
 
-    HttpGet curent_version_http_getter;
+    HttpGet current_version_http_getter;
     
     QFont rulesFont;
     QFont treeFont;
