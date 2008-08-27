@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>713</width>
+    <width>719</width>
     <height>719</height>
    </rect>
   </property>
@@ -118,7 +118,7 @@
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="TabPage" >
       <attribute name="title" >
@@ -1006,26 +1006,15 @@ First, create temporary access list to permit connections from the management su
        <string>Logging</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
-       </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>6</number>
-       </property>
-       <property name="verticalSpacing" >
-        <number>6</number>
-       </property>
        <item row="0" column="0" >
-        <widget class="QGroupBox" name="frame171" >
+        <widget class="QCheckBox" name="generate_logging_commands" >
+         <property name="text" >
+          <string>Generate logging commands</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QGroupBox" name="syslog_controls" >
          <property name="title" >
           <string>Syslog</string>
          </property>
@@ -1145,8 +1134,8 @@ First, create temporary access list to permit connections from the management su
          </layout>
         </widget>
        </item>
-       <item row="1" column="0" >
-        <widget class="QGroupBox" name="frame172" >
+       <item row="2" column="0" >
+        <widget class="QGroupBox" name="other_logging_controls" >
          <property name="title" >
           <string>Other logging destinations and levels:</string>
          </property>
@@ -1192,7 +1181,7 @@ First, create temporary access list to permit connections from the management su
          </layout>
         </widget>
        </item>
-       <item row="2" column="0" >
+       <item row="3" column="0" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -1202,8 +1191,8 @@ First, create temporary access list to permit connections from the management su
          </property>
          <property name="sizeHint" >
           <size>
-           <width>20</width>
-           <height>40</height>
+           <width>675</width>
+           <height>121</height>
           </size>
          </property>
         </spacer>
@@ -1399,6 +1388,22 @@ First, create temporary access list to permit connections from the management su
     <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>generate_logging_commands</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>iosaclAdvancedDialog_q</receiver>
+   <slot>toggleGenerateLogging()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>359</x>
+     <y>55</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>359</x>
+     <y>359</y>
     </hint>
    </hints>
   </connection>

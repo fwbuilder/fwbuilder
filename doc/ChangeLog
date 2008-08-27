@@ -1,3 +1,13 @@
+2008-08-27  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* iosaclAdvancedDialog.cpp (toggleGenerateLogging): fixed bug
+	#2078107: "IOS ACL compiler issue". Logging commands for IOS ACL
+	were not generated properly (settings made in the GUI were
+	ignored). Also added checkbox to completely enable or suppress
+	generation of logging commands, this checkbox is off by
+	default. This provides for better backwards compatibility for
+	existing routers.
+
 2008-08-26  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* instDialog.cpp (instDialog::addToLog): fixed bug (no #): compile

@@ -167,54 +167,59 @@ string OSConfigurator_ios::_printLogging()
     Helper helper(this);
 
     ostringstream  str;
-    bool  logging_on=false;
+    bool logging_on=false;
 
-    string syslog_host    =  fw->getOptionsObject()->getStr("ios_syslog_host");
-    string syslog_facility=  fw->getOptionsObject()->getStr("ios_syslog_facility");
-    string trap_level=       fw->getOptionsObject()->getStr("ios_logging_trap_level");
+    bool iosacl_generate_logging_commands = fw->getOptionsObject()->getBool(
+        "iosacl_generate_logging_commands");
 
-    bool   buffered=         fw->getOptionsObject()->getBool("ios_logging_buffered");
-    string buffered_level=   fw->getOptionsObject()->getStr("ios_logging_buffered_level");
-
-    bool   console=          fw->getOptionsObject()->getBool("ios_logging_console");
-    string console_level=    fw->getOptionsObject()->getStr("ios_logging_console_level");
-
-    bool   timestamp=        fw->getOptionsObject()->getBool("ios_logging_timestamp");
-
-    if ( ! timestamp ) str << "no ";
-    str << "service timestamp log datetime localtime" << endl;
-
-    if ( ! syslog_host.empty() )
+    if (iosacl_generate_logging_commands)
     {
+        string syslog_host = fw->getOptionsObject()->getStr("iosacl_syslog_host");
+        string syslog_facility= fw->getOptionsObject()->getStr("iosacl_syslog_facility");
+        string trap_level= fw->getOptionsObject()->getStr("iosacl_logging_trap_level");
+
+        bool buffered = fw->getOptionsObject()->getBool("iosacl_logging_buffered");
+        string buffered_level = fw->getOptionsObject()->getStr("iosacl_logging_buffered_level");
+
+        bool console = fw->getOptionsObject()->getBool("iosacl_logging_console");
+        string console_level = fw->getOptionsObject()->getStr("iosacl_logging_console_level");
+
+        bool timestamp = fw->getOptionsObject()->getBool("iosacl_logging_timestamp");
+
+        if ( ! timestamp ) str << "no ";
+        str << "service timestamp log datetime localtime" << endl;
+
+        if ( ! syslog_host.empty() )
+        {
+            str << endl;
+
+            str << "logging host " << syslog_host << endl;
+
+            if ( ! syslog_facility.empty() )
+                str << "logging facility " << syslog_facility <<  endl;
+
+            if ( ! trap_level.empty() )
+                str << "logging trap " << trap_level << endl;
+
+            logging_on=true;
+        }
+
+        if ( ! buffered ) str << "no logging buffered" << endl;
+        else
+        {
+            str << "logging buffered " << buffered_level << endl;
+            logging_on=true;
+        }
+
+        if ( ! console )  str << "no logging console" << endl;
+        else
+        {
+            str << "logging console " << console_level << endl;
+            logging_on=true;
+        }
+
         str << endl;
-
-        str << "logging host " << syslog_host << endl;
-
-        if ( ! syslog_facility.empty() )
-            str << "logging facility " << syslog_facility <<  endl;
-
-        if ( ! trap_level.empty() )
-            str << "logging trap " << trap_level << endl;
-
-        logging_on=true;
     }
-
-    if ( ! buffered ) str << "no logging buffered" << endl;
-    else
-    {
-        str << "logging buffered " << buffered_level << endl;
-        logging_on=true;
-    }
-
-    if ( ! console )  str << "no logging console" << endl;
-    else
-    {
-        str << "logging console " << console_level << endl;
-        logging_on=true;
-    }
-
-    str << endl;
-
     return str.str();
 }
 

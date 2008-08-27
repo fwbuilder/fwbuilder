@@ -272,13 +272,13 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
 
 /* page Installer */
 
-    data.registerOption( m_dialog->user             ,fwoptions, "admUser"         );
-    data.registerOption( m_dialog->altAddress       ,fwoptions, "altAddress"      );
-    data.registerOption( m_dialog->sshArgs          ,fwoptions, "sshArgs"         );
+    data.registerOption( m_dialog->user, fwoptions, "admUser");
+    data.registerOption( m_dialog->altAddress, fwoptions, "altAddress");
+    data.registerOption( m_dialog->sshArgs, fwoptions, "sshArgs");
 
     PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
 
-    m_dialog->installScript->setText(     pis->getCommand().c_str() );
+    m_dialog->installScript->setText(pis->getCommand().c_str() );
     m_dialog->installScriptArgs->setText( pis->getArguments().c_str() );
 
 
@@ -291,7 +291,10 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
 
 /* page Logging */
 
-    data.registerOption( m_dialog->syslog_host,          fwoptions,    "iosacl_syslog_host");
+    data.registerOption(m_dialog->generate_logging_commands, fwoptions,
+                        "iosacl_generate_logging_commands");
+
+    data.registerOption(m_dialog->syslog_host, fwoptions, "iosacl_syslog_host");
 
     m_dialog->syslog_facility->clear();
     m_dialog->syslog_facility->addItems( syslogFacilities );
@@ -304,16 +307,19 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->logging_trap_level,   fwoptions,
                          "iosacl_logging_trap_level", logLevelMapping);
 
-    data.registerOption( m_dialog->logging_timestamp,    fwoptions,    "iosacl_logging_timestamp");
+    data.registerOption(m_dialog->logging_timestamp, fwoptions,
+                        "iosacl_logging_timestamp");
 
-    data.registerOption( m_dialog->logging_buffered,     fwoptions,    "iosacl_logging_buffered");
+    data.registerOption(m_dialog->logging_buffered, fwoptions,
+                        "iosacl_logging_buffered");
 
     m_dialog->logging_buffered_level->clear();
     m_dialog->logging_buffered_level->addItems(logLevels);
     data.registerOption( m_dialog->logging_buffered_level, fwoptions,
                          "iosacl_logging_buffered_level", logLevelMapping);
 
-    data.registerOption( m_dialog->logging_console,      fwoptions,    "iosacl_logging_console");
+    data.registerOption(m_dialog->logging_console, fwoptions,
+                        "iosacl_logging_console");
 
     m_dialog->logging_console_level->clear();
     m_dialog->logging_console_level->addItems(logLevels);
@@ -322,6 +328,7 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
 
     data.loadAll();
     scriptACLModeChanged();
+    toggleGenerateLogging();
 }
 
 /*
@@ -377,8 +384,18 @@ void iosaclAdvancedDialog::editEpilog()
 
 void iosaclAdvancedDialog::scriptACLModeChanged()
 {
-    m_dialog->iosacl_acl_temp_lbl->setEnabled(m_dialog->iosacl_acl_substitution->isChecked());
-    m_dialog->iosacl_acl_temp_addr->setEnabled(m_dialog->iosacl_acl_substitution->isChecked());
+    m_dialog->iosacl_acl_temp_lbl->setEnabled(
+        m_dialog->iosacl_acl_substitution->isChecked());
+    m_dialog->iosacl_acl_temp_addr->setEnabled(
+        m_dialog->iosacl_acl_substitution->isChecked());
+}
+
+void iosaclAdvancedDialog::toggleGenerateLogging()
+{
+    m_dialog->syslog_controls->setEnabled(
+        m_dialog->generate_logging_commands->isChecked());
+    m_dialog->other_logging_controls->setEnabled(
+        m_dialog->generate_logging_commands->isChecked());
 }
 
 

@@ -65,7 +65,7 @@ protected slots:
     virtual void editEpilog();
 
     virtual void scriptACLModeChanged();
-    
+    virtual void toggleGenerateLogging();
 };
 
 #endif // __IOSACLADVANCEDDIALOG_H
