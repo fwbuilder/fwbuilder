@@ -203,7 +203,7 @@ instDialog::~instDialog()
 void setSuccessState(QTreeWidgetItem *item)
 {
     QBrush b = item->foreground(1);
-    b.setColor(Qt::green);
+//    b.setColor(Qt::green);
     item->setForeground(1,b);
     item->setForeground(0,b);
 
@@ -1796,6 +1796,7 @@ void instDialog::addToLog(const QString &line)
         QString txt = line;
         txt.replace('\n', "<br>\n");
         currentLog->insertHtml( txt );
+        currentLog->ensureCursorVisible();
     }
 }
 
@@ -1807,9 +1808,11 @@ void instDialog::interpretLogLine(const QString &line)
     QStringList words = line.trimmed().split(" ");
 
     if (fwbdebug)
-        qDebug("instDialog::interpretLogLine words[0]='%s' words[1]='%s'",
-               words[0].toAscii().constData(),
-               words[1].toAscii().constData() );
+    {
+        for (int i=0; i<words.size(); ++i)
+            qDebug("instDialog::interpretLogLine words[%d]='%s'",
+                   i, words[i].toAscii().constData());
+    }
 
     if (words.first().indexOf("rule")>=0)
     {

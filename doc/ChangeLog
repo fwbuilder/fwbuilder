@@ -1,3 +1,17 @@
+2008-08-26  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* instDialog.cpp (instDialog::addToLog): fixed bug (no #): compile
+	and install progress window was stuck showing the topmost part of
+	the output of the compiler or installer. Need to make the window
+	automatically scroll and follow the output so that the latest
+	output lines are always visible.
+
+2008-08-24  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* HttpGet.cpp (HttpGet::httpDone): reset last_error when new http
+	operation begins to make sure we do not accumulate error messages
+	on top of those from previous http ops.
+
 2008-08-23  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PrefsDialog.cpp (PrefsDialog::checkSwUpdates): Added setting for

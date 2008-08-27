@@ -107,6 +107,7 @@ void HttpGet::httpDone(int id, bool error)
     if (request_id == id)
     {
         status = true;
+        last_error = "";
         QHttpResponseHeader resp = http.lastResponse();
         QTextStream err(&last_error,  QIODevice::WriteOnly);
         if (error)
