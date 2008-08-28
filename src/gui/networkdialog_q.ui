@@ -240,6 +240,9 @@
            <enum>QFrame::Sunken</enum>
           </property>
           <layout class="QGridLayout" >
+           <property name="verticalSpacing" >
+            <number>8</number>
+           </property>
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
              <property name="text" >

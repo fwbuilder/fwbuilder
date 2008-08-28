@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>818</width>
-    <height>278</height>
+    <width>905</width>
+    <height>306</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -205,6 +205,12 @@
          <enum>QFrame::Sunken</enum>
         </property>
         <layout class="QGridLayout" >
+         <property name="horizontalSpacing" >
+          <number>8</number>
+         </property>
+         <property name="verticalSpacing" >
+          <number>8</number>
+         </property>
          <item row="0" column="0" >
           <widget class="QLabel" name="textLabel1" >
            <property name="sizePolicy" >
@@ -313,22 +319,6 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
             <number>100</number>
            </property>
           </widget>
-         </item>
-         <item row="3" column="0" colspan="3" >
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType" >
-            <enum>QSizePolicy::MinimumExpanding</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>282</width>
-             <height>51</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </widget>
