@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>724</width>
-    <height>254</height>
+    <width>621</width>
+    <height>259</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -226,7 +226,7 @@
          <widget class="QFrame" name="frame14" >
           <property name="minimumSize" >
            <size>
-            <width>300</width>
+            <width>0</width>
             <height>16</height>
            </size>
           </property>
@@ -263,13 +263,13 @@
             <widget class="QLineEdit" name="obj_name" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
+               <horstretch>200</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize" >
               <size>
-               <width>250</width>
+               <width>0</width>
                <height>25</height>
               </size>
              </property>
@@ -301,13 +301,13 @@
             <widget class="QLineEdit" name="address" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
+               <horstretch>200</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize" >
               <size>
-               <width>250</width>
+               <width>0</width>
                <height>25</height>
               </size>
              </property>

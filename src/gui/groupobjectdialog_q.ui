@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>854</width>
-    <height>232</height>
+    <width>750</width>
+    <height>242</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -213,53 +213,29 @@
         <enum>QFrame::Sunken</enum>
        </property>
        <layout class="QGridLayout" >
-        <property name="leftMargin" >
-         <number>2</number>
-        </property>
-        <property name="topMargin" >
-         <number>2</number>
-        </property>
-        <property name="rightMargin" >
-         <number>2</number>
-        </property>
-        <property name="bottomMargin" >
-         <number>2</number>
-        </property>
-        <property name="horizontalSpacing" >
-         <number>2</number>
-        </property>
-        <property name="verticalSpacing" >
-         <number>2</number>
-        </property>
-        <item row="0" column="3" >
-         <widget class="QLabel" name="textLabel2" >
-          <property name="text" >
-           <string>Comment:</string>
+        <item row="0" column="0" >
+         <spacer>
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
           </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
+          <property name="sizeType" >
+           <enum>QSizePolicy::Expanding</enum>
           </property>
-         </widget>
+          <property name="sizeHint" >
+           <size>
+            <width>251</width>
+            <height>34</height>
+           </size>
+          </property>
+         </spacer>
         </item>
-        <item row="0" column="2" >
+        <item row="0" column="1" >
          <widget class="QGroupBox" name="buttonGroup2" >
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>2</number>
-           </property>
            <property name="topMargin" >
             <number>2</number>
            </property>
-           <property name="rightMargin" >
-            <number>2</number>
-           </property>
            <property name="bottomMargin" >
-            <number>2</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
             <number>2</number>
            </property>
            <item row="0" column="0" >
@@ -324,62 +300,30 @@
              </property>
             </widget>
            </item>
+           <item row="0" column="2" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>151</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
           </layout>
          </widget>
         </item>
-        <item row="0" column="1" >
-         <spacer>
-          <property name="orientation" >
-           <enum>Qt::Horizontal</enum>
+        <item row="0" column="2" >
+         <widget class="QLabel" name="textLabel2" >
+          <property name="text" >
+           <string>Comment:</string>
           </property>
-          <property name="sizeType" >
-           <enum>QSizePolicy::Expanding</enum>
+          <property name="wordWrap" >
+           <bool>false</bool>
           </property>
-          <property name="sizeHint" >
-           <size>
-            <width>230</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="3" >
-         <widget class="QTextEdit" name="comment" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>200</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="tabChangesFocus" >
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1" colspan="2" >
-         <widget class="QStackedWidget" name="objectViewsStack" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>250</width>
-            <height>100</height>
-           </size>
-          </property>
-          <property name="acceptDrops" >
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="WStackPage" />
          </widget>
         </item>
         <item row="1" column="0" >
@@ -429,13 +373,13 @@
             <widget class="QLineEdit" name="obj_name" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
+               <horstretch>200</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize" >
               <size>
-               <width>200</width>
+               <width>0</width>
                <height>0</height>
               </size>
              </property>
@@ -455,6 +399,45 @@
             </widget>
            </item>
           </layout>
+         </widget>
+        </item>
+        <item row="1" column="1" >
+         <widget class="QStackedWidget" name="objectViewsStack" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+            <horstretch>250</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>250</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="acceptDrops" >
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="WStackPage" />
+         </widget>
+        </item>
+        <item row="1" column="2" >
+         <widget class="QTextEdit" name="comment" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="tabChangesFocus" >
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
        </layout>

@@ -404,15 +404,15 @@
              <item row="0" column="0" >
               <widget class="QStackedWidget" name="objectEditorStack" >
                <property name="sizePolicy" >
-                <sizepolicy vsizetype="MinimumExpanding" hsizetype="Expanding" >
+                <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
                <property name="minimumSize" >
                 <size>
-                 <width>16</width>
-                 <height>10</height>
+                 <width>200</width>
+                 <height>200</height>
                 </size>
                </property>
                <property name="focusPolicy" >

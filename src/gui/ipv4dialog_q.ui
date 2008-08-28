@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>613</width>
+    <width>612</width>
     <height>237</height>
    </rect>
   </property>
@@ -245,13 +245,13 @@
             <widget class="QLineEdit" name="obj_name" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
+               <horstretch>200</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize" >
               <size>
-               <width>200</width>
+               <width>0</width>
                <height>0</height>
               </size>
              </property>

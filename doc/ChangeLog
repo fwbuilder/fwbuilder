@@ -8,6 +8,10 @@
 	default. This provides for better backwards compatibility for
 	existing routers.
 
+	* various object type dialogs: layout changes for bug #2078671:
+	"fwbuilder 3.0.0 build 487 - add/edit interface". Dialogs did not
+	look right under QT theme with large fonts.
+	
 2008-08-26  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* instDialog.cpp (instDialog::addToLog): fixed bug (no #): compile

@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>556</width>
-    <height>283</height>
+    <width>774</width>
+    <height>264</height>
    </rect>
   </property>
   <property name="baseSize" >
@@ -217,7 +217,7 @@
           </property>
           <property name="minimumSize" >
            <size>
-            <width>300</width>
+            <width>0</width>
             <height>16</height>
            </size>
           </property>
@@ -242,13 +242,13 @@
             <widget class="QLineEdit" name="obj_name" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
+               <horstretch>200</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize" >
               <size>
-               <width>200</width>
+               <width>0</width>
                <height>0</height>
               </size>
              </property>
@@ -293,14 +293,14 @@
            <item row="3" column="0" colspan="3" >
             <widget class="QLineEdit" name="filename" >
              <property name="sizePolicy" >
-              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize" >
               <size>
-               <width>250</width>
+               <width>0</width>
                <height>0</height>
               </size>
              </property>

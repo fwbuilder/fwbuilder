@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>732</width>
-    <height>205</height>
+    <width>668</width>
+    <height>249</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -276,7 +276,7 @@
          <widget class="QFrame" name="frame50" >
           <property name="minimumSize" >
            <size>
-            <width>300</width>
+            <width>0</width>
             <height>16</height>
            </size>
           </property>
@@ -301,13 +301,13 @@
             <widget class="QLineEdit" name="obj_name" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
+               <horstretch>200</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize" >
               <size>
-               <width>250</width>
+               <width>0</width>
                <height>0</height>
               </size>
              </property>
@@ -327,13 +327,13 @@
             <widget class="QLineEdit" name="address" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
+               <horstretch>200</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize" >
               <size>
-               <width>250</width>
+               <width>0</width>
                <height>0</height>
               </size>
              </property>
@@ -348,22 +348,10 @@
               <enum>QFrame::Raised</enum>
              </property>
              <layout class="QGridLayout" >
-              <property name="leftMargin" >
-               <number>0</number>
-              </property>
               <property name="topMargin" >
                <number>0</number>
               </property>
               <property name="rightMargin" >
-               <number>0</number>
-              </property>
-              <property name="bottomMargin" >
-               <number>0</number>
-              </property>
-              <property name="horizontalSpacing" >
-               <number>0</number>
-              </property>
-              <property name="verticalSpacing" >
                <number>0</number>
               </property>
               <item row="0" column="0" >
@@ -387,10 +375,23 @@
                 <property name="minimumSize" >
                  <size>
                   <width>0</width>
-                  <height>0</height>
+                  <height>23</height>
                  </size>
                 </property>
                </widget>
+              </item>
+              <item row="1" column="0" >
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" >
+                 <size>
+                  <width>20</width>
+                  <height>21</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
              </layout>
             </widget>

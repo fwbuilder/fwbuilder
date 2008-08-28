@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>936</width>
-    <height>268</height>
+    <width>818</width>
+    <height>278</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -22,479 +22,503 @@
    <string>Interface</string>
   </property>
   <layout class="QGridLayout" >
-   <property name="leftMargin" >
-    <number>2</number>
-   </property>
-   <property name="topMargin" >
-    <number>2</number>
-   </property>
-   <property name="rightMargin" >
-    <number>2</number>
-   </property>
-   <property name="bottomMargin" >
-    <number>2</number>
-   </property>
-   <property name="horizontalSpacing" >
-    <number>0</number>
-   </property>
-   <property name="verticalSpacing" >
-    <number>0</number>
-   </property>
    <item row="0" column="0" >
-    <layout class="QVBoxLayout" >
-     <property name="spacing" >
-      <number>2</number>
+    <widget class="QFrame" name="frame3" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <item>
-      <widget class="QFrame" name="frame3" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize" >
-        <size>
-         <width>16</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="palette" >
-        <palette>
-         <active>
-          <colorrole role="Base" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Window" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>254</green>
-             <blue>253</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Base" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Window" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>254</green>
-             <blue>253</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled>
-          <colorrole role="Base" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>254</green>
-             <blue>253</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Window" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>254</green>
-             <blue>253</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </disabled>
-        </palette>
-       </property>
-       <property name="autoFillBackground" >
-        <bool>true</bool>
-       </property>
-       <property name="frameShape" >
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow" >
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <layout class="QGridLayout" >
-        <property name="leftMargin" >
-         <number>2</number>
+     <property name="minimumSize" >
+      <size>
+       <width>16</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="palette" >
+      <palette>
+       <active>
+        <colorrole role="Base" >
+         <brush brushstyle="SolidPattern" >
+          <color alpha="255" >
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Window" >
+         <brush brushstyle="SolidPattern" >
+          <color alpha="255" >
+           <red>255</red>
+           <green>254</green>
+           <blue>253</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="Base" >
+         <brush brushstyle="SolidPattern" >
+          <color alpha="255" >
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Window" >
+         <brush brushstyle="SolidPattern" >
+          <color alpha="255" >
+           <red>255</red>
+           <green>254</green>
+           <blue>253</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="Base" >
+         <brush brushstyle="SolidPattern" >
+          <color alpha="255" >
+           <red>255</red>
+           <green>254</green>
+           <blue>253</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Window" >
+         <brush brushstyle="SolidPattern" >
+          <color alpha="255" >
+           <red>255</red>
+           <green>254</green>
+           <blue>253</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
+     </property>
+     <property name="autoFillBackground" >
+      <bool>true</bool>
+     </property>
+     <property name="frameShape" >
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="leftMargin" >
+       <number>2</number>
+      </property>
+      <property name="topMargin" >
+       <number>2</number>
+      </property>
+      <property name="rightMargin" >
+       <number>2</number>
+      </property>
+      <property name="bottomMargin" >
+       <number>2</number>
+      </property>
+      <property name="horizontalSpacing" >
+       <number>2</number>
+      </property>
+      <property name="verticalSpacing" >
+       <number>2</number>
+      </property>
+      <item row="0" column="2" >
+       <widget class="QLabel" name="editorTitle" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <property name="topMargin" >
-         <number>2</number>
+        <property name="font" >
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
         </property>
-        <property name="rightMargin" >
-         <number>2</number>
+        <property name="text" >
+         <string>Interface</string>
         </property>
-        <property name="bottomMargin" >
-         <number>2</number>
+        <property name="wordWrap" >
+         <bool>false</bool>
         </property>
-        <property name="horizontalSpacing" >
-         <number>2</number>
+       </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="QLabel" name="label_2" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <property name="verticalSpacing" >
-         <number>2</number>
+        <property name="text" >
+         <string/>
         </property>
-        <item row="0" column="2" >
-         <widget class="QLabel" name="editorTitle" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font" >
-           <font>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text" >
-           <string>Interface</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" >
-         <widget class="QLabel" name="label_2" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text" >
-           <string/>
-          </property>
-          <property name="pixmap" >
-           <pixmap resource="MainRes.qrc" >:/Icons/Interface/icon</pixmap>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QFrame" name="frame7" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="frameShape" >
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow" >
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <layout class="QGridLayout" >
-        <item rowspan="2" row="0" column="0" colspan="2" >
-         <widget class="QFrame" name="frame26" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="frameShape" >
-           <enum>QFrame::Box</enum>
-          </property>
-          <property name="frameShadow" >
-           <enum>QFrame::Sunken</enum>
-          </property>
-          <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>8</number>
+        <property name="pixmap" >
+         <pixmap resource="MainRes.qrc" >:/Icons/Interface/icon</pixmap>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <widget class="QFrame" name="frame7" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="frameShape" >
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <layout class="QGridLayout" >
+      <item rowspan="2" row="0" column="0" >
+       <widget class="QFrame" name="frame26" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize" >
+         <size>
+          <width>0</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="frameShape" >
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow" >
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <layout class="QGridLayout" >
+         <item row="0" column="0" >
+          <widget class="QLabel" name="textLabel1" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
-           <property name="topMargin" >
-            <number>8</number>
+           <property name="text" >
+            <string>Name:</string>
            </property>
-           <property name="rightMargin" >
-            <number>8</number>
+           <property name="wordWrap" >
+            <bool>false</bool>
            </property>
-           <property name="bottomMargin" >
-            <number>8</number>
+          </widget>
+         </item>
+         <item row="0" column="1" colspan="2" >
+          <widget class="QLineEdit" name="obj_name" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+             <horstretch>200</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
-           <property name="horizontalSpacing" >
-            <number>8</number>
+           <property name="minimumSize" >
+            <size>
+             <width>0</width>
+             <height>23</height>
+            </size>
            </property>
-           <property name="verticalSpacing" >
-            <number>8</number>
+          </widget>
+         </item>
+         <item row="1" column="0" >
+          <widget class="QLabel" name="textLabel2_2" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
-           <item row="0" column="0" >
-            <widget class="QLabel" name="textLabel1" >
-             <property name="text" >
-              <string>Name:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0" >
-            <widget class="QLabel" name="textLabel2_2" >
-             <property name="text" >
-              <string>Label:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0" >
-            <widget class="QLabel" name="seclevelLabel" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize" >
-              <size>
-               <width>0</width>
-               <height>40</height>
-              </size>
-             </property>
-             <property name="text" >
-              <string>Security
-level:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1" >
-            <widget class="QSpinBox" name="seclevel" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="toolTip" >
-              <string>&lt;p>Each interface of the firewall must have security level associated with it.&lt;br>Security level can be any number between 0 and 100, 0 being least secure and 100 being most secure levels. Interface with security level 0 ususally serves Internet connection.&lt;/p></string>
-             </property>
-             <property name="whatsThis" >
-              <string>&lt;p>Each interface of the firewall must have security level associated with it.&lt;br>
+           <property name="text" >
+            <string>Label:</string>
+           </property>
+           <property name="wordWrap" >
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" colspan="2" >
+          <widget class="QLineEdit" name="label" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize" >
+            <size>
+             <width>0</width>
+             <height>23</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="2" >
+          <widget class="QLabel" name="seclevelLabel" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize" >
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text" >
+            <string>Security level:</string>
+           </property>
+           <property name="wordWrap" >
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2" >
+          <widget class="QSpinBox" name="seclevel" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip" >
+            <string>&lt;p>Each interface of the firewall must have security level associated with it.&lt;br>Security level can be any number between 0 and 100, 0 being least secure and 100 being most secure levels. Interface with security level 0 ususally serves Internet connection.&lt;/p></string>
+           </property>
+           <property name="whatsThis" >
+            <string>&lt;p>Each interface of the firewall must have security level associated with it.&lt;br>
 Security level can be any number between 0 and 100, 0 being least secure and 100 being most secure levels. Interface with security level 0 ususally serves Internet connection.&lt;/p></string>
-             </property>
-             <property name="buttonSymbols" >
-              <enum>QAbstractSpinBox::PlusMinus</enum>
-             </property>
-             <property name="maximum" >
-              <number>100</number>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1" >
-            <widget class="QLineEdit" name="label" />
-           </item>
-           <item row="0" column="1" >
-            <widget class="QLineEdit" name="obj_name" >
-             <property name="minimumSize" >
-              <size>
-               <width>200</width>
-               <height>0</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::MinimumExpanding</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>20</width>
-               <height>2</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item rowspan="2" row="0" column="2" >
-         <widget class="QGroupBox" name="buttonGroup1" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="title" >
-           <string/>
-          </property>
-          <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>8</number>
            </property>
-           <property name="topMargin" >
-            <number>8</number>
+           <property name="buttonSymbols" >
+            <enum>QAbstractSpinBox::PlusMinus</enum>
            </property>
-           <property name="rightMargin" >
-            <number>8</number>
+           <property name="maximum" >
+            <number>100</number>
            </property>
-           <property name="bottomMargin" >
-            <number>8</number>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="3" >
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Vertical</enum>
            </property>
-           <property name="horizontalSpacing" >
-            <number>8</number>
+           <property name="sizeType" >
+            <enum>QSizePolicy::MinimumExpanding</enum>
            </property>
-           <property name="verticalSpacing" >
-            <number>8</number>
+           <property name="sizeHint" >
+            <size>
+             <width>282</width>
+             <height>51</height>
+            </size>
            </property>
-           <item row="1" column="0" >
-            <widget class="QCheckBox" name="ext" >
-             <property name="toolTip" >
-              <string>&lt;p>One interface of the firewall must be marked as 'external'. This interface should be connected to the least secure network, usually the Internet.&lt;/p></string>
-             </property>
-             <property name="whatsThis" >
-              <string>One interface of the firewall must be marked as 'external'. This interface should be connected to the least secure network, usually the Internet.</string>
-             </property>
-             <property name="text" >
-              <string>This interface is external (insecure)</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0" >
-            <widget class="QCheckBox" name="management" >
-             <property name="toolTip" >
-              <string>&lt;p>Check if this interface is used for management (SNMP queries, remote policy install etc.)&lt;p></string>
-             </property>
-             <property name="text" >
-              <string>Management interface</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0" >
-            <widget class="QRadioButton" name="unnumbered" >
-             <property name="text" >
-              <string>Unnumbered interface</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0" >
-            <widget class="QRadioButton" name="dynamic" >
-             <property name="text" >
-              <string>Address is assigned dynamically</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0" >
-            <widget class="QRadioButton" name="regular" >
-             <property name="text" >
-              <string>Regular interface</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0" >
-            <widget class="QCheckBox" name="unprotected" >
-             <property name="toolTip" >
-              <string>Skip this interface while assigning policy rules</string>
-             </property>
-             <property name="text" >
-              <string>Unprotected interface</string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="0" >
-            <widget class="QRadioButton" name="bridgeport" >
-             <property name="text" >
-              <string>Bridge port</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="0" column="3" >
-         <widget class="QLabel" name="textLabel2" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text" >
-           <string>Comment:</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item rowspan="2" row="1" column="3" >
-         <widget class="QTextEdit" name="comment" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-            <horstretch>0</horstretch>
-            <verstretch>100</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>200</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="tabChangesFocus" >
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0" >
-         <widget class="QLabel" name="netzoneLabel" >
-          <property name="text" >
-           <string>Network zone:</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1" colspan="2" >
-         <widget class="QComboBox" name="netzone" >
-          <property name="toolTip" >
-           <string>&lt;p>Network zone consists of hosts and networks that can be reached through this interface of the firewall. Subnet to which this interface is directly attached must be part of its network zone. Other subnets reachable by means of routing should alse be added to the network zone.
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item rowspan="5" row="0" column="1" >
+       <widget class="QGroupBox" name="buttonGroup1" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title" >
+         <string/>
+        </property>
+        <layout class="QGridLayout" >
+         <property name="leftMargin" >
+          <number>8</number>
+         </property>
+         <property name="topMargin" >
+          <number>2</number>
+         </property>
+         <property name="rightMargin" >
+          <number>8</number>
+         </property>
+         <property name="bottomMargin" >
+          <number>2</number>
+         </property>
+         <property name="horizontalSpacing" >
+          <number>8</number>
+         </property>
+         <property name="verticalSpacing" >
+          <number>2</number>
+         </property>
+         <item row="1" column="0" >
+          <widget class="QCheckBox" name="ext" >
+           <property name="toolTip" >
+            <string>&lt;p>One interface of the firewall must be marked as 'external'. This interface should be connected to the least secure network, usually the Internet.&lt;/p></string>
+           </property>
+           <property name="whatsThis" >
+            <string>One interface of the firewall must be marked as 'external'. This interface should be connected to the least secure network, usually the Internet.</string>
+           </property>
+           <property name="text" >
+            <string>This interface is external (insecure)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" >
+          <widget class="QCheckBox" name="management" >
+           <property name="toolTip" >
+            <string>&lt;p>Check if this interface is used for management (SNMP queries, remote policy install etc.)&lt;p></string>
+           </property>
+           <property name="text" >
+            <string>Management interface</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0" >
+          <widget class="QRadioButton" name="unnumbered" >
+           <property name="text" >
+            <string>Unnumbered interface</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" >
+          <widget class="QRadioButton" name="dynamic" >
+           <property name="text" >
+            <string>Address is assigned dynamically</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" >
+          <widget class="QRadioButton" name="regular" >
+           <property name="text" >
+            <string>Regular interface</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" >
+          <widget class="QCheckBox" name="unprotected" >
+           <property name="toolTip" >
+            <string>Skip this interface while assigning policy rules</string>
+           </property>
+           <property name="text" >
+            <string>Unprotected interface</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0" >
+          <widget class="QRadioButton" name="bridgeport" >
+           <property name="text" >
+            <string>Bridge port</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="2" >
+       <widget class="QLabel" name="textLabel2" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text" >
+         <string>Comment:</string>
+        </property>
+        <property name="wordWrap" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item rowspan="4" row="1" column="2" >
+       <widget class="QTextEdit" name="comment" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+          <horstretch>0</horstretch>
+          <verstretch>100</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize" >
+         <size>
+          <width>200</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="tabChangesFocus" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" >
+       <widget class="QLabel" name="netzoneLabel" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text" >
+         <string>Network zone:</string>
+        </property>
+        <property name="wordWrap" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" >
+       <widget class="QComboBox" name="netzone" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize" >
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip" >
+         <string>&lt;p>Network zone consists of hosts and networks that can be reached through this interface of the firewall. Subnet to which this interface is directly attached must be part of its network zone. Other subnets reachable by means of routing should alse be added to the network zone.
 &lt;br>
 If network zone for this interface consists of only one subnet, you can simply choose that network's object in the pull-down below. If your network zone should include multiple subnets, you need to create an Object Group, then put all hosts and networks which are going to be part of the network zone into that group and finally choose this group in the pull-down below.&lt;/p></string>
-          </property>
-          <property name="whatsThis" >
-           <string>&lt;p>Network zone consists of hosts and networks that can be reached through this interface of the firewall. Subnet to which this interface is directly attached must be part of its network zone. Other subnets reachable by means of routing should alse be added to the network zone.
+        </property>
+        <property name="whatsThis" >
+         <string>&lt;p>Network zone consists of hosts and networks that can be reached through this interface of the firewall. Subnet to which this interface is directly attached must be part of its network zone. Other subnets reachable by means of routing should alse be added to the network zone.
 &lt;br>
 If network zone for this interface consists of only one subnet, you can simply choose that network's object in the pull-down below. If your network zone should include multiple subnets, you need to create an Object Group, then put all hosts and networks which are going to be part of the network zone into that group and finally choose this group in the pull-down below.&lt;/p></string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-    </layout>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" >
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>20</width>
+          <height>21</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>
