@@ -1,5 +1,9 @@
 2008-08-27  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* configure.in: Applied patch per bug #2079941: "Patch for
+	configure.in --with-qmake". Patch adds option --with-qmake to
+	configure in libfwbuilder and fwbuilder.
+
 	* iosaclAdvancedDialog.cpp (toggleGenerateLogging): fixed bug
 	#2078107: "IOS ACL compiler issue". Logging commands for IOS ACL
 	were not generated properly (settings made in the GUI were

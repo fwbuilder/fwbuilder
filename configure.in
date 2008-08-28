@@ -34,6 +34,7 @@ echo "Creating VERSION.h file..."
 echo "#define VERSION      \"$VERSION\""      > VERSION.h
 echo "#define RELEASE_NUM  \"$RELEASE_NUM\"" >> VERSION.h
 
+
 dnl try to find QT
 dnl
 AC_ARG_WITH(qtdir,[  --with-qtdir=DIR        Specify directory path for QT ])
@@ -48,8 +49,12 @@ fi
 # TODO: do we need to add $QTDIR/bin to PATH to find qmake?
 EXTENDED_PATH="/usr/local/bin:$PATH"
 
-# TODO: add support for --with-qmake option
-AC_PATH_PROG(QMAKE,  qmake,      ,[$EXTENDED_PATH])
+AC_ARG_WITH(qmake, [  --with-qmake=qmake     Specify the qmake to be used (debian qmake-qt4) ])
+if test -n "$with_qmake"; then
+    AC_PATH_PROG(QMAKE,  $with_qmake,      ,[$EXTENDED_PATH])
+else
+    AC_PATH_PROG(QMAKE,  qmake,      ,[$EXTENDED_PATH])
+fi
 if test -z "$QMAKE"; then
     AC_MSG_ERROR("Could not find qmake")
 fi
