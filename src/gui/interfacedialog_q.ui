@@ -9,7 +9,7 @@
     <x>0</x>
     <y>0</y>
     <width>905</width>
-    <height>306</height>
+    <height>342</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -110,22 +110,10 @@
       <enum>QFrame::Sunken</enum>
      </property>
      <layout class="QGridLayout" >
-      <property name="leftMargin" >
+      <property name="margin" >
        <number>2</number>
       </property>
-      <property name="topMargin" >
-       <number>2</number>
-      </property>
-      <property name="rightMargin" >
-       <number>2</number>
-      </property>
-      <property name="bottomMargin" >
-       <number>2</number>
-      </property>
-      <property name="horizontalSpacing" >
-       <number>2</number>
-      </property>
-      <property name="verticalSpacing" >
+      <property name="spacing" >
        <number>2</number>
       </property>
       <item row="0" column="2" >
@@ -162,7 +150,7 @@
          <string/>
         </property>
         <property name="pixmap" >
-         <pixmap resource="MainRes.qrc" >:/Icons/Interface/icon</pixmap>
+         <pixmap>:/Icons/Interface/icon</pixmap>
         </property>
        </widget>
       </item>
@@ -184,6 +172,12 @@
       <enum>QFrame::Sunken</enum>
      </property>
      <layout class="QGridLayout" >
+      <property name="sizeConstraint" >
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
+      <property name="spacing" >
+       <number>8</number>
+      </property>
       <item rowspan="2" row="0" column="0" >
        <widget class="QFrame" name="frame26" >
         <property name="sizePolicy" >
@@ -205,10 +199,13 @@
          <enum>QFrame::Sunken</enum>
         </property>
         <layout class="QGridLayout" >
-         <property name="horizontalSpacing" >
+         <property name="sizeConstraint" >
+          <enum>QLayout::SetMinAndMaxSize</enum>
+         </property>
+         <property name="margin" >
           <number>8</number>
          </property>
-         <property name="verticalSpacing" >
+         <property name="spacing" >
           <number>8</number>
          </property>
          <item row="0" column="0" >
@@ -304,6 +301,12 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="minimumSize" >
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
            </property>
            <property name="toolTip" >
             <string>&lt;p>Each interface of the firewall must have security level associated with it.&lt;br>Security level can be any number between 0 and 100, 0 being least secure and 100 being most secure levels. Interface with security level 0 ususally serves Internet connection.&lt;/p></string>
@@ -499,7 +502,7 @@ If network zone for this interface consists of only one subnet, you can simply c
         <property name="orientation" >
          <enum>Qt::Vertical</enum>
         </property>
-        <property name="sizeHint" >
+        <property name="sizeHint" stdset="0" >
          <size>
           <width>20</width>
           <height>21</height>
