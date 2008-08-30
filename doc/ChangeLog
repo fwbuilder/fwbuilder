@@ -1,5 +1,9 @@
 2008-08-30  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* instDialog.cpp (instDialog::fillCompileSelectList): disabled
+	font manipulations in install/compile dialog, it did not work
+	right on windows
+
 	* InterfaceDialog: layout adjustment for bug #2078671: "fwbuilder
 	3.0.0 build 487 - add/edit interface". Layout did not work quite
 	right with QT4 themes Plastique and Oxygen with default font size

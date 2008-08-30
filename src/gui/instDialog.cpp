@@ -202,8 +202,10 @@ instDialog::~instDialog()
 
 void setSuccessState(QTreeWidgetItem *item)
 {
+// disable font manipulation, it does not work right on windows
+#if 0
     QBrush b = item->foreground(1);
-//    b.setColor(Qt::green);
+    b.setColor(Qt::green);
     item->setForeground(1,b);
     item->setForeground(0,b);
 
@@ -211,10 +213,13 @@ void setSuccessState(QTreeWidgetItem *item)
     f.setBold(false);
     item->setFont(1,f);
     item->setFont(0,f);
+#endif
 }
 
 void setFailureState(QTreeWidgetItem *item)
 {
+// disable font manipulation, it does not work right on windows
+#if 0
     QBrush b = item->foreground(1);
     b.setColor(Qt::red);
     item->setForeground(1,b);
@@ -224,22 +229,29 @@ void setFailureState(QTreeWidgetItem *item)
     f.setBold(false);
     item->setFont(1,f);
     item->setFont(0,f);
+#endif
 }
 
 void setErrorState(QTreeWidgetItem *item)
 {
+// disable font manipulation, it does not work right on windows
+#if 0
     QFont f = item->font(1);
     f.setBold(false);
     item->setFont(1,f);
     item->setFont(0,f);
+#endif
 }
 
 void setInProcessState(QTreeWidgetItem *item)
 {
+// disable font manipulation, it does not work right on windows
+#if 0
     QFont f = item->font(1);
     f.setBold(true);
     item->setFont(1,f);
     item->setFont(0,f);
+#endif
 }
 
 void instDialog::nextClicked()
@@ -514,7 +526,15 @@ void instDialog::fillCompileSelectList()
         temp.setColor(QPalette::Window, Qt::white);
         l->setPalette(temp);
 
-        if (lm>lc && lm>li) {font=l->font();font.setBold(true);l->setFont(font);}
+// disable font manipulation, it does not work right on windows
+#if 0
+        if (lm>lc && lm>li) {
+            font=l->font();
+            font.setBold(true);
+            l->setFont(font);
+        }
+#endif
+
         l->setText((lm)?dt.toString():QString("---"));
         m_dialog->selectTable->setCellWidget(row,4,l);
 
@@ -523,7 +543,17 @@ void instDialog::fillCompileSelectList()
         temp = l->palette();
         temp.setColor(QPalette::Window, Qt::white);
         l->setPalette(temp);
-        if (lc>lm && lc>li) {font=l->font();font.setBold(true);l->setFont(font);}
+
+// disable font manipulation, it does not work right on windows
+#if 0
+        if (lc>lm && lc>li)
+        {
+            font=l->font();
+            font.setBold(true);
+            l->setFont(font);
+        }
+#endif
+
         l->setText((lm)?dt.toString():QString("---"));
         m_dialog->selectTable->setCellWidget(row,5,l);
 
@@ -532,7 +562,17 @@ void instDialog::fillCompileSelectList()
         temp = l->palette();
         temp.setColor(QPalette::Window, Qt::white);
         l->setPalette(temp);
-        if (li>lc && li>lm) {font=l->font();font.setBold(true);l->setFont(font);}
+
+// disable font manipulation, it does not work right on windows
+#if 0
+        if (li>lc && li>lm)
+        {
+            font=l->font();
+            font.setBold(true);
+            l->setFont(font);
+        }
+#endif
+
         l->setText((lm)?dt.toString():QString("---"));
         m_dialog->selectTable->setCellWidget(row,6,l);
 
