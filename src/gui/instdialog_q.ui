@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>564</width>
-    <height>663</height>
+    <width>854</width>
+    <height>621</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -74,7 +74,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex" >
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page" >
       <property name="sizePolicy" >
@@ -259,6 +259,9 @@
             </property>
             <item>
              <widget class="QTableWidget" name="selectTable" >
+              <property name="alternatingRowColors" >
+               <bool>true</bool>
+              </property>
               <property name="selectionMode" >
                <enum>QAbstractItemView::NoSelection</enum>
               </property>

@@ -21,9 +21,6 @@
     <height>32767</height>
    </size>
   </property>
-  <property name="font" >
-   <font/>
-  </property>
   <property name="focusPolicy" >
    <enum>Qt::StrongFocus</enum>
   </property>
@@ -548,7 +545,6 @@
   <tabstop>okButton</tabstop>
   <tabstop>cancelButton</tabstop>
  </tabstops>
- <includes/>
  <resources/>
  <connections>
   <connection>

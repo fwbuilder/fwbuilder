@@ -603,7 +603,6 @@ int main( int argc, char *argv[] )
         app->setOrganizationName(QLatin1String("NetCitadel LLC"));
         app->setApplicationName(QLatin1String("Firewall Builder"));
 
-
 /* need to initialize in order to be able to use FWBSettings */
         init(argv);
         init_platforms();
@@ -616,6 +615,8 @@ int main( int argc, char *argv[] )
         if (fwbdebug) qDebug("done");
 
         QPixmapCache::setCacheLimit(4096);
+
+//        app->setFont(st->getTreeFont());
 
 #ifdef ELC
         registered = init2(argv0,

@@ -24,13 +24,6 @@
     <height>0</height>
    </size>
   </property>
-  <property name="font" >
-   <font>
-    <family>Sans Serif</family>
-    <pointsize>11</pointsize>
-    <stylestrategy>PreferDefault</stylestrategy>
-   </font>
-  </property>
   <property name="windowTitle" >
    <string>Firewall Builder</string>
   </property>
@@ -83,7 +76,7 @@
      <x>0</x>
      <y>0</y>
      <width>741</width>
-     <height>28</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="editMenu" >

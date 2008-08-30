@@ -1,3 +1,10 @@
+2008-08-29  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* making sure dialogs do not enforce font type and size if not
+	necessary. Main window and install dialog used to override system
+	font which led to problems with dialog layouts on some systems.
+
+
 2008-08-27  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* configure.in: Applied patch per bug #2079941: "Patch for
