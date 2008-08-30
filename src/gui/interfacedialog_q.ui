@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>905</width>
-    <height>342</height>
+    <width>857</width>
+    <height>267</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -110,10 +110,22 @@
       <enum>QFrame::Sunken</enum>
      </property>
      <layout class="QGridLayout" >
-      <property name="margin" >
+      <property name="leftMargin" >
        <number>2</number>
       </property>
-      <property name="spacing" >
+      <property name="topMargin" >
+       <number>2</number>
+      </property>
+      <property name="rightMargin" >
+       <number>2</number>
+      </property>
+      <property name="bottomMargin" >
+       <number>2</number>
+      </property>
+      <property name="horizontalSpacing" >
+       <number>2</number>
+      </property>
+      <property name="verticalSpacing" >
        <number>2</number>
       </property>
       <item row="0" column="2" >
@@ -150,7 +162,7 @@
          <string/>
         </property>
         <property name="pixmap" >
-         <pixmap>:/Icons/Interface/icon</pixmap>
+         <pixmap/>
         </property>
        </widget>
       </item>
@@ -160,7 +172,7 @@
    <item row="1" column="0" >
     <widget class="QFrame" name="frame7" >
      <property name="sizePolicy" >
-      <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+      <sizepolicy vsizetype="MinimumExpanding" hsizetype="Expanding" >
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -172,12 +184,6 @@
       <enum>QFrame::Sunken</enum>
      </property>
      <layout class="QGridLayout" >
-      <property name="sizeConstraint" >
-       <enum>QLayout::SetDefaultConstraint</enum>
-      </property>
-      <property name="spacing" >
-       <number>8</number>
-      </property>
       <item rowspan="2" row="0" column="0" >
        <widget class="QFrame" name="frame26" >
         <property name="sizePolicy" >
@@ -188,8 +194,8 @@
         </property>
         <property name="minimumSize" >
          <size>
-          <width>0</width>
-          <height>16</height>
+          <width>170</width>
+          <height>107</height>
          </size>
         </property>
         <property name="frameShape" >
@@ -202,10 +208,22 @@
          <property name="sizeConstraint" >
           <enum>QLayout::SetMinAndMaxSize</enum>
          </property>
-         <property name="margin" >
+         <property name="leftMargin" >
           <number>8</number>
          </property>
-         <property name="spacing" >
+         <property name="topMargin" >
+          <number>8</number>
+         </property>
+         <property name="rightMargin" >
+          <number>8</number>
+         </property>
+         <property name="bottomMargin" >
+          <number>8</number>
+         </property>
+         <property name="horizontalSpacing" >
+          <number>8</number>
+         </property>
+         <property name="verticalSpacing" >
           <number>8</number>
          </property>
          <item row="0" column="0" >
@@ -456,6 +474,19 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
        </widget>
       </item>
       <item row="2" column="0" >
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>20</width>
+          <height>21</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="3" column="0" >
        <widget class="QLabel" name="netzoneLabel" >
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -471,7 +502,7 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
         </property>
        </widget>
       </item>
-      <item row="3" column="0" >
+      <item row="4" column="0" >
        <widget class="QComboBox" name="netzone" >
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -496,19 +527,6 @@ If network zone for this interface consists of only one subnet, you can simply c
 If network zone for this interface consists of only one subnet, you can simply choose that network's object in the pull-down below. If your network zone should include multiple subnets, you need to create an Object Group, then put all hosts and networks which are going to be part of the network zone into that group and finally choose this group in the pull-down below.&lt;/p></string>
         </property>
        </widget>
-      </item>
-      <item row="4" column="0" >
-       <spacer>
-        <property name="orientation" >
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0" >
-         <size>
-          <width>20</width>
-          <height>21</height>
-         </size>
-        </property>
-       </spacer>
       </item>
      </layout>
     </widget>

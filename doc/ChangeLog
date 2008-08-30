@@ -1,3 +1,10 @@
+2008-08-30  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* InterfaceDialog: layout adjustment for bug #2078671: "fwbuilder
+	3.0.0 build 487 - add/edit interface". Layout did not work quite
+	right with QT4 themes Plastique and Oxygen with default font size
+	14.
+	
 2008-08-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ObjectEditor.cpp: more missing #include for FreeBSD

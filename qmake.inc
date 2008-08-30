@@ -37,8 +37,8 @@ unix {
 
     INCLUDEPATH  += .. ../.. $$(INCLUDEPATH) /home/vadim/src/fwb3-branch-v3/install_root/include/ /home/vadim/src/fwb3-branch-v3/install_root/include/fwb-3 /usr/include/libxml2
 
-    LIBS_FWCOMPILER         = -L/home/vadim/src/fwb3-branch-v3/install_root/lib -pthread -lfwcompiler -lfwbuilder -lxslt -lxml2 -lnetsnmp -lm -lwrap
-    LIBS_FWBUILDER          = -L/home/vadim/src/fwb3-branch-v3/install_root/lib -pthread -lfwbuilder -lxslt -lxml2 -lnetsnmp -lm -lwrap
+    LIBS_FWCOMPILER         = -L/home/vadim/src/fwb3-branch-v3/install_root/lib -pthread -lfwcompiler -lfwbuilder -lxslt -lxml2 -lz -lm -lcrypto -lsensors -lnetsnmp
+    LIBS_FWBUILDER          = -L/home/vadim/src/fwb3-branch-v3/install_root/lib -pthread -lfwbuilder -lxslt -lxml2 -lz -lm -lcrypto -lsensors -lnetsnmp
 
 	target.path             = $$PREFIX/bin
 	dtd.path                = @TEMPLATE_DIR@/
