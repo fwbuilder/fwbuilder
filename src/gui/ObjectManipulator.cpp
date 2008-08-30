@@ -43,6 +43,7 @@
 #include "findDialog.h"
 #include "newGroupDialog.h"
 #include "FindObjectWidget.h"
+#include "AskLibForCopyDialog.h"
 
 #include <QTextEdit>
 #include <QTime>
@@ -95,11 +96,10 @@
 #include "fwbuilder/FWReference.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/RuleSet.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/NAT.h"
+#include "fwbuilder/Routing.h"
 #include "fwbuilder/RuleElement.h"
-
-#ifdef USE_INTERFACE_POLICY
-#  include "fwbuilder/InterfacePolicy.h"
-#endif
 
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/IPService.h"
@@ -117,7 +117,7 @@
 
 #include <iostream>
 #include <algorithm>
-#include "AskLibForCopyDialog.h"
+#include <sstream>
 
 using namespace std;
 using namespace libfwbuilder;
