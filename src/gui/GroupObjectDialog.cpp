@@ -44,6 +44,7 @@
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Group.h"
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/ServiceGroup.h"
 
 #include <qlineedit.h>
 #include <qtextedit.h>
