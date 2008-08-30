@@ -1,5 +1,7 @@
 2008-08-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ObjectEditor.cpp: more missing #include for FreeBSD
+
 	* ObjectManipulator.cpp: Added missing #include for FreeBSD 7.0
 	port
 

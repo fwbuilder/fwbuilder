@@ -59,6 +59,9 @@
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/ObjectGroup.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/NAT.h"
+#include "fwbuilder/Routing.h"
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWReference.h"
