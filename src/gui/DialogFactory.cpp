@@ -100,6 +100,9 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/TagService.h"
 #include "fwbuilder/UserService.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/NAT.h"
+#include "fwbuilder/Routing.h"
 
 #include <iostream>
 #include "ProjectPanel.h"
