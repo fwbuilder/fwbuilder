@@ -515,65 +515,20 @@ void instDialog::fillCompileSelectList()
         m_dialog->selectTable->setItem(row,1,citem);
         installMapping[f]=citem;
 
-        QLabel *l;
-        QFont font;
-
         dt.setTime_t(lm);
-        l = new QLabel(m_dialog->selectTable);
-
-// disable font manipulation, it does not work right on windows
-#if 0
-        QPalette temp = l->palette();
-        temp.setColor(QPalette::Window, Qt::white);
-        l->setPalette(temp);
-        if (lm>lc && lm>li)
-        {
-            font=l->font();
-            font.setBold(true);
-            l->setFont(font);
-        }
-#endif
-
-        l->setText((lm)?dt.toString():QString("---"));
-        m_dialog->selectTable->setCellWidget(row,4,l);
+        citem = new QTableWidgetItem;
+        citem->setText((lm)?dt.toString():QString("---"));
+        m_dialog->selectTable->setItem(row,4,citem);
 
         dt.setTime_t(lc);
-        l = new QLabel(m_dialog->selectTable);
-
-// disable font manipulation, it does not work right on windows
-#if 0
-        temp = l->palette();
-        temp.setColor(QPalette::Window, Qt::white);
-        l->setPalette(temp);
-        if (lc>lm && lc>li)
-        {
-            font=l->font();
-            font.setBold(true);
-            l->setFont(font);
-        }
-#endif
-
-        l->setText((lm)?dt.toString():QString("---"));
-        m_dialog->selectTable->setCellWidget(row,5,l);
+        citem = new QTableWidgetItem;
+        citem->setText((lm)?dt.toString():QString("---"));
+        m_dialog->selectTable->setItem(row,5,citem);
 
         dt.setTime_t(li);
-        l = new QLabel(m_dialog->selectTable);
-
-// disable font manipulation, it does not work right on windows
-#if 0
-        temp = l->palette();
-        temp.setColor(QPalette::Window, Qt::white);
-        l->setPalette(temp);
-        if (li>lc && li>lm)
-        {
-            font=l->font();
-            font.setBold(true);
-            l->setFont(font);
-        }
-#endif
-
-        l->setText((lm)?dt.toString():QString("---"));
-        m_dialog->selectTable->setCellWidget(row,6,l);
+        citem = new QTableWidgetItem;
+        citem->setText((lm)?dt.toString():QString("---"));
+        m_dialog->selectTable->setItem(row,6,citem);
 
         row++;
     }
