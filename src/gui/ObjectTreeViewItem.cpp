@@ -29,6 +29,10 @@
 #include "ObjectTreeViewItem.h"
 
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/NAT.h"
+#include "fwbuilder/Routing.h"
 
 #include <qfont.h>
 #include <qpainter.h>

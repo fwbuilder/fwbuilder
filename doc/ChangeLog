@@ -1,3 +1,8 @@
+2008-08-31  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ObjectTreeViewItem.cpp: more fixes for compile problems on
+	FreeBSD
+
 2008-08-30  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PrefsDialog.cpp: more fixes for compile problems on FreeBSD
