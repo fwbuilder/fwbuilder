@@ -466,5 +466,5 @@ AC_CONFIG_FILES([ src/res/platform/unknown.xml ])
 
 AC_OUTPUT
 
-CCACHE=$CCACHE QTDIR=$QTDIR ./runqmake.sh
+QMAKE=$QMAKE CCACHE=$CCACHE QTDIR=$QTDIR ./runqmake.sh
 
