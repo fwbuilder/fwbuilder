@@ -1030,9 +1030,7 @@ void ProjectPanel::load(QWidget*)
 /*
  *  Load user data file referenced by the RCS object
  */
-void ProjectPanel::load(QWidget*,
-                        RCS* _rcs,
-                        FWObjectDatabase* clone)
+void ProjectPanel::load(QWidget*, RCS* _rcs, FWObjectDatabase* clone)
 {
     QStatusBar *sb = mainW->statusBar();
 
@@ -1176,6 +1174,7 @@ void ProjectPanel::load(QWidget*,
                             0, 1 );
 
                         load(this);
+                        mainW->disableActions(m_panel->ruleSets->count()!=0);
                         return;
                     }
                     nfinfo.setFile(nfn);
@@ -1209,6 +1208,7 @@ void ProjectPanel::load(QWidget*,
         mainW->addToRCSActionSetEn( !rcs->isInRCS() && !rcs->isRO());
         mainW->fileDiscardActionSetEn( rcs->isInRCS() && !rcs->isRO());
         mainW->fileCommitActionSetEn( rcs->isInRCS() && !rcs->isRO());
+        mainW->disableActions(m_panel->ruleSets->count()!=0);
 
     } catch(FWException &ex)
     {
@@ -1252,6 +1252,7 @@ void ProjectPanel::load(QWidget*,
                 0, 1 );
         }
         load(this);
+        mainW->disableActions(m_panel->ruleSets->count()!=0);
         return;
     }
 
@@ -1515,6 +1516,7 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
         mainW->addToRCSActionSetEn( !rcs->isInRCS() && !rcs->isRO());
         mainW->fileDiscardActionSetEn( rcs->isInRCS() && !rcs->isRO());
         mainW->fileCommitActionSetEn( rcs->isInRCS() && !rcs->isRO());
+        mainW->disableActions(m_panel->ruleSets->count()!=0);
 
     } catch(FWException &ex)
     {

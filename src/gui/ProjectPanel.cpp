@@ -458,7 +458,8 @@ void ProjectPanel::openRuleSet(FWObject * obj)
 void ProjectPanel::selectRules()
 {
 //    `unselect();
-    RuleSetView* rv=dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
+    RuleSetView* rv = dynamic_cast<RuleSetView*>(
+        m_panel->ruleSets->currentWidget());
     rv->setFocus();
 }
 
@@ -1135,7 +1136,8 @@ void ProjectPanel::rollBackSelectionDifferentWidget()
 QString ProjectPanel::printHeader()
 {
     QString headerText = rcs->getFileName().section("/",-1,-1);
-    if (rcs->isInRCS()) headerText = headerText + ", rev " + rcs->getSelectedRev();
+    if (rcs->isInRCS())
+        headerText = headerText + ", rev " + rcs->getSelectedRev();
     return headerText;
 }
 
@@ -1146,16 +1148,14 @@ void ProjectPanel::releaseEditor()
 
 void ProjectPanel::connectEditor(QWidget *w)
 {
-    connect(this,
-            SIGNAL(restoreSelection_sign(bool)),
-            w,
-            SLOT(restoreSelection(bool)));
+    connect(this, SIGNAL(restoreSelection_sign(bool)),
+            w, SLOT(restoreSelection(bool)));
 }
 
 bool ProjectPanel::requestEditorOwnership(QWidget *w,
-                                      FWObject *obj,
-                                      ObjectEditor::OptType otype,
-                                      bool validate)
+                                          FWObject *obj,
+                                          ObjectEditor::OptType otype,
+                                          bool validate)
 {
     if (!isEditorVisible()) return false;
 
@@ -1177,9 +1177,9 @@ bool ProjectPanel::requestEditorOwnership(QWidget *w,
          * is still connected to the previous owner
          */
         if (w == editorOwner )
-            QTimer::singleShot( 0, this, SLOT(rollBackSelectionSameWidget()) );
+            QTimer::singleShot(0, this, SLOT(rollBackSelectionSameWidget()));
         else
-            QTimer::singleShot( 0, this, SLOT(rollBackSelectionDifferentWidget()) );
+            QTimer::singleShot(0,this,SLOT(rollBackSelectionDifferentWidget()));
         return false;
     }
 
@@ -1209,8 +1209,7 @@ bool ProjectPanel::isStandardId(FWObject *obj)
     return objectTreeFormat->isStandardId(obj);
 }
     
-bool ProjectPanel::validateForInsertion(FWObject *target,
-                                        FWObject *obj)
+bool ProjectPanel::validateForInsertion(FWObject *target, FWObject *obj)
 {
     return objectTreeFormat->validateForInsertion(target, obj);
 }
@@ -1239,8 +1238,6 @@ FWObject* ProjectPanel::createNewLibrary(FWObjectDatabase *db)
 {
     return objectTreeFormat->createNewLibrary(db);
 }
-
-
 
 void ProjectPanel::scheduleRuleSetRedraw()
 {

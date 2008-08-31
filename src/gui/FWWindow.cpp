@@ -203,6 +203,8 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
         qDebug("/FWWindow constructor");
 
     recreateWindowsMenu();    
+    disableActions(false);
+
 //    findObject->setMinimumSize( QSize( 0, 0 ) );
 }
 
@@ -1551,7 +1553,8 @@ void FWWindow::recreateWindowsMenu ()
     for (int i = 0 ; i < subWindowList.size();i++)
     {
         windowsPainters.push_back (subWindowList[i]);
-        ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
+        ProjectPanel * pp = dynamic_cast<ProjectPanel *>(
+            subWindowList[i]->widget());
         if (pp!=NULL)
         {
             if (pp->isClosing())
@@ -1565,7 +1568,8 @@ void FWWindow::recreateWindowsMenu ()
             act->setCheckable ( true );
             if (subWindowList[i]==m_space->activeSubWindow ())
                 act->setChecked(true);
-            connect(act, SIGNAL(triggered()), this, SLOT(selectActiveSubWindow()));
+            connect(act, SIGNAL(triggered()),
+                    this, SLOT(selectActiveSubWindow()));
         }
     }
 
