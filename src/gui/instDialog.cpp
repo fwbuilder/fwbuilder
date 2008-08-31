@@ -519,14 +519,15 @@ void instDialog::fillCompileSelectList()
         QFont font;
 
         dt.setTime_t(lm);
-        l=new QLabel(m_dialog->selectTable);
+        l = new QLabel(m_dialog->selectTable);
 
 // disable font manipulation, it does not work right on windows
 #if 0
         QPalette temp = l->palette();
         temp.setColor(QPalette::Window, Qt::white);
         l->setPalette(temp);
-        if (lm>lc && lm>li) {
+        if (lm>lc && lm>li)
+        {
             font=l->font();
             font.setBold(true);
             l->setFont(font);
@@ -537,7 +538,7 @@ void instDialog::fillCompileSelectList()
         m_dialog->selectTable->setCellWidget(row,4,l);
 
         dt.setTime_t(lc);
-        l=new QLabel(m_dialog->selectTable);
+        l = new QLabel(m_dialog->selectTable);
 
 // disable font manipulation, it does not work right on windows
 #if 0
@@ -556,7 +557,7 @@ void instDialog::fillCompileSelectList()
         m_dialog->selectTable->setCellWidget(row,5,l);
 
         dt.setTime_t(li);
-        l=new QLabel(m_dialog->selectTable);
+        l = new QLabel(m_dialog->selectTable);
 
 // disable font manipulation, it does not work right on windows
 #if 0
@@ -576,16 +577,16 @@ void instDialog::fillCompileSelectList()
 
         row++;
     }
+
     creatingTable = false;
-    if (show_library)
-        m_dialog->selectTable->showColumn(3);
-    else
-        m_dialog->selectTable->hideColumn(3);
+
+    if (show_library) m_dialog->selectTable->showColumn(3);
+    else              m_dialog->selectTable->hideColumn(3);
 
     for (int i=0;i<m_dialog->selectTable->columnCount();i++)
     {
         if (i<4)
-            m_dialog->selectTable->resizeColumnToContents (i);
+            m_dialog->selectTable->resizeColumnToContents(i);
         else
             m_dialog->selectTable->setColumnWidth(i,200);
     }
