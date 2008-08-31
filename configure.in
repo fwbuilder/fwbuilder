@@ -468,4 +468,4 @@ dnl qmake just copies the file; we need to make it executable before that
 dnl 
 chmod a+x src/confscript/libfwbuilder-config-3
 
-CCACHE=$CCACHE ./runqmake.sh
+QMAKE=$QMAKE CCACHE=$CCACHE ./runqmake.sh
