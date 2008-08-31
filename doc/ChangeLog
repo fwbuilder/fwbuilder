@@ -7,6 +7,8 @@
 
 2008-08-30  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* RuleSetDialog.cpp: fixing compile problems on FreeBSD 7.0
+
 	* instDialog.cpp (instDialog::fillCompileSelectList): resize rows
 	in the table that lists all firewalls for compile/install to make
 	rows minimal required height.

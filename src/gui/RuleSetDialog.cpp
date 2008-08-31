@@ -36,6 +36,7 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Management.h"
 #include "fwbuilder/FWException.h"
+#include "fwbuilder/RuleSet.h"
 
 #include <qlineedit.h>
 #include <qspinbox.h>
