@@ -56,6 +56,8 @@
 #include <qapplication.h>
 #include <qcursor.h>
 #include <qpixmapcache.h>
+#include <qfiledialog.h>
+#include <qdir.h>
 
 #include <iostream>
 

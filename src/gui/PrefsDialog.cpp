@@ -52,6 +52,7 @@
 #include <qpixmapcache.h>
 #include <qfontdialog.h>
 #include <QUrl>
+#include <QMessageBox>
 
 /*
 

@@ -1,11 +1,11 @@
-2008-08-30  vadim  <vadim@vk.crocodile.org>
+2008-08-30  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* PrefsDialog.cpp: more fixes for compile problems on FreeBSD
 
 	* instDialog.cpp (instDialog::fillCompileSelectList): fixed a bug:
 	firewall table in the compile/install dialog did not show "last
 	compiled", "last modified", "last installed" time stamps on
 	windows and mac.
-
-2008-08-30  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* RuleSetDialog.cpp: fixing compile problems on FreeBSD 7.0
 
