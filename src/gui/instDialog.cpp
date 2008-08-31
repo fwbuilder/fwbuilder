@@ -515,19 +515,17 @@ void instDialog::fillCompileSelectList()
         m_dialog->selectTable->setItem(row,1,citem);
         installMapping[f]=citem;
 
-
         QLabel *l;
         QFont font;
 
-
         dt.setTime_t(lm);
         l=new QLabel(m_dialog->selectTable);
-        QPalette temp = l->palette();
-        temp.setColor(QPalette::Window, Qt::white);
-        l->setPalette(temp);
 
 // disable font manipulation, it does not work right on windows
 #if 0
+        QPalette temp = l->palette();
+        temp.setColor(QPalette::Window, Qt::white);
+        l->setPalette(temp);
         if (lm>lc && lm>li) {
             font=l->font();
             font.setBold(true);
@@ -540,12 +538,12 @@ void instDialog::fillCompileSelectList()
 
         dt.setTime_t(lc);
         l=new QLabel(m_dialog->selectTable);
-        temp = l->palette();
-        temp.setColor(QPalette::Window, Qt::white);
-        l->setPalette(temp);
 
 // disable font manipulation, it does not work right on windows
 #if 0
+        temp = l->palette();
+        temp.setColor(QPalette::Window, Qt::white);
+        l->setPalette(temp);
         if (lc>lm && lc>li)
         {
             font=l->font();
@@ -559,12 +557,12 @@ void instDialog::fillCompileSelectList()
 
         dt.setTime_t(li);
         l=new QLabel(m_dialog->selectTable);
-        temp = l->palette();
-        temp.setColor(QPalette::Window, Qt::white);
-        l->setPalette(temp);
 
 // disable font manipulation, it does not work right on windows
 #if 0
+        temp = l->palette();
+        temp.setColor(QPalette::Window, Qt::white);
+        l->setPalette(temp);
         if (li>lc && li>lm)
         {
             font=l->font();
@@ -594,6 +592,7 @@ void instDialog::fillCompileSelectList()
 
     //selectTable->setColumnStretchable(2,true);
     //selectTable->sortColumn(2,true,true);
+    m_dialog->selectTable->resizeRowsToContents();
 }
 
 void instDialog::showPage(const int page)
