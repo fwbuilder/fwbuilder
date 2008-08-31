@@ -50,12 +50,17 @@ EXTENDED_PATH="/usr/local/bin:$PATH"
 AC_ARG_WITH(qmake, [  --with-qmake=qmake     Specify the qmake to be used (debian qmake-qt4) ])
 if test -n "$with_qmake"; then
     AC_PATH_PROG(QMAKE,  $with_qmake,      ,[$EXTENDED_PATH])
+    if test -z "$QMAKE"; then
+        AC_MSG_ERROR("Could not find qmake")
+    fi
 else
     AC_PATH_PROG(QMAKE,  qmake,      ,[$EXTENDED_PATH])
-fi
-
-if test -z "$QMAKE"; then
-    AC_MSG_ERROR("Could not find qmake")
+    if test -z "$QMAKE"; then
+        AC_PATH_PROG(QMAKE,  qmake-qt4,      ,[$EXTENDED_PATH])
+        if test -z "$QMAKE"; then
+            AC_MSG_ERROR("Could not find qmake")
+        fi
+    fi
 fi
 
 AC_MSG_CHECKING(checking version of QT this qmake is part of)
