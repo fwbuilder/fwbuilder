@@ -26,6 +26,12 @@
 #include "AskLibForCopyDialog.h"
 #include "FWBSettings.h"
 
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Library.h"
+
+#include <qpixmapcache.h>
+
 using namespace std;
 using namespace libfwbuilder;
 

@@ -37,6 +37,7 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Rule.h"
+#include "fwbuilder/RuleSet.h"
 #include "fwbuilder/Firewall.h"
 
 #include <qlineedit.h>

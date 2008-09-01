@@ -1,3 +1,11 @@
+2008-09-01  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* res.pro: Do not try to install icons if variable ICONSDIR was
+	not defined by configure. This is the case on FreeBSD, I do not
+	know where application icons should be installed there.
+
+	* ActionsDialog.cpp: more fixes for compile problems on FreeBSD
+
 2008-08-31  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ObjectTreeViewItem.cpp: more fixes for compile problems on
