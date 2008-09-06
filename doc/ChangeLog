@@ -1,3 +1,7 @@
+2008-09-06  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* v3.0.0 released Sep 1, 2008. Merged branch "v3" r512 to trunk
+	
 2008-09-01  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* res.pro: Do not try to install icons if variable ICONSDIR was
