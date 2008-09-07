@@ -157,7 +157,10 @@ public slots:
     virtual void newObject();
     virtual void lockObject();
     virtual void unlockObject();
+
     virtual void prepareObjectMenu();
+    virtual void prepareFileMenu();
+
     virtual void toolsDiscoveryDruid();
     virtual void closeAuxiliaryPanel();
     virtual void closeEditorPanel();
@@ -166,7 +169,9 @@ public slots:
     virtual void killInstDialog();
 
     virtual void checkForUpgrade(const QString&);
- 
+
+    virtual void projectWindowClosed();
+    
  public:
     Ui::FWBMainWindow_q *m_mainWindow;
      
@@ -346,11 +351,6 @@ public slots:
     //find dialog functions wrapers
     void setFDObject(libfwbuilder::FWObject *o);
     
-    void addToRCSActionSetEn(bool en);
-    void fileDiscardActionSetEn(bool en);
-    void fileCommitActionSetEn(bool en);
-    void fileSaveActionSetEn(bool en);
-
     QPrinter* getPrinter();
     libfwbuilder::FWObjectDatabase* db();
     QString printHeader();

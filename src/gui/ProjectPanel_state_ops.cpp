@@ -41,9 +41,6 @@ using namespace Ui;
 using namespace libfwbuilder;
 using namespace std;
 
-#define DEFAULT_H_SPLITTER_POSITION 250
-#define DEFAULT_V_SPLITTER_POSITION 450
-
 // this slot is called when user hits "maximize" or "minimize" buttons
 // on the title bar of the internal window. Need to restore window
 // geometry and splitter position when window becomes normal (not maximized).
@@ -179,11 +176,7 @@ void ProjectPanel::loadState()
         qDebug(QString("%1: %2x%3").arg(h_splitter_setting).
                arg(w1).arg(w2).toAscii().data());
 
-    QList<int> sl;
-    sl.push_back(w1);
-    sl.push_back(w2);
-    if (w1 && w2)
-        m_panel->mainSplitter->setSizes( sl );
+    setMainSplitterPosition(w1, w2);
 
     if (fwbdebug) qDebug("Restore info window splitter position");
 
@@ -200,14 +193,33 @@ void ProjectPanel::loadState()
         qDebug(QString("%1: %2x%3").arg(v_splitter_setting).
                arg(w1).arg(w2).toAscii().data());
 
-    sl.clear();
-    sl.push_back(w1);
-    sl.push_back(w2);
-    if (w1 && w2)
-        m_panel->objInfoSplitter->setSizes( sl );
-
+    setObjInfoSplitterPosition(w1, w2);
 
     if (fwbdebug) qDebug("ProjectPanel::loadState done");
+}
+
+void ProjectPanel::setMainSplitterPosition(int w1, int w2)
+{
+    if (w1 && w2)
+    {
+        QList<int> sl;
+        sl.push_back(w1);
+        sl.push_back(w2);
+        if (fwbdebug) qDebug("Setting main splitter position: %d,%d", w1, w2);
+        m_panel->mainSplitter->setSizes( sl );
+    }
+}
+
+void ProjectPanel::setObjInfoSplitterPosition(int w1, int w2)
+{
+    if (w1 && w2) 
+    {
+        QList<int> sl;
+        sl.clear();
+        sl.push_back(w1);
+        sl.push_back(w2);
+        m_panel->objInfoSplitter->setSizes( sl );
+    }
 }
 
 

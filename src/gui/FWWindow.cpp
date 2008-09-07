@@ -197,10 +197,12 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 
     connect( m_mainWindow->ObjectMenu, SIGNAL (aboutToShow() ),
             this,     SLOT( prepareObjectMenu()  ));
+
+    connect( m_mainWindow->fileMenu, SIGNAL (aboutToShow() ),
+            this,     SLOT( prepareFileMenu()  ));
+
     connect( m_space, SIGNAL(subWindowActivated (QMdiSubWindow *)),
              this, SLOT(changeActiveSubwindow())); 
-    if (fwbdebug)
-        qDebug("/FWWindow constructor");
 
     recreateWindowsMenu();    
     disableActions(false);
@@ -247,7 +249,7 @@ ProjectPanel* FWWindow::activeProject()
 {
     QMdiSubWindow *w = m_space->currentSubWindow();
     if (w) return dynamic_cast<ProjectPanel*>(w->widget());
-    return 0;
+    return NULL;
 }
 
 void FWWindow::killInstDialog()
@@ -260,7 +262,7 @@ void FWWindow::killInstDialog()
     }
 }
 
-void FWWindow::updateWindowTitle ()
+void FWWindow::updateWindowTitle()
 {
     if (activeProject())
     {
@@ -343,32 +345,12 @@ void FWWindow::fileNew()
     if (proj->fileNew())
     {
     	showSub(proj);
-        proj->startupLoad();
+        //proj->startupLoad();
     }
     else
     {
         delete proj ;  
     }
-}
-
-void FWWindow::addToRCSActionSetEn(bool en)
-{
-    m_mainWindow->addToRCSAction->setEnabled(en);
-}
-
-void FWWindow::fileDiscardActionSetEn(bool en)
-{
-    m_mainWindow->fileDiscardAction->setEnabled(en);
-}
-
-void FWWindow::fileCommitActionSetEn(bool en)
-{
-    m_mainWindow->fileCommitAction->setEnabled(en);
-}
-
-void FWWindow::fileSaveActionSetEn(bool en)
-{
-    m_mainWindow->fileSaveAction->setEnabled(en);
 }
 
 void FWWindow::fileOpen()
@@ -386,7 +368,19 @@ void FWWindow::fileOpen()
 
 void FWWindow::fileClose()
 {
-    if (activeProject()) activeProject()->fileClose();
+    if (fwbdebug) qDebug("FWWindow::fileClose()");
+
+    if (activeProject())
+    {
+        ProjectPanel * project = activeProject();
+        if (!project->saveIfModified()) return;  // abort operation
+        project->saveState();
+        project->fileClose();
+    }
+
+    if (fwbdebug) qDebug("subWindowList().size()=%d",
+                         m_space->subWindowList().size());
+
     recreateWindowsMenu();
 }
 
@@ -460,34 +454,29 @@ void FWWindow::importPolicy()
 
 void FWWindow::load(QWidget *dialogs_parent)
 {
-    if (activeProject())
-        activeProject()->load(dialogs_parent);
+    if (activeProject()) activeProject()->load(dialogs_parent);
 }
 
 FWObject* FWWindow::getVisibleFirewalls()
 { 
-    if (activeProject())
-        return activeProject()->getVisibleFirewall(); 
+    if (activeProject()) return activeProject()->getVisibleFirewall(); 
     return 0;
 }
 
 void FWWindow::load(QWidget *dialogs_parent,RCS *_rcs)
 {
-    if (activeProject())
-        activeProject()->load(dialogs_parent, _rcs);
+    if (activeProject()) activeProject()->load(dialogs_parent, _rcs);
 }
 
 bool FWWindow::checkin(bool unlock)
 {
-    if (activeProject())
-        return activeProject()->checkin(unlock);
+    if (activeProject()) return activeProject()->checkin(unlock);
     return false;
 }
 
 void FWWindow::save()
 {
-    if (activeProject())
-        activeProject()->save();
+    if (activeProject()) activeProject()->save();
 }
 
 void FWWindow::loadLibrary(const string &libfpath)
@@ -498,35 +487,30 @@ void FWWindow::loadLibrary(const string &libfpath)
 
 void FWWindow::fileImport()
 {
-    if (activeProject())
-        activeProject()->fileImport();
+    if (activeProject()) activeProject()->fileImport();
 }
 
 
 void FWWindow::fileCompare()
 {
-    if (activeProject())
-        activeProject()->fileCompare();
+    if (activeProject()) activeProject()->fileCompare();
 }
 
 void FWWindow::findExternalRefs(FWObject *lib,
                                        FWObject *root,
                                        list<FWReference*> &extRefs)
 {
-    if (activeProject())
-        activeProject()->findExternalRefs(lib, root, extRefs);
+    if (activeProject()) activeProject()->findExternalRefs(lib, root, extRefs);
 }
 
 void FWWindow::setSafeMode(bool f)
 {
-    if (activeProject())
-        activeProject()->setSafeMode(f);
+    if (activeProject()) activeProject()->setSafeMode(f);
 }
 
 void FWWindow::setStartupFileName(const QString &fn)
 {
-    if (activeProject())
-        activeProject()->setStartupFileName(fn);
+    if (activeProject()) activeProject()->setStartupFileName(fn);
 }
 
 bool FWWindow::exportLibraryTest(list<FWObject*> &selectedLibs)
@@ -562,8 +546,7 @@ void FWWindow::exportLibraryTo(QString fname,list<FWObject*> &selectedLibs, bool
 
 void FWWindow::fileExport()
 {
-    if (activeProject())
-        activeProject()->fileExport();
+    if (activeProject()) activeProject()->fileExport();
 }
 
 void FWWindow::setActionsEnabled(bool en)
@@ -585,15 +568,13 @@ void FWWindow::setActionsEnabled(bool en)
 
 int  FWWindow::findFirewallInList(FWObject *f)
 {
-    if (activeProject())
-        return activeProject()->findFirewallInList(f);
+    if (activeProject()) return activeProject()->findFirewallInList(f);
     return -1;
 }
 
 void FWWindow::ensureObjectVisibleInRules(FWReference *obj)
 {
-    if (activeProject())
-        activeProject()->ensureObjectVisibleInRules(obj);
+    if (activeProject()) activeProject()->ensureObjectVisibleInRules(obj);
 }
 
 /*
@@ -601,14 +582,12 @@ void FWWindow::ensureObjectVisibleInRules(FWReference *obj)
  */
 void FWWindow::ensureRuleIsVisible(Rule *rule, int col)
 {
-    if (activeProject())
-        activeProject()->ensureRuleIsVisible(rule, col);
+    if (activeProject()) activeProject()->ensureRuleIsVisible(rule, col);
 }
 
 void FWWindow::updateRuleSetViewSelection()
 {
-    if (activeProject())
-        activeProject()->updateRuleSetViewSelection();
+    if (activeProject()) activeProject()->updateRuleSetViewSelection();
 }
 
 void FWWindow::updateTreeViewItemOrder()
@@ -616,44 +595,37 @@ void FWWindow::updateTreeViewItemOrder()
     //this is for case when tree becomes to be resorted
     //if we do not reopen parent item, some of child
     //items mix incorrectly (maybe bug of QT?)
-    if (activeProject())
-        activeProject()->updateTreeViewItemOrder();
+    if (activeProject()) activeProject()->updateTreeViewItemOrder();
 }
 
 void FWWindow::updateRuleSetView()
 {
-    if (activeProject())
-        activeProject()->updateRuleSetView();
+    if (activeProject()) activeProject()->updateRuleSetView();
 }
 
 void FWWindow::updateRuleOptions()
 {
-    if (activeProject())
-        activeProject()->updateRuleOptions();
+    if (activeProject()) activeProject()->updateRuleOptions();
 }
 
 void FWWindow::updateFirewallName(FWObject *obj,const QString &str)
 {
-    if (activeProject())
-        activeProject()->updateFirewallName(obj, str);
+    if (activeProject()) activeProject()->updateFirewallName(obj, str);
 }
 
 void FWWindow::scheduleRuleSetRedraw()
 {
-    if (activeProject())
-        activeProject()->scheduleRuleSetRedraw();
+    if (activeProject()) activeProject()->scheduleRuleSetRedraw();
 }
 
 void FWWindow::redrawRuleSets()
 {
-    if (activeProject())
-        activeProject()->redrawRuleSets();
+    if (activeProject()) activeProject()->redrawRuleSets();
 }
 
 void FWWindow::reopenFirewall()
 {
-    if (activeProject())
-        activeProject()->reopenFirewall();
+    if (activeProject()) activeProject()->reopenFirewall();
 }
 
 void FWWindow::setEnabledAfterRF()
@@ -689,14 +661,12 @@ void FWWindow::selectRules()
     m_mainWindow ->compileAction->setEnabled( true );
     m_mainWindow ->installAction->setEnabled( true );
 
-    if (activeProject())
-        activeProject()->selectRules();
+    if (activeProject()) activeProject()->selectRules();
 }
 
 void FWWindow::unselectRules()
 {
-    if (activeProject())
-        activeProject()->unselectRules();
+    if (activeProject()) activeProject()->unselectRules();
 }
 
 void FWWindow::disableActions(bool havePolicies)
@@ -718,8 +688,7 @@ void FWWindow::disableActions(bool havePolicies)
 
 void FWWindow::editCopy()
 {
-    if (activeProject())
-        activeProject()->editCopy();
+    if (activeProject()) activeProject()->editCopy();
 }
 
 void FWWindow::editCut()
@@ -799,14 +768,12 @@ void FWWindow::install()
 
 void FWWindow::changeInfoStyle()
 {
-    if (activeProject())
-        activeProject()->changeInfoStyle();
+    if (activeProject()) activeProject()->changeInfoStyle();
 }
 
 void FWWindow::insertRule()
 {
-    if (activeProject())
-        activeProject()->insertRule();
+    if (activeProject()) activeProject()->insertRule();
 }
 
 void FWWindow::addRuleAfterCurrent()
@@ -817,62 +784,52 @@ void FWWindow::addRuleAfterCurrent()
 
 void FWWindow::removeRule()
 {
-    if (activeProject())
-        activeProject()->removeRule();
+    if (activeProject()) activeProject()->removeRule();
 }
 
 void FWWindow::moveRule()
 {
-    if (activeProject())
-        activeProject()->moveRule();
+    if (activeProject()) activeProject()->moveRule();
 }
 
 void FWWindow::moveRuleUp()
 {
-    if (activeProject())
-        activeProject()->moveRuleUp();
+    if (activeProject()) activeProject()->moveRuleUp();
 }
 
 void FWWindow::moveRuleDown()
 {
-    if (activeProject())
-        activeProject()->moveRuleDown();
+    if (activeProject()) activeProject()->moveRuleDown();
 }
 
 void FWWindow::copyRule()
 {
-    if (activeProject())
-        activeProject()->copyRule();
+    if (activeProject()) activeProject()->copyRule();
 }
 
 void FWWindow::cutRule()
 {
-    if (activeProject())
-        activeProject()->cutRule();
+    if (activeProject()) activeProject()->cutRule();
 }
 
 void FWWindow::pasteRuleAbove()
 {
-    if (activeProject())
-        activeProject()->pasteRuleAbove();
+    if (activeProject()) activeProject()->pasteRuleAbove();
 }
 
 void FWWindow::pasteRuleBelow()
 {
-    if (activeProject())
-        activeProject()->pasteRuleBelow();
+    if (activeProject()) activeProject()->pasteRuleBelow();
 }
 
 void FWWindow::search()
 {
-    if (activeProject())
-        activeProject()->search();
+    if (activeProject()) activeProject()->search();
 }
 
 void FWWindow::findWhereUsed(FWObject * obj)
 {
-    if (activeProject())
-        activeProject()->findWhereUsed(obj);
+    if (activeProject()) activeProject()->findWhereUsed(obj);
 }
 
 void FWWindow::showEvent(QShowEvent *ev)
@@ -889,14 +846,12 @@ void FWWindow::hideEvent(QHideEvent *ev)
 
 void FWWindow::back()
 {
-    if (activeProject())
-        activeProject()->back();
+    if (activeProject()) activeProject()->back();
 }
 
 void FWWindow::newObject()
 {
-    if (activeProject())
-        activeProject()->newObject();
+    if (activeProject()) activeProject()->newObject();
 }
 
 // ObjectManipulator::lockObject calls
@@ -904,8 +859,7 @@ void FWWindow::newObject()
 // other windows
 void FWWindow::lockObject()
 {
-    if (activeProject())
-        activeProject()->lockObject();
+    if (activeProject()) activeProject()->lockObject();
 }
 
 // ObjectManipulator::unlockObject calls
@@ -913,8 +867,7 @@ void FWWindow::lockObject()
 // other windows
 void FWWindow::unlockObject()
 {
-    if (activeProject())
-        activeProject()->unlockObject();
+    if (activeProject()) activeProject()->unlockObject();
 }
 
 void FWWindow::prepareObjectMenu()
@@ -926,49 +879,81 @@ void FWWindow::prepareObjectMenu()
     m_mainWindow->ObjectLockAction->setEnabled(otv->isLockable());
 }
 
+void FWWindow::prepareFileMenu()
+{
+    if (!activeProject())
+    {
+        m_mainWindow->fileCloseAction->setEnabled(false);
+        m_mainWindow->fileSaveAction->setEnabled(false);
+        m_mainWindow->fileSaveAsAction->setEnabled(false);
+        m_mainWindow->addToRCSAction->setEnabled(false);
+        m_mainWindow->fileCommitAction->setEnabled(false);
+        m_mainWindow->fileDiscardAction->setEnabled(false);
+        m_mainWindow->filePropAction->setEnabled(false);
+        return;
+    }
+
+    bool real_file_opened = (activeProject()->getFileName() != "");
+    bool in_rcs = (activeProject()->getRCS() != NULL &&
+                   activeProject()->getRCS()->isCheckedOut());
+
+    if (fwbdebug)
+        qDebug("FWWindow::prepareFileMenu(): activeProject()=%p"
+               "  activeProject()->getFileName()='%s'",
+               activeProject(),
+               activeProject()->getFileName().toAscii().constData());
+    
+    m_mainWindow->fileSaveAction->setEnabled(real_file_opened);
+    m_mainWindow->fileCloseAction->setEnabled(real_file_opened);
+    m_mainWindow->filePropAction->setEnabled(real_file_opened);
+    m_mainWindow->filePrintAction->setEnabled(real_file_opened);
+    m_mainWindow->libExportAction->setEnabled(real_file_opened);
+
+    m_mainWindow->addToRCSAction->setEnabled(real_file_opened && !in_rcs);
+    m_mainWindow->fileCommitAction->setEnabled(real_file_opened && in_rcs);
+    m_mainWindow->fileDiscardAction->setEnabled(real_file_opened && in_rcs);
+
+    m_mainWindow->fileNewAction->setEnabled(true);
+    m_mainWindow->fileOpenAction->setEnabled(true);
+    m_mainWindow->fileSaveAsAction->setEnabled(true);
+}
+
 
 void FWWindow::setupAutoSave()
 {
-    if (activeProject())
-        activeProject()->setupAutoSave();
+    if (activeProject()) activeProject()->setupAutoSave();
 }
 
 QString FWWindow::getCurrentFileName()
 {
-    if (activeProject())
-        return activeProject()->getCurrentFileName();
+    if (activeProject()) return activeProject()->getCurrentFileName();
     return "";
 }
 
 RCS * FWWindow::getRCS()
 {
-    if (activeProject())
-        return activeProject()->getRCS();
+    if (activeProject()) return activeProject()->getRCS();
     return 0;
 }
 
 void FWWindow::findObject(FWObject *o)
 {
-    if (activeProject())
-        activeProject()->findObject(o);
+    if (activeProject()) activeProject()->findObject(o);
 }
 
 void FWWindow::closeAuxiliaryPanel()
 {
-    if (activeProject())
-        activeProject()->closeAuxiliaryPanel();
+    if (activeProject()) activeProject()->closeAuxiliaryPanel();
 }
 
 void FWWindow::closeEditorPanel()
 {
-    if (activeProject())
-        activeProject()->closeEditorPanel();
+    if (activeProject()) activeProject()->closeEditorPanel();
 }
 
 void FWWindow::openEditorPanel()
 {
-    if (activeProject())
-        activeProject()->openEditorPanel();
+    if (activeProject()) activeProject()->openEditorPanel();
 }
 
 void FWWindow::editPrefs()
@@ -1508,7 +1493,9 @@ void FWWindow::minimize()
     QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
     for (int i = 0 ; i < subWindowList.size();i++)
     {
-        ProjectPanel * pp = dynamic_cast<ProjectPanel *>(subWindowList[i]->widget());
+        ProjectPanel * pp = dynamic_cast<ProjectPanel *>(
+            subWindowList[i]->widget());
+
         if (pp!=NULL)
         {
             pp->loadState();
@@ -1547,6 +1534,7 @@ void FWWindow::recreateWindowsMenu ()
     connect(cascade, SIGNAL(triggered()), m_space, SLOT(cascadeSubWindows()));
     connect(next, SIGNAL(triggered()),m_space, SLOT(activateNextSubWindow()));
     connect(previous, SIGNAL(triggered()),m_space, SLOT(activatePreviousSubWindow()));
+
     QList<QMdiSubWindow *> subWindowList = getMdiArea()->subWindowList();
     QActionGroup * ag = new QActionGroup ( this );
     ag->setExclusive ( true );
@@ -1616,6 +1604,17 @@ void FWWindow::checkForUpgrade(const QString& server_response)
                    current_version_http_getter->getLastError().
                    toLatin1().constData());
     }
+}
+
+/*
+ * This slot is called after one of the mdi windows is closed.
+ */
+void FWWindow::projectWindowClosed()
+{
+    if (fwbdebug) qDebug("FWWindow::projectWindowClosed()");
+
+    if (m_space->subWindowList().size() == 0)
+        QCoreApplication::exit(0);
 }
 
 

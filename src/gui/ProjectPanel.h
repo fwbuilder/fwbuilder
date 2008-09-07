@@ -55,6 +55,10 @@ class FindWhereUsedWidget;
 class listOfLibraries;
 class FWBTree;
 
+#define DEFAULT_H_SPLITTER_POSITION 250
+#define DEFAULT_V_SPLITTER_POSITION 450
+
+
 class ProjectPanel: public QWidget {
     Q_OBJECT
 
@@ -386,6 +390,9 @@ protected:
     virtual void resizeEvent ( QResizeEvent * event );
 
     bool loadFile(const QString &fileName);
+
+    void setMainSplitterPosition(int w1, int w2);
+    void setObjInfoSplitterPosition(int w1, int w2);
 };
 
 #endif

@@ -64,10 +64,25 @@ void ProjectPanel::initMain(FWWindow *main)
 
     // mdiWindow changes state several times right after it is opened,
     // but we call saveState to store splitter position and its geometry
-    // when state changed. Flag "ready" is false after ProjectPanel is created
+    // when state changes. Flag "ready" is false after ProjectPanel is created
     // and until FWWindow decides that ProjectPanel is ready for operation.
     // Do not load or save state if flag ready is false.
     ready = false;
+
+    int total_width = DEFAULT_H_SPLITTER_POSITION;
+    int total_height = DEFAULT_V_SPLITTER_POSITION;
+
+    if (mainW)
+    {
+        total_width = mainW->width();
+        total_height = mainW->height();
+    }
+
+    setMainSplitterPosition(DEFAULT_H_SPLITTER_POSITION,
+                            total_width - DEFAULT_H_SPLITTER_POSITION);
+    setObjInfoSplitterPosition(DEFAULT_V_SPLITTER_POSITION,
+                               total_height - DEFAULT_V_SPLITTER_POSITION);
+
 
     enableAvtoSaveState=true ;
     oldState=-1;
@@ -126,8 +141,7 @@ ProjectPanel::ProjectPanel(QWidget *parent):
     findObjectWidget(0), 
     findWhereUsedWidget(0)
 {
-    if (fwbdebug)
-        qDebug("ProjectPanel constructor");
+    if (fwbdebug) qDebug("ProjectPanel constructor");
     m_panel = new Ui::ProjectPanel_q();
     m_panel->setupUi(this);
     firstTimeNormal = st->getInt("Window/maximized");
@@ -550,7 +564,7 @@ QString ProjectPanel::getDestDir(const QString &fname)
 
 void ProjectPanel::setFileName(const QString &fname)
 {
-    systemFile=false;
+    systemFile = false;
     rcs->setFileName(fname);
     db()->setFileName(fname.toLatin1().constData());
 
@@ -1313,13 +1327,16 @@ void ProjectPanel::closeEvent( QCloseEvent * ev)
     mw->updateWindowTitle();
     mw->recreateWindowsMenu();
 
-    if (fwbdebug) qDebug("ProjectPanel::closeEvent all done");
+    QTimer::singleShot( 0, mw, SLOT(projectWindowClosed()) );
 
+    if (fwbdebug) qDebug("ProjectPanel::closeEvent all done");
 //    emit closed();
 }
 
 QString ProjectPanel::getFileName()
 {
+    if (fwbdebug) qDebug("ProjectPanel::getFileName() :  rcs=%p", rcs);
+
     if (rcs!=NULL)
     {
         QString FileName = rcs->getFileName();

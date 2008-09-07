@@ -1,5 +1,23 @@
 2008-09-06  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWWindow.cpp (FWWindow::projectWindowClosed): fixed bug
+	#2091520: "Crash FWB". The GUI crashed if user closed mdi window
+	showing just standard objects and then tried to close the main
+	window.
+
+	* FWWindow.cpp (FWWindow::fileNew): fixed bug #2091507: "Create
+	New Firewall problem.". If user created new data file using
+	File/New main menu item, items in the main menu File used to stay
+	disabled and file could only be saved using "File/Save As" (which
+	did not make sense because the name has already been assigned to
+	the file during File/New operation).
+
+	* ProjectPanel_file_ops.cpp (ProjectPanel::fileSaveAs): bugfix: if
+	user called "Save As" and then hit Cancel in the dialog where they
+	choose file name, internal RCS object used to be deleted anyway.
+
+	* v3.0.1 started
+	
 	* v3.0.0 released Sep 1, 2008. Merged branch "v3" r512 to trunk
 	
 2008-09-01  Vadim Kurland  <vadim@vk.crocodile.org>

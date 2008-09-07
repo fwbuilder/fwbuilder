@@ -145,8 +145,10 @@ void ProjectPanel::fileProp()
 
 bool ProjectPanel::fileNew()
 {
+    if (fwbdebug) qDebug("ProjectPanel::fileNew()");
+
     QString nfn = chooseNewFileName(
-        st->getWDir(),true,
+        st->getWDir(), true,
         tr("Choose name and location for the new file"));
 
     if ( !nfn.isEmpty() )
@@ -162,22 +164,12 @@ bool ProjectPanel::fileNew()
         save();
         setupAutoSave();
     }
-    if (rcs!=NULL)
-    {
-    	mainW->addToRCSActionSetEn(
-            !rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
-    	mainW->fileDiscardActionSetEn(
-            rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
-    	mainW->fileCommitActionSetEn(
-            rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
-    	mainW->fileSaveActionSetEn( !rcs->isRO() && !rcs->isTemp() );
-        return true ;
-    }
-    else
-    {
-        return false ;
-    }
 
+    if (fwbdebug)
+        qDebug("ProjectPanel::fileNew()  rcs=%p  rcs->getFileName()='%s'",
+               rcs, rcs->getFileName().toAscii().constData());
+
+    return (rcs!=NULL);
 }
 
 bool ProjectPanel::fileOpen()
@@ -277,7 +269,7 @@ void ProjectPanel::fileClose()
 {
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): start");
 
-    closing=true ;
+    closing = true ;
 
     findObjectWidget->init();
     if (isEditorVisible()) hideEditor();
@@ -328,13 +320,7 @@ void ProjectPanel::fileSaveAs()
 
 /* need to close the file without asking and saving, then reopen it again */
 
-    db()->setDirty(false);  // so it wont ask if user wants to save
-    rcs->abandon();
-
     QString oldFileName = rcs->getFileName();
-    if (rcs!=NULL) delete rcs;
-
-    rcs = new RCS("");
 
     QString nfn = chooseNewFileName(
         oldFileName, true,
@@ -342,17 +328,16 @@ void ProjectPanel::fileSaveAs()
 
     if (!nfn.isEmpty())
     {
+        db()->setDirty(false);  // so it wont ask if user wants to save
+        rcs->abandon();
+
+        if (rcs!=NULL) delete rcs;
+
+        rcs = new RCS("");
+
         setFileName(nfn);
 
         save();
-
-        mainW->addToRCSActionSetEn(
-            !rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
-        mainW->fileDiscardActionSetEn(
-            rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
-        mainW->fileCommitActionSetEn(
-            rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
-        mainW->fileSaveActionSetEn( !rcs->isRO() && !rcs->isTemp() );
     }
 }
 
@@ -455,12 +440,6 @@ void ProjectPanel::fileAddToRCS()
     if (rcs->isRO()) caption = caption + " " + tr("(read-only)");
 
     setWindowTitle( QString("Firewall Builder: ")+caption );
-
-    mainW->addToRCSActionSetEn( !rcs->isInRCS() && !rcs->isRO());
-    mainW->fileDiscardActionSetEn(
-        rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
-    mainW->fileCommitActionSetEn(
-        rcs->isInRCS() && !rcs->isRO() && !rcs->isTemp());
 }
 
 void ProjectPanel::fileImport()
@@ -1005,11 +984,6 @@ void ProjectPanel::load(QWidget*)
 
         setWindowTitle( "Firewall Builder" );
 
-        mainW->fileSaveActionSetEn( false );
-        mainW->addToRCSActionSetEn( false );
-        mainW->fileDiscardActionSetEn( false );
-        mainW->fileCommitActionSetEn( false );
-
         loadObjects();
         setupAutoSave();
 
@@ -1050,7 +1024,7 @@ void ProjectPanel::load(QWidget*, RCS* _rcs, FWObjectDatabase* clone)
 
     try
     {
-        systemFile=false;
+        systemFile = false;
         objdb = clone;
         sb->showMessage( tr("Loading system objects...") );
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
@@ -1204,10 +1178,6 @@ void ProjectPanel::load(QWidget*, RCS* _rcs, FWObjectDatabase* clone)
 
         setWindowTitle( QString("Firewall Builder: ")+caption );
 
-        mainW->fileSaveActionSetEn( !rcs->isRO() && !rcs->isTemp());
-        mainW->addToRCSActionSetEn( !rcs->isInRCS() && !rcs->isRO());
-        mainW->fileDiscardActionSetEn( rcs->isInRCS() && !rcs->isRO());
-        mainW->fileCommitActionSetEn( rcs->isInRCS() && !rcs->isRO());
         mainW->disableActions(m_panel->ruleSets->count()!=0);
 
     } catch(FWException &ex)
@@ -1298,7 +1268,7 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
     try
     {
         /* load the data file */
-        systemFile=false;
+        systemFile = false;
 
         objdb = new FWObjectDatabase();
 
@@ -1512,10 +1482,6 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
 
         setWindowTitle( QString("Firewall Builder: ")+caption );
 
-        mainW->fileSaveActionSetEn( !rcs->isRO() && !rcs->isTemp());
-        mainW->addToRCSActionSetEn( !rcs->isInRCS() && !rcs->isRO());
-        mainW->fileDiscardActionSetEn( rcs->isInRCS() && !rcs->isRO());
-        mainW->fileCommitActionSetEn( rcs->isInRCS() && !rcs->isRO());
         mainW->disableActions(m_panel->ruleSets->count()!=0);
 
     } catch(FWException &ex)
@@ -1536,12 +1502,12 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
                 elem.truncate(LONG_ERROR_CUTOFF);
                 msg+="\n"+tr("XML element : %1").arg(elem);
             }
-             QMessageBox::critical(
-                 this,"Firewall Builder",
-                 tr("The program encountered error trying to load data file.\n"
-                    "The file has not been loaded. Error:\n%1").arg(msg),
-                 tr("&Continue"), QString::null,QString::null,
-                 0, 1 );
+            QMessageBox::critical(
+                this,"Firewall Builder",
+                tr("The program encountered error trying to load data file.\n"
+                   "The file has not been loaded. Error:\n%1").arg(msg),
+                tr("&Continue"), QString::null,QString::null,
+                0, 1 );
         } else
         {
             QString error_txt = ex.toString().c_str();
@@ -1551,13 +1517,13 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
                 error_txt += "\n\n" + tr("(Long error message was truncated)");
             }
 
-             QMessageBox::critical(
-                 this,"Firewall Builder",
-                 tr("The program encountered error trying to load data file.\n"
-                    "The file has not been loaded. Error:\n%1").arg(
-                        error_txt),
-                 tr("&Continue"), QString::null,QString::null,
-                 0, 1 );
+            QMessageBox::critical(
+                this,"Firewall Builder",
+                tr("The program encountered error trying to load data file.\n"
+                   "The file has not been loaded. Error:\n%1").arg(
+                       error_txt),
+                tr("&Continue"), QString::null,QString::null,
+                0, 1 );
         }
         // load standard objects so the window does not remain empty
         load(this);
@@ -1603,7 +1569,9 @@ bool ProjectPanel::checkin(bool unlock)
             QDialog *fsd_dialog = new QDialog(this);
             fsd.setupUi(fsd_dialog);
             fsd.checkinDialogTitle->setText(
-                QString("<b>")+tr("Checking file %1 in RCS").arg(rcs->getFileName())+QString("</b>")
+                QString("<b>") +
+                tr("Checking file %1 in RCS").arg(rcs->getFileName()) +
+                QString("</b>")
             );
             if ( fsd_dialog->exec()== QDialog::Rejected )
             {
@@ -1647,8 +1615,12 @@ bool ProjectPanel::checkin(bool unlock)
 void ProjectPanel::save()
 {
     if (fwbdebug)
-        qDebug("ProjectPanel::save:  rcs=%p  rcs->isRO=%d  rcs->isTemp=%d rcs->getFileName=%s",
-               rcs, rcs->isRO(), rcs->isTemp(), rcs->getFileName().toLatin1().constData());
+        qDebug("ProjectPanel::save:  rcs=%p  rcs->isRO=%d  "
+               "rcs->isTemp=%d rcs->getFileName=%s",
+               rcs,
+               rcs->isRO(),
+               rcs->isTemp(),
+               rcs->getFileName().toLatin1().constData());
 
     if (!rcs->isRO() && !rcs->isTemp())
     {
@@ -1690,8 +1662,12 @@ void ProjectPanel::save()
 /* exported libraries are always read-only */
                         list<FWObject*> ll = ndb->getByType(Library::TYPENAME);
                         for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
-                            if ((*i)->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
-                                (*i)->getId()!=FWObjectDatabase::DELETED_OBJECTS_ID) (*i)->setReadOnly( true );
+                        {
+                            if ((*i)->getId()!=FWObjectDatabase::STANDARD_LIB_ID
+                                &&
+                                (*i)->getId()!=FWObjectDatabase::DELETED_OBJECTS_ID)
+                                (*i)->setReadOnly( true );
+                        }
                     }
 
                     ndb->resetTimeLastModified( db()->getTimeLastModified() );
@@ -1718,10 +1694,9 @@ void ProjectPanel::save()
  * error message in the exception, let's check for obvious problems here
  */
             QString err;
-            if (access( rcs->getFileName().toLatin1().constData(), W_OK)!=0 && errno==EACCES)
-                err=tr("File is read-only");
-            else
-                err=ex.toString().c_str();
+            if (access( rcs->getFileName().toLatin1().constData(), W_OK)!=0 &&
+                errno==EACCES)  err=tr("File is read-only");
+            else                err=ex.toString().c_str();
 
             QMessageBox::critical(
                 this,"Firewall Builder",
