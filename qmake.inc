@@ -6,7 +6,7 @@ QTDIR         = $$(QTDIR)
 
 TEMPLATE      = lib
 
-SO_VERSION    = 8.0.0
+SO_VERSION    = 8.1.0
 
 DEFINES      += $$(DEFINES)
 INCLUDEPATH  += .. ../.. $$(INCLUDEPATH)
@@ -23,9 +23,9 @@ unix {
 	DESTDIR =
 
 	target.path = $$exec_prefix/lib
-	dtd.path = /home/vadim/src/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.0/
-	migration.path = /home/vadim/src/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.0/migration
-	doc.path = /home/vadim/src/fwb3-branch-v3/install_root/share/doc/libfwbuilder-3.0.0
+	dtd.path = /home/vadim/src/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.1/
+	migration.path = /home/vadim/src/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.1/migration
+	doc.path = /home/vadim/src/fwb3-branch-v3/install_root/share/doc/libfwbuilder-3.0.1
 
 	CONFIG                 += warn_on debug
 	QMAKE_CFLAGS_DEBUG     += -Wno-unused-parameter
