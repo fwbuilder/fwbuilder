@@ -1,3 +1,16 @@
+2008-09-08  vadim  <vadim@vk.crocodile.org>
+
+	* main_mac.cpp (odocHandler): bug #2099700 "Association of the
+	.fwb and .fwl file types with app on Mac". Implemented support for
+	the association of the application and data file type on Mac OS
+	X. Double-clicking on .fwb and .fwl files in Finder will now open
+	application and load files automatically. User can open several
+	files by selecting them in Finder and double-clicking.
+
+	* main.cpp (main): remove "safe mode" command line flag -s because
+	on Mac OS X the program is started with flag -psn when it is
+	launched via finder. This caused undesired effects.
+
 2008-09-06  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWWindow.cpp (FWWindow::projectWindowClosed): fixed bug
@@ -17,9 +30,9 @@
 	choose file name, internal RCS object used to be deleted anyway.
 
 	* v3.0.1 started
-	
+
 	* v3.0.0 released Sep 1, 2008. Merged branch "v3" r512 to trunk
-	
+
 2008-09-01  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* res.pro: Do not try to install icons if variable ICONSDIR was

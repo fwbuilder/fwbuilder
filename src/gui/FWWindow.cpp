@@ -282,7 +282,6 @@ void FWWindow::startupLoad()
         current_version_http_getter->get(QUrl(CHECK_UPDATE_URL));
     }
 
-
     if (activeProject())
     {
         activeProject()->startupLoad();
@@ -357,6 +356,19 @@ void FWWindow::fileOpen()
 {
     std::auto_ptr<ProjectPanel> proj(newProjectPanel());
     if (proj->fileOpen())
+    {
+        showSub(proj.get());
+        proj->readyStatus(true);
+        proj->loadState();
+        proj.release();
+    }
+    recreateWindowsMenu();
+}
+
+void FWWindow::loadFile(const QString &filename)
+{
+    std::auto_ptr<ProjectPanel> proj(newProjectPanel());
+    if (proj->loadFile(filename))
     {
         showSub(proj.get());
         proj->readyStatus(true);

@@ -67,11 +67,11 @@
 #include "listOfLibraries.h"
 #include "ObjectEditor.h"
 #include "findDialog.h"
+#include "ProjectPanel.h"
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Tools.h"
 #include "fwbuilder/dns.h"
-//#include "fwbuilder/crypto.h"
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWException.h"
@@ -121,6 +121,11 @@ extern bool init2(const std::string &a1,
                   bool f1, bool f2, bool d);
 #endif
 
+#if defined(Q_WS_MAC)
+extern void connectOdocHandler();
+#endif
+
+
 using namespace libfwbuilder;
 using namespace std;
 
@@ -138,7 +143,6 @@ bool               cli_print        = false;
 QString            cli_print_fwname = "";
 
 #ifndef _WIN32
-
 #ifndef HAVE_CFMAKERAW
 static inline void cfmakeraw(struct termios *termios_p)
 {
@@ -331,7 +335,6 @@ void usage()
     cerr << "Usage: fwbuilder [-hv] [-P object_name] [-o file_name] [ [-f] filename]\n";
     cerr << endl;
 }
-
 
 int main( int argc, char *argv[] )
 {
@@ -556,7 +559,7 @@ int main( int argc, char *argv[] )
     // started via Finder.
 
     int c;
-    while ((c = getopt (argc , argv , "hvf:o:P:dxsg")) != EOF )
+    while ((c = getopt (argc , argv , "hvf:o:P:dxg")) != EOF )
 	switch (c) {
 	case 'h':
 	    usage();
@@ -578,13 +581,10 @@ int main( int argc, char *argv[] )
 	    cout << VERSION << endl;
 	    exit(0);
 
-        case 's':
-            safemode = true;
-            break;
-
         case 'g':
             gui_experiment1 = true;
             break;
+
         case 'P':
             cli_print = true ;
             cli_print_fwname = optarg;
@@ -682,11 +682,13 @@ int main( int argc, char *argv[] )
         if (fwbdebug) qDebug("loading libraries ...");
 
         mw  = new FWWindow();
-        mw->setSafeMode(safemode);
+        //mw->setSafeMode(safemode);
         if (filename!="")
         {
-            QDir file (filename);
-            mw->setStartupFileName(file.canonicalPath ());
+            if (fwbdebug)
+                qDebug("Open file %s", filename.toAscii().constData());
+            QDir file(filename);
+            mw->setStartupFileName(file.canonicalPath());
         }
         //QToolTip::setWakeUpDelay( st->getTooltipDelay()*1000 );
 
@@ -694,12 +696,12 @@ int main( int argc, char *argv[] )
 
         app->connect(app, SIGNAL( lastWindowClosed() ), app, SLOT( quit()));
 
+#if defined(Q_WS_MAC)
+        connectOdocHandler();
+#endif
 
-        if (fwbdebug) qDebug("Checking for new version ...");
-
-// setup single shot timer to call loadEverything()
-
-        QTimer::singleShot( 0, mw, SLOT(startupLoad()) );
+        // setup single shot timer to call loadEverything()
+        QTimer::singleShot(0, mw, SLOT(startupLoad()));
 
         app->exec();
 
@@ -732,3 +734,5 @@ int main( int argc, char *argv[] )
         qDebug("Exception: %s",ex.toString().c_str());
     }
 }
+
+

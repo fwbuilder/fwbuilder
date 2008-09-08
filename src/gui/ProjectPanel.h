@@ -340,16 +340,23 @@ public:
     bool editingLibrary();
     void createRCS( const QString &filename);
     void load(QWidget *dialogs_parent,RCS *rcs);
-    void load(QWidget *dialogs_parent,RCS *rcs,libfwbuilder::FWObjectDatabase * clone);
+    void load(QWidget *dialogs_parent,RCS *rcs,
+              libfwbuilder::FWObjectDatabase * clone);
     void load(QWidget *dialogs_parent);
+    bool loadFile(const QString &fileName);
+
     void save();
+
     void saveState();
     void loadState();
+
     bool checkin(bool unlock);
     void loadLibrary(const std::string &libfpath);
     
     bool exportLibraryTest(std::list<libfwbuilder::FWObject*> &selectedLibs);
-    void exportLibraryTo(QString fname,std::list<libfwbuilder::FWObject*> &selectedLibs, bool rof);
+    void exportLibraryTo(QString fname,
+                         std::list<libfwbuilder::FWObject*> &selectedLibs,
+                         bool rof);
 
     void findExternalRefs(libfwbuilder::FWObject *lib,
                        libfwbuilder::FWObject *root,
@@ -388,8 +395,6 @@ protected:
     virtual void hideEvent( QHideEvent *ev);
     virtual void closeEvent( QCloseEvent * );
     virtual void resizeEvent ( QResizeEvent * event );
-
-    bool loadFile(const QString &fileName);
 
     void setMainSplitterPosition(int w1, int w2);
     void setObjInfoSplitterPosition(int w1, int w2);

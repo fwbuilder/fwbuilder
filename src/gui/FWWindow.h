@@ -186,6 +186,7 @@ public slots:
     void load(QWidget *dialogs_parent,RCS *rcs);
     void load(QWidget *dialogs_parent);
     void loadLibrary(const std::string &libfpath);
+    void loadFile(const QString &filename);
     void save();
     bool checkin(bool unlock);
     int  findFirewallInList(libfwbuilder::FWObject *f);

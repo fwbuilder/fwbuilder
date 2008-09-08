@@ -139,6 +139,7 @@ SOURCES += ProjectPanel.cpp \
 	ProjectPanel_state_ops.cpp \
     FWWindow.cpp \
     main.cpp \
+    main_mac.cpp \
 	utils.cpp \
 	utils_no_qt.cpp \
     Importer.cpp \
