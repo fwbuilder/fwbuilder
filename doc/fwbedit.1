@@ -111,7 +111,7 @@ objects have attributes "icmp_type" and "icmp_code".
 
 
 
-.B add -f file.fwb -p group -o object
+.B add -f file.fwb -g group -o object
 
 Adds object specified by path or ID to a group, also specified by its
 path or ID.
@@ -119,21 +119,21 @@ path or ID.
 .PP
  -f file.fwb: data file
 .PP
- -p group: group the object should be added to, 
+ -g group: group the object should be added to, 
               full path or ID
 .PP
  -o object: object to be deleted, full path or ID
 
 
 
-.B remove -f file.fwb -p group -o object
+.B remove -f file.fwb -g group -o object
 
 Removes object from a group.
 
 .PP
  -f file.fwb: data file
 .PP
- -p group: group the object should be removed from,
+ -g group: group the object should be removed from,
        full path or ID
 .PP
  -o object: object to be deleted, full path or ID
@@ -160,35 +160,35 @@ data file and repairs it if necessary.
 .PP
 
 .PP
--t Firewall -o platform, host OS
+-t Firewall -a platform, host OS
 .PP
--t IPv4 -o IP address [,netmask]
+-t IPv4 -a IP address [,netmask]
 .PP
--t IPv6 -o IPv6 address [,masklen]
+-t IPv6 -a IPv6 address [,masklen]
 .PP
--t DNSName -o DNS record,run time
+-t DNSName -a DNS record,run time
 .PP
--t AddressRange -o start address, end address
+-t AddressRange -a start address, end address
 .PP
 -t ObjectGroup
 .PP
--t Network -o address,netmask
+-t Network -a address,netmask
 .PP
--t NetworkIPv6 -o ipv6_address,netmask_length
+-t NetworkIPv6 -a ipv6_address,netmask_length
 .PP
--t Interval -o start time,start date,start day,end time, end date, end day
+-t Interval -a start time,start date,start day,end time, end date, end day
 .PP
--t Interface -o security level,address type (dynamic or unnumbered),management
+-t Interface -a security level,address type (dynamic or unnumbered),management
 .PP
 -t Host
 .PP
--t TCPService -o source port range start,end,destination port range start,end,UAPRSF,UAPRSF
+-t TCPService -a source port range start,end,destination port range start,end,UAPRSF,UAPRSF
 .PP
--t UDPService -o source port range start,end,Destination port range start,end
+-t UDPService -a source port range start,end,Destination port range start,end
 .PP
--t ICMPService -o ICMP type,ICMP code
+-t ICMPService -a ICMP type,ICMP code
 .PP
--t IPService -o protocol number,lsrr/ssrr/rr/ts/fragm/short_fragm
+-t IPService -a protocol number,lsrr/ssrr/rr/ts/fragm/short_fragm
 
 
 .SH EXAMPLES

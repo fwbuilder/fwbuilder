@@ -1,3 +1,9 @@
+2008-09-08  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* fwbedit.cpp (usage): fixed "usage" in fwbedit, command line
+	option that specifies object attributes for the command "new" is
+	"-a", not  "-o". Also fixed this in the man page.
+
 2008-09-08  vadim  <vadim@vk.crocodile.org>
 
 	* main_mac.cpp (odocHandler): bug #2099700 "Association of the

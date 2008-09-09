@@ -198,19 +198,19 @@ void usage()
     cout << endl;
 
     cout <<
-        "       add -f file.fwb -p group -o object\n"
+        "       add -f file.fwb -g group -o object\n"
         "\n"
         "           -f file.fwb: data file\n"
-        "           -p group: group the object should be added to, \n"
+        "           -g group: group the object should be added to, \n"
         "              full path or ID\n"
         "           -o object: object to be deleted, full path or ID\n";
     cout << endl;
 
     cout <<
-        "   remove -f file.fwb -p group -o object\n"
+        "   remove -f file.fwb -g group -o object\n"
         "\n"
         "          -f file.fwb: data file\n"
-        "          -p group: group the object should be removed from,\n"
+        "          -g group: group the object should be removed from,\n"
         "             full path or ID\n"
         "          -o object: object to be deleted, full path or ID\n";
     cout << endl;
@@ -231,34 +231,34 @@ void usage()
     cout << endl;
     cout << "      "
          << " -t " <<Firewall::TYPENAME
-         << " -o platform, host OS" << endl;
+         << " -a platform, host OS" << endl;
     cout << "      "
          << " -t " <<IPv4::TYPENAME
-         << " -o IP address [,netmask]" << endl;
+         << " -a IP address [,netmask]" << endl;
     cout << "      "
          << " -t " <<IPv6::TYPENAME
-         << " -o IPv6 address [,masklen]" << endl;
+         << " -a IPv6 address [,masklen]" << endl;
     cout << "      "
          << " -t " <<DNSName::TYPENAME
-         << " -o DNS record,run time" << endl;
+         << " -a DNS record,run time" << endl;
     cout << "      "
          << " -t " <<AddressRange::TYPENAME
-         << " -o start address, end address" << endl;
+         << " -a start address, end address" << endl;
     cout << "      "
          << " -t " <<ObjectGroup::TYPENAME
          <<  endl;
     cout << "      "
          << " -t " <<Network::TYPENAME
-         << " -o address,netmask" << endl;
+         << " -a address,netmask" << endl;
     cout << "      "
          << " -t " <<NetworkIPv6::TYPENAME
-         << " -o ipv6_address,netmask_length" << endl;
+         << " -a ipv6_address,netmask_length" << endl;
     cout << "      "
          << " -t " <<Interval::TYPENAME
-         << " -o start time,start date,start day,end time, end date, end day" << endl;
+         << " -a start time,start date,start day,end time, end date, end day" << endl;
     cout << "      "
          << " -t " <<Interface::TYPENAME
-         << " -o security level,address type "
+         << " -a security level,address type "
         "(dynamic or unnumbered),management" << endl;
     cout << "      "
          << " -t " <<Host::TYPENAME
@@ -268,16 +268,16 @@ void usage()
          <<  endl;
     cout << "      "
          << " -t " <<TCPService::TYPENAME
-         << " -o source port range start,end,destination port range start,end,UAPRSF,UAPRSF" << endl;
+         << " -a source port range start,end,destination port range start,end,UAPRSF,UAPRSF" << endl;
     cout << "      "
          << " -t " <<UDPService::TYPENAME
-         << " -o source port range start,end,Destination port range start,end" << endl;
+         << " -a source port range start,end,Destination port range start,end" << endl;
     cout << "      "
          << " -t " <<ICMPService::TYPENAME
-         << " -o ICMP type,ICMP code" << endl;
+         << " -a ICMP type,ICMP code" << endl;
     cout << "      "
          << " -t " <<IPService::TYPENAME
-         << " -o protocol "
+         << " -a protocol "
         "number,lsrr/ssrr/rr/ts/fragm/short_fragm" << endl;
 }
 
