@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1220933797" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1220934384" id="root">
   <Library id="sysid99" ro="False" name="Deleted Objects" comment="">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination"/>
     <IPv4 id="id1168X3773" name="student1" comment="" address="10.1.1.1" netmask="255.255.255.0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="id3F9A1BCA"/>
+    <ServiceRef ref="sysid1"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ServiceRef ref="sysid1"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects">
     <ObjectGroup id="stdid01_1" name="Objects" comment="">
@@ -539,7 +548,129 @@
     <ServiceGroup id="stdid05_1" name="Services" comment="">
       <ServiceGroup id="stdid05_1_userservices" name="Users" comment=""/>
       <ServiceGroup id="stdid05_1_og_tag_1" name="TagServices" comment=""/>
-      <ServiceGroup id="stdid10_1" name="Groups" comment=""/>
+      <ServiceGroup id="stdid10_1" name="Groups" comment="">
+        <ServiceGroup id="id8427X3737" name="lots of tcp services" comment="">
+          <ServiceRef ref="id3D703C8B"/>
+          <ServiceRef ref="id3D703C93"/>
+          <ServiceRef ref="id3B4FF09A"/>
+          <ServiceRef ref="tcp-SSH"/>
+          <ServiceRef ref="id3AEDBE00"/>
+          <ServiceRef ref="tcp-TCP-SYN"/>
+          <ServiceRef ref="tcp-Telnet"/>
+          <ServiceRef ref="id3B4FEE76"/>
+          <ServiceRef ref="id3D703C87"/>
+          <ServiceRef ref="tcp-FTP"/>
+          <ServiceRef ref="tcp-FTP_data"/>
+          <ServiceRef ref="id41291788"/>
+          <ServiceRef ref="id41291887"/>
+          <ServiceRef ref="id41291888"/>
+          <ServiceRef ref="id3E7E4039"/>
+          <ServiceRef ref="id3E7E403A"/>
+          <ServiceRef ref="id3D703C97"/>
+          <ServiceRef ref="id3DC8C8BB"/>
+          <ServiceRef ref="id3D703C98"/>
+          <ServiceRef ref="id3B4FEE7A"/>
+          <ServiceRef ref="tcp-NNTP"/>
+          <ServiceRef ref="id3E7553BB"/>
+          <ServiceRef ref="id3B4FEE1D"/>
+          <ServiceRef ref="id3E7553BA"/>
+          <ServiceRef ref="id3B4FF0EA"/>
+          <ServiceRef ref="id3AECF782"/>
+          <ServiceRef ref="id3B4FEF7C"/>
+          <ServiceRef ref="id4127EDF6"/>
+          <ServiceRef ref="id4127F04F"/>
+          <ServiceRef ref="id3AECF77A"/>
+          <ServiceRef ref="id3AECF77C"/>
+          <ServiceRef ref="id3AECF77E"/>
+          <ServiceRef ref="id4127F146"/>
+          <ServiceRef ref="id4127F147"/>
+          <ServiceRef ref="id41291784"/>
+          <ServiceRef ref="id3D703C99"/>
+          <ServiceRef ref="id3B4FEF34"/>
+          <ServiceRef ref="id3C685B2B"/>
+          <ServiceRef ref="id4127E949"/>
+          <ServiceRef ref="id3D703C89"/>
+          <ServiceRef ref="tcp-SMTP"/>
+          <ServiceRef ref="id3B4FF04C"/>
+          <ServiceRef ref="id4127EA72"/>
+          <ServiceRef ref="id4127EBAC"/>
+          <ServiceRef ref="id4127ECF1"/>
+          <ServiceRef ref="id3CB131C4"/>
+          <ServiceRef ref="id41291785"/>
+          <ServiceRef ref="id41291787"/>
+          <ServiceRef ref="id3B4FED69"/>
+          <ServiceRef ref="id3AECF776"/>
+          <ServiceRef ref="id3B4FED9F"/>
+          <ServiceRef ref="id3D703C90"/>
+          <ServiceRef ref="id3B4FF000"/>
+          <ServiceRef ref="id3B4FF13C"/>
+          <ServiceRef ref="id3E7E3EA2"/>
+          <ServiceRef ref="id3B4FEE21"/>
+          <ServiceRef ref="id3B4FEE23"/>
+          <ServiceRef ref="id3AECF778"/>
+          <ServiceRef ref="id4127ECF2"/>
+          <ServiceRef ref="id4127ED5E"/>
+          <ServiceRef ref="tcp-uucp"/>
+          <ServiceRef ref="id3CB131C6"/>
+          <ServiceRef ref="id3B4FF1B8"/>
+          <ServiceRef ref="id3B4FEEEE"/>
+          <ServiceRef ref="id3E755609"/>
+          <ServiceRef ref="tcp-Auth"/>
+          <ServiceRef ref="id3AEDBE6E"/>
+          <ServiceRef ref="id3E7E3D58"/>
+          <ServiceRef ref="id3D703C82"/>
+          <ServiceRef ref="id3DC8C8BC"/>
+          <ServiceRef ref="id3D703C8D"/>
+          <ServiceRef ref="id3D703C84"/>
+          <ServiceRef ref="id3D703C83"/>
+          <ServiceRef ref="id3CB131C8"/>
+          <ServiceRef ref="tcp-DNS"/>
+          <ServiceRef ref="id3B4FEDA3"/>
+          <ServiceRef ref="id3AECF774"/>
+          <ServiceRef ref="id3D703C91"/>
+          <ServiceRef ref="id3D703C92"/>
+          <ServiceRef ref="id3AEDBEAC"/>
+          <ServiceRef ref="id412Z18A9"/>
+          <ServiceRef ref="id3E7553BC"/>
+          <ServiceRef ref="tcp-HTTP"/>
+        </ServiceGroup>
+        <ServiceGroup id="id9342X3737" name="lots of udp services" comment="">
+          <ServiceRef ref="id3B4FEDA1"/>
+          <ServiceRef ref="udp-bootpc"/>
+          <ServiceRef ref="udp-bootps"/>
+          <ServiceRef ref="id3AEDBE70"/>
+          <ServiceRef ref="udp-DNS"/>
+          <ServiceRef ref="id3D703C8A"/>
+          <ServiceRef ref="id3B4FEDA5"/>
+          <ServiceRef ref="id3D703C96"/>
+          <ServiceRef ref="id3CB129D2"/>
+          <ServiceRef ref="id3CB131CA"/>
+          <ServiceRef ref="id3AED0D6B"/>
+          <ServiceRef ref="id3D703C8C"/>
+          <ServiceRef ref="id3D703C85"/>
+          <ServiceRef ref="id3D703C86"/>
+          <ServiceRef ref="id3B4FEDA9"/>
+          <ServiceRef ref="id3B4FEDA7"/>
+          <ServiceRef ref="id3B4FEDAB"/>
+          <ServiceRef ref="id3F865B0D"/>
+          <ServiceRef ref="udp-netbios-dgm"/>
+          <ServiceRef ref="udp-netbios-ns"/>
+          <ServiceRef ref="udp-netbios-ssn"/>
+          <ServiceRef ref="id3B4FEE78"/>
+          <ServiceRef ref="udp-ntp"/>
+          <ServiceRef ref="id3B4FEF7E"/>
+          <ServiceRef ref="id3D703C88"/>
+          <ServiceRef ref="udp-SNMP"/>
+          <ServiceRef ref="id3AED0D69"/>
+          <ServiceRef ref="id3AEDBE19"/>
+          <ServiceRef ref="id3AECF780"/>
+          <ServiceRef ref="id3AED0D67"/>
+          <ServiceRef ref="id3AED0D8C"/>
+          <ServiceRef ref="id4127EA73"/>
+          <ServiceRef ref="id41291783"/>
+          <ServiceRef ref="id41291883"/>
+        </ServiceGroup>
+      </ServiceGroup>
       <ServiceGroup id="stdid07_1" name="ICMP" comment=""/>
       <ServiceGroup id="stdid06_1" name="IP" comment=""/>
       <ServiceGroup id="stdid09_1" name="TCP" comment=""/>
@@ -547,10 +678,80 @@
       <ServiceGroup id="stdid13_1" name="Custom" comment=""/>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="">
-      <Firewall id="id3F9A1BD2" host_OS="linux24" lastCompiled="0" lastInstalled="0" lastModified="0" platform="iptables" ro="False" name="test" comment="">
-        <NAT id="id3F9A1BD6" name="NAT" comment="" ipv6_rule_set="False" top_rule_set="True"/>
+      <Firewall id="id3F9A1BD2" host_OS="linux24" lastCompiled="0" lastInstalled="0" lastModified="1220934384" platform="iptables" ro="False" name="test" comment="">
+        <NAT id="id3F9A1BD6" name="NAT" comment="" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id10279X3737" disabled="False" position="0" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id4510X3737"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id8427X3737"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3F9A1BD9"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id11212X3737" disabled="False" position="1" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id3F9A1BCA"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3F9A1BCB"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+        </NAT>
         <Policy id="id3F9A1BD5" name="Policy" comment="" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id3F9A1CE7" action="Accept" disabled="False" log="False" position="0" comment="">
+          <PolicyRule id="id6439X3737" action="Deny" direction="Both" disabled="False" group="" log="True" position="0" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id4510X3737"/>
+              <ObjectRef ref="id3F9A1BCA"/>
+              <ObjectRef ref="id3F9A1BCB"/>
+              <ObjectRef ref="id3F9A1BCC"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id4510X3737"/>
+              <ObjectRef ref="id3F9A1BCA"/>
+              <ObjectRef ref="id3F9A1BCB"/>
+              <ObjectRef ref="id3F9A1BCC"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id8427X3737"/>
+              <ServiceRef ref="id9342X3737"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3F9A1CE7" action="Accept" disabled="False" log="False" position="1" comment="">
             <Src neg="False">
               <ObjectRef ref="id3F9A1BC7"/>
             </Src>
@@ -568,7 +769,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3F9A1BF6" action="Accept" disabled="False" log="False" position="1" comment="">
+          <PolicyRule id="id3F9A1BF6" action="Accept" disabled="False" log="False" position="2" comment="">
             <Src neg="False">
               <ObjectRef ref="id3F9A1BCA"/>
             </Src>
@@ -586,7 +787,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3F9A1BEC" action="Accept" disabled="False" log="False" position="2" comment="">
+          <PolicyRule id="id3F9A1BEC" action="Accept" disabled="False" log="False" position="3" comment="">
             <Src neg="False">
               <ObjectRef ref="id3F9A1BCA"/>
             </Src>
@@ -604,7 +805,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3F9A1C2E" action="Accept" disabled="False" log="False" position="3" comment="">
+          <PolicyRule id="id3F9A1C2E" action="Accept" disabled="False" log="False" position="4" comment="">
             <Src neg="False">
               <ObjectRef ref="id3F9A1BCB"/>
             </Src>
@@ -622,7 +823,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3F9A1C96" action="Accept" disabled="False" log="False" position="4" comment="">
+          <PolicyRule id="id3F9A1C96" action="Accept" disabled="False" log="False" position="5" comment="">
             <Src neg="False">
               <ObjectRef ref="id3F9A1BC7"/>
             </Src>
@@ -640,7 +841,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3F9A1C3A" action="Deny" disabled="False" log="True" position="5" comment="">
+          <PolicyRule id="id3F9A1C3A" action="Deny" disabled="False" log="True" position="6" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -730,8 +931,131 @@
     <IntervalGroup id="stdid11_1" name="Time" comment=""/>
   </Library>
   <Library id="syslib000" color="#d4f8ff" ro="True" name="Standard" comment="Standard objects">
-    <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service"/>
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" address="0.0.0.0" netmask="0.0.0.0"/>
+    <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service"/>
+    <ServiceGroup id="stdid05" name="Services" comment="">
+      <ServiceGroup id="stdid09" name="TCP" comment="">
+        <TCPService id="id3D703C8B" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="Real-Audio" comment="RealNetworks PNA Protocol" src_range_start="0" src_range_end="0" dst_range_start="7070" dst_range_end="7070"/>
+        <TCPService id="id3D703C93" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="RealSecure" comment="" src_range_start="0" src_range_end="0" dst_range_start="2998" dst_range_end="2998"/>
+        <TCPService id="id3B4FF09A" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="squid" comment="" src_range_start="0" src_range_end="0" dst_range_start="3128" dst_range_end="3128"/>
+        <TCPService id="tcp-SSH" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ssh" comment="" src_range_start="0" src_range_end="0" dst_range_start="22" dst_range_end="22"/>
+        <TCPService id="id3AEDBE00" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="sunrpc" comment="" src_range_start="0" src_range_end="0" dst_range_start="111" dst_range_end="111"/>
+        <TCPService id="tcp-TCP-SYN" ack_flag="False" ack_flag_mask="True" fin_flag="False" fin_flag_mask="True" psh_flag="False" psh_flag_mask="True" rst_flag="False" rst_flag_mask="True" syn_flag="True" syn_flag_mask="True" urg_flag="False" urg_flag_mask="True" name="tcp-syn" comment="" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
+        <TCPService id="tcp-Telnet" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="telnet" comment="" src_range_start="0" src_range_end="0" dst_range_start="23" dst_range_end="23"/>
+        <TCPService id="id3B4FEE76" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="socks" comment="" src_range_start="0" src_range_end="0" dst_range_start="1080" dst_range_end="1080"/>
+        <TCPService id="id3D703C87" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="sqlnet1" comment="" src_range_start="0" src_range_end="0" dst_range_start="1521" dst_range_end="1521"/>
+        <TCPService id="tcp-FTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ftp" comment="" src_range_start="0" src_range_end="0" dst_range_start="21" dst_range_end="21"/>
+        <TCPService id="tcp-FTP_data" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ftp data" comment="FTP data channel.&#10;  Note: FTP protocol does not really require server to use source port 20 for the data channel, &#10;  but many ftp server implementations do so." src_range_start="20" src_range_end="20" dst_range_start="1024" dst_range_end="65535"/>
+        <TCPService id="id41291788" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="vnc-0" comment="Regular VNC viewer, display 0" src_range_start="0" src_range_end="0" dst_range_start="5900" dst_range_end="5900"/>
+        <TCPService id="id41291887" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="vnc-java-1" comment="Java VNC viewer, display 1" src_range_start="0" src_range_end="0" dst_range_start="5801" dst_range_end="5801"/>
+        <TCPService id="id41291888" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="vnc-1" comment="Regular VNC viewer, display 1" src_range_start="0" src_range_end="0" dst_range_start="5901" dst_range_end="5901"/>
+        <TCPService id="id3E7E4039" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="LDAP GC" comment="" src_range_start="0" src_range_end="0" dst_range_start="3268" dst_range_end="3268"/>
+        <TCPService id="id3E7E403A" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="LDAP GC SSL" comment="" src_range_start="0" src_range_end="0" dst_range_start="3269" dst_range_end="3269"/>
+        <TCPService id="id3D703C97" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="lpr" comment="" src_range_start="0" src_range_end="0" dst_range_start="515" dst_range_end="515"/>
+        <TCPService id="id3DC8C8BB" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="microsoft-rpc" comment="" src_range_start="0" src_range_end="0" dst_range_start="135" dst_range_end="135"/>
+        <TCPService id="id3D703C98" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ms-sql" comment="Microsoft SQL Server" src_range_start="0" src_range_end="0" dst_range_start="1433" dst_range_end="1433"/>
+        <TCPService id="id3B4FEE7A" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="nfs" comment="" src_range_start="0" src_range_end="0" dst_range_start="2049" dst_range_end="2049"/>
+        <TCPService id="tcp-NNTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="nntp" comment="" src_range_start="0" src_range_end="0" dst_range_start="119" dst_range_end="119"/>
+        <TCPService id="id3E7553BB" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="nntps" comment="NNTP over SSL" src_range_start="0" src_range_end="0" dst_range_start="563" dst_range_end="563"/>
+        <TCPService id="id3B4FEE1D" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="pop3" comment="" src_range_start="0" src_range_end="0" dst_range_start="110" dst_range_end="110"/>
+        <TCPService id="id3E7553BA" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="pop3s" comment="POP-3 over SSL" src_range_start="0" src_range_end="0" dst_range_start="995" dst_range_end="995"/>
+        <TCPService id="id3B4FF0EA" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="postgres" comment="" src_range_start="0" src_range_end="0" dst_range_start="5432" dst_range_end="5432"/>
+        <TCPService id="id3AECF782" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="printer" comment="" src_range_start="0" src_range_end="0" dst_range_start="515" dst_range_end="515"/>
+        <TCPService id="id3B4FEF7C" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="quake" comment="" src_range_start="0" src_range_end="0" dst_range_start="26000" dst_range_end="26000"/>
+        <TCPService id="id4127EDF6" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="whois" comment="" src_range_start="0" src_range_end="0" dst_range_start="43" dst_range_end="43"/>
+        <TCPService id="id4127F04F" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="bgp" comment="" src_range_start="0" src_range_end="0" dst_range_start="179" dst_range_end="179"/>
+        <TCPService id="id3AECF77A" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="rexec" comment="" src_range_start="0" src_range_end="0" dst_range_start="512" dst_range_end="512"/>
+        <TCPService id="id3AECF77C" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="rlogin" comment="" src_range_start="0" src_range_end="0" dst_range_start="513" dst_range_end="513"/>
+        <TCPService id="id3AECF77E" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="rshell" comment="" src_range_start="0" src_range_end="0" dst_range_start="514" dst_range_end="514"/>
+        <TCPService id="id4127F146" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="radius" comment="Radius protocol" src_range_start="0" src_range_end="0" dst_range_start="1812" dst_range_end="1812"/>
+        <TCPService id="id4127F147" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="radius acct" comment="Radius Accounting" src_range_start="0" src_range_end="0" dst_range_start="1813" dst_range_end="1813"/>
+        <TCPService id="id41291784" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="upnp" comment="" src_range_start="0" src_range_end="0" dst_range_start="5000" dst_range_end="5000"/>
+        <TCPService id="id3D703C99" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="rtsp" comment="Real Time Streaming Protocol" src_range_start="0" src_range_end="0" dst_range_start="554" dst_range_end="554"/>
+        <TCPService id="id3B4FEF34" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="rwhois" comment="" src_range_start="0" src_range_end="0" dst_range_start="4321" dst_range_end="4321"/>
+        <TCPService id="id3C685B2B" ack_flag="True" ack_flag_mask="True" fin_flag="True" fin_flag_mask="True" psh_flag="True" psh_flag_mask="True" rst_flag="True" rst_flag_mask="True" syn_flag="True" syn_flag_mask="True" urg_flag="True" urg_flag_mask="True" name="xmas scan - full" comment="This service object matches TCP packet with all six flags set." src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
+        <TCPService id="id4127E949" ack_flag="False" ack_flag_mask="True" fin_flag="True" fin_flag_mask="True" psh_flag="True" psh_flag_mask="True" rst_flag="False" rst_flag_mask="True" syn_flag="False" syn_flag_mask="True" urg_flag="True" urg_flag_mask="True" name="xmas scan" comment="This service object matches TCP packet with flags FIN, PSH and URG set and other flags cleared. This is a  &quot;christmas scan&quot; as defined in snort rules. Nmap can generate this scan, too." src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
+        <TCPService id="id3D703C89" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="securidprop" comment="" src_range_start="0" src_range_end="0" dst_range_start="5510" dst_range_end="5510"/>
+        <TCPService id="tcp-SMTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="smtp" comment="" src_range_start="0" src_range_end="0" dst_range_start="25" dst_range_end="25"/>
+        <TCPService id="id3B4FF04C" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="smtps" comment="" src_range_start="0" src_range_end="0" dst_range_start="465" dst_range_end="465"/>
+        <TCPService id="id4127EA72" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="rsync" comment="" src_range_start="0" src_range_end="0" dst_range_start="873" dst_range_end="873"/>
+        <TCPService id="id4127EBAC" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="distcc" comment="distributed compiler" src_range_start="0" src_range_end="0" dst_range_start="3632" dst_range_end="3632"/>
+        <TCPService id="id4127ECF1" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="cvspserver" comment="CVS client/server operations" src_range_start="0" src_range_end="0" dst_range_start="2401" dst_range_end="2401"/>
+        <TCPService id="id3CB131C4" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="Citrix-ICA" comment="" src_range_start="0" src_range_end="0" dst_range_start="1494" dst_range_end="1494"/>
+        <TCPService id="id41291785" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="upnp-5431" comment="Although UPnP specification say it should use TCP port 5000, Linksys running Sveasoft firmware listens on port 5431" src_range_start="0" src_range_end="0" dst_range_start="5431" dst_range_end="5431"/>
+        <TCPService id="id41291787" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="vnc-java-0" comment="Java VNC viewer, display 0" src_range_start="0" src_range_end="0" dst_range_start="5800" dst_range_end="5800"/>
+        <TCPService id="id3B4FED69" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="https" comment="" src_range_start="0" src_range_end="0" dst_range_start="443" dst_range_end="443"/>
+        <TCPService id="id3AECF776" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="imap" comment="" src_range_start="0" src_range_end="0" dst_range_start="143" dst_range_end="143"/>
+        <TCPService id="id3B4FED9F" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="imaps" comment="" src_range_start="0" src_range_end="0" dst_range_start="993" dst_range_end="993"/>
+        <TCPService id="id3D703C90" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ldaps" comment="Lightweight Directory Access Protocol over TLS/SSL" src_range_start="0" src_range_end="0" dst_range_start="636" dst_range_end="636"/>
+        <TCPService id="id3B4FF000" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="linuxconf" comment="" src_range_start="0" src_range_end="0" dst_range_start="98" dst_range_end="98"/>
+        <TCPService id="id3B4FF13C" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="irc" comment="" src_range_start="0" src_range_end="0" dst_range_start="6667" dst_range_end="6667"/>
+        <TCPService id="id3E7E3EA2" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="kerberos" comment="" src_range_start="0" src_range_end="0" dst_range_start="88" dst_range_end="88"/>
+        <TCPService id="id3B4FEE21" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="klogin" comment="" src_range_start="0" src_range_end="0" dst_range_start="543" dst_range_end="543"/>
+        <TCPService id="id3B4FEE23" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ksh" comment="" src_range_start="0" src_range_end="0" dst_range_start="544" dst_range_end="544"/>
+        <TCPService id="id3AECF778" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ldap" comment="" src_range_start="0" src_range_end="0" dst_range_start="389" dst_range_end="389"/>
+        <TCPService id="id4127ECF2" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="cvsup" comment="CVSup file transfer/John Polstra/FreeBSD" src_range_start="0" src_range_end="0" dst_range_start="5999" dst_range_end="5999"/>
+        <TCPService id="id4127ED5E" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="afp" comment="AFP (Apple file sharing) over TCP" src_range_start="0" src_range_end="0" dst_range_start="548" dst_range_end="548"/>
+        <TCPService id="tcp-uucp" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="uucp" comment="" src_range_start="0" src_range_end="0" dst_range_start="540" dst_range_end="540"/>
+        <TCPService id="id3CB131C6" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="winterm" comment="Windows Terminal Services" src_range_start="0" src_range_end="0" dst_range_start="3389" dst_range_end="3389"/>
+        <TCPService id="id3B4FF1B8" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="xfs" comment="" src_range_start="0" src_range_end="0" dst_range_start="7100" dst_range_end="7100"/>
+        <TCPService id="id3B4FEEEE" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="mysql" comment="" src_range_start="0" src_range_end="0" dst_range_start="3306" dst_range_end="3306"/>
+        <TCPService id="id3E755609" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="netbios-ssn" comment="" src_range_start="0" src_range_end="0" dst_range_start="139" dst_range_end="139"/>
+        <TCPService id="tcp-Auth" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="auth" comment="" src_range_start="0" src_range_end="0" dst_range_start="113" dst_range_end="113"/>
+        <TCPService id="id3AEDBE6E" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="daytime" comment="" src_range_start="0" src_range_end="0" dst_range_start="13" dst_range_end="13"/>
+        <TCPService id="id3E7E3D58" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="WINS replication" comment="" src_range_start="0" src_range_end="0" dst_range_start="42" dst_range_end="42"/>
+        <TCPService id="id3D703C82" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="X11" comment="X Window System" src_range_start="0" src_range_end="0" dst_range_start="6000" dst_range_end="6063"/>
+        <TCPService id="id3DC8C8BC" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="SMB" comment="SMB over TCP (without NETBIOS)&#10;" src_range_start="0" src_range_end="0" dst_range_start="445" dst_range_end="445"/>
+        <TCPService id="id3D703C8D" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="TACACSplus" comment="" src_range_start="0" src_range_end="0" dst_range_start="49" dst_range_end="49"/>
+        <TCPService id="id3D703C84" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="TCP high ports" comment="TCP high ports" src_range_start="0" src_range_end="0" dst_range_start="1024" dst_range_end="65535"/>
+        <TCPService id="id3D703C83" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="OpenWindows" comment="Open Windows" src_range_start="0" src_range_end="0" dst_range_start="2000" dst_range_end="2000"/>
+        <TCPService id="id3CB131C8" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="PCAnywhere-data" comment="data channel for PCAnywhere v7.52 and later " src_range_start="0" src_range_end="0" dst_range_start="5631" dst_range_end="5631"/>
+        <TCPService id="tcp-DNS" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="domain" comment="" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
+        <TCPService id="id3B4FEDA3" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="eklogin" comment="" src_range_start="0" src_range_end="0" dst_range_start="2105" dst_range_end="2105"/>
+        <TCPService id="id3AECF774" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="finger" comment="" src_range_start="0" src_range_end="0" dst_range_start="79" dst_range_end="79"/>
+        <TCPService id="id3D703C91" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="Entrust-Admin" comment="Entrust CA Administration Service" src_range_start="0" src_range_end="0" dst_range_start="709" dst_range_end="709"/>
+        <TCPService id="id3D703C92" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="Entrust-KeyMgmt" comment="Entrust CA Key Management Service" src_range_start="0" src_range_end="0" dst_range_start="710" dst_range_end="710"/>
+        <TCPService id="id3AEDBEAC" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="H323" comment="" src_range_start="0" src_range_end="0" dst_range_start="1720" dst_range_end="1720"/>
+        <TCPService id="id412Z18A9" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="icslap" comment="Sometimes this protocol is called icslap, but Microsoft does not call it that and just says that DSPP uses port 2869 in Windows XP SP2" src_range_start="0" src_range_end="0" dst_range_start="2869" dst_range_end="2869"/>
+        <TCPService id="id3E7553BC" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ftp data passive" comment="FTP data channel for passive mode transfers&#10;" src_range_start="0" src_range_end="0" dst_range_start="20" dst_range_end="20"/>
+        <TCPService id="tcp-HTTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="http" comment="" src_range_start="0" src_range_end="0" dst_range_start="80" dst_range_end="80"/>
+      </ServiceGroup>
+      <ServiceGroup id="stdid08" name="UDP" comment="">
+        <UDPService id="id3B4FEDA1" name="afs" comment="" src_range_start="0" src_range_end="0" dst_range_start="7000" dst_range_end="7009"/>
+        <UDPService id="udp-bootpc" name="bootpc" comment="" src_range_start="0" src_range_end="0" dst_range_start="68" dst_range_end="68"/>
+        <UDPService id="udp-bootps" name="bootps" comment="" src_range_start="0" src_range_end="0" dst_range_start="67" dst_range_end="67"/>
+        <UDPService id="id3AEDBE70" name="daytime" comment="" src_range_start="0" src_range_end="0" dst_range_start="13" dst_range_end="13"/>
+        <UDPService id="udp-DNS" name="domain" comment="" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
+        <UDPService id="id3D703C8A" name="interphone" comment="VocalTec Internet Phone" src_range_start="0" src_range_end="0" dst_range_start="22555" dst_range_end="22555"/>
+        <UDPService id="id3B4FEDA5" name="kerberos" comment="" src_range_start="0" src_range_end="0" dst_range_start="88" dst_range_end="88"/>
+        <UDPService id="id3D703C96" name="ICQ" comment="" src_range_start="0" src_range_end="0" dst_range_start="4000" dst_range_end="4000"/>
+        <UDPService id="id3CB129D2" name="IKE" comment="" src_range_start="0" src_range_end="0" dst_range_start="500" dst_range_end="500"/>
+        <UDPService id="id3CB131CA" name="PCAnywhere-status" comment="status channel for PCAnywhere v7.52 and later" src_range_start="0" src_range_end="0" dst_range_start="5632" dst_range_end="5632"/>
+        <UDPService id="id3AED0D6B" name="RIP" comment="routing protocol RIP" src_range_start="0" src_range_end="0" dst_range_start="520" dst_range_end="520"/>
+        <UDPService id="id3D703C8C" name="Radius" comment="" src_range_start="0" src_range_end="0" dst_range_start="1645" dst_range_end="1645"/>
+        <UDPService id="id3D703C85" name="UDP high ports" comment="" src_range_start="0" src_range_end="0" dst_range_start="1024" dst_range_end="65535"/>
+        <UDPService id="id3D703C86" name="Who" comment="" src_range_start="0" src_range_end="0" dst_range_start="513" dst_range_end="513"/>
+        <UDPService id="id3B4FEDA9" name="kerberos-adm" comment="" src_range_start="0" src_range_end="0" dst_range_start="749" dst_range_end="750"/>
+        <UDPService id="id3B4FEDA7" name="kpasswd" comment="" src_range_start="0" src_range_end="0" dst_range_start="464" dst_range_end="464"/>
+        <UDPService id="id3B4FEDAB" name="krb524" comment="" src_range_start="0" src_range_end="0" dst_range_start="4444" dst_range_end="4444"/>
+        <UDPService id="id3F865B0D" name="microsoft-rpc" comment="" src_range_start="0" src_range_end="0" dst_range_start="135" dst_range_end="135"/>
+        <UDPService id="udp-netbios-dgm" name="netbios-dgm" comment="" src_range_start="0" src_range_end="0" dst_range_start="138" dst_range_end="138"/>
+        <UDPService id="udp-netbios-ns" name="netbios-ns" comment="" src_range_start="0" src_range_end="0" dst_range_start="137" dst_range_end="137"/>
+        <UDPService id="udp-netbios-ssn" name="netbios-ssn" comment="" src_range_start="0" src_range_end="0" dst_range_start="139" dst_range_end="139"/>
+        <UDPService id="id3B4FEE78" name="nfs" comment="" src_range_start="0" src_range_end="0" dst_range_start="2049" dst_range_end="2049"/>
+        <UDPService id="udp-ntp" name="ntp" comment="" src_range_start="0" src_range_end="0" dst_range_start="123" dst_range_end="123"/>
+        <UDPService id="id3B4FEF7E" name="quake" comment="" src_range_start="0" src_range_end="0" dst_range_start="26000" dst_range_end="26000"/>
+        <UDPService id="id3D703C88" name="secureid-udp" comment="" src_range_start="0" src_range_end="0" dst_range_start="1024" dst_range_end="1024"/>
+        <UDPService id="udp-SNMP" name="snmp" comment="" src_range_start="0" src_range_end="0" dst_range_start="161" dst_range_end="161"/>
+        <UDPService id="id3AED0D69" name="snmp-trap" comment="" src_range_start="0" src_range_end="0" dst_range_start="162" dst_range_end="162"/>
+        <UDPService id="id3AEDBE19" name="sunrpc" comment="" src_range_start="0" src_range_end="0" dst_range_start="111" dst_range_end="111"/>
+        <UDPService id="id3AECF780" name="syslog" comment="" src_range_start="0" src_range_end="0" dst_range_start="514" dst_range_end="514"/>
+        <UDPService id="id3AED0D67" name="tftp" comment="" src_range_start="0" src_range_end="0" dst_range_start="69" dst_range_end="69"/>
+        <UDPService id="id3AED0D8C" name="traceroute" comment="" src_range_start="0" src_range_end="0" dst_range_start="33434" dst_range_end="33524"/>
+        <UDPService id="id4127EA73" name="rsync" comment="" src_range_start="0" src_range_end="0" dst_range_start="873" dst_range_end="873"/>
+        <UDPService id="id41291783" name="SSDP" comment="Simple Service Discovery Protocol (used for UPnP)" src_range_start="0" src_range_end="0" dst_range_start="1900" dst_range_end="1900"/>
+        <UDPService id="id41291883" name="OpenVPN" comment="" src_range_start="0" src_range_end="0" dst_range_start="1194" dst_range_end="1194"/>
+      </ServiceGroup>
+    </ServiceGroup>
     <AnyInterval id="sysid2" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1" name="Any" comment="Any Interval"/>
   </Library>
 </FWObjectDatabase>
