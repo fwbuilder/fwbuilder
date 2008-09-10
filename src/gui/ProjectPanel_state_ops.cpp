@@ -117,6 +117,10 @@ void ProjectPanel::saveState()
     arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
     if (sl[0] || sl[1])
         st->setStr("Window/" + FileName + "/ObjInfoSplitter", arg );
+
+    m_panel->om->saveExpandedTreeItems();
+
+    saveOpenedRuleSet();
 }
 
 void ProjectPanel::loadState()
@@ -195,6 +199,10 @@ void ProjectPanel::loadState()
 
     setObjInfoSplitterPosition(w1, w2);
 
+    m_panel->om->loadExpandedTreeItems();
+
+    loadOpenedRuleSet();
+
     if (fwbdebug) qDebug("ProjectPanel::loadState done");
 }
 
@@ -221,5 +229,41 @@ void ProjectPanel::setObjInfoSplitterPosition(int w1, int w2)
         m_panel->objInfoSplitter->setSizes( sl );
     }
 }
+
+void ProjectPanel::loadOpenedRuleSet()
+{
+    if (rcs==NULL) return;
+    QString filename = rcs->getFileName();
+
+    int id = st->getVisibleRuleSetId(
+        filename, m_panel->om->getCurrentLib()->getName().c_str());
+
+    if (id)
+    {
+        FWObject *obj = db()->getById(id, true);
+        if (obj)
+        {
+            m_panel->om->openObject(obj);
+            openRuleSet(RuleSet::cast(obj));
+        }
+    }
+}
+
+void ProjectPanel::saveOpenedRuleSet()
+{
+    if (rcs==NULL) return;
+    QString filename = rcs->getFileName();
+
+    if (visibleRuleSet!=NULL)
+    {
+        st->setVisibleRuleSet(filename,
+                              visibleRuleSet->getLibrary()->getName().c_str(),
+                              visibleRuleSet);
+    }
+}
+     
+
+
+
 
 

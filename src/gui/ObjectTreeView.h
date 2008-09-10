@@ -40,6 +40,7 @@
 #include <QDragLeaveEvent>
 
 #include <vector>
+#include <set>
 
 namespace libfwbuilder {
     class FWObject;
@@ -51,23 +52,22 @@ class ObjectTreeView : public QTreeWidget {
 
      Q_OBJECT
 
-    QTreeWidgetItem   *item_before_drag_started;
-    QTreeWidgetItem   *lastSelected;
-    QItemSelection     lastSelection;
-    bool             second_click;
-
-    bool             selectionFrozen;
-    bool             expandOrCollapse;
-    bool             Lockable;
-    bool             Unlockable;
-    bool             startingDrag;
-
-    bool             visible;
-
-    bool             process_mouse_release_event;
-
-    std::vector<libfwbuilder::FWObject*>          selectedObjects;
+    QTreeWidgetItem *item_before_drag_started;
+    QTreeWidgetItem *lastSelected;
+    QItemSelection lastSelection;
+    bool second_click;
+    bool selectionFrozen;
+    bool expandOrCollapse;
+    bool Lockable;
+    bool Unlockable;
+    bool startingDrag;
+    bool visible;
+    bool process_mouse_release_event;
+    std::set<int> expanded_objects;
+    std::vector<libfwbuilder::FWObject*> selectedObjects;
     ProjectPanel* m_project;
+
+
     bool isCurrReadOnly(QDragMoveEvent *ev);
     libfwbuilder::FWObject *getDropTarget(
         QDropEvent *ev, libfwbuilder::FWObject* dragobj);
@@ -99,9 +99,12 @@ protected:
     
  public:
 
-    ObjectTreeView(ProjectPanel* project, QWidget* parent = 0, const char * name = 0, Qt::WFlags f = 0);
+    ObjectTreeView(ProjectPanel* project,
+                   QWidget* parent = 0,
+                   const char * name = 0,
+                   Qt::WFlags f = 0);
 
-    void freezeSelection(bool f) { selectionFrozen=f; }
+    void freezeSelection(bool f) { selectionFrozen = f; }
 
     std::vector<libfwbuilder::FWObject*>& getSelectedObjects()
         { return selectedObjects; }
@@ -133,7 +136,10 @@ protected:
     std::vector<libfwbuilder::FWObject*> getSimplifiedSelection();
 
     void ignoreNextMouseReleaseEvent() { process_mouse_release_event = false; }
-    
+
+    void ExpandTreeItems(const std::set<int> &ids);
+    const std::set<int>& getListOfExpandedObjectIds() { return expanded_objects; }
+
  public slots:
 
     void itemSelectionChanged();

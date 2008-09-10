@@ -205,18 +205,32 @@ void ObjectTreeView::currentItemChanged(QTreeWidgetItem *cur)
 
 void ObjectTreeView::itemCollapsed(QTreeWidgetItem* itm)
 {
-    if (fwbdebug)
-        qDebug("ObjectTreeView::collapsed  itm=%s",
-               itm->text(0).toAscii().constData());
     expandOrCollapse = true;
+
+    ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem*>(itm);
+    assert(otvi!=NULL);
+    FWObject *o = otvi->getFWObject();
+    if (o)
+    {
+        int id = o->getId();
+        expanded_objects.erase(id);
+        if (fwbdebug) qDebug("Tree item for object id=%d collapsed", id);
+    }
 }
 
 void ObjectTreeView::itemExpanded(QTreeWidgetItem* itm)
 {
-    if (fwbdebug)
-        qDebug("ObjectTreeView::expanded  itm=%s",
-               itm->text(0).toAscii().constData());
     expandOrCollapse = true;
+
+    ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(itm);
+    assert(otvi!=NULL);
+    FWObject *o = otvi->getFWObject();
+    if (o)
+    {
+        int id = o->getId();
+        expanded_objects.insert(id);
+        if (fwbdebug) qDebug("Tree item for object id=%d expanded", id);
+    }
 }
 
 /*
@@ -541,7 +555,7 @@ void ObjectTreeView::dropEvent(QDropEvent *ev)
     if (fwbdebug) qDebug("ObjectTreeView::dropEvent done");
 }
 
-FWObject *ObjectTreeView::getDropTarget(QDropEvent *ev, FWObject* dragobj)
+FWObject *ObjectTreeView::getDropTarget(QDropEvent *ev, FWObject*)
 {
     QTreeWidgetItem *ovi = itemAt(ev->pos());
 
@@ -845,3 +859,18 @@ void ObjectTreeView::updateAfterPrefEdit()
 {
      setFont(st->getTreeFont());
 }
+
+void ObjectTreeView::ExpandTreeItems(const set<int> &ids)
+{
+    QTreeWidgetItemIterator it(this);
+    while ( *it )
+    {
+        QTreeWidgetItem *itm = *it;
+        ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(itm);
+        FWObject *obj = otvi->getFWObject();
+        if (ids.count(obj->getId()))
+            itm->setExpanded(true);
+        ++it;
+    }
+}
+

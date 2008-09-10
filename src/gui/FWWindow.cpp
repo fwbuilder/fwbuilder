@@ -1079,7 +1079,7 @@ void FWWindow::closeRuleSetInAllWindowsWhereOpen(RuleSet *rs)
     }
 }
 
-void FWWindow::closeObjectInAllWindowsWhereOpen(FWObject *obj)
+void FWWindow::closeObjectInAllWindowsWhereOpen(FWObject*)
 {
     QList<QMdiSubWindow*> subWindowList = getMdiArea()->subWindowList();
     for (int i = 0 ; i < subWindowList.size(); i++)

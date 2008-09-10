@@ -350,6 +350,9 @@ public:
     void saveState();
     void loadState();
 
+    void loadOpenedRuleSet();
+    void saveOpenedRuleSet();
+    
     bool checkin(bool unlock);
     void loadLibrary(const std::string &libfpath);
     

@@ -359,7 +359,9 @@ public:
          libfwbuilder::FWObject *o);
      void findAllFirewalls (std::list<libfwbuilder::Firewall *> &fws);
 
-    
+     void loadExpandedTreeItems();
+     void saveExpandedTreeItems();
+
 signals:
 /**
  * the dialog class should have a slot that can load object's data

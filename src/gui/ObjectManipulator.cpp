@@ -718,7 +718,7 @@ void ObjectManipulator::loadObjects()
     if (fwbdebug) qDebug("ObjectManipulator::loadObjects %p done", this);
 }
 
-void ObjectManipulator::addLib( FWObject *lib,QTreeWidget* otv)
+void ObjectManipulator::addLib( FWObject *lib, QTreeWidget* otv)
 {
     QString newlibname = QString::fromUtf8(lib->getName().c_str());
     int              N = m_objectManipulator->libs->count();
@@ -754,7 +754,7 @@ void ObjectManipulator::addTreePage( FWObject *lib)
     ObjectTreeView *objTreeView = new ObjectTreeView(
         m_project, m_objectManipulator->widgetStack, OBJTREEVIEW_WIDGET_NAME );
 
-    addLib(lib,objTreeView);
+    addLib(lib, objTreeView);
 
     QSizePolicy policy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     policy.setHorizontalStretch(0);
@@ -843,6 +843,7 @@ void ObjectManipulator::addTreePage( FWObject *lib)
 
     for (list<FWObject*>::iterator m=lib->begin(); m!=lib->end(); m++)
         insertSubtree( itm1, (*m) );
+
     objTreeView->updateTreeItems();
     objTreeView->sortByColumn(0,Qt::AscendingOrder);
 }
@@ -1802,8 +1803,6 @@ FWObject* ObjectManipulator::duplicateWithDependencies(FWObject *target,
         }
         // create copy of this object
         if (fwbdebug) qDebug("Create object %s", old_obj->getName().c_str());
-
-        int repl_counter = 0;
 
         if (Interface::isA(old_obj) ||
             (
@@ -3432,8 +3431,31 @@ void ObjectManipulator::reopenCurrentItemParent()
     current_tree_view->scrollToItem(itm);
 }
 
+void ObjectManipulator::loadExpandedTreeItems()
+{
+    for (int i=0; i<m_objectManipulator->libs->count(); i++)
+    {
+        ObjectTreeView *objTreeView =
+            dynamic_cast<ObjectTreeView*>(idxToTrees[i]);
+        FWObject *lib = idxToLibs[i];
+        set<int> expanded_objects;
+        st->getExpandedObjectIds(m_project->getFileName(),
+                                 lib->getName().c_str(),
+                                 expanded_objects);
+        objTreeView->ExpandTreeItems(expanded_objects);
+    }
+}
 
-
-
-
+void ObjectManipulator::saveExpandedTreeItems()
+{
+    for (int i=0; i<m_objectManipulator->libs->count(); i++)
+    {
+        ObjectTreeView *objTreeView =
+            dynamic_cast<ObjectTreeView*>(idxToTrees[i]);
+        FWObject *lib = idxToLibs[i];
+        st->setExpandedObjectIds(m_project->getFileName(),
+                                 lib->getName().c_str(),
+                                 objTreeView->getListOfExpandedObjectIds());
+    }
+}
 

@@ -31,6 +31,8 @@
 #include <qprinter.h>
 #include <qfont.h>
 
+#include <set>
+
 class QWidget;
 
 /*
@@ -164,6 +166,20 @@ class FWBSettings : public QSettings {
     QString getCheckUpdatesProxy();
     void setCheckUpdatesProxy(const QString &proxy_line);
 
+    void getExpandedObjectIds(const QString &filename,
+                              const QString &lib,
+                              std::set<int> &ids);
+    void setExpandedObjectIds(const QString &filename,
+                              const QString &lib,
+                              const std::set<int> &ids);
+
+    int getVisibleRuleSetId(const QString &filename,
+                            const QString &lib);
+    void setVisibleRuleSet(const QString &filename,
+                           const QString &lib,
+                           libfwbuilder::FWObject *ruleset);
+
+    
 private:
     QFont getFontByType(const char*type);
 };

@@ -282,7 +282,8 @@ void ProjectPanel::clearFirewallTabs()
     while (m_panel->ruleSets->count()!=0)
     {
         QWidget *p = m_panel->ruleSets->widget(0);
-        m_panel->ruleSets->removeWidget(m_panel->ruleSets->widget(m_panel->ruleSets->indexOf(p)));
+        m_panel->ruleSets->removeWidget(
+            m_panel->ruleSets->widget(m_panel->ruleSets->indexOf(p)));
         delete p;
     }
     m_panel->rulesetname->setText("");

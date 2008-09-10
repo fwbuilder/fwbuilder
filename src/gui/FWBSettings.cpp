@@ -90,6 +90,7 @@ const char* groupModeSetpath = SETTINGS_PATH_PREFIX "/UI/GroupViewMode";
 const char* groupColsSetpath = SETTINGS_PATH_PREFIX "/UI/GroupViewColumns";
 const char* objTooltips = SETTINGS_PATH_PREFIX "/UI/objTooltips";
 const char* tooltipDelay = SETTINGS_PATH_PREFIX "/UI/tooltipDelay";
+
 const char* emptyRCSLog = SETTINGS_PATH_PREFIX "/RCS/emptyLog";
 const char* dontSaveStdLib = SETTINGS_PATH_PREFIX "/DataFormat/dontSaveStdLib";
 const char* WindowGeometrySetpath= SETTINGS_PATH_PREFIX "/Layout/";
@@ -685,4 +686,47 @@ void FWBSettings::setCheckUpdatesProxy(const QString &proxy_line)
     setValue(checkUpdatesProxy, proxy_line);
 }
 
+void FWBSettings::getExpandedObjectIds(const QString &filename,
+                                       const QString &lib,
+                                       std::set<int> &ids)
+{
+    ids.clear();
+    QString ids_str = value(
+        QString(SETTINGS_PATH_PREFIX "/") +
+        "Window/" + filename + "/" + lib + "/ExpandedTreeItems").toString();
+    QStringList strl = ids_str.split(":");
+    for (QStringList::iterator i=strl.begin(); i!=strl.end(); ++i)
+        ids.insert(i->toInt());
+}
+
+void FWBSettings::setExpandedObjectIds(const QString &filename,
+                                       const QString &lib,
+                                       const std::set<int> &ids)
+{
+    QStringList strl;
+    for (set<int>::iterator i=ids.begin(); i!=ids.end(); ++i)
+        strl.push_back(QString("%1").arg(*i));
+    setValue(
+        QString(SETTINGS_PATH_PREFIX "/") +
+        "Window/" + filename + "/" + lib + "/ExpandedTreeItems",
+        strl.join(":"));
+}
+
+int FWBSettings::getVisibleRuleSetId(const QString &filename,
+                                     const QString &lib)
+{
+    string str_id = value(
+        QString(SETTINGS_PATH_PREFIX "/") +
+        "Window/" + filename + "/" + lib + "/OpenedRuleSet").toString().toStdString();
+    return FWObjectDatabase::getIntId(str_id);
+}
+
+void FWBSettings::setVisibleRuleSet(const QString &filename,
+                                    const QString &lib,
+                                    FWObject *ruleset)
+{
+    setValue(QString(SETTINGS_PATH_PREFIX "/") +
+             "Window/" + filename + "/" + lib + "/OpenedRuleSet",
+             FWObjectDatabase::getStringId(ruleset->getId()).c_str() );
+}
 

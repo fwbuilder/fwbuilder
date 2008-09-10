@@ -1,3 +1,15 @@
+2008-09-09  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWBSettings.cpp (FWBSettings::setExpandedObjectIds): bug
+	#2091225: "Can objects in the left pane remember last state.". The
+	program saves state of the object tree branches (expanded or
+	collapsed) between sessions. 
+
+	* FWBSettings.cpp (FWBSettings::getVisibleRuleSetId): bug #2099631
+	"GUI should rememver firewall object that was opened last". The
+	program remembers opened ruleset between sessions.
+
+
 2008-09-08  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* fwbedit.cpp (usage): fixed "usage" in fwbedit, command line
