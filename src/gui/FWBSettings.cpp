@@ -694,9 +694,9 @@ void FWBSettings::getExpandedObjectIds(const QString &filename,
     QString ids_str = value(
         QString(SETTINGS_PATH_PREFIX "/") +
         "Window/" + filename + "/" + lib + "/ExpandedTreeItems").toString();
-    QStringList strl = ids_str.split(":");
+    QStringList strl = ids_str.split(",");
     for (QStringList::iterator i=strl.begin(); i!=strl.end(); ++i)
-        ids.insert(i->toInt());
+        ids.insert(FWObjectDatabase::getIntId(i->toStdString()));
 }
 
 void FWBSettings::setExpandedObjectIds(const QString &filename,
@@ -704,12 +704,12 @@ void FWBSettings::setExpandedObjectIds(const QString &filename,
                                        const std::set<int> &ids)
 {
     QStringList strl;
-    for (set<int>::iterator i=ids.begin(); i!=ids.end(); ++i)
-        strl.push_back(QString("%1").arg(*i));
+    for (set<int>::const_iterator i=ids.begin(); i!=ids.end(); ++i)
+        strl.push_back(FWObjectDatabase::getStringId(*i).c_str());
     setValue(
         QString(SETTINGS_PATH_PREFIX "/") +
         "Window/" + filename + "/" + lib + "/ExpandedTreeItems",
-        strl.join(":"));
+        strl.join(","));
 }
 
 int FWBSettings::getVisibleRuleSetId(const QString &filename,

@@ -18,9 +18,9 @@
 
 2008-09-08  vadim  <vadim@vk.crocodile.org>
 
-	* main_mac.cpp (odocHandler): bug #2099700 "Association of the
-	.fwb and .fwl file types with app on Mac". Implemented support for
-	the association of the application and data file type on Mac OS
+	* main.cpp (odocHandler): bug #2099700 "Association of the .fwb
+	and .fwl file types with app on Mac". Implemented support for the
+	association of the application and data file type on Mac OS
 	X. Double-clicking on .fwb and .fwl files in Finder will now open
 	application and load files automatically. User can open several
 	files by selecting them in Finder and double-clicking.
