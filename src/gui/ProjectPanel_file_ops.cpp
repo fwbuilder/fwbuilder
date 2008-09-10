@@ -346,7 +346,6 @@ void ProjectPanel::fileExit()
     if (saveIfModified() && checkin(true))
     {
         saveState();
-        storeLastOpenedLib();
         if (rcs) delete rcs;
         qApp->quit();
     }
@@ -1245,7 +1244,6 @@ void ProjectPanel::load(QWidget*, RCS* _rcs, FWObjectDatabase* clone)
     QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 
     setupAutoSave();
-    loadLastOpenedLib();
 }
 
 
@@ -1549,7 +1547,6 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
     QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 
     setupAutoSave();
-    loadLastOpenedLib();
 }
 
 bool ProjectPanel::checkin(bool unlock)

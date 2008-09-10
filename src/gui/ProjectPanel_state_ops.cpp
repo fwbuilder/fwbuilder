@@ -120,10 +120,11 @@ void ProjectPanel::saveState()
 
     m_panel->om->saveExpandedTreeItems();
 
+    saveLastOpenedLib();
     saveOpenedRuleSet();
 }
 
-void ProjectPanel::loadState()
+void ProjectPanel::loadState(bool open_objects)
 {
     int w1 = 0;
     int w2 = 0;
@@ -201,6 +202,7 @@ void ProjectPanel::loadState()
 
     m_panel->om->loadExpandedTreeItems();
 
+    loadLastOpenedLib();
     loadOpenedRuleSet();
 
     if (fwbdebug) qDebug("ProjectPanel::loadState done");
@@ -262,6 +264,37 @@ void ProjectPanel::saveOpenedRuleSet()
     }
 }
      
+void ProjectPanel::saveLastOpenedLib()
+{
+    if (rcs==NULL) return;
+    QString filename = rcs->getFileName();
+
+    FWObject*  obj = m_panel->om->getCurrentLib();
+    if (obj!=NULL)
+    {
+        std::string sid = FWObjectDatabase::getStringId(obj->getId());
+        st->setStr("Window/" + filename + "/LastLib", sid.c_str() );
+        
+    }
+}
+    
+void ProjectPanel::loadLastOpenedLib()
+{
+    if (rcs==NULL) return;
+    QString filename = rcs->getFileName();
+
+    QString sid = st->getStr("Window/" + filename + "/LastLib");
+    if (sid!="")
+    {
+        m_panel->om->libChangedById(
+            FWObjectDatabase::getIntId(sid.toStdString()));
+    }        
+    else
+    {
+        m_panel->om->changeFirstNotSystemLib();
+    }
+}
+
 
 
 

@@ -575,40 +575,6 @@ void ProjectPanel::setFileName(const QString &fname)
     setWindowTitle( QString("Firewall Builder: ")+caption );
 }
 
-void ProjectPanel::storeLastOpenedLib()
-{
-    FWObject*  obj = m_panel->om->getCurrentLib();
-    if (obj!=NULL)
-    {
-        std::string sid = FWObjectDatabase::getStringId(obj->getId());
-        QString FileName ;
-        if (rcs!=NULL)
-        {
-            FileName = rcs->getFileName();
-        }
-        st->setStr("Window/" + FileName + "/LastLib", sid.c_str() );
-        
-    }
-}
-    
-void ProjectPanel::loadLastOpenedLib(QString filename)
-{
-    QString FileName = filename;
-    if (rcs!=NULL)
-    {
-        FileName = rcs->getFileName();
-    }
-    QString sid = st->getStr("Window/" + FileName + "/LastLib");
-    if (sid!="")
-    {
-        m_panel->om->libChangedById(FWObjectDatabase::getIntId(sid.toAscii().data()));
-    }        
-    else
-    {
-        m_panel->om->changeFirstNotSystemLib();
-    }
-}
-
 //wrapers for some ObjectManipulator functions
 FWObject* ProjectPanel::getOpened()
 {
@@ -1007,7 +973,7 @@ void ProjectPanel::startupLoad()
                 rcs->co();
                 load(NULL, rcs);
 
-                loadLastOpenedLib();
+                //loadLastOpenedLib();
             } catch (FWException &ex)
             {
                 qDebug("Exception: %s",ex.toString().c_str());
@@ -1016,7 +982,7 @@ void ProjectPanel::startupLoad()
         } else
         {
             load(NULL); // load standard objects
-            loadLastOpenedLib(startupFileName);
+            //loadLastOpenedLib(startupFileName);
         }
     }
 
@@ -1302,7 +1268,7 @@ void ProjectPanel::closeEvent( QCloseEvent * ev)
 
 //    if (!closing)
     saveState();
-    storeLastOpenedLib();
+    //storeLastOpenedLib();
 
     if (fwbdebug)
         qDebug("ProjectPanel::closeEvent check in and delete RCS object");

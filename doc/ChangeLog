@@ -1,3 +1,14 @@
+2008-09-10  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::getMenuState): fixed
+	bug #2100415: "cannot re-create or clone Routing object". The GUI
+	does not let the user to delete Routing object. Policy and NAT
+	objects can be deleted as long as there is at least one more
+	left. Also "top" rule set objects can not be deleted at all.
+
+	* ObjectManipulator.cpp (ObjectManipulator::pasteTo): fixed
+	bug (no #): added ability to copy/paste rule set objects.
+
 2008-09-09  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWBSettings.cpp (FWBSettings::setExpandedObjectIds): bug

@@ -129,8 +129,6 @@ public:
     ~ProjectPanel();
 
 
-    void storeLastOpenedLib();
-    void loadLastOpenedLib(QString filename="");
     void initMain(FWWindow *main);
     void loadObjects();
     void loadObjects(libfwbuilder::FWObjectDatabase *db);
@@ -348,10 +346,13 @@ public:
     void save();
 
     void saveState();
-    void loadState();
+    void loadState(bool open_objects=true);
 
     void loadOpenedRuleSet();
     void saveOpenedRuleSet();
+
+    void saveLastOpenedLib();
+    void loadLastOpenedLib();
     
     bool checkin(bool unlock);
     void loadLibrary(const std::string &libfpath);

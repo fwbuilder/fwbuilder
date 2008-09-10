@@ -1173,13 +1173,11 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     copyID->setEnabled(copyMenuItem);
     pasteID->setEnabled(pasteMenuItem);
 
-    cutID->setEnabled(copyMenuItem);
+    cutID->setEnabled(delMenuItem);
     delID->setEnabled(delMenuItem);
 
-    if (newID1)
-        newID1->setEnabled(newMenuItem);
-    if (newID2)
-        newID2->setEnabled(newMenuItem);
+    if (newID1) newID1->setEnabled(newMenuItem);
+    if (newID2) newID2->setEnabled(newMenuItem);
 
 
 //    if (inDeletedObjects) movID->setText( tr("Undelete...") );
@@ -1222,6 +1220,20 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
             m_project->getPasteMenuState(objPath) &&
             (FWObjectClipboard::obj_clipboard->size()!=0);
         delMenuItem   = delMenuItem && m_project->getDeleteMenuState(objPath);
+
+        // can't delete last policy, nat and routing child objects
+        // also can't delete "top" policy ruleset
+        if (RuleSet::cast(obj))
+        {
+            if (dynamic_cast<RuleSet*>(obj)->isTop()) delMenuItem = false;
+            else
+            {
+                FWObject *fw = obj->getParent();
+                assert(Firewall::cast(fw)!=NULL);
+                list<FWObject*> child_objects = fw->getByType(obj->getTypeName());
+                if (child_objects.size()==1) delMenuItem = false;
+            }
+        }
 
         if (pasteMenuItem)
         {
@@ -1640,10 +1652,12 @@ bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj)
     if (m_project->isSystem(ta))
         return m_project->validateForInsertion(ta,obj);
 
-    Host      *hst  = Host::cast(ta);   // works for firewall, too
+    Host *hst = Host::cast(ta);
+    Firewall *fw = Firewall::cast(ta);
     Interface *intf = Interface::cast(ta);
 
     if (hst!=NULL)  return (hst->validateChild(obj));
+    if (fw!=NULL)  return (fw->validateChild(obj));
     if (intf!=NULL) return (intf->validateChild(obj));
 
     Group *grp=Group::cast(ta);
@@ -1688,9 +1702,12 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
             return nobj;
         }
 
-        if ( m_project->isSystem(ta))
+        if ( m_project->isSystem(ta) ||
+             (Firewall::isA(ta) && RuleSet::cast(obj)!=NULL))
         {
-/* add a copy of the object to system group */
+/* add a copy of the object to system group , or
+ * add ruleset object to a firewall.
+ */
 
             FWObject *nobj= m_project->db()->create(obj->getTypeName());
             assert (nobj!=NULL);

@@ -286,7 +286,7 @@ void FWWindow::startupLoad()
     {
         activeProject()->startupLoad();
         activeProject()->readyStatus(true);
-        activeProject()->loadState();
+        activeProject()->loadState(true);
     }
 }
 
@@ -359,7 +359,7 @@ void FWWindow::fileOpen()
     {
         showSub(proj.get());
         proj->readyStatus(true);
-        proj->loadState();
+        proj->loadState(true);
         proj.release();
     }
     recreateWindowsMenu();
@@ -372,7 +372,7 @@ void FWWindow::loadFile(const QString &filename)
     {
         showSub(proj.get());
         proj->readyStatus(true);
-        proj->loadState();
+        proj->loadState(true);
         proj.release();
     }
     recreateWindowsMenu();
@@ -1510,7 +1510,7 @@ void FWWindow::minimize()
 
         if (pp!=NULL)
         {
-            pp->loadState();
+            pp->loadState(false);
         }
     }
 }
