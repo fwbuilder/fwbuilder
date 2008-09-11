@@ -1179,7 +1179,6 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     if (newID1) newID1->setEnabled(newMenuItem);
     if (newID2) newID2->setEnabled(newMenuItem);
 
-
 //    if (inDeletedObjects) movID->setText( tr("Undelete...") );
 
     popup->exec( objTreeView->mapToGlobal( pos ) );
@@ -1229,7 +1228,9 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
             else
             {
                 FWObject *fw = obj->getParent();
-                assert(Firewall::cast(fw)!=NULL);
+                // fw can be NULL if this ruleset is in the Deleted objects
+                // library
+                if (fw==NULL) return;
                 list<FWObject*> child_objects = fw->getByType(obj->getTypeName());
                 if (child_objects.size()==1) delMenuItem = false;
             }
@@ -2455,23 +2456,6 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
     }
 
     currentObj = obj;
-
-    bool dupMenuItem=true;
-    bool moveMenuItem=true;
-    bool copyMenuItem=true;
-    bool pasteMenuItem=true;
-    bool delMenuItem=true;
-    bool newMenuItem=true;
-    bool inDeletedObjects = false;
-
-    getMenuState(false,
-                 dupMenuItem,moveMenuItem,copyMenuItem,pasteMenuItem,
-                 delMenuItem,newMenuItem,inDeletedObjects);
-
-    mw->m_mainWindow->editCopyAction->setEnabled(copyMenuItem);
-    mw->m_mainWindow->editDeleteAction->setEnabled(delMenuItem);
-    mw->m_mainWindow->editCutAction->setEnabled(copyMenuItem);
-    mw->m_mainWindow->editPasteAction->setEnabled(pasteMenuItem);
 
     active=true;
 

@@ -1009,7 +1009,6 @@ void ProjectPanel::startupLoad()
                 qDebug("open object %s",show_obj->getName().c_str());
         }
     }
-    mw->recreateWindowsMenu();
 }
 
 
@@ -1292,12 +1291,10 @@ void ProjectPanel::closeEvent( QCloseEvent * ev)
         qDebug("ProjectPanel::closeEvent main window houskeeping tasks");
 
     mw->updateWindowTitle();
-    mw->recreateWindowsMenu();
 
     QTimer::singleShot( 0, mw, SLOT(projectWindowClosed()) );
 
     if (fwbdebug) qDebug("ProjectPanel::closeEvent all done");
-//    emit closed();
 }
 
 QString ProjectPanel::getFileName()

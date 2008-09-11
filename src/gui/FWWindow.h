@@ -84,7 +84,6 @@ class FWWindow : public QMainWindow {
     
 public:
     ProjectPanel* activeProject();
-    void recreateWindowsMenu ();
     void updateWindowTitle ();
     QVector <QString> windowsTitles;
     QVector <QMdiSubWindow*> windowsPainters;
@@ -158,8 +157,10 @@ public slots:
     virtual void lockObject();
     virtual void unlockObject();
 
+    virtual void prepareEditMenu();
     virtual void prepareObjectMenu();
     virtual void prepareFileMenu();
+    virtual void prepareWindowsMenu ();
 
     virtual void toolsDiscoveryDruid();
     virtual void closeAuxiliaryPanel();

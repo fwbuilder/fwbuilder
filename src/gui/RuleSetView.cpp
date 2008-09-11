@@ -741,7 +741,8 @@ Firewall* RuleSetView::getFirewall()
 {
     FWObject *f=ruleset;
     while (f!=NULL && !Firewall::isA(f)) f=f->getParent();
-    assert(f!=NULL);
+    // f can be NULL if user is looking at deleted ruleset which is a child
+    // of the library DeletedObjects
     return Firewall::cast(f);
 }
 
@@ -1209,17 +1210,20 @@ void RuleSetView::iinit()
     supports_rule_options =false;
     supports_time         =false;
 
-    try {
-        supports_logging=
+    if (f)
+    {
+        try {
+            supports_logging=
                 Resources::getTargetCapabilityBool(f->getStr("platform"),
-                "logging_in_policy");
-        supports_rule_options=
+                                                   "logging_in_policy");
+            supports_rule_options=
                 Resources::getTargetCapabilityBool(f->getStr("platform"),
-                "options_in_policy");
-        supports_time=
+                                                   "options_in_policy");
+            supports_time=
                 Resources::getTargetCapabilityBool(f->getStr("platform"),
-                "supports_time");
-    } catch (FWException &ex)    {    }
+                                                   "supports_time");
+        } catch (FWException &ex)    {    }
+    }
 
     update();
 
@@ -2038,7 +2042,10 @@ QSize RuleSetView::drawIconInRule(QPainter &p, int x, int y, RuleElement *re, FW
 
 QString RuleSetView::getPlatform()
 {
-    return  getFirewall()->getStr("platform").c_str();
+    FWObject *f = getFirewall();
+    if (f)
+        return  f->getStr("platform").c_str();
+    return "";
 }
 
 
@@ -2284,6 +2291,7 @@ void RuleSetView::insertRule()
 {
 //    if (!hasFocus()) return;       // <-- can insert rule even if does not have focus
     if (!isTreeReadWrite(this,ruleset)) return;
+    if (getFirewall()==NULL) return;
 
     changingRules = true;
     if (firstSelectedRow > -1)
@@ -2541,8 +2549,9 @@ void RuleSetView::openObjectInTree(FWObject *obj)
     if (gui_experiment1) return;
 
     FWObject *oo = obj;
-    if (obj==NULL || Rule::cast(obj)!=NULL)
-        oo = getFirewall();
+    if (obj==NULL || Rule::cast(obj)!=NULL)  oo = getFirewall();
+    if (oo==NULL) return;
+
     selectedObject=oo;
     mw->info(oo);
 
@@ -2756,6 +2765,7 @@ void RuleSetView::removeFromGroup (int row, int count)
 
 void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
 {
+    if (getFirewall()==NULL) return;
 
     if (col > 0)
         setCurrentCell(row,col);
@@ -3284,6 +3294,8 @@ void RuleSetView::setRuleColor(const QString &c)
 
 void RuleSetView::changeAction(PolicyRule::Action act)
 {
+    if (getFirewall()==NULL) return;
+
     if (!isTreeReadWrite(this,ruleset)) return;
 
     if ( currentRow()!=-1 && currentColumn()!=-1 )
@@ -3386,6 +3398,8 @@ void RuleSetView::changeActionToBranch()
 
 void RuleSetView::changeDitection(PolicyRule::Direction dir)
 {
+    if (getFirewall()==NULL) return;
+
     if (!isTreeReadWrite(this,ruleset)) return;
 
     if ( currentRow()!=-1 && currentColumn()!=-1 )
@@ -3418,6 +3432,8 @@ void RuleSetView::changeDirectionToBoth()
 
 void RuleSetView::changeLogToOn()
 {
+    if (getFirewall()==NULL) return;
+
     if (!isTreeReadWrite(this,ruleset)) return;
 
     if ( currentRow()!=-1 && currentColumn()!=-1 )
@@ -3431,6 +3447,8 @@ void RuleSetView::changeLogToOn()
 
 void RuleSetView::changeLogToOff()
 {
+    if (getFirewall()==NULL) return;
+
     if (!isTreeReadWrite(this,ruleset)) return;
 
     if ( currentRow()!=-1 && currentColumn()!=-1 )
@@ -3476,6 +3494,8 @@ void RuleSetView::deleteSelectedObject()
 
 void RuleSetView::deleteObject(int row, int col, FWObject *obj)
 {
+    if (getFirewall()==NULL) return;
+
     RuleElement *re = getRE(row,col);
     if (re==NULL || re->isAny()) return;
     int id = obj->getId();
@@ -3512,6 +3532,8 @@ void RuleSetView::deleteObject(int row, int col, FWObject *obj)
 
 bool RuleSetView::insertObject(int row, int col, FWObject *obj)
 {
+    if (getFirewall()==NULL) return false;
+
     if (fwbdebug)
         qDebug("RuleSetView::insertObject  -- insert object %s",
                obj->getName().c_str());
@@ -3611,6 +3633,8 @@ void RuleSetView::pasteObject()
 
 void RuleSetView::negateRE()
 {
+    if (getFirewall()==NULL) return;
+
     if (!isTreeReadWrite(this,ruleset)) return;
 
     if ( currentRow()!=-1 && currentColumn()!=-1 )
@@ -3660,6 +3684,8 @@ void RuleSetView::editRE()
 
 void RuleSetView::keyPressEvent( QKeyEvent* ev )
 {
+    if (getFirewall()==NULL) return;
+
     m_project->selectRules();
 
     RuleElement *re;
@@ -4058,6 +4084,8 @@ void RuleSetView::dropEvent(QDropEvent *ev)
 
 void RuleSetView::removeRule()
 {
+    if (getFirewall()==NULL) return;
+
     if (!hasFocus()) return;
     if (!isTreeReadWrite(this,ruleset)) return;
 /* we call removeRule in a loop. Set flag changingRules to true to prevent
@@ -4116,6 +4144,8 @@ void RuleSetView::removeRule()
 
 void RuleSetView::addRuleAfterCurrent()
 {
+    if (getFirewall()==NULL) return;
+
     if (!hasFocus()) return;
     if (!isTreeReadWrite(this,ruleset)) return;
 
@@ -4128,6 +4158,8 @@ void RuleSetView::addRuleAfterCurrent()
 
 void RuleSetView::moveRule()
 {
+    if (getFirewall()==NULL) return;
+
     if (!hasFocus()) return;
 
     int selectionSize = lastSelectedRow - firstSelectedRow + 1;
@@ -4315,6 +4347,8 @@ void RuleSetView::cutRule()
 
 void RuleSetView::pasteRuleAbove()
 {
+    if (getFirewall()==NULL) return;
+
     if (!isTreeReadWrite(this,ruleset)) return;
 
     /*int firstSelectedRow=-1;
@@ -4351,6 +4385,8 @@ void RuleSetView::pasteRuleAbove()
 
 void RuleSetView::pasteRuleBelow()
 {
+    if (getFirewall()==NULL) return;
+
     if (!isTreeReadWrite(this,ruleset)) return;
 
     /*int firstSelectedRow=-1;
@@ -4396,6 +4432,7 @@ void RuleSetView::pasteRuleBelow()
 
 void RuleSetView::enableRule()
 {
+    if (getFirewall()==NULL) return;
     if (!isTreeReadWrite(this,ruleset)) return;
 
     if ( firstSelectedRow!=-1 )
@@ -4415,6 +4452,7 @@ void RuleSetView::enableRule()
 
 void RuleSetView::disableRule()
 {
+    if (getFirewall()==NULL) return;
     if (!isTreeReadWrite(this,ruleset)) return;
 
 
