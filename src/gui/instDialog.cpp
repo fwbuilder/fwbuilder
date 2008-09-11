@@ -851,7 +851,7 @@ bool instDialog::doInstallPage(Firewall* f)
  * use current Windows account name to log in to the firewall and this
  * is unlikely to work anyway. This seems to be a decent workaround.
  */
-        if (!cnf.user.isEmpty() && ssh.indexOf("plink.exe")!=-1)
+        if (!cnf.user.isEmpty() && ssh.toLower().indexOf("plink.exe")!=-1)
         {
             args.push_back("-ssh");
             args.push_back("-pw");
@@ -1165,7 +1165,7 @@ void instDialog::initiateCopy(const QString &file)
 #ifdef _WIN32
     args.push_back(ssh);
 
-    if (!cnf.user.isEmpty() && ssh.indexOf("plink.exe")!=-1)
+    if (!cnf.user.isEmpty() && ssh.toLower().indexOf("plink.exe")!=-1)
     {
         args.push_back("-ssh");
         args.push_back("-pw");

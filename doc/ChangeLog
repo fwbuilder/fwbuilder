@@ -1,5 +1,10 @@
 2008-09-10  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* instDialog.cpp (instDialog::initiateCopy): fixed bug (no #): if
+	the name of the plink.exe program was specified in upper case in
+	Preferences dialog, built-in installer failed to provide correct
+	command line options to it.
+
 	* ObjectManipulator.cpp (ObjectManipulator::getMenuState): fixed
 	bug #2100415: "cannot re-create or clone Routing object". The GUI
 	does not let the user to delete Routing object. Policy and NAT
