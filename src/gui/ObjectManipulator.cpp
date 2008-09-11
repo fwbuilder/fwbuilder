@@ -2503,6 +2503,11 @@ void ObjectManipulator::openObject(FWObject *obj, bool /*register_in_history*/)
 
     m_objectManipulator->libs->setCurrentIndex(
         getIdxForLib( obj->getLibrary()));
+
+    if (fwbdebug)
+        qDebug("ObjectManipulator::openObject:  currentIndex=%d",
+               m_objectManipulator->libs->currentIndex());
+
     updateCreateObjectMenu(obj->getLibrary());
 }
 
@@ -2533,10 +2538,18 @@ void ObjectManipulator::libChangedById(int id)
 {
     for (vector<FWObject*>::size_type i = 0 ; i < idxToLibs.size(); i++)
     {
+        if (fwbdebug)
+            qDebug("ObjectManipulator::libChangedById: id=%d -- i=%d idxToLibs[i]->getId()=%d", id, i, idxToLibs[i]->getId());
+
         if (idxToLibs[i]->getId()==id)
         {
             libChanged(i);
             m_objectManipulator->libs->setCurrentIndex(i);
+
+            if (fwbdebug)
+                qDebug("ObjectManipulator::libChangedById:  currentIndex=%d",
+                       m_objectManipulator->libs->currentIndex());
+
             return;
         }
     }

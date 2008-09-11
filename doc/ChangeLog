@@ -1,3 +1,13 @@
+2008-09-11  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ProjectPanel_state_ops.cpp (ProjectPanel::loadLastOpenedLib):
+	more for bug #2091225: "Can objects in the left pane remember last
+	state.". If there is no record of the last library used by he user
+	in the settings, the GUI opens library "User" or the first
+	non-system library if there is non named "User". Minor bug-fix to
+	prevent desynchronization of the tree view and pull-down list of
+	libraries.
+
 2008-09-10  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* RuleSetView.cpp (RuleSetView::pasteRuleAbove): More checks for

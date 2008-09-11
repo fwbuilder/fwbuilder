@@ -36,6 +36,8 @@
 #include <QMdiSubWindow>
 #include <QMdiArea>
 
+#include "fwbuilder/Library.h"
+
 
 using namespace Ui;
 using namespace libfwbuilder;
@@ -240,7 +242,7 @@ void ProjectPanel::loadOpenedRuleSet()
     int id = st->getVisibleRuleSetId(
         filename, m_panel->om->getCurrentLib()->getName().c_str());
 
-    if (id)
+    if (id > 0)
     {
         FWObject *obj = db()->getById(id, true);
         if (obj)
@@ -291,7 +293,22 @@ void ProjectPanel::loadLastOpenedLib()
     }        
     else
     {
-        m_panel->om->changeFirstNotSystemLib();
+        list<FWObject*> all_libs = db()->getByType(Library::TYPENAME);
+        FWObject *first_non_system_lib = NULL;
+        for (list<FWObject*>::iterator i=all_libs.begin(); i!=all_libs.end(); ++i)
+        {
+            string str_id = FWObjectDatabase::getStringId((*i)->getId());
+            if (str_id.find("sysid")==0) continue;
+            if (first_non_system_lib==NULL) first_non_system_lib = (*i);
+            if ((*i)->getName()=="User")
+            {
+                first_non_system_lib = *i;
+                break;
+            }
+        }
+        if (first_non_system_lib)
+            //m_panel->om->openObject(first_non_system_lib);
+            m_panel->om->libChangedById(first_non_system_lib->getId());
     }
 }
 
