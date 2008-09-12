@@ -200,6 +200,12 @@ instDialog::~instDialog()
     }
 }
 
+/*
+ * The following color and font manipulations are subject to QT bug
+ * http://trolltech.no/developer/task-tracker/index_html?method=entry&id=212207
+ *
+ * This requires QT 4.4.1 or 4.3
+ */
 void setSuccessState(QTreeWidgetItem *item)
 {
     QBrush b = item->foreground(1);
@@ -241,13 +247,10 @@ void setErrorState(QTreeWidgetItem *item)
 
 void setInProcessState(QTreeWidgetItem *item)
 {
-// disable font manipulation, it does not work right on windows
-#if 0
     QFont f = item->font(1);
     f.setBold(true);
     item->setFont(1,f);
     item->setFont(0,f);
-#endif
 }
 
 void instDialog::nextClicked()
