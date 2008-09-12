@@ -1299,8 +1299,6 @@ void ProjectPanel::closeEvent( QCloseEvent * ev)
 
 QString ProjectPanel::getFileName()
 {
-    if (fwbdebug) qDebug("ProjectPanel::getFileName() :  rcs=%p", rcs);
-
     if (rcs!=NULL)
     {
         QString FileName = rcs->getFileName();

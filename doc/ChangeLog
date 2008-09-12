@@ -1,5 +1,25 @@
 2008-09-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* instDialog.cpp (instDialog::addToLog): working on bug #2105111:
+	"use color for compiler status and errors". Compilation and
+	installation status is color coded in the left panel of
+	compile/install dialog (Error is red, Success is green). Also
+	coloring compiler error messages red in the compiler progress
+	panel.
+
+	* RuleSetView.cpp (RuleSetView::updateGroups): fixed bug #2106124:
+	"Crash after deletion of (last rule in + whole) rule group".
+
+	* RuleSetView.cpp (RuleSetView::paintCell): working on bug
+	#2106280: "option to change color of rule group head". Made rule
+	group head colored in "medium dark", actual color depends on
+	chosen QT theme.
+
+	* RuleSetView.cpp (RuleTableModel::headerData): fixed bug #2106229
+	"Disable-Icon bad position in rule group". Icon that indicates
+	that a rule is disabled used to be drawn in the wrong row of the
+	ruleset table.
+
 	* ProjectPanel_state_ops.cpp (ProjectPanel::loadLastOpenedLib):
 	more for bug #2091225: "Can objects in the left pane remember last
 	state.". If there is no record of the last library used by he user

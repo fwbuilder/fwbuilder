@@ -152,11 +152,12 @@ QVariant RuleTableModel::headerData(int section,
 
     if (orientation == Qt::Vertical)
     {
+        Rule *rule =  ruleSetView->ruleIndex[section];
+
         if (role == Qt::SizeHintRole)
             return QSize(45, ruleSetView->getRowHeight(section));
         if (role == Qt::DisplayRole)
         {
-            Rule * rule = ruleSetView->ruleIndex[section];
             if (rule==NULL)
             {
                 return QString ("");
@@ -182,7 +183,7 @@ QVariant RuleTableModel::headerData(int section,
         }
         if (role == Qt::DecorationRole)
         {
-            if (ruleSetView->rulesDisabled[section])
+            if (rule && rule->isDisabled())
                 return QVariant(ruleSetView->negIcon);
             else
                 return QVariant(QIcon());
@@ -909,20 +910,23 @@ void RuleSetView::init()
         horizontalHeader()->resizeSection(col, colW[col]);
     }
 
+#if DEBUG_RULE_GROUPS
     if (fwbdebug)
     {
         qDebug("End of init:");
         debugPrintRows();
     }
-
+#endif
     //updateContents();
     updateGroups();
 
+#if DEBUG_RULE_GROUPS
     if (fwbdebug)
     {
         qDebug("After updateGroups:");
         debugPrintRows();
     }
+#endif
 
     update();
 
@@ -1012,19 +1016,19 @@ void RuleSetView::updateGroups()
 
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
-        setSpan(i,1,0,1);
+        setSpan(i, 1, 0, 1);
     }
 
     reset();
 
-    setColumnWidth(0,20);
+    setColumnWidth(0, 20);
     horizontalHeader()->setResizeMode (0, QHeaderView::Fixed);
     horizontalHeader()->resizeSection(0, 20);
 
     QMap <QString, QString> groupColors ;
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
-        setSpan(i,1,0,1);
+        setSpan(i, 1, 0, 1);
         if (ruleIndex[i]==NULL)
         {        
             if (rowsInfo[i]->isFirstRow)
@@ -1033,12 +1037,15 @@ void RuleSetView::updateGroups()
                 if (groupColors[rowsInfo[i]->groupName]=="")
                 {
                     Rule * r = ruleIndex[i+1];
-                    QString color = 
-                        r->getOptionsObject()->getStr("color").c_str();
-                    if (color!="")
+                    if (r)
                     {
-                        if (color=="#FFFFFF") color = "";
-                        groupColors[rowsInfo[i]->groupName]=color;
+                        FWOptions *ro = r->getOptionsObject();
+                        QString color = ro->getStr("color").c_str();
+                        if (color!="")
+                        {
+                            if (color=="#FFFFFF") color = "";
+                            groupColors[rowsInfo[i]->groupName]=color;
+                        }
                     }
                 }
             }
@@ -1062,8 +1069,10 @@ void RuleSetView::updateGroups()
             Rule * r = ruleIndex[i];
             QString groupName = r->getRuleGroupName().c_str();
 
+#if DEBUG_RULE_GROUPS
             if (fwbdebug) qDebug("row %d: group %s",
                                  i, groupName.toAscii().constData());
+#endif
 
             int count = rulesInGroup[groupName];
             count++;
@@ -1520,7 +1529,7 @@ void RuleSetView::paintCell(QPainter *pntr,
             QPixmapCache::insert( bpmname, bufferpixmap);
         }
     
-        bufferpixmap.fill( cg.base().color() );
+        bufferpixmap.fill(cg.base().color() );
     
         QPainter p( &bufferpixmap );
         QFont font = st->getRulesFont();
@@ -1590,8 +1599,7 @@ void RuleSetView::paintCell(QPainter *pntr,
 
     if (rule==NULL) 
     {
-        RuleRowInfo * rri = rowsInfo[row];
-
+        /* Rule group head */
         QPixmap bufferpixmap;
         QString bpmname = QString("rulesetcell_%1_%2").
             arg(cr.width()).arg(cr.height());
@@ -1601,16 +1609,14 @@ void RuleSetView::paintCell(QPainter *pntr,
             QPixmapCache::insert( bpmname, bufferpixmap);
         }
     
-        bufferpixmap.fill( cg.base().color() );
-    
+        bufferpixmap.fill(cg.mid().color());
+
         QPainter p( &bufferpixmap );
         QFont font = st->getRulesFont();
         p.setFont(font);
 
-        QRect rect(0, 0, cr.width(), cr.height() );
-        p.fillRect(rect, palette().color(QPalette::Active,
-                                         QPalette::AlternateBase));
 #ifdef DRAW_RULE_GROUP_FRAME
+        RuleRowInfo * rri = rowsInfo[row];
         p.setPen(Qt::green);
         if (rri->isFirstRow)
         {
@@ -1622,21 +1628,12 @@ void RuleSetView::paintCell(QPainter *pntr,
         if (isRowHidden(row+1))
         {
             p.drawLine( 1, cr.height()-3,  cr.width() , cr.height()-3);
-                                                           
         }
         
         p.end();
 
         pntr->drawPixmap( cr.left() - horizontalOffset(),
                           cr.top() - verticalOffset(), bufferpixmap );
-
-        /*
-          p.drawLine( (cr.width()-1)/2, (cr.height()-1)/2, cr.width()-1, (cr.height()-1)/2 );
-          if (rri->isFirstRow)
-          p.drawLine( (cr.width()-1)/2, (cr.height()-1)/2, (cr.width()-1)/2, cr.height()-1 );
-          else
-          p.drawLine( (cr.width()-1)/2, (cr.height()-1)/2, (cr.width()-1)/2, 0 );
-        */
     
         return;
     }
@@ -1655,7 +1652,7 @@ void RuleSetView::paintCell(QPainter *pntr,
     }
 
     //bufferpixmap.resize( cr.width() , cr.height() );
-    bufferpixmap.fill( cg.base().color() );
+    bufferpixmap.fill(cg.base().color() );
 
     QPainter p( &bufferpixmap );
     QFont font = st->getRulesFont();
@@ -1723,10 +1720,9 @@ void RuleSetView::paintCell(QPainter *pntr,
 
             x += sz.width()+1;
 
-
             p.drawText( x, y + RuleElementSpacing/2,
                         cr.width()-sz.width()-1, item_h,
-                        Qt::AlignLeft|Qt::AlignVCenter, objectText(re,o1) );
+                        Qt::AlignLeft|Qt::AlignVCenter, objectText(re, o1) );
 
             FWObject *mwSelObj = selectedObject;
             std::vector<libfwbuilder::FWObject*> om_selected_objects ;
@@ -2831,7 +2827,7 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
                 RuleRowInfo * ri= rowsInfo[top];
                 QString label = tr("Add to the group ");
                 label += ri->groupName;
-                 popup->addAction( label, this, SLOT( addToGroupAbove() ));
+                popup->addAction( label, this, SLOT( addToGroupAbove() ));
             }
             int bottom = getDownNullRuleIndex(lastSelectedRow);
             if (bottom!=-1&&bottom==lastSelectedRow+1)
@@ -2853,7 +2849,8 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
     else
     {
             if (row==0)
-                popup->addAction( tr("Insert Rule Above"), this, SLOT( insertRuleAboveFirstGroup() ));
+                popup->addAction( tr("Insert Rule Above"), this,
+                                  SLOT( insertRuleAboveFirstGroup() ));
 
             popup->addAction( tr("Rename group"), this, SLOT( renameGroup() ));
             popup->addSeparator();
@@ -4088,6 +4085,7 @@ void RuleSetView::removeRule()
 
     if (!hasFocus()) return;
     if (!isTreeReadWrite(this,ruleset)) return;
+
 /* we call removeRule in a loop. Set flag changingRules to true to prevent
     * removeRule from calling updateLastModifiedTimestampForAllFirewalls each time
  */

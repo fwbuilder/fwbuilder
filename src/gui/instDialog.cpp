@@ -202,45 +202,41 @@ instDialog::~instDialog()
 
 void setSuccessState(QTreeWidgetItem *item)
 {
-// disable font manipulation, it does not work right on windows
-#if 0
     QBrush b = item->foreground(1);
-    b.setColor(Qt::green);
+    b.setColor(Qt::darkGreen);
     item->setForeground(1,b);
     item->setForeground(0,b);
 
     QFont f = item->font(1);
-    f.setBold(false);
+    f.setBold(true);
     item->setFont(1,f);
     item->setFont(0,f);
-#endif
 }
 
 void setFailureState(QTreeWidgetItem *item)
 {
-// disable font manipulation, it does not work right on windows
-#if 0
     QBrush b = item->foreground(1);
-    b.setColor(Qt::red);
+    b.setColor(Qt::darkRed);
     item->setForeground(1,b);
     item->setForeground(0,b);
 
     QFont f = item->font(1);
-    f.setBold(false);
+    f.setBold(true);
     item->setFont(1,f);
     item->setFont(0,f);
-#endif
 }
 
 void setErrorState(QTreeWidgetItem *item)
 {
-// disable font manipulation, it does not work right on windows
-#if 0
+    QBrush b = item->foreground(1);
+    b.setColor(Qt::darkRed);
+    item->setForeground(1,b);
+    item->setForeground(0,b);
+
     QFont f = item->font(1);
-    f.setBold(false);
+    f.setBold(true);
     item->setFont(1,f);
     item->setFont(0,f);
-#endif
 }
 
 void setInProcessState(QTreeWidgetItem *item)
@@ -1789,6 +1785,8 @@ void instDialog::addToLog(const QString &line)
     if (currentLog)
     {
         QString txt = line;
+        txt.replace(QRegExp("(Error:[^\n]*)\n"), 
+                    QString("<b><font color=\"red\">\\1</font></b>\n"));
         txt.replace('\n', "<br>\n");
         currentLog->insertHtml( txt );
         currentLog->ensureCursorVisible();
