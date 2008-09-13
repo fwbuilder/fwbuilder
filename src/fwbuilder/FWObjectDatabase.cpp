@@ -1120,8 +1120,24 @@ void FWObjectDatabase::findWhereUsed(FWObject *o,
                                      FWObject *p,
                                      set<FWObject *> &resset)
 {
+    set<FWObject*> results;
     searchId++;
-    _findWhereUsed(o, p, resset);
+    _findWhereUsed(o, p, results);
+    for (set<FWObject*>::iterator it=results.begin(); it!=results.end(); ++it)
+    {
+        FWObject *obj = *it;
+        if (RuleElement::cast(obj))
+        {
+            resset.insert(obj->getParent());
+            continue;
+        }
+        if (RuleSet::cast(obj))
+        {
+            resset.insert(obj->getParent());
+            continue;
+        }
+        resset.insert(obj);
+    }
 }
 
 bool FWObjectDatabase::_findWhereUsed(FWObject *o,
@@ -1131,7 +1147,13 @@ bool FWObjectDatabase::_findWhereUsed(FWObject *o,
     bool res=false;
         
     if ( _isInIgnoreList(p) || p->size()==0) return res;
-    
+
+    if (o==p)
+    {
+        resset.insert(p);
+        res = true;
+    }
+
     if (p->getInt(".searchId")==searchId)
     {
         res=p->getBool(".searchResult");
@@ -1149,13 +1171,23 @@ bool FWObjectDatabase::_findWhereUsed(FWObject *o,
         case PolicyRule::Tag:
         {
             FWObject *tagobj = rule->getTagObject();
-            if (o==tagobj)  { res=true; break; }
+            if (o==tagobj)
+            {
+                resset.insert(p);
+                res = true;
+                break;
+            }
             break;
         }
         case PolicyRule::Branch:
         {
             FWObject *ruleset = rule->getBranch();
-            if (o==ruleset)  { res=true; break; }
+            if (o==ruleset)
+            {
+                resset.insert(p);
+                res = true;
+                break;
+            }
             break;
         }
         default: ;
@@ -1171,18 +1203,24 @@ bool FWObjectDatabase::_findWhereUsed(FWObject *o,
         if (ref!=NULL)
         {  // child is a reference
             FWObject *g = ref->getPointer();
-            if (o==g) res = true;
-            else      _findWhereUsed(o, g, resset);
+            if (_findWhereUsed(o, g, resset))
+            {
+                resset.insert(p);
+                res = true;
+            }
         }
         else    // child is a regular object, not a reference
         {
-            if (o==(*i1))  { res=true; break; }
-            _findWhereUsed(o, *i1, resset);
+            if (_findWhereUsed(o, *i1, resset))
+            {
+                resset.insert(p);
+                res = true;
+            }
         }
     }
 
     p->setBool(".searchResult",res);
-    if (res) resset.insert(p);
+    //if (res) resset.insert(p);
     return res;
 }
 

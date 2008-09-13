@@ -1,3 +1,10 @@
+2008-09-13  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWObjectDatabase.cpp (FWObjectDatabase::_findWhereUsed): fixed
+	bug #2090332: "Where used search function does not always work.".
+	WhereUsed function could not find firewall if it was used in its
+	own rules.
+
 2008-09-10  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Firewall.cpp (Firewall::validateChild): making sure Firewall
