@@ -1207,9 +1207,9 @@ string PolicyCompiler_ipt::PrintRule::_printTimeInterval(PolicyRule *r)
         if (eday>0 && emonth>0 && eyear>0)
         {
             ostr << "--datestop "
-                 << setw(2) << setfill('0') << syear << ":"
-                 << setw(2) << setfill('0') << smonth << ":"
-                 << setw(2) << setfill('0') << sday  << ":"
+                 << setw(2) << setfill('0') << eyear << ":"
+                 << setw(2) << setfill('0') << emonth << ":"
+                 << setw(2) << setfill('0') << eday  << ":"
                  << setw(2) << setfill('0') << ehour << ":"
                  << setw(2) << setfill('0') << emin << ":00 ";
             use_timestart_timestop = false;
