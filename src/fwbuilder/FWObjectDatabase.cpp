@@ -1126,11 +1126,13 @@ void FWObjectDatabase::findWhereUsed(FWObject *o,
     for (set<FWObject*>::iterator it=results.begin(); it!=results.end(); ++it)
     {
         FWObject *obj = *it;
+/*
         if (RuleElement::cast(obj))
         {
             resset.insert(obj->getParent());
             continue;
         }
+*/
         if (RuleSet::cast(obj))
         {
             resset.insert(obj->getParent());
@@ -1213,7 +1215,10 @@ bool FWObjectDatabase::_findWhereUsed(FWObject *o,
         {
             if (_findWhereUsed(o, *i1, resset))
             {
-                resset.insert(p);
+                // do not add rule to the results if rule element
+                // matches because rule element should already be there.
+                if (RuleElement::cast(*i1)==NULL)
+                    resset.insert(p);
                 res = true;
             }
         }
