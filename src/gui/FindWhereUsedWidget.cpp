@@ -138,6 +138,8 @@ void FindWhereUsedWidget::_find(FWObject *obj)
     mapping.clear();
     resset.clear();
 
+    if (fwbdebug) qDebug("FindWhereUsedWidget: initiate search for %s",
+                         obj->getName().c_str());
 
     mw->db()->findWhereUsed(obj, mw->db(), resset);
 
@@ -155,6 +157,12 @@ void FindWhereUsedWidget::_find(FWObject *obj)
         fw=NULL;
         r=NULL;
         rs=NULL;
+
+
+        if (fwbdebug) qDebug("Search result object id=%d type=%s name=%s",
+                             o->getId(),
+                             o->getTypeName().c_str(),
+                             o->getName().c_str());
 
 //        if (findRef(object,o)==NULL) continue;
 
@@ -252,7 +260,6 @@ void FindWhereUsedWidget::showObject(FWObject* o)
         RuleSetView *rsv = mw->activeProject()->getCurrentRuleSetView();
         rsv->selectRE( ref );
         rsv->setFocus ( Qt::MouseFocusReason );
-//        mw->selectRules();
         if (mw->isEditorVisible())
         {
             mw->editObject( object );

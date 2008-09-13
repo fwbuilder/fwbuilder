@@ -1,5 +1,10 @@
 2008-09-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FindWhereUsedWidget.cpp (FindWhereUsedWidget::showObject): fixed
+	bug #2090332: "Where used search function does not always work.".
+	WhereUsed function could not find firewall if it was used in its
+	own rules.
+
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printTimeInterval):
 	fixed bug (no #): compiler for iptables used date entered for the
 	beginning of the interval in "Time" object both for the beginning
