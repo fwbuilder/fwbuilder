@@ -1,3 +1,12 @@
+2008-09-12  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* GroupObjectDialog.cpp (GroupObjectDialog::applyChanges): fixed
+	bug #2107004: "Fwbuilder crashes while deleting objects in
+	groups".  I could only reproduce the crash when there were two
+	identical objects in the group and I was trying to delete
+	both. v3.0 does not allow the user to add the same object twice to
+	the group so this condition should not be possible.
+
 2008-09-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* instDialog.cpp (instDialog::addToLog): working on bug #2105111:

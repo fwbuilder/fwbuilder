@@ -29,18 +29,16 @@
 #include "utils.h"
 #include "ProjectPanel.h"
 
-#include "fwbuilder/FWObjectDatabase.h"
 #include "FWWindow.h"
 #include "FWBTree.h"
 #include "FWBSettings.h"
 #include "FWObjectPropertiesFactory.h"
 #include "GroupObjectDialog.h"
-#include "ObjectListViewItem.h"
-#include "ObjectIconViewItem.h"
 #include "FWObjectDrag.h"
 #include "FWObjectClipboard.h"
 #include "ObjectTreeView.h"
 
+#include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Group.h"
 #include "fwbuilder/Resources.h"
@@ -173,39 +171,36 @@ GroupObjectDialog::~GroupObjectDialog()
 
 void GroupObjectDialog::iconViewSelectionChanged()
 {
+    if (fwbdebug) qDebug("GroupObjectDialog::iconViewSelectionChanged()");
+
     selectedObjects.clear();
 
-    for ( int itemn = 0; itemn < iconView->count(); itemn++ )
+    for (int it=0; it<iconView->count(); ++it)
     {
-        QListWidgetItem *item = iconView->item(itemn);
-        if(item->isSelected())
+        QListWidgetItem *itm = iconView->item(it);
+        if (itm->isSelected())
         {
-            ObjectIconViewItem *oivi=dynamic_cast<ObjectIconViewItem*>(item);
-            assert(oivi!=NULL);
-            FWObject *o = oivi->getFWObject();
-            if (o!=NULL)
-                selectedObjects.push_back(o);
+            int obj_id = itm->data(Qt::UserRole).toInt();
+            if (fwbdebug) qDebug("obj_id=%d", obj_id);
+            selectedObjects.push_back(obj_id);
         }
-
     }
-
 }
+
 void GroupObjectDialog::listViewSelectionChanged()
 {
+    if (fwbdebug) qDebug("GroupObjectDialog::listViewSelectionChanged()");
+
     selectedObjects.clear();
-    //QTreeWidgetItemIterator it(listView);
 
-    for ( int i = 0; i < listView->topLevelItemCount(); i++)
+    for (int it=0; it<listView->topLevelItemCount(); ++it)
     {
-        QTreeWidgetItem *itm= listView->topLevelItem(i);
-        if(itm->isSelected())
+        QTreeWidgetItem *itm = listView->topLevelItem(it);
+        if (itm->isSelected())
         {
-            ObjectListViewItem *otvi=dynamic_cast<ObjectListViewItem*>(itm);
-            assert(otvi!=NULL);
-
-            FWObject *o=otvi->getFWObject();
-            assert(o!=NULL);
-            selectedObjects.push_back(o);
+            int obj_id = itm->data(0, Qt::UserRole).toInt();
+            if (fwbdebug) qDebug("obj_id=%d", obj_id);
+            selectedObjects.push_back(obj_id);
         }
     }
 }
@@ -217,14 +212,9 @@ void GroupObjectDialog::iconViewCurrentChanged(QListWidgetItem *itm)
         selectedObject=NULL;
         return;
     }
-
-    ObjectIconViewItem *oivi=dynamic_cast<ObjectIconViewItem*>(itm);
-    assert(oivi!=NULL);
-
-    FWObject *o = oivi->getFWObject();
-    if (o!=NULL)
-        selectedObject=o;
-
+    int obj_id = itm->data(Qt::UserRole).toInt();
+    FWObject *o = mw->db()->findInIndex(obj_id);
+    selectedObject = o;
 }
 
 
@@ -235,14 +225,9 @@ void GroupObjectDialog::listViewCurrentChanged(QTreeWidgetItem *itm)
         selectedObject=NULL;
         return;
     }
-
-    ObjectListViewItem *otvi=dynamic_cast<ObjectListViewItem*>(itm);
-    assert(otvi!=NULL);
-
-    FWObject *o = otvi->getFWObject();
-    if (o!=NULL)
-        selectedObject=o;
-
+    int obj_id = itm->data(0, Qt::UserRole).toInt();
+    FWObject *o = mw->db()->findInIndex(obj_id);
+    selectedObject = o;
 }
 
 /*
@@ -263,17 +248,14 @@ void GroupObjectDialog::insertObject(FWObject *o)
 /* avoid duplicates */
     int cp_id = o->getId();
 
-    map<int, ObjectListViewItem*>::iterator i;
-    for (i=allListViewItems.begin(); i!=allListViewItems.end(); ++i)
+    for (int it=0; it<listView->topLevelItemCount(); ++it)
     {
-        int go = (*i).first;
-        //if (FWReference::cast(go)!=NULL) go=FWReference::cast(go)->getPointer();
-        //if (o==go || o->getId()==go->getId()) return;
-	if(go==cp_id) return;
+        QTreeWidgetItem *itm = listView->topLevelItem(it);
+        int obj_id = itm->data(0, Qt::UserRole).toInt();
+	if(obj_id==cp_id) return;
     }
 
     addIcon(o, ! m_project->isSystem(obj) );
-
 
     changed();
 }
@@ -291,7 +273,7 @@ void GroupObjectDialog::addIcon(FWObject *fwo)
     addIcon(o,ref);
 }
 
-void GroupObjectDialog::addIcon(FWObject *o,bool ref)
+void GroupObjectDialog::addIcon(FWObject *o, bool ref)
 {
     if (Resources::global_res->getResourceBool(
             string("/FWBuilderResources/Type/") +
@@ -309,25 +291,17 @@ void GroupObjectDialog::addIcon(FWObject *o,bool ref)
         QPixmapCache::insert( icn_filename, pm);
     }
 
-    ObjectIconViewItem *ivitm = new ObjectIconViewItem(iconView,obj_name,pm );
-    //ivitm->setProperty("id",   o->getId().c_str()   );
-    ivitm->setProperty("type", o->getTypeName().c_str() );
-    ivitm->setFWObject( o );
+    QListWidgetItem *list_item = new QListWidgetItem(QIcon(pm),
+                                                     obj_name, iconView);
+    list_item->setData(Qt::UserRole, QVariant(o->getId()));
+    iconView->addItem(list_item);
 
-    allIconViewItems[o->getId()]=ivitm;
-
-    icn_filename = Resources::global_res->getObjResourceStr(o, "icon-tree").c_str();
-
-    ObjectListViewItem *tvitm=new ObjectListViewItem( listView );
-    tvitm->setText( 0, obj_name );
-    tvitm->setText( 1, FWObjectPropertiesFactory::getObjectProperties(o) );
-    tvitm->setIcon( 0, QIcon(pm) );
-
-    //tvitm->setProperty("id",   o->getId().c_str()   );
-    tvitm->setProperty("type", o->getTypeName().c_str() );
-    tvitm->setFWObject( o );
-
-    allListViewItems[o->getId()]=tvitm;
+    QTreeWidgetItem *tree_item = new QTreeWidgetItem(listView);
+    tree_item->setText(0, obj_name);
+    tree_item->setText(1, FWObjectPropertiesFactory::getObjectProperties(o) );
+    tree_item->setIcon(0, QIcon(pm) );
+    tree_item->setData(0, Qt::UserRole, QVariant(o->getId()));
+    listView->addTopLevelItem(tree_item);
 }
 
 void GroupObjectDialog::loadFWObject(FWObject *o)
@@ -337,16 +311,15 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
     assert(g!=NULL);
     if (ServiceGroup::cast(obj)!=NULL)
     {
-        m_dialog->icon->setPixmap(QIcon(":/Icons/ServiceGroup/icon").pixmap(25,25));
+        m_dialog->icon->setPixmap(QIcon(":/Icons/ServiceGroup/icon").pixmap(
+                                      25,25));
     }
     else
     {
-        m_dialog->icon->setPixmap(QIcon(":/Icons/ObjectGroup/icon").pixmap(25,25));
+        m_dialog->icon->setPixmap(QIcon(":/Icons/ObjectGroup/icon").pixmap(
+                                      25,25));
     }
     init=true;
-
-    allIconViewItems.clear();
-    allListViewItems.clear();
 
     m_dialog->obj_name->setText( QString::fromUtf8(g->getName().c_str()) );
     m_dialog->comment->setText( QString::fromUtf8(g->getComment().c_str()) );
@@ -407,7 +380,11 @@ void GroupObjectDialog::validate(bool *res)
 {
     *res=true;
     if (!isTreeReadWrite(this,obj)) { *res=false; return; }
-    if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
+    if (!validateName(this, obj, m_dialog->obj_name->text()))
+    {
+        *res=false;
+        return;
+    }
 }
 
 void GroupObjectDialog::isChanged(bool*)
@@ -422,42 +399,47 @@ void GroupObjectDialog::libChanged()
 
 void GroupObjectDialog::applyChanges()
 {
-    if (fwbdebug)
-        qDebug("GroupObjectDialog::applyChanges");
+    if (fwbdebug) qDebug("GroupObjectDialog::applyChanges");
 
     string oldname=obj->getName();
     obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    obj->setComment(
+        string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
     init=true;
 
-    set<FWObject*> oldobj;
-    set<FWObject*> newobj;
-    map<int, ObjectListViewItem*>::iterator i;
-    for (i=allListViewItems.begin(); i!=allListViewItems.end(); ++i)
+    set<int> oldobj;
+    set<int> newobj;
+
+    for (int it=0; it<listView->topLevelItemCount(); ++it)
     {
-        newobj.insert( mw->db()->findInIndex((*i).first) );
+        QTreeWidgetItem *itm = listView->topLevelItem(it);
+        int obj_id = itm->data(0, Qt::UserRole).toInt();
+        newobj.insert(obj_id);
     }
 
     for (FWObject::iterator j=obj->begin(); j!=obj->end(); ++j)
     {
-        FWObject *o= *j;
-        if (FWReference::cast(o)!=NULL)
-            o=FWReference::cast(o)->getPointer();
-        oldobj.insert( o );
+        FWObject *o = *j;
+        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        oldobj.insert(o->getId());
     }
 
-    set<FWObject*> diff;
+    set<int> diff;
+
     set_difference( oldobj.begin(), oldobj.end(),
                     newobj.begin(), newobj.end(),
                     inserter(diff,diff.begin()));
 /* diff contains objects present in oldobj but not in newobj - these objects
    were deleted from the group */
 
-    for (set<FWObject*>::iterator k=diff.begin(); k!=diff.end(); ++k)
+    for (set<int>::iterator k=diff.begin(); k!=diff.end(); ++k)
     {
-        if (m_project->isSystem(obj)) mw->delObj(*k, false);
-        else               obj->removeRef( *k );
+        FWObject *o = mw->db()->findInIndex(*k);
+        if (m_project->isSystem(obj))
+            mw->delObj(o, false);
+        else
+            obj->removeRef(o);
     }
 
     diff.clear();
@@ -468,19 +450,21 @@ void GroupObjectDialog::applyChanges()
 /* diff contains objects present in newobj but not in oldobj - these objects
    were added to the group */
 
-    for (set<FWObject*>::iterator k1=diff.begin(); k1!=diff.end(); ++k1)
+    for (set<int>::iterator k1=diff.begin(); k1!=diff.end(); ++k1)
     {
-        if (m_project->isSystem(obj))  mw->pasteTo(obj, *k1);
-        else                obj->addRef( *k1);
+        FWObject *o = mw->db()->findInIndex(*k1);
+        if (m_project->isSystem(o))
+            mw->pasteTo(obj, o);
+        else
+            obj->addRef(o);
     }
 
-    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    mw->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
 
     //apply->setEnabled( false );
     mw->updateLastModifiedTimestampForAllFirewalls(obj);
 
-    if (fwbdebug)
-        qDebug("GroupObjectDialog::applyChanges done");
+    if (fwbdebug) qDebug("GroupObjectDialog::applyChanges done");
 }
 
 void GroupObjectDialog::discardChanges()
@@ -523,10 +507,8 @@ void GroupObjectDialog::openObject()
 
 void GroupObjectDialog::openObject(QTreeWidgetItem *itm)
 {
-    ObjectListViewItem *otvi=dynamic_cast<ObjectListViewItem*>(itm);
-    assert(otvi!=NULL);
-
-    FWObject *o = otvi->getFWObject();
+    int obj_id = itm->data(0, Qt::UserRole).toInt();
+    FWObject *o = mw->db()->findInIndex(obj_id);
     if (o!=NULL)
     {
         mw->openObject( o );
@@ -536,10 +518,8 @@ void GroupObjectDialog::openObject(QTreeWidgetItem *itm)
 
 void GroupObjectDialog::openObject(QListWidgetItem *itm)
 {
-    ObjectIconViewItem *oivi=dynamic_cast<ObjectIconViewItem*>(itm);
-    assert(oivi!=NULL);
-
-    FWObject *o = oivi->getFWObject();
+    int obj_id = itm->data(Qt::UserRole).toInt();
+    FWObject *o = mw->db()->findInIndex(obj_id);
     if (o!=NULL)
     {
         mw->openObject( o );
@@ -572,9 +552,9 @@ void GroupObjectDialog::dropped(QDropEvent *ev)
 void GroupObjectDialog::iconContextMenu(const QPoint & pos)
 {
     FWObject *o=NULL;
-    ObjectIconViewItem *oivi=dynamic_cast<ObjectIconViewItem*>(
-            iconView->itemAt(pos));
-    if (oivi!=NULL) o = oivi->getFWObject();
+    QListWidgetItem *itm = iconView->itemAt(pos);
+    int obj_id = itm->data(Qt::UserRole).toInt();
+    o = mw->db()->findInIndex(obj_id);
     selectedObject=o;
 
     setupPopupMenu(iconView->mapToGlobal(pos));
@@ -584,10 +564,10 @@ void GroupObjectDialog::iconContextMenu(const QPoint & pos)
 void GroupObjectDialog::listContextMenu(const QPoint & pos)
 {
     FWObject *o=NULL;
-    ObjectListViewItem *otvi=dynamic_cast<ObjectListViewItem*>(
-            listView->itemAt(pos));
-    if (otvi!=NULL) o = otvi->getFWObject();
-    selectedObject=o;
+    QTreeWidgetItem *itm = listView->itemAt(pos);
+    int obj_id = itm->data(0, Qt::UserRole).toInt();
+    o = mw->db()->findInIndex(obj_id);
+    selectedObject = o;
 
     setupPopupMenu(listView->viewport()->mapToGlobal(pos));
 }
@@ -599,15 +579,15 @@ void GroupObjectDialog::setupPopupMenu(const QPoint &pos)
     if (selectedObject!=NULL)
     {
         if (selectedObject->isReadOnly() )
-            popup->addAction( tr("Open") ,  this , SLOT( openObject())    );
+            popup->addAction(tr("Open"), this, SLOT(openObject()));
         else
-            popup->addAction( tr("Edit") ,  this , SLOT( openObject())    );
+            popup->addAction(tr("Edit"), this, SLOT(openObject()));
     }
 
-    QAction *copyID =popup->addAction( tr("Copy") ,  this , SLOT( copyObj())   );
-    QAction *cutID  =popup->addAction( tr("Cut") ,   this , SLOT( cutObj())    );
-    QAction *pasteID=popup->addAction( tr("Paste") , this , SLOT( pasteObj())  );
-    QAction *delID  =popup->addAction( tr("Delete") ,this , SLOT( deleteObj()) );
+    QAction *copyID =popup->addAction(tr("Copy"), this, SLOT(copyObj()));
+    QAction *cutID =popup->addAction(tr("Cut"), this, SLOT(cutObj()));
+    QAction *pasteID=popup->addAction(tr("Paste"), this, SLOT(pasteObj()));
+    QAction *delID =popup->addAction(tr("Delete"),this, SLOT(deleteObj()));
 
     copyID->setEnabled(selectedObject!=NULL &&
                           ! m_project->isSystem(selectedObject) );
@@ -626,19 +606,15 @@ void GroupObjectDialog::setupPopupMenu(const QPoint &pos)
 void GroupObjectDialog::copyObj()
 {
     FWObjectClipboard::obj_clipboard->clear();
-    for(vector<FWObject*>::iterator it=selectedObjects.begin();
-            it!=selectedObjects.end(); ++it)
+    for(vector<int>::iterator it=selectedObjects.begin(); 
+        it!=selectedObjects.end(); ++it)
     {
-        FWObject* selectedObject=*it;
+        FWObject* selectedObject = mw->db()->findInIndex(*it);
 
         if (selectedObject!=NULL && ! m_project->isSystem(selectedObject) )
         {
-            FWObject *o=selectedObject;
-            if (FWReference::cast(o)!=NULL)
-                o=FWReference::cast(o)->getPointer();
-
-
-            FWObjectClipboard::obj_clipboard->add( o,this->m_project );
+            FWObjectClipboard::obj_clipboard->add(selectedObject,
+                                                  this->m_project );
         }
 
     }
@@ -659,44 +635,41 @@ void GroupObjectDialog::pasteObj()
     {
         insertObject( mw->db()->findInIndex(i->first) );
     }
-
-//    if (FWObjectClipboard::obj_clipboard->getObject()==NULL) return;
-//    insertObject( FWObjectClipboard::obj_clipboard->getObject() );
 }
 
 void GroupObjectDialog::deleteObj()
 {
-    vector<FWObject*> tv;
-    FWObject* selectedObject;
-    copy (selectedObjects.begin(),selectedObjects.end(),inserter(tv,tv.begin()));
+    // make a copy of the list of selected objects because selection
+    // changes when we delete items 
+    vector<int> tv;
+    copy(selectedObjects.begin(),selectedObjects.end(),inserter(tv,tv.begin()));
 
-    for(vector<FWObject*>::iterator it=tv.begin();
-            it!=tv.end(); ++it)
+    for(vector<int>::iterator it=tv.begin(); it!=tv.end(); ++it)
     {
-        selectedObject=(*it);
+        if (fwbdebug)
+            qDebug("GroupObjectDialog::deleteObj()  (*it)=%d", (*it));
 
-        if (selectedObject!=NULL &&  ! m_project->isSystem(obj) )
+        FWObject* selectedObject = mw->db()->findInIndex(*it);
+        int o_id = selectedObject->getId();
+
+        for (int it=0; it<listView->topLevelItemCount(); ++it)
         {
-            Group *g = dynamic_cast<Group*>(obj);
-            assert(g!=NULL);
+            QTreeWidgetItem *itm = listView->topLevelItem(it);
+            if (o_id == itm->data(0, Qt::UserRole).toInt())
+            {
+                listView->takeTopLevelItem(it);
+                break;
+            }
+        }
 
-            FWObject *o=selectedObject;
-            assert(o!=NULL);
-            if (FWReference::cast(o)!=NULL)
-                o=FWReference::cast(o)->getPointer();
-
-            selectedObject=NULL;
-
-    //        g->removeRef(o);
-
-            assert(allListViewItems[o->getId()]!=NULL);
-            delete allListViewItems[o->getId()];
-            allListViewItems.erase(o->getId());
-
-            assert(allIconViewItems[o->getId()]!=NULL);
-            delete allIconViewItems[o->getId()];
-            allIconViewItems.erase(o->getId());
-
+        for (int it=0; it<iconView->count(); ++it)
+        {
+            QListWidgetItem *itm = iconView->item(it);
+            if (o_id == itm->data(Qt::UserRole).toInt())
+            {
+                iconView->takeItem(it);
+                break;
+            }
         }
     }
     changed();
@@ -731,8 +704,25 @@ void GroupObjectDialog::hideEvent(QHideEvent *)
 
 void GroupObjectDialog::selectObject(FWObject *o)
 {
-//    ObjectListViewItem* list_item=allListViewItems[o->getId()];
-    ObjectIconViewItem* icon_item=allIconViewItems[o->getId()];
+    int o_id = o->getId();
 
-    iconView->setCurrentItem (icon_item);
+    for (int it=0; it<listView->topLevelItemCount(); ++it)
+    {
+        QTreeWidgetItem *itm = listView->topLevelItem(it);
+        if (o_id == itm->data(0, Qt::UserRole).toInt())
+        {
+            listView->setCurrentItem(itm);
+            break;
+        }
+    }
+
+    for (int it=0; it<iconView->count(); ++it)
+    {
+        QListWidgetItem *itm = iconView->item(it);
+        if (o_id == itm->data(Qt::UserRole).toInt())
+        {
+            iconView->setCurrentItem(itm);
+            break;
+        }
+    }
 }
