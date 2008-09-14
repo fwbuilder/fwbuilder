@@ -1,3 +1,11 @@
+2008-09-14  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* bug #2099700 "Association of the .fwb and .fwl file types with
+	app". Implemented support for the association of the application
+	and data file type on Windows. Double-clicking on .fwb and .fwl
+	files in Explorer will now open application and load files
+	automatically.
+
 2008-09-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* GroupObjectDialog.cpp (GroupObjectDialog::listContextMenu):
