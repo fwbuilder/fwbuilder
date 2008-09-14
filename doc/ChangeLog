@@ -1,5 +1,9 @@
 2008-09-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* GroupObjectDialog.cpp (GroupObjectDialog::listContextMenu):
+	fixed bug #2109833: "Crash on right mouse click in the object
+	group".
+
 	* FWWindow.cpp (FWWindow::prepareWindowsMenu): fixed bug #2109675:
 	"file Title bar contains redundant info". Internal page title
 	should be coordinated with items in the Windows main menu. There

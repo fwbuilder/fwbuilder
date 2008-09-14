@@ -565,10 +565,12 @@ void GroupObjectDialog::listContextMenu(const QPoint & pos)
 {
     FWObject *o=NULL;
     QTreeWidgetItem *itm = listView->itemAt(pos);
-    int obj_id = itm->data(0, Qt::UserRole).toInt();
-    o = mw->db()->findInIndex(obj_id);
-    selectedObject = o;
-
+    if (itm)
+    {
+        int obj_id = itm->data(0, Qt::UserRole).toInt();
+        o = mw->db()->findInIndex(obj_id);
+        selectedObject = o;
+    }
     setupPopupMenu(listView->viewport()->mapToGlobal(pos));
 }
 
