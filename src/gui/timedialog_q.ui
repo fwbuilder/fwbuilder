@@ -289,6 +289,12 @@
               </item>
               <item row="0" column="2" >
                <widget class="QDateEdit" name="startDate" >
+                <property name="displayFormat" >
+                 <string>M/d/yyyy</string>
+                </property>
+                <property name="calendarPopup" >
+                 <bool>true</bool>
+                </property>
                 <property name="date" >
                  <date>
                   <year>2000</year>
@@ -369,6 +375,12 @@
               </item>
               <item row="0" column="2" >
                <widget class="QDateEdit" name="endDate" >
+                <property name="displayFormat" >
+                 <string>M/d/yyyy</string>
+                </property>
+                <property name="calendarPopup" >
+                 <bool>true</bool>
+                </property>
                 <property name="date" >
                  <date>
                   <year>2000</year>

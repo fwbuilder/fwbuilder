@@ -107,6 +107,7 @@ void TimeDialog::loadFWObject(FWObject *o)
         break;
 
     }*/
+
     int fromH = obj->getInt("from_hour");
     int fromM = obj->getInt("from_minute");
     if (fromH<0) fromH=0;
@@ -181,21 +182,13 @@ void TimeDialog::enableAllWidgets()
 
     m_dialog->startTime->setEnabled(!obj->isReadOnly());
     m_dialog->useStartDate->setEnabled(!obj->isReadOnly());
-    m_dialog->startDate->setEnabled(!obj->isReadOnly() && m_dialog->useStartDate->isChecked());
-//    m_dialog->startDOW->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
-/*    m_dialog->cbStart1_2->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
-    m_dialog->cbStart2_2->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
-    m_dialog->cbStart3_2->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
-    m_dialog->cbStart4_2->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
-    m_dialog->cbStart5_2->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
-    m_dialog->cbStart6_2->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());
-    m_dialog->cbStart7_2->setEnabled(!obj->isReadOnly() && !m_dialog->useStartDate->isChecked());*/
+    m_dialog->startDate->setEnabled(!obj->isReadOnly() &&
+                                    m_dialog->useStartDate->isChecked());
 
     m_dialog->endTime->setEnabled(!obj->isReadOnly());
     m_dialog->useEndDate->setEnabled(!obj->isReadOnly());
     m_dialog->endDate->setEnabled(!obj->isReadOnly() && m_dialog->useEndDate->isChecked());
 
-//    m_dialog->endDOW->setEnabled(!obj->isReadOnly() && !m_dialog->useEndDate->isChecked());
 }
 
 void TimeDialog::changed()
