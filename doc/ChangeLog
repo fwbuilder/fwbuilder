@@ -1,5 +1,8 @@
 2008-09-14  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* instDialog.cpp (instDialog::addToLog): better regex to recognize
+	compiler erorrs.
+
 	* TimeDialog.cpp (TimeDialog::loadFWObject): Changed format of the
 	start and stop date fields in the Time Interval object to show
 	year as four digits. Also enabled calendar in these widgets.

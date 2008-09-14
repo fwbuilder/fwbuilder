@@ -164,11 +164,17 @@ bool PolicyCompiler_ipt::optimize1::processNext()
         FWObject *o= *i;
         if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 	    
-        Service *s=Service::cast( o );
-        assert(s);
+        Service *service_object = Service::cast( o );
+        if (service_object==NULL)
+        {
+            ostringstream err;
+            err << "Broken Service rule element in rule "
+                << rule->getLabel();
+                compiler->abort(err.str());
+        }
 
 // tcp and udp will be collapsed because we can use multiport module
-        if ( !TCPService::isA(s) && !UDPService::isA(s))
+        if ( !TCPService::isA(service_object) && !UDPService::isA(service_object))
         {
             all_tcp_or_udp = false;
             break;

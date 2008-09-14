@@ -1793,8 +1793,15 @@ void instDialog::addToLog(const QString &line)
     if (currentLog)
     {
         QString txt = line;
-        txt.replace(QRegExp("(Error:[^\n]*)\n"), 
+        txt.replace(QRegExp("(Error(:| )[^\n]*)\n"), 
                     QString("<b><font color=\"red\">\\1</font></b>\n"));
+        txt.replace(QRegExp("(Abnormal[^\n]*)\n"), 
+                    QString("<b><font color=\"red\">\\1</font></b>\n"));
+
+        // the following regex matches assertion errors
+        txt.replace(QRegExp("(fwb_[a-z]{1,}: \\S*\\.cpp:\\d{1,}: .*: Assertion .* failed.)"), 
+                    QString("<b><font color=\"red\">\\1</font></b>\n"));
+
         txt.replace('\n', "<br>\n");
         currentLog->insertHtml( txt );
         currentLog->ensureCursorVisible();
