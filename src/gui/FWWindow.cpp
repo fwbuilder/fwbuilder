@@ -210,7 +210,6 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     connect( m_space, SIGNAL(subWindowActivated (QMdiSubWindow *)),
              this, SLOT(changeActiveSubwindow())); 
 
-    prepareWindowsMenu();    
     disableActions(false);
 
 //    findObject->setMinimumSize( QSize( 0, 0 ) );
@@ -368,7 +367,6 @@ void FWWindow::fileOpen()
         proj->loadState(true);
         proj.release();
     }
-    //prepareWindowsMenu();
 }
 
 void FWWindow::loadFile(const QString &filename)
@@ -381,7 +379,6 @@ void FWWindow::loadFile(const QString &filename)
         proj->loadState(true);
         proj.release();
     }
-    //prepareWindowsMenu();
 }
 
 void FWWindow::fileClose()
@@ -399,7 +396,6 @@ void FWWindow::fileClose()
     if (fwbdebug) qDebug("subWindowList().size()=%d",
                          m_space->subWindowList().size());
 
-    //prepareWindowsMenu();
 }
 
 void FWWindow::fileSave()
@@ -993,13 +989,13 @@ void FWWindow::prepareWindowsMenu()
             subWindowList[i]->widget());
         if (pp!=NULL)
         {
-            if (pp->isClosing())
-                continue ;
-            QString text = pp->getFileName ();
+            if (pp->isClosing()) continue ;
+
+            QString text = pp->windowTitle();
             windowsTitles.push_back(text);
-            if (text=="")
-                text = "[Noname]";
-            QAction * act = m_mainWindow->menuWindow->addAction (text);
+
+            if (text=="") text = "[Noname]";
+            QAction * act = m_mainWindow->menuWindow->addAction(text);
             ag->addAction(act);
             act->setCheckable ( true );
             if (subWindowList[i]==m_space->activeSubWindow ())

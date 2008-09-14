@@ -269,6 +269,8 @@ public:
                         libfwbuilder::FWObject *nobj, 
                         const std::map<int,
                         libfwbuilder::FWObject *> &objByIds);
+
+    QString getPageTitle();
     
  public slots:
     void newObject();

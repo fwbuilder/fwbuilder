@@ -593,7 +593,7 @@
   </action>
   <action name="libImportAction" >
    <property name="text" >
-    <string>&amp;Import Library</string>
+    <string>Import &amp;Library</string>
    </property>
    <property name="iconText" >
     <string>Import Library From a File</string>
@@ -609,13 +609,16 @@
   </action>
   <action name="filePropAction" >
    <property name="text" >
-    <string>&amp;Properties</string>
+    <string>Propert&amp;ies</string>
    </property>
    <property name="iconText" >
-    <string>&amp;Properties</string>
+    <string>Propert&amp;ies</string>
    </property>
    <property name="statusTip" >
     <string>Show File Properties</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+I</string>
    </property>
   </action>
   <action name="moveRuleAction" >

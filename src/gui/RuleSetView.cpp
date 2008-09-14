@@ -21,6 +21,23 @@
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+
+  Notes:
+
+  to get rule object for given row number, use
+
+    Rule *rule = ruleIndex[pos];
+
+  or just
+
+    Rule *rule = getRule(int row);
+
+
+  To find table row for given rule, use
+
+    int row = getRow(rule);
+
+
 */
 
 
@@ -2045,13 +2062,28 @@ QString RuleSetView::getPlatform()
 }
 
 
-libfwbuilder::PolicyRule* RuleSetView::getRule(int row)
+Rule* RuleSetView::getRule(int row)
 {
-    return PolicyRule::cast( ruleIndex[row] );
+    return Rule::cast( ruleIndex[row] );
 }
+
+int RuleSetView::getRow(Rule *rule)
+{
+    int row = 0;
+    for (; row < rowsInfo.size(); row++)
+    {
+        Rule *r = getRule(row);
+        if (r && rule->getId()==r->getId()) break;
+    }
+    return row;
+}
+
 
 void RuleSetView::selectRE( int row, int col)
 {
+    if (fwbdebug)
+        qDebug("RuleSetView::selectRE  row=%d col=%d", row, col);
+
     m_project->selectRules();
 
     if (row!=currentRow() || col!=currentColumn())
@@ -2067,29 +2099,35 @@ void RuleSetView::selectRE( int row, int col)
     }
 }
 
-void RuleSetView::selectRE(libfwbuilder::FWReference *ref)
+void RuleSetView::selectRE(FWReference *ref)
 {
-    m_project->selectRules();
-
-    setSelectedObject( ref->getPointer() );
-
     /* need to find row and column this object is in and show it */
-    FWObject *re = ref->getParent();
-    Rule     *r  = Rule::cast(re->getParent());
-    assert(r!=NULL);
+    RuleElement *re = RuleElement::cast(ref->getParent());
+    assert(re);
+    selectRE(re, ref->getPointer());
+}
 
-    int row      = r->getPosition();
-    int col;
+void RuleSetView::selectRE(Rule *rule, int col)
+{
+    if (fwbdebug)
+        qDebug("RuleSetView::selectRE  rule: id=%s type=%s , col=%d",
+               FWObjectDatabase::getStringId(rule->getId()).c_str(),
+               rule->getTypeName().c_str(),
+               col);
+
+    selectRE(getRow(rule), col);
+}
+
+void RuleSetView::selectRE(RuleElement *re, FWObject *obj)
+{
+    Rule *rule = Rule::cast(re->getParent());
+    assert(rule!=NULL);
+    int col=0;
     for (col=0; col<ncols; ++col)
-        if (re==getRE(r,col))
-    {
-            selectRE(row, col);
-            //setCurrentCell(row,col);
-            //scrollTo( ruleModel->index(row,col),
-            //          QAbstractItemView::EnsureVisible);
-            //updateCell(row,col);
-            break;
-    }
+        if (re==getRE(rule,col)) break;
+
+    selectRE(rule, col);
+    setSelectedObject(obj);
 }
 
 void RuleSetView::itemDoubleClicked(const QModelIndex & index)
@@ -2231,8 +2269,8 @@ Rule* RuleSetView::insertRule(int pos, FWObject *r)
     }
 
     if (fwbdebug && PolicyRule::cast(r)!=NULL)
-        qDebug(QString("RuleSetView::insertRule: r->direction=%1")
-                .arg(PolicyRule::cast(r)->getDirectionAsString().c_str()).toAscii().constData());
+        qDebug("RuleSetView::insertRule: r->direction=%s",
+               PolicyRule::cast(r)->getDirectionAsString().c_str());
 
     PolicyRule *newrule_as_policy_rule = PolicyRule::cast(newrule);
 
@@ -2477,7 +2515,8 @@ void RuleSetView::mouseReleaseEvent( QMouseEvent* ev )
 void RuleSetView::setSelectedObject(FWObject* obj)
 {
     if (fwbdebug)
-        qDebug("RuleSetView::setSelectedObject  obj='%s' currentRow()=%d currentColumn()=%d",
+        qDebug("RuleSetView::setSelectedObject  obj='%s' "
+               "currentRow()=%d currentColumn()=%d",
                (obj)?obj->getName().c_str():"",
                currentRow(),
                currentColumn());

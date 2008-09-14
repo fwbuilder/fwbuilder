@@ -434,11 +434,7 @@ void ProjectPanel::fileAddToRCS()
             0, 1 );
     }
 
-    QString caption = rcs->getFileName().section("/",-1,-1);
-    if (rcs->isInRCS()) caption = caption + ", rev " + rcs->getSelectedRev();
-    if (rcs->isRO()) caption = caption + " " + tr("(read-only)");
-
-    setWindowTitle( QString("Firewall Builder: ")+caption );
+    setWindowTitle(getPageTitle());
 }
 
 void ProjectPanel::fileImport()
@@ -981,7 +977,7 @@ void ProjectPanel::load(QWidget*)
 
         createRCS("");
 
-        setWindowTitle( "Firewall Builder" );
+        setWindowTitle("");
 
         loadObjects();
         setupAutoSave();
@@ -1171,11 +1167,7 @@ void ProjectPanel::load(QWidget*, RCS* _rcs, FWObjectDatabase* clone)
         rcs->setFileName(fn);
         db()->setFileName(fn.toLatin1().constData());
 
-        QString caption = rcs->getFileName().section("/",-1,-1);
-        if (rcs->isInRCS()) caption = caption + ", rev " + rcs->getSelectedRev();
-        if (rcs->isRO()) caption = caption + " " + tr("(read-only)");
-
-        setWindowTitle( QString("Firewall Builder: ")+caption );
+        setWindowTitle(getPageTitle());
 
         mainW->disableActions(m_panel->ruleSets->count()!=0);
 
@@ -1473,12 +1465,7 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
         rcs->setFileName(fn);
         db()->setFileName(fn.toLatin1().constData());
 
-        QString caption = rcs->getFileName().section("/",-1,-1);
-        if (rcs->isInRCS()) caption = caption
-                                + ", rev " + rcs->getSelectedRev();
-        if (rcs->isRO()) caption = caption + " " + tr("(read-only)");
-
-        setWindowTitle( QString("Firewall Builder: ")+caption );
+        setWindowTitle(getPageTitle());
 
         mainW->disableActions(m_panel->ruleSets->count()!=0);
 

@@ -247,6 +247,11 @@ void setErrorState(QTreeWidgetItem *item)
 
 void setInProcessState(QTreeWidgetItem *item)
 {
+    QBrush b = item->foreground(1);
+    b.setColor(Qt::black);
+    item->setForeground(1,b);
+    item->setForeground(0,b);
+
     QFont f = item->font(1);
     f.setBold(true);
     item->setFont(1,f);
@@ -299,20 +304,20 @@ void instDialog::prepareInstallerOptions()
 
     cnf.batchInstall = m_dialog->batchInstall->isChecked();
 
-    cnf.incremental    = st->value("/FirewallBuilder2/Installer/incr"    ).toBool();
-    cnf.save_diff      = st->value("/FirewallBuilder2/Installer/savediff").toBool();
-    cnf.saveStandby    = st->value("/FirewallBuilder2/Installer/saveStandby").toBool();
-    cnf.dry_run        = st->value("/FirewallBuilder2/Installer/dryrun"  ).toBool();
-    cnf.quiet          = st->value("/FirewallBuilder2/Installer/quiet"   ).toBool();
-    cnf.verbose        = st->value("/FirewallBuilder2/Installer/verbose" ).toBool();
-    cnf.stripComments  = st->value("/FirewallBuilder2/Installer/stripComments" ).toBool();
-    cnf.compressScript = st->value("/FirewallBuilder2/Installer/compressScript" ).toBool();
-    cnf.copyFWB        = st->value("/FirewallBuilder2/Installer/copyFWB" ).toBool();
-    cnf.testRun        = st->value("/FirewallBuilder2/Installer/testRun" ).toBool();
-    cnf.rollback       = st->value("/FirewallBuilder2/Installer/rollback" ).toBool();
-    cnf.rollbackTime   = st->value("/FirewallBuilder2/Installer/rollbackTime").toInt();
+    cnf.incremental= st->value("/FirewallBuilder2/Installer/incr").toBool();
+    cnf.save_diff = st->value("/FirewallBuilder2/Installer/savediff").toBool();
+    cnf.saveStandby = st->value("/FirewallBuilder2/Installer/saveStandby").toBool();
+    cnf.dry_run = st->value("/FirewallBuilder2/Installer/dryrun").toBool();
+    cnf.quiet = st->value("/FirewallBuilder2/Installer/quiet").toBool();
+    cnf.verbose = st->value("/FirewallBuilder2/Installer/verbose" ).toBool();
+    cnf.stripComments  = st->value("/FirewallBuilder2/Installer/stripComments").toBool();
+    cnf.compressScript = st->value("/FirewallBuilder2/Installer/compressScript").toBool();
+    cnf.copyFWB = st->value("/FirewallBuilder2/Installer/copyFWB").toBool();
+    cnf.testRun = st->value("/FirewallBuilder2/Installer/testRun").toBool();
+    cnf.rollback = st->value("/FirewallBuilder2/Installer/rollback").toBool();
+    cnf.rollbackTime = st->value("/FirewallBuilder2/Installer/rollbackTime").toInt();
     cnf.cancelRollbackIfSuccess =
-        st->value("/FirewallBuilder2/Installer/canceRollbackIfSuccess" ).toBool();
+        st->value("/FirewallBuilder2/Installer/canceRollbackIfSuccess").toBool();
 /* TODO: set cnf.pgm to ssh path here */
 
     QString platform = cnf.fwobj->getStr("platform").c_str();
@@ -1812,8 +1817,10 @@ void instDialog::interpretLogLine(const QString &line)
 
     if (words.first().indexOf("rule")>=0)
     {
-        processedRules = words[1].toInt();
-        currentProgressBar->setValue(processedRules);
+        bool ok;
+        processedRules = words[1].toInt(&ok);
+        if (ok)
+            currentProgressBar->setValue(processedRules);
 
         if (fwbdebug)
             qDebug("instDialog::interpretLogLine set progress bar current=%d",
@@ -1823,8 +1830,10 @@ void instDialog::interpretLogLine(const QString &line)
         if (words.first().indexOf("processing")>=0)
         {
             currentProgressBar->reset();
-            totalRules = words[1].toInt();
-            currentProgressBar->setMaximum(totalRules);
+            bool ok;
+            totalRules = words[1].toInt(&ok);
+            if (ok)
+                currentProgressBar->setMaximum(totalRules);
             processedRules = 0;
 
             if (fwbdebug)

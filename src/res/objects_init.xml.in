@@ -374,6 +374,5 @@
     </IntervalGroup>
   </Library>
   <Library id="sysid99" name="Deleted Objects" ro="False">
-    <ICMP6Service id="idE0C27650" name="ipv6 dest unreachable" comment="No route to destination" code="0" type="1"/>
   </Library>
 </FWObjectDatabase>

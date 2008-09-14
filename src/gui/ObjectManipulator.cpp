@@ -1113,14 +1113,10 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         popup->addSeparator();
         popup->addAction( tr("Find"), this, SLOT( findObject()));
 
-        if (RuleSet::cast(currentObj)==NULL)
-            popup->addAction( tr("Where used"), this, SLOT( findWhereUsedSlot()));
+        popup->addAction( tr("Where used"), this, SLOT( findWhereUsedSlot()));
     } else
     {
-
-        popup->addAction( tr("Group"), this,
-                           SLOT( groupObjects() ) );
-
+        popup->addAction( tr("Group"), this, SLOT( groupObjects() ) );
     }
 
     if (Firewall::cast(currentObj)!=NULL ||

@@ -252,14 +252,12 @@ void FindWhereUsedWidget::showObject(FWObject* o)
 
     if (RuleElement::cast(o)!=NULL)
     {
-        ref = findRef(object, o);
-        if (ref==NULL) return;
         mw->activeProject()->openRuleSet(o->getParent()->getParent());
         mw->clearManipulatorFocus();
-        mw->ensureObjectVisibleInRules( ref );
         RuleSetView *rsv = mw->activeProject()->getCurrentRuleSetView();
-        rsv->selectRE( ref );
+        rsv->selectRE(RuleElement::cast(o), object);
         rsv->setFocus ( Qt::MouseFocusReason );
+
         if (mw->isEditorVisible())
         {
             mw->editObject( object );
@@ -271,10 +269,8 @@ void FindWhereUsedWidget::showObject(FWObject* o)
     {
         mw->activeProject()->openRuleSet(o->getParent());
         mw->clearManipulatorFocus();
-        mw->ensureRuleIsVisible( Rule::cast(o) );
         RuleSetView *rsv = mw->activeProject()->getCurrentRuleSetView();
-        rsv->selectRE( Rule::cast(o)->getPosition(),
-                       rsv->getColByType(RuleSetView::Action));
+        rsv->selectRE( Rule::cast(o), rsv->getColByType(RuleSetView::Action));
 
         if (mw->isEditorVisible())
         {

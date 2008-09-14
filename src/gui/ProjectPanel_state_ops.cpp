@@ -282,12 +282,20 @@ void ProjectPanel::saveLastOpenedLib()
     
 void ProjectPanel::loadLastOpenedLib()
 {
-    if (rcs==NULL) return;
-    QString filename = rcs->getFileName();
+    if (fwbdebug) qDebug("ProjectPanel::loadLastOpenedLib()");
+
+    QString filename = "";
+    if (rcs!=NULL) filename = rcs->getFileName();
 
     QString sid = st->getStr("Window/" + filename + "/LastLib");
     if (sid!="")
     {
+        if (fwbdebug)
+            qDebug("ProjectPanel::loadLastOpenedLib(): filename=%s "
+                   "opening lib id=%s",
+                   filename.toAscii().constData(),
+                   sid.toAscii().constData());
+
         m_panel->om->libChangedById(
             FWObjectDatabase::getIntId(sid.toStdString()));
     }        

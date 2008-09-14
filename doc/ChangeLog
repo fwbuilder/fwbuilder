@@ -1,5 +1,27 @@
 2008-09-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWWindow.cpp (FWWindow::prepareWindowsMenu): fixed bug #2109675:
+	"file Title bar contains redundant info". Internal page title
+	should be coordinated with items in the Windows main menu. There
+	is also no need to add "Firewall Builder" to the title of internal
+	windows.
+
+	* instDialog.cpp (instDialog::interpretLogLine): fixed bug
+	#2109660: "Compiler Progress: bar is incomplete". Compiler
+	progress bar failed to show full length bar when operation was
+	complete for some firewall platforms.
+
+	* ObjectManipulator.cpp (ObjectManipulator::contextMenuRequested):
+	fixed bug #2109431: "context menu item "Where used" is missing for
+	rulesets".
+
+	* RuleSetView.cpp (RuleSetView::selectRE): fixed bug # 2109432:
+	"double click on results in "Where used" list opens wrong rule."
+
+	* objects_init.xml.in: fix for bug #2099631: there used to be
+	object "icmpv6 unreachables" in the Deleted Objects library in the
+	file of standard objects that comes with the package.
+
 	* FindWhereUsedWidget.cpp (FindWhereUsedWidget::showObject): fixed
 	bug #2090332: "Where used search function does not always work.".
 	WhereUsed function could not find firewall if it was used in its

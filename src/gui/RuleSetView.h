@@ -436,8 +436,9 @@ public:
 
     libfwbuilder::FWObject* getObj(int row, int col,
                                    int mouse_y_pos, QRect *cr=NULL); 
-    libfwbuilder::PolicyRule* getRule(int row);
-
+    libfwbuilder::Rule* getRule(int row);
+    int getRow(libfwbuilder::Rule *rule);
+    
     void selectRE( int row, int col);
 
     /**
@@ -445,6 +446,16 @@ public:
      */
     void selectRE(libfwbuilder::FWReference *ref);
 
+    /**
+     * makes specified column of a rule current.
+     */
+    void selectRE(libfwbuilder::Rule *rule, int col);
+
+    /**
+     * makes specified rule element current and selects object <obj> in it.
+     */
+    void selectRE(libfwbuilder::RuleElement *re, libfwbuilder::FWObject *obj);
+    
     void updateCell( const int row, const int col );
     void updateAll();
     void updateCurrentCell();

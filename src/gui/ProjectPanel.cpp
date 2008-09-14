@@ -180,6 +180,14 @@ void ProjectPanel::info(FWObject *obj, bool forced)
 //    unselectRules();
 }
 
+QString ProjectPanel::getPageTitle()
+{
+    QString caption = rcs->getFileName().section("/",-1,-1);
+    if (rcs->isInRCS()) caption = caption + ", rev " + rcs->getSelectedRev();
+    if (rcs->isRO()) caption = caption + " " + tr("(read-only)");
+    return caption;
+}
+
 void ProjectPanel::setStartupFileName(const QString &fn) 
 { 
     startupFileName = fn; 
@@ -569,10 +577,7 @@ void ProjectPanel::setFileName(const QString &fname)
     rcs->setFileName(fname);
     db()->setFileName(fname.toLatin1().constData());
 
-    QString caption = rcs->getFileName().section("/",-1,-1);
-    if (rcs->isInRCS()) caption = caption + ", rev " + rcs->getSelectedRev();
-
-    setWindowTitle( QString("Firewall Builder: ")+caption );
+    setWindowTitle(getPageTitle());
 }
 
 //wrapers for some ObjectManipulator functions
