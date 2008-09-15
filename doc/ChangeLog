@@ -1,3 +1,9 @@
+2008-09-14  vadim  <vadim@vk.crocodile.org>
+
+	* DiscoveryDruid.cpp, debugDialog.cpp, filePropDialog.cpp: enable
+	"close" button in the dialog window title (it was not shown on
+	Mac).
+
 2008-09-14  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ProjectPanel_state_ops.cpp (ProjectPanel::loadLastOpenedLib):

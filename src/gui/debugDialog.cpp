@@ -48,7 +48,8 @@
 using namespace std;
 
 
-debugDialog::debugDialog(QWidget *parent) : QDialog(parent)
+debugDialog::debugDialog(QWidget *parent) :
+    QDialog(parent, Qt::CustomizeWindowHint|Qt::WindowSystemMenuHint)
 {
     m_dialog = new Ui::debugDialog_q;
     m_dialog->setupUi(this);
