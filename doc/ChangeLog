@@ -1,5 +1,15 @@
 2008-09-14  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ProjectPanel_state_ops.cpp (ProjectPanel::loadLastOpenedLib):
+	change in the logic applied when the program decided which library
+	to open at start time. If a file is opened and there is settings
+	record pointing to the library that was opened in this file last
+	time the program was used, this library is opened. If there is no
+	such settings record, the program tries to find the first not
+	system library in the file but prefers the one named "User". If
+	the program starts without data file, it shows library "User" from
+	the standard objects file.
+
 	* instDialog.cpp (instDialog::addToLog): better regex to recognize
 	compiler erorrs.
 

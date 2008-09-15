@@ -268,8 +268,8 @@ void ProjectPanel::saveOpenedRuleSet()
      
 void ProjectPanel::saveLastOpenedLib()
 {
-    if (rcs==NULL) return;
-    QString filename = rcs->getFileName();
+    QString filename = "";
+    if (rcs!=NULL) filename = rcs->getFileName();
 
     FWObject*  obj = m_panel->om->getCurrentLib();
     if (obj!=NULL)
@@ -286,9 +286,8 @@ void ProjectPanel::loadLastOpenedLib()
 
     QString filename = "";
     if (rcs!=NULL) filename = rcs->getFileName();
-
     QString sid = st->getStr("Window/" + filename + "/LastLib");
-    if (sid!="")
+    if (filename!="" && sid!="")
     {
         if (fwbdebug)
             qDebug("ProjectPanel::loadLastOpenedLib(): filename=%s "
@@ -298,7 +297,7 @@ void ProjectPanel::loadLastOpenedLib()
 
         m_panel->om->libChangedById(
             FWObjectDatabase::getIntId(sid.toStdString()));
-    }        
+    }
     else
     {
         list<FWObject*> all_libs = db()->getByType(Library::TYPENAME);
