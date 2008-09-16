@@ -1,3 +1,15 @@
+2008-09-15  vadim  <vadim@vk.crocodile.org>
+
+	* ProjectPanel_file_ops.cpp (ProjectPanel::fileOpen): workaround
+	for a problem that only appears on Mac: if user uses File/Open but
+	cancels operation, the main window used to switch from the
+	subwindow that was active to another one (usually the empty
+	default window with only standard objects tree).
+
+	* FWWindow.cpp (FWWindow::FWWindow): Experiment: since MDI looks
+	very foreign on Mac and can not be fixed, trying tabbed
+	presentation of internal subwindows. Only on Mac OS X.
+
 2008-09-14  vadim  <vadim@vk.crocodile.org>
 
 	* DiscoveryDruid.cpp, debugDialog.cpp, filePropDialog.cpp: enable

@@ -83,7 +83,6 @@ void ProjectPanel::initMain(FWWindow *main)
     setObjInfoSplitterPosition(DEFAULT_V_SPLITTER_POSITION,
                                total_height - DEFAULT_V_SPLITTER_POSITION);
 
-
     enableAvtoSaveState=true ;
     oldState=-1;
     if (st->getInfoStyle()!=0) m_panel->oi->show();
@@ -145,8 +144,11 @@ ProjectPanel::ProjectPanel(QWidget *parent):
     m_panel = new Ui::ProjectPanel_q();
     m_panel->setupUi(this);
     firstTimeNormal = st->getInt("Window/maximized");
-}
 
+    setWindowTitle(getPageTitle());
+
+    if (fwbdebug) qDebug("New ProjectPanel  %p", this);
+}
 
 ProjectPanel::~ProjectPanel()
 {
@@ -182,10 +184,16 @@ void ProjectPanel::info(FWObject *obj, bool forced)
 
 QString ProjectPanel::getPageTitle()
 {
-    QString caption = rcs->getFileName().section("/",-1,-1);
-    if (rcs->isInRCS()) caption = caption + ", rev " + rcs->getSelectedRev();
-    if (rcs->isRO()) caption = caption + " " + tr("(read-only)");
-    return caption;
+    QString default_caption = tr("Default Object Tree");
+    if (rcs)
+    {
+        QString caption = rcs->getFileName().section("/",-1,-1);
+        if (rcs->isInRCS()) caption= caption + ", rev " + rcs->getSelectedRev();
+        if (rcs->isRO()) caption = caption + " " + tr("(read-only)");
+        if (caption.isEmpty()) return default_caption;
+        return caption;
+    }
+    else return default_caption;
 }
 
 void ProjectPanel::setStartupFileName(const QString &fn) 
@@ -1247,28 +1255,26 @@ void ProjectPanel::findWhereUsed(FWObject * obj)
     findWhereUsedWidget->find(obj);
 }
 
-void ProjectPanel::showEvent( QShowEvent *ev)
+void ProjectPanel::showEvent(QShowEvent *ev)
 { 
-    if (fwbdebug)
-    {
-        qDebug("ProjectPanel::showEvent");
-        int wf = windowFlags();
-        qDebug("windowFlags=%x", wf);
-    }
+    if (fwbdebug) qDebug("ProjectPanel::showEvent %p title=%s",
+                         this, getPageTitle().toAscii().constData());
     QWidget::showEvent(ev);
 }
 
 
-void ProjectPanel::hideEvent( QHideEvent *ev)
+void ProjectPanel::hideEvent(QHideEvent *ev)
 {
-    if (fwbdebug) qDebug("ProjectPanel::hideEvent");
+    if (fwbdebug) qDebug("ProjectPanel::hideEvent %p title=%s",
+                         this, getPageTitle().toAscii().constData());
     QWidget::hideEvent(ev);
 }
 
 
-void ProjectPanel::closeEvent( QCloseEvent * ev)
+void ProjectPanel::closeEvent(QCloseEvent * ev)
 {   
-    if (fwbdebug) qDebug("ProjectPanel::closeEvent");
+    if (fwbdebug) qDebug("ProjectPanel::closeEvent %p title=%s",
+                         this, getPageTitle().toAscii().constData());
 
 //    if (!closing)
     saveState();

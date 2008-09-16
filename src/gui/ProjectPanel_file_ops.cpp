@@ -174,7 +174,22 @@ bool ProjectPanel::fileNew()
 
 bool ProjectPanel::fileOpen()
 {
-    if (fwbdebug) qDebug("ProjectPanel::fileOpen(): start");
+/*
+ * there appears to be a bug on Mac OS X that causes main window to
+ * switch to a different MDI subwindow if user opens "File Open"
+ * dialog and cancels operation by clicking "Cancel". This does not
+ * happen on other platforms so this must be Mac only thing. To work
+ * around the issue we save pointer to the MDI subwindow that was
+ * active before activation of the "OpenFile" dialog and restore it if
+ * user cancelled operation.
+ *
+ * This only happens in fileOpen(). fileImport() uses the same
+ * QFileDialog dialog but does not trigger this effect. Perhaps this
+ * happens because we call fileOpen from newly created but still
+ * hidden ProjectPanel object. This is the only difference I can think
+ * of.
+ */
+    QMdiSubWindow *current_active_window=mainW->getMdiArea()->activeSubWindow();
 
     QString dir;
     dir=st->getWDir();
@@ -185,9 +200,13 @@ bool ProjectPanel::fileOpen()
         mainW,
         tr("Open File"),
         dir,
-        tr("FWB files (*.fwb *.fwl *.xml);;All Files (*)"));
+        "FWB files (*.fwb *.fwl *.xml);;All Files (*)");
 
-    if (fileName.isEmpty()) return false;
+    if (fileName.isEmpty())
+    {
+        mainW->getMdiArea()->setActiveSubWindow(current_active_window);
+        return false;
+    }
 
     return loadFile(fileName);
 }
@@ -977,7 +996,7 @@ void ProjectPanel::load(QWidget*)
 
         createRCS("");
 
-        setWindowTitle("");
+        setWindowTitle(getPageTitle());
 
         loadObjects();
         setupAutoSave();

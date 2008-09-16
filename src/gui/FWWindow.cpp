@@ -174,6 +174,10 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     setSafeMode(false);
     setStartupFileName("");
 
+#ifdef Q_OS_MACX
+    getMdiArea()->setViewMode(QMdiArea::TabbedView);
+#endif    
+
     printer = new QPrinter(QPrinter::HighResolution);
 
     current_version_http_getter = new HttpGet();
@@ -980,33 +984,34 @@ void FWWindow::prepareWindowsMenu()
     connect(previous, SIGNAL(triggered()),m_space, SLOT(activatePreviousSubWindow()));
 
     QList<QMdiSubWindow *> subWindowList = getMdiArea()->subWindowList();
-    QActionGroup * ag = new QActionGroup ( this );
-    ag->setExclusive ( true );
-    for (int i = 0 ; i < subWindowList.size();i++)
+    QActionGroup * ag = new QActionGroup(this);
+    ag->setExclusive (true);
+    for (int i = 0 ; i < subWindowList.size(); i++)
     {
         windowsPainters.push_back (subWindowList[i]);
         ProjectPanel * pp = dynamic_cast<ProjectPanel *>(
             subWindowList[i]->widget());
         if (pp!=NULL)
         {
+            if (fwbdebug) qDebug("FWWindow::prepareWindowsMenu() pp=%p", pp);
+
             if (pp->isClosing()) continue ;
 
-            QString text = pp->windowTitle();
+//            QString text = pp->windowTitle();
+            QString text = pp->getPageTitle();
             windowsTitles.push_back(text);
 
-            if (text=="") text = "[Noname]";
+//            if (text=="") text = "[Noname]";
             QAction * act = m_mainWindow->menuWindow->addAction(text);
             ag->addAction(act);
             act->setCheckable ( true );
-            if (subWindowList[i]==m_space->activeSubWindow ())
+            if (subWindowList[i]==m_space->activeSubWindow())
                 act->setChecked(true);
             connect(act, SIGNAL(triggered()),
                     this, SLOT(selectActiveSubWindow()));
         }
     }
-
 }
-
 
 void FWWindow::setupAutoSave()
 {
@@ -1568,7 +1573,7 @@ void FWWindow::selectActiveSubWindow (/*const QString & text*/)
     {
         if (windowsTitles[i]==text)
         {
-            getMdiArea()->setActiveSubWindow (windowsPainters[i]);
+            getMdiArea()->setActiveSubWindow(windowsPainters[i]);
         }
     }
 }

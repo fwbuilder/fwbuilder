@@ -72,27 +72,17 @@ void ProjectPanel::stateChanged(Qt::WindowStates oldState,
 void ProjectPanel::saveState()
 {
     QString FileName ;
-    if (rcs!=NULL)
-    {
-        FileName = rcs->getFileName();
-    }
-
-    if (fwbdebug)
-        qDebug("ProjectPanel::saveState FileName=%s ready=%d",
-               FileName.toAscii().data(), ready);
+    if (rcs!=NULL) FileName = rcs->getFileName();
+    if (fwbdebug) qDebug("ProjectPanel::saveState %p title=%s "
+                         "FileName=%s ready=%d",
+                         this,
+                         getPageTitle().toAscii().constData(),
+                         FileName.toAscii().data(),
+                         ready);
 
     if (!ready) return;
 
-    if (mdiWindow->isMaximized())
-    {
-        if (fwbdebug) qDebug ("Window/maximized true");
-        st->setInt("Window/maximized", 1);
-    }
-    else
-    {
-        if (fwbdebug) qDebug ("Window/maximized false");
-        st->setInt("Window/maximized", 0);
-    }
+    st->setInt("Window/maximized", mdiWindow->isMaximized());
 
     if (!mdiWindow->isMaximized())
     {
