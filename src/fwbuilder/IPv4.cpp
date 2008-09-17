@@ -41,6 +41,7 @@
 #include <assert.h>
 #include <iostream>
 #include <cstring>
+#include <stdexcept>
 #include <fwbuilder/libfwbuilder-config.h>
 
 #include <fwbuilder/IPv4.h>
@@ -75,7 +76,13 @@ void IPv4::fromXML(xmlNodePtr root) throw(FWException)
     string addr(n);
     string::size_type first = addr.find_first_of("0123456789");
     string::size_type last = addr.find_last_of("0123456789");
-    addr = addr.substr(first, last-first+1);
+    try {
+        addr = addr.substr(first, last-first+1);
+    } catch (std::out_of_range &ex)
+    {
+        cerr << "Invalid address" << n << endl;
+        addr = "0.0.0.0";
+    }
     setAddress(InetAddr(addr));
     FREEXMLBUFF(n);
 
@@ -85,7 +92,13 @@ void IPv4::fromXML(xmlNodePtr root) throw(FWException)
     string netm(n);
     first = netm.find_first_of("0123456789");
     last = netm.find_last_of("0123456789");
-    netm = netm.substr(first, last-first+1);
+    try {
+        netm = netm.substr(first, last-first+1);
+    } catch (std::out_of_range &ex)
+    {
+        cerr << "Invalid netmask" << n << endl;
+        addr = "0.0.0.0";
+    }
 
     if (!netm.empty()) setNetmask(InetAddr(netm));
     else               setNetmask(InetAddr(0));
