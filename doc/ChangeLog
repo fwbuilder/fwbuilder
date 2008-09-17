@@ -1,3 +1,13 @@
+2008-09-16  vadim  <vadim@vk.crocodile.org>
+
+	* IPv4.cpp (IPv4::fromXML): (change in libfwbuilder) filter
+	addresses and strip leading and trailing whitespaces and other
+	non-digit characters before converting to InetAddr. This will help
+	with annoying problem where v2.1 allowed such characters in
+	address attributes of Address objects but v3.0 applies strict
+	checks during file load and rejects such data files.
+
+
 2008-09-15  vadim  <vadim@vk.crocodile.org>
 
 	* ProjectPanel_file_ops.cpp (ProjectPanel::fileOpen): workaround
