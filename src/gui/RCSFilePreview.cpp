@@ -74,11 +74,13 @@ RCSFilePreview::RCSFilePreview(QWidget *parent): QDialog(parent)
 
     connect( m_widget->cancelButton, SIGNAL( clicked() ),
              this, SLOT( reject() ) );
-    connect( m_widget->RCSTreeView, SIGNAL( itemActivated( QTreeWidgetItem*, int ) ),
+    connect( m_widget->RCSTreeView,
+             SIGNAL( itemActivated( QTreeWidgetItem*, int ) ),
              this, SLOT( accept() ) );
 
     m_widget->RCSTreeView->setAllColumnsShowFocus( true );
-    m_widget->RCSTreeView->setSelectionMode( QAbstractItemView::SingleSelection );
+    m_widget->RCSTreeView->setSelectionMode(
+        QAbstractItemView::SingleSelection );
     m_widget->RCSTreeView->setRootIsDecorated( FALSE );
 //    m_widget->RCSTreeView->sortByColumn( 0, Qt::AscendingOrder );
 

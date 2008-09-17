@@ -49,22 +49,16 @@ using namespace std;
 void ProjectPanel::stateChanged(Qt::WindowStates oldState,
                                 Qt::WindowStates newState)
 {
+    if (fwbdebug) qDebug("ProjectPanel::stateChanged");
+
+#if 0
+// vk 09/16
     bool is_maximized = ((newState & Qt::WindowMaximized) != 0);
     bool was_maximized = ((oldState & Qt::WindowMaximized) != 0);
-//    bool is_active = ((newState & Qt::WindowActive) != 0);
-#if 0
-    if (fwbdebug)
-        qDebug("ProjectPanel::stateChanged "
-               "newState=%d was_maximized=%d is_maximized=%d is_active=%d",
-               int(newState), was_maximized, is_maximized, is_active);
-#endif
     st->setInt("Window/maximized", is_maximized);
     if (!was_maximized && is_maximized) saveState();
-    // restore size only if state of the window changes from "maximized"
-    // to "normal" for the first time. After this, MDI keeps track of
-    // window size automatically.
-    //if (was_maximized && !is_maximized && firstTimeNormal) loadState();
-    firstTimeNormal = false;
+#endif
+
 }
 
 
@@ -114,6 +108,8 @@ void ProjectPanel::saveState()
 
     saveLastOpenedLib();
     saveOpenedRuleSet();
+
+    if (fwbdebug) qDebug("ProjectPanel::saveState() done");
 }
 
 void ProjectPanel::loadState(bool open_objects)

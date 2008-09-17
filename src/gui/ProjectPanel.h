@@ -71,7 +71,6 @@ class ProjectPanel: public QWidget {
     bool                                    editingStandardLib;
     bool                                    editingTemplateLib;
     bool                                    ruleSetRedrawPending;
-    bool                                    firstTimeNormal;
     bool                                    closing ;
     bool                                    ready;
     QString                                 startupFileName;

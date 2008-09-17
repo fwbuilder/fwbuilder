@@ -1,3 +1,17 @@
+2008-09-16  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWWindow.cpp (FWWindow::fileOpen): when the program is started
+	without data file, it shows panel with just default objects, with
+	a title "Untitled". If user opens data file, it is loaded into the
+	same panel and its title changes accordingly. If user makes
+	changes and then saves using "Save As", its title also changes
+	accordingly (and there is still one panel). If user uses "File/New
+	data file" and enters the name of the new data file, it is loaded
+	into the same panel and its title changes accordingly. Still,
+	after this there is only one panel. However if the panel shows
+	contents of some data file, operations "File/Open" and "File/New"
+	load second data file into a new panel.
+
 2008-09-16  vadim  <vadim@vk.crocodile.org>
 
 	* IPv4.cpp (IPv4::fromXML): (change in libfwbuilder) filter

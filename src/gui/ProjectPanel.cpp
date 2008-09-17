@@ -143,7 +143,6 @@ ProjectPanel::ProjectPanel(QWidget *parent):
     if (fwbdebug) qDebug("ProjectPanel constructor");
     m_panel = new Ui::ProjectPanel_q();
     m_panel->setupUi(this);
-    firstTimeNormal = st->getInt("Window/maximized");
 
     setWindowTitle(getPageTitle());
 
@@ -184,7 +183,7 @@ void ProjectPanel::info(FWObject *obj, bool forced)
 
 QString ProjectPanel::getPageTitle()
 {
-    QString default_caption = tr("Default Object Tree");
+    QString default_caption = tr("Untitled");
     if (rcs)
     {
         QString caption = rcs->getFileName().section("/",-1,-1);

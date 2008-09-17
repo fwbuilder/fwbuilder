@@ -349,27 +349,47 @@ void FWWindow::fileProp()
 
 void FWWindow::fileNew()
 {
-    ProjectPanel *proj = newProjectPanel();
-    if (proj->fileNew())
+    // if the only project panel window that we have shows
+    // default object tree (i.e. its filename is empty), then load file
+    // into. Otherwise create new project window.
+    if (activeProject() && activeProject()->getFileName().isEmpty())
     {
-    	showSub(proj);
-        //proj->startupLoad();
-    }
-    else
+        activeProject()->fileNew();
+    } else
     {
-        delete proj ;  
+        std::auto_ptr<ProjectPanel> proj(newProjectPanel());
+        if (proj->fileNew())
+        {
+            showSub(proj.get());
+            //proj->startupLoad();
+            proj.release();
+        }
     }
 }
 
 void FWWindow::fileOpen()
 {
-    std::auto_ptr<ProjectPanel> proj(newProjectPanel());
-    if (proj->fileOpen())
+    // if the only project panel window that we have shows
+    // default object tree (i.e. its filename is empty), then load file
+    // into. Otherwise create new project window.
+    if (activeProject() && activeProject()->getFileName().isEmpty())
     {
-        showSub(proj.get());
-        proj->readyStatus(true);
-        proj->loadState(true);
-        proj.release();
+        ProjectPanel *proj = activeProject();
+        if (proj->fileOpen())
+        {
+            proj->readyStatus(true);
+            proj->loadState(true);
+        }
+    } else
+    {
+        std::auto_ptr<ProjectPanel> proj(newProjectPanel());
+        if (proj->fileOpen())
+        {
+            showSub(proj.get());
+            proj->readyStatus(true);
+            proj->loadState(true);
+            proj.release();
+        }
     }
 }
 
@@ -1540,7 +1560,9 @@ bool FWWindow::isSystem(FWObject *obj)
 
 
 void FWWindow::closeEvent(QCloseEvent* ev)
-{   
+{
+    if (fwbdebug) qDebug("FWWindow::closeEvent");
+
     st->setInt("Window/maximized", activeProject()->isMaximized());
 
     QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
