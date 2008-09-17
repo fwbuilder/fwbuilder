@@ -80,7 +80,7 @@ void IPv4::fromXML(xmlNodePtr root) throw(FWException)
         addr = addr.substr(first, last-first+1);
     } catch (std::out_of_range &ex)
     {
-        cerr << "Invalid address" << n << endl;
+        cerr << "Object \"" << getName() << "\": Invalid address" << n << endl;
         addr = "0.0.0.0";
     }
     setAddress(InetAddr(addr));
@@ -96,7 +96,7 @@ void IPv4::fromXML(xmlNodePtr root) throw(FWException)
         netm = netm.substr(first, last-first+1);
     } catch (std::out_of_range &ex)
     {
-        cerr << "Invalid netmask" << n << endl;
+        cerr << "Object \"" << getName() << "\": Invalid netmask" << n << endl;
         addr = "0.0.0.0";
     }
 
