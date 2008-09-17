@@ -70,13 +70,25 @@ void IPv4::fromXML(xmlNodePtr root) throw(FWException)
 
     const char* n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
     assert(n!=NULL);
-    setAddress(InetAddr(n));
+
+    // strip whitespace and other non-numeric characters at the beginng and end
+    string addr(n);
+    string::size_type first = addr.find_first_of("0123456789");
+    string::size_type last = addr.find_last_of("0123456789");
+    addr = addr.substr(first, last-first+1);
+    setAddress(InetAddr(addr));
     FREEXMLBUFF(n);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("netmask")));
     assert(n!=NULL);
-    if (strlen(n)) setNetmask(InetAddr(n));
-    else           setNetmask(InetAddr(0));
+
+    string netm(n);
+    first = netm.find_first_of("0123456789");
+    last = netm.find_last_of("0123456789");
+    netm = netm.substr(first, last-first+1);
+
+    if (!netm.empty()) setNetmask(InetAddr(netm));
+    else               setNetmask(InetAddr(0));
     FREEXMLBUFF(n);
 }
 
