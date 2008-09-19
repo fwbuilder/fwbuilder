@@ -75,7 +75,7 @@ using namespace std;
 
 bool ProjectPanel::saveIfModified()
 {
-    if (db() && db()->isDirty())
+    if (db() && db()->isDirty() && !rcs->getFileName().isEmpty())
     {
         QString message = "Some objects have been modified but not saved.\n";
         message+="Do you want to save ";
@@ -213,9 +213,8 @@ bool ProjectPanel::fileOpen()
 
 bool ProjectPanel::loadFile(const QString &fileName)
 {
-    if (fwbdebug)
-        qDebug("ProjectPanel::loadFile  fileName=%s",
-               fileName.toAscii().constData());
+    if (fwbdebug) qDebug("ProjectPanel::loadFile  fileName=%s",
+                         fileName.toAscii().constData());
 
     RCSFilePreview  fp(this);
 

@@ -473,12 +473,8 @@ string PolicyCompiler_ipfw::PrintRule::_printDstService(Service *srv,bool neg)
     return res;
 }
 
-
-
-PolicyCompiler_ipfw::PrintRule::PrintRule(const std::string &name) : PolicyCompiler_pf::PrintRule(name)
-{ 
-    print_once_on_top=true;
-}
+PolicyCompiler_ipfw::PrintRule::PrintRule(const std::string &name) :
+    PolicyCompiler_pf::PrintRule(name) { }
 
 bool PolicyCompiler_ipfw::PrintRule::processNext()
 {
@@ -492,27 +488,6 @@ bool PolicyCompiler_ipfw::PrintRule::processNext()
  * Mac more often than anywhere else */
 
     string quote = "\"";
-
-    if (print_once_on_top) 
-    {
-        compiler->output << quote << "$IPFW" << quote
-                         << " set disable 1" << endl;
-
-        /* checking if option add_check_state_rule is absent to
-         * provide for backward compatibility: before 2.1.6 build 131
-         * this option did not exist and compiler alawys generated
-         * check-state rule
-         */
-        if (options->getStr("add_check_state_rule").empty() ||
-            options->getBool("add_check_state_rule"))
-            compiler->output << quote << "$IPFW" << quote
-                             << " add 1 set 1 check-state ip from any to any"  << endl;
-
-        compiler->output << endl;
-
-        print_once_on_top=false;
-    }
-
 
     string rl=rule->getLabel();
     if (rl!=current_rule_label) 
@@ -618,4 +593,29 @@ bool PolicyCompiler_ipfw::PrintRule::processNext()
     return true;
 }
 
+string PolicyCompiler_ipfw::defaultRules()
+{
+    FWOptions *options = fw->getOptionsObject();
+    string quote = "\"";
+    ostringstream res;
+
+    res << quote << "$IPFW" << quote
+        << " set disable 1" << endl;
+
+    /* checking if option add_check_state_rule is absent to
+     * provide for backward compatibility: before 2.1.6 build 131
+     * this option did not exist and compiler alawys generated
+     * check-state rule
+     */
+    if (options->getStr("add_check_state_rule").empty() ||
+        options->getBool("add_check_state_rule"))
+    {
+        res << quote << "$IPFW" << quote
+            << " add 1 set 1 check-state ip from any to any"  << endl;
+    }
+
+    res << endl;
+
+    return res.str();
+}
 

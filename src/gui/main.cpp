@@ -344,10 +344,10 @@ int main( int argc, char *argv[] )
     const char *arg[64];
     int         i, j;
 
-    filename="";
-    print_output_file_name="";
-    fwbdebug=0;
-    safemode=false;
+    filename = "";
+    print_output_file_name = "";
+    fwbdebug = 0;
+    safemode = false;
 
     if(fwbdebug)
         qDebug("main()");
@@ -566,7 +566,7 @@ int main( int argc, char *argv[] )
 	    exit(0);
 
 	case 'f':
-	    filename=optarg;
+	    filename = optarg;
 	    break;
 
 	case 'o':
@@ -683,14 +683,7 @@ int main( int argc, char *argv[] )
 
         mw  = new FWWindow();
         //mw->setSafeMode(safemode);
-        if (filename!="")
-        {
-            if (fwbdebug)
-                qDebug("Open file %s", filename.toAscii().constData());
-            QDir file(filename);
-            mw->setStartupFileName(file.canonicalPath());
-        }
-        //QToolTip::setWakeUpDelay( st->getTooltipDelay()*1000 );
+        if (filename!="") mw->openDocFiles << filename;
 
         mw->show();
 
@@ -700,8 +693,8 @@ int main( int argc, char *argv[] )
         connectOdocHandler();
 #endif
 
-        // setup single shot timer to call loadEverything()
-        QTimer::singleShot(0, mw, SLOT(startupLoad()));
+        // setup single shot timer to call startupLoad()
+        QTimer::singleShot(0.5, mw, SLOT(startupLoad()));
 
         app->exec();
 

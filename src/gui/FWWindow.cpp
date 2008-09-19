@@ -293,9 +293,15 @@ void FWWindow::startupLoad()
 
     if (activeProject())
     {
-        activeProject()->startupLoad();
+        activeProject()->load(NULL);
         activeProject()->readyStatus(true);
         activeProject()->loadState(true);
+    }
+
+    for (QStringList::iterator it=openDocFiles.begin(); it!=openDocFiles.end();
+         it++)
+    {
+        loadFile(*it);
     }
 }
 
@@ -395,13 +401,24 @@ void FWWindow::fileOpen()
 
 void FWWindow::loadFile(const QString &filename)
 {
-    std::auto_ptr<ProjectPanel> proj(newProjectPanel());
-    if (proj->loadFile(filename))
+    if (activeProject() && activeProject()->getFileName().isEmpty())
     {
-        showSub(proj.get());
-        proj->readyStatus(true);
-        proj->loadState(true);
-        proj.release();
+        ProjectPanel *proj = activeProject();
+        if (proj->loadFile(filename))
+        {
+            proj->readyStatus(true);
+            proj->loadState(true);
+        }
+    } else
+    {
+        std::auto_ptr<ProjectPanel> proj(newProjectPanel());
+        if (proj->loadFile(filename))
+        {
+            showSub(proj.get());
+            proj->readyStatus(true);
+            proj->loadState(true);
+            proj.release();
+        }
     }
 }
 

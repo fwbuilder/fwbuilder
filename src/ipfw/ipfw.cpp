@@ -67,6 +67,7 @@
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/Policy.h"
 
 #ifdef HAVE_GETOPT_H
   #include <getopt.h>
@@ -95,6 +96,8 @@ static int              drp            = -1;
 static int              drn            = -1;
 static int              verbose        = 0;
 static bool             test_mode      = false;
+static bool             ipv4_run       = true;
+static bool             ipv6_run       = true;
 
 FWObjectDatabase       *objdb = NULL;
 
@@ -107,6 +110,33 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
 	return false;
     }
 };
+
+/* Find rulesets that belong to other firewall objects but are
+ * referenced by rules of this firewall using action Branch
+ */
+void findImportedRuleSets(Firewall *fw, list<FWObject*> &all_policies)
+{
+    list<FWObject*> imported_policies;
+    for (list<FWObject*>::iterator i=all_policies.begin();
+         i!=all_policies.end(); ++i)
+    {
+        for (list<FWObject*>::iterator r=(*i)->begin();
+             r!=(*i)->end(); ++r)
+        {
+            PolicyRule *rule = PolicyRule::cast(*r);
+            RuleSet *ruleset = NULL;
+            if (rule->getAction() == PolicyRule::Branch &&
+                (ruleset = rule->getBranch())!=NULL &&
+                !ruleset->isChildOf(fw))
+            {
+                imported_policies.push_back(ruleset);
+            }
+        }
+    }
+    if (imported_policies.size() > 0)
+        all_policies.insert(all_policies.end(),
+                            imported_policies.begin(), imported_policies.end());
+}
     
 void usage(const char *name)
 {
@@ -138,10 +168,18 @@ int main(int argc, char * const *argv)
 
     int   opt;
 
-    while( (opt=getopt(argc,argv,"x:vVf:d:r:o:")) != EOF )
+    while( (opt=getopt(argc,argv,"x:vVf:d:r:o:46")) != EOF )
     {
         switch(opt)
         {
+        case '4':
+            ipv4_run = true;
+            ipv6_run = false;
+            break;
+        case '6':
+            ipv4_run = false;
+            ipv6_run = true;
+            break;
         case 'd':
             wdir = strdup(optarg);
             break;
@@ -307,9 +345,6 @@ int main(int argc, char * const *argv)
 	bool debug=options->getBool("debug");
 	string shell_dbg=(debug)?"-x":"" ;
 
-        Preprocessor* prep=new Preprocessor(objdb , fwobjectname, false);
-        prep->compile();
-
 /*
  * Process firewall options, build OS network configuration script
  */
@@ -325,6 +360,128 @@ int main(int argc, char * const *argv)
 	    throw FWException(_("Unrecognized host OS ")+fw->getStr("host_OS")+"  (family "+family+")");
 
 	oscnf->prolog();
+
+
+        list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
+        vector<bool> ipv4_6_runs;
+        string generated_script;
+        int policy_rules_count  = 0;
+        int ipfw_rule_number = 0;
+
+        findImportedRuleSets(fw, all_policies);
+
+        // command line options -4 and -6 control address family for which
+        // script will be generated. If "-4" is used, only ipv4 part will 
+        // be generated. If "-6" is used, only ipv6 part will be generated.
+        // If neither is used, both parts will be done.
+
+        if (options->getStr("ipv4_6_order").empty() ||
+            options->getStr("ipv4_6_order") == "ipv4_first")
+        {
+            if (ipv4_run) ipv4_6_runs.push_back(false);
+            if (ipv6_run) ipv4_6_runs.push_back(true);
+        }
+
+        if (options->getStr("ipv4_6_order") == "ipv6_first")
+        {
+            if (ipv6_run) ipv4_6_runs.push_back(true);
+            if (ipv4_run) ipv4_6_runs.push_back(false);
+        }
+
+        for (vector<bool>::iterator i=ipv4_6_runs.begin(); 
+             i!=ipv4_6_runs.end(); ++i)
+        {
+            bool ipv6_policy = *i;
+
+            /*
+              We need to create and run preprocessor for this address
+              family before nat and policy compilers, but if there are
+              no nat / policy rules for this address family, we do not
+              need preprocessor either.
+            */
+
+            // Count rules for each address family
+            int policy_count = 0;
+
+            for (list<FWObject*>::iterator p=all_policies.begin();
+                 p!=all_policies.end(); ++p)
+            {
+                Policy *policy = Policy::cast(*p);
+                if (policy->isV6()==ipv6_policy) policy_count++;
+            }
+
+            if (policy_count)
+            {
+                Preprocessor* prep = new Preprocessor(
+                    objdb , fwobjectname, ipv6_policy);
+                if (test_mode) prep->setTestMode();
+                prep->compile();
+            }
+
+            ostringstream c_str;
+            bool empty_output = true;
+ 
+            for (list<FWObject*>::iterator p=all_policies.begin();
+                 p!=all_policies.end(); ++p )
+            {
+                Policy *policy = Policy::cast(*p);
+                string branch_name = policy->getName();
+
+                if (policy->isV6()!=ipv6_policy) continue;
+
+                PolicyCompiler_ipfw c(objdb, fwobjectname, ipv6_policy, oscnf);
+                c.setIPFWNumber(ipfw_rule_number);
+                c.setSourceRuleSet( policy );
+                c.setRuleSetName(branch_name);
+                c.setDebugLevel( dl );
+                c.setDebugRule(  drp );
+                c.setVerbose( (bool)(verbose) );
+                if (test_mode) c.setTestMode();
+
+                if ( (policy_rules_count=c.prolog()) > 0 )
+                {
+                    c.compile();
+                    c.epilog();
+
+                    ipfw_rule_number = c.getIPFWNumber();
+
+                    if (c.getCompiledScriptLength() > 0)
+                    {
+                        c_str << "# ================ Rule set "
+                              << branch_name << endl;
+                        if (c.haveErrorsAndWarnings())
+                        {
+                            c_str << "# Policy compiler errors and warnings:"
+                                  << endl;
+                            c_str << c.getErrors("# ");
+                        }
+                        c_str << c.getCompiledScript();
+                        c_str << endl;
+                        empty_output = false;
+                    }
+                }
+            }
+
+            if (!empty_output)
+            {
+                if (ipv6_policy)
+                {
+                    generated_script += "\n\n";
+                    generated_script += "# ================ IPv6\n";
+                    generated_script += "\n\n";
+                } else
+                {
+                    generated_script += "\n\n";
+                    generated_script += "# ================ IPv4\n";
+                    generated_script += "\n\n";
+                }
+            }
+
+            generated_script += c_str.str();
+        }
+
+
+#if NO_IPV6
 /*
  * create compilers and run the whole thing 
  */
@@ -343,6 +500,7 @@ int main(int argc, char * const *argv)
 	    c.compile();
 	    c.epilog();
 	}
+#endif
 
 /*
  * now write generated scripts to files
@@ -441,6 +599,7 @@ int main(int argc, char * const *argv)
 */
         fw_file << endl;
 
+#if NO_IPV6
 	if (have_ipfw)
         {
             if (c.haveErrorsAndWarnings())
@@ -452,6 +611,11 @@ int main(int argc, char * const *argv)
 
 	    fw_file << c.getCompiledScript();
         }
+#else
+        PolicyCompiler_ipfw c(objdb, fwobjectname, false, oscnf);
+        fw_file << c.defaultRules();
+        fw_file << generated_script;
+#endif
 
         fw_file << endl;
         fw_file << "#" << endl;

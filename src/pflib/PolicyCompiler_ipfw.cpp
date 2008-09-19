@@ -407,34 +407,32 @@ bool PolicyCompiler_ipfw::specialCaseWithDynInterface::processNext()
 }
 
 
-PolicyCompiler_ipfw::calculateNum::calculateNum(const std::string &n) : PolicyRuleProcessor(n)
-{
-    ipfw_num=0;
-}
+PolicyCompiler_ipfw::calculateNum::calculateNum(const std::string &n) :
+    PolicyRuleProcessor(n) {}
 
 bool PolicyCompiler_ipfw::calculateNum::processNext()
 {
+    PolicyCompiler_ipfw *pcomp = dynamic_cast<PolicyCompiler_ipfw*>(compiler);
+
     slurp();
     if (tmp_queue.size()==0) return false;
 
     for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
     {
         PolicyRule *r = PolicyRule::cast( *k );
-
-        ipfw_num += 10;
-        r->setInt("ipfw_num", ipfw_num );
+        pcomp->ipfw_num += 10;
+        r->setInt("ipfw_num", pcomp->ipfw_num );
     }
-
 
     for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
     {
         PolicyRule *r = PolicyRule::cast( *k );
-        int    current_position=r->getPosition();
+        int current_position = r->getPosition();
         if (r->getAction()==PolicyRule::Continue) 
         {
             r->setAction(PolicyRule::Skip);
             
-            deque<Rule*>::iterator j=k;
+            deque<Rule*>::iterator j = k;
             ++j;
             PolicyRule *r2;
             for ( ; j!=tmp_queue.end(); ++j) 
@@ -521,7 +519,10 @@ bool PolicyCompiler_ipfw::processMultiAddressObjectsInRE::processNext()
 
 void PolicyCompiler_ipfw::compile()
 {
-    cout << " Compiling policy for " << fw->getName() << " ..." <<  endl << flush;
+    cout << " Compiling " << fw->getName();
+    if (!getRuleSetName().empty())  cout << " ruleset " << getRuleSetName();
+    if (ipv6) cout << ", IPv6";
+    cout <<  endl << flush;
 
     try {
 
@@ -535,9 +536,11 @@ void PolicyCompiler_ipfw::compile()
             add( new Begin("Detecting rule shadowing"));
             add( new printTotalNumberOfRules());
 
-            add( new SpecialRuleActionsForShadowing( "disable rules with action Pipe and Custom") );
-            add( new ItfNegation(         "process negation in Itf"  ) );
-            add( new InterfacePolicyRules("process interface policy rules and store interface ids") );
+            add( new SpecialRuleActionsForShadowing(
+                     "disable rules with action Pipe and Custom") );
+            add( new ItfNegation("process negation in Itf"  ) );
+            add( new InterfacePolicyRules(
+                     "process interface policy rules and store interface ids"));
 
             add( new recursiveGroupsInSrc("check for recursive grps in SRC"));
             add( new recursiveGroupsInDst("check for recursive grps in DST"));
@@ -545,17 +548,21 @@ void PolicyCompiler_ipfw::compile()
             check_for_recursive_groups=false;
 
             add( new ExpandGroups("expand groups"));
+            add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
             add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC"));
             add( new eliminateDuplicatesInDST("eliminate duplicates in DST"));
             add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV"));
 
-            add( new swapMultiAddressObjectsInSrc(" swap MultiAddress -> MultiAddressRunTime in Src") );
-            add( new swapMultiAddressObjectsInDst(" swap MultiAddress -> MultiAddressRunTime in Dst") );
+            add( new swapMultiAddressObjectsInSrc(
+                     " swap MultiAddress -> MultiAddressRunTime in Src") );
+            add( new swapMultiAddressObjectsInDst(
+                     " swap MultiAddress -> MultiAddressRunTime in Dst") );
 
             add( new ExpandMultipleAddressesInSRC(
                      "expand objects with multiple addresses in SRC"));
             add( new ExpandMultipleAddressesInDST(
                      "expand objects with multiple addresses in DST"));
+            add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
             add( new ConvertToAtomic("convert to atomic rules"));
             add( new DetectShadowing("Detect shadowing"));
             add( new simplePrintProgress());
@@ -579,28 +586,35 @@ void PolicyCompiler_ipfw::compile()
         add( new emptyGroupsInDst("check for empty grps in DST"));
         add( new emptyGroupsInSrv("check for empty grps in SRV"));
 
-        add( new ItfNegation(         "process negation in Itf"  ) );
-        add( new InterfacePolicyRules("process interface policy rules and store interface ids") );
+        add( new ItfNegation("process negation in Itf"));
+        add( new InterfacePolicyRules(
+                 "process interface policy rules and store interface ids"));
 
         add( new doSrcNegation("process negation in Src"));
         add( new doDstNegation("process negation in Dst"));
         add( new doSrvNegation("process negation in Srv"));
         add( new ExpandGroups("expand groups"));
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
         add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC"));
         add( new eliminateDuplicatesInDST("eliminate duplicates in DST"));
         add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV"));
 
-        add( new swapMultiAddressObjectsInSrc(" swap MultiAddress -> MultiAddressRunTime in Src") );
-        add( new swapMultiAddressObjectsInDst(" swap MultiAddress -> MultiAddressRunTime in Dst") );
+        add( new swapMultiAddressObjectsInSrc(
+                 " swap MultiAddress -> MultiAddressRunTime in Src") );
+        add( new swapMultiAddressObjectsInDst(
+                 " swap MultiAddress -> MultiAddressRunTime in Dst") );
 
-        add( new processMultiAddressObjectsInSrc("process MultiAddress objects in Src") );
-        add( new processMultiAddressObjectsInDst("process MultiAddress objects in Dst") );
+        add( new processMultiAddressObjectsInSrc(
+                 "process MultiAddress objects in Src") );
+        add( new processMultiAddressObjectsInDst(
+                 "process MultiAddress objects in Dst") );
 
         add( new splitIfFirewallInSrc("split rule if firewall is in Src"));
         add( new splitIfFirewallInDst("split rule if firewall is in Dst"));
         add( new fillDirection("determine directions"));
         add( new ExpandMultipleAddresses(
                  "expand objects with multiple addresses"));
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
         add( new checkForDynamicInterfacesOfOtherObjects(
                  "check for dynamic interfaces of other hosts and firewalls"));
         add( new MACFiltering("verify for MAC address filtering"));

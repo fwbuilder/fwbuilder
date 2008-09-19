@@ -347,7 +347,6 @@ bool PolicyCompiler_pf::fillDirection::processNext()
  * as long as it misses interface - we need to determine direction
  * again anyway.
  */
-
     if (rule->getDirectionAsString()=="" || rule->getInterfaceId()==-1 )
     {
 	if ( compiler->getCachedFwOpt()->getBool("pass_all_out") )

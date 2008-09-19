@@ -53,7 +53,7 @@ namespace fwcompiler {
 	libfwbuilder::TCPService   *anytcp;
 	libfwbuilder::UDPService   *anyudp;
 	libfwbuilder::ICMPService  *anyicmp;
-
+        int ipfw_num;
 
 	virtual std::string myPlatformName();
 
@@ -138,7 +138,8 @@ namespace fwcompiler {
         {
             void dropDynamicInterface(libfwbuilder::RuleElement *re);
             public:
-            specialCaseWithDynInterface(const std::string &name) : PolicyRuleProcessor(name) {}
+            specialCaseWithDynInterface(const std::string &name) :
+            PolicyRuleProcessor(name) {}
             virtual bool processNext();
         };
 
@@ -148,11 +149,11 @@ namespace fwcompiler {
         DECLARE_POLICY_RULE_PROCESSOR(checkForKeepState);
 
 	/**
-	 * calculates numbers for rules (ipfw numbers, that is)
+	 * increments numbers for rules (ipfw numbers, that is)
+         * The number itself is stored in the compiler class.
 	 */
         class calculateNum : public PolicyRuleProcessor
         {
-            int ipfw_num;
             public:
             calculateNum(const std::string &n);
             virtual bool processNext();
@@ -166,7 +167,8 @@ namespace fwcompiler {
             private:
             std::deque<libfwbuilder::PolicyRule*> rules_seen_so_far;
             public:
-            eliminateDuplicateRules(const std::string &n) : PolicyRuleProcessor(n) {}
+            eliminateDuplicateRules(const std::string &n) :
+            PolicyRuleProcessor(n) {}
             virtual bool processNext();
         };
         friend class fwcompiler::PolicyCompiler_ipfw::eliminateDuplicateRules;
@@ -180,23 +182,28 @@ namespace fwcompiler {
             std::string re_type;
             public:
             processMultiAddressObjectsInRE(const std::string &name,
-                      const std::string &t) : PolicyRuleProcessor(name) { re_type=t; }
+                      const std::string &t) : PolicyRuleProcessor(name)
+            { re_type=t; }
             virtual bool processNext();
         };
 
 
-        class processMultiAddressObjectsInSrc : public processMultiAddressObjectsInRE
+        class processMultiAddressObjectsInSrc :
+        public processMultiAddressObjectsInRE
         {
             public:
             processMultiAddressObjectsInSrc(const std::string &n) :
-                processMultiAddressObjectsInRE(n,libfwbuilder::RuleElementSrc::TYPENAME) {}
+                processMultiAddressObjectsInRE(
+                    n, libfwbuilder::RuleElementSrc::TYPENAME) {}
         };
 
-        class processMultiAddressObjectsInDst : public processMultiAddressObjectsInRE
+        class processMultiAddressObjectsInDst :
+        public processMultiAddressObjectsInRE
         {
             public:
             processMultiAddressObjectsInDst(const std::string &n) :
-                processMultiAddressObjectsInRE(n,libfwbuilder::RuleElementDst::TYPENAME) {}
+                processMultiAddressObjectsInRE(
+                    n, libfwbuilder::RuleElementDst::TYPENAME) {}
         };
 
 	/**
@@ -216,11 +223,12 @@ namespace fwcompiler {
             virtual void _printInterface(libfwbuilder::PolicyRule *r);
             virtual void _printSrcService(libfwbuilder::RuleElementSrv  *o);
             virtual void _printDstService(libfwbuilder::RuleElementSrv  *o);
-            virtual std::string _printSrcService(libfwbuilder::Service *srv,bool neg=false);
-            virtual std::string _printDstService(libfwbuilder::Service *srv,bool neg=false);
+            virtual std::string _printSrcService(libfwbuilder::Service *srv,
+                                                 bool neg=false);
+            virtual std::string _printDstService(libfwbuilder::Service *srv,
+                                                 bool neg=false);
             virtual std::string _printTCPFlags(libfwbuilder::TCPService *srv);
 
-            bool print_once_on_top;
             public:
             PrintRule(const std::string &name);
             virtual bool processNext();
@@ -236,13 +244,19 @@ namespace fwcompiler {
 			   const std::string &fwname,
                             bool ipv6_policy,
 			   fwcompiler::OSConfigurator *_oscnf) :
-        PolicyCompiler_pf(_db, fwname, ipv6_policy, _oscnf, NULL) {}
-
+        PolicyCompiler_pf(_db, fwname, ipv6_policy, _oscnf, NULL)
+        {
+            ipfw_num = 0;
+        }
 
 	virtual int  prolog();
 	virtual void compile();
 	virtual void epilog();
-	
+
+        std::string defaultRules();
+
+        int getIPFWNumber() { return ipfw_num; }
+        void setIPFWNumber(int n) { ipfw_num = n; }
     };
 
 

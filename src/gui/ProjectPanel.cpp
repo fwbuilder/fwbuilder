@@ -961,42 +961,12 @@ void ProjectPanel::pasteRuleBelow()
     getCurrentRuleSetView()->pasteRuleBelow();
 }
 
-//rcs
 void ProjectPanel::startupLoad()
 {
-    if (fwbdebug) qDebug("ProjectPanel::startupLoad: "
-                         "startup: load everything.");
+    if (fwbdebug)
+        qDebug("ProjectPanel::startupLoad: startup: load everything.");
 
-    int sa = st->getStartupAction();
-
-    if (safeMode)  load(NULL);
-    else
-    {
-        if (startupFileName.isEmpty() && sa==1) // load last edited
-        {
-            startupFileName = st->getLastEdited();
-        }
-
-        if ( !startupFileName.isEmpty() )
-        {
-            try
-            {
-                RCS *rcs=new RCS(startupFileName);
-                rcs->co();
-                load(NULL, rcs);
-
-                //loadLastOpenedLib();
-            } catch (FWException &ex)
-            {
-                qDebug("Exception: %s",ex.toString().c_str());
-                load(NULL);
-            }
-        } else
-        {
-            load(NULL); // load standard objects
-            //loadLastOpenedLib(startupFileName);
-        }
-    }
+    load(NULL);
 
     QString id = st->getStr("UI/visibleFirewall");
     int i_id = FWObjectDatabase::getIntId(id.toLatin1().constData());
@@ -1007,7 +977,7 @@ void ProjectPanel::startupLoad()
     i_id = FWObjectDatabase::getIntId(id.toLatin1().constData());
     FWObject *show_obj=NULL;
     if ( !id.isEmpty() ) show_obj = db()->getById(i_id, true);
-    if ( sa==1 && !safeMode )
+    if ( !safeMode )
     {
         if (show_fw)
         {

@@ -80,28 +80,39 @@ ipfwAdvancedDialog::ipfwAdvancedDialog(QWidget *parent,FWObject *o)
     if (fwopt->getStr("add_check_state_rule").empty())
         fwopt->setBool("add_check_state_rule",true);
 
-    m_dialog->tabWidget->setTabEnabled(4,false); //Disable tab
-    data.registerOption(m_dialog->ipv4before_2,    fwopt, "ipv4_6_order", QStringList() <<  "IPv4 before IPv6" <<"ipv4_first" << "IPv6 before IPv4" << "ipv6_first"      );
+    data.registerOption(m_dialog->ipv4before_2,
+                        fwopt,
+                        "ipv4_6_order",
+                        QStringList() <<  "IPv4 before IPv6"
+                        <<"ipv4_first" <<
+                        "IPv6 before IPv4"
+                        << "ipv6_first"
+    );
 
-    data.registerOption( m_dialog->ipfw_add_check_state_rule  ,fwopt, "add_check_state_rule");
-    data.registerOption( m_dialog->ipfw_check_shadowing       ,fwopt, "check_shading"       );
-    data.registerOption( m_dialog->ipfw_ignore_empty_groups   ,fwopt, "ignore_empty_groups" );
-    data.registerOption( m_dialog->ipfw_fw_dir                ,fwopt, "firewall_dir"    );
-    data.registerOption( m_dialog->ipfw_user                  ,fwopt, "admUser"         );
-    data.registerOption( m_dialog->altAddress                 ,fwopt, "altAddress"      );
-    data.registerOption( m_dialog->sshArgs                    ,fwopt, "sshArgs"         );
-    data.registerOption( m_dialog->activationCmd              ,fwopt, "activationCmd"   );
+    data.registerOption( m_dialog->ipfw_add_check_state_rule, fwopt,
+                         "add_check_state_rule");
+    data.registerOption( m_dialog->ipfw_check_shadowing, fwopt,
+                         "check_shading");
+    data.registerOption( m_dialog->ipfw_ignore_empty_groups, fwopt,
+                         "ignore_empty_groups" );
+    data.registerOption( m_dialog->ipfw_fw_dir, fwopt, "firewall_dir");
+    data.registerOption( m_dialog->ipfw_user, fwopt, "admUser");
+    data.registerOption( m_dialog->altAddress, fwopt, "altAddress");
+    data.registerOption( m_dialog->sshArgs, fwopt, "sshArgs");
+    data.registerOption( m_dialog->activationCmd, fwopt, "activationCmd");
 
-    data.registerOption( m_dialog->ipfw_manage_virtual_addr   ,fwopt, "manage_virtual_addr"  );
-    data.registerOption( m_dialog->ipfw_configure_interfaces  ,fwopt, "configure_interfaces" );
-    data.registerOption( m_dialog->ipfw_debug                 ,fwopt, "debug"           );
+    data.registerOption( m_dialog->ipfw_manage_virtual_addr, fwopt,
+                         "manage_virtual_addr");
+    data.registerOption( m_dialog->ipfw_configure_interfaces, fwopt,
+                         "configure_interfaces");
+    data.registerOption( m_dialog->ipfw_debug, fwopt, "debug");
 
-    data.registerOption( m_dialog->compiler                   ,fwopt, "compiler" );
-    data.registerOption( m_dialog->compilerArgs               ,fwopt, "cmdline"  );
-    data.registerOption( m_dialog->outputFileName       , fwopt,  "output_file"  );
+    data.registerOption( m_dialog->compiler, fwopt, "compiler" );
+    data.registerOption( m_dialog->compilerArgs, fwopt, "cmdline");
+    data.registerOption( m_dialog->outputFileName, fwopt, "output_file");
 
-    data.registerOption( m_dialog->mgmt_ssh             , fwopt,  "mgmt_ssh"  );
-    data.registerOption( m_dialog->mgmt_addr            , fwopt,  "mgmt_addr" );
+    data.registerOption( m_dialog->mgmt_ssh, fwopt, "mgmt_ssh"  );
+    data.registerOption( m_dialog->mgmt_addr, fwopt, "mgmt_addr" );
 
     PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
 
@@ -109,10 +120,10 @@ ipfwAdvancedDialog::ipfwAdvancedDialog(QWidget *parent,FWObject *o)
     m_dialog->installScriptArgs->setText( pis->getArguments().c_str() );
 
 /* page "Prolog/Epilog" */
-    data.registerOption( m_dialog->prolog_script    , fwopt,
+    data.registerOption( m_dialog->prolog_script, fwopt,
                          "prolog_script"  );
 
-    data.registerOption( m_dialog->epilog_script    , fwopt,
+    data.registerOption( m_dialog->epilog_script, fwopt,
                          "epilog_script"  );
 
 

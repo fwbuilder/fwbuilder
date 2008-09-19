@@ -83,10 +83,12 @@ class FWWindow : public QMainWindow {
     void showSub(ProjectPanel *projectW);
     
 public:
-    ProjectPanel* activeProject();
-    void updateWindowTitle ();
     QVector <QString> windowsTitles;
     QVector <QMdiSubWindow*> windowsPainters;
+    QStringList openDocFiles;
+
+    ProjectPanel* activeProject();
+    void updateWindowTitle ();
     void updateTreeFont ();
     
 public slots:
