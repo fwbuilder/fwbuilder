@@ -128,18 +128,20 @@ string NATCompiler_pix::debugPrintRule(Rule *r)
             os << " rule=[" << natcmd->rule_label << "]";
             os << " id=" << natcmd->nat_id;
             os << " rule=" << natcmd->rule_label;
-            os << " nat_acl_name="   <<  natcmd->nat_acl_name;
+            os << " nat_acl_name=" << natcmd->nat_acl_name;
             os << " (" << nat_acl_names[natcmd->nat_acl_name] << ")";
-            os << " o_src="          <<  natcmd->o_src->getAddressPtr()->toString();
-            os << " o_dst="          <<  natcmd->o_dst->getAddressPtr()->toString();
-            os << " o_srv="          <<  natcmd->o_srv->getName();
-            os << " o_iface="        <<  natcmd->o_iface->getLabel();
-            os << " t_addr="         <<  natcmd->t_addr->getAddressPtr()->toString();
-            os << " t_iface="        <<  natcmd->t_iface->getLabel();
-            os << " ignore_global="  <<  string((natcmd->ignore_global)?"1":"0");
-            os << " ignore_nat="     <<  string((natcmd->ignore_nat)?"1":"0");
-            os << " ignore_nat_and_print_acl=" << string((natcmd->ignore_nat_and_print_acl)?"1":"0");
-            os << " use_nat_0_0="    <<  string((rule->getBool("use_nat_0_0"))?"1":"0");
+            os << " o_src=" <<  natcmd->o_src->getAddressPtr()->toString();
+            os << " o_dst=" <<  natcmd->o_dst->getAddressPtr()->toString();
+            os << " o_srv=" <<  natcmd->o_srv->getName();
+            os << " o_iface=" <<  natcmd->o_iface->getLabel();
+            os << " t_addr=" <<  natcmd->t_addr->getAddressPtr()->toString();
+            os << " t_iface=" <<  natcmd->t_iface->getLabel();
+            os << " ignore_global=" << string((natcmd->ignore_global)?"1":"0");
+            os << " ignore_nat=" << string((natcmd->ignore_nat)?"1":"0");
+            os << " ignore_nat_and_print_acl="
+               << string((natcmd->ignore_nat_and_print_acl)?"1":"0");
+            os << " use_nat_0_0="
+               << string((rule->getBool("use_nat_0_0"))?"1":"0");
         }
     }
     break;
@@ -794,7 +796,8 @@ bool NATCompiler_pix::createNATCmd::processNext()
             }
         }
 
-        natcmd->ignore_nat=natcmd->ignore_nat_and_print_acl=natcmd->ignore_global=false;
+        natcmd->ignore_nat = natcmd->ignore_nat_and_print_acl =
+            natcmd->ignore_global=false;
         natcmd->use_nat_0_0 = rule->getBool("use_nat_0_0");
         
 /*
@@ -874,12 +877,13 @@ bool NATCompiler_pix::mergeNATCmd::processNext()
 
         if (rule->getRuleType()==NATRule::DNAT)
         {
-            StaticCmd *scmd=pix_comp->static_commands[rule->getInt("sc_cmd")];
+            StaticCmd *scmd = pix_comp->static_commands[rule->getInt("sc_cmd")];
 
-            for (map<int,StaticCmd*>::iterator i1=pix_comp->static_commands.begin();
+            map<int,StaticCmd*>::iterator i1;
+            for (i1=pix_comp->static_commands.begin();
                  i1!=pix_comp->static_commands.end(); ++i1) 
             {
-                StaticCmd *sc=(*i1).second;
+                StaticCmd *sc = (*i1).second;
                 if (scmd==sc) break;
                 
                 if (*(scmd->oaddr) == *(sc->oaddr) &&
@@ -900,12 +904,13 @@ bool NATCompiler_pix::mergeNATCmd::processNext()
 
 	if (rule->getRuleType()==NATRule::SNAT) 
         { 
-            NATCmd *natcmd=pix_comp->nat_commands[ rule->getInt("nat_cmd") ];
+            NATCmd *natcmd = pix_comp->nat_commands[ rule->getInt("nat_cmd") ];
 
-            for (map<int,NATCmd*>::iterator i1=pix_comp->nat_commands.begin();
-                 i1!=pix_comp->nat_commands.end(); ++i1) 
+            map<int,NATCmd*>::iterator i1;
+            for (i1 = pix_comp->nat_commands.begin();
+                 i1 != pix_comp->nat_commands.end(); ++i1) 
             {
-                NATCmd *nc=(*i1).second;
+                NATCmd *nc = (*i1).second;
 /* since map nat_commands is sorted by the key, we only have to scan it
  * until we hit natcmd 
  */
@@ -917,10 +922,12 @@ bool NATCompiler_pix::mergeNATCmd::processNext()
                 Interface *int1 = natcmd->t_iface;
                 Interface *int2 = nc->t_iface;
 
-                if ( *a1 == *a2 && int1->getId() == int2->getId() ) 
+                if ((natcmd->t_addr == nc->t_addr ||
+                     (a1 && a2 && *a1 == *a2)) &&
+                    int1->getId() == int2->getId() ) 
                 {
-                    natcmd->ignore_global=true;
-                    natcmd->nat_id=nc->nat_id;
+                    natcmd->ignore_global = true;
+                    natcmd->nat_id = nc->nat_id;
                 }
             }
 
@@ -951,23 +958,23 @@ bool NATCompiler_pix::mergeNATCmd::processNext()
  * reassign it to the global pool of the rule #2.
  */
                     natcmd->ignore_nat=true;
-
-                    for (map<int,NATCmd*>::iterator i2=pix_comp->nat_commands.begin();
-                         i2!=pix_comp->nat_commands.end(); ++i2) 
+                    map<int,NATCmd*>::iterator i2;
+                    for (i2 = pix_comp->nat_commands.begin();
+                         i2 != pix_comp->nat_commands.end(); ++i2) 
                     {
-                        NATCmd *nc2=i2->second;
+                        NATCmd *nc2 = i2->second;
                         if (natcmd->nat_id == nc2->nat_id)
                             nc2->nat_id=nc->nat_id;
                     }
-
-                    natcmd->nat_id=nc->nat_id;
+                    natcmd->nat_id = nc->nat_id;
                 }
             }
 
             if (!natcmd->use_nat_0_0) 
             {
-                for (map<int,NATCmd*>::iterator i1=pix_comp->nat_commands.begin();
-                     i1!=pix_comp->nat_commands.end(); ++i1) 
+                map<int,NATCmd*>::iterator i1;
+                for (i1 = pix_comp->nat_commands.begin();
+                     i1 != pix_comp->nat_commands.end(); ++i1) 
                 {
                     NATCmd *nc=(*i1).second;
 /* since map nat_commands is sorted by the key, we only have to scan it
@@ -979,7 +986,6 @@ bool NATCompiler_pix::mergeNATCmd::processNext()
  * command or use 'nat 0' command since this means we won't print
  * access-list for those rules and hense can not merge lists
  */
-
                     if (nc->ignore_nat) continue;
                     if (nc->use_nat_0_0) continue;
 
@@ -993,14 +999,12 @@ bool NATCompiler_pix::mergeNATCmd::processNext()
  * in the previous cycle.  We can merge access lists and drop one of
  * these nat commands. We merge ACLs by assigning them the same name.
  */
-
                         natcmd->nat_acl_name = nc->nat_acl_name;
                         nc->ignore_nat_and_print_acl=true;
                     }
                 }
             }
 	}
-
 
     }
     return true;

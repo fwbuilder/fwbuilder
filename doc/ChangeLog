@@ -1,5 +1,10 @@
 2008-09-21  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* NATCompiler_pix.cpp (mergeNATCmd::processNext): fixed crash in
+	compiler for PIX that happened when compiler tried to merge
+	"global" commands and some of the interfaces of the firewall had
+	dynamic address.
+
 	* FWObject.cpp (FWObject::fromXML): (change in libfwbuilder)
 	converted attribute "ro" (read-only) from a dictionary variable to
 	the member variable of class FWObject. We check read-only status
