@@ -156,43 +156,53 @@ bool RoutingCompiler_ipt::eliminateDuplicateRules::processNext()
  */
 void RoutingCompiler_ipt::compile()
 {
-    cout << _(" Compiling routing rules for ") << fw->getName() << " ..." <<  endl << flush;
+    cout << _(" Compiling routing rules for ")
+         << fw->getName() << " ..." <<  endl << flush;
 
     try {
 
 	Compiler::compile();
         //bool check_for_recursive_groups=true;
 
+        add(new RoutingCompiler::Begin());
+        add(new printTotalNumberOfRules());
+        
+        add(new recursiveGroupsInRDst("Check for recursive Groups in RDst"));
+        add(new emptyGroupsInRDst("Check for empty Groups in RDst"));
+        add(new emptyRDstAndRItf("Check if RDst and RItf are both empty"));
+        add(new singleAdressInRGtw(
+                "Check if RGtw object has exactly one IP adress"));
+        add(new rItfChildOfFw("Check if RItf is an Iterface of this firewall"));
+        add(new validateNetwork("Validate network addresses"));
+        add(new reachableAddressInRGtw(
+                "Check if RGtw is reachable via local networks"));
+        add(new contradictionRGtwAndRItf(
+                "Check if RGtw is in a network of RItf"));
 
-        add( new RoutingCompiler::Begin());
-        add( new printTotalNumberOfRules());
+        add(new ExpandGroups("Expand groups in DST"));
+        add(new ExpandMultipleAddresses(
+                "Expand objects with multiple addresses in DST"));
+        add(new eliminateDuplicatesInDST("Eliminate duplicates in DST"));
         
-        add( new recursiveGroupsInRDst(       "Check for recursive Groups in RDst"             ) );        
-        add( new emptyGroupsInRDst(           "Check for empty Groups in RDst"                 ) );
-        add( new emptyRDstAndRItf(            "Check if RDst and RItf are both empty"          ) );
-        add( new singleAdressInRGtw(          "Check if RGtw object has exactly one IP adress" ) );
-        add( new rItfChildOfFw(               "Check if RItf is an Iterface of this firewall"  ) );
-        add( new validateNetwork(             "Validate network addresses"                     ) );
-        add( new reachableAdressInRGtw(       "Check if RGtw is reachable via local networks"  ) );
-        add( new contradictionRGtwAndRItf(    "Check if RGtw is in a network of RItf"          ) );
+        add(new createSortedDstIdsLabel(
+                "Create label with a sorted dst-id-list for 'competingRules'"));
+        add(new competingRules("Check for competing rules"));
 
-        add( new ExpandGroups(                "Expand groups in DST"                           ) );
-        add( new ExpandMultipleAddresses(     "Expand objects with multiple addresses in DST"  ) );
-        add( new eliminateDuplicatesInDST(    "Eliminate duplicates in DST"                    ) );
+        add(new ConvertToAtomicForDST(
+                "Convert to atomic rules by dst address elements"));
         
-        add( new createSortedDstIdsLabel(     "Creates a label with a sorted dst-id-list for 'competingRules'"      ) );
-        add( new competingRules(              "Check for competing rules"                      ) );
-
-        add( new ConvertToAtomicForDST(       "Convert to atomic rules by dst address elements") );
+        add(new createSortedDstIdsLabel(
+                "Create label with a sorted dst-id-list for 'classifyRoutingRules'"));
+        add(new classifyRoutingRules(
+                "Classify into single path or part of a multi path rule"));
         
-        add( new createSortedDstIdsLabel(     "Creates a label with a sorted dst-id-list for 'classifyRoutingRules'") );
-        add( new classifyRoutingRules(        "Classify into single path or part of a multi path rule"              ) );
+        add(new optimize3(
+                "Eliminate duplicate rules generated from a single gui-rule"));
+        add(new eliminateDuplicateRules(
+                "Eliminate duplicate rules over the whole table"));
         
-        add( new optimize3(                   "Eliminate duplicate rules generated from a single gui-rule"          ) );
-        add( new eliminateDuplicateRules(     "Eliminate duplicate rules over the whole table" ) );
-        
-        add( new PrintRule(                   "generate ip code"                               ) );
-        add( new simplePrintProgress(                                                          ) );
+        add(new PrintRule("generate ip code"));
+        add(new simplePrintProgress());
 
         runRuleProcessors();
 
@@ -219,13 +229,13 @@ void RoutingCompiler_ipt::epilog()
     int nb = 0;
     
     // ecmp roules can only be generated after all the rules have been parsed, that is the reason for putting this code in the epilog function
-    if( ecmp_rules_buffer.size() > 0) {
+    if(ecmp_rules_buffer.size() > 0) {
             
         output << "\n#\n# ======================================= EQUAL COST MULTI PATH ========================================\n#" << endl;
         
         output << "echo \"Activating ecmp routing rules...\"" << endl;
                 
-        for( map<string,string>::iterator ecmp_comments_buffer_it = ecmp_comments_buffer.begin(); ecmp_comments_buffer_it != ecmp_comments_buffer.end(); ++ecmp_comments_buffer_it) {
+        for (map<string,string>::iterator ecmp_comments_buffer_it = ecmp_comments_buffer.begin(); ecmp_comments_buffer_it != ecmp_comments_buffer.end(); ++ecmp_comments_buffer_it) {
         
             output << ecmp_comments_buffer_it->second << "#\n" << flush;
     

@@ -1,3 +1,31 @@
+2008-09-21  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWObject.cpp (FWObject::fromXML): (change in libfwbuilder)
+	converted attribute "ro" (read-only) from a dictionary variable to
+	the member variable of class FWObject. We check read-only status
+	of objects very often and dictionary lookups were slowing compiler
+	down considerably.
+
+	* FWObjectDatabase.cpp (FWObjectDatabase::getStringId): (change in
+	libfwbuilder) generate unique string object id on demand instead
+	of in the call to generateUniqeueId. This helps speed up compiler
+	operations by a factor of about 3 because we generate unique int
+	ID every time object is created or copied, yet string ID is only
+	needed when object is stored in external XML file. Also using
+	sprintf to assemble string ID, it works faster than ostringstream.
+
+	* RoutingCompiler.cpp (reachableAddressInRGtw::processNext): (change
+	in libfwbuilder) fixed crashes in RoutingCompiler that happened
+	because Routing ruleset object being processed is disconnected
+	from the firewall parent at the time compiler works with it.
+
+	* RoutingCompiler.cpp (rItfChildOfFw::processNext): (change in
+	libfwbuilder) fixed compiler error "Error (iptables): The object
+	"eth0" used as interface in the routing rule 0 (main) is not a
+	child of the firewall the rule belongs to!" that also happened
+	because Routing ruleset object being processed is disconnected
+	from the firewall parent at the time compiler works with it.
+
 2008-09-19  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ipfw.cpp (main): Basic suport for IPv6 for ipfw. IPv6 rules
