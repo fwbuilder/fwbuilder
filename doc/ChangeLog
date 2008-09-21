@@ -1,3 +1,37 @@
+2008-09-21  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWObject.cpp (FWObject::fromXML): converted attribute
+	"ro" (read-only) from a dictionary variable to the member variable
+	of class FWObject. We check read-only status of objects very often
+	and dictionary lookups were slowing compiler down considerably.
+
+	* FWObjectDatabase.cpp (FWObjectDatabase::getStringId): generate
+	unique string object id on demand instead of in the call to
+	generateUniqeueId. This helps speed up compiler operations by a
+	factor of about 3 because we generate unique int ID every time
+	object is created or copied, yet string ID is only needed when
+	object is stored in external XML file. Also using sprintf to
+	assemble string ID, it works faster than ostringstream.
+
+	* RoutingCompiler.cpp (reachableAddressInRGtw::processNext): fixed
+	crashes in RoutingCompiler that happened because Routing ruleset
+	object being processed is disconnected from the firewall parent
+	at the time compiler works with it.
+
+	* RoutingCompiler.cpp (rItfChildOfFw::processNext): fixed compiler
+	error "Error (iptables): The object "eth0" used as interface in
+	the routing rule 0 (main) is not a child of the firewall the rule
+	belongs to!" that also happened because Routing ruleset object
+	being processed is disconnected from the firewall parent at the
+	time compiler works with it.
+
+	* Preprocessor.cpp (Preprocessor::isUsedByThisFirewall): added
+	code to break infinite loop that happens when a group references
+	itelf.
+
+	* FWObjectDatabase.cpp (FWObjectDatabase::_findWhereUsed): fixed
+	findWhereUsed
+
 2008-09-16  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* IPv4.cpp (IPv4::fromXML): filter addresses and strip leading and
@@ -22,7 +56,7 @@
 2008-09-06  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* v3.0.0 released Sep 1, 2008. Merged branch "v3" r180 to trunk
-	
+
 2008-08-23  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWObject.cpp (FWObject::toXML): moved saving of XML attributes

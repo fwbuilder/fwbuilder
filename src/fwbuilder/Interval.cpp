@@ -305,6 +305,7 @@ xmlNodePtr Interval::toXML(xmlNodePtr parent) throw(FWException)
 
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
     xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((_getRO()) ? "True" : "False")));
 
     return me;
 }

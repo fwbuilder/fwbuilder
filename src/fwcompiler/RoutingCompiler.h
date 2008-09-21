@@ -110,14 +110,21 @@ namespace fwcompiler {
                 validateNetwork(const std::string &n) : RoutingRuleProcessor(n) {};
                 virtual ~validateNetwork() {};
                 virtual bool processNext();
-                bool checkValidNetwork(libfwbuilder::FWObject *);
+                bool checkValidNetwork(libfwbuilder::FWObject*);
         };
         
         /**
          * the IP address of the gateway has to be 
          * in the same local network as the firewall
          */
-        DECLARE_ROUTING_RULE_PROCESSOR(reachableAdressInRGtw);
+        friend class reachableAddressInRGtw;
+        class reachableAddressInRGtw : public RoutingRuleProcessor { 
+            public: 
+                reachableAddressInRGtw(const std::string &n) : RoutingRuleProcessor(n) {};
+                virtual ~reachableAddressInRGtw() {};
+                virtual bool processNext();
+                bool checkReachableIPAddress(libfwbuilder::FWObject*);
+        };
         
         /**
          * the IP address of the gateway has to be

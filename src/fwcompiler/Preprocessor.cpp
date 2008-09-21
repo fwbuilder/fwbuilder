@@ -34,10 +34,13 @@
 
 #include <iostream>
 
+#include <stdlib.h>
+
 using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
+static int infinite_recursion_breaker = 0;
 string Preprocessor::myPlatformName() { return "generic_preprocessor"; }
 
 Preprocessor::~Preprocessor() {}
@@ -55,7 +58,8 @@ Preprocessor::Preprocessor(FWObjectDatabase *_db,
 
 void Preprocessor::convertObject(FWObject *obj)
 {
-    MultiAddress *adt=MultiAddress::cast(obj);
+    MultiAddress *adt = MultiAddress::cast(obj);
+
     if (adt!=NULL && adt->isCompileTime() && isUsedByThisFirewall(obj))
     {
         try
@@ -75,8 +79,13 @@ void Preprocessor::convertObject(FWObject *obj)
  */
 bool Preprocessor::isUsedByThisFirewall(FWObject *obj)
 {
+    int marker = obj->getInt(".convert_objects_recursion_breaker");
+    if (marker == infinite_recursion_breaker) return false;
+    obj->setInt(".convert_objects_recursion_breaker",
+                infinite_recursion_breaker);
+
     set<FWObject*> resset;
-    obj->getRoot()->findWhereUsed(obj,obj->getRoot(),resset);
+    obj->getRoot()->findWhereUsed(obj, obj->getRoot(), resset);
 
     set<FWObject*>::iterator i;
     for (i=resset.begin(); i!=resset.end(); ++i)
@@ -102,6 +111,7 @@ bool Preprocessor::isUsedByThisFirewall(FWObject *obj)
 
 void Preprocessor::convertObjectsRecursively(FWObject *o)
 {
+    infinite_recursion_breaker++;
     for (FWObject::iterator i=o->begin(); i!=o->end(); ++i)
     {
         FWObject *obj = *i;

@@ -89,7 +89,7 @@ void FWObject::fromXML(xmlNodePtr root) throw(FWException)
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("ro")));
     if(n)
     {
-        setStr("ro",n);
+        ro = (cxx_strcasecmp(n, "1")==0 || cxx_strcasecmp(n , "true")==0);
         FREEXMLBUFF(n);
     }
 
@@ -126,7 +126,8 @@ xmlNodePtr FWObject::toXML(xmlNodePtr xml_parent_node) throw(FWException)
     return toXML(xml_parent_node, true);
 }
 
-xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children) throw(FWException)
+xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
+    throw(FWException)
 {
     string s_id = FWObjectDatabase::getStringId(getId());
 
@@ -172,6 +173,7 @@ FWObject::FWObject()
     name        = "";
     comment     = "";
     id          = -1;
+    ro          = false;
 
     // When object is created we assign it unique Id
     setId(FWObjectDatabase::generateUniqueId());
@@ -188,6 +190,7 @@ FWObject::FWObject(bool new_id)
     name        = "";
     comment     = "";
     id          = -1;
+    ro          = false;
 
     // When object created we assign it unique Id
     if (new_id)
@@ -211,6 +214,7 @@ FWObject::FWObject(const FWObject *root, bool )
     name        = "";
     comment     = "";
     id          = -1;
+    ro          = false;
     
     // When object created we assign it unique Id
     setId(FWObjectDatabase::generateUniqueId());
@@ -341,17 +345,7 @@ FWObject& FWObject::duplicate(const FWObject *x, bool preserve_id)
     throw(FWException)
 {
     checkReadOnly();
-    bool xro = x->getBool("ro"); 
-
-#if 0
-    cerr << "--------------------------------" << endl;
-    cerr << "this: " << endl;
-    dump(true,true);
-    cerr << endl;
-    cerr << "x: " << endl;
-    ((FWObject*)x)->dump(true,true);
-    cerr << endl;
-#endif
+    bool xro = x->ro;
 
     shallowDuplicate(x, preserve_id);
 
@@ -409,11 +403,10 @@ FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
     id = x->id;
     name = x->name;
     comment = x->comment;
-
+    ro = x->ro;
     data = x->data;
 
-    bool ro_status = getBool("ro");
-    if (ro_status) setReadOnly(false);
+    setReadOnly(false);
 
     //if (getBool("ro")) setReadOnly(false);
     if (!preserve_id)
@@ -431,9 +424,7 @@ FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
     if (dbroot==NULL) setRoot(x->getRoot());
     if (dbroot!=NULL) FWObjectDatabase::cast(dbroot)->addToIndex(this);
 
-    // do setReadOnly only if needed; this way objects that
-    // do not have this attribute won't get it accidentally.
-    if (ro_status) setReadOnly(true);
+    setReadOnly(x->ro);
     setDirty(true);
     return *this;
 }
@@ -464,12 +455,6 @@ FWObject*  FWObject::getLibrary() const
 FWObjectDatabase* FWObject::getRoot() const
 {
     return FWObjectDatabase::cast(dbroot);
-#if 0
-    const FWObject *p=this;
-
-    while(p->getParent()!=NULL) p=p->getParent();
-    return FWObjectDatabase::cast((FWObject*)p);
-#endif
 }
 
 string FWObject::getPath(bool relative) const
@@ -523,6 +508,12 @@ bool FWObject::exists(const string &name) const
 
 const string &FWObject::getStr(const string &name) const
 {
+    map<string,string>::const_iterator i=data.find(name);
+    if (i==data.end())
+        return NOT_FOUND;
+    else
+        return (*i).second;
+#if 0
     if(exists(name)) 
     {
         map<string,string>::const_iterator i=data.find(name);
@@ -531,6 +522,7 @@ const string &FWObject::getStr(const string &name) const
     {
         return NOT_FOUND;
     }
+#endif
 }
 
 void FWObject::remStr(const string &name)
@@ -577,8 +569,8 @@ bool FWObject::getBool(const string &name) const
 {
     if(exists(name)) 
     {
-		return(getStr(name)=="1" || 
-               cxx_strcasecmp(getStr(name).c_str() , "true")==0);
+        string val = getStr(name);
+        return (val=="1" || cxx_strcasecmp(val.c_str() , "true")==0);
     } else
         return false;
 }
@@ -1050,7 +1042,6 @@ FWObject* FWObject::getById  (int id, bool recursive)
     return NULL; // not found
 }
 
-
 FWObject* FWObject::getFirstByType(const string &type_name) const
 {
     const_iterator i=find_if(begin(),end(), FWObjectTypeNameEQPredicate(type_name));
@@ -1099,16 +1090,15 @@ bool FWObject::isDirty()
  */
 void FWObject::setReadOnly(bool f)
 {
-    data["ro"]= (f)?"True":"False" ;
+    ro = f;
     FWObjectDatabase *dbroot = getRoot();
     if (dbroot)
     {
-        bool ri=dbroot->init;
-        dbroot->init=true;
+        bool ri = dbroot->init;
+        dbroot->init = true;
         setDirty(true);
-        dbroot->init=ri;
+        dbroot->init = ri;
     }
-//    setBool("ro",f);
 }
 
 /*
@@ -1127,26 +1117,27 @@ bool FWObject::isReadOnly()
     FWObject *p=this;
     while (p)
     {
-        if (p->getBool("ro")) return true;
-        p=p->getParent();
+        if (p->ro) return true;
+        p = p->getParent();
     }
     return false;
 }
 
 void FWObject::checkReadOnly() throw(FWException)
 {
-    if (isReadOnly())
-        throw FWException(
-            string("Attempt to modify read-only object ")+getName());
+    if (isReadOnly()) throw FWException(
+        string("Attempt to modify read-only object ")+getName());
 }
 
-
-FWObjectTypedChildIterator::FWObjectTypedChildIterator(const FWObjectTypedChildIterator &o):
-    type_name(o.type_name),real_iterator(o.real_iterator), _begin(o._begin), _end(o._end)
+FWObjectTypedChildIterator::FWObjectTypedChildIterator(
+    const FWObjectTypedChildIterator &o) :
+    type_name(o.type_name),
+    real_iterator(o.real_iterator), _begin(o._begin), _end(o._end)
 {
 }
 
-FWObjectTypedChildIterator::FWObjectTypedChildIterator(const FWObject *o, const std::string &_type_name)
+FWObjectTypedChildIterator::FWObjectTypedChildIterator(
+    const FWObject *o, const std::string &_type_name)
 {
     type_name     = _type_name ;
     _end          = o->end()   ;
@@ -1157,12 +1148,14 @@ FWObjectTypedChildIterator::FWObjectTypedChildIterator(const FWObject *o, const 
     _begin = real_iterator;
 }
 
-bool FWObjectTypedChildIterator::operator==(const FWObject::const_iterator& __x) const 
+bool FWObjectTypedChildIterator::operator==(
+    const FWObject::const_iterator& __x) const 
 { 
     return real_iterator == __x; 
 }
 
-bool FWObjectTypedChildIterator::operator!=(const FWObject::const_iterator& __x) const 
+bool FWObjectTypedChildIterator::operator!=(
+    const FWObject::const_iterator& __x) const 
 { 
     return real_iterator != __x; 
 }
@@ -1190,7 +1183,8 @@ FWObjectTypedChildIterator& FWObjectTypedChildIterator::operator--()
     do
     {
         real_iterator--;
-    } while(real_iterator!=_begin && (real_iterator==_end || (*real_iterator)->getTypeName()!=type_name));
+    } while(real_iterator!=_begin &&
+           (real_iterator==_end || (*real_iterator)->getTypeName()!=type_name));
     return *this;
 }
 

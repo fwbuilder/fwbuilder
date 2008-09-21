@@ -79,6 +79,7 @@ xmlNodePtr RuleSet::toXML(xmlNodePtr parent) throw(FWException)
     xmlNodePtr me = FWObject::toXML(parent, false);
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
     xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((_getRO()) ? "True" : "False")));
 
     string ipv6_s = (ipv6)?"True":"False";
     string top_s = (top)?"True":"False";

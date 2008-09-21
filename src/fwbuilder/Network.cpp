@@ -87,6 +87,7 @@ xmlNodePtr Network::toXML(xmlNodePtr xml_parent_node) throw(FWException)
     xmlNodePtr me = FWObject::toXML(xml_parent_node);
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
     xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((_getRO()) ? "True" : "False")));
     
     xmlNewProp(me, 
                TOXMLCAST("address"),

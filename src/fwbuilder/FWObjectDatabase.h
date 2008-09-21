@@ -63,7 +63,6 @@ class IDcounter {
 class FWObjectDatabase : public FWObject
 {
 private:
-
     void _clearReferenceCounters(FWObject *o);
     void _fixReferenceCounters(FWObject *o);
     bool _isInIgnoreList(FWObject *o);

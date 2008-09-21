@@ -88,6 +88,7 @@ xmlNodePtr AddressTable::toXML(xmlNodePtr parent) throw(FWException)
 
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
     xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((_getRO()) ? "True" : "False")));
 
     return me;
 }
@@ -109,6 +110,7 @@ void AddressTable::loadFromSource(bool ipv6) throw(FWException)
        while(!fs.eof())
        {
             getline(fs,buf);
+
             pos = buf.find_first_not_of(" \t");
             if (pos!=string::npos)
             {

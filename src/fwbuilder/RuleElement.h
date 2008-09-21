@@ -89,7 +89,7 @@ class RuleElementSrc : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementSrc);
     RuleElementSrc();
     RuleElementSrc(const FWObject *root,bool prepopulate);
-    virtual   int getAnyElementId();
+    virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 };
 
@@ -98,7 +98,7 @@ class RuleElementDst : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementDst);
     RuleElementDst();
     RuleElementDst(const FWObject *root,bool prepopulate);
-    virtual   int getAnyElementId();
+    virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 };
 
@@ -107,7 +107,7 @@ class RuleElementSrv : public ServiceGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementSrv);
     RuleElementSrv();
     RuleElementSrv(const FWObject *root,bool prepopulate);
-    virtual   int getAnyElementId();
+    virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 };
 
@@ -116,8 +116,8 @@ class RuleElementItf : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementItf);
     RuleElementItf();
     RuleElementItf(const FWObject *root,bool prepopulate);
-    virtual   int getAnyElementId();
-    virtual   bool         validateChild(FWObject *o);
+    virtual int getAnyElementId();
+    virtual bool validateChild(FWObject *o);
     bool checkItfChildOfThisFw(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 };
@@ -127,7 +127,7 @@ class RuleElementInterval : public IntervalGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementInterval);
     RuleElementInterval();
     RuleElementInterval(const FWObject *root,bool prepopulate);
-    virtual   int getAnyElementId();
+    virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 };
 
@@ -136,7 +136,7 @@ class RuleElementOSrc : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementOSrc);
     RuleElementOSrc();
     RuleElementOSrc(const FWObject *root,bool prepopulate);
-    virtual   int getAnyElementId();
+    virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 };
 
@@ -145,7 +145,7 @@ class RuleElementODst : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementODst);
     RuleElementODst();
     RuleElementODst(const FWObject *root,bool prepopulate);
-    virtual   int getAnyElementId();
+    virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 };
 
@@ -154,7 +154,7 @@ class RuleElementOSrv : public ServiceGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementOSrv);
     RuleElementOSrv();
     RuleElementOSrv(const FWObject *root,bool prepopulate);
-    virtual   int getAnyElementId();
+    virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 };
 
@@ -163,7 +163,7 @@ class RuleElementTSrc : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementTSrc);
     RuleElementTSrc();
     RuleElementTSrc(const FWObject *root,bool prepopulate);
-    virtual   int getAnyElementId();
+    virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 };
 
@@ -172,7 +172,7 @@ class RuleElementTDst : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementTDst);
     RuleElementTDst();
     RuleElementTDst(const FWObject *root,bool prepopulate);
-    virtual   int getAnyElementId();
+    virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 };
 
@@ -181,7 +181,7 @@ class RuleElementTSrv : public ServiceGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementTSrv);
     RuleElementTSrv();
     RuleElementTSrv(const FWObject *root,bool prepopulate);
-    virtual   int getAnyElementId();
+    virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 };
 
@@ -190,7 +190,7 @@ class RuleElementRDst : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementRDst);
     RuleElementRDst();
     RuleElementRDst(const FWObject *root,bool prepopulate);
-    virtual   int getAnyElementId();
+    virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 };
 
@@ -199,8 +199,8 @@ class RuleElementRGtw : public ObjectGroup, public RuleElement {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementRGtw);
     RuleElementRGtw();
     RuleElementRGtw(const FWObject *root,bool prepopulate);
-    virtual   int getAnyElementId();
-    virtual   bool         validateChild(FWObject *o);
+    virtual int getAnyElementId();
+    virtual bool validateChild(FWObject *o);
     bool checkSingleIPAdress(FWObject *o);
     bool checkReachableIPAdress(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
@@ -211,7 +211,7 @@ class RuleElementRItf : public RuleElementItf {
     DECLARE_FWOBJECT_SUBTYPE(RuleElementRItf);
     RuleElementRItf();
     RuleElementRItf(const FWObject *root,bool prepopulate);
-    virtual   bool         validateChild(FWObject *o);
+    virtual bool validateChild(FWObject *o);
 };
 
 }

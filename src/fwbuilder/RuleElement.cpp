@@ -322,28 +322,27 @@ bool RuleElementItf::validateChild(FWObject *o)
  */
 bool RuleElementItf::checkItfChildOfThisFw(FWObject *o)
 {
-    // Check if o is child of a firewall
     FWObject* o_tmp = getRoot()->findInIndex(o->getId());
-    bool child_of_firewall = false;
-    while( o_tmp && 
-           o_tmp->getRoot() != o_tmp && 
-           Firewall::cast(o_tmp) == NULL) o_tmp = o_tmp->getParent();
-    if( Firewall::cast(o_tmp)!=NULL) child_of_firewall = true;
-    
-    // Check if the Firewall the Interface belongs to is the same this RuleElement belongs to
-    bool same_firewall = false;
-    if( child_of_firewall)
+    FWObject* o_tmp2 = this;
+
+    while (o_tmp)
     {
-        FWObject* o_tmp2 = this;
-        while( Firewall::cast(o_tmp2) == NULL) o_tmp2 = o_tmp2->getParent();
-      
-        if( Firewall::cast(o_tmp) == Firewall::cast(o_tmp2)) same_firewall = true;
+        if (Firewall::cast(o_tmp))
+        {
+            // Check if the Firewall the Interface belongs to is the same this
+            // RuleElement belongs to
+            while (o_tmp2)
+            {
+                if (Firewall::cast(o_tmp2) && o_tmp->getId()==o_tmp2->getId())
+                    return true;
+                o_tmp2 = o_tmp2->getParent();
+            }
+            return false;
+        }
+        o_tmp = o_tmp->getParent();
     }
-    
-    return (child_of_firewall && same_firewall);
+    return false;
 }
-
-
 
 
 const char *RuleElementOSrc::TYPENAME={"OSrc"};
@@ -615,93 +614,6 @@ bool RuleElementRGtw::checkSingleIPAdress(FWObject *o) {
     return ( o->getId() == getAnyElementId() ||
             (FWObject::validateChild(o) && 
             (IPv4::cast(o)!=NULL || FWObjectReference::cast(o)!=NULL)));
-}
-
-// the IP address of the gateway has to be in a local network of the firewall
-bool RuleElementRGtw::checkReachableIPAdress(FWObject *o)
-{
-    FWObject* o_tmp = this;
-    while( Firewall::cast(o_tmp) == NULL) o_tmp = o_tmp->getParent();
-    // let's walk over all interfaces of this firewall
-    FWObjectTypedChildIterator j=o_tmp->findByType(Interface::TYPENAME);
-
-
-    if( Host::cast(o) != NULL)
-    {
-        Host *host=Host::cast(o);
-        const InetAddr *ip_host = host->getAddressPtr();
-        for ( ; j!=j.end(); ++j )
-        {
-            Interface *i_firewall=Interface::cast(*j);
-            for(FWObjectTypedChildIterator fw_ips=i_firewall->findByType(IPv4::TYPENAME); fw_ips!=fw_ips.end(); ++fw_ips) {
-                IPv4 *ipv4_obj_firewall = IPv4::cast(*fw_ips);
-
-                const InetAddr *addr = ipv4_obj_firewall->getAddressPtr();
-                const InetAddr *netm = ipv4_obj_firewall->getNetmaskPtr();
-                if (addr)
-                {
-                    InetAddrMask fw_net(*addr, *netm);
-                    if (fw_net.belongs(*ip_host))
-                        return true;
-                }
-            }
-        }
-        return false;
-
-    } else if( Interface::cast(o) != NULL)
-    {
-        Interface *gw_interface=Interface::cast(o);
-        const InetAddr *ip_gateway = gw_interface->getAddressPtr();
-
-        // walk over all interfaces of this firewall
-        for ( ; j!=j.end(); ++j )
-        {
-            Interface *if_firewall=Interface::cast(*j);
-            FWObjectTypedChildIterator addresses =
-                if_firewall->findByType(IPv4::TYPENAME);
-
-            // check all IPv4 addresses of this firewall interface
-            for ( ; addresses!=addresses.end(); ++addresses )
-            {
-                IPv4 *ipv4_obj_firewall = IPv4::cast(*addresses);
-                const InetAddr *addr = ipv4_obj_firewall->getAddressPtr();
-                const InetAddr *netm = ipv4_obj_firewall->getNetmaskPtr();
-                if (addr)
-                {
-                    InetAddrMask fw_net(*addr, *netm);
-                    if (fw_net.belongs(*ip_gateway))
-                        return true;
-                }
-            }
-        }
-        return false;
-
-    } else if( IPv4::cast(o) != NULL) {
-
-        IPv4 *ipv4=IPv4::cast(o);
-        const InetAddr *ip_ipv4 = ipv4->getAddressPtr();
-
-        for ( ; j!=j.end(); ++j ) {
-            Interface *if_firewall=Interface::cast(*j);
-            FWObjectTypedChildIterator addresses =
-                if_firewall->findByType(IPv4::TYPENAME);
-
-            // check all IPv4 addresses of this firewall interface
-            for ( ; addresses!=addresses.end(); ++addresses ) {
-                IPv4 *ipv4_obj_firewall = IPv4::cast(*addresses);
-                const InetAddr *addr = ipv4_obj_firewall->getAddressPtr();
-                const InetAddr *netm = ipv4_obj_firewall->getNetmaskPtr();
-                if (addr)
-                {
-                    InetAddrMask fw_net(*addr, *netm);
-                    if (fw_net.belongs(*ip_ipv4))
-                        return true;
-                }
-            }
-        } return false;
-
-    } else return true;
-
 }
 
 const char *RuleElementRItf::TYPENAME={"RItf"};

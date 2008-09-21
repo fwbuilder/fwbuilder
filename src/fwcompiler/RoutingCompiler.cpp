@@ -319,24 +319,113 @@ bool RoutingCompiler::validateNetwork::processNext()
     
 }
 
+// the IP address of the gateway has to be in a local network of the firewall
+bool RoutingCompiler::reachableAddressInRGtw::checkReachableIPAddress(FWObject *o)
+{
+    // let's walk over all interfaces of this firewall
+    FWObjectTypedChildIterator j = compiler->fw->findByType(Interface::TYPENAME);
+
+    if( Host::cast(o) != NULL)
+    {
+        Host *host=Host::cast(o);
+        const InetAddr *ip_host = host->getAddressPtr();
+        for ( ; j!=j.end(); ++j )
+        {
+            Interface *i_firewall=Interface::cast(*j);
+            for(FWObjectTypedChildIterator fw_ips = 
+                    i_firewall->findByType(IPv4::TYPENAME);
+                fw_ips!=fw_ips.end(); ++fw_ips)
+            {
+                IPv4 *ipv4_obj_firewall = IPv4::cast(*fw_ips);
+
+                const InetAddr *addr = ipv4_obj_firewall->getAddressPtr();
+                const InetAddr *netm = ipv4_obj_firewall->getNetmaskPtr();
+                if (addr)
+                {
+                    InetAddrMask fw_net(*addr, *netm);
+                    if (fw_net.belongs(*ip_host))
+                        return true;
+                }
+            }
+        }
+        return false;
+
+    } else if( Interface::cast(o) != NULL)
+    {
+        Interface *gw_interface=Interface::cast(o);
+        const InetAddr *ip_gateway = gw_interface->getAddressPtr();
+
+        // walk over all interfaces of this firewall
+        for ( ; j!=j.end(); ++j )
+        {
+            Interface *if_firewall=Interface::cast(*j);
+            FWObjectTypedChildIterator addresses =
+                if_firewall->findByType(IPv4::TYPENAME);
+
+            // check all IPv4 addresses of this firewall interface
+            for ( ; addresses!=addresses.end(); ++addresses )
+            {
+                IPv4 *ipv4_obj_firewall = IPv4::cast(*addresses);
+                const InetAddr *addr = ipv4_obj_firewall->getAddressPtr();
+                const InetAddr *netm = ipv4_obj_firewall->getNetmaskPtr();
+                if (addr)
+                {
+                    InetAddrMask fw_net(*addr, *netm);
+                    if (fw_net.belongs(*ip_gateway))
+                        return true;
+                }
+            }
+        }
+        return false;
+
+    } else if( IPv4::cast(o) != NULL)
+    {
+        IPv4 *ipv4=IPv4::cast(o);
+        const InetAddr *ip_ipv4 = ipv4->getAddressPtr();
+
+        for ( ; j!=j.end(); ++j )
+        {
+            Interface *if_firewall=Interface::cast(*j);
+            FWObjectTypedChildIterator addresses =
+                if_firewall->findByType(IPv4::TYPENAME);
+
+            // check all IPv4 addresses of this firewall interface
+            for ( ; addresses!=addresses.end(); ++addresses ) {
+                IPv4 *ipv4_obj_firewall = IPv4::cast(*addresses);
+                const InetAddr *addr = ipv4_obj_firewall->getAddressPtr();
+                const InetAddr *netm = ipv4_obj_firewall->getNetmaskPtr();
+                if (addr)
+                {
+                    InetAddrMask fw_net(*addr, *netm);
+                    if (fw_net.belongs(*ip_ipv4))
+                        return true;
+                }
+            }
+        } return false;
+
+    } else return true;
+
+    return false;
+}
+
+
 //  the IP address of the gateway has to be in a local network of the firewall
-bool RoutingCompiler::reachableAdressInRGtw::processNext()
+bool RoutingCompiler::reachableAddressInRGtw::processNext()
 {
     RoutingRule *rule=getNext(); if (rule==NULL) return false;
-    
     tmp_queue.push_back(rule);
-    
     
     RuleElementRGtw *gtwrel=rule->getRGtw();
     FWObject *o = FWReference::cast(gtwrel->front())->getPointer();
               
-    if( gtwrel->checkReachableIPAdress(o) == false) {
-        
+    if( checkReachableIPAddress(o) == false)
+    {
         string msg;
-        msg = "The object \"" + o->getName() + "\" used as gateway in the routing rule "\
-            + rule->getLabel() + " is not reachable, since not in any local network of the firewall!";
+        msg = "The object \"" + o->getName() +
+            "\" used as gateway in the routing rule "\
+            + rule->getLabel() +
+            " is not reachable, since not in any local network of the firewall";
         compiler->abort( msg.c_str() );
-        
     }
     return true;
 }
@@ -404,20 +493,35 @@ bool RoutingCompiler::contradictionRGtwAndRItf::processNext()
 bool RoutingCompiler::rItfChildOfFw::processNext()
 {
     RoutingRule *rule=getNext(); if (rule==NULL) return false;
-    
     tmp_queue.push_back(rule);
     
-    
-    RuleElementRItf *itfrel=rule->getRItf();
+    RuleElementRItf *itfrel = rule->getRItf();
     FWObject *o = FWReference::cast(itfrel->front())->getPointer();
+
+    /*
+     * check if an object 'o' is a child of the firewall being
+     * processed
+     */
+    FWObject* o_tmp = o;
+    bool same_fw = false;
+    while (o_tmp)
+    {
+        if (Firewall::cast(o_tmp) && o_tmp->getId()==compiler->fw->getId())
+        {
+            same_fw = true;
+            break;
+        }
+        o_tmp = o_tmp->getParent();
+    }
               
-    if( itfrel->checkItfChildOfThisFw(o) == false) {
-        
+    if (!same_fw)
+    {
         string msg;
-        msg = "The object \"" + o->getName() + "\" used as interface in the routing rule "\
-            + rule->getLabel() + " is not a child of the firewall the rule belongs to!";
+        msg = "The object \"" + o->getName() + 
+            "\" used as interface in the routing rule " +
+            rule->getLabel() +
+            " is not a child of the firewall the rule belongs to!";
         compiler->abort( msg.c_str() );
-        
     } 
     return true;
 }

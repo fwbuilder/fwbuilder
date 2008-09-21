@@ -94,6 +94,11 @@ using namespace libfwbuilder;
 // "System" objects use ids < 1000.
 
 int id_seed = 1000;
+#ifdef _WIN32
+static int cached_pid = _getpid();
+#else
+static int cached_pid = getpid();
+#endif
 
 // these two dictionaries must be static to ensure uniqueness of integer
 // ids across multiple FWObjectDatabase objects
@@ -136,7 +141,7 @@ FWObjectDatabase::FWObjectDatabase(FWObjectDatabase& d) : FWObject(false)
 
     searchId =0;
 
-    init=true;
+    init = true;
     *this = d;  // copies entire tree
     setId( ROOT_ID );
 
@@ -148,7 +153,7 @@ FWObjectDatabase::FWObjectDatabase(FWObjectDatabase& d) : FWObject(false)
     addToIndexRecursive( this );  // reindex
 
     setDirty(false);
-    init=false;
+    init = false;
 }
 
 void FWObjectDatabase::init_id_dict()
@@ -159,7 +164,6 @@ void FWObjectDatabase::init_id_dict()
         id_dict[ANY_ADDRESS_ID] = "sysid0";
         id_dict[ANY_SERVICE_ID] = "sysid1";
         id_dict[ANY_INTERVAL_ID] = "sysid2";
-        id_dict[DELETED_OBJECTS_ID] = "sysid99";
         id_dict[STANDARD_LIB_ID] = "syslib000";
         id_dict[TEMPLATE_LIB_ID] = "syslib100";
         id_dict[DELETED_OBJECTS_ID] = "sysid99";
@@ -191,30 +195,19 @@ int FWObjectDatabase::getIntId(const std::string &s_id)
 string FWObjectDatabase::getStringId(int i_id)
 {
     if (id_dict.count(i_id) > 0) return id_dict[i_id];
-    return "";
+
+    // TODO: Use proper GUID algorithm here
+    char id_buf[64];
+    sprintf(id_buf, "id%dX%d", i_id, cached_pid);
+    id_dict[i_id] = string(id_buf);
+    id_dict_reverse[string(id_buf)] = i_id;
+    return id_dict[i_id];
 }
 
 int FWObjectDatabase::generateUniqueId()
 {
-    int i_id = ++id_seed;
-
-    // TODO: Use proper GUID algorithm here
-    int pid=0;
-#ifdef _WIN32
-    pid = _getpid();
-#else
-    pid = getpid();
-#endif
-    ostringstream str;
-    str << "id" << i_id << "X" << pid;
-
-    id_dict[i_id] = string(str.str());
-    id_dict_reverse[string(str.str())] = i_id;
-
-    return i_id;
+    return ++id_seed;
 }
-
-
 
 void FWObjectDatabase::setFileName(const string &filename)
 {
@@ -247,20 +240,22 @@ void FWObjectDatabase::load(const string &f,
     if(f=="") 
         return;
     
-    xmlDocPtr doc=XMLTools::loadFile(f, FWObjectDatabase::TYPENAME,
-                                     FWObjectDatabase::DTD_FILE_NAME,
-                                     upgrade, template_dir);
+    xmlDocPtr doc = XMLTools::loadFile(f, FWObjectDatabase::TYPENAME,
+                                       FWObjectDatabase::DTD_FILE_NAME,
+                                       upgrade, template_dir);
     
     xmlNodePtr root = xmlDocGetRootElement(doc);
     
-    if(!root || !root->name || strcmp(FROMXMLCAST(root->name), FWObjectDatabase::TYPENAME)!=SAME)
+    if(!root || !root->name || strcmp(FROMXMLCAST(root->name),
+                                      FWObjectDatabase::TYPENAME)!=SAME)
     {
 	xmlFreeDoc(doc);
         throw FWException("Data file has invalid structure: "+f);
     }
     
-    try {
-        init=true;
+    try
+    {
+        init = true;
 
 //        clearChildren();
         deleteChildren();
@@ -271,10 +266,10 @@ void FWObjectDatabase::load(const string &f,
         setFileName(f);
     } catch (FWException &ex)
     {
-        init=false;
+        init = false;
         throw(ex);
     }
-    init=false;
+    init = false;
 }
 
 void FWObjectDatabase::saveXML(xmlDocPtr doc) throw(FWException)
@@ -1126,13 +1121,6 @@ void FWObjectDatabase::findWhereUsed(FWObject *o,
     for (set<FWObject*>::iterator it=results.begin(); it!=results.end(); ++it)
     {
         FWObject *obj = *it;
-/*
-        if (RuleElement::cast(obj))
-        {
-            resset.insert(obj->getParent());
-            continue;
-        }
-*/
         if (RuleSet::cast(obj))
         {
             resset.insert(obj->getParent());
@@ -1142,19 +1130,35 @@ void FWObjectDatabase::findWhereUsed(FWObject *o,
     }
 }
 
+//#define DEBUG_WHERE_USED 1
+
 bool FWObjectDatabase::_findWhereUsed(FWObject *o,
                                       FWObject *p,
                                       set<FWObject *> &resset)
 {
     bool res=false;
-        
-    if ( _isInIgnoreList(p) || p->size()==0) return res;
+    if ( _isInIgnoreList(p)) return res;
+
+#if DEBUG_WHERE_USED
+    cerr << "_findWhereUsed"
+         << "  o=" << o
+         << "  " << o->getName()
+         << "  p=" << p
+         << "  " << p->getName()
+         << " (" << p->getTypeName() << ")"
+         << "  resset.size()=" << resset.size()
+         << "  p->getInt(\".searchId\")=" << p->getInt(".searchId")
+         << "  searchId=" << searchId
+         << endl;
+#endif        
 
     if (o==p)
     {
         resset.insert(p);
         res = true;
     }
+
+    if (p->size()==0) return res;
 
     if (p->getInt(".searchId")==searchId)
     {
@@ -1217,7 +1221,7 @@ bool FWObjectDatabase::_findWhereUsed(FWObject *o,
             {
                 // do not add rule to the results if rule element
                 // matches because rule element should already be there.
-                if (RuleElement::cast(*i1)==NULL)
+                if (Rule::cast(p) && RuleElement::cast(*i1)==NULL)
                     resset.insert(p);
                 res = true;
             }

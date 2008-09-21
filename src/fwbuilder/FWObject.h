@@ -93,6 +93,7 @@ private:
      */
     FWObject *dbroot;
     int id;
+    bool ro;
     std::string name;
     std::string comment;
 
@@ -107,7 +108,15 @@ protected:
     std::map<std::string, std::string> data;
 
     void clearRefCounter() { ref_counter=0; }
-    
+
+    /**
+     * _getRO() simply returns value of private member ro. Note the
+     * difference between _getRO and isReadOnly() - the latter checks
+     * if any parent of this object is read-only in addition to
+     * checking if this object is read-only itself.
+     */
+    bool _getRO() { return ro; }
+
     void _removeAll(FWObject *rm);
     void _removeAllRef(FWObject *rm);
     void _adopt(FWObject *obj);   // increments reference

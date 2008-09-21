@@ -150,6 +150,7 @@ xmlNodePtr Firewall::toXML(xmlNodePtr parent) throw(FWException)
     xmlNodePtr me = FWObject::toXML(parent, false);
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
     xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((_getRO()) ? "True" : "False")));
 
     FWObject *o;
     for (FWObjectTypedChildIterator it = findByType(NAT::TYPENAME);
