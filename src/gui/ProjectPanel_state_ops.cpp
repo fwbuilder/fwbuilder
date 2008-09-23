@@ -32,6 +32,7 @@
 #include "ProjectPanel.h"
 #include "FWBSettings.h"
 #include "RCS.h"
+#include "RuleSetView.h"
 
 #include <QMdiSubWindow>
 #include <QMdiArea>
@@ -235,6 +236,7 @@ void ProjectPanel::loadOpenedRuleSet()
         {
             m_panel->om->openObject(obj);
             openRuleSet(RuleSet::cast(obj));
+//            getCurrentRuleSetView()->restoreCollapsedGroups();
         }
     }
 }
@@ -249,6 +251,7 @@ void ProjectPanel::saveOpenedRuleSet()
         st->setVisibleRuleSet(filename,
                               visibleRuleSet->getLibrary()->getName().c_str(),
                               visibleRuleSet);
+        getCurrentRuleSetView()->saveCollapsedGroups();
     }
 }
      

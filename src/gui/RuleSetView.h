@@ -66,7 +66,7 @@ namespace libfwbuilder {
 class RuleRowInfo;
 class RuleSetView;
 class ProjectPanel;
-class RuleGroupPanel;
+
 /**
  * this class is used to intercept mouse clicks on the vertical header
  * of the table so we could open a context menu
@@ -166,7 +166,7 @@ public slots:
     void addToGroupBelow();
     void removeFromGroup();
     void insertRuleAboveFirstGroup();    
-    void showHideRuleGroup (RuleGroupPanel * rgp);
+    void showHideRuleGroup(int row);
 
     void editSelected();
     void copySelectedObject();
@@ -218,6 +218,8 @@ public slots:
     void pasteRuleAbove();
     void pasteRuleBelow();
 
+    void saveCollapsedGroups();
+    void restoreCollapsedGroups();
 
     void enableRule();
     void disableRule();
@@ -269,6 +271,9 @@ public:
 
     void resetRuleModel();
     void createRuleModel();
+
+    void collapseRuleGroup(int row);
+    void expandRuleGroup(int row);
     
     //these functions are added in the porting process
     //they are needed to work with stored cell sizes (columnWidths,
@@ -356,8 +361,6 @@ public:
     void iinit();
     QString settingsKey();
 
-    void addRuleGroupPanel (int row);
-    void deleteRuleGroupPanel (int row);
     void insertRuleIndex (int idx);
     void removeRuleIndex (int idx);
     void updateGroups ();
@@ -473,6 +476,7 @@ public:
     REType  getColType(int col) const;
     int     getColByType(REType) const;
 
+    
 private:
     ProjectPanel *m_project;
     virtual libfwbuilder::RuleElement* getRE(int row, int col ) = 0;

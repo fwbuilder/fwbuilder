@@ -1,3 +1,14 @@
+2008-09-23  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::saveCollapsedGroups): fixed bug #
+	2106266: "Save collapse/expand state of groups in policy". The GUI
+	will remember state of the rule groups (expanded/collapsed)
+	between sessions. The state is saved in preferences. Groups are
+	referenced by combination of file name (full path), firewall object
+	name, ruleset name, group name. Since state is saved in
+	preferences rather than in the data file, state of the rule groups
+	is separate for each user.
+
 2008-09-21  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* NATCompiler_pix.cpp (mergeNATCmd::processNext): fixed crash in

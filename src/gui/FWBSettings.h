@@ -179,7 +179,15 @@ class FWBSettings : public QSettings {
                            const QString &lib,
                            libfwbuilder::FWObject *ruleset);
 
-    
+    void getCollapsedRuleGroups(const QString &filename,
+                                const QString &firewall,
+                                const QString &ruleset,
+                                QStringList &collapsed_groups);
+    void setCollapsedRuleGroups(const QString &filename,
+                                const QString &firewall,
+                                const QString &ruleset,
+                                const QStringList &collapsed_groups);
+                                
 private:
     QFont getFontByType(const char*type);
 };

@@ -730,3 +730,24 @@ void FWBSettings::setVisibleRuleSet(const QString &filename,
              FWObjectDatabase::getStringId(ruleset->getId()).c_str() );
 }
 
+void FWBSettings::getCollapsedRuleGroups(const QString &filename,
+                                         const QString &firewall,
+                                         const QString &ruleset,
+                                         QStringList &collapsed_groups)
+{
+    QString strl = value(QString(SETTINGS_PATH_PREFIX "/") +
+                         "Window/" + filename + "/" + firewall + "/" +
+                         ruleset + "/CollapsedRuleGroups").toString();
+    collapsed_groups = strl.split(",");
+}
+
+void FWBSettings::setCollapsedRuleGroups(const QString &filename,
+                                         const QString &firewall,
+                                         const QString &ruleset,
+                                         const QStringList &collapsed_groups)
+{
+    setValue(QString(SETTINGS_PATH_PREFIX "/") +
+             "Window/" + filename + "/" + firewall + "/" + ruleset +
+             "/CollapsedRuleGroups",
+             collapsed_groups.join(","));
+}

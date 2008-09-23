@@ -29,25 +29,25 @@
 RuleGroupPanel::RuleGroupPanel(QWidget * parent,
                                RuleSetView * rsv, int row) : QFrame(parent)
 {
-    this->row= row;
+    this->row = row;
     this->rsv = rsv;
     this->setupUi(this);
-    setContentsMargins (3,3,3,3);
+    setContentsMargins(3,3,3,3);
     showHideRuleGroupButton->hide();
     connect(showHideRuleGroupButton, SIGNAL(pressed()),
             this,SLOT(showHideRuleGroup()));
 }
 
-void RuleGroupPanel::mousePressEvent ( QMouseEvent * event )
+void RuleGroupPanel::mousePressEvent( QMouseEvent * event )
 {
-    if (event->buttons () == Qt::RightButton)
+    if (event->buttons() == Qt::RightButton)
     {
         rsv->firstSelectedRow = row;
-        rsv->contextMenu (row,0,event->globalPos ());
+        rsv->contextMenu(row,0,event->globalPos ());
     }
 }
 
-void RuleGroupPanel::mouseDoubleClickEvent ( QMouseEvent * event )
+void RuleGroupPanel::mouseDoubleClickEvent( QMouseEvent * event )
 {
     rsv->firstSelectedRow = row ;
     rsv->renameGroup();

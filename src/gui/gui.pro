@@ -128,7 +128,6 @@ HEADERS += ../../config.h \
 	FakeWizard.h \
 	AskLibForCopyDialog.h \
 	FWBAboutDialog.h \
-	RuleGroupPanel.h \
 	RuleRowInfo.h \
 	Help.h \
 	HttpGet.h \
@@ -241,7 +240,6 @@ SOURCES += ProjectPanel.cpp \
 	FakeWizard.cpp \
     AskLibForCopyDialog.cpp \
 	ObjectListViewItem.cpp \
-	RuleGroupPanel.cpp \
 	Help.cpp \
 	HttpGet.cpp
 
@@ -317,7 +315,6 @@ FORMS = FWBMainWindow_q.ui \
 	metriceditorpanel_q.ui \
 	findwhereusedwidget_q.ui \
 	confirmdeleteobjectdialog_q.ui\
-	rulegrouppanel.ui\
     projectpanel_q.ui\
     asklibforcopydialog_q.ui
 

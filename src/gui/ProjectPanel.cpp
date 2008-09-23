@@ -343,7 +343,9 @@ void ProjectPanel::updateRuleSetViewSelection()
     RuleSetView* rv = dynamic_cast<RuleSetView*>(
         m_panel->ruleSets->currentWidget());
     if (rv!=NULL)
+    {
         rv->repaintSelection();
+    }
 }
 
 void ProjectPanel::updateRuleSetView()
