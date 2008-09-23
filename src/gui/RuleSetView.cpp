@@ -102,8 +102,8 @@
 using namespace libfwbuilder;
 using namespace std;
 
-#define DEBUG_RULE_GROUPS 1
-//#define DRAW_RULE_GROUP_FRAME 1
+// #define DEBUG_RULE_GROUPS 1
+// #define DRAW_RULE_GROUP_FRAME 1
 
 int QMAX(int a, int b)
 {
@@ -332,11 +332,6 @@ void RuleDelegate::paint(QPainter *painter,
 {
     QRect size = cellGeometry(index.row(), index.column());
 
-    if (fwbdebug)
-        qDebug("RuleDelegate::paint row=%d col=%d size=%dx%dx%dx%d",
-               index.row(), index.column(),
-               size.left(), size.top(), size.width(), size.height());
-
     if (ruleSetView->ruleIndex[index.row()]==NULL)
     {
         if (index.column() > 1) return;
@@ -349,9 +344,6 @@ void RuleDelegate::paint(QPainter *painter,
                 w += ruleSetView->getColumnWidth(i);
 
             size.setWidth(w);
-
-            if (fwbdebug)
-                qDebug("RuleDelegate::paint  rule group head width=%d", w);
         }
     }
 
@@ -501,6 +493,9 @@ RuleSetView::RuleSetView(ProjectPanel *project, int , int c, QWidget *parent):
 {
     setFont(st->getRulesFont());
     rowSizingFrozen = false;
+
+    prevCurrentRow = 0;
+    prevCurrentCol = 0;
 
     ruleModel = NULL;
     ruleDelegate = NULL;
@@ -679,29 +674,17 @@ void RuleSetView::currentChanged( const QModelIndex &current )
     changeCurrentCell(current.row(), current.column());
 }
 
-void RuleSetView::updateCell( const int row, const int col )
+/*
+ * Should not do anything with other MDI subwindows from a subwindow.
+ */
+void RuleSetView::updateCell(const int row, const int col)
 {
     if ((row < 0) || (col < 0))
         return;
 
-    /*QRect r = ruleDelegate->cellGeometry(row,col);
-    setDirtyRegion( QRegion( r.left() - horizontalOffset(), r.top() - verticalOffset(),
-                              r.right() - horizontalOffset(), r.bottom() - verticalOffset() ) );
-    update();*/
-
     QModelIndex ind = ruleModel->index(row, col);
     setCurrentCell(row, col);
     dataChanged(ind, ind);
-    QVector <ProjectPanel*> pps = getAllMdiProjectPanel();
-    for (int i = 0 ; i < pps.size();i++)
-    {
-        ProjectPanel*pp= pps[i];
-        if (pp!=m_project)
-        {
-            if (pp->getCurrentRuleSetView()!=NULL)
-                pp->getCurrentRuleSetView()->updateAll();
-        }
-    }
 }
 
 void RuleSetView::setName(QString)
@@ -755,8 +738,7 @@ void RuleSetView::unselect()
 {
     clearSelection();
     selectedObject=NULL;
-
-    updateCell(currentRow(),currentColumn());
+    updateCell(currentRow(), currentColumn());
 }
 
 Firewall* RuleSetView::getFirewall()
@@ -792,15 +774,9 @@ QString RuleSetView::settingsKey()
     return QString("/RuleSets/") + objectName() + "_Columns";
 }
 
-void RuleSetView::setRuleNumber(int row, libfwbuilder::Rule *rule)
+void RuleSetView::setRuleNumber(int row, Rule *rule)
 {
-    QIcon icn;
-
-    if (rule!=NULL && rule->isDisabled())
-        rulesDisabled[row] = true;
-    else
-        rulesDisabled[row] = false;
-
+    rulesDisabled[row] = (rule!=NULL && rule->isDisabled());
     verticalHeader()->headerDataChanged(Qt::Vertical, row, row);
 }
 
@@ -941,6 +917,9 @@ void RuleSetView::init()
 
     updateGroups();
 
+    // Note:     restoreCollapsedGroups() calls updateGroups()
+    // cant call restoreCollapsedGroups() from here because it would
+    // cause infinite loop.
     QTimer::singleShot(0, this, SLOT(restoreCollapsedGroups()));
 
 #if DEBUG_RULE_GROUPS
@@ -1018,7 +997,7 @@ void RuleSetView::updateGroups()
     horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
     horizontalHeader()->resizeSection(0, 20);
 
-    QMap <QString, QString> groupColors ;
+    QMap<QString, QString> groupColors ;
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
         setSpan(i, 1, 0, 1);
@@ -1973,10 +1952,6 @@ void RuleSetView::drawComment(QPainter &p, int row, int col, const QRect &cr)
     if (rule==NULL) return;
     QString comm = QString::fromUtf8(rule->getComment().c_str());
 
-    if (fwbdebug) qDebug("drawComment: row=%d col=%d comm=%s cr=%dx%dx%dx%d",
-                         row, col, comm.toAscii().constData(),
-                         cr.left(), cr.top(), cr.width(), cr.height());
-
     QRect r = ruleDelegate->cellRect(row,col);
 
     int x  = r.left() + RuleElementSpacing/2;
@@ -2078,10 +2053,13 @@ Rule* RuleSetView::getRule(int row)
 int RuleSetView::getRow(Rule *rule)
 {
     int row = 0;
-    for (; row < rowsInfo.size(); row++)
+    if (rule)
     {
-        Rule *r = getRule(row);
-        if (r && rule->getId()==r->getId()) break;
+        for (; row < rowsInfo.size(); row++)
+        {
+            Rule *r = getRule(row);
+            if (r && rule->getId()==r->getId()) break;
+        }
     }
     return row;
 }
@@ -2252,35 +2230,87 @@ void RuleSetView::adjustRow( int row )
     adjustRow_int(row,h);
 }
 
-Rule* RuleSetView::insertRule(int pos, FWObject *r)
+/**
+ *  insert rule at given position. 
+ */
+Rule* RuleSetView::insertRule(Rule *next_to_rule, insertRuleOp rule_op,
+                              FWObject *old_rule)
 {
-    if (r!=NULL &&
+    int table_row = getRow(next_to_rule);
+    int next_to_position = (next_to_rule) ? next_to_rule->getPosition() : 0;
+
+    if (fwbdebug)
+        qDebug("RuleSetView::insertRule next_to_rule=%p next_to_position=%d "
+               "rule_op=%d table_row=%d ruleset->getRuleSetSize()=%d",
+               next_to_rule, next_to_position, rule_op, table_row,
+               ruleset->getRuleSetSize());
+
+    if (old_rule!=NULL &&
         ruleset->getTypeName()==Policy::TYPENAME &&
-        r->getTypeName()!=PolicyRule::TYPENAME)  return NULL;
-    if (r!=NULL &&
+        old_rule->getTypeName()!=PolicyRule::TYPENAME)  return NULL;
+    if (old_rule!=NULL &&
         ruleset->getTypeName()==NAT::TYPENAME    &&
-        r->getTypeName()!=NATRule::TYPENAME   )  return NULL;
+        old_rule->getTypeName()!=NATRule::TYPENAME   )  return NULL;
 
-    if (pos<0) pos=0;
+    if (table_row<0) table_row = 0;
 
-
-    Rule *newrule=NULL;
-    if ( ruleset->getRuleSetSize()==0) newrule=ruleset->insertRuleAtTop();
-    else
+    Rule *newrule = NULL;
+    if ( ruleset->getRuleSetSize()==0 || next_to_rule==NULL)
     {
-        if (pos==ruleset->getRuleSetSize())
+        newrule = ruleset->insertRuleAtTop();
+        for (int i=ruleIndex.size(); i>table_row; --i)  
+            ruleIndex[i] = ruleIndex[i-1];
+        ruleIndex[table_row] = newrule;
+    } else
+    {
+        switch (rule_op)
         {
-            newrule=ruleset->appendRuleAtBottom();
-        } else
-            newrule=ruleset->insertRuleBefore(pos);
-            assert(newrule!=NULL);
+        case appendAfter:
+            if (fwbdebug)
+                qDebug("RuleSetView::insertRule append after rule %d",
+                       next_to_position);
+            newrule = ruleset->appendRuleAfter(next_to_position);
+            for (int i=ruleIndex.size(); i>table_row+1; --i)  
+                ruleIndex[i] = ruleIndex[i-1];
+            ruleIndex[table_row+1] = newrule;
+            break;
+
+        case insertBefore:
+            if (fwbdebug)
+                qDebug("RuleSetView::insertRule insert before rule %d",
+                       next_to_position);
+            newrule = ruleset->insertRuleBefore(next_to_position);
+            for (int i=ruleIndex.size(); i>table_row; --i)  
+                ruleIndex[i] = ruleIndex[i-1];
+            ruleIndex[table_row] = newrule;
+            break;
+        }
     }
+    assert(newrule!=NULL);
 
-    if (fwbdebug && PolicyRule::cast(r)!=NULL)
-        qDebug("RuleSetView::insertRule: r->direction=%s",
-               PolicyRule::cast(r)->getDirectionAsString().c_str());
+    initRule(newrule, Rule::cast(old_rule));
+    if (next_to_rule!=NULL)
+        newrule->setRuleGroupName(next_to_rule->getRuleGroupName());
 
-    PolicyRule *newrule_as_policy_rule = PolicyRule::cast(newrule);
+    for (int i=ruleIndex.size(); i>=table_row; --i)
+        setRuleNumber(i, ruleIndex[i]);
+
+    ruleModel->insertRow(table_row);
+    rowsInfo.insert(table_row,NULL);
+    adjustRow(table_row);
+    update();
+
+    updateGroups();
+    setCurrentCell( table_row, currentColumn() );
+    updateCell(table_row, currentColumn());
+    mw->reloadAllWindowsWithFile(m_project);
+
+    return newrule;
+}
+
+void RuleSetView::initRule(Rule *new_rule, Rule *old_rule)
+{
+    PolicyRule *newrule_as_policy_rule = PolicyRule::cast(new_rule);
 
     if (newrule_as_policy_rule)
     {
@@ -2292,66 +2322,109 @@ Rule* RuleSetView::insertRule(int pos, FWObject *r)
                          getStatelessFlagForAction(newrule_as_policy_rule));
     }
 
-    if (r!=NULL)  copyRuleContent(newrule,Rule::cast(r));
-
-    Rule * oldr = ruleIndex[pos];
-    for (int i=ruleIndex.size(); i>pos; --i)  
-        ruleIndex[i]=ruleIndex[i-1];
-    //RuleRowInfo * info = getRuleRowInfoByGroupName(newrule->getRuleGroupName().c_str());
-    //if (info!=NULL)
-    //{
-    //    info->rules.push_back (newrule);
-    //}
-    if (oldr!=NULL)
-    {
-        newrule->setRuleGroupName (oldr->getRuleGroupName());
-    }
-    ruleIndex[pos] = newrule;
-
-    if (fwbdebug && PolicyRule::cast(r)!=NULL)
-        qDebug(QString("RuleSetView::insertRule: newrule->direction=%1")
-                .arg(PolicyRule::cast(newrule)->getDirectionAsString().c_str()).toAscii().constData());
-
-
-    for (int i=ruleIndex.size(); i>=pos; --i)
-        setRuleNumber(i, ruleIndex[i]);
-
-    ruleModel->insertRow(pos);
-    rowsInfo.insert(pos,NULL);
-    adjustRow(pos);
-    update();
-    updateGroups();
-    setCurrentCell( pos, currentColumn() );
-    updateCell(pos,currentColumn());
-
-    if (fwbdebug) qDebug("Firewall changed: insertRule");
-
-    return newrule;
+    if (old_rule!=NULL)  copyRuleContent(new_rule, old_rule);
 }
 
 void RuleSetView::insertRule()
 {
-//    if (!hasFocus()) return;       // <-- can insert rule even if does not have focus
     if (!isTreeReadWrite(this,ruleset)) return;
     if (getFirewall()==NULL) return;
 
     changingRules = true;
     if (firstSelectedRow > -1)
     {
-        insertRule(firstSelectedRow,NULL);
-        changeCurrentCell(firstSelectedRow+1,currentColumn(), true);
+        Rule *current_rule_at_pos = ruleIndex[firstSelectedRow];
+        insertRule(current_rule_at_pos, insertBefore, NULL);
+        changeCurrentCell(firstSelectedRow+1, currentColumn(), true);
     }
     else
-        insertRule(0,NULL);
+        insertRule(NULL, insertBefore, NULL);
 
     changingRules = false;
     mw->updateLastModifiedTimestampForOneFirewall(getFirewall());
 }
 
+void RuleSetView::addRuleAfterCurrent()
+{
+    if (getFirewall()==NULL) return;
+    if (!hasFocus()) return;
+    if (!isTreeReadWrite(this,ruleset)) return;
+
+    changingRules = true;
+    Rule *current_rule_at_pos = ruleIndex[lastSelectedRow];
+
+    insertRule(current_rule_at_pos, appendAfter, NULL);
+    changingRules = false;
+    m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
+    updateGroups();
+}
+
 void RuleSetView::insertRuleAboveFirstGroup()
 {
-    insertRule(0,NULL);
+    insertRule(NULL, insertBefore, NULL);
     updateGroups();
+}
+
+void RuleSetView::removeRule()
+{
+    if (getFirewall()==NULL) return;
+
+    if (!hasFocus()) return;
+    if (!isTreeReadWrite(this,ruleset)) return;
+
+/* we call removeRule in a loop. Set flag changingRules to true to prevent
+    * removeRule from calling updateLastModifiedTimestampForAllFirewalls each time
+ */
+    changingRules = true;
+
+    m_project->findObjectWidget->reset();
+
+    /* remove rules firstSelectedRow through lastSelectedRow */
+
+    if ( firstSelectedRow!=-1 )
+    {
+        if (fwbdebug) qDebug("removeRule");
+
+        setUpdatesEnabled(false);
+        for (int rn=lastSelectedRow; rn>=firstSelectedRow; --rn)
+        {
+            int rule_n = ruleIndex[rn]->getPosition();
+            if (fwbdebug) qDebug("rule #%d", rule_n);
+
+            if (m_project->isEditorVisible() &&
+                m_project->getOpenedEditor()==ruleIndex[rn])
+                m_project->closeEditor();
+
+            if ( ruleset->deleteRule(rule_n) )
+            {
+                if (fwbdebug) qDebug("ruleset removed rule successfully");
+
+                int lastN = ruleIndex.size()-1;
+                ruleIndex.remove(rn); //erase(rn);
+                rowsInfo.remove(rn);
+                for (int i=rn; i<lastN; ++i)   ruleIndex[i] = ruleIndex[i+1];
+
+                for (int row=rn; row<lastN; ++row)
+                    setRuleNumber(row, ruleIndex[row]);
+            } else
+            {
+                if (fwbdebug) qDebug("ruleset failed to remove rule");
+            }
+        }
+
+        ruleModel->removeRows(firstSelectedRow, lastSelectedRow);
+        
+        setUpdatesEnabled(true);
+
+        clearSelection();
+
+        setCurrentCell( firstSelectedRow, currentColumn() );
+        update();
+        updateGroups();
+        changingRules = false;
+        m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
+        mw->reloadAllWindowsWithFile(m_project);
+    }
 }
 
 FWObject* RuleSetView::getSelectedObject()
@@ -2634,10 +2707,10 @@ void RuleSetView::createGroup(int row, int count, QString groupName)
 {
     for (int idx=0 ; idx<count; idx++)
         ruleIndex[row + idx]->setRuleGroupName(groupName.toAscii().data());
-
-    QTimer::singleShot( 0, m_project, SLOT(reopenFirewall()) );
-
-//    updateGroups();
+    // Note that ProjectPanel::reopenFirewall destroys all RuleSetView
+    // objects and creates new ones. Save stored inside RuleSetView
+    // object does not survive call to reopenFirewall()
+    QTimer::singleShot(0, m_project, SLOT(reopenFirewall()) );
 }
 
 void RuleSetView::renameGroup()
@@ -3317,9 +3390,8 @@ void RuleSetView::setRuleColor(const QString &c)
     if (ruleIndex[firstSelectedRow]==NULL)
     {
         RuleRowInfo * rri = rowsInfo[firstSelectedRow];
-        rri->color =c;
-        if (rri->color=="")
-            rri->color="#FFFFFF";
+        rri->color = c;
+        if (rri->color=="") rri->color="#FFFFFF";
         updateGroups();
         return ;
     }
@@ -3332,12 +3404,18 @@ void RuleSetView::setRuleColor(const QString &c)
             if (rule!=NULL)
             {
                 FWOptions *ropt = rule->getOptionsObject();
-                ropt->setStr("color",c.toLatin1().constData());
-    
-                adjustRow(i);   // this causes repaint
+                ropt->setStr("color", c.toLatin1().constData());
+                // need to call dataChanged to trigger row repaint.
+                // At least on Mac OS X with QT 4.4.1 calling update()
+                // was insufficient.
+                dataChanged(model()->index(i, 0),
+                            model()->index(i, model()->columnCount()));
+                adjustRow(i);
             }
         }
     }
+    update();
+    mw->reloadAllWindowsWithFile(m_project);
 }
 
 void RuleSetView::changeAction(PolicyRule::Action act)
@@ -3365,6 +3443,7 @@ void RuleSetView::changeAction(PolicyRule::Action act)
         ruleopt->setBool("stateless", getStatelessFlagForAction(rule));
 
         mw->actionChangedEditor(rule);
+        mw->reloadAllWindowsWithFile(m_project);
     }
 }
 
@@ -3459,6 +3538,7 @@ void RuleSetView::changeDitection(PolicyRule::Direction dir)
             if (!changingRules)
                 mw->updateLastModifiedTimestampForOneFirewall(getFirewall());
             rule->setDirection( dir );
+            mw->reloadAllWindowsWithFile(m_project);
         }
     }
 }
@@ -3490,6 +3570,7 @@ void RuleSetView::changeLogToOn()
         if (!changingRules)
             mw->updateLastModifiedTimestampForOneFirewall(getFirewall());
         rule->setLogging( true );
+        mw->reloadAllWindowsWithFile(m_project);
     }
 }
 
@@ -3505,6 +3586,7 @@ void RuleSetView::changeLogToOff()
         if (!changingRules)
             mw->updateLastModifiedTimestampForOneFirewall(getFirewall());
         rule->setLogging( false );
+        mw->reloadAllWindowsWithFile(m_project);
     }
 }
 
@@ -3576,6 +3658,7 @@ void RuleSetView::deleteObject(int row, int col, FWObject *obj)
     adjustRow(row);
     updateCell(row,col);
     m_project->findObjectWidget->reset();
+    mw->reloadAllWindowsWithFile(m_project);
 }
 
 bool RuleSetView::insertObject(int row, int col, FWObject *obj)
@@ -3593,13 +3676,11 @@ bool RuleSetView::insertObject(int row, int col, FWObject *obj)
     RuleElement *re = getRE(row,col);
     assert (re!=NULL);
 
-    if (fwbdebug)
-        qDebug("RuleSetView::insertObject  -- validate");
+    if (fwbdebug) qDebug("RuleSetView::insertObject  -- validate");
 
     if (! re->validateChild(obj) )
     {
-        if (fwbdebug)
-            qDebug("RuleSetView::insertObject  -- validation failed");
+        if (fwbdebug)qDebug("RuleSetView::insertObject  -- validation failed");
 
         if (RuleElementRItf::cast(re))
 
@@ -3618,10 +3699,9 @@ bool RuleSetView::insertObject(int row, int col, FWObject *obj)
 
     if (re->getAnyElementId()==obj->getId()) return false;
 
-    if (fwbdebug)
-        qDebug("RuleSetView::insertObject  -- check for duplicates");
+    if (fwbdebug) qDebug("RuleSetView::insertObject  -- check for duplicates");
 
-    if (! re->isAny())
+    if ( !re->isAny())
     {
         /* avoid duplicates */
         int cp_id = obj->getId();
@@ -3637,8 +3717,7 @@ bool RuleSetView::insertObject(int row, int col, FWObject *obj)
         }
     }
 
-    if (fwbdebug)
-        qDebug("RuleSetView::insertObject  -- add reference");
+    if (fwbdebug) qDebug("RuleSetView::insertObject  -- add reference");
 
     re->addRef(obj);
 
@@ -3648,8 +3727,8 @@ bool RuleSetView::insertObject(int row, int col, FWObject *obj)
     adjustColumn(col);
     adjustRow(row);
     updateCell(row, col);
+    mw->reloadAllWindowsWithFile(m_project);
 
-    if (fwbdebug) qDebug("Firewall changed: insertObject");
     if (!changingRules)
         m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
     return true;
@@ -3694,6 +3773,7 @@ void RuleSetView::negateRE()
             m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
 
         updateCell(currentRow(),currentColumn());
+        mw->reloadAllWindowsWithFile(m_project);
     }
 }
 
@@ -3727,7 +3807,7 @@ QVector <ProjectPanel*> RuleSetView::getAllMdiProjectPanel ()
 void RuleSetView::editRE()
 {
     if (!isTreeReadWrite(this,ruleset)) return;
-    openPersistentEditor ( ruleModel->index(currentRow(),currentColumn()) );
+    openPersistentEditor( ruleModel->index(currentRow(),currentColumn()) );
 }
 
 void RuleSetView::keyPressEvent( QKeyEvent* ev )
@@ -3956,8 +4036,8 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         deleteSelectedObject();
     }
 
-    updateCell(currentRow(),currentColumn());
-    updateCell(oldRow,oldColumn);
+    updateCell(currentRow(), currentColumn());
+    updateCell(oldRow, oldColumn);
 
     QTableView::keyPressEvent(ev);
 }
@@ -3972,7 +4052,7 @@ QDrag* RuleSetView::dragObject()
     list<FWObject*> dragobj;
     dragobj.push_back(obj);
 
-    FWObjectDrag    *drag = new FWObjectDrag(dragobj, this, NULL);
+    FWObjectDrag *drag = new FWObjectDrag(dragobj, this, NULL);
 
     QPixmap pm = LoadPixmap(icn);
 
@@ -4130,81 +4210,6 @@ void RuleSetView::dropEvent(QDropEvent *ev)
     ev->accept();
 }
 
-void RuleSetView::removeRule()
-{
-    if (getFirewall()==NULL) return;
-
-    if (!hasFocus()) return;
-    if (!isTreeReadWrite(this,ruleset)) return;
-
-/* we call removeRule in a loop. Set flag changingRules to true to prevent
-    * removeRule from calling updateLastModifiedTimestampForAllFirewalls each time
- */
-    changingRules = true;
-
-    m_project->findObjectWidget->reset();
-
-    /* remove rules firstSelectedRow through lastSelectedRow */
-
-    if ( firstSelectedRow!=-1 )
-    {
-        if (fwbdebug) qDebug("removeRule");
-
-        setUpdatesEnabled(false);
-        for (int rn=lastSelectedRow; rn>=firstSelectedRow; --rn)
-        {
-            int rule_n = ruleIndex[rn]->getPosition();
-            if (fwbdebug) qDebug("rule #%d", rule_n);
-
-            if (m_project->isEditorVisible() &&
-                m_project->getOpenedEditor()==ruleIndex[rn])
-                m_project->closeEditor();
-
-            if ( ruleset->deleteRule(rule_n) )
-            {
-                if (fwbdebug) qDebug("ruleset removed rule successfully");
-
-                int lastN = ruleIndex.size()-1;
-                ruleIndex.remove(rn); //erase(rn);
-                rowsInfo.remove(rn);
-                for (int i=rn; i<lastN; ++i)   ruleIndex[i] = ruleIndex[i+1];
-
-                for (int row=rn; row<lastN; ++row)
-                    setRuleNumber(row, ruleIndex[row]);
-            } else
-            {
-                if (fwbdebug) qDebug("ruleset failed to remove rule");
-            }
-        }
-
-        ruleModel->removeRows(firstSelectedRow, lastSelectedRow);
-        
-        setUpdatesEnabled(true);
-
-        clearSelection();
-
-        setCurrentCell( firstSelectedRow, currentColumn() );
-        update();
-        updateGroups();
-        changingRules = false;
-        m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
-    }
-}
-
-void RuleSetView::addRuleAfterCurrent()
-{
-    if (getFirewall()==NULL) return;
-
-    if (!hasFocus()) return;
-    if (!isTreeReadWrite(this,ruleset)) return;
-
-    changingRules = true;
-    insertRule(lastSelectedRow+1,NULL);
-    changingRules = false;
-    m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
-    updateGroups();
-}
-
 void RuleSetView::moveRule()
 {
     if (getFirewall()==NULL) return;
@@ -4294,6 +4299,7 @@ void RuleSetView::moveRule()
         */
 
         QTimer::singleShot( 0, m_project, SLOT(reopenFirewall()) );
+        mw->reloadAllWindowsWithFile(m_project);
 
         //update();
         //updateGroups();
@@ -4417,12 +4423,14 @@ void RuleSetView::pasteRuleAbove()
         if (!Rule::cast(co)) continue;
         if (proj_p==m_project)
         {
-            insertRule( firstSelectedRow, co);
+            Rule *current_rule_at_pos = ruleIndex[firstSelectedRow];
+            insertRule(current_rule_at_pos, insertBefore, co);
         } else 
         {
             // rule is being copied from another project file
             co = m_project->m_panel->om->duplicateWithDependencies(NULL, co);
-            insertRule( firstSelectedRow, co);
+            Rule *current_rule_at_pos = ruleIndex[firstSelectedRow];
+            insertRule(current_rule_at_pos, insertBefore, co);
         }
     }
 
@@ -4469,7 +4477,8 @@ void RuleSetView::pasteRuleBelow()
     {
         FWObject *co= m_project->db()->findInIndex(i->first);
         if (!Rule::cast(co)) continue;
-        insertRule( position+1+n, co);
+        Rule *current_rule_at_pos = ruleIndex[position+n];
+        insertRule(current_rule_at_pos, appendAfter, co);
     }
 
     changingRules = false;
@@ -4494,16 +4503,16 @@ void RuleSetView::enableRule()
             setRuleNumber(rn,r);
         }
     }
-
+    update();
     //changingRules = false;
     m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
+    mw->reloadAllWindowsWithFile(m_project);
 }
 
 void RuleSetView::disableRule()
 {
     if (getFirewall()==NULL) return;
     if (!isTreeReadWrite(this,ruleset)) return;
-
 
     if ( firstSelectedRow!=-1 )
     {
@@ -4515,9 +4524,10 @@ void RuleSetView::disableRule()
             setRuleNumber(rn,r);
         }
     }
-
+    update();
     //changingRules = false;
     m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
+    mw->reloadAllWindowsWithFile(m_project);
 }
 
 void RuleSetView::editSelected()
@@ -4633,6 +4643,25 @@ bool RuleSetView::switchObjectInEditor(int col,bool validate)
     return true;
 }
 
+void RuleSetView::saveCurrentRowColumn(int &row, int &column)
+{
+    row = currentRow();
+    column = currentColumn();
+    if (fwbdebug) qDebug("RuleSetView::saveCurrentRowColumn: "
+                         "row=%d, column=%d",
+                         row, column);
+}
+
+void RuleSetView::restoreCurrentRowColumn(int row, int column)
+{
+    if (fwbdebug) qDebug("RuleSetView::restoreCurrentRowColumn: "
+                         "row=%d, column=%d",
+                         row, column);
+    setCurrentCell(row, column);
+    scrollTo(ruleModel->index(row, column), QAbstractItemView::EnsureVisible);
+    update();
+}
+
 void RuleSetView::restoreSelection(bool same_widget)
 {
     if (fwbdebug)
@@ -4658,7 +4687,7 @@ void RuleSetView::restoreSelection(bool same_widget)
         selectedObjectRow = prevSelectedObjectRow;
         selectedObjectCol = prevSelectedObjectCol;
     }
-    changeCurrentCell(selectedObjectRow,selectedObjectCol);
+    changeCurrentCell(selectedObjectRow, selectedObjectCol);
 
     openObjectInTree(selectedObject);
 }
@@ -4702,9 +4731,9 @@ void RuleSetView::restoreCollapsedGroups()
         }
     }
 
-    mw->unselectRules();
+    //mw->unselectRules();
     setCurrentIndex(QModelIndex());
-    changeCurrentCell(0, 0, true);
+    //changeCurrentCell(0, 0, true);
 
     unfreezeRowSizing();
 }
@@ -4721,14 +4750,13 @@ void RuleSetView::updateAll()
     QFontMetrics p(st->getRulesFont());
     QRect br = p.boundingRect(QRect(0, 0, 1000, 1000),
                               Qt::AlignLeft|Qt::AlignVCenter,"WMWM" );
-    text_h   = br.height();
+    text_h = br.height();
 
     for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++,r++)
         adjustRow(r);
         //dirtyRows[r] = 1;
 
     repaint();
-
     updateGroups();
 }
 

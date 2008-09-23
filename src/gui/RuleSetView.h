@@ -154,7 +154,9 @@ public slots:
     
     void selectionChanged(const QItemSelection&, const QItemSelection&);
     void restoreSelection(bool same_widget);
+
     void currentChanged( const QModelIndex &current );
+    void restoreCurrentRowColumn(int row, int column);
 
     void itemDoubleClicked(const QModelIndex & index);
     void contextMenu(int row, int col, const QPoint &pos);
@@ -255,7 +257,6 @@ public:
      void setCurrentRow(const int value);
      void setCurrentColumn(const int value);
 
-
     enum REType{ RuleOp,
                  Object,
                  Action,
@@ -301,7 +302,8 @@ public:
 
     enum PixmapAttr      { Normal,  Neg,     Ref,       Tree, NegTree };
     enum PopupMenuAction { None,    EditObj, EditRE,    NegateRE };
-
+    enum insertRuleOp    { appendAfter, insertBefore };
+    
     headerMouseEventInterceptor hme;
 
     
@@ -349,6 +351,9 @@ public:
     libfwbuilder::FWObject *prevSelectedObject;
     int prevSelectedObjectRow;
     int prevSelectedObjectCol;
+
+    int prevCurrentRow;
+    int prevCurrentCol;
 
     bool kbdGoingUp;
     bool changingSelection;
@@ -435,8 +440,12 @@ public:
     libfwbuilder::FWObject* getSelectedObject(); 
     libfwbuilder::Firewall* getFirewall();
 
-    libfwbuilder::Rule* insertRule(int pos, libfwbuilder::FWObject *r);
-
+    libfwbuilder::Rule* insertRule(libfwbuilder::Rule *next_to_rule,
+                                   insertRuleOp rule_op,
+                                   libfwbuilder::FWObject *old_rule);
+    void initRule(libfwbuilder::Rule *new_rule,
+                  libfwbuilder::Rule *old_rule);
+    
     libfwbuilder::FWObject* getObj(int row, int col,
                                    int mouse_y_pos, QRect *cr=NULL); 
     libfwbuilder::Rule* getRule(int row);
@@ -462,6 +471,8 @@ public:
     void updateCell( const int row, const int col );
     void updateAll();
     void updateCurrentCell();
+
+    void saveCurrentRowColumn(int &row, int &column);
 
     void editCurrentObject();
     bool switchObjectInEditor(int col,bool validate=true);

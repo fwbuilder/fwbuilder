@@ -383,36 +383,31 @@ void ProjectPanel::reopenFirewall()
     if (ruleSetRedrawPending) return;
 
     int currentPage = m_panel->ruleSets->currentIndex();
+    int cur_row = 0;
+    int cur_col = 0;
+    RuleSetView* rv = dynamic_cast<RuleSetView*>(
+        m_panel->ruleSets->currentWidget());
+    if (rv) rv->saveCurrentRowColumn(cur_row, cur_col);
 
-    changingTabs=true;
+    // since reopenFirewall deletes and recreates all RuleSetView
+    // widgets, it causes significant amount of repaint and
+    // flicker. Disable updates for the duration of operation to avoid
+    // that.
+    m_panel->ruleSets->setUpdatesEnabled(false);
+
+    changingTabs = true;
+
+    QStatusBar *sb = mainW->statusBar();
+    sb->showMessage( tr("Building policy view...") );
+    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 
     clearFirewallTabs();
     
-/*    if (firewalls.size()==0 || visibleFirewall==NULL)
-    {
-        changingTabs=false;
-        return;
-    }
-*/
-    QStatusBar *sb = mainW->statusBar();
-    sb->showMessage( tr("Building policy view...") );
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
-    if (fwbdebug)  qDebug("ProjectPanel::reopenFirewall()   adding Policy tab");
-/*
-    RuleSetView *rsv;
-    Policy *pol=Policy::cast(visibleFirewall->getFirstByType(Policy::TYPENAME));
-    m_panel->ruleSets->addTab( rsv=new PolicyView(this, pol,NULL) , tr("Policy") );
-    ruleSetViews[pol]=rsv;
-*/
-// let the GUI process events to display new tab
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
-    if (visibleRuleSet==NULL)
-        return ;
+    if (visibleRuleSet==NULL) return ;
 
     for (int i =0 ; i < m_panel->ruleSets->count (); i++)
-    {
         m_panel->ruleSets->removeWidget(m_panel->ruleSets->widget(i));
-    }
+
     m_panel->rulesetname->setTextFormat(Qt::RichText);
     QString name = "<B>";
     FWObject * p = visibleRuleSet->getParent();
@@ -424,30 +419,28 @@ void ProjectPanel::reopenFirewall()
     m_panel->rulesetname->setText(name );
 
     if (rule!=NULL)
-    {
         m_panel->ruleSets->addWidget( new PolicyView(this, rule,NULL) );
-    }
 
     NAT *nat  = NAT::cast(visibleRuleSet);
     if (nat!=NULL)
-    {
         m_panel->ruleSets->addWidget( new NATView(this, nat,NULL) );
-    }
 
     Routing *r = Routing::cast(visibleRuleSet);
     if (r!=NULL)
-    {
         m_panel->ruleSets->addWidget( new RoutingView(this, r,NULL) );
-    }
 
-    sb->clearMessage();
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
-    if (fwbdebug)  qDebug("ProjectPanel::reopenFirewall()   all tabs are done");
+    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 
     m_panel->ruleSets->setCurrentIndex( currentPage );
+    rv = dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
+    rv->restoreCurrentRowColumn(cur_row, cur_col);
+    
+    sb->clearMessage();
 
-    changingTabs=false;
+    changingTabs = false;
     mainW->setEnabledAfterRF();
+
+    m_panel->ruleSets->setUpdatesEnabled(true);
     m_panel->ruleSets->show();
 }
 
