@@ -232,6 +232,8 @@ public slots:
     void horzSectionResized ( int logicalIndex, int oldSize, int newSize );
     void vertSectionResized ( int logicalIndex, int oldSize, int newSize );
 
+    virtual void updateGeometries();
+
 public:
      
      libfwbuilder::RuleSet *ruleset;

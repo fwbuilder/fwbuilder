@@ -1,3 +1,20 @@
+2008-09-24  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Network.cpp (Network::Network): (change in libfwbuilder) set
+	netmask to /32 when new Network object is created. This used to be
+	the default in fwbuilder v2.1. New default of 0.0.0.0 appears to
+	be confusing and error-prone, by user's requests changing default
+	back to /32.
+
+	* FWObjectPropertiesFactory.cpp (getObjectProperties): do not
+	print netmask of the IPv4 and IPv6 objects in tooltips and "info"
+	panel unless such object is child of an Interface.
+
+	* RuleSetView.cpp (RuleSetView::updateGeometries): fixed bug
+	#2124804: "Policy list "jump" when using groups". Combination of
+	rule groups and very tall rows in the rule set view caused
+	problems with vertical scrolling.
+
 2008-09-23  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* RuleSetView.cpp (RuleSetView::insertRule): fixed bug #2123150:

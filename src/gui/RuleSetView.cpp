@@ -98,6 +98,7 @@
 #include <qinputdialog.h>
 #include <QMdiSubWindow>
 #include <QMdiArea>
+#include <QScrollBar>
 
 using namespace libfwbuilder;
 using namespace std;
@@ -362,6 +363,13 @@ QSize RuleDelegate::sizeHint(const QStyleOptionViewItem &,
     return QSize(30, 19);
 }
 
+/*****************************************************************
+
+    RuleSetView
+
+ *****************************************************************/
+
+
 void RuleSetView::setColumnWidth( const int col, const int width )
 {
     if (col < 0)
@@ -510,6 +518,7 @@ RuleSetView::RuleSetView(ProjectPanel *project, int , int c, QWidget *parent):
 
     setSelectionMode( QAbstractItemView::ContiguousSelection );
     setSelectionBehavior( QAbstractItemView::SelectRows );
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 
     int lm, tm, rm, bm;
     getContentsMargins(&lm, &tm, &rm, &bm);
@@ -551,6 +560,19 @@ RuleSetView::RuleSetView(ProjectPanel *project, int , int c, QWidget *parent):
 
 RuleSetView::~RuleSetView()
 {
+}
+
+/*
+ *  QTableView updates scroll bars (among other things) in this
+ *  virtual slot. We want vertical scroller to be by-pixel but their
+ *  implementation sets step to approximately average row height. This
+ *  causes problems when rows have very different height (some are
+ *  small, some are very tall) because scroll step becomes too big.
+ */
+void RuleSetView::updateGeometries()
+{
+    QTableView::updateGeometries();
+    verticalScrollBar()->setSingleStep(20);
 }
 
 bool RuleSetView::showCommentTip(QPoint pos, QHelpEvent *he)

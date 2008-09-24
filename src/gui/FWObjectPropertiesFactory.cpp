@@ -84,20 +84,26 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
 {
     QString res;
     QTextStream str(&res, QIODevice::WriteOnly);
+    FWObject *parent_obj = obj->getParent();
 
     try
     {
         if (IPv4::isA(obj))
         {
             str <<  IPv4::cast(obj)->getAddressPtr()->toString().c_str();
-            str << "/";
-            str << IPv4::cast(obj)->getNetmaskPtr()->toString().c_str();
+            if (parent_obj && Interface::isA(parent_obj))
+            {
+                str << "/";
+                str << IPv4::cast(obj)->getNetmaskPtr()->toString().c_str();
+            }
         } else if (IPv6::isA(obj))
         {
             str <<  IPv6::cast(obj)->getAddressPtr()->toString().c_str();
-            str << "/";
-            str << QString("%1").arg(IPv6::cast(obj)->getNetmaskPtr()->getLength());
-
+            if (parent_obj && Interface::isA(parent_obj))
+            {
+                str << "/";
+                str << QString("%1").arg(IPv6::cast(obj)->getNetmaskPtr()->getLength());
+            }
         } else if (physAddress::isA(obj))
         {
             str <<  physAddress::cast(obj)->getPhysAddress().c_str();
@@ -253,6 +259,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
                                                                bool richText)
 {
     QString str;
+    FWObject *parent_obj = obj->getParent();
 
     QString path = obj->getPath().c_str();
     path = path.section('/',2,-1);
@@ -285,15 +292,20 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
             str +=  IPv4::cast(obj)->getAddressPtr()->toString().c_str();
-            str += "/";
-            str += IPv4::cast(obj)->getNetmaskPtr()->toString().c_str();
-
+            if (parent_obj && Interface::isA(parent_obj))
+            {
+                str += "/";
+                str += IPv4::cast(obj)->getNetmaskPtr()->toString().c_str();
+            }
         } else if (IPv6::isA(obj))
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
             str +=  IPv6::cast(obj)->getAddressPtr()->toString().c_str();
-            str += "/";
-            str += QString("%1").arg(IPv6::cast(obj)->getNetmaskPtr()->getLength());
+            if (parent_obj && Interface::isA(parent_obj))
+            {
+                str += "/";
+                str += QString("%1").arg(IPv6::cast(obj)->getNetmaskPtr()->getLength());
+            }
         } else if (physAddress::isA(obj))
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
