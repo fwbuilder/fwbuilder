@@ -42,13 +42,13 @@ const char *Network::TYPENAME={"Network"};
 
 Network::Network() : Address()
 {
-    setNetmask(InetAddr(0));
+    setNetmask(InetAddr(AF_INET, 32));
 }
 
 Network::Network(const FWObject *root,bool prepopulate) :
     Address(root, prepopulate)
 {
-    setNetmask(InetAddr(0));
+    setNetmask(InetAddr(AF_INET, 32));
 }
 
 Network::Network(Network &o) : Address(o)

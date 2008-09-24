@@ -1,3 +1,17 @@
+2008-09-24  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Network.cpp (Network::Network): set netmask to /32 when new
+	Network object is created. This used to be the default in
+	fwbuilder v2.1. New default of 0.0.0.0 appears to be confusing and
+	error-prone, by user's requests changing default back to /32.
+
+	* FWObjectDatabase.cpp (FWObjectTreeScanner::merge): at one point
+	I've got bunch of data files where DeletedObjects library
+	contained references to objects. This should not happen, but at
+	the same time this is valid file structure so the code should be
+	able to handle it. This change will make merge() just copy
+	contents of the DeletedObjects library without asking the user.
+
 2008-09-21  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWObject.cpp (FWObject::fromXML): converted attribute

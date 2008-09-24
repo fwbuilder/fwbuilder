@@ -967,25 +967,36 @@ void FWObjectTreeScanner::merge(FWObject *dst,FWObject *src)
 
             if (Group::cast(dobj)!=NULL)
             {
-                FWObject *firstChild=NULL;
-                if (dobj->size()>0)         firstChild= dobj->front();
+                // at one point I've got bunch of data files where
+                // DeletedObjects library contained references for
+                // some reason. This should not happen, but at the
+                // same time this is valid file structure so the code
+                // should be able to handle it.
+                if (dobj->getId()==FWObjectDatabase::DELETED_OBJECTS_ID)
+                    merge( dobj , *i );
                 else
                 {
-                    if ( (*i)->size()>0 )   firstChild= (*i)->front();
-                }
-                if (firstChild==NULL || FWReference::cast(firstChild)!=NULL)
-                {
-                    if (crp!=NULL && crp->askUser( dobj, *i ))
+
+                    FWObject *firstChild=NULL;
+                    if (dobj->size()>0)         firstChild= dobj->front();
+                    else
                     {
-#ifdef DEBUG_MERGE
-                        cerr << "--------------------------------" << endl;
-                        cerr << "merge: duplicate #2 " << endl;
-                        dobj->dump(true,true);
-                        cerr << endl;
-#endif
-                        dobj->duplicate( (*i), false );
+                        if ( (*i)->size()>0 )   firstChild= (*i)->front();
                     }
-                } else merge( dobj , *i );
+                    if (firstChild==NULL || FWReference::cast(firstChild)!=NULL)
+                    {
+                        if (crp!=NULL && crp->askUser( dobj, *i ))
+                        {
+#ifdef DEBUG_MERGE
+                            cerr << "--------------------------------" << endl;
+                            cerr << "merge: duplicate #2 " << endl;
+                            dobj->dump(true,true);
+                            cerr << endl;
+#endif
+                            dobj->duplicate( (*i), false );
+                        }
+                    } else merge( dobj , *i );
+                }
             }
             else
             {
