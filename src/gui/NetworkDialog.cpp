@@ -29,12 +29,14 @@
 
 #include "FWBTree.h"
 #include "NetworkDialog.h"
-
 #include "ProjectPanel.h"
+#include "FWBSettings.h"
+
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/FWException.h"
+#include "fwbuilder/Inet6AddrMask.h"
 
 #include <qlineedit.h>
 #include <qspinbox.h>
@@ -43,7 +45,6 @@
 #include <qcombobox.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-#include "FWBSettings.h"
 
 #include "FWWindow.h"
 using namespace std;
@@ -217,6 +218,30 @@ void NetworkDialog::discardChanges()
 void NetworkDialog::closeEvent(QCloseEvent *e)
 {
     emit close_sign(e);
+
+}
+
+void NetworkDialog::addressEntered()
+{
+    try
+    {
+        QString addr = m_dialog->address->text();
+        InetAddrMask address_and_mask(string(addr.toLatin1().constData()));
+        if (addr.contains('/'))
+        {
+            m_dialog->address->setText(
+                address_and_mask.getAddressPtr()->toString().c_str());
+            m_dialog->netmask->setText(
+                address_and_mask.getNetmaskPtr()->toString().c_str());
+        }
+    } catch (FWException &ex)
+    {
+// exception thrown if user types illegal m_dialog->address 
+        QMessageBox::critical(this, "Firewall Builder",
+                              tr("Illegal IP address '%1'").arg(m_dialog->address->text()),
+                              tr("&Continue"), 0, 0,
+                              0 );
+    }
 
 }
 

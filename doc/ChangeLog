@@ -1,5 +1,16 @@
 2008-09-25  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* NetworkDialog.cpp (NetworkDialog::addressEntered): Network and
+	NetworkIPv6 object dialogs accept CIDR notation in the "address"
+	input field. Netmask input field is filled automatically using
+	"/NN" entered as part of the address when user hits Return or Tab
+	or switches to another input element using mouse click.
+
+	* ProjectPanel_file_ops.cpp (ProjectPanel::saveIfModified): fixed
+	GUI crash that happened when user made modifications in the
+	default object tree but did not save the changes and then tried to
+	exit the program.
+
 	* FWBTree.cpp (FWBTree::createNewLibrary): fixed bug #2126524:
 	"User Service created in the Service Group section".
 

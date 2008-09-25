@@ -30,11 +30,14 @@
 #include "FWBTree.h"
 #include "NetworkDialogIPv6.h"
 #include "ProjectPanel.h"
+#include "FWBSettings.h"
+
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/FWException.h"
+#include "fwbuilder/Inet6AddrMask.h"
 
 #include <qlineedit.h>
 #include <qspinbox.h>
@@ -43,7 +46,6 @@
 #include <qcombobox.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-#include "FWBSettings.h"
 
 #include "FWWindow.h"
 using namespace std;
@@ -112,7 +114,7 @@ void NetworkDialogIPv6::validate(bool *res)
     {
         *res=false;
         QMessageBox::critical(this, "Firewall Builder",
-                              tr("Illegal IP address '%1'").arg(
+                              tr("Illegal IPv6 address '%1'").arg(
                                   m_dialog->address->text()),
                               tr("&Continue"), 0, 0,
                               0 );
@@ -186,6 +188,30 @@ void NetworkDialogIPv6::discardChanges()
 void NetworkDialogIPv6::closeEvent(QCloseEvent *e)
 {
     emit close_sign(e);
+
+}
+
+void NetworkDialogIPv6::addressEntered()
+{
+    try
+    {
+        QString addr = m_dialog->address->text();
+        Inet6AddrMask address_and_mask(string(addr.toLatin1().constData()));
+        if (addr.contains('/'))
+        {
+            m_dialog->address->setText(
+                address_and_mask.getAddressPtr()->toString().c_str());
+            m_dialog->netmask->setText(
+                QString().setNum(address_and_mask.getNetmaskPtr()->getLength()));
+        }
+    } catch (FWException &ex)
+    {
+// exception thrown if user types illegal m_dialog->address 
+        QMessageBox::critical(this, "Firewall Builder",
+                              tr("Illegal IPv6 address '%1'").arg(m_dialog->address->text()),
+                              tr("&Continue"), 0, 0,
+                              0 );
+    }
 
 }
 

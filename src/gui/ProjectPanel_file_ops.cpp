@@ -75,12 +75,12 @@ using namespace std;
 
 bool ProjectPanel::saveIfModified()
 {
-    if (db() && db()->isDirty() && !rcs->getFileName().isEmpty())
+    if (db() && db()->isDirty() && rcs && !rcs->getFileName().isEmpty())
     {
         QString message = "Some objects have been modified but not saved.\n";
-        message+="Do you want to save ";
-        message+=rcs->getFileName();
-        message+=" changes now ?"; 
+        message += "Do you want to save ";
+        message += rcs->getFileName();
+        message += " changes now ?"; 
         switch (QMessageBox::information(this, "Firewall Builder",
             message,
             tr("&Save"), tr("&Discard"), tr("&Cancel"),

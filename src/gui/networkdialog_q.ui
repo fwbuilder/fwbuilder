@@ -9,7 +9,7 @@
     <x>0</x>
     <y>0</y>
     <width>711</width>
-    <height>210</height>
+    <height>287</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -22,22 +22,10 @@
    <string>Network</string>
   </property>
   <layout class="QGridLayout" >
-   <property name="leftMargin" >
+   <property name="margin" >
     <number>2</number>
    </property>
-   <property name="topMargin" >
-    <number>2</number>
-   </property>
-   <property name="rightMargin" >
-    <number>2</number>
-   </property>
-   <property name="bottomMargin" >
-    <number>2</number>
-   </property>
-   <property name="horizontalSpacing" >
-    <number>2</number>
-   </property>
-   <property name="verticalSpacing" >
+   <property name="spacing" >
     <number>2</number>
    </property>
    <item row="0" column="0" >
@@ -45,16 +33,7 @@
      <property name="spacing" >
       <number>2</number>
      </property>
-     <property name="leftMargin" >
-      <number>0</number>
-     </property>
-     <property name="topMargin" >
-      <number>0</number>
-     </property>
-     <property name="rightMargin" >
-      <number>0</number>
-     </property>
-     <property name="bottomMargin" >
+     <property name="margin" >
       <number>0</number>
      </property>
      <item>
@@ -145,22 +124,10 @@
         <enum>QFrame::Sunken</enum>
        </property>
        <layout class="QGridLayout" >
-        <property name="leftMargin" >
+        <property name="margin" >
          <number>2</number>
         </property>
-        <property name="topMargin" >
-         <number>2</number>
-        </property>
-        <property name="rightMargin" >
-         <number>2</number>
-        </property>
-        <property name="bottomMargin" >
-         <number>2</number>
-        </property>
-        <property name="horizontalSpacing" >
-         <number>2</number>
-        </property>
-        <property name="verticalSpacing" >
+        <property name="spacing" >
          <number>2</number>
         </property>
         <item row="0" column="2" >
@@ -317,7 +284,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>5</height>
@@ -439,5 +406,41 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>address</sender>
+   <signal>lostFocus()</signal>
+   <receiver>NetworkDialog_q</receiver>
+   <slot>addressEntered()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>218</x>
+     <y>106</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>355</x>
+     <y>143</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>address</sender>
+   <signal>returnPressed()</signal>
+   <receiver>NetworkDialog_q</receiver>
+   <slot>addressEntered()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>218</x>
+     <y>106</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>355</x>
+     <y>143</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>changed()</slot>
+  <slot>addressEntered()</slot>
+ </slots>
 </ui>

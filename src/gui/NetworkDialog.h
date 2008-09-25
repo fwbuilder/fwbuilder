@@ -57,7 +57,8 @@ public slots:
     virtual void validate(bool*);
     virtual void isChanged(bool*);
     virtual void closeEvent(QCloseEvent *e);
-
+    virtual void addressEntered();
+    
  signals:
 /**
  * This signal is emitted from closeEvent, ObjectEditor connects
