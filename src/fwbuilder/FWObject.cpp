@@ -543,9 +543,8 @@ void FWObject::remStr(const string &name)
 void FWObject::setStr(const string &name, const string &val)
 {
     if (name[0]!='.') checkReadOnly();
-
-    data[name]=val;
-    setDirty(true);
+    data[name] = val;
+    if (name[0]!='.') setDirty(true);
 }
 
 int FWObject::getInt(const string &name) const
@@ -562,7 +561,10 @@ void FWObject::setInt(const string &name, int val)
     ostringstream str;
     str << val;
     setStr(name, str.str());
-    setDirty(true);
+    // attribute with name that starts with "." is considered "hidden"
+    // or "internal". Such attribute is not saved to the data file and
+    // should not trigger "dirty" flag.
+    if (name[0]!='.') setDirty(true);
 }
 
 bool FWObject::getBool(const string &name) const
@@ -578,7 +580,7 @@ bool FWObject::getBool(const string &name) const
 void FWObject::setBool(const string &name, bool val)
 {
     setStr(name, (val)?"True":"False");
-    setDirty(true);
+    if (name[0]!='.') setDirty(true);
 }
 
 void FWObject::setBool(const string &name, const string &val)
@@ -693,7 +695,7 @@ void FWObject::addAt(int where_id, FWObject *obj)
     p->add(obj);
 }
 
-void FWObject::add(FWObject *obj,bool validate)
+void FWObject::add(FWObject *obj, bool validate)
 {
     checkReadOnly();
 
@@ -1073,8 +1075,8 @@ void  FWObject::setDirty(bool f)
 {
     FWObjectDatabase *dbroot = getRoot();
     if (dbroot==NULL) return;
-    if (dbroot==this) dirty=f;
-    else              dbroot->setDirty(f);
+    if (dbroot==this) dirty = f;
+    else              dbroot->dirty = f;
 }
 
 bool FWObject::isDirty()
