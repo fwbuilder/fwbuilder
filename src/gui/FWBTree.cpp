@@ -164,9 +164,6 @@ FWBTree::FWBTree()
     systemGroupTypes[ICMP6Service::TYPENAME]=  ServiceGroup::TYPENAME;
     systemGroupNames[ICMP6Service::TYPENAME]=  "ICMP"          ;
 
-    systemGroupTypes[UserService::TYPENAME]=   UserService::TYPENAME;
-    systemGroupNames[UserService::TYPENAME]=   "Users"          ;
-
     systemGroupTypes[TCPService::TYPENAME]=    ServiceGroup::TYPENAME;
     systemGroupNames[TCPService::TYPENAME]=    "TCP"           ;
 
@@ -477,7 +474,7 @@ FWObject* FWBTree::createNewLibrary(FWObjectDatabase *db)
     o2->setName("UDP");
     o1->add(o2);
 
-    o2 = db->create(UserService::TYPENAME);
+    o2 = db->create(ServiceGroup::TYPENAME);
     o2->setName("Users");
     o1->add(o2);
 

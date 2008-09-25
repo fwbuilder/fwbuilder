@@ -363,6 +363,7 @@
         </CustomService>
       </ServiceGroup>
       <ServiceGroup id="stdid19" name="TagServices"/>
+      <ServiceGroup id="stdid20" name="UserServices"/>
     </ServiceGroup>
     <ObjectGroup id="stdid12" name="Firewalls"/>
     <IntervalGroup id="stdid11" name="Time">

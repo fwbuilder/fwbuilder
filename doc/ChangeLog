@@ -1,14 +1,25 @@
+2008-09-25  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWBTree.cpp (FWBTree::createNewLibrary): fixed bug #2126524:
+	"User Service created in the Service Group section".
+
+	* objects_init.xml.in: bug #2126524: "User Service created in the
+	Service Group section" - added missing group UserServices to the
+	standard objects file.
+
 2008-09-24  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Network.cpp (Network::Network): (change in libfwbuilder) set
 	netmask to /32 when new Network object is created. This used to be
 	the default in fwbuilder v2.1. New default of 0.0.0.0 appears to
 	be confusing and error-prone, by user's requests changing default
-	back to /32.
+	back to /32. This fixes bug #2125542: New Address objects added
+	with netmask of "0.0.0.0"
 
 	* FWObjectPropertiesFactory.cpp (getObjectProperties): do not
 	print netmask of the IPv4 and IPv6 objects in tooltips and "info"
-	panel unless such object is child of an Interface.
+	panel unless such object is child of an Interface. This fixes bug
+	#2125542: New Address objects added with netmask of "0.0.0.0"
 
 	* RuleSetView.cpp (RuleSetView::updateGeometries): fixed bug
 	#2124804: "Policy list "jump" when using groups". Combination of
