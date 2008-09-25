@@ -42,7 +42,8 @@ class FirewallDialog : public QWidget
     libfwbuilder::FWObject *obj;
     Ui::FirewallDialog_q   *m_dialog;
     bool init;
-
+    bool modified;
+    
     void fillVersion();
     void saveVersion();
     ProjectPanel *m_project;

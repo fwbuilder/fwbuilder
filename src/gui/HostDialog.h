@@ -41,6 +41,7 @@ class HostDialog : public QWidget
 
     libfwbuilder::FWObject *obj;
     bool init;
+    bool modified;
     Ui::HostDialog_q *m_dialog;
     ProjectPanel *m_project;
 

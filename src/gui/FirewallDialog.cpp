@@ -67,7 +67,8 @@ FirewallDialog::~FirewallDialog()
     delete m_dialog;
 }
 
-FirewallDialog::FirewallDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+FirewallDialog::FirewallDialog(ProjectPanel *project, QWidget *parent) :
+    QWidget(parent), m_project(project)
 {
     m_dialog = new Ui::FirewallDialog_q;
     m_dialog->setupUi(this);
@@ -80,7 +81,8 @@ void FirewallDialog::loadFWObject(FWObject *o)
     Firewall *s = dynamic_cast<Firewall*>(obj);
     assert(s!=NULL);
 
-    init=true;
+    init = true;
+    modified = false;
 
 /* fill in platform */
     setPlatform(m_dialog->platform, obj->getStr("platform").c_str() );
@@ -98,16 +100,10 @@ void FirewallDialog::loadFWObject(FWObject *o)
 //    FWOptions  *opt =s->getOptionsObject();
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
-//    snmpCommunity->setText( mgmt->getSNMPManagement()->getReadCommunity().c_str() );
-
-    //comment->setTextFormat(QTextEdit::PlainText);
 
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
 
     m_dialog->inactive->setChecked(s->getInactive());
-
-    //apply->setEnabled( false );
-
 
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->obj_name);
@@ -145,13 +141,15 @@ void FirewallDialog::fillVersion()
 {
     m_dialog->version->clear();
 
-    list<QStringPair> vl=getVersionsForPlatform( readPlatform(m_dialog->platform) );
-    QString            v=obj->getStr("version").c_str();
-    int cp=0;
+    list<QStringPair> vl = getVersionsForPlatform(
+        readPlatform(m_dialog->platform) );
+    QString v = obj->getStr("version").c_str();
+    int cp = 0;
     for (list<QStringPair>::iterator i1=vl.begin(); i1!=vl.end(); i1++,cp++)
     {
         if (fwbdebug)
-            qDebug(QString("Adding version %1").arg(i1->second).toAscii().constData());
+            qDebug(QString("Adding version %1").arg(
+                       i1->second).toAscii().constData());
 
         m_dialog->version->addItem( i1->second );
         if ( v == i1->first ) m_dialog->version->setCurrentIndex( cp );
@@ -168,18 +166,6 @@ void FirewallDialog::saveVersion()
         std::find_if(vl.begin(),vl.end(),findSecondInQStringPair(v));
     if (li!=vl.end())
         obj->setStr("version", li->first.toLatin1().constData() );
-
-#if 0
-    int cp=0;
-    for (list<QStringPair>::iterator i1=vl.begin(); i1!=vl.end(); i1++,cp++)
-    {
-        if ( v == i1.data() )
-        {
-            obj->setStr("version", i1.key().toLatin1().constData() );
-            break;
-        }
-    }
-#endif
 }
 
 void FirewallDialog::platformChanged()
@@ -187,7 +173,9 @@ void FirewallDialog::platformChanged()
     fillVersion();
     changed();
 
-    QString so=Resources::platform_res[readPlatform(m_dialog->platform).toLatin1().constData()]->getResourceStr("/FWBuilderResources/Target/supported_os").c_str();
+    QString so = Resources::platform_res[
+        readPlatform(m_dialog->platform).toLatin1().constData()
+    ]->getResourceStr("/FWBuilderResources/Target/supported_os").c_str();
     if (so.isEmpty()) return;
 
     QString ho=so.section(",",0);
@@ -206,22 +194,29 @@ void FirewallDialog::hostOSChanged()
 
 void FirewallDialog::changed()
 {
-    //apply->setEnabled( true );
+    if (fwbdebug) qDebug("FirewallDialog::changed init=%d", init);
+    if (!init) modified = true;
     emit changed_sign();
 }
 
 void FirewallDialog::validate(bool *res)
 {
-    *res=true;
-    if (!isTreeReadWrite(this,obj)) { *res=false; return; }
-    if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
+    *res = true;
+    if (!isTreeReadWrite(this,obj))
+    {
+        *res=false;
+        return;
+    }
+    if (!validateName(this,obj,m_dialog->obj_name->text()))
+    {
+        *res = false;
+        return;
+    }
 }
 
-void FirewallDialog::isChanged(bool*)
+void FirewallDialog::isChanged(bool *m)
 {
-    if (fwbdebug)
-        qDebug("FirewallDialog::isChanged");
-    //*res=(!init && apply->isEnabled());
+    *m = modified;
 }
 
 void FirewallDialog::libChanged()
@@ -245,14 +240,15 @@ void FirewallDialog::applyChanges()
 
     string oldVer=obj->getStr("version");
 
-    obj->setName( newname );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
-//    mgmt->getSNMPManagement()->setReadCommunity( snmpCommunity->text().toLatin1().constData() );
+    obj->setName(newname);
+    obj->setComment(
+        string(m_dialog->comment->toPlainText().toUtf8().constData()));
 
     string pl = readPlatform(m_dialog->platform).toLatin1().constData();
     obj->setStr("platform", pl );
 
-    obj->setStr("host_OS", readHostOS(m_dialog->hostOS).toLatin1().constData() );
+    obj->setStr("host_OS",
+                readHostOS(m_dialog->hostOS).toLatin1().constData());
 
     s->setInactive(m_dialog->inactive->isChecked());
 
@@ -265,25 +261,24 @@ void FirewallDialog::applyChanges()
     if (oldplatform!=pl || oldname!=newname || oldVer!=newVer)
     {
         if (fwbdebug)
-            qDebug("FirewallDialog::applyChanges() scheduling call to reopenFirewall()");
-        //mw->reopenFirewall();
-        //QTimer::singleShot( 0, mw, SLOT(reopenFirewall()) );
+            qDebug("FirewallDialog::applyChanges() scheduling call "
+                   "to reopenFirewall()");
         mw->scheduleRuleSetRedraw();
     }
 
     if (oldplatform!=pl)
     {
         if (fwbdebug)
-            qDebug("FirewallDialog::applyChanges() platform has changed - clear option 'compiler'");
+            qDebug("FirewallDialog::applyChanges() platform has changed - "
+                   "clear option 'compiler'");
         Firewall *s = Firewall::cast(obj);
         assert(s!=NULL);
         FWOptions  *opt =s->getOptionsObject();
         opt->setStr("compiler","");
     }
 
-    //apply->setEnabled( false );
     mw->updateLastModifiedTimestampForAllFirewalls(s);
-
+    modified = false;
 }
 
 void FirewallDialog::discardChanges()
@@ -293,9 +288,12 @@ void FirewallDialog::discardChanges()
 
 void FirewallDialog::openFWDialog()
 {
-    /*if (apply->isEnabled())*/ applyChanges();
+    if (fwbdebug)
+        qDebug("FirewallDialog::openFWDialog: modified=%d", modified);
 
-    if (obj->getStr("version").empty()) saveVersion();
+    if (modified) applyChanges();
+
+//    if (obj->getStr("version").empty()) saveVersion();
 
     try
     {
@@ -320,7 +318,7 @@ void FirewallDialog::openFWDialog()
 
 void FirewallDialog::openOSDialog()
 {
-    /*if (apply->isEnabled())*/ applyChanges();
+    if (modified) applyChanges();
 
     try
     {
@@ -349,6 +347,5 @@ void FirewallDialog::openOSDialog()
 void FirewallDialog::closeEvent(QCloseEvent *e)
 {
     emit close_sign(e);
-
 }
 

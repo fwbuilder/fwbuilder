@@ -69,7 +69,8 @@ void HostDialog::loadFWObject(FWObject *o)
     Host *s = dynamic_cast<Host*>(obj);
     assert(s!=NULL);
 
-    init=true;
+    init = true;
+    modified = false;
 
     Management *mgmt=s->getManagementObject();
     assert(mgmt!=NULL);
@@ -102,20 +103,28 @@ void HostDialog::loadFWObject(FWObject *o)
 
 void HostDialog::changed()
 {
-    //apply->setEnabled( true );
+    if (!init) modified = true;
     emit changed_sign();
 }
 
 void HostDialog::validate(bool *res)
 {
-    *res=true;
-    if (!isTreeReadWrite(this,obj)) { *res=false; return; }
-    if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
+    *res = true;
+    if (!isTreeReadWrite(this,obj))
+    {
+        *res=false;
+        return;
+    }
+    if (!validateName(this,obj,m_dialog->obj_name->text()))
+    {
+        *res=false;
+        return;
+    }
 }
 
-void HostDialog::isChanged(bool*)
+void HostDialog::isChanged(bool *m)
 {
-    //*res=(!init && apply->isEnabled());
+    *m = modified;
 }
 
 void HostDialog::libChanged()
@@ -143,6 +152,7 @@ void HostDialog::applyChanges()
 
     //apply->setEnabled( false );
     mw->updateLastModifiedTimestampForAllFirewalls(obj);
+    modified = false;
 }
 
 void HostDialog::discardChanges()

@@ -1,5 +1,16 @@
 2008-09-25  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FirewallDialog.cpp (FirewallDialog::openFWDialog): fixed bug
+	#2105977: "Viewing firewall settings change state to
+	edited". Opening firewall "advanced" settings dialog triggered
+	internal flag that signalled that something in the object tree has
+	changed.
+
+	* FWObject.cpp (FWObject::setInt): (change in libfwbuilder) fixed
+	bug #2128261: "fwbuilder thinks the file has changed when opened
+	read-only". Operation "find where used" triggered "dirty" flag on
+	the object tree even though it does not change anything.
+
 	* NetworkDialog.cpp (NetworkDialog::addressEntered): Network and
 	NetworkIPv6 object dialogs accept CIDR notation in the "address"
 	input field. Netmask input field is filled automatically using
