@@ -407,6 +407,7 @@ void PolicyCompiler_pf::PrintRule::_printAF(PolicyRule*)
 {
     PolicyCompiler_pf *pf_comp=dynamic_cast<PolicyCompiler_pf*>(compiler);
     if (pf_comp->ipv6) compiler->output << "inet6 ";
+    else compiler->output << "inet ";
 }
 
 void PolicyCompiler_pf::PrintRule::_printProtocol(libfwbuilder::Service *srv)
@@ -859,11 +860,9 @@ bool PolicyCompiler_pf::PrintRule::processNext()
 
     _printInterface(rule);
 
-    _printAF(rule);
-
     _printRouteOptions(rule);
 
-    compiler->output << "inet ";
+    _printAF(rule);
 
     _printProtocol(srv);
 

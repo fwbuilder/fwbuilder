@@ -1,5 +1,9 @@
 2008-09-26  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_pf_writers.cpp (PrintRule::_printAF): fixed
+	bug (no #): policy compiler for PF used to insert both "inet" and
+	"inet6" into generated pf.conf lines for the IPv6 policy.
+
 	* RuleSetView.cpp (RuleSetView::getFullRuleGroupTitle): Added
 	tooltip in the rule set view for the column showing rule group
 	handle, the tooltip shows group name and number of rules.
