@@ -259,14 +259,15 @@ public:
      void setCurrentRow(const int value);
      void setCurrentColumn(const int value);
 
-    enum REType{ RuleOp,
-                 Object,
-                 Action,
-                 Direction,
-                 Options,
-                 Time,
-                 Comment,
-                 Metric };
+     enum REType{ GroupHandle,
+                  RuleOp,
+                  Object,
+                  Action,
+                  Direction,
+                  Options,
+                  Time,
+                  Comment,
+                  Metric };
 
  protected:
 
@@ -378,6 +379,7 @@ public:
 
     RuleRowInfo* getRuleRowInfoByGroupName(QString name);
     int getRuleRowInfoIndexByGroupName(QString name);
+    QString getFullRuleGroupTitle(int row);
 
     void createGroup(int row, int count, QString groupName);
     void removeFromGroup(int row, int count);

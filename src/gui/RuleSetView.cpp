@@ -580,7 +580,7 @@ bool RuleSetView::showCommentTip(QPoint pos, QHelpEvent *he)
     if (!st->getClipComment())
         return false;
     int col = columnAt(pos.x() - verticalHeader()->width());
-    if((pos.y() >= horizontalHeader()->height()) &&
+    if ((pos.y() >= horizontalHeader()->height()) &&
        RuleSetView::Comment == getColType(col))
     {
 
@@ -627,45 +627,55 @@ bool RuleSetView::event( QEvent * event )
             if ((row < 0) || (col < 0)) return true;
 
             QRect   cr;
-            QString t="";
+            QString tooltip_text = "";
 
             QPoint contentsMouse = viewport()->mapFromGlobal(mapToGlobal(pos));
-            contentsMouse.setY(contentsMouse.y() + verticalOffset() + 3);//+3 for fitting purposed
+            contentsMouse.setY(contentsMouse.y() + verticalOffset() + 3);
 
             cr = ruleDelegate->cellGeometry(row, col);
 
-            if ( RuleSetView::Options == getColType(col) )
+            if ( RuleSetView::GroupHandle == getColType(col) )
+            {
+                tooltip_text = getFullRuleGroupTitle(row);
+            } else if ( RuleSetView::Options == getColType(col) )
             {
                 Rule *rule = getRule(row);
                 if (PolicyRule::cast(rule)!=NULL )
                 {
-                    if (! isDefaultPolicyRuleOptions( rule->getOptionsObject() ))
-                        t= FWObjectPropertiesFactory::getPolicyRuleOptions(rule);
+                    if (!isDefaultPolicyRuleOptions(rule->getOptionsObject()))
+                        tooltip_text = 
+                            FWObjectPropertiesFactory::getPolicyRuleOptions(
+                                rule);
                 }
                 if (NATRule::cast(rule)!=NULL )
                 {
-                    if (! isDefaultNATRuleOptions( rule->getOptionsObject() ))
-                        t= FWObjectPropertiesFactory::getNATRuleOptions(rule);
+                    if (!isDefaultNATRuleOptions( rule->getOptionsObject()))
+                        tooltip_text =
+                            FWObjectPropertiesFactory::getNATRuleOptions(rule);
                 }
             }
             else if( RuleSetView::Direction == getColType(col) )
             {
                 PolicyRule *rule = PolicyRule::cast( getRule(row) );
                 if (rule!=NULL)
-                    t = rule->getDirectionAsString().c_str();
+                    tooltip_text = rule->getDirectionAsString().c_str();
             }
             else if( RuleSetView::Action == getColType(col) )
             {
                 PolicyRule *rule = PolicyRule::cast( getRule(row) );
                 if (rule!=NULL)
-                    t= FWObjectPropertiesFactory::getRuleActionPropertiesRich(rule);
+                    tooltip_text =
+                        FWObjectPropertiesFactory::getRuleActionPropertiesRich(
+                            rule);
             }
             else
             {
                 FWObject *obj = getObj(row,col,contentsMouse.y(),&cr);
                 if (obj==NULL)
                     return true;
-                t=FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj,true,true);
+                tooltip_text = 
+                    FWObjectPropertiesFactory::getObjectPropertiesDetailed(
+                        obj,true,true);
             }
 
             cr = QRect(
@@ -675,9 +685,11 @@ bool RuleSetView::event( QEvent * event )
                 cr.height() + 4);
 
             QRect global = QRect(
-                viewport()->mapToGlobal(cr.topLeft()), viewport()->mapToGlobal(cr.bottomRight()));
+                viewport()->mapToGlobal(cr.topLeft()),
+                viewport()->mapToGlobal(cr.bottomRight()));
 
-            QToolTip::showText(mapToGlobal( he->pos() ), t, this, global);
+            QToolTip::showText(
+                mapToGlobal(he->pos()), tooltip_text, this, global);
         }
 
         return true;
@@ -842,6 +854,30 @@ int RuleSetView::getRuleRowInfoIndexByGroupName(QString name)
     }
     return -1;
 
+}
+
+QString RuleSetView::getFullRuleGroupTitle(int row)
+{
+    Rule *rule = getRule(row);
+    QString groupTitle;
+    QString groupName;
+    if (rule==NULL)
+    {
+        // rule group head row
+        RuleRowInfo *rri = rowsInfo[row];
+        if (rri) groupName = rri->groupName;
+    } else
+        groupName = QString(rule->getRuleGroupName().c_str());
+
+    if (!groupName.isEmpty())
+    {
+        int count = rulesInGroup[groupName];
+        groupTitle = groupName;
+        groupTitle += " (" ;
+        groupTitle += QString().setNum(count);
+        groupTitle += " rules)";
+    }
+    return groupTitle;
 }
 
 void RuleSetView::init()
@@ -1631,12 +1667,7 @@ void RuleSetView::paintCell(QPainter *pntr,
         RuleRowInfo *rri = rowsInfo[row];
         if (rri && rri->isFirstRow)
         {
-            int count = rulesInGroup[ rri->groupName ];
-            QString groupTitle = rri->groupName;
-            groupTitle += " (" ;
-            groupTitle += QString().setNum(count);
-            groupTitle += " rules)";
-
+            QString groupTitle = getFullRuleGroupTitle(row);
             QRect r = ruleDelegate->cellRect(row,col);
 
             int x  = r.left() + RuleElementSpacing/2;
@@ -4802,52 +4833,52 @@ PolicyView::PolicyView(ProjectPanel *project, Policy *p, QWidget *parent) :
 void PolicyView::init()
 {
     //ncols=7 +
-    ncols=8 +
+    ncols = 8 +
         ((supports_time)?1:0) +
         ((supports_logging && supports_rule_options)?1:0);
 
     ruleModel->setColumnCount(ncols);
 
-    colTypes[-1]=RuleOp;
+    colTypes[-1] = RuleOp;
 
     int col=0;
     QStringList qsl;
 
-    qsl << "";      // -1 :)
-    colTypes[col++]=Object;
+    qsl << "";
+    colTypes[col++] = GroupHandle;
 
     qsl << "Source";      // 0
-    colTypes[col++]=Object;
+    colTypes[col++] = Object;
 
     qsl << "Destination"; // 1
-    colTypes[col++]=Object;
+    colTypes[col++] = Object;
 
     qsl << "Service";     // 2
-    colTypes[col++]=Object;
+    colTypes[col++] = Object;
 
     qsl << "Interface";   // 3
-    colTypes[col++]=Object;
+    colTypes[col++] = Object;
 
     qsl << "Direction";   // 4
-    colTypes[col++]=Direction;
+    colTypes[col++] = Direction;
 
     qsl << "Action";      // 5
-    colTypes[col++]=Action;
+    colTypes[col++] = Action;
 
     if (supports_time)
     {
         qsl << "Time";    // 6
-        colTypes[col++]=Time;
-    }
+        colTypes[col++] = Time;
+    } 
 
     if (supports_logging && supports_rule_options)
     {
         qsl << "Options";
-        colTypes[col++]=Options;
-    }
+        colTypes[col++] = Options;
+    } 
 
     qsl << "Comment";
-    colTypes[col]=Comment;
+    colTypes[col] = Comment;
 
     ruleModel->setHeader(qsl);
 
@@ -4916,42 +4947,42 @@ void InterfacePolicyView::init()
 
     ruleModel->setColumnCount(ncols);
 
-    colTypes[-1]=RuleOp;
+    colTypes[-1] = RuleOp;
 
-    int col=0;
+    int col = 0;
     QStringList qsl;
-    qsl << "";      // -1
-    colTypes[col++]=Object;    
+    qsl << "";
+    colTypes[col++] = GroupHandle;
 
     qsl << "Source";      // 0
-    colTypes[col++]=Object;
+    colTypes[col++] = Object;
 
     qsl << "Destination"; // 1
-    colTypes[col++]=Object;
+    colTypes[col++] = Object;
 
     qsl << "Service";     // 2
-    colTypes[col++]=Object;
+    colTypes[col++] = Object;
 
     qsl << "Direction";   // 3
-    colTypes[col++]=Direction;
+    colTypes[col++] = Direction;
 
     qsl << "Action";      // 4
-    colTypes[col++]=Action;
+    colTypes[col++] = Action;
 
     if (supports_time)
     {
         qsl << "Time";    // 5
-        colTypes[col++]=Time;
+        colTypes[col++] = Time;
     }
 
     if (supports_logging && supports_rule_options)
     {
         qsl << "Options";
-        colTypes[col++]=Options;
+        colTypes[col++] = Options;
     }
 
     qsl << "Comment";
-    colTypes[col]=Comment;
+    colTypes[col] = Comment;
 
     ruleModel->setHeader(qsl);
 //    setColumnStretchable(col, true);
@@ -5010,39 +5041,39 @@ NATView::NATView(ProjectPanel *project, NAT *p, QWidget *parent) :
 
 void NATView::init()
 {
-    colTypes[-1]=RuleOp;
+    colTypes[-1] = RuleOp;
 
     ncols=9;
     ruleModel->setColumnCount(9);
 
-    int col=0;
+    int col = 0;
     QStringList qsl;
-    qsl << "";      // -1
-    colTypes[col++]=Object;
+    qsl << "";
+    colTypes[col++] = GroupHandle;
 
     qsl << "Original Src";
-    colTypes[col++]=Object;
+    colTypes[col++] = Object;
 
     qsl << "Original Dst";
-    colTypes[col++]=Object;
+    colTypes[col++] = Object;
 
     qsl << "Original Srv";
-    colTypes[col++]=Object;
+    colTypes[col++] = Object;
 
     qsl << "Translated Src";
-    colTypes[col++]=Object;
+    colTypes[col++] = Object;
 
     qsl << "Translated Dst";
-    colTypes[col++]=Object;
+    colTypes[col++] = Object;
 
     qsl << "Translated Srv";
-    colTypes[col++]=Object;
+    colTypes[col++] = Object;
 
     qsl << "Options";
-    colTypes[col++]=Options;
+    colTypes[col++] = Options;
 
     qsl << "Comment";
-    colTypes[col++]=Comment;
+    colTypes[col++] = Comment;
 
     ruleModel->setHeader(qsl);
 //    setColumnStretchable(col, true);
@@ -5099,33 +5130,33 @@ RoutingView::RoutingView(ProjectPanel *project, Routing *p, QWidget *parent) :
 
 void RoutingView::init()
 {
-    colTypes[-1]=RuleOp;
+    colTypes[-1] = RuleOp;
     ncols=7;
     ruleModel->setColumnCount(ncols);
 
-    int col=0;
+    int col = 0;
 
     QStringList qsl;
     qsl << "";
-    colTypes[col++]=Object;
+    colTypes[col++] = GroupHandle;
 
     qsl << "Destination";
-    colTypes[col++]=Object;
+    colTypes[col++] = Object;
 
     qsl << "Gateway";
-    colTypes[col++]=Object;
+    colTypes[col++] = Object;
 
     qsl << "Interface";
-    colTypes[col++]=Object;
+    colTypes[col++] = Object;
 
     qsl << "Metric";
-    colTypes[col++]=Metric;
+    colTypes[col++] = Metric;
 
     qsl << "Options";
-    colTypes[col++]=Options;
+    colTypes[col++] = Options;
 
     qsl << "Comment";
-    colTypes[col]=Comment;
+    colTypes[col] = Comment;
 
     ruleModel->setHeader(qsl);
 //    setColumnStretchable(col, true);

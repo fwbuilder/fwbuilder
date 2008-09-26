@@ -1,3 +1,9 @@
+2008-09-26  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::getFullRuleGroupTitle): Added
+	tooltip in the rule set view for the column showing rule group
+	handle, the tooltip shows group name and number of rules.
+
 2008-09-25  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FirewallDialog.cpp (FirewallDialog::openFWDialog): fixed bug
