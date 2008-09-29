@@ -105,7 +105,7 @@ using namespace std;
 
 // #define DEBUG_RULE_GROUPS 1
 // #define DRAW_RULE_GROUP_FRAME 1
-#define DEBUG_PAINT_CELL 1
+// #define DEBUG_PAINT_CELL 1
 
 int QMAX(int a, int b)
 {
@@ -336,7 +336,7 @@ void RuleDelegate::paint(QPainter *painter,
 
     if (ruleSetView->ruleIndex[index.row()]==NULL)
     {
-        if (index.column() > 1) return;
+//        if (index.column() > 1) return;
         if (index.column() == 1)
         {
             // Correct geometry rect for the rule group head row
@@ -579,10 +579,10 @@ void RuleSetView::updateGeometries()
     verticalScrollBar()->setSingleStep(20);
 }
 
-bool RuleSetView::showCommentTip(QPoint pos, QHelpEvent *he)
+bool RuleSetView::showCommentTip(const QPoint &pos, QHelpEvent *he)
 {
-    if (!st->getClipComment())
-        return false;
+    if (!st->getClipComment()) return false;
+
     int col = columnAt(pos.x() - verticalHeader()->width());
     if ((pos.y() >= horizontalHeader()->height()) &&
        RuleSetView::Comment == getColType(col))
@@ -725,7 +725,7 @@ void RuleSetView::updateCell(const int row, const int col)
     dataChanged(ind, ind);
 }
 
-void RuleSetView::setName(QString)
+void RuleSetView::setName(const QString&)
 {
     //do nothing
 }
@@ -748,6 +748,12 @@ void RuleSetView::setCurrentRow(const int value)
 void RuleSetView::setCurrentColumn(const int value)
 {
     m_currentColumn = value;
+}
+
+void RuleSetView::scrollToCurrent()
+{
+    scrollTo( ruleModel->index(currentRow(), currentColumn()),
+              QAbstractItemView::EnsureVisible);
 }
 
 void RuleSetView::setCurrentCell(const int row, const int col)
@@ -840,24 +846,21 @@ void RuleSetView::fixRulePosition(Rule *rule, FWObject *parent, int pos)
         rule->setPosition(pos);
 }
 
-RuleRowInfo* RuleSetView::getRuleRowInfoByGroupName(QString name)
+RuleRowInfo* RuleSetView::getRuleRowInfoByGroupName(const QString &name)
 {
-    if (name=="") name = "New Group";
+    if (fwbdebug) qDebug("RuleSetView::getRuleRowInfoByGroupName name=%s",
+                         name.toAscii().constData());
+//    if (name == "") name = "New Group";
     for (int i = 0 ; i < rowsInfo.size(); i++)
-    {
-        if (rowsInfo[i]->groupName==name)  return rowsInfo[i];
-    }
+        if (rowsInfo[i] && rowsInfo[i]->groupName == name)  return rowsInfo[i];
     return NULL;
 }
 
-int RuleSetView::getRuleRowInfoIndexByGroupName(QString name)
+int RuleSetView::getRuleRowInfoIndexByGroupName(const QString &name)
 {
     for (int i = 0 ; i < rowsInfo.size(); i++)
-    {
-        if (rowsInfo[i]->groupName==name) return i;
-    }
+        if (rowsInfo[i] && rowsInfo[i]->groupName == name) return i;
     return -1;
-
 }
 
 QString RuleSetView::getFullRuleGroupTitle(int row)
@@ -1040,11 +1043,6 @@ void RuleSetView::updateGroups()
 {
     if (fwbdebug) qDebug("RuleSetView::updateGroups");
 
-//    for (int i = 0 ; i < rowsInfo.size(); i++)
-//    {
-//        setSpan(i, 1, 0, 1);
-//    }
-
     reset();
 
     QStringList collapsed_groups;
@@ -1062,7 +1060,6 @@ void RuleSetView::updateGroups()
     QMap<QString, QString> groupColors ;
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
-//        setSpan(i, 1, 0, 1);
         if (ruleIndex[i]==NULL)
         {        
             if (rowsInfo[i]->isFirstRow)
@@ -1184,7 +1181,8 @@ void RuleSetView::updateGroups()
         {
             rri->collapsedGroup = 
                 bool(collapsed_groups.count(rri->groupName) > 0);
-            if (!rri->isFirstRow) hideRow(row);
+            if (rri->isFirstRow) setSpan(row, 1, 1, ncols-1);
+            else hideRow(row);
         }
     }
 
@@ -1588,8 +1586,9 @@ void RuleSetView::paintCell(QPainter *pntr,
     }
 
     Rule *rule = ruleIndex[row];
+    RuleRowInfo * rri = rowsInfo[row];
 
-    if (rule==NULL) 
+    if (rule==NULL && rri && rri->isFirstRow) 
     {
         /* Rule group head */
         drawRuleGroupHead(pntr, row, col, cr, selected, cg);
@@ -1908,44 +1907,42 @@ void RuleSetView::drawRuleGroupHead(QPainter *pntr, int row, int col,
                                     bool, const QPalette &cg)
 {
     QString rclr;
-//    Rule *rule = ruleIndex[row];
-//    int groupEnd = getDownNullRuleIndex(row); 
-
     QPixmap bufferpixmap;
-    QString bpmname = QString("rulesetcell_%1_%2").
-        arg(cr.width()).arg(cr.height());
+    QString bpmname = 
+        QString("rulesetcell_%1_%2_%3").
+        arg(ruleset->getName().c_str()).arg(row).arg(col);
+
     if ( ! QPixmapCache::find( bpmname, bufferpixmap) )
     {
         bufferpixmap = QPixmap( cr.width()-1 , cr.height()-1 );
         QPixmapCache::insert( bpmname, bufferpixmap);
-    }
-    
-    bufferpixmap.fill(cg.mid().color());
+    }    
 
+    bufferpixmap.fill(cg.mid().color());
     QPainter p( &bufferpixmap );
-    QFont font = st->getRulesFont();
-    p.setFont(font);
+
+    if (col == 1)
+    {
+        QFont font = st->getRulesFont();
+        p.setFont(font);
+
+        RuleRowInfo * rri = rowsInfo[row];
 
 #ifdef DRAW_RULE_GROUP_FRAME
-    RuleRowInfo * rri = rowsInfo[row];
-    p.setPen(Qt::green);
-    if (rri->isFirstRow)
-    {
-        p.drawLine( 1, 1, 1, cr.height() );
-        p.drawLine( 1, 1, cr.width()-3, 1 );
-        p.drawLine( cr.width()-3, 1, cr.width()-3, cr.height() );
-    }
+        p.setPen(Qt::green);
+        if (rri->isFirstRow)
+        {
+            p.drawLine( 1, 1, 1, cr.height() );
+            p.drawLine( 1, 1, cr.width()-3, 1 );
+            p.drawLine( cr.width()-3, 1, cr.width()-3, cr.height() );
+        }
 #endif
-    if (isRowHidden(row+1))
-    {
-        p.drawLine( 1, cr.height()-3,  cr.width() , cr.height()-3);
-    }
 
-    RuleRowInfo *rri = rowsInfo[row];
-    if (rri && rri->isFirstRow)
-    {
+        if (rri->collapsedGroup)   //   isRowHidden(row+1))
+            p.drawLine( 1, cr.height()-3,  cr.width() , cr.height()-3);
+
         QString groupTitle = getFullRuleGroupTitle(row);
-        QRect r = ruleDelegate->cellRect(row,col);
+        QRect r = ruleDelegate->cellRect(row, col);
 
         int x  = r.left() + RuleElementSpacing/2;
         int y  = r.top();
@@ -1958,13 +1955,10 @@ void RuleSetView::drawRuleGroupHead(QPainter *pntr, int row, int col,
                     Qt::AlignLeft|Qt::AlignTop,
                     groupTitle);
     }
-        
-    p.end();
 
+    p.end();
     pntr->drawPixmap( cr.left() - horizontalOffset(),
                       cr.top() - verticalOffset(), bufferpixmap );
-    
-
 }
 
 void RuleSetView::drawRuleGroupHandle(QPainter *pntr, int row, int,
@@ -2126,8 +2120,9 @@ void RuleSetView::drawComment(QPainter &p, int row, int col, const QRect &cr)
                     comm);
 }
 
-QString RuleSetView::chooseIcon(QString icn)
+QString RuleSetView::chooseIcon(const QString &_icn)
 {
+    QString icn = _icn;
     if (!st->getShowIconsInRules())
         return QString();
     if (FWBSettings::SIZE16X16 == st->getIconsInRulesSize())
@@ -2187,13 +2182,8 @@ void RuleSetView::selectRE( int row, int col)
     if (row!=currentRow() || col!=currentColumn())
     {
         selectedObject = NULL;
-
-        setCurrentCell(row,col);
-        scrollTo( ruleModel->index(row,col),
-                  QAbstractItemView::EnsureVisible);
-        updateCell(row,col);
-
-//        updateCell(currentRow(),currentColumn());
+        setCurrentCell(row, col);
+        QTimer::singleShot(0, this, SLOT(scrollToCurrent()));
     }
 }
 
@@ -2207,13 +2197,17 @@ void RuleSetView::selectRE(FWReference *ref)
 
 void RuleSetView::selectRE(Rule *rule, int col)
 {
+    QString group_name = QString(rule->getRuleGroupName().c_str());
+    int row = getRow(rule);
     if (fwbdebug)
-        qDebug("RuleSetView::selectRE  rule: id=%s type=%s , col=%d",
+        qDebug("RuleSetView::selectRE  rule: id=%s type=%s, "
+               "row=%d col=%d group=%s",
                FWObjectDatabase::getStringId(rule->getId()).c_str(),
                rule->getTypeName().c_str(),
-               col);
+               row, col, group_name.toAscii().constData());
 
-    selectRE(getRow(rule), col);
+    expandRuleGroupByName(group_name);
+    selectRE(row, col);
 }
 
 void RuleSetView::selectRE(RuleElement *re, FWObject *obj)
@@ -2640,26 +2634,17 @@ void RuleSetView::mousePressEvent( QMouseEvent* ev )
     int row = rowAt(ev->y());
     int col = columnAt(ev->x());
     if (row == -1) return ;    
-    if (col == 0)
-    {
-        if (row < rowsInfo.size() && row >= 0)
-        {
-            if (rowsInfo[row] != NULL) showHideRuleGroup(row);
-        }
-    }
+    if (col == 0 && row < rowsInfo.size() && row >= 0 && rowsInfo[row] != NULL)
+        showHideRuleGroup(row);
 
-    FWObject *obj = getObj(row,col,ev->y()+verticalOffset());
-
-    if (fwbdebug)
-        qDebug("RuleSetView::contentsMousePressEvent  obj=%s  row=%d  col=%d",
-               (obj)?obj->getName().c_str():"NULL", row, col);
-
-    if (fwbdebug)
-        qDebug("RuleSetView::contentsMousePressEvent  1 "
-               "currentRow=%d  currentColumn=%d",
-               currentRow(),currentColumn());
+    FWObject *obj = getObj(row, col, ev->y()+verticalOffset());
 
     QTableView::mousePressEvent(ev);
+
+    if (fwbdebug)
+        qDebug("RuleSetView::contentsMousePressEvent  "
+               "obj=%s  row=%d  col=%d",
+               (obj)?obj->getName().c_str():"NULL", row, col);
 
     if ((row > 0) && (col > 0)) mw->selectRules();
     else
@@ -2669,11 +2654,6 @@ void RuleSetView::mousePressEvent( QMouseEvent* ev )
         //unselect();
     }
 
-    if (fwbdebug)
-        qDebug("RuleSetView::contentsMousePressEvent  2 "
-               "currentRow=%d  currentColumn=%d",
-               currentRow(),currentColumn());
-
     startingDrag = (row==currentRow() &&
                     col==currentColumn() &&
                     selectedObject==obj);
@@ -2681,16 +2661,13 @@ void RuleSetView::mousePressEvent( QMouseEvent* ev )
     //forget old selection by setting View's current cell
     changeCurrentCell(row, col, true);
     setSelectedObject(obj);
-
-    //verticalHeader()->update();
 }
 
 void RuleSetView::mouseReleaseEvent( QMouseEvent* ev )
 {
     QTableView::mouseReleaseEvent(ev);
 
-    if (fwbdebug)
-        qDebug("RuleSetView::contentsMouseReleaseEvent");
+    if (fwbdebug) qDebug("RuleSetView::contentsMouseReleaseEvent");
 
     if (mw->isEditorVisible() && !switchObjectInEditor( columnAt(ev->x()) ))
     {
@@ -2815,7 +2792,7 @@ void RuleSetView::newGroup()
     } 
 }
 
-void RuleSetView::createGroup(int row, int count, QString groupName)
+void RuleSetView::createGroup(int row, int count, const QString &groupName)
 {
     for (int idx=0 ; idx<count; idx++)
         ruleIndex[row + idx]->setRuleGroupName(groupName.toAscii().data());
@@ -2965,6 +2942,28 @@ void RuleSetView::expandRuleGroup(int row)
                 model()->index(model()->rowCount(), model()->columnCount()));
 
     saveCollapsedGroups();
+}
+
+/*
+ * Collapse rule group identified by name. Since group name does not
+ * have to be unique, find and collapse all groups with the same name.
+ */ 
+void RuleSetView::collapseRuleGroupByName(const QString &name)
+{
+    for (int i = 0 ; i < rowsInfo.size(); i++)
+        if (rowsInfo[i] && rowsInfo[i]->groupName == name) 
+            collapseRuleGroup(i);
+}
+
+/*
+ * Expand rule group identified by name. Since group name does not
+ * have to be unique, find and expand all groups with the same name.
+ */ 
+void RuleSetView::expandRuleGroupByName(const QString &name)
+{
+    for (int i = 0 ; i < rowsInfo.size(); i++)
+        if (rowsInfo[i] && rowsInfo[i]->groupName == name) 
+            expandRuleGroup(i);
 }
 
 void RuleSetView::removeFromGroup()
@@ -4770,7 +4769,7 @@ void RuleSetView::restoreCurrentRowColumn(int row, int column)
                          "row=%d, column=%d",
                          row, column);
     setCurrentCell(row, column);
-    scrollTo(ruleModel->index(row, column), QAbstractItemView::EnsureVisible);
+    scrollToCurrent();
     update();
 }
 

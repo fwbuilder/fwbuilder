@@ -76,7 +76,7 @@ using namespace std;
 using namespace libfwbuilder;
 
 
-FindWhereUsedWidget::FindWhereUsedWidget(QWidget*p,
+FindWhereUsedWidget::FindWhereUsedWidget(QWidget *p,
                                          const char * n,
                                          Qt::WindowFlags f,
                                          bool f_mini) : QWidget(p)
@@ -133,7 +133,7 @@ void FindWhereUsedWidget::find(FWObject *obj)
 
 void FindWhereUsedWidget::_find(FWObject *obj)
 {
-    object=obj;
+    object = obj;
     m_widget->resListView->clear();
     mapping.clear();
     resset.clear();
@@ -243,12 +243,12 @@ void FindWhereUsedWidget::findFromDrop()
 
 void FindWhereUsedWidget::showObject(FWObject* o)
 {
-    if (fwbdebug) qDebug("FindWhereUsedWidget::showObject");
+    if (fwbdebug) qDebug("FindWhereUsedWidget::showObject  o=%s (%s)",
+                         o->getName().c_str(), o->getTypeName().c_str());
 
     if (object==NULL || o==NULL) return;
 
-    FWReference* ref=NULL;
-
+    FWReference* ref = NULL;
 
     if (RuleElement::cast(o)!=NULL)
     {
@@ -256,45 +256,42 @@ void FindWhereUsedWidget::showObject(FWObject* o)
         mw->clearManipulatorFocus();
         RuleSetView *rsv = mw->activeProject()->getCurrentRuleSetView();
         rsv->selectRE(RuleElement::cast(o), object);
-        rsv->setFocus ( Qt::MouseFocusReason );
+        rsv->setFocus(Qt::MouseFocusReason);
 
-        if (mw->isEditorVisible())
-        {
-            mw->editObject( object );
-        }
-        return;
-    }
-
-    if (Rule::cast(o)!=NULL)
+        if (mw->isEditorVisible()) mw->editObject( object );
+    } else
     {
-        mw->activeProject()->openRuleSet(o->getParent());
-        mw->clearManipulatorFocus();
-        RuleSetView *rsv = mw->activeProject()->getCurrentRuleSetView();
-        rsv->selectRE( Rule::cast(o), rsv->getColByType(RuleSetView::Action));
-
-        if (mw->isEditorVisible())
+        if (Rule::cast(o)!=NULL)
         {
-            mw->editObject( object );
-        }
-        return;
-    }
+            mw->activeProject()->openRuleSet(o->getParent());
+            mw->clearManipulatorFocus();
+            RuleSetView *rsv = mw->activeProject()->getCurrentRuleSetView();
+            rsv->selectRE(Rule::cast(o),rsv->getColByType(RuleSetView::Action));
 
-    mw->unselectRules();
-
-    if (Group::cast(o)!=NULL)
-    {
-
-        mw->openObject( o );
-        mw->unselectRules();
-
-        if (mw->isEditorVisible())
+            if (mw->isEditorVisible()) mw->editObject( object );
+        } else
         {
-            mw->editObject( o );
-            mw->selectObjectInEditor( object);
-        }
-        return;
-    }
+            mw->unselectRules();
 
+            if (Group::cast(o)!=NULL)
+            {
+                mw->openObject( o );
+                mw->unselectRules();
+
+                if (mw->isEditorVisible())
+                {
+                    mw->editObject( o );
+                    mw->selectObjectInEditor( object);
+                }
+            } else
+            {
+                mw->openObject( object );
+                mw->unselectRules();
+
+                if (mw->isEditorVisible()) mw->editObject( object );
+            }
+        }
+    }
     //mw->closeEditor();
     //mw->openObject( o );
 }

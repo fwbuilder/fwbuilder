@@ -25,17 +25,15 @@
 
 #include "fwbuilder/Rule.h"
 
-#include <vector>
 #include <QPalette>
 #include <QStringListModel>
 #include <QStandardItemModel>
 #include <QAbstractItemModel>
 #include <QAbstractTableModel>
 #include <QIcon>
-//#include <QPixmap>
-#include <qtableview.h>
 #include <QItemDelegate>
 #include <QHeaderView>
+#include <qtableview.h>
 #include <qpixmap.h>
 #include <qevent.h>
 #include <qtooltip.h>
@@ -118,21 +116,22 @@ public:
     
     RuleTableModel(const int rows, const int columns, RuleSetView *ruleView);
     ~RuleTableModel();
-    
-    int rowCount ( const QModelIndex & parent = QModelIndex() ) const;
-    int columnCount ( const QModelIndex & parent = QModelIndex() ) const;
 
-    void setRowCount ( const int &value );
-    void setColumnCount ( const int &value );
-    
-    QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    bool setHeader ( QStringList qsl );
-    
-    void removeRows( const int row1, const int row2 ); 
-    void swapRows( const int row1, const int row2 );
-    void insertRow( const int before_pos ); 
-    
+    int rowCount(const QModelIndex & parent = QModelIndex()) const;
+    int columnCount(const QModelIndex & parent = QModelIndex()) const;
+
+    void setRowCount(const int &value);
+    void setColumnCount(const int &value);
+
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+    QVariant headerData(int section, Qt::Orientation orientation,
+                        int role = Qt::DisplayRole) const;
+    bool setHeader(QStringList qsl);
+
+    void removeRows(const int row1, const int row2); 
+    void swapRows(const int row1, const int row2);
+    void insertRow(const int before_pos); 
+
 protected:
     int m_rowCount;
     int m_columnCount;
@@ -148,7 +147,7 @@ class RuleSetView : public QTableView
     friend class RuleDelegate;
     
     Q_OBJECT
-    QVector <ProjectPanel*> getAllMdiProjectPanel ();
+    QVector <ProjectPanel*> getAllMdiProjectPanel();
 
 public slots:
     
@@ -160,7 +159,7 @@ public slots:
 
     void itemDoubleClicked(const QModelIndex & index);
     void contextMenu(int row, int col, const QPoint &pos);
-    void contextMenuRequested ( const QPoint &p );
+    void contextMenuRequested( const QPoint &p );
     
     void newGroup();
     void renameGroup();
@@ -229,15 +228,16 @@ public slots:
     void setRuleColor(const QString &c);
     void setRuleNumber(int row, libfwbuilder::Rule *rule);
     
-    void horzSectionResized ( int logicalIndex, int oldSize, int newSize );
-    void vertSectionResized ( int logicalIndex, int oldSize, int newSize );
+    void horzSectionResized( int logicalIndex, int oldSize, int newSize );
+    void vertSectionResized( int logicalIndex, int oldSize, int newSize );
+
+    void scrollToCurrent();
 
     virtual void updateGeometries();
 
 public:
      
      libfwbuilder::RuleSet *ruleset;
-
      QMap<QString,int> rulesInGroup;
      QItemSelectionRange itemSelectionRange;
 
@@ -248,7 +248,7 @@ public:
      void drawRuleGroupHandle(QPainter *p,int row, int col,
                             const QRect &cr, bool selected, const QPalette &cg);
 
-     void setName(QString qs);
+     void setName(const QString &qs);
      void setCurrentCell(const int row, const int col);
      void changeCurrentCell(const int row, const int col,
                             bool fullrefresh = false);
@@ -282,6 +282,8 @@ public:
 
     void collapseRuleGroup(int row);
     void expandRuleGroup(int row);
+    void collapseRuleGroupByName(const QString &name);
+    void expandRuleGroupByName(const QString &name);
     
     //these functions are added in the porting process
     //they are needed to work with stored cell sizes (columnWidths,
@@ -298,7 +300,7 @@ public:
     void setColumnWidth( const int col, const int width );
     void setRowHeight( const int row, const int height );
 
-    bool event ( QEvent * event );
+    bool event( QEvent * event );
      
     vector<int> columnWidths;
     vector<int> rowHeights;
@@ -348,7 +350,6 @@ public:
     int text_h;
     int item_h;
     std::map<int,int> dirtyRows;
-
     std::map<int,REType> colTypes;
 
     libfwbuilder::FWObject *selectedObject;
@@ -368,28 +369,25 @@ public:
 
     PopupMenuAction lastPopupMenuAction;
 
-
-
     void iinit();
     QString settingsKey();
 
-    void insertRuleIndex (int idx);
-    void removeRuleIndex (int idx);
-    void updateGroups ();
-    void refreshGroups ();
+    void insertRuleIndex(int idx);
+    void removeRuleIndex(int idx);
+    void updateGroups();
+    void refreshGroups();
 
-    int getUpNullRuleIndex (int idx);
-    int getDownNullRuleIndex (int idx);
+    int getUpNullRuleIndex(int idx);
+    int getDownNullRuleIndex(int idx);
 
-    RuleRowInfo* getRuleRowInfoByGroupName(QString name);
-    int getRuleRowInfoIndexByGroupName(QString name);
+    RuleRowInfo* getRuleRowInfoByGroupName(const QString &name);
+    int getRuleRowInfoIndexByGroupName(const QString &name);
     QString getFullRuleGroupTitle(int row);
 
-    void createGroup(int row, int count, QString groupName);
+    void createGroup(int row, int count, const QString &groupName);
     void removeFromGroup(int row, int count);
     void addToUpGroup(int row);
     void addToDownGroup(int row);
-    
     
     void adjustRow_int( int row, int h );
 
@@ -460,7 +458,7 @@ public:
     libfwbuilder::Rule* getRule(int row);
     int getRow(libfwbuilder::Rule *rule);
     
-    void selectRE( int row, int col);
+    void selectRE(int row, int col);
 
     /**
      * selects rule element a reference 'ref' belongs to
@@ -477,7 +475,7 @@ public:
      */
     void selectRE(libfwbuilder::RuleElement *re, libfwbuilder::FWObject *obj);
     
-    void updateCell( const int row, const int col );
+    void updateCell(const int row, const int col);
     void updateAll();
     void updateCurrentCell();
 
@@ -514,8 +512,8 @@ private:
     QSize drawIconInRule(QPainter &p, int x, int y,
                          libfwbuilder::RuleElement *re, 
                          libfwbuilder::FWObject *o1);
-    QString chooseIcon(QString icn);
-    bool showCommentTip(QPoint pos, QHelpEvent *he);
+    QString chooseIcon(const QString &icn);
+    bool showCommentTip(const QPoint &pos, QHelpEvent *he);
     void drawComment(QPainter &p, int row, int col, const QRect &cr);
 };
 

@@ -1,5 +1,14 @@
 2008-09-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* RuleSetView.cpp (RuleSetView::updateGroups): using setSpan to
+	make row holding rule group head span across all columns. Without
+	this, clicking on table cell in column >1 caused visual
+	artifacts (cell color would turn white, possibly erasing part of
+	the group name).
+
+	* FindWhereUsedWidget.cpp (FindWhereUsedWidget::showObject): fixed
+	bug #2129726: "Where Used" not working on collapsed groups.
+
 	* RuleSetView.cpp (RuleSetView::paintEvent): fixed bug related to
 	#2123152 "Fwbuilder 3.0.0 Gui very slow and doesn't refresh
 	properly". There seems to be a bug in QT 4.4.1 (not sure of 4.4.0,
