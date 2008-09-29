@@ -105,6 +105,7 @@ using namespace std;
 
 // #define DEBUG_RULE_GROUPS 1
 // #define DRAW_RULE_GROUP_FRAME 1
+#define DEBUG_PAINT_CELL 1
 
 int QMAX(int a, int b)
 {
@@ -502,6 +503,8 @@ RuleSetView::RuleSetView(ProjectPanel *project, int , int c, QWidget *parent):
     setFont(st->getRulesFont());
     rowSizingFrozen = false;
 
+    setShowGrid(true);
+
     prevCurrentRow = 0;
     prevCurrentCol = 0;
 
@@ -571,6 +574,7 @@ RuleSetView::~RuleSetView()
  */
 void RuleSetView::updateGeometries()
 {
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     QTableView::updateGeometries();
     verticalScrollBar()->setSingleStep(20);
 }
@@ -1036,10 +1040,10 @@ void RuleSetView::updateGroups()
 {
     if (fwbdebug) qDebug("RuleSetView::updateGroups");
 
-    for (int i = 0 ; i < rowsInfo.size(); i++)
-    {
-        setSpan(i, 1, 0, 1);
-    }
+//    for (int i = 0 ; i < rowsInfo.size(); i++)
+//    {
+//        setSpan(i, 1, 0, 1);
+//    }
 
     reset();
 
@@ -1058,7 +1062,7 @@ void RuleSetView::updateGroups()
     QMap<QString, QString> groupColors ;
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
-        setSpan(i, 1, 0, 1);
+//        setSpan(i, 1, 0, 1);
         if (ruleIndex[i]==NULL)
         {        
             if (rowsInfo[i]->isFirstRow)
@@ -1503,203 +1507,106 @@ QString RuleSetView::objectText(RuleElement *re,FWObject *obj)
 
 QPixmap RuleSetView::getPixmap(FWObject *obj, PixmapAttr pmattr) const
 {
-//    QPixmap pm;
     string icn = "icon";
     if (pmattr == Neg)  icn="icon-neg";
     if (pmattr == Ref)  icn="icon-ref";
     if (pmattr == Tree) icn="icon-tree";
     if (pmattr == NegTree) icn="icon-neg-tree";
-//    return QPixmap::fromMimeSource(
-//        Resources::global_res->getObjResourceStr(obj, icn).c_str() );
 
-    QString icn_file = (":/Icons/"+obj->getTypeName()+"/"+icn).c_str();// = Resources::global_res->getObjResourceStr(obj, icn).c_str();
+    QString icn_file = (":/Icons/"+obj->getTypeName()+"/"+icn).c_str();
     QPixmap pm;
     LoadPixmap(icn_file, pm);
-    //qDebug("here %s", icn_file.toAscii().constData());
 
     return pm;
 }
 
-void RuleSetView::repaintSelection()
+void RuleSetView::repaintSelection() {}
+
+void RuleSetView::paintEvent(QPaintEvent * event)
 {
-    setDirtyRegion( QRegion( 0, 0, width(), height() ) );
+    QTableView::paintEvent(event);
+
+    // There seems to be a bug in QT 4.4.1 (not sure of 4.4.0,
+    // definitely not in 4.3.x) which causes QTableView::paintEvent to
+    // sometimes skip the last row of the table when it redraws
+    // contents if rows have very different height. This looks like
+    // the last row comes out blank when user scrolls the table
+    // up. The last row is finally redrawn when most of it is already
+    // visible. The error appears to be in QTableView::paintEvent and
+    // is hard to work around. Even if this is fixed in 4.4.2 (to be
+    // verified still), some distros ship 4.4.1 so the problem can not
+    // be ignored.
+    // This is known to happen on Ubuntu Hardy, as well as Mac and Windows
+    // if the program is linked with QT 4.4.1
+    //
+    // The following fragment is a hack that always forces redraw of
+    // the last row. This should have some performance impact but it
+    // is hard to measure. The problem with this hack is that table
+    // grid is drawn in QTableView::paintEvent and gets overwritten by
+    // drawing functions in paintCell(). To avoid that we should be
+    // careful to dra only inside the cell rectangle in paintCell()
+    // 
+    //
+    int last_visual_row = verticalHeader()->visualIndexAt(height());
+    if (last_visual_row >= 0)
+    {
+        if (fwbdebug) qDebug("RuleSetView::paintEvent: last_visual_row=%d",
+                             last_visual_row);
+
+        QPainter painter(viewport());
+        for (int col=0; col < ncols; col++)
+            ruleDelegate->paint(&painter, QStyleOptionViewItem(),
+                                ruleModel->index(last_visual_row, col));
+    }
 }
 
 void RuleSetView::paintCell(QPainter *pntr,
                             int row,
                             int col,
                             const QRect &cr,
-                            bool,
+                            bool selected,
                             const QPalette &cg)
 {
     int re_size;
 
 /* row may point at an empty row where there is no rule yet. This
-    * happens if this method is called to redraw the table when we call
-    * setNumRows
+ * happens if this method is called to redraw the table when we call
+ * setNumRows
  */
-
-    /*if (fwbdebug)
-        qDebug("Draw cell: row=%d col=%d  current palette=%d",
-               row,col,palette().serialNumber());*/
+#ifdef DEBUG_PAINT_CELL
+    if (fwbdebug)
+        qDebug("RuleSetView::paintCell: row=%d col=%d cr=%dx%dx%dx%d",
+               row, col, cr.top(), cr.left(), cr.width(), cr.height());
+#endif
 
     if (ruleIndex.count(row)==0) return;
 
-    QString rclr;
-    Rule *rule = ruleIndex[row];
-    int groupEnd = getDownNullRuleIndex(row); 
-    
     if (col==0)
     {
-        // Leftmost column, we draw rule group expand/collapse control
-        // element here.
-
-        QPixmap bufferpixmap;
-        QString bpmname = QString("rulesetcell_%1_%2").
-            arg(cr.width()).arg(cr.height());
-        if ( ! QPixmapCache::find( bpmname, bufferpixmap) )
-        {
-            bufferpixmap = QPixmap( cr.width() , cr.height() );
-            QPixmapCache::insert( bpmname, bufferpixmap);
-        }
-    
-        bufferpixmap.fill(cg.base().color() );
-    
-        QPainter p( &bufferpixmap );
-        QFont font = st->getRulesFont();
-        p.setFont(font);
-
-        if (rule==NULL)
-        {
-            RuleRowInfo * rri = rowsInfo[row];
-                    
-            if (rri->isFirstRow)
-            {
-                p.drawRect((cr.width()-1)/2-4,(cr.height()-1)/2-4,8,8);
-                p.drawLine( (cr.width()-1)/2+7, (cr.height()-1)/2,
-                            cr.width()-1, (cr.height()-1)/2 );    
-                if (!isRowHidden(row+1))
-                {
-                    p.drawLine(
-                        (cr.width()-1)/2, (cr.height()-1)/2+7,
-                        (cr.width()-1)/2, cr.height()-1 );
-                    p.drawLine(
-                        (cr.width()-1)/2-2, (cr.height()-1)/2,
-                        (cr.width()-1)/2+2, (cr.height()-1)/2);
-                }
-                else
-                {
-                    p.drawLine(
-                        (cr.width()-1)/2-2, (cr.height()-1)/2,
-                        (cr.width()-1)/2+2, (cr.height()-1)/2);
-                    p.drawLine(
-                        (cr.width()-1)/2, (cr.height()-1)/2-2,
-                        (cr.width()-1)/2, (cr.height()-1)/2+2);
-                }    
-
-            }
-        }
-        else
-        {
-            QString group = rule->getRuleGroupName().c_str();
-            if (group != "")
-            {
-                if (groupEnd!=-1 && groupEnd==row+1)
-                {
-//                    p.drawLine( (cr.width()-1)/2, (cr.height()-1)/2,
-//                                cr.width()-1, (cr.height()-1)/2 );
-//                    p.drawLine( (cr.width()-1)/2, (cr.height()-1)/2,
-//                                (cr.width()-1)/2, 0 );
-
-                    p.drawLine( (cr.width()-1)/2, cr.height()-4,
-                                cr.width()-1, cr.height()-4 );
-                    p.drawLine( (cr.width()-1)/2, cr.height()-4,
-                                (cr.width()-1)/2, 0 );
-
-                }
-                else
-                {
-                    p.drawLine( (cr.width()-1)/2, 0, (cr.width()-1)/2,
-                                cr.height()-1 );
-                }
-            }
-        }
-        p.end();
-
-        pntr->drawPixmap( cr.left() - horizontalOffset(),
-                          cr.top() - verticalOffset(), bufferpixmap );
-        return ;
+        drawRuleGroupHandle(pntr, row, col, cr, selected, cg);
+        return;
     }
+
+    Rule *rule = ruleIndex[row];
 
     if (rule==NULL) 
     {
         /* Rule group head */
-        QPixmap bufferpixmap;
-        QString bpmname = QString("rulesetcell_%1_%2").
-            arg(cr.width()).arg(cr.height());
-        if ( ! QPixmapCache::find( bpmname, bufferpixmap) )
-        {
-            bufferpixmap = QPixmap( cr.width() , cr.height() );
-            QPixmapCache::insert( bpmname, bufferpixmap);
-        }
-    
-        bufferpixmap.fill(cg.mid().color());
-
-        QPainter p( &bufferpixmap );
-        QFont font = st->getRulesFont();
-        p.setFont(font);
-
-#ifdef DRAW_RULE_GROUP_FRAME
-        RuleRowInfo * rri = rowsInfo[row];
-        p.setPen(Qt::green);
-        if (rri->isFirstRow)
-        {
-            p.drawLine( 1, 1, 1, cr.height() );
-            p.drawLine( 1, 1, cr.width()-3, 1 );
-            p.drawLine( cr.width()-3, 1, cr.width()-3, cr.height() );
-        }
-#endif
-        if (isRowHidden(row+1))
-        {
-            p.drawLine( 1, cr.height()-3,  cr.width() , cr.height()-3);
-        }
-
-        RuleRowInfo *rri = rowsInfo[row];
-        if (rri && rri->isFirstRow)
-        {
-            QString groupTitle = getFullRuleGroupTitle(row);
-            QRect r = ruleDelegate->cellRect(row,col);
-
-            int x  = r.left() + RuleElementSpacing/2;
-            int y  = r.top();
-            QRect br = p.boundingRect(QRect(x, y, 1000, 1000),
-                                      Qt::AlignLeft|Qt::AlignVCenter,
-                                      groupTitle);
-            p.drawText( x, y + RuleElementSpacing/2,
-                        br.width(),
-                        br.height(),
-                        Qt::AlignLeft|Qt::AlignTop,
-                        groupTitle);
-        }
-        
-        p.end();
-
-        pntr->drawPixmap( cr.left() - horizontalOffset(),
-                          cr.top() - verticalOffset(), bufferpixmap );
-    
+        drawRuleGroupHead(pntr, row, col, cr, selected, cg);
         return;
     }
 
     FWOptions  *ropt = rule->getOptionsObject();
     assert(ropt!=NULL);
-    rclr = ropt->getStr("color").c_str();
+    QString rclr = ropt->getStr("color").c_str();
 
     QPixmap bufferpixmap;
     QString bpmname = QString("rulesetcell_%1_%2").
         arg(cr.width()).arg(cr.height());
+
     if ( ! QPixmapCache::find( bpmname, bufferpixmap) )
     {
-        bufferpixmap = QPixmap( cr.width() , cr.height() );
+        bufferpixmap = QPixmap( cr.width()-1 , cr.height()-1 );
         QPixmapCache::insert( bpmname, bufferpixmap);
     }
 
@@ -1711,10 +1618,6 @@ void RuleSetView::paintCell(QPainter *pntr,
     p.setFont(font);
 
     QRect r = ruleDelegate->cellRect(row,col);
-
-    static int lastrow = 0;
-    if (lastrow != row) lastrow = row;
-
     int x  = r.left() + RuleElementSpacing/2;
     int y  = r.top();
 
@@ -1724,22 +1627,20 @@ void RuleSetView::paintCell(QPainter *pntr,
         p.fillRect(rect, QColor(rclr));
     }
 
+#if 0
+// there is no need to draw table grid because we call setShowGrid(true)
     p.drawLine( cr.width()-1, 0, cr.width()-1, cr.height()-1 );
     p.drawLine( 0, cr.height()-1, cr.width()-1, cr.height()-1 );
 
     p.drawLine( cr.width(), 1, cr.width(), cr.height() );
     p.drawLine( 1, cr.height(), cr.width(), cr.height() );
-
-/*
-    const BackgroundMode bgmode = backgroundMode();
-    const QColorGroup::ColorRole crole = QPalette::backgroundRoleFromMode( bgmode );
-*/
+#endif
 
     bool  sel = (row==currentRow() && col==currentColumn());
 
     if (getColType(col)==Object || getColType(col)==Time)
     {
-        RuleElement *re = getRE(row,col);
+        RuleElement *re = getRE(row, col);
         if (re==NULL) return;
         re_size = re->size();
 
@@ -1775,6 +1676,11 @@ void RuleSetView::paintCell(QPainter *pntr,
             p.drawText( x, y + RuleElementSpacing/2,
                         cr.width()-sz.width()-1, item_h,
                         Qt::AlignLeft|Qt::AlignVCenter, objectText(re, o1) );
+#ifdef DEBUG_PAINT_CELL
+            if (fwbdebug)
+                qDebug("RuleSetView::paintCell: row %d rule %d object %s",
+                       row, rule->getPosition(), o1->getName().c_str());
+#endif
 
             FWObject *mwSelObj = selectedObject;
             std::vector<libfwbuilder::FWObject*> om_selected_objects ;
@@ -1880,11 +1786,11 @@ void RuleSetView::paintCell(QPainter *pntr,
                 p.drawPixmap( x,y + RuleElementSpacing/2, pm );
                 x += pm.width()+1;
 
-                QRect br=p.boundingRect(QRect(x, y, 1000, 1000),
-                                        Qt::AlignLeft|Qt::AlignVCenter,
-                                        res.toAscii().constData() );
-                if (br.height()>height)
-                    height=br.height();
+                QRect br = p.boundingRect(QRect(x, y, 1000, 1000),
+                                          Qt::AlignLeft|Qt::AlignVCenter,
+                                          res.toAscii().constData() );
+                if (br.height()>height) height=br.height();
+
                 p.drawText( x, y+ RuleElementSpacing/2, br.width(), height,
                             Qt::AlignLeft|Qt::AlignVCenter,
                             res.toAscii().constData() );
@@ -1922,10 +1828,8 @@ void RuleSetView::paintCell(QPainter *pntr,
                    )
                 {
                     QString icn = chooseIcon(":/Icons/Options");
-
                     QPixmap pm;
                     LoadPixmap(icn, pm);
-
                     p.drawPixmap( x,y + RuleElementSpacing/2, pm );
                 }
                 break;
@@ -1940,9 +1844,10 @@ void RuleSetView::paintCell(QPainter *pntr,
                 RoutingRule *rule = RoutingRule::cast( ruleIndex[row] );
                 if (rule==NULL) return;
 
-                p.drawText( x, y, cr.width()-2, RuleElementSpacing*2+pixmap_h,
-                            Qt::AlignHCenter|Qt::AlignVCenter,
-                            QString::fromUtf8(rule->getMetricAsString().c_str()) );
+                p.drawText(
+                    x, y, cr.width()-2, RuleElementSpacing*2+pixmap_h,
+                    Qt::AlignHCenter|Qt::AlignVCenter,
+                    QString::fromUtf8(rule->getMetricAsString().c_str()) );
 
                 break;
             }
@@ -1992,9 +1897,199 @@ void RuleSetView::paintCell(QPainter *pntr,
 
     p.end();
 
-    pntr->drawPixmap( cr.left() - horizontalOffset(), cr.top() - verticalOffset(), bufferpixmap );
+    pntr->drawPixmap( cr.left() - horizontalOffset(),
+                      cr.top() - verticalOffset(), bufferpixmap );
 
     return;
+}
+
+void RuleSetView::drawRuleGroupHead(QPainter *pntr, int row, int col,
+                                    const QRect &cr,
+                                    bool, const QPalette &cg)
+{
+    QString rclr;
+//    Rule *rule = ruleIndex[row];
+//    int groupEnd = getDownNullRuleIndex(row); 
+
+    QPixmap bufferpixmap;
+    QString bpmname = QString("rulesetcell_%1_%2").
+        arg(cr.width()).arg(cr.height());
+    if ( ! QPixmapCache::find( bpmname, bufferpixmap) )
+    {
+        bufferpixmap = QPixmap( cr.width()-1 , cr.height()-1 );
+        QPixmapCache::insert( bpmname, bufferpixmap);
+    }
+    
+    bufferpixmap.fill(cg.mid().color());
+
+    QPainter p( &bufferpixmap );
+    QFont font = st->getRulesFont();
+    p.setFont(font);
+
+#ifdef DRAW_RULE_GROUP_FRAME
+    RuleRowInfo * rri = rowsInfo[row];
+    p.setPen(Qt::green);
+    if (rri->isFirstRow)
+    {
+        p.drawLine( 1, 1, 1, cr.height() );
+        p.drawLine( 1, 1, cr.width()-3, 1 );
+        p.drawLine( cr.width()-3, 1, cr.width()-3, cr.height() );
+    }
+#endif
+    if (isRowHidden(row+1))
+    {
+        p.drawLine( 1, cr.height()-3,  cr.width() , cr.height()-3);
+    }
+
+    RuleRowInfo *rri = rowsInfo[row];
+    if (rri && rri->isFirstRow)
+    {
+        QString groupTitle = getFullRuleGroupTitle(row);
+        QRect r = ruleDelegate->cellRect(row,col);
+
+        int x  = r.left() + RuleElementSpacing/2;
+        int y  = r.top();
+        QRect br = p.boundingRect(QRect(x, y, 1000, 1000),
+                                  Qt::AlignLeft|Qt::AlignVCenter,
+                                  groupTitle);
+        p.drawText( x, y + RuleElementSpacing/2,
+                    br.width(),
+                    br.height(),
+                    Qt::AlignLeft|Qt::AlignTop,
+                    groupTitle);
+    }
+        
+    p.end();
+
+    pntr->drawPixmap( cr.left() - horizontalOffset(),
+                      cr.top() - verticalOffset(), bufferpixmap );
+    
+
+}
+
+void RuleSetView::drawRuleGroupHandle(QPainter *pntr, int row, int,
+                                      const QRect &cr,
+                                      bool, const QPalette &cg)
+{
+    // Leftmost column, we draw rule group expand/collapse control
+    // element here.
+    QString rclr;
+    Rule *rule = ruleIndex[row];
+    int groupEnd = getDownNullRuleIndex(row); 
+
+    QPixmap bufferpixmap;
+    QString bpmname = QString("rulesetcell_%1_%2").
+        arg(cr.width()).arg(cr.height());
+
+    if ( ! QPixmapCache::find( bpmname, bufferpixmap) )
+    {
+        bufferpixmap = QPixmap( cr.width()-1 , cr.height()-1 );
+        QPixmapCache::insert( bpmname, bufferpixmap);
+    }
+    
+    bufferpixmap.fill(cg.base().color() );
+    
+    QPainter p( &bufferpixmap );
+    QFont font = st->getRulesFont();
+    p.setFont(font);
+
+    if (rule==NULL)
+    {
+        RuleRowInfo * rri = rowsInfo[row];
+                    
+        if (rri->isFirstRow)
+        {
+            p.drawRect((cr.width()-1)/2-4,(cr.height()-1)/2-4,8,8);
+            p.drawLine( (cr.width()-1)/2+7, (cr.height()-1)/2,
+                        cr.width()-1, (cr.height()-1)/2 );    
+            if (!isRowHidden(row+1))
+            {
+                p.drawLine(
+                    (cr.width()-1)/2, (cr.height()-1)/2+7,
+                    (cr.width()-1)/2, cr.height()-1 );
+                p.drawLine(
+                    (cr.width()-1)/2-2, (cr.height()-1)/2,
+                    (cr.width()-1)/2+2, (cr.height()-1)/2);
+            }
+            else
+            {
+                p.drawLine(
+                    (cr.width()-1)/2-2, (cr.height()-1)/2,
+                    (cr.width()-1)/2+2, (cr.height()-1)/2);
+                p.drawLine(
+                    (cr.width()-1)/2, (cr.height()-1)/2-2,
+                    (cr.width()-1)/2, (cr.height()-1)/2+2);
+            }    
+
+        }
+    }
+    else
+    {
+        QString group = rule->getRuleGroupName().c_str();
+        if (group != "")
+        {
+            if (groupEnd!=-1 && groupEnd==row+1)
+            {
+//                    p.drawLine( (cr.width()-1)/2, (cr.height()-1)/2,
+//                                cr.width()-1, (cr.height()-1)/2 );
+//                    p.drawLine( (cr.width()-1)/2, (cr.height()-1)/2,
+//                                (cr.width()-1)/2, 0 );
+
+                p.drawLine( (cr.width()-1)/2, cr.height()-4,
+                            cr.width()-1, cr.height()-4 );
+                p.drawLine( (cr.width()-1)/2, cr.height()-4,
+                            (cr.width()-1)/2, 0 );
+
+            }
+            else
+            {
+                p.drawLine( (cr.width()-1)/2, 0, (cr.width()-1)/2,
+                            cr.height()-1 );
+            }
+        }
+    }
+    p.end();
+
+    pntr->drawPixmap( cr.left() - horizontalOffset(),
+                      cr.top() - verticalOffset(), bufferpixmap );
+    return ;
+
+}
+
+QSize RuleSetView::drawIconInRule(QPainter &p,
+                                  int x, int y, RuleElement *re, FWObject *o1)
+{
+
+    if (!st->getShowIconsInRules()) return QSize();
+
+    QPixmap pm;
+    if (FWBSettings::SIZE16X16 == st->getIconsInRulesSize())
+    {
+        if (!re->getNeg())
+        {
+            pm = getPixmap(o1, Tree);
+        }
+        else
+        {
+            pm = getPixmap(o1, NegTree);
+        }
+    }
+
+    if (FWBSettings::SIZE25X25 == st->getIconsInRulesSize())
+    {
+        if (!re->getNeg())
+        {
+            pm = getPixmap(o1, Normal);
+        }
+        else
+        {
+            pm = getPixmap(o1, Neg);
+        }
+    }
+    
+    if (!re->isAny()) p.drawPixmap( x, y + RuleElementSpacing/2, pm );
+
+    return pm.size();
 }
 
 void RuleSetView::drawComment(QPainter &p, int row, int col, const QRect &cr)
@@ -2051,42 +2146,6 @@ QString RuleSetView::chooseIcon(QString icn)
         return icn+"-tree";
     }
     return icn;
-}
-
-QSize RuleSetView::drawIconInRule(QPainter &p, int x, int y, RuleElement *re, FWObject *o1)
-{
-
-    if (!st->getShowIconsInRules())
-        return QSize();
-    QPixmap pm;
-    if (FWBSettings::SIZE16X16 == st->getIconsInRulesSize())
-    {
-        if (!re->getNeg())
-        {
-            pm = getPixmap(o1, Tree);
-        }
-        else
-        {
-            pm = getPixmap(o1, NegTree);
-        }
-    }
-    if (FWBSettings::SIZE25X25 == st->getIconsInRulesSize())
-    {
-        if (!re->getNeg())
-        {
-            pm = getPixmap(o1, Normal);
-        }
-        else
-        {
-            pm = getPixmap(o1, Neg);
-        }
-    }
-
-    
-    if (!re->isAny())
-        p.drawPixmap( x, y + RuleElementSpacing/2, pm );
-
-    return pm.size();
 }
 
 QString RuleSetView::getPlatform()

@@ -243,6 +243,10 @@ public:
 
      virtual void paintCell(QPainter *p,int row, int col,
                             const QRect &cr, bool selected, const QPalette &cg);
+     void drawRuleGroupHead(QPainter *p,int row, int col,
+                            const QRect &cr, bool selected, const QPalette &cg);
+     void drawRuleGroupHandle(QPainter *p,int row, int col,
+                            const QRect &cr, bool selected, const QPalette &cg);
 
      void setName(QString qs);
      void setCurrentCell(const int row, const int col);
@@ -401,6 +405,7 @@ public:
     //virtual void contentsDragEnterEvent( QDragEnterEvent *ev);
     virtual void dropEvent( QDropEvent *ev); 
     virtual void hideEvent(QHideEvent *ev);
+    virtual void paintEvent(QPaintEvent * event);
     
     virtual void adjustRow( int row );
     virtual void adjustColumn( int col );

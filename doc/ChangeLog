@@ -1,3 +1,14 @@
+2008-09-29  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::paintEvent): fixed bug related to
+	#2123152 "Fwbuilder 3.0.0 Gui very slow and doesn't refresh
+	properly". There seems to be a bug in QT 4.4.1 (not sure of 4.4.0,
+	definitely not in 4.3.x) which causes the last row of the rule set
+	view table to come out blank when the table is redrawn. This
+	happens when rows have very different height and looks like the
+	last row comes out blank when user scrolls the table up. The last
+	row is finally redrawn when most of it is already visible.
+
 2008-09-26  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_pf_writers.cpp (PrintRule::_printAF): fixed
