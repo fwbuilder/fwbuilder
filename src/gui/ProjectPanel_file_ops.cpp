@@ -217,7 +217,6 @@ bool ProjectPanel::loadFile(const QString &fileName)
                          fileName.toAscii().constData());
 
     RCSFilePreview  fp(this);
-
     bool hasRCS = fp.showFileRLog(fileName);
 
     if ( (!hasRCS) || (fp.exec() == QDialog::Accepted) )
@@ -230,53 +229,21 @@ bool ProjectPanel::loadFile(const QString &fileName)
 
         //if preview cannot give RCS,
         //get a new RCS from file dialog
-        if (new_rcs==NULL)
-            new_rcs = new RCS(fileName);
+        if (new_rcs==NULL) new_rcs = new RCS(fileName);
+        if (new_rcs==NULL) return false;
 
-        //if RCS isn't still formed, it's an error
-        if (new_rcs==NULL)
-            return false;
-
-/***********************************************************************
- * TODO : add an option "RCS support"
- *
- * if opening read-only, do not checkout
- * checkout may throw exception, need to catch it
- */
         try
         {
             new_rcs->co();
-
         } catch (FWException &ex)
         {
-/* if there was an exception, abort operation. E.g. RCS::co may throw
- * exception */
             return false;
         }
-/***********************************************************************/
 
-        QList<QMdiSubWindow*> subWindowList = mw->getMdiArea()->subWindowList();
-
-        QString fileName = new_rcs->getFileName();
-        for (int i = 0 ; i < subWindowList.size();i++)
-        {
-            ProjectPanel * pp = dynamic_cast<ProjectPanel*>(
-                subWindowList[i]->widget());
-            if (pp!=NULL && pp->getFileName() == fileName)
-            {
-                load(this, new_rcs, pp->objdb );
-
-                if (new_rcs->isTemp())
-                    unlink(new_rcs->getFileName().toLatin1().constData());
-                return true ;
-            }
-        }
-        load(this, new_rcs );
+        load(this, new_rcs);
 
         if (new_rcs->isTemp())
             unlink(new_rcs->getFileName().toLatin1().constData());
-
-        if (fwbdebug) qDebug("ProjectPanel::loadFile  done");
 
         return true;
     }
@@ -1000,8 +967,10 @@ void ProjectPanel::load(QWidget*)
         loadObjects();
         setupAutoSave();
 
-        if (fwbdebug) qDebug("ProjectPanel::load(): done");
-
+        time_t last_modified = objdb->getTimeLastModified();
+        if (fwbdebug)
+            qDebug("ProjectPanel::load(): done  last_modified=%s dirty=%d",
+                   ctime(&last_modified), objdb->isDirty());
     } catch(FWException &ex)
     {
         QMessageBox::critical(
@@ -1031,8 +1000,6 @@ void ProjectPanel::load(QWidget*, RCS* _rcs, FWObjectDatabase* clone)
 
     MessageBoxUpgradePredicate upgrade_predicate(mainW);
 
-    assert(_rcs!=NULL);
-
     rcs = _rcs;
 
     try
@@ -1045,11 +1012,6 @@ void ProjectPanel::load(QWidget*, RCS* _rcs, FWObjectDatabase* clone)
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         sb->clearMessage();
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-
-/* loadingLib is true if user wants to open a library or master library file
-        bool loadingLib         = editingLibrary();
-*/
-
         sb->showMessage( tr("Merging with system objects...") );
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
 
@@ -1057,12 +1019,6 @@ void ProjectPanel::load(QWidget*, RCS* _rcs, FWObjectDatabase* clone)
 
         sb->clearMessage();
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
-
-/*
- * TODO: we should create new FWObjectDatabase object and assign db
- * instead of using singleton
- */
-//        objdb = FWObjectDatabase::db;
 
         if (fwbdebug)
         {
@@ -1487,6 +1443,12 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
 
         mainW->disableActions(m_panel->ruleSets->count()!=0);
 
+        time_t last_modified = db()->getTimeLastModified();
+        if (fwbdebug)
+            qDebug("ProjectPanel::load(): load complete dirty=%d "
+                   "last_modified=%s",
+                   db()->isDirty(), ctime(&last_modified));
+
     } catch(FWException &ex)
     {
         QString trans = ex.getProperties()["failed_transformation"].c_str();
@@ -1552,6 +1514,12 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
     QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 
     setupAutoSave();
+
+    time_t last_modified = db()->getTimeLastModified();
+    if (fwbdebug)
+        qDebug("ProjectPanel::load(): all done: "
+               "dirty=%d last_modified=%s",
+               db()->isDirty(), ctime(&last_modified));
 }
 
 bool ProjectPanel::checkin(bool unlock)

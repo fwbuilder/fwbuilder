@@ -380,6 +380,12 @@ void ProjectPanel::reopenFirewall()
 {
     if (fwbdebug)  qDebug("ProjectPanel::reopenFirewall()");
 
+    time_t last_modified = db()->getTimeLastModified();
+    if (fwbdebug)
+        qDebug("ProjectPanel::reopenFirewall(): checkpoint 1: "
+               "dirty=%d last_modified=%s",
+               db()->isDirty(), ctime(&last_modified));
+
     if (ruleSetRedrawPending) return;
 
     int currentPage = m_panel->ruleSets->currentIndex();
@@ -388,6 +394,12 @@ void ProjectPanel::reopenFirewall()
     RuleSetView* rv = dynamic_cast<RuleSetView*>(
         m_panel->ruleSets->currentWidget());
     if (rv) rv->saveCurrentRowColumn(cur_row, cur_col);
+
+    last_modified = db()->getTimeLastModified();
+    if (fwbdebug)
+        qDebug("ProjectPanel::reopenFirewall(): checkpoint 2: "
+               "dirty=%d last_modified=%s",
+               db()->isDirty(), ctime(&last_modified));
 
     // since reopenFirewall deletes and recreates all RuleSetView
     // widgets, it causes significant amount of repaint and
@@ -402,6 +414,12 @@ void ProjectPanel::reopenFirewall()
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 
     clearFirewallTabs();
+
+    last_modified = db()->getTimeLastModified();
+    if (fwbdebug)
+        qDebug("ProjectPanel::reopenFirewall(): checkpoint 3: "
+               "dirty=%d last_modified=%s",
+               db()->isDirty(), ctime(&last_modified));
     
     if (visibleRuleSet==NULL) return ;
 
@@ -415,9 +433,15 @@ void ProjectPanel::reopenFirewall()
     name += " / ";
     name += visibleRuleSet->getName().c_str();
     name += "</B>";
-    Policy *rule = Policy::cast(visibleRuleSet);
     m_panel->rulesetname->setText(name );
 
+    last_modified = db()->getTimeLastModified();
+    if (fwbdebug)
+        qDebug("ProjectPanel::reopenFirewall(): checkpoint 4: "
+               "dirty=%d last_modified=%s",
+               db()->isDirty(), ctime(&last_modified));
+    
+    Policy *rule = Policy::cast(visibleRuleSet);
     if (rule!=NULL)
         m_panel->ruleSets->addWidget( new PolicyView(this, rule,NULL) );
 
@@ -431,6 +455,12 @@ void ProjectPanel::reopenFirewall()
 
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 
+    last_modified = db()->getTimeLastModified();
+    if (fwbdebug)
+        qDebug("ProjectPanel::reopenFirewall(): checkpoint 5: "
+               "dirty=%d last_modified=%s",
+               db()->isDirty(), ctime(&last_modified));
+    
     m_panel->ruleSets->setCurrentIndex( currentPage );
     rv = dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
     rv->restoreCurrentRowColumn(cur_row, cur_col);

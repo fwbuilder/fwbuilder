@@ -4881,9 +4881,12 @@ PolicyView::PolicyView(ProjectPanel *project, Policy *p, QWidget *parent) :
       RuleSetView(project, 1, 7, parent)
 {
     setName("PolicyView");
-    ruleset=p;
+    ruleset = p;
+
+    bool old_dirty_flag = ruleset->isDirty();
     iinit();
     init();
+    ruleset->setDirty(old_dirty_flag);
 
     if (fwbdebug) qDebug("PolicyView constructor: done");
 }
@@ -4992,9 +4995,12 @@ InterfacePolicyView::InterfacePolicyView(ProjectPanel *project, InterfacePolicy 
     RuleSetView(project, 1,7,parent)
 {
     setName("InterfacePolicyView");
-    ruleset=p;
+    ruleset = p;
+
+    bool old_dirty_flag = ruleset->isDirty();
     iinit();
     init();
+    ruleset->setDirty(old_dirty_flag);
 }
 
 void InterfacePolicyView::init()
@@ -5092,9 +5098,12 @@ NATView::NATView(ProjectPanel *project, NAT *p, QWidget *parent) :
       RuleSetView(project, 1,8,parent)
 {
     setName("NATView");
-    ruleset=p;
+    ruleset = p;
+
+    bool old_dirty_flag = ruleset->isDirty();
     iinit();
     init();
+    ruleset->setDirty(old_dirty_flag);
 }
 
 void NATView::init()
@@ -5181,9 +5190,12 @@ RoutingView::RoutingView(ProjectPanel *project, Routing *p, QWidget *parent) :
       RuleSetView(project, 1,5,parent)
 {
     setName("RoutingView");
-    ruleset=p;
+    ruleset = p;
+
+    bool old_dirty_flag = ruleset->isDirty();
     iinit();
     init();
+    ruleset->setDirty(old_dirty_flag);
 }
 
 void RoutingView::init()

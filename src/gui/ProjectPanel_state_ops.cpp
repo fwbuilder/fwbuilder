@@ -194,7 +194,11 @@ void ProjectPanel::loadState(bool open_objects)
     loadLastOpenedLib();
     loadOpenedRuleSet();
 
-    if (fwbdebug) qDebug("ProjectPanel::loadState done");
+    time_t last_modified = db()->getTimeLastModified();
+    if (fwbdebug)
+        qDebug("ProjectPanel::loadState(): done: "
+               "dirty=%d last_modified=%s",
+               db()->isDirty(), ctime(&last_modified));
 }
 
 void ProjectPanel::setMainSplitterPosition(int w1, int w2)
@@ -235,8 +239,20 @@ void ProjectPanel::loadOpenedRuleSet()
         if (obj)
         {
             m_panel->om->openObject(obj);
-            openRuleSet(RuleSet::cast(obj));
-//            getCurrentRuleSetView()->restoreCollapsedGroups();
+
+            time_t last_modified = db()->getTimeLastModified();
+            if (fwbdebug)
+                qDebug("ProjectPanel::loadOpenedRuleSet(): checkpoint 1: "
+                       "dirty=%d last_modified=%s",
+                       db()->isDirty(), ctime(&last_modified));
+
+            openRuleSet(obj);
+
+            last_modified = db()->getTimeLastModified();
+            if (fwbdebug)
+                qDebug("ProjectPanel::loadOpenedRuleSet(): checkpoint 2: "
+                       "dirty=%d last_modified=%s",
+                       db()->isDirty(), ctime(&last_modified));
         }
     }
 }
@@ -306,6 +322,12 @@ void ProjectPanel::loadLastOpenedLib()
             //m_panel->om->openObject(first_non_system_lib);
             m_panel->om->libChangedById(first_non_system_lib->getId());
     }
+
+    time_t last_modified = db()->getTimeLastModified();
+    if (fwbdebug)
+        qDebug("ProjectPanel::loadLastOpenedLib(): done: "
+               "dirty=%d last_modified=%s",
+               db()->isDirty(), ctime(&last_modified));
 }
 
 

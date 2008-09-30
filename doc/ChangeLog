@@ -1,3 +1,12 @@
+2008-09-30  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (PolicyView::PolicyView): constructors of rule
+	set view classes (PolicyView, NATView, RoutingView) used to set
+	"dirty" flag in the object database which caused the GUI to ask
+	the user if they wanted to save modifications before exisitng the
+	program even when there were no modifications made. This change
+	fixes this annoying problem.
+
 2008-09-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* RuleSetView.cpp (RuleSetView::updateGroups): using setSpan to
