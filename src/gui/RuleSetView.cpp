@@ -574,7 +574,6 @@ RuleSetView::~RuleSetView()
  */
 void RuleSetView::updateGeometries()
 {
-    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     QTableView::updateGeometries();
     verticalScrollBar()->setSingleStep(20);
 }
