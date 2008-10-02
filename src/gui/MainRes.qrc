@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/" >
+    <file alias="Icons/Tag-tree" >Icons/service-tag_16.png</file>
+    <file alias="Icons/Tag" >Icons/service-tag_25.png</file>
     <file alias="Icons/Routing/icon-tree" >Icons/route_16.png</file>
     <file alias="Icons/Accept-tree" >Icons/accept_16.png</file>
     <file alias="Icons/Accept" >Icons/accept_25.png</file>
