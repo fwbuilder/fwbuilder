@@ -101,12 +101,7 @@ void FakeWizard::setFinishEnabled(const int page, const bool enabled)
     if (page >= m_pageCount) return;
     finishEnabled[page] = enabled;
     if (page == currentPage())
-    {
-        if (enabled)
-            finishButton->show();
-        else
-            finishButton->hide();
-    }
+        finishButton->setEnabled(enabled);
 }
 
 void FakeWizard::setTitle(const int page, const QString title)
@@ -145,15 +140,11 @@ void FakeWizard::showPage(const int page)
 {
     if (page >= m_pageCount) return;
 
-    if (finishEnabled[page])
-        finishButton->show();
-    else
-        finishButton->hide();
-
-    nextButton->setEnabled( nextEnabled[page] &&
+    nextButton->setEnabled(nextEnabled[page] &&
                            (nextRelevant(page) > -1) );
-    backButton->setEnabled( backEnabled[page] &&
+    backButton->setEnabled(backEnabled[page] &&
                            (previousRelevant(page) > -1) );
+    finishButton->setEnabled(finishEnabled[page]);
 
     if (titleLabel)
     {

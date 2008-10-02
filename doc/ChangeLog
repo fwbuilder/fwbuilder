@@ -1,5 +1,11 @@
 2008-10-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* instDialog.cpp (instDialog::finishInstall): fixed bug #2125604:
+	"Cancel button does not kill the installer". Cancel button of the
+	installer wizard in fact kills background process. Second issue
+	raised in this bug report is that "Finish" button was always
+	enabled. This is now fixed.
+
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printTarget): fixed
 	bug #2141911: "no ULOG for ip6tables". ULOG target has not been
 	implemented for ip6tables yet, so the compiler should fall back to

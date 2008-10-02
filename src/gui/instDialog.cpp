@@ -129,7 +129,8 @@ instDialog::instDialog(QWidget* p,
 
     m_dialog->fwWorkList->setSortingEnabled(true);
 
-    setFinishEnabled(pageCount()-1, true);
+    for (int page=0; page < pageCount(); page++)
+        setFinishEnabled(page, false);
 
     lastPage=-1;
     reqFirewalls = reqFirewalls_;
@@ -564,8 +565,10 @@ void instDialog::showPage(const int page)
 
     if (fwbdebug) qDebug("instDialog::showPage");
     int p = page;
+
     if (fwbdebug)
-        qDebug(QString("to page: %1  from page: %2").arg(p).arg(lastPage).toAscii().constData());
+        qDebug(QString("to page: %1  from page: %2").
+               arg(p).arg(lastPage).toAscii().constData());
 
     switch (p)
     {
@@ -632,7 +635,6 @@ void instDialog::showPage(const int page)
         }
         setBackEnabled(2,false);
         setNextEnabled(2, false);
-        setFinishEnabled(2, true);
         if (compileFlag && operation==BATCH_INSTALL)
         {
             fillInstallOpList();
@@ -2030,7 +2032,7 @@ void instDialog::finishInstall(bool success)
     if (fwbdebug) qDebug("instDialog::finishInstall done");
 
     setNextEnabled(1, false);
-    setFinishEnabled(1, true);
+    setFinishEnabled(currentPage(), true);
 }
 
 void instDialog::restartSession()
@@ -2166,7 +2168,7 @@ void instDialog::processExited(int res)
     }
     currentSaveButton->setEnabled(true);
     if (operation==BATCH_COMPILE)
-        setFinishEnabled(1, true);
+        setFinishEnabled(currentPage(), true);
     else
         setNextEnabled(1, true);
 
@@ -2460,8 +2462,6 @@ void instDialog::installSelected()
 
     setTitle(1, tr("Installing firewalls"));
     setNextEnabled(1, false);
-    setNextEnabled(1, false);
-    setFinishEnabled(1, true);
     m_dialog->saveMCLogButton->setEnabled(true);
 
     bool fPix=false,fCustInst=true;
