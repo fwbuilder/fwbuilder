@@ -25594,7 +25594,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4833F62B6131" host_OS="linux24" inactive="False" lastCompiled="1219115207" lastInstalled="0" lastModified="1219116070" platform="iptables" version="" name="firewall-ipv6-1" comment="" ro="False">
+      <Firewall id="id4833F62B6131" host_OS="linux24" inactive="False" lastCompiled="1219115207" lastInstalled="0" lastModified="1222946501" platform="iptables" version="" name="firewall-ipv6-1" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
         <NAT id="id4833F62F6131" name="NAT" comment="" ro="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id483F5B7623190" name="Policy_ipv6" comment="" ro="False" ipv6_rule_set="True" top_rule_set="True">
           <PolicyRule id="id30141X31704" action="Accept" direction="Outbound" disabled="False" log="False" position="0" comment="for bug 2047082&#10;&#10;">
@@ -26187,7 +26187,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
-          <Option name="drop_invalid">False</Option>
+          <Option name="drop_invalid">True</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="enable_ipv6">True</Option>
           <Option name="epilog_script"></Option>
@@ -26231,7 +26231,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="load_modules">True</Option>
           <Option name="local_nat">False</Option>
           <Option name="log_all">False</Option>
-          <Option name="log_invalid">False</Option>
+          <Option name="log_invalid">True</Option>
           <Option name="log_ip_opt">False</Option>
           <Option name="log_level">info</Option>
           <Option name="log_prefix">RULE %N -- %A </Option>
@@ -26272,7 +26272,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
-          <Option name="use_ULOG">False</Option>
+          <Option name="use_ULOG">True</Option>
           <Option name="use_iptables_restore">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">True</Option>

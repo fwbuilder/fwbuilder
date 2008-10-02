@@ -313,6 +313,7 @@ string PolicyCompiler_ipt::PrintRule::_printModules(PolicyRule *rule)
 
 string PolicyCompiler_ipt::PrintRule::_printTarget(PolicyRule *rule)
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     std::ostringstream ostr;
 
     string target=rule->getStr("ipt_target");
@@ -326,7 +327,8 @@ string PolicyCompiler_ipt::PrintRule::_printTarget(PolicyRule *rule)
         return ostr.str();
     }
 
-    if ( compiler->getCachedFwOpt()->getBool("use_ULOG") &&
+    // there is no ULOG for ip6tables yet
+    if (!ipt_comp->ipv6 && compiler->getCachedFwOpt()->getBool("use_ULOG") &&
          target=="LOG") target="ULOG";
 
     ostr << " -j " << target << " ";
@@ -566,14 +568,17 @@ string PolicyCompiler_ipt::PrintRule::_printLogPrefix(PolicyRule *rule,
 			 prefix);
 }
 
-string PolicyCompiler_ipt::PrintRule::_printLogParameters(libfwbuilder::PolicyRule *rule)
+string PolicyCompiler_ipt::PrintRule::_printLogParameters(PolicyRule *rule)
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     std::ostringstream str;
     string s;
-//    int    l;
-    FWOptions *ruleopt =(rule!=NULL)?rule->getOptionsObject():compiler->getCachedFwOpt();
+    FWOptions *ruleopt = (rule!=NULL) ? 
+        rule->getOptionsObject() : compiler->getCachedFwOpt();
 
-    bool   use_ulog=compiler->getCachedFwOpt()->getBool("use_ULOG");
+    // there is no ULOG for ip6tables yet
+    bool use_ulog = (!ipt_comp->ipv6 &&
+                     compiler->getCachedFwOpt()->getBool("use_ULOG"));
 
     if (use_ulog)
     {
@@ -1653,7 +1658,8 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
             res << _startRuleLine();
 
 
-	    if (compiler->getCachedFwOpt()->getBool("use_ULOG")) 
+            // Note: there is no ULOG for ip6tables yet
+	    if (!isIPv6 && compiler->getCachedFwOpt()->getBool("use_ULOG")) 
 	    {  
 	    	string s = compiler->getCachedFwOpt()->getStr("ulog_nlgroup");
 

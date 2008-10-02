@@ -1,5 +1,10 @@
 2008-10-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_printTarget): fixed
+	bug #2141911: "no ULOG for ip6tables". ULOG target has not been
+	implemented for ip6tables yet, so the compiler should fall back to
+	LOG target while compiling ipv6 policy.
+
 	* RuleSetView.cpp (RuleSetView::updateGeometries): fixed crash
 	that happened on Ubuntu with QT 4.3.x because of recursive call to
 	updateGeometries()
