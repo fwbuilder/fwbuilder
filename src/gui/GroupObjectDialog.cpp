@@ -551,12 +551,14 @@ void GroupObjectDialog::dropped(QDropEvent *ev)
 
 void GroupObjectDialog::iconContextMenu(const QPoint & pos)
 {
-    FWObject *o=NULL;
+    FWObject *o = NULL;
     QListWidgetItem *itm = iconView->itemAt(pos);
-    int obj_id = itm->data(Qt::UserRole).toInt();
-    o = mw->db()->findInIndex(obj_id);
-    selectedObject=o;
-
+    if (itm)
+    {
+        int obj_id = itm->data(Qt::UserRole).toInt();
+        o = mw->db()->findInIndex(obj_id);
+        selectedObject = o;
+    }
     setupPopupMenu(iconView->mapToGlobal(pos));
 }
 

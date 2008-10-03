@@ -1,5 +1,9 @@
 2008-10-03  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* GroupObjectDialog.cpp (GroupObjectDialog::iconContextMenu):
+	fixed bug #2144122 "Segfault when trying to add an address to a
+	group"
+
 	* ProjectPanel_file_ops.cpp (ProjectPanel::chooseNewFileName):
 	fixed bug #2144358 "Double check with 'save as'". The GUI used to
 	ask twice if user wants to overwrite the file in Save As operation
