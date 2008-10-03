@@ -379,7 +379,7 @@ int main(int argc, char * const *argv)
     string comment_txt;
     bool list_children = false;
     bool recursive = false;
-    string list_format;
+    string list_format = "%path%";
     bool full_dump = false;
 
     if (argc<=2)

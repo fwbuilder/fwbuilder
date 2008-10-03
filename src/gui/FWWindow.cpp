@@ -335,11 +335,9 @@ QString FWWindow::getDestDir(const QString &fname)
    return "";
 }
 
-QString FWWindow::chooseNewFileName(const QString &fname,
-                                    bool checkPresence,const QString &title)
+QString FWWindow::chooseNewFileName(const QString &fname, const QString &title)
 {  
-    if (activeProject())
-        return activeProject()->chooseNewFileName(fname, checkPresence, title);
+    if (activeProject()) return activeProject()->chooseNewFileName(fname,title);
     return "";
 }
 
@@ -1684,14 +1682,14 @@ void FWWindow::checkForUpgrade(const QString& server_response)
 }
 
 /*
- * This slot is called after one of the mdi windows is closed.
+ * This slot is called after one of the mdi windows is closed.  This
+ * is where the decision is made as to wether we should terminate the
+ * program when the last MDI window is closed. Bug #2144114 "fwbuilder
+ * exits if the last object file is closed" requests for the program
+ * to continue after the last window is closed.
  */
 void FWWindow::projectWindowClosed()
 {
-    if (fwbdebug) qDebug("FWWindow::projectWindowClosed()");
-
-    if (m_space->subWindowList().size() == 0)
-        QCoreApplication::exit(0);
+//    if (m_space->subWindowList().size() == 0) QCoreApplication::exit(0);
 }
-
 

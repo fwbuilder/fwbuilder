@@ -1,3 +1,23 @@
+2008-10-03  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ProjectPanel_file_ops.cpp (ProjectPanel::chooseNewFileName):
+	fixed bug #2144358 "Double check with 'save as'". The GUI used to
+	ask twice if user wants to overwrite the file in Save As operation
+	if file with given name already existed.
+
+	* FWWindow.cpp (FWWindow::projectWindowClosed): fixed bug #2144114
+	"fwbuilder * exits if the last object file is closed". The GUI
+	will not terminate after the last window is closed but instead
+	will just show empty main window.
+
+	* fwbedit.cpp (main): fixed bug #2143894: "fwbedit list does not
+	show objects". Command "fwbedit list -f file" did not print
+	anything unless option "-F" was supplied. This change adds default
+	value for this option so that when it is missing, the command
+	prints object path.
+
+	* fwbedit.1: fixed bug #2143961: a typo in the man page fwbedit.1
+
 2008-10-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* instDialog.cpp (instDialog::finishInstall): fixed bug #2125604:

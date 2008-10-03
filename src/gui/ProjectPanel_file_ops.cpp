@@ -102,34 +102,16 @@ bool ProjectPanel::saveIfModified()
 
 
 QString ProjectPanel::chooseNewFileName(const QString &fname,
-                                        bool checkPresence,
                                         const QString &title)
 {
     QString destdir = getDestDir(fname);
 
+    // Note that QFileDialog::getSaveFileName asks for confirmation
+    // if the file already exists.
     QString fn = QFileDialog::getSaveFileName( this, title, destdir,
        tr( "FWB Files (*.fwb);;All Files (*)" ) );
-    if ( fn.isEmpty() ) return "";
 
-    QFileInfo finfo(fn);
-
-    //if (finfo.extension(false)!="fwb") fn=fn+".fwb";
-    if (finfo.suffix()!="fwb") fn=fn+".fwb";
-
-    finfo.setFile(fn);
-
-    if ( ! checkPresence || ! finfo.exists() ||
-             QMessageBox::warning(
-                 this,"Firewall Builder",
-                 tr("The file %1 already exists.\nDo you want to overwrite it ?")
-                 .arg(fn.toLatin1().constData()),
-                 tr("&Yes"), tr("&No"), QString::null,
-                 0, 1 )==0 )
-    {
-        return fn;
-    }
-
-    return "";
+    return fn;
 }
 
 
@@ -148,8 +130,7 @@ bool ProjectPanel::fileNew()
     if (fwbdebug) qDebug("ProjectPanel::fileNew()");
 
     QString nfn = chooseNewFileName(
-        st->getWDir(), true,
-        tr("Choose name and location for the new file"));
+        st->getWDir(), tr("Choose name and location for the new file"));
 
     if ( !nfn.isEmpty() )
     {
@@ -308,8 +289,7 @@ void ProjectPanel::fileSaveAs()
     QString oldFileName = rcs->getFileName();
 
     QString nfn = chooseNewFileName(
-        oldFileName, true,
-        tr("Choose name and location for the file"));
+        oldFileName, tr("Choose name and location for the file"));
 
     if (!nfn.isEmpty())
     {
@@ -1103,8 +1083,8 @@ void ProjectPanel::load(QWidget*, RCS* _rcs, FWObjectDatabase* clone)
                         tr("&Continue"), QString::null,QString::null,
                         0, 1 );
 
-                    nfn=chooseNewFileName(fn,true,
-                                          tr("Choose name and location for the new file"));
+                    nfn=chooseNewFileName(
+                        fn, tr("Choose name and location for the new file"));
                     if (nfn.isEmpty())
                     {
                         QString oldFileName = ofinfo.absoluteFilePath() + ".bak";
@@ -1400,8 +1380,7 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
                         0, 1 );
 
                     nfn = chooseNewFileName(
-                        fn,true,
-                        tr("Choose name and location for the new file"));
+                        fn, tr("Choose name and location for the new file"));
                     if (nfn.isEmpty())
                     {
                         QString oldFileName = ofinfo.absoluteFilePath()

@@ -260,9 +260,7 @@ public:
     
     bool saveIfModified();
     QString getDestDir(const QString &fname);
-    QString chooseNewFileName(const QString &fname,
-                              bool checkPresence,
-                              const QString &title);
+    QString chooseNewFileName(const QString &fname, const QString &title);
     void setFileName(const QString &fname);
     void restoreDepends(libfwbuilder::FWObject *obj_old,
                         libfwbuilder::FWObject *nobj, 

@@ -263,7 +263,7 @@ fwbedit list -f x.fwb  -o /User/Services/ICMP -c -F "name='%name%' icmp_type=%ic
 .PP
 Add IPv6 address to one of the interfaces of firewall object "firewall":
 .PP
-fwbedit new  -f x.fwb -p /User/Firewalls/firewall/eth3 -t IPv6 -n eth3-v6-addr -o 2001:470:1f05:590::2,64
+fwbedit new  -f x.fwb -p /User/Firewalls/firewall/eth3 -t IPv6 -n eth3-v6-addr -a 2001:470:1f05:590::2,64
 
 .PP
 Add reference to the Host object 'A' to the group 'B':
