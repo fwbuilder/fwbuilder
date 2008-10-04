@@ -182,7 +182,7 @@ instDialog::instDialog(QWidget* p,
     }
 
     //hide all details
-    bool fs=st->value("/FirewallBuilder2/Installer/ShowDetails"    ).toBool();
+    bool fs = st->value(SETTINGS_PATH_PREFIX"/Installer/ShowDetails"    ).toBool();
     if (fs)
         m_dialog->detailMCframe->show();
     else
@@ -277,13 +277,13 @@ void instDialog::togleDetailMC()
     {
         m_dialog->detailsButton->setText(tr("Show details"));
         m_dialog->detailMCframe->hide();
-        st->setValue("/FirewallBuilder2/Installer/ShowDetails",false);
+        st->setValue(SETTINGS_PATH_PREFIX"/Installer/ShowDetails",false);
     }
     else
     {
         m_dialog->detailsButton->setText(tr("Hide details"));
         m_dialog->detailMCframe->show();
-        st->setValue("/FirewallBuilder2/Installer/ShowDetails",true);
+        st->setValue(SETTINGS_PATH_PREFIX"/Installer/ShowDetails",true);
     }
 }
 
@@ -305,20 +305,20 @@ void instDialog::prepareInstallerOptions()
 
     cnf.batchInstall = m_dialog->batchInstall->isChecked();
 
-    cnf.incremental= st->value("/FirewallBuilder2/Installer/incr").toBool();
-    cnf.save_diff = st->value("/FirewallBuilder2/Installer/savediff").toBool();
-    cnf.saveStandby = st->value("/FirewallBuilder2/Installer/saveStandby").toBool();
-    cnf.dry_run = st->value("/FirewallBuilder2/Installer/dryrun").toBool();
-    cnf.quiet = st->value("/FirewallBuilder2/Installer/quiet").toBool();
-    cnf.verbose = st->value("/FirewallBuilder2/Installer/verbose" ).toBool();
-    cnf.stripComments  = st->value("/FirewallBuilder2/Installer/stripComments").toBool();
-    cnf.compressScript = st->value("/FirewallBuilder2/Installer/compressScript").toBool();
-    cnf.copyFWB = st->value("/FirewallBuilder2/Installer/copyFWB").toBool();
-    cnf.testRun = st->value("/FirewallBuilder2/Installer/testRun").toBool();
-    cnf.rollback = st->value("/FirewallBuilder2/Installer/rollback").toBool();
-    cnf.rollbackTime = st->value("/FirewallBuilder2/Installer/rollbackTime").toInt();
+    cnf.incremental= st->value(SETTINGS_PATH_PREFIX"/Installer/incr").toBool();
+    cnf.save_diff = st->value(SETTINGS_PATH_PREFIX"/Installer/savediff").toBool();
+    cnf.saveStandby = st->value(SETTINGS_PATH_PREFIX"/Installer/saveStandby").toBool();
+    cnf.dry_run = st->value(SETTINGS_PATH_PREFIX"/Installer/dryrun").toBool();
+    cnf.quiet = st->value(SETTINGS_PATH_PREFIX"/Installer/quiet").toBool();
+    cnf.verbose = st->value(SETTINGS_PATH_PREFIX"/Installer/verbose" ).toBool();
+    cnf.stripComments  = st->value(SETTINGS_PATH_PREFIX"/Installer/stripComments").toBool();
+    cnf.compressScript = st->value(SETTINGS_PATH_PREFIX"/Installer/compressScript").toBool();
+    cnf.copyFWB = st->value(SETTINGS_PATH_PREFIX"/Installer/copyFWB").toBool();
+    cnf.testRun = st->value(SETTINGS_PATH_PREFIX"/Installer/testRun").toBool();
+    cnf.rollback = st->value(SETTINGS_PATH_PREFIX"/Installer/rollback").toBool();
+    cnf.rollbackTime = st->value(SETTINGS_PATH_PREFIX"/Installer/rollbackTime").toInt();
     cnf.cancelRollbackIfSuccess =
-        st->value("/FirewallBuilder2/Installer/canceRollbackIfSuccess").toBool();
+        st->value(SETTINGS_PATH_PREFIX"/Installer/canceRollbackIfSuccess").toBool();
 /* TODO: set cnf.pgm to ssh path here */
 
     QString platform = cnf.fwobj->getStr("platform").c_str();
@@ -398,19 +398,19 @@ void instDialog::prepareInstallerOptions()
 
 void instDialog::storeInstallerOptions()
 {
-    st->setValue("/FirewallBuilder2/Installer/incr",    cnf.incremental);
-    st->setValue("/FirewallBuilder2/Installer/savediff",cnf.save_diff  );
-    st->setValue("/FirewallBuilder2/Installer/saveStandby",cnf.saveStandby);
-    st->setValue("/FirewallBuilder2/Installer/dryrun"  ,cnf.dry_run    );
-    st->setValue("/FirewallBuilder2/Installer/quiet",   cnf.quiet      );
-    st->setValue("/FirewallBuilder2/Installer/verbose", cnf.verbose    );
-    st->setValue("/FirewallBuilder2/Installer/stripComments", cnf.stripComments);
-    st->setValue("/FirewallBuilder2/Installer/compressScript", cnf.compressScript);
-    st->setValue("/FirewallBuilder2/Installer/copyFWB",  cnf.copyFWB);
-    st->setValue("/FirewallBuilder2/Installer/testRun",  cnf.testRun);
-    st->setValue("/FirewallBuilder2/Installer/rollback", cnf.rollback);
-    st->setValue("/FirewallBuilder2/Installer/rollbackTime", cnf.rollbackTime);
-    st->setValue("/FirewallBuilder2/Installer/canceRollbackIfSuccess",
+    st->setValue(SETTINGS_PATH_PREFIX"/Installer/incr",    cnf.incremental);
+    st->setValue(SETTINGS_PATH_PREFIX"/Installer/savediff",cnf.save_diff  );
+    st->setValue(SETTINGS_PATH_PREFIX"/Installer/saveStandby",cnf.saveStandby);
+    st->setValue(SETTINGS_PATH_PREFIX"/Installer/dryrun"  ,cnf.dry_run    );
+    st->setValue(SETTINGS_PATH_PREFIX"/Installer/quiet",   cnf.quiet      );
+    st->setValue(SETTINGS_PATH_PREFIX"/Installer/verbose", cnf.verbose    );
+    st->setValue(SETTINGS_PATH_PREFIX"/Installer/stripComments", cnf.stripComments);
+    st->setValue(SETTINGS_PATH_PREFIX"/Installer/compressScript", cnf.compressScript);
+    st->setValue(SETTINGS_PATH_PREFIX"/Installer/copyFWB",  cnf.copyFWB);
+    st->setValue(SETTINGS_PATH_PREFIX"/Installer/testRun",  cnf.testRun);
+    st->setValue(SETTINGS_PATH_PREFIX"/Installer/rollback", cnf.rollback);
+    st->setValue(SETTINGS_PATH_PREFIX"/Installer/rollbackTime", cnf.rollbackTime);
+    st->setValue(SETTINGS_PATH_PREFIX"/Installer/canceRollbackIfSuccess",
       cnf.cancelRollbackIfSuccess);
 }
 

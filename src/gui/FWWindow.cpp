@@ -239,14 +239,10 @@ void FWWindow::showSub(ProjectPanel *projectW)
     sub->setAttribute(Qt::WA_DeleteOnClose);
     m_space->addSubWindow(sub);
 
-//    QIcon p(":Icons/Firewall/icon-tree");
-//    sub->setWindowIcon(p); 
-
     connect(sub,
             SIGNAL(windowStateChanged(Qt::WindowStates,Qt::WindowStates)),
             projectW,
             SLOT(stateChanged(Qt::WindowStates, Qt::WindowStates )));
-         
 
     if (st->getInt("Window/maximized"))
         projectW->setWindowState(Qt::WindowMaximized);

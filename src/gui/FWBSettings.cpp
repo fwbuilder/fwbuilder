@@ -56,21 +56,6 @@
 using namespace std;
 using namespace libfwbuilder;
 
-/*
- * Note:
- *
- * We need to keep installation data and program settings in registry
- * folders with different names. QSettings always looks into Current
- * User registry first, so if the folders have the same names, then we
- * store evaluation key in Current User, while it is better to put it
- * in the Local Machine branch.
- *
- * So, installation data goes to HKLM Software\NetCitadel\FirewallBuilder
- * and settings to HKCU Software\NetCitadel\FirewallBuilder2
- *
- * fwbuilder-lm determines folder path for the license file by
- * reading key Install_Dir under HKLM Software\NetCitadel\FirewallBuilder
- */
 
 const char* DTDSetpath = SETTINGS_PATH_PREFIX "/System/DTDPath";
 const char* ResSetpath = SETTINGS_PATH_PREFIX "/System/ResPath";
@@ -126,16 +111,6 @@ FWBSettings::FWBSettings() :
 void FWBSettings::init()
 {
     bool ok=false;
-/*
-    QString defwd =
-#ifdef _WIN32
-        QString(getenv("HOMEPATH"))+"/Firewalls";
-#else
-        "";
-#endif
-    QString wd = readEntry(wdirSetpath,defwd, &ok);
-    if (!ok)  writeEntry(wdirSetpath, defwd );
-*/
 
     ok = contains(infoStyleSetpath);
     if (!ok) setValue(infoStyleSetpath,2);

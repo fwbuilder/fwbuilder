@@ -33,14 +33,10 @@ class  QApplication;
 class  FWWindow;
 class  FWBSettings;
 class  listOfLibraries;
-//class  ActionsDialog;
 
 extern QApplication      *app;
 extern FWWindow          *mw;
-//extern ActionsDialog     *ap;
 extern FWBSettings       *st;
-
-//extern listOfLibraries   *addOnLibs;
 
 extern std::string     appRootDir;
 extern std::string     userDataDir;
@@ -55,10 +51,7 @@ extern int             fwbdebug;
 extern bool            registered;
 extern bool            gui_experiment1;
 
-//#define STANDARD_LIB "syslib000"
-//#define USER_LIB     "syslib001"
-//#define TEMPLATE_LIB "syslib100"
-//#define DELETED_LIB  "sysid99"
+#define SETTINGS_PATH_PREFIX  "/3.0"
 
 #ifdef NDEBUG
 #  undef NDEBUG

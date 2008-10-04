@@ -1,3 +1,8 @@
+2008-10-04  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* global.h (SETTINGS_PATH_PREFIX): making sure all modules store
+	settings under the same path prefix "3.0/" (applies to all OS).
+
 2008-10-03  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* GroupObjectDialog.cpp (GroupObjectDialog::iconContextMenu):

@@ -78,7 +78,7 @@ void CustomServiceDialog::loadFWObject(FWObject *o)
     m_dialog->platform->clear();
 
     int cp=0;
-    showPlatform=st->value("/FirewallBuilder2/CustomService/Platform").toString();
+    showPlatform=st->value(SETTINGS_PATH_PREFIX"/CustomService/Platform").toString();
     QMap<QString,QString> platforms = getAllPlatforms();
     QMap<QString,QString>::iterator i;
     for (i=platforms.begin(); i!=platforms.end(); i++,cp++)
@@ -151,7 +151,7 @@ void CustomServiceDialog::platformChanged()
     QString npl = platformReverseMap[m_dialog->platform->currentText()];
     m_dialog->code->setText( allCodes[ npl ] ); //fromUtf8
     showPlatform = npl;
-    st->setValue("/FirewallBuilder2/CustomService/Platform",showPlatform);
+    st->setValue(SETTINGS_PATH_PREFIX"/CustomService/Platform",showPlatform);
     init=false;
 //    changed();
 }

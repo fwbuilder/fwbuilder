@@ -76,7 +76,7 @@ FindObjectWidget::FindObjectWidget(QWidget*p, const char * n, Qt::WindowFlags f)
     setObjectName(n);
 
     replaceDisable();
-    m_widget->srScope->setCurrentIndex(st->getInt("/FirewallBuilder2/Search/Scope"));
+    m_widget->srScope->setCurrentIndex(st->getInt(SETTINGS_PATH_PREFIX"/Search/Scope"));
 }
 void FindObjectWidget::findObject(FWObject *o)
 {
@@ -605,6 +605,6 @@ void FindObjectWidget::replaceNext()
 }
 void FindObjectWidget::scopeChanged()
 {
-    st->setValue("/FirewallBuilder2/Search/Scope",m_widget->srScope->currentIndex ());
+    st->setValue(SETTINGS_PATH_PREFIX"/Search/Scope",m_widget->srScope->currentIndex ());
 
 }

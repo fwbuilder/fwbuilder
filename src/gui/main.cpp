@@ -388,20 +388,6 @@ int main( int argc, char *argv[] )
 
 /* need to create and initialize settings to be able to use ssh/scp
  * configuration in the wrapper
- *
- * Note:
- *
- * We need to keep installation data and program settings in registry
- * folders with different names. QSettings always looks into Current
- * User registry first, so if the folders have the same names, then we
- * store evaluation key in Current User, while it is better to put it
- * in the Local Machine branch.
- *
- * So, installation data goes to HKLM Software\NetCitadel\FirewallBuilder
- * and settings to HKCU Software\NetCitadel\FirewallBuilder2
- *
- * fwbuilder-lm determines folder path for the license file by
- * reading key Install_Dir under HKLM Software\NetCitadel\FirewallBuilder
  */
         st = new FWBSettings();
 

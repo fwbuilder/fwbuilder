@@ -22,10 +22,22 @@
    <string>Network</string>
   </property>
   <layout class="QGridLayout" >
-   <property name="margin" >
+   <property name="leftMargin" >
     <number>2</number>
    </property>
-   <property name="spacing" >
+   <property name="topMargin" >
+    <number>2</number>
+   </property>
+   <property name="rightMargin" >
+    <number>2</number>
+   </property>
+   <property name="bottomMargin" >
+    <number>2</number>
+   </property>
+   <property name="horizontalSpacing" >
+    <number>2</number>
+   </property>
+   <property name="verticalSpacing" >
     <number>2</number>
    </property>
    <item row="0" column="0" >
@@ -33,7 +45,16 @@
      <property name="spacing" >
       <number>2</number>
      </property>
-     <property name="margin" >
+     <property name="leftMargin" >
+      <number>0</number>
+     </property>
+     <property name="topMargin" >
+      <number>0</number>
+     </property>
+     <property name="rightMargin" >
+      <number>0</number>
+     </property>
+     <property name="bottomMargin" >
       <number>0</number>
      </property>
      <item>
@@ -124,10 +145,22 @@
         <enum>QFrame::Sunken</enum>
        </property>
        <layout class="QGridLayout" >
-        <property name="margin" >
+        <property name="leftMargin" >
          <number>2</number>
         </property>
-        <property name="spacing" >
+        <property name="topMargin" >
+         <number>2</number>
+        </property>
+        <property name="rightMargin" >
+         <number>2</number>
+        </property>
+        <property name="bottomMargin" >
+         <number>2</number>
+        </property>
+        <property name="horizontalSpacing" >
+         <number>2</number>
+        </property>
+        <property name="verticalSpacing" >
          <number>2</number>
         </property>
         <item row="0" column="2" >
@@ -284,7 +317,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" stdset="0" >
+             <property name="sizeHint" >
               <size>
                <width>20</width>
                <height>5</height>
@@ -408,7 +441,7 @@
   </connection>
   <connection>
    <sender>address</sender>
-   <signal>lostFocus()</signal>
+   <signal>editingFinished()</signal>
    <receiver>NetworkDialog_q</receiver>
    <slot>addressEntered()</slot>
    <hints>
@@ -439,8 +472,4 @@
    </hints>
   </connection>
  </connections>
- <slots>
-  <slot>changed()</slot>
-  <slot>addressEntered()</slot>
- </slots>
 </ui>
