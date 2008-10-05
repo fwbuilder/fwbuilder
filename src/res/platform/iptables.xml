@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<FWBuilderResources version="3.0.1">
+<FWBuilderResources version="3.0.2">
     <Target name="iptables">
       <description>iptables</description>
       <compiler>fwb_ipt</compiler>
