@@ -53,7 +53,6 @@ namespace libfwbuilder {
     class Rule;
     class RuleSet;
     class Policy;
-    class InterfacePolicy;
     class NAT;
     class Routing;
     class RuleElement;
@@ -530,22 +529,6 @@ class PolicyView : public RuleSetView
 
     virtual void init();
     
-};
-
-class InterfacePolicyView : public RuleSetView
-{
-    virtual libfwbuilder::RuleElement* getRE(int row, int col ) ;
-    virtual libfwbuilder::RuleElement* getRE(libfwbuilder::Rule* r, int col ) ;
-
- public:
-
-    InterfacePolicyView(ProjectPanel *project,
-                        libfwbuilder::InterfacePolicy *p, QWidget *parent);
-    virtual ~InterfacePolicyView() {}
-
-    virtual void init();
-    
-
 };
 
 class NATView : public RuleSetView

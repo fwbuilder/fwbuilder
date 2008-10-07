@@ -38,6 +38,7 @@
 #include <QMdiArea>
 
 #include "fwbuilder/Library.h"
+#include "fwbuilder/RuleSet.h"
 
 
 using namespace Ui;

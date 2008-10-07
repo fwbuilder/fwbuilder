@@ -1,3 +1,10 @@
+2008-10-07  vadim  <vadim@vk.crocodile.org>
+
+	* FWWindowPrint.cpp, RuleSetView.cpp, FWBSettings.h,
+	ProjectPanel_state_ops.cpp: got rid of references to
+	InterfacePolicy class; build fixes for FreeBSD 7 (should fix
+	compile problems on other systems too, such as Solaris)
+
 2008-10-05  vadim  <vadim@vk.crocodile.org>
 
 	* VERSION: started 3.0.2

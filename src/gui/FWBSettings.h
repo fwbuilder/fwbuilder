@@ -26,6 +26,9 @@
 #ifndef __FWBSETTINGS_H_
 #define __FWBSETTINGS_H_
 
+#include "fwbuilder/FWObject.h"
+
+
 #include <qsettings.h>
 #include <qrect.h>
 #include <qprinter.h>

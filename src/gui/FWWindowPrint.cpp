@@ -56,7 +56,6 @@
 #include <qprintdialog.h>
 
 #include "fwbuilder/Policy.h"
-#include "fwbuilder/InterfacePolicy.h"
 #include "fwbuilder/NAT.h"
 #include "fwbuilder/Routing.h"
 #include "fwbuilder/Interface.h"
@@ -166,13 +165,6 @@ list<FWObject*> findAllUsedByType(list<FWObject*> &result,FWObject *obj,const st
 
         ruleSet = obj->getFirstByType(Policy::TYPENAME);
         findAllUsedByType(result,ruleSet,typeName);
-
-        FWObjectTypedChildIterator j=obj->findByType(Interface::TYPENAME);
-        for ( ; j!=j.end(); ++j )
-        {
-          if ((ruleSet = (*j)->getFirstByType(InterfacePolicy::TYPENAME))!=NULL)
-            findAllUsedByType(result,ruleSet,typeName);
-        }
 
         ruleSet = obj->getFirstByType(NAT::TYPENAME);
         findAllUsedByType(result,ruleSet,typeName);
@@ -333,48 +325,7 @@ void printFirewall(FWObject *fw,
     delete ruleView;
     }
 
-    j=fw->findByType(Interface::TYPENAME);
-    for ( ; j!=j.end(); ++j )
-    {
-        Interface       *intf = Interface::cast(*j);
-        InterfacePolicy *ip   = InterfacePolicy::cast((*j)->getFirstByType(InterfacePolicy::TYPENAME));
-        if (ip)
-        {
-          QString tabName;
-          if ( !intf->getLabel().empty() )
-            tabName=QString::fromUtf8(intf->getLabel().c_str());
-          else
-            tabName=QString::fromUtf8(intf->getName().c_str());
 
-//                ppd->genericProgressIndicator(ppdCounter++,QObject::tr("Processing policy for interface %1").arg(tabName));
-          if (fwbdebug)
-              qDebug("******** Interface policy for %s",tabName.toLatin1().constData());
-
-
-          if (newPageForSection)
-            {
-              pr.flushPage();
-              pr.beginPage();   // resets yPos
-            } else
-            pr.printText(" ");
-
-          pr.printText(QObject::tr("Interface %1").arg(tabName));
-
-          ruleView=new InterfacePolicyView(project, ip,NULL);
-          ruleView->setSizePolicy( QSizePolicy( (QSizePolicy::Policy)7,
-                                                (QSizePolicy::Policy)7) );
-          ruleView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-          ruleView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-          if (fwbdebug) qDebug("%dx%d",ruleView->width(),ruleView->height());
-
-          pr.printQTable(ruleView);
-          //        pr.printPixmap(QPixmap::grabWidget(ruleView,0,0));
-          delete ruleView;
-        }
-    }
-
-//            ppd->genericProgressIndicator(ppdCounter++,QObject::tr("Processing NAT rules"));
     if (fwbdebug)  qDebug("******** NAT");
     j=fw->findByType(NAT::TYPENAME);
     for ( ; j!=j.end(); ++j )

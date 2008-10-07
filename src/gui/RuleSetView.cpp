@@ -3302,8 +3302,6 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
             delID->setEnabled(!re->isAny());
 
             string cap_name;
-            if (InterfacePolicy::cast(ruleset)!=NULL)
-                cap_name="negation_in_interface_policy";
             if (Policy::cast(ruleset)!=NULL) cap_name="negation_in_policy";
             if (NAT::cast(ruleset)!=NULL) cap_name="negation_in_nat";
 
@@ -4980,106 +4978,6 @@ RuleElement* PolicyView::getRE( Rule* r, int col )
         case 1: ret=RuleElementDst::TYPENAME; break;
         case 2: ret=RuleElementSrv::TYPENAME; break;
         case 3: ret=RuleElementItf::TYPENAME; break;*/
-        }
-        break;
-    case Time:
-        ret=RuleElementInterval::TYPENAME; break;
-    default: return NULL;
-    }
-
-    return RuleElement::cast( r->getFirstByType(ret) );
-}
-
-InterfacePolicyView::InterfacePolicyView(ProjectPanel *project, InterfacePolicy *p, QWidget *parent) :
-    RuleSetView(project, 1,7,parent)
-{
-    setName("InterfacePolicyView");
-    ruleset = p;
-
-    bool old_dirty_flag = ruleset->isDirty();
-    iinit();
-    init();
-    ruleset->setDirty(old_dirty_flag);
-}
-
-void InterfacePolicyView::init()
-{
-    ncols=7 +
-        ((supports_time)?1:0) +
-        ((supports_logging && supports_rule_options)?1:0);
-
-    ruleModel->setColumnCount(ncols);
-
-    colTypes[-1] = RuleOp;
-
-    int col = 0;
-    QStringList qsl;
-    qsl << "";
-    colTypes[col++] = GroupHandle;
-
-    qsl << "Source";      // 0
-    colTypes[col++] = Object;
-
-    qsl << "Destination"; // 1
-    colTypes[col++] = Object;
-
-    qsl << "Service";     // 2
-    colTypes[col++] = Object;
-
-    qsl << "Direction";   // 3
-    colTypes[col++] = Direction;
-
-    qsl << "Action";      // 4
-    colTypes[col++] = Action;
-
-    if (supports_time)
-    {
-        qsl << "Time";    // 5
-        colTypes[col++] = Time;
-    }
-
-    if (supports_logging && supports_rule_options)
-    {
-        qsl << "Options";
-        colTypes[col++] = Options;
-    }
-
-    qsl << "Comment";
-    colTypes[col] = Comment;
-
-    ruleModel->setHeader(qsl);
-//    setColumnStretchable(col, true);
-
-//    ncols=col;
-
-    RuleSetView::init();
-}
-
-RuleElement* InterfacePolicyView::getRE( int row, int col )
-{
-    if (row<0) return NULL;
-    if (ruleIndex[row]==NULL)
-        return NULL;
-    PolicyRule *r = PolicyRule::cast( ruleIndex[row] );
-    assert(r!=NULL);
-    return getRE(r,col);
-}
-
-RuleElement* InterfacePolicyView::getRE( Rule *r, int col )
-{
-    string ret;
-    if (col==0)
-        return NULL;
-    if (r==NULL)
-        return NULL;
-    switch (getColType(col))
-    {
-    case Object:
-        switch (col)
-        {
-        case 1: ret=RuleElementSrc::TYPENAME; break;
-        case 2: ret=RuleElementDst::TYPENAME; break;
-        case 3: ret=RuleElementSrv::TYPENAME; break;
         }
         break;
     case Time:
