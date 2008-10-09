@@ -1,3 +1,11 @@
+2008-10-09  vadim  <vadim@vk.crocodile.org>
+
+	* instDialog_compile.cpp (instDialog::prepareArgForCompiler):
+	always provide "-o" command line option to compilers when calling
+	them from the GUI. The output file name defined this way can be
+	encoded properly for the OS encoding and locale (compilers do not
+	use QT so it is hard to do there).
+
 2008-10-08  vadim  <vadim@vk.crocodile.org>
 
 	* merged branch "new-installer" -r569:HEAD

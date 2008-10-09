@@ -219,13 +219,20 @@ Can't compile firewall policy."),
         args.push_back(wdir);
     }
 
-    QString ofname = QString::fromUtf8(fwopt->getStr("output_file").c_str());
-    if (!ofname.isEmpty())
-    {
-        args.push_back("-o");
-        args.push_back(ofname);
-    }
-
+    // Always pass "-o file_name" parameter to the compiler. If user
+    // specified it in the "compiler" tab, then use that. If not,
+    // compose it from the name of the firewall and extension
+    // ".fw". This way we can properly encode file name for the
+    // encoding and locale used on the system. Compiler simply takes
+    // the name of the fw object from XML file and uses that for the
+    // generated file name, but since the name in XML is encoded in
+    // Utf8, the file name ended up in Utf8 regardless of the OS
+    // encoding and locale. This caused problems, such as installer
+    // could not then find file created by the compiler if fw name had
+    // non-ascii characters.
+    args.push_back("-o");
+    args.push_back(FirewallInstaller::getGeneratedFileFullPath(fw));
+ 
     args.push_back("-i");
 
     args.push_back( mw->db()->getStringId(fw->getId()).c_str() );

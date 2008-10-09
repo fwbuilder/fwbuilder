@@ -960,9 +960,6 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
 
         cnf.fwdir = s;
 
-        QString ofname = fwopt->getStr("output_file").c_str();
-        if (ofname.isEmpty())
-            ofname = QString(cnf.fwobj->getName().c_str()) + ".fw";
         cnf.conffile = FirewallInstaller::getGeneratedFileFullPath(fw);
         cnf.fwbfile = mw->db()->getFileName().c_str();
         cnf.wdir = getFileDir( mw->getRCS()->getFileName() );

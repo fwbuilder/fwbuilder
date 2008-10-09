@@ -86,7 +86,8 @@ bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
         qDebug("FirewallInstaller::packInstallJobsList read manifest from %s",
                cnf->conffile.toAscii().constData());
 
-/* Note that if output file is specified in firewall settings dialog,
+/*
+ * Note that if output file is specified in firewall settings dialog,
  * it can be an absolute path. In this case compiler puts additional
  * generated files (if any) in the same directory. The manifest in the
  * .fw file does not specify directory path so that the .fw file and
@@ -94,7 +95,6 @@ bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
  * dir path from the .fw file and if it is not empty, assume that all
  * other files are located there as well.
  */
-
     QFileInfo cnf_file_info(cnf->conffile);
     QString dir_path = "";
     if (cnf_file_info.isAbsolute())
@@ -104,13 +104,6 @@ bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
 
-    // the file name is always in Utf8, regardless of the OS locale
-    // because compilers create file name from the fw object name
-    // which is stored in XML file in Utf8. QFile does some tricks
-    // with names depending on the current locale, so it can not find
-    // file if fw object name has non-ascii characters AND system
-    // locale is not "C". Open file using simple system function
-    // open(), then pass file descriptor to QFile.
     QFile cf;
     int fd = open(cnf->conffile.toAscii().constData(), O_RDONLY);
     if (cf.open(fd, QIODevice::ReadOnly ))
