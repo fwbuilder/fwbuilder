@@ -1,5 +1,7 @@
 2008-10-08  vadim  <vadim@vk.crocodile.org>
 
+	* merged branch "new-installer" -r569:HEAD
+
 	* PrefsDialog.cpp (PrefsDialog::accept): Added GUI control for the
 	path to scp utility used by built-in policy installer
 
