@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>691</width>
-    <height>571</height>
+    <width>685</width>
+    <height>671</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -16,22 +16,10 @@
    <bool>false</bool>
   </property>
   <layout class="QGridLayout" >
-   <property name="leftMargin" >
+   <property name="margin" >
     <number>11</number>
    </property>
-   <property name="topMargin" >
-    <number>11</number>
-   </property>
-   <property name="rightMargin" >
-    <number>11</number>
-   </property>
-   <property name="bottomMargin" >
-    <number>11</number>
-   </property>
-   <property name="horizontalSpacing" >
-    <number>6</number>
-   </property>
-   <property name="verticalSpacing" >
+   <property name="spacing" >
     <number>6</number>
    </property>
    <item row="1" column="0" >
@@ -39,16 +27,7 @@
      <property name="spacing" >
       <number>6</number>
      </property>
-     <property name="leftMargin" >
-      <number>0</number>
-     </property>
-     <property name="topMargin" >
-      <number>0</number>
-     </property>
-     <property name="rightMargin" >
-      <number>0</number>
-     </property>
-     <property name="bottomMargin" >
+     <property name="margin" >
       <number>0</number>
      </property>
      <item>
@@ -59,7 +38,7 @@
        <property name="sizeType" >
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>20</width>
          <height>20</height>
@@ -101,62 +80,35 @@
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab" >
       <attribute name="title" >
        <string>Compiler</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
-       </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>6</number>
-       </property>
-       <property name="verticalSpacing" >
-        <number>6</number>
-       </property>
-       <item rowspan="2" row="4" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
+      <layout class="QGridLayout" name="gridLayout_4" >
+       <item row="0" column="0" colspan="2" >
+        <widget class="QLabel" name="compilerLabel" >
+         <property name="text" >
+          <string>Compiler:</string>
          </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="sizeHint" >
-          <size>
-           <width>40</width>
-           <height>30</height>
-          </size>
+         <property name="wordWrap" >
+          <bool>false</bool>
          </property>
-        </spacer>
+        </widget>
        </item>
-       <item row="3" column="1" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" >
+       <item row="0" column="2" >
+        <widget class="QLineEdit" name="compiler" >
+         <property name="maximumSize" >
           <size>
-           <width>20</width>
-           <height>20</height>
+           <width>32767</width>
+           <height>32767</height>
           </size>
          </property>
-        </spacer>
+        </widget>
        </item>
        <item row="1" column="0" colspan="2" >
         <widget class="QLabel" name="compilerArgsLabel" >
@@ -177,16 +129,13 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="0" colspan="2" >
-        <widget class="QLabel" name="compilerLabel" >
-         <property name="text" >
-          <string>Compiler:</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>false</bool>
+       <item row="1" column="2" >
+        <widget class="QLineEdit" name="compilerArgs" >
+         <property name="maximumSize" >
+          <size>
+           <width>32767</width>
+           <height>32767</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -219,71 +168,49 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="2" >
-        <widget class="QLineEdit" name="compilerArgs" >
-         <property name="maximumSize" >
-          <size>
-           <width>32767</width>
-           <height>32767</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2" >
-        <widget class="QLineEdit" name="compiler" >
-         <property name="maximumSize" >
-          <size>
-           <width>32767</width>
-           <height>32767</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="2" >
+       <item row="3" column="1" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
+          <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
-           <height>40</height>
+           <height>20</height>
           </size>
          </property>
         </spacer>
        </item>
-       <item row="7" column="2" >
-        <widget class="QLineEdit" name="mgmt_addr" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+       <item rowspan="2" row="4" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
          </property>
-         <property name="maximumSize" >
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
           <size>
-           <width>32767</width>
-           <height>32767</height>
+           <width>40</width>
+           <height>30</height>
           </size>
          </property>
-        </widget>
+        </spacer>
        </item>
-       <item row="6" column="1" colspan="2" >
-        <widget class="QCheckBox" name="ipfw_ignore_empty_groups" >
+       <item row="4" column="1" colspan="2" >
+        <widget class="QCheckBox" name="ipfw_add_check_state_rule" >
          <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="toolTip" >
-          <string>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes 'any' after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</string>
-         </property>
          <property name="text" >
-          <string>Ignore empty groups in rules</string>
+          <string>Add rule to accept packets matching dynamic rules created for
+known sessions on top of the policy (action 'check-state')</string>
          </property>
         </widget>
        </item>
@@ -303,21 +230,23 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="1" colspan="2" >
-        <widget class="QCheckBox" name="ipfw_add_check_state_rule" >
+       <item row="6" column="1" colspan="2" >
+        <widget class="QCheckBox" name="ipfw_ignore_empty_groups" >
          <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="toolTip" >
+          <string>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes 'any' after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</string>
+         </property>
          <property name="text" >
-          <string>Add rule to accept packets matching dynamic rules created for
-known sessions on top of the policy (action 'check-state')</string>
+          <string>Ignore empty groups in rules</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="1" >
+       <item rowspan="2" row="7" column="1" colspan="2" >
         <widget class="QCheckBox" name="mgmt_ssh" >
          <property name="text" >
           <string>Always permit ssh access from
@@ -326,32 +255,23 @@ with this address:</string>
          </property>
         </widget>
        </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tab1" >
-      <attribute name="title" >
-       <string>Installer</string>
-      </attribute>
-      <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
-       </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>6</number>
-       </property>
-       <property name="verticalSpacing" >
-        <number>6</number>
-       </property>
-       <item row="2" column="0" >
+       <item row="8" column="2" >
+        <widget class="QLineEdit" name="mgmt_addr" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize" >
+          <size>
+           <width>32767</width>
+           <height>32767</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="2" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -359,149 +279,27 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
-           <height>20</height>
+           <height>40</height>
           </size>
          </property>
         </spacer>
        </item>
-       <item row="1" column="0" >
-        <widget class="QGroupBox" name="groupBox1" >
-         <property name="title" >
-          <string>External install script</string>
-         </property>
-         <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>6</number>
-          </property>
-          <property name="verticalSpacing" >
-           <number>6</number>
-          </property>
-          <item row="0" column="1" >
-           <widget class="QLineEdit" name="installScript" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0" >
-           <widget class="QLabel" name="textLabel5_2" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text" >
-             <string>Policy install script (using built-in installer if this field is blank):</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-            <property name="wordWrap" >
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" >
-           <widget class="QLabel" name="textLabel6_2_2" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text" >
-             <string>Command line options for the script:</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-            <property name="wordWrap" >
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1" >
-           <widget class="QLineEdit" name="installScriptArgs" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab1" >
+      <attribute name="title" >
+       <string>Installer</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_3" >
        <item row="0" column="0" >
         <widget class="QGroupBox" name="groupBox2" >
          <property name="title" >
           <string>Built-in installer</string>
          </property>
-         <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>6</number>
-          </property>
-          <property name="verticalSpacing" >
-           <number>6</number>
-          </property>
-          <item row="2" column="0" >
-           <widget class="QLabel" name="textLabel1_3" >
-            <property name="text" >
-             <string>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-            </property>
-            <property name="wordWrap" >
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" >
-           <widget class="QLabel" name="textLabel1_2" >
-            <property name="text" >
-             <string>User name used to authenticate to the firewall (leave this empty if you use putty session):</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-            <property name="wordWrap" >
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
+         <layout class="QGridLayout" name="gridLayout" >
           <item row="0" column="0" >
            <widget class="QLabel" name="label556" >
             <property name="text" >
@@ -525,6 +323,19 @@ with this address:</string>
             </property>
            </widget>
           </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="textLabel1_2" >
+            <property name="text" >
+             <string>User name used to authenticate to the firewall (leave this empty if you use putty session):</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="1" >
            <widget class="QLineEdit" name="ipfw_user" >
             <property name="sizePolicy" >
@@ -535,18 +346,21 @@ with this address:</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1" >
-           <widget class="QLineEdit" name="altAddress" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="textLabel1_3" >
+            <property name="text" >
+             <string>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="3" column="1" >
-           <widget class="QLineEdit" name="activationCmd" >
+          <item row="2" column="1" >
+           <widget class="QLineEdit" name="altAddress" >
             <property name="sizePolicy" >
              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
               <horstretch>0</horstretch>
@@ -568,21 +382,22 @@ with this address:</string>
             </property>
            </widget>
           </item>
+          <item row="3" column="1" >
+           <widget class="QLineEdit" name="activationCmd" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
           <item row="4" column="0" colspan="2" >
            <layout class="QHBoxLayout" >
             <property name="spacing" >
              <number>6</number>
             </property>
-            <property name="leftMargin" >
-             <number>0</number>
-            </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
+            <property name="margin" >
              <number>0</number>
             </property>
             <item>
@@ -603,12 +418,151 @@ with this address:</string>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize" >
+               <size>
+                <width>300</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="5" column="0" colspan="2" >
+           <layout class="QHBoxLayout" name="_2" >
+            <item>
+             <widget class="QLabel" name="textLabel1_8" >
+              <property name="text" >
+               <string>Additional command line parameters for scp</string>
+              </property>
+              <property name="wordWrap" >
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="scpArgs" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize" >
+               <size>
+                <width>300</width>
+                <height>0</height>
+               </size>
+              </property>
              </widget>
             </item>
            </layout>
           </item>
          </layout>
         </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QGroupBox" name="groupBox1" >
+         <property name="title" >
+          <string>External install script</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2" >
+          <item row="0" column="0" >
+           <layout class="QHBoxLayout" name="horizontalLayout" >
+            <item>
+             <widget class="QLabel" name="textLabel5_2" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>Policy install script (using built-in installer if this field is blank):</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+              <property name="wordWrap" >
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="installScript" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize" >
+               <size>
+                <width>300</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0" >
+           <layout class="QHBoxLayout" name="horizontalLayout_2" >
+            <item>
+             <widget class="QLabel" name="textLabel6_2_2" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>Command line options for the script:</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+              <property name="wordWrap" >
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="installScriptArgs" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize" >
+               <size>
+                <width>300</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -617,22 +571,10 @@ with this address:</string>
        <string>Prolog/Epilog</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>6</number>
        </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>6</number>
-       </property>
-       <property name="verticalSpacing" >
+       <property name="spacing" >
         <number>6</number>
        </property>
        <item row="1" column="0" >
@@ -641,22 +583,10 @@ with this address:</string>
           <string/>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>6</number>
-          </property>
-          <property name="verticalSpacing" >
+          <property name="spacing" >
            <number>6</number>
           </property>
           <item row="2" column="1" >
@@ -674,7 +604,7 @@ with this address:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>40</width>
               <height>20</height>
@@ -707,22 +637,10 @@ with this address:</string>
           <string/>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>6</number>
-          </property>
-          <property name="verticalSpacing" >
+          <property name="spacing" >
            <number>6</number>
           </property>
           <item row="2" column="0" >
@@ -733,7 +651,7 @@ with this address:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>40</width>
               <height>20</height>
@@ -774,22 +692,10 @@ with this address:</string>
        <string>Script Options</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>6</number>
        </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>6</number>
-       </property>
-       <property name="verticalSpacing" >
+       <property name="spacing" >
         <number>6</number>
        </property>
        <item rowspan="3" row="2" column="0" >
@@ -800,7 +706,7 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>40</width>
            <height>70</height>
@@ -850,7 +756,7 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>230</height>
@@ -866,7 +772,7 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>20</height>
@@ -893,7 +799,7 @@ with this address:</string>
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>40</width>
            <height>20</height>
@@ -920,7 +826,7 @@ with this address:</string>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>40</height>

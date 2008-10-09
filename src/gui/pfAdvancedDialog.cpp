@@ -135,8 +135,9 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->pf_fw_dir              ,fwopt, "firewall_dir"    );
     data.registerOption( m_dialog->pf_user                ,fwopt, "admUser"         );
     data.registerOption( m_dialog->altAddress             ,fwopt, "altAddress"      );
-    data.registerOption( m_dialog->sshArgs                ,fwopt, "sshArgs"         );
-    data.registerOption( m_dialog->activationCmd          ,fwopt, "activationCmd"   );
+    data.registerOption( m_dialog->sshArgs, fwopt, "sshArgs");
+    data.registerOption( m_dialog->scpArgs, fwopt, "scpArgs");
+    data.registerOption( m_dialog->activationCmd, fwopt, "activationCmd");
 
     data.registerOption( m_dialog->pf_manage_virtual_addr ,fwopt, "manage_virtual_addr" );
     data.registerOption( m_dialog->pf_configure_interfaces,fwopt, "configure_interfaces");

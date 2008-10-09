@@ -209,7 +209,7 @@ public slots:
     
     bool saveIfModified();
     
-    void updateFirewallName(libfwbuilder::FWObject *obj,const QString &oldName);
+    void updateFirewallName();
     void updateRuleSetView();
     void updateRuleOptions();
     void updateRuleSetViewSelection();

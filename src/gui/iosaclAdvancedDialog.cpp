@@ -235,46 +235,47 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
     );
 /* Page "Compiler Options" */
 
-    data.registerOption( m_dialog->outputFileName       , fwoptions,
+    data.registerOption( m_dialog->outputFileName, fwoptions,
                          "output_file"  );
 
-    data.registerOption( m_dialog->iosacl_acl_basic , fwoptions,
+    data.registerOption( m_dialog->iosacl_acl_basic, fwoptions,
                          "iosacl_acl_basic" );
 
 /*
-    data.registerOption( m_dialog->iosacl_acl_alwaysNew , fwoptions,
+    data.registerOption( m_dialog->iosacl_acl_alwaysNew, fwoptions,
                          "iosacl_acl_always_new" );
 */
 
-    data.registerOption( m_dialog->iosacl_acl_no_clear , fwoptions,
+    data.registerOption( m_dialog->iosacl_acl_no_clear, fwoptions,
                          "iosacl_acl_no_clear" );
 
-    data.registerOption( m_dialog->iosacl_acl_substitution , fwoptions,
+    data.registerOption( m_dialog->iosacl_acl_substitution, fwoptions,
                          "iosacl_acl_substitution" );
 
-    data.registerOption( m_dialog->iosacl_acl_temp_addr , fwoptions,
+    data.registerOption( m_dialog->iosacl_acl_temp_addr, fwoptions,
                          "iosacl_acl_temp_addr" );
 
-    data.registerOption( m_dialog->iosacl_include_comments , fwoptions,
+    data.registerOption( m_dialog->iosacl_include_comments, fwoptions,
                          "iosacl_include_comments" );
 
-    data.registerOption( m_dialog->iosacl_regroup_commands , fwoptions,
+    data.registerOption( m_dialog->iosacl_regroup_commands, fwoptions,
                          "iosacl_regroup_commands" );
 
-    data.registerOption( m_dialog->iosacl_check_shadowing    , fwoptions,
+    data.registerOption( m_dialog->iosacl_check_shadowing, fwoptions,
                          "check_shading"  );
 
-    data.registerOption( m_dialog->iosacl_ignore_empty_groups , fwoptions,
+    data.registerOption( m_dialog->iosacl_ignore_empty_groups, fwoptions,
                          "ignore_empty_groups" );
 
-    data.registerOption( m_dialog->mgmt_ssh     , fwoptions,  "mgmt_ssh"  );
-    data.registerOption( m_dialog->mgmt_addr    , fwoptions,  "mgmt_addr" );
+    data.registerOption( m_dialog->mgmt_ssh, fwoptions,  "mgmt_ssh"  );
+    data.registerOption( m_dialog->mgmt_addr, fwoptions,  "mgmt_addr" );
 
 /* page Installer */
 
     data.registerOption( m_dialog->user, fwoptions, "admUser");
     data.registerOption( m_dialog->altAddress, fwoptions, "altAddress");
     data.registerOption( m_dialog->sshArgs, fwoptions, "sshArgs");
+    data.registerOption( m_dialog->scpArgs, fwoptions, "scpArgs");
 
     PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
 
@@ -283,10 +284,10 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
 
 
 /* page "Prolog/Epilog" */
-    data.registerOption( m_dialog->iosacl_prolog_script    , fwoptions,
+    data.registerOption( m_dialog->iosacl_prolog_script, fwoptions,
                          "iosacl_prolog_script"  );
 
-    data.registerOption( m_dialog->iosacl_epilog_script    , fwoptions,
+    data.registerOption( m_dialog->iosacl_epilog_script, fwoptions,
                          "iosacl_epilog_script"  );
 
 /* page Logging */

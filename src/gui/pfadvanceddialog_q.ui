@@ -5,9 +5,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>691</width>
-    <height>662</height>
+    <width>687</width>
+    <height>685</height>
    </rect>
+  </property>
+  <property name="maximumSize" >
+   <size>
+    <width>700</width>
+    <height>16777215</height>
+   </size>
   </property>
   <property name="windowTitle" >
    <string>pf: advanced settings</string>
@@ -16,8 +22,17 @@
    <bool>false</bool>
   </property>
   <layout class="QGridLayout" >
+   <property name="spacing" >
+    <number>20</number>
+   </property>
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget" >
+     <property name="minimumSize" >
+      <size>
+       <width>663</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="currentIndex" >
       <number>0</number>
      </property>
@@ -25,20 +40,11 @@
       <attribute name="title" >
        <string>Compiler</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
+      <layout class="QGridLayout" name="gridLayout_8" >
+       <property name="verticalSpacing" >
+        <number>10</number>
        </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
-       </property>
-       <item row="0" column="0" colspan="3" >
+       <item row="0" column="0" >
         <widget class="QLabel" name="compilerLabel" >
          <property name="text" >
           <string>Compiler:</string>
@@ -51,7 +57,17 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="3" >
+       <item row="0" column="1" >
+        <widget class="QLineEdit" name="compiler" >
+         <property name="maximumSize" >
+          <size>
+           <width>32767</width>
+           <height>22</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" >
         <widget class="QLabel" name="compilerArgsLabel" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
@@ -70,122 +86,17 @@
          </property>
         </widget>
        </item>
-       <item row="15" column="2" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>20</width>
-           <height>16</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="14" column="3" >
-        <widget class="QLineEdit" name="mgmt_addr" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
+       <item row="1" column="1" >
+        <widget class="QLineEdit" name="compilerArgs" >
          <property name="maximumSize" >
           <size>
            <width>32767</width>
-           <height>32767</height>
+           <height>22</height>
           </size>
          </property>
         </widget>
        </item>
-       <item row="14" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="14" column="1" colspan="2" >
-        <widget class="QCheckBox" name="mgmt_ssh" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text" >
-          <string>Always permit ssh access from
-the management workstation
-with this address:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1" colspan="3" >
-        <widget class="QCheckBox" name="pf_accept_new_tcp_with_no_syn" >
-         <property name="text" >
-          <string>Accept TCP sessions opened prior to firewall restart</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="1" colspan="3" >
-        <widget class="QCheckBox" name="pf_modulate_state" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text" >
-          <string>Modulate state for all stateful rules (applies only to TCP services)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="1" colspan="3" >
-        <widget class="QCheckBox" name="pf_check_shadowing" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="toolTip" >
-          <string>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</string>
-         </property>
-         <property name="text" >
-          <string>Detect rule shadowing in policy</string>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="1" colspan="3" >
-        <widget class="QCheckBox" name="pf_ignore_empty_groups" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="toolTip" >
-          <string>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes 'any' after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</string>
-         </property>
-         <property name="text" >
-          <string>Ignore empty groups in rules</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" colspan="3" >
+       <item row="2" column="0" >
         <widget class="QLabel" name="textLabel1_5" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
@@ -204,207 +115,262 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="3" >
+       <item row="2" column="1" >
         <widget class="QLineEdit" name="outputFileName" >
          <property name="maximumSize" >
           <size>
            <width>32767</width>
-           <height>32767</height>
+           <height>22</height>
           </size>
          </property>
         </widget>
        </item>
-       <item row="0" column="3" >
-        <widget class="QLineEdit" name="compiler" >
-         <property name="maximumSize" >
-          <size>
-           <width>32767</width>
-           <height>32767</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="3" >
-        <widget class="QLineEdit" name="compilerArgs" >
-         <property name="maximumSize" >
-          <size>
-           <width>32767</width>
-           <height>32767</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1" colspan="3" >
+       <item row="3" column="0" colspan="2" >
         <widget class="QGroupBox" name="buttonGroup2" >
          <property name="title" >
           <string/>
          </property>
-         <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <item row="1" column="0" >
-           <widget class="QRadioButton" name="pf_pass_all_out" >
+         <property name="flat" >
+          <bool>true</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_4" >
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label571" >
             <property name="text" >
-             <string>Pass all outgoing</string>
+             <string>There are two ways compiler can generate code for rules in the Global Policy: it can either create two pf rules to control both incoming and outgoing packets for each rule, or it can create only one pf rule for incoming packets and permit all outgoing ones.You get more control over the packets crossing the firewall in the first mode, but generated script is going to be smaller if you choose the second.</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="0" column="0" >
-           <widget class="QRadioButton" name="pf_in_out_code" >
+          <item row="1" column="0" >
+           <layout class="QHBoxLayout" name="horizontalLayout_5" >
+            <item>
+             <spacer name="horizontalSpacer_2" >
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0" >
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="pf_in_out_code" >
+              <property name="text" >
+               <string>Generate both 'in' and 'out' rules</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="pf_pass_all_out" >
+              <property name="text" >
+               <string>Pass all outgoing</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_3" >
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0" >
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="2" >
+        <widget class="QGroupBox" name="groupBox" >
+         <property name="title" >
+          <string/>
+         </property>
+         <property name="flat" >
+          <bool>true</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_6" >
+          <property name="horizontalSpacing" >
+           <number>20</number>
+          </property>
+          <property name="verticalSpacing" >
+           <number>-1</number>
+          </property>
+          <item row="0" column="0" colspan="3" >
+           <widget class="QCheckBox" name="pf_accept_new_tcp_with_no_syn" >
             <property name="text" >
-             <string>Generate both 'in' and 'out' rules</string>
+             <string>Accept TCP sessions opened prior to firewall restart</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="3" >
+           <widget class="QCheckBox" name="pf_modulate_state" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text" >
+             <string>Modulate state for all stateful rules (applies only to TCP services)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="3" >
+           <widget class="QCheckBox" name="pf_check_shadowing" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip" >
+             <string>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</string>
+            </property>
+            <property name="text" >
+             <string>Detect rule shadowing in policy</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="3" >
+           <widget class="QCheckBox" name="pf_ignore_empty_groups" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip" >
+             <string>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes 'any' after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</string>
+            </property>
+            <property name="text" >
+             <string>Ignore empty groups in rules</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" >
+           <widget class="QLabel" name="textLabel3" >
+            <property name="text" >
+             <string>Optimization:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1" >
+           <widget class="QComboBox" name="pf_optimization" />
+          </item>
+          <item row="4" column="2" >
+           <spacer name="spacer" >
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType" >
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0" >
+             <size>
+              <width>354</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+         <zorder>spacer</zorder>
+         <zorder>pf_optimization</zorder>
+         <zorder>pf_modulate_state</zorder>
+         <zorder>pf_ignore_empty_groups</zorder>
+         <zorder>pf_check_shadowing</zorder>
+         <zorder>textLabel3</zorder>
+         <zorder>pf_accept_new_tcp_with_no_syn</zorder>
+         <zorder>groupBox_2</zorder>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2" >
+        <widget class="QGroupBox" name="groupBox_2" >
+         <property name="title" >
+          <string/>
+         </property>
+         <property name="flat" >
+          <bool>true</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_7" >
+          <item row="0" column="0" >
+           <widget class="QCheckBox" name="mgmt_ssh" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text" >
+             <string>Always permit ssh access from
+the management workstation
+with this address:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" >
+           <widget class="QLineEdit" name="mgmt_addr" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>32767</width>
+              <height>22</height>
+             </size>
             </property>
            </widget>
           </item>
          </layout>
         </widget>
        </item>
-       <item row="5" column="0" >
-        <spacer>
+       <item row="6" column="1" >
+        <spacer name="verticalSpacer" >
          <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
+          <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
-           <width>40</width>
-           <height>30</height>
+           <width>20</width>
+           <height>11</height>
           </size>
          </property>
         </spacer>
-       </item>
-       <item row="4" column="0" colspan="4" >
-        <widget class="QLabel" name="label571" >
-         <property name="text" >
-          <string>There are two ways compiler can generate code for rules in the Global Policy: it can either create two pf rules to control both incoming and outgoing packets for each rule, or it can create only one pf rule for incoming packets and permit all outgoing ones.You get more control over the packets crossing the firewall in the first mode, but generated script is going to be smaller if you choose the second.</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0" colspan="4" >
-        <widget class="Line" name="hseparator34" >
-         <property name="frameShape" >
-          <enum>QFrame::HLine</enum>
-         </property>
-         <property name="frameShadow" >
-          <enum>QFrame::Sunken</enum>
-         </property>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="4" >
-        <widget class="Line" name="hseparator34_2" >
-         <property name="frameShape" >
-          <enum>QFrame::HLine</enum>
-         </property>
-         <property name="frameShadow" >
-          <enum>QFrame::Sunken</enum>
-         </property>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="12" column="1" >
-        <widget class="QLabel" name="textLabel3" >
-         <property name="text" >
-          <string>Optimization:</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="12" column="2" >
-        <widget class="QComboBox" name="pf_optimization" />
-       </item>
-       <item row="12" column="3" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>107</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item rowspan="6" row="7" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>40</width>
-           <height>150</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="13" column="0" colspan="4" >
-        <widget class="Line" name="line4" >
-         <property name="frameShape" >
-          <enum>QFrame::HLine</enum>
-         </property>
-         <property name="frameShadow" >
-          <enum>QFrame::Sunken</enum>
-         </property>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
        </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tab2" >
       <attribute name="title" >
-       <string>Scrub rule options</string>
+       <string>Scrub</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
+      <layout class="QGridLayout" name="gridLayout_5" >
+       <property name="spacing" >
+        <number>20</number>
        </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
-       </property>
-       <item row="0" column="3" >
+       <item row="0" column="1" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -412,7 +378,7 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>20</height>
@@ -420,69 +386,126 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="3" column="1" colspan="2" >
-        <widget class="QCheckBox" name="pf_scrub_use_minttl" >
-         <property name="text" >
-          <string>Enforce Minimum TTL:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1" colspan="2" >
-        <widget class="QCheckBox" name="pf_scrub_use_maxmss" >
-         <property name="text" >
-          <string>Enforce Maximum MSS:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="3" >
-        <widget class="QSpinBox" name="pf_scrub_maxmss" >
+       <item row="1" column="1" >
+        <widget class="QCheckBox" name="pf_scrub_no_df" >
          <property name="toolTip" >
-          <string>Enforces a maximum Maximum Segment Size (MSS) in TCP packet headers.</string>
+          <string>Clears the don't fragment bit from the IP packet header.</string>
          </property>
-         <property name="minimum" >
-          <number>536</number>
-         </property>
-         <property name="maximum" >
-          <number>10000</number>
-         </property>
-         <property name="value" >
-          <number>1460</number>
+         <property name="text" >
+          <string>Clear DF bit</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="3" >
-        <widget class="QSpinBox" name="pf_scrub_minttl" >
+       <item row="2" column="1" >
+        <widget class="QCheckBox" name="pf_scrub_random_id" >
          <property name="toolTip" >
-          <string>Enforces a minimum Time To Live (TTL) in IP packet headers.</string>
+          <string>Replaces the IP identification field of outgoing packets with random values to compensate for operating systems that use predictable values.</string>
          </property>
-         <property name="minimum" >
-          <number>0</number>
-         </property>
-         <property name="maximum" >
-          <number>100</number>
-         </property>
-         <property name="value" >
-          <number>1</number>
+         <property name="text" >
+          <string>Use random ID</string>
          </property>
         </widget>
        </item>
-       <item row="8" column="3" >
+       <item rowspan="4" row="3" column="0" >
         <spacer>
          <property name="orientation" >
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Horizontal</enum>
          </property>
          <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
+          <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
-           <width>20</width>
-           <height>110</height>
+           <width>40</width>
+           <height>100</height>
           </size>
          </property>
         </spacer>
        </item>
-       <item row="5" column="1" colspan="4" >
+       <item row="3" column="1" >
+        <layout class="QHBoxLayout" name="horizontalLayout_3" >
+         <item>
+          <widget class="QCheckBox" name="pf_scrub_use_minttl" >
+           <property name="text" >
+            <string>Enforce Minimum TTL:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="pf_scrub_minttl" >
+           <property name="toolTip" >
+            <string>Enforces a minimum Time To Live (TTL) in IP packet headers.</string>
+           </property>
+           <property name="minimum" >
+            <number>0</number>
+           </property>
+           <property name="maximum" >
+            <number>100</number>
+           </property>
+           <property name="value" >
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer" >
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0" >
+            <size>
+             <width>328</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item row="4" column="1" >
+        <layout class="QHBoxLayout" name="horizontalLayout_4" >
+         <item>
+          <widget class="QCheckBox" name="pf_scrub_use_maxmss" >
+           <property name="text" >
+            <string>Enforce Maximum MSS:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="pf_scrub_maxmss" >
+           <property name="toolTip" >
+            <string>Enforces a maximum Maximum Segment Size (MSS) in TCP packet headers.</string>
+           </property>
+           <property name="minimum" >
+            <number>536</number>
+           </property>
+           <property name="maximum" >
+            <number>10000</number>
+           </property>
+           <property name="value" >
+            <number>1460</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType" >
+            <enum>QSizePolicy::Expanding</enum>
+           </property>
+           <property name="sizeHint" stdset="0" >
+            <size>
+             <width>140</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item row="5" column="1" >
         <widget class="Line" name="hseparator39" >
          <property name="frameShape" >
           <enum>QFrame::HLine</enum>
@@ -495,82 +518,14 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1" colspan="4" >
+       <item row="6" column="1" >
         <widget class="QCheckBox" name="pf_do_scrub" >
          <property name="text" >
           <string>Reassemble fragments</string>
          </property>
         </widget>
        </item>
-       <item rowspan="4" row="3" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>40</width>
-           <height>100</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="7" column="0" colspan="2" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>60</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="1" colspan="4" >
-        <widget class="QCheckBox" name="pf_scrub_no_df" >
-         <property name="toolTip" >
-          <string>Clears the don't fragment bit from the IP packet header.</string>
-         </property>
-         <property name="text" >
-          <string>Clear DF bit</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" colspan="4" >
-        <widget class="QCheckBox" name="pf_scrub_random_id" >
-         <property name="toolTip" >
-          <string>Replaces the IP identification field of outgoing packets with random values to compensate for operating systems that use predictable values.</string>
-         </property>
-         <property name="text" >
-          <string>Use random ID</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="4" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>140</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="7" column="2" colspan="3" >
+       <item row="7" column="1" >
         <widget class="QGroupBox" name="buttonGroup20" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
@@ -582,16 +537,7 @@ with this address:</string>
           <string/>
          </property>
          <layout class="QVBoxLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item>
@@ -645,6 +591,22 @@ with this address:</string>
          </layout>
         </widget>
        </item>
+       <item row="8" column="1" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>110</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tab3" >
@@ -652,17 +614,11 @@ with this address:</string>
        <string>Limits</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>6</number>
        </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
+       <property name="spacing" >
+        <number>20</number>
        </property>
        <item row="1" column="2" >
         <widget class="QSpinBox" name="pf_limit_frags" >
@@ -768,7 +724,7 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>310</width>
            <height>20</height>
@@ -848,7 +804,7 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>40</width>
            <height>99</height>
@@ -864,7 +820,7 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>20</height>
@@ -880,7 +836,7 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>40</height>
@@ -895,17 +851,11 @@ with this address:</string>
        <string>Timeouts</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>6</number>
        </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
+       <property name="spacing" >
+        <number>20</number>
        </property>
        <item row="0" column="0" colspan="2" >
         <widget class="QLabel" name="textLabel2" >
@@ -926,16 +876,7 @@ with this address:</string>
           <string>TCP</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item row="0" column="0" >
@@ -1130,16 +1071,7 @@ with this address:</string>
           <string>UDP</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item row="0" column="0" >
@@ -1238,16 +1170,7 @@ with this address:</string>
           <string>ICMP</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item row="0" column="1" >
@@ -1317,16 +1240,7 @@ with this address:</string>
           <string>Other Protocols</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item row="0" column="0" >
@@ -1431,16 +1345,7 @@ with this address:</string>
           <string>Fragments</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item row="0" column="0" >
@@ -1512,7 +1417,7 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>20</height>
@@ -1526,16 +1431,7 @@ with this address:</string>
           <string>Adaptive scaling</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item row="0" column="0" colspan="5" >
@@ -1642,7 +1538,7 @@ with this address:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>40</width>
               <height>20</height>
@@ -1659,158 +1555,16 @@ with this address:</string>
       <attribute name="title" >
        <string>Installer</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
+      <layout class="QGridLayout" name="gridLayout_3" >
+       <property name="spacing" >
+        <number>20</number>
        </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
-       </property>
-       <item row="2" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>20</width>
-           <height>80</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="0" >
-        <widget class="QGroupBox" name="groupBox1_2" >
-         <property name="title" >
-          <string>External install script</string>
-         </property>
-         <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <item row="0" column="1" >
-           <widget class="QLineEdit" name="installScript" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0" >
-           <widget class="QLabel" name="textLabel5_2" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text" >
-             <string>Policy install script (using built-in installer if this field is blank):</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-            <property name="wordWrap" >
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" >
-           <widget class="QLabel" name="textLabel6_2" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text" >
-             <string>Command line options for the script:</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-            <property name="wordWrap" >
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1" >
-           <widget class="QLineEdit" name="installScriptArgs" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
        <item row="0" column="0" >
         <widget class="QGroupBox" name="groupBox2_2" >
          <property name="title" >
           <string>Built-in installer</string>
          </property>
-         <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <item row="2" column="0" >
-           <widget class="QLabel" name="textLabel1_3" >
-            <property name="text" >
-             <string>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-            </property>
-            <property name="wordWrap" >
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" >
-           <widget class="QLabel" name="textLabel1_2" >
-            <property name="text" >
-             <string>User name used to authenticate to the firewall (leave this empty if you use putty session):</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-            <property name="wordWrap" >
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
+         <layout class="QGridLayout" name="gridLayout" >
           <item row="0" column="0" >
            <widget class="QLabel" name="label556" >
             <property name="text" >
@@ -1834,6 +1588,19 @@ with this address:</string>
             </property>
            </widget>
           </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="textLabel1_2" >
+            <property name="text" >
+             <string>User name used to authenticate to the firewall (leave this empty if you use putty session):</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="1" >
            <widget class="QLineEdit" name="pf_user" >
             <property name="sizePolicy" >
@@ -1844,18 +1611,21 @@ with this address:</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1" >
-           <widget class="QLineEdit" name="altAddress" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="textLabel1_3" >
+            <property name="text" >
+             <string>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="3" column="1" >
-           <widget class="QLineEdit" name="activationCmd" >
+          <item row="2" column="1" >
+           <widget class="QLineEdit" name="altAddress" >
             <property name="sizePolicy" >
              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
               <horstretch>0</horstretch>
@@ -1874,6 +1644,16 @@ with this address:</string>
             </property>
             <property name="wordWrap" >
              <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1" >
+           <widget class="QLineEdit" name="activationCmd" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
            </widget>
           </item>
@@ -1897,12 +1677,151 @@ with this address:</string>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize" >
+               <size>
+                <width>300</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="5" column="0" colspan="2" >
+           <layout class="QHBoxLayout" name="_2" >
+            <item>
+             <widget class="QLabel" name="textLabel1_8" >
+              <property name="text" >
+               <string>Additional command line parameters for scp</string>
+              </property>
+              <property name="wordWrap" >
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="scpArgs" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize" >
+               <size>
+                <width>300</width>
+                <height>0</height>
+               </size>
+              </property>
              </widget>
             </item>
            </layout>
           </item>
          </layout>
         </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QGroupBox" name="groupBox1_2" >
+         <property name="title" >
+          <string>External install script</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2" >
+          <item row="0" column="0" >
+           <layout class="QHBoxLayout" name="horizontalLayout" >
+            <item>
+             <widget class="QLabel" name="textLabel5_2" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>Policy install script (using built-in installer if this field is blank):</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+              <property name="wordWrap" >
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="installScript" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize" >
+               <size>
+                <width>300</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0" >
+           <layout class="QHBoxLayout" name="horizontalLayout_2" >
+            <item>
+             <widget class="QLabel" name="textLabel6_2" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>Command line options for the script:</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+              <property name="wordWrap" >
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="installScriptArgs" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize" >
+               <size>
+                <width>300</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>80</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -1911,17 +1830,11 @@ with this address:</string>
        <string>Prolog/Epilog</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>6</number>
        </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
+       <property name="spacing" >
+        <number>20</number>
        </property>
        <item row="1" column="0" >
         <widget class="QGroupBox" name="frame147" >
@@ -1929,16 +1842,7 @@ with this address:</string>
           <string/>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item row="2" column="1" >
@@ -1956,7 +1860,7 @@ with this address:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>40</width>
               <height>20</height>
@@ -1996,16 +1900,7 @@ with this address:</string>
           <string/>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item row="3" column="3" >
@@ -2076,7 +1971,7 @@ with this address:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>40</width>
               <height>20</height>
@@ -2092,7 +1987,7 @@ with this address:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>410</width>
               <height>20</height>
@@ -2110,17 +2005,11 @@ with this address:</string>
        <string>Logging</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>6</number>
        </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
+       <property name="spacing" >
+        <number>20</number>
        </property>
        <item row="0" column="2" >
         <spacer>
@@ -2130,7 +2019,7 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>20</height>
@@ -2159,7 +2048,7 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>70</width>
            <height>20</height>
@@ -2175,7 +2064,7 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>130</width>
            <height>20</height>
@@ -2194,7 +2083,7 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>320</height>
@@ -2213,20 +2102,14 @@ with this address:</string>
      </widget>
      <widget class="QWidget" name="tab8" >
       <attribute name="title" >
-       <string>Script Options</string>
+       <string>Script</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>6</number>
        </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
+       <property name="spacing" >
+        <number>20</number>
        </property>
        <item rowspan="3" row="2" column="0" >
         <spacer>
@@ -2236,7 +2119,7 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>40</width>
            <height>70</height>
@@ -2286,7 +2169,7 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>230</height>
@@ -2302,7 +2185,7 @@ with this address:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>20</height>
@@ -2312,11 +2195,14 @@ with this address:</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab" >
+     <widget class="QWidget" name="tab9" >
       <attribute name="title" >
        <string>IPv6</string>
       </attribute>
       <layout class="QGridLayout" >
+       <property name="spacing" >
+        <number>20</number>
+       </property>
        <item row="1" column="0" >
         <widget class="QLabel" name="label" >
          <property name="text" >
@@ -2329,7 +2215,7 @@ with this address:</string>
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>40</width>
            <height>20</height>
@@ -2356,7 +2242,7 @@ with this address:</string>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>40</height>
@@ -2385,7 +2271,7 @@ with this address:</string>
        <property name="sizeType" >
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>331</width>
          <height>27</height>
@@ -2434,13 +2320,6 @@ with this address:</string>
   <tabstop>outputFileName</tabstop>
   <tabstop>pf_in_out_code</tabstop>
   <tabstop>pf_pass_all_out</tabstop>
-  <tabstop>pf_accept_new_tcp_with_no_syn</tabstop>
-  <tabstop>pf_modulate_state</tabstop>
-  <tabstop>pf_check_shadowing</tabstop>
-  <tabstop>pf_ignore_empty_groups</tabstop>
-  <tabstop>pf_optimization</tabstop>
-  <tabstop>mgmt_ssh</tabstop>
-  <tabstop>mgmt_addr</tabstop>
   <tabstop>buttonOk</tabstop>
   <tabstop>buttonCancel</tabstop>
   <tabstop>pf_scrub_no_df</tabstop>

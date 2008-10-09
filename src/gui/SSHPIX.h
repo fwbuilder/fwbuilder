@@ -38,12 +38,13 @@
 #include <list>
 #include <string>
 
-
+class QEventLoop;
 
 class SSHPIX : public SSHSession {
 
     Q_OBJECT
 
+    QEventLoop *local_event_loop;
     int         nLines;
     int         ncmd;
     QStringList allConfig;

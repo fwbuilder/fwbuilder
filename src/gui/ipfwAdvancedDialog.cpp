@@ -99,6 +99,7 @@ ipfwAdvancedDialog::ipfwAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->ipfw_user, fwopt, "admUser");
     data.registerOption( m_dialog->altAddress, fwopt, "altAddress");
     data.registerOption( m_dialog->sshArgs, fwopt, "sshArgs");
+    data.registerOption( m_dialog->scpArgs, fwopt, "scpArgs");
     data.registerOption( m_dialog->activationCmd, fwopt, "activationCmd");
 
     data.registerOption( m_dialog->ipfw_manage_virtual_addr, fwopt,

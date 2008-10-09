@@ -427,13 +427,7 @@ void ProjectPanel::reopenFirewall()
         m_panel->ruleSets->removeWidget(m_panel->ruleSets->widget(i));
 
     m_panel->rulesetname->setTextFormat(Qt::RichText);
-    QString name = "<B>";
-    FWObject * p = visibleRuleSet->getParent();
-    name += p->getName().c_str();
-    name += " / ";
-    name += visibleRuleSet->getName().c_str();
-    name += "</B>";
-    m_panel->rulesetname->setText(name );
+    updateFirewallName();
 
     last_modified = db()->getTimeLastModified();
     if (fwbdebug)
@@ -485,16 +479,16 @@ int  ProjectPanel::findFirewallInList(FWObject *f)
     return -1;
 }
 
-void ProjectPanel::updateFirewallName(FWObject *, const QString &)
+void ProjectPanel::updateFirewallName()
 {
     if (visibleRuleSet==NULL)
         return ;
 
     QString name = "<B>";
     FWObject * p = visibleRuleSet->getParent();
-    name += p->getName().c_str();
+    name += QString::fromUtf8(p->getName().c_str());
     name += " / ";
-    name += visibleRuleSet->getName().c_str();
+    name += QString::fromUtf8(visibleRuleSet->getName().c_str());
     name += "</B>";
     m_panel->rulesetname->setText(name );
 }

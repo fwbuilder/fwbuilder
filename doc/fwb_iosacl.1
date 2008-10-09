@@ -12,6 +12,7 @@ fwb_ipt \- Policy compiler for Cisco IOS ACL
 .B [-d wdir]
 .B [-4]
 .B [-6]
+.B [-i]
 .B -f data_file.xml
 object_name
 
@@ -61,6 +62,10 @@ Be verbose: compiler prints diagnostic messages when it works.
 
 .IP "-V"
 Print version number and quit.
+
+.IP "-i"
+When this option is present, the last argument on the command line is
+supposed to be firewall object ID rather than its name
 
 .SH URL
 Firewall Builder home page is located at the following URL:

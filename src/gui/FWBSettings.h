@@ -137,6 +137,9 @@ class FWBSettings : public QSettings {
     QString getSSHPath();
     void    setSSHPath(const QString &path);
 
+    QString getSCPPath();
+    void    setSCPPath(const QString &path);
+
     void    getPrinterOptions(QPrinter *printer,int &pageWidth,int &pageHeight);
     void    setPrinterOptions(QPrinter *printer,int pageWidth,int pageHeight);
 

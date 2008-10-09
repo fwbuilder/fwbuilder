@@ -400,13 +400,6 @@ void SSHSession::readFromStdout()
 {
     if (proc)
     {
-        if (fwbdebug)
-        {
-            QTime t = QTime::currentTime();
-            qDebug(QString("SSHSession::readFromStdout()  on entry: %1").
-                    arg(t.toString("hh:mm:ss.zzz")).toAscii().constData());
-        }
-
         QByteArray ba = proc->readAllStandardOutput();
         int  basize  = ba.size();
         if (basize==0) return;
@@ -420,13 +413,6 @@ void SSHSession::readFromStdout()
 
         // split on LF
         QStringList bufLines = buf.split("\n", QString::KeepEmptyParts);
-
-        if (fwbdebug)
-        {
-            QTime t = QTime::currentTime();
-            qDebug(QString("SSHSession::readFromStdout()  on check 1: %1").
-                    arg(t.toString("hh:mm:ss.zzz")).toAscii().constData());
-        }
 
 #if 0
         if (fwbdebug)
@@ -465,22 +451,7 @@ void SSHSession::readFromStdout()
 
         pendingLogLine += lastLine;
 
-        if (fwbdebug)
-        {
-            QTime t = QTime::currentTime();
-            qDebug(QString("SSHSession::readFromStdout()  on check 2: %1").
-                   arg(t.toString("hh:mm:ss.zzz")).toAscii().constData());
-        }
-
         stateMachine();
-
-        if (fwbdebug)
-        {
-            QTime t = QTime::currentTime();
-            qDebug(QString("SSHSession::readFromStdout()  finish: %1").
-                    arg(t.toString("hh:mm:ss.zzz")).toAscii().constData());
-        }
-
     }
 }
 
@@ -510,6 +481,7 @@ void SSHSession::readFromStderr()
 void SSHSession::sessionComplete(bool err)
 {
     if (fwbdebug) qDebug("SSHSession::sessionComplete  err=%d", err);
+    heartBeatTimer->disconnect(SIGNAL(timeout()));
 
     error = err;
     if (error)
@@ -521,8 +493,8 @@ void SSHSession::sessionComplete(bool err)
 void SSHSession::finished(int retcode)
 {
     if (fwbdebug) qDebug("SSHSession::processExited");
-
-    if (fwbdebug) qDebug("SSHSession::processExited   proc=%p retcode=%d",proc,retcode);
+    if (fwbdebug) qDebug("SSHSession::processExited   proc=%p retcode=%d",
+                         proc, retcode);
 
     // background process has exited now, we do not need proc object anymore
     delete proc;
@@ -530,7 +502,8 @@ void SSHSession::finished(int retcode)
 
     QString exitStatus = (retcode)?QObject::tr("ERROR"):QObject::tr("OK");
 
-    emit printStdout_sign(tr("SSH session terminated, exit status: %1").arg(retcode) + "\n");
+    emit printStdout_sign(tr("SSH session terminated, exit status: %1").arg(
+                              retcode) + "\n");
     sessionComplete( retcode!=0 );
 //    if (retcode) error=true;
 //    emit sessionFinished_sign();

@@ -93,7 +93,7 @@ static const char      *filename       = NULL;
 static const char      *wdir           = NULL;
 static const char      *fwobjectname   = NULL;
 static string           fw_file_name   = "";
-static string           pf_file_name   = "";
+static string           output_dir     = "";
 static int              dl             = 0;
 static int              drp            = -1;
 static int              drn            = -1;
@@ -101,6 +101,13 @@ static int              verbose        = 0;
 static bool             test_mode      = false;
 static bool             ipv4_run       = true;
 static bool             ipv6_run       = true;
+static bool             fw_by_id       = false;
+
+#ifdef _WIN32
+string fs_separator = "\\";
+#else
+string fs_separator = "/";
+#endif
 
 // Note that in the following maps ruleset name will be 
 // "__main__" for both main Policy and NAT rulesets.
@@ -144,27 +151,43 @@ void join::operator()(std::string &s)
     *result += s;
 }
 
+string getFileName(const string &file_path)
+{
+    string::size_type n = file_path.rfind(fs_separator);
+    string res = file_path;
+    res.erase(0, n+1);
+    return res;
+}
+
+string getDir(const string &file_path)
+{
+    string::size_type n = file_path.rfind(fs_separator);
+    string res = file_path;
+    if (n==string::npos) return "";
+    else res.erase(n);
+    return res;
+}
+
 string getConfFileName(const string &ruleset_name,
                        const string &fwobjectname,
                        const string &fw_file_name)
 {
     string conf_file_name;
-    if (ruleset_name == "__main__")
-        conf_file_name = string(fwobjectname) + ".conf";
-    else
+    string suffix = "-" + ruleset_name;
+    if (ruleset_name == "__main__") suffix = "";
+
+    if (fw_file_name.empty())
     {
-        if (fw_file_name.empty())
-        {
-            conf_file_name = string(fwobjectname) + "-" +
-                ruleset_name + ".conf";
-        } else
-        {
-            string::size_type n = fw_file_name.rfind(".");
-            conf_file_name = fw_file_name;
-            conf_file_name.erase(n);
-            conf_file_name.append("-" + ruleset_name + ".conf");
-        }
+        conf_file_name = string(fwobjectname) + suffix + ".conf";
+    } else
+    {
+        string just_file = getFileName(fw_file_name);
+        string::size_type n = just_file.rfind(".");
+        conf_file_name = just_file;
+        conf_file_name.erase(n);
+        conf_file_name.append(suffix + ".conf");
     }
+
     return conf_file_name;
 }
 
@@ -194,8 +217,6 @@ void findImportedRuleSets(Firewall *fw, list<FWObject*> &all_policies)
         all_policies.insert(all_policies.end(),
                             imported_policies.begin(), imported_policies.end());
 }
-
-
 
 
 void usage(const char *name)
@@ -440,10 +461,13 @@ int main(int argc, char * const *argv)
 
     int   opt;
 
-    while( (opt=getopt(argc,argv,"x:vVf:d:r:o:46")) != EOF )
+    while( (opt=getopt(argc,argv,"x:ivVf:d:r:o:46")) != EOF )
     {
         switch(opt)
         {
+        case 'i':
+            fw_by_id = true;
+            break;
         case '4':
             ipv4_run = true;
             ipv6_run = false;
@@ -500,18 +524,6 @@ int main(int argc, char * const *argv)
 
     fwobjectname = strdup( argv[optind++] );
 
-    if (fw_file_name.empty())
-    {
-        fw_file_name=string(fwobjectname)+".fw";
-        pf_file_name=string(fwobjectname)+".conf";
-    } else
-    {
-        string::size_type n = fw_file_name.rfind(".");
-        pf_file_name = fw_file_name;
-        pf_file_name.erase(n);
-        pf_file_name.append(".conf");
-    }
-
     if (wdir==0) 	wdir="./";
 
     if (
@@ -556,7 +568,26 @@ int main(int argc, char * const *argv)
         if (slib && slib->isReadOnly()) slib->setReadOnly(false);
 
 	/* Review firewall and OS options and generate commands */
-	Firewall*  fw=objdb->findFirewallByName(fwobjectname);
+	Firewall* fw;
+        if (fw_by_id)
+        {
+            // fwobjectname is actually object id
+            fw = Firewall::cast(
+                objdb->findInIndex(objdb->getIntId(fwobjectname)));
+            fwobjectname = fw->getName().c_str();
+        }
+        else
+            fw = objdb->findFirewallByName(fwobjectname);
+
+        if (fw_file_name.empty())
+        {
+            fw_file_name = string(fwobjectname)+".fw";
+            output_dir = "";
+        } else
+        {
+            output_dir = getDir(fw_file_name);
+            if (!output_dir.empty()) output_dir += "/";
+        }
 
         /* some initial sanity checks */
         list<FWObject*> all_interfaces=fw->getByType(Interface::TYPENAME);
@@ -858,7 +889,7 @@ int main(int argc, char * const *argv)
              fi!=generated_scripts.end(); fi++)
         {
             string ruleset_name = fi->first;
-            string file_name = conf_files[ruleset_name];
+            string file_name = output_dir + conf_files[ruleset_name];
             ostringstream *strm = fi->second;
 
             ofstream pf_file;
@@ -876,7 +907,6 @@ int main(int argc, char * const *argv)
                 printStaticOptions(pf_file, fw);
             }
             pf_file << table_factories[ruleset_name]->PrintTables();
-
             pf_file << strm->str();
             pf_file.close();
         }
@@ -925,11 +955,10 @@ int main(int argc, char * const *argv)
 #  Generated ") << timestr << " " << tzname[stm->tm_isdst] << _(" by ") 
                << user_name << "\n#\n";
 
-        fw_file << MANIFEST_MARKER << "* " << fw_file_name << endl;
-        //fw_file << MANIFEST_MARKER << "  " << pf_file_name << endl;
+        fw_file << MANIFEST_MARKER << "* " << getFileName(fw_file_name) << endl;
         for (map<string,string>::iterator i=conf_files.begin();
                                           i!=conf_files.end(); ++i)
-            fw_file << MANIFEST_MARKER << "  " << i->second << endl;
+            fw_file << MANIFEST_MARKER << "  " << getFileName(i->second) << endl;
 
         fw_file << "#" << endl;
         fw_file << "#" << endl;
@@ -965,7 +994,7 @@ int main(int argc, char * const *argv)
 	fw_file << endl;
 
         fw_file << "$PFCTL " << pfctl_dbg << pfctl_f_option
-                << "${FWDIR}/" << pf_file_name
+                << "${FWDIR}/" << getFileName(conf_files["__main__"])
                 << " || exit 1"
                 << endl;
 

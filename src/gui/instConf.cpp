@@ -46,22 +46,7 @@ using namespace libfwbuilder;
 
 instConf::instConf()
 {
-    quiet=false;
-    verbose=false;
-    debug=0;
-    incremental=false;
-    dry_run=false;
-    saveStandby=false;
-    save_diff=false;
-    diff_pgm="";
-    no_gui=false;
-    backup=false;
-    backup_file="";
-    wdir="./";
-    fwobj=NULL;
-    maddr="";
-    user="";
-    batchInstall=false;
+    clear();
 }
 
 QString instConf::getCmdFromResource(const QString &resource_name)
@@ -85,5 +70,27 @@ QString instConf::getCmdFromResource(const QString &resource_name)
         qDebug(QString("instConf::getCmdFromResource  cmd=%1").arg(cmd).toAscii().constData());
 
     return cmd;
+}
+
+void instConf::clear()
+{
+    quiet = false;
+    verbose = false;
+    debug = 0;
+    incremental = false;
+    dry_run = false;
+    saveStandby = false;
+    save_diff = false;
+    diff_pgm = "";
+    no_gui = false;
+    backup = false;
+    backup_file = "";
+    wdir = "./";
+    fwobj = NULL;
+    maddr = "";
+    user = "";
+    batchInstall = false;
+    sshArgs = "";
+    scpArgs = "";
 }
 

@@ -63,6 +63,7 @@ class instConf {
     QString   epwd;
     QString   maddr;
     QString   sshArgs;
+    QString   scpArgs;
     QString   fwdir;
     int       rollbackTime;
     QString   rollbackTimeUnit;
@@ -77,7 +78,7 @@ class instConf {
     instConf();
 
     QString getCmdFromResource(const QString &resource_name);
-   
+    void clear();
    
 };
 

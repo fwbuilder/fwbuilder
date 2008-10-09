@@ -106,6 +106,9 @@ HEADERS += ../../config.h \
 	PrefsDialog.h \
 	instConf.h \
 	instDialog.h \
+	FirewallInstaller.h \
+	FirewallInstallerCisco.h \
+	FirewallInstallerUnx.h \
 	newFirewallDialog.h \
 	newHostDialog.h \
 	ObjConflictResolutionDialog.h \
@@ -216,6 +219,12 @@ SOURCES += ProjectPanel.cpp \
 	PrefsDialog.cpp \
 	instConf.cpp \
 	instDialog.cpp \
+	instDialog_ui_ops.cpp \
+	instDialog_compile.cpp \
+	instDialog_installer.cpp \
+	FirewallInstaller.cpp \
+	FirewallInstallerCisco.cpp \
+	FirewallInstallerUnx.cpp \
 	newFirewallDialog.cpp \
 	newHostDialog.cpp \
 	ObjConflictResolutionDialog.cpp \

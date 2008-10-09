@@ -657,9 +657,9 @@ void FWWindow::updateRuleOptions()
     if (activeProject()) activeProject()->updateRuleOptions();
 }
 
-void FWWindow::updateFirewallName(FWObject *obj,const QString &str)
+void FWWindow::updateFirewallName()
 {
-    if (activeProject()) activeProject()->updateFirewallName(obj, str);
+    if (activeProject()) activeProject()->updateFirewallName();
 }
 
 void FWWindow::scheduleRuleSetRedraw()

@@ -82,6 +82,7 @@ const char* WindowGeometrySetpath= SETTINGS_PATH_PREFIX "/Layout/";
 const char* screenPositionSetpath= SETTINGS_PATH_PREFIX "/ScreenPos/";
 
 const char* SSHPath = SETTINGS_PATH_PREFIX "/SSH/SSHPath";
+const char* SCPPath = SETTINGS_PATH_PREFIX "/SSH/SCPPath";
 const char* showIconsInRules = SETTINGS_PATH_PREFIX "/UI/Icons/ShowIconsInRules";
 const char* showDirectionText = SETTINGS_PATH_PREFIX "/UI/Icons/ShowDirectionTextInRules";
 const char* iconsInRulesSize = SETTINGS_PATH_PREFIX "/UI/Icons/IconsInRulesSize";
@@ -191,6 +192,7 @@ void FWBSettings::init()
 
 #ifndef _WIN32
     if (getSSHPath().isEmpty())  setSSHPath("ssh");
+    if (getSCPPath().isEmpty())  setSCPPath("scp");
 #endif
 }
 
@@ -497,6 +499,16 @@ QString FWBSettings::getSSHPath()
 void FWBSettings::setSSHPath(const QString &path)
 {
     setValue(SSHPath,path);
+}
+
+QString FWBSettings::getSCPPath()
+{
+    return value(SCPPath).toString();
+}
+
+void FWBSettings::setSCPPath(const QString &path)
+{
+    setValue(SCPPath,path);
 }
 
 void FWBSettings::getPrinterOptions(QPrinter *printer,

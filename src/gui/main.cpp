@@ -340,9 +340,10 @@ int main( int argc, char *argv[] )
 {
 
 
-    bool        ssh_wrapper=false;
+    bool ssh_wrapper = false;
+    bool scp_wrapper = false;
     const char *arg[64];
-    int         i, j;
+    int i, j;
 
     filename = "";
     print_output_file_name = "";
@@ -376,14 +377,16 @@ int main( int argc, char *argv[] )
     {
         if (strncmp(argv[i], "-X", 2)==0) { ssh_wrapper=true; continue; }
         else
-            if (strncmp(argv[i], "-d", 2)==0) { fwbdebug++; continue; }
+            if (strncmp(argv[i], "-Y", 2)==0) { scp_wrapper=true; continue; }
             else
-                arg[j] = strdup(argv[i]);
+                if (strncmp(argv[i], "-d", 2)==0) { fwbdebug++; continue; }
+                else
+                    arg[j] = strdup(argv[i]);
         j++;
     }
     arg[j] = NULL;
 
-    if (ssh_wrapper)
+    if (ssh_wrapper || scp_wrapper)
     {
 
 /* need to create and initialize settings to be able to use ssh/scp
@@ -394,15 +397,23 @@ int main( int argc, char *argv[] )
 /* initialize preferences */
         st->init();
 
-        QString sshcmd=st->getSSHPath();
+        if (ssh_wrapper)
+        {
+            QString sshcmd = st->getSSHPath();
+            if (sshcmd.isEmpty()) sshcmd = "ssh";
+            arg[0] = strdup( sshcmd.toLatin1().constData() );
+        }
 
-        if (sshcmd.isEmpty()) sshcmd="ssh";
-
-        arg[0]=strdup( sshcmd.toLatin1().constData() );
+        if (scp_wrapper)
+        {
+            QString scpcmd = st->getSCPPath();
+            if (scpcmd.isEmpty()) scpcmd = "scp";
+            arg[0] = strdup( scpcmd.toLatin1().constData() );
+        }
 
         if (fwbdebug)
         {
-            qDebug("cmd: %s",arg[0]);
+            qDebug("cmd: %s", arg[0]);
             qDebug("Arguments:");
             for (const char **cptr = arg; *cptr!=NULL; cptr++)
             {
@@ -419,7 +430,7 @@ int main( int argc, char *argv[] )
         char  slave_name[64];
 //        char  *pgm;
 
-        pid=forkpty(&mfd,slave_name,NULL,NULL);
+        pid = forkpty(&mfd,slave_name,NULL,NULL);
         if (pid<0)
         {
             qDebug("Fork failed: %s", strerror(errno));
@@ -463,7 +474,7 @@ int main( int argc, char *argv[] )
             tv.tv_usec = 0;
 
             FD_ZERO(&rfds);
-            FD_SET(mfd,            &rfds);
+            FD_SET(mfd,  &rfds);
             if (!endOfStream)  FD_SET(STDIN_FILENO  , &rfds);
 
             retval = select( max(STDIN_FILENO,mfd)+1 , &rfds, NULL, NULL, &tv);

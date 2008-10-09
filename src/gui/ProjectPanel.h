@@ -249,7 +249,7 @@ public:
     void updateRuleOptions();
     void updateTreeViewItemOrder();
     int  findFirewallInList(libfwbuilder::FWObject *f);
-    void updateFirewallName(libfwbuilder::FWObject *obj,const QString &str);
+    void updateFirewallName();
     void scheduleRuleSetRedraw();
     void selectRules();
     void unselectRules();

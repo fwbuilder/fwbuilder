@@ -35,6 +35,7 @@
 #include "fakeWizard.h"
 
 #include "instOptionsDialog.h"
+#include "FirewallInstaller.h"
 
 #include <qstring.h>
 #include <qstringlist.h>
@@ -45,8 +46,9 @@
 #include <map>
 #include <list>
 
+class FirewallInstaller;
+
 class QEventLoop;
-class SSHSession;
 class QTextEdit;
 class QListViewItem;
 class QCheckListItem;
@@ -60,14 +62,13 @@ namespace libfwbuilder
     class Firewall;
 }
 
-enum BatchOperation {BATCH_INSTALL,BATCH_COMPILE} ;
+enum BatchOperation {BATCH_INSTALL, BATCH_COMPILE} ;
+enum Page1Operation {COMPILE, INSTALL};
 
-typedef std::map<libfwbuilder::Firewall *,QTreeWidgetItem *> t_listMap;
 typedef std::map<libfwbuilder::Firewall *,QTableWidgetItem *> t_tableMap;
 typedef std::list<libfwbuilder::Firewall *> t_fwList;
 typedef std::pair<QString,QString> t_procMess; // first - compilation result, second - installation result;
 typedef std::set<libfwbuilder::Firewall*> t_fwSet;
-
 
 class instDialog : public QDialog, public FakeWizard
 {
@@ -75,64 +76,37 @@ class instDialog : public QDialog, public FakeWizard
     Q_OBJECT
 
     Ui::instDialog_q *m_dialog;
-    bool        ready;
-    bool        activationCommandDone;
-    instConf    cnf;
-
-    QString     ssh;
-    
-    QString     confScript;
-    QStringList confFiles;
-    
-    QString     fwb_prompt;
-    
-    QString     newKeyMsg;
-    
-    int         phase;
-
-    QString replaceMacrosInCommand(const QString &cmd);
-    QString getActivationCmd();
-    //libfwbuilder::Firewall * firewall;
-    t_fwSet reqFirewalls;
-
-
-    // session is used when e run built-in installer
-    SSHSession  *session;
-
+    instConf cnf;
+    Page1Operation page_1_op;
+    FirewallInstaller *installer;
+        
     // proc is used to launch external oprocess, such as compiler or
     // user-defined installer script
     QProcess       proc;
 
-    std::map<libfwbuilder::Firewall *, t_procMess>    processedFirewalls;
-
-    t_fwList      firewalls;
-    t_fwList      opList;
-
-    t_fwList::iterator   opListIterator;
-
-    t_listMap            opListMapping;
-    t_tableMap           compileMapping;
-    t_tableMap           installMapping;
+    QString fwb_prompt;
     
-    QString              path; //path of the program to execute
-    QStringList          args; //arguments for that program
+    t_fwSet reqFirewalls;
+
+    t_fwList firewalls;
+    
+    std::list<libfwbuilder::Firewall*> compile_fw_list;
+    std::list<libfwbuilder::Firewall*>::size_type compile_list_initial_size;
+    std::list<libfwbuilder::Firewall*> install_fw_list;
+    std::list<libfwbuilder::Firewall*>::size_type install_list_initial_size;
+    
+    std::map<int,QTreeWidgetItem*> opListMapping;
+    
+    t_tableMap compileMapping;
+    t_tableMap installMapping;
+    
+    QString path; //path of the program to execute
+    QStringList args; //arguments for that program
         
-    QTextEdit           *currentLog;
-    QPushButton             *currentSaveButton;
-    QPushButton             *currentStopButton;
-    QProgressBar        *currentProgressBar;
-    QProgressBar        *currentFirewallsBar;
-    QLabel              *currentLabel;
-    QLabel              *currentFWLabel;
-    QString              currentSearchString;
-    bool                 creatingTable;
+    bool creatingTable;
     
-    BatchOperation       operation;
-    instOptionsDialog   *dlg;
-    QString              pendingLogLine;
+    BatchOperation operation;
 
-    int progress;
-    int totalRules;
     int processedRules;
     int lastPage;
     bool stopProcessFlag;
@@ -141,62 +115,96 @@ class instDialog : public QDialog, public FakeWizard
     bool customScriptFlag;
     bool showSelectedFlag;
 
+    QTextEdit *currentLog;
+    QPushButton *currentSaveButton;
+    QPushButton *currentStopButton;
+    QProgressBar *currentProgressBar;
+    QProgressBar *currentFirewallsBar;
+    QLabel *currentLabel;
+    QLabel *currentFWLabel;
+    QString currentSearchString;
+
+    
     void fillCompileSelectList();
     void selectAll(t_tableMap &mapping);
     void deselectAll(t_tableMap &mappin);
+
     void fillCompileOpList();
-    void fillLastList();
-    bool doInstallPage(libfwbuilder::Firewall*);
-    void resetInstallSSHSession();    
-    bool testFirewall(libfwbuilder::Firewall*);
-    void finishInstall(bool success=true);
+    void fillCompileUIList();
     void fillInstallOpList();
-    void installNext();
-    void initInstall();
-    void analyseInstallQueue(bool &fPix, bool &fCustInst);
+    void fillInstallUIList();
+
+    bool testFirewall(libfwbuilder::Firewall*);
+    
+    //void analyseInstallQueue(bool &fPix, bool &fCustInst);
     libfwbuilder::Firewall *findFirewallbyListItem(QTreeWidgetItem* item);
     libfwbuilder::Firewall *findFirewallbyTableItem(QTableWidgetItem *item);
     
-    
+    void setSuccessState(QTreeWidgetItem *item);
+    void setFailureState(QTreeWidgetItem *item);
+    void setErrorState(QTreeWidgetItem *item);
+    void setInProcessState(QTreeWidgetItem *item);
+
  public:
+   
     instDialog(QWidget* p, BatchOperation op, t_fwSet reqFirewalls_);
     virtual ~instDialog();
     
-    void setReady(bool f) { ready=f; }
-
     void summary();
-
+    void opSuccess(libfwbuilder::Firewall *fw);
+    void opError(libfwbuilder::Firewall *fw);
+    void opCancelled(libfwbuilder::Firewall *fw);
 
     QWidget* page(int n) { return m_dialog->stackedWidget->widget(n); }
     
-    void initiateCopy(const QString &file);
-    void runSSH(SSHSession *s);
     void displayCommand(const QStringList &args);
-    bool runCompile(libfwbuilder::Firewall *fw);
-    bool runInstall(libfwbuilder::Firewall *fw);
+    bool runCompiler(libfwbuilder::Firewall *fw);
+    bool runInstaller(libfwbuilder::Firewall *fw);
+
     bool prepareArgForCompiler(libfwbuilder::Firewall *fw);
-    bool isTableHasChecked();
+    bool tableHasChecked();
     void clearReqFirewalls();
     void addReqFirewall(libfwbuilder::Firewall *f);
-    void interpretLogLine(const QString &buf);
+    QString replaceMacrosInCommand(const QString &cmd);
+    QString getActivationCmd();
+    
+    void enableStopButton();
+    void disableStopButton();
+
     
 protected:
-
+    void executeCommand(QStringList &args);
+    
     virtual void showEvent( QShowEvent *ev);
     virtual void hideEvent( QHideEvent *ev);
-    virtual void prepareInstallerOptions();
+
+    bool getInstOptions(libfwbuilder::Firewall *fw);
+    bool getBatchInstOptions();
     
-    virtual void prepareInstConf(libfwbuilder::Firewall *fw);
-    virtual void storeInstallerOptions();
-    virtual void findFirewalls();
+    void prepareInstConf(libfwbuilder::Firewall *fw);
 
-    QString getFullPath(instConf &cnf, const QString &file );
+    void blockInstallForFirewall(libfwbuilder::Firewall *fw);
 
- protected slots:
-    void processExited(int code);
+    void readInstallerOptionsFromSettings();
+    void readInstallerOptionsFromFirewallObject(libfwbuilder::Firewall *fw);
+    void readInstallerOptionsFromDialog(libfwbuilder::Firewall *fw,
+                                                instOptionsDialog *dlg);
+    void completeInstallerOptions();
+
+    void storeInstallerOptions();
+    void findFirewalls();
+
+    bool isCiscoFamily();
+
+    void interpretLogLine(const QString &buf);
+    
+public slots:
+
+    void compilerFinished(int ret_code, QProcess::ExitStatus);
+    void installerFinished(int ret_code, QProcess::ExitStatus);
     void installerSuccess();
     void installerError();
-    void installSelected();
+
     void showPage(const int page);
      
     void finishClicked();
@@ -207,29 +215,25 @@ protected:
     void addToLog(const QString &buf); 
     void updateProgressBar(int n,bool setsize);
 
-    virtual void saveLog();
-    virtual void togleDetailMC();
+    void saveLog();
+    void togleDetailMC();
 
-    virtual void readFromStdout();
+    void readFromStdout();
     //virtual void readFromStderr();
-    virtual void selectAllFirewalls();
-    virtual void deselectAllFirewalls();
+    void selectAllFirewalls();
+    void deselectAllFirewalls();
     
-    virtual void nextClicked();
-    virtual void backClicked();
+    void nextClicked();
+    void backClicked();
 
-    void stopSessionAndDisconnectSignals();
-    void continueRun();
-    void restartSession();
-    void sessionCleanupOnError();
+    void mainLoopCompile();
+    void mainLoopInstall();
     
-    void compileSelected();
     void stopCompile();
     void stopInstall();
     void findFirewallInCompileLog(QTreeWidgetItem*);
     void showSelected();
     void tableValueChanged(int row, int col);
-    
     
 };
 

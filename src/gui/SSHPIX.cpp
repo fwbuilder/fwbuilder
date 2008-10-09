@@ -83,6 +83,8 @@ SSHPIX::SSHPIX(QWidget *_par,
     errorsEnabledState.push_back("invalid");
     errorsEnabledState.push_back("cannot find");
     errorsEnabledState.push_back("An object-group with the same id but different type");
+
+    local_event_loop = new QEventLoop();
 }
 
 void SSHPIX::loadPreConfigCommands(const QStringList &cl)
@@ -101,14 +103,15 @@ SSHPIX::~SSHPIX()
 
 QString SSHPIX::cmd(QProcess *proc,const QString &cmd)
 {
+    if (fwbdebug) qDebug("Command '%s'", cmd.toAscii().constData());
     stdoutBuffer="";
 
     proc->write( (cmd + "\n").toAscii() );
-//    proc->write( "\n" );
+    state = EXECUTING_COMMAND;
+    local_event_loop->exec();
+    //qApp->processEvents();
 
-    state=EXECUTING_COMMAND;
-    qApp->processEvents();
-//    QApplication::eventLoop()->enterLoop();
+    if (fwbdebug) qDebug("Command '%s' completed", cmd.toAscii().constData());
 
     return stdoutBuffer;
 }
@@ -326,11 +329,13 @@ void SSHPIX::stateMachine()
         break;
 
     case EXECUTING_COMMAND:
-        if ( cmpPrompt(stdoutBuffer,QRegExp(enable_prompt)) )
+        if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
         {
-            //QApplication::eventLoop()->exitLoop();
-            QCoreApplication::exit();
-            state=COMMAND_DONE;
+            //QCoreApplication::exit();
+            state = COMMAND_DONE;
+            if (fwbdebug) qDebug("Switching to COMMAND_DONE state; state=%d",
+                                 state);
+            if (local_event_loop->isRunning()) local_event_loop->exit();
         }
         break;
 
@@ -447,7 +452,7 @@ void SSHPIX::stateMachine()
 //                state=GET_ACLS;
 //                goto entry;
 
-                state=EXIT_FROM_CONFIG;
+                state = EXIT_FROM_CONFIG;
                 emit printStdout_sign( tr("End") + "\n" );
                 proc->write( "exit\n" );
             }
@@ -527,15 +532,25 @@ void SSHPIX::PIXbackup()
 {
     if (fwbdebug) qDebug("SSHPIX::PIXbackup  ");
 
-    bool sv=verbose;
-    verbose=false;
+    bool sv = verbose;
+    verbose = false;
 
-    emit printStdout_sign(tr("Making backup copy of the firewall configuration"));
+    emit printStdout_sign(
+        tr("Making backup copy of the firewall configuration"));
     emit printStdout_sign( "\n");
 
-    QString cfg=cmd(proc,"show run");
+    cmd(proc, "terminal pager 0");
+    if (state==FINISH) return;
 
-    verbose=sv;
+    if (fwbdebug) qDebug("terminal pager 0  done");
+
+    QString cfg = cmd(proc, "show run");
+
+    if (fwbdebug) qDebug("show run  done");
+
+    verbose = sv;
+
+    if (fwbdebug) qDebug("state=%d", state);
 
 /* if state changed to FINISH, there was an error and ssh terminated */
     if (state==FINISH) return;
@@ -545,8 +560,8 @@ void SSHPIX::PIXbackup()
         ofs << cfg.toAscii().constData();
         ofs.close();
 
-        backup=false;  // backup is done
-        state=ENABLE;
+        backup = false;  // backup is done
+        state = ENABLE;
     }
 
     proc->write( "\n" );
@@ -561,7 +576,7 @@ void SSHPIX::getACLs()
     verbose=false;
     quiet=true;
 
-    QString     sa=cmd(proc,"show access-list");
+    QString sa = cmd(proc,"show access-list");
 
     QStringList showAcls;
     showAcls=sa.split("\n");
@@ -605,7 +620,9 @@ void SSHPIX::clearACLs()
         currentAcls.pop_front();
         if (newAcls.indexOf(ca)==-1)//newAcls.end())
         {
-            if (fwbdebug) qDebug("clear access-list %s",ca.toAscii().constData());
+            if (fwbdebug)
+                qDebug("clear access-list %s",ca.toAscii().constData());
+
             cmd(proc,QString("clear access-list %1").arg(ca));
 
 /* if state changed to FINISH, there was an error and ssh terminated */
@@ -626,7 +643,7 @@ void SSHPIX::getObjectGroups()
     verbose=false;
     quiet=true;
 
-    QString sog=cmd(proc,"show object-group");
+    QString sog = cmd(proc,"show object-group");
 
     QStringList showOG;
     showOG=sog.split("\n");
@@ -670,15 +687,17 @@ void SSHPIX::clearObjectGroups()
         currentObjectGroups.pop_front();
         if (newObjectGroups.indexOf(ca)==-1)//==newObjectGroups.end())
         {
-            if (fwbdebug) qDebug("clear object-group %s",ca.toAscii().constData());
-            cmd(proc,QString("clear object-group %1").arg(ca));
+            if (fwbdebug)
+                qDebug("clear object-group %s",ca.toAscii().constData());
+
+            cmd(proc, QString("clear object-group %1").arg(ca));
 
 /* if state changed to FINISH, there was an error and ssh terminated */
             if (state==FINISH) return;
         }
     }
 
-    state=EXIT_FROM_CONFIG;
+    state = EXIT_FROM_CONFIG;
     emit printStdout_sign( tr("*** End ") + "\n" );
     proc->write( "exit\n" );
 }
@@ -693,17 +712,17 @@ void SSHPIX::PIXincrementalInstall()
     emit printStdout_sign(tr("Reading current firewall configuration"));
     emit printStdout_sign( "\n");
 
-    current_config =cmd(proc,"show run | grep ^telnet|^ssh|^icmp");
+    current_config = cmd(proc, "show run | grep ^telnet|^ssh|^icmp");
     if (state==FINISH) return;
-    current_config+=cmd(proc,"show object-group");
+    current_config += cmd(proc, "show object-group");
     if (state==FINISH) return;
-    current_config+=cmd(proc,"show access-list");
+    current_config += cmd(proc, "show access-list");
     if (state==FINISH) return;
-    current_config+=cmd(proc,"show global");
+    current_config += cmd(proc, "show global");
     if (state==FINISH) return;
-    current_config+=cmd(proc,"show nat");
+    current_config += cmd(proc, "show nat");
     if (state==FINISH) return;
-    current_config+=cmd(proc,"show static");
+    current_config += cmd(proc, "show static");
     if (state==FINISH) return;
 
     verbose=sv;

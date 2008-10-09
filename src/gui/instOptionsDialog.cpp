@@ -55,20 +55,9 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
     m_dialog->setupUi(this);
     cnf = _cnf;
 
-    QString platform = cnf->fwobj->getStr("platform").c_str();
-
     m_dialog->pwd->setEchoMode( QLineEdit::Password );
     m_dialog->epwd->setEchoMode( QLineEdit::Password );
 
-    QString fwname = QString::fromUtf8(cnf->fwobj->getName().c_str());
-    if (!cnf->batchInstall)
-        m_dialog->dialogTitleLine->setText(
-            QString("<p align=\"center\"><b><font size=\"+2\">")+
-            tr("Install options for firewall '%1'").arg(fwname)+
-            QString("</font></b></p>")
-        );
-
-    m_dialog->uname->setFocus();
     m_dialog->uname->setText( cnf->user );
     m_dialog->incr->setChecked( cnf->incremental );
     m_dialog->test->setChecked( cnf->dry_run );
@@ -86,71 +75,67 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
     m_dialog->rollbackTime->setValue( cnf->rollbackTime );
     m_dialog->cancelRollbackIfSuccess->setChecked( cnf->cancelRollbackIfSuccess );
 
-    if (platform=="pix" || platform=="fwsm" || platform=="iosacl")
+    // If we have user name, bring focus to the password input field
+    // if we do not have user name, focus goes to the user name field
+    if (cnf->user.isEmpty()) m_dialog->uname->setFocus();
+    else m_dialog->pwd->setFocus();
+
+
+    if (cnf->batchInstall)
     {
         m_dialog->copyFWB->hide();
-
-        // Hide elements of installOptions dialog for which we do not have commands
-        QString cmd = cnf->getCmdFromResource("schedule_rollback");
-        // option "schedule_rollback" is currently used to control rollback
-        // behavior only for pix, fwsm and ios
-        if (cmd.isEmpty())
-        {
-            m_dialog->rollback->hide();
-            m_dialog->rollbackTime->hide();
-            m_dialog->rollbackTimeUnit->hide();
-            m_dialog->cancelRollbackIfSuccess->hide();
-        }
-
-        if (platform=="iosacl")
-        {
-            m_dialog->PIXgroupBox->hide();
-/*
-            incr->hide();
-            test->hide();
-            saveStandby->hide();
-            backupConfigFile->hide();
-            backupConfigFileLbl->hide();
-*/
-        }
-
-        if (cnf->batchInstall)
-        {
-            m_dialog->backupConfigFile->hide();
-            m_dialog->backupConfigFileLbl->hide();
-        }
-
+        m_dialog->rollback->hide();
+        m_dialog->rollbackTime->hide();
+        m_dialog->rollbackTimeUnit->hide();
+        m_dialog->cancelRollbackIfSuccess->hide();
+        m_dialog->PIXgroupBox->hide();
+        m_dialog->backupConfigFile->hide();
+        m_dialog->backupConfigFileLbl->hide();
     } else
     {
-        m_dialog->epwd->hide();
-        m_dialog->PIXgroupBox->hide();
-        // cancelling rollback at the end of activation is currently
-        // only supported on pix,fwsm and ios
-        m_dialog->cancelRollbackIfSuccess->hide();
+        QString fwname = QString::fromUtf8(cnf->fwobj->getName().c_str());
+        m_dialog->dialogTitleLine->setText(
+            QString("<p align=\"center\"><b><font size=\"+2\">")+
+            tr("Install options for firewall '%1'").arg(fwname)+
+            QString("</font></b></p>")
+        );
+
+        QString platform = cnf->fwobj->getStr("platform").c_str();
+
+        if (platform=="pix" || platform=="fwsm" || platform=="iosacl")
+        {
+            m_dialog->copyFWB->hide();
+            // Hide elements of installOptions dialog for which we do not
+            // have commands
+            QString cmd = cnf->getCmdFromResource("schedule_rollback");
+            // option "schedule_rollback" is currently used to control rollback
+            // behavior only for pix, fwsm and ios
+            if (cmd.isEmpty())
+            {
+                m_dialog->rollback->hide();
+                m_dialog->rollbackTime->hide();
+                m_dialog->rollbackTimeUnit->hide();
+                m_dialog->cancelRollbackIfSuccess->hide();
+            }
+
+            if (platform=="iosacl") m_dialog->PIXgroupBox->hide();
+
+        } else
+        {
+            m_dialog->epwd->hide();
+            m_dialog->PIXgroupBox->hide();
+            // cancelling rollback at the end of activation is currently
+            // only supported on pix,fwsm and ios
+            m_dialog->cancelRollbackIfSuccess->hide();
+        }
     }
-
-
 
 /* hide anyway, diff does not work for pix 6.3(3) */
-    //dlg->hideOption( dlg->saveDiff );
     m_dialog->saveDiff->hide();
 
-    //progressBar->hide();
-    //dlg->hideOption( dlg->stripComments );
     m_dialog->stripComments->hide();
-    //dlg->compressScript->hide();
 
-    //if (platform=="pix" || platform=="fwsm")
-    //{
-    //    progressBar->show();
-    //    stripComments->show();
-    //}
-
-    if (cnf->fwobj->getStr("host_OS")!="linksys")
-    {
-        m_dialog->compressScript->hide();
-        //dlg->hideOption( dlg->compressScript );
-    }
+    m_dialog->compressScript->hide();
 
     m_dialog->PIXgroupBox->adjustSize();
     m_dialog->generalOptionsBox->adjustSize();

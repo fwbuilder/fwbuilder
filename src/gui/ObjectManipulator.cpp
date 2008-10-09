@@ -527,12 +527,12 @@ void ObjectManipulator::updateObjName(FWObject *obj,
     /* need to update name of the firewall in the drop-down list */
     if (Firewall::isA(obj))
     {
-        m_project->updateFirewallName(obj,oldName);
+        m_project->updateFirewallName();
     }
 
     if (RuleSet::cast(obj)!=NULL)
     {
-        m_project->updateFirewallName(obj,oldName);
+        m_project->updateFirewallName();
     }
 }
 

@@ -117,6 +117,7 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
 //    dontSaveStdLib->setChecked( st->getDontSaveStdLib() );
 
     m_dialog->sshPath->setText( st->getSSHPath() );
+    m_dialog->scpPath->setText( st->getSCPPath() );
     
     for (list<libData>::iterator i=mw->getAddOnLibs()->begin(); i!=mw->getAddOnLibs()->end(); ++i)
     {
@@ -318,6 +319,15 @@ void PrefsDialog::findSSH()
     if (!fp.isEmpty()) m_dialog->sshPath->setText(fp);
 }
 
+void PrefsDialog::findSCP()
+{
+    QString fp = QFileDialog::getOpenFileName(
+        this,
+        tr("Find SCP utility") );
+
+    if (!fp.isEmpty()) m_dialog->scpPath->setText(fp);
+}
+
 void PrefsDialog::libClick(QTreeWidgetItem* itm, int col)
 {
     if (itm && col==1)
@@ -473,6 +483,7 @@ void PrefsDialog::accept()
     st->setCheckUpdatesProxy(m_dialog->checkUpdatesProxy->text());
 
     st->setSSHPath( m_dialog->sshPath->text() );
+    st->setSCPPath( m_dialog->scpPath->text() );
 
     if (!wd.isEmpty())
     {

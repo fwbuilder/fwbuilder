@@ -88,6 +88,7 @@ static int              drn            = -1;
 static int              verbose        = 0;
 static int              test_mode      = 0;
 static int              only_print_inspection_code = 0;
+static bool             fw_by_id       = false;
 
 FWObjectDatabase       *objdb = NULL;
 
@@ -146,11 +147,14 @@ int main(int argc, char * const * argv)
 
     int   opt;
 
-    while( (opt=getopt(argc,argv,"x:vVf:d:r:tLo:i")) != EOF )
+    while( (opt=getopt(argc,argv,"x:ivVf:d:r:tLo:I")) != EOF )
     {
         switch(opt)
         {
         case 'i':
+            fw_by_id = true;
+            break;
+        case 'I':
             only_print_inspection_code++;
             break;
         case 'd':
@@ -209,11 +213,6 @@ int main(int argc, char * const * argv)
 
     fwobjectname = strdup( argv[optind++] );
 
-    if (ofname.empty())
-    {
-        ofname=string(fwobjectname)+".fw";
-    }
-
     if (filename==NULL || fwobjectname==NULL)
     {
         usage(argv[0]);
@@ -269,16 +268,23 @@ int main(int argc, char * const * argv)
 
         if (verbose) cout << " done\n";
 
-/*  why do I do this ? 
+        /*
+         *  some general sanity checks first
+         */
+	Firewall* fw;
+        if (fw_by_id)
+        {
+            // fwobjectname is actually object id
+            fw = Firewall::cast(
+                objdb->findInIndex(objdb->getIntId(fwobjectname)));
+            fwobjectname = fw->getName().c_str();
+        }
+        else
+            fw = objdb->findFirewallByName(fwobjectname);
 
-        FWObject *slib = objdb->findInIndex("syslib000");
-        if ( slib->isReadOnly()) slib->setReadOnly(false);
-*/
+        if (ofname.empty())
+            ofname=string(fwobjectname)+".fw";
 
-/*
- *  some general sanity checks first
- */
-        Firewall*  fw=objdb->findFirewallByName(fwobjectname);
         FWOptions* options=fw->getOptionsObject();
 
         bool pix_acl_basic=options->getBool("pix_acl_basic");

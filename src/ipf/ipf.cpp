@@ -91,13 +91,38 @@ static const char      *fwobjectname   = NULL;
 static string           fw_file_name   = "";
 static string           ipf_file_name  = "";
 static string           nat_file_name  = "";
+static string           output_dir     = "";
 static int              dl             = 0;
 static int              drp            = -1;
 static int              drn            = -1;
 static int              verbose        = 0;
 static bool             test_mode      = false;
+static bool             fw_by_id       = false;
 
 FWObjectDatabase       *objdb = NULL;
+
+#ifdef _WIN32
+string fs_separator = "\\";
+#else
+string fs_separator = "/";
+#endif
+
+string getFileName(const string &file_path)
+{
+    string::size_type n = file_path.rfind(fs_separator);
+    string res = file_path;
+    res.erase(0, n+1);
+    return res;
+}
+
+string getDir(const string &file_path)
+{
+    string::size_type n = file_path.rfind(fs_separator);
+    string res = file_path;
+    if (n==string::npos) return "";
+    else res.erase(n);
+    return res;
+}
 
 class UpgradePredicate: public XMLTools::UpgradePredicate
 {
@@ -159,10 +184,13 @@ int main(int argc, char * const *argv)
 
     int   opt;
 
-    while( (opt=getopt(argc,argv,"x:vVf:d:r:o:")) != EOF )
+    while( (opt=getopt(argc,argv,"x:ivVf:d:r:o:")) != EOF )
     {
         switch(opt)
         {
+        case 'i':
+            fw_by_id = true;
+            break;
         case 'd':
             wdir = strdup(optarg);
             break;
@@ -211,22 +239,6 @@ int main(int argc, char * const *argv)
 
     fwobjectname = strdup( argv[optind++] );
 
-    if (fw_file_name.empty())
-    {
-        fw_file_name=string(fwobjectname)+".fw";
-        ipf_file_name=string(fwobjectname)+"-ipf.conf";
-        nat_file_name=string(fwobjectname)+"-nat.conf";
-    } else
-    {
-        string::size_type n = fw_file_name.rfind(".");
-        ipf_file_name = fw_file_name;
-        ipf_file_name.erase(n);
-        ipf_file_name.append("-ipf.conf");
-        nat_file_name = fw_file_name;
-        nat_file_name.erase(n);
-        nat_file_name.append("-nat.conf");
-    }
-
     if (wdir==0) 	wdir="./";
 
     if (
@@ -270,8 +282,36 @@ int main(int argc, char * const *argv)
         if (slib && slib->isReadOnly()) slib->setReadOnly(false);
 
 	/* Review firewall and OS options and generate commands */
-	Firewall*  fw=objdb->findFirewallByName(fwobjectname);
- 
+	Firewall* fw;
+        if (fw_by_id)
+        {
+            // fwobjectname is actually object id
+            fw = Firewall::cast(
+                objdb->findInIndex(objdb->getIntId(fwobjectname)));
+            fwobjectname = fw->getName().c_str();
+        }
+        else
+            fw = objdb->findFirewallByName(fwobjectname);
+
+        if (fw_file_name.empty())
+        {
+            fw_file_name = string(fwobjectname)+".fw";
+            ipf_file_name = string(fwobjectname)+"-ipf.conf";
+            nat_file_name = string(fwobjectname)+"-nat.conf";
+            output_dir = "";
+        } else
+        {
+            string::size_type n = fw_file_name.rfind(".");
+            ipf_file_name = getFileName(fw_file_name);
+            ipf_file_name.erase(n);
+            ipf_file_name.append("-ipf.conf");
+            nat_file_name = getFileName(fw_file_name);
+            nat_file_name.erase(n);
+            nat_file_name.append("-nat.conf");
+            output_dir = getDir(fw_file_name);
+            if (!output_dir.empty()) output_dir += "/";
+        }
+
 	if (verbose) cout << _(" *** Data checks ...");
 
         /* some initial sanity checks */
@@ -443,11 +483,11 @@ int main(int argc, char * const *argv)
 #  Generated ") << timestr << " " << tzname[stm->tm_isdst] << _(" by ") 
                << user_name << "\n#\n#\n";
 
-        fw_file << MANIFEST_MARKER << "* " << fw_file_name << endl;
+        fw_file << MANIFEST_MARKER << "* " << getFileName(fw_file_name) << endl;
       	if (have_ipf) 
-            fw_file << MANIFEST_MARKER << "  " << ipf_file_name << endl;
+            fw_file << MANIFEST_MARKER << "  " << getFileName(ipf_file_name) << endl;
       	if (have_nat) 
-            fw_file << MANIFEST_MARKER << "  " << nat_file_name << endl;
+            fw_file << MANIFEST_MARKER << "  " << getFileName(nat_file_name) << endl;
         fw_file << "#" << endl;
         fw_file << "#" << endl;
 
@@ -501,16 +541,18 @@ int main(int argc, char * const *argv)
         fw_file << "# End of prolog script" << endl;
         fw_file << "#" << endl;
 
-        unlink(ipf_file_name.c_str());
+        string file_name = output_dir + ipf_file_name;
+
+        unlink(file_name.c_str());
       	if (have_ipf) 
         {
             ofstream ipf_file;
             ipf_file.exceptions(ofstream::eofbit|ofstream::failbit|ofstream::badbit);
         
 #ifdef _WIN32
-            ipf_file.open(ipf_file_name.c_str(), ios::out|ios::binary);
+            ipf_file.open(file_name.c_str(), ios::out|ios::binary);
 #else
-            ipf_file.open(ipf_file_name.c_str());
+            ipf_file.open(file_name.c_str());
 #endif
 
             if (c.haveErrorsAndWarnings())
@@ -524,28 +566,30 @@ int main(int argc, char * const *argv)
 	    ipf_file.close();
 
             string cmd = string("$IPF ")+ipf_dbg+" -I -f ";
-            string filePath = string("${FWDIR}/")+ipf_file_name;
+            string filePath = string("${FWDIR}/") + ipf_file_name;
             if (fw->getOptionsObject()->getBool("dynAddr"))
             {
                 cmd += "-";
                 fw_file << 
-                    printActivationCommandWithSubstitution(fw,filePath,cmd);
+                    printActivationCommandWithSubstitution(fw, filePath, cmd);
             } else
             {
                 fw_file << cmd << filePath << endl;
             }
 	}
 
-        unlink(nat_file_name.c_str());
+        file_name = output_dir + nat_file_name;
+
+        unlink(file_name.c_str());
 	if (have_nat) 
         {
             ofstream nat_file;
             nat_file.exceptions(ofstream::eofbit|ofstream::failbit|ofstream::badbit);
 
 #ifdef _WIN32
-            nat_file.open(nat_file_name.c_str(), ios::out|ios::binary);
+            nat_file.open(file_name.c_str(), ios::out|ios::binary);
 #else
-            nat_file.open(nat_file_name.c_str());
+            nat_file.open(file_name.c_str());
 #endif
 
             if (n.haveErrorsAndWarnings())

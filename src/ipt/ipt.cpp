@@ -102,10 +102,35 @@ static bool             have_dynamic_interfaces = false;
 static bool             test_mode      = false;
 static bool             ipv4_run       = true;
 static bool             ipv6_run       = true;
+static bool             fw_by_id       = false;
+
 
 FWObjectDatabase       *objdb = NULL;
 
 static map<string,RuleSet*> branches;
+
+#ifdef _WIN32
+string fs_separator = "\\";
+#else
+string fs_separator = "/";
+#endif
+
+string getFileName(const string &file_path)
+{
+    string::size_type n = file_path.rfind(fs_separator);
+    string res = file_path;
+    res.erase(0, n+1);
+    return res;
+}
+
+string getDir(const string &file_path)
+{
+    string::size_type n = file_path.rfind(fs_separator);
+    string res = file_path;
+    if (n==string::npos) return "";
+    else res.erase(n);
+    return res;
+}
 
 class UpgradePredicate: public XMLTools::UpgradePredicate
 {
@@ -306,10 +331,13 @@ int main(int argc, char * const *argv)
 
     int   opt;
 
-    while( (opt=getopt(argc,argv,"x:vVqf:d:r:o:46")) != EOF )
+    while( (opt=getopt(argc,argv,"x:ivVqf:d:r:o:46")) != EOF )
     {
         switch(opt)
         {
+        case 'i':
+            fw_by_id = true;
+            break;
         case '4':
             ipv4_run = true;
             ipv6_run = false;
@@ -369,9 +397,6 @@ int main(int argc, char * const *argv)
 
     fwobjectname = strdup( argv[optind++] );
 
-    if (fw_file_name.empty())
-        fw_file_name=string(fwobjectname)+".fw";
-
     if (wdir==0) 	wdir="./";
 
     if (
@@ -418,9 +443,23 @@ int main(int argc, char * const *argv)
         if (slib && slib->isReadOnly()) slib->setReadOnly(false);
 
 	/* Review firewall and OS options and generate commands */
-	Firewall*  fw = objdb->findFirewallByName(fwobjectname);
+
+	Firewall* fw;
+        if (fw_by_id)
+        {
+            // fwobjectname is actually object id
+            fw = Firewall::cast(
+                objdb->findInIndex(objdb->getIntId(fwobjectname)));
+            fwobjectname = fw->getName().c_str();
+        }
+        else
+            fw = objdb->findFirewallByName(fwobjectname);
+
 	FWOptions* options = fw->getOptionsObject();
 	string s;
+
+        if (fw_file_name.empty())
+            fw_file_name=string(fwobjectname)+".fw";
 
         /* some initial sanity checks */
 
@@ -914,7 +953,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                << user_name << "\n#\n";
         }
 
-        script << MANIFEST_MARKER << "* " << fw_file_name << endl;
+        script << MANIFEST_MARKER << "* " << getFileName(fw_file_name) << endl;
         script << "#" << endl;
         script << "#" << endl;
         script << "# Compiled for iptables " << fw_version << endl;

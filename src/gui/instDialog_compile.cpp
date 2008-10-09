@@ -1,0 +1,264 @@
+/*
+
+                          Firewall Builder
+
+                 Copyright (C) 2008 NetCitadel, LLC
+
+  Author:  Vadim Kurland     vadim@fwbuilder.org
+
+  $Id$
+
+  This program is free software which we release under the GNU General Public
+  License. You may redistribute and/or modify this program under the terms
+  of that license as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  To get a copy of the GNU General Public License, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+*/
+
+#include "../../config.h"
+#include "global.h"
+#include "utils.h"
+#include "utils_no_qt.h"
+
+#include "instDialog.h"
+#include "FWBSettings.h"
+#include "FWWindow.h"
+#include "InstallFirewallViewItem.h"
+#include "instOptionsDialog.h"
+#include "instBatchOptionsDialog.h"
+
+#include "fwbuilder/Resources.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/XMLTools.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Management.h"
+
+#ifndef _WIN32
+#  include <unistd.h>     // for access(2) and getdomainname
+#endif
+
+#include <errno.h>
+#include <iostream>
+
+using namespace std;
+using namespace libfwbuilder;
+
+
+bool instDialog::runCompiler(Firewall *fw)
+{
+    if (fwbdebug)
+    {
+        qDebug("instDialog::runCompile");
+        qDebug(("Firewall:"+fw->getName()).c_str());
+    }
+    // store pointer to the firewall so we can use it in
+    // slot compilerFinished
+    cnf.fwobj = fw;
+
+    currentSearchString = tr("Compiling rule sets for firewall: ");
+    currentFirewallsBar->setValue(compile_list_initial_size - 
+                                  compile_fw_list.size());
+    currentProgressBar->reset();
+    currentProgressBar->setFormat("%v/%m");
+
+    QTreeWidgetItem* item = opListMapping[fw->getId()];
+    assert(item!=NULL);
+
+    currentFWLabel->setText(QString::fromUtf8(fw->getName().c_str()));
+    m_dialog->fwWorkList->scrollToItem(item);
+    setInProcessState(item);
+    item->setText(1, tr("Compiling ..."));
+    currentLabel->setText(tr("Compiling ..."));
+
+    qApp->processEvents();
+
+    addToLog("\n");
+    addToLog(
+        QObject::tr("Compiling rule sets for firewall: %1\n").
+        arg(QString::fromUtf8(fw->getName().c_str()))
+    );
+
+    if (!prepareArgForCompiler(fw)) return false;
+
+    addToLog( args.join(" ") + "\n" );
+
+    // Launch compiler in the background
+    QString path = args.at(0);
+    args.pop_front();
+
+    disconnect(currentStopButton, SIGNAL(clicked()) );
+    connect(currentStopButton, SIGNAL(clicked()),
+            this, SLOT(stopCompile()));
+
+    proc.disconnect(SIGNAL(finished(int,QProcess::ExitStatus)));
+    connect(&proc, SIGNAL(finished(int,QProcess::ExitStatus)),
+            this, SLOT(compilerFinished(int,QProcess::ExitStatus)) );
+
+    proc.start(path, args);
+
+    currentStopButton->setText(tr("Stop"));
+    currentStopButton->setEnabled(true);
+
+    if ( !proc.waitForStarted() )
+    {
+        opError(cnf.fwobj);
+        addToLog( tr("Error: Failed to start program") );
+        blockInstallForFirewall(cnf.fwobj);
+        QTimer::singleShot( 0, this, SLOT(mainLoopCompile()));
+        return false;
+    }
+    args.push_front(path);
+
+    return true;
+}
+
+void instDialog::stopCompile()
+{
+    if( fwbdebug) qDebug("instDialog::stopCompile");
+    stopProcessFlag = true;
+
+    disconnect(currentStopButton, SIGNAL(clicked()) );
+    currentStopButton->setEnabled(false);
+
+    proc.terminate();                                  //try to close proc.
+    QTimer::singleShot( 1000, &proc, SLOT( kill() ) ); //if it doesn't respond, kill it
+
+    blockInstallForFirewall(cnf.fwobj);
+
+    // to terminate whole compile sequence rather than just current
+    // compiler process, clear the list.
+    for (list<Firewall*>::iterator i=compile_fw_list.begin();
+         i!=compile_fw_list.end(); ++i)
+    {
+        opCancelled(*i);
+        blockInstallForFirewall(*i);
+    }
+
+    compile_fw_list.clear();
+}
+
+bool instDialog::prepareArgForCompiler(Firewall *fw)
+{
+    FWOptions *fwopt = fw->getOptionsObject();
+
+/*
+ * I should be able to specify custom compiler for firewall with
+ * no platform (e.g. for experiments)
+ */
+    string compiler = fwopt->getStr("compiler");
+    if (compiler=="")
+    {
+        compiler=Resources::platform_res[fw->getStr("platform")]->getCompiler();
+    }
+
+    if (compiler=="")
+    {
+        QMessageBox::warning(
+            this,"Firewall Builder",
+            tr("Firewall platform is not specified in this object.\n\
+Can't compile firewall policy."),
+            tr("&Continue"), QString::null,QString::null,
+            0, 1 );
+        return false;
+    }
+
+/*
+ * On Unix compilers are installed in the standard place and are
+ * accessible via PATH. On Windows and Mac they get installed in
+ * unpredictable directories and need to be found
+ *
+ * first, check if user specified an absolute path for the compiler,
+ * then check  if compiler is registsred in preferences, and if not,
+ * look for it in appRootDir and if it is not there, rely on PATH
+ */
+#if defined(Q_OS_WIN32) ||  defined(Q_OS_MACX)
+
+    if ( ! QFile::exists( compiler.c_str() ) )
+    {
+        string ts = string("Compilers/")+compiler;
+        QString cmppath = st->getStr( ts.c_str() );
+        if (!cmppath.isEmpty()) compiler=cmppath.toLatin1().constData();
+        else
+        {
+            /* try to find compiler in appRootDir. */
+            string ts =  getPathToBinary(compiler);
+
+            if (fwbdebug) qDebug("Checking compiler in %s", ts.c_str());
+
+            if ( QFile::exists( ts.c_str() ) )
+                compiler = ts;
+        }
+    }
+#endif
+
+    QString wdir = getFileDir(mw->getRCS()->getFileName() );
+
+    args.clear();
+
+    args.push_back(compiler.c_str());
+
+    QString qs = fwopt->getStr("cmdline").c_str();
+    args += qs.split(" ", QString::SkipEmptyParts);
+
+    args.push_back("-v");
+    args.push_back("-f");
+    args.push_back(mw->db()->getFileName().c_str());
+
+    if (wdir!="")
+    {
+        args.push_back("-d");
+        args.push_back(wdir);
+    }
+
+    QString ofname = QString::fromUtf8(fwopt->getStr("output_file").c_str());
+    if (!ofname.isEmpty())
+    {
+        args.push_back("-o");
+        args.push_back(ofname);
+    }
+
+    args.push_back("-i");
+
+    args.push_back( mw->db()->getStringId(fw->getId()).c_str() );
+    return true;
+}
+
+void instDialog::compilerFinished(int ret_code, QProcess::ExitStatus status)
+{
+    if( fwbdebug) qDebug("instDialog::compilerFinished "
+                         "exit code = %d exit_status=%d",
+                         ret_code, status);
+
+    readFromStdout();
+
+    if (rejectDialogFlag)
+    {
+        rejectDialogFlag = false;
+        QDialog::reject();
+        return;
+    }
+
+    if (ret_code==0 && status==QProcess::NormalExit)
+    {
+        opSuccess(cnf.fwobj);
+        mw->updateLastCompiledTimestamp(cnf.fwobj);
+    }
+    else
+    {
+        blockInstallForFirewall(cnf.fwobj);
+        opError(cnf.fwobj);
+    }
+    currentProgressBar->setValue(currentProgressBar->maximum());
+
+    QTimer::singleShot( 0, this, SLOT(mainLoopCompile()));
+    return;
+}

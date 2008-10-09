@@ -111,7 +111,7 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
     connect(fwb_pix_proc, SIGNAL(bytesWritten(qint64)),   this,  SLOT(allXMLSent() ) );
 
     compilerPath = compiler.c_str();
-    argumentList << "-f" << "-" << "-i" << fw->getName().c_str();
+    argumentList << "-f" << "-" << "-I" << fw->getName().c_str();
 
     string vers="version_"+obj->getStr("version");
     string platform = obj->getStr("platform");   // could be 'pix' or 'fwsm'
@@ -243,168 +243,264 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
         m_dialog->pix_generate_out_acl->hide();
 
     m_dialog->tabWidget->setTabEnabled(8,false); //Disable tab
-    data.registerOption(m_dialog->ipv4before_2,    fwoptions, "ipv4_6_order", QStringList() <<  "IPv4 before IPv6" <<"ipv4_first" << "IPv6 before IPv4" << "ipv6_first"      );
+    data.registerOption(m_dialog->ipv4before_2,    fwoptions, "ipv4_6_order", QStringList() <<  "IPv4 before IPv6" <<"ipv4_first" << "IPv6 before IPv4" << "ipv6_first");
 
 
-    data.registerOption( m_dialog->outputFileName       , fwoptions,
-                         "output_file"  );
+    data.registerOption( m_dialog->outputFileName, fwoptions,
+                         "output_file");
 
-    data.registerOption( m_dialog->pix_assume_fw_part_of_any  , fwoptions,
-                         "pix_assume_fw_part_of_any" );
+    data.registerOption( m_dialog->pix_assume_fw_part_of_any, fwoptions,
+                         "pix_assume_fw_part_of_any");
 
-    data.registerOption( m_dialog->pix_replace_natted_objects  , fwoptions,
-                         "pix_replace_natted_objects" );
+    data.registerOption( m_dialog->pix_replace_natted_objects, fwoptions,
+                         "pix_replace_natted_objects");
 
-    data.registerOption( m_dialog->pix_emulate_out_acl  , fwoptions,
-                         "pix_emulate_out_acl" );
+    data.registerOption( m_dialog->pix_emulate_out_acl, fwoptions,
+                         "pix_emulate_out_acl");
 
-    data.registerOption( m_dialog->pix_generate_out_acl  , fwoptions,
-                         "pix_generate_out_acl" );
+    data.registerOption( m_dialog->pix_generate_out_acl, fwoptions,
+                         "pix_generate_out_acl");
 
 
-    data.registerOption( m_dialog->pix_acl_basic , fwoptions,
-                         "pix_acl_basic" );
+    data.registerOption( m_dialog->pix_acl_basic, fwoptions,
+                         "pix_acl_basic");
 
 /*
-    data.registerOption( m_dialog->pix_acl_alwaysNew , fwoptions,
-                         "pix_acl_always_new" );
+    data.registerOption( m_dialog->pix_acl_alwaysNew, fwoptions,
+                         "pix_acl_always_new");
 */
 
-    data.registerOption( m_dialog->pix_acl_no_clear , fwoptions,
-                         "pix_acl_no_clear" );
+    data.registerOption( m_dialog->pix_acl_no_clear, fwoptions,
+                         "pix_acl_no_clear");
 
-    data.registerOption( m_dialog->pix_acl_substitution , fwoptions,
-                         "pix_acl_substitution" );
+    data.registerOption( m_dialog->pix_acl_substitution, fwoptions,
+                         "pix_acl_substitution");
 
-    data.registerOption( m_dialog->pix_acl_temp_addr , fwoptions,
-                         "pix_acl_temp_addr" );
+    data.registerOption( m_dialog->pix_acl_temp_addr, fwoptions,
+                         "pix_acl_temp_addr");
 
 
-    data.registerOption( m_dialog->pix_include_comments , fwoptions,
-                         "pix_include_comments" );
+    data.registerOption( m_dialog->pix_include_comments, fwoptions,
+                         "pix_include_comments");
 
-    data.registerOption( m_dialog->pix_use_acl_remarks , fwoptions,
-                         "pix_use_acl_remarks" );
+    data.registerOption( m_dialog->pix_use_acl_remarks, fwoptions,
+                         "pix_use_acl_remarks");
 
-    data.registerOption( m_dialog->pix_regroup_commands , fwoptions,
-                         "pix_regroup_commands" );
+    data.registerOption( m_dialog->pix_regroup_commands, fwoptions,
+                         "pix_regroup_commands");
 
-    data.registerOption( m_dialog->pix_use_manual_commit , fwoptions,
-                         "pix_use_manual_commit" );
+    data.registerOption( m_dialog->pix_use_manual_commit, fwoptions,
+                         "pix_use_manual_commit");
 
     m_dialog->pix_use_manual_commit->setEnabled(platform=="fwsm");
 /*
-    data.registerOption( m_dialog->pix_add_clear_statements , fwoptions,
-                         "pix_add_clear_statements" );
+    data.registerOption( m_dialog->pix_add_clear_statements, fwoptions,
+                         "pix_add_clear_statements");
 */
 
-    data.registerOption( m_dialog->pix_optimize_default_nat , fwoptions,
-                         "pix_optimize_default_nat" );
+    data.registerOption( m_dialog->pix_optimize_default_nat, fwoptions,
+                         "pix_optimize_default_nat");
 
-    data.registerOption( m_dialog->pix_check_shadowing    , fwoptions,
-                         "check_shading"  );
+    data.registerOption( m_dialog->pix_check_shadowing, fwoptions,
+                         "check_shading");
 
-    data.registerOption( m_dialog->pix_ignore_empty_groups , fwoptions,
-                         "ignore_empty_groups" );
+    data.registerOption( m_dialog->pix_ignore_empty_groups, fwoptions,
+                         "ignore_empty_groups");
 
 
-    data.registerOption( m_dialog->pix_check_duplicate_nat    , fwoptions,
-                         "pix_check_duplicate_nat"  );
+    data.registerOption( m_dialog->pix_check_duplicate_nat, fwoptions,
+                         "pix_check_duplicate_nat");
 
-    data.registerOption( m_dialog->pix_check_overlapping_global_pools , fwoptions,
-                         "pix_check_overlapping_global_pools" );
+    data.registerOption( m_dialog->pix_check_overlapping_global_pools, fwoptions,
+                         "pix_check_overlapping_global_pools");
 
-    data.registerOption( m_dialog->pix_check_overlapping_statics , fwoptions,
-                         "pix_check_overlapping_statics" );
+    data.registerOption( m_dialog->pix_check_overlapping_statics, fwoptions,
+                         "pix_check_overlapping_statics");
 
-    data.registerOption( m_dialog->pix_check_overlapping_global_statics , fwoptions,
-                         "pix_check_overlapping_global_statics" );
+    data.registerOption( m_dialog->pix_check_overlapping_global_statics, fwoptions,
+                         "pix_check_overlapping_global_statics");
 
-    data.registerOption( m_dialog->mgmt_ssh     , fwoptions,  "mgmt_ssh"  );
-    data.registerOption( m_dialog->mgmt_addr    , fwoptions,  "mgmt_addr" );
+    data.registerOption( m_dialog->mgmt_ssh, fwoptions,  "mgmt_ssh");
+    data.registerOption( m_dialog->mgmt_addr, fwoptions,  "mgmt_addr");
 
 /* page Installer */
 
-    data.registerOption( m_dialog->user             ,fwoptions, "admUser"         );
-    data.registerOption( m_dialog->altAddress       ,fwoptions, "altAddress"      );
-    data.registerOption( m_dialog->sshArgs          ,fwoptions, "sshArgs"         );
+    data.registerOption( m_dialog->user,fwoptions, "admUser");
+    data.registerOption( m_dialog->altAddress,fwoptions, "altAddress");
+    data.registerOption( m_dialog->sshArgs, fwoptions, "sshArgs");
+    data.registerOption( m_dialog->scpArgs, fwoptions, "scpArgs");
 
     PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
 
-    m_dialog->installScript->setText(     pis->getCommand().c_str() );
-    m_dialog->installScriptArgs->setText( pis->getArguments().c_str() );
+    m_dialog->installScript->setText(     pis->getCommand().c_str());
+    m_dialog->installScriptArgs->setText( pis->getArguments().c_str());
 
 
 /* page "Prolog/Epilog" */
-    data.registerOption( m_dialog->pix_prolog_script    , fwoptions,
-                         "pix_prolog_script"  );
+    data.registerOption( m_dialog->pix_prolog_script, fwoptions,
+                         "pix_prolog_script");
 
-    data.registerOption( m_dialog->pix_epilog_script    , fwoptions,
-                         "pix_epilog_script"  );
+    data.registerOption( m_dialog->pix_epilog_script, fwoptions,
+                         "pix_epilog_script");
 
 /* page "Timeouts" */
-    data.registerOption( m_dialog->xlate_hh       , fwoptions, "xlate_hh"      );
-    data.registerOption( m_dialog->xlate_mm       , fwoptions, "xlate_mm"      );
-    data.registerOption( m_dialog->xlate_ss       , fwoptions, "xlate_ss"      );
+    data.registerOption( m_dialog->xlate_hh, fwoptions, "xlate_hh");
+    data.registerOption( m_dialog->xlate_mm, fwoptions, "xlate_mm");
+    data.registerOption( m_dialog->xlate_ss, fwoptions, "xlate_ss");
 
-    data.registerOption( m_dialog->conn_hh        , fwoptions, "conn_hh"       );
-    data.registerOption( m_dialog->conn_mm        , fwoptions, "conn_mm"       );
-    data.registerOption( m_dialog->conn_ss        , fwoptions, "conn_ss"       );
+    data.registerOption( m_dialog->conn_hh, fwoptions, "conn_hh");
+    data.registerOption( m_dialog->conn_mm, fwoptions, "conn_mm");
+    data.registerOption( m_dialog->conn_ss, fwoptions, "conn_ss");
 
-    data.registerOption( m_dialog->udp_hh         , fwoptions, "udp_hh"        );
-    data.registerOption( m_dialog->udp_mm         , fwoptions, "udp_mm"        );
-    data.registerOption( m_dialog->udp_ss         , fwoptions, "udp_ss"        );
+    data.registerOption( m_dialog->udp_hh, fwoptions, "udp_hh");
+    data.registerOption( m_dialog->udp_mm, fwoptions, "udp_mm");
+    data.registerOption( m_dialog->udp_ss, fwoptions, "udp_ss");
 
-    data.registerOption( m_dialog->rpc_hh         , fwoptions, "rpc_hh"        );
-    data.registerOption( m_dialog->rpc_mm         , fwoptions, "rpc_mm"        );
-    data.registerOption( m_dialog->rpc_ss         , fwoptions, "rpc_ss"        );
+    data.registerOption( m_dialog->rpc_hh, fwoptions, "rpc_hh");
+    data.registerOption( m_dialog->rpc_mm, fwoptions, "rpc_mm");
+    data.registerOption( m_dialog->rpc_ss, fwoptions, "rpc_ss");
 
-    data.registerOption( m_dialog->h323_hh        , fwoptions, "h323_hh"       );
-    data.registerOption( m_dialog->h323_mm        , fwoptions, "h323_mm"       );
-    data.registerOption( m_dialog->h323_ss        , fwoptions, "h323_ss"       );
+    data.registerOption( m_dialog->h323_hh, fwoptions, "h323_hh");
+    data.registerOption( m_dialog->h323_mm, fwoptions, "h323_mm");
+    data.registerOption( m_dialog->h323_ss, fwoptions, "h323_ss");
 
-    data.registerOption( m_dialog->sip_hh         , fwoptions, "sip_hh"        );
-    data.registerOption( m_dialog->sip_mm         , fwoptions, "sip_mm"        );
-    data.registerOption( m_dialog->sip_ss         , fwoptions, "sip_ss"        );
+    data.registerOption( m_dialog->sip_hh, fwoptions, "sip_hh");
+    data.registerOption( m_dialog->sip_mm, fwoptions, "sip_mm");
+    data.registerOption( m_dialog->sip_ss, fwoptions, "sip_ss");
 
-    data.registerOption( m_dialog->sip_media_hh   , fwoptions, "sip_media_hh"  );
-    data.registerOption( m_dialog->sip_media_mm   , fwoptions, "sip_media_mm"  );
-    data.registerOption( m_dialog->sip_media_ss   , fwoptions, "sip_media_ss"  );
+    data.registerOption( m_dialog->sip_media_hh, fwoptions, "sip_media_hh");
+    data.registerOption( m_dialog->sip_media_mm, fwoptions, "sip_media_mm");
+    data.registerOption( m_dialog->sip_media_ss, fwoptions, "sip_media_ss");
 
-    data.registerOption( m_dialog->half_closed_hh , fwoptions, "half-closed_hh");
-    data.registerOption( m_dialog->half_closed_mm , fwoptions, "half-closed_mm");
-    data.registerOption( m_dialog->half_closed_ss , fwoptions, "half-closed_ss");
+    data.registerOption( m_dialog->half_closed_hh, fwoptions, "half-closed_hh");
+    data.registerOption( m_dialog->half_closed_mm, fwoptions, "half-closed_mm");
+    data.registerOption( m_dialog->half_closed_ss, fwoptions, "half-closed_ss");
 
-    data.registerOption( m_dialog->uauth_hh       , fwoptions, "uauth_hh"      );
-    data.registerOption( m_dialog->uauth_mm       , fwoptions, "uauth_mm"      );
-    data.registerOption( m_dialog->uauth_ss       , fwoptions, "uauth_ss"      );
-    data.registerOption( m_dialog->uauth_abs      , fwoptions, "uauth_abs"     );
-    data.registerOption( m_dialog->uauth_inact    , fwoptions, "uauth_inact"   );
+    data.registerOption( m_dialog->uauth_hh, fwoptions, "uauth_hh");
+    data.registerOption( m_dialog->uauth_mm, fwoptions, "uauth_mm");
+    data.registerOption( m_dialog->uauth_ss, fwoptions, "uauth_ss");
+    data.registerOption( m_dialog->uauth_abs, fwoptions, "uauth_abs");
+    data.registerOption( m_dialog->uauth_inact, fwoptions, "uauth_inact");
 
-    data.registerOption( m_dialog->telnet_timeout , fwoptions, "pix_telnet_timeout");
-    data.registerOption( m_dialog->ssh_timeout    , fwoptions, "pix_ssh_timeout"   );
+    data.registerOption( m_dialog->telnet_timeout, fwoptions, "pix_telnet_timeout");
+    data.registerOption( m_dialog->ssh_timeout, fwoptions, "pix_ssh_timeout");
 
 /* page Fixups */
 
-    allFixups.push_back(fixupControl( m_dialog->pix_ctiqbe_switch,   m_dialog->pix_ctiqbe_port,       NULL,               NULL,             "ctiqbe_fixup"    , "ctiqbe"    , 0));
-    allFixups.push_back(fixupControl( m_dialog->pix_dns_switch,      m_dialog->pix_dns_max_length,    NULL,               NULL,             "dns_fixup"       , "dns"       , 1));
-    allFixups.push_back(fixupControl( m_dialog->pix_espike_switch,   NULL,                  NULL,               NULL,             "espike_fixup"    , "esp-ike"   , 2));
-    allFixups.push_back(fixupControl( m_dialog->pix_ftp_switch,      m_dialog->pix_ftp_port,          NULL,               m_dialog->pix_ftp_strict,   "ftp_fixup"       , "ftp"       , 3));
-    allFixups.push_back(fixupControl( m_dialog->pix_h323h225_switch, m_dialog->pix_h323h225_port1,    m_dialog->pix_h323h225_port2, NULL,             "h323_h225_fixup" , "h323 h225" , 4));
-    allFixups.push_back(fixupControl( m_dialog->pix_h323ras_switch,  m_dialog->pix_h323ras_port1,     m_dialog->pix_h323ras_port2,  NULL,             "h323_ras_fixup"  , "h323 ras"  , 5));
-    allFixups.push_back(fixupControl( m_dialog->pix_http_switch,     m_dialog->pix_http_port1,        m_dialog->pix_http_port2,     NULL,             "http_fixup"      , "http"      , 6));
-    allFixups.push_back(fixupControl( m_dialog->pix_icmperror_switch, NULL,                 NULL,               NULL,             "icmp_error_fixup", "icmp error", 7));
-    allFixups.push_back(fixupControl( m_dialog->pix_ils_switch,      m_dialog->pix_ils_port1,         m_dialog->pix_ils_port2,      NULL,             "ils_fixup"       , "ils"       , 8));
-    allFixups.push_back(fixupControl( m_dialog->pix_mgcp_switch,     m_dialog->pix_mgcp_gateway_port, m_dialog->pix_mgcp_call_agent_port, NULL,       "mgcp_fixup"      , "mgcp"      , 9));
-    allFixups.push_back(fixupControl( m_dialog->pix_pptp_switch,     m_dialog->pix_pptp_port,         NULL,               NULL,             "pptp_fixup"      , "pptp"      , 10));
-    allFixups.push_back(fixupControl( m_dialog->pix_rsh_switch,      m_dialog->pix_rsh_port1,         NULL,               NULL,             "rsh_fixup"       , "rsh"       , 11));
-    allFixups.push_back(fixupControl( m_dialog->pix_rtsp_switch,     m_dialog->pix_rtsp_port,         NULL,               NULL,             "rtsp_fixup"      , "rtsp"      , 12));
-    allFixups.push_back(fixupControl( m_dialog->pix_sip_switch,      m_dialog->pix_sip_port1,         m_dialog->pix_sip_port2,      NULL,             "sip_fixup"       , "sip"       , 13));
-    allFixups.push_back(fixupControl( m_dialog->pix_sipudp_switch,   m_dialog->pix_sip_udp_port1,     NULL,               NULL,             "sip_udp_fixup"   , "sip udp"   , 14));
-    allFixups.push_back(fixupControl( m_dialog->pix_skinny_switch,   m_dialog->pix_skinny_port1,      m_dialog->pix_skinny_port2,   NULL,             "skinny_fixup"    , "skinny"    , 15));
-    allFixups.push_back(fixupControl( m_dialog->pix_smtp_switch,     m_dialog->pix_smtp_port1,        m_dialog->pix_smtp_port2,     NULL,             "smtp_fixup"      , "smtp"      , 16));
-    allFixups.push_back(fixupControl( m_dialog->pix_sqlnet_switch,   m_dialog->pix_sqlnet_port1,      m_dialog->pix_sqlnet_port2,   NULL,             "sqlnet_fixup"    , "sqlnet"    , 17));
-    allFixups.push_back(fixupControl( m_dialog->pix_tftp_switch,     m_dialog->pix_tftp_port,         NULL,               NULL,             "tftp_fixup"      , "tftp"      , 18));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_ctiqbe_switch,
+                            m_dialog->pix_ctiqbe_port,
+                            NULL,
+                            NULL,
+                            "ctiqbe_fixup", "ctiqbe", 0));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_dns_switch, 
+                            m_dialog->pix_dns_max_length, 
+                            NULL, 
+                            NULL, 
+                            "dns_fixup", "dns", 1));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_espike_switch, 
+                            NULL, 
+                            NULL, 
+                            NULL, 
+                            "espike_fixup", "esp-ike", 2));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_ftp_switch, 
+                            m_dialog->pix_ftp_port, 
+                            NULL, 
+                            m_dialog->pix_ftp_strict, 
+                            "ftp_fixup", "ftp", 3));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_h323h225_switch, 
+                            m_dialog->pix_h323h225_port1, 
+                            m_dialog->pix_h323h225_port2, 
+                            NULL, 
+                            "h323_h225_fixup", "h323 h225", 4));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_h323ras_switch, 
+                            m_dialog->pix_h323ras_port1, 
+                            m_dialog->pix_h323ras_port2, 
+                            NULL, 
+                            "h323_ras_fixup", "h323 ras", 5));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_http_switch, 
+                            m_dialog->pix_http_port1, 
+                            m_dialog->pix_http_port2, 
+                            NULL, 
+                            "http_fixup", "http", 6));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_icmperror_switch, 
+                            NULL, 
+                            NULL, 
+                            NULL, 
+                            "icmp_error_fixup", "icmp error", 7));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_ils_switch, 
+                            m_dialog->pix_ils_port1, 
+                            m_dialog->pix_ils_port2, 
+                            NULL, 
+                            "ils_fixup", "ils", 8));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_mgcp_switch, 
+                            m_dialog->pix_mgcp_gateway_port, 
+                            m_dialog->pix_mgcp_call_agent_port, 
+                            NULL, 
+                            "mgcp_fixup", "mgcp", 9));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_pptp_switch, 
+                            m_dialog->pix_pptp_port, 
+                            NULL, 
+                            NULL, 
+                            "pptp_fixup", "pptp", 10));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_rsh_switch, 
+                            m_dialog->pix_rsh_port1, 
+                            NULL, 
+                            NULL, 
+                            "rsh_fixup", "rsh", 11));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_rtsp_switch, 
+                            m_dialog->pix_rtsp_port, 
+                            NULL, 
+                            NULL, 
+                            "rtsp_fixup", "rtsp", 12));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_sip_switch, 
+                            m_dialog->pix_sip_port1, 
+                            m_dialog->pix_sip_port2, 
+                            NULL, 
+                            "sip_fixup", "sip", 13));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_sipudp_switch, 
+                            m_dialog->pix_sip_udp_port1, 
+                            NULL, 
+                            NULL, 
+                            "sip_udp_fixup", "sip udp", 14));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_skinny_switch, 
+                            m_dialog->pix_skinny_port1, 
+                            m_dialog->pix_skinny_port2, 
+                            NULL, 
+                            "skinny_fixup", "skinny", 15));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_smtp_switch, 
+                            m_dialog->pix_smtp_port1, 
+                            m_dialog->pix_smtp_port2, 
+                            NULL, 
+                            "smtp_fixup", "smtp", 16));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_sqlnet_switch, 
+                            m_dialog->pix_sqlnet_port1, 
+                            m_dialog->pix_sqlnet_port2, 
+                            NULL, 
+                            "sqlnet_fixup", "sqlnet", 17));
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_tftp_switch, 
+                            m_dialog->pix_tftp_port, 
+                            NULL, 
+                            NULL, 
+                            "tftp_fixup", "tftp", 18));
 
     string lst=Resources::platform_res[platform]->getResourceStr(
             "/FWBuilderResources/Target/options/"+vers+"/fixups/list");
@@ -413,21 +509,25 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
         qDebug("pixAdvancedDialog::pixAdvancedDialog lst = %s",lst.c_str());
 
 
-    for (list<fixupControl>::iterator fi=allFixups.begin(); fi!=allFixups.end(); fi++)
+    for (list<fixupControl>::iterator fi=allFixups.begin();
+         fi!=allFixups.end(); fi++)
     {
-        qDebug("pixAdvancedDialog::pixAdvancedDialog fwo = %s",fi->fwoption.toAscii().constData());
+        if (fwbdebug)
+            qDebug("pixAdvancedDialog::pixAdvancedDialog fwopt = %s",
+                   fi->fwoption.toAscii().constData());
 
-        if (fi->switch_widget!=NULL) connect( fi->switch_widget, SIGNAL(activated(int)),
-                                              this, SLOT(fixupCmdChanged()) );
+        if (fi->switch_widget!=NULL)
+            connect( fi->switch_widget, SIGNAL(activated(int)),
+                     this, SLOT(fixupCmdChanged()));
 
         if (fi->arg1!=NULL) connect( fi->arg1, SIGNAL(valueChanged(int)),
-                                     this, SLOT(fixupCmdChanged()) );
+                                     this, SLOT(fixupCmdChanged()));
 
         if (fi->arg2!=NULL) connect( fi->arg2, SIGNAL(valueChanged(int)),
-                                     this, SLOT(fixupCmdChanged()) );
+                                     this, SLOT(fixupCmdChanged()));
 
         if (fi->arg3!=NULL) connect( fi->arg3, SIGNAL(clicked()),
-                                     this, SLOT(fixupCmdChanged()) );
+                                     this, SLOT(fixupCmdChanged()));
 
         string::size_type i,j;
         i=0;
@@ -443,7 +543,7 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
         if (!present)
         {
             fi->active=false;
-            m_dialog->fixup_notebook->setTabEnabled( fi->page, false );
+            m_dialog->fixup_notebook->setTabEnabled( fi->page, false);
         }
     }
 
@@ -451,11 +551,12 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
 
     m_dialog->emblem_log_format->setEnabled(
         Resources::platform_res[platform]->getResourceBool(
-            "/FWBuilderResources/Target/options/"+vers+"/pix_emblem_log_format") );
+            "/FWBuilderResources/Target/options/"+vers+"/pix_emblem_log_format"));
 
 
-    syslogDeviceIdSupported= (Resources::platform_res[platform]->getResourceBool(
-                  "/FWBuilderResources/Target/options/"+vers+"/pix_syslog_device_id_supported") );
+    syslogDeviceIdSupported=(Resources::platform_res[platform]->getResourceBool(
+                                 "/FWBuilderResources/Target/options/"+
+                                 vers+"/pix_syslog_device_id_supported"));
 
     m_dialog->syslog_device_id_hostname->setEnabled(syslogDeviceIdSupported);
     m_dialog->syslog_device_id_interface->setEnabled(syslogDeviceIdSupported);
@@ -464,29 +565,30 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
     m_dialog->syslog_device_id_string_val->setEnabled(syslogDeviceIdSupported);
 
 
-    data.registerOption( m_dialog->syslog_host,          fwoptions,    "pix_syslog_host");
-    data.registerOption( m_dialog->syslog_queue_size,    fwoptions,    "pix_syslog_queue_size" );
+    data.registerOption( m_dialog->syslog_host, fwoptions, "pix_syslog_host");
+    data.registerOption( m_dialog->syslog_queue_size, fwoptions, "pix_syslog_queue_size");
 
     m_dialog->syslog_facility->clear();
-    m_dialog->syslog_facility->addItems( syslogFacilities );
-    data.registerOption( m_dialog->syslog_facility,      fwoptions,
+    m_dialog->syslog_facility->addItems( syslogFacilities);
+    data.registerOption( m_dialog->syslog_facility, fwoptions,
                          "pix_syslog_facility", syslogFacilityMapping);
 
     m_dialog->logging_trap_level->clear();
     m_dialog->logging_trap_level->addItems(logLevels);
 
-    data.registerOption( m_dialog->logging_trap_level,   fwoptions,
+    data.registerOption( m_dialog->logging_trap_level, fwoptions,
                          "pix_logging_trap_level", logLevelMapping);
 
 
-    data.registerOption( m_dialog->emblem_log_format,    fwoptions,    "pix_emblem_log_format");
+    data.registerOption( m_dialog->emblem_log_format, fwoptions,
+                         "pix_emblem_log_format");
 
 
 
     QStringList interfaces;
     list<FWObject*> l2=obj->getByType(Interface::TYPENAME);
     for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
-        interfaces.push_back( (Interface::cast(*i))->getLabel().c_str() );
+        interfaces.push_back( (Interface::cast(*i))->getLabel().c_str());
 
     m_dialog->syslog_device_id_interface_val->addItems(interfaces);
 
@@ -508,16 +610,19 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
         }
     }
 
-    data.registerOption( m_dialog->logging_timestamp,    fwoptions,    "pix_logging_timestamp");
+    data.registerOption( m_dialog->logging_timestamp, fwoptions,
+                         "pix_logging_timestamp");
 
-    data.registerOption( m_dialog->logging_buffered,     fwoptions,    "pix_logging_buffered");
+    data.registerOption( m_dialog->logging_buffered, fwoptions,
+                         "pix_logging_buffered");
 
     m_dialog->logging_buffered_level->clear();
     m_dialog->logging_buffered_level->addItems(logLevels);
     data.registerOption( m_dialog->logging_buffered_level, fwoptions,
                          "pix_logging_buffered_level", logLevelMapping);
 
-    data.registerOption( m_dialog->logging_console,      fwoptions,    "pix_logging_console");
+    data.registerOption( m_dialog->logging_console, fwoptions,
+                         "pix_logging_console");
 
     m_dialog->logging_console_level->clear();
     m_dialog->logging_console_level->addItems(logLevels);
@@ -529,25 +634,25 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
 
     m_dialog->fragguard->setEnabled(
         Resources::platform_res[platform]->getResourceBool(
-            "/FWBuilderResources/Target/options/"+vers+"/pix_security_fragguard_supported") );
+            "/FWBuilderResources/Target/options/"+vers+"/pix_security_fragguard_supported"));
 
     m_dialog->route_dnat->setEnabled(
         Resources::platform_res[platform]->getResourceBool(
-            "/FWBuilderResources/Target/options/"+vers+"/pix_route_dnat_supported") );
+            "/FWBuilderResources/Target/options/"+vers+"/pix_route_dnat_supported"));
 
-    data.registerOption( m_dialog->fragguard,           fwoptions,  "pix_fragguard"           );
-    data.registerOption( m_dialog->route_dnat,          fwoptions,  "pix_route_dnat"          );
+    data.registerOption( m_dialog->fragguard, fwoptions, "pix_fragguard");
+    data.registerOption( m_dialog->route_dnat, fwoptions, "pix_route_dnat");
 
-    data.registerOption( m_dialog->resetinbound,        fwoptions,  "pix_resetinbound"        );
-    data.registerOption( m_dialog->resetoutside,        fwoptions,  "pix_resetoutside"        );
+    data.registerOption( m_dialog->resetinbound, fwoptions, "pix_resetinbound");
+    data.registerOption( m_dialog->resetoutside, fwoptions, "pix_resetoutside");
 
-    data.registerOption( m_dialog->connection_timewait, fwoptions,  "pix_connection_timewait" );
-    data.registerOption( m_dialog->floodguard,          fwoptions,  "pix_floodguard"          );
-    data.registerOption( m_dialog->nodnsalias_inbound,  fwoptions,  "pix_nodnsalias_inbound"  );
-    data.registerOption( m_dialog->nodnsalias_outbound, fwoptions,  "pix_nodnsalias_outbound" );
+    data.registerOption( m_dialog->connection_timewait, fwoptions, "pix_connection_timewait");
+    data.registerOption( m_dialog->floodguard, fwoptions, "pix_floodguard");
+    data.registerOption( m_dialog->nodnsalias_inbound, fwoptions, "pix_nodnsalias_inbound");
+    data.registerOption( m_dialog->nodnsalias_outbound, fwoptions, "pix_nodnsalias_outbound");
 
-    data.registerOption( m_dialog->max_conns,           fwoptions,  "pix_max_conns"           );
-    data.registerOption( m_dialog->emb_limit,           fwoptions,  "pix_emb_limit"           );
+    data.registerOption( m_dialog->max_conns, fwoptions, "pix_max_conns");
+    data.registerOption( m_dialog->emb_limit, fwoptions, "pix_emb_limit");
 
     data.loadAll();
     loadFixups();
@@ -665,7 +770,7 @@ void pixAdvancedDialog::saveFixups()
         ostringstream str;
         str << sw << " " << p1 << " " << p2 << " " << on << " " << int(ov);
 
-        options->setStr( fi->fwoption.toLatin1().constData() , str.str() );
+        options->setStr( fi->fwoption.toLatin1().constData(), str.str() );
     }
 }
 
@@ -759,8 +864,10 @@ void pixAdvancedDialog::accept()
 //    pis->setCommand( installScript->text() );
 //    pis->setArguments( installScriptArgs->text() );
 
-    mgmt->setAddress( *((Firewall::cast(obj))->getAddressPtr()) );
-
+    // find first interface marked as "management"
+    const InetAddr *mgmt_addr = Firewall::cast(obj)->getManagementAddress();
+    if (mgmt_addr)
+        mgmt->setAddress(*mgmt_addr);
 
     if (syslogDeviceIdSupported)
     {

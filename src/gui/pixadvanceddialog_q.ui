@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>691</width>
-    <height>713</height>
+    <width>734</width>
+    <height>722</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -19,16 +19,7 @@
    <bool>false</bool>
   </property>
   <layout class="QGridLayout" >
-   <property name="leftMargin" >
-    <number>11</number>
-   </property>
-   <property name="topMargin" >
-    <number>11</number>
-   </property>
-   <property name="rightMargin" >
-    <number>11</number>
-   </property>
-   <property name="bottomMargin" >
+   <property name="margin" >
     <number>11</number>
    </property>
    <item row="1" column="0" >
@@ -41,7 +32,7 @@
        <property name="sizeType" >
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>20</width>
          <height>20</height>
@@ -81,43 +72,33 @@
    </item>
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget" >
+     <property name="maximumSize" >
+      <size>
+       <width>700</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="tabPosition" >
+      <enum>QTabWidget::North</enum>
+     </property>
+     <property name="tabShape" >
+      <enum>QTabWidget::Rounded</enum>
+     </property>
      <property name="currentIndex" >
       <number>0</number>
      </property>
+     <property name="usesScrollButtons" >
+      <bool>true</bool>
+     </property>
      <widget class="QWidget" name="TabPage1" >
       <attribute name="title" >
-       <string>Compiler Options</string>
+       <string>Compiler</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
+      <layout class="QGridLayout" name="gridLayout_4" >
+       <property name="spacing" >
+        <number>20</number>
        </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
-       </property>
-       <item row="3" column="1" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>20</width>
-           <height>170</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="0" colspan="3" >
+       <item row="0" column="0" >
         <widget class="QLabel" name="textLabel1_5" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
@@ -136,58 +117,17 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="3" >
+       <item row="0" column="1" >
         <widget class="QLineEdit" name="outputFileName" >
          <property name="maximumSize" >
           <size>
            <width>32767</width>
-           <height>32767</height>
+           <height>22</height>
           </size>
          </property>
         </widget>
        </item>
-       <item row="2" column="2" colspan="2" >
-        <widget class="QLineEdit" name="mgmt_addr" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize" >
-          <size>
-           <width>32767</width>
-           <height>32767</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" >
-        <widget class="QCheckBox" name="mgmt_ssh" >
-         <property name="text" >
-          <string>Always permit ssh access from
-the management workstation
-with this address:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>40</width>
-           <height>50</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="0" colspan="2" >
+       <item row="1" column="0" >
         <widget class="QGroupBox" name="frame114" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
@@ -199,16 +139,10 @@ with this address:</string>
           <string>Policy Compiler Options</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
+          <property name="verticalSpacing" >
+           <number>20</number>
           </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item row="0" column="0" >
@@ -291,7 +225,7 @@ translations in policy rules</string>
          </layout>
         </widget>
        </item>
-       <item row="1" column="2" colspan="2" >
+       <item row="1" column="1" >
         <widget class="QGroupBox" name="frame153" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
@@ -303,16 +237,10 @@ translations in policy rules</string>
           <string>Verification of NAT rules</string>
          </property>
          <layout class="QVBoxLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
+          <property name="spacing" >
+           <number>20</number>
           </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item>
@@ -353,341 +281,31 @@ pools and statics</string>
          </layout>
         </widget>
        </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tab1" >
-      <attribute name="title" >
-       <string>Script Options</string>
-      </attribute>
-      <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
-       </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
-       </property>
-       <item row="1" column="0" >
-        <widget class="QGroupBox" name="frame170" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="title" >
-          <string>Options</string>
-         </property>
-         <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <item row="0" column="0" >
-           <widget class="QCheckBox" name="pix_include_comments" >
-            <property name="toolTip" >
-             <string>Insert comments into generated PIX configuration file</string>
-            </property>
-            <property name="text" >
-             <string>Comment the code</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" >
-           <widget class="QCheckBox" name="pix_use_acl_remarks" >
-            <property name="toolTip" >
-             <string>Use ACL remarks to relate ACL commands and policy rules in the GUI</string>
-            </property>
-            <property name="text" >
-             <string>Use ACL remarks</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" >
-           <widget class="QCheckBox" name="pix_regroup_commands" >
-            <property name="toolTip" >
-             <string>Group PIX commands in the script so that similar commands appear next to each other, just like PIX does it when you use 'show config'</string>
-            </property>
-            <property name="text" >
-             <string>Group similar commands together</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0" >
-           <widget class="QCheckBox" name="pix_use_manual_commit" >
-            <property name="text" >
-             <string>Use manual ACL commit on FWSM</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="0" column="0" >
-        <widget class="QGroupBox" name="buttonGroup10" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="title" >
-          <string>Access lists (requires Firewall Builder for PIX 1.1.6 and later)</string>
-         </property>
-         <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>20</number>
-          </property>
-          <property name="verticalSpacing" >
-           <number>20</number>
-          </property>
-          <item row="0" column="1" >
-           <widget class="QLabel" name="textLabel2_3" >
-            <property name="text" >
-             <string>Clear all access lists then install new ones. This method may interrupt access to the firewall if you manage it remotely via IPSEC tunnel. This is the way access lists were generated in older versions of Firewall Builder for PIX.</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignVCenter</set>
-            </property>
-            <property name="wordWrap" >
-             <bool>true</bool>
-            </property>
-            <property name="buddy" >
-             <cstring>pix_acl_basic</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1" >
-           <widget class="QLabel" name="textLabel3" >
-            <property name="focusPolicy" >
-             <enum>Qt::ClickFocus</enum>
-            </property>
-            <property name="text" >
-             <string>Do not clear access lists and object group, just generate PIX commands for the new ones. Use this optin if you have your own policy installation scripts.</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignVCenter</set>
-            </property>
-            <property name="wordWrap" >
-             <bool>true</bool>
-            </property>
-            <property name="buddy" >
-             <cstring>pix_acl_no_clear</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1" >
-           <spacer>
-            <property name="orientation" >
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeType" >
-             <enum>QSizePolicy::Expanding</enum>
-            </property>
-            <property name="sizeHint" >
-             <size>
-              <width>20</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="2" column="1" >
-           <widget class="QLabel" name="textLabel4" >
-            <property name="text" >
-             <string>"Safety net" method:
-
-First, create temporary access list to permit connections from the management subnet specified below to the firewall and assign it to outside interface. This temporary ACL helps maintain session between management station and the firewall while access lists are reloaded in case connection comes over IPSEC tunnel. Then clear permanent lists, recreate them and assign to interfaces. This method ensures that remote access to the firewall is maintained without interruption  at a cost of slightly larger configuration.</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignVCenter</set>
-            </property>
-            <property name="wordWrap" >
-             <bool>true</bool>
-            </property>
-            <property name="buddy" >
-             <cstring>pix_acl_substitution</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0" colspan="2" >
-           <widget class="QFrame" name="frame5" >
-            <property name="frameShape" >
-             <enum>QFrame::StyledPanel</enum>
-            </property>
-            <property name="frameShadow" >
-             <enum>QFrame::Sunken</enum>
-            </property>
-            <layout class="QGridLayout" >
-             <property name="leftMargin" >
-              <number>11</number>
-             </property>
-             <property name="topMargin" >
-              <number>11</number>
-             </property>
-             <property name="rightMargin" >
-              <number>11</number>
-             </property>
-             <property name="bottomMargin" >
-              <number>11</number>
-             </property>
-             <item row="0" column="0" colspan="3" >
-              <widget class="QLabel" name="pix_acl_temp_lbl" >
-               <property name="text" >
-                <string>Temporary access list should permit access from this address or subnet (use prefix notation to specify subnet, e.g. 192.0.2.0/24):</string>
-               </property>
-               <property name="alignment" >
-                <set>Qt::AlignVCenter</set>
-               </property>
-               <property name="wordWrap" >
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="2" >
-              <spacer>
-               <property name="orientation" >
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeType" >
-                <enum>QSizePolicy::Expanding</enum>
-               </property>
-               <property name="sizeHint" >
-                <size>
-                 <width>120</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="1" column="1" >
-              <widget class="QLineEdit" name="pix_acl_temp_addr" >
-               <property name="sizePolicy" >
-                <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize" >
-                <size>
-                 <width>200</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize" >
-                <size>
-                 <width>120</width>
-                 <height>32767</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0" >
-              <spacer>
-               <property name="orientation" >
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeType" >
-                <enum>QSizePolicy::Expanding</enum>
-               </property>
-               <property name="sizeHint" >
-                <size>
-                 <width>110</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="0" column="0" >
-           <widget class="QRadioButton" name="pix_acl_basic" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text" >
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" >
-           <widget class="QRadioButton" name="pix_acl_no_clear" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text" >
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" >
-           <widget class="QRadioButton" name="pix_acl_substitution" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text" >
-             <string/>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tab2" >
-      <attribute name="title" >
-       <string>Installer</string>
-      </attribute>
-      <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
-       </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
-       </property>
        <item row="2" column="0" >
+        <widget class="QCheckBox" name="mgmt_ssh" >
+         <property name="text" >
+          <string>Always permit ssh access from the management
+workstation with this address:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" >
+        <widget class="QLineEdit" name="mgmt_addr" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize" >
+          <size>
+           <width>32767</width>
+           <height>22</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -695,124 +313,30 @@ First, create temporary access list to permit connections from the management su
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
-           <height>20</height>
+           <height>170</height>
           </size>
          </property>
         </spacer>
        </item>
-       <item row="1" column="0" >
-        <widget class="QGroupBox" name="groupBox1" >
-         <property name="title" >
-          <string>External install script</string>
-         </property>
-         <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <item row="0" column="1" >
-           <widget class="QLineEdit" name="installScript" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0" >
-           <widget class="QLabel" name="textLabel5_2" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text" >
-             <string>Policy install script (using built-in installer if this field is blank):</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-            <property name="wordWrap" >
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" >
-           <widget class="QLabel" name="textLabel6_2" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text" >
-             <string>Command line options for the script:</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-            <property name="wordWrap" >
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1" >
-           <widget class="QLineEdit" name="installScriptArgs" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab2" >
+      <attribute name="title" >
+       <string>Installer</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_3" >
+       <property name="verticalSpacing" >
+        <number>20</number>
+       </property>
        <item row="0" column="0" >
         <widget class="QGroupBox" name="groupBox2" >
          <property name="title" >
           <string>Built-in installer</string>
          </property>
-         <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <item row="1" column="0" >
-           <widget class="QLabel" name="textLabel1_3" >
-            <property name="text" >
-             <string>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-            </property>
-            <property name="wordWrap" >
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
+         <layout class="QGridLayout" name="gridLayout" >
           <item row="0" column="0" >
            <widget class="QLabel" name="textLabel1_2" >
             <property name="text" >
@@ -833,6 +357,19 @@ First, create temporary access list to permit connections from the management su
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="textLabel1_3" >
+            <property name="text" >
+             <string>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -866,12 +403,151 @@ First, create temporary access list to permit connections from the management su
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize" >
+               <size>
+                <width>300</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="3" column="0" colspan="2" >
+           <layout class="QHBoxLayout" name="_2" >
+            <item>
+             <widget class="QLabel" name="textLabel1_8" >
+              <property name="text" >
+               <string>Additional command line parameters for scp</string>
+              </property>
+              <property name="wordWrap" >
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="scpArgs" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize" >
+               <size>
+                <width>300</width>
+                <height>0</height>
+               </size>
+              </property>
              </widget>
             </item>
            </layout>
           </item>
          </layout>
         </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QGroupBox" name="groupBox1" >
+         <property name="title" >
+          <string>External install script</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2" >
+          <item row="0" column="0" >
+           <layout class="QHBoxLayout" name="horizontalLayout" >
+            <item>
+             <widget class="QLabel" name="textLabel5_2" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>Policy install script (using built-in installer if this field is blank):</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+              <property name="wordWrap" >
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="installScript" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize" >
+               <size>
+                <width>300</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0" >
+           <layout class="QHBoxLayout" name="horizontalLayout_2" >
+            <item>
+             <widget class="QLabel" name="textLabel6_2" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>Command line options for the script:</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+              <property name="wordWrap" >
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="installScriptArgs" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize" >
+               <size>
+                <width>300</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -880,16 +556,10 @@ First, create temporary access list to permit connections from the management su
        <string>Prolog/Epilog</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
+       <property name="verticalSpacing" >
+        <number>20</number>
        </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>6</number>
        </property>
        <item row="0" column="0" >
@@ -898,16 +568,7 @@ First, create temporary access list to permit connections from the management su
           <string/>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item row="2" column="0" >
@@ -918,7 +579,7 @@ First, create temporary access list to permit connections from the management su
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>40</width>
               <height>20</height>
@@ -965,16 +626,7 @@ First, create temporary access list to permit connections from the management su
           <string/>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item row="2" column="1" >
@@ -992,7 +644,7 @@ First, create temporary access list to permit connections from the management su
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>40</width>
               <height>20</height>
@@ -1033,16 +685,10 @@ First, create temporary access list to permit connections from the management su
        <string>Timeouts</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
+       <property name="verticalSpacing" >
+        <number>20</number>
        </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>6</number>
        </property>
        <item row="2" column="1" >
@@ -1053,7 +699,7 @@ First, create temporary access list to permit connections from the management su
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>30</height>
@@ -1076,7 +722,7 @@ First, create temporary access list to permit connections from the management su
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>40</width>
            <height>20</height>
@@ -1093,16 +739,7 @@ First, create temporary access list to permit connections from the management su
           <enum>QFrame::Sunken</enum>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>11</number>
-          </property>
-          <property name="topMargin" >
-           <number>11</number>
-          </property>
-          <property name="rightMargin" >
-           <number>11</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>11</number>
           </property>
           <item row="1" column="0" >
@@ -1686,16 +1323,7 @@ First, create temporary access list to permit connections from the management su
              <string/>
             </property>
             <layout class="QGridLayout" >
-             <property name="leftMargin" >
-              <number>6</number>
-             </property>
-             <property name="topMargin" >
-              <number>6</number>
-             </property>
-             <property name="rightMargin" >
-              <number>6</number>
-             </property>
-             <property name="bottomMargin" >
+             <property name="margin" >
               <number>6</number>
              </property>
              <item row="0" column="1" >
@@ -1751,16 +1379,10 @@ First, create temporary access list to permit connections from the management su
        <string>Inspect</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
+       <property name="verticalSpacing" >
+        <number>20</number>
        </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>6</number>
        </property>
        <item row="0" column="0" >
@@ -1799,7 +1421,7 @@ First, create temporary access list to permit connections from the management su
            <property name="sizeType" >
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>40</width>
              <height>20</height>
@@ -1836,7 +1458,7 @@ First, create temporary access list to permit connections from the management su
            <property name="sizeType" >
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>40</width>
              <height>20</height>
@@ -1856,7 +1478,7 @@ First, create temporary access list to permit connections from the management su
            <property name="sizeType" >
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>170</width>
              <height>20</height>
@@ -1879,7 +1501,7 @@ First, create temporary access list to permit connections from the management su
            <property name="sizeType" >
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>40</width>
              <height>20</height>
@@ -1897,27 +1519,27 @@ First, create temporary access list to permit connections from the management su
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="maximumSize" >
+          <size>
+           <width>700</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="tabShape" >
           <enum>QTabWidget::Triangular</enum>
          </property>
          <property name="currentIndex" >
-          <number>16</number>
+          <number>0</number>
+         </property>
+         <property name="usesScrollButtons" >
+          <bool>true</bool>
          </property>
          <widget class="QWidget" name="label660" >
           <attribute name="title" >
            <string>ctiqbe</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="0" column="0" >
@@ -1989,7 +1611,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>80</width>
                <height>20</height>
@@ -2004,16 +1626,7 @@ First, create temporary access list to permit connections from the management su
            <string>dns</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="4" >
@@ -2085,7 +1698,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -2100,16 +1713,7 @@ First, create temporary access list to permit connections from the management su
            <string>esp ike</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="2" >
@@ -2152,7 +1756,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -2167,16 +1771,7 @@ First, create temporary access list to permit connections from the management su
            <string>ftp</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="0" column="4" >
@@ -2236,7 +1831,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -2283,16 +1878,7 @@ First, create temporary access list to permit connections from the management su
            <string>h323 h225</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="6" >
@@ -2371,7 +1957,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>30</width>
                <height>20</height>
@@ -2405,16 +1991,7 @@ First, create temporary access list to permit connections from the management su
            <string>h323 ras</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="6" >
@@ -2493,7 +2070,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -2527,16 +2104,7 @@ First, create temporary access list to permit connections from the management su
            <string>http</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="6" >
@@ -2615,7 +2183,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -2649,16 +2217,7 @@ First, create temporary access list to permit connections from the management su
            <string>icmp error</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="2" >
@@ -2701,7 +2260,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -2716,16 +2275,7 @@ First, create temporary access list to permit connections from the management su
            <string>ils</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="6" >
@@ -2804,7 +2354,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -2838,16 +2388,7 @@ First, create temporary access list to permit connections from the management su
            <string>mgcp</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="3" column="0" colspan="3" >
@@ -2945,7 +2486,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -2961,7 +2502,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>160</width>
                <height>20</height>
@@ -2976,16 +2517,7 @@ First, create temporary access list to permit connections from the management su
            <string>pptp</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="4" >
@@ -3038,7 +2570,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -3072,16 +2604,7 @@ First, create temporary access list to permit connections from the management su
            <string>rsh</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="4" >
@@ -3131,7 +2654,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -3165,16 +2688,7 @@ First, create temporary access list to permit connections from the management su
            <string>rtsp</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="4" >
@@ -3227,7 +2741,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -3261,16 +2775,7 @@ First, create temporary access list to permit connections from the management su
            <string>sip</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="6" >
@@ -3349,7 +2854,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -3383,16 +2888,7 @@ First, create temporary access list to permit connections from the management su
            <string>sip udp</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="4" >
@@ -3442,7 +2938,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -3476,16 +2972,7 @@ First, create temporary access list to permit connections from the management su
            <string>skinny</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="6" >
@@ -3564,7 +3051,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -3598,16 +3085,7 @@ First, create temporary access list to permit connections from the management su
            <string>smtp</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="6" >
@@ -3686,7 +3164,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -3720,16 +3198,7 @@ First, create temporary access list to permit connections from the management su
            <string>sqlnet</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="6" >
@@ -3808,7 +3277,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -3842,16 +3311,7 @@ First, create temporary access list to permit connections from the management su
            <string>tftp</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="4" >
@@ -3904,7 +3364,7 @@ First, create temporary access list to permit connections from the management su
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -3943,7 +3403,7 @@ First, create temporary access list to permit connections from the management su
          <property name="sizeType" >
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>10</height>
@@ -3957,35 +3417,17 @@ First, create temporary access list to permit connections from the management su
       <attribute name="title" >
        <string>Logging</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
-       </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
-       </property>
+      <layout class="QGridLayout" name="gridLayout_5" >
        <item row="0" column="0" >
         <widget class="QGroupBox" name="frame171" >
          <property name="title" >
-          <string>Syslog</string>
+          <string/>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
+          <property name="verticalSpacing" >
+           <number>20</number>
           </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item row="0" column="1" colspan="2" >
@@ -4012,7 +3454,7 @@ First, create temporary access list to permit connections from the management su
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>40</width>
               <height>20</height>
@@ -4107,16 +3549,7 @@ First, create temporary access list to permit connections from the management su
              <string>Set device id for syslog messages (v6.3 and later):</string>
             </property>
             <layout class="QGridLayout" >
-             <property name="leftMargin" >
-              <number>6</number>
-             </property>
-             <property name="topMargin" >
-              <number>6</number>
-             </property>
-             <property name="rightMargin" >
-              <number>6</number>
-             </property>
-             <property name="bottomMargin" >
+             <property name="margin" >
               <number>6</number>
              </property>
              <item row="1" column="1" >
@@ -4154,7 +3587,7 @@ First, create temporary access list to permit connections from the management su
                <property name="sizeType" >
                 <enum>QSizePolicy::Expanding</enum>
                </property>
-               <property name="sizeHint" >
+               <property name="sizeHint" stdset="0" >
                 <size>
                  <width>40</width>
                  <height>20</height>
@@ -4207,16 +3640,7 @@ First, create temporary access list to permit connections from the management su
           <string>Other logging destinations and levels:</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item row="0" column="0" >
@@ -4250,7 +3674,7 @@ First, create temporary access list to permit connections from the management su
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>40</height>
@@ -4260,21 +3684,294 @@ First, create temporary access list to permit connections from the management su
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tab1" >
+      <attribute name="title" >
+       <string>Script</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <property name="verticalSpacing" >
+        <number>20</number>
+       </property>
+       <property name="margin" >
+        <number>6</number>
+       </property>
+       <item row="1" column="0" >
+        <widget class="QGroupBox" name="frame170" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title" >
+          <string/>
+         </property>
+         <layout class="QGridLayout" >
+          <property name="margin" >
+           <number>6</number>
+          </property>
+          <item row="0" column="0" >
+           <widget class="QCheckBox" name="pix_include_comments" >
+            <property name="toolTip" >
+             <string>Insert comments into generated PIX configuration file</string>
+            </property>
+            <property name="text" >
+             <string>Comment the code</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QCheckBox" name="pix_use_acl_remarks" >
+            <property name="toolTip" >
+             <string>Use ACL remarks to relate ACL commands and policy rules in the GUI</string>
+            </property>
+            <property name="text" >
+             <string>Use ACL remarks</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" >
+           <widget class="QCheckBox" name="pix_regroup_commands" >
+            <property name="toolTip" >
+             <string>Group PIX commands in the script so that similar commands appear next to each other, just like PIX does it when you use 'show config'</string>
+            </property>
+            <property name="text" >
+             <string>Group similar commands together</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" >
+           <widget class="QCheckBox" name="pix_use_manual_commit" >
+            <property name="text" >
+             <string>Use manual ACL commit on FWSM</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0" >
+        <widget class="QGroupBox" name="buttonGroup10" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title" >
+          <string/>
+         </property>
+         <layout class="QGridLayout" >
+          <property name="margin" >
+           <number>6</number>
+          </property>
+          <property name="spacing" >
+           <number>20</number>
+          </property>
+          <item row="0" column="1" >
+           <widget class="QLabel" name="textLabel2_3" >
+            <property name="text" >
+             <string>Clear all access lists then install new ones. This method may interrupt access to the firewall if you manage it remotely via IPSEC tunnel. This is the way access lists were generated in older versions of Firewall Builder for PIX.</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignVCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>true</bool>
+            </property>
+            <property name="buddy" >
+             <cstring>pix_acl_basic</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" >
+           <widget class="QLabel" name="textLabel3" >
+            <property name="focusPolicy" >
+             <enum>Qt::ClickFocus</enum>
+            </property>
+            <property name="text" >
+             <string>Do not clear access lists and object group, just generate PIX commands for the new ones. Use this optin if you have your own policy installation scripts.</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignVCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>true</bool>
+            </property>
+            <property name="buddy" >
+             <cstring>pix_acl_no_clear</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1" >
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType" >
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0" >
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="1" >
+           <widget class="QLabel" name="textLabel4" >
+            <property name="text" >
+             <string>"Safety net" method:
+
+First, create temporary access list to permit connections from the management subnet specified below to the firewall and assign it to outside interface. This temporary ACL helps maintain session between management station and the firewall while access lists are reloaded in case connection comes over IPSEC tunnel. Then clear permanent lists, recreate them and assign to interfaces. This method ensures that remote access to the firewall is maintained without interruption  at a cost of slightly larger configuration.</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignVCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>true</bool>
+            </property>
+            <property name="buddy" >
+             <cstring>pix_acl_substitution</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" colspan="2" >
+           <widget class="QFrame" name="frame5" >
+            <property name="frameShape" >
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow" >
+             <enum>QFrame::Sunken</enum>
+            </property>
+            <layout class="QGridLayout" >
+             <property name="margin" >
+              <number>11</number>
+             </property>
+             <item row="0" column="0" colspan="3" >
+              <widget class="QLabel" name="pix_acl_temp_lbl" >
+               <property name="text" >
+                <string>Temporary access list should permit access from this address or subnet (use prefix notation to specify subnet, e.g. 192.0.2.0/24):</string>
+               </property>
+               <property name="alignment" >
+                <set>Qt::AlignVCenter</set>
+               </property>
+               <property name="wordWrap" >
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2" >
+              <spacer>
+               <property name="orientation" >
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType" >
+                <enum>QSizePolicy::Expanding</enum>
+               </property>
+               <property name="sizeHint" stdset="0" >
+                <size>
+                 <width>120</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="1" column="1" >
+              <widget class="QLineEdit" name="pix_acl_temp_addr" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize" >
+                <size>
+                 <width>200</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize" >
+                <size>
+                 <width>120</width>
+                 <height>32767</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0" >
+              <spacer>
+               <property name="orientation" >
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType" >
+                <enum>QSizePolicy::Expanding</enum>
+               </property>
+               <property name="sizeHint" stdset="0" >
+                <size>
+                 <width>110</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="0" >
+           <widget class="QRadioButton" name="pix_acl_basic" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QRadioButton" name="pix_acl_no_clear" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" >
+           <widget class="QRadioButton" name="pix_acl_substitution" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="label638" >
       <attribute name="title" >
        <string>PIX Options</string>
       </attribute>
       <layout class="QVBoxLayout" >
-       <property name="leftMargin" >
-        <number>6</number>
+       <property name="spacing" >
+        <number>20</number>
        </property>
-       <property name="topMargin" >
-        <number>6</number>
-       </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>6</number>
        </property>
        <item>
@@ -4286,16 +3983,10 @@ First, create temporary access list to permit connections from the management su
           <enum>QFrame::Plain</enum>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>11</number>
+          <property name="verticalSpacing" >
+           <number>20</number>
           </property>
-          <property name="topMargin" >
-           <number>11</number>
-          </property>
-          <property name="rightMargin" >
-           <number>11</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>11</number>
           </property>
           <item row="0" column="0" colspan="2" >
@@ -4490,7 +4181,7 @@ the packet should go to, and which is the next hop
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>20</width>
               <height>20</height>
@@ -4508,6 +4199,9 @@ the packet should go to, and which is the next hop
        <string>IPv6</string>
       </attribute>
       <layout class="QGridLayout" >
+       <property name="verticalSpacing" >
+        <number>20</number>
+       </property>
        <item row="1" column="0" >
         <widget class="QLabel" name="label_2" >
          <property name="text" >
@@ -4520,7 +4214,7 @@ the packet should go to, and which is the next hop
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>40</width>
            <height>20</height>
@@ -4547,7 +4241,7 @@ the packet should go to, and which is the next hop
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>40</height>

@@ -1,11 +1,63 @@
+2008-10-08  vadim  <vadim@vk.crocodile.org>
+
+	* PrefsDialog.cpp (PrefsDialog::accept): Added GUI control for the
+	path to scp utility used by built-in policy installer
+
+	* All compilers: firewall object can be specified by its ID in
+	addition to by name. Command line option "-i" tells compiler that
+	the last parameter of the command line is object ID. This works
+	reliably when firewall object name contains non-ascii characters
+	and the program runs under locale using 8 bit characters. Built-in
+	installer now uses this method while calling all policy compilers.
+
 2008-10-07  vadim  <vadim@vk.crocodile.org>
+
+	* pf.cpp, ipf.cpp: Policy compilers for pf and ipf use file name
+	and path specified with "-o" command line option for the name and
+	path for all .fw and .conf files they generate.
+
+	* instDialog.cpp: built-in installer finds all generated files
+	when user specifies alternative name (possibly full path) for the
+	generated script.
+
+	* FirewallInstaller.cpp (FirewallInstaller::getGeneratedFileFullPath):
+	built-in installer works properly when firewall name contains
+	non-english characters. In this case generated firewall script
+	also has name that contains non-english characters.
 
 	* FWWindowPrint.cpp, RuleSetView.cpp, FWBSettings.h,
 	ProjectPanel_state_ops.cpp: got rid of references to
 	InterfacePolicy class; build fixes for FreeBSD 7 (should fix
 	compile problems on other systems too, such as Solaris)
 
+2008-10-06  vadim  <vadim@vk.crocodile.org>
+
+	* SSHPIX.cpp (SSHPIX::stateMachine): fixed crash in built-in
+	installer that happened when existing PIX configuration was saved
+	before loading new one.
+
+	* pixAdvancedDialog.cpp (pixAdvancedDialog::accept): fixed crash
+	that happened when user opened PIX firewall "advanced" settings
+	dialog and then tried to save changes by clicking OK.
+
+	* FirewallInstaller.h (class FirewallInstaller): all installer
+	logic moved to separate classes FirewallInstaller,
+	FirewallInstallerCisco and FirewallInstallerUnx. These classes
+	launch background process (via SSHSession or QProcess) and control
+	all steps of policy installation and activation, but do not deal
+	with the UI. This provides for good separation of functions
+	between UI and core logic classes. The code is much cleaner and
+	easier to maintain now.
+
 2008-10-05  vadim  <vadim@vk.crocodile.org>
+
+	* instDialog_unx.cpp (instDialog::copyFileOnUnx): Using
+	scp (pscp.exe on windows) to copy files to the firewall. This
+	helps improve performance of the installer. This fixes bug
+	#2135827: "Store a copy of fwb file..." very slow
+
+	* instDialog.cpp (instDialog::instDialog): refactored installer
+	classes to make code more manageable.
 
 	* VERSION: started 3.0.2
 

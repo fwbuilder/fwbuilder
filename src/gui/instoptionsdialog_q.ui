@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>578</width>
-    <height>819</height>
+    <width>588</width>
+    <height>739</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -31,16 +31,7 @@
    <bool>false</bool>
   </property>
   <layout class="QGridLayout" >
-   <property name="leftMargin" >
-    <number>4</number>
-   </property>
-   <property name="topMargin" >
-    <number>4</number>
-   </property>
-   <property name="rightMargin" >
-    <number>4</number>
-   </property>
-   <property name="bottomMargin" >
+   <property name="margin" >
     <number>4</number>
    </property>
    <item row="0" column="0" >
@@ -120,7 +111,7 @@
         <property name="sizeType" >
          <enum>QSizePolicy::Expanding</enum>
         </property>
-        <property name="sizeHint" >
+        <property name="sizeHint" stdset="0" >
          <size>
           <width>230</width>
           <height>20</height>
@@ -186,7 +177,7 @@
            <property name="sizeType" >
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>140</width>
              <height>20</height>
@@ -209,7 +200,7 @@
            <property name="sizeType" >
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>30</width>
              <height>20</height>
@@ -312,7 +303,7 @@
          </sizepolicy>
         </property>
         <property name="text" >
-         <string>Alternative address to communicate with the firewall:</string>
+         <string>Address that will be used to communicate with the firewall:</string>
         </property>
         <property name="alignment" >
          <set>Qt::AlignVCenter</set>
@@ -347,22 +338,13 @@
          </sizepolicy>
         </property>
         <property name="title" >
-         <string>Options for PIX and fwsm firewalls :</string>
+         <string/>
         </property>
         <property name="flat" >
          <bool>false</bool>
         </property>
         <layout class="QGridLayout" >
-         <property name="leftMargin" >
-          <number>0</number>
-         </property>
-         <property name="topMargin" >
-          <number>0</number>
-         </property>
-         <property name="rightMargin" >
-          <number>0</number>
-         </property>
-         <property name="bottomMargin" >
+         <property name="margin" >
           <number>0</number>
          </property>
          <item row="5" column="0" colspan="2" >
@@ -477,7 +459,7 @@
            <property name="sizeType" >
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>40</width>
              <height>20</height>
@@ -493,7 +475,7 @@
            <property name="sizeType" >
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>40</width>
              <height>20</height>

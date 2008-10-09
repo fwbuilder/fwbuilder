@@ -90,6 +90,7 @@ static int              verbose        = 0;
 static int              test_mode      = 0;
 static bool             ipv4_run       = true;
 static bool             ipv6_run       = true;
+static bool             fw_by_id       = false;
 
 FWObjectDatabase       *objdb = NULL;
 
@@ -127,10 +128,13 @@ int main(int argc, char * const * argv)
 
     int   opt;
 
-    while( (opt=getopt(argc,argv,"x:vVf:d:r:tLo:46")) != EOF )
+    while( (opt=getopt(argc,argv,"x:ivVf:d:r:tLo:46")) != EOF )
     {
         switch(opt)
         {
+        case 'i':
+            fw_by_id = true;
+            break;
         case '4':
             ipv4_run = true;
             ipv6_run = false;
@@ -192,11 +196,6 @@ int main(int argc, char * const * argv)
 
     fwobjectname = strdup( argv[optind++] );
 
-    if (ofname.empty())
-    {
-        ofname=string(fwobjectname)+".fw";
-    }
-
     if (filename==NULL || fwobjectname==NULL)
     {
         usage(argv[0]);
@@ -240,16 +239,23 @@ int main(int argc, char * const * argv)
 
         if (verbose) cout << " done\n";
 
-/*  why do I do this ? 
+        /*
+         *  some general sanity checks first
+         */
+	Firewall* fw;
+        if (fw_by_id)
+        {
+            // fwobjectname is actually object id
+            fw = Firewall::cast(
+                objdb->findInIndex(objdb->getIntId(fwobjectname)));
+            fwobjectname = fw->getName().c_str();
+        }
+        else
+            fw = objdb->findFirewallByName(fwobjectname);
 
-        FWObject *slib = objdb->findInIndex("syslib000");
-        if ( slib->isReadOnly()) slib->setReadOnly(false);
-*/
+        if (ofname.empty())
+            ofname = string(fwobjectname)+".fw";
 
-/*
- *  some general sanity checks first
- */
-        Firewall*  fw=objdb->findFirewallByName(fwobjectname);
         FWOptions* options=fw->getOptionsObject();
 
         string fwvers = fw->getStr("version");

@@ -11,6 +11,7 @@ fwb_ipf \- Policy compiler for ipfilter
 .B [-vVx]
 .B [-d wdir]
 .B [-o output.fw]
+.B [-i]
 .B -f data_file.xml
 object_name
 
@@ -55,6 +56,10 @@ Be verbose: compiler prints diagnostic messages when it works.
 
 .IP "-V"
 Print version number and quit.
+
+.IP "-i"
+When this option is present, the last argument on the command line is
+supposed to be firewall object ID rather than its name
 
 .IP "-x"
 Generate debugging information while working. This option is intended
