@@ -115,7 +115,7 @@ void FirewallInstaller::packSCPArgs(const QString &file_name,
 
     if (!cnf->user.isEmpty() && scp.toLower().indexOf("pscp.exe")!=-1)
     {
-        args.push_back("-ssh");
+//        args.push_back("-ssh");
         args.push_back("-pw");
         args.push_back(cnf->pwd);
     }

@@ -356,17 +356,16 @@ QString instDialog::replaceMacrosInCommand(const QString &ocmd)
  * and use only the file name for %FWSCRIPT%
  */
     QString cmd = ocmd;
-
-    QString clean_conffile = cnf.conffile.section(QDir::separator(),-1);
+    QString fwbscript = QFileInfo(cnf.conffile).fileName();
     if (fwbdebug)
     {
         qDebug("Macro substitutions:");
-        qDebug(QString("  cnf.conffile=%1").arg(cnf.conffile).toAscii().constData());
-        qDebug(QString("  %%FWSCRIPT%%=%1").arg(clean_conffile).toAscii().constData());
-        qDebug(QString("  %%FWDIR%%=%1").arg(cnf.fwdir).toAscii().constData());
+        qDebug("  cnf.conffile=%s", cnf.conffile.toAscii().constData());
+        qDebug("  %%FWSCRIPT%%=%s", fwbscript.toAscii().constData());
+        qDebug("  %%FWDIR%%=%s", cnf.fwdir.toAscii().constData());
     }
 
-    cmd.replace("%FWSCRIPT%", clean_conffile);
+    cmd.replace("%FWSCRIPT%", fwbscript);
     cmd.replace("%FWDIR%", cnf.fwdir);
     cmd.replace("%FWBPROMPT%", fwb_prompt);
 
@@ -417,31 +416,6 @@ bool instDialog::testFirewall(Firewall *fw)
         addToLog("Please configure directory path to the secure \n "
                  "shell utility installed on your machine using \n"
                  "Preferences dialog\n");
-        return false;
-    }
-
-    QString generated_file = FirewallInstaller::getGeneratedFileFullPath(fw);
-
-    if (fwbdebug)
-        qDebug("Seeking generated file %s",
-               generated_file.toLocal8Bit().constData());
-    
-    // Note that compilers just take the name of the firewall from XML
-    // file and use that for the file name. So, if the object name in
-    // XML file is stored in Utf8, the file name will be composed in
-    // Utf8 regardless of the OS locale. The reason for this is that
-    // compilers should not depend on QT, so we don't have easy way to
-    // convert between encodings in compilers.
-
-    const char *generated_file_utf8 = generated_file.toUtf8().constData();
-    if (access(generated_file_utf8, R_OK))
-    {
-/* need to recompile */
-        addToLog("\n");
-        addToLog(tr("Can not open generated firewall configuration file %1.\n"
-                    "Recompile the firewall or check file permissions.\n")
-                 .arg(QString(generated_file)));
-        if (fwbdebug) qDebug("Firewall isn't compiled.");
         return false;
     }
 
