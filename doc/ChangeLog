@@ -1,3 +1,9 @@
+2008-10-10  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* iosacl.cpp (main): fixed bug #2154906 "Post script is missing /
+	Cisco ACL handling". Prolog/epilog sections were not added to the
+	generated script for Cisco IOS ACLs.
+
 2008-10-09  vadim  <vadim@vk.crocodile.org>
 
 	* ipt.cpp (main): Compiler for iptables uses QT functions to

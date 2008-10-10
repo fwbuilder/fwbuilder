@@ -475,7 +475,7 @@ int main(int argc, char * const * argv)
         ofile << "! Prolog script:" << endl;
         ofile << "!" << endl;
 
-        string pre_hook= fw->getOptionsObject()->getStr("ios_prolog_script");
+        string pre_hook= fw->getOptionsObject()->getStr("iosacl_prolog_script");
         ofile << pre_hook << endl;
 
         ofile << "!" << endl;
@@ -495,7 +495,7 @@ int main(int argc, char * const * argv)
         ofile << "! Epilog script:" << endl;
         ofile << "!" << endl;
 
-        string post_hook= fw->getOptionsObject()->getStr("ios_epilog_script");
+        string post_hook= fw->getOptionsObject()->getStr("iosacl_epilog_script");
         ofile << post_hook << endl;
 
         ofile << endl;
