@@ -91,6 +91,9 @@ bool instDialog::runCompiler(Firewall *fw)
 
     addToLog( args.join(" ") + "\n" );
 
+    QTextCodec::setCodecForCStrings(NULL);
+    QTextCodec::setCodecForLocale(NULL);
+
     // Launch compiler in the background
     QString path = args.at(0);
     args.pop_front();
@@ -231,7 +234,8 @@ Can't compile firewall policy."),
     // could not then find file created by the compiler if fw name had
     // non-ascii characters.
     args.push_back("-o");
-    args.push_back(FirewallInstaller::getGeneratedFileFullPath(fw));
+    args.push_back(
+        FirewallInstaller::getGeneratedFileFullPath(fw));
  
     args.push_back("-i");
 

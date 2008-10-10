@@ -41,6 +41,7 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Management.h"
 
+#include <qdir.h>
 #include <qfileinfo.h>
 #include <qstring.h>
 
@@ -127,7 +128,6 @@ void FirewallInstaller::packSCPArgs(const QString &file_name,
 
     if (!cnf->scpArgs.isEmpty())
         args += cnf->scpArgs.split(" ", QString::SkipEmptyParts);
-    //if (cnf->verbose) args.push_back("-v");
 
     args.push_back("-q");
 
@@ -248,8 +248,8 @@ QString FirewallInstaller::getActivationCmd()
 
     string optpath="activation/";
 
-    if (cnf->user=="root")   optpath += "root/";
-    else                     optpath += "reg_user/";
+    if (cnf->user=="root") optpath += "root/";
+    else                   optpath += "reg_user/";
 
     if (cnf->testRun)
     {
@@ -259,12 +259,12 @@ QString FirewallInstaller::getActivationCmd()
     } else
     {
         optpath += "run/";
-        if (cnf->compressScript)  optpath += "compression/";
+        if (cnf->compressScript) optpath += "compression/";
         else                     optpath += "no_compression/";
     }
 
-    cmd=Resources::getTargetOptionStr(cnf->fwobj->getStr("host_OS"),
-                                      optpath).c_str();
+    cmd = Resources::getTargetOptionStr(cnf->fwobj->getStr("host_OS"),
+                                        optpath).c_str();
     return inst_dlg->replaceMacrosInCommand(cmd);
 }
 
@@ -286,9 +286,8 @@ QString FirewallInstaller::getGeneratedFileFullPath(Firewall *fw)
     if (!gen_file_info.isAbsolute())
     {
         QFileInfo fwb_file_info = QFileInfo(mw->getRCS()->getFileName());
-        QString fwb_dir_path = fwb_file_info.dir().path();
-        generated_file = fwb_dir_path + "/" + generated_file;
+        generated_file = fwb_file_info.dir().path() + "/" + generated_file;
     }
-    return generated_file;
-} 
+    return QDir::toNativeSeparators(generated_file);
+}
  
