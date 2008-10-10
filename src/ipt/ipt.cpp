@@ -72,6 +72,7 @@
 #include "fwbuilder/IPv6.h"
 
 #include <QApplication>
+#include <QStringList>
 
 #ifdef HAVE_GETOPT_H
   #include <getopt.h>
@@ -91,10 +92,10 @@ using namespace fwcompiler;
 
 int fwbdebug = 0;
 
-static string           filename       = NULL;
-static string           wdir           = NULL;
-static string           fwobjectname   = NULL;
-static string           fw_file_name   = "";
+static string           filename;
+static string           wdir;
+static string           fwobjectname;
+static string           fw_file_name;
 static int              dl             = 0;
 static int              drp            = -1;
 static bool             omit_timestamp = false;
@@ -315,7 +316,7 @@ int main(int argc, char **argv)
 
     QStringList args = app.arguments();
 
-    if (args.size()<1)
+    if (args.size()<=1)
     {
         usage(argv[0]);
         exit(1);
