@@ -967,7 +967,8 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         }
 
         QFileInfo fw_file_info(fw_file_name);
-        script << MANIFEST_MARKER << "* " << fw_file_info.fileName() << endl;
+        script << MANIFEST_MARKER << "* "
+               << fw_file_info.fileName() << endl;
         script << "#" << endl;
         script << "#" << endl;
         script << "# Compiled for iptables " << fw_version.c_str() << endl;

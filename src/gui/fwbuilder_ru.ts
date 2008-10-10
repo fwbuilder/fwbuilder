@@ -3613,7 +3613,7 @@ All changes will be lost if you do this.
     <message>
         <location filename="aboutdialog_q.ui" line="477"/>
         <source>Copyright 2002-2008  NetCitadel, LLC</source>
-        <translation type="unfinished">Copyright 2002-2006 (C) NetCitadel, LLC {2002-2008 ?}</translation>
+        <translation>Copyright 2002-2008 (C) NetCitadel, LLC</translation>
     </message>
     <message>
         <location filename="aboutdialog_q.ui" line="523"/>
@@ -5548,7 +5548,7 @@ shell utilities installed on your machine using Preferences dialog</source>
 Определите в настройках программы пути к утилитам scp и ssh.</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="1020"/>
+        <location filename="FWWindowPrint.cpp" line="971"/>
         <source>&amp;Continue</source>
         <translation>Продолжить</translation>
     </message>
@@ -5588,22 +5588,22 @@ Do you want to recompile it before you install ?</source>
         <translation type="obsolete">Добавление файла %1 в систему контроля версий</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="1135"/>
+        <location filename="FWWindowPrint.cpp" line="1086"/>
         <source>Legend</source>
         <translation>Условные обозначения</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="665"/>
+        <location filename="FWWindowPrint.cpp" line="616"/>
         <source>Objects</source>
         <translation>Объекты</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="1019"/>
+        <location filename="FWWindowPrint.cpp" line="970"/>
         <source>Printing aborted</source>
         <translation>Печать отменена</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="1023"/>
+        <location filename="FWWindowPrint.cpp" line="974"/>
         <source>Printing completed</source>
         <translation>Печать завершена</translation>
     </message>
@@ -5616,12 +5616,12 @@ Do you want to recompile it before you install ?</source>
         <translation type="obsolete">Установить</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="948"/>
+        <location filename="FWWindowPrint.cpp" line="899"/>
         <source>Groups</source>
         <translation>Группы</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="994"/>
+        <location filename="FWWindowPrint.cpp" line="945"/>
         <source>EMPTY</source>
         <translation>Пусто</translation>
     </message>
@@ -5696,7 +5696,7 @@ objects that they refer to moved in it:</source>
         <translation type="obsolete">Маршрутизация</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="1027"/>
+        <location filename="FWWindowPrint.cpp" line="978"/>
         <source>Printing &lt;ed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6042,23 +6042,23 @@ objects that they refer to moved in it:</source>
 <context>
     <name>FirewallInstallerUnx</name>
     <message>
-        <location filename="FirewallInstallerUnx.cpp" line="142"/>
+        <location filename="FirewallInstallerUnx.cpp" line="135"/>
         <source>Generated script file %1 not found.</source>
         <translation>Сгенерированный компилятором файл %1 не найден.</translation>
     </message>
     <message>
-        <location filename="FirewallInstallerUnx.cpp" line="143"/>
+        <location filename="FirewallInstallerUnx.cpp" line="136"/>
         <source>&amp;Continue</source>
         <translation>Продолжить работу</translation>
     </message>
     <message>
-        <location filename="FirewallInstallerUnx.cpp" line="229"/>
+        <location filename="FirewallInstallerUnx.cpp" line="222"/>
         <source>Copying %1 -&gt; %2:%3
 </source>
         <translation>Копируется файл %1 -&gt; %2:%3</translation>
     </message>
     <message>
-        <location filename="FirewallInstallerUnx.cpp" line="286"/>
+        <location filename="FirewallInstallerUnx.cpp" line="279"/>
         <source>Error: Failed to start program:</source>
         <translation>Не удалось запустить программу:</translation>
     </message>
@@ -7682,7 +7682,7 @@ interface &apos;%2&apos; will stay the same.)</source>
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="PrefsDialog.cpp" line="307"/>
+        <location filename="PrefsDialog.cpp" line="308"/>
         <source>Find working directory</source>
         <translation>Определить рабочий каталог</translation>
     </message>
@@ -7691,12 +7691,12 @@ interface &apos;%2&apos; will stay the same.)</source>
         <translation type="obsolete">Определить утилиту scp</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="316"/>
+        <location filename="PrefsDialog.cpp" line="317"/>
         <source>Find Secure Shell utility</source>
         <translation>Определить утилиту ssh</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="366"/>
+        <location filename="PrefsDialog.cpp" line="376"/>
         <source>Find add-on library</source>
         <translation>Определить библиотеку дополнений</translation>
     </message>
@@ -7705,19 +7705,24 @@ interface &apos;%2&apos; will stay the same.)</source>
         <translation type="obsolete">Выберите цвет</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="511"/>
+        <location filename="PrefsDialog.cpp" line="522"/>
         <source>Your version of Firewall Builder is up to date.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="517"/>
+        <location filename="PrefsDialog.cpp" line="528"/>
         <source>A new version of Firewall Builder is available at http://www.fwbuilder.org</source>
+        <translation type="unfinished">Новая версия программы может быть загружена с http://www.fwbuilder.org</translation>
+    </message>
+    <message>
+        <location filename="PrefsDialog.cpp" line="535"/>
+        <source>Error checking for software updates:
+%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="524"/>
-        <source>Error checking for software updates:
-%1</source>
+        <location filename="PrefsDialog.cpp" line="326"/>
+        <source>Find SCP utility</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -8989,72 +8994,72 @@ Are you sure you want to open it?</source>
         <translation type="obsolete">Серый</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="98"/>
+        <location filename="FWWindowPrint.cpp" line="97"/>
         <source>Firewall</source>
         <translation>Межсетевой экран</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="99"/>
+        <location filename="FWWindowPrint.cpp" line="98"/>
         <source>Host</source>
         <translation>Узел</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="101"/>
+        <location filename="FWWindowPrint.cpp" line="100"/>
         <source>Address</source>
         <translation>Адрес</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="102"/>
+        <location filename="FWWindowPrint.cpp" line="101"/>
         <source>Addres Range</source>
         <translation>Диапазон адресов</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="103"/>
+        <location filename="FWWindowPrint.cpp" line="102"/>
         <source>Interface</source>
         <translation>Интерфейс</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="104"/>
+        <location filename="FWWindowPrint.cpp" line="103"/>
         <source>Network</source>
         <translation>Подсеть</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="105"/>
+        <location filename="FWWindowPrint.cpp" line="104"/>
         <source>Group of objects</source>
         <translation>Группа объектов</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="106"/>
+        <location filename="FWWindowPrint.cpp" line="105"/>
         <source>Custom Service</source>
         <translation>Пользовательский сервис</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="107"/>
+        <location filename="FWWindowPrint.cpp" line="106"/>
         <source>IP Service</source>
         <translation>IP сервис</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="109"/>
+        <location filename="FWWindowPrint.cpp" line="108"/>
         <source>ICMP Service</source>
         <translation>ICMP сервис</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="110"/>
+        <location filename="FWWindowPrint.cpp" line="109"/>
         <source>TCP Service</source>
         <translation>TCP сервис</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="111"/>
+        <location filename="FWWindowPrint.cpp" line="110"/>
         <source>UDP Service</source>
         <translation>UDP сервис</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="112"/>
+        <location filename="FWWindowPrint.cpp" line="111"/>
         <source>Group of services</source>
         <translation>Группа сервисов</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="113"/>
+        <location filename="FWWindowPrint.cpp" line="112"/>
         <source>Time Interval</source>
         <translation>Интервал времени</translation>
     </message>
@@ -9064,34 +9069,34 @@ Are you sure you want to open it?</source>
         <translation>Страница %1</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="292"/>
+        <location filename="FWWindowPrint.cpp" line="284"/>
         <source>Firewall name: %1</source>
         <translation>Название межсетевого экрана: %1</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="293"/>
+        <location filename="FWWindowPrint.cpp" line="285"/>
         <source>Platform: </source>
         <translation>Тип межсетевого экрана: </translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="294"/>
+        <location filename="FWWindowPrint.cpp" line="286"/>
         <source>Version: </source>
         <translation>Версия межсетевого экрана: </translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="295"/>
+        <location filename="FWWindowPrint.cpp" line="287"/>
         <source>Host OS: </source>
         <translation>Операционная система межсетевого экрана: </translation>
     </message>
     <message>
         <location filename="FWWindowPrint.cpp" line="298"/>
-        <source>Global Policy</source>
-        <translation type="obsolete">Основной набор правил</translation>
+        <source>Policy: </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="FWWindowPrint.cpp" line="361"/>
         <source>Interface %1</source>
-        <translation>Интерфейс %1</translation>
+        <translation type="obsolete">Интерфейс %1</translation>
     </message>
     <message>
         <location filename="FWWindowPrint.cpp" line="377"/>
@@ -9757,12 +9762,7 @@ Builder GUI and save back to file again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="306"/>
-        <source>Policy: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="FWWindowPrint.cpp" line="392"/>
+        <location filename="FWWindowPrint.cpp" line="343"/>
         <source>NAT: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -9838,19 +9838,19 @@ Builder GUI and save back to file again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="1058"/>
+        <location filename="instDialog_ui_ops.cpp" line="1055"/>
         <source>Only one interface of the firewall &apos;%1&apos; must be marked as management interface.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="1066"/>
+        <location filename="instDialog_ui_ops.cpp" line="1063"/>
         <source>One of the interfaces of the firewall &apos;%1&apos; must be marked as management interface.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="1074"/>
+        <location filename="instDialog_ui_ops.cpp" line="1071"/>
         <source>Management interface does not have IP address, can not communicate with the firewall.
 </source>
         <translation type="unfinished"></translation>
@@ -10723,7 +10723,7 @@ access access lists generated for it.</source>
         <translation>Исходный</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3381"/>
+        <location filename="RuleSetView.cpp" line="3379"/>
         <source>Insert Rule</source>
         <translation>Вставить правило</translation>
     </message>
@@ -10733,7 +10733,7 @@ access access lists generated for it.</source>
         <translation>Вставить правило из буфера обмена</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3433"/>
+        <location filename="RuleSetView.cpp" line="3431"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
@@ -10775,67 +10775,67 @@ access access lists generated for it.</source>
         <translation type="obsolete">Цветовая метка:</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3383"/>
+        <location filename="RuleSetView.cpp" line="3381"/>
         <source>Add Rule Below</source>
         <translation>Добавить правило ниже</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3386"/>
+        <location filename="RuleSetView.cpp" line="3384"/>
         <source>Remove Rule</source>
         <translation>Удалить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3387"/>
+        <location filename="RuleSetView.cpp" line="3385"/>
         <source>Remove Rules</source>
         <translation>Удалить правила</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3390"/>
+        <location filename="RuleSetView.cpp" line="3388"/>
         <source>Move Rule</source>
         <translation>Переместить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3391"/>
+        <location filename="RuleSetView.cpp" line="3389"/>
         <source>Move Rules</source>
         <translation>Переместить правила</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3397"/>
+        <location filename="RuleSetView.cpp" line="3395"/>
         <source>Copy Rule</source>
         <translation>Копировать правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3399"/>
+        <location filename="RuleSetView.cpp" line="3397"/>
         <source>Cut Rule</source>
         <translation>Вырезать правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3401"/>
+        <location filename="RuleSetView.cpp" line="3399"/>
         <source>Paste Rule Above</source>
         <translation>Вставить правило выше</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3403"/>
+        <location filename="RuleSetView.cpp" line="3401"/>
         <source>Paste Rule Below</source>
         <translation>Вставить правило ниже</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3410"/>
+        <location filename="RuleSetView.cpp" line="3408"/>
         <source>Enable Rule</source>
         <translation>Включить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3411"/>
+        <location filename="RuleSetView.cpp" line="3409"/>
         <source>Enable Rules</source>
         <translation>Включить правила</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3415"/>
+        <location filename="RuleSetView.cpp" line="3413"/>
         <source>Disable Rule</source>
         <translation>Отключить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3416"/>
+        <location filename="RuleSetView.cpp" line="3414"/>
         <source>Disable Rules</source>
         <translation>Отключить правила</translation>
     </message>
@@ -10920,63 +10920,58 @@ access access lists generated for it.</source>
         <translation type="unfinished">Используется</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3345"/>
+        <location filename="RuleSetView.cpp" line="3343"/>
         <source>Rules %1-%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3348"/>
+        <location filename="RuleSetView.cpp" line="3346"/>
         <source>Rule %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3350"/>
+        <location filename="RuleSetView.cpp" line="3348"/>
         <source>Change color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3354"/>
+        <location filename="RuleSetView.cpp" line="3352"/>
         <source>No color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3357"/>
+        <location filename="RuleSetView.cpp" line="3355"/>
         <source>Red</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3360"/>
+        <location filename="RuleSetView.cpp" line="3358"/>
         <source>Orange</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3363"/>
+        <location filename="RuleSetView.cpp" line="3361"/>
         <source>Yellow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3366"/>
+        <location filename="RuleSetView.cpp" line="3364"/>
         <source>Green</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3369"/>
+        <location filename="RuleSetView.cpp" line="3367"/>
         <source>Blue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3372"/>
+        <location filename="RuleSetView.cpp" line="3370"/>
         <source>Purple</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3375"/>
+        <location filename="RuleSetView.cpp" line="3373"/>
         <source>Gray</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="RuleSetView.cpp" line="2769"/>
-        <source></source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12251,7 +12246,7 @@ by the target firewall platform</source>
         <translation type="obsolete">Не найден файл %1.</translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="169"/>
+        <location filename="instDialog_compile.cpp" line="172"/>
         <source>&amp;Continue</source>
         <translation>Продолжить</translation>
     </message>
@@ -12344,12 +12339,12 @@ Copying %1 -&gt; %2:%3
 </translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="114"/>
+        <location filename="instDialog_compile.cpp" line="117"/>
         <source>Error: Failed to start program</source>
         <translation>Ошибка: не могу запустить программу</translation>
     </message>
     <message>
-        <location filename="instDialog.cpp" line="414"/>
+        <location filename="instDialog.cpp" line="413"/>
         <source>Policy installer uses Secure Shell to communicate with the firewall.
 Please configure directory path to the secure shell utility 
 installed on your machine using Preferences dialog</source>
@@ -12363,7 +12358,7 @@ installed on your machine using Preferences dialog</source>
         <translation type="obsolete">Набор правил для межсетевого экрана не скомпилирован.</translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="168"/>
+        <location filename="instDialog_compile.cpp" line="171"/>
         <source>Firewall platform is not specified in this object.
 Can&apos;t compile firewall policy.</source>
         <translation>Не указан межесетевой экран для этого объекта.
@@ -12439,13 +12434,6 @@ Can&apos;t compile firewall policy.</source>
     <message>
         <location filename="instDialog.cpp" line="135"/>
         <source>There are no firewalls to process.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="instDialog.cpp" line="443"/>
-        <source>Can not open generated firewall configuration file %1.
-Recompile the firewall or check file permissions.
-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -16942,12 +16930,12 @@ workstation with this address:</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="965"/>
+        <location filename="prefsdialog_q.ui" line="938"/>
         <source>&amp;OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="981"/>
+        <location filename="prefsdialog_q.ui" line="954"/>
         <source>&amp;Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -16962,7 +16950,7 @@ workstation with this address:</source>
         <translation>Рабочий каталог:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="393"/>
+        <location filename="prefsdialog_q.ui" line="410"/>
         <source>Browse...</source>
         <translation>Выбрать...</translation>
     </message>
@@ -17022,12 +17010,12 @@ workstation with this address:</source>
         <translation>Управление версиями (ревизиями)</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="344"/>
+        <location filename="prefsdialog_q.ui" line="332"/>
         <source>Do not ask for the log record when checking in new file revision.</source>
         <translation>Всегда помещать файл в систему контроля версий с пустой записью в журнал.</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="368"/>
+        <location filename="prefsdialog_q.ui" line="356"/>
         <source>SSH</source>
         <translation>SSH</translation>
     </message>
@@ -17038,90 +17026,90 @@ workstation with this address:</source>
     <message>
         <location filename="prefsdialog_q.ui" line="374"/>
         <source>A full path to the Secure Shell utility (remote command execution; for example ssh on Unix or plink.exe or vsh.exe on Windows):</source>
-        <translation>Полный путь к утилите SSH (например, ssh для Unix и plink.exe или vsh.exe для Windows):</translation>
+        <translation type="obsolete">Полный путь к утилите SSH (например, ssh для Unix и plink.exe или vsh.exe для Windows):</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="842"/>
+        <location filename="prefsdialog_q.ui" line="836"/>
         <source>Libraries</source>
         <translation>Библиотеки</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="866"/>
+        <location filename="prefsdialog_q.ui" line="848"/>
         <source>Add...</source>
         <translation>Добавить...</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="873"/>
+        <location filename="prefsdialog_q.ui" line="855"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="886"/>
+        <location filename="prefsdialog_q.ui" line="868"/>
         <source>If you remove libraries from the list, changes get in effect next time you start the program</source>
         <translation>При удалении библиотеки, изменения вступят в силу после перезапуска программы</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="899"/>
+        <location filename="prefsdialog_q.ui" line="881"/>
         <source>Available libraries:</source>
         <translation>Доступные библиотеки:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="910"/>
+        <location filename="prefsdialog_q.ui" line="892"/>
         <source>Name</source>
         <translation>Название</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="915"/>
+        <location filename="prefsdialog_q.ui" line="897"/>
         <source>Load</source>
         <translation>Загрузить</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="920"/>
+        <location filename="prefsdialog_q.ui" line="902"/>
         <source>File Path</source>
         <translation>Путь к файлу</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="493"/>
+        <location filename="prefsdialog_q.ui" line="511"/>
         <source>Labels</source>
         <translation>Метки</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="517"/>
+        <location filename="prefsdialog_q.ui" line="523"/>
         <source>Use these labels to mark rules in the firewall policy</source>
         <translation>Использовать эти метки для маркировки правил в наборе</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="666"/>
+        <location filename="prefsdialog_q.ui" line="660"/>
         <source>Green</source>
         <translation>Зеленый</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="652"/>
+        <location filename="prefsdialog_q.ui" line="646"/>
         <source>Purple</source>
         <translation>Пурпурный</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="589"/>
+        <location filename="prefsdialog_q.ui" line="583"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="617"/>
+        <location filename="prefsdialog_q.ui" line="611"/>
         <source>Orange</source>
         <translation>Оранжевый</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="596"/>
+        <location filename="prefsdialog_q.ui" line="590"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="673"/>
+        <location filename="prefsdialog_q.ui" line="667"/>
         <source>Gray</source>
         <translation>Серый</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="603"/>
+        <location filename="prefsdialog_q.ui" line="597"/>
         <source>Yellow</source>
         <translation>Желтый</translation>
     </message>
@@ -17142,27 +17130,27 @@ workstation with this address:</source>
         <translation type="obsolete">Спросить, что делать дальше</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="683"/>
+        <location filename="prefsdialog_q.ui" line="677"/>
         <source>Icons</source>
         <translation>Иконки</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="692"/>
+        <location filename="prefsdialog_q.ui" line="686"/>
         <source>Show icons in rules</source>
         <translation>Показывать иконки в правилах</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="709"/>
+        <location filename="prefsdialog_q.ui" line="703"/>
         <source>Icon size:</source>
         <translation>Размер иконок:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="725"/>
+        <location filename="prefsdialog_q.ui" line="719"/>
         <source>25x25</source>
         <translation>25x25</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="718"/>
+        <location filename="prefsdialog_q.ui" line="712"/>
         <source>16x16</source>
         <translation>16x16</translation>
     </message>
@@ -17172,32 +17160,32 @@ workstation with this address:</source>
         <translation>Обрезать в правилах комментарии по размеру ячейки</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="686"/>
+        <location filename="prefsdialog_q.ui" line="680"/>
         <source>Icons settings</source>
         <translation>Настройки иконок</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="752"/>
+        <location filename="prefsdialog_q.ui" line="746"/>
         <source>Fonts</source>
         <translation>Шрифты</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="770"/>
+        <location filename="prefsdialog_q.ui" line="764"/>
         <source>Choose font for rules sets</source>
         <translation>Выберите шрифт для правил</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="773"/>
+        <location filename="prefsdialog_q.ui" line="767"/>
         <source>Rules font </source>
         <translation>Шрифт правил</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="805"/>
+        <location filename="prefsdialog_q.ui" line="799"/>
         <source>Choose font for tree</source>
         <translation>Выберите шрифт для дерева</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="808"/>
+        <location filename="prefsdialog_q.ui" line="802"/>
         <source>Tree font</source>
         <translation>Шрифт дерева</translation>
     </message>
@@ -17232,28 +17220,39 @@ workstation with this address:</source>
         <translation>Использовать http proxy при проверке на наличие новых версий (host:port)</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="462"/>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Monospace&apos;; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Download plink.exe from the web site at  &lt;a href=&quot;http://www.chiark.greenend.org.uk/~sgtatham/putty/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.chiark.greenend.org.uk/~sgtatham/putty/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="prefsdialog_q.ui" line="702"/>
+        <location filename="prefsdialog_q.ui" line="696"/>
         <source>Show text descriptions in columns &quot;Direction&quot;, &quot;Action&quot;</source>
         <translation>Показывать текстовые пояснения в колонках &quot;Направление&quot; и &quot;Действие&quot;</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="786"/>
+        <location filename="prefsdialog_q.ui" line="780"/>
         <source>rules font description</source>
         <translation>описание шрифта для правил</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="821"/>
+        <location filename="prefsdialog_q.ui" line="815"/>
         <source>tree font description</source>
         <translation>описание шрифта для дерева объектов</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="362"/>
+        <source>A full path to the Secure Shell utility (remote command execution; for example ssh on Unix or plink.exe  on Windows):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="391"/>
+        <source>A full path to the SCP utility (file copy over ssh; for example scp on Unix or pscp.exe on Windows):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="479"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Download plink.exe from the web site at  &lt;a href=&quot;http://www.chiark.greenend.org.uk/~sgtatham/putty/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.chiark.greenend.org.uk/~sgtatham/putty/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
