@@ -98,7 +98,7 @@ int fwbdebug = 0;
 
 static string           filename;
 static string           wdir;
-static string           fwobjectname;
+static QString          fwobjectname;
 static QString          fw_file_name;
 static int              dl             = 0;
 static int              drp            = -1;
@@ -114,6 +114,13 @@ static bool             fw_by_id       = false;
 FWObjectDatabase       *objdb = NULL;
 
 static map<string,RuleSet*> branches;
+
+QTextStream& operator<< (QTextStream &text_stream, const string &str)
+{
+    text_stream << str.c_str();
+    return text_stream;
+}
+
 
 #ifdef _WIN32
 string fs_separator = "\\";
@@ -408,7 +415,7 @@ int main(int argc, char **argv)
         }
     }
 
-    fwobjectname = last_arg.toUtf8().constData();
+    fwobjectname = last_arg;
 
     if (wdir.empty()) wdir="./";
 
@@ -462,17 +469,18 @@ int main(int argc, char **argv)
         {
             // fwobjectname is actually object id
             fw = Firewall::cast(
-                objdb->findInIndex(objdb->getIntId(fwobjectname)));
+                objdb->findInIndex(
+                    objdb->getIntId(fwobjectname.toAscii().constData())));
             fwobjectname = fw->getName().c_str();
         }
         else
-            fw = objdb->findFirewallByName(fwobjectname);
+            fw = objdb->findFirewallByName(fwobjectname.toUtf8().constData());
 
 	FWOptions* options = fw->getOptionsObject();
 	string s;
 
         if (fw_file_name.isEmpty())
-            fw_file_name = QString::fromUtf8(fwobjectname.c_str()) + ".fw";
+            fw_file_name = fwobjectname + ".fw";
 
         /* some initial sanity checks */
 
@@ -598,7 +606,8 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         if (fw_version.empty()) fw_version = "(any version)";
 
         if ( family=="linux24" )
-            oscnf = new OSConfigurator_linux24(objdb , fwobjectname, false);
+            oscnf = new OSConfigurator_linux24(
+                objdb , fwobjectname.toUtf8().constData(), false);
 
 	if (oscnf==NULL)
 	    throw FWException(_("Unrecognized host OS ")+fw->getStr("host_OS")+"  (family "+family+")");
@@ -697,7 +706,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             if (nat_count || policy_count)
             {
                 Preprocessor* prep = new Preprocessor(
-                    objdb , fwobjectname, ipv6_policy);
+                    objdb , fwobjectname.toUtf8().constData(), ipv6_policy);
                 if (test_mode) prep->setTestMode();
                 prep->compile();
             }
@@ -720,8 +729,9 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 // compile NAT rules before policy rules because policy
                 // compiler needs to know the number of virtual addresses
                 // being created for NAT
-                NATCompiler_ipt n(objdb, fwobjectname, ipv6_policy, oscnf,
-                                  &minus_n_commands_nat);
+                NATCompiler_ipt n(
+                    objdb, fwobjectname.toUtf8().constData(), ipv6_policy, oscnf,
+                    &minus_n_commands_nat);
                 n.setSourceRuleSet( nat );
                 n.setRuleSetName(branch_name);
 
@@ -771,7 +781,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 if (policy->isV6()!=ipv6_policy) continue;
 
                 MangleTableCompiler_ipt m(
-                    objdb , fwobjectname, ipv6_policy , oscnf,
+                    objdb , fwobjectname.toUtf8().constData(), ipv6_policy , oscnf,
                     &minus_n_commands_mangle );
 
                 if (!policy->isTop())
@@ -824,8 +834,9 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 }
 
 
-                PolicyCompiler_ipt c(objdb, fwobjectname, ipv6_policy, oscnf,
-                                     &minus_n_commands_filter);
+                PolicyCompiler_ipt c(
+                    objdb, fwobjectname.toUtf8().constData(), ipv6_policy, oscnf,
+                    &minus_n_commands_filter);
 
                 if (!policy->isTop())
                     c.registerRuleSetChain(branch_name);
@@ -895,7 +906,8 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                                            ipv6_policy);
         }
 
-        RoutingCompiler_ipt r( objdb , fwobjectname , false, oscnf );
+        RoutingCompiler_ipt r(
+            objdb , fwobjectname.toUtf8().constData() , false, oscnf );
 
 	r.setDebugLevel( dl );
 	r.setDebugRule(  drp );
@@ -971,7 +983,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                << fw_file_info.fileName() << endl;
         script << "#" << endl;
         script << "#" << endl;
-        script << "# Compiled for iptables " << fw_version.c_str() << endl;
+        script << "# Compiled for iptables " << fw_version << endl;
         script << "#" << endl;
         if ( !nocomm )
         {
@@ -980,14 +992,14 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             n1=n2=0;
             while ( (n2=fwcomment.find("\n",n1))!=string::npos )
             {
-                script << "#  " << fwcomment.substr(n1,n2-n1).c_str() << endl;
+                script << "#  " << fwcomment.substr(n1,n2-n1) << endl;
                 n1=n2+1;
             }
-            script << "#  " << fwcomment.substr(n1).c_str() << endl;
+            script << "#  " << fwcomment.substr(n1) << endl;
             script << "#\n#\n#\n";
         }
 
-        script << shell_dbg.c_str() << endl;
+        script << shell_dbg << endl;
         script << endl;
 
         script << "PATH=\"/sbin:/usr/sbin:/bin:/usr/bin:${PATH}\"" << endl;
@@ -1000,7 +1012,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
  * for a given distro, or custom strings entered by user in the GUI and stored
  * in firewall options.
  */
-        script << oscnf->printPathForAllTools(DISTRO).c_str();
+        script << oscnf->printPathForAllTools(DISTRO);
 
         string prolog_place= fw->getOptionsObject()->getStr("prolog_place");
         if (prolog_place == "") prolog_place="top";
@@ -1009,11 +1021,10 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         {
             script <<
                 addPrologScript(
-                    nocomm,
-                    fw->getOptionsObject()->getStr("prolog_script")).c_str();
+                    nocomm, fw->getOptionsObject()->getStr("prolog_script"));
         }
 
-	script << oscnf->getCompiledScript().c_str();
+	script << oscnf->getCompiledScript();
 
         script << endl;
 
@@ -1021,8 +1032,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         {
             script <<
                 addPrologScript(
-                    nocomm,
-                    fw->getOptionsObject()->getStr("prolog_script")).c_str();
+                    nocomm, fw->getOptionsObject()->getStr("prolog_script"));
         }
 
         script << "log '";
@@ -1047,12 +1057,12 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
 	script << endl;
 
-        script << generated_script.c_str();
+        script << generated_script;
 
-        script << r.getCompiledScript().c_str();
+        script << r.getCompiledScript();
 
         oscnf->epilog();
-	script << oscnf->getCompiledScript().c_str();
+	script << oscnf->getCompiledScript();
 
         if ( !nocomm )
         {
@@ -1063,7 +1073,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         }
 
         string post_hook= fw->getOptionsObject()->getStr("epilog_script");
-        script << post_hook.c_str() << endl;
+        script << post_hook << endl;
 
         if ( !nocomm )
         {
@@ -1079,7 +1089,6 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
 	script << endl;
 
-//        string sbuf = script.str();
         QFile fw_file(fw_file_name);
         if (fw_file.open(QIODevice::WriteOnly))
         {
@@ -1089,28 +1098,6 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             fw_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
                                    QFile::ReadGroup | QFile::ReadOther);
         }
-
-#ifdef OLD_STREAM_METHOD
-	ofstream fw_file;
-        fw_file.exceptions(ofstream::eofbit|ofstream::failbit|ofstream::badbit);
-
-#ifdef _WIN32
-        fw_file.open(fw_file_name.c_str(), ios::out|ios::binary);
-#else
-        fw_file.open(fw_file_name.c_str());
-#endif
-
-        fw_file << sbuf << endl;
-	fw_file.close();
-
-#ifdef _WIN32
-        _chmod(fw_file_name.c_str(),_S_IREAD|_S_IWRITE);
-#else
-        chmod(fw_file_name.c_str(),S_IXUSR|S_IRUSR|S_IWUSR|S_IRGRP);
-#endif
-#endif
-
-
 
         cout << _(" Compiled successfully") << endl << flush;
         
