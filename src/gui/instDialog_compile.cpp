@@ -91,8 +91,9 @@ bool instDialog::runCompiler(Firewall *fw)
 
     addToLog( args.join(" ") + "\n" );
 
-    QTextCodec::setCodecForCStrings(NULL);
-    QTextCodec::setCodecForLocale(NULL);
+    // compilers always write file names into manifest in Utf8
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
 
     // Launch compiler in the background
     QString path = args.at(0);

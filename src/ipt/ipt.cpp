@@ -76,6 +76,7 @@
 #include <QFileInfo>
 #include <QFile>
 #include <QTextStream>
+#include <QTextCodec>
 
 #ifdef HAVE_GETOPT_H
   #include <getopt.h>
@@ -299,6 +300,10 @@ void usage(const char *name)
 int main(int argc, char **argv)
 {   
     QApplication app(argc, argv, false);
+
+    // compilers always write file names into manifest in Utf8
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
 
     QStringList args = app.arguments();
 
