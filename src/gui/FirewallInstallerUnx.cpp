@@ -264,6 +264,10 @@ void FirewallInstallerUnx::executeCommand(QStringList &args)
     // seems to not merge them on windows.
     proc.setProcessChannelMode(QProcess::MergedChannels);
 
+    // set codecs so that command line parameters can be encoded
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
+
     QString path = args.at(0);
     args.pop_front();
 
