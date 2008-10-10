@@ -73,6 +73,9 @@
 
 #include <QApplication>
 #include <QStringList>
+#include <QFileInfo>
+#include <QFile>
+#include <QTextStream>
 
 #ifdef HAVE_GETOPT_H
   #include <getopt.h>
@@ -95,7 +98,7 @@ int fwbdebug = 0;
 static string           filename;
 static string           wdir;
 static string           fwobjectname;
-static string           fw_file_name;
+static QString          fw_file_name;
 static int              dl             = 0;
 static int              drp            = -1;
 static bool             omit_timestamp = false;
@@ -116,23 +119,6 @@ string fs_separator = "\\";
 #else
 string fs_separator = "/";
 #endif
-
-string getFileName(const string &file_path)
-{
-    string::size_type n = file_path.rfind(fs_separator);
-    string res = file_path;
-    res.erase(0, n+1);
-    return res;
-}
-
-string getDir(const string &file_path)
-{
-    string::size_type n = file_path.rfind(fs_separator);
-    string res = file_path;
-    if (n==string::npos) return "";
-    else res.erase(n);
-    return res;
-}
 
 class UpgradePredicate: public XMLTools::UpgradePredicate
 {
@@ -327,7 +313,6 @@ int main(int argc, char **argv)
     for (int idx=0; idx < args.size(); idx++)
     {
         QString arg = args.at(idx);
-        cerr << "arg=" << arg.toAscii().constData() << endl;
 
         last_arg = arg;
         if (arg == "-i")
@@ -372,8 +357,6 @@ int main(int argc, char **argv)
         if (arg == "-f")
         {
             idx++;
-            cerr << "-f " << endl;
-            cerr << args.at(idx).toLatin1().constData() << endl;
             filename = string(args.at(idx).toLatin1().constData());
             continue;
         }
@@ -386,7 +369,7 @@ int main(int argc, char **argv)
         if (arg == "-o")
         {
             idx++;
-            fw_file_name = string(args.at(idx).toLatin1().constData());
+            fw_file_name = args.at(idx);
             continue;
         }
         if (arg == "-xt")
@@ -421,9 +404,6 @@ int main(int argc, char **argv)
     }
 
     fwobjectname = last_arg.toUtf8().constData();
-
-    cerr << "Firewall object name: " << fwobjectname << endl;
-    cerr << "wdir: " << wdir << endl;
 
     if (wdir.empty()) wdir="./";
 
@@ -486,8 +466,8 @@ int main(int argc, char **argv)
 	FWOptions* options = fw->getOptionsObject();
 	string s;
 
-        if (fw_file_name.empty())
-            fw_file_name = string(fwobjectname) + ".fw";
+        if (fw_file_name.isEmpty())
+            fw_file_name = QString::fromUtf8(fwobjectname.c_str()) + ".fw";
 
         /* some initial sanity checks */
 
@@ -964,8 +944,8 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
  * assemble the script and then perhaps post-process it if it should
  * run on Linksys device with sveasoft firmware
  */
-
-        ostringstream script;
+        QString script_buffer;
+        QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
 	script << "#!/bin/sh "  << endl;
 
@@ -981,10 +961,11 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                << user_name << "\n#\n";
         }
 
-        script << MANIFEST_MARKER << "* " << getFileName(fw_file_name) << endl;
+        QFileInfo fw_file_info(fw_file_name);
+        script << MANIFEST_MARKER << "* " << fw_file_info.fileName() << endl;
         script << "#" << endl;
         script << "#" << endl;
-        script << "# Compiled for iptables " << fw_version << endl;
+        script << "# Compiled for iptables " << fw_version.c_str() << endl;
         script << "#" << endl;
         if ( !nocomm )
         {
@@ -993,14 +974,14 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             n1=n2=0;
             while ( (n2=fwcomment.find("\n",n1))!=string::npos )
             {
-                script << "#  " << fwcomment.substr(n1,n2-n1) << endl;
+                script << "#  " << fwcomment.substr(n1,n2-n1).c_str() << endl;
                 n1=n2+1;
             }
-            script << "#  " << fwcomment.substr(n1) << endl;
+            script << "#  " << fwcomment.substr(n1).c_str() << endl;
             script << "#\n#\n#\n";
         }
 
-        script << shell_dbg << endl;
+        script << shell_dbg.c_str() << endl;
         script << endl;
 
         script << "PATH=\"/sbin:/usr/sbin:/bin:/usr/bin:${PATH}\"" << endl;
@@ -1013,7 +994,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
  * for a given distro, or custom strings entered by user in the GUI and stored
  * in firewall options.
  */
-        script << oscnf->printPathForAllTools(DISTRO);
+        script << oscnf->printPathForAllTools(DISTRO).c_str();
 
         string prolog_place= fw->getOptionsObject()->getStr("prolog_place");
         if (prolog_place == "") prolog_place="top";
@@ -1022,10 +1003,11 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         {
             script <<
                 addPrologScript(
-                    nocomm, fw->getOptionsObject()->getStr("prolog_script"));
+                    nocomm,
+                    fw->getOptionsObject()->getStr("prolog_script")).c_str();
         }
 
-	script << oscnf->getCompiledScript();
+	script << oscnf->getCompiledScript().c_str();
 
         script << endl;
 
@@ -1033,7 +1015,8 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         {
             script <<
                 addPrologScript(
-                    nocomm, fw->getOptionsObject()->getStr("prolog_script"));
+                    nocomm,
+                    fw->getOptionsObject()->getStr("prolog_script")).c_str();
         }
 
         script << "log '";
@@ -1058,12 +1041,12 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
 	script << endl;
 
-        script << generated_script;
+        script << generated_script.c_str();
 
-        script << r.getCompiledScript();
+        script << r.getCompiledScript().c_str();
 
         oscnf->epilog();
-	script << oscnf->getCompiledScript();
+	script << oscnf->getCompiledScript().c_str();
 
         if ( !nocomm )
         {
@@ -1074,7 +1057,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         }
 
         string post_hook= fw->getOptionsObject()->getStr("epilog_script");
-        script << post_hook << endl;
+        script << post_hook.c_str() << endl;
 
         if ( !nocomm )
         {
@@ -1090,8 +1073,18 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
 	script << endl;
 
-        string sbuf = script.str();
+//        string sbuf = script.str();
+        QFile fw_file(fw_file_name);
+        if (fw_file.open(QIODevice::WriteOnly))
+        {
+            QTextStream fw_str(&fw_file);
+            fw_str << script_buffer;
+            fw_file.close();
+            fw_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
+                                   QFile::ReadGroup | QFile::ReadOther);
+        }
 
+#ifdef OLD_STREAM_METHOD
 	ofstream fw_file;
         fw_file.exceptions(ofstream::eofbit|ofstream::failbit|ofstream::badbit);
 
@@ -1109,6 +1102,9 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 #else
         chmod(fw_file_name.c_str(),S_IXUSR|S_IRUSR|S_IWUSR|S_IRGRP);
 #endif
+#endif
+
+
 
         cout << _(" Compiled successfully") << endl << flush;
         
