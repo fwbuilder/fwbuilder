@@ -71,6 +71,8 @@
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
 
+#include <QApplication>
+
 #ifdef HAVE_GETOPT_H
   #include <getopt.h>
 #else
@@ -89,9 +91,9 @@ using namespace fwcompiler;
 
 int fwbdebug = 0;
 
-static const char      *filename       = NULL;
-static const char      *wdir           = NULL;
-static const char      *fwobjectname   = NULL;
+static string           filename       = NULL;
+static string           wdir           = NULL;
+static string           fwobjectname   = NULL;
 static string           fw_file_name   = "";
 static int              dl             = 0;
 static int              drp            = -1;
@@ -103,7 +105,6 @@ static bool             test_mode      = false;
 static bool             ipv4_run       = true;
 static bool             ipv6_run       = true;
 static bool             fw_by_id       = false;
-
 
 FWObjectDatabase       *objdb = NULL;
 
@@ -308,102 +309,128 @@ void usage(const char *name)
             "[-m] [-4|-6] firewall_object_name" << endl;
 }
 
-int main(int argc, char * const *argv)
+int main(int argc, char **argv)
 {   
+    QApplication app(argc, argv, false);
 
-#ifdef ENABLE_NLS
-    setlocale (LC_ALL, "");
+    QStringList args = app.arguments();
 
-    bindtextdomain (PACKAGE, LOCALEDIR);
-    textdomain (PACKAGE);
-#else
-#  ifdef HAVE_SETLOCALE
-    setlocale (LC_ALL, "");
-#  endif
-#endif
-    
-
-    if (argc<=1)
+    if (args.size()<1)
     {
         usage(argv[0]);
         exit(1);
     }
 
-    int   opt;
+    QString last_arg;
 
-    while( (opt=getopt(argc,argv,"x:ivVqf:d:r:o:46")) != EOF )
+    for (int idx=0; idx < args.size(); idx++)
     {
-        switch(opt)
+        QString arg = args.at(idx);
+        cerr << "arg=" << arg.toAscii().constData() << endl;
+
+        last_arg = arg;
+        if (arg == "-i")
         {
-        case 'i':
             fw_by_id = true;
-            break;
-        case '4':
-            ipv4_run = true;
-            ipv6_run = false;
-            break;
-        case '6':
-            ipv4_run = false;
-            ipv6_run = true;
-            break;
-        case 'd':
-            wdir = strdup(optarg);
-            break;
-        case 'r':
-            respath = string(optarg);
-            break;
-        case 'f':
-            filename = strdup(optarg);
-            break;
-        case 'o':
-            fw_file_name = string(optarg);
-            break;
-        case 'x':
-            if (*optarg=='t') {
-                test_mode = true;
-            } else if (*optarg=='p') {
-                ++optarg;
-                drp  = atoi(optarg);
-            } else {
-                if (*optarg=='n') {
-                    ++optarg;
-                    drn  = atoi(optarg);
-                } else {
-                    if (isdigit(*optarg))  dl=atoi(optarg);  // increase debug level
-                    else {
-                        usage(argv[0]);
-                        exit(1);
-                    }
-                }
-            }
-            break;
-        case 'v':
+            continue;
+        }
+        if (arg == "-v")
+        {
             verbose++;
-            break;
-        case 'V':
+            continue;
+        }
+        if (arg == "-V")
+        {
             usage(argv[0]);
             exit(1);
-        case 'q':
+        }
+        if (arg == "-q")
+        {
             omit_timestamp = true;
-            break;
+            continue;
+        }
+
+        if (arg == "-4")
+        {
+            ipv4_run = true;
+            ipv6_run = false;
+            continue;
+        }
+        if (arg == "-6")
+        {
+            ipv4_run = false;
+            ipv6_run = true;
+            continue;
+        }
+        if (arg == "-d")
+        {
+            idx++;
+            wdir = string(args.at(idx).toLatin1().constData());
+            continue;
+        }
+        if (arg == "-f")
+        {
+            idx++;
+            cerr << "-f " << endl;
+            cerr << args.at(idx).toLatin1().constData() << endl;
+            filename = string(args.at(idx).toLatin1().constData());
+            continue;
+        }
+        if (arg == "-r")
+        {
+            idx++;
+            respath = string(args.at(idx).toLatin1().constData());
+            continue;
+        }
+        if (arg == "-o")
+        {
+            idx++;
+            fw_file_name = string(args.at(idx).toLatin1().constData());
+            continue;
+        }
+        if (arg == "-xt")
+        {
+            test_mode = true;
+            continue;
+        }
+        if (arg == "-xp")
+        {
+            idx++;
+            bool ok = false;
+            drp = args.at(idx).toInt(&ok);
+            if (!ok)
+            {
+                usage(argv[0]);
+                exit(1);
+            }
+            continue;
+        }
+        if (arg == "-xn")
+        {
+            idx++;
+            bool ok = false;
+            drn = args.at(idx).toInt(&ok);
+            if (!ok)
+            {
+                usage(argv[0]);
+                exit(1);
+            }
+            continue;
         }
     }
-    
-    if((argc-1) != optind)
-    {
-        usage(argv[0]);
-        exit(1);
-    }
 
-    fwobjectname = strdup( argv[optind++] );
+    fwobjectname = last_arg.toUtf8().constData();
 
-    if (wdir==0) 	wdir="./";
+    cerr << "Firewall object name: " << fwobjectname << endl;
+    cerr << "wdir: " << wdir << endl;
+
+    if (wdir.empty()) wdir="./";
 
     if (
 #ifdef _WIN32
-    _chdir(wdir)
+        _chdir(wdir.c_str())
 #else
-    chdir(wdir)
+        chdir(wdir.c_str())
 #endif
     ) {
 	cerr << _("Can't change to: ") << wdir << endl;
@@ -459,7 +486,7 @@ int main(int argc, char * const *argv)
 	string s;
 
         if (fw_file_name.empty())
-            fw_file_name=string(fwobjectname)+".fw";
+            fw_file_name = string(fwobjectname) + ".fw";
 
         /* some initial sanity checks */
 

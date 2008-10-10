@@ -33,9 +33,9 @@ HEADERS	 = ../../config.h \
 	QMAKE_COPY    = ../../install.sh -m 0755 -s
 }
 
-win32:CONFIG += console
+win32: CONFIG += console
 
-unix { !macx: CONFIG -= qt }
+#unix { !macx: CONFIG -= qt }
 
 TARGET      = fwb_ipt
 
