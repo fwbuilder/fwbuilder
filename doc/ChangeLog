@@ -3,13 +3,25 @@
 	* ipt.cpp (main): Compiler for iptables uses QT functions to
 	properly process non-ascii file names and firewall object
 	names. Compiler correctly creates generated script when its file
-	name contains non-ascii characters on Linux and Mac OS X. The GUI
+	name contains non-ascii characters on all supported OS. The GUI
 	can find the file and built-in installer can copy it to the
 	firewall and activate it there. QT helps manage encodings and
-	locales in OS-independent manner. However dependency on QT
-	libraries means compilers can not be deployed on the firewall
-	separately from the GUI.
+	locales in OS-independent manner. Caveats:
 
+	  - Dependency on QT libraries means compilers can not be deployed
+	on the firewall separately from the GUI.
+
+	  - pscp.exe on Windows does not seem to be able to pick up file
+	with non-ascii characters in name when program runs on Windows
+	with standard English locale. Could not test on Windows running
+	with national locale. As a workaround, user can specify
+	alternative name for the generated script in the firewall settings
+	dialog (tab "Compiler").
+
+	  - Support for non-ascii firewall object and generated script
+	  names is currently only available in compiler for iptables
+
+	
 	* instDialog_compile.cpp (instDialog::prepareArgForCompiler):
 	always provide "-o" command line option to compilers when calling
 	them from the GUI. The output file name defined this way can be
