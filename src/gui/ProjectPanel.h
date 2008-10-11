@@ -388,7 +388,7 @@ public:
     bool getCopyMenuState(const QString &objPath);
     bool getCutMenuState(const QString &objPath);
     bool getPasteMenuState(const QString &objPath);
-    bool getDeleteMenuState(const QString &objPath);    
+    bool getDeleteMenuState(libfwbuilder::FWObject *obj);
     libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db);
 
 

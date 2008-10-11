@@ -329,7 +329,6 @@ ObjectTreeViewItem* ObjectManipulator::insertObject( ObjectTreeViewItem *itm,
     return nitm;
 }
 
-
 void ObjectManipulator::insertSubtree( ObjectTreeViewItem *itm,
                                        FWObject *obj )
 {
@@ -341,30 +340,26 @@ void ObjectManipulator::insertSubtree( ObjectTreeViewItem *itm,
     if (Firewall::isA(obj))
     {
          for (FWObjectTypedChildIterator it = Firewall::cast(obj)->findByType(Interface::TYPENAME);
-         it != it.end(); ++it)
-        {
-            insertSubtree( nitm, *it );
- 
-        }
+              it != it.end(); ++it)
+         {
+             insertSubtree( nitm, *it );
+         }
          for (FWObjectTypedChildIterator it = Firewall::cast(obj)->findByType(Policy::TYPENAME);
-         it != it.end(); ++it)
-        {
-            insertSubtree( nitm, *it );
- 
-        }
+              it != it.end(); ++it)
+         {
+             insertSubtree( nitm, *it );
+         }
          for (FWObjectTypedChildIterator it = Firewall::cast(obj)->findByType(NAT::TYPENAME);
-         it != it.end(); ++it)
-        {
-            insertSubtree( nitm, *it );
- 
-        }
+              it != it.end(); ++it)
+         {
+             insertSubtree( nitm, *it );
+         }
          for (FWObjectTypedChildIterator it = Firewall::cast(obj)->findByType(Routing::TYPENAME);
-         it != it.end(); ++it)
-        {
-            insertSubtree( nitm, *it );
- 
-        }
-        return ;
+              it != it.end(); ++it)
+         {
+             insertSubtree( nitm, *it );
+         }
+         return ;
     }
     for (list<FWObject*>::iterator m=obj->begin(); m!=obj->end(); m++)
     {
@@ -393,7 +388,8 @@ void ObjectManipulator::showDeletedObjects(bool f)
             FWObjectDatabase::DELETED_OBJECTS_ID);
 
         if (fwbdebug)
-            qDebug("ObjectManipulator::showDeletedObjects f=%d  dobj=%p",f, dobj);
+            qDebug("ObjectManipulator::showDeletedObjects f=%d  dobj=%p",
+                   f, dobj);
 
         if (dobj==NULL)
         {
@@ -407,7 +403,7 @@ void ObjectManipulator::showDeletedObjects(bool f)
         int idx = getIdxForLib(dobj);
 
         if (fwbdebug)
-            qDebug("ObjectManipulator::showDeletedObjects idx=%d",idx);
+            qDebug("ObjectManipulator::showDeletedObjects idx=%d", idx);
 
         if (f)
         {
@@ -421,7 +417,7 @@ void ObjectManipulator::showDeletedObjects(bool f)
             QTreeWidget *otv = idxToTrees[idx];
 
             if (fwbdebug)
-                qDebug("ObjectManipulator::showDeletedObjects otv=%p",otv);
+                qDebug("ObjectManipulator::showDeletedObjects otv=%p", otv);
 
             assert(otv!=NULL);
             m_objectManipulator->widgetStack->removeWidget( otv );
@@ -1208,12 +1204,12 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
 {
     if (fwbdebug) qDebug("ObjectManipulator::getMenuState");
 
-    dupMenuItem=true;
-    moveMenuItem=true;
-    copyMenuItem=true;
-    pasteMenuItem=true;
-    delMenuItem=true;
-    newMenuItem=true;
+    dupMenuItem = true;
+    moveMenuItem = true;
+    copyMenuItem = true;
+    pasteMenuItem = true;
+    delMenuItem = true;
+    newMenuItem = true;
 
     inDeletedObjects = false;
 
@@ -1227,27 +1223,11 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
 
         QString objPath = obj->getPath(true).c_str();
 
-        copyMenuItem  = copyMenuItem && m_project->getCopyMenuState(objPath);
+        copyMenuItem = copyMenuItem && m_project->getCopyMenuState(objPath);
         pasteMenuItem = pasteMenuItem &&
             m_project->getPasteMenuState(objPath) &&
             (FWObjectClipboard::obj_clipboard->size()!=0);
-        delMenuItem   = delMenuItem && m_project->getDeleteMenuState(objPath);
-
-        // can't delete last policy, nat and routing child objects
-        // also can't delete "top" policy ruleset
-        if (RuleSet::cast(obj))
-        {
-            if (dynamic_cast<RuleSet*>(obj)->isTop()) delMenuItem = false;
-            else
-            {
-                FWObject *fw = obj->getParent();
-                // fw can be NULL if this ruleset is in the Deleted objects
-                // library
-                if (fw==NULL) return;
-                list<FWObject*> child_objects = fw->getByType(obj->getTypeName());
-                if (child_objects.size()==1) delMenuItem = false;
-            }
-        }
+        delMenuItem = delMenuItem && m_project->getDeleteMenuState(obj);
 
         if (pasteMenuItem)
         {
@@ -1973,6 +1953,10 @@ void ObjectManipulator::unlockObject()
     mw->reloadAllWindowsWithFile(m_project);
 }
 
+/*
+ * Note: this slot gets controlwhen user presses "Delete" key in
+ * addition to menu items activation
+ */
 void ObjectManipulator::deleteObj()
 {
 
@@ -1981,24 +1965,36 @@ void ObjectManipulator::deleteObj()
                getCurrentObjectTree()->getNumSelected());
     
     if (getCurrentObjectTree()->getNumSelected()==0) return;
-    
+
     FWObject *obj;
     bool emptyingTrash      = false;
     bool emptyingTrashInLib = false;
+    
+    vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
+    vector<FWObject*> so2;
+    
+    for (vector<FWObject*>::iterator i=so.begin(); i!=so.end(); ++i)
+    {
+        bool del_obj_status = m_project->getDeleteMenuState(*i);
+        if (fwbdebug)
+            qDebug("ObjectManipulator::deleteObj object: %s del_obj_status=%d",
+                   (*i)->getName().c_str(), del_obj_status);
+        if (del_obj_status) so2.push_back(*i);
+    }
+    
+    if (so2.size()==0) return;
     
     FWObject *delObjLib = m_project->db()->findInIndex(
         FWObjectDatabase::DELETED_OBJECTS_ID);
 
     if (fwbdebug)
-        qDebug("ObjectManipulator::deleteObj  delObjLib=%p",delObjLib);
-    
-    vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
+        qDebug("ObjectManipulator::deleteObj  delObjLib=%p", delObjLib);
     
     if (delObjLib!=NULL)
     {
-        for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
+        for (vector<FWObject*>::iterator i=so2.begin();  i!=so2.end(); ++i)
         {
-            obj= *i;
+            obj = *i;
             emptyingTrash |= obj->isChildOf(delObjLib);
         }
     }
@@ -2042,10 +2038,10 @@ void ObjectManipulator::deleteObj()
                    "so.size=%d  so.front()->type=%s",
                    emptyingTrash,
                    int(so.size()),
-                   so.front()->getTypeName().c_str() );
+                   so2.front()->getTypeName().c_str() );
     
     
-        if (!emptyingTrash && (so.size()>1 || !Library::isA(so.front())))
+        if (!emptyingTrash && (so2.size()>1 || !Library::isA(so2.front())))
         {
             /*
               msg = tr(
@@ -2059,22 +2055,20 @@ void ObjectManipulator::deleteObj()
               0, 1 )!=0) return;
             */
             QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
-            ConfirmDeleteObjectDialog * dlg= new ConfirmDeleteObjectDialog(this);
+            ConfirmDeleteObjectDialog * dlg =
+                new ConfirmDeleteObjectDialog(this);
     
-            dlg->load(so);
+            dlg->load(so2);
     
             QApplication::restoreOverrideCursor();
             if(dlg->exec()==QDialog::Rejected ) return;
         }
     }
-    
-    
+        
     /* need to work with a copy of the list of selected objects because
      * some of the methods we call below clear list
      * getCurrentObjectTree()->getSelectedObjects()
      */
-    
-    vector<FWObject*> so2 = so;
     
     if (fwbdebug)
     {
@@ -2113,7 +2107,8 @@ void ObjectManipulator::deleteObj()
                             0, 1 )!=0 ) continue;
                 }
     
-                if (m_project->isEditorVisible() && m_project->getOpenedEditor()==obj) m_project->hideEditor();
+                if (m_project->isEditorVisible() &&
+                    m_project->getOpenedEditor()==obj) m_project->hideEditor();
                     
                 delObj(obj);
             }

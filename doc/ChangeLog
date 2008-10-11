@@ -1,5 +1,11 @@
 2008-10-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ProjectPanel.cpp (ProjectPanel::getDeleteMenuState): fixed bug
+	#2149585 "Deleting Routing object breaks file". The GUI should not
+	allow the user to delete "Routing" ruleset object, as well as any
+	other top-level ruleset object. This applies to both deleting them
+	via context menu item or Delete key stroke.
+
 	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::newIptables): fixed
 	bug #2151898: "use of "--icmp-type any" iptables 1.2.6a". Iptables
 	v1.2.6a and older do not have option "-m icmp --icmp-type any".
