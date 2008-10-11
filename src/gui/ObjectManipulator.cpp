@@ -299,7 +299,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject( ObjectTreeViewItem *itm,
         icn_filename=(":/Icons/"+obj->getTypeName()+"/icon-tree").c_str();
         //icn_filename=Resources::global_res->getObjResourceStr(obj, "icon-tree").c_str();
 
-    if (obj->getBool("ro")) icn_filename = ":/Icons/lock.png";
+    if (obj->getRO()) icn_filename = ":/Icons/lock.png";
 
     if (Resources::global_res->getResourceBool(
             string("/FWBuilderResources/Type/") +

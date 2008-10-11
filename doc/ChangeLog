@@ -1,5 +1,15 @@
 2008-10-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ObjectTreeView.cpp (ObjectTreeView::updateTreeItems): fixed bug
+	#2149503: ever since attribute "read-only" of FWObject has been
+	converted from a dictionary entry to a member variable, the GUI
+	could not properly check if an object is read-only and could not
+	update context menu and icon in the object tree. This lead to
+	unstable behavior when an object was set read-only because the GUI
+	could not show corresponding icon to indicate its status change,
+	did not switch context menu items and permitted operations that
+	should not have been permitted.
+
 	* ProjectPanel.cpp (ProjectPanel::getDeleteMenuState): fixed bug
 	#2149585 "Deleting Routing object breaks file". The GUI should not
 	allow the user to delete "Routing" ruleset object, as well as any

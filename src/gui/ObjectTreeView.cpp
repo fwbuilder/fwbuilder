@@ -323,8 +323,8 @@ void ObjectTreeView::updateTreeItems()
             QPixmapCache::insert( icn, pm_obj);
         }
 
-        if (obj->getBool("ro"))  itm->setIcon(0, pm_lock);//setPixmap(0, pm_lock );
-        else                     itm->setIcon(0, pm_obj );
+        if (obj->getRO())  itm->setIcon(0, pm_lock);//setPixmap(0, pm_lock );
+        else               itm->setIcon(0, pm_obj );
 
         Firewall *fw=Firewall::cast(obj);
         if (fw!=NULL)
@@ -832,8 +832,8 @@ void ObjectTreeView::setLockFlags()
             if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
                 lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
             {
-                if (otvi->getFWObject()->getBool("ro"))  Unlockable=true;
-                else                                     Lockable=true;
+                if (otvi->getFWObject()->getRO())  Unlockable = true;
+                else                               Lockable = true;
             }
         }
         ++it;

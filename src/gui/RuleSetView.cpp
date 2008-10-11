@@ -830,7 +830,7 @@ void RuleSetView::fixRulePosition(Rule *rule, FWObject *parent, int pos)
         // need to temporary break the lock
         // since several parents could be read-only, do it recursively
         FWObject *o = (parent!=NULL) ? parent : rule;
-        while ( o!=NULL && !o->getBool("ro") ) o = o->getParent();
+        while ( o!=NULL && !o->getRO() ) o = o->getParent();
         if (o)
         {
             o->setReadOnly(false);
