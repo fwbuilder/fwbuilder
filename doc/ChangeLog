@@ -1,4 +1,7 @@
-2008-10-10  vadim  <vadim@vk.crocodile.org>
+2008-10-10  User Vadim  <vadim@vk.crocodile.org>
+
+	* FirewallInstallerUnx.cpp: fixed bug #2158561: "Solaris fwb 3.0.2-b599
+	build prob" Fixed build problems on FreeBSD and Solaris
 
 	* pix.pro, iosacl.pro: fixed bug #2158407: "iosacl and pix install
 	probs"

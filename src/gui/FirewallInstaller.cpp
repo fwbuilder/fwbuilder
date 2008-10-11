@@ -52,6 +52,10 @@
 #include <errno.h>
 #include <iostream>
 
+#include <QTextCodec>
+#include <QTimer>
+#include <QMessageBox>
+
 using namespace std;
 using namespace libfwbuilder;
 
