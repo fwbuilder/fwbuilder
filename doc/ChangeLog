@@ -1,3 +1,20 @@
+2008-10-11  vadim  <vadim@vk.crocodile.org>
+
+	* PrefsDialog.cpp (PrefsDialog::PrefsDialog): Added tab "Data
+	File" to the Preferences dialog; added checkbox "Enable data file
+	compression" to this tab. If this checkbox is turned on, the GUI
+	will compress data file when it is saved to disk.
+
+	* FWBSettings.cpp (FWBSettings::getCompression): saving data file
+	compression flag in user settings.
+
+	* ProjectPanel_file_ops.cpp (ProjectPanel::exportLibraryTo): added
+	support for data file compression. This fixes bug# 2130128: "Option
+	to compress the FWB file".
+
+	* pix.pro, iosacl.pro: should be ../../install.sh rather than
+	../../install
+
 2008-10-10  User Vadim  <vadim@vk.crocodile.org>
 
 	* FirewallInstallerUnx.cpp: fixed bug #2158561: "Solaris fwb 3.0.2-b599
@@ -35,7 +52,6 @@
 	  - Support for non-ascii firewall object and generated script
 	  names is currently only available in compiler for iptables
 
-	
 	* instDialog_compile.cpp (instDialog::prepareArgForCompiler):
 	always provide "-o" command line option to compilers when calling
 	them from the GUI. The output file name defined this way can be

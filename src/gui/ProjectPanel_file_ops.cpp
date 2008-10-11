@@ -67,6 +67,8 @@
 
 #include <errno.h>
 
+#include <libxml/tree.h>
+
 #define LONG_ERROR_CUTOFF 1024
 
 using namespace Ui;
@@ -774,6 +776,7 @@ void ProjectPanel::exportLibraryTo(QString fname,list<FWObject*> &selectedLibs, 
 
     try
     {
+        xmlSetCompressMode(st->getCompression() ? 9 : 0);
         ndb->saveFile( fname.toLatin1().constData() );
     }
     catch (FWException &ex)
@@ -1620,6 +1623,7 @@ void ProjectPanel::save()
                     }
 
                     ndb->resetTimeLastModified( db()->getTimeLastModified() );
+                    xmlSetCompressMode(st->getCompression() ? 9 : 0);
                     ndb->saveFile( rcs->getFileName().toLatin1().constData() );
 
                     delete ndb;
@@ -1629,6 +1633,7 @@ void ProjectPanel::save()
                 } else
                 {
                     QApplication::setOverrideCursor(QCursor( Qt::WaitCursor));
+                    xmlSetCompressMode(st->getCompression() ? 9 : 0);
                     db()->saveFile( rcs->getFileName().toLatin1().constData() );
                     QApplication::restoreOverrideCursor();
                 }

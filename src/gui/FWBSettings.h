@@ -108,6 +108,9 @@ class FWBSettings : public QSettings {
     bool    getAutoSave();
     void    setAutoSave(bool f);
 
+    bool    getCompression();
+    void    setCompression(bool f);
+
     bool    getDontSaveStdLib();
     void    setDontSaveStdLib( bool f);
     

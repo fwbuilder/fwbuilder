@@ -70,8 +70,6 @@ public:
 public slots:
     virtual void accept();
     virtual void findWDir();
-    virtual void addLibrary();
-    virtual void remLibrary();
     virtual void findSSH();
     virtual void findSCP();
     virtual void libClick(QTreeWidgetItem* itm, int col);

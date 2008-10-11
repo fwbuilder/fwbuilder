@@ -59,6 +59,7 @@ using namespace libfwbuilder;
 
 const char* DTDSetpath = SETTINGS_PATH_PREFIX "/System/DTDPath";
 const char* ResSetpath = SETTINGS_PATH_PREFIX "/System/ResPath";
+const char* compression = SETTINGS_PATH_PREFIX "/DataFile/compression";
 const char* wdirSetpath = SETTINGS_PATH_PREFIX "/Environment/WDir";
 const char* ofdirSetpath = SETTINGS_PATH_PREFIX "/Environment/OpenFileDir";
 const char* sfdirSetpath = SETTINGS_PATH_PREFIX "/Environment/SaveFileDir";
@@ -190,6 +191,9 @@ void FWBSettings::init()
     ok = contains(checkUpdates);
     if (!ok) setCheckUpdates(true);
 
+    ok = contains(compression);
+    if (!ok) setCompression(false);
+
 #ifndef _WIN32
     if (getSSHPath().isEmpty())  setSSHPath("ssh");
     if (getSCPPath().isEmpty())  setSCPPath("scp");
@@ -301,6 +305,9 @@ void    FWBSettings::setRCSLogState(bool f) { setValue( emptyRCSLog , f ); }
 
 bool    FWBSettings::getAutoSave() { return value( autoSave ).toBool(); }
 void    FWBSettings::setAutoSave(bool f) { setValue( autoSave, f); }
+
+bool    FWBSettings::getCompression() { return value(compression).toBool(); }
+void    FWBSettings::setCompression(bool f) { setValue(compression, f); }
 
 bool    FWBSettings::getDontSaveStdLib() {return value(dontSaveStdLib).toBool();}
 void    FWBSettings::setDontSaveStdLib( bool f) { setValue(dontSaveStdLib,f);}

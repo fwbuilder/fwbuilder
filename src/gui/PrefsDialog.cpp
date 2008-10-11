@@ -98,7 +98,6 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog = new Ui::prefsDialog_q;
     m_dialog->setupUi(this);
 
-    m_dialog->tabWidget->removeTab(6);
     m_dialog->tabWidget->setCurrentIndex(0);
 
     m_dialog->wDir->setText( st->getWDir() );
@@ -111,33 +110,17 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->emptyRCSLog->setChecked( st->getRCSLogState() );
     m_dialog->autosave->setChecked( st->getAutoSave() );
 
-    m_dialog->autosaveFile->setChecked( st->getBool("Environment/autoSaveFile") );
-    m_dialog->autosaveInterval->setValue( st->getInt("Environment/autoSaveFilePeriod"));
+    m_dialog->autosaveFile->setChecked(st->getBool("Environment/autoSaveFile"));
+    m_dialog->autosaveInterval->setValue(
+        st->getInt("Environment/autoSaveFilePeriod"));
+
+    m_dialog->dataFileCompression->setChecked( st->getCompression() );
 
 //    dontSaveStdLib->setChecked( st->getDontSaveStdLib() );
 
     m_dialog->sshPath->setText( st->getSSHPath() );
     m_dialog->scpPath->setText( st->getSCPPath() );
-    
-    for (list<libData>::iterator i=mw->getAddOnLibs()->begin(); i!=mw->getAddOnLibs()->end(); ++i)
-    {
-        QStringList qsl;
-        qsl << i->name << "" << i->path; //fromUtf8
-        QTreeWidgetItem *itm = new QTreeWidgetItem( m_dialog->avLibs, qsl );
-        if (i->load)
-        {
-            //itm->setPixmap(1, QPixmap::fromMimeSource( "apply.png" ) );
-
-            QPixmap pm;
-            QString icn = ":/Icons/apply.png";
-            if ( ! QPixmapCache::find( icn, pm) )
-            {
-                pm.load( icn );
-                QPixmapCache::insert( icn, pm);
-            }
-            itm->setIcon(1, QIcon(pm));
-        }
-    }
+   
 
 // set label icons colors and text strings using user's settings
 
@@ -369,66 +352,6 @@ void PrefsDialog::libClick(QTreeWidgetItem* itm, int col)
     }
 }
 
-void PrefsDialog::addLibrary()
-{
-    QString fp = QFileDialog::getOpenFileName(
-        this,
-        tr("Find add-on library"),
-        st->getWDir(),
-        "Firewall Builder 2 files (*.fwl)");
-
-    if (!fp.isEmpty())
-    {
-        list<libData>::iterator i = mw->getAddOnLibs()->add( fp.toLatin1().constData(), true );
-        if (i==mw->getAddOnLibs()->end())
-        {
-            if (fwbdebug)
-                qDebug("PrefsDialog::addLibrary(): library addition failed");
-            return;
-        }
-        QString libname = i->name; //fromUtf8
-        QStringList qsl;
-        qsl << libname << "" << fp;
-        QTreeWidgetItem *itm = new QTreeWidgetItem( m_dialog->avLibs, qsl );
-
-        QPixmap pm;
-        QString icn = ":/Icons/apply.png";
-        if ( ! QPixmapCache::find( icn, pm) )
-        {
-            pm.load( icn );
-            QPixmapCache::insert( icn, pm);
-        }
-        itm->setIcon(1, QIcon(pm));
-
-        // commented out for bug #1620284
-        //
-        //mw->loadLibrary( i->path.latin1() );
-        //mw->loadObjects();
-    }
-}
-
-/* when user removes library from the list, the change gets in effect
- * next time they start the program. There is a warning in the dialog
- * that says so
- */
-void PrefsDialog::remLibrary()
-{
-    QTreeWidgetItem *itm = m_dialog->avLibs->currentItem();
-    if (itm==NULL) return;
-
-    if (itm->text(0)=="Standard") return;
-
-    for (list<libData>::iterator i=mw->getAddOnLibs()->begin(); i!=mw->getAddOnLibs()->end(); ++i)
-    {
-        if (i->name == itm->text(0)) //fromUtf8
-        {
-            mw->getAddOnLibs()->erase(i);
-            delete itm;
-            break;
-        }
-    }
-}
-
 void PrefsDialog::accept()
 {
     QString wd=m_dialog->wDir->text();
@@ -447,8 +370,10 @@ void PrefsDialog::accept()
     st->setRCSLogState( m_dialog->emptyRCSLog->isChecked() );
     st->setAutoSave( m_dialog->autosave->isChecked() );
 
-    st->setBool("Environment/autoSaveFile", m_dialog->autosaveFile->isChecked() );
+    st->setBool("Environment/autoSaveFile", m_dialog->autosaveFile->isChecked());
     st->setInt("Environment/autoSaveFilePeriod", m_dialog->autosaveInterval->value() );
+
+    st->setCompression(m_dialog->dataFileCompression->isChecked());
 
 //    st->setDontSaveStdLib( dontSaveStdLib->isChecked() );
 

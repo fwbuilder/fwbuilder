@@ -6042,23 +6042,23 @@ objects that they refer to moved in it:</source>
 <context>
     <name>FirewallInstallerUnx</name>
     <message>
-        <location filename="FirewallInstallerUnx.cpp" line="135"/>
+        <location filename="FirewallInstallerUnx.cpp" line="143"/>
         <source>Generated script file %1 not found.</source>
         <translation>Сгенерированный компилятором файл %1 не найден.</translation>
     </message>
     <message>
-        <location filename="FirewallInstallerUnx.cpp" line="136"/>
+        <location filename="FirewallInstallerUnx.cpp" line="144"/>
         <source>&amp;Continue</source>
         <translation>Продолжить работу</translation>
     </message>
     <message>
-        <location filename="FirewallInstallerUnx.cpp" line="222"/>
+        <location filename="FirewallInstallerUnx.cpp" line="230"/>
         <source>Copying %1 -&gt; %2:%3
 </source>
         <translation>Копируется файл %1 -&gt; %2:%3</translation>
     </message>
     <message>
-        <location filename="FirewallInstallerUnx.cpp" line="279"/>
+        <location filename="FirewallInstallerUnx.cpp" line="291"/>
         <source>Error: Failed to start program:</source>
         <translation>Не удалось запустить программу:</translation>
     </message>
@@ -7682,7 +7682,7 @@ interface &apos;%2&apos; will stay the same.)</source>
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="PrefsDialog.cpp" line="308"/>
+        <location filename="PrefsDialog.cpp" line="291"/>
         <source>Find working directory</source>
         <translation>Определить рабочий каталог</translation>
     </message>
@@ -7691,39 +7691,39 @@ interface &apos;%2&apos; will stay the same.)</source>
         <translation type="obsolete">Определить утилиту scp</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="317"/>
+        <location filename="PrefsDialog.cpp" line="300"/>
         <source>Find Secure Shell utility</source>
         <translation>Определить утилиту ssh</translation>
     </message>
     <message>
         <location filename="PrefsDialog.cpp" line="376"/>
         <source>Find add-on library</source>
-        <translation>Определить библиотеку дополнений</translation>
+        <translation type="obsolete">Определить библиотеку дополнений</translation>
     </message>
     <message>
         <source>Pick the color</source>
         <translation type="obsolete">Выберите цвет</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="522"/>
+        <location filename="PrefsDialog.cpp" line="447"/>
         <source>Your version of Firewall Builder is up to date.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы используете послднюю версию программы.</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="528"/>
+        <location filename="PrefsDialog.cpp" line="453"/>
         <source>A new version of Firewall Builder is available at http://www.fwbuilder.org</source>
-        <translation type="unfinished">Новая версия программы может быть загружена с http://www.fwbuilder.org</translation>
+        <translation>Новая версия программы может быть загружена с http://www.fwbuilder.org</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="535"/>
+        <location filename="PrefsDialog.cpp" line="460"/>
         <source>Error checking for software updates:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Произошла ошибка во время проверки версии программы: %1</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="326"/>
+        <location filename="PrefsDialog.cpp" line="309"/>
         <source>Find SCP utility</source>
-        <translation type="unfinished"></translation>
+        <translation>Найти утилиту scp</translation>
     </message>
 </context>
 <context>
@@ -7754,7 +7754,7 @@ interface &apos;%2&apos; will stay the same.)</source>
     <message>
         <location filename="ProjectPanel.cpp" line="138"/>
         <source>No firewalls defined</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет ни одного межсетевого экрана</translation>
     </message>
     <message>
         <location filename="ProjectPanel.cpp" line="441"/>
@@ -7764,7 +7764,7 @@ interface &apos;%2&apos; will stay the same.)</source>
     <message>
         <location filename="ProjectPanel.cpp" line="413"/>
         <source>Building policy view...</source>
-        <translation type="unfinished">Строится представление набора правил ...</translation>
+        <translation>Строится представление набора правил ...</translation>
     </message>
     <message>
         <location filename="ProjectPanel.cpp" line="582"/>
@@ -7777,58 +7777,58 @@ interface &apos;%2&apos; will stay the same.)</source>
         <translation type="obsolete">Строится представление маршрутизации ...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="86"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="88"/>
         <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="86"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="88"/>
         <source>&amp;Discard</source>
-        <translation type="unfinished"></translation>
+        <translation>Отбросить изменения</translation>
+    </message>
+    <message>
+        <location filename="ProjectPanel_file_ops.cpp" line="341"/>
+        <source>&amp;Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="ProjectPanel_file_ops.cpp" line="114"/>
+        <source>FWB Files (*.fwb);;All Files (*)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ProjectPanel_file_ops.cpp" line="617"/>
+        <source>The file %1 already exists.
+Do you want to overwrite it ?</source>
+        <translation>Файл %1 уже существует.\nПереписать ?</translation>
+    </message>
+    <message>
+        <location filename="ProjectPanel_file_ops.cpp" line="618"/>
+        <source>&amp;Yes</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <location filename="ProjectPanel_file_ops.cpp" line="618"/>
+        <source>&amp;No</source>
+        <translation>Нет</translation>
+    </message>
+    <message>
+        <location filename="ProjectPanel_file_ops.cpp" line="1386"/>
+        <source>Choose name and location for the new file</source>
+        <translation>Выберите имя и папку для нового файла</translation>
+    </message>
+    <message>
+        <location filename="ProjectPanel_file_ops.cpp" line="268"/>
+        <source>Saving data to file...</source>
+        <translation>Данные записываются в файл...</translation>
+    </message>
+    <message>
+        <location filename="ProjectPanel_file_ops.cpp" line="294"/>
+        <source>Choose name and location for the file</source>
+        <translation>Выберите имя и папку для размещения файла</translation>
     </message>
     <message>
         <location filename="ProjectPanel_file_ops.cpp" line="339"/>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="112"/>
-        <source>FWB Files (*.fwb);;All Files (*)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="615"/>
-        <source>The file %1 already exists.
-Do you want to overwrite it ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="616"/>
-        <source>&amp;Yes</source>
-        <translation type="unfinished">Да</translation>
-    </message>
-    <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="616"/>
-        <source>&amp;No</source>
-        <translation type="unfinished">Нет</translation>
-    </message>
-    <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1383"/>
-        <source>Choose name and location for the new file</source>
-        <translation type="unfinished">Выберите имя и папку для нового файла</translation>
-    </message>
-    <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="266"/>
-        <source>Saving data to file...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="292"/>
-        <source>Choose name and location for the file</source>
-        <translation type="unfinished">Выберите имя и папку для размещения файла</translation>
-    </message>
-    <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="337"/>
         <source>This operation discards all changes that have been saved
 into the file so far, closes it and replaces it with a clean
 copy of its head revision from RCS.
@@ -7836,178 +7836,178 @@ copy of its head revision from RCS.
 All changes will be lost if you do this.
 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Эта операция отбрасывает все изменения сохраненные в файл\nданных до сих пор, закрывает его и заменяет его\nчистой копией самой последней ревизии из RCS.\n\nВсе изменения сделанные до сих пор будут потеряны.</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="338"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="340"/>
         <source>&amp;Discard changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Отбросить изменения</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="388"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="390"/>
         <source>File %1 has been added to RCS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл %1 добавлен в систему контроля ревизий (RCS).</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1654"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1659"/>
         <source>&amp;Continue</source>
-        <translation type="unfinished"></translation>
+        <translation>Продолжать</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="397"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="399"/>
         <source>Error adding file to RCS:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Произошла ошибка во время добавления файла в RCS: %1</translation>
     </message>
     <message>
         <location filename="ProjectPanel.cpp" line="191"/>
         <source>(read-only)</source>
-        <translation type="unfinished">(только для чтения)</translation>
+        <translation>(только для чтения)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1223"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1226"/>
         <source>Loading system objects...</source>
-        <translation type="unfinished">Загрузка системных объектов...</translation>
+        <translation>Загрузка системных объектов...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="958"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="961"/>
         <source>Error loading file:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Произошла ошибка во время загрузки файла: %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1231"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1234"/>
         <source>Reading and parsing data file...</source>
-        <translation type="unfinished">Чтение и обработка файла данных...</translation>
+        <translation>Чтение и обработка файла данных...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1270"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1273"/>
         <source>Merging with system objects...</source>
-        <translation type="unfinished">Смешивание с системными объектами...</translation>
+        <translation>Смешивание с системными объектами...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1082"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1085"/>
         <source>Firewall Builder 2 uses file extension &apos;.fwb&apos; and 
 needs to rename old data file &apos;%1&apos; to &apos;%2&apos;,
 but file &apos;%3&apos; already exists.
 Choose a different name for the new file.</source>
-        <translation type="unfinished">Firewall Builder версии 2 использует расширение файлов .fwb.
+        <translation>Firewall Builder версии 2 использует расширение файлов .fwb.
 Для выполнения текущей операции необходимо переименовать
 старый файл %1 в новый %2, однако файл %3 уже существует.
 Выберите другое имя для создаваемого файла.</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1095"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1098"/>
         <source>Load operation cancelled and data file reverted to original version.</source>
-        <translation type="unfinished">Операция открытия файла была отменена, поэтому файл не был изменен.</translation>
+        <translation>Операция открытия файла была отменена, поэтому файл не был изменен.</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1112"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1115"/>
         <source>Firewall Builder 2 uses file extension &apos;.fwb&apos;. Your data file &apos;%1&apos; 
 has been renamed &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1438"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1441"/>
         <source>Exception: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка: %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1442"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1445"/>
         <source>Failed transformation : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1447"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1450"/>
         <source>XML element : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1482"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1485"/>
         <source>Building object tree...</source>
-        <translation type="unfinished">Построение дерева объектов...</translation>
+        <translation>Построение дерева объектов...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1488"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1491"/>
         <source>Indexing...</source>
-        <translation type="unfinished">Индексация...</translation>
+        <translation>Индексация...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1522"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1525"/>
         <source>Checking file %1 in RCS</source>
-        <translation type="unfinished">Добавление файла %1 в систему контроля версий</translation>
+        <translation>Добавление файла %1 в систему контроля версий</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1556"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1559"/>
         <source>Error checking in file %1:
 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1647"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1652"/>
         <source>File is read-only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1653"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1658"/>
         <source>Error saving file %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="489"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="491"/>
         <source>Error loading file %1:
 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="411"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="413"/>
         <source>Choose a file to import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="428"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="430"/>
         <source>This operation inspects two data files (either .fwb or .fwl) and finds conflicting objects. Conflicting objects have the same internal ID but different attributes. Two data files can not be merged, or one imported into another, if they contain such objects. This operation also helps identify changes made to objects in two copies of the same data file.&lt;br&gt;&lt;br&gt;This operation does not find objects present in one file but not in the other, such objects present no problem for merge or import operations.&lt;br&gt;&lt;br&gt;This operation works with two external files, neither of which needs to be opened in the program. Currently opened data file is not affected by this operation and objects in the tree do not change.&lt;br&gt;&lt;br&gt;Do you want to proceed ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="437"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="439"/>
         <source>Choose the first file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="445"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="447"/>
         <source>Choose the second file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="512"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="514"/>
         <source>Total number of conflicting objects: %1.
 Do you want to generate report?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="522"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="524"/>
         <source>Choose name and location for the report file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="524"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="526"/>
         <source>TXT Files (*.txt);;All Files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="549"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="551"/>
         <source>Can not open report file for writing. File &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="561"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="563"/>
         <source>Unexpected error comparing files %1 and %2:
 %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="748"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="750"/>
         <source>A library that you are trying to export contains references
 to objects in the other libraries and can not be exported.
 The following objects need to be moved outside of it or
@@ -8015,7 +8015,7 @@ objects that they refer to moved in it:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="591"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="593"/>
         <source>Please select a library you want to export.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8025,31 +8025,31 @@ objects that they refer to moved in it:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="182"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="184"/>
         <source>Open File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1461"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1464"/>
         <source>(Long error message was truncated)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="895"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="898"/>
         <source>The program encountered error trying to load file %1.
 The file has not been loaded. Error:
 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1467"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1470"/>
         <source>The program encountered error trying to load data file.
 The file has not been loaded. Error:
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1378"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1381"/>
         <source>Firewall Builder 2 uses file extension &apos;.fwb&apos; and
 needs to rename old data file &apos;%1&apos; to &apos;%2&apos;,
 but file &apos;%3&apos; already exists.
@@ -8057,12 +8057,12 @@ Choose a different name for the new file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1394"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1397"/>
         <source>Load operation cancelled and data file revertedto original version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1410"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1413"/>
         <source>Firewall Builder 2 uses file extension &apos;.fwb&apos;. Your datafile &apos;%1&apos; 
 has been renamed &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
@@ -8108,7 +8108,7 @@ has been renamed &apos;%2&apos;</source>
     <message>
         <location filename="projectpanel_q.ui" line="572"/>
         <source>Firewall / ruleset</source>
-        <translation type="unfinished"></translation>
+        <translation>Межсетевой экран  / набор правил</translation>
     </message>
 </context>
 <context>
@@ -8724,7 +8724,7 @@ because of incompatible type.</source>
         <translation>Не могу открыть файл %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="711"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="713"/>
         <source>Library %1: Firewall &apos;%2&apos; (global policy rule #%3) uses object &apos;%4&apos; from library &apos;%5&apos;</source>
         <translation>Библиотека %1: Межсетевой экран %2 (правило в наборе #%3) использует объект %4 из библиотеки %5</translation>
     </message>
@@ -8734,22 +8734,22 @@ because of incompatible type.</source>
         <translation type="obsolete">Библиотека %1: Межсетевой экран %2 (правило интерфейса %3 в наборе #%4) использует объект %5 из библиотеки %6</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="721"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="723"/>
         <source>Library %1: Firewall &apos;%2&apos; (NAT rule #%3) uses object &apos;%4&apos; from library &apos;%5&apos;</source>
         <translation>Библиотека %1: Межсетевой экран %2 (правило NAT в наборе #%3) использует объект %4 из библиотеки %5</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="731"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="733"/>
         <source>Library %1: Group &apos;%2&apos; uses object &apos;%3&apos; from library &apos;%4&apos;</source>
         <translation>Библиотека %1: Группа %2 использует объект %3 из библиотеки %4</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="786"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="789"/>
         <source>File is read-only</source>
         <translation>Файл доступен только для чтения</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="791"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="794"/>
         <source>Error saving file %1: %2</source>
         <translation>Ошибка при сохранении файла %1: %2</translation>
     </message>
@@ -8886,7 +8886,7 @@ part of the tee or data file was opened read-only</source>
         <translation>&lt;b&gt;Имя Объекта:&lt;/b&gt; </translation>
     </message>
     <message>
-        <location filename="FWBSettings.cpp" line="138"/>
+        <location filename="FWBSettings.cpp" line="139"/>
         <source>Working directory %1 does not exist and could not be created.
 Ignoring this setting.</source>
         <translation>Рабочий каталог %1 не существует и не может быть создан.
@@ -9767,13 +9767,13 @@ Builder GUI and save back to file again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="87"/>
+        <location filename="instDialog_compile.cpp" line="91"/>
         <source>Compiling rule sets for firewall: %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_installer.cpp" line="85"/>
+        <location filename="instDialog_installer.cpp" line="90"/>
         <source>Installing policy rules on firewall &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11002,6 +11002,11 @@ access access lists generated for it.</source>
     <message>
         <location filename="RuleSetView.cpp" line="3089"/>
         <source>Rename group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="RuleSetView.cpp" line="2769"/>
+        <source></source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12246,7 +12251,7 @@ by the target firewall platform</source>
         <translation type="obsolete">Не найден файл %1.</translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="172"/>
+        <location filename="instDialog_compile.cpp" line="177"/>
         <source>&amp;Continue</source>
         <translation>Продолжить</translation>
     </message>
@@ -12339,7 +12344,7 @@ Copying %1 -&gt; %2:%3
 </translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="117"/>
+        <location filename="instDialog_compile.cpp" line="122"/>
         <source>Error: Failed to start program</source>
         <translation>Ошибка: не могу запустить программу</translation>
     </message>
@@ -12358,7 +12363,7 @@ installed on your machine using Preferences dialog</source>
         <translation type="obsolete">Набор правил для межсетевого экрана не скомпилирован.</translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="171"/>
+        <location filename="instDialog_compile.cpp" line="176"/>
         <source>Firewall platform is not specified in this object.
 Can&apos;t compile firewall policy.</source>
         <translation>Не указан межесетевой экран для этого объекта.
@@ -12382,12 +12387,12 @@ Can&apos;t compile firewall policy.</source>
         <translation type="obsolete">Пропущен</translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="80"/>
+        <location filename="instDialog_compile.cpp" line="84"/>
         <source>Compiling ...</source>
         <translation>Компиляция ...</translation>
     </message>
     <message>
-        <location filename="instDialog_installer.cpp" line="133"/>
+        <location filename="instDialog_installer.cpp" line="138"/>
         <source>Failure</source>
         <translation>Ошибка</translation>
     </message>
@@ -12407,7 +12412,7 @@ Can&apos;t compile firewall policy.</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="instDialog_installer.cpp" line="87"/>
+        <location filename="instDialog_installer.cpp" line="92"/>
         <source>Install firewall: </source>
         <translation>Установить межсетевой экран: </translation>
     </message>
@@ -12417,7 +12422,7 @@ Can&apos;t compile firewall policy.</source>
         <translation type="obsolete">Установка межсетевых экранов</translation>
     </message>
     <message>
-        <location filename="instDialog_installer.cpp" line="100"/>
+        <location filename="instDialog_installer.cpp" line="105"/>
         <source>Installing ...</source>
         <translation>Установка ...</translation>
     </message>
@@ -12437,7 +12442,7 @@ Can&apos;t compile firewall policy.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="67"/>
+        <location filename="instDialog_compile.cpp" line="71"/>
         <source>Compiling rule sets for firewall: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -16930,12 +16935,12 @@ workstation with this address:</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="938"/>
+        <location filename="prefsdialog_q.ui" line="1025"/>
         <source>&amp;OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="954"/>
+        <location filename="prefsdialog_q.ui" line="1041"/>
         <source>&amp;Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -16945,12 +16950,12 @@ workstation with this address:</source>
         <translation>Общие</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="78"/>
+        <location filename="prefsdialog_q.ui" line="99"/>
         <source>Working directory:</source>
         <translation>Рабочий каталог:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="410"/>
+        <location filename="prefsdialog_q.ui" line="536"/>
         <source>Browse...</source>
         <translation>Выбрать...</translation>
     </message>
@@ -16975,47 +16980,47 @@ workstation with this address:</source>
         <translation type="obsolete">Раскрыть все дерево объектов</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="206"/>
+        <location filename="prefsdialog_q.ui" line="313"/>
         <source>Tooltip delay:</source>
         <translation>Задержка всплывающей подсказки:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="149"/>
+        <location filename="prefsdialog_q.ui" line="270"/>
         <source>Automatically save data in dialogs when switching between objects</source>
         <translation>Автоматически сохранять данные в диалогах при переключении между объектами</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="172"/>
+        <location filename="prefsdialog_q.ui" line="399"/>
         <source>Periodically save data to file every </source>
         <translation>Периодически сохранять данные в файл, каждые</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="189"/>
+        <location filename="prefsdialog_q.ui" line="428"/>
         <source>minutes</source>
         <translation>минут</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="199"/>
+        <location filename="prefsdialog_q.ui" line="293"/>
         <source>Enable object tooltips</source>
         <translation>Включить всплывающие подсказки для объектов</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="239"/>
+        <location filename="prefsdialog_q.ui" line="346"/>
         <source>Show deleted objects</source>
         <translation>Показывать удаленные объекты</translation>
     </message>
     <message>
         <location filename="prefsdialog_q.ui" line="320"/>
         <source>Revision Control</source>
-        <translation>Управление версиями (ревизиями)</translation>
+        <translation type="obsolete">Управление версиями (ревизиями)</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="332"/>
+        <location filename="prefsdialog_q.ui" line="451"/>
         <source>Do not ask for the log record when checking in new file revision.</source>
         <translation>Всегда помещать файл в систему контроля версий с пустой записью в журнал.</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="356"/>
+        <location filename="prefsdialog_q.ui" line="479"/>
         <source>SSH</source>
         <translation>SSH</translation>
     </message>
@@ -17031,85 +17036,85 @@ workstation with this address:</source>
     <message>
         <location filename="prefsdialog_q.ui" line="836"/>
         <source>Libraries</source>
-        <translation>Библиотеки</translation>
+        <translation type="obsolete">Библиотеки</translation>
     </message>
     <message>
         <location filename="prefsdialog_q.ui" line="848"/>
         <source>Add...</source>
-        <translation>Добавить...</translation>
+        <translation type="obsolete">Добавить...</translation>
     </message>
     <message>
         <location filename="prefsdialog_q.ui" line="855"/>
         <source>Remove</source>
-        <translation>Удалить</translation>
+        <translation type="obsolete">Удалить</translation>
     </message>
     <message>
         <location filename="prefsdialog_q.ui" line="868"/>
         <source>If you remove libraries from the list, changes get in effect next time you start the program</source>
-        <translation>При удалении библиотеки, изменения вступят в силу после перезапуска программы</translation>
+        <translation type="obsolete">При удалении библиотеки, изменения вступят в силу после перезапуска программы</translation>
     </message>
     <message>
         <location filename="prefsdialog_q.ui" line="881"/>
         <source>Available libraries:</source>
-        <translation>Доступные библиотеки:</translation>
+        <translation type="obsolete">Доступные библиотеки:</translation>
     </message>
     <message>
         <location filename="prefsdialog_q.ui" line="892"/>
         <source>Name</source>
-        <translation>Название</translation>
+        <translation type="obsolete">Название</translation>
     </message>
     <message>
         <location filename="prefsdialog_q.ui" line="897"/>
         <source>Load</source>
-        <translation>Загрузить</translation>
+        <translation type="obsolete">Загрузить</translation>
     </message>
     <message>
         <location filename="prefsdialog_q.ui" line="902"/>
         <source>File Path</source>
-        <translation>Путь к файлу</translation>
+        <translation type="obsolete">Путь к файлу</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="511"/>
+        <location filename="prefsdialog_q.ui" line="637"/>
         <source>Labels</source>
         <translation>Метки</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="523"/>
+        <location filename="prefsdialog_q.ui" line="646"/>
         <source>Use these labels to mark rules in the firewall policy</source>
         <translation>Использовать эти метки для маркировки правил в наборе</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="660"/>
+        <location filename="prefsdialog_q.ui" line="761"/>
         <source>Green</source>
         <translation>Зеленый</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="646"/>
+        <location filename="prefsdialog_q.ui" line="747"/>
         <source>Purple</source>
         <translation>Пурпурный</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="583"/>
+        <location filename="prefsdialog_q.ui" line="684"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="611"/>
+        <location filename="prefsdialog_q.ui" line="712"/>
         <source>Orange</source>
         <translation>Оранжевый</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="590"/>
+        <location filename="prefsdialog_q.ui" line="691"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="667"/>
+        <location filename="prefsdialog_q.ui" line="768"/>
         <source>Gray</source>
         <translation>Серый</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="597"/>
+        <location filename="prefsdialog_q.ui" line="698"/>
         <source>Yellow</source>
         <translation>Желтый</translation>
     </message>
@@ -17130,62 +17135,62 @@ workstation with this address:</source>
         <translation type="obsolete">Спросить, что делать дальше</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="677"/>
+        <location filename="prefsdialog_q.ui" line="807"/>
         <source>Icons</source>
         <translation>Иконки</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="686"/>
+        <location filename="prefsdialog_q.ui" line="835"/>
         <source>Show icons in rules</source>
         <translation>Показывать иконки в правилах</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="703"/>
+        <location filename="prefsdialog_q.ui" line="852"/>
         <source>Icon size:</source>
         <translation>Размер иконок:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="719"/>
+        <location filename="prefsdialog_q.ui" line="868"/>
         <source>25x25</source>
         <translation>25x25</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="712"/>
+        <location filename="prefsdialog_q.ui" line="861"/>
         <source>16x16</source>
         <translation>16x16</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="246"/>
+        <location filename="prefsdialog_q.ui" line="353"/>
         <source>Clip comments in rules</source>
         <translation>Обрезать в правилах комментарии по размеру ячейки</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="680"/>
+        <location filename="prefsdialog_q.ui" line="810"/>
         <source>Icons settings</source>
         <translation>Настройки иконок</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="746"/>
+        <location filename="prefsdialog_q.ui" line="895"/>
         <source>Fonts</source>
         <translation>Шрифты</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="764"/>
+        <location filename="prefsdialog_q.ui" line="932"/>
         <source>Choose font for rules sets</source>
         <translation>Выберите шрифт для правил</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="767"/>
+        <location filename="prefsdialog_q.ui" line="935"/>
         <source>Rules font </source>
         <translation>Шрифт правил</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="799"/>
+        <location filename="prefsdialog_q.ui" line="967"/>
         <source>Choose font for tree</source>
         <translation>Выберите шрифт для дерева</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="802"/>
+        <location filename="prefsdialog_q.ui" line="970"/>
         <source>Tree font</source>
         <translation>Шрифт дерева</translation>
     </message>
@@ -17200,59 +17205,74 @@ workstation with this address:</source>
         <translation type="obsolete">Шрифт интерфейса</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="259"/>
+        <location filename="prefsdialog_q.ui" line="168"/>
         <source>Software Updates:</source>
         <translation>Проверка наличия новых версий программы:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="266"/>
+        <location filename="prefsdialog_q.ui" line="175"/>
         <source>Check for updates automatically</source>
         <translation>Проверять автоматически</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="273"/>
+        <location filename="prefsdialog_q.ui" line="195"/>
         <source>Check Now</source>
         <translation>Проверить сейчас</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="293"/>
+        <location filename="prefsdialog_q.ui" line="215"/>
         <source>Use http proxy while checking for updates  (host:port)</source>
         <translation>Использовать http proxy при проверке на наличие новых версий (host:port)</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="696"/>
+        <location filename="prefsdialog_q.ui" line="845"/>
         <source>Show text descriptions in columns &quot;Direction&quot;, &quot;Action&quot;</source>
         <translation>Показывать текстовые пояснения в колонках &quot;Направление&quot; и &quot;Действие&quot;</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="780"/>
+        <location filename="prefsdialog_q.ui" line="948"/>
         <source>rules font description</source>
         <translation>описание шрифта для правил</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="815"/>
+        <location filename="prefsdialog_q.ui" line="983"/>
         <source>tree font description</source>
         <translation>описание шрифта для дерева объектов</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="362"/>
+        <location filename="prefsdialog_q.ui" line="488"/>
         <source>A full path to the Secure Shell utility (remote command execution; for example ssh on Unix or plink.exe  on Windows):</source>
-        <translation type="unfinished"></translation>
+        <translation>Полный путь к утилите SSH (исполнение команд на другом компьютере; наример ssh на Unix или plink.exe на Windows):</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="391"/>
+        <location filename="prefsdialog_q.ui" line="517"/>
         <source>A full path to the SCP utility (file copy over ssh; for example scp on Unix or pscp.exe on Windows):</source>
-        <translation type="unfinished"></translation>
+        <translation>Полный путь к утилите SCP (копирование файлов на другой компьютер; наример scp на Unix или pscp.exe на Windows):</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="479"/>
+        <location filename="prefsdialog_q.ui" line="605"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Download plink.exe from the web site at  &lt;a href=&quot;http://www.chiark.greenend.org.uk/~sgtatham/putty/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.chiark.greenend.org.uk/~sgtatham/putty/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="245"/>
+        <source>Objects</source>
+        <translation>Объекты</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="374"/>
+        <source>Data File</source>
+        <translation>Файл данных</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="458"/>
+        <source>Enable compression of the data file</source>
+        <translation>Включить сжатие файла данных</translation>
     </message>
 </context>
 <context>

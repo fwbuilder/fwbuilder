@@ -85,6 +85,8 @@ class MergeConflictRes :
     public libfwbuilder::FWObjectDatabase::ConflictResolutionPredicate,
     ObjConflictResolutionDialog
 {
+    Q_OBJECT
+
     public:
     MergeConflictRes(QWidget *p) : ObjConflictResolutionDialog(p) {}
     virtual bool askUser(libfwbuilder::FWObject *o1,libfwbuilder::FWObject *o2)
@@ -99,6 +101,8 @@ class CompareObjectsDialog :
     public libfwbuilder::FWObjectDatabase::ConflictResolutionPredicate,
     ObjConflictResolutionDialog
 {
+    Q_OBJECT
+
     std::list<QString> report;
     QStringList        report_attributes;
     int                num_conflicts;
