@@ -407,7 +407,8 @@ string PolicyCompiler_ipt::PrintRule::_printDirectionAndInterface(PolicyRule *ru
         compiler->getCachedFwInterface(rule->getInterfaceId());
 
     if (rule_iface && rule_iface->isBridgePort() &&
-        XMLTools::version_compare(version, "1.3.0")>=0)
+        (version.empty() ||
+         XMLTools::version_compare(version, "1.3.0")>=0))
     {
         if (rule->getDirection()==PolicyRule::Inbound)   
             ostr << " -m physdev --physdev-in "  << iface_name; 
@@ -483,7 +484,7 @@ string PolicyCompiler_ipt::PrintRule::_printActionOnReject(libfwbuilder::PolicyR
                         str << " --reject-with icmp-net-prohibited";
                     if (s.find("host")!=string::npos)
                         str << " --reject-with icmp-host-prohibited";
-                    if (ipt_comp->newIptables(version) &&
+                    if (XMLTools::version_compare(version, "1.2.9")>=0 &&
                         s.find("admin")!=string::npos)
                         str << " --reject-with icmp-admin-prohibited";
                 }
@@ -682,7 +683,9 @@ string PolicyCompiler_ipt::PrintRule::_printProtocol(libfwbuilder::Service *srv)
             {
                 s = "-p ipv6-icmp ";
                 if (srv->getInt("type")!=-1 &&
-                    ipt_comp->newIptables(version)) s += " -m icmp6";
+                    (version.empty() ||
+                     XMLTools::version_compare(version, "1.3.0")>=0))
+                    s += " -m icmp6";
             } else
             {
                 // ip6tables issues warning for commands using "-p all"
@@ -701,7 +704,9 @@ string PolicyCompiler_ipt::PrintRule::_printProtocol(libfwbuilder::Service *srv)
             if (ICMPService::isA(srv))
             {
                 s = "-p icmp ";
-                if (ipt_comp->newIptables(version)) s += " -m icmp ";
+                if (version.empty() ||
+                    XMLTools::version_compare(version, "1.2.9")>=0)
+                    s += " -m icmp ";
             } else
             {
                 s = "-p " + pn + " ";
@@ -960,7 +965,9 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
 	    if (str.empty() ) 
             {
                 // module icmp6 does not like "--icmp6-type any"
-                if (ipt_comp->newIptables(version) && !ipt_comp->ipv6)
+                if ((version.empty() ||
+                     XMLTools::version_compare(version, "1.2.6")>0) &&
+                    !ipt_comp->ipv6)
                     ostr << icmp_type_str << " any ";
             } else
             {

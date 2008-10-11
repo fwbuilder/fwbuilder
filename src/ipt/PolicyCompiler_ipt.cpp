@@ -4229,7 +4229,7 @@ string PolicyCompiler_ipt::commit()
 bool PolicyCompiler_ipt::newIptables(const string &version)
 {
     return (version.empty() || version=="ge_1.2.6" ||
-            XMLTools::version_compare(version, "1.2.6")>=0);
+            XMLTools::version_compare(version, "1.2.6")>0);
 }
 
 

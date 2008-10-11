@@ -1,4 +1,8 @@
-2008-10-11  vadim  <vadim@vk.crocodile.org>
+2008-10-11  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::newIptables): fixed
+	bug #2151898: "use of "--icmp-type any" iptables 1.2.6a". Iptables
+	v1.2.6a and older do not have option "-m icmp --icmp-type any".
 
 	* PrefsDialog.cpp (PrefsDialog::PrefsDialog): Added tab "Data
 	File" to the Preferences dialog; added checkbox "Enable data file
