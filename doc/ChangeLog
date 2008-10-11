@@ -1,3 +1,12 @@
+2008-10-11  vadim  <vadim@vk.crocodile.org>
+
+	* fwbuilder/XMLTools.cpp (XMLTools::readFile): Added support for
+	compressed data files. The flag that controls compression on save
+	is supposed to be set outside the API (in the GUI, via call to
+	xmlSetCompressMode()). The API uses gzopen, gzread routines to
+	read the file and therefore can transparently read both compressed
+	and uncompressed .fwb files.
+
 2008-10-05  vadim  <vadim@vk.crocodile.org>
 
 	* VERSION: started 3.0.2
