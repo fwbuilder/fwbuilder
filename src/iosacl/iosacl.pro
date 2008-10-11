@@ -21,7 +21,7 @@ HEADERS	 = ../../config.h                      \
 			../cisco_lib/Helper.h 
 
 !win32 {
-	QMAKE_COPY    = /usr/bin/install -m 0755 -s
+	QMAKE_COPY    = ../../install -m 0755 -s
 }
 
 win32:CONFIG += console

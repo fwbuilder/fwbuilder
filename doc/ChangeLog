@@ -1,3 +1,8 @@
+2008-10-10  vadim  <vadim@vk.crocodile.org>
+
+	* pix.pro, iosacl.pro: fixed bug #2158407: "iosacl and pix install
+	probs"
+
 2008-10-10  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* iosacl.cpp (main): fixed bug #2154906 "Post script is missing /
