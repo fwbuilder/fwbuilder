@@ -30,6 +30,8 @@
 #include <fwbuilder/XMLTools.h>
 #include <fwbuilder/ThreadTools.h>
 
+#include <zlib.h>
+
 #include <string.h>
 
 #include <stdio.h>
@@ -231,42 +233,26 @@ string XMLTools::readFile(const std::string &rfile) throw(FWException)
             buf += '\n';
         }
         return buf;
-    } else
-    {
-#ifdef _WIN32
-      if (stat( rfile.c_str() , &stt )!=0 || (fd=_open(rfile.c_str(),O_RDONLY|_O_BINARY))<0)
-#else
-      if (stat( rfile.c_str() , &stt )!=0 || (fd=open(rfile.c_str(),O_RDONLY))<0)
-#endif
-        throw FWException("Could not read file "+rfile);
-
     }
+
+    gzFile gzf = gzopen(rfile.c_str(), "rb9");
+    if (gzf == NULL) throw FWException("Could not read file "+rfile);
 
     int chunk_size = 65536;
     char *chunk = (char*)malloc(chunk_size);
     if (!chunk) throw FWException("Out of memory");
 
-    int   n = 0;
+    int  n = 0;
     while(1)
     {
-#ifdef _WIN32
-        n=_read(fd,chunk,chunk_size-1);
-#else
-        n=read(fd,chunk,chunk_size-1);
-#endif
+        n = gzread(gzf, chunk, chunk_size-1);
         if (n<=0) break;
         chunk[n] = '\0';
-
         buf = buf + chunk;
     }
+    int errn = errno;
     free(chunk);
-
-    int errn=errno;
-#ifdef _WIN32
-    _close(fd);
-#else
-    close(fd);
-#endif
+    gzclose(gzf);
 
     if (n<0)
     {
@@ -274,6 +260,7 @@ string XMLTools::readFile(const std::string &rfile) throw(FWException)
         s = "Error reading from file " + rfile + " : " + string(strerror(errn));
         throw FWException(s);
     }
+
     return buf;
 }
 
@@ -285,25 +272,27 @@ xmlDocPtr XMLTools::parseFile(const string &file_name,
     xml_parser_mutex.lock();
 
     if (current_template_dir!=NULL) delete[] current_template_dir;
-    current_template_dir=cxx_strdup(template_dir.c_str());
+    current_template_dir = cxx_strdup(template_dir.c_str());
     
-    xmlDoValidityCheckingDefaultValue = use_dtd?1:0;
-    xmlLoadExtDtdDefaultValue         = use_dtd?DTD_LOAD_BITS:0;
+    xmlDoValidityCheckingDefaultValue = use_dtd ? 1 : 0;
+    xmlLoadExtDtdDefaultValue = use_dtd ? DTD_LOAD_BITS : 0;
     
     string errors;
-    xmlSetGenericErrorFunc (&errors, xslt_error_handler);
+    xmlSetGenericErrorFunc(&errors, xslt_error_handler);
 //    xmlDocPtr doc = xmlParseFile(file_name.c_str()); 
 
     xmlDocPtr doc = xmlParseMemory(buffer.c_str(), buffer.length());
 
-    xmlSetGenericErrorFunc (NULL, NULL);
+    xmlSetGenericErrorFunc(NULL, NULL);
 
     xml_parser_mutex.unlock();
-    if(!doc || errors.length())
+    if (!doc || errors.length())
     {
-        throw FWException("Error parsing XML from file '"+file_name+ "' "+
-                          "(use_dtd="+ (use_dtd?string("1"):string("0"))+") "+
-                          (errors.length()?(string("\nXML Parser reported:\n")+errors):string(""))
+        throw FWException(
+            "Error parsing XML from file '"+file_name+ "' "+
+            "(use_dtd="+ (use_dtd?string("1"):string("0"))+") "+
+            (errors.length() ? (
+                string("\nXML Parser reported:\n")+errors):string(""))
         );
     }
 
