@@ -885,8 +885,11 @@ string PolicyCompiler_ipt::PrintRule::_printSrcService(RuleElementSrv  *rel)
     Service *srv= Service::cast(o);
 
 
-    if (rel->size()==1) {
-	if (UDPService::isA(srv) || TCPService::isA(srv)) {
+    if (rel->size()==1)
+    {
+	if (UDPService::isA(srv) || TCPService::isA(srv) ||
+            TagService::isA(srv))
+        {
 	    string str=_printSrcPorts( srv );
 	    if (! str.empty() ) 
             {
@@ -894,7 +897,8 @@ string PolicyCompiler_ipt::PrintRule::_printSrcService(RuleElementSrv  *rel)
                 ostr  << _printSingleObjectNegation(rel) << str << " ";
             }
 	}
-    } else {
+    } else
+    {
 /* use multiport */
 
 	string str;
@@ -938,7 +942,7 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
 
     if (rel->size()==1) 
     {
-	if (UDPService::isA(srv) || TCPService::isA(srv)) 
+	if (UDPService::isA(srv) || TCPService::isA(srv))
         {
 	    string str=_printDstPorts( srv );
 	    if (! str.empty() )
@@ -993,7 +997,9 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
 	}
         if (TagService::isA(srv))
         {
-	    ostr << "-m mark --mark "
+	    ostr << "-m mark "
+                 << _printSingleObjectNegation(rel) 
+                 << "--mark "
                  << TagService::constcast(srv)->getCode() << " ";
         }
         if (UserService::isA(srv))

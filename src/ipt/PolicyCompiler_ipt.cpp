@@ -941,16 +941,20 @@ bool PolicyCompiler_ipt::singleDstNegation::processNext()
 
 bool PolicyCompiler_ipt::singleSrvNegation::processNext()
 {
-    PolicyRule         *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     RuleElementSrv *srvrel=rule->getSrv();
-    Service        *srv=compiler->getFirstSrv(rule); // need to make sure it is not a group
-
-/*   A  B  ! C  ACTION  */
-    if (srvrel->getNeg() && srvrel->size()==1 && srv!=NULL ) 
+    Service *srv=compiler->getFirstSrv(rule); // need to make sure it is not a group
+    // see comment in compile() where this rule processor is used for why
+    // only some services can be processed here.
+    if (TagService::isA(srv))
     {
-        srvrel->setNeg(false);
-        srvrel->setBool("single_object_negation",true);
+/*   A  B  ! C  ACTION  */
+        if (srvrel->getNeg() && srvrel->size()==1 && srv!=NULL ) 
+        {
+            srvrel->setNeg(false);
+            srvrel->setBool("single_object_negation", true);
+        }
     }
 
     tmp_queue.push_back(rule);
@@ -1522,8 +1526,8 @@ bool PolicyCompiler_ipt::setChainPostroutingForTag::processNext()
 
 bool PolicyCompiler_ipt::checkForRestoreMarkInOutput::processNext()
 {
-    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
     FWOptions  *ruleopt = rule->getOptionsObject();
 
     if ( (rule->getAction() == PolicyRule::Tag ||
@@ -1582,16 +1586,17 @@ bool PolicyCompiler_ipt::setChainForMangle::processNext()
  */
 bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    FWOptions  *ruleopt = rule->getOptionsObject();
-    Interface  *rule_iface = compiler->getCachedFwInterface(rule->getInterfaceId());
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    FWOptions *ruleopt = rule->getOptionsObject();
+    Interface *rule_iface = compiler->getCachedFwInterface(rule->getInterfaceId());
 
-    RuleElementSrc      *nsrc;
-    RuleElementDst      *ndst;
-    RuleElementSrv      *nsrv;
+    RuleElementSrc *nsrc;
+    RuleElementDst *ndst;
+    RuleElementSrv *nsrv;
     RuleElementInterval *nint;
-    bool                 make_terminating = compiler->fw->getOptionsObject()->getBool("classify_mark_terminating");
+    bool make_terminating =
+        compiler->fw->getOptionsObject()->getBool("classify_mark_terminating");
 
     if (rule->getAction() == PolicyRule::Tag &&
         ruleopt->getBool("ipt_mark_connections"))
@@ -1653,7 +1658,8 @@ bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
 
         if (make_terminating)
         {
-            r1= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r1 = PolicyRule::cast(
+                compiler->dbcopy->create(PolicyRule::TYPENAME) );
             compiler->temp_ruleset->add(r1);
             r1->duplicate(r);
             r1->setStr("ipt_target","ACCEPT");
@@ -1663,6 +1669,7 @@ bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
         }
 
         ipt_comp->have_connmark = true;
+
     } else
 	tmp_queue.push_back(rule);
 
@@ -1684,7 +1691,8 @@ bool PolicyCompiler_ipt::splitIfIfaceAndDirectionBoth::processNext()
         // direction 'inbound' does not make sense for it.
         if (rule->getStr("ipt_chain") != "POSTROUTING")
         {
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r = PolicyRule::cast(
+                compiler->dbcopy->create(PolicyRule::TYPENAME) );
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             r->setDirection( PolicyRule::Inbound );
@@ -1695,7 +1703,7 @@ bool PolicyCompiler_ipt::splitIfIfaceAndDirectionBoth::processNext()
         // direction 'Outbound' does not make sense for it.
         if (rule->getStr("ipt_chain") != "PREROUTING")
         {
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             r->setDirection( PolicyRule::Outbound );
@@ -3831,11 +3839,14 @@ void PolicyCompiler_ipt::compile()
  * protocols except TCP port 25". We just can't use "!" with negation
  * in service even if there is only single object in that rule
  * element.
+ *
+ * Further correction: we CAN use single object negatiob with some types
+ * of service objects, such as e.g. TagService
  */
-//        add( new singleSrvNegation("negation in Srv if it holds 1 object"));
+    add( new singleSrvNegation("negation in Srv if it holds 1 object"));
     add( new splitRuleIfSrvAnyActionReject(
              "split rule if action is reject and srv is any" ) );
-    add( new SrvNegation( false,      "process negation in Srv"               ) );
+    add( new SrvNegation( false, "process negation in Srv") );
     add( new expandGroupsInSrv("expand groups in Srv" ));
 
     add( new CheckForTCPEstablished("TCPService with \"established\"") );
@@ -3860,11 +3871,11 @@ void PolicyCompiler_ipt::compile()
     add( new splitIfSrcNegAndFw("split rule if src has negation and fw"));
     add( new splitIfDstNegAndFw("split rule if dst has negation and fw"));
 
-    add( new SrcNegation( false,         "process negation in Src"  ));
-    add( new DstNegation( false,         "process negation in Dst"  ));
-    add( new TimeNegation( false,        "process negation in Time" ));
+    add( new SrcNegation(false, "process negation in Src"  ));
+    add( new DstNegation(false, "process negation in Dst"  ));
+    add( new TimeNegation(false, "process negation in Time" ));
 
-    add( new Logging2(                   "process logging"          ));
+    add( new Logging2("process logging"));
 
 /* this is just a patch for those who do not understand how does
  * "assume firewall is part of any" work. It also eliminates redundant

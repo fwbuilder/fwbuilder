@@ -51,9 +51,12 @@ int MangleTableCompiler_ipt::prolog()
         i!=combined_ruleset->end(); i++)
     {
 	PolicyRule *r = PolicyRule::cast( *i );
+        FWOptions *ruleopt = r->getOptionsObject();
 	if (r->isDisabled()) continue;
         if (r->getAction() == PolicyRule::Tag ||
             r->getAction() == PolicyRule::Classify) n++;
+        if (r->getAction() == PolicyRule::Branch &&
+            ruleopt->getBool("ipt_branch_in_mangle")) n++;
     }
     return n;
 }
@@ -114,6 +117,13 @@ void MangleTableCompiler_ipt::addRuleFilter()
 }
 
 string MangleTableCompiler_ipt::flushAndSetDefaultPolicy()
+{
+    return "";
+}
+
+
+string MangleTableCompiler_ipt::printAutomaticRulesForMangleTable(
+    bool have_connmark, bool have_connmark_in_output)
 {
     ostringstream res;
 

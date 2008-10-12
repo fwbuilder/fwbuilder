@@ -994,6 +994,9 @@ namespace fwcompiler {
 	std::string getNewTmpChainName(libfwbuilder::PolicyRule *rule);
 	std::string getNewChainName(libfwbuilder::PolicyRule *rule,libfwbuilder::Interface *rule_iface);
 
+        bool haveConnMarkRules() { return have_connmark; }
+        bool haveConnMarkRulesInOutput() { return have_connmark_in_output; }
+         
     };
 
 

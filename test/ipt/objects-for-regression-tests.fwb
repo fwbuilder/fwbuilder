@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1221975696" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1223765455" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -600,6 +600,7 @@
     <ObjectRef ref="id4387287918346"/>
     <ObjectRef ref="id4834B9206131"/>
     <ObjectRef ref="id86936X27543"/>
+    <ServiceRef ref="sysid1"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -1467,6 +1468,7 @@
         <TagService id="id365999" tagcode="8" name="Tag 8" comment="Automatically created for firewall37-1 rule 8" ro="False"/>
         <TagService id="id366232" tagcode="9" name="Tag 9" comment="Automatically created for firewall37-1 rule 9" ro="False"/>
         <TagService id="id342984" tagcode="10" name="Tag 10" comment="Automatically created for firewall37 rule 8" ro="False"/>
+        <TagService id="id37422X26379" tagcode="0" name="Tag0" comment="" ro="False"/>
       </ServiceGroup>
       <ServiceGroup id="stdid10_1" name="Groups" comment="" ro="False">
         <ServiceGroup id="id3B457567" name="svcgroup1" comment="" ro="False">
@@ -19338,7 +19340,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id43BB80919745" host_OS="linux24" inactive="False" lastCompiled="1215360268" lastInstalled="1142003872" lastModified="1221325242" platform="iptables" version="" name="firewall37" comment="testing TAG and CLASSIFY rules&#10;&#10;normal script mode (not using  iptables-restore)" ro="False">
+      <Firewall id="id43BB80919745" host_OS="linux24" inactive="False" lastCompiled="1223772424" lastInstalled="1142003872" lastModified="1223772593" platform="iptables" version="" name="firewall37" comment="testing TAG and CLASSIFY rules&#10;&#10;normal script mode (not using  iptables-restore)" ro="False">
         <NAT id="id43BB80B09745" name="NAT" comment="" ro="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id43BB814D9745" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -19925,7 +19927,50 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="tagobject_id">id342984</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id43BB80989745" action="Pipe" direction="Both" disabled="False" log="False" position="20" comment="">
+          <PolicyRule id="id37410X26379" action="Accept" direction="Both" disabled="False" group="" log="False" position="20" comment="tag 0 matches packet that has not been marked yet.&#10;">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="True">
+              <ServiceRef ref="id37422X26379"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#C86E6E</Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_reply_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_route_load_option">none</Option>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
+              <Option name="pf_route_option">route_reply_through</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">False</Option>
+              <Option name="tagobject_id">id37422X26379</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id43BB80989745" action="Pipe" direction="Both" disabled="False" log="False" position="21" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -19945,7 +19990,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id43BB81879745" action="Classify" direction="Both" disabled="False" log="False" position="21" comment="">
+          <PolicyRule id="id43BB81879745" action="Classify" direction="Both" disabled="False" log="False" position="22" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -19980,7 +20025,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id451E2B486383" action="Classify" direction="Both" disabled="False" log="True" position="22" comment="">
+          <PolicyRule id="id451E2B486383" action="Classify" direction="Both" disabled="False" log="True" position="23" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -20015,7 +20060,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id451E56936383" action="Classify" direction="Both" disabled="False" log="False" position="23" comment="">
+          <PolicyRule id="id451E56936383" action="Classify" direction="Both" disabled="False" log="False" position="24" comment="">
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B022266"/>
@@ -20051,7 +20096,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id451E56A46383" action="Classify" direction="Both" disabled="False" log="True" position="24" comment="">
+          <PolicyRule id="id451E56A46383" action="Classify" direction="Both" disabled="False" log="True" position="25" comment="">
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B022266"/>
@@ -20087,7 +20132,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id451EAD596383" action="Classify" direction="Both" disabled="False" log="False" position="25" comment="">
+          <PolicyRule id="id451EAD596383" action="Classify" direction="Both" disabled="False" log="False" position="26" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -20122,7 +20167,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id451EAD6A6383" action="Classify" direction="Both" disabled="False" log="True" position="26" comment="">
+          <PolicyRule id="id451EAD6A6383" action="Classify" direction="Both" disabled="False" log="True" position="27" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -20157,7 +20202,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id451ED8E76383" action="Classify" direction="Both" disabled="False" log="False" position="27" comment="">
+          <PolicyRule id="id451ED8E76383" action="Classify" direction="Both" disabled="False" log="False" position="28" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -20192,7 +20237,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id451ED8F86383" action="Classify" direction="Both" disabled="False" log="True" position="28" comment="">
+          <PolicyRule id="id451ED8F86383" action="Classify" direction="Both" disabled="False" log="True" position="29" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -20227,7 +20272,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id4599A9DC19324" action="Classify" direction="Both" disabled="False" log="False" position="29" comment="testing for bug #1618381&#10;classify action is non-terminating&#10;in this firewall object">
+          <PolicyRule id="id4599A9DC19324" action="Classify" direction="Both" disabled="False" log="False" position="30" comment="testing for bug #1618381&#10;classify action is non-terminating&#10;in this firewall object">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -20269,7 +20314,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id4599A9E919324" action="Classify" direction="Both" disabled="False" log="False" position="30" comment="second rule for bug #1618381">
+          <PolicyRule id="id4599A9E919324" action="Classify" direction="Both" disabled="False" log="False" position="31" comment="second rule for bug #1618381">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -20311,7 +20356,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id459A026219324" action="Classify" direction="Both" disabled="False" log="False" position="31" comment="testing for bug #1618381">
+          <PolicyRule id="id459A026219324" action="Classify" direction="Both" disabled="False" log="False" position="32" comment="testing for bug #1618381">
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B022266"/>
@@ -20354,7 +20399,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id459A5AFB19324" action="Classify" direction="Both" disabled="False" log="False" position="32" comment="testing for bug #1618381">
+          <PolicyRule id="id459A5AFB19324" action="Classify" direction="Both" disabled="False" log="False" position="33" comment="testing for bug #1618381">
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B022266"/>
@@ -20398,7 +20443,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id459A875F19324" action="Classify" direction="Both" disabled="False" log="False" position="33" comment="bug #1618381&#10;this rule uses multiport&#10;and has to be split because&#10;of that">
+          <PolicyRule id="id459A875F19324" action="Classify" direction="Both" disabled="False" log="False" position="34" comment="bug #1618381&#10;this rule uses multiport&#10;and has to be split because&#10;of that">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -20441,7 +20486,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id43F46B8A28368" action="Custom" direction="Both" disabled="False" log="False" position="34" comment="">
+          <PolicyRule id="id43F46B8A28368" action="Custom" direction="Both" disabled="False" log="False" position="35" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -20469,7 +20514,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="tagvalue"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id43495X28575" action="Branch" direction="Both" disabled="False" group="" log="True" position="35" comment="">
+          <PolicyRule id="id43495X28575" action="Branch" direction="Both" disabled="False" group="" log="True" position="36" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -20512,7 +20557,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id43BB80A49745" action="Deny" direction="Both" disabled="False" log="True" position="36" comment="">
+          <PolicyRule id="id43BB80A49745" action="Deny" direction="Both" disabled="False" log="True" position="37" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
