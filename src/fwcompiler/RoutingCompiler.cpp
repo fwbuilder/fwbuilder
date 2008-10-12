@@ -65,7 +65,7 @@ int RoutingCompiler::prolog()
 {
     Compiler::prolog();
     
-    FWObject  *routing=fw->getFirstByType(Routing::TYPENAME);
+    FWObject  *routing = fw->getFirstByType(Routing::TYPENAME);
     assert(routing);
 
     combined_ruleset = new Routing();   // combined ruleset
@@ -74,7 +74,10 @@ int RoutingCompiler::prolog()
     temp_ruleset = new Routing();   // working copy of the routing
     fw->add( temp_ruleset );
 
-    list<FWObject*> l=routing->getByType(RoutingRule::TYPENAME);
+    combined_ruleset->setName(routing->getName());
+    temp_ruleset->setName(routing->getName());
+
+    list<FWObject*> l = routing->getByType(RoutingRule::TYPENAME);
     for (list<FWObject*>::iterator j=l.begin(); j!=l.end(); ++j) 
     {
 	Rule *r= Rule::cast(*j);

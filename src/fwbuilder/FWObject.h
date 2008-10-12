@@ -109,14 +109,6 @@ protected:
 
     void clearRefCounter() { ref_counter=0; }
 
-    /**
-     * _getRO() simply returns value of private member ro. Note the
-     * difference between _getRO and isReadOnly() - the latter checks
-     * if any parent of this object is read-only in addition to
-     * checking if this object is read-only itself.
-     */
-    bool _getRO() { return ro; }
-
     void _removeAll(FWObject *rm);
     void _removeAllRef(FWObject *rm);
     void _adopt(FWObject *obj);   // increments reference
@@ -186,6 +178,14 @@ public:
     void setId(int i);
     bool haveId() { return (id != -1); }
 
+    /**
+     * getRO() simply returns value of private member ro. Note the
+     * difference between _getRO and isReadOnly() - the latter checks
+     * if any parent of this object is read-only in addition to
+     * checking if this object is read-only itself.
+     */
+    bool getRO() { return ro; }
+    
     virtual void fromXML(xmlNodePtr xml_parent_node) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
     xmlNodePtr toXML(xmlNodePtr xml_parent_node, bool process_children) throw(FWException);

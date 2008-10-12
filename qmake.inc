@@ -18,14 +18,14 @@ unix {
 	MOC_DIR = .moc
 	OBJECTS_DIR = .obj
 
-    prefix = /Users/vadim/src/fwb3-branch-v3/install_root
+    prefix = /home/vadim/src/fwb3-branch-v3/install_root
 	exec_prefix = $$prefix
 	DESTDIR =
 
 	target.path = $$exec_prefix/lib
-	dtd.path = /Users/vadim/src/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.2/
-	migration.path = /Users/vadim/src/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.2/migration
-	doc.path = /Users/vadim/src/fwb3-branch-v3/install_root/share/doc/libfwbuilder-3.0.2
+	dtd.path = /home/vadim/src/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.2/
+	migration.path = /home/vadim/src/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.2/migration
+	doc.path = /home/vadim/src/fwb3-branch-v3/install_root/share/doc/libfwbuilder-3.0.2
 
 	CONFIG                 += warn_on debug
 	QMAKE_CFLAGS_DEBUG     += -Wno-unused-parameter
@@ -37,9 +37,9 @@ unix {
 
 unix {
 	INCLUDEPATH += /usr/include /usr/include/libxml2  \
-				    
-	LIBS +=  -L/usr/lib -lxml2 -lz -lpthread -licucore -lm  -lxslt -lnetsnmp \
-				    -lnetsnmp 
+				   -pthread 
+	LIBS += -pthread -L/usr/lib -lxml2  -lxslt -L/usr/lib -lnetsnmp -lm -lwrap -lwrap \
+				    -L/usr/lib -lnetsnmp -lm -lwrap -lwrap 
 }
 
 exists(qmake2.inc) {

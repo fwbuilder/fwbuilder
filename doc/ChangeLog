@@ -1,4 +1,10 @@
-2008-10-11  vadim  <vadim@vk.crocodile.org>
+2008-10-11  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler.cpp (PolicyCompiler::prolog): assign name of the
+	source rule set to combined_ruleset and temp_ruleset
+
+	* FWObject.h (libfwbuilder): made getRO() public so it can be
+	called from the GUI.
 
 	* fwbuilder/XMLTools.cpp (XMLTools::readFile): Added support for
 	compressed data files. The flag that controls compression on save

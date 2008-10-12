@@ -104,7 +104,7 @@ xmlNodePtr CustomService::toXML(xmlNodePtr parent) throw(FWException)
     xmlNodePtr me = FWObject::toXML(parent);
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
     xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((_getRO()) ? "True" : "False")));
+    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
 
     map<string, string>::const_iterator i;
     for(i=codes.begin(); i!=codes.end(); ++i)  

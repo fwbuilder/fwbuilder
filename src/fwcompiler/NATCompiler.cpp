@@ -82,6 +82,9 @@ int NATCompiler::prolog()
         ruleset = nat;
     }
 
+    combined_ruleset->setName(ruleset->getName());
+    temp_ruleset->setName(ruleset->getName());
+
     string label_prefix = "";
     if (ruleset->getName() != "NAT") label_prefix = ruleset->getName();
 

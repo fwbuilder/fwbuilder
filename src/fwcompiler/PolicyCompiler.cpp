@@ -65,7 +65,7 @@ int PolicyCompiler::prolog()
 {
     Compiler::prolog();
 
-    FWObject  *policy=fw->getFirstByType(Policy::TYPENAME);
+    FWObject *policy = fw->getFirstByType(Policy::TYPENAME);
     assert(policy);
 
     combined_ruleset = new Policy();   // combined ruleset (all interface policies and global policy)
@@ -82,6 +82,9 @@ int PolicyCompiler::prolog()
         source_ruleset = RuleSet::cast(policy);
         ruleset = policy;
     }
+
+    combined_ruleset->setName(ruleset->getName());
+    temp_ruleset->setName(ruleset->getName());
 
     string label_prefix = "";
     if (ruleset->getName() != "Policy") label_prefix = ruleset->getName();
