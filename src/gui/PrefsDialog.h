@@ -42,7 +42,7 @@
 #include <qstring.h>
 
 class QPushButton;
-
+class QTreeWidgetItem;
 
 class PrefsDialog : public QDialog
 {

@@ -37,6 +37,8 @@
 #include "fwbuilder/Management.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/RuleSet.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Policy.h"
 
 #include <qlineedit.h>
 #include <qspinbox.h>

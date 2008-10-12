@@ -52,6 +52,8 @@
 #include <qpixmapcache.h>
 #include <qfontdialog.h>
 #include <qmessagebox.h>
+
+#include <QTreeWidgetItem>
 #include <QUrl>
 
 #include <sstream>
