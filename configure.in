@@ -310,6 +310,9 @@ AC_CHECK_LIB(c, inet_net_ntop, [
 ],[])
 
 
+AC_CHECK_LIB(z, gzopen, [ LIBS="-lz ${LIBS}"], [
+   AC_MSG_ERROR([libz library not found])
+])
 
 AC_LANG_CPLUSPLUS
 
