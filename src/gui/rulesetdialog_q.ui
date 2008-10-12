@@ -183,6 +183,9 @@
            <enum>QFrame::Sunken</enum>
           </property>
           <layout class="QGridLayout" name="gridLayout_3" >
+           <property name="spacing" >
+            <number>10</number>
+           </property>
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
              <property name="text" >
@@ -219,13 +222,16 @@
                <number>10</number>
               </property>
               <property name="topMargin" >
-               <number>0</number>
+               <number>10</number>
               </property>
               <property name="rightMargin" >
                <number>2</number>
               </property>
               <property name="bottomMargin" >
-               <number>0</number>
+               <number>10</number>
+              </property>
+              <property name="verticalSpacing" >
+               <number>10</number>
               </property>
               <item row="0" column="0" >
                <widget class="QRadioButton" name="ipv4_rule_set" >
@@ -254,13 +260,16 @@
                <number>10</number>
               </property>
               <property name="topMargin" >
-               <number>0</number>
+               <number>10</number>
               </property>
               <property name="rightMargin" >
                <number>2</number>
               </property>
               <property name="bottomMargin" >
-               <number>2</number>
+               <number>10</number>
+              </property>
+              <property name="verticalSpacing" >
+               <number>10</number>
               </property>
               <item row="0" column="0" >
                <widget class="QRadioButton" name="ipt_filter_table" >
