@@ -8,30 +8,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>691</width>
-    <height>234</height>
+    <width>886</width>
+    <height>216</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Ruleset</string>
   </property>
   <layout class="QGridLayout" >
-   <property name="leftMargin" >
+   <property name="margin" >
     <number>2</number>
    </property>
-   <property name="topMargin" >
-    <number>2</number>
-   </property>
-   <property name="rightMargin" >
-    <number>2</number>
-   </property>
-   <property name="bottomMargin" >
-    <number>2</number>
-   </property>
-   <property name="horizontalSpacing" >
-    <number>0</number>
-   </property>
-   <property name="verticalSpacing" >
+   <property name="spacing" >
     <number>0</number>
    </property>
    <item row="0" column="0" >
@@ -127,22 +115,10 @@
         <enum>QFrame::Sunken</enum>
        </property>
        <layout class="QGridLayout" >
-        <property name="leftMargin" >
+        <property name="margin" >
          <number>2</number>
         </property>
-        <property name="topMargin" >
-         <number>2</number>
-        </property>
-        <property name="rightMargin" >
-         <number>2</number>
-        </property>
-        <property name="bottomMargin" >
-         <number>2</number>
-        </property>
-        <property name="horizontalSpacing" >
-         <number>2</number>
-        </property>
-        <property name="verticalSpacing" >
+        <property name="spacing" >
          <number>2</number>
         </property>
         <item row="0" column="0" >
@@ -154,7 +130,7 @@
            </sizepolicy>
           </property>
           <property name="pixmap" >
-           <pixmap resource="MainRes.qrc" >:/Icons/Routing/icon</pixmap>
+           <pixmap>:/Icons/Routing/icon</pixmap>
           </property>
           <property name="scaledContents" >
            <bool>true</bool>
@@ -197,7 +173,7 @@
        <property name="frameShadow" >
         <enum>QFrame::Sunken</enum>
        </property>
-       <layout class="QGridLayout" >
+       <layout class="QGridLayout" name="gridLayout_4" >
         <item rowspan="2" row="0" column="0" >
          <widget class="QFrame" name="frame27" >
           <property name="frameShape" >
@@ -206,10 +182,7 @@
           <property name="frameShadow" >
            <enum>QFrame::Sunken</enum>
           </property>
-          <layout class="QGridLayout" >
-           <property name="verticalSpacing" >
-            <number>8</number>
-           </property>
+          <layout class="QGridLayout" name="gridLayout_3" >
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
              <property name="text" >
@@ -220,7 +193,7 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1" >
+           <item row="0" column="1" colspan="2" >
             <widget class="QLineEdit" name="obj_name" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -237,27 +210,76 @@
             </widget>
            </item>
            <item row="1" column="0" colspan="2" >
-            <widget class="QRadioButton" name="ipv4_rule_set" >
-             <property name="text" >
-              <string>This is IPv4 rule set</string>
+            <widget class="QGroupBox" name="groupBox" >
+             <property name="title" >
+              <string/>
              </property>
+             <layout class="QGridLayout" name="gridLayout" >
+              <property name="leftMargin" >
+               <number>2</number>
+              </property>
+              <property name="topMargin" >
+               <number>0</number>
+              </property>
+              <property name="rightMargin" >
+               <number>2</number>
+              </property>
+              <property name="bottomMargin" >
+               <number>0</number>
+              </property>
+              <item row="0" column="0" >
+               <widget class="QRadioButton" name="ipv4_rule_set" >
+                <property name="text" >
+                 <string>This is IPv4 rule set</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" >
+               <widget class="QRadioButton" name="ipv6_rule_set" >
+                <property name="text" >
+                 <string>This is IPv6 rule set</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
-           <item row="2" column="0" colspan="2" >
-            <widget class="QRadioButton" name="ipv6_rule_set" >
-             <property name="text" >
-              <string>This is IPv6 rule set</string>
+           <item row="1" column="2" >
+            <widget class="QGroupBox" name="iptables_only" >
+             <property name="title" >
+              <string/>
              </property>
+             <layout class="QGridLayout" name="gridLayout_2" >
+              <property name="leftMargin" >
+               <number>2</number>
+              </property>
+              <property name="topMargin" >
+               <number>0</number>
+              </property>
+              <property name="rightMargin" >
+               <number>2</number>
+              </property>
+              <property name="bottomMargin" >
+               <number>2</number>
+              </property>
+              <item row="0" column="0" >
+               <widget class="QRadioButton" name="ipt_filter_table" >
+                <property name="text" >
+                 <string>filter table</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" >
+               <widget class="QRadioButton" name="ipt_mangle_table" >
+                <property name="text" >
+                 <string>mangle table</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
-           <item row="3" column="0" colspan="2" >
-            <widget class="Line" name="line" >
-             <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0" colspan="2" >
+           <item row="2" column="0" colspan="3" >
             <widget class="QCheckBox" name="top_rule_set" >
              <property name="text" >
               <string>Top ruleset</string>
@@ -351,38 +373,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>ipv4_rule_set</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>RuleSetDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>110</x>
-     <y>118</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>329</x>
-     <y>104</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ipv6_rule_set</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>RuleSetDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>110</x>
-     <y>142</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>329</x>
-     <y>104</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>top_rule_set</sender>
    <signal>stateChanged(int)</signal>
    <receiver>RuleSetDialog_q</receiver>
@@ -398,5 +388,72 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>ipv4_rule_set</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>RuleSetDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>123</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>442</x>
+     <y>107</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ipv6_rule_set</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>RuleSetDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>123</x>
+     <y>139</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>442</x>
+     <y>107</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ipt_filter_table</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>RuleSetDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>338</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>442</x>
+     <y>107</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ipt_mangle_table</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>RuleSetDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>338</x>
+     <y>139</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>442</x>
+     <y>107</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>changed()</slot>
+ </slots>
 </ui>
