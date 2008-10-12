@@ -34,12 +34,16 @@
 #include "fwbuilder/Rule.h"
 
 #include <iostream>
+#include <list>
+#include <algorithm>
+#include <iterator>
 
 using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
 string MangleTableCompiler_ipt::myPlatformName() { return "iptables"; }
+
 
 int MangleTableCompiler_ipt::prolog()
 {
@@ -63,49 +67,57 @@ int MangleTableCompiler_ipt::prolog()
 
 bool MangleTableCompiler_ipt::keepMangleTableRules::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    FWOptions *ruleopt =rule->getOptionsObject();
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    FWOptions *ruleopt = rule->getOptionsObject();
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
 
-    if (rule->getAction() == PolicyRule::Branch &&
-        ruleopt->getBool("ipt_branch_in_mangle"))
-    {
-        PolicyRule* r;
-        
-        // this is a branching rule for mangle table. Need to put it
-        // into PREROUTING and POSTROUTING chains as well because some
-        // targets that work with mangle table can only go into these
-        // chains, yet we do not know what kind of rules will user
-        // place in the branch
+    string ruleset_name = compiler->getRuleSetName();
 
-        if (rule->getDirection()==PolicyRule::Undefined ||
-            rule->getDirection()==PolicyRule::Both ||
-            rule->getDirection()==PolicyRule::Inbound)
-        {
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
-            compiler->temp_ruleset->add(r);
-            r->duplicate(rule);
-            r->setStr("ipt_chain","PREROUTING");
-            tmp_queue.push_back(r);
-        }
-
-        if (rule->getDirection()==PolicyRule::Undefined ||
-            rule->getDirection()==PolicyRule::Both ||
-            rule->getDirection()==PolicyRule::Outbound)
-        {
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
-            compiler->temp_ruleset->add(r);
-            r->duplicate(rule);
-            r->setStr("ipt_chain","POSTROUTING");
-            tmp_queue.push_back(r);
-        }
-
+    if (ipt_comp->isMangleOnlyRuleSet(ruleset_name))
         tmp_queue.push_back(rule);
-    }
+    else
+    {
+        if (rule->getAction() == PolicyRule::Branch &&
+            ruleopt->getBool("ipt_branch_in_mangle"))
+        {
+            PolicyRule* r;
+        
+            // this is a branching rule for mangle table. Need to put it
+            // into PREROUTING and POSTROUTING chains as well because some
+            // targets that work with mangle table can only go into these
+            // chains, yet we do not know what kind of rules will user
+            // place in the branch
 
-    if (rule->getAction() == PolicyRule::Tag ||
-        rule->getAction() == PolicyRule::Route ||
-        rule->getAction() == PolicyRule::Classify ||
-        ruleopt->getBool("put_in_mangle_table")) tmp_queue.push_back(rule);
+            if (rule->getDirection()==PolicyRule::Undefined ||
+                rule->getDirection()==PolicyRule::Both ||
+                rule->getDirection()==PolicyRule::Inbound)
+            {
+                r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
+                compiler->temp_ruleset->add(r);
+                r->duplicate(rule);
+                r->setStr("ipt_chain","PREROUTING");
+                tmp_queue.push_back(r);
+            }
+
+            if (rule->getDirection()==PolicyRule::Undefined ||
+                rule->getDirection()==PolicyRule::Both ||
+                rule->getDirection()==PolicyRule::Outbound)
+            {
+                r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
+                compiler->temp_ruleset->add(r);
+                r->duplicate(rule);
+                r->setStr("ipt_chain","POSTROUTING");
+                tmp_queue.push_back(r);
+            }
+
+            tmp_queue.push_back(rule);
+        }
+
+        if (rule->getAction() == PolicyRule::Tag ||
+            rule->getAction() == PolicyRule::Route ||
+            rule->getAction() == PolicyRule::Classify ||
+            ruleopt->getBool("put_in_mangle_table")) tmp_queue.push_back(rule);
+    }
 
     return true;
 }
@@ -118,7 +130,8 @@ void MangleTableCompiler_ipt::addRuleFilter()
 
 string MangleTableCompiler_ipt::flushAndSetDefaultPolicy()
 {
-    return "";
+    return printAutomaticRulesForMangleTable(have_connmark,
+                                             have_connmark_in_output);
 }
 
 

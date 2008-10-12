@@ -72,7 +72,7 @@ void RuleSetDialog::loadFWObject(FWObject *o)
     RuleSet *s = dynamic_cast<RuleSet*>(obj);
     assert(s!=NULL);
 
-    init=true;
+    init = true;
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
@@ -84,8 +84,10 @@ void RuleSetDialog::loadFWObject(FWObject *o)
     FWObject *fw = o;
     while (fw && fw->getTypeName()!="Firewall") fw = fw->getParent();
     if (fw) platform = fw->getStr("platform");
+    FWOptions  *fwopt = Firewall::cast(fw)->getOptionsObject();
 
     if (platform == "iptables")
+    {
         m_dialog->top_rule_set->setToolTip(
             QApplication::translate("RuleSetDialog_q",
                                     "On iptables \"top\" rule set goes into \n"
@@ -95,6 +97,27 @@ void RuleSetDialog::loadFWObject(FWObject *o)
                                     "with the name the same as the name of \n"
                                     "the rule set.",
                                     0, QApplication::UnicodeUTF8));
+
+        if (Policy::isA(obj))
+        {
+            // if this attribute is absent, we consider it False, so for
+            // backwards compatibility the rule set is considered
+            // filter+mangle rather than mangle only.
+            m_dialog->iptables_only->show();
+            QStringList mangle_rulesets = 
+                QString(fwopt->getStr("ipt_mangle_only_rulesets").c_str()).
+                split(" ");
+            bool f = (mangle_rulesets.indexOf(s->getName().c_str()) >= 0);
+            m_dialog->ipt_filter_table->setChecked(!f);
+            m_dialog->ipt_mangle_table->setChecked(f);
+        } else
+            m_dialog->iptables_only->hide();
+
+    } else
+    {
+        m_dialog->iptables_only->hide();
+    }
+
 
     if (platform == "pf")
         m_dialog->top_rule_set->setToolTip(
@@ -161,12 +184,24 @@ void RuleSetDialog::applyChanges()
     RuleSet *s = dynamic_cast<RuleSet*>(obj);
     assert(s!=NULL);
 
+    FWObject *fw = obj;
+    while (fw && fw->getTypeName()!="Firewall") fw = fw->getParent();
+    FWOptions  *fwopt = Firewall::cast(fw)->getOptionsObject();
+
     string oldname=obj->getName();
     obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     obj->setComment(
         string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     s->setV6(m_dialog->ipv6_rule_set->isChecked());
     s->setTop(m_dialog->top_rule_set->isChecked());
+
+    QStringList mangle_rulesets = 
+        QString(fwopt->getStr("ipt_mangle_only_rulesets").c_str()).
+        split(" ");
+    if (mangle_rulesets.indexOf(s->getName().c_str()) < 0)
+        mangle_rulesets.push_back(s->getName().c_str());
+    fwopt->setStr("ipt_mangle_only_rulesets",
+                  mangle_rulesets.join(" ").toAscii().constData());
 
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 

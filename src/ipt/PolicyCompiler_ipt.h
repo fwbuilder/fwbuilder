@@ -75,6 +75,7 @@ namespace fwcompiler {
         bool                           have_connmark;
         bool                           have_connmark_in_output;
         std::string                    my_table;
+        std::list<std::string>         mangle_only_rulesets;
 
         std::map<std::string, int>     tmp_chain_no;
         std::map<std::string, int>     chain_usage_counter;
@@ -996,7 +997,8 @@ namespace fwcompiler {
 
         bool haveConnMarkRules() { return have_connmark; }
         bool haveConnMarkRulesInOutput() { return have_connmark_in_output; }
-         
+
+        bool isMangleOnlyRuleSet(const std::string &rule_set_name);
     };
 
 

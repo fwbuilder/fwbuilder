@@ -1,5 +1,21 @@
 2008-10-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipt.cpp (finalizeChain::processNext): Always
+	placing rules with action "Accept" in table mangle in chain
+	PREROUTING
+
+	* RuleSetDialog.cpp (RuleSetDialog::loadFWObject): Added attribute
+	to the Policy object for iptables to indicate that this policy
+	ruleset should be compiled into filter and mangle tables or only
+	for the mangle table. This makes sense (and is only shown) for
+	iptables firewalls. By default the attribute is set to
+	"filter+mangle" which means compiler will try to figure out which
+	table each rule should go to. However some combinations of service
+	objects and actions are ambiguous and can be used in both filter
+	and mangle tables. In cases like these, user can help by creating
+	separate Policy ruleset that will be translated only into iptables
+	rules in the mangle table.
+
 	* PolicyCompiler_ipt.cpp (singleSrvNegation::processNext): fixed
 	bug #2148378: "Negation does not work on Tag Service". Policy
 	compiler for iptables should be able to use "!"  single-object

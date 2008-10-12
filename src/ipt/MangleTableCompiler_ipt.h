@@ -41,6 +41,7 @@ namespace fwcompiler {
          * this processor drops all rules except for those that require mangle table
          */
         DECLARE_POLICY_RULE_PROCESSOR(keepMangleTableRules);
+        friend class keepMangleTableRules;
 
 	public:
 

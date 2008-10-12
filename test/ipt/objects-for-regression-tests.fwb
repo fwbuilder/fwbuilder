@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1223765455" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1223783524" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -600,6 +600,8 @@
     <ObjectRef ref="id4387287918346"/>
     <ObjectRef ref="id4834B9206131"/>
     <ObjectRef ref="id86936X27543"/>
+    <ServiceRef ref="sysid1"/>
+    <ServiceRef ref="sysid1"/>
     <ServiceRef ref="sysid1"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
@@ -19340,7 +19342,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id43BB80919745" host_OS="linux24" inactive="False" lastCompiled="1223772424" lastInstalled="1142003872" lastModified="1223772593" platform="iptables" version="" name="firewall37" comment="testing TAG and CLASSIFY rules&#10;&#10;normal script mode (not using  iptables-restore)" ro="False">
+      <Firewall id="id43BB80919745" host_OS="linux24" inactive="False" lastCompiled="1223783631" lastInstalled="1142003872" lastModified="1223783606" platform="iptables" version="" name="firewall37" comment="testing TAG and CLASSIFY rules&#10;&#10;normal script mode (not using  iptables-restore)" ro="False">
         <NAT id="id43BB80B09745" name="NAT" comment="" ro="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id43BB814D9745" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -20664,6 +20666,111 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
+        <Policy id="id39898X29169" name="mangle_rules" comment="" ro="False" ipv6_rule_set="False" top_rule_set="False">
+          <PolicyRule id="id39899X29169" action="Accept" direction="Both" disabled="False" log="False" position="0" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="True">
+              <ServiceRef ref="id37422X26379"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id56804X29169" action="Tag" direction="Both" disabled="False" group="" log="False" position="1" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">True</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_route_load_option">none</Option>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">False</Option>
+              <Option name="tagobject_id">id449328D824380</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id56817X29169" action="Classify" direction="Both" disabled="False" group="" log="False" position="2" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id449328D824380"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="classify_str">1:12</Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_route_load_option">none</Option>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
         <Routing id="id43BB81789745" name="Routing" comment="" ro="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id43BB81799745" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id43BB817B9745" name="firewall37:eth0:ip" comment="" ro="False" address="192.168.1.22" netmask="255.255.255.0"/>
@@ -20699,6 +20806,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="firewall_dir"></Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="ignore_empty_groups">True</Option>
+          <Option name="ipt_mangle_only_rulesets"> mangle_rules</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>

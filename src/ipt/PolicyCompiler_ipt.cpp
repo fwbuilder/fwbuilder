@@ -64,6 +64,8 @@
 #include <iomanip>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
+#include <iterator>
 
 #include <assert.h>
 
@@ -341,7 +343,15 @@ int PolicyCompiler_ipt::prolog()
     if (fw->getStr("platform")!="iptables")
 	abort(_("Unsupported platform ") + fw->getStr("platform") );
 
-    int n= PolicyCompiler::prolog();
+    int n = PolicyCompiler::prolog();
+
+    FWOptions *fwopt = getCachedFwOpt();
+
+    istringstream is(fwopt->getStr("ipt_mangle_only_rulesets"));
+    std::copy(istream_iterator<string>(is),
+              istream_iterator<string>(),
+              back_inserter(mangle_only_rulesets));
+
 
     // initialize counters for the standard chains
     for (list<string>::const_iterator i =
@@ -396,7 +406,6 @@ int PolicyCompiler_ipt::prolog()
     cacheObj(bcast255);
 
 
-    FWOptions *fwopt    = getCachedFwOpt();
     bool afpa = fwopt->getBool("firewall_is_part_of_any_and_networks");
 
     for(FWObject::iterator i=combined_ruleset->begin();
@@ -734,6 +743,11 @@ bool PolicyCompiler_ipt::Route::processNext()
 bool PolicyCompiler_ipt::dropMangleTableRules::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+
+    string ruleset_name = compiler->getRuleSetName();
+
+    if (ipt_comp->isMangleOnlyRuleSet(ruleset_name)) return true;
 
     if (rule->getAction() == PolicyRule::Tag ||
         rule->getAction() == PolicyRule::Route ||
@@ -2869,20 +2883,26 @@ bool PolicyCompiler_ipt::finalizeChain::processNext()
             rule->setStr("ipt_chain","FORWARD");
             break;
         }
+
+        if (rule->getAction() == PolicyRule::Accept)
+            rule->setStr("ipt_chain","PREROUTING");
+
     } else
     {
 
 //    RuleElementSrc *srcrel=rule->getSrc();
-      Address        *src   =compiler->getFirstSrc(rule);
+      Address *src = compiler->getFirstSrc(rule);
       if (src==NULL)
-          compiler->abort(string("finalizeChain: Empty Source rule element in rule ") +
-                          rule->getLabel());
+          compiler->abort(
+              string("finalizeChain: Empty Source rule element in rule ") +
+              rule->getLabel());
 
 //    RuleElementDst *dstrel=rule->getDst();
       Address        *dst   =compiler->getFirstDst(rule);
       if (dst==NULL)
-          compiler->abort(string("finalizeChain: Empty Destination rule element in rule ") +
-                          rule->getLabel());
+          compiler->abort(
+              string("finalizeChain: Empty Destination rule element in rule ") +
+              rule->getLabel());
 
       bool b,m;
 /* 
@@ -3974,8 +3994,8 @@ void PolicyCompiler_ipt::compile()
     add( new decideOnChainIfLoopback("any-any rule on loopback"     ) );
 
 //      add( new decideOnChainForClassify("set chain if action is Classify"));
-    add( new finalizeChain(              "decide on chain"   ) );
-    add( new decideOnTarget(             "decide on target"  ) );
+    add( new finalizeChain( "decide on chain"   ) );
+    add( new decideOnTarget( "decide on target"  ) );
 
     add( new checkForRestoreMarkInOutput(
              "check if we need -A OUTPUT -j CONNMARK --restore-mark"));
@@ -4241,6 +4261,13 @@ bool PolicyCompiler_ipt::newIptables(const string &version)
 {
     return (version.empty() || version=="ge_1.2.6" ||
             XMLTools::version_compare(version, "1.2.6")>0);
+}
+
+bool PolicyCompiler_ipt::isMangleOnlyRuleSet(const string &ruleset_name)
+{
+    return (std::find(mangle_only_rulesets.begin(),
+                      mangle_only_rulesets.end(),
+                      ruleset_name) != mangle_only_rulesets.end());
 }
 
 

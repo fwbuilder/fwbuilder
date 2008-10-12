@@ -783,27 +783,27 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
                 if (policy->isV6()!=ipv6_policy) continue;
 
-                MangleTableCompiler_ipt *m = new MangleTableCompiler_ipt(
+                MangleTableCompiler_ipt m(
                     objdb , fwobjectname.toUtf8().constData(),
                     ipv6_policy , oscnf,
                     &minus_n_commands_mangle );
 
                 if (!policy->isTop())
-                    m->registerRuleSetChain(branch_name);
+                    m.registerRuleSetChain(branch_name);
 
-                m->setSourceRuleSet( policy );
-                m->setRuleSetName(branch_name);
+                m.setSourceRuleSet( policy );
+                m.setRuleSetName(branch_name);
 
-                m->setDebugLevel( dl );
-                m->setDebugRule(  drp );
-                m->setVerbose( (bool)(verbose) );
-                m->setHaveDynamicInterfaces(have_dynamic_interfaces);
-                if (test_mode) m->setTestMode();
+                m.setDebugLevel( dl );
+                m.setDebugRule(  drp );
+                m.setVerbose( (bool)(verbose) );
+                m.setHaveDynamicInterfaces(have_dynamic_interfaces);
+                if (test_mode) m.setTestMode();
 
-                if ( (mangle_rules_count = m->prolog()) > 0 )
+                if ( (mangle_rules_count = m.prolog()) > 0 )
                 {
-                    m->compile();
-                    m->epilog();
+                    m.compile();
+                    m.epilog();
 
                     // We need to generate automatic rules in mangle
                     // table (-j CONNMARK --restore-mark) if CONNMARK
@@ -816,30 +816,36 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     // later if either of these flags is true after
                     // all rulesets have been processed.
 
-                    have_connmark |= m->haveConnMarkRules();
-                    have_connmark_in_output |= m->haveConnMarkRulesInOutput();
+                    have_connmark |= m.haveConnMarkRules();
+                    have_connmark_in_output |= m.haveConnMarkRulesInOutput();
 
                     long m_str_pos = m_str.tellp();
 
-                    if (policy->isTop()) top_level_mangle_compiler = m;
+                    if (policy->isTop())
+                    {
+                        m_str << "# ================ Table 'mangle', ";
+                        m_str << "automatic rules";
+                        m_str << endl;
+                        m_str << m.flushAndSetDefaultPolicy();
+                    }
 
-                    if (m->getCompiledScriptLength() > 0)
+                    if (m.getCompiledScriptLength() > 0)
                     {
                         m_str << "# ================ Table 'mangle', rule set "
                               << branch_name << endl;
-                        if (m->haveErrorsAndWarnings())
+                        if (m.haveErrorsAndWarnings())
                         {
                             m_str << "# Policy compiler errors and warnings:"
                                   << endl;
-                            m_str << m->getErrors("# ");
+                            m_str << m.getErrors("# ");
                         }
 
-                        m_str << m->getCompiledScript();
+                        m_str << m.getCompiledScript();
                     }
 
                     if (m_str_pos!=m_str.tellp())
                     {
-                        m_str << m->commit();
+                        m_str << m.commit();
                         m_str << endl;
                         empty_output = false;
                     }
@@ -847,7 +853,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
 
                 PolicyCompiler_ipt c(
-                    objdb, fwobjectname.toUtf8().constData(), ipv6_policy, oscnf,
+                    objdb,fwobjectname.toUtf8().constData(), ipv6_policy, oscnf,
                     &minus_n_commands_filter);
 
                 if (!policy->isTop())
@@ -895,18 +901,6 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
             }
 
-            string mangle_table_script = "";
-            if (top_level_mangle_compiler &&
-                (have_connmark || have_connmark_in_output))
-            {
-                mangle_table_script = "# ================ Table 'mangle', ";
-                mangle_table_script += "automatic rules";
-                mangle_table_script += "\n";
-                mangle_table_script += 
-                    top_level_mangle_compiler->printAutomaticRulesForMangleTable(
-                        have_connmark, have_connmark_in_output);
-            }
-
             if (!empty_output)
             {
                 if (ipv6_policy)
@@ -925,7 +919,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             generated_script += dumpScript(nocomm, fw,
                                            reset_rules.str(),
                                            n_str.str(),
-                                           mangle_table_script + m_str.str(),
+                                           m_str.str(),
                                            c_str.str(),
                                            ipv6_policy);
         }
