@@ -915,12 +915,39 @@ bool PolicyCompiler_ipt::Logging2::processNext()
     return true;
 }
 
+string PolicyCompiler_ipt::printRuleElements::printRE(RuleElement *re)
+{
+    ostringstream str;
+    if (re->size() == 0) return "<EMPTY>";
+    FWObject *obj = FWReference::cast(re->front())->getPointer();
+    str << "id=" << obj->getId()
+        << " name=" << obj->getName()
+        << " type=" << obj->getTypeName();
+    return str.str();
+}
+
+bool PolicyCompiler_ipt::printRuleElements::processNext()
+{
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    RuleElementSrc *srcrel = rule->getSrc();
+    RuleElementDst *dstrel = rule->getDst();
+    RuleElementSrv *srvrel = rule->getSrv();
+
+    cerr << "rule " << rule->getLabel()
+         << "  src: " << printRE(srcrel)
+         << "  dst: " << printRE(dstrel)
+         << "  srv: " << printRE(srvrel)
+         << endl;
+
+    tmp_queue.push_back(rule);
+    return true;
+}
+
 bool PolicyCompiler_ipt::singleSrcNegation::processNext()
 {
     PolicyRule         *rule=getNext(); if (rule==NULL) return false;
-
-    RuleElementSrc *srcrel=rule->getSrc();
-    Address        *src   =compiler->getFirstSrc(rule);  
+    RuleElementSrc *srcrel = rule->getSrc();
+    Address *src = compiler->getFirstSrc(rule);  
 
 /*   ! A  B  C  ACTION  */
     if (srcrel->getNeg() && srcrel->size()==1 && src!=NULL &&
@@ -1569,14 +1596,15 @@ bool PolicyCompiler_ipt::setChainForMangle::processNext()
             rule->setStr("ipt_chain","POSTROUTING");
 
 /* if direction is "Outbound", chain can never be INPUT, but could be FORWARD */
-        RuleElementSrc *srcrel=rule->getSrc();
-        Address        *src   =compiler->getFirstSrc(rule);  assert(src);
+        RuleElementSrc *srcrel = rule->getSrc();
+        Address *src = compiler->getFirstSrc(rule);
+        assert(src);
 
         if ( rule->getDirection()!=PolicyRule::Inbound &&
-             !srcrel->isAny() &&
+             !srcrel->isAny() && 
              compiler->complexMatch(src,compiler->fw,true,true))
         {
-            rule->setStr("ipt_chain","OUTPUT");
+            rule->setStr("ipt_chain", "OUTPUT");
         }
     }
 
@@ -2023,8 +2051,8 @@ bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
 	return true;
     }
 
-    RuleElementSrc *srcrel=rule->getSrc();
-    Address        *src=compiler->getFirstSrc(rule); 
+    RuleElementSrc *srcrel = rule->getSrc();
+    Address *src = compiler->getFirstSrc(rule); 
 
     if ( rule->getDirection()!=PolicyRule::Inbound &&
          ( 
@@ -2036,7 +2064,6 @@ bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
          ) 
     )
     {
-         
         PolicyRule *r= PolicyRule::cast(
             compiler->dbcopy->create(PolicyRule::TYPENAME) );
         compiler->temp_ruleset->add(r);
@@ -2090,9 +2117,9 @@ bool PolicyCompiler_ipt::splitIfDstAny::processNext()
 	return true;
     }
 
-    RuleElementDst *dstrel=rule->getDst();
-    Address        *dst=compiler->getFirstDst(rule); 
-   
+    RuleElementDst *dstrel = rule->getDst();
+    Address *dst = compiler->getFirstDst(rule); 
+
     if ( rule->getDirection()!=PolicyRule::Outbound &&
          ( 
              dstrel->isAny() ||
@@ -3749,43 +3776,43 @@ void PolicyCompiler_ipt::compile()
 
         add( new printTotalNumberOfRules());
 
-        add( new ItfNegation(            "process negation in Itf"  ) );
+        add( new ItfNegation("process negation in Itf"));
         add( new InterfacePolicyRules(
                  "process interface policy rules and store interface ids"));
-        add( new convertAnyToNotFWForShadowing("convert 'any' to '!fw'"     ) );
+        add( new convertAnyToNotFWForShadowing("convert 'any' to '!fw'"));
 #if 0
-        add( new splitIfSrcAnyForShadowing("split rule if src is any" ) );
-        add( new splitIfDstAnyForShadowing("split rule if dst is any" ) );
-        add( new SrcNegation( true,        "process negation in Src"  ) );
-        add( new DstNegation( true,        "process negation in Dst"  ) );
+        add( new splitIfSrcAnyForShadowing("split rule if src is any"));
+        add( new splitIfDstAnyForShadowing("split rule if dst is any"));
+        add( new SrcNegation(true, "process negation in Src"));
+        add( new DstNegation(true, "process negation in Dst"));
 #endif
         add( new recursiveGroupsInSrc("check for recursive groups in SRC"));
         add( new recursiveGroupsInDst("check for recursive groups in DST"));
         add( new recursiveGroupsInSrv("check for recursive groups in SRV"));
         check_for_recursive_groups=false;
 
-        add( new ExpandGroups("expand groups"                          ) );
+        add( new ExpandGroups("expand groups"));
         add( new dropRuleWithEmptyRE(
                  "drop rules with empty rule elements"));
-        add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC") );
-        add( new eliminateDuplicatesInDST("eliminate duplicates in DST") );
-        add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV") );
+        add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC"));
+        add( new eliminateDuplicatesInDST("eliminate duplicates in DST"));
+        add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV"));
 
         add( new swapMultiAddressObjectsInSrc(
-                 " swap MultiAddress -> MultiAddressRunTime in Src") );
+                 " swap MultiAddress -> MultiAddressRunTime in Src"));
         add( new swapMultiAddressObjectsInDst(
-                 " swap MultiAddress -> MultiAddressRunTime in Dst") );
+                 " swap MultiAddress -> MultiAddressRunTime in Dst"));
 
 /* behavior of processors ExpandMultiple... has been changed in
  * virtual method _expandInterface  */
         add( new ExpandMultipleAddressesInSRC(
-                 "expand objects with multiple addresses in SRC" ) );
+                 "expand objects with multiple addresses in SRC"));
         add( new ExpandMultipleAddressesInDST(
-                 "expand objects with multiple addresses in DST" ) );
+                 "expand objects with multiple addresses in DST"));
         add( new dropRuleWithEmptyRE(
                  "drop rules with empty rule elements"));
 
-        add( new ConvertToAtomic("convert to atomic rules"            ) );
+        add( new ConvertToAtomic("convert to atomic rules"));
 
 /*
  * This assumes that all rules that go into the mangle table are
@@ -3816,27 +3843,27 @@ void PolicyCompiler_ipt::compile()
     }
 
 
-    add( new PolicyCompiler::Begin() );
-    add( new addPredefinedRules("Add some predefined rules"           ) );
+    add( new PolicyCompiler::Begin());
+    add( new addPredefinedRules("Add some predefined rules"));
+
+//    add(new printRuleElements("print"));
 
     addRuleFilter();
 
-    add( new printTotalNumberOfRules(                                 ) );
+    add( new printTotalNumberOfRules());
 
-    add( new Route("process route rules"                   ) );
-    add( new storeAction("store original action of this rule"    ) );
+    add( new Route("process route rules"));
+    add( new storeAction("store original action of this rule"));
 
     add( new splitIfTagAndConnmark("Tag+CONNMARK combo"));
     //add( new setChainForMangle("set chain for other rules in mangle"));
 
-    add( new Logging1("check global logging override option"  ) );
-    add( new ItfNegation("process negation in Itf"  ) );
+    add( new Logging1("check global logging override option"));
+    add( new ItfNegation("process negation in Itf"));
 
-//        add( new InterfacePolicyRulesWithOptimization("process interface policy rules and store interface ids") );
+    add( new decideOnChainForClassify("set chain for action is Classify"));
 
-    add( new decideOnChainForClassify("set chain for action is Classify") );
-
-    add( new InterfaceAndDirection("fill in interface and direction"  ) );
+    add( new InterfaceAndDirection("fill in interface and direction"));
 
 // if an action requires chain POSTROUTING (e.g. Classify), set chain
 // BEFORE calling splitIfIfaceAndDirectionBoth
@@ -3850,9 +3877,9 @@ void PolicyCompiler_ipt::compile()
         add( new recursiveGroupsInSrv("check for recursive groups in SRV"));
     }
 
-    add( new emptyGroupsInSrc("check for empty groups in SRC"         ) );
-    add( new emptyGroupsInDst("check for empty groups in DST"         ) );
-    add( new emptyGroupsInSrv("check for empty groups in SRV"         ) );
+    add( new emptyGroupsInSrc("check for empty groups in SRC"));
+    add( new emptyGroupsInDst("check for empty groups in DST"));
+    add( new emptyGroupsInSrv("check for empty groups in SRV"));
 /*
  * commented out to fix bug #727324. "-p tcp --destination-port ! 25"
  * means "all TCP with port != 25", which is not the same as "all
@@ -3875,14 +3902,12 @@ void PolicyCompiler_ipt::compile()
 //                 "split rule if action is reject and srv is any" ) );
     add( new fillActionOnReject("fill in action_on_reject"            ) );
     add( new splitServicesIfRejectWithTCPReset(
-             "check and split if action on reject is TCP reset"));
+             "split if action on reject is TCP reset"));
     add( new fillActionOnReject("fill in action_on_reject 2"          ) );
     add( new splitServicesIfRejectWithTCPReset(
-             "check and split if action on reject is TCP reset 2"));
-    add( new singleSrcNegation(
-             "process negation in Src if it holds single object"      ) );
-    add( new singleDstNegation( 
-             "process negation in Dst if it holds single object"      ) );
+             "split if action on reject is TCP reset 2"));
+    add( new singleSrcNegation("negation in Src if it holds single object"));
+    add( new singleDstNegation("negation in Dst if it holds single object"));
 
 /*
  * phased out these processors, they are not needed anymore because we use variable
@@ -3904,28 +3929,42 @@ void PolicyCompiler_ipt::compile()
  */
 //        add( new decideOnChainIfLoopback("any-any rule on loopback"     ) );
 
+#if 0
     add( new splitIfSrcAny("split rule if src is any") );
-
     add( new setChainForMangle("set chain for other rules in mangle"));
-
-    // call setChainPreroutingForTag before splitIfDstAny
     add( new setChainPreroutingForTag("chain PREROUTING for Tag"));
-
     add( new splitIfDstAny("split rule if dst is any") );
-
     add( new setChainPostroutingForTag("chain POSTROUTING for Tag"));
-
-    add( new ExpandGroups(            "expand all groups"           ));
+    add( new ExpandGroups("expand all groups"));
     add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
-
     add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC" ));
     add( new eliminateDuplicatesInDST("eliminate duplicates in DST" ));
     add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV" ));
-
     add( new swapMultiAddressObjectsInSrc(
              " swap MultiAddress -> MultiAddressRunTime in Src"));
     add( new swapMultiAddressObjectsInDst(
              " swap MultiAddress -> MultiAddressRunTime in Dst"));
+#endif
+
+    add( new ExpandGroups("expand all groups"));
+    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+    add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC" ));
+    add( new eliminateDuplicatesInDST("eliminate duplicates in DST" ));
+    add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV" ));
+    add( new swapMultiAddressObjectsInSrc(
+             " swap MultiAddress -> MultiAddressRunTime in Src"));
+    add( new swapMultiAddressObjectsInDst(
+             " swap MultiAddress -> MultiAddressRunTime in Dst"));
+
+    add( new splitIfSrcAny("split rule if src is any") );
+    add( new setChainForMangle("set chain for other rules in mangle"));
+    add( new setChainPreroutingForTag("chain PREROUTING for Tag"));
+    add( new splitIfDstAny("split rule if dst is any") );
+    add( new setChainPostroutingForTag("chain POSTROUTING for Tag"));
+
+
+
+
 
     add( new processMultiAddressObjectsInSrc(
              "process MultiAddress objects in Src"));

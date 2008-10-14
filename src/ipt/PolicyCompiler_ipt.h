@@ -122,6 +122,19 @@ namespace fwcompiler {
         virtual std::string debugPrintRule(libfwbuilder::Rule *rule);
 
         /**
+         * trivial rule processor - just prints contents of src, dst, srv
+         */ 
+        class printRuleElements : public PolicyRuleProcessor
+        {
+            std::string printRE(libfwbuilder::RuleElement *re);
+            public:
+            printRuleElements(const std::string &name) : PolicyRuleProcessor(name) 
+            {}
+            virtual bool processNext();
+        };
+        friend class printRuleElements;
+        
+        /**
          * this processor drops all rules that require mangle table
          */
         DECLARE_POLICY_RULE_PROCESSOR(dropMangleTableRules);

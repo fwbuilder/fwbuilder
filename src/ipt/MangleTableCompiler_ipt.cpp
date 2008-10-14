@@ -92,7 +92,8 @@ bool MangleTableCompiler_ipt::keepMangleTableRules::processNext()
                 rule->getDirection()==PolicyRule::Both ||
                 rule->getDirection()==PolicyRule::Inbound)
             {
-                r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
+                r= PolicyRule::cast(
+                    compiler->dbcopy->create(PolicyRule::TYPENAME));
                 compiler->temp_ruleset->add(r);
                 r->duplicate(rule);
                 r->setStr("ipt_chain","PREROUTING");
@@ -103,7 +104,8 @@ bool MangleTableCompiler_ipt::keepMangleTableRules::processNext()
                 rule->getDirection()==PolicyRule::Both ||
                 rule->getDirection()==PolicyRule::Outbound)
             {
-                r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
+                r= PolicyRule::cast(
+                    compiler->dbcopy->create(PolicyRule::TYPENAME));
                 compiler->temp_ruleset->add(r);
                 r->duplicate(rule);
                 r->setStr("ipt_chain","POSTROUTING");
@@ -111,6 +113,7 @@ bool MangleTableCompiler_ipt::keepMangleTableRules::processNext()
             }
 
             tmp_queue.push_back(rule);
+            return true;
         }
 
         if (rule->getAction() == PolicyRule::Tag ||
