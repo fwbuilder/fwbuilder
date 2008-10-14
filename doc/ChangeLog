@@ -1,3 +1,10 @@
+2008-10-13  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Preprocessor.cpp (Preprocessor::isUsedByThisFirewall):
+	explicitly checking for RuleElement and Rule objects in the set
+	returned by findWhereUsed, this makes check if the object is used
+	by the firewall slightly faster.
+
 2008-10-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler.cpp (PolicyCompiler::prolog): assign name of the

@@ -28,6 +28,7 @@
 
 #include "fwbuilder/MultiAddress.h"
 #include "fwbuilder/Rule.h"
+#include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/ObjectGroup.h"
 #include "fwbuilder/ServiceGroup.h"
@@ -90,7 +91,16 @@ bool Preprocessor::isUsedByThisFirewall(FWObject *obj)
     set<FWObject*>::iterator i;
     for (i=resset.begin(); i!=resset.end(); ++i)
     {
-        FWObject *p = (*i);
+        FWObject *p = *i;
+        if (obj->getId() == p->getId()) continue;
+
+        if (RuleElement::cast(p)!=NULL || Rule::cast(p)!=NULL)
+        {
+            FWObject *q = p;
+            while (q && !Firewall::isA(q)) q = q->getParent();
+            if (q && q->getId()==fw->getId()) return true;
+            continue;
+        }
 
         if (ObjectGroup::isA(p) || ServiceGroup::isA(p))
         {
@@ -102,9 +112,6 @@ bool Preprocessor::isUsedByThisFirewall(FWObject *obj)
             continue;
         }
 
-
-        while (p && !Firewall::isA(p)) p = p->getParent();
-        if (p && p->getId()==fw->getId()) return true;
     }
     return false;
 }
