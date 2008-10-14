@@ -3,7 +3,7 @@
 	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::compile): fixed
 	bug (no #): policy compiler for iptables would crash with
 	assertion when AddressTable or DNSName object was used in a rule
-	in pure mangle table ruleset. This can be related to crash
+	in pure mangle table ruleset. This could be related to crash
 	reported in bug #2157121.
 
 2008-10-11  Vadim Kurland  <vadim@vk.crocodile.org>
@@ -28,13 +28,6 @@
 	bug #2148378: "Negation does not work on Tag Service". Policy
 	compiler for iptables should be able to use "!"  single-object
 	negation for TagService obejcts
-
-	* ipt.cpp (main): fixed bug (no #): policy compiler for iptables
-	used to only add automatic rule "$IPTABLES -t mangle -A PREROUTING
-	-j CONNMARK --restore-mark" if CONNMARK target was used in the
-	top-level Policy ruleset. Since this target can be used in branch
-	rule sets as well, compiler should keep track of it globally and
-	add rule with "--restore-mark" as needed.
 
 	* ObjectTreeView.cpp (ObjectTreeView::updateTreeItems): fixed bug
 	#2149503: ever since attribute "read-only" of FWObject has been
