@@ -133,7 +133,7 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
     public:
     virtual bool operator()(const string&) const 
     { 
-	cout << _("Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it.") << endl;
+	cout << _("Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it.") << std::endl;
 	return false;
     }
 };
@@ -265,15 +265,15 @@ string dumpScript(bool nocomm, Firewall *fw,
 
         if (script.tellp() > 0)
         {
-            res << "(" << endl;
+            res << "(" << "\n";
             res << script.str();
-            res << "#" << endl;
+            res << "#" << "\n";
             if (ipv6_policy)
                 res << ") | $IP6TABLES_RESTORE; IPTABLES_RESTORE_RES=$?"
-                    << endl;
+                    << "\n";
             else
                 res << ") | $IPTABLES_RESTORE; IPTABLES_RESTORE_RES=$?"
-                    << endl;
+                    << "\n";
         }
         return res.str();
     } else
@@ -755,12 +755,12 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 if (n.getCompiledScriptLength() > 0)
                 {
                     n_str << "# ================ Table 'nat', rule set "
-                          << branch_name << endl;
+                          << branch_name << "\n";
 
                     if (n.haveErrorsAndWarnings())
                     {
                         n_str << "# NAT compiler errors and warnings:"
-                              << endl;
+                              << "\n";
                         n_str << n.getErrors("# ");
                     }
 
@@ -769,7 +769,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
                     n_str << n.getCompiledScript();
                     n_str << n.commit();
-                    n_str << endl;
+                    n_str << "\n";
                     empty_output = false;
                 }
             }
@@ -825,18 +825,18 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     {
                         m_str << "# ================ Table 'mangle', ";
                         m_str << "automatic rules";
-                        m_str << endl;
+                        m_str << "\n";
                         m_str << m.flushAndSetDefaultPolicy();
                     }
 
                     if (m.getCompiledScriptLength() > 0)
                     {
                         m_str << "# ================ Table 'mangle', rule set "
-                              << branch_name << endl;
+                              << branch_name << "\n";
                         if (m.haveErrorsAndWarnings())
                         {
                             m_str << "# Policy compiler errors and warnings:"
-                                  << endl;
+                                  << "\n";
                             m_str << m.getErrors("# ");
                         }
 
@@ -846,7 +846,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     if (m_str_pos!=m_str.tellp())
                     {
                         m_str << m.commit();
-                        m_str << endl;
+                        m_str << "\n";
                         empty_output = false;
                     }
                 }
@@ -876,16 +876,16 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     if (c.getCompiledScriptLength() > 0)
                     {
                         c_str << "# ================ Table 'filter', rule set "
-                              << branch_name << endl;
+                              << branch_name << "\n";
                         if (c.haveErrorsAndWarnings())
                         {
                             c_str << "# Policy compiler errors and warnings:"
-                                  << endl;
+                                  << "\n";
                             c_str << c.getErrors("# ");
                         }
                         c_str << c.getCompiledScript();
                         c_str << c.commit();
-                        c_str << endl;
+                        c_str << "\n";
                         empty_output = false;
                     }
                 }
@@ -894,7 +894,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 {
                     reset_rules
                         << "# ================ Table 'filter', automatic rules"
-                        << endl;
+                        << "\n";
                     reset_rules << c.flushAndSetDefaultPolicy();
                     empty_output = false;
                 }
@@ -982,7 +982,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         QString script_buffer;
         QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
-	script << "#!/bin/sh "  << endl;
+	script << "#!/bin/sh "  << "\n";
 
         script << _("#\n\
 #  This is automatically generated file. DO NOT MODIFY !\n\
@@ -998,11 +998,11 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
         QFileInfo fw_file_info(fw_file_name);
         script << MANIFEST_MARKER << "* "
-               << fw_file_info.fileName() << endl;
-        script << "#" << endl;
-        script << "#" << endl;
-        script << "# Compiled for iptables " << fw_version << endl;
-        script << "#" << endl;
+               << fw_file_info.fileName() << "\n";
+        script << "#" << "\n";
+        script << "#" << "\n";
+        script << "# Compiled for iptables " << fw_version << "\n";
+        script << "#" << "\n";
         if ( !nocomm )
         {
             string fwcomment=fw->getComment();
@@ -1010,19 +1010,19 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             n1=n2=0;
             while ( (n2=fwcomment.find("\n",n1))!=string::npos )
             {
-                script << "#  " << fwcomment.substr(n1,n2-n1) << endl;
+                script << "#  " << fwcomment.substr(n1,n2-n1) << "\n";
                 n1=n2+1;
             }
-            script << "#  " << fwcomment.substr(n1) << endl;
+            script << "#  " << fwcomment.substr(n1) << "\n";
             script << "#\n#\n#\n";
         }
 
-        script << shell_dbg << endl;
-        script << endl;
+        script << shell_dbg << "\n";
+        script << "\n";
 
-        script << "PATH=\"/sbin:/usr/sbin:/bin:/usr/bin:${PATH}\"" << endl;
-        script << "export PATH" << endl;
-        script << endl;
+        script << "PATH=\"/sbin:/usr/sbin:/bin:/usr/bin:${PATH}\"" << "\n";
+        script << "export PATH" << "\n";
+        script << "\n";
 
 /*
  * print definitions for variables IPTABLES, IP, LOGGER. Some day we may
@@ -1044,7 +1044,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
 	script << oscnf->getCompiledScript();
 
-        script << endl;
+        script << "\n";
 
         if (prolog_place == "after_interfaces")
         {
@@ -1071,9 +1071,9 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                << user_name;
         }
 
-        script << "'" << endl;
+        script << "'" << "\n";
 
-	script << endl;
+	script << "\n";
 
         script << generated_script;
 
@@ -1084,28 +1084,28 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
         if ( !nocomm )
         {
-            script << endl;
-            script << "#" << endl;
-            script << "# Epilog script" << endl;
-            script << "#" << endl;
+            script << "\n";
+            script << "#" << "\n";
+            script << "# Epilog script" << "\n";
+            script << "#" << "\n";
         }
 
         string post_hook= fw->getOptionsObject()->getStr("epilog_script");
-        script << post_hook << endl;
+        script << post_hook << "\n";
 
         if ( !nocomm )
         {
-            script << endl;
-            script << "# End of epilog script" << endl;
-            script << "#" << endl;
+            script << "\n";
+            script << "# End of epilog script" << "\n";
+            script << "#" << "\n";
         }
 
-        script << endl;
+        script << "\n";
 
         if (options->getBool("use_iptables_restore"))
             script << "exit $IPTABLES_RESTORE_RES";
 
-	script << endl;
+	script << "\n";
 
         QFile fw_file(fw_file_name);
         if (fw_file.open(QIODevice::WriteOnly))
@@ -1117,30 +1117,31 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                                    QFile::ReadGroup | QFile::ReadOther);
         }
 
-        cout << _(" Compiled successfully") << endl << flush;
+        cout << _(" Compiled successfully") << std::endl << flush;
         
         return 0;
 
     } catch(const FWException &ex)  {
-	cerr << "Error: " << ex.toString() << endl;
+	cerr << "Error: " << ex.toString() << std::endl;
         return 1;
 #if __GNUC__ >= 3
 /* need to check version because std::ios::failure does not seem to be
  * supported in gcc 2.9.5 on FreeBSD 4.10 */
     } catch (const std::ios::failure &e) {
-        cerr << "Error while opening or writing to the output file" << endl;
+        cerr << "Error while opening or writing to the output file"
+             << std::endl;
         return 1;
 #endif
 
     } catch (const std::string &s) {
-	cerr << s << endl;
+	cerr << s << std::endl;
         return 1;
     } catch (const std::exception &ex) {
-	cerr << ex.what() << endl;
+	cerr << ex.what() << std::endl;
         return 1;
     }
     catch (...) {
-	cerr << _("Unsupported exception") << endl;
+	cerr << _("Unsupported exception") << std::endl;
         return 1;
     }
 

@@ -1,3 +1,10 @@
+2008-10-15  vadim  <vadim@vk.crocodile.org>
+
+	* ipt.cpp (dumpScript): Explicitly use "\n" instead of endl to
+	avoid implicit conversion to "\r\n" on Windows (generated script
+	is for iptables which can only run on Linux, so it is safe to use
+	"\n" instead of endl).
+
 2008-10-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::compile): fixed
