@@ -101,7 +101,7 @@ bool Address::hasInetAddress() const
     return false;
 }
 
-int Address::countInetAddresses() const
+int Address::countInetAddresses(bool ) const
 {
     return 0;
 }

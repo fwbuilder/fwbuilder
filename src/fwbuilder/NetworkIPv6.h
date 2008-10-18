@@ -61,7 +61,7 @@ public:
     /**
      * similar to hasInetAddress() but counts addresses
      */
-    virtual int countInetAddresses() const { return 1; }
+    virtual int countInetAddresses(bool) const { return 1; }
     
     virtual const Address* getAddressObject() const { return this; }
 

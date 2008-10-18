@@ -78,7 +78,7 @@ public:
     /**
      * similar to hasInetAddress() but counts addresses
      */
-    virtual int countInetAddresses() const;
+    virtual int countInetAddresses(bool skip_loopback) const;
     
     /**
      * returns const pointer to internal InetAddr object. Some objects

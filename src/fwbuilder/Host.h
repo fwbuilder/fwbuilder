@@ -85,7 +85,7 @@ class Host : public Address
     /**
      * similar to hasInetAddress() but counts addresses
      */
-    virtual int countInetAddresses() const;
+    virtual int countInetAddresses(bool skip_loopback) const;
     
     protected:
     
