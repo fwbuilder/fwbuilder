@@ -101,6 +101,11 @@ bool Address::hasInetAddress() const
     return false;
 }
 
+int Address::countInetAddresses() const
+{
+    return 0;
+}
+
 const InetAddr* Address::getAddressPtr() const
 {
     const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr();

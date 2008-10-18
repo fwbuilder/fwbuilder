@@ -168,6 +168,11 @@ public:
         
         virtual unsigned int dimension()  const { return 1; }
 
+        /**
+         * similar to hasInetAddress() but counts addresses
+         */
+        virtual int countInetAddresses() const;
+    
     };
 
 }

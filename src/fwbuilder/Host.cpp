@@ -155,3 +155,15 @@ const Address* Host::getAddressObject() const
     return Interface::cast(*j)->getAddressObject();
 }
 
+int Host::countInetAddresses() const
+{
+    int res = 0;
+    FWObjectTypedChildIterator j = findByType(Interface::TYPENAME);
+    for( ; j!=j.end(); ++j)
+    {
+        Interface *iface = Interface::cast(*j);
+        res += iface->countInetAddresses();
+    }
+    return res;
+}
+

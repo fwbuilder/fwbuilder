@@ -76,6 +76,11 @@ public:
     virtual bool hasInetAddress() const;
 
     /**
+     * similar to hasInetAddress() but counts addresses
+     */
+    virtual int countInetAddresses() const;
+    
+    /**
      * returns const pointer to internal InetAddr object. Some objects
      * that inherit this class may return NULL if they do not have
      * their own IP address (examples: physAddress or Interface with

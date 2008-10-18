@@ -1,3 +1,9 @@
+2008-10-18  vadim  <vadim@vk.crocodile.org>
+
+	* Address.cpp (Address::countInetAddresses): Added virtual method
+	countInetAddresses() that returns total number of IP addresses
+	given object has, counting all its children.
+
 2008-10-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Preprocessor.cpp (Preprocessor::isUsedByThisFirewall):

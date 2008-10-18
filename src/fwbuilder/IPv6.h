@@ -58,6 +58,11 @@ public:
 
     virtual bool hasInetAddress() const { return true; }
 
+    /**
+     * similar to hasInetAddress() but counts addresses
+     */
+    virtual int countInetAddresses() const { return 1; }
+
     virtual const Address* getAddressObject() const { return this; }
 
     virtual void setAddress(const InetAddr &a);

@@ -81,6 +81,11 @@ class Host : public Address
 
     virtual const Address* getAddressObject() const;
     virtual unsigned int dimension()  const { return 1; }
+
+    /**
+     * similar to hasInetAddress() but counts addresses
+     */
+    virtual int countInetAddresses() const;
     
     protected:
     

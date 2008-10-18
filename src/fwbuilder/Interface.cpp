@@ -325,3 +325,21 @@ IPv6*  Interface::addIPv6()
     return ipv6;
 }
 
+int Interface::countInetAddresses() const
+{
+    int res = 0;
+    FWObjectTypedChildIterator j = findByType(IPv4::TYPENAME);
+    for( ; j!=j.end(); ++j)
+    {
+        IPv4 *ipv4 = IPv4::cast(*j);
+        res += ipv4->countInetAddresses();
+    }
+    j = findByType(IPv6::TYPENAME);
+    for( ; j!=j.end(); ++j)
+    {
+        IPv6 *ipv6 = IPv6::cast(*j);
+        res += ipv6->countInetAddresses();
+    }
+    return res;
+}
+
