@@ -1470,7 +1470,7 @@ bool NATCompiler_ipt::singleObjectNegation::processNext()
         FWObject *o = rel->front();
         if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
         Address *reladdr = Address::cast(o);
-        if ( reladdr && reladdr->countInetAddresses()==1 &&
+        if ( reladdr && reladdr->countInetAddresses(true)==1 &&
              !compiler->complexMatch(reladdr, compiler->fw)) 
         {
             rel->setNeg(false);

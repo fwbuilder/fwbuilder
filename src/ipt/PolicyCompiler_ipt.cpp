@@ -954,7 +954,7 @@ bool PolicyCompiler_ipt::singleSrcNegation::processNext()
         Address *src = compiler->getFirstSrc(rule);  
         // note: src can be NULL if object in this rule element is a group
         // or MultiAddress
-        if (src!=NULL && src->countInetAddresses()==1 &&
+        if (src!=NULL && src->countInetAddresses(true)==1 &&
             !compiler->complexMatch(src,compiler->fw)) 
         {
             srcrel->setNeg(false);
@@ -975,7 +975,7 @@ bool PolicyCompiler_ipt::singleDstNegation::processNext()
     if (dstrel->getNeg() && dstrel->size()==1)
     {
         Address *dst = compiler->getFirstDst(rule);  
-        if (dst!=NULL && dst->countInetAddresses()==1 &&
+        if (dst!=NULL && dst->countInetAddresses(true)==1 &&
             !compiler->complexMatch(dst,compiler->fw)) 
         {
             dstrel->setNeg(false);

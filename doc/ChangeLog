@@ -1,5 +1,11 @@
 2008-10-18  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipt.cpp (singleDstNegation::processNext): while
+	processing single object negation, consider hosts and firewalls
+	with one normal interface and loopback interface
+	eligible (i.e. ignore loopback address even though formally such
+	object has at least two ip addresses).
+
 	* PolicyCompiler_ipt.cpp (singleDstNegation::processNext): fixed
 	bug (no #): policy compiler for iptables did not handle correctly
 	rules where a host that has multiple addresses was a single object
