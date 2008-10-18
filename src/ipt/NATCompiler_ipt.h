@@ -305,6 +305,40 @@ namespace fwcompiler {
         DECLARE_NAT_RULE_PROCESSOR(splitMultipleICMP);
 
         /**
+         * prepare for negation of single objects in rule elements
+         */
+        class singleObjectNegation : public NATRuleProcessor
+        {
+            std::string re_type;
+            public:
+            singleObjectNegation(const std::string &n,std::string _type):
+                NATRuleProcessor(n) { re_type=_type; }
+            virtual bool processNext();
+        };
+
+	/**
+         * single object negation in OSrc
+	 */
+        class singleObjectNegationOSrc : public singleObjectNegation
+        {
+            public:
+            singleObjectNegationOSrc(const std::string &n):
+                singleObjectNegation(n,libfwbuilder::RuleElementOSrc::TYPENAME)
+                {}
+        };
+
+	/**
+         * single object negation in ODst
+	 */
+        class singleObjectNegationODst : public singleObjectNegation
+        {
+            public:
+            singleObjectNegationODst(const std::string &n):
+                singleObjectNegation(n,libfwbuilder::RuleElementODst::TYPENAME)
+                {}
+        };
+
+        /**
          *  deals with negation in OSrc 
          */
         DECLARE_NAT_RULE_PROCESSOR(doOSrcNegation);
@@ -478,6 +512,7 @@ namespace fwcompiler {
                                            bool print_mask=true,
                                            bool print_range=false);
             virtual std::string _printChainDirectionAndInterface(libfwbuilder::NATRule *r);
+            virtual std::string _printSingleObjectNegation(libfwbuilder::RuleElement *rel);
 
             public:
             PrintRule(const std::string &name);

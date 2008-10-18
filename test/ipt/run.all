@@ -1,7 +1,14 @@
-#!/usr/bin/perl
+#!/bin/sh
 
-$XMLFILE=@ARGV[0];
+XMLFILE=$1
 
+fwbedit list -f $XMLFILE -o /User/Firewalls -c -F%name% | sort | while read fwobj; do
+  echo "echo"
+  echo "echo \"============================ $fwobj\""
+  echo "fwb_ipt -v -f $XMLFILE -xt $fwobj"
+done
+
+exit 0
 
 while (<>) {
   $str=$_;

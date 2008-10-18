@@ -1104,7 +1104,8 @@ string PolicyCompiler_ipt::PrintRule::_printAddr(Address  *o)
 }
 
 
-string PolicyCompiler_ipt::PrintRule::_printSingleObjectNegation(RuleElement *rel)
+string PolicyCompiler_ipt::PrintRule::_printSingleObjectNegation(
+    RuleElement *rel)
 {
     if (rel->getBool("single_object_negation"))   return "! ";
     else return "";

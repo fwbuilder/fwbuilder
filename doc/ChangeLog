@@ -1,3 +1,17 @@
+2008-10-18  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt.cpp (singleDstNegation::processNext): fixed
+	bug (no #): policy compiler for iptables did not handle correctly
+	rules where a host that has multiple addresses was a single object
+	in a rule element and had negation.
+
+	* NATCompiler_ipt.cpp (singleObjectNegation::processNext): added
+	support for single object negation in OSrc and ODst in NAT rules.
+	This provides for more compact iptables script in the often used
+	case where single object is used with negation in these elements
+	of a NAT rule. Other improvements in handling NAT rules with
+	negation.
+
 2008-10-15  vadim  <vadim@vk.crocodile.org>
 
 	* ipt.cpp (dumpScript): Explicitly use "\n" instead of endl to

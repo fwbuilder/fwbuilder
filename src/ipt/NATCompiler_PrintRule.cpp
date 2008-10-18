@@ -452,7 +452,7 @@ string NATCompiler_ipt::PrintRule::_printDstService(RuleElementOSrv  *rel)
 
 // Note print_mask is true by default, print_range is false by default.
 string NATCompiler_ipt::PrintRule::_printAddr(Address  *o,
-                                              bool print_mask,
+                                              bool ,
                                               bool print_range)
 {
     NATCompiler_ipt *ipt_comp=dynamic_cast<NATCompiler_ipt*>(compiler);
@@ -525,6 +525,13 @@ string NATCompiler_ipt::PrintRule::_printAddr(Address  *o,
     return ostr.str();
 }
 
+string NATCompiler_ipt::PrintRule::_printSingleObjectNegation(
+    RuleElement *rel)
+{
+    if (rel->getBool("single_object_negation"))   return "! ";
+    else return "";
+}
+
 NATCompiler_ipt::PrintRule::PrintRule(const std::string &name) : 
     NATRuleProcessor(name)
 {
@@ -554,16 +561,16 @@ bool NATCompiler_ipt::PrintRule::processNext()
     compiler->output << _createChain(rule->getStr("ipt_target"));
 
 
-//    RuleElementOSrc *osrcrel=rule->getOSrc();
-    Address  *osrc=compiler->getFirstOSrc(rule);  assert(osrc);
-//    RuleElementODst *odstrel=rule->getODst();
-    Address  *odst=compiler->getFirstODst(rule);  assert(odst);
+    RuleElementOSrc *osrcrel = rule->getOSrc();
+    Address  *osrc = compiler->getFirstOSrc(rule);  assert(osrc);
+    RuleElementODst *odstrel = rule->getODst();
+    Address  *odst = compiler->getFirstODst(rule);  assert(odst);
     RuleElementOSrv *osrvrel=rule->getOSrv();
-    Service  *osrv=compiler->getFirstOSrv(rule);  assert(osrv);
+    Service  *osrv = compiler->getFirstOSrv(rule);  assert(osrv);
 
-    Address  *tsrc=compiler->getFirstTSrc(rule);  assert(tsrc);
-    Address  *tdst=compiler->getFirstTDst(rule);  assert(tdst);
-    Service  *tsrv=compiler->getFirstTSrv(rule);  assert(tsrv);
+    Address  *tsrc = compiler->getFirstTSrc(rule);  assert(tsrc);
+    Address  *tdst = compiler->getFirstTDst(rule);  assert(tdst);
+    Service  *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
 
 //    Interface *iface=
 //	Interface::cast( rule->getRoot()->getById(rule->getInterfaceId() ,true) );
@@ -598,7 +605,9 @@ bool NATCompiler_ipt::PrintRule::processNext()
         if (osrc_addr==NULL || !osrc_addr->isAny())
         {
             string osrc_out = _printAddr(osrc);
-            if (!osrc_out.empty()) cmdout << " -s " << osrc_out;
+            if (!osrc_out.empty()) cmdout << " -s "
+                                          << _printSingleObjectNegation(osrcrel)
+                                          << osrc_out;
         }
 
 //	cmdout << " -s ";
@@ -611,8 +620,9 @@ bool NATCompiler_ipt::PrintRule::processNext()
     }
 
     if (!odst->isAny()) {
-	cmdout << " -d ";
-	cmdout << _printAddr(odst);
+	cmdout << " -d "
+               << _printSingleObjectNegation(odstrel)
+               << _printAddr(odst);
     }
 
     cmdout << " ";

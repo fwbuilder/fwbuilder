@@ -945,16 +945,21 @@ bool PolicyCompiler_ipt::printRuleElements::processNext()
 
 bool PolicyCompiler_ipt::singleSrcNegation::processNext()
 {
-    PolicyRule         *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
     RuleElementSrc *srcrel = rule->getSrc();
-    Address *src = compiler->getFirstSrc(rule);  
 
 /*   ! A  B  C  ACTION  */
-    if (srcrel->getNeg() && srcrel->size()==1 && src!=NULL &&
-        !compiler->complexMatch(src,compiler->fw)) 
+    if (srcrel->getNeg() && srcrel->size()==1)
     {
-        srcrel->setNeg(false);
-        srcrel->setBool("single_object_negation",true);
+        Address *src = compiler->getFirstSrc(rule);  
+        // note: src can be NULL if object in this rule element is a group
+        // or MultiAddress
+        if (src!=NULL && src->countInetAddresses()==1 &&
+            !compiler->complexMatch(src,compiler->fw)) 
+        {
+            srcrel->setNeg(false);
+            srcrel->setBool("single_object_negation",true);
+        }
     }
 
     tmp_queue.push_back(rule);
@@ -963,17 +968,19 @@ bool PolicyCompiler_ipt::singleSrcNegation::processNext()
 
 bool PolicyCompiler_ipt::singleDstNegation::processNext()
 {
-    PolicyRule         *rule=getNext(); if (rule==NULL) return false;
-
-    RuleElementDst *dstrel=rule->getDst();
-    Address        *dst   =compiler->getFirstDst(rule);  
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    RuleElementDst *dstrel = rule->getDst();
 
 /*   A  ! B  C  ACTION  */
-    if (dstrel->getNeg() && dstrel->size()==1 && dst!=NULL &&
-        !compiler->complexMatch(dst,compiler->fw)) 
+    if (dstrel->getNeg() && dstrel->size()==1)
     {
-        dstrel->setNeg(false);
-        dstrel->setBool("single_object_negation",true);
+        Address *dst = compiler->getFirstDst(rule);  
+        if (dst!=NULL && dst->countInetAddresses()==1 &&
+            !compiler->complexMatch(dst,compiler->fw)) 
+        {
+            dstrel->setNeg(false);
+            dstrel->setBool("single_object_negation",true);
+        }
     }
 
     tmp_queue.push_back(rule);
@@ -2596,8 +2603,9 @@ bool PolicyCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::processNext()
 bool PolicyCompiler_ipt::expandMultipleAddressesIfNotFWinSrc::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    RuleElementSrc *srcrel=rule->getSrc();
-    Address        *src   =compiler->getFirstSrc(rule);  assert(src);
+    RuleElementSrc *srcrel = rule->getSrc();
+    Address *src =compiler->getFirstSrc(rule);
+    assert(src);
     if (Firewall::cast(src)==NULL)  compiler->_expandAddr(rule, srcrel);
     tmp_queue.push_back(rule);
     return true;
@@ -3906,13 +3914,11 @@ void PolicyCompiler_ipt::compile()
     add( new fillActionOnReject("fill in action_on_reject 2"          ) );
     add( new splitServicesIfRejectWithTCPReset(
              "split if action on reject is TCP reset 2"));
+
+
     add( new singleSrcNegation("negation in Src if it holds single object"));
     add( new singleDstNegation("negation in Dst if it holds single object"));
 
-/*
- * phased out these processors, they are not needed anymore because we use variable
- * for dynamic interfaces.
- */
     add( new splitIfSrcNegAndFw("split rule if src has negation and fw"));
     add( new splitIfDstNegAndFw("split rule if dst has negation and fw"));
 
@@ -3922,29 +3928,14 @@ void PolicyCompiler_ipt::compile()
 
     add( new Logging2("process logging"));
 
-/* this is just a patch for those who do not understand how does
+/*
+ * this is just a patch for those who do not understand how does
  * "assume firewall is part of any" work. It also eliminates redundant
  * and useless rules in the FORWARD chain for rules assigned to a
  * loopback interface.
  */
 //        add( new decideOnChainIfLoopback("any-any rule on loopback"     ) );
 
-#if 0
-    add( new splitIfSrcAny("split rule if src is any") );
-    add( new setChainForMangle("set chain for other rules in mangle"));
-    add( new setChainPreroutingForTag("chain PREROUTING for Tag"));
-    add( new splitIfDstAny("split rule if dst is any") );
-    add( new setChainPostroutingForTag("chain POSTROUTING for Tag"));
-    add( new ExpandGroups("expand all groups"));
-    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
-    add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC" ));
-    add( new eliminateDuplicatesInDST("eliminate duplicates in DST" ));
-    add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV" ));
-    add( new swapMultiAddressObjectsInSrc(
-             " swap MultiAddress -> MultiAddressRunTime in Src"));
-    add( new swapMultiAddressObjectsInDst(
-             " swap MultiAddress -> MultiAddressRunTime in Dst"));
-#endif
 
     add( new ExpandGroups("expand all groups"));
     add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));

@@ -920,25 +920,35 @@ bool NATCompiler_ipt::ReplaceFirewallObjectsTSrc::processNext()
 
 	if (obj->getId()==compiler->getFwId() ) 
 	{
-            Address *odst=compiler->getFirstODst(rule);
+            RuleElementODst *odstrel = rule->getODst();
+            Address *odst = compiler->getFirstODst(rule);
 
             rel->clearChildren();
 
-            Interface *iface=compiler->findInterfaceFor(odst,compiler->fw);
+            Interface *odst_iface =
+                compiler->findInterfaceFor(odst, compiler->fw);
 
-            if (!odst->isAny() && iface!=NULL)  rel->addRef(iface);
-            else  // else use all interfaces except loopback and unnumbered ones
+            if (!odst->isAny() && odst_iface!=NULL &&
+                !odstrel->getBool("single_object_negation"))
+                rel->addRef(odst_iface);
+            else
             {
+                // else use all interfaces except loopback and unnumbered ones
+                // also skip interface connected to ODst if single object
+                // negation was detected in ODst
                 list<FWObject*> l2=compiler->fw->getByType(Interface::TYPENAME);
                 for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) 
                 {
-                    Interface *iface=Interface::cast(*i);
-                    if (! iface->isLoopback() &&
-                        ! iface->isUnnumbered() &&
-                        ! iface->isBridgePort()
-                    )
-                        rel->addRef( *i );
+                    Interface *iface = Interface::cast(*i);
+                    if (iface->isLoopback() ||
+                        iface->isUnnumbered() ||
+                        iface->isBridgePort() ) continue;
+                    if (odstrel->getBool("single_object_negation") &&
+                        odst_iface->getId()==iface->getId()) continue;
+
+                    rel->addRef( *i );
                 }
+
                 for (FWObject::iterator i1=cl.begin(); i1!=cl.end(); ++i1)
                     rel->addRef( *i1 );
 
@@ -1448,6 +1458,30 @@ bool NATCompiler_ipt::splitMultipleICMP::processNext()
     return true;
 }
 
+bool NATCompiler_ipt::singleObjectNegation::processNext()
+{
+    NATRule *rule=getNext(); if (rule==NULL) return false;
+
+    RuleElement *rel = RuleElement::cast(rule->getFirstByType(re_type));
+    assert(rel);
+
+    if (rel->getNeg() && rel->size()==1)
+    {
+        FWObject *o = rel->front();
+        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        Address *reladdr = Address::cast(o);
+        if ( reladdr && reladdr->countInetAddresses()==1 &&
+             !compiler->complexMatch(reladdr, compiler->fw)) 
+        {
+            rel->setNeg(false);
+            rel->setBool("single_object_negation", true);
+        }
+    }
+
+    tmp_queue.push_back(rule);
+    return true;
+}
+
 bool NATCompiler_ipt::doOSrcNegation::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
@@ -1466,7 +1500,7 @@ bool NATCompiler_ipt::doOSrcNegation::processNext()
 	RuleElementTDst *ntdst;
 	RuleElementTSrv *ntsrv;
 
-	string new_chain=NATCompiler_ipt::getNewTmpChainName(rule);
+	string new_chain = NATCompiler_ipt::getNewTmpChainName(rule);
 	osrcrel->setNeg(false);
 /*
  *   negation in OSrc :
@@ -1728,8 +1762,8 @@ bool NATCompiler_ipt::localNATRule::processNext()
 //    if ( rule->getStr("ipt_chain").empty())
 //    {
 
-    Address          *osrc=compiler->getFirstOSrc(rule);
-    bool osrcfw= compiler->complexMatch(osrc,compiler->fw);
+    Address *osrc = compiler->getFirstOSrc(rule);
+    bool osrcfw = compiler->complexMatch(osrc,compiler->fw);
 
     switch( rule->getRuleType())
     {
@@ -1744,7 +1778,7 @@ bool NATCompiler_ipt::localNATRule::processNext()
  *
  * Can use OUTPUT chain only for DNAT rules and a like
  */
-        if (osrcfw) rule->setStr("ipt_chain","OUTPUT");
+        if (osrcfw) rule->setStr("ipt_chain", "OUTPUT");
         if (osrcfw && osrc->getId()==compiler->fw->getId())
         {
             RuleElementOSrc *src;
@@ -1778,15 +1812,17 @@ bool NATCompiler_ipt::splitIfOSrcAny::processNext()
 
     if (rule->getRuleType()==NATRule::DNAT)
     {
-//        RuleElementOSrc *osrcrel=rule->getOSrc();
-        Address         *osrc=compiler->getFirstOSrc(rule); 
+        RuleElementOSrc *osrcrel = rule->getOSrc();
+        Address *osrc = compiler->getFirstOSrc(rule); 
 
-        if (osrc->isAny())
+        // split if osrc is any OR if it has a single object with negation
+        if (osrc->isAny() || osrcrel->getBool("single_object_negation"))
         {
-            NATRule *r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+            NATRule *r = NATRule::cast(
+                compiler->dbcopy->create(NATRule::TYPENAME) );
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
-            RuleElementOSrc *nosrcrel=r->getOSrc();
+            RuleElementOSrc *nosrcrel = r->getOSrc();
             nosrcrel->addRef(compiler->fw);
             tmp_queue.push_back(r);
         }
@@ -2220,6 +2256,26 @@ void NATCompiler_ipt::compile()
         add( new classifyNATRule( "reclassify rules" ));
         add( new ConvertLoadBalancingRules( "convert load balancing rules"));
         add( new VerifyRules( "verify rules" ));
+#if 0
+// ----------- 10/18/2008
+        add( new splitODstForSNAT(
+                 "split rule if objects in ODst belong to different subnets") );
+        add( new ReplaceFirewallObjectsODst("replace firewall in ODst" ) );
+	add( new ReplaceFirewallObjectsTSrc("replace firewall in TSrc" ) );
+        add( new splitOnDynamicInterfaceInODst(
+                 "split rule if ODst is dynamic interface" ) );
+        add( new splitOnDynamicInterfaceInTSrc(
+                 "split rule if TSrc is dynamic interface" ) );
+
+        add( new ExpandMultipleAddresses("expand multiple addresses") );
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+// ----------- 
+#endif
+
+        add( new singleObjectNegationOSrc(
+                 "negation in OSrc if it holds single object"));
+        add( new singleObjectNegationODst(
+                 "negation in ODst if it holds single object"));
 
         add( new doOSrcNegation( "process negation in OSrc" ));
         add( new doODstNegation( "process negation in ODst" ));
@@ -2245,6 +2301,8 @@ void NATCompiler_ipt::compile()
         add( new decideOnChain( "decide on chain" ) );
         add( new decideOnTarget( "decide on target" ) );
 
+
+// ----------- 10/18/2008
         add( new splitODstForSNAT(
                  "split rule if objects in ODst belong to different subnets") );
         add( new ReplaceFirewallObjectsODst("replace firewall in ODst" ) );
@@ -2256,6 +2314,7 @@ void NATCompiler_ipt::compile()
 
         add( new ExpandMultipleAddresses("expand multiple addresses") );
         add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+
 
         if (ipv6)
             add( new DropIPv4Rules("drop ipv4 rules"));
