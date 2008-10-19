@@ -1134,7 +1134,7 @@ string PolicyCompiler_ipt::PrintRule::_printTimeInterval(PolicyRule *r)
     int emin, ehour, eday, emonth, eyear, edayofweek;
     string days_of_week;
 
-    Interval *interval=compiler->getFirstWhen(r);
+    Interval *interval = compiler->getFirstWhen(r);
     assert(interval!=NULL);
 
     interval->getStartTime( &smin, &shour, &sday, &smonth, &syear, &sdayofweek);
@@ -1147,15 +1147,12 @@ string PolicyCompiler_ipt::PrintRule::_printTimeInterval(PolicyRule *r)
     if (ehour<0) ehour=23;
     if (emin<0)  emin=59;
 
-
     ostr << "-m time ";
 
     bool use_timestart_timestop = true;
 
+    string version = compiler->fw->getStr("version");
 
-    string version=compiler->fw->getStr("version");
-
-//    if (version == "1.4.0")
     if (XMLTools::version_compare(version, "1.4.0")>=0)
     {
         // in 1.4.0 date format has changed, it is now ISO 8601
@@ -1183,11 +1180,12 @@ string PolicyCompiler_ipt::PrintRule::_printTimeInterval(PolicyRule *r)
             use_timestart_timestop = false;
         }
 
-        if (use_timestart_timestop )
+        if (use_timestart_timestop)
         {
             ostr << " --timestart "
                  << setw(2) << setfill('0') << shour << ":"
                  << setw(2) << setfill('0') << smin  << " ";
+
             ostr << " --timestop "
                  << setw(2) << setfill('0') << ehour << ":"
                  << setw(2) << setfill('0') << emin  << " ";
@@ -1212,65 +1210,42 @@ string PolicyCompiler_ipt::PrintRule::_printTimeInterval(PolicyRule *r)
 
     } else
     {
-        if (sday>0 && smonth>0 && syear>0)
+        /* "old" iptables time module
+
+TIME v1.2.11 options:
+ --timestart value --timestop value --days listofdays
+          timestart value : HH:MM
+          timestop  value : HH:MM
+          listofdays value: a list of days to apply -> ie. Mon,Tue,Wed,Thu,Fri.
+          Case sensitive
+
+         */
+
+        ostr << " --timestart "
+             << setw(2) << setfill('0') << shour << ":"
+             << setw(2) << setfill('0') << smin  << " ";
+
+        ostr << " --timestop "
+             << setw(2) << setfill('0') << ehour << ":"
+             << setw(2) << setfill('0') << emin  << " ";
+
+        if (!days_of_week.empty() && days_of_week != "0,1,2,3,4,5,6")
         {
-            ostr << "--datestart " 
-                 << setw(2) << setfill('0') << syear << ":" 
-                 << setw(2) << setfill('0') << smonth << ":" 
-                 << setw(2) << setfill('0') << sday  << ":"
-                 << setw(2) << setfill('0') << shour << ":"
-                 << setw(2) << setfill('0') << smin << ":00 ";
-            use_timestart_timestop = false;
-        }
-
-        if (eday>0 && emonth>0 && eyear>0)
-        {
-            ostr << "--datestop "
-                 << setw(2) << setfill('0') << eyear << ":"
-                 << setw(2) << setfill('0') << emonth << ":"
-                 << setw(2) << setfill('0') << eday  << ":"
-                 << setw(2) << setfill('0') << ehour << ":"
-                 << setw(2) << setfill('0') << emin << ":00 ";
-            use_timestart_timestop = false;
-        }
-
-
-        if (use_timestart_timestop )
-        {
-            ostr << " --timestart "
-                 << setw(2) << setfill('0') << shour << ":"
-                 << setw(2) << setfill('0') << smin  << " ";
-            ostr << " --timestop "
-                 << setw(2) << setfill('0') << ehour << ":"
-                 << setw(2) << setfill('0') << emin  << " ";
-
-            if (sdayofweek<0) sdayofweek=0;
-            if (sdayofweek>6) sdayofweek=6;
-
-            // if both start and end day are -1, need to
-            // generate "sun,mon,tue,wed,thu,fri,sat"
-            if (edayofweek<0) edayofweek=6;
-            if (edayofweek>6) edayofweek=6;
-
             ostr << " --days ";
-            first=true;
-
-            bool inside_interval = false;
-            int  day=0;
-            while (1)
+            istringstream istr(days_of_week);
+            bool first= true;
+            while (!istr.eof())
             {
-                if (!inside_interval && day==sdayofweek) inside_interval=true;
-                if (inside_interval)
-                {
-                    if (!first) ostr << ",";
-                    first=false;
-                    ostr << daysofweek[day];
-                    // if sdayofweek==edayofweek print one day
-                    if (day==edayofweek)  break;
-                }
-                if (++day>6) day=0;
+                if (!first) ostr << ',';
+                first = false;
+                int d;
+                istr >> d;
+                ostr << daysofweek[d];
+                char sep;
+                istr >> sep;
             }
         }
+
     }
     return ostr.str();
 }
