@@ -110,8 +110,15 @@ void ProjectPanel::initMain(FWWindow *main)
             this,SLOT(splitterMoved(int,int)));
 
     m_panel->auxiliaryPanel->hide();
-    initOE();
-    initFD();
+
+    oe  = new ObjectEditor((QWidget*)m_panel->objectEditorStack, this);
+    oe->setCloseButton(m_panel->closeObjectEditorButton);
+    oe->setApplyButton(m_panel->applyObjectEditorButton);
+    closeEditorPanel();
+    oe->hide();
+
+    fd  = new findDialog(this, this);
+    fd->hide();
 }
 
 ProjectPanel::ProjectPanel(QWidget *parent): 
@@ -270,22 +277,6 @@ void ProjectPanel::loadObjects(FWObjectDatabase*)
 void ProjectPanel::clearObjects()
 {
     m_panel->om->clearObjects();
-}
-
-
-
-void ProjectPanel::initOE()
-{
-    oe  = new ObjectEditor((QWidget*)m_panel->objectEditorStack, this);
-    oe->setCloseButton(m_panel->closeObjectEditorButton);
-    oe->setApplyButton(m_panel->applyObjectEditorButton);
-    oe->hide();
-}
-
-void ProjectPanel::initFD()
-{
-    fd  = new findDialog(this, this);
-    fd->hide();
 }
 
 void ProjectPanel::clearFirewallTabs()
@@ -855,11 +846,14 @@ bool ProjectPanel::isEditorModified()
 
 void ProjectPanel::showEditor()
 {
+    openEditorPanel();
+    m_panel->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
     oe->show();
 }
 
 void ProjectPanel::hideEditor()
 {
+    closeEditorPanel();
     oe->hide();
 }
 
@@ -870,12 +864,20 @@ void ProjectPanel::closeEditor()
 
 void ProjectPanel::openEditor(FWObject *o)
 {
+    QSize old_size = m_panel->objectEditorStack->size();
     oe->open(o);
+    m_panel->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
+    m_panel->objectEditorFrame->show();
+    m_panel->objectEditorStack->resize(old_size);
 }
 
 void ProjectPanel::openOptEditor(FWObject *o, ObjectEditor::OptType t)
 {
+    QSize old_size = m_panel->objectEditorStack->size();
     oe->openOpt(o, t);
+    m_panel->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
+    m_panel->objectEditorFrame->show();
+    m_panel->objectEditorStack->resize(old_size);
 }
 
 void ProjectPanel::blankEditor()
@@ -1058,6 +1060,7 @@ void ProjectPanel::closeEditorPanel()
 
 void ProjectPanel::openEditorPanel()
 {
+    m_panel->objectEditorStack->adjustSize();
     m_panel->objectEditorFrame->adjustSize();
     m_panel->objectEditorFrame->show();
 

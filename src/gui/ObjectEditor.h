@@ -48,11 +48,10 @@ class ObjectEditor : public QObject {
 
     Q_OBJECT
 
-    QMap<QString, int>               stackIds;
-    QMap<int, QWidget*>              dialogs;
-    
-    libfwbuilder::FWObject          *opened;
-    int                              visible;
+    QMap<QString, int> stackIds;
+    QMap<int, QWidget*> dialogs;
+    libfwbuilder::FWObject *opened;
+    int current_dialog_idx;
     QStackedWidget *parentWidget;
     QPushButton *closeButton;
     QPushButton *applyButton;
@@ -91,6 +90,8 @@ public:
     void selectionChanged(libfwbuilder::FWObject *o);
     void actionChanged(libfwbuilder::FWObject *o);
 
+    int getCurrentDialogIndex() { return current_dialog_idx; };
+    QWidget* getCurrentObjectDialog();
     
 public slots:
     void validateAndClose(QCloseEvent *e);

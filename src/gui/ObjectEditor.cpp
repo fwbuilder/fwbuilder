@@ -92,7 +92,7 @@ using namespace libfwbuilder;
 
 
 ObjectEditor::ObjectEditor( QWidget *parent, ProjectPanel *project):
-    QObject(parent), opened(0), visible(-1),
+    QObject(parent), opened(0), current_dialog_idx(-1),
     parentWidget(dynamic_cast<QStackedWidget*>(parent)),
     closeButton(0),
     applyButton(0),
@@ -257,44 +257,26 @@ ObjectEditor::ObjectEditor( QWidget *parent, ProjectPanel *project):
 
 }
 
+QWidget* ObjectEditor::getCurrentObjectDialog()
+{
+    if (current_dialog_idx >= 0) return dialogs[current_dialog_idx];
+    else return NULL;
+}
+
 void ObjectEditor::show()
 {
-    //dialogs[ visible ]->adjustSize();
-    //if (st->haveGeometry(dialogs[ visible ]))
-    //    st->restoreGeometry(dialogs[ visible ]);
-    //if (st->haveScreenPosition("Object Editor"))
-    //    dialogs[ visible ]->move(st->getScreenPosition("Object Editor"));
-    //dialogs[ visible ]->show();
-    parentWidget->setCurrentIndex(visible);
-    m_project->openEditorPanel();
+//    parentWidget->setCurrentIndex(current_dialog_idx);
+//    m_project->openEditorPanel();
 }
 
 void ObjectEditor::hide()
 {
-//    if (visible==-1)
-//    {
-//        QMap<QString, int>::iterator i;
-//        for (i=stackIds.begin(); i!=stackIds.end(); ++i)
-//            dialogs[ i.data() ]->hide();
-//    } else
-//    {
-//        st->saveGeometry(dialogs[ visible ]);
-////        QPoint p = dialogs[ visible ]->pos();
-//        QRect   g = dialogs[ visible ]->geometry();
-//        g.moveTopLeft(dialogs[ visible ]->frameGeometry().topLeft());
-//
-//       if (g.x()!=0 && g.y()!=0)
-//            st->saveScreenPosition("Object Editor",g.topLeft());
-//
-//       dialogs[ visible ]->hide();
-//    }
-    m_project->closeEditorPanel();
-    visible=-1;
+//    m_project->closeEditorPanel();
+    current_dialog_idx = -1;
 }
 
 bool ObjectEditor::isVisible()
 {
-    //return (visible!=-1 && dialogs[visible]->isVisible());
     return (parentWidget->isVisible());
 }
 
@@ -314,9 +296,9 @@ void ObjectEditor::openOpt(FWObject *obj,OptType t)
 
     disconnectSignals();
 
-    int wid= stackIds[getOptDialogName(t)];
+    int wid = stackIds[getOptDialogName(t)];
 
-    visible=wid;
+    current_dialog_idx = wid;
 
     show();
 
@@ -370,7 +352,7 @@ void ObjectEditor::open(FWObject *obj)
         //hide();
 
 
-        visible=wid;
+        current_dialog_idx = wid;
 
         show();
 
@@ -415,7 +397,7 @@ void ObjectEditor::disconnectSignals()
     //disconnect( SIGNAL(isChanged_sign(bool*)) );
     disconnect( SIGNAL(applyChanges_sign()) );
     disconnect( SIGNAL(discardChanges_sign()) );
-    if (visible>=0) dialogs[visible]->disconnect( this );
+    if (current_dialog_idx>=0) dialogs[current_dialog_idx]->disconnect( this );
 }
 
 void ObjectEditor::purge()
@@ -424,7 +406,7 @@ void ObjectEditor::purge()
 
     applyButton->setEnabled(false);
     int wid = stackIds["BLANK"];
-    visible = wid;
+    current_dialog_idx = wid;
     opened = NULL;
     openedOpt = optNone;
 }
@@ -450,7 +432,7 @@ void ObjectEditor::validateAndClose(QCloseEvent *e)
 bool ObjectEditor::validateAndSave()
 {
     if (fwbdebug) qDebug("ObjectEditor::validateAndSave");
-    if (visible==stackIds["BLANK"]) return true;
+    if (current_dialog_idx==stackIds["BLANK"]) return true;
     bool ischanged=false;
     ischanged = isModified();
     //emit isChanged_sign(&ischanged);
@@ -461,7 +443,7 @@ bool ObjectEditor::validateAndSave()
                ischanged, m_project->db()->isReadOnly());
 
 /* if nothing changed or tree is read-only, just close dialog */
-    if (!ischanged || !isTreeReadWrite(dialogs[visible], m_project->db()))
+    if (!ischanged || !isTreeReadWrite(dialogs[current_dialog_idx], m_project->db()))
     {
         if (fwbdebug) qDebug("ObjectEditor::validateAndSave: no changes");
         return true;
@@ -474,7 +456,7 @@ bool ObjectEditor::validateAndSave()
     {
         switch (
             QMessageBox::warning(
-                dialogs[ visible ],
+                dialogs[current_dialog_idx],
                 "Firewall Builder",
                 tr("Modifications done to this object can not be saved.\n"
                    "Do you want to continue editing it ?"),
@@ -507,7 +489,7 @@ bool ObjectEditor::validateAndSave()
     {
         switch (
             QMessageBox::warning(
-                dialogs[ visible ],
+                dialogs[current_dialog_idx],
                 "Firewall Builder",
                 tr("This object has been modified but not saved.\n"
                    "Do you want to save it ?"),
@@ -580,23 +562,17 @@ void ObjectEditor::changed()
 void ObjectEditor::selectObject(FWObject *o)
 {
     qDebug("ObjectEditor::selectObject");
-    if (Group::cast(opened)==NULL || visible==-1) return;
-   ((GroupObjectDialog *) dialogs[ visible ])->selectObject(o);
+    if (Group::cast(opened)==NULL || current_dialog_idx==-1) return;
+    ((GroupObjectDialog *) dialogs[current_dialog_idx])->selectObject(o);
 }
 
 void ObjectEditor::selectionChanged(FWObject*)
 {
-    /*
-    if (visible==-1) return;
-    //if (opened==o) return;
-    open (o);
-    show();
-    */
 }
 
 void ObjectEditor::actionChanged(FWObject *o)
 {
-    if (visible==-1)
+    if (current_dialog_idx==-1)
     {
         purge();
         return;
@@ -612,10 +588,9 @@ void ObjectEditor::blank()
     if (isVisible())
     {
         applyButton->setEnabled(false);
-        int wid= stackIds["BLANK"];
-
-        visible=wid;
-        opened=NULL;
+        int wid = stackIds["BLANK"];
+        current_dialog_idx = wid;
+        opened = NULL;
         show();
     }
 }

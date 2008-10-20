@@ -91,12 +91,9 @@ class ProjectPanel: public QWidget {
     libfwbuilder::FWObject                 *visibleFirewall;
     libfwbuilder::RuleSet                  *visibleRuleSet ;
     std::vector<libfwbuilder::FWObject*>    firewalls;
-    int                                    lastFirewallIdx;
-    
+
+    int                                     lastFirewallIdx;
     bool                                    changingTabs;
-    void initOE();
-    void initFD();
-        
     QString                                 noFirewalls;
     bool                                    enableAvtoSaveState;
     
