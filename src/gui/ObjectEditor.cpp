@@ -265,13 +265,16 @@ QWidget* ObjectEditor::getCurrentObjectDialog()
 
 void ObjectEditor::show()
 {
-//    parentWidget->setCurrentIndex(current_dialog_idx);
-//    m_project->openEditorPanel();
 }
 
+/*
+ * need to call ProjectPanel::closeEditorPanel from here because
+ * we connect signal clicked() from the closeButton to the slot in
+ * ObjectEditor rather than in ProjectPanel.
+ */
 void ObjectEditor::hide()
 {
-//    m_project->closeEditorPanel();
+    m_project->closeEditorPanel();
     current_dialog_idx = -1;
 }
 
