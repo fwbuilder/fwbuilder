@@ -1,8 +1,11 @@
 2008-10-19  vadim  <vadim@vk.crocodile.org>
 
-	* ProjectPanel.cpp (ProjectPanel::openEditor): fixed bug (no #):
-	object editor panel resized erratically when user switched between
-	objects while editor was open. This happened on Windows and Mac OS X.
+	* fixed object type icon in the RuleSet and Interface object dialogs.
+
+	* ProjectPanel.cpp (ProjectPanel::openEditor): fixed bug: object
+	editor panel resized itself erratically when user switched between
+	objects while editor was open. This happened on Windows and Mac OS
+	X.
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printTimeInterval):
 	fixed bug #2180556: "broken support for the "old" time module for

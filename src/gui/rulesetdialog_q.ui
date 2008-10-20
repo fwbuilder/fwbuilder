@@ -122,7 +122,7 @@
          <number>2</number>
         </property>
         <item row="0" column="0" >
-         <widget class="QLabel" name="pixmapLabel1" >
+         <widget class="QLabel" name="icon" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
             <horstretch>0</horstretch>
@@ -130,7 +130,7 @@
            </sizepolicy>
           </property>
           <property name="pixmap" >
-           <pixmap>:/Icons/Routing/icon</pixmap>
+           <pixmap resource="MainRes.qrc" >:/Icons/Policy/icon</pixmap>
           </property>
           <property name="scaledContents" >
            <bool>true</bool>

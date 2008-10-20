@@ -9,7 +9,7 @@
     <x>0</x>
     <y>0</y>
     <width>857</width>
-    <height>267</height>
+    <height>317</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -110,22 +110,10 @@
       <enum>QFrame::Sunken</enum>
      </property>
      <layout class="QGridLayout" >
-      <property name="leftMargin" >
+      <property name="margin" >
        <number>2</number>
       </property>
-      <property name="topMargin" >
-       <number>2</number>
-      </property>
-      <property name="rightMargin" >
-       <number>2</number>
-      </property>
-      <property name="bottomMargin" >
-       <number>2</number>
-      </property>
-      <property name="horizontalSpacing" >
-       <number>2</number>
-      </property>
-      <property name="verticalSpacing" >
+      <property name="spacing" >
        <number>2</number>
       </property>
       <item row="0" column="2" >
@@ -151,7 +139,7 @@
        </widget>
       </item>
       <item row="0" column="1" >
-       <widget class="QLabel" name="label_2" >
+       <widget class="QLabel" name="icon" >
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
           <horstretch>0</horstretch>
@@ -162,7 +150,7 @@
          <string/>
         </property>
         <property name="pixmap" >
-         <pixmap/>
+         <pixmap resource="MainRes.qrc" >:/Icons/Interface/icon</pixmap>
         </property>
        </widget>
       </item>
@@ -208,22 +196,10 @@
          <property name="sizeConstraint" >
           <enum>QLayout::SetMinAndMaxSize</enum>
          </property>
-         <property name="leftMargin" >
+         <property name="margin" >
           <number>8</number>
          </property>
-         <property name="topMargin" >
-          <number>8</number>
-         </property>
-         <property name="rightMargin" >
-          <number>8</number>
-         </property>
-         <property name="bottomMargin" >
-          <number>8</number>
-         </property>
-         <property name="horizontalSpacing" >
-          <number>8</number>
-         </property>
-         <property name="verticalSpacing" >
+         <property name="spacing" >
           <number>8</number>
          </property>
          <item row="0" column="0" >
@@ -478,7 +454,7 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
         <property name="orientation" >
          <enum>Qt::Vertical</enum>
         </property>
-        <property name="sizeHint" >
+        <property name="sizeHint" stdset="0" >
          <size>
           <width>20</width>
           <height>21</height>
@@ -547,7 +523,9 @@ If network zone for this interface consists of only one subnet, you can simply c
   <tabstop>comment</tabstop>
   <tabstop>netzone</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="MainRes.qrc" />
+ </resources>
  <connections>
   <connection>
    <sender>bridgeport</sender>
