@@ -752,9 +752,9 @@ bool PolicyCompiler_cisco::equalObjCISCO::operator()(FWObject *o)
 /*  re_type can be either RuleElementSrc::TYPENAME or RuleElementDst::TYPENAME */
 bool PolicyCompiler_cisco::removeRedundantAddresses::processNext()
 {
-    PolicyRule     *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    RuleElement    *re=RuleElement::cast(rule->getFirstByType(re_type));
+    RuleElement *re=RuleElement::cast(rule->getFirstByType(re_type));
     if (re->size()==1) 
     {
         tmp_queue.push_back(rule);
@@ -782,7 +782,7 @@ bool PolicyCompiler_cisco::removeRedundantAddresses::processNext()
         {
             Address *a2 = i2->first;
             if (a1==a2) continue;
-            if (fwcompiler::checkForShadowing(*a1, *a2) ) cl.push_back(i1->second);
+            if (compiler->checkForShadowing(*a1, *a2) ) cl.push_back(i1->second);
         }
     }
 

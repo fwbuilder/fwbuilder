@@ -1,5 +1,10 @@
 2008-10-20  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler.cpp (PolicyCompiler::checkForShadowing): (change
+	in libfwbuilder) Using internal caching to speed-up shadowing
+	detection. This cuts time of shadowing detection almost in half
+	for large policies with many rules.
+
 	* dns.cpp (list): (change in libfwbuilder) getHostByName() used to
 	insert duplicate IP addresses into the list of the results. Now
 	making sure ip addresses in the result are unique.
