@@ -129,15 +129,36 @@ int PolicyCompiler::prolog()
 /*
  * detects if tule r2 shades rule r1.
  */
-bool PolicyCompiler::checkForShadowing(PolicyRule &r1,
-                                       PolicyRule &r2)
+bool PolicyCompiler::checkForShadowing(PolicyRule &r1, PolicyRule &r2)
 {
-    if (r1.getSrc()->getNeg()) return false;
-    if (r1.getDst()->getNeg()) return false;
-    if (r1.getSrv()->getNeg()) return false;
-    if (r2.getSrc()->getNeg()) return false;
-    if (r2.getDst()->getNeg()) return false;
-    if (r2.getSrv()->getNeg()) return false;
+    RuleElement *srcrel1;
+    RuleElement *dstrel1;
+    RuleElement *srvrel1;
+
+    RuleElement *srcrel2;
+    RuleElement *dstrel2;
+    RuleElement *srvrel2;
+
+    FWObject::iterator i1 = r1.begin();
+    srcrel1 = RuleElement::cast(*i1);
+    i1++;
+    dstrel1 = RuleElement::cast(*i1);
+    i1++;
+    srvrel1 = RuleElement::cast(*i1);
+
+    i1 = r2.begin();
+    srcrel2 = RuleElement::cast(*i1);
+    i1++;
+    dstrel2 = RuleElement::cast(*i1);
+    i1++;
+    srvrel2 = RuleElement::cast(*i1);
+
+    if (srcrel1->getNeg()) return false;
+    if (dstrel1->getNeg()) return false;
+    if (srvrel1->getNeg()) return false;
+    if (srcrel2->getNeg()) return false;
+    if (dstrel2->getNeg()) return false;
+    if (srvrel2->getNeg()) return false;
 
     if (r1.getAction()==PolicyRule::Accounting  ||
         r2.getAction()==PolicyRule::Accounting ) return false;
@@ -171,30 +192,50 @@ bool PolicyCompiler::checkForShadowing(PolicyRule &r1,
     if (r1.getAction()==PolicyRule::Branch  ||
         r2.getAction()==PolicyRule::Branch ) return false;
 
+    Address  *src1;
+    Address  *dst1;
+    Service  *srv1;
 
-    //Address  *src1=getFirstSrc(&r1);
-    //Address  *dst1=getFirstDst(&r1);
-    //Service  *srv1=getFirstSrv(&r1);
+    Address  *src2;
+    Address  *dst2;
+    Service  *srv2;
 
-    //Address  *src2=getFirstSrc(&r2);
-    //Address  *dst2=getFirstDst(&r2);
-    //Service  *srv2=getFirstSrv(&r2);
+    if (rule_elements_cache.count(r1.getId()) > 0)
+    {
+        threeTuple *tt = rule_elements_cache[r1.getId()];
+        src1 = tt->src;
+        dst1 = tt->dst;
+        srv1 = tt->srv;
+    } else
+    {
+        src1 = Address::cast(FWReference::cast(srcrel1->front())->getPointer());
+        dst1 = Address::cast(FWReference::cast(dstrel1->front())->getPointer());
+        srv1 = Service::cast(FWReference::cast(srvrel1->front())->getPointer());
+        threeTuple *tt = new struct threeTuple;
+        tt->src = src1;
+        tt->dst = dst1;
+        tt->srv = srv1;
+        rule_elements_cache[r1.getId()] = tt;
+    }
 
-    Address  *src1 = static_cast<Address*>(
-        static_cast<FWReference*>(r1.getFirstByType(RuleElementSrc::TYPENAME)->front())->getPointer());
-    Address  *dst1 = static_cast<Address*>(
-        static_cast<FWReference*>(r1.getFirstByType(RuleElementDst::TYPENAME)->front())->getPointer());
-    Service  *srv1 = static_cast<Service*>(
-        static_cast<FWReference*>(r1.getFirstByType(RuleElementSrv::TYPENAME)->front())->getPointer());
 
-    Address  *src2 = static_cast<Address*>(
-        static_cast<FWReference*>(r2.getFirstByType(RuleElementSrc::TYPENAME)->front())->getPointer());
-    Address  *dst2 = static_cast<Address*>(
-        static_cast<FWReference*>(r2.getFirstByType(RuleElementDst::TYPENAME)->front())->getPointer());
-    Service  *srv2 = static_cast<Service*>(
-        static_cast<FWReference*>(r2.getFirstByType(RuleElementSrv::TYPENAME)->front())->getPointer());
-
-
+    if (rule_elements_cache.count(r2.getId()) > 0)
+    {
+        threeTuple *tt = rule_elements_cache[r2.getId()];
+        src2 = tt->src;
+        dst2 = tt->dst;
+        srv2 = tt->srv;
+    } else
+    {
+        src2 = Address::cast(FWReference::cast(srcrel2->front())->getPointer());
+        dst2 = Address::cast(FWReference::cast(dstrel2->front())->getPointer());
+        srv2 = Service::cast(FWReference::cast(srvrel2->front())->getPointer());
+        threeTuple *tt = new struct threeTuple;
+        tt->src = src2;
+        tt->dst = dst2;
+        tt->srv = srv2;
+        rule_elements_cache[r2.getId()] = tt;
+    }
 
     if (MultiAddressRunTime::isA(src1) || MultiAddressRunTime::isA(dst1) ||
         MultiAddressRunTime::isA(src2) || MultiAddressRunTime::isA(dst2))
@@ -225,9 +266,9 @@ bool PolicyCompiler::checkForShadowing(PolicyRule &r1,
 //    if (srv1->getTypeName()==srv2->getTypeName() || (!srv1->isAny() && srv2->isAny()))
 //    {
     return ( 
-        fwcompiler::checkForShadowing(*src1, *src2) && 
-        fwcompiler::checkForShadowing(*dst1, *dst2) && 
-        fwcompiler::checkForShadowing(*srv1, *srv2) 
+        Compiler::checkForShadowing(*src1, *src2) && 
+        Compiler::checkForShadowing(*dst1, *dst2) && 
+        Compiler::checkForShadowing(*srv1, *srv2) 
     );
 
 //    }

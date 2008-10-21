@@ -187,204 +187,6 @@ vector<FWObject*> fwcompiler::_find_srv_intersection(Service *op1, Service *op2)
 }
 
 
-bool fwcompiler::checkForShadowing(const Service &o1, const Service &o2)
-{
-    if (o1.getId()==o2.getId()) return true;
-    if (o1.isAny() && o2.isAny()) return false;
-    if ( ! o1.isAny() && o2.isAny()) return true;
-    if ( o1.isAny() && !o2.isAny()) return false;
-
-    if (o1.getTypeName()==o2.getTypeName()) 
-    {
-        const IPService *ip1;
-        const IPService *ip2;
-	if ((ip1=IPService::constcast(&o1))!=NULL) 
-        {
-            ip2 = IPService::constcast(&o2);
-/* 
- * Both objects are IPService
- *
- * can't use Service::getProtocolNumber member because it is not
- * defined as 'const'. Can't redefine it either since that will break
- * binary compatibility (as of v2.0.4)
- */
-	    if (o1.getStr("fragm")!=o2.getStr("fragm") ||
-                o1.getStr("short_fragm")!=o2.getStr("short_fragm") ||
-                o1.getStr("lsrr")!=o2.getStr("lsrr") ||
-                o1.getStr("ssrr")!=o2.getStr("ssrr") ||
-                o1.getStr("rr")!=o2.getStr("rr") ||
-                o1.getStr("ts")!=o2.getStr("ts") ) return false;
-
-            if (ip1->getTOSCode()!=ip2->getTOSCode() ||
-                ip1->getDSCPCode()!=ip2->getDSCPCode()) return false;
-
-	    if (o1.getInt("protocol_num")==o2.getInt("protocol_num"))
-                return true;
-
-	    if (o1.getInt("protocol_num")!=0 && o2.getInt("protocol_num")==0)
-                return true;
-
-            return false;
-	}
-	if ( ICMPService::constcast(&o1)) 
-        {
-	    if (o1.getInt("type")!=-1 && o2.getInt("type")==-1) return true;
-	    else return false;
-	}
-	if ( TCPService::constcast(&o1) ) 
-        {
-            const TCPService *t1=TCPService::constcast(&o1);
-            const TCPService *t2=TCPService::constcast(&o2);
-
-/* it seems STL does not define operator!= for class std::set */
-            if ( !( t1->getAllTCPFlags()     == t2->getAllTCPFlags() &&
-                    t1->getAllTCPFlagMasks() == t2->getAllTCPFlagMasks() ) )
-                return false;
-        }
-	if ( TCPService::constcast(&o1) || UDPService::constcast(&o1) ) 
-        {
-	    int srs1=static_cast<const TCPUDPService*>(&o1)->getSrcRangeStart();
-	    int sre1=static_cast<const TCPUDPService*>(&o1)->getSrcRangeEnd();
-	    int drs1=static_cast<const TCPUDPService*>(&o1)->getDstRangeStart();
-	    int dre1=static_cast<const TCPUDPService*>(&o1)->getDstRangeEnd();
-
-	    int srs2=static_cast<const TCPUDPService*>(&o2)->getSrcRangeStart();
-	    int sre2=static_cast<const TCPUDPService*>(&o2)->getSrcRangeEnd();
-	    int drs2=static_cast<const TCPUDPService*>(&o2)->getDstRangeStart();
-	    int dre2=static_cast<const TCPUDPService*>(&o2)->getDstRangeEnd();
-
-	    return (srs1>=srs2 && sre1<=sre2 && drs1>=drs2 && dre1<=dre2);
-	}
-	if ( TagService::constcast(&o1)) 
-        {
-            string tagvalue1 = TagService::constcast(&o1)->getCode();
-            string tagvalue2 = TagService::constcast(&o2)->getCode();
-            return (tagvalue1 == tagvalue2);
-	}
-	if ( UserService::constcast(&o1)) 
-        {
-            string uid1 = UserService::constcast(&o1)->getUserId();
-            string uid2 = UserService::constcast(&o2)->getUserId();
-            return (uid1 == uid2);
-	}
-
-        return false;
-    }
-/*
- * if objects are of the different types, then the only case allowed is
- * when one object is IPService
- */
-
-    if (IPService::constcast(&o2) && ! IPService::constcast(&o1) )
-    {
-        /* if o2 is IP Service and o1 is not, then o2 only shades o1
-         * when all flags are cleared in o2
-         */
-        return ( o2.getInt("protocol_num")==0 &&
-                 o2.getStr("fragm")!="True" &&
-                 o2.getStr("short_fragm")!="True" &&
-                 o2.getStr("lsrr")!="True" &&
-                 o2.getStr("ssrr")!="True" &&
-                 o2.getStr("rr")!="True" &&
-                 o2.getStr("ts")!="True");
-    }
-
-    return false;
-
-    throw FWException("trying to compare objects of incompatible types: \
-o1: "+o1.getName()+" ("+o1.getTypeName()+") o2: "+o2.getName()+" ("+o2.getTypeName()+")");
-}
-
-bool fwcompiler::checkForShadowing(const Address &o1,const Address &o2)
-{
-    if (o1.getId()==o2.getId()) return true;
-
-    if (Interface::isA(&o1))
-    {
-        const Interface *intf=Interface::constcast(&o1);
-        if (!intf->isRegular()) return false;
-    }
-
-    if (Interface::isA(&o2))
-    {
-        const Interface *intf=Interface::constcast(&o2);
-        if (!intf->isRegular()) return false;
-    }
-
-    if (physAddress::isA(&o1) && physAddress::isA(&o2))
-    {
-        const physAddress *o1_pa =physAddress::constcast(&o1);
-        const physAddress *o2_pa =physAddress::constcast(&o2);
-        return o1_pa->getPhysAddress()==o2_pa->getPhysAddress();
-    }
-    
-    const InetAddr *o1b;
-    const InetAddr *o1e;
-    const InetAddr *o2b;
-    const InetAddr *o2e;
-
-    if (AddressRange::isA(&o1))
-    {
-        o1b = &(AddressRange::constcast(&o1)->getRangeStart());
-        o1e = &(AddressRange::constcast(&o1)->getRangeEnd());
-    } else
-    {
-        if (Network::isA(&o1))
-        {
-            o1b = o1.getAddressPtr();
-            o1e = o1.getBroadcastAddressPtr();
-        } else
-        {
-            o1b = o1.getAddressPtr();
-            o1e = o1.getAddressPtr();
-        }
-    }
-
-    if (AddressRange::isA(&o2))
-    {
-        o2b = &(AddressRange::constcast(&o2)->getRangeStart());
-        o2e = &(AddressRange::constcast(&o2)->getRangeEnd());
-    } else
-    {
-        if (Network::isA(&o2))
-        {
-            o2b = o2.getAddressPtr();
-            o2e = o2.getBroadcastAddressPtr();
-        } else
-        {
-            o2b = o2.getAddressPtr();
-            o2e = o2.getAddressPtr();
-        }
-    }
-
-#if 0
-    cerr << "# o1=" << o1.getName() << " [" << o1.toString() << "] "
-         << o1b->toString() << "-" << o1e->toString()
-         << "(" << o1.dimension() << ")"
-         << " o2=" << o2.getName() << " [" << o2.toString() << "] "
-         << o2b->toString() << "-" << o2e->toString()
-         << "(" << o2.dimension() << ")"
-         << " " << int( ((*o1b)>(*o2b) || (*o1b)==(*o2b)) &&
-                        ((*o1e)<(*o2e) || (*o1e)==(*o2e)) )
-         << endl;
-#endif
-
-    // if any of the objects has no ip address, then we can not
-    // check for shadowing and return false. examples of objects with
-    // no real ip address: physAddress, Interface with no child IPv4/IPv6
-    // object. High level compilers should make sure they process rules
-    // to the point where no such objects are left before they call
-    // this method.
-    if (o1b==NULL || o2b==NULL || o1e==NULL || o2e==NULL) return false;
-
-    if (o1.isAny() && o2.isAny())  return true;
-    if (o1.isAny() && !o2.isAny()) return false;
-    if (!o1.isAny() && o2.isAny()) return true;
-
-    return ( ((*o2b) < (*o1b) || (*o1b) == (*o2b)) &&
-             ((*o1e) < (*o2e) || (*o1e) == (*o2e)) );
-}
-
 /*************************************************************************/
 
 
@@ -546,6 +348,223 @@ bool fwcompiler::operator<=(const Service  &o1,const Service  &o2)
 */
 
 /*************************************************************************/
+
+#define RETURN(x) { object_comparison_cache[cache_key] = x; return x; }
+
+bool Compiler::checkForShadowing(const Service &o1, const Service &o2)
+{
+    pair<int,int> cache_key = pair<int,int>(o1.getId(), o2.getId());
+    if (object_comparison_cache.count(cache_key)>0)
+        return object_comparison_cache[cache_key];
+
+    if (o1.getId()==o2.getId()) RETURN(true);
+
+    if (o1.isAny() && o2.isAny()) RETURN(false);
+
+    if ( ! o1.isAny() && o2.isAny()) RETURN(true);
+
+    if ( o1.isAny() && !o2.isAny()) RETURN(false);
+
+    if (o1.getTypeName()==o2.getTypeName()) 
+    {
+        const IPService *ip1;
+        const IPService *ip2;
+	if ((ip1=IPService::constcast(&o1))!=NULL) 
+        {
+            ip2 = IPService::constcast(&o2);
+/* 
+ * Both objects are IPService
+ *
+ * can't use Service::getProtocolNumber member because it is not
+ * defined as 'const'. Can't redefine it either since that will break
+ * binary compatibility (as of v2.0.4)
+ */
+	    if (o1.getStr("fragm")!=o2.getStr("fragm") ||
+                o1.getStr("short_fragm")!=o2.getStr("short_fragm") ||
+                o1.getStr("lsrr")!=o2.getStr("lsrr") ||
+                o1.getStr("ssrr")!=o2.getStr("ssrr") ||
+                o1.getStr("rr")!=o2.getStr("rr") ||
+                o1.getStr("ts")!=o2.getStr("ts") ) RETURN(false);
+
+            if (ip1->getTOSCode()!=ip2->getTOSCode() ||
+                ip1->getDSCPCode()!=ip2->getDSCPCode()) RETURN(false);
+
+	    if (o1.getInt("protocol_num")==o2.getInt("protocol_num"))
+                RETURN(true);
+
+	    if (o1.getInt("protocol_num")!=0 && o2.getInt("protocol_num")==0)
+                RETURN(true);
+
+            RETURN(false);
+	}
+	if ( ICMPService::constcast(&o1)) 
+        {
+	    bool res = (o1.getInt("type")!=-1 && o2.getInt("type")==-1);
+            RETURN(res);
+	}
+	if ( TCPService::constcast(&o1) ) 
+        {
+            const TCPService *t1=TCPService::constcast(&o1);
+            const TCPService *t2=TCPService::constcast(&o2);
+
+/* it seems STL does not define operator!= for class std::set */
+            if ( !( t1->getAllTCPFlags()     == t2->getAllTCPFlags() &&
+                    t1->getAllTCPFlagMasks() == t2->getAllTCPFlagMasks() ) )
+                RETURN(false);
+        }
+	if ( TCPService::constcast(&o1) || UDPService::constcast(&o1) ) 
+        {
+	    int srs1=static_cast<const TCPUDPService*>(&o1)->getSrcRangeStart();
+	    int sre1=static_cast<const TCPUDPService*>(&o1)->getSrcRangeEnd();
+	    int drs1=static_cast<const TCPUDPService*>(&o1)->getDstRangeStart();
+	    int dre1=static_cast<const TCPUDPService*>(&o1)->getDstRangeEnd();
+
+	    int srs2=static_cast<const TCPUDPService*>(&o2)->getSrcRangeStart();
+	    int sre2=static_cast<const TCPUDPService*>(&o2)->getSrcRangeEnd();
+	    int drs2=static_cast<const TCPUDPService*>(&o2)->getDstRangeStart();
+	    int dre2=static_cast<const TCPUDPService*>(&o2)->getDstRangeEnd();
+
+	    bool res = (srs1>=srs2 && sre1<=sre2 && drs1>=drs2 && dre1<=dre2);
+            RETURN(res);
+	}
+	if ( TagService::constcast(&o1)) 
+        {
+            string tagvalue1 = TagService::constcast(&o1)->getCode();
+            string tagvalue2 = TagService::constcast(&o2)->getCode();
+            bool res = (tagvalue1 == tagvalue2);
+            RETURN(res);
+	}
+	if ( UserService::constcast(&o1)) 
+        {
+            string uid1 = UserService::constcast(&o1)->getUserId();
+            string uid2 = UserService::constcast(&o2)->getUserId();
+            bool res = (uid1 == uid2);
+            RETURN(res);
+	}
+
+        RETURN(false);
+    }
+/*
+ * if objects are of the different types, then the only case allowed is
+ * when one object is IPService
+ */
+
+    if (IPService::constcast(&o2) && ! IPService::constcast(&o1) )
+    {
+        /* if o2 is IP Service and o1 is not, then o2 only shades o1
+         * when all flags are cleared in o2
+         */
+        bool res = ( o2.getInt("protocol_num")==0 &&
+                     o2.getStr("fragm")!="True" &&
+                     o2.getStr("short_fragm")!="True" &&
+                     o2.getStr("lsrr")!="True" &&
+                     o2.getStr("ssrr")!="True" &&
+                     o2.getStr("rr")!="True" &&
+                     o2.getStr("ts")!="True");
+        RETURN(res);
+    }
+
+    RETURN(false);
+
+    throw FWException("trying to compare objects of incompatible types: \
+o1: "+o1.getName()+" ("+o1.getTypeName()+") o2: "+o2.getName()+" ("+o2.getTypeName()+")");
+}
+
+bool Compiler::checkForShadowing(const Address &o1,const Address &o2)
+{
+    pair<int,int> cache_key = pair<int,int>(o1.getId(), o2.getId());
+    if (object_comparison_cache.count(cache_key)>0)
+        return object_comparison_cache[cache_key];
+
+    if (o1.getId()==o2.getId()) RETURN(true);
+
+    if (Interface::isA(&o1))
+    {
+        const Interface *intf=Interface::constcast(&o1);
+        if (!intf->isRegular()) RETURN(false);
+    }
+
+    if (Interface::isA(&o2))
+    {
+        const Interface *intf=Interface::constcast(&o2);
+        if (!intf->isRegular()) RETURN(false);
+    }
+
+    if (physAddress::isA(&o1) && physAddress::isA(&o2))
+    {
+        const physAddress *o1_pa =physAddress::constcast(&o1);
+        const physAddress *o2_pa =physAddress::constcast(&o2);
+        bool res = (o1_pa->getPhysAddress()==o2_pa->getPhysAddress());
+        RETURN(res);
+    }
+    
+    const InetAddr *o1b;
+    const InetAddr *o1e;
+    const InetAddr *o2b;
+    const InetAddr *o2e;
+
+    if (AddressRange::isA(&o1))
+    {
+        o1b = &(AddressRange::constcast(&o1)->getRangeStart());
+        o1e = &(AddressRange::constcast(&o1)->getRangeEnd());
+    } else
+    {
+        if (Network::isA(&o1))
+        {
+            o1b = o1.getAddressPtr();
+            o1e = o1.getBroadcastAddressPtr();
+        } else
+        {
+            o1b = o1.getAddressPtr();
+            o1e = o1.getAddressPtr();
+        }
+    }
+
+    if (AddressRange::isA(&o2))
+    {
+        o2b = &(AddressRange::constcast(&o2)->getRangeStart());
+        o2e = &(AddressRange::constcast(&o2)->getRangeEnd());
+    } else
+    {
+        if (Network::isA(&o2))
+        {
+            o2b = o2.getAddressPtr();
+            o2e = o2.getBroadcastAddressPtr();
+        } else
+        {
+            o2b = o2.getAddressPtr();
+            o2e = o2.getAddressPtr();
+        }
+    }
+
+#if 0
+    cerr << "# o1=" << o1.getName() << " [" << o1.toString() << "] "
+         << o1b->toString() << "-" << o1e->toString()
+         << "(" << o1.dimension() << ")"
+         << " o2=" << o2.getName() << " [" << o2.toString() << "] "
+         << o2b->toString() << "-" << o2e->toString()
+         << "(" << o2.dimension() << ")"
+         << " " << int( ((*o1b)>(*o2b) || (*o1b)==(*o2b)) &&
+                        ((*o1e)<(*o2e) || (*o1e)==(*o2e)) )
+         << endl;
+#endif
+
+    // if any of the objects has no ip address, then we can not
+    // check for shadowing and return false. examples of objects with
+    // no real ip address: physAddress, Interface with no child IPv4/IPv6
+    // object. High level compilers should make sure they process rules
+    // to the point where no such objects are left before they call
+    // this method.
+    if (o1b==NULL || o2b==NULL || o1e==NULL || o2e==NULL) RETURN(false);
+
+    if (o1.isAny() && o2.isAny())  RETURN(true);
+    if (o1.isAny() && !o2.isAny()) RETURN(false);
+    if (!o1.isAny() && o2.isAny()) RETURN(true);
+
+    bool res = ( ((*o2b) < (*o1b) || (*o1b) == (*o2b)) &&
+                 ((*o1e) < (*o2e) || (*o1e) == (*o2e)) );
+    RETURN(res);
+}
 
 bool Compiler::intersect(PolicyRule &r1, PolicyRule &r2)
 {

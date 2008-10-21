@@ -73,13 +73,6 @@ namespace fwcompiler {
  */
 
     /**
-     * this method compares two objects to determine if one of them
-     * "shades" another
-     */
-    bool checkForShadowing(const libfwbuilder::Address &o1,const libfwbuilder::Address &o2);
-    bool checkForShadowing(const libfwbuilder::Service &o1,const libfwbuilder::Service &o2);
-
-    /**
      * this operator compares two objects to determine if they are
      * equivalent
      */
@@ -115,9 +108,12 @@ namespace fwcompiler {
      * this method is intended for internal use only
      */
     bool _find_portrange_intersection(int rs1,int re1,int rs2,int re2,int &rsr,int &rer);
-	
 
-
+    struct threeTuple {
+        libfwbuilder::Address *src;
+        libfwbuilder::Address *dst;
+        libfwbuilder::Service *srv;
+    };
 
     class Compiler {
 
@@ -143,13 +139,15 @@ namespace fwcompiler {
         bool checkIfAddressesMatch(const libfwbuilder::Address *a1,
                                    const libfwbuilder::Address *a2);
 
-	protected:
+protected:
 
         int  _cntr_;
         bool initialized;
         int countIPv6Rules;
         bool ipv6;
-
+        std::map<std::pair<int,int>, bool> object_comparison_cache;
+        std::map<int, threeTuple*> rule_elements_cache;
+        
         std::list<BasicRuleProcessor*> rule_processors;
 
         /**
@@ -264,6 +262,15 @@ namespace fwcompiler {
         libfwbuilder::Address* getFirstTDst(libfwbuilder::NATRule *rule);
         libfwbuilder::Service* getFirstTSrv(libfwbuilder::NATRule *rule);
 
+        /**
+         * these methods compare two objects to determine if one of them
+         * "shades" the other
+         */
+        bool checkForShadowing(const libfwbuilder::Address &o1,
+                               const libfwbuilder::Address &o2);
+        bool checkForShadowing(const libfwbuilder::Service &o1,
+                               const libfwbuilder::Service &o2);
+        void resetObjectComparisonCache() { object_comparison_cache.clear(); }
 
 	/**
 	 *   a method to check for unnumbered interface in a rule

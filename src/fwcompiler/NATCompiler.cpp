@@ -109,13 +109,27 @@ int NATCompiler::prolog()
 
 bool NATCompiler::checkForShadowing(NATRule &r1, NATRule &r2)
 {
-    Address  *osrc1=getFirstOSrc(&r1);
-    Address  *odst1=getFirstODst(&r1);
-    Service  *osrv1=getFirstOSrv(&r1);
+    Address  *osrc1;  //=getFirstOSrc(&r1);
+    Address  *odst1;  //=getFirstODst(&r1);
+    Service  *osrv1;  //=getFirstOSrv(&r1);
 			    
-    Address  *osrc2=getFirstOSrc(&r2);
-    Address  *odst2=getFirstODst(&r2);
-    Service  *osrv2=getFirstOSrv(&r2);
+    Address  *osrc2;  //=getFirstOSrc(&r2);
+    Address  *odst2;  //=getFirstODst(&r2);
+    Service  *osrv2;  //=getFirstOSrv(&r2);
+
+    FWObject::iterator i1 = r1.begin();
+    osrc1 = Address::cast(FWReference::cast((*i1)->front())->getPointer());
+    i1++;
+    odst1 = Address::cast(FWReference::cast((*i1)->front())->getPointer());
+    i1++;
+    osrv1 = Service::cast(FWReference::cast((*i1)->front())->getPointer());
+
+    i1 = r2.begin();
+    osrc2 = Address::cast(FWReference::cast((*i1)->front())->getPointer());
+    i1++;
+    odst2 = Address::cast(FWReference::cast((*i1)->front())->getPointer());
+    i1++;
+    osrv2 = Service::cast(FWReference::cast((*i1)->front())->getPointer());
 
     if (osrc1==NULL || odst1==NULL || osrv1==NULL)
         throw FWException("Can not compare rules because rule "+r1.getLabel()+" has a group in one of its elements. Aborting.");
@@ -123,9 +137,9 @@ bool NATCompiler::checkForShadowing(NATRule &r1, NATRule &r2)
     if (osrc2==NULL || odst2==NULL || osrv2==NULL)
         throw FWException("Can not compare rules because rule "+r2.getLabel()+" has a group in one of its elements. Aborting.");
 
-    return ( fwcompiler::checkForShadowing(*osrc1, *osrc2) && 
-             fwcompiler::checkForShadowing(*odst1, *odst2) && 
-             fwcompiler::checkForShadowing(*osrv1, *osrv2) );
+    return ( Compiler::checkForShadowing(*osrc1, *osrc2) && 
+             Compiler::checkForShadowing(*odst1, *odst2) && 
+             Compiler::checkForShadowing(*osrv1, *osrv2) );
 
 //    if ( (*osrc2 <= *osrc1) && (*odst2 <= *odst1) && (*osrv2 <= *osrv1) ) return  1;
 
