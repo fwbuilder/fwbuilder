@@ -153,16 +153,17 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
             case AF_INET:
             {
                 struct sockaddr_in *sa = (struct sockaddr_in *) ai->ai_addr;
-                v.push_back(
-                    InetAddr((struct in_addr *)(&(sa->sin_addr))));
+                InetAddr addr((struct in_addr *)(&(sa->sin_addr)));
+                v.push_back(addr);
+
             }
             break;
                     
             case AF_INET6:
             {
                 struct sockaddr_in6 *sa = (struct sockaddr_in6 *) ai->ai_addr;
-                v.push_back(
-                    InetAddr((struct in6_addr *)(&(sa->sin6_addr))));
+                InetAddr addr((struct in_addr *)(&(sa->sin6_addr)));
+                v.push_back(addr);
             }
             break;
             }
@@ -176,44 +177,9 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
     freeaddrinfo(aiList);
 
     v.sort();
+    v.unique();
+
     return v;
-
-#if 0
-
-    struct hostent *hp=NULL;
-    char  *tmphstbuf=NULL;
-    
-
-    gethostbyname_mutex->lock();
-    hp = gethostbyname2(name.c_str(), type);
-    if(!hp)
-    {
-        gethostbyname_mutex->unlock();
-
-        std::ostringstream strerr;
-        strerr << "Host or network '"+name+"' not found; last error: ";
-        strerr << strerror(errno);
-        throw FWException(strerr.str());
-    }
-
-    try
-    {
-        for(char **p = hp->h_addr_list; *p != 0; p++) 
-            v.push_back(InetAddr((struct in_addr *)(*p)));
-    } catch(const FWException &e)
-    {
-        if(tmphstbuf) free(tmphstbuf);
-        gethostbyname_mutex->unlock();
-        throw;
-    }
-
-    if(tmphstbuf) free(tmphstbuf);
-    gethostbyname_mutex->unlock();
-
-    v.sort();
-    return v;
-
-#endif
 }
 
 
