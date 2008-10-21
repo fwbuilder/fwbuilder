@@ -430,14 +430,23 @@ void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
         {
             if (Interface::cast(*i2)!=NULL)
             {
-                Interface *interface_=Interface::cast(*i2);
+                Interface *interface_ = Interface::cast(*i2);
 /*
  * Special case is loopback interface - skip it, but only if this rule is
  * not attached to loopback!
+ *
+ * Correction 10/20/2008: if user put loopback interface object into
+ * rule element, keep it. However if we expanded it from a host or
+ * firewall object, then skip it unless the rule is attached to
+ * loopback interface.
  */
-                if ( ! on_loopback && interface_->isLoopback() ) continue;
-
-                _expandInterface(interface_,ol);
+                if (interface_->isLoopback())
+                {
+                    if (RuleElement::cast(s) || on_loopback)
+                        _expandInterface(interface_,ol);
+                } else
+// this is not a loopback interface                
+                    _expandInterface(interface_,ol);
 
                 continue;
             }
