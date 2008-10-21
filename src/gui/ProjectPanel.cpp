@@ -1060,8 +1060,8 @@ void ProjectPanel::closeEditorPanel()
 
 void ProjectPanel::openEditorPanel()
 {
-    m_panel->objectEditorStack->adjustSize();
-    m_panel->objectEditorFrame->adjustSize();
+//    m_panel->objectEditorStack->adjustSize();
+//    m_panel->objectEditorFrame->adjustSize();
     m_panel->objectEditorFrame->show();
 
 }
