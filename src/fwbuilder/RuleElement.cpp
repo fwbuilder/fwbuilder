@@ -70,8 +70,7 @@ void RuleElement::fromXML(xmlNodePtr root) throw(FWException)
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("neg")));
     if (n)
     {
-        if (strncmp(n, "True", strlen(n))==0) setNeg(true);
-        else setNeg(false);
+        negation = (cxx_strcasecmp(n, "1")==0 || cxx_strcasecmp(n , "true")==0);
         FREEXMLBUFF(n);
     }
 
