@@ -294,7 +294,7 @@ bool FWObject::cmp(const FWObject *obj) throw(FWException)
         const string &value = (*i).second;
 // 10/21/2008 --vk
         map<string,string>::const_iterator j=obj->data.find(name);
-        if (j==data.end()) continue;
+        if (j==obj->data.end()) continue;
         if (j->second!=value) return false;
     }
     
