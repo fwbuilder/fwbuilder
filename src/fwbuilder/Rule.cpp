@@ -203,7 +203,6 @@ RuleElementInterval* PolicyRule::getWhen()
     return when_re;
 }
 
-
 bool PolicyRule::isEmpty()
 {
   return (getSrc()->isAny() && 
@@ -229,8 +228,8 @@ string PolicyRule::getActionAsString() const
     case Custom:     return "Custom";
     case Branch:     return "Branch";
     case Route:      return "Route";
-    default:         return "Deny";
     }
+    return "Deny";
 }
 
 void PolicyRule::setAction(const string& act)
@@ -259,8 +258,8 @@ string PolicyRule::getDirectionAsString() const
     {
     case Inbound:   return "Inbound";
     case Outbound:  return "Outbound";
-    default:        return "Both";
     }
+    return "Both";
 }
 
 void PolicyRule::setDirection(const string& dir)

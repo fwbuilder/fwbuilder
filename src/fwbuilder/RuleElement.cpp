@@ -196,6 +196,8 @@ int RuleElementSrc::getAnyElementId() {
 xmlNodePtr RuleElementSrc::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+    xmlNewProp(me, TOXMLCAST("neg"),
+               TOXMLCAST(((getNeg()) ? "True" : "False")));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
         (*j)->toXML(me);
@@ -221,6 +223,8 @@ int RuleElementDst::getAnyElementId() {
 xmlNodePtr RuleElementDst::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+    xmlNewProp(me, TOXMLCAST("neg"),
+               TOXMLCAST(((getNeg()) ? "True" : "False")));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
         (*j)->toXML(me);
@@ -247,6 +251,8 @@ int RuleElementSrv::getAnyElementId() {
 xmlNodePtr RuleElementSrv::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+    xmlNewProp(me, TOXMLCAST("neg"),
+               TOXMLCAST(((getNeg()) ? "True" : "False")));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
         (*j)->toXML(me);
@@ -272,6 +278,8 @@ int RuleElementItf::getAnyElementId()
 xmlNodePtr RuleElementItf::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+    xmlNewProp(me, TOXMLCAST("neg"),
+               TOXMLCAST(((getNeg()) ? "True" : "False")));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
         (*j)->toXML(me);
@@ -357,6 +365,8 @@ int RuleElementOSrc::getAnyElementId() {
 xmlNodePtr RuleElementOSrc::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+    xmlNewProp(me, TOXMLCAST("neg"),
+               TOXMLCAST(((getNeg()) ? "True" : "False")));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
         (*j)->toXML(me);
@@ -382,6 +392,8 @@ int RuleElementODst::getAnyElementId() {
 xmlNodePtr RuleElementODst::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+    xmlNewProp(me, TOXMLCAST("neg"),
+               TOXMLCAST(((getNeg()) ? "True" : "False")));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
         (*j)->toXML(me);
@@ -407,6 +419,8 @@ int RuleElementOSrv::getAnyElementId() {
 xmlNodePtr RuleElementOSrv::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+    xmlNewProp(me, TOXMLCAST("neg"),
+               TOXMLCAST(((getNeg()) ? "True" : "False")));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
         (*j)->toXML(me);
@@ -434,6 +448,8 @@ int RuleElementTSrc::getAnyElementId() {
 xmlNodePtr RuleElementTSrc::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+    xmlNewProp(me, TOXMLCAST("neg"),
+               TOXMLCAST(((getNeg()) ? "True" : "False")));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
         (*j)->toXML(me);
@@ -459,6 +475,8 @@ int RuleElementTDst::getAnyElementId() {
 xmlNodePtr RuleElementTDst::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+    xmlNewProp(me, TOXMLCAST("neg"),
+               TOXMLCAST(((getNeg()) ? "True" : "False")));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
         (*j)->toXML(me);
@@ -484,6 +502,8 @@ int RuleElementTSrv::getAnyElementId() {
 xmlNodePtr RuleElementTSrv::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+    xmlNewProp(me, TOXMLCAST("neg"),
+               TOXMLCAST(((getNeg()) ? "True" : "False")));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
         (*j)->toXML(me);
@@ -511,6 +531,8 @@ int RuleElementInterval::getAnyElementId() {
 xmlNodePtr RuleElementInterval::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+    xmlNewProp(me, TOXMLCAST("neg"),
+               TOXMLCAST(((getNeg()) ? "True" : "False")));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
         (*j)->toXML(me);
@@ -537,6 +559,8 @@ int RuleElementRDst::getAnyElementId() {
 xmlNodePtr RuleElementRDst::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+    xmlNewProp(me, TOXMLCAST("neg"),
+               TOXMLCAST(((getNeg()) ? "True" : "False")));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
         (*j)->toXML(me);
@@ -561,6 +585,8 @@ int RuleElementRGtw::getAnyElementId() {
 xmlNodePtr RuleElementRGtw::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
+    xmlNewProp(me, TOXMLCAST("neg"),
+               TOXMLCAST(((getNeg()) ? "True" : "False")));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
         (*j)->toXML(me);
