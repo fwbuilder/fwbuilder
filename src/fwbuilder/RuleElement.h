@@ -51,7 +51,9 @@ class RuleElement : virtual public FWObject {
 
 protected:
 
-    void      _initialize(const FWObject *root);
+    bool negation;
+    
+    void  _initialize(const FWObject *root);
 
 public:
     RuleElement();
@@ -59,11 +61,16 @@ public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElement);
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
 
-    void      setAnyElement();
-    void      reset();
-    virtual   int getAnyElementId();
-    bool      isAny();
+    virtual FWObject& shallowDuplicate(const FWObject *obj,
+                                       bool preserve_id = true)
+        throw(FWException);
+    
+    void setAnyElement();
+    void reset();
+    virtual int getAnyElementId();
+    bool isAny();
 
     /**
      * Adds reference object pointing to 'obj' as a child of 'this'. If
@@ -78,9 +85,9 @@ public:
      */
     virtual void removeRef(FWObject *obj);
 
-    bool   getNeg();
-    void   setNeg(bool flag);
-    void   toggleNeg();
+    bool getNeg() const { return negation; }
+    void setNeg(bool flag) { negation = flag; }
+    void toggleNeg() { negation = !negation; }
 
 };
 

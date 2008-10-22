@@ -145,7 +145,7 @@ protected:
         bool initialized;
         int countIPv6Rules;
         bool ipv6;
-        std::map<std::pair<int,int>, bool> object_comparison_cache;
+        std::map<int, bool> object_comparison_cache;
         std::map<int, threeTuple*> rule_elements_cache;
         
         std::list<BasicRuleProcessor*> rule_processors;

@@ -292,13 +292,10 @@ bool FWObject::cmp(const FWObject *obj) throw(FWException)
     {
         const string &name  = (*i).first;
         const string &value = (*i).second;
-
-        if (obj->exists(name))
-        {
-            map<string,string>::const_iterator i=obj->data.find(name);
-            if ((*i).second!=value)
-                return false;
-        }
+// 10/21/2008 --vk
+        map<string,string>::const_iterator j=obj->data.find(name);
+        if (j==data.end()) continue;
+        if (j->second!=value) return false;
     }
     
     if (size()!=obj->size())  return false;
@@ -513,30 +510,16 @@ const string &FWObject::getStr(const string &name) const
         return NOT_FOUND;
     else
         return (*i).second;
-#if 0
-    if(exists(name)) 
-    {
-        map<string,string>::const_iterator i=data.find(name);
-        return (*i).second;
-    } else
-    {
-        return NOT_FOUND;
-    }
-#endif
 }
 
 void FWObject::remStr(const string &name)
 {
     checkReadOnly();
-
-    if(exists(name)) 
+    map<string, string>::iterator m=data.find(name);
+    if(m != data.end()) 
     {
-	map<string, string>::iterator m=data.find(name);
-	if(m != data.end()) 
-        {
-	    data.erase(m);
-	    setDirty(true);
-	}
+        data.erase(m);
+        setDirty(true);
     }
 }
 
@@ -569,12 +552,9 @@ void FWObject::setInt(const string &name, int val)
 
 bool FWObject::getBool(const string &name) const
 {
-    if(exists(name)) 
-    {
-        string val = getStr(name);
-        return (val=="1" || cxx_strcasecmp(val.c_str() , "true")==0);
-    } else
-        return false;
+// 10/21/2008 --vk
+    string val = getStr(name);
+    return (val=="1" || cxx_strcasecmp(val.c_str() , "true")==0);
 }
 
 void FWObject::setBool(const string &name, bool val)

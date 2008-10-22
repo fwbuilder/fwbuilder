@@ -353,9 +353,10 @@ bool fwcompiler::operator<=(const Service  &o1,const Service  &o2)
 
 bool Compiler::checkForShadowing(const Service &o1, const Service &o2)
 {
-    pair<int,int> cache_key = pair<int,int>(o1.getId(), o2.getId());
-    if (object_comparison_cache.count(cache_key)>0)
-        return object_comparison_cache[cache_key];
+    int cache_key = o1.getId() + (o2.getId() << 16);
+    map<int, bool>::iterator it = object_comparison_cache.find(cache_key);
+    if (it!=object_comparison_cache.end())
+        return it->second;
 
     if (o1.getId()==o2.getId()) RETURN(true);
 
@@ -472,9 +473,10 @@ o1: "+o1.getName()+" ("+o1.getTypeName()+") o2: "+o2.getName()+" ("+o2.getTypeNa
 
 bool Compiler::checkForShadowing(const Address &o1,const Address &o2)
 {
-    pair<int,int> cache_key = pair<int,int>(o1.getId(), o2.getId());
-    if (object_comparison_cache.count(cache_key)>0)
-        return object_comparison_cache[cache_key];
+    int cache_key = o1.getId() + (o2.getId() << 16);
+    map<int, bool>::iterator it = object_comparison_cache.find(cache_key);
+    if (it!=object_comparison_cache.end())
+        return it->second;
 
     if (o1.getId()==o2.getId()) RETURN(true);
 

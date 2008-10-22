@@ -53,13 +53,13 @@ const char *RuleElement::TYPENAME={"RuleElement"};
 
 RuleElement::RuleElement() 
 {
-    setBool("neg",false);
+    setNeg(false);
 }
 
 RuleElement::RuleElement(const FWObject *root, bool prepopulate) :
     FWObject(root,prepopulate)
 {
-    setBool("neg", false);
+    setNeg(false);
     setId(-1);
 }
 
@@ -68,19 +68,37 @@ void RuleElement::fromXML(xmlNodePtr root) throw(FWException)
     const char *n;
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("neg")));
-    if(n)
+    if (n)
     {
-        setStr("neg", n);
+        if (strncmp(n, "True", strlen(n))==0) setNeg(true);
+        else setNeg(false);
         FREEXMLBUFF(n);
     }
 
     FWObject::fromXML(root);
 }
 
+xmlNodePtr RuleElement::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+{
+    xmlNodePtr me = FWObject::toXML(xml_parent_node);
+    xmlNewProp(me, TOXMLCAST("neg"),
+               TOXMLCAST(((getNeg()) ? "True" : "False")));
+    return me;
+}
+
+FWObject& RuleElement::shallowDuplicate(const FWObject *other,
+                                        bool preserve_id) throw(FWException)
+{
+    setNeg(RuleElement::constcast(other)->getNeg());
+    return FWObject::shallowDuplicate(other, preserve_id);
+}
+
+
 void RuleElement::addRef(FWObject *obj)
 {
     FWObject *o=NULL;
-    if (isAny()) {
+    if (isAny())
+    {
 	o=(*(begin()));
 	o=(FWReference::cast(o))->getPointer();
     }
@@ -161,28 +179,6 @@ void RuleElement::_initialize(const FWObject *root)
 int RuleElement::getAnyElementId()
 {
     return -1;
-}
-
-/*
- *   Meaning of "source","destination" and "service" can be negated
- */
-bool RuleElement::getNeg()
-{
-    return ( getBool("neg") );
-}
-
-void RuleElement::setNeg(bool f) 
-{ 
-    if (!empty()) setBool("neg",f);
-    else          setBool("neg",false);  // it does not make sence to negate nothing
-}
-
-void RuleElement::toggleNeg()
-{ 
-    bool n;
-    n=getBool("neg");
-    if (!empty()) setBool("neg",!n );
-    else          setBool("neg",false);  // it does not make sence to negate nothing
 }
 
 const char *RuleElementSrc::TYPENAME={"Src"};

@@ -84,14 +84,15 @@ void Rule::setRuleGroupName(const std::string &group_name)
 
 
 
-FWObject& Rule::shallowDuplicate(const FWObject *x, bool preserve_id) throw(FWException)
+FWObject& Rule::shallowDuplicate(const FWObject *x,
+                                 bool preserve_id) throw(FWException)
 {
     const Rule *rx=Rule::constcast(x);
-    fallback=rx->fallback;
-    hidden=rx->hidden;
-    label=rx->label;
-    unique_id=rx->unique_id;
-    abs_rule_number=rx->abs_rule_number;
+    fallback = rx->fallback;
+    hidden = rx->hidden;
+    label = rx->label;
+    unique_id = rx->unique_id;
+    abs_rule_number = rx->abs_rule_number;
 
     return  FWObject::shallowDuplicate(x,preserve_id);
 }
@@ -103,7 +104,8 @@ const char *PolicyRule::TYPENAME={"PolicyRule"};
 
 PolicyRule::PolicyRule()
 {
-    setStr("action","Deny");
+//    setStr("action","Deny");
+    setAction(PolicyRule::Deny);
 
     src_re = NULL;
     dst_re = NULL;
@@ -114,7 +116,8 @@ PolicyRule::PolicyRule()
 
 PolicyRule::PolicyRule(const FWObject *root,bool prepopulate) : Rule(root,prepopulate)
 {
-    setStr("action","Deny");
+//    setStr("action","Deny");
+    setAction(PolicyRule::Deny);
 
     src_re = NULL;
     dst_re = NULL;
@@ -147,7 +150,8 @@ PolicyRule::PolicyRule(const FWObject *root,bool prepopulate) : Rule(root,prepop
     }
 }
 
-FWObject& PolicyRule::shallowDuplicate(const FWObject *x, bool preserve_id) throw(FWException)
+FWObject& PolicyRule::shallowDuplicate(const FWObject *x,
+                                       bool preserve_id) throw(FWException)
 {
     const PolicyRule *rx=PolicyRule::constcast(x);
     setDirection(rx->getDirection());
@@ -160,7 +164,7 @@ FWObject& PolicyRule::shallowDuplicate(const FWObject *x, bool preserve_id) thro
     itf_re = NULL;
     when_re = NULL;
 
-    return  Rule::shallowDuplicate(x,preserve_id);
+    return  Rule::shallowDuplicate(x, preserve_id);
 }
 
 
@@ -208,86 +212,62 @@ bool PolicyRule::isEmpty()
           getItf()->isAny());
 }
 
-PolicyRule::Action PolicyRule::getAction()  const
-{
-    string a=getActionAsString();
-    if (a=="Accept")     return Accept;
-    if (a=="Reject")     return Reject;
-    if (a=="Scrub")      return Scrub;
-    if (a=="Return")     return Return;
-    if (a=="Skip")       return Skip;
-    if (a=="Continue")   return Continue;
-    if (a=="Accounting") return Accounting;
-    if (a=="Modify")     return Modify;
-    if (a=="Tag")        return Tag;
-    if (a=="Pipe")       return Pipe;
-    if (a=="Classify")   return Classify;
-    if (a=="Custom")     return Custom;
-    if (a=="Branch")     return Branch;
-    if (a=="Route")      return Route;
-    return Deny;
-}
-
-void   PolicyRule::setAction(PolicyRule::Action act)
-{
-    switch (act) {
-    case Accept:     setAction("Accept");   return;
-    case Reject:     setAction("Reject");   return;
-    case Scrub:      setAction("Scrub");    return;
-    case Return:     setAction("Return");   return;
-    case Skip:       setAction("Skip");     return;
-    case Continue:   setAction("Continue"); return;
-    case Accounting: setAction("Accounting"); return;
-    case Modify:     setAction("Modify");   return;
-    case Tag:        setAction("Tag");      return;
-    case Pipe:       setAction("Pipe");     return;
-    case Classify:   setAction("Classify"); return;
-    case Custom:     setAction("Custom");   return;
-    case Branch:     setAction("Branch");   return;
-    case Route:      setAction("Route");    return;
-    default:         setAction("Deny");     return;
-    }
-}
-
 string PolicyRule::getActionAsString() const
 {
-    string res = getStr("action");
-    if (res.empty()) res = "Deny";
-    return res;
-}
-
-void   PolicyRule::setAction(const string& act)
-{
-    setStr("action",(act.empty())?"Deny":act);
-}
-
-PolicyRule::Direction PolicyRule::getDirection() const
-{
-    string d=getDirectionAsString();
-    if (d=="Inbound")   return Inbound;
-    if (d=="Outbound")  return Outbound;
-    return Both;
-}
-
-void   PolicyRule::setDirection(PolicyRule::Direction dir)
-{
-    switch (dir) {
-    case Inbound:   setDirection("Inbound");  return;
-    case Outbound:  setDirection("Outbound"); return;
-    default  :      setDirection("Both");     return;
+    switch (action) {
+    case Accept:     return "Accept";
+    case Reject:     return "Reject";
+    case Scrub:      return "Scrub";
+    case Return:     return "Return";
+    case Skip:       return "Skip";
+    case Continue:   return "Continue";
+    case Accounting: return "Accounting";
+    case Modify:     return "Modify";
+    case Tag:        return "Tag";
+    case Pipe:       return "Pipe";
+    case Classify:   return "Classify";
+    case Custom:     return "Custom";
+    case Branch:     return "Branch";
+    case Route:      return "Route";
+    default:         return "Deny";
     }
+}
+
+void PolicyRule::setAction(const string& act)
+{
+    if (act=="Accept")     { setAction(Accept); return; }
+    if (act=="Deny")       { setAction(Deny); return; }
+    if (act=="Reject")     { setAction(Reject); return; }
+    if (act=="Scrub")      { setAction(Scrub); return; }
+    if (act=="Return")     { setAction(Return); return; }
+    if (act=="Skip")       { setAction(Skip); return; }
+    if (act=="Continue")   { setAction(Continue); return; }
+    if (act=="Accounting") { setAction(Accounting); return; }
+    if (act=="Modify")     { setAction(Modify); return; }
+    if (act=="Tag")        { setAction(Tag); return; }
+    if (act=="Pipe")       { setAction(Pipe); return; }
+    if (act=="Classify")   { setAction(Classify); return; }
+    if (act=="Custom")     { setAction(Custom); return; }
+    if (act=="Branch")     { setAction(Branch); return; }
+    if (act=="Route")      { setAction(Route); return; }
+    setAction(Deny);
 }
 
 string PolicyRule::getDirectionAsString() const
 {
-    string res = getStr("direction");
-    if (res.empty()) res = "Both";
-    return res;
+    switch (direction)
+    {
+    case Inbound:   return "Inbound";
+    case Outbound:  return "Outbound";
+    default:        return "Both";
+    }
 }
 
-void   PolicyRule::setDirection(const string& dir)
+void PolicyRule::setDirection(const string& dir)
 {
-    setStr("direction",(dir.empty())?"Both":dir);
+    if (dir=="Inbound")   { setDirection(Inbound); return; }
+    if (dir=="Outbound")  { setDirection(Outbound); return; }
+    setDirection(Both);
 }
 
 bool   PolicyRule::getLogging() const    { return getBool("log"); }
@@ -317,7 +297,7 @@ void PolicyRule::fromXML(xmlNodePtr root) throw(FWException)
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("action")));
     if(n)
     {
-        setStr("action",n);
+        setAction(string(n));
         FREEXMLBUFF(n);
     }
 
@@ -339,7 +319,7 @@ void PolicyRule::fromXML(xmlNodePtr root) throw(FWException)
     n= FROMXMLCAST(xmlGetProp(root,TOXMLCAST("direction")));
     if(n)
     {
-        setStr("direction",n);
+        setDirection(string(n));
         FREEXMLBUFF(n);
     }
 
@@ -356,6 +336,8 @@ xmlNodePtr PolicyRule::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
 //    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("action"), STRTOXMLCAST(getActionAsString()));
+    xmlNewProp(me, TOXMLCAST("direction"), STRTOXMLCAST(getDirectionAsString()));
     xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
 
     FWObject *o;
@@ -716,7 +698,8 @@ void         NATRule::setRuleType(NATRuleTypes rt)
     rule_type=rt;
 }
 
-FWObject& NATRule::shallowDuplicate(const FWObject *x, bool preserve_id) throw(FWException)
+FWObject& NATRule::shallowDuplicate(const FWObject *x,
+                                    bool preserve_id) throw(FWException)
 {
     const NATRule *rx=NATRule::constcast(x);
     if (rx!=NULL) rule_type=rx->rule_type;
@@ -729,7 +712,7 @@ FWObject& NATRule::shallowDuplicate(const FWObject *x, bool preserve_id) throw(F
     tsrv_re = NULL;
     when_re = NULL;
 
-    return  Rule::shallowDuplicate(x,preserve_id);
+    return  Rule::shallowDuplicate(x, preserve_id);
 }
 
 
@@ -917,14 +900,15 @@ void RoutingRule::setRuleType(RoutingRuleTypes rt)
     rule_type=rt;
 }
 
-FWObject& RoutingRule::duplicate(const FWObject *x, bool preserve_id) throw(FWException)
+FWObject& RoutingRule::duplicate(const FWObject *x,
+                                 bool preserve_id) throw(FWException)
 {
     Rule::duplicate(x,preserve_id);
-    const RoutingRule *rx=RoutingRule::constcast(x);
-    if (rx!=NULL) {
-        
-        rule_type=rx->rule_type;
-        sorted_dst_ids=rx->sorted_dst_ids;
+    const RoutingRule *rx = RoutingRule::constcast(x);
+    if (rx!=NULL)
+    {
+        rule_type = rx->rule_type;
+        sorted_dst_ids = rx->sorted_dst_ids;
     }
     return *this;
 }

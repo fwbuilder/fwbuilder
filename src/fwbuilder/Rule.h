@@ -117,13 +117,6 @@ class Rule : public Group
 
 class PolicyRule : public Rule 
 {
-    libfwbuilder::RuleElementSrc*      src_re;
-    libfwbuilder::RuleElementDst*      dst_re;
-    libfwbuilder::RuleElementSrv*      srv_re;
-    libfwbuilder::RuleElementItf*      itf_re;
-    libfwbuilder::RuleElementInterval* when_re;
-    
-    
     public:
 /*
  * Supported policy rule actions:
@@ -182,13 +175,25 @@ class PolicyRule : public Rule
                    Outbound, 
                    Both } Direction;
 
+private:
 
+    libfwbuilder::RuleElementSrc* src_re;
+    libfwbuilder::RuleElementDst* dst_re;
+    libfwbuilder::RuleElementSrv* srv_re;
+    libfwbuilder::RuleElementItf* itf_re;
+    libfwbuilder::RuleElementInterval* when_re;
+    Action action;
+    Direction direction;
+    
+public:    
 
     PolicyRule();
     PolicyRule(const FWObject *root,bool prepopulate);
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML      (xmlNodePtr parent) throw(FWException);
-    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+    virtual FWObject& shallowDuplicate(const FWObject *obj,
+                                       bool preserve_id = true)
+        throw(FWException);
 
     DECLARE_FWOBJECT_SUBTYPE(PolicyRule);
     virtual FWOptions* getOptionsObject();
@@ -210,13 +215,13 @@ class PolicyRule : public Rule
     libfwbuilder::RuleElementItf*  getItf() ;
     libfwbuilder::RuleElementInterval* getWhen() ;
 
-    Action getAction() const;
-    void   setAction(Action act);
+    Action getAction() const { return action; }
+    void   setAction(Action act) { action = act; }
     std::string getActionAsString() const;
     void   setAction(const std::string& act);
 
-    Direction getDirection() const;
-    void   setDirection(Direction dir);
+    Direction getDirection() const { return direction; }
+    void   setDirection(Direction dir) { direction = dir; }
     std::string getDirectionAsString() const;
     void   setDirection(const std::string& dir);
 

@@ -1,3 +1,19 @@
+2008-10-21  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler.cpp (PolicyCompiler::checkForShadowing):
+	Optimisations in the code that detects rule shadowing. Combined
+	with conversion of the most used rule and rule element attributes
+	to class member variables, this yields improvement in shadowing
+	detection of about x5.
+
+	* RuleElement.h (class RuleElement): converted "neg" from
+	dictionary item to class member variable to improve performance of
+	policy compilers
+
+	* Rule.h (class PolicyRule): converted "action" and "direction"
+	from dictionary items to class member variables to improve
+	performance of policy compilers.
+
 2008-10-20  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler.cpp (PolicyCompiler::checkForShadowing): Using

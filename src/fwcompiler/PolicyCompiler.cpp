@@ -160,8 +160,11 @@ bool PolicyCompiler::checkForShadowing(PolicyRule &r1, PolicyRule &r2)
     if (dstrel2->getNeg()) return false;
     if (srvrel2->getNeg()) return false;
 
-    if (r1.getAction()==PolicyRule::Accounting  ||
-        r2.getAction()==PolicyRule::Accounting ) return false;
+    PolicyRule::Action r1_action = r1.getAction();
+    PolicyRule::Action r2_action = r2.getAction();
+
+    if (r1_action==PolicyRule::Accounting  ||
+        r2_action==PolicyRule::Accounting ) return false;
 
     /*
      * this is delicate case: negation. We consider r2 to "shade" r1
@@ -170,8 +173,8 @@ bool PolicyCompiler::checkForShadowing(PolicyRule &r1, PolicyRule &r2)
      * fwb_ipt, then some of the produced rules have action Return. If
      * r2 has action != Return and r1 has action Return, we ignore r1.
      */
-    if (r1.getAction()==PolicyRule::Return  ||
-        r2.getAction()==PolicyRule::Return ) return false;
+    if (r1_action==PolicyRule::Return  ||
+        r2_action==PolicyRule::Return ) return false;
 
     /*
      * TODO: actually, route rule may shadow other rules if it
@@ -179,8 +182,8 @@ bool PolicyCompiler::checkForShadowing(PolicyRule &r1, PolicyRule &r2)
      * may or may not be so, depending on the platform and combination
      * of rule options.
      */
-    if (r1.getAction()==PolicyRule::Route  ||
-        r2.getAction()==PolicyRule::Route ) return false;
+    if (r1_action==PolicyRule::Route  ||
+        r2_action==PolicyRule::Route ) return false;
 
     /*
      * the problem with branching rules is that it is combination of
@@ -189,8 +192,8 @@ bool PolicyCompiler::checkForShadowing(PolicyRule &r1, PolicyRule &r2)
      * shadowing detection does not support this so all we can do is
      * skip rules with action Branch.
      */
-    if (r1.getAction()==PolicyRule::Branch  ||
-        r2.getAction()==PolicyRule::Branch ) return false;
+    if (r1_action==PolicyRule::Branch  ||
+        r2_action==PolicyRule::Branch ) return false;
 
     Address  *src1;
     Address  *dst1;
@@ -200,9 +203,10 @@ bool PolicyCompiler::checkForShadowing(PolicyRule &r1, PolicyRule &r2)
     Address  *dst2;
     Service  *srv2;
 
-    if (rule_elements_cache.count(r1.getId()) > 0)
+    map<int, threeTuple*>::iterator it = rule_elements_cache.find(r1.getId());
+    if (it!=rule_elements_cache.end())
     {
-        threeTuple *tt = rule_elements_cache[r1.getId()];
+        threeTuple *tt = it->second;
         src1 = tt->src;
         dst1 = tt->dst;
         srv1 = tt->srv;
@@ -217,11 +221,11 @@ bool PolicyCompiler::checkForShadowing(PolicyRule &r1, PolicyRule &r2)
         tt->srv = srv1;
         rule_elements_cache[r1.getId()] = tt;
     }
-
-
-    if (rule_elements_cache.count(r2.getId()) > 0)
+    
+    it = rule_elements_cache.find(r2.getId());
+    if (it!=rule_elements_cache.end())
     {
-        threeTuple *tt = rule_elements_cache[r2.getId()];
+        threeTuple *tt = it->second;
         src2 = tt->src;
         dst2 = tt->dst;
         srv2 = tt->srv;
@@ -237,47 +241,40 @@ bool PolicyCompiler::checkForShadowing(PolicyRule &r1, PolicyRule &r2)
         rule_elements_cache[r2.getId()] = tt;
     }
 
+    if (src1==NULL || dst1==NULL || srv1==NULL)
+        throw FWException("Can not compare rules because rule " + 
+                          r1.getLabel()
+                          + " has a group in one of its elements. Aborting.");
+
+    if (src2==NULL || dst2==NULL || srv2==NULL)
+        throw FWException("Can not compare rules because rule " + 
+                          r2.getLabel() +
+                          " has a group in one of its elements. Aborting.");
+
     if (MultiAddressRunTime::isA(src1) || MultiAddressRunTime::isA(dst1) ||
         MultiAddressRunTime::isA(src2) || MultiAddressRunTime::isA(dst2))
         return false;
 
-    if (src1==NULL || dst1==NULL || srv1==NULL)
-        throw FWException("Can not compare rules because rule "+r1.getLabel()+" has a group in one of its elements. Aborting.");
+    PolicyRule::Direction dir1 = r1.getDirection();
+    PolicyRule::Direction dir2 = r2.getDirection();
 
-    if (src2==NULL || dst2==NULL || srv2==NULL)
-        throw FWException("Can not compare rules because rule "+r2.getLabel()+" has a group in one of its elements. Aborting.");
+    if (dir1 == PolicyRule::Both) dir1 = dir2;
+    if (dir2 == PolicyRule::Both) dir2 = dir1;
 
-//    if (! fwcompiler::intersect( r1, r2 )) return -2;
+    if (dir1 != dir2)     return false;
 
-    PolicyRule::Direction dir1=r1.getDirection();
-    PolicyRule::Direction dir2=r2.getDirection();
-
-    if (dir1==PolicyRule::Both) dir1=dir2;
-    if (dir2==PolicyRule::Both) dir2=dir1;
-
-    if (dir1!=dir2)     return false;
-
-/*  reminder: here rule2 is above rule1, so we should return true if
- *  src2 shades src1 etc.  however, if src2 happened to be a child of
- *  src1, then this is not shadowing and we return false. this is
- *  important because our definition of shadowing includes the case when
- *  addresses are equal.
- */
-//    if (srv1->getTypeName()==srv2->getTypeName() || (!srv1->isAny() && srv2->isAny()))
-//    {
     return ( 
         Compiler::checkForShadowing(*src1, *src2) && 
         Compiler::checkForShadowing(*dst1, *dst2) && 
         Compiler::checkForShadowing(*srv1, *srv2) 
     );
 
-//    }
+// complete: 3'5"
 
     return false;
 }
 
-bool PolicyCompiler::cmpRules(PolicyRule &r1,
-                              PolicyRule &r2)
+bool PolicyCompiler::cmpRules(PolicyRule &r1, PolicyRule &r2)
 {
     if (r1.getSrc()->getNeg()!=r2.getSrc()->getNeg()) return false;
     if (r1.getDst()->getNeg()!=r2.getDst()->getNeg()) return false;
@@ -285,7 +282,6 @@ bool PolicyCompiler::cmpRules(PolicyRule &r1,
     if (r2.getSrc()->getNeg()!=r2.getSrc()->getNeg()) return false;
     if (r2.getDst()->getNeg()!=r2.getDst()->getNeg()) return false;
     if (r2.getSrv()->getNeg()!=r2.getSrv()->getNeg()) return false;
-
 
     Address  *src1=getFirstSrc(&r1);
     Address  *dst1=getFirstDst(&r1);
@@ -295,12 +291,15 @@ bool PolicyCompiler::cmpRules(PolicyRule &r1,
     Address  *dst2=getFirstDst(&r2);
     Service  *srv2=getFirstSrv(&r2);
 
-
     if (src1==NULL || dst1==NULL || srv1==NULL)
-        throw FWException("Can not compare rules because rule "+r1.getLabel()+" has a group in one of its elements. Aborting.");
+        throw FWException("Can not compare rules because rule " +
+                          r1.getLabel() +
+                          " has a group in one of its elements. Aborting.");
 
     if (src2==NULL || dst2==NULL || srv2==NULL)
-        throw FWException("Can not compare rules because rule "+r2.getLabel()+" has a group in one of its elements. Aborting.");
+        throw FWException("Can not compare rules because rule " +
+                          r2.getLabel() +
+                          " has a group in one of its elements. Aborting.");
 
     PolicyRule::Direction dir1=r1.getDirection();
     PolicyRule::Direction dir2=r2.getDirection();
