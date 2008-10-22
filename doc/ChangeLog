@@ -1,3 +1,11 @@
+2008-10-21  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler.cpp (PolicyCompiler::checkForShadowing): (change
+	in libfwbuilder) Optimisations in the code that detects rule
+	shadowing. Combined with improvements in classes Rule and
+	RuleElement, this yields speed-up in shadowing detection by a
+	factor of about 5.
+
 2008-10-20  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler.cpp (PolicyCompiler::checkForShadowing): (change
