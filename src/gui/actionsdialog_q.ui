@@ -6,29 +6,17 @@
     <x>0</x>
     <y>0</y>
     <width>852</width>
-    <height>212</height>
+    <height>228</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Actions Dialog</string>
   </property>
   <layout class="QGridLayout" >
-   <property name="leftMargin" >
+   <property name="margin" >
     <number>2</number>
    </property>
-   <property name="topMargin" >
-    <number>2</number>
-   </property>
-   <property name="rightMargin" >
-    <number>2</number>
-   </property>
-   <property name="bottomMargin" >
-    <number>2</number>
-   </property>
-   <property name="horizontalSpacing" >
-    <number>2</number>
-   </property>
-   <property name="verticalSpacing" >
+   <property name="spacing" >
     <number>2</number>
    </property>
    <item row="0" column="0" colspan="2" >
@@ -50,70 +38,6 @@
          <height>30</height>
         </size>
        </property>
-       <property name="palette" >
-        <palette>
-         <active>
-          <colorrole role="Base" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Window" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>254</green>
-             <blue>253</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Base" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Window" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>254</green>
-             <blue>253</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled>
-          <colorrole role="Base" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>254</green>
-             <blue>253</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Window" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>254</green>
-             <blue>253</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </disabled>
-        </palette>
-       </property>
        <property name="autoFillBackground" >
         <bool>true</bool>
        </property>
@@ -127,16 +51,7 @@
         <property name="spacing" >
          <number>2</number>
         </property>
-        <property name="leftMargin" >
-         <number>2</number>
-        </property>
-        <property name="topMargin" >
-         <number>2</number>
-        </property>
-        <property name="rightMargin" >
-         <number>2</number>
-        </property>
-        <property name="bottomMargin" >
+        <property name="margin" >
          <number>2</number>
         </property>
         <item>
@@ -238,7 +153,7 @@
               <property name="orientation" >
                <enum>Qt::Horizontal</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>691</width>
                 <height>58</height>
@@ -254,7 +169,7 @@
               <property name="sizeType" >
                <enum>QSizePolicy::MinimumExpanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>20</width>
                 <height>0</height>
@@ -266,22 +181,10 @@
           </widget>
           <widget class="QWidget" name="RejectPage" >
            <layout class="QGridLayout" >
-            <property name="leftMargin" >
+            <property name="margin" >
              <number>0</number>
             </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
-             <number>0</number>
-            </property>
-            <property name="horizontalSpacing" >
-             <number>2</number>
-            </property>
-            <property name="verticalSpacing" >
+            <property name="spacing" >
              <number>2</number>
             </property>
             <item row="1" column="0" colspan="3" >
@@ -305,7 +208,7 @@
               <property name="sizeType" >
                <enum>QSizePolicy::MinimumExpanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>20</width>
                 <height>0</height>
@@ -331,7 +234,7 @@
               <property name="sizeType" >
                <enum>QSizePolicy::MinimumExpanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>10</width>
                 <height>20</height>
@@ -347,7 +250,7 @@
               <property name="sizeType" >
                <enum>QSizePolicy::MinimumExpanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>0</width>
                 <height>20</height>
@@ -359,16 +262,7 @@
           </widget>
           <widget class="QWidget" name="NonePage" >
            <layout class="QGridLayout" >
-            <property name="leftMargin" >
-             <number>0</number>
-            </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
+            <property name="margin" >
              <number>0</number>
             </property>
             <item row="0" column="0" >
@@ -406,7 +300,7 @@
               <property name="sizeType" >
                <enum>QSizePolicy::Expanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>201</width>
                 <height>81</height>
@@ -474,7 +368,7 @@ tab of the firewall object properties dialog activates emulation.</string>
               <property name="sizeType" >
                <enum>QSizePolicy::MinimumExpanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>609</width>
                 <height>21</height>
@@ -486,16 +380,7 @@ tab of the firewall object properties dialog activates emulation.</string>
           </widget>
           <widget class="QWidget" name="AccountingStrPage" >
            <layout class="QGridLayout" >
-            <property name="leftMargin" >
-             <number>0</number>
-            </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
+            <property name="margin" >
              <number>0</number>
             </property>
             <item row="1" column="0" >
@@ -522,7 +407,7 @@ tab of the firewall object properties dialog activates emulation.</string>
               <property name="sizeType" >
                <enum>QSizePolicy::MinimumExpanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>20</width>
                 <height>0</height>
@@ -534,22 +419,10 @@ tab of the firewall object properties dialog activates emulation.</string>
           </widget>
           <widget class="QWidget" name="ClassifyArgsIPFW" >
            <layout class="QGridLayout" >
-            <property name="leftMargin" >
+            <property name="margin" >
              <number>0</number>
             </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
-             <number>0</number>
-            </property>
-            <property name="horizontalSpacing" >
-             <number>2</number>
-            </property>
-            <property name="verticalSpacing" >
+            <property name="spacing" >
              <number>2</number>
             </property>
             <item row="0" column="0" colspan="3" >
@@ -571,22 +444,10 @@ tab of the firewall object properties dialog activates emulation.</string>
                <string/>
               </property>
               <layout class="QGridLayout" >
-               <property name="leftMargin" >
+               <property name="margin" >
                 <number>2</number>
                </property>
-               <property name="topMargin" >
-                <number>2</number>
-               </property>
-               <property name="rightMargin" >
-                <number>2</number>
-               </property>
-               <property name="bottomMargin" >
-                <number>2</number>
-               </property>
-               <property name="horizontalSpacing" >
-                <number>2</number>
-               </property>
-               <property name="verticalSpacing" >
+               <property name="spacing" >
                 <number>2</number>
                </property>
                <item row="1" column="0" >
@@ -624,7 +485,7 @@ tab of the firewall object properties dialog activates emulation.</string>
               <property name="sizeType" >
                <enum>QSizePolicy::Expanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>40</width>
                 <height>20</height>
@@ -653,7 +514,7 @@ tab of the firewall object properties dialog activates emulation.</string>
               <property name="sizeType" >
                <enum>QSizePolicy::MinimumExpanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>20</width>
                 <height>0</height>
@@ -668,16 +529,7 @@ tab of the firewall object properties dialog activates emulation.</string>
             <property name="spacing" >
              <number>2</number>
             </property>
-            <property name="leftMargin" >
-             <number>0</number>
-            </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
+            <property name="margin" >
              <number>0</number>
             </property>
             <item>
@@ -701,7 +553,7 @@ tab of the firewall object properties dialog activates emulation.</string>
               <property name="sizeType" >
                <enum>QSizePolicy::MinimumExpanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>20</width>
                 <height>0</height>
@@ -713,16 +565,7 @@ tab of the firewall object properties dialog activates emulation.</string>
           </widget>
           <widget class="QWidget" name="ClassifyStrPage" >
            <layout class="QGridLayout" >
-            <property name="leftMargin" >
-             <number>0</number>
-            </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
+            <property name="margin" >
              <number>0</number>
             </property>
             <item row="0" column="0" >
@@ -746,7 +589,7 @@ tab of the firewall object properties dialog activates emulation.</string>
               <property name="sizeType" >
                <enum>QSizePolicy::MinimumExpanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>20</width>
                 <height>0</height>
@@ -780,16 +623,7 @@ object properties dialog.</string>
           </widget>
           <widget class="QWidget" name="PipeArgsIPFW" >
            <layout class="QGridLayout" >
-            <property name="leftMargin" >
-             <number>0</number>
-            </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
+            <property name="margin" >
              <number>0</number>
             </property>
             <item row="1" column="0" >
@@ -810,7 +644,7 @@ object properties dialog.</string>
               <property name="sizeType" >
                <enum>QSizePolicy::Expanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>40</width>
                 <height>20</height>
@@ -839,7 +673,7 @@ object properties dialog.</string>
               <property name="sizeType" >
                <enum>QSizePolicy::MinimumExpanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>20</width>
                 <height>0</height>
@@ -894,7 +728,7 @@ object properties dialog.</string>
               <property name="orientation" >
                <enum>Qt::Horizontal</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>41</width>
                 <height>21</height>
@@ -910,7 +744,7 @@ object properties dialog.</string>
               <property name="sizeType" >
                <enum>QSizePolicy::MinimumExpanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>30</width>
                 <height>20</height>
@@ -958,7 +792,7 @@ object properties dialog.</string>
               <property name="orientation" >
                <enum>Qt::Horizontal</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>701</width>
                 <height>64</height>
@@ -974,7 +808,7 @@ object properties dialog.</string>
               <property name="sizeType" >
                <enum>QSizePolicy::MinimumExpanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>20</width>
                 <height>0</height>
@@ -986,22 +820,10 @@ object properties dialog.</string>
           </widget>
           <widget class="QWidget" name="RouteIPFPage" >
            <layout class="QGridLayout" >
-            <property name="leftMargin" >
+            <property name="margin" >
              <number>0</number>
             </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
-             <number>0</number>
-            </property>
-            <property name="horizontalSpacing" >
-             <number>2</number>
-            </property>
-            <property name="verticalSpacing" >
+            <property name="spacing" >
              <number>2</number>
             </property>
             <item row="2" column="0" >
@@ -1012,7 +834,7 @@ object properties dialog.</string>
               <property name="sizeType" >
                <enum>QSizePolicy::MinimumExpanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>20</width>
                 <height>0</height>
@@ -1137,7 +959,7 @@ object properties dialog.</string>
               <property name="sizeType" >
                <enum>QSizePolicy::Fixed</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>40</width>
                 <height>20</height>
@@ -1186,7 +1008,7 @@ object properties dialog.</string>
               <property name="orientation" >
                <enum>Qt::Horizontal</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>131</width>
                 <height>20</height>
@@ -1202,7 +1024,7 @@ object properties dialog.</string>
               <property name="sizeType" >
                <enum>QSizePolicy::MinimumExpanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>553</width>
                 <height>0</height>
@@ -1214,22 +1036,10 @@ object properties dialog.</string>
           </widget>
           <widget class="QWidget" name="RouteIPTPage" >
            <layout class="QGridLayout" >
-            <property name="leftMargin" >
+            <property name="margin" >
              <number>0</number>
             </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
-             <number>0</number>
-            </property>
-            <property name="horizontalSpacing" >
-             <number>2</number>
-            </property>
-            <property name="verticalSpacing" >
+            <property name="spacing" >
              <number>2</number>
             </property>
             <item row="0" column="0" >
@@ -1279,7 +1089,7 @@ object properties dialog.</string>
               <property name="sizeType" >
                <enum>QSizePolicy::Expanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>170</width>
                 <height>20</height>

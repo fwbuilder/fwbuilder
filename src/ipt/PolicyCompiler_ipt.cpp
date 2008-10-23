@@ -995,7 +995,7 @@ bool PolicyCompiler_ipt::singleSrvNegation::processNext()
     Service *srv=compiler->getFirstSrv(rule); // need to make sure it is not a group
     // see comment in compile() where this rule processor is used for why
     // only some services can be processed here.
-    if (TagService::isA(srv))
+    if (TagService::isA(srv) || UserService::isA(srv))
     {
 /*   A  B  ! C  ACTION  */
         if (srvrel->getNeg() && srvrel->size()==1 && srv!=NULL ) 
@@ -3134,6 +3134,47 @@ bool PolicyCompiler_ipt::checkUserServiceInWrongChains::processNext()
     return true;
 }
 
+bool PolicyCompiler_ipt::separateUserServices::processNext()
+{
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+
+    RuleElementSrv *rel= rule->getSrv();
+
+    if (rel->size()==1) 
+    {
+	tmp_queue.push_back(rule);
+	return true;
+    }
+
+    list<Service*> services;
+    for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) 
+    {	    
+	FWObject *o= *i;
+	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+	Service *s=Service::cast(o);
+	assert(s!=NULL);
+
+	if (UserService::isA(s))
+        {
+            PolicyRule *r= PolicyRule::cast(
+                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            compiler->temp_ruleset->add(r);
+            r->duplicate(rule);
+            RuleElementSrv *nsrv=r->getSrv();
+            nsrv->clearChildren();
+            nsrv->addRef( s );
+            tmp_queue.push_back(r);
+            services.push_back(s);
+        }
+    }
+    for (list<Service*>::iterator i=services.begin(); i!=services.end(); i++) 
+	rel->removeRef( (*i) );
+
+    if (!rel->isAny())
+	tmp_queue.push_back(rule);
+
+    return true;
+}
 
 bool PolicyCompiler_ipt::separatePortRanges::processNext()
 {
@@ -3896,7 +3937,7 @@ void PolicyCompiler_ipt::compile()
  * element.
  *
  * Further correction: we CAN use single object negatiob with some types
- * of service objects, such as e.g. TagService
+ * of service objects, such as e.g. TagService or UserService
  */
     add( new singleSrvNegation("negation in Srv if it holds 1 object"));
     add( new splitRuleIfSrvAnyActionReject(
@@ -4057,13 +4098,14 @@ void PolicyCompiler_ipt::compile()
     add( new optimize1(        "optimization 1, pass 3"              ) );
 
 
-    add( new splitServices(              "split on services"           ));
-    add( new separateTCPWithFlags( "split on TCP services with flags"  ));
-    add( new verifyCustomServices( "verify custom services"            ));
+    add( new splitServices("split on services"));
+    add( new separateTCPWithFlags("split on TCP services with flags"));
+    add( new verifyCustomServices("verify custom services"));
     add( new specialCasesWithCustomServices(
-             "scpecial cases with some custom services"      ) );
-    add( new separatePortRanges(         "separate port ranges"        ));
-    add( new separateSrcPort(  "split on TCP and UDP with source ports"));
+             "scpecial cases with some custom services"));
+    add( new separatePortRanges("separate port ranges"));
+    add( new separateUserServices("separate user services"));
+    add( new separateSrcPort("split on TCP and UDP with source ports"));
 
 //        add( new optimize1(        "optimization 1, pass 1"              ) );
 //        add( new optimize1(        "optimization 1, pass 2"              ) );

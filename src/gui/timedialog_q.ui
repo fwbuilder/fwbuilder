@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>968</width>
-    <height>258</height>
+    <width>987</width>
+    <height>303</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -19,34 +19,13 @@
    <property name="spacing" >
     <number>2</number>
    </property>
-   <property name="leftMargin" >
-    <number>2</number>
-   </property>
-   <property name="topMargin" >
-    <number>2</number>
-   </property>
-   <property name="rightMargin" >
-    <number>2</number>
-   </property>
-   <property name="bottomMargin" >
+   <property name="margin" >
     <number>2</number>
    </property>
    <item>
     <layout class="QVBoxLayout" >
      <property name="spacing" >
       <number>2</number>
-     </property>
-     <property name="leftMargin" >
-      <number>0</number>
-     </property>
-     <property name="topMargin" >
-      <number>0</number>
-     </property>
-     <property name="rightMargin" >
-      <number>0</number>
-     </property>
-     <property name="bottomMargin" >
-      <number>0</number>
      </property>
      <item>
       <widget class="QFrame" name="frame3" >
@@ -62,70 +41,6 @@
          <height>30</height>
         </size>
        </property>
-       <property name="palette" >
-        <palette>
-         <active>
-          <colorrole role="Base" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Window" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>254</green>
-             <blue>253</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Base" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Window" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>254</green>
-             <blue>253</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled>
-          <colorrole role="Base" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>254</green>
-             <blue>253</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Window" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
-             <red>255</red>
-             <green>254</green>
-             <blue>253</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </disabled>
-        </palette>
-       </property>
        <property name="autoFillBackground" >
         <bool>true</bool>
        </property>
@@ -135,26 +50,30 @@
        <property name="frameShadow" >
         <enum>QFrame::Sunken</enum>
        </property>
-       <layout class="QGridLayout" >
-        <property name="leftMargin" >
+       <layout class="QGridLayout" name="gridLayout" >
+        <property name="margin" >
          <number>2</number>
         </property>
-        <property name="topMargin" >
+        <property name="spacing" >
          <number>2</number>
         </property>
-        <property name="rightMargin" >
-         <number>2</number>
-        </property>
-        <property name="bottomMargin" >
-         <number>2</number>
-        </property>
-        <property name="horizontalSpacing" >
-         <number>2</number>
-        </property>
-        <property name="verticalSpacing" >
-         <number>2</number>
-        </property>
-        <item row="0" column="2" >
+        <item row="0" column="0" >
+         <widget class="QLabel" name="label_3" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text" >
+           <string/>
+          </property>
+          <property name="pixmap" >
+           <pixmap resource="MainRes.qrc" >:/Icons/Interval/icon</pixmap>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" >
          <widget class="QLabel" name="editorTitle" >
           <property name="font" >
            <font>
@@ -167,22 +86,6 @@
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" >
-         <widget class="QLabel" name="label_3" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text" >
-           <string/>
-          </property>
-          <property name="pixmap" >
-           <pixmap resource="MainRes.qrc" >:/Icons/clock_25.png</pixmap>
           </property>
          </widget>
         </item>
@@ -241,7 +144,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::MinimumExpanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>5</height>
@@ -309,7 +212,7 @@
                 <property name="orientation" >
                  <enum>Qt::Horizontal</enum>
                 </property>
-                <property name="sizeHint" >
+                <property name="sizeHint" stdset="0" >
                  <size>
                   <width>101</width>
                   <height>25</height>
@@ -342,7 +245,7 @@
                 <property name="orientation" >
                  <enum>Qt::Horizontal</enum>
                 </property>
-                <property name="sizeHint" >
+                <property name="sizeHint" stdset="0" >
                  <size>
                   <width>111</width>
                   <height>20</height>
@@ -395,7 +298,7 @@
                 <property name="orientation" >
                  <enum>Qt::Horizontal</enum>
                 </property>
-                <property name="sizeHint" >
+                <property name="sizeHint" stdset="0" >
                  <size>
                   <width>101</width>
                   <height>25</height>
@@ -421,7 +324,7 @@
                 <property name="orientation" >
                  <enum>Qt::Horizontal</enum>
                 </property>
-                <property name="sizeHint" >
+                <property name="sizeHint" stdset="0" >
                  <size>
                   <width>101</width>
                   <height>25</height>
@@ -459,22 +362,10 @@
                  <enum>QFrame::Raised</enum>
                 </property>
                 <layout class="QGridLayout" >
-                 <property name="leftMargin" >
+                 <property name="margin" >
                   <number>0</number>
                  </property>
-                 <property name="topMargin" >
-                  <number>0</number>
-                 </property>
-                 <property name="rightMargin" >
-                  <number>0</number>
-                 </property>
-                 <property name="bottomMargin" >
-                  <number>0</number>
-                 </property>
-                 <property name="horizontalSpacing" >
-                  <number>0</number>
-                 </property>
-                 <property name="verticalSpacing" >
+                 <property name="spacing" >
                   <number>0</number>
                  </property>
                  <item row="0" column="0" >
@@ -586,7 +477,9 @@
   <tabstop>endTime</tabstop>
   <tabstop>comment</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="MainRes.qrc" />
+ </resources>
  <connections>
   <connection>
    <sender>obj_name</sender>

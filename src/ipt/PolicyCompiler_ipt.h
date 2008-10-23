@@ -720,6 +720,8 @@ namespace fwcompiler {
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(separatePortRanges);
 
+        DECLARE_POLICY_RULE_PROCESSOR(separateUserServices);
+        
 	/**
 	 * separate TCP/UDP services that specify source port (can
 	 * not be used in combination with destination port with

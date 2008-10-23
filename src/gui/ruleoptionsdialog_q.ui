@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>1124</width>
-    <height>232</height>
+    <height>285</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -16,16 +16,7 @@
    <property name="spacing" >
     <number>2</number>
    </property>
-   <property name="leftMargin" >
-    <number>2</number>
-   </property>
-   <property name="topMargin" >
-    <number>2</number>
-   </property>
-   <property name="rightMargin" >
-    <number>2</number>
-   </property>
-   <property name="bottomMargin" >
+   <property name="margin" >
     <number>2</number>
    </property>
    <item>
@@ -42,70 +33,6 @@
        <height>35</height>
       </size>
      </property>
-     <property name="palette" >
-      <palette>
-       <active>
-        <colorrole role="Base" >
-         <brush brushstyle="SolidPattern" >
-          <color alpha="255" >
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
-          </color>
-         </brush>
-        </colorrole>
-        <colorrole role="Window" >
-         <brush brushstyle="SolidPattern" >
-          <color alpha="255" >
-           <red>255</red>
-           <green>254</green>
-           <blue>253</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </active>
-       <inactive>
-        <colorrole role="Base" >
-         <brush brushstyle="SolidPattern" >
-          <color alpha="255" >
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
-          </color>
-         </brush>
-        </colorrole>
-        <colorrole role="Window" >
-         <brush brushstyle="SolidPattern" >
-          <color alpha="255" >
-           <red>255</red>
-           <green>254</green>
-           <blue>253</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </inactive>
-       <disabled>
-        <colorrole role="Base" >
-         <brush brushstyle="SolidPattern" >
-          <color alpha="255" >
-           <red>255</red>
-           <green>254</green>
-           <blue>253</blue>
-          </color>
-         </brush>
-        </colorrole>
-        <colorrole role="Window" >
-         <brush brushstyle="SolidPattern" >
-          <color alpha="255" >
-           <red>255</red>
-           <green>254</green>
-           <blue>253</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </disabled>
-      </palette>
-     </property>
      <property name="autoFillBackground" >
       <bool>true</bool>
      </property>
@@ -116,22 +43,10 @@
       <enum>QFrame::Sunken</enum>
      </property>
      <layout class="QGridLayout" >
-      <property name="leftMargin" >
+      <property name="margin" >
        <number>2</number>
       </property>
-      <property name="topMargin" >
-       <number>2</number>
-      </property>
-      <property name="rightMargin" >
-       <number>2</number>
-      </property>
-      <property name="bottomMargin" >
-       <number>2</number>
-      </property>
-      <property name="horizontalSpacing" >
-       <number>2</number>
-      </property>
-      <property name="verticalSpacing" >
+      <property name="spacing" >
        <number>2</number>
       </property>
       <item row="0" column="1" >
@@ -194,22 +109,10 @@
      </property>
      <widget class="QWidget" name="page0" >
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>2</number>
        </property>
-       <property name="topMargin" >
-        <number>2</number>
-       </property>
-       <property name="rightMargin" >
-        <number>2</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>2</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>2</number>
-       </property>
-       <property name="verticalSpacing" >
+       <property name="spacing" >
         <number>2</number>
        </property>
        <item row="1" column="0" >
@@ -220,7 +123,7 @@
          <property name="sizeType" >
           <enum>QSizePolicy::MinimumExpanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>0</height>
@@ -247,22 +150,10 @@
            <string>General</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
+           <property name="margin" >
             <number>2</number>
            </property>
-           <property name="topMargin" >
-            <number>2</number>
-           </property>
-           <property name="rightMargin" >
-            <number>2</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>2</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
+           <property name="spacing" >
             <number>2</number>
            </property>
            <item row="0" column="0" >
@@ -300,7 +191,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::MinimumExpanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>0</height>
@@ -316,7 +207,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::MinimumExpanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>0</height>
@@ -331,22 +222,10 @@
            <string>Logging</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
+           <property name="margin" >
             <number>2</number>
            </property>
-           <property name="topMargin" >
-            <number>2</number>
-           </property>
-           <property name="rightMargin" >
-            <number>2</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>2</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
+           <property name="spacing" >
             <number>2</number>
            </property>
            <item row="1" column="1" >
@@ -452,7 +331,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::MinimumExpanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>0</width>
                <height>20</height>
@@ -488,7 +367,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::MinimumExpanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>0</height>
@@ -503,22 +382,10 @@
            <string>limit</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
+           <property name="margin" >
             <number>2</number>
            </property>
-           <property name="topMargin" >
-            <number>2</number>
-           </property>
-           <property name="rightMargin" >
-            <number>2</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>2</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
+           <property name="spacing" >
             <number>2</number>
            </property>
            <item row="1" column="0" >
@@ -552,7 +419,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::MinimumExpanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>0</width>
                <height>0</height>
@@ -635,7 +502,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::MinimumExpanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>0</height>
@@ -650,22 +517,10 @@
            <string>connlimit</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
+           <property name="margin" >
             <number>2</number>
            </property>
-           <property name="topMargin" >
-            <number>2</number>
-           </property>
-           <property name="rightMargin" >
-            <number>2</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>2</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
+           <property name="spacing" >
             <number>2</number>
            </property>
            <item row="2" column="2" colspan="2" >
@@ -692,7 +547,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>20</height>
@@ -750,7 +605,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -786,7 +641,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::MinimumExpanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>0</height>
@@ -801,22 +656,10 @@
            <string>hashlimit</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
+           <property name="margin" >
             <number>2</number>
            </property>
-           <property name="topMargin" >
-            <number>2</number>
-           </property>
-           <property name="rightMargin" >
-            <number>2</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>2</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
+           <property name="spacing" >
             <number>2</number>
            </property>
            <item row="0" column="0" colspan="4" >
@@ -1054,7 +897,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::MinimumExpanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>0</height>
@@ -1128,7 +971,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -1144,22 +987,10 @@
      </widget>
      <widget class="QWidget" name="page1" >
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>2</number>
        </property>
-       <property name="topMargin" >
-        <number>2</number>
-       </property>
-       <property name="rightMargin" >
-        <number>2</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>2</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>2</number>
-       </property>
-       <property name="verticalSpacing" >
+       <property name="spacing" >
         <number>2</number>
        </property>
        <item row="0" column="0" >
@@ -1178,22 +1009,10 @@
            <string>General</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
+           <property name="margin" >
             <number>2</number>
            </property>
-           <property name="topMargin" >
-            <number>2</number>
-           </property>
-           <property name="rightMargin" >
-            <number>2</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>2</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
+           <property name="spacing" >
             <number>2</number>
            </property>
            <item row="4" column="0" >
@@ -1204,7 +1023,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>8</height>
@@ -1233,7 +1052,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -1269,22 +1088,10 @@
            <string>Logging</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>0</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
+           <property name="spacing" >
             <number>2</number>
            </property>
            <item row="0" column="0" >
@@ -1341,7 +1148,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>20</height>
@@ -1357,7 +1164,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>30</height>
@@ -1377,7 +1184,7 @@
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>40</height>
@@ -1389,22 +1196,10 @@
      </widget>
      <widget class="QWidget" name="page2" >
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>2</number>
        </property>
-       <property name="topMargin" >
-        <number>2</number>
-       </property>
-       <property name="rightMargin" >
-        <number>2</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>2</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>2</number>
-       </property>
-       <property name="verticalSpacing" >
+       <property name="spacing" >
         <number>2</number>
        </property>
        <item row="1" column="0" >
@@ -1415,7 +1210,7 @@
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>20</height>
@@ -1442,22 +1237,10 @@
            <string>General</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
+           <property name="margin" >
             <number>2</number>
            </property>
-           <property name="topMargin" >
-            <number>2</number>
-           </property>
-           <property name="rightMargin" >
-            <number>2</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>2</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
+           <property name="spacing" >
             <number>2</number>
            </property>
            <item row="0" column="0" >
@@ -1513,22 +1296,10 @@
            <string>Logging</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
+           <property name="margin" >
             <number>2</number>
            </property>
-           <property name="topMargin" >
-            <number>2</number>
-           </property>
-           <property name="rightMargin" >
-            <number>2</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>2</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
+           <property name="spacing" >
             <number>2</number>
            </property>
            <item row="0" column="1" >
@@ -1552,7 +1323,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>301</width>
                <height>20</height>
@@ -1568,7 +1339,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>51</height>
@@ -1583,22 +1354,10 @@
            <string>Tracking</string>
           </attribute>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
+           <property name="margin" >
             <number>2</number>
            </property>
-           <property name="topMargin" >
-            <number>2</number>
-           </property>
-           <property name="rightMargin" >
-            <number>2</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>2</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing" >
+           <property name="spacing" >
             <number>2</number>
            </property>
            <item row="0" column="0" >
@@ -1619,7 +1378,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>20</height>
@@ -1711,7 +1470,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>20</height>
@@ -1727,7 +1486,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>40</height>
@@ -1779,7 +1538,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>101</width>
                <height>23</height>
@@ -1821,7 +1580,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>101</width>
                <height>23</height>
@@ -1948,7 +1707,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>431</width>
                <height>23</height>
@@ -1964,7 +1723,7 @@
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>22</width>
                <height>41</height>
@@ -1998,7 +1757,7 @@
              <property name="orientation" >
               <enum>Qt::Vertical</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>51</height>
@@ -2014,22 +1773,10 @@
      </widget>
      <widget class="QWidget" name="page3" >
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>2</number>
        </property>
-       <property name="topMargin" >
-        <number>2</number>
-       </property>
-       <property name="rightMargin" >
-        <number>2</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>2</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>2</number>
-       </property>
-       <property name="verticalSpacing" >
+       <property name="spacing" >
         <number>2</number>
        </property>
        <item row="0" column="0" >
@@ -2041,22 +1788,10 @@
           <enum>QFrame::Sunken</enum>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
+          <property name="margin" >
            <number>2</number>
           </property>
-          <property name="topMargin" >
-           <number>2</number>
-          </property>
-          <property name="rightMargin" >
-           <number>2</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>2</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>2</number>
-          </property>
-          <property name="verticalSpacing" >
+          <property name="spacing" >
            <number>2</number>
           </property>
           <item row="2" column="0" >
@@ -2067,7 +1802,7 @@
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>20</width>
               <height>90</height>
@@ -2109,7 +1844,7 @@
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>40</width>
               <height>20</height>
@@ -2124,22 +1859,10 @@
      </widget>
      <widget class="QWidget" name="page4" >
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>2</number>
        </property>
-       <property name="topMargin" >
-        <number>2</number>
-       </property>
-       <property name="rightMargin" >
-        <number>2</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>2</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>2</number>
-       </property>
-       <property name="verticalSpacing" >
+       <property name="spacing" >
         <number>2</number>
        </property>
        <item row="0" column="0" >
@@ -2151,22 +1874,10 @@
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
+          <property name="margin" >
            <number>2</number>
           </property>
-          <property name="topMargin" >
-           <number>2</number>
-          </property>
-          <property name="rightMargin" >
-           <number>2</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>2</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>2</number>
-          </property>
-          <property name="verticalSpacing" >
+          <property name="spacing" >
            <number>2</number>
           </property>
           <item row="0" column="0" >
@@ -2190,7 +1901,7 @@
             <property name="sizeType" >
              <enum>QSizePolicy::Fixed</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>20</width>
               <height>16</height>
@@ -2210,16 +1921,7 @@
             <property name="spacing" >
              <number>2</number>
             </property>
-            <property name="leftMargin" >
-             <number>0</number>
-            </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
+            <property name="margin" >
              <number>0</number>
             </property>
             <item>
@@ -2243,7 +1945,7 @@
               <property name="sizeType" >
                <enum>QSizePolicy::Expanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>51</width>
                 <height>20</height>
@@ -2258,16 +1960,7 @@
             <property name="spacing" >
              <number>2</number>
             </property>
-            <property name="leftMargin" >
-             <number>0</number>
-            </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
+            <property name="margin" >
              <number>0</number>
             </property>
             <item>
@@ -2295,7 +1988,7 @@
               <property name="sizeType" >
                <enum>QSizePolicy::Expanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>51</width>
                 <height>20</height>
@@ -2313,7 +2006,7 @@
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>20</width>
               <height>20</height>
@@ -2328,22 +2021,10 @@
      </widget>
      <widget class="QWidget" name="page5" >
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>2</number>
        </property>
-       <property name="topMargin" >
-        <number>2</number>
-       </property>
-       <property name="rightMargin" >
-        <number>2</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>2</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>2</number>
-       </property>
-       <property name="verticalSpacing" >
+       <property name="spacing" >
         <number>2</number>
        </property>
        <item row="0" column="0" >
@@ -2354,7 +2035,7 @@
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>40</height>
@@ -2383,7 +2064,7 @@
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>40</height>

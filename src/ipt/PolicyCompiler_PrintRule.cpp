@@ -1004,7 +1004,9 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
         }
         if (UserService::isA(srv))
         {
-	    ostr << "-m owner --uid-owner "
+	    ostr << "-m owner "
+                 << _printSingleObjectNegation(rel)
+                 << "--uid-owner "
                  << UserService::cast(srv)->getUserId() << " ";
         }
     } else 

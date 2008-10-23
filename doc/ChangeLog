@@ -1,3 +1,16 @@
+2008-10-22  vadim  <vadim@vk.crocodile.org>
+
+	* various dialogs: fixed bug #2187094: "fwbuilder does not use
+	system colors for text boxes".  Some dialogs would not properly
+	pick up KDE theme. This was especially visible if theme used dark
+	background colors and white font, in which case many input fields
+	in dialogs would use white text on white background.
+
+	* PolicyCompiler_ipt.cpp (separateUserServices::processNext):
+	fixed bug #2186568 "Again User service - group/negate".  Compiler
+	for iptables did not support groups and negation of the
+	UserService objects.
+
 2008-10-21  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler.cpp (PolicyCompiler::checkForShadowing): (change
