@@ -334,13 +334,17 @@ void PolicyRule::fromXML(xmlNodePtr root) throw(FWException)
 xmlNodePtr PolicyRule::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-//    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
     xmlNewProp(me, TOXMLCAST("action"), STRTOXMLCAST(getActionAsString()));
-    xmlNewProp(me, TOXMLCAST("direction"), STRTOXMLCAST(getDirectionAsString()));
+    xmlNewProp(me, TOXMLCAST("direction"),STRTOXMLCAST(getDirectionAsString()));
     xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
 
     FWObject *o;
-    
+
+    /*
+     * Save children to XML file in just this order (src, dst, srv).
+     * PolicyCompiler::checkForShadowing depends on it!
+     * But after all, DTD requires this order.
+     */
     if ( (o=getFirstByType( RuleElementSrc::TYPENAME ))!=NULL )
 	o->toXML(me);
 
@@ -359,6 +363,7 @@ xmlNodePtr PolicyRule::toXML(xmlNodePtr parent) throw(FWException)
     if ( (o=getFirstByType( PolicyRuleOptions::TYPENAME ))!=NULL )
 	o->toXML(me);
 
+    // there should be no children Policy objects in v3
     if ( (o=getFirstByType( Policy::TYPENAME ))!=NULL )
 	o->toXML(me);
 

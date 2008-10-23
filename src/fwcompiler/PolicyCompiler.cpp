@@ -569,7 +569,7 @@ bool PolicyCompiler::splitServices::processNext()
         Service *s=Service::cast( o );
         assert(s);
 
-        int proto=s->getProtocolNumber();
+        int proto = s->getProtocolNumber();
         services[proto].push_back(s);
     }
 
