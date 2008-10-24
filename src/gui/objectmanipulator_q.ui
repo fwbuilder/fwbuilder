@@ -13,9 +13,7 @@
    </rect>
   </property>
   <property name="sizePolicy" >
-   <sizepolicy>
-    <hsizetype>5</hsizetype>
-    <vsizetype>7</vsizetype>
+   <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -32,15 +30,51 @@
    </property>
    <item row="1" column="0" >
     <widget class="QStackedWidget" name="widgetStack" >
-     <widget class="QWidget" name="page" />
+     <widget class="QWidget" name="page" >
+      <property name="palette" >
+       <palette>
+        <active>
+         <colorrole role="Text" >
+          <brush brushstyle="SolidPattern" >
+           <color alpha="255" >
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </active>
+        <inactive>
+         <colorrole role="Text" >
+          <brush brushstyle="SolidPattern" >
+           <color alpha="255" >
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </inactive>
+        <disabled>
+         <colorrole role="Text" >
+          <brush brushstyle="SolidPattern" >
+           <color alpha="255" >
+            <red>69</red>
+            <green>69</green>
+            <blue>69</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </disabled>
+       </palette>
+      </property>
+     </widget>
     </widget>
    </item>
    <item row="0" column="0" >
     <widget class="QGroupBox" name="buttonGroup1" >
      <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>5</hsizetype>
-       <vsizetype>0</vsizetype>
+      <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -64,7 +98,8 @@
          <string/>
         </property>
         <property name="icon" >
-         <iconset resource="MainRes.qrc" >:/Icons/Return</iconset>
+         <iconset resource="MainRes.qrc" >
+          <normaloff>:/Icons/Return</normaloff>:/Icons/Return</iconset>
         </property>
         <property name="autoRaise" >
          <bool>true</bool>
@@ -74,9 +109,7 @@
       <item row="0" column="1" >
        <widget class="Line" name="line1" >
         <property name="sizePolicy" >
-         <sizepolicy>
-          <hsizetype>0</hsizetype>
-          <vsizetype>1</vsizetype>
+         <sizepolicy vsizetype="Minimum" hsizetype="Fixed" >
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -104,9 +137,7 @@
       <item row="0" column="3" >
        <widget class="QComboBox" name="libs" >
         <property name="sizePolicy" >
-         <sizepolicy>
-          <hsizetype>7</hsizetype>
-          <vsizetype>0</vsizetype>
+         <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -122,7 +153,8 @@
          <string>Create New Object</string>
         </property>
         <property name="icon" >
-         <iconset resource="MainRes.qrc" >:/Icons/newobject_25.png</iconset>
+         <iconset resource="MainRes.qrc" >
+          <normaloff>:/Icons/newobject_25.png</normaloff>:/Icons/newobject_25.png</iconset>
         </property>
         <property name="autoRaise" >
          <bool>true</bool>
