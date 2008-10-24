@@ -80,6 +80,9 @@ namespace fwcompiler {
         std::map<std::string, int>     tmp_chain_no;
         std::map<std::string, int>     chain_usage_counter;
 
+        typedef std::list<std::string> chain_list;
+        std::map<std::string, chain_list*> chains;
+
         // use minus_n_commands map to track creation of chains.
         // Using external map object for this to be able to track
         // new chains across different compiler runs (used to process
@@ -87,7 +90,17 @@ namespace fwcompiler {
         std::map<const std::string, bool> *minus_n_commands;
 
         static const std::list<std::string>& getStandardChains();
-        
+
+        void registerChain(const std::string &chain_name);
+        void insertUpstreamChain(const std::string &chain_name,
+                                 const std::string &before_chain);
+        std::string findUpstreamChain(const std::string &chain_name);
+        void setChain(libfwbuilder::PolicyRule *rule,
+                      const std::string &chain_name);
+        std::string printChains(libfwbuilder::PolicyRule *rule);
+        bool isChainDescendantOfOutput(const std::string &chain_name);
+        bool isChainDescendantOfInput(const std::string &chain_name);
+
         PolicyCompiler_ipt::PrintRule* createPrintRuleProcessor();
 
         std::string getInterfaceVarName(libfwbuilder::FWObject *iface,

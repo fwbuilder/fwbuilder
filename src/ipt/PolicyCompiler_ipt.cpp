@@ -109,6 +109,84 @@ void join::operator()(std::string &s)
 
 string PolicyCompiler_ipt::myPlatformName() { return "iptables"; }
 
+void PolicyCompiler_ipt::registerChain(const string &chain_name)
+{
+    map<string, chain_list*>::iterator i = chains.find(chain_name);
+    if (i==chains.end())
+    {
+        chain_list *cl = new chain_list();
+        cl->push_back(chain_name);
+        chains[chain_name] = cl;
+    }
+}
+
+void PolicyCompiler_ipt::insertUpstreamChain(const string &chain_name,
+                                             const string &before_chain)
+{
+    if (!chain_name.empty())
+    {
+        map<string, chain_list*>::iterator i = chains.find(before_chain);
+        if (i==chains.end()) return;
+        chain_list *cl = i->second;
+        list<string>::iterator j = std::find(cl->begin(),
+                                             cl->end(), before_chain);
+        cl->insert(j, chain_name);
+    }
+}
+
+string PolicyCompiler_ipt::findUpstreamChain(const string &chain_name)
+{
+    map<string, chain_list*>::iterator i = chains.find(chain_name);
+    if (i==chains.end()) return "";
+    return i->second->front();
+}
+
+void PolicyCompiler_ipt::setChain(PolicyRule *rule, const string &chain_name)
+{
+    rule->setStr("ipt_chain", chain_name);
+    string target = rule->getStr("ipt_target");
+    if (!target.empty())
+    {
+        registerChain(target);
+        insertUpstreamChain(chain_name, target);
+    }
+}
+
+string PolicyCompiler_ipt::printChains(PolicyRule *rule)
+{
+    string chain_name = rule->getStr("ipt_chain");
+    map<string, chain_list*>::iterator i = chains.find(chain_name);
+    if (i==chains.end() || i->second->size()==0) return chain_name;
+    ostringstream res;
+    for (list<string>::iterator j=i->second->begin(); j!=i->second->end(); ++j)
+    {
+        res << *j;
+        if (*j == chain_name) res << "*";
+        res << "[" 
+            << chain_usage_counter[*j]
+            << "],";
+    }
+    return res.str();
+}
+
+bool PolicyCompiler_ipt::isChainDescendantOfOutput(const string &chain_name)
+{
+    map<string, chain_list*>::iterator i = chains.find(chain_name);
+    if (i==chains.end()) return false;
+    for (list<string>::iterator j=i->second->begin(); j!=i->second->end(); ++j)
+        if (*j=="OUTPUT") return true;
+    return false;
+}
+
+bool PolicyCompiler_ipt::isChainDescendantOfInput(const string &chain_name)
+{
+    map<string, chain_list*>::iterator i = chains.find(chain_name);
+    if (i==chains.end()) return false;
+    for (list<string>::iterator j=i->second->begin(); j!=i->second->end(); ++j)
+        if (*j=="INPUT") return true;
+    return false;
+}
+
 string PolicyCompiler_ipt::getInterfaceVarName(FWObject *iface, bool v6)
 {
     ostringstream  ostr;
@@ -419,102 +497,12 @@ int PolicyCompiler_ipt::prolog()
                          afpa | ruleopt->getBool("firewall_is_part_of_any_and_networks"));
     }
 
-#if 0
-/*
- * set up backup ssh access to the firewall if told to do so
- */
-    if (fwopt->getBool("mgmt_ssh") && !fwopt->getStr("mgmt_addr").empty())
-    {
-        string addr = options->getStr("mgmt_addr");
-        output << "$IPTABLES -A INPUT -p tcp -s " << addr << " --destination-port 22 -m state --state NEW -j ACCEPT" << endl;
-    }
-#endif
-
-
     return n;
 }
 
 void PolicyCompiler_ipt::addPredefinedPolicyRules()
 {
 }
-
-/*
- * if rule is associated with multiple interfaces we split it to check
- * for interfaces first and then do the rest in the common
- * user-defined chain. If the rule also has negation, this
- * optimization leads to a useless command that bounces from one
- * user-defined chain to another, like this:
- *
- * $IPTABLES -A Cid433D045026912.0  -j Cid433D045026912.1  
- *
- * This needs to be fixed.
- */
-
-#if 0
-bool  PolicyCompiler_ipt::InterfacePolicyRulesWithOptimization::processNext()
-{
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-
-    RuleElementItf *itfre=rule->getItf();   assert(itfre);
-    if (itfre->isAny())
-    {
-        rule->setInterfaceId("");
-        tmp_queue.push_back(rule);
-        return true;
-    }
-    if (itfre->size()==1)
-    {
-        Interface *itf = compiler->getFirstItf(rule);  assert(itf);
-        rule->setInterfaceId( itf->getId() );
-        tmp_queue.push_back(rule);
-        return true;
-    } else
-    {
-        RuleElementSrc *nsrc;
-        RuleElementDst *ndst;
-        RuleElementSrv *nsrv;
-        RuleElementItf *nitfre;
-        PolicyRule     *r;
-        FWOptions      *ruleopt;
-        string this_chain  =rule->getStr("ipt_chain");
-        string new_chain   =PolicyCompiler_ipt::getNewTmpChainName(rule);
-
-        for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
-        {
-            FWObject *o=*i;
-            if (FWReference::cast(o)!=NULL)
-                o=FWReference::cast(o)->getPointer();
-
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
-            compiler->temp_ruleset->add(r);
-            r->duplicate(rule);
-            r->setStr("subrule_suffix","i1");
-            r->setLogging(false);
-            r->setStr("ipt_target",new_chain);
-            ruleopt =r->getOptionsObject();
-            ruleopt->setInt("limit_value",-1);
-            ruleopt->setInt("limit_value",-1);
-            ruleopt->setInt("connlimit_value",-1);
-            ruleopt->setInt("hashlimit_value",-1);
-            r->setInterfaceId(o->getId());
-            nsrc=r->getSrc();   nsrc->reset();
-            ndst=r->getDst();   ndst->reset();
-            nsrv=r->getSrv();   nsrv->reset();
-            nitfre=r->getItf(); nitfre->reset();
-            nitfre->addRef(o);
-            tmp_queue.push_back(r);
-        }
-        itfre->reset();
-        ruleopt =rule->getOptionsObject();
-        ruleopt->setBool("stateless",true);
-	rule->setDirection(PolicyRule::Both);
-	rule->setStr("ipt_chain",new_chain);
-        rule->setStr("upstream_rule_chain",this_chain);
-        tmp_queue.push_back(rule);
-    }
-    return true;
-}
-#endif
 
 bool  PolicyCompiler_ipt::SkipActionContinueWithNoLogging::processNext()
 {
@@ -606,6 +594,8 @@ bool  PolicyCompiler_ipt::splitNonTerminatingTargets::processNext()
         r->setLogging(false);
 	r->setStr("ipt_chain",new_chain);
         r->setStr("upstream_rule_chain",this_chain);
+        ipt_comp->registerChain(new_chain);
+        ipt_comp->insertUpstreamChain(this_chain, new_chain);
         tmp_queue.push_back(r);
 
         r2= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
@@ -686,6 +676,7 @@ bool  PolicyCompiler_ipt::InterfacePolicyRulesWithOptimization::processNext()
 
 bool PolicyCompiler_ipt::Route::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     FWOptions *ruleopt =rule->getOptionsObject();
     
@@ -698,26 +689,27 @@ bool PolicyCompiler_ipt::Route::processNext()
 
         if (!iif.empty())
         {
-            rule->setStr("ipt_chain","PREROUTING");
+            ipt_comp->setChain(rule, "PREROUTING");
         }
 
         if (!oif.empty() || !gw.empty())
         {
-            rule->setStr("ipt_chain","POSTROUTING");
+            ipt_comp->setChain(rule, "POSTROUTING");
         }
 
         if (ruleopt->getBool("ipt_tee"))
         {
-            PolicyRule *r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *r= PolicyRule::cast(
+                compiler->dbcopy->create(PolicyRule::TYPENAME) );
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
-            r->setStr("ipt_chain","PREROUTING");
+            ipt_comp->setChain(rule, "PREROUTING");
             tmp_queue.push_back(r);
 
             r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
-            r->setStr("ipt_chain","POSTROUTING");
+            ipt_comp->setChain(rule, "POSTROUTING");
             tmp_queue.push_back(r);
 
             return true;
@@ -860,6 +852,9 @@ bool PolicyCompiler_ipt::Logging2::processNext()
 	if ( (nint=r->getWhen())!=NULL )  nint->reset();
 	r->setStr("ipt_chain",new_chain);
         r->setStr("upstream_rule_chain",this_chain);
+        ipt_comp->registerChain(new_chain);
+        ipt_comp->insertUpstreamChain(this_chain, new_chain);
+
 	r->setStr("ipt_target","LOG");
         r->setAction(PolicyRule::Continue);    // ###
 	r->setDirection( PolicyRule::Both );
@@ -898,6 +893,9 @@ bool PolicyCompiler_ipt::Logging2::processNext()
 
 	r->setStr("ipt_chain",new_chain);
         r->setStr("upstream_rule_chain",this_chain);
+        ipt_comp->registerChain(new_chain);
+        ipt_comp->insertUpstreamChain(this_chain, new_chain);
+
 	r->setInterfaceStr("nil");
 	r->setDirection( PolicyRule::Both );
 	r->setLogging(false);
@@ -1073,6 +1071,9 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
  	r->setStr("ipt_chain",new_chain);
 	r->setStr("ipt_target","");
         r->setStr("upstream_rule_chain",this_chain);
+        ipt_comp->registerChain(new_chain);
+        ipt_comp->insertUpstreamChain(this_chain, new_chain);
+
         ruleopt =r->getOptionsObject();
         ruleopt->setInt("limit_value",-1);
         ruleopt->setInt("limit_value",-1);
@@ -1113,6 +1114,9 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
         }
 	r->setStr("ipt_chain",new_chain);
         r->setStr("upstream_rule_chain",this_chain);
+        ipt_comp->registerChain(new_chain);
+        ipt_comp->insertUpstreamChain(this_chain, new_chain);
+
 	if ( ! rule->getStr("ipt_target").empty() )
 	    r->setStr("ipt_target",rule->getStr("ipt_target"));
 //	r->setInterfaceStr("nil");
@@ -1190,6 +1194,9 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
 	r->setStr("ipt_chain",new_chain);
 	r->setStr("ipt_target","");
         r->setStr("upstream_rule_chain",this_chain);
+        ipt_comp->registerChain(new_chain);
+        ipt_comp->insertUpstreamChain(this_chain, new_chain);
+
         ruleopt =r->getOptionsObject();
         ruleopt->setInt("limit_value",-1);
         ruleopt->setInt("limit_value",-1);
@@ -1232,6 +1239,9 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
 	r->setStr("ipt_chain",new_chain);
 	r->setStr("ipt_target","");
         r->setStr("upstream_rule_chain",this_chain);
+        ipt_comp->registerChain(new_chain);
+        ipt_comp->insertUpstreamChain(this_chain, new_chain);
+
 	if ( ! rule->getStr("ipt_target").empty() )
 	    r->setStr("ipt_target",rule->getStr("ipt_target"));
 //	r->setInterfaceStr("nil");
@@ -1308,6 +1318,9 @@ bool PolicyCompiler_ipt::SrvNegation::processNext()
 	r->setStr("ipt_chain",new_chain);
 	r->setStr("ipt_target","");
         r->setStr("upstream_rule_chain",this_chain);
+        ipt_comp->registerChain(new_chain);
+        ipt_comp->insertUpstreamChain(this_chain, new_chain);
+
         ruleopt =r->getOptionsObject();
         ruleopt->setInt("limit_value",-1);
         ruleopt->setInt("limit_value",-1);
@@ -1335,6 +1348,9 @@ bool PolicyCompiler_ipt::SrvNegation::processNext()
 
 	r->setStr("ipt_chain",new_chain);
         r->setStr("upstream_rule_chain",this_chain);
+        ipt_comp->registerChain(new_chain);
+        ipt_comp->insertUpstreamChain(this_chain, new_chain);
+
         r->setBool("upstream_rule_neg",true);
 	if ( ! rule->getStr("ipt_target").empty() )
 	    r->setStr("ipt_target",rule->getStr("ipt_target"));
@@ -1414,6 +1430,9 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
 	r->setStr("ipt_chain",new_chain);
 	r->setStr("ipt_target","");
         r->setStr("upstream_rule_chain",this_chain);
+        ipt_comp->registerChain(new_chain);
+        ipt_comp->insertUpstreamChain(this_chain, new_chain);
+
         ruleopt =r->getOptionsObject();
         ruleopt->setInt("limit_value",-1);
         ruleopt->setInt("limit_value",-1);
@@ -1456,6 +1475,9 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
         }
 	r->setStr("ipt_chain",new_chain);
         r->setStr("upstream_rule_chain",this_chain);
+        ipt_comp->registerChain(new_chain);
+        ipt_comp->insertUpstreamChain(this_chain, new_chain);
+
 	if ( ! rule->getStr("ipt_target").empty() )
 	    r->setStr("ipt_target",rule->getStr("ipt_target"));
 //	r->setInterfaceStr("nil");
@@ -1508,6 +1530,7 @@ bool PolicyCompiler_ipt::InterfaceAndDirection::processNext()
 
 bool PolicyCompiler_ipt::setChainPreroutingForTag::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     /*
@@ -1547,7 +1570,7 @@ bool PolicyCompiler_ipt::setChainPreroutingForTag::processNext()
          (rule->getDirection()==PolicyRule::Both ||
           rule->getDirection()==PolicyRule::Inbound) &&
          rule->getInterfaceId()==-1 )
-        rule->setStr("ipt_chain","PREROUTING");
+        ipt_comp->setChain(rule, "PREROUTING");
 
     tmp_queue.push_back(rule);
 
@@ -1557,6 +1580,7 @@ bool PolicyCompiler_ipt::setChainPreroutingForTag::processNext()
 
 bool PolicyCompiler_ipt::setChainPostroutingForTag::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     if ( (rule->getAction() == PolicyRule::Tag ||
@@ -1565,7 +1589,7 @@ bool PolicyCompiler_ipt::setChainPostroutingForTag::processNext()
          (rule->getDirection()==PolicyRule::Both ||
           rule->getDirection()==PolicyRule::Outbound) &&
          rule->getInterfaceId()==-1 )
-        rule->setStr("ipt_chain","POSTROUTING");
+        ipt_comp->setChain(rule, "POSTROUTING");
 
     tmp_queue.push_back(rule);
 
@@ -1597,10 +1621,10 @@ bool PolicyCompiler_ipt::setChainForMangle::processNext()
     if (ipt_comp->my_table=="mangle" && rule->getStr("ipt_chain").empty())
     {
         if (rule->getDirection()==PolicyRule::Inbound)
-            rule->setStr("ipt_chain","PREROUTING");
+            ipt_comp->setChain(rule, "PREROUTING");
 
         if (rule->getDirection()==PolicyRule::Outbound)
-            rule->setStr("ipt_chain","POSTROUTING");
+            ipt_comp->setChain(rule, "POSTROUTING");
 
 /* if direction is "Outbound", chain can never be INPUT, but could be FORWARD */
         RuleElementSrc *srcrel = rule->getSrc();
@@ -1611,7 +1635,7 @@ bool PolicyCompiler_ipt::setChainForMangle::processNext()
              !srcrel->isAny() && 
              compiler->complexMatch(src,compiler->fw,true,true))
         {
-            rule->setStr("ipt_chain", "OUTPUT");
+            ipt_comp->setChain(rule, "OUTPUT");
         }
     }
 
@@ -1676,6 +1700,9 @@ bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
 	r->duplicate(rule);
 	r->setStr("ipt_chain",new_chain);
         r->setStr("upstream_rule_chain",this_chain);
+        ipt_comp->registerChain(new_chain);
+        ipt_comp->insertUpstreamChain(this_chain, new_chain);
+
 //	r->setDirection( PolicyRule::Both );
         ruleopt =r->getOptionsObject();
         ruleopt->setBool("stateless",true);
@@ -1833,6 +1860,7 @@ bool PolicyCompiler_ipt::bridgingFw::checkForMatchingBroadcastAndMulticast(
  */
 bool PolicyCompiler_ipt::bridgingFw::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
 //    Address        *src=compiler->getFirstSrc(rule);
@@ -1858,14 +1886,14 @@ bool PolicyCompiler_ipt::bridgingFw::processNext()
             if (rule_iface!=NULL && 
                 (rule_iface->isUnnumbered() ||
                  rule_iface->isBridgePort() )
-            ) rule->setStr("ipt_chain","FORWARD");
+            ) ipt_comp->setChain(rule, "FORWARD");
             else
             {
                 PolicyRule *r= PolicyRule::cast(
                     compiler->dbcopy->create(PolicyRule::TYPENAME) );
                 compiler->temp_ruleset->add(r);
                 r->duplicate(rule);
-                r->setStr("ipt_chain","FORWARD");
+                ipt_comp->setChain(r, "FORWARD");
                 tmp_queue.push_back(r);
             }
         }
@@ -1878,6 +1906,7 @@ bool PolicyCompiler_ipt::bridgingFw::processNext()
 
 bool PolicyCompiler_ipt::splitIfSrcNegAndFw::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     if ( ! rule->getStr("ipt_chain").empty() ) 
@@ -1928,7 +1957,7 @@ bool PolicyCompiler_ipt::splitIfSrcNegAndFw::processNext()
                 compiler->dbcopy->create(PolicyRule::TYPENAME) );
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
-            r->setStr("ipt_chain","OUTPUT");
+            ipt_comp->setChain(r,"OUTPUT");
             r->setDirection( PolicyRule::Outbound );
             nsrc=r->getSrc();
             nsrc->clearChildren();
@@ -1943,7 +1972,8 @@ bool PolicyCompiler_ipt::splitIfSrcNegAndFw::processNext()
                 nsrc->addRef(*m);
             if (!nsrc->isAny()) nsrc->setNeg(true);
             FWOptions  *ruleopt = rule->getOptionsObject();
-            ruleopt->setBool("firewall_is_part_of_any_and_networks",false);  // so we do not put this rule in OUTPUT chain later
+            // so we do not put this rule in OUTPUT chain later
+            ruleopt->setBool("no_output_chain",true);
             tmp_queue.push_back(rule);
             return true;
         }
@@ -1955,6 +1985,7 @@ bool PolicyCompiler_ipt::splitIfSrcNegAndFw::processNext()
 
 bool PolicyCompiler_ipt::splitIfDstNegAndFw::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     if ( ! rule->getStr("ipt_chain").empty() ) 
@@ -2005,7 +2036,7 @@ bool PolicyCompiler_ipt::splitIfDstNegAndFw::processNext()
                 compiler->dbcopy->create(PolicyRule::TYPENAME) );
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
-            r->setStr("ipt_chain","INPUT");
+            ipt_comp->setChain(r,"INPUT");
             r->setDirection( PolicyRule::Inbound );
             ndst=r->getDst();
             ndst->clearChildren();
@@ -2023,7 +2054,8 @@ bool PolicyCompiler_ipt::splitIfDstNegAndFw::processNext()
                 ndst->addRef(*m);
             if (!ndst->isAny()) ndst->setNeg(true);
             FWOptions  *ruleopt = rule->getOptionsObject();
-            ruleopt->setBool("firewall_is_part_of_any_and_networks",false);  // so we do not put this rule in INPUT chain later
+            // so we do not put this rule in INPUT chain later
+            ruleopt->setBool("no_input_chain",true);
             tmp_queue.push_back(rule);
             return true;
         }
@@ -2038,15 +2070,16 @@ bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-//    FWOptions *fwopt    = compiler->getCachedFwOpt();
     FWOptions  *ruleopt = rule->getOptionsObject();
+
 /* commented to fix bug #1112470
  * if fw is considered part of any, we should place rule in INPUT/OUTPUT
  * chains even if it is a bridging fw since fw itself may send or receive
  * packets
  */
     if ( /* fwopt->getBool("bridging_fw") || */
-         ! ruleopt->getBool("firewall_is_part_of_any_and_networks") ) 
+         ! ruleopt->getBool("firewall_is_part_of_any_and_networks") ||
+         ruleopt->getBool("no_output_chain")) 
     {
 	tmp_queue.push_back(rule);
 	return true;
@@ -2064,7 +2097,6 @@ bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
     if ( rule->getDirection()!=PolicyRule::Inbound &&
          ( 
              srcrel->isAny() ||
-
              ( srcrel->size()==1 && src!=NULL &&
                !compiler->complexMatch(src,compiler->fw) &&
                srcrel->getBool("single_object_negation")) 
@@ -2075,7 +2107,7 @@ bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
             compiler->dbcopy->create(PolicyRule::TYPENAME) );
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
-        r->setStr("ipt_chain","OUTPUT");
+        ipt_comp->setChain(r,"OUTPUT");
         r->setDirection( PolicyRule::Outbound );
         tmp_queue.push_back(r);
 
@@ -2083,12 +2115,13 @@ bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
         // POSTROUTING chain as well because some targets that
         // work with mangle table can only go into POSTROUTING chain
         // such as CLASSIFY
-        if (ipt_comp->my_table=="mangle" && rule->getAction()==PolicyRule::Classify)
+        if (ipt_comp->my_table=="mangle" &&
+            rule->getAction()==PolicyRule::Classify)
         {
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
-            r->setStr("ipt_chain","POSTROUTING");
+            ipt_comp->setChain(r,"POSTROUTING");
             r->setDirection( PolicyRule::Outbound );
             tmp_queue.push_back(r);
         }
@@ -2112,7 +2145,8 @@ bool PolicyCompiler_ipt::splitIfDstAny::processNext()
  * packets
  */
     if ( /* fwopt->getBool("bridging_fw") || */
-         ! ruleopt->getBool("firewall_is_part_of_any_and_networks") ) 
+         ! ruleopt->getBool("firewall_is_part_of_any_and_networks") ||
+         ruleopt->getBool("no_input_chain")) 
     {
 	tmp_queue.push_back(rule);
 	return true;
@@ -2141,7 +2175,7 @@ bool PolicyCompiler_ipt::splitIfDstAny::processNext()
 	    compiler->dbcopy->create(PolicyRule::TYPENAME) );
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
-	r->setStr("ipt_chain","INPUT");
+	ipt_comp->setChain(r,"INPUT");
 	r->setDirection( PolicyRule::Inbound );
 	tmp_queue.push_back(r);
 
@@ -2154,7 +2188,7 @@ bool PolicyCompiler_ipt::splitIfDstAny::processNext()
             r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
-            r->setStr("ipt_chain","PREROUTING");
+            ipt_comp->setChain(r,"PREROUTING");
             r->setDirection( PolicyRule::Inbound );
             tmp_queue.push_back(r);
         }
@@ -2167,6 +2201,7 @@ bool PolicyCompiler_ipt::splitIfDstAny::processNext()
 
 bool PolicyCompiler_ipt::splitIfSrcAnyForShadowing::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     if (rule->getAction() == PolicyRule::Classify)
@@ -2179,6 +2214,7 @@ bool PolicyCompiler_ipt::splitIfSrcAnyForShadowing::processNext()
     FWOptions  *ruleopt = rule->getOptionsObject();
 
     if ( ruleopt->getBool("firewall_is_part_of_any_and_networks") &&
+         !ruleopt->getBool("no_output_chain") &&
          rule->getDirection()!=PolicyRule::Inbound && 
          srcrel->isAny() )
     {
@@ -2186,7 +2222,7 @@ bool PolicyCompiler_ipt::splitIfSrcAnyForShadowing::processNext()
             compiler->dbcopy->create(PolicyRule::TYPENAME) );
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
-        r->setStr("ipt_chain","OUTPUT");
+        ipt_comp->setChain(r,"OUTPUT");
         r->setDirection( PolicyRule::Outbound );
         RuleElementSrc *nsrcrel=r->getSrc();
         nsrcrel->addRef(compiler->fw);
@@ -2199,6 +2235,7 @@ bool PolicyCompiler_ipt::splitIfSrcAnyForShadowing::processNext()
 
 bool PolicyCompiler_ipt::splitIfDstAnyForShadowing::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     if (rule->getAction() == PolicyRule::Classify)
@@ -2211,6 +2248,7 @@ bool PolicyCompiler_ipt::splitIfDstAnyForShadowing::processNext()
     FWOptions  *ruleopt = rule->getOptionsObject();
 
     if ( ruleopt->getBool("firewall_is_part_of_any_and_networks") &&
+         !ruleopt->getBool("no_input_chain") &&
          rule->getDirection()!=PolicyRule::Outbound && 
          dstrel->isAny() )
     {
@@ -2218,7 +2256,7 @@ bool PolicyCompiler_ipt::splitIfDstAnyForShadowing::processNext()
             compiler->dbcopy->create(PolicyRule::TYPENAME) );
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
-        r->setStr("ipt_chain","INPUT");
+        ipt_comp->setChain(r,"INPUT");
         r->setDirection( PolicyRule::Inbound );
         RuleElementDst *ndstrel=r->getDst();
         ndstrel->addRef(compiler->fw);
@@ -2232,6 +2270,7 @@ bool PolicyCompiler_ipt::splitIfDstAnyForShadowing::processNext()
 
 bool PolicyCompiler_ipt::splitIfSrcFWNetwork::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     if (rule->getAction() == PolicyRule::Classify)
@@ -2245,7 +2284,8 @@ bool PolicyCompiler_ipt::splitIfSrcFWNetwork::processNext()
     FWOptions *fwopt = compiler->getCachedFwOpt();
     FWOptions  *ruleopt = rule->getOptionsObject();
     if ( fwopt->getBool("bridging_fw") ||
-         ! ruleopt->getBool("firewall_is_part_of_any_and_networks") ) 
+         ! ruleopt->getBool("firewall_is_part_of_any_and_networks") ||
+         ruleopt->getBool("no_output_chain"))
     {
 	tmp_queue.push_back(rule);
 	return true;
@@ -2280,7 +2320,7 @@ bool PolicyCompiler_ipt::splitIfSrcFWNetwork::processNext()
                 compiler->dbcopy->create(PolicyRule::TYPENAME) );
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
-            r->setStr("ipt_chain","OUTPUT");
+            ipt_comp->setChain(r,"OUTPUT");
             r->setDirection( PolicyRule::Outbound );
 
 #if 0
@@ -2304,6 +2344,7 @@ bool PolicyCompiler_ipt::splitIfSrcFWNetwork::processNext()
 
 bool PolicyCompiler_ipt::splitIfDstFWNetwork::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     if (rule->getAction() == PolicyRule::Classify)
@@ -2317,7 +2358,8 @@ bool PolicyCompiler_ipt::splitIfDstFWNetwork::processNext()
     FWOptions *fwopt = compiler->getCachedFwOpt();
     FWOptions  *ruleopt = rule->getOptionsObject();
     if ( fwopt->getBool("bridging_fw") ||
-         ! ruleopt->getBool("firewall_is_part_of_any_and_networks") ) 
+         ! ruleopt->getBool("firewall_is_part_of_any_and_networks") ||
+         ruleopt->getBool("no_input_chain"))
     {
 	tmp_queue.push_back(rule);
 	return true;
@@ -2352,7 +2394,7 @@ bool PolicyCompiler_ipt::splitIfDstFWNetwork::processNext()
                 compiler->dbcopy->create(PolicyRule::TYPENAME) );
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
-            r->setStr("ipt_chain","INPUT");
+            ipt_comp->setChain(r,"INPUT");
             r->setDirection( PolicyRule::Inbound );
 
 #if 0
@@ -2667,6 +2709,7 @@ bool PolicyCompiler_ipt::expandLoopbackInterfaceAddress::processNext()
  */
 bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     if ( ! rule->getStr("ipt_chain").empty() ||
@@ -2698,7 +2741,7 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
 	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
-        r->setStr("ipt_chain","FORWARD");
+        ipt_comp->setChain(r,"FORWARD");
 
 	tmp_queue.push_back(r);
     }
@@ -2724,7 +2767,7 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
     case PolicyRule::Outbound:
 /* if direction is "Outbound", chain can never be INPUT, but could be FORWARD */
         if (!src->isAny() && compiler->complexMatch(src, compiler->fw, b, m))
-            rule->setStr("ipt_chain","OUTPUT");
+            ipt_comp->setChain(rule,"OUTPUT");
         break;
 
     case PolicyRule::Both:
@@ -2732,7 +2775,7 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
  */
         if (!src->isAny() && compiler->complexMatch(src, compiler->fw, b, m)) 
         {
-            rule->setStr("ipt_chain","OUTPUT");
+            ipt_comp->setChain(rule,"OUTPUT");
             rule->setDirection( PolicyRule::Outbound );
         }
         break;
@@ -2745,6 +2788,7 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
 
 bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     if ( ! rule->getStr("ipt_chain").empty() || 
@@ -2775,7 +2819,7 @@ bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
 	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
-        r->setStr("ipt_chain","FORWARD");
+        ipt_comp->setChain(r,"FORWARD");
 
 	tmp_queue.push_back(r);
     }
@@ -2801,7 +2845,7 @@ bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
     case PolicyRule::Inbound:
 /* if direction is "Inbound", chain can never be OUTPUT, but could be FORWARD */
         if (!dst->isAny() && compiler->complexMatch(dst,compiler->fw,b,m))
-            rule->setStr("ipt_chain","INPUT");
+            ipt_comp->setChain(rule,"INPUT");
         break;
 
     case PolicyRule::Both:
@@ -2809,7 +2853,7 @@ bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
  */
         if (!dst->isAny() && compiler->complexMatch(dst,compiler->fw,b,m)) 
         {
-            rule->setStr("ipt_chain","INPUT");
+            ipt_comp->setChain(rule,"INPUT");
             rule->setDirection(PolicyRule::Inbound);
         }
         break;
@@ -2840,6 +2884,7 @@ bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
  */ 
 bool PolicyCompiler_ipt::decideOnChainIfLoopback::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     RuleElementItf *itfre=rule->getItf();
@@ -2858,8 +2903,8 @@ bool PolicyCompiler_ipt::decideOnChainIfLoopback::processNext()
     {
         switch (rule->getDirection())
         {
-        case PolicyRule::Inbound:   rule->setStr("ipt_chain","INPUT");  break;
-        case PolicyRule::Outbound:  rule->setStr("ipt_chain","OUTPUT"); break;
+        case PolicyRule::Inbound:   ipt_comp->setChain(rule,"INPUT");  break;
+        case PolicyRule::Outbound:  ipt_comp->setChain(rule,"OUTPUT"); break;
         default: ;
         }
     }
@@ -2874,6 +2919,7 @@ bool PolicyCompiler_ipt::decideOnChainIfLoopback::processNext()
  */
 bool PolicyCompiler_ipt::decideOnChainForClassify::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     if (rule->getAction() != PolicyRule::Classify)
@@ -2883,7 +2929,7 @@ bool PolicyCompiler_ipt::decideOnChainForClassify::processNext()
     }
 
     if (rule->getStr("ipt_chain").empty())
-        rule->setStr("ipt_chain","POSTROUTING");
+        ipt_comp->setChain(rule,"POSTROUTING");
 
     tmp_queue.push_back(rule);
     return true;
@@ -2891,8 +2937,8 @@ bool PolicyCompiler_ipt::decideOnChainForClassify::processNext()
 
 bool PolicyCompiler_ipt::finalizeChain::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
 
 //    tmp_queue.push_back(rule);
 
@@ -2902,25 +2948,25 @@ bool PolicyCompiler_ipt::finalizeChain::processNext()
         return true;
     }
 
-    rule->setStr("ipt_chain","FORWARD");
+    ipt_comp->setChain(rule, "FORWARD");
 
     if (ipt_comp->my_table=="mangle")
     {
         switch ( rule->getDirection() ) 
         {
         case PolicyRule::Inbound:
-            rule->setStr("ipt_chain","PREROUTING");
+            ipt_comp->setChain(rule,"PREROUTING");
             break;
         case PolicyRule::Outbound:
-            rule->setStr("ipt_chain","POSTROUTING");
+            ipt_comp->setChain(rule,"POSTROUTING");
             break;
         default:
-            rule->setStr("ipt_chain","FORWARD");
+            ipt_comp->setChain(rule,"FORWARD");
             break;
         }
 
         if (rule->getAction() == PolicyRule::Accept)
-            rule->setStr("ipt_chain","PREROUTING");
+            ipt_comp->setChain(rule,"PREROUTING");
 
     } else
     {
@@ -2951,14 +2997,14 @@ bool PolicyCompiler_ipt::finalizeChain::processNext()
       case PolicyRule::Inbound:
 /* if direction is "Inbound", chain can never be OUTPUT, but could be FORWARD */
           if (!dst->isAny() && ipt_comp->complexMatch(dst,ipt_comp->fw,b,m))
-              rule->setStr("ipt_chain","INPUT");
+              ipt_comp->setChain(rule,"INPUT");
 
           break;
 
       case PolicyRule::Outbound:
 /* if direction is "Outbound", chain can never be INPUT, but could be FORWARD */
           if (!src->isAny() && ipt_comp->complexMatch(src,ipt_comp->fw,b,m))
-              rule->setStr("ipt_chain","OUTPUT");
+              ipt_comp->setChain(rule,"OUTPUT");
 
           break;
 
@@ -2967,12 +3013,12 @@ bool PolicyCompiler_ipt::finalizeChain::processNext()
 /* direction == Both */
           if (!dst->isAny() && ipt_comp->complexMatch(dst,ipt_comp->fw,b,m)) 
           {
-              rule->setStr("ipt_chain","INPUT");
+              ipt_comp->setChain(rule,"INPUT");
               break;
           }
           if (!src->isAny() && ipt_comp->complexMatch(src,ipt_comp->fw,b,m)) 
           {
-              rule->setStr("ipt_chain","OUTPUT");
+              ipt_comp->setChain(rule,"OUTPUT");
               break;
           }
       }
@@ -3051,6 +3097,7 @@ bool PolicyCompiler_ipt::decideOnTarget::processNext()
  */
 bool PolicyCompiler_ipt::removeFW::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     tmp_queue.push_back(rule);
@@ -3070,15 +3117,16 @@ bool PolicyCompiler_ipt::removeFW::processNext()
             string("removeFW: Empty Destination rule element in rule ") +
             rule->getLabel());
 
-        if (( rule->getStr("ipt_chain")=="INPUT" || 
-              rule->getStr("upstream_rule_chain")=="INPUT") &&
+        string chain = rule->getStr("ipt_chain");
+        if (( chain=="INPUT" || 
+              ipt_comp->isChainDescendantOfInput(chain)) &&
             dst->getId()==compiler->getFwId() ) 
         {
             dstrel->reset();
         }
 
-        if (( rule->getStr("ipt_chain")=="OUTPUT" ||
-              rule->getStr("upstream_rule_chain")=="OUTPUT") &&
+        if (( chain=="OUTPUT" ||
+              ipt_comp->isChainDescendantOfOutput(chain)) &&
             src->getId()==compiler->getFwId() ) 
         {
             srcrel->reset();
@@ -3116,14 +3164,14 @@ bool PolicyCompiler_ipt::checkMACinOUTPUTChain::processNext()
 
 bool PolicyCompiler_ipt::checkUserServiceInWrongChains::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     Service *srv = compiler->getFirstSrv(rule);  assert(srv);
     string chain = rule->getStr("ipt_chain");
-    string upstream_chain = rule->getStr("upstream_rule_chain");
 
     if (UserService::cast(srv) != NULL &&
         chain != "OUTPUT" &&
-        upstream_chain != "OUTPUT")
+        !ipt_comp->isChainDescendantOfOutput(chain))
     {
         compiler->warning("Iptables does not support module 'owner' in a chain "
                           "other than OUTPUT; Rule " + rule->getLabel());
@@ -3601,7 +3649,7 @@ bool PolicyCompiler_ipt::convertAnyToNotFWForShadowing::processNext()
 //            srcrel->addRef(compiler->fw);
 //            srcrel->setNeg(true);
 
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             r->setAction( PolicyRule::Return );
@@ -3616,7 +3664,7 @@ bool PolicyCompiler_ipt::convertAnyToNotFWForShadowing::processNext()
 //            dstrel->addRef(compiler->fw);
 //            dstrel->setNeg(true);
 
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             r->setAction( PolicyRule::Return );
@@ -3743,6 +3791,9 @@ bool PolicyCompiler_ipt::accounting::processNext()
             nsrv=r->getSrv();  nsrv->reset();
             r->setStr("ipt_chain",new_chain);
             r->setStr("upstream_rule_chain",this_chain);
+            ipt_comp->registerChain(new_chain);
+            ipt_comp->insertUpstreamChain(this_chain, new_chain);
+
             r->setStr("ipt_target","RETURN");
             r->setLogging(false);
             r->setAction(PolicyRule::Continue);
@@ -4252,17 +4303,14 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
         if ( i5!=intrel->end() ) ++i5;
     }
 
+    str << " c=" << printChains(rule);
 
-    str << " c="+rule->getStr("ipt_chain")
-        << "[" 
-        << chain_usage_counter[rule->getStr("ipt_chain")]
-        << "]"
-        << " t="+rule->getStr("ipt_target")
-        << " intfId="+rule->getInterfaceId()
-        << " intfstr="+rule->getInterfaceStr();
+    str << " t=" << rule->getStr("ipt_target")
+        << " intfId=" + rule->getInterfaceId()
+        << " intfstr=" + rule->getInterfaceStr();
 
     if (rule->getAction()==PolicyRule::Reject)
-        str << " "+ruleopt->getStr("action_on_reject");
+        str << " " + ruleopt->getStr("action_on_reject");
 
     if (ruleopt!=NULL && ruleopt->getInt("limit_value")>0)
         str << " limit";
@@ -4272,6 +4320,12 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
 
     if (ruleopt!=NULL && ruleopt->getInt("hashlimit_value")>0)
         str << " hashlimit";
+
+    if (ruleopt!=NULL && ruleopt->getBool("no_input_chain"))
+        str << " no_input";
+
+    if (ruleopt!=NULL && ruleopt->getBool("no_output_chain"))
+        str << " no_output";
 
     return str.str();
 }
