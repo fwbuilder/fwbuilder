@@ -2663,8 +2663,8 @@ bool PolicyCompiler_ipt::expandMultipleAddressesIfNotFWinDst::processNext()
     return true;
 }
 
-void PolicyCompiler_ipt::expandLoopbackInterfaceAddress::replaceLoopbackWithItsAddress(RuleElement *rel,
-                                                                                       Rule        *rule)
+void PolicyCompiler_ipt::expandLoopbackInterfaceAddress::replaceLoopbackWithItsAddress(
+    RuleElement *rel, Rule *rule)
 {
     if (rel->isAny()) return;
     list<FWObject*> cl;
@@ -2676,7 +2676,7 @@ void PolicyCompiler_ipt::expandLoopbackInterfaceAddress::replaceLoopbackWithItsA
 
         if (Interface::cast(obj)!=NULL && Interface::cast(obj)->isLoopback())
         {
-            FWObject *addr=obj->getFirstByType(IPv4::TYPENAME);
+            FWObject *addr = obj->getFirstByType(IPv4::TYPENAME);
             if (addr==NULL)
                 compiler->abort(_("Loopback interface of the firewall object does not have IP address but is used in the rule ")+rule->getLabel());
             rel->removeRef(obj);

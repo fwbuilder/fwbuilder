@@ -62,8 +62,8 @@ using namespace std;
  * Run splitRuleIfSrvAnyActionReject before this processor to make sure
  * Srv contains only TCP objects if action is "Reject" and TCP RST is required
  */
-void PolicyCompiler_ipt::optimize1::optimizeForRuleElement(PolicyRule    *rule, 
-                                                      const std::string  &re_type)
+void PolicyCompiler_ipt::optimize1::optimizeForRuleElement(
+    PolicyRule  *rule, const std::string  &re_type)
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule     *r;
@@ -86,7 +86,8 @@ void PolicyCompiler_ipt::optimize1::optimizeForRuleElement(PolicyRule    *rule,
                nre->setAnyElement();
             } else
             {
-               RuleElement *re=RuleElement::cast(rule->getFirstByType((*i)->getTypeName()));
+               RuleElement *re = RuleElement::cast(
+                   rule->getFirstByType((*i)->getTypeName()));
 /* 
  * put "any tcp" service back in srv field if it was originally some
  * tcp service. This is needed because we may need to produce
@@ -102,8 +103,9 @@ void PolicyCompiler_ipt::optimize1::optimizeForRuleElement(PolicyRule    *rule,
                    if (TCPService::isA(srv))
                    {
                        re->clearChildren();
-                       re->addRef(compiler->dbcopy->findInIndex(
-                                      FWObjectDatabase::getIntId(ANY_TCP_OBJ_ID)));
+                       re->addRef(
+                           compiler->dbcopy->findInIndex(
+                               FWObjectDatabase::getIntId(ANY_TCP_OBJ_ID)));
 /* also leave a flag indicating that further optimization by service
  * is not needed */
                        rule->setBool("do_not_optimize_by_srv",true);
@@ -130,7 +132,9 @@ void PolicyCompiler_ipt::optimize1::optimizeForRuleElement(PolicyRule    *rule,
     ruleopt->setInt("hashlimit_value",-1);
     rule->setStr("ipt_chain",new_chain);
     rule->setBool("force_state_check",false);
-    rule->setStr("upstream_rule_chain",this_chain);
+    rule->setStr("upstream_rule_chain", this_chain);
+    ipt_comp->registerChain(new_chain);
+    ipt_comp->insertUpstreamChain(this_chain, new_chain);
     if (rule->getInterfaceStr()=="")
         rule->setInterfaceStr("nil");
     rule->setDirection( PolicyRule::Both ); 
@@ -140,23 +144,33 @@ void PolicyCompiler_ipt::optimize1::optimizeForRuleElement(PolicyRule    *rule,
 
 bool PolicyCompiler_ipt::optimize1::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
-    RuleElementSrc      *srcrel=rule->getSrc();
-    RuleElementDst      *dstrel=rule->getDst();
-    RuleElementSrv      *srvrel=rule->getSrv();
-    RuleElementInterval *intrel=rule->getWhen();
+    RuleElementSrc      *srcrel;
+    RuleElementDst      *dstrel;
+    RuleElementSrv      *srvrel;
+    RuleElementInterval *intrel;
 
-    bool srcany=srcrel->isAny();
-    bool dstany=dstrel->isAny();
-    bool srvany=srvrel->isAny();
-    bool intany=(intrel!=NULL && intrel->isAny());
+    FWObject::iterator i1 = rule->begin();
+    srcrel = RuleElementSrc::cast(*i1);
+    i1++;
+    dstrel = RuleElementDst::cast(*i1);
+    i1++;
+    srvrel = RuleElementSrv::cast(*i1);
+    i1++;
+    i1++;
+    intrel = RuleElementInterval::cast(*i1);
 
-    int  srcn=srcrel->size();
-    int  dstn=dstrel->size();
-    int  srvn=srvrel->size();
-    int  intn=1;
-    if (intrel!=NULL) intn=intrel->size();
+    bool srcany = srcrel->isAny();
+    bool dstany = dstrel->isAny();
+    bool srvany = srvrel->isAny();
+    bool intany = (intrel!=NULL && intrel->isAny());
+
+    int  srcn = srcrel->size();
+    int  dstn = dstrel->size();
+    int  srvn = srvrel->size();
+    int  intn = 1;
+    if (intrel!=NULL) intn = intrel->size();
 
     bool all_tcp_or_udp = true;
     for (FWObject::iterator i=srvrel->begin(); i!=srvrel->end(); i++)
