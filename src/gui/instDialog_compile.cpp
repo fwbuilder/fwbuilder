@@ -91,7 +91,8 @@ bool instDialog::runCompiler(Firewall *fw)
         arg(QString::fromUtf8(fw->getName().c_str()))
     );
 
-    if (!prepareArgForCompiler(fw)) return false;
+    QStringList args = prepareArgForCompiler(fw);
+    if (args.isEmpty()) return false;
 
     addToLog( args.join(" ") + "\n" );
 
@@ -154,9 +155,10 @@ void instDialog::stopCompile()
     compile_fw_list.clear();
 }
 
-bool instDialog::prepareArgForCompiler(Firewall *fw)
+QStringList instDialog::prepareArgForCompiler(Firewall *fw)
 {
     FWOptions *fwopt = fw->getOptionsObject();
+    QStringList args;
 
 /*
  * I should be able to specify custom compiler for firewall with
@@ -176,7 +178,7 @@ bool instDialog::prepareArgForCompiler(Firewall *fw)
 Can't compile firewall policy."),
             tr("&Continue"), QString::null,QString::null,
             0, 1 );
-        return false;
+        return args; // still empty list
     }
 
 /*
@@ -219,7 +221,7 @@ Can't compile firewall policy."),
 
     args.push_back("-v");
     args.push_back("-f");
-    args.push_back(mw->db()->getFileName().c_str());
+    args.push_back(mw->getRCS()->getFileName());
 
     if (wdir!="")
     {
@@ -245,7 +247,7 @@ Can't compile firewall policy."),
     args.push_back("-i");
 
     args.push_back( mw->db()->getStringId(fw->getId()).c_str() );
-    return true;
+    return args;
 }
 
 void instDialog::compilerFinished(int ret_code, QProcess::ExitStatus status)

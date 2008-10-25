@@ -140,7 +140,7 @@ bool ProjectPanel::fileNew()
         if (!systemFile && rcs!=NULL) 
             fileClose();       // fileClose calls load(this)
         else  
-            load(this);
+            loadStandardObjects();
 
         visibleFirewall = NULL;
         setFileName(nfn);
@@ -184,7 +184,7 @@ bool ProjectPanel::fileOpen()
         tr("Open File"),
         dir,
         "FWB files (*.fwb *.fwl *.xml);;All Files (*)");
-
+    
     if (fileName.isEmpty())
     {
         mainW->getMdiArea()->setActiveSubWindow(current_active_window);
@@ -197,7 +197,7 @@ bool ProjectPanel::fileOpen()
 bool ProjectPanel::loadFile(const QString &fileName)
 {
     if (fwbdebug) qDebug("ProjectPanel::loadFile  fileName=%s",
-                         fileName.toAscii().constData());
+                         fileName.toLocal8Bit().constData());
 
     RCSFilePreview  fp(this);
     bool hasRCS = fp.showFileRLog(fileName);
@@ -223,10 +223,10 @@ bool ProjectPanel::loadFile(const QString &fileName)
             return false;
         }
 
-        load(this, new_rcs);
+        loadFromRCS(new_rcs);
 
         if (new_rcs->isTemp())
-            unlink(new_rcs->getFileName().toLatin1().constData());
+            unlink(new_rcs->getFileName().toLocal8Bit().constData());
 
         return true;
     }
@@ -416,7 +416,7 @@ void ProjectPanel::fileImport()
 
     if (fname.isEmpty()) return;   // Cancel  - keep working with old file
 
-    loadLibrary( fname.toLatin1().constData() );
+    loadLibrary( fname.toLocal8Bit().constData() );
 
     loadObjects();
 }
@@ -459,7 +459,7 @@ void ProjectPanel::fileCompare()
     try
     {
         db1 = new FWObjectDatabase();
-        db1->load(fname1.toLatin1().constData(),
+        db1->load(fname1.toLocal8Bit().constData(),
                   &upgrade_predicate,  librespath);
 
         dobj = db1->findInIndex(FWObjectDatabase::DELETED_OBJECTS_ID);
@@ -478,7 +478,7 @@ void ProjectPanel::fileCompare()
     try
     {
         db2 = new FWObjectDatabase();
-        db2->load(fname2.toLatin1().constData(),
+        db2->load(fname2.toLocal8Bit().constData(),
                   &upgrade_predicate,  librespath);
 
         dobj = db2->findInIndex(FWObjectDatabase::DELETED_OBJECTS_ID);
@@ -777,7 +777,7 @@ void ProjectPanel::exportLibraryTo(QString fname,list<FWObject*> &selectedLibs, 
     try
     {
         xmlSetCompressMode(st->getCompression() ? 9 : 0);
-        ndb->saveFile( fname.toLatin1().constData() );
+        ndb->saveFile( fname.toLocal8Bit().constData() );
     }
     catch (FWException &ex)
     {
@@ -785,7 +785,7 @@ void ProjectPanel::exportLibraryTo(QString fname,list<FWObject*> &selectedLibs, 
  * error message in the exception, let's check for obvious problems here
  */
         QString err;
-        if (access( fname.toLatin1().constData(), W_OK)!=0 && errno==EACCES)
+        if (access( fname.toLocal8Bit().constData(), W_OK)!=0 && errno==EACCES)
             err=QObject::tr("File is read-only");
 
         QMessageBox::critical(
@@ -842,47 +842,9 @@ void ProjectPanel::loadLibrary(const string &libfpath)
         FWObject *dobj = ndb->findInIndex(FWObjectDatabase::DELETED_OBJECTS_ID);
         if (dobj) ndb->remove(dobj, false);
 
-#if 0
-        list<FWObject*> newLibs;
-        newLibs= ndb->getByType(Library::TYPENAME);
-
-        list<FWObject*> currentLibs;
-        currentLibs= db()->getByType(Library::TYPENAME);
-
-        list<FWObject*> duplicateLibs;
-
-        for (list<FWObject*>::iterator i=newLibs.begin(); i!=newLibs.end(); i++)
-        {
-            string newLibID = (*i)->getId();
-            if (newLibID==STANDARD_LIB)
-            {
-                duplicateLibs.push_back(*i);
-                continue;
-            }
-            QString name = (*i)->getName().c_str();
-            if (std::find_if(currentLibs.begin(),currentLibs.end(),
-                             findFWObjectIDPredicate(newLibID))!=currentLibs.end() )
-            {
-                QMessageBox::warning(
-                    NULL,"Firewall Builder",
-                    QObject::tr("Duplicate library '%1'").arg(QString::fromUtf8(name)),
-                    QObject::tr("&Continue"), QString::null,QString::null,
-                    0, 1 );
-                duplicateLibs.push_back(*i);
-            }
-        }
-
-        if (!duplicateLibs.empty())
-        {
-            for (list<FWObject*>::iterator i=duplicateLibs.begin(); i!=duplicateLibs.end(); i++)
-                ndb->remove(*i,false);
-        }
-#endif
         MergeConflictRes mcr(this);
         db()->merge(ndb, &mcr);
-
         delete ndb;
-
     } catch(FWException &ex)
     {
         QString error_txt = ex.toString().c_str();
@@ -904,7 +866,7 @@ void ProjectPanel::loadLibrary(const string &libfpath)
 /*
  * Load standard library objects
  */
-void ProjectPanel::load(QWidget*)
+void ProjectPanel::loadStandardObjects()
 {
     if (fwbdebug) qDebug("ProjectPanel::load(): start");
 
@@ -966,237 +928,7 @@ void ProjectPanel::load(QWidget*)
     sb->clearMessage();
 }
 
-/*
- *  Load user data file referenced by the RCS object
- */
-void ProjectPanel::load(QWidget*, RCS* _rcs, FWObjectDatabase* clone)
-{
-    QStatusBar *sb = mainW->statusBar();
-
-    resetFD();
-
-    editingStandardLib = false;
-    editingTemplateLib = false;
-
-    // use this flag to force 'save' operation if file should be renamed
-    bool forceSave=false;
-
-    MessageBoxUpgradePredicate upgrade_predicate(mainW);
-
-    rcs = _rcs;
-
-    try
-    {
-        systemFile = false;
-        objdb = clone;
-        sb->showMessage( tr("Loading system objects...") );
-        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-        sb->showMessage( tr("Reading and parsing data file...") );
-        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-        sb->clearMessage();
-        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-        sb->showMessage( tr("Merging with system objects...") );
-        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
-
-        MergeConflictRes mcr(mainW);
-
-        sb->clearMessage();
-        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
-
-        if (fwbdebug)
-        {
-            qDebug("* Merge is done");
-            list<FWObject*> ll = db()->getByType(Library::TYPENAME);
-            for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
-            {
-                qDebug("* Library %s %s in the data file",
-                       FWObjectDatabase::getStringId((*i)->getId()).c_str(),
-                       (*i)->getName().c_str() );
-            }
-        }
-
-
-/* this is a hack: 'Standard' library should be read-only. I have too
- * many files I already converted to the new API/DTD and I am too lazy
- * to convert them again, so I patch it up here.
- *
- * However, if I am editing standard library, it should not be read-only.
- */
-        FWObject *slib = objdb->findInIndex(FWObjectDatabase::STANDARD_LIB_ID);
-        if (slib!=NULL )
-        {
-            if (fwbdebug)
-                qDebug("standard library read-only status: %d, "
-                       "editingStandardLib: %d",
-                       slib->isReadOnly(), editingStandardLib);
-
-            slib->setReadOnly(! editingStandardLib);
-        }
-
-/* if the file name has an old extension .xml, change it to .fwb and
- * warn the user
- */
-        QString   fn = rcs->getFileName();
-        QFileInfo ofinfo(fn);
-
-        if ( ofinfo.suffix()=="xml")
-        {
-            if (fwbdebug)
-            {
-                qDebug("Need to rename file:  %s",fn.toAscii().constData());
-                qDebug("             dirPath: %s",ofinfo.dir().absolutePath().toAscii().constData());
-                qDebug("            filePath: %s",ofinfo.absoluteFilePath().toAscii().constData());
-            }
-            QString nfn=ofinfo.dir().absolutePath() + "/" + ofinfo.completeBaseName() + ".fwb";
-
-            bool needToRename = true;
-
-/* need these dances with symlinks to fix bug #1008956: "Existing .fwb
- * file gets overwritten if has wrong extension"
- */
-            QFileInfo nfinfo(nfn);
-            if (nfinfo.exists() && ofinfo.isSymLink() && ofinfo.readLink()==nfn)
-            {
-// .xml file is a symlink pointing at .fwb file
-// no need to rename
-                needToRename = false;
-            }
-
-            if (needToRename)
-            {
-                if (nfinfo.exists())
-                {
-/* .fwb file exists but .xml is not a symlink
- * .fwb is a separate file with the same name.
- *
- * tell the user we need to rename old file but the new file exists,
- * then ask them to choose a new name. If the user chooses the same
- * name and agrees to overwrite the file, just use this name. If the
- * user hits cancel, tell them they need to choose a new name and open
- * "file save" dialog again.
- *
- * Show the first dialog only once. If user hits Cancel, they see
- * shorted version of the dialog and will be presented with "save
- * file" dialog again.
- */
-                    QMessageBox::warning(
-                        this,"Firewall Builder",
-                        tr("Firewall Builder 2 uses file extension '.fwb' and \nneeds to rename old data file '%1' to '%2',\nbut file '%3' already exists.\nChoose a different name for the new file.")
-                        .arg(fn).arg(nfn).arg(nfn),
-                        tr("&Continue"), QString::null,QString::null,
-                        0, 1 );
-
-                    nfn=chooseNewFileName(
-                        fn, tr("Choose name and location for the new file"));
-                    if (nfn.isEmpty())
-                    {
-                        QString oldFileName = ofinfo.absoluteFilePath() + ".bak";
-                        rename(oldFileName.toLatin1().constData(), fn.toLatin1().constData());
-
-                        QMessageBox::warning(
-                            this,"Firewall Builder",
-                            tr("Load operation cancelled and data file reverted to original version."),
-                            tr("&Continue"), QString::null,QString::null,
-                            0, 1 );
-
-                        load(this);
-                        mainW->disableActions(m_panel->ruleSets->count()!=0);
-                        return;
-                    }
-                    nfinfo.setFile(nfn);
-                }
-
-                rename(fn.toLatin1().constData(), nfn.toLatin1().constData());
-
-
-                QMessageBox::warning(
-                this,"Firewall Builder",
-                tr("Firewall Builder 2 uses file extension '.fwb'. Your data file '%1' \nhas been renamed '%2'")
-                .arg(fn).arg(nfn),
-                tr("&Continue"), QString::null,QString::null,
-                0, 1 );
-
-            }
-
-            fn = nfn;
-        }
-
-        rcs->setFileName(fn);
-        db()->setFileName(fn.toLatin1().constData());
-
-        setWindowTitle(getPageTitle());
-
-        mainW->disableActions(m_panel->ruleSets->count()!=0);
-
-    } catch(FWException &ex)
-    {
-        QString trans = ex.getProperties()["failed_transformation"].c_str();
-        QString elem  = ex.getProperties()["failed_element"].c_str();
-
-        if(!trans.isEmpty() || !elem.isEmpty())
-        {
-            QString msg = tr("Exception: %1").arg(ex.toString().c_str());
-            if (!trans.isEmpty())
-            {
-                trans.truncate(LONG_ERROR_CUTOFF);
-                msg+="\n"+tr("Failed transformation : %1").arg(trans);
-            }
-            if (!elem.isEmpty())
-            {
-                elem.truncate(LONG_ERROR_CUTOFF);
-                msg+="\n"+tr("XML element : %1").arg(elem);
-            }
-            QMessageBox::critical(
-                this,"Firewall Builder",
-                tr("The program encountered error trying to load data file.\n"
-                   "The file has not been loaded. Error:\n%1").arg(msg),
-                tr("&Continue"), QString::null,QString::null,
-                0, 1 );
-        } else
-        {
-            QString error_txt = ex.toString().c_str();
-            if (error_txt.length() > LONG_ERROR_CUTOFF) 
-            {
-                error_txt.truncate(LONG_ERROR_CUTOFF);
-                error_txt += "\n\n" + tr("(Long error message was truncated)");
-            }
-
-            QMessageBox::critical(
-                this,"Firewall Builder",
-                tr("The program encountered error trying to load data file.\n"
-                   "The file has not been loaded. Error:\n%1").arg(
-                       error_txt),
-                tr("&Continue"), QString::null,QString::null,
-                0, 1 );
-        }
-        load(this);
-        mainW->disableActions(m_panel->ruleSets->count()!=0);
-        return;
-    }
-
-    db()->setReadOnly( rcs->isRO() || rcs->isTemp() );
-
-// clear dirty flag for all objects, recursively
-    if (!forceSave)  db()->setDirty(false);
-
-    sb->showMessage( tr("Building object tree...") );
-    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
-
-    loadObjects();
-    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
-
-    sb->showMessage( tr("Indexing...") );
-    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
-    db()->reIndex();
-
-    sb->clearMessage();
-    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
-
-    setupAutoSave();
-}
-
-
-void ProjectPanel::load(QWidget*, RCS *_rcs)
+void ProjectPanel::loadFromRCS(RCS *_rcs)
 {
     QStatusBar *sb = mainW->statusBar();
 
@@ -1235,7 +967,7 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
         FWObjectDatabase *ndb = new FWObjectDatabase();
-        ndb->load(rcs->getFileName().toLatin1().constData(),
+        ndb->load(rcs->getFileName().toLocal8Bit().constData(),
                   &upgrade_predicate,librespath);
         time_t   oldtimestamp = ndb->getTimeLastModified();
 
@@ -1279,7 +1011,7 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
 
         delete ndb;
 
-        objdb->setFileName(rcs->getFileName().toLatin1().constData());
+        objdb->setFileName(rcs->getFileName().toLocal8Bit().constData());
         objdb->resetTimeLastModified(oldtimestamp);
         objdb->setDirty(false);
 
@@ -1388,8 +1120,8 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
                     {
                         QString oldFileName = ofinfo.absoluteFilePath()
                             + ".bak";
-                        rename(oldFileName.toLatin1().constData(),
-                               fn.toLatin1().constData());
+                        rename(oldFileName.toLocal8Bit().constData(),
+                               fn.toLocal8Bit().constData());
 
                         QMessageBox::warning(
                             this,"Firewall Builder",
@@ -1398,13 +1130,14 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
                             tr("&Continue"), QString::null,QString::null,
                             0, 1 );
 
-                        load(this);
+                        loadStandardObjects();
                         return;
                     }
                     nfinfo.setFile(nfn);
                 }
 
-                rename(fn.toLatin1().constData(), nfn.toLatin1().constData());
+                rename(fn.toLocal8Bit().constData(),
+                       nfn.toLocal8Bit().constData());
 
                 QMessageBox::warning(
                 this,"Firewall Builder",
@@ -1419,7 +1152,7 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
         }
 
         rcs->setFileName(fn);
-        db()->setFileName(fn.toLatin1().constData());
+        db()->setFileName(fn.toLocal8Bit().constData());
 
         setWindowTitle(getPageTitle());
 
@@ -1473,7 +1206,7 @@ void ProjectPanel::load(QWidget*, RCS *_rcs)
                 0, 1 );
         }
         // load standard objects so the window does not remain empty
-        load(this);
+        loadStandardObjects();
         return;
     }
 
@@ -1572,7 +1305,7 @@ void ProjectPanel::save()
                rcs,
                rcs->isRO(),
                rcs->isTemp(),
-               rcs->getFileName().toLatin1().constData());
+               rcs->getFileName().toLocal8Bit().constData());
 
     if (!rcs->isRO() && !rcs->isTemp())
     {
@@ -1624,7 +1357,8 @@ void ProjectPanel::save()
 
                     ndb->resetTimeLastModified( db()->getTimeLastModified() );
                     xmlSetCompressMode(st->getCompression() ? 9 : 0);
-                    ndb->saveFile( rcs->getFileName().toLatin1().constData() );
+                    ndb->saveFile(
+                        rcs->getFileName().toLocal8Bit().constData());
 
                     delete ndb;
 
@@ -1634,7 +1368,8 @@ void ProjectPanel::save()
                 {
                     QApplication::setOverrideCursor(QCursor( Qt::WaitCursor));
                     xmlSetCompressMode(st->getCompression() ? 9 : 0);
-                    db()->saveFile( rcs->getFileName().toLatin1().constData() );
+                    db()->saveFile(
+                        rcs->getFileName().toLocal8Bit().constData());
                     QApplication::restoreOverrideCursor();
                 }
             }
@@ -1648,7 +1383,8 @@ void ProjectPanel::save()
  * error message in the exception, let's check for obvious problems here
  */
             QString err;
-            if (access( rcs->getFileName().toLatin1().constData(), W_OK)!=0 &&
+            if (access(
+                    rcs->getFileName().toLocal8Bit().constData(), W_OK)!=0 &&
                 errno==EACCES)  err=tr("File is read-only");
             else                err=ex.toString().c_str();
 

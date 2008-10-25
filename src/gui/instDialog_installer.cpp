@@ -73,7 +73,7 @@ bool instDialog::runInstaller(Firewall *fw)
         return false;
     }
 
-    args.clear();
+//    args.clear();
 
 /* need to save settings so that if the user just changed ssh/scp, the
  * wrapper will pick changes up

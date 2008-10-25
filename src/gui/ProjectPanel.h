@@ -333,10 +333,8 @@ public:
     QString getFileName();
     bool editingLibrary();
     void createRCS( const QString &filename);
-    void load(QWidget *dialogs_parent,RCS *rcs);
-    void load(QWidget *dialogs_parent,RCS *rcs,
-              libfwbuilder::FWObjectDatabase * clone);
-    void load(QWidget *dialogs_parent);
+    void loadFromRCS(RCS *rcs);
+    void loadStandardObjects();
     bool loadFile(const QString &fileName);
 
     void save();

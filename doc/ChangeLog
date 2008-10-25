@@ -1,3 +1,21 @@
+2008-10-25  vadim  <vadim@vk.crocodile.org>
+
+	* ProjectPanel_file_ops.cpp (ProjectPanel::loadFromRCS): more
+	fixes for bug #2194829: use toLocal8Bit() instead of toLatin1() in
+	all calls to libfwbuilder functions that deal with
+	files (FWObjectDatabase::load() etc.), as well as system functions
+	such as unlink(), rename(), access(). Now I can open, save, check
+	out and check in file if it is in directory with non-ascii name
+	and also can use non-ascii characters in RCS checkin log records.
+
+	* instDialog_compile.cpp (instDialog::prepareArgForCompiler):
+	fixed bug #2194829: "the gui can not locate data file in non-ascii
+	directory". This seems to have happened only on Windows and Mac;
+	if data file was located in the directory with the name with
+	non-ascii characters, the gui generated incorrect command line for
+	the compiler when user tried to compile the data file more than
+	once.
+
 2008-10-23  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (isChainDescendantOfOutput): more for the

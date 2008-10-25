@@ -281,13 +281,14 @@ RCS::RCS(const QString &file)
     ciproc = new QProcess();
     proc = new QProcess();
 
-    connect(proc, SIGNAL(readyReadStandardOutput()), this,  SLOT(readFromStdout() ) );
-    connect(proc, SIGNAL(readyReadStandardError()), this,  SLOT(readFromStderr() ) );
-
+    connect(proc, SIGNAL(readyReadStandardOutput()),
+            this,  SLOT(readFromStdout() ) );
+    connect(proc, SIGNAL(readyReadStandardError()),
+            this,  SLOT(readFromStderr() ) );
 
     try
     {
-        QString  rcspath=filename.left( filename.lastIndexOf("/") );
+        QString  rcspath = filename.left( filename.lastIndexOf("/") );
         QDir     rcsdir;
         rcsdir.cd(rcspath);
 
@@ -900,10 +901,12 @@ QString RCS::rlog() throw(libfwbuilder::FWException)
 //    proc->addArgument( "-zLT" );
 
     if (fwbdebug)
-        qDebug("Running rlog: %s %s",rlog_file_name.toAscii().constData(),arglist.join(" ").toAscii().constData());
+        qDebug("Running rlog: %s %s",
+               rlog_file_name.toLocal8Bit().constData(),
+               arglist.join(" ").toLocal8Bit().constData());
 
-    stdoutBuffer="";
-    stderrBuffer="";
+    stdoutBuffer = "";
+    stderrBuffer = "";
 
     //proc->setEnvironment(*rcsenvfix->getEnv());
     proc->start( rlog_file_name, arglist );
@@ -918,7 +921,8 @@ QString RCS::rlog() throw(libfwbuilder::FWException)
 
     if (fwbdebug) qDebug("Running rlog: finished reading");
 
-    QString rlogTxt = QString::fromUtf8(stdoutBuffer.toAscii().constData());
+    QString rlogTxt = QString::fromLocal8Bit(
+        stdoutBuffer.toAscii().constData());
 
     if (proc->state() == QProcess::NotRunning && proc->exitCode()==0)
         return rlogTxt;

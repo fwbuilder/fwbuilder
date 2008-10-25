@@ -101,7 +101,7 @@ class instDialog : public QDialog, public FakeWizard
     t_tableMap installMapping;
     
     QString path; //path of the program to execute
-    QStringList args; //arguments for that program
+//    QStringList args; //arguments for that program
         
     bool creatingTable;
     
@@ -161,7 +161,7 @@ class instDialog : public QDialog, public FakeWizard
     bool runCompiler(libfwbuilder::Firewall *fw);
     bool runInstaller(libfwbuilder::Firewall *fw);
 
-    bool prepareArgForCompiler(libfwbuilder::Firewall *fw);
+    QStringList prepareArgForCompiler(libfwbuilder::Firewall *fw);
     bool tableHasChecked();
     void clearReqFirewalls();
     void addReqFirewall(libfwbuilder::Firewall *f);

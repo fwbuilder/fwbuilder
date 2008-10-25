@@ -987,7 +987,7 @@ void ProjectPanel::startupLoad()
     if (fwbdebug)
         qDebug("ProjectPanel::startupLoad: startup: load everything.");
 
-    load(NULL);
+    loadStandardObjects();
 
     QString id = st->getStr("UI/visibleFirewall");
     int i_id = FWObjectDatabase::getIntId(id.toLatin1().constData());

@@ -289,7 +289,7 @@ void FWWindow::startupLoad()
 
     if (activeProject())
     {
-        activeProject()->load(NULL);
+        activeProject()->loadStandardObjects();
         activeProject()->readyStatus(true);
         activeProject()->loadState(true);
     }
@@ -501,9 +501,9 @@ void FWWindow::importPolicy()
     druid.exec();
 }
 
-void FWWindow::load(QWidget *dialogs_parent)
+void FWWindow::load(QWidget*)
 {
-    if (activeProject()) activeProject()->load(dialogs_parent);
+    if (activeProject()) activeProject()->loadStandardObjects();
 }
 
 FWObject* FWWindow::getVisibleFirewalls()
@@ -512,9 +512,9 @@ FWObject* FWWindow::getVisibleFirewalls()
     return 0;
 }
 
-void FWWindow::load(QWidget *dialogs_parent,RCS *_rcs)
+void FWWindow::load(QWidget*, RCS *_rcs)
 {
-    if (activeProject()) activeProject()->load(dialogs_parent, _rcs);
+    if (activeProject()) activeProject()->loadFromRCS(_rcs);
 }
 
 bool FWWindow::checkin(bool unlock)

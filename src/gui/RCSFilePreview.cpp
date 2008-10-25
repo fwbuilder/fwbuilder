@@ -123,7 +123,7 @@ void RCSFilePreview::selectedRevision(QTreeWidgetItem *itm)
 bool RCSFilePreview::showFileRLog( const QString &filename )
 {
     if (fwbdebug) qDebug("RCSFilePreview::showFileRLog filename=%s rcs=%p",
-                         filename.toAscii().constData(),rcs);
+                         filename.toLocal8Bit().constData(),rcs);
 
     m_widget->RCSTreeView->clear();
 
