@@ -56,7 +56,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-#define DEBUG_DNS 1
+#undef DEBUG_DNS 1
 
 Mutex *DNS::gethostbyname_mutex = NULL;
 Mutex *DNS::gethostbyaddr_mutex = NULL;
