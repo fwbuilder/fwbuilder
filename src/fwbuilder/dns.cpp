@@ -56,7 +56,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-#undef DNS_DEBUG
+#define DEBUG_DNS 1
 
 Mutex *DNS::gethostbyname_mutex = NULL;
 Mutex *DNS::gethostbyaddr_mutex = NULL;
@@ -122,6 +122,10 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
     struct addrinfo *aiList = NULL;
     int retVal;
 
+#ifdef DEBUG_DNS
+    cerr << "DNS::getHostByName " << name << "  type=" << type << endl;
+#endif
+
     if ((retVal = getaddrinfo(name.c_str(), NULL, NULL, &aiList)) != 0)
     {
         std::ostringstream strerr;
@@ -139,6 +143,12 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
     {
         for (ai=aiList; ai!=NULL; ai=ai->ai_next)
         {
+#ifdef DEBUG_DNS
+            cerr << "DNS::getHostByName " << name
+                 << "  returned address type=" << ai->ai_family
+                 << endl;
+#endif
+
             if (ai->ai_family!=type) continue;
 
             switch (ai->ai_family)
@@ -148,6 +158,11 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
                 struct sockaddr_in *sa = (struct sockaddr_in *) ai->ai_addr;
                 InetAddr addr((struct in_addr *)(&(sa->sin_addr)));
                 v.push_back(addr);
+#ifdef DEBUG_DNS
+                cerr << "DNS::getHostByName " << name
+                     << "  ipv4 address=" << addr.toString()
+                     << endl;
+#endif
             }
             break;
                     
@@ -156,6 +171,11 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
                 struct sockaddr_in6 *sa = (struct sockaddr_in6 *) ai->ai_addr;
                 InetAddr addr((struct in6_addr *)(&(sa->sin6_addr)));
                 v.push_back(addr);
+#ifdef DEBUG_DNS
+                cerr << "DNS::getHostByName " << name
+                     << "  ipv6 address=" << addr.toString()
+                     << endl;
+#endif
             }
             break;
             }

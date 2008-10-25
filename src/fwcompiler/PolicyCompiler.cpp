@@ -716,7 +716,8 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
     return a;
 }
 
-Address* PolicyCompiler::checkForZeroAddr::findHostWithNoInterfaces(RuleElement *re)
+Address* PolicyCompiler::checkForZeroAddr::findHostWithNoInterfaces(
+    RuleElement *re)
 {
     Address *a=NULL;
 
@@ -725,8 +726,9 @@ Address* PolicyCompiler::checkForZeroAddr::findHostWithNoInterfaces(RuleElement 
 	FWObject *o= *i;
 	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 	assert(o!=NULL);
-        Host      *addr=Host::cast(o);
-        if (addr!=NULL && addr->getFirstByType(Interface::TYPENAME)==NULL)
+        Host *addr = Host::cast(o);
+        // if host has child of type Interface, it must be first of the children
+        if (addr!=NULL && addr->front()!=NULL && Interface::isA(addr->front()))
         {
             a=addr;
             break;

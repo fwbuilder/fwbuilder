@@ -1026,8 +1026,8 @@ bool Compiler::splitIfRuleElementMatchesFW::processNext()
 {
     Rule *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
 
-    RuleElement    *re=RuleElement::cast(rule->getFirstByType(re_type));
-    int nre=re->size();
+    RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
+    int nre = re->size();
 
     list<FWObject*> cl;
 
@@ -1049,7 +1049,7 @@ bool Compiler::splitIfRuleElementMatchesFW::processNext()
 	    Rule  *new_rule= Rule::cast(compiler->dbcopy->create(rule->getTypeName()) );
 	    compiler->temp_ruleset->add(new_rule);
 	    new_rule->duplicate(rule);
-            RuleElement *new_re=RuleElement::cast(new_rule->getFirstByType(re_type));
+            RuleElement *new_re = RuleElement::cast(new_rule->getFirstByType(re_type));
 	    new_re->clearChildren();
 	    new_re->setAnyElement();
 	    new_re->addRef( a );

@@ -171,35 +171,50 @@ FWObject& PolicyRule::shallowDuplicate(const FWObject *x,
 RuleElementSrc*  PolicyRule::getSrc()
 {
     if (src_re) return src_re;
-    src_re = RuleElementSrc::cast(getFirstByType(RuleElementSrc::TYPENAME));
+    FWObject::iterator i1 = begin();
+    src_re = RuleElementSrc::cast(*i1);
     return src_re;
 }
 
 RuleElementDst*  PolicyRule::getDst()
 {
     if (dst_re) return dst_re;
-    dst_re = RuleElementDst::cast(getFirstByType(RuleElementDst::TYPENAME));
+    FWObject::iterator i1 = begin();
+    i1++;
+    dst_re = RuleElementDst::cast(*i1);
     return dst_re;
 }
 
 RuleElementSrv*  PolicyRule::getSrv()
 {
     if (srv_re) return srv_re;
-    srv_re = RuleElementSrv::cast(getFirstByType(RuleElementSrv::TYPENAME));
+    FWObject::iterator i1 = begin();
+    i1++;
+    i1++;
+    srv_re = RuleElementSrv::cast(*i1);
     return srv_re;
 }
 
 RuleElementItf*  PolicyRule::getItf()
 {
     if (itf_re) return itf_re;
-    itf_re = RuleElementItf::cast(getFirstByType(RuleElementItf::TYPENAME));
+    FWObject::iterator i1 = begin();
+    i1++;
+    i1++;
+    i1++;
+    itf_re = RuleElementItf::cast(*i1);
     return itf_re;
 }
 
 RuleElementInterval* PolicyRule::getWhen()
 {
     if (when_re) return when_re;
-    when_re = RuleElementInterval::cast(getFirstByType(RuleElementInterval::TYPENAME));
+    FWObject::iterator i1 = begin();
+    i1++;
+    i1++;
+    i1++;
+    i1++;
+    when_re = RuleElementInterval::cast(*i1);
     return when_re;
 }
 
