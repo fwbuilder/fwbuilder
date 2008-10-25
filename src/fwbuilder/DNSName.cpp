@@ -120,10 +120,11 @@ void DNSName::loadFromSource(bool ipv6) throw(FWException)
         list<InetAddr> v = DNS::getHostByName(getSourceName(), af_type);
         for (list<InetAddr>::iterator i=v.begin(); i!=v.end(); ++i)
         {
-            Address *a = Address::cast(getRoot()->create(
-                                         (ipv6)?IPv6::TYPENAME:IPv4::TYPENAME));
+            Address *a = Address::cast(
+                getRoot()->create((ipv6)?IPv6::TYPENAME:IPv4::TYPENAME));
             a->setAddress( *i );
             addRef(a);
+
         }
     } catch (const FWException &ex)
     {
