@@ -590,8 +590,8 @@ int main( int argc, char *argv[] )
     if ( (argc-1)==optind)
         filename = strdup( argv[optind++] );
 
-    try
-    {
+//    try
+//    {
         if (fwbdebug) qDebug("Initializing ...");
 
         if (fwbdebug) qDebug("Creating app ...");
@@ -718,11 +718,11 @@ int main( int argc, char *argv[] )
 
         st->save();
         delete st;
-    }
-    catch (FWException &ex)
-    {
-        qDebug("Exception: %s",ex.toString().c_str());
-    }
+//    }
+//    catch (FWException &ex)
+//    {
+//        qDebug("Exception: %s",ex.toString().c_str());
+//    }
 }
 
 

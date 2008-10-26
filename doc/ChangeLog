@@ -1,3 +1,10 @@
+2008-10-26  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::setRuleColor): making sure no rule
+	operations are allowed when rule set or parent firewall object are
+	read-only. This fixes GUI crash that happened when user tried to
+	remove rule from a group in the read-only firewall.
+
 2008-10-25  vadim  <vadim@vk.crocodile.org>
 
 	* ProjectPanel_file_ops.cpp (ProjectPanel::loadFromRCS): more

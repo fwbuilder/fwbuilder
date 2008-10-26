@@ -237,6 +237,7 @@ public slots:
 public:
      
      libfwbuilder::RuleSet *ruleset;
+     QMap<QString, QString> groupColors;
      QMap<QString,int> rulesInGroup;
      QItemSelectionRange itemSelectionRange;
 
@@ -246,7 +247,8 @@ public:
                             const QRect &cr, bool selected, const QPalette &cg);
      void drawRuleGroupHandle(QPainter *p,int row, int col,
                             const QRect &cr, bool selected, const QPalette &cg);
-
+     QString getGroupColorForRule(libfwbuilder::Rule *rule);
+    
      void setName(const QString &qs);
      void setCurrentCell(const int row, const int col);
      void changeCurrentCell(const int row, const int col,

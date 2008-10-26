@@ -1056,7 +1056,7 @@ void RuleSetView::updateGroups()
     horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
     horizontalHeader()->resizeSection(0, 20);
 
-    QMap<QString, QString> groupColors ;
+    groupColors.clear();
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
         if (ruleIndex[i]==NULL)
@@ -1091,6 +1091,7 @@ void RuleSetView::updateGroups()
     QString memberRow = "";
     bool beginGroup = false ;
     QString group;
+
     rulesInGroup.clear();
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
@@ -1117,23 +1118,6 @@ void RuleSetView::updateGroups()
         Rule * r = ruleIndex[i];
         group = r->getRuleGroupName().c_str();
         QString color = groupColors[group];
-        if (color!="")
-        {
-            FWOptions *ropt = r->getOptionsObject();
-            ropt->setStr("color", color.toLatin1().constData());
-        }
-        else
-        {
-            if (group!="")
-            {
-                color = r->getOptionsObject()->getStr("color").c_str();
-                if (color!="")
-                {
-                    if (color=="#FFFFFF") color="";
-                    groupColors[group] = color;
-                }
-            }
-        }
 
         RuleRowInfo *rri;
 
@@ -1147,7 +1131,10 @@ void RuleSetView::updateGroups()
                 beginGroup = true ;
                 memberRow = group;
                 rri = new RuleRowInfo(memberRow, true, false);
-                rri->color = groupColors[memberRow];
+                color = r->getOptionsObject()->getStr("color").c_str();
+                if (color=="#FFFFFF") color="";
+                groupColors[memberRow] = color;
+                rri->color = color;
                 rowsInfo.insert(i, rri);
             }
             else
@@ -1596,7 +1583,11 @@ void RuleSetView::paintCell(QPainter *pntr,
 
     FWOptions  *ropt = rule->getOptionsObject();
     assert(ropt!=NULL);
+    QString gclr = getGroupColorForRule(rule);
     QString rclr = ropt->getStr("color").c_str();
+
+    // group color, if set, overrides rule color
+    if (!gclr.isEmpty()) rclr = gclr;
 
     QPixmap bufferpixmap;
     QString bpmname = QString("rulesetcell_%1_%2").
@@ -2764,6 +2755,8 @@ void RuleSetView::openObjectInTree(FWObject *obj)
 
 void RuleSetView::newGroup()
 {
+    if (!isTreeReadWrite(this,ruleset)) return;
+
     bool ok = false ;
     QString text = QInputDialog::getText(
         this, tr(""), tr("Enter group name:"),
@@ -2793,6 +2786,8 @@ void RuleSetView::newGroup()
 
 void RuleSetView::createGroup(int row, int count, const QString &groupName)
 {
+    if (!isTreeReadWrite(this,ruleset)) return;
+
     for (int idx=0 ; idx<count; idx++)
         ruleIndex[row + idx]->setRuleGroupName(groupName.toAscii().data());
     // Note that ProjectPanel::reopenFirewall destroys all RuleSetView
@@ -2803,6 +2798,8 @@ void RuleSetView::createGroup(int row, int count, const QString &groupName)
 
 void RuleSetView::renameGroup()
 {
+    if (!isTreeReadWrite(this,ruleset)) return;
+
     bool ok = false ;
     QString oldGroup = "";
     if (rowsInfo[ firstSelectedRow ] != NULL)
@@ -2837,6 +2834,8 @@ void RuleSetView::renameGroup()
 
 void RuleSetView::addToGroupAbove ()
 {
+    if (!isTreeReadWrite(this,ruleset)) return;
+
     int row = firstSelectedRow;
     int count = lastSelectedRow - firstSelectedRow +1;
     int top = getUpNullRuleIndex(row);
@@ -2868,6 +2867,8 @@ void RuleSetView::addToGroupAbove ()
 
 void RuleSetView::addToGroupBelow()
 {
+    if (!isTreeReadWrite(this,ruleset)) return;
+
     int row = firstSelectedRow;
     int bottom = getDownNullRuleIndex(row);
     RuleRowInfo *ru = rowsInfo[bottom];
@@ -2943,6 +2944,39 @@ void RuleSetView::expandRuleGroup(int row)
     saveCollapsedGroups();
 }
 
+void RuleSetView::removeFromGroup()
+{
+    if (!isTreeReadWrite(this,ruleset)) return;
+
+    int row = firstSelectedRow;
+    int count = lastSelectedRow - firstSelectedRow+1;
+
+    removeFromGroup(row,count);
+}
+
+void RuleSetView::removeFromGroup(int row, int count)
+{
+    if (!isTreeReadWrite(this,ruleset)) return;
+
+    for (int i = row ; i < row+count ; i++)
+    {
+        Rule * r = ruleIndex[i];
+        if (r!=NULL && !r->isReadOnly())
+        {
+            r->setRuleGroupName("");
+            ruleIndex[i]=r;
+        }
+    }
+    QTimer::singleShot( 0, m_project, SLOT(reopenFirewall()) );
+}
+
+
+QString RuleSetView::getGroupColorForRule(Rule *rule)
+{
+    QString group = rule->getRuleGroupName().c_str();
+    return groupColors[group];
+}
+
 /*
  * Collapse rule group identified by name. Since group name does not
  * have to be unique, find and collapse all groups with the same name.
@@ -2964,34 +2998,6 @@ void RuleSetView::expandRuleGroupByName(const QString &name)
         if (rowsInfo[i] && rowsInfo[i]->groupName == name) 
             expandRuleGroup(i);
 }
-
-void RuleSetView::removeFromGroup()
-{
-    int row = firstSelectedRow;
-    int count = lastSelectedRow - firstSelectedRow+1;
-
-    removeFromGroup(row,count);
-}
-
-void RuleSetView::removeFromGroup (int row, int count)
-{
-    for (int i = row ; i < row+count ; i++)
-    {
-        Rule * r = ruleIndex[i];
-        if (r!=NULL)
-        {
-            r->setRuleGroupName("");
-            FWOptions *ropt = r->getOptionsObject();
-            ropt->setStr("color","");
-    
-            ruleIndex[i]=r;
-        }
-    }
-    QTimer::singleShot( 0, m_project, SLOT(reopenFirewall()) );
-
-//    updateGroups();
-}
-
 
 void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
 {
@@ -3497,31 +3503,52 @@ void RuleSetView::setRuleColor(const QString &c)
 
     if (ruleIndex[firstSelectedRow]==NULL)
     {
+        if (fwbdebug)
+            qDebug("RuleSetView::setRuleColor changing color for group c=%s",
+                   c.toAscii().constData());
         RuleRowInfo * rri = rowsInfo[firstSelectedRow];
         rri->color = c;
         if (rri->color=="") rri->color="#FFFFFF";
-        updateGroups();
-        return ;
-    }
-
-    if ( firstSelectedRow!=-1 )
-    {
-        for (int i=firstSelectedRow; i<=lastSelectedRow; ++i)
+        // Find first rule of the group
+        Rule *rule = NULL;
+        for (int row = firstSelectedRow; row < ruleIndex.size() && rule==NULL;
+             row++)
         {
-            Rule *rule =  ruleIndex[i];
-            if (rule!=NULL)
+            rule = ruleIndex[row];
+        }
+        if (rule)
+        {
+            FWOptions *ropt = rule->getOptionsObject();
+            ropt->setStr("color", c.toLatin1().constData());
+            updateGroups();
+        }
+    } else
+    {
+        if ( firstSelectedRow!=-1 )
+        {
+            if (fwbdebug)
+                qDebug("RuleSetView::setRuleColor changing color for rule c=%s",
+                       c.toAscii().constData());
+
+            for (int i=firstSelectedRow; i<=lastSelectedRow; ++i)
             {
-                FWOptions *ropt = rule->getOptionsObject();
-                ropt->setStr("color", c.toLatin1().constData());
-                // need to call dataChanged to trigger row repaint.
-                // At least on Mac OS X with QT 4.4.1 calling update()
-                // was insufficient.
-                dataChanged(model()->index(i, 0),
-                            model()->index(i, model()->columnCount()));
-                adjustRow(i);
+                Rule *rule = ruleIndex[i];
+                if (rule!=NULL)
+                {
+                    FWOptions *ropt = rule->getOptionsObject();
+                    ropt->setStr("color", c.toLatin1().constData());
+
+                    // need to call dataChanged to trigger row repaint.
+                    // At least on Mac OS X with QT 4.4.1 calling update()
+                    // was insufficient.
+                    dataChanged(model()->index(i, 0),
+                                model()->index(i, model()->columnCount()));
+                    adjustRow(i);
+                }
             }
         }
     }
+
     update();
     mw->reloadAllWindowsWithFile(m_project);
 }
@@ -3530,7 +3557,7 @@ void RuleSetView::changeAction(PolicyRule::Action act)
 {
     if (getFirewall()==NULL) return;
 
-    if (!isTreeReadWrite(this,ruleset)) return;
+    if (!isTreeReadWrite(this, ruleset)) return;
 
     if ( currentRow()!=-1 && currentColumn()!=-1 )
     {
@@ -4320,6 +4347,8 @@ void RuleSetView::dropEvent(QDropEvent *ev)
 
 void RuleSetView::moveRule()
 {
+    if (!isTreeReadWrite(this,ruleset)) return;
+
     if (getFirewall()==NULL) return;
 
     if (!hasFocus()) return;
