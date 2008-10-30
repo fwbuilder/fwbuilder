@@ -67,7 +67,7 @@ ObjectIconView::ObjectIconView(QWidget* parent, const char*, Qt::WindowFlags) :
     //startingDrag = false;
 }
 
-bool ObjectIconView::event ( QEvent * event )
+bool ObjectIconView::event(QEvent *event)
 {
     if (event->type() == QEvent::ToolTip)
     {
@@ -83,13 +83,12 @@ bool ObjectIconView::event ( QEvent * event )
             FWObject  *obj=NULL;
             QRect      cr;
 
-            QListWidgetItem      *itm   = itemAt( QPoint(cx,cy) );
+            QListWidgetItem *itm = itemAt( QPoint(cx,cy) );
             QModelIndex ind = indexAt( QPoint(cx,cy) );
             if (itm==NULL) return false;
-            ObjectIconViewItem *oivi  = dynamic_cast<ObjectIconViewItem*>(itm);
-            assert(oivi!=NULL);
-            obj     = oivi->getFWObject();
 
+            int obj_id = itm->data(Qt::UserRole).toInt();
+            obj = mw->db()->findInIndex(obj_id);
             if (obj==NULL) return false;
 
             cr = rectForIndex(ind);
@@ -100,11 +99,14 @@ bool ObjectIconView::event ( QEvent * event )
                 cr.height());
 
             QRect global = QRect(
-                viewport()->mapToGlobal(cr.topLeft()), viewport()->mapToGlobal(cr.bottomRight()));
+                viewport()->mapToGlobal(cr.topLeft()),
+                viewport()->mapToGlobal(cr.bottomRight()));
 
 
             QToolTip::showText(mapToGlobal( he->pos() ),
-                FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj,true,true),
+                FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj,
+                                                                       true,
+                                                                       true),
                 this, global);
         }
 
@@ -116,13 +118,9 @@ bool ObjectIconView::event ( QEvent * event )
 
 QDrag* ObjectIconView::dragObject()
 {
-    QListWidgetItem      *ivi  = currentItem();
-    ObjectIconViewItem *oivi = dynamic_cast<ObjectIconViewItem*>(ivi);
-    if (!oivi)
-        return NULL;
-    //assert(oivi!=NULL);
-
-    FWObject *obj = oivi->getFWObject();
+    QListWidgetItem *ivi = currentItem();
+    int obj_id = ivi->data(Qt::UserRole).toInt();
+    FWObject *obj = mw->db()->findInIndex(obj_id);
     QString icn =
         Resources::global_res->getObjResourceStr(obj, "icon-ref").c_str();
     list<FWObject*> dragobj;

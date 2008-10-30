@@ -69,10 +69,11 @@ ObjectListView::ObjectListView(QWidget* parent, const char*,
     header()->setMovable(false);
     setSortingEnabled(true);
     sortByColumn ( 0, Qt::AscendingOrder );
-    connect (header (),SIGNAL(sectionClicked (int)),this,SLOT(sectionClicked (int)));
+    connect(header(), SIGNAL(sectionClicked (int)),
+            this, SLOT(sectionClicked (int)));
 }
 
-bool ObjectListView::event ( QEvent * event )
+bool ObjectListView::event(QEvent *event)
 {
     if (event->type() == QEvent::ToolTip)
     {
@@ -88,25 +89,26 @@ bool ObjectListView::event ( QEvent * event )
             FWObject  *obj=NULL;
             QRect      cr;
 
-            QTreeWidgetItem      *itm   = itemAt( QPoint(cx,cy - header()->height()) );
+            QTreeWidgetItem *itm = itemAt(QPoint(cx,cy - header()->height()));
             if (itm==NULL) return false;
-            ObjectListViewItem *oivi  = dynamic_cast<ObjectListViewItem*>(itm);
-            assert(oivi!=NULL);
-            obj     = oivi->getFWObject();
-
+            int obj_id = itm->data(0, Qt::UserRole).toInt();
+            obj = mw->db()->findInIndex(obj_id);
             if (obj==NULL) return false;
 
             cr = visualItemRect(itm);
 
             QRect global = QRect(
-                viewport()->mapToGlobal(cr.topLeft()), viewport()->mapToGlobal(cr.bottomRight()));
+                viewport()->mapToGlobal(cr.topLeft()),
+                viewport()->mapToGlobal(cr.bottomRight()));
 
             //finally stretch rect up to component's width and even more
             //(it fixes bug with horizontal scroll)
             global.setWidth(width() + horizontalOffset());
 
             QToolTip::showText(mapToGlobal( he->pos() ),
-                FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj,true,true),
+                FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj,
+                                                                       true,
+                                                                       true),
                 this, global);
         }
 
@@ -119,10 +121,8 @@ bool ObjectListView::event ( QEvent * event )
 QDrag* ObjectListView::dragObject()
 {
     QTreeWidgetItem *ovi = currentItem();
-    ObjectListViewItem *otvi=dynamic_cast<ObjectListViewItem*>(ovi);
-    assert(otvi!=NULL);
-
-    FWObject *obj = otvi->getFWObject();
+    int obj_id = ovi->data(0, Qt::UserRole).toInt();
+    FWObject *obj = mw->db()->findInIndex(obj_id);
     QString icn = (":/Icons/"+obj->getTypeName()+"/icon-ref").c_str();
         //Resources::global_res->getObjResourceStr(obj, "icon-ref").c_str();
 

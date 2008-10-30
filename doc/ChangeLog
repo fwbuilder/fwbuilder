@@ -1,3 +1,10 @@
+2008-10-30  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectIconView.cpp (ObjectIconView::event): fixed bug #2209210
+	"crash in fwbuilder: ObjectIconView.cpp:90:". The GUI crashed if
+	user moved mouse cursor over object icons in a group object editor
+	when tooltips were activated.
+
 2008-10-26  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* RuleSetView.cpp (RuleSetView::setRuleColor): making sure no rule
