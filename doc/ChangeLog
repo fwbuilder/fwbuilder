@@ -1,5 +1,11 @@
 2008-10-30  vadim  <vadim@vk.crocodile.org>
 
+	* Added Japanese translation by Tadashi Jokagi ( elf2000 )
+	Translation converted from the .po file generated for 
+	fwbuilder 2.1.19. Since translation was done for the old version
+	of the product, it is incomplete, however at least menus seem
+	to be translated.
+
 	* ObjectIconView.cpp (ObjectIconView::event): fixed bug #2209210
 	"crash in fwbuilder: ObjectIconView.cpp:90:". The GUI crashed if
 	user moved mouse cursor over object icons in a group object editor

@@ -339,10 +339,13 @@ contains( HAVE_ANTLR_RUNTIME, 1 ){
 
 RESOURCES += MainRes.qrc
 
-TRANSLATIONS = fwbuilder_ru.ts
+TRANSLATIONS = fwbuilder_ru.ts fwbuilder_ja.ts
+
+ja.path = $$PKGLOCALEDIR
+ja.files = fwbuilder_ja.qm
 
 ru.path = $$PKGLOCALEDIR
 ru.files = fwbuilder_ru.qm
 
-INSTALLS += ru
+INSTALLS += ja ru
 
