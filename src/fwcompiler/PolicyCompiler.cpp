@@ -319,12 +319,14 @@ bool PolicyCompiler::ItfNegation::processNext()
 
     list<FWObject*> allInterfaces=compiler->fw->getByType(Interface::TYPENAME);
 
-    RuleElementItf *itfre=rule->getItf();
+    RuleElementItf *itfre = rule->getItf();
     if (itfre==NULL)
+    {
         compiler->abort("Missing interface RE in rule '" +
                         rule->getLabel() +
                         "' id=" + FWObjectDatabase::getStringId(rule->getId())
         );
+    }
 
     if (itfre->getNeg())
     {

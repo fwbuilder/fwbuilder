@@ -1,3 +1,10 @@
+2008-11-01  vadim  <vadim@vk.crocodile.org>
+
+	* fwbuilder/Rule.cpp (PolicyRule::PolicyRule): create rule
+	elements exactly in the order defined by the DTD. Incorrect order
+	caused errors in compilers ever since getSrc, getDst and other
+	methods that return rule elements depend on the order.
+
 2008-10-21  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler.cpp (PolicyCompiler::checkForShadowing):

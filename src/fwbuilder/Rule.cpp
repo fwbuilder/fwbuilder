@@ -131,6 +131,7 @@ PolicyRule::PolicyRule(const FWObject *root,bool prepopulate) : Rule(root,prepop
         FWObjectDatabase *db=(FWObjectDatabase*)root;
         assert(db);
 
+// <!ELEMENT PolicyRule (Src,Dst,Srv?,Itf?,When?,PolicyRuleOptions?)>
         re=db->create("Src");  assert(re!=NULL);
         add(re); src_re = RuleElementSrc::cast(re);
 
@@ -140,11 +141,11 @@ PolicyRule::PolicyRule(const FWObject *root,bool prepopulate) : Rule(root,prepop
         re=db->create("Srv");  assert(re!=NULL);
         add(re); srv_re = RuleElementSrv::cast(re);
 
-        re=db->create("When"); assert(re!=NULL);
-        add(re); when_re = RuleElementInterval::cast(re);
-
         re=db->create("Itf");  assert(re!=NULL);
         add(re); itf_re = RuleElementItf::cast(re);
+
+        re=db->create("When"); assert(re!=NULL);
+        add(re); when_re = RuleElementInterval::cast(re);
 
         add( db->create(PolicyRuleOptions::TYPENAME) );
     }
@@ -167,7 +168,7 @@ FWObject& PolicyRule::shallowDuplicate(const FWObject *x,
     return  Rule::shallowDuplicate(x, preserve_id);
 }
 
-
+// <!ELEMENT PolicyRule (Src,Dst,Srv?,Itf?,When?,PolicyRuleOptions?)>
 RuleElementSrc*  PolicyRule::getSrc()
 {
     if (src_re) return src_re;
@@ -359,6 +360,8 @@ xmlNodePtr PolicyRule::toXML(xmlNodePtr parent) throw(FWException)
      * Save children to XML file in just this order (src, dst, srv).
      * PolicyCompiler::checkForShadowing depends on it!
      * But after all, DTD requires this order.
+     *
+     <!ELEMENT PolicyRule (Src,Dst,Srv?,Itf?,When?,PolicyRuleOptions?)>
      */
     if ( (o=getFirstByType( RuleElementSrc::TYPENAME ))!=NULL )
 	o->toXML(me);
