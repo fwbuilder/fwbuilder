@@ -112,15 +112,15 @@ bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
 
-    QFile cf;
-    int fd = open(cnf->conffile.toAscii().constData(), O_RDONLY);
-    if (cf.open(fd, QIODevice::ReadOnly ))
+    QFile cf(cnf->conffile);
+    if (cf.open(QIODevice::ReadOnly ))
     {
         QTextStream stream(&cf);
         QString line;
-        while (!stream.atEnd())
+        do
         {
             line = stream.readLine();
+            if (line.isNull()) break;
             int pos = -1;
             if ( (pos=line.indexOf(MANIFEST_MARKER))!=-1 )
             {
@@ -133,8 +133,7 @@ bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
                            line[n].toLatin1(),
                            line.mid(n+2).toAscii().constData());
             }
-            line = "";
-        }
+        } while  (!line.isNull());
         cf.close();
     } else
     {

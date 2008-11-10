@@ -1,3 +1,12 @@
+2008-11-09    <vadim@vk.crocodile.org>
+
+	* FirewallInstallerUnx.cpp(FirewallInstallerUnx::packInstallJobsList): 
+	fixed a bug introduced some time earlier and reported in the bug
+	report #2135827: policy installer would only copy .fwb file to the
+	firewall when "Store data file on the firewall" was activated and
+	skipped actual generated policy file(s) (.fw). This only happened
+	on Windows.
+
 2008-10-30  vadim  <vadim@vk.crocodile.org>
 
 	* Added Japanese translation by Tadashi Jokagi ( elf2000 )
