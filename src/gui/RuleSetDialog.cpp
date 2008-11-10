@@ -85,7 +85,8 @@ void RuleSetDialog::loadFWObject(FWObject *o)
     string platform = "";
     FWObject *fw = o;
     while (fw && fw->getTypeName()!="Firewall") fw = fw->getParent();
-    if (fw) platform = fw->getStr("platform");
+    assert(fw!=NULL);
+    platform = fw->getStr("platform");
     FWOptions  *fwopt = Firewall::cast(fw)->getOptionsObject();
 
     if (platform == "iptables")
@@ -186,8 +187,11 @@ void RuleSetDialog::applyChanges()
     RuleSet *s = dynamic_cast<RuleSet*>(obj);
     assert(s!=NULL);
 
+    string platform = "";
     FWObject *fw = obj;
     while (fw && fw->getTypeName()!="Firewall") fw = fw->getParent();
+    assert(fw!=NULL);
+    platform = fw->getStr("platform");
     FWOptions  *fwopt = Firewall::cast(fw)->getOptionsObject();
 
     string oldname=obj->getName();
@@ -200,8 +204,18 @@ void RuleSetDialog::applyChanges()
     QStringList mangle_rulesets = 
         QString(fwopt->getStr("ipt_mangle_only_rulesets").c_str()).
         split(" ");
-    if (mangle_rulesets.indexOf(s->getName().c_str()) < 0)
-        mangle_rulesets.push_back(s->getName().c_str());
+
+    if (platform == "iptables")
+    {
+        if (m_dialog->ipt_mangle_table->isChecked() &&
+            mangle_rulesets.indexOf(s->getName().c_str()) < 0)
+            mangle_rulesets.push_back(s->getName().c_str());
+
+        if (!m_dialog->ipt_mangle_table->isChecked() &&
+            mangle_rulesets.indexOf(s->getName().c_str()) >= 0)
+            mangle_rulesets.removeOne(s->getName().c_str());
+    }
+
     fwopt->setStr("ipt_mangle_only_rulesets",
                   mangle_rulesets.join(" ").toAscii().constData());
 

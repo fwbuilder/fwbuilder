@@ -2659,7 +2659,8 @@ void RuleSetView::mouseReleaseEvent( QMouseEvent* ev )
 
     if (fwbdebug) qDebug("RuleSetView::contentsMouseReleaseEvent");
 
-    if (mw->isEditorVisible() && !switchObjectInEditor( columnAt(ev->x()) ))
+    if (ruleset->size()!=0 &&
+        mw->isEditorVisible() && !switchObjectInEditor( columnAt(ev->x()) ))
     {
         ev->accept();
     };
