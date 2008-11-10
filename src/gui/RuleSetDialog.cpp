@@ -213,7 +213,7 @@ void RuleSetDialog::applyChanges()
 
         if (!m_dialog->ipt_mangle_table->isChecked() &&
             mangle_rulesets.indexOf(s->getName().c_str()) >= 0)
-            mangle_rulesets.removeOne(s->getName().c_str());
+            mangle_rulesets.removeAll(s->getName().c_str());
     }
 
     fwopt->setStr("ipt_mangle_only_rulesets",
