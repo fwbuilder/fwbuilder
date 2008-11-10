@@ -1,16 +1,26 @@
 2008-11-09    <vadim@vk.crocodile.org>
 
-	* FirewallInstallerUnx.cpp(FirewallInstallerUnx::packInstallJobsList): 
+	* Added updated Japanese translation by Tadashi Jokagi ( elf2000 )
+	from bug #2214440
+
+	* FirewallInstallerUnx.cpp(FirewallInstallerUnx::packInstallJobsList):
 	fixed a bug introduced some time earlier and reported in the bug
 	report #2135827: policy installer would only copy .fwb file to the
 	firewall when "Store data file on the firewall" was activated and
 	skipped actual generated policy file(s) (.fw). This only happened
 	on Windows.
 
+2008-11-01  vadim  <vadim@vk.crocodile.org>
+
+	* fwbuilder/Rule.cpp (PolicyRule::PolicyRule): a bugfix in the
+	PolicyRule class, fixes errors in some operations in policy
+	compilers that were caused by switch to a more efficient way to
+	find rule element objects in rules.
+
 2008-10-30  vadim  <vadim@vk.crocodile.org>
 
 	* Added Japanese translation by Tadashi Jokagi ( elf2000 )
-	Translation converted from the .po file generated for 
+	Translation converted from the .po file generated for
 	fwbuilder 2.1.19. Since translation was done for the old version
 	of the product, it is incomplete, however at least menus seem
 	to be translated.
