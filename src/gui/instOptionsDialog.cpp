@@ -83,7 +83,7 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
 
     if (cnf->batchInstall)
     {
-        m_dialog->copyFWB->hide();
+        //m_dialog->copyFWB->hide();
         m_dialog->rollback->hide();
         m_dialog->rollbackTime->hide();
         m_dialog->rollbackTimeUnit->hide();

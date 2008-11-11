@@ -1,5 +1,10 @@
 2008-11-10  vadim  <vadim@vk.crocodile.org>
 
+	* instOptionsDialog.cpp (instOptionsDialog::instOptionsDialog):
+	for bug #2135827: "'Store a copy of fwb file...'  very slow" -
+	need to enable option "store copy of data file on the firewall"
+	for the batch install.
+
 	* RuleSetDialog.cpp (RuleSetDialog::applyChanges): fixed bug
 	#2255591 Adding new ipv6 policy is always type "mangle". When user
 	added new Policy object to the iptables firewall and made and
