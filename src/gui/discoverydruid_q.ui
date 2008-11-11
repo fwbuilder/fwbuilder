@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>557</width>
+    <width>559</width>
     <height>670</height>
    </rect>
   </property>
@@ -13,16 +13,7 @@
    <property name="spacing" >
     <number>6</number>
    </property>
-   <property name="leftMargin" >
-    <number>9</number>
-   </property>
-   <property name="topMargin" >
-    <number>9</number>
-   </property>
-   <property name="rightMargin" >
-    <number>9</number>
-   </property>
-   <property name="bottomMargin" >
+   <property name="margin" >
     <number>9</number>
    </property>
    <item>
@@ -63,23 +54,14 @@
      </property>
      <widget class="QWidget" name="WizardPage0" >
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>0</number>
-       </property>
-       <property name="topMargin" >
-        <number>0</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>0</number>
-       </property>
        <property name="horizontalSpacing" >
         <number>6</number>
        </property>
        <property name="verticalSpacing" >
-        <number>6</number>
+        <number>40</number>
+       </property>
+       <property name="margin" >
+        <number>0</number>
        </property>
        <item row="0" column="0" >
         <widget class="QLabel" name="textLabel1" >
@@ -100,7 +82,7 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0" >
+       <item row="2" column="0" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -108,23 +90,7 @@
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
-          <size>
-           <width>20</width>
-           <height>30</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="3" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>70</height>
@@ -132,28 +98,19 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="0" >
+       <item row="1" column="0" >
         <widget class="QGroupBox" name="dm_buttonGroup" >
          <property name="title" >
           <string>Discovery method:</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
           <property name="horizontalSpacing" >
            <number>6</number>
           </property>
           <property name="verticalSpacing" >
+           <number>20</number>
+          </property>
+          <property name="margin" >
            <number>6</number>
           </property>
           <item row="0" column="0" >
@@ -197,16 +154,7 @@
        <property name="spacing" >
         <number>6</number>
        </property>
-       <property name="leftMargin" >
-        <number>0</number>
-       </property>
-       <property name="topMargin" >
-        <number>0</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>0</number>
        </property>
        <item>
@@ -230,7 +178,7 @@
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>31</height>
@@ -247,16 +195,7 @@
           <property name="spacing" >
            <number>6</number>
           </property>
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item>
@@ -267,7 +206,7 @@
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>20</width>
               <height>20</height>
@@ -280,16 +219,7 @@
             <property name="spacing" >
              <number>6</number>
             </property>
-            <property name="leftMargin" >
-             <number>0</number>
-            </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
+            <property name="margin" >
              <number>0</number>
             </property>
             <item>
@@ -312,7 +242,7 @@
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>20</width>
               <height>41</height>
@@ -331,7 +261,7 @@
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>181</height>
@@ -343,22 +273,10 @@
      </widget>
      <widget class="QWidget" name="page" >
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>0</number>
        </property>
-       <property name="topMargin" >
-        <number>0</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>0</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>6</number>
-       </property>
-       <property name="verticalSpacing" >
+       <property name="spacing" >
         <number>6</number>
        </property>
        <item row="0" column="0" colspan="4" >
@@ -382,7 +300,7 @@
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>20</height>
@@ -461,7 +379,7 @@
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>110</width>
            <height>20</height>
@@ -496,7 +414,7 @@
          <property name="sizeType" >
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>10</height>
@@ -512,7 +430,7 @@
          <property name="sizeType" >
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>10</height>
@@ -528,7 +446,7 @@
          <property name="sizeType" >
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>10</height>
@@ -543,16 +461,7 @@
        <property name="spacing" >
         <number>6</number>
        </property>
-       <property name="leftMargin" >
-        <number>0</number>
-       </property>
-       <property name="topMargin" >
-        <number>0</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>0</number>
        </property>
        <item>
@@ -577,7 +486,7 @@ Please enter the domain name below:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>21</height>
@@ -594,16 +503,7 @@ Please enter the domain name below:</string>
           <property name="spacing" >
            <number>6</number>
           </property>
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item>
@@ -614,7 +514,7 @@ Please enter the domain name below:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>20</width>
               <height>21</height>
@@ -633,7 +533,7 @@ Please enter the domain name below:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>20</width>
               <height>21</height>
@@ -652,7 +552,7 @@ Please enter the domain name below:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>20</height>
@@ -687,16 +587,7 @@ Please enter the domain name below:</string>
        <property name="spacing" >
         <number>6</number>
        </property>
-       <property name="leftMargin" >
-        <number>0</number>
-       </property>
-       <property name="topMargin" >
-        <number>0</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>0</number>
        </property>
        <item>
@@ -718,22 +609,10 @@ Please enter the domain name below:</string>
           <string>Name server</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>6</number>
-          </property>
-          <property name="verticalSpacing" >
+          <property name="spacing" >
            <number>6</number>
           </property>
           <item row="0" column="0" >
@@ -761,16 +640,7 @@ Please enter the domain name below:</string>
             <property name="spacing" >
              <number>6</number>
             </property>
-            <property name="leftMargin" >
-             <number>0</number>
-            </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
+            <property name="margin" >
              <number>0</number>
             </property>
             <item>
@@ -816,7 +686,7 @@ Please enter the domain name below:</string>
               <property name="sizeType" >
                <enum>QSizePolicy::Expanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>50</width>
                 <height>20</height>
@@ -835,22 +705,10 @@ Please enter the domain name below:</string>
           <string>DNS Query options</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
+          <property name="margin" >
            <number>0</number>
           </property>
-          <property name="topMargin" >
-           <number>0</number>
-          </property>
-          <property name="rightMargin" >
-           <number>0</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>0</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>6</number>
-          </property>
-          <property name="verticalSpacing" >
+          <property name="spacing" >
            <number>6</number>
           </property>
           <item row="0" column="0" >
@@ -901,7 +759,7 @@ Please enter the domain name below:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>160</width>
               <height>20</height>
@@ -917,7 +775,7 @@ Please enter the domain name below:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>170</width>
               <height>20</height>
@@ -936,7 +794,7 @@ Please enter the domain name below:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>131</height>
@@ -951,16 +809,7 @@ Please enter the domain name below:</string>
        <property name="spacing" >
         <number>6</number>
        </property>
-       <property name="leftMargin" >
-        <number>0</number>
-       </property>
-       <property name="topMargin" >
-        <number>0</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>0</number>
        </property>
        <item>
@@ -982,22 +831,10 @@ Please enter the domain name below:</string>
           <string>'Seed' host</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>6</number>
-          </property>
-          <property name="verticalSpacing" >
+          <property name="spacing" >
            <number>6</number>
           </property>
           <item row="0" column="0" >
@@ -1005,16 +842,7 @@ Please enter the domain name below:</string>
             <property name="spacing" >
              <number>6</number>
             </property>
-            <property name="leftMargin" >
-             <number>0</number>
-            </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
+            <property name="margin" >
              <number>0</number>
             </property>
             <item>
@@ -1032,7 +860,7 @@ Please enter the domain name below:</string>
               <property name="sizeType" >
                <enum>QSizePolicy::Expanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>211</width>
                 <height>21</height>
@@ -1047,16 +875,7 @@ Please enter the domain name below:</string>
             <property name="spacing" >
              <number>6</number>
             </property>
-            <property name="leftMargin" >
-             <number>0</number>
-            </property>
-            <property name="topMargin" >
-             <number>0</number>
-            </property>
-            <property name="rightMargin" >
-             <number>0</number>
-            </property>
-            <property name="bottomMargin" >
+            <property name="margin" >
              <number>0</number>
             </property>
             <item>
@@ -1105,7 +924,7 @@ Please enter the domain name below:</string>
               <property name="sizeType" >
                <enum>QSizePolicy::Expanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>40</width>
                 <height>20</height>
@@ -1137,22 +956,10 @@ Please enter the domain name below:</string>
           <string>Confine scan to this network:</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>6</number>
-          </property>
-          <property name="verticalSpacing" >
+          <property name="spacing" >
            <number>6</number>
           </property>
           <item row="0" column="1" >
@@ -1169,7 +976,7 @@ Please enter the domain name below:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>271</width>
               <height>20</height>
@@ -1185,7 +992,7 @@ Please enter the domain name below:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>271</width>
               <height>20</height>
@@ -1234,7 +1041,7 @@ Please enter the domain name below:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>70</height>
@@ -1249,16 +1056,7 @@ Please enter the domain name below:</string>
        <property name="spacing" >
         <number>6</number>
        </property>
-       <property name="leftMargin" >
-        <number>0</number>
-       </property>
-       <property name="topMargin" >
-        <number>0</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>0</number>
        </property>
        <item>
@@ -1390,16 +1188,7 @@ Please enter the domain name below:</string>
        <property name="spacing" >
         <number>6</number>
        </property>
-       <property name="leftMargin" >
-        <number>0</number>
-       </property>
-       <property name="topMargin" >
-        <number>0</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>0</number>
        </property>
        <item>
@@ -1421,22 +1210,10 @@ Please enter the domain name below:</string>
           <string>SNMP query parameters:</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>6</number>
-          </property>
-          <property name="verticalSpacing" >
+          <property name="spacing" >
            <number>6</number>
           </property>
           <item row="0" column="0" >
@@ -1504,7 +1281,7 @@ Please enter the domain name below:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>190</width>
               <height>20</height>
@@ -1520,7 +1297,7 @@ Please enter the domain name below:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>250</width>
               <height>20</height>
@@ -1536,7 +1313,7 @@ Please enter the domain name below:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>250</width>
               <height>20</height>
@@ -1553,22 +1330,10 @@ Please enter the domain name below:</string>
           <string>DNS parameters:</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>6</number>
-          </property>
-          <property name="verticalSpacing" >
+          <property name="spacing" >
            <number>6</number>
           </property>
           <item row="0" column="2" >
@@ -1579,7 +1344,7 @@ Please enter the domain name below:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>300</width>
               <height>20</height>
@@ -1671,7 +1436,7 @@ Please enter the domain name below:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>80</height>
@@ -1686,16 +1451,7 @@ Please enter the domain name below:</string>
        <property name="spacing" >
         <number>6</number>
        </property>
-       <property name="leftMargin" >
-        <number>0</number>
-       </property>
-       <property name="topMargin" >
-        <number>0</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>0</number>
        </property>
        <item>
@@ -1707,16 +1463,7 @@ Please enter the domain name below:</string>
           <property name="spacing" >
            <number>6</number>
           </property>
-          <property name="leftMargin" >
-           <number>0</number>
-          </property>
-          <property name="topMargin" >
-           <number>0</number>
-          </property>
-          <property name="rightMargin" >
-           <number>0</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>0</number>
           </property>
           <item>
@@ -1745,22 +1492,10 @@ Please enter the domain name below:</string>
           <string/>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>6</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>6</number>
-          </property>
-          <property name="verticalSpacing" >
+          <property name="spacing" >
            <number>6</number>
           </property>
           <item row="0" column="0" >
@@ -1792,7 +1527,7 @@ Please enter the domain name below:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>141</width>
               <height>20</height>
@@ -1812,16 +1547,7 @@ Please enter the domain name below:</string>
           <property name="spacing" >
            <number>6</number>
           </property>
-          <property name="leftMargin" >
-           <number>0</number>
-          </property>
-          <property name="topMargin" >
-           <number>0</number>
-          </property>
-          <property name="rightMargin" >
-           <number>0</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>0</number>
           </property>
           <item>
@@ -1841,16 +1567,7 @@ Please enter the domain name below:</string>
        <property name="spacing" >
         <number>6</number>
        </property>
-       <property name="leftMargin" >
-        <number>0</number>
-       </property>
-       <property name="topMargin" >
-        <number>0</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>0</number>
        </property>
        <item>
@@ -1871,16 +1588,7 @@ Please enter the domain name below:</string>
          <property name="spacing" >
           <number>6</number>
          </property>
-         <property name="leftMargin" >
-          <number>6</number>
-         </property>
-         <property name="topMargin" >
-          <number>6</number>
-         </property>
-         <property name="rightMargin" >
-          <number>6</number>
-         </property>
-         <property name="bottomMargin" >
+         <property name="margin" >
           <number>6</number>
          </property>
          <item>
@@ -1888,16 +1596,7 @@ Please enter the domain name below:</string>
            <property name="spacing" >
             <number>6</number>
            </property>
-           <property name="leftMargin" >
-            <number>6</number>
-           </property>
-           <property name="topMargin" >
-            <number>6</number>
-           </property>
-           <property name="rightMargin" >
-            <number>6</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>6</number>
            </property>
            <item>
@@ -1909,22 +1608,10 @@ Please enter the domain name below:</string>
            </item>
            <item>
             <layout class="QGridLayout" >
-             <property name="leftMargin" >
+             <property name="margin" >
               <number>6</number>
              </property>
-             <property name="topMargin" >
-              <number>6</number>
-             </property>
-             <property name="rightMargin" >
-              <number>6</number>
-             </property>
-             <property name="bottomMargin" >
-              <number>6</number>
-             </property>
-             <property name="horizontalSpacing" >
-              <number>6</number>
-             </property>
-             <property name="verticalSpacing" >
+             <property name="spacing" >
               <number>6</number>
              </property>
              <item row="1" column="0" >
@@ -1964,16 +1651,7 @@ Please enter the domain name below:</string>
            <property name="spacing" >
             <number>6</number>
            </property>
-           <property name="leftMargin" >
-            <number>6</number>
-           </property>
-           <property name="topMargin" >
-            <number>6</number>
-           </property>
-           <property name="rightMargin" >
-            <number>6</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>6</number>
            </property>
            <item>
@@ -1998,7 +1676,7 @@ Please enter the domain name below:</string>
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>300</height>
@@ -2013,16 +1691,7 @@ Please enter the domain name below:</string>
            <property name="spacing" >
             <number>6</number>
            </property>
-           <property name="leftMargin" >
-            <number>6</number>
-           </property>
-           <property name="topMargin" >
-            <number>6</number>
-           </property>
-           <property name="rightMargin" >
-            <number>6</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>6</number>
            </property>
            <item>
@@ -2037,16 +1706,7 @@ Please enter the domain name below:</string>
              <property name="spacing" >
               <number>6</number>
              </property>
-             <property name="leftMargin" >
-              <number>6</number>
-             </property>
-             <property name="topMargin" >
-              <number>6</number>
-             </property>
-             <property name="rightMargin" >
-              <number>6</number>
-             </property>
-             <property name="bottomMargin" >
+             <property name="margin" >
               <number>6</number>
              </property>
              <item>
@@ -2076,16 +1736,7 @@ Please enter the domain name below:</string>
        <property name="spacing" >
         <number>6</number>
        </property>
-       <property name="leftMargin" >
-        <number>0</number>
-       </property>
-       <property name="topMargin" >
-        <number>0</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>0</number>
        </property>
        <item>
@@ -2106,16 +1757,7 @@ Please enter the domain name below:</string>
          <property name="spacing" >
           <number>6</number>
          </property>
-         <property name="leftMargin" >
-          <number>6</number>
-         </property>
-         <property name="topMargin" >
-          <number>6</number>
-         </property>
-         <property name="rightMargin" >
-          <number>6</number>
-         </property>
-         <property name="bottomMargin" >
+         <property name="margin" >
           <number>6</number>
          </property>
          <item>
@@ -2123,16 +1765,7 @@ Please enter the domain name below:</string>
            <property name="spacing" >
             <number>6</number>
            </property>
-           <property name="leftMargin" >
-            <number>6</number>
-           </property>
-           <property name="topMargin" >
-            <number>6</number>
-           </property>
-           <property name="rightMargin" >
-            <number>6</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>6</number>
            </property>
            <item>
@@ -2144,22 +1777,10 @@ Please enter the domain name below:</string>
            </item>
            <item>
             <layout class="QGridLayout" >
-             <property name="leftMargin" >
+             <property name="margin" >
               <number>6</number>
              </property>
-             <property name="topMargin" >
-              <number>6</number>
-             </property>
-             <property name="rightMargin" >
-              <number>6</number>
-             </property>
-             <property name="bottomMargin" >
-              <number>6</number>
-             </property>
-             <property name="horizontalSpacing" >
-              <number>6</number>
-             </property>
-             <property name="verticalSpacing" >
+             <property name="spacing" >
               <number>6</number>
              </property>
              <item row="0" column="1" >
@@ -2199,16 +1820,7 @@ Please enter the domain name below:</string>
            <property name="spacing" >
             <number>6</number>
            </property>
-           <property name="leftMargin" >
-            <number>6</number>
-           </property>
-           <property name="topMargin" >
-            <number>6</number>
-           </property>
-           <property name="rightMargin" >
-            <number>6</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>6</number>
            </property>
            <item>
@@ -2233,7 +1845,7 @@ Please enter the domain name below:</string>
              <property name="sizeType" >
               <enum>QSizePolicy::Expanding</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>240</height>
@@ -2248,16 +1860,7 @@ Please enter the domain name below:</string>
            <property name="spacing" >
             <number>6</number>
            </property>
-           <property name="leftMargin" >
-            <number>6</number>
-           </property>
-           <property name="topMargin" >
-            <number>6</number>
-           </property>
-           <property name="rightMargin" >
-            <number>6</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>6</number>
            </property>
            <item>
@@ -2272,16 +1875,7 @@ Please enter the domain name below:</string>
              <property name="spacing" >
               <number>6</number>
              </property>
-             <property name="leftMargin" >
-              <number>6</number>
-             </property>
-             <property name="topMargin" >
-              <number>6</number>
-             </property>
-             <property name="rightMargin" >
-              <number>6</number>
-             </property>
-             <property name="bottomMargin" >
+             <property name="margin" >
               <number>6</number>
              </property>
              <item>
@@ -2308,42 +1902,18 @@ Please enter the domain name below:</string>
      </widget>
      <widget class="QWidget" name="WizardPage10" >
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>0</number>
        </property>
-       <property name="topMargin" >
-        <number>0</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>0</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>6</number>
-       </property>
-       <property name="verticalSpacing" >
+       <property name="spacing" >
         <number>6</number>
        </property>
        <item row="2" column="0" >
         <layout class="QGridLayout" >
-         <property name="leftMargin" >
+         <property name="margin" >
           <number>0</number>
          </property>
-         <property name="topMargin" >
-          <number>0</number>
-         </property>
-         <property name="rightMargin" >
-          <number>0</number>
-         </property>
-         <property name="bottomMargin" >
-          <number>0</number>
-         </property>
-         <property name="horizontalSpacing" >
-          <number>6</number>
-         </property>
-         <property name="verticalSpacing" >
+         <property name="spacing" >
           <number>6</number>
          </property>
          <item row="1" column="2" >
@@ -2354,7 +1924,7 @@ Please enter the domain name below:</string>
            <property name="sizeType" >
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>30</width>
              <height>20</height>
@@ -2391,7 +1961,7 @@ Please enter the domain name below:</string>
            <property name="sizeType" >
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>20</width>
              <height>20</height>
@@ -2415,16 +1985,7 @@ Please enter the domain name below:</string>
             <property name="spacing" >
              <number>6</number>
             </property>
-            <property name="leftMargin" >
-             <number>6</number>
-            </property>
-            <property name="topMargin" >
-             <number>6</number>
-            </property>
-            <property name="rightMargin" >
-             <number>6</number>
-            </property>
-            <property name="bottomMargin" >
+            <property name="margin" >
              <number>6</number>
             </property>
             <item>
@@ -2498,16 +2059,7 @@ Please enter the domain name below:</string>
        <property name="spacing" >
         <number>6</number>
        </property>
-       <property name="leftMargin" >
-        <number>0</number>
-       </property>
-       <property name="topMargin" >
-        <number>0</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>0</number>
        </property>
        <item>
@@ -2519,16 +2071,7 @@ Please enter the domain name below:</string>
           <property name="spacing" >
            <number>6</number>
           </property>
-          <property name="leftMargin" >
-           <number>6</number>
-          </property>
-          <property name="topMargin" >
-           <number>6</number>
-          </property>
-          <property name="rightMargin" >
-           <number>6</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>6</number>
           </property>
           <item>
@@ -2549,7 +2092,7 @@ Please enter the domain name below:</string>
             <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>71</width>
               <height>20</height>
@@ -2568,7 +2111,7 @@ Please enter the domain name below:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>340</height>
@@ -2583,16 +2126,7 @@ Please enter the domain name below:</string>
        <property name="spacing" >
         <number>6</number>
        </property>
-       <property name="leftMargin" >
-        <number>0</number>
-       </property>
-       <property name="topMargin" >
-        <number>0</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>0</number>
        </property>
        <item>
@@ -2623,7 +2157,7 @@ Please enter the domain name below:</string>
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>241</height>
@@ -2659,16 +2193,7 @@ Please enter the domain name below:</string>
       <property name="spacing" >
        <number>6</number>
       </property>
-      <property name="leftMargin" >
-       <number>9</number>
-      </property>
-      <property name="topMargin" >
-       <number>9</number>
-      </property>
-      <property name="rightMargin" >
-       <number>9</number>
-      </property>
-      <property name="bottomMargin" >
+      <property name="margin" >
        <number>9</number>
       </property>
       <item>
@@ -2676,7 +2201,7 @@ Please enter the domain name below:</string>
         <property name="orientation" >
          <enum>Qt::Horizontal</enum>
         </property>
-        <property name="sizeHint" >
+        <property name="sizeHint" stdset="0" >
          <size>
           <width>40</width>
           <height>20</height>
