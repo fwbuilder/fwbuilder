@@ -29,6 +29,7 @@
 #include <QtCore>
 #include <QtNetwork>
 #include <QHttpResponseHeader>
+#include <QLocale>
 
 #include "HttpGet.h"
 #include "FWBSettings.h"
@@ -88,14 +89,29 @@ bool HttpGet::get(const QUrl &url)
     http.setHost(url.host(), url.port(80));
     QHttpRequestHeader hdr(QLatin1String("GET"), url.toString());
     hdr.setValue("Host", url.host());
-    QString agent = "fwbuilder "VERSION" ";
+
+    QString locale = QLocale::system().name();//"en_US";//
+
+    QString agent = QString("fwbuilder/%1 (").arg(VERSION);
 
 #if defined(Q_WS_MAC)
-    agent += " MacOSX";
+    agent += "MacOSX; ";
+#else
+  #if defined(Q_WS_WIN)
+    agent += "Windows; ";
+  #else
+    agent += QString("%1; %2; ").arg(OS).arg(DISTRO);
+  #endif
 #endif
-#if defined(Q_WS_WIN)
-    agent += " Windows";
+    agent += locale;
+    agent += QString("; b:%1; ").arg(BUILD_NUM);
+#ifdef ELC
+    if (registered) agent += "r";
+    else            agent += "u";
+#else
+    agent += "u";
 #endif
+    agent += ")";
 
     hdr.setValue("User-Agent", agent);
     request_id = http.request(hdr, NULL, &strm);
