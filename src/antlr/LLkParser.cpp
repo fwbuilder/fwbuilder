@@ -80,6 +80,16 @@ void LLkParser::traceOut(const char* rname)
 	traceDepth--;
 }
 
+RefToken LLkParser::LT(unsigned int i)
+{
+    assert(this!=NULL);
+    assert(inputState!=NULL);
+    TokenBuffer &tb = inputState->getInput();
+    assert(&tb!=NULL);
+    return tb.LT(i);
+}
+
+
 #ifdef ANTLR_CXX_SUPPORTS_NAMESPACE
 }
 #endif

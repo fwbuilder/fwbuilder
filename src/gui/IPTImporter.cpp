@@ -34,6 +34,7 @@
 #include <ios>
 #include <iostream>
 #include <algorithm>
+#include <map>
 
 #ifndef _WIN32
 #  include <netdb.h>
@@ -510,19 +511,12 @@ void IPTImporter::pushPolicyRule()
 
     if (action==PolicyRule::Unknown)
     {
+        if (fwbdebug)
+            qDebug("Unknown target %s, creating branch", target.c_str());
+
         // unknown target, consider it a branch
-        // NOTE:
-        // as of fwbuilder v2.1, branch ruleset is a child object of
-        // PolicyRule. This means two different rules can not point at the same
-        // branch ruleset. This is unfortunate. To fix this we need
-        // to change XML DTD and API. Will do this in 3.0
-        // Meanwhile, have to check if branch ruleset with requested name
-        // already exists and change the name by adding suffix '1', '2' etc
-        // to make it different.
         //
         std::string branch_ruleset_name = target;
-        bool duplicate_branch = false;
-        int cntr = 0;
         action = PolicyRule::Branch;
         UnidirectionalRuleSet *rs = NULL;
         while (true)
@@ -532,30 +526,15 @@ void IPTImporter::pushPolicyRule()
             {
                 rs = getUnidirRuleSet(branch_ruleset_name);
                 break;
-            } else
-            {
-                std::ostringstream ostr;
-                ostr << ++cntr;
-                branch_ruleset_name = target + ostr.str();
-                duplicate_branch = true;
-            }
+            } 
         }
-
-        current_rule->add(rs->ruleset);
-        ropt->setStr("branch_name", branch_ruleset_name);
-        getFirewallObject()->remove(rs->ruleset, false);
         branch_rulesets[branch_ruleset_name] = rs;
 
-        if (duplicate_branch)
-            markCurrentRuleBad(
-                std::string("Rule passes control to branch ") + target +
-                std::string(
-                    " which \n"
-                    "is already used by some rule prior to this one. \n"
-                    "fwbuilder 2.1 does not support multiple rules \n"
-                    "passing control to the same branch. This will \n"
-                    "be fixed in the next major release (v3.0)"));
+        //current_rule->add(rs->ruleset);
+        //ropt->setStr("branch_name", branch_ruleset_name);
+        //getFirewallObject()->remove(rs->ruleset, false);
 
+        current_rule->setBranch(rs->ruleset);
     }
 
     rule->setAction(action);
@@ -646,7 +625,7 @@ void IPTImporter::pushPolicyRule()
     if (!skip_rule)
     {
 /* we set "firewall_is_part_of_any_and_networks" to False */
-        rule_comment += std::string("\n") + "Chain " + current_chain + ". ";
+        rule_comment += "Chain " + current_chain + ". ";
 
         if (current_chain=="INPUT")
         {
@@ -666,11 +645,11 @@ void IPTImporter::pushPolicyRule()
 
         //  add rule to the right ruleset
         std::string ruleset_name = "";
-        if (current_chain=="INPUT" ||
-            current_chain=="OUTPUT" ||
-            current_chain=="FORWARD" ||
-            current_chain=="PREROUTING" ||
-            current_chain=="POSTROUTING") ruleset_name = "filter";
+        if (current_chain == "INPUT" ||
+            current_chain == "OUTPUT" ||
+            current_chain == "FORWARD" ||
+            current_chain == "PREROUTING" ||
+            current_chain == "POSTROUTING") ruleset_name = "filter";
         else
             ruleset_name = current_chain;
 
@@ -876,42 +855,46 @@ Firewall* IPTImporter::finalize()
 
         fwopt->setBool("firewall_is_part_of_any_and_networks", false);
 
-        FWObject *policy =
-            getFirewallObject()->getFirstByType(Policy::TYPENAME);
+        FWObject *policy= getFirewallObject()->getFirstByType(Policy::TYPENAME);
         assert( policy!=NULL );
 
-        UnidirectionalRuleSet *rs = getUnidirRuleSet("filter");
-        assert(rs!=NULL);
+        UnidirectionalRuleSet *filter_ruleset = getUnidirRuleSet("filter");
+        assert(filter_ruleset!=NULL);
 
         FWObject::iterator i;
-        for (i=rs->ruleset->begin(); i!=rs->ruleset->end(); ++i)
+        for (i=filter_ruleset->ruleset->begin(); i!=filter_ruleset->ruleset->end(); ++i)
         {
             policy->add(*i);
         }
 
-        // call clearChidren() not recursive because children objects
-        // of all rules should not be deleted
-        rs->ruleset->clearChildren(false);
-        getFirewallObject()->remove(rs->ruleset, false);
-        delete rs->ruleset;
-
-
-        FWObject *nat =
-            getFirewallObject()->getFirstByType(NAT::TYPENAME);
+        FWObject *nat = getFirewallObject()->getFirstByType(NAT::TYPENAME);
         assert( nat!=NULL );
 
-        rs = getUnidirRuleSet("nat");
-        if (rs!=NULL)
+        UnidirectionalRuleSet *nat_ruleset = getUnidirRuleSet("nat");
+        if (nat_ruleset!=NULL)
         {
-            for (i=rs->ruleset->begin(); i!=rs->ruleset->end(); ++i)
+            for (i=nat_ruleset->ruleset->begin(); i!=nat_ruleset->ruleset->end(); ++i)
             {
                 nat->add(*i);
             }
 
+            //nat_ruleset->ruleset->clearChildren(false);
+            //getFirewallObject()->remove(nat_ruleset->ruleset, false);
+            //delete nat_ruleset->ruleset;
+        }
+
+        std::map<const std::string,UnidirectionalRuleSet*>::iterator iter;
+        for (iter=all_rulesets.begin(); iter!=all_rulesets.end(); ++iter)
+        {
+            UnidirectionalRuleSet *rs = iter->second;
+            // call clearChidren() not recursive because children objects
+            // of all rules should not be deleted
             rs->ruleset->clearChildren(false);
             getFirewallObject()->remove(rs->ruleset, false);
             delete rs->ruleset;
         }
+
+
 
         return getFirewallObject();
     }

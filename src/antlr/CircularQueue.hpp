@@ -12,13 +12,23 @@
 #include <antlr/Token.hpp>
 #include <vector>
 #include <cassert>
+#include <stdexcept> // out_of_range exception
+
+#include <iostream>
 
 #ifdef ANTLR_CXX_SUPPORTS_NAMESPACE
 namespace antlr {
 #endif
 
 // Resize every 5000 items
-#define OFFSET_MAX_RESIZE 5000
+// -------------------- vk --------------------------------------------
+// 11/12/2008: extend the size to make sure large policy files are
+// parsed without resizing. Resizing causes crash because of call to
+// elementAt with idx+m_offset = -1 (call comes from TokenBuffer::LT).
+// I could not figure out why this happens so simpler fix is just to avoid
+// resizing.
+// -------------------- vk --------------------------------------------
+#define OFFSET_MAX_RESIZE 1000000
 
 template <class T>
 class ANTLR_API CircularQueue {
@@ -52,8 +62,9 @@ public:
         // -------------------- vk --------------------------------------------
 	inline T elementAt( int idx ) const
 	{
-		return storage[idx+m_offset];
+            return storage[idx+m_offset];
 	}
+
 	void removeFirst()
 	{
 		if (m_offset >= OFFSET_MAX_RESIZE)
@@ -64,6 +75,7 @@ public:
 		else
 			++m_offset;
 	}
+
 	inline void removeItems( size_t nb )
 	{
 		// it would be nice if we would not get called with nb > entries

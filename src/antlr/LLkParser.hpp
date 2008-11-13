@@ -46,10 +46,8 @@ public:
 		return inputState->getInput().LA(i);
 	}
 
-	virtual inline RefToken LT(unsigned int i)
-	{
-		return inputState->getInput().LT(i);
-	}
+	virtual RefToken LT(unsigned int i);
+
 protected:
 	/// the lookahead this LL(k) parser is using.
 	int k;

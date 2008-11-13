@@ -272,9 +272,12 @@ UnidirectionalRuleSet* Importer::checkUnidirRuleSet(
     return all_rulesets[ruleset_name];
 }
 
-UnidirectionalRuleSet* Importer::getUnidirRuleSet(
-    const std::string &ruleset_name)
+UnidirectionalRuleSet* Importer::getUnidirRuleSet(const std::string &ruleset_name)
 {
+    if (fwbdebug)
+        qDebug("Importer::getUnidirRuleSet %s", ruleset_name.c_str());
+
+
     UnidirectionalRuleSet *rs = all_rulesets[ruleset_name];
     if (rs==NULL)
     {
@@ -287,6 +290,8 @@ UnidirectionalRuleSet* Importer::getUnidirRuleSet(
             rs->ruleset = RuleSet::cast(dbroot->create(NAT::TYPENAME));
         else
             rs->ruleset = RuleSet::cast(dbroot->create(Policy::TYPENAME));
+
+        rs->ruleset->setName(ruleset_name);
 
         all_rulesets[ruleset_name] = rs;
 
@@ -311,6 +316,10 @@ void Importer::setInterfaceAndDirectionForRuleSet(const std::string &ruleset_nam
                                                   const std::string &_intf_name,
                                                   const std::string &_dir)
 {
+    if (fwbdebug)
+        qDebug("Importer::setInterfaceAndDirectionForRuleSet %s",
+               ruleset_name.c_str());
+
     UnidirectionalRuleSet *rs = getUnidirRuleSet(ruleset_name);
     std::string intf;
     if ( !_intf_name.empty()) intf = _intf_name;

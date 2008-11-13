@@ -834,16 +834,12 @@ m_tcp : TCP
 // tcp options can follow "-p tcp", the "-m tcp" seems to be optional,
 // at least in the older versions of iptables
 
-tcp_options : ( syn | tcp_flags | tcp_option)
+tcp_options : 
+    ( EXCLAMATION { importer->srv_neg = true; } )?
+    ( syn | tcp_flags | tcp_option)
     ;
 
-syn :   (   
-            EXCLAMATION
-            {
-                importer->srv_neg = true;
-            }
-        )?
-        MATCH_SYN
+syn :   MATCH_SYN
         {
             importer->tcp_flags_mask.clear();
             importer->tcp_flags_mask.push_back(libfwbuilder::TCPService::SYN);
@@ -970,7 +966,7 @@ LINE_COMMENT : "#" (~('\r' | '\n'))* NEWLINE ;
 Whitespace :  ( '\003'..'\010' | '\t' | '\013' | '\f' | '\016'.. '\037' | '\177'..'\377' | ' ' )
         { _ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;  } ;
 
-NEWLINE : ( "\r\n" | '\r' | '\n' ) { newline(); } ;
+NEWLINE : ( "\r\n" | '\r' | '\n' ) { newline(); resetText(); } ;
 
 protected
 INT_CONST:;

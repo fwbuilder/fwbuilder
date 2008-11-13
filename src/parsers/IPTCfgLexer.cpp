@@ -627,8 +627,8 @@ void IPTCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 973 "iptables.g"
-		newline();
+#line 969 "iptables.g"
+		newline(); resetText();
 #line 633 "IPTCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -708,7 +708,7 @@ void IPTCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 971 "iptables.g"
+#line 967 "iptables.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
 #line 714 "IPTCfgLexer.cpp"
 	}
@@ -954,7 +954,7 @@ void IPTCfgLexer::mNUMBER(bool _createToken) {
 		}  // ( ... )+
 		}
 		if ( inputState->guessing==0 ) {
-#line 993 "iptables.g"
+#line 989 "iptables.g"
 			_ttype = IPV4;
 #line 960 "IPTCfgLexer.cpp"
 		}
@@ -1057,7 +1057,7 @@ void IPTCfgLexer::mNUMBER(bool _createToken) {
 			}  // ( ... )+
 			}
 			if ( inputState->guessing==0 ) {
-#line 999 "iptables.g"
+#line 995 "iptables.g"
 				_ttype = HEX_CONST;
 #line 1063 "IPTCfgLexer.cpp"
 			}
@@ -1078,7 +1078,7 @@ void IPTCfgLexer::mNUMBER(bool _createToken) {
 			_loop169:;
 			}  // ( ... )+
 			if ( inputState->guessing==0 ) {
-#line 997 "iptables.g"
+#line 993 "iptables.g"
 				_ttype = INT_CONST;
 #line 1084 "IPTCfgLexer.cpp"
 			}
@@ -1408,7 +1408,7 @@ void IPTCfgLexer::mSECONDS(bool _createToken) {
 	
 	match("--seconds");
 	if ( inputState->guessing==0 ) {
-#line 1015 "iptables.g"
+#line 1011 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
 #line 1414 "IPTCfgLexer.cpp"
 	}
@@ -1427,7 +1427,7 @@ void IPTCfgLexer::mSET(bool _createToken) {
 	
 	match("--set");
 	if ( inputState->guessing==0 ) {
-#line 1018 "iptables.g"
+#line 1014 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
 #line 1433 "IPTCfgLexer.cpp"
 	}
@@ -1446,7 +1446,7 @@ void IPTCfgLexer::mRSOURCE(bool _createToken) {
 	
 	match("--rsource");
 	if ( inputState->guessing==0 ) {
-#line 1021 "iptables.g"
+#line 1017 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
 #line 1452 "IPTCfgLexer.cpp"
 	}
@@ -1927,7 +1927,7 @@ void IPTCfgLexer::mULOG_QTHR(bool _createToken) {
 	
 	match("--ulog-qthreshold");
 	if ( inputState->guessing==0 ) {
-#line 1069 "iptables.g"
+#line 1065 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
 #line 1933 "IPTCfgLexer.cpp"
 	}
@@ -1946,7 +1946,7 @@ void IPTCfgLexer::mULOG_NLG(bool _createToken) {
 	
 	match("--ulog-nlgroup");
 	if ( inputState->guessing==0 ) {
-#line 1070 "iptables.g"
+#line 1066 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
 #line 1952 "IPTCfgLexer.cpp"
 	}
@@ -1965,7 +1965,7 @@ void IPTCfgLexer::mULOG_CPR(bool _createToken) {
 	
 	match("--ulog-cprange");
 	if ( inputState->guessing==0 ) {
-#line 1071 "iptables.g"
+#line 1067 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
 #line 1971 "IPTCfgLexer.cpp"
 	}
