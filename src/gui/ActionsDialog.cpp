@@ -266,7 +266,7 @@ void ActionsDialog::setRule(PolicyRule *r )
     fillInterfaces(m_dialog->ipf_route_opt_if);
     fillInterfaces(m_dialog->pf_route_opt_if);
 
-    editor = Resources::getActionEditor(platform,act);
+    editor = Resources::getActionEditor(platform, act);
 
     branchNameInput = NULL;
 
@@ -358,12 +358,14 @@ void ActionsDialog::setRule(PolicyRule *r )
         w=m_dialog->TagIntPage;
         FWObject *o = rule->getTagObject();
         m_dialog->iptTagDropArea->setObject(o);
+        m_dialog->iptTagDropArea->update();
     }
     else if (editor=="TagStr")
     {
         w=m_dialog->TagStrPage;
         FWObject *o = rule->getTagObject();
         m_dialog->pfTagDropArea->setObject(o);
+        m_dialog->pfTagDropArea->update();
     }
     else if (editor=="AccountingStr")
     {

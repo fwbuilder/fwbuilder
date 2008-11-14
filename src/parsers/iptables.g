@@ -433,12 +433,14 @@ target_options :
         |
             SET_TOS HEX_CONST
             {
-                *dbg << " SET TOS=" << LT(0)->getText() << "(unsupported)";
+                importer->action_params["set_tos"] = LT(0)->getText();
+                *dbg << " SET TOS=" << LT(0)->getText();
             }
         |
             SET_TOS WORD
             {
-                *dbg << " SET TOS=" << LT(0)->getText() << "(unsupported)";
+                importer->action_params["set_tos"] = LT(0)->getText();
+                *dbg << " SET TOS=" << LT(0)->getText();
             }
         |
             SAVE_MARK

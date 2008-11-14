@@ -70,8 +70,6 @@ void IPTImporter::run()
 
     try
     {
-        current_ruleset = getUnidirRuleSet("Policy");  // creates if new
-
         parser.cfgfile();
     } catch(ANTLR_USE_NAMESPACE(antlr)ANTLRException &e)
     {

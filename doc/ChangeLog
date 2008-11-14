@@ -1,8 +1,20 @@
+2008-11-13  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* IPTImporter.cpp (IPTImporter::pushPolicyRule): policy importer
+	for iptables properly creates TagService objects and places them
+	into action of the rule finds iptables rule with target "-j MARK"
+
+	* IPTImporter.cpp (IPTImporter::pushPolicyRule): policy importer
+	for iptables correctly imports user-defined chain, configures rule
+	with action "Chain" and establishes association between it and
+	ruleset created for the user-defined chain. Multiple rules with
+	this action can point at the same ruleset.
+
 2008-11-12  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* IPTImporter.cpp (IPTImporter::finalize): fixed bug (no #):
-	policy importer created separate Policy objects for chains INPUT,
-	FORWARD, OUTPUT.
+	policy importer used to create separate Policy objects for chains
+	INPUT, FORWARD, OUTPUT.
 
 	* CircularQueue.hpp (OFFSET_MAX_RESIZE): a temporary fix for the
 	problem in ANTLR that causes crash on import of very large config

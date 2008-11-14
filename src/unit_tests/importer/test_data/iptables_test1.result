@@ -1,27 +1,14 @@
  *** Loading standard data file ... done
-Ruleset: INPUT
-Ruleset: FORWARD
-Ruleset: OUTPUT
 Ruleset: user_chain
 Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
 Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
 Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
 Address object: h-21.21.21.21
 TCP Service object: tcp 22-22:
-Parser error: Rule passes control to branch drop_invalid which 
-is already used by some rule prior to this one. 
-fwbuilder 2.1 does not support multiple rules 
-passing control to the same branch. This will 
-be fixed in the next major release (v3.0)
 Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
 Interface: lo
 TCP Service object: tcp 0-8000
 UDP Service object: udp 0-0:0-8000
-Parser error: Rule passes control to branch user_chain which 
-is already used by some rule prior to this one. 
-fwbuilder 2.1 does not support multiple rules 
-passing control to the same branch. This will 
-be fixed in the next major release (v3.0)
 Network object: net-192.168.0.0/16
 Network object: net-128.143.0.0/16
 ICMP Service object: icmp -1/-1
@@ -64,27 +51,17 @@ TCP Service object: tcp 201-201
 TCP Service object: tcp 202-202
 TCP Service object: tcp 204-204
 TCP Service object: tcp 206-206
-Ruleset: PREROUTING
-Ruleset: INPUT
-Ruleset: FORWARD
-Ruleset: OUTPUT
-Ruleset: POSTROUTING
+Tag Service object: tag-16
 TCP Service object: tcp 25-25
 Interface: eth1
+Tag Service object: tag-0xa
+Tag Service object: tag-0xB
 Skip command with '-j CONNMARK --restore-mark' This rule is generated automatically.
 TCP Service object: tcp 25-25:
 Turned option on in previous rule with action Mark for '-j CONNMARK --save-mark' 
 Tag Service object: tag-1
 Interface: eth2
 Tag Service object: tag-2
-Parser error: Rule passes control to branch TOS which 
-is already used by some rule prior to this one. 
-fwbuilder 2.1 does not support multiple rules 
-passing control to the same branch. This will 
-be fixed in the next major release (v3.0)
-Ruleset: PREROUTING
-Ruleset: POSTROUTING
-Ruleset: OUTPUT
 Network object: net-192.168.1.0/24
 Address object: h-222.222.222.222
 Parser error: Original rule defines outbound interface 'eth1'.

@@ -68,7 +68,7 @@ class IPTImporter : public Importer {
 
     public:
 
-    int         service_group_name_seed;
+    int service_group_name_seed;
 
     std::string current_table;
     std::string current_chain;
@@ -129,11 +129,13 @@ class IPTImporter : public Importer {
     void pushNATRule();
 
     virtual void pushRule();
+    virtual void newUnidirRuleSet(const std::string &name);
     
     // this method actually adds interfaces to the firewall object
     // and does final clean up.
     virtual libfwbuilder::Firewall* finalize();
 
+    bool isStandardChain(const std::string &ipt_chain);
 };
 
 #endif

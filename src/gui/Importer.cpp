@@ -277,7 +277,6 @@ UnidirectionalRuleSet* Importer::getUnidirRuleSet(const std::string &ruleset_nam
     if (fwbdebug)
         qDebug("Importer::getUnidirRuleSet %s", ruleset_name.c_str());
 
-
     UnidirectionalRuleSet *rs = all_rulesets[ruleset_name];
     if (rs==NULL)
     {
@@ -343,8 +342,9 @@ void Importer::setInterfaceAndDirectionForRuleSet(const std::string &ruleset_nam
 
 void Importer::newUnidirRuleSet(const std::string &ruleset_name)
 {
+    if (fwbdebug) qDebug("Importer::newUnidirRuleSet %s",
+                         ruleset_name.c_str());
     current_ruleset = getUnidirRuleSet(ruleset_name);  // creates if new
-
     *logger << "Ruleset: " << ruleset_name << "\n";
 }
 
@@ -681,7 +681,8 @@ FWObject* Importer::getTagService(const std::string &tagcode)
     cstr << "Imported from " << getFirewallObject()->getName() << "\n"
          << "mark " << tagcode;
 
-    if (all_objects.count(sstr.str())!=0) return TagService::cast(all_objects[sstr.str()]);
+    if (all_objects.count(sstr.str())!=0)
+        return TagService::cast(all_objects[sstr.str()]);
 
     s = TagService::cast(createObject(TagService::TYPENAME, nstr.str()));
     assert(s!=NULL);

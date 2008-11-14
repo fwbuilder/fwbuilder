@@ -420,7 +420,9 @@ void IPTImporter::pushPolicyRule()
     PolicyRule::Action action = PolicyRule::Unknown;
 
     if (target=="ACCEPT")   action = PolicyRule::Accept;
+
     if (target=="DROP")     action = PolicyRule::Deny;
+
     if (target=="REJECT")
     {
         action = PolicyRule::Reject;
@@ -429,8 +431,11 @@ void IPTImporter::pushPolicyRule()
         else
             ropt->setStr("action_on_reject", action_params["reject_with"]);
     }
+
     if (target=="QUEUE")    action = PolicyRule::Pipe;
+
     if (target=="CLASSIFY") action = PolicyRule::Classify;
+
     if (target=="LOG")
     {
         action = PolicyRule::Continue;
@@ -448,6 +453,7 @@ void IPTImporter::pushPolicyRule()
                 ropt->setStr("limit_burst", limit_burst);
         }
     }
+
     if (target=="ULOG")
     {
         action = PolicyRule::Continue;
@@ -455,26 +461,14 @@ void IPTImporter::pushPolicyRule()
         fwopt->setBool("use_ULOG", true);
         ropt->setStr("log_prefix", action_params["log_prefix"]);
     }
+
     if (target=="MARK")
     {
         action = PolicyRule::Tag;
         last_mark_rule = rule;
         std::string mark_code = action_params["set_mark"];
-        std::istringstream str(mark_code);
-        int m_code = 0;
-
-        // check if the code is in hex
-        if (mark_code.find("0x")==0)
-        {
-            char c;
-            str >> c >> c >> std::hex >> m_code;
-        } else
-        {
-            str >> m_code;
-        }
-        ropt->setInt("tagvalue", m_code);
-//        if (current_chain=="PREROUTING")
-//            ropt->setBool("ipt_mark_prerouting",true);
+        FWObject *tag_service = getTagService(mark_code);
+        rule->setTagObject(tag_service);
     }
     if (target=="CONNMARK")        action = PolicyRule::Continue;
 
@@ -509,6 +503,16 @@ void IPTImporter::pushPolicyRule()
             << "\n";
     }
 
+    if (target=="TOS")
+    {
+        // special-case target TOS, create custom action
+        // this is not very useful though because compiler can not properly
+        // put such rule in POSTROUTING chain.
+        action = PolicyRule::Custom;
+        ropt->setStr("custom_str",
+                     "-j TOS --set-tos " + action_params["set_tos"]);
+    }
+
     if (action==PolicyRule::Unknown)
     {
         if (fwbdebug)
@@ -518,23 +522,18 @@ void IPTImporter::pushPolicyRule()
         //
         std::string branch_ruleset_name = target;
         action = PolicyRule::Branch;
-        UnidirectionalRuleSet *rs = NULL;
-        while (true)
-        {
-            rs = branch_rulesets[branch_ruleset_name];
-            if (rs==NULL)
-            {
-                rs = getUnidirRuleSet(branch_ruleset_name);
-                break;
-            } 
-        }
+        UnidirectionalRuleSet *rs = branch_rulesets[branch_ruleset_name];
+        if (rs==NULL)
+            rs = getUnidirRuleSet(branch_ruleset_name);
+
         branch_rulesets[branch_ruleset_name] = rs;
 
         //current_rule->add(rs->ruleset);
         //ropt->setStr("branch_name", branch_ruleset_name);
         //getFirewallObject()->remove(rs->ruleset, false);
 
-        current_rule->setBranch(rs->ruleset);
+        rs->ruleset->setName(target);
+        rule->setBranch(rs->ruleset);
     }
 
     rule->setAction(action);
@@ -645,18 +644,19 @@ void IPTImporter::pushPolicyRule()
 
         //  add rule to the right ruleset
         std::string ruleset_name = "";
-        if (current_chain == "INPUT" ||
-            current_chain == "OUTPUT" ||
-            current_chain == "FORWARD" ||
-            current_chain == "PREROUTING" ||
-            current_chain == "POSTROUTING") ruleset_name = "filter";
-        else
-            ruleset_name = current_chain;
-
-        UnidirectionalRuleSet *rs = getUnidirRuleSet(ruleset_name);
-        assert(rs!=NULL);
-        rs->ruleset->add(current_rule);
-
+        if (isStandardChain(current_chain))
+        {
+            RuleSet *policy = RuleSet::cast(
+                getFirewallObject()->getFirstByType(Policy::TYPENAME));
+            assert( policy!=NULL );
+            policy->add(current_rule);
+        } else
+        {
+            UnidirectionalRuleSet *rs = getUnidirRuleSet(current_chain);
+            assert(rs!=NULL);
+            rs->ruleset->add(current_rule);
+        }
+    
         rule->setDirection(PolicyRule::Both);
 
         if ( !i_intf.empty() && !o_intf.empty())
@@ -825,10 +825,10 @@ void IPTImporter::pushNATRule()
 
     current_rule->setComment(rule_comment);
 
-    UnidirectionalRuleSet *rs = getUnidirRuleSet("nat");
-    assert(rs!=NULL);
-    rs->ruleset->add(current_rule);
-
+    RuleSet *nat = RuleSet::cast(
+        getFirewallObject()->getFirstByType(NAT::TYPENAME));
+    assert( nat!=NULL );
+    nat->add(current_rule);
 
     current_rule = NULL;
     rule_comment = "";
@@ -855,49 +855,25 @@ Firewall* IPTImporter::finalize()
 
         fwopt->setBool("firewall_is_part_of_any_and_networks", false);
 
-        FWObject *policy= getFirewallObject()->getFirstByType(Policy::TYPENAME);
-        assert( policy!=NULL );
-
-        UnidirectionalRuleSet *filter_ruleset = getUnidirRuleSet("filter");
-        assert(filter_ruleset!=NULL);
-
-        FWObject::iterator i;
-        for (i=filter_ruleset->ruleset->begin(); i!=filter_ruleset->ruleset->end(); ++i)
-        {
-            policy->add(*i);
-        }
-
-        FWObject *nat = getFirewallObject()->getFirstByType(NAT::TYPENAME);
-        assert( nat!=NULL );
-
-        UnidirectionalRuleSet *nat_ruleset = getUnidirRuleSet("nat");
-        if (nat_ruleset!=NULL)
-        {
-            for (i=nat_ruleset->ruleset->begin(); i!=nat_ruleset->ruleset->end(); ++i)
-            {
-                nat->add(*i);
-            }
-
-            //nat_ruleset->ruleset->clearChildren(false);
-            //getFirewallObject()->remove(nat_ruleset->ruleset, false);
-            //delete nat_ruleset->ruleset;
-        }
-
-        std::map<const std::string,UnidirectionalRuleSet*>::iterator iter;
-        for (iter=all_rulesets.begin(); iter!=all_rulesets.end(); ++iter)
-        {
-            UnidirectionalRuleSet *rs = iter->second;
-            // call clearChidren() not recursive because children objects
-            // of all rules should not be deleted
-            rs->ruleset->clearChildren(false);
-            getFirewallObject()->remove(rs->ruleset, false);
-            delete rs->ruleset;
-        }
-
-
-
         return getFirewallObject();
     }
     else
         return NULL;
 }
+
+void IPTImporter::newUnidirRuleSet(const std::string &ruleset_name)
+{
+    if (!isStandardChain(ruleset_name))
+        Importer::newUnidirRuleSet(ruleset_name);
+}
+
+
+bool IPTImporter::isStandardChain(const std::string &ipt_chain)
+{
+    return (ipt_chain == "INPUT" ||
+            ipt_chain == "OUTPUT" ||
+            ipt_chain == "FORWARD" ||
+            ipt_chain == "PREROUTING" ||
+            ipt_chain == "POSTROUTING");
+}
+
