@@ -10,6 +10,7 @@
 
 #include <antlr/config.hpp>
 
+#include <cstdio>
 #include <map>
 #include <cstring>
 
