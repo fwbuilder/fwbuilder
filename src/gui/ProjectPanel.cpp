@@ -164,8 +164,8 @@ ProjectPanel::~ProjectPanel()
 
 void ProjectPanel::info(FWObject *obj, bool forced)
 {
-    if (obj==NULL)
-        return ;
+    if (obj==NULL) return ;
+
     if (st->getInfoStyle()!=0 && (shownInInfo!=obj || forced))
     {
         m_panel->oi->clear();
@@ -173,16 +173,18 @@ void ProjectPanel::info(FWObject *obj, bool forced)
         QString s="";
         if (st->getInfoStyle()==2)
         {
-            s=FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj)
-                + QString("<hr height=\"0\">");
+            s = FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj) +
+                QString("<hr height=\"0\">");
             m_panel->oi->setText(s);
         }
 
-        s=QString::fromUtf8(obj->getComment().c_str());
+        s = QString::fromUtf8(obj->getComment().c_str());
         m_panel->oi->append(s);
         m_panel->oi->moveCursor(QTextCursor::Start);
 
         shownInInfo = obj;
+
+        m_panel->oi->repaint();
     }
 
 //    unselectRules();

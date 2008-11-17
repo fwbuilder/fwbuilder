@@ -82,7 +82,7 @@ bool instDialog::runInstaller(Firewall *fw)
 
     summary();
 
-    if (testFirewall(fw))
+    if (checkSSHPathConfiguration(fw))
     {
         setTitle(
             1,

@@ -393,9 +393,9 @@ void instDialog::findFirewalls()
 }
 
 
-bool instDialog::testFirewall(Firewall *fw)
+bool instDialog::checkSSHPathConfiguration(Firewall *fw)
 {
-    if (fwbdebug) qDebug("instDialog::testFirewall");
+    if (fwbdebug) qDebug("instDialog::checkSSHPathConfiguration");
     FWOptions  *fwopt = fw->getOptionsObject();
     customScriptFlag = false;
 
@@ -405,7 +405,8 @@ bool instDialog::testFirewall(Firewall *fw)
 
 /* we don't care about ssh settings if external installer is to be used */
 
-    if ( pis->getCommand()=="" && st->getSSHPath().isEmpty())
+    if ( pis->getCommand()=="" && (
+             st->getSSHPath().isEmpty() || st->getSCPPath().isEmpty()))
     {
         QMessageBox::critical(this, "Firewall Builder",
    tr("Policy installer uses Secure Shell to communicate with the firewall.\n"

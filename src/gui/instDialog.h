@@ -134,7 +134,7 @@ class instDialog : public QDialog, public FakeWizard
     void fillInstallOpList();
     void fillInstallUIList();
 
-    bool testFirewall(libfwbuilder::Firewall*);
+    bool checkSSHPathConfiguration(libfwbuilder::Firewall*);
     
     //void analyseInstallQueue(bool &fPix, bool &fCustInst);
     libfwbuilder::Firewall *findFirewallbyListItem(QTreeWidgetItem* item);

@@ -1416,7 +1416,17 @@ FWObject* ObjectManipulator::duplicateObject(FWObject *targetLib,
       if (!o->isReadOnly() &&
           (Host::isA(o) || Firewall::isA(o) || Interface::isA(o)) )
         autorename(o, askForAutorename);
+      if (Firewall::isA(o))
+      {
+          // reset lastModified, lastCompiled, lastInstalled
+          o->setInt("lastCompiled", 0);
+          o->setInt("lastModified", 0);
+          o->setInt("lastInstalled", 0);
+          // switch policy 
+          m_project->openRuleSet(o->getFirstByType(Policy::TYPENAME));
+      }
     }
+    m_project->info(o);
     return o;
 }
 
@@ -1434,8 +1444,8 @@ void ObjectManipulator::duplicateObj(QAction *action)
     {
         obj= *i;
         if ( m_project->isSystem(obj) || Interface::isA(obj) ) continue;
-        FWObject *cl   = idxToLibs[libid];
-        nobj = duplicateObject(cl,obj,"",false);
+        FWObject *cl = idxToLibs[libid];
+        nobj = duplicateObject(cl, obj, "", false);
     }
     editObject(nobj);
     ot->freezeSelection(false);

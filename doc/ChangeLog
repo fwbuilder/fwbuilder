@@ -1,3 +1,18 @@
+2008-11-17  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::duplicateObject): fix
+	bug #2303486: "Operation of duplicating firewall should switch
+	policy". When firewall object is duplicated, the GUI should
+	automatically open policy of the new object rather than keep
+	policy of the original open. At the same time, reset lastModified,
+	lastCompiled, lastInstalled of the new firewall instead of keeping
+	copies from the original.
+
+	* instDialog.cpp (instDialog::testFirewall): Check to make sure
+	paths to ssh and scp utilities are properly configured in
+	Preferences before running install. Show aprropriate error dialog
+	to the user if path to ssh or scp is not configured.
+
 2008-11-15  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* antlr/CharScanner.hpp: applied patch for gcc 4.4 from bug#
