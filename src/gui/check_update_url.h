@@ -30,7 +30,7 @@
 #include "../../VERSION.h"
 #include "../../build_num"
 
-#define CHECK_UPDATE_URL "http://www.fwbuilder.org/update_checks/check.cgi?v="VERSION
+#define CHECK_UPDATE_URL "http://update.fwbuilder.org/update_checks/check.cgi?v="VERSION
 
 #endif
 
