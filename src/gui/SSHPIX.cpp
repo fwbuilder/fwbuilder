@@ -37,6 +37,7 @@
 #include <qmessagebox.h>
 #include <qapplication.h>
 #include <qeventloop.h>
+#include <qfileinfo.h>
 
 #include <iostream>
 
@@ -345,7 +346,11 @@ void SSHPIX::stateMachine()
             state=CONFIG;
 
 /* install full policy */
-            QString ff = wdir+"/"+conffile;
+            QString ff;
+            QFileInfo conffile_info(conffile);
+            if (conffile_info.isAbsolute()) ff = conffile;
+            else ff = wdir + "/" + conffile;
+
             config_file = new ifstream(ff.toLatin1().constData());
             if ( ! *config_file)
             {
@@ -729,7 +734,11 @@ void SSHPIX::PIXincrementalInstall()
 
     if (state==COMMAND_DONE)
     {
-        QString statefile = wdir+"/"+conffile + "_current";
+        QString statefile;
+        QFileInfo conffile_info(conffile);
+        if (conffile_info.isAbsolute()) statefile = conffile + "_current";
+        else statefile = wdir + "/" + conffile + "_current";
+
         ofstream ofs(statefile.toLatin1().constData());
         ofs << current_config.toAscii().constData();
         ofs.close();
@@ -737,7 +746,9 @@ void SSHPIX::PIXincrementalInstall()
         emit printStdout_sign(tr("Generating configuration diff"));
         emit printStdout_sign( "\n");
 
-        QString cm = diff_pgm + " \"" + statefile + "\" \"" + wdir+"/"+conffile + "\"";
+        QString cm = diff_pgm + " \"" + statefile + "\" \"";
+        if (conffile_info.isAbsolute()) cm += wdir + "/";
+        cm += conffile + "\"";
 
 //        emit printStdout_sign(tr("Running command: %1\n").arg(cm));
 

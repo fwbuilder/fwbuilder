@@ -52,7 +52,9 @@ using namespace libfwbuilder;
 
 bool FirewallInstallerCisco::packInstallJobsList(Firewall*)
 {
-    if (fwbdebug) qDebug("FirewallInstallerCisco::packInstallJobList");
+    if (fwbdebug)
+        qDebug("FirewallInstallerCisco::packInstallJobList  conffile=%s",
+               cnf->conffile.toAscii().constData());
     job_list.clear();
     job_list.push_back(instJob(ACTIVATE_POLICY, cnf->conffile));
     return true;

@@ -1,3 +1,19 @@
+2008-11-18  vadim  <vadim@vk.crocodile.org>
+
+	* prefsdialog_q.ui: better layout of the first page of Preferences
+	dialog to make sure long path to the working directory fits in the
+	input widget.
+
+	* SSHPIX.cpp (SSHPIX::stateMachine): bugfix: installer for Cisco
+	routers and PIX could not find generated file because variable
+	conffile is now always a full absolute path. This bug was
+	introduced earlier during installer rewrite for v3.0.2. Tested
+	installer for router and PIX using default generated file name, as
+	well as custom generated file name, defined both as absolute and
+	as relative path. Tested batch install of combination of a router
+	and a pix in one batch (the same user account, then same enable
+	password on both)
+
 2008-11-17  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ObjectManipulator.cpp (ObjectManipulator::duplicateObject): fix
@@ -17,7 +33,7 @@
 
 	* antlr/CharScanner.hpp: applied patch for gcc 4.4 from bug#
 	2282828 "patch for gcc-4.4"
-	
+
 	* AddressTable.cpp (AddressTable::AddressTable): (change in
 	libfwbuilder) fixed bug# 2293052 "Saving file with empy
 	AddressTable produces corrupt XML".  When new AddressTable object
