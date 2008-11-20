@@ -273,18 +273,31 @@ void printFirewall(FWObject *fw,
 
     QString txt;
 
-    QString platform = fw->getStr("platform").c_str();
-    QString version  = fw->getStr("version").c_str();
-    QString readableVersion = getVersionString(platform,version);
-    QString hostOS = fw->getStr("host_OS").c_str();
+    if (fwbdebug) fw->dump(false,false);
+
+    string platform = fw->getStr("platform");
+    string version  = fw->getStr("version");
+    string hostOS = fw->getStr("host_OS");
+
+    if (fwbdebug)
+    {
+        qDebug("platform: %s", platform.c_str());
+        qDebug("version: %s", version.c_str());
+        qDebug("host_OS: %s", hostOS.c_str());
+    }
+
+    QString readableVersion = getVersionString(QString(platform.c_str()),
+                                               QString(version.c_str()));
+    if (fwbdebug) qDebug("Readable version: %s",
+                         readableVersion.toAscii().constData());
 
     pr.beginPage();   // resets yPos
 
     pr.printText(QObject::tr("Firewall name: %1").arg(
                      QString::fromUtf8(fw->getName().c_str())));
-    pr.printText(QObject::tr("Platform: ") + platform);
+    pr.printText(QObject::tr("Platform: ") + platform.c_str());
     pr.printText(QObject::tr("Version: ")  + readableVersion);
-    pr.printText(QObject::tr("Host OS: ")  + hostOS);
+    pr.printText(QObject::tr("Host OS: ")  + hostOS.c_str());
     pr.printText(" ");
     RuleSetView *ruleView =NULL;
 //            ppd->genericProgressIndicator(ppdCounter++,QObject::tr("Processing global policy"));
@@ -1016,7 +1029,8 @@ void FWWindow::printFirewallFromFile (QString fileName,
     FWObjectDatabase * objdb = new FWObjectDatabase();
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
     objdb->load(fileName.toLatin1().constData(), NULL,librespath);
-    FWObject* obj = objdb->findObjectByName(Firewall::TYPENAME,firewallName.toAscii().data());
+    FWObject* obj = objdb->findObjectByName(Firewall::TYPENAME,
+                                            firewallName.toAscii().data());
     if (obj!=NULL)
     {
         int pageWidth = 0;
@@ -1085,7 +1099,7 @@ void FWWindow::printFirewallFromFile (QString fileName,
         }
 
 //            int ppdCounter = 1;
-        printFirewall(obj,pr,NULL,newPageForSection, NULL);
+        printFirewall(obj, pr, NULL, newPageForSection, NULL);
 
         if (printLegend)
         {

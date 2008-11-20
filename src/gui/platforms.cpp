@@ -368,7 +368,7 @@ bool isDefaultRoutingRuleOptions(FWOptions *opt)
     return res;
 }
 
-QString getVersionString(const QString &platform,const QString &version)
+QString getVersionString(const QString &platform, const QString &version)
 {
     list<QStringPair> vl = getVersionsForPlatform(platform);
     list<QStringPair>::iterator li =
@@ -399,8 +399,9 @@ list<QStringPair> getVersionsForPlatform(const QString &platform)
     {
         if (platform=="pix" || platform=="fwsm" || platform=="iosacl")
         {
-            QString lst=Resources::platform_res[platform.toAscii().constData()]->getResourceStr(
-                "/FWBuilderResources/Target/versions").c_str();
+            QString lst = Resources::platform_res[
+                platform.toAscii().constData()]->getResourceStr(
+                    "/FWBuilderResources/Target/versions").c_str();
 
             QStringList ll=lst.split(',');
 

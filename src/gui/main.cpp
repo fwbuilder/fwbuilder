@@ -622,6 +622,26 @@ int main( int argc, char *argv[] )
                            "3.0",
                            true, true, fwbdebug);
 #endif
+
+        string full_res_path = respath + FS_SEPARATOR + "resources.xml";
+
+        if (fwbdebug)
+        {
+            qDebug("reading resources from '%s' ...", full_res_path.c_str());
+        }
+
+        //respath = RES_DIR;
+        new Resources(full_res_path);
+        if (fwbdebug) qDebug("done");
+
+        vector<std::string> platforms = Resources::getListOfPlatforms();
+        if (platforms.empty() || (
+                platforms.size()==1 && platforms.front()=="unknown" ))
+        {
+            qDebug("Failed to load list of supported platforms");
+            exit(1);
+        }
+
         if (cli_print)
         {
             if (fwbdebug) qDebug("Print from command line");
@@ -631,24 +651,6 @@ int main( int argc, char *argv[] )
             return 0;
         }
 
-        string full_res_path = respath + FS_SEPARATOR + "resources.xml";
-
-        if (fwbdebug)
-        {
-            qDebug("reading resources from '%s' ...",full_res_path.c_str());
-        }
-
-        //respath = RES_DIR;
-        new Resources(full_res_path);
-        if (fwbdebug) qDebug("done");
-
-        vector<std::string> platforms=Resources::getListOfPlatforms();
-        if (platforms.empty() || (
-                platforms.size()==1 && platforms.front()=="unknown" ))
-        {
-            qDebug("Failed to load list of supported platforms");
-            exit(1);
-        }
 
         if (fwbdebug) qDebug("creating widgets ...");
 
