@@ -268,8 +268,7 @@ void printFirewall(FWObject *fw,
                    bool newPageForSection,
                    ProjectPanel *project)
 {
-    if (Firewall::cast(fw)==NULL)
-        return ;
+    if (Firewall::cast(fw)==NULL) return ;
     list<pixmapOrText> listPT;
 
     QString txt;
@@ -281,7 +280,8 @@ void printFirewall(FWObject *fw,
 
     pr.beginPage();   // resets yPos
 
-    pr.printText(QObject::tr("Firewall name: %1").arg(QString::fromUtf8(fw->getName().c_str())));
+    pr.printText(QObject::tr("Firewall name: %1").arg(
+                     QString::fromUtf8(fw->getName().c_str())));
     pr.printText(QObject::tr("Platform: ") + platform);
     pr.printText(QObject::tr("Version: ")  + readableVersion);
     pr.printText(QObject::tr("Host OS: ")  + hostOS);
@@ -294,71 +294,75 @@ void printFirewall(FWObject *fw,
     FWObjectTypedChildIterator j =fw->findByType(Policy::TYPENAME);
     for ( ; j!=j.end(); ++j )
     {
-    Policy * pol = Policy::cast(*j) ;
-    QString name = QObject::tr("Policy: ");
-    name += pol->getName().c_str();
-    pr.printText(name);
-
-    ruleView=new PolicyView(project,
-        pol,NULL);
-    ruleView->setSizePolicy( QSizePolicy( (QSizePolicy::Policy)7,
-                                          (QSizePolicy::Policy)7) );
-    ruleView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ruleView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-    ruleView->setMaximumHeight(pr.getPageHeight());
-
-    /*if (fwbdebug) qDebug("Contents: %dx%d",
-                         ruleView->contentsWidth(),ruleView->contentsHeight());
-    if (fwbdebug) qDebug("Visible: %dx%d",
-                         ruleView->visibleWidth(),ruleView->visibleHeight());*/
-    if (fwbdebug) qDebug("Viewport: %dx%d",
-                         ruleView->viewport()->width(),ruleView->viewport()->height());
-    /*if (fwbdebug) qDebug("Clipper: %dx%d",
-                         ruleView->clipper()->width(),ruleView->clipper()->height());*/
-
-    if (fwbdebug) qDebug("Size: %dx%d",ruleView->width(),ruleView->height());
-
-//    pr.printPixmap(QPixmap::grabWidget(ruleView,0,0));
-    pr.printQTable(ruleView);
-
-    delete ruleView;
-    }
-
-
-    if (fwbdebug)  qDebug("******** NAT");
-    j=fw->findByType(NAT::TYPENAME);
-    for ( ; j!=j.end(); ++j )
-    {
-
-    NAT *nat  = NAT::cast(*j);
-    if (nat && nat->size()!=0)
-    {
-        if (newPageForSection)
-        {
-            pr.flushPage();
-            pr.beginPage();   // resets yPos
-        } else
-            pr.printText(" ");
-        QString name = QObject::tr("NAT: ");
-        name += nat->getName ().c_str(); 
+        Policy * pol = Policy::cast(*j) ;
+        QString name = QObject::tr("Policy: ");
+        name += pol->getName().c_str();
         pr.printText(name);
 
-        ruleView=new NATView(project, nat,NULL);
-
+        ruleView=new PolicyView(project,
+                                pol,NULL);
         ruleView->setSizePolicy( QSizePolicy( (QSizePolicy::Policy)7,
                                               (QSizePolicy::Policy)7) );
         ruleView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         ruleView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-        if (fwbdebug) qDebug("%dx%d",ruleView->width(),ruleView->height());
+        ruleView->setMaximumHeight(pr.getPageHeight());
 
-        pr.printQTable(ruleView);
+        /*if (fwbdebug) qDebug("Contents: %dx%d",
+          ruleView->contentsWidth(),ruleView->contentsHeight());
+          if (fwbdebug) qDebug("Visible: %dx%d",
+          ruleView->visibleWidth(),ruleView->visibleHeight());*/
+        if (fwbdebug)
+            qDebug("Viewport: %dx%d",
+                   ruleView->viewport()->width(),ruleView->viewport()->height());
+        /*if (fwbdebug) qDebug("Clipper: %dx%d",
+          ruleView->clipper()->width(),ruleView->clipper()->height());*/
+
+        if (fwbdebug) qDebug("Size: %dx%d",ruleView->width(),ruleView->height());
+
 //    pr.printPixmap(QPixmap::grabWidget(ruleView,0,0));
+        pr.printQTable(ruleView);
+
         delete ruleView;
     }
+
+
+    if (fwbdebug)  qDebug("******** NAT");
+
+    j=fw->findByType(NAT::TYPENAME);
+    for ( ; j!=j.end(); ++j )
+    {
+
+        NAT *nat  = NAT::cast(*j);
+        if (nat && nat->size()!=0)
+        {
+            if (newPageForSection)
+            {
+                pr.flushPage();
+                pr.beginPage();   // resets yPos
+            } else
+                pr.printText(" ");
+            QString name = QObject::tr("NAT: ");
+            name += nat->getName ().c_str(); 
+            pr.printText(name);
+
+            ruleView=new NATView(project, nat,NULL);
+
+            ruleView->setSizePolicy( QSizePolicy( (QSizePolicy::Policy)7,
+                                                  (QSizePolicy::Policy)7) );
+            ruleView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+            ruleView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+            if (fwbdebug) qDebug("%dx%d",ruleView->width(),ruleView->height());
+
+            pr.printQTable(ruleView);
+//    pr.printPixmap(QPixmap::grabWidget(ruleView,0,0));
+            delete ruleView;
+        }
     }
+
     if (fwbdebug)  qDebug("******** Routing");
+
     Routing *routing  = Routing::cast(fw->getFirstByType(Routing::TYPENAME));
     if (routing && routing->size()!=0)
     {
