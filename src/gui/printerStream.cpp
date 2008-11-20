@@ -35,12 +35,14 @@
 #include <qdatetime.h>
 
 printerStream::printerStream(QPrinter *p,
+                             float ts,
                              float m,
                              bool h,
                              const QString &ht,
                              PrintingProgressDialog *pd) : pr()//,metrics(p)
 {
     printer = p;
+    table_scaling = ts;
     margin = m;
     printHeader = h;
     headerText = ht;
@@ -115,6 +117,10 @@ bool printerStream::begin()
 
     yPos = 0;
     pageNo = 1;
+
+    QPaintDevice *dev = pr.device();
+    // lets table with width 1000 pixels be drawn 80% of the page width
+    pixmap_scaling_ratio = float(dev->width()) * 0.8 / 1000 * table_scaling;
 
     return true;
 }
@@ -218,10 +224,11 @@ void printerStream::printText(const QString &txt, bool newLine)
 
 void printerStream::printPixmap(const QPixmap &pm, bool newLine)
 {
+    QPaintDevice *dev = pr.device();
     if (fwbdebug)
     {
         qDebug("printPixmap: width=%d height=%d", pm.width(), pm.height());
-        QPaintDevice *dev = pr.device();
+        qDebug("printPixmap: printer->resolution()=%d", printer->resolution());
         if (dev)
         {
             qDebug("printPixmap: device parameters:");
@@ -234,19 +241,27 @@ void printerStream::printPixmap(const QPixmap &pm, bool newLine)
         }
     }
 
+    int target_w = pm.width() * pixmap_scaling_ratio;
+    int target_h = pm.height() * pixmap_scaling_ratio;
+
     int pmYOffset = 0;
     while ( getYSpace()<(pm.height()-pmYOffset) )
     {
-        int yFrag = pageBody.height()-yPos;
+        int yFrag = pageBody.height() - yPos;
         if (pageNo>=fromPage && pageNo<=toPage)
-            pr.drawPixmap(xmargin,yPos,pm,0,pmYOffset,-1,yFrag);
-        pmYOffset = pmYOffset+yFrag;
+            pr.drawPixmap(xmargin, yPos, target_w, target_h,
+                          pm,
+                          0, pmYOffset, -1, yFrag);
+        pmYOffset = pmYOffset + yFrag;
         flushPage();
         beginPage();   // resets yPos
     }
     if (pageNo>=fromPage && pageNo<=toPage)
-        pr.drawPixmap(xmargin,yPos,pm,0,pmYOffset,-1,-1);
-    if (newLine) yPos = yPos + (pm.height()-pmYOffset);
+        pr.drawPixmap(xmargin, yPos, target_w, target_h,
+                      pm,
+                      0, pmYOffset, -1, -1);
+
+    if (newLine) yPos = yPos + (target_h - pmYOffset); //  (pm.height() - pmYOffset);
 }
 
 void printerStream::printQTable(QTableView *tbl, bool left_margin,

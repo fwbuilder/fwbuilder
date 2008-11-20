@@ -64,10 +64,15 @@ class printerStream {
     int       pageWidth;
     int       pageHeight;
     int       dpiy;
-
+    float     pixmap_scaling_ratio;
+    float     table_scaling;
+    
     public:
 
-    printerStream(QPrinter *p,float margin,bool header,const QString &headerText,
+    printerStream(QPrinter *p,
+                  float table_scaling,
+                  float margin, bool header,
+                  const QString &headerText,
                   PrintingProgressDialog *ppd);
 
     bool begin();

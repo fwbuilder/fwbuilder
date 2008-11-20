@@ -403,7 +403,7 @@ void FWWindow::filePrint()
     bool  fullPage = false;
 
     float margin = 0;
-    int   resolution = 150;
+    float table_scaling = 1.0;
     bool  printHeader = true;
     bool  printLegend = true;
     bool  printObjects = true;
@@ -450,18 +450,18 @@ void FWWindow::filePrint()
         st->setBool("PrintSetup/printObjects",     printObjects     );
         st->setInt("PrintSetup/tableResolution",   tableResolution  );
 
+        st->getPrinterOptions(printer, pageWidth, pageHeight);
+
         switch (tableResolution)
         {
-        case 0: resolution = 300; break;
-        case 1: resolution = 225; break;
-        case 2: resolution = 150; break;
-        case 3: resolution = 100; break;
-        case 4: resolution = 75;  break;
+        case 0: table_scaling = 0.5; break;
+        case 1: table_scaling = 0.75; break;
+        case 2: table_scaling = 1.0; break;
+        case 3: table_scaling = 1.5; break;
+        case 4: table_scaling = 2.0; break;
         }
 
-        st->getPrinterOptions(printer,pageWidth,pageHeight);
-
-        printer->setResolution(resolution);
+        //printer->setResolution(resolution);
         printer->setFullPage(fullPage);
 
         QPrintDialog pdialog(printer, this);
@@ -479,17 +479,21 @@ void FWWindow::filePrint()
 
             statusBar()->showMessage( "Printing..." );
 
-            PrintingProgressDialog *ppd = new PrintingProgressDialog(this,printer,0,false);
+            PrintingProgressDialog *ppd = 
+                new PrintingProgressDialog(this, printer, 0, false);
 
             QString headerText = mw->printHeader();
 
 #if defined(Q_OS_MACX)
-            printerStream pr(printer,margin,printHeader,headerText,NULL);
+            printerStream pr(printer, table_scaling, margin, printHeader, headerText, NULL);
 #else
-            printerStream pr(printer,margin,printHeader,headerText,ppd);
+            printerStream pr(printer, table_scaling, margin, printHeader, headerText, ppd);
             ppd->show();
 #endif
-            pr.setFromTo(fromPage,toPage);
+            pr.setFromTo(fromPage, toPage);
+
+            if (fwbdebug)
+                qDebug("Printer resolution: %d dpi", printer->resolution());
 
             if ( !pr.begin())
             {
@@ -498,17 +502,22 @@ void FWWindow::filePrint()
                 return;
             }
 
-            int leftMargin = printer->paperRect().left() - printer->pageRect().left();
-            int topMargin = printer->paperRect().top() - printer->pageRect().top();
+            int leftMargin = printer->paperRect().left() -
+                printer->pageRect().left();
+            int topMargin = printer->paperRect().top() -
+                printer->pageRect().top();
 
             if (fwbdebug)
             {
-                qDebug("Margins: %d,%d",leftMargin,topMargin);
+                qDebug("Margins: %d,%d", leftMargin, topMargin);
             }
 
 //            int ppdCounter = 1;
-            printFirewall(activeProject()->getCurrentRuleSet()->getParent(),pr,ppd,
-                  newPageForSection, activeProject());
+            printFirewall(activeProject()->getCurrentRuleSet()->getParent(),
+                          pr,
+                          ppd, 
+                          newPageForSection, 
+                          activeProject());
 
             if (printLegend)
             {
@@ -1015,7 +1024,7 @@ void FWWindow::printFirewallFromFile (QString fileName,
         bool  fullPage = false;
     
         float margin = 0;
-        int   resolution = 150;
+        float table_scaling = 1.0;
         bool  printHeader = true;
         bool  printLegend = true;
         bool  printObjects = true;
@@ -1039,135 +1048,136 @@ void FWWindow::printFirewallFromFile (QString fileName,
     
         switch (tableResolution)
         {
-        case 0: resolution = 300; break;
-        case 1: resolution = 225; break;
-        case 2: resolution = 150; break;
-        case 3: resolution = 100; break;
-        case 4: resolution = 75;  break;
+        case 0: table_scaling = 0.5; break;
+        case 1: table_scaling = 0.75; break;
+        case 2: table_scaling = 1.0; break;
+        case 3: table_scaling = 1.5; break;
+        case 4: table_scaling = 2.0; break;
         }
 
         st->getPrinterOptions(printer,pageWidth,pageHeight);
 
-        printer->setResolution(resolution);
+        //printer->setResolution(resolution);
         printer->setFullPage(fullPage);
         printer->setOutputFileName (outputFileName);
-            int fromPage = 1;
-            int toPage = 9999;
+        int fromPage = 1;
+        int toPage = 9999;
 
+        QString headerText = fileName; //mw->printHeader();
+        printerStream pr(printer, table_scaling,
+                         margin, printHeader, headerText, NULL);
 
-            QString headerText = fileName; //mw->printHeader();
-            printerStream pr(printer,margin,printHeader,headerText,NULL);
+        pr.setFromTo(fromPage,toPage);
 
-            pr.setFromTo(fromPage,toPage);
+        if ( !pr.begin())
+        {
+            return;
+        }
 
-            if ( !pr.begin())
-            {
-                return;
-            }
+        int leftMargin = printer->paperRect().left() -
+            printer->pageRect().left();
+        int topMargin = printer->paperRect().top() -
+            printer->pageRect().top();
 
-            int leftMargin = printer->paperRect().left() - printer->pageRect().left();
-            int topMargin = printer->paperRect().top() - printer->pageRect().top();
-
-            if (fwbdebug)
-            {
-                qDebug("Margins: %d,%d",leftMargin,topMargin);
-            }
+        if (fwbdebug)
+        {
+            qDebug("Margins: %d,%d",leftMargin,topMargin);
+        }
 
 //            int ppdCounter = 1;
-            printFirewall(obj,pr,NULL,newPageForSection, NULL);
+        printFirewall(obj,pr,NULL,newPageForSection, NULL);
 
-            if (printLegend)
+        if (printLegend)
+        {
+            if (fwbdebug) qDebug("******** Legend");
+
+            if (newPageForSection)
             {
-                if (fwbdebug) qDebug("******** Legend");
+                pr.flushPage();
+                pr.beginPage();   // resets yPos
+            } else
+                pr.printText("\n");
 
-                if (newPageForSection)
+            pr.printText(tr("Legend"));
+            pr.printText(" ");
+
+            QTableWidget legendTbl(1,2);
+            legendTbl.resize(pr.getWorkspaceWidth(),
+                             pr.getWorkspaceHeight());
+            legendTbl.setSizePolicy( QSizePolicy( (QSizePolicy::Policy)7,
+                                                  (QSizePolicy::Policy)7) );
+            legendTbl.setShowGrid(false);
+            legendTbl.setFrameStyle(QFrame::NoFrame | QFrame::Plain);
+
+            legendTbl.horizontalHeader()->hide();
+            legendTbl.verticalHeader()->hide();
+            //legendTbl.setTopMargin(0);
+            //legendTbl.setLeftMargin(0);
+
+            legendTbl.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+            legendTbl.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+            string icon_path="/FWBuilderResources/Type/";
+            int row=0;
+            int col=0;
+
+            QPixmap pm;
+
+            QPixmap bfr(32,32);
+            QPainter bfrp(&bfr);
+
+            for (int i=0; !legendList[i].isEmpty(); ++i,++i)
+            {
+                if (row>=legendTbl.rowCount()) legendTbl.insertRow(row);
+
+                QString typeName=legendList[i];
+                QString objName=legendList[i+1];
+
+                if (typeName==CustomService::TYPENAME)
                 {
-                    pr.flushPage();
-                    pr.beginPage();   // resets yPos
-                } else
-                    pr.printText("\n");
-
-                pr.printText(tr("Legend"));
-                pr.printText(" ");
-
-                QTableWidget legendTbl(1,2);
-                legendTbl.resize(pr.getWorkspaceWidth(),
-                                 pr.getWorkspaceHeight());
-                legendTbl.setSizePolicy( QSizePolicy( (QSizePolicy::Policy)7,
-                                                      (QSizePolicy::Policy)7) );
-                legendTbl.setShowGrid(false);
-                legendTbl.setFrameStyle(QFrame::NoFrame | QFrame::Plain);
-
-                legendTbl.horizontalHeader()->hide();
-                legendTbl.verticalHeader()->hide();
-                //legendTbl.setTopMargin(0);
-                //legendTbl.setLeftMargin(0);
-
-                legendTbl.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-                legendTbl.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-
-                string icon_path="/FWBuilderResources/Type/";
-                int row=0;
-                int col=0;
-
-                QPixmap pm;
-
-                QPixmap bfr(32,32);
-                QPainter bfrp(&bfr);
-
-                for (int i=0; !legendList[i].isEmpty(); ++i,++i)
-                {
-                  if (row>=legendTbl.rowCount()) legendTbl.insertRow(row);
-
-                    QString typeName=legendList[i];
-                    QString objName=legendList[i+1];
-
-                    if (typeName==CustomService::TYPENAME)
-                    {
-                        col++;
-                        row=0;
-                    }
-
-                    if (fwbdebug)
-                        qDebug("Legend table: row=%d col=%d %s %s",
-                               row,col,typeName.toAscii().constData(),objName.toAscii().constData());
-
-//                    pm.load( Resources::global_res->getResourceStr(
-//                        icon_path+string(typeName.toLatin1().constData())+"/icon").c_str() );
-
-                    QString icn = ":/Icons/"+typeName+"/icon";
-                    QPixmap pm;
-                    if ( ! QPixmapCache::find( icn, pm) )
-                    {
-                        pm.load( icn );
-                        QPixmapCache::insert( icn, pm);
-                    }
-
-                    bfrp.fillRect(0,0,32,32,QColor(Qt::white));
-                    bfrp.drawPixmap(4,4,pm);
-
-                    QTableWidgetItem *itm = new QTableWidgetItem;
-                    itm->setIcon(QIcon(bfr));
-                    itm->setText(objName);
-                    legendTbl.setItem(row, col, itm);
-
-                    row++;
+                    col++;
+                    row=0;
                 }
 
-                legendTbl.resizeColumnToContents(0);
-                legendTbl.resizeColumnToContents(1);
+                if (fwbdebug)
+                    qDebug("Legend table: row=%d col=%d %s %s",
+                           row,
+                           col,
+                           typeName.toAscii().constData(),
+                           objName.toAscii().constData());
 
-                for (int i=0; i<legendTbl.rowCount(); ++i)
-                    legendTbl.resizeRowToContents(i);
+                QString icn = ":/Icons/"+typeName+"/icon";
+                QPixmap pm;
+                if ( ! QPixmapCache::find( icn, pm) )
+                {
+                    pm.load( icn );
+                    QPixmapCache::insert( icn, pm);
+                }
 
-                QSize sh = legendTbl.sizeHint();
-                legendTbl.resize(sh.width(),sh.height());
-                if (fwbdebug) qDebug("legendTbl size: %dx%d",
-                                     legendTbl.width(),legendTbl.height());
+                bfrp.fillRect(0,0,32,32,QColor(Qt::white));
+                bfrp.drawPixmap(4,4,pm);
 
-                pr.printQTable(&legendTbl, false, false);
+                QTableWidgetItem *itm = new QTableWidgetItem;
+                itm->setIcon(QIcon(bfr));
+                itm->setText(objName);
+                legendTbl.setItem(row, col, itm);
+
+                row++;
             }
+
+            legendTbl.resizeColumnToContents(0);
+            legendTbl.resizeColumnToContents(1);
+
+            for (int i=0; i<legendTbl.rowCount(); ++i)
+                legendTbl.resizeRowToContents(i);
+
+            QSize sh = legendTbl.sizeHint();
+            legendTbl.resize(sh.width(),sh.height());
+            if (fwbdebug) qDebug("legendTbl size: %dx%d",
+                                 legendTbl.width(),legendTbl.height());
+
+            pr.printQTable(&legendTbl, false, false);
+        }
     }
     else
     {   
