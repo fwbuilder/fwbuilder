@@ -1045,12 +1045,18 @@ void RuleSetView::updateGroups()
     reset();
 
     QStringList collapsed_groups;
-    QString filename = m_project->getRCS()->getFileName();
-    st->getCollapsedRuleGroups(
-        filename,
-        getFirewall()->getName().c_str(),
-        ruleset->getName().c_str(),
-        collapsed_groups);
+    if (m_project!=NULL) // For printing without creating ProjectPanel
+    {
+        // we do not have access to project panel and therefore to the file
+        // name when we print from command line. Will always print all
+        // rule groups expanded when print from command line
+        QString filename = m_project->getRCS()->getFileName();
+        st->getCollapsedRuleGroups(
+            filename,
+            getFirewall()->getName().c_str(),
+            ruleset->getName().c_str(),
+            collapsed_groups);
+    }
 
     setColumnWidth(0, 20);
     horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);

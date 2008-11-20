@@ -1,3 +1,24 @@
+2008-11-19  vadim  <vadim@vk.crocodile.org>
+
+	* printerStream.cpp (printerStream::begin): fixed printing with QT
+	4.4. QT 4.4 correctly sets physical resolution of the printer and
+	sets its logical resolution to 1200dpi. This caused rulesets to be
+	printed incorrectly on Windows and Mac where we use QT 4.4.1. This
+	fix restores printing on these platforms.
+
+	* Printing from command line: user can print firewall object and
+	all its rulesets from command line without running the program in
+	interactive GUI mode using command line
+	"fwbuilder -f file -P fw_object -o print_output_file.pdf". Making
+	sure this works on Mac OS X as well where the program should be
+	launched as "fwbuilder3.app/Contents/MacOS/fwbuilder"
+
+	* RuleSetView.cpp (RuleSetView::updateGroups): fixed printing from
+	command line which was broken some time ago (perhaps in
+	3.0.1). When user prints firewall policy from command line using
+	"fwbuilder -f file -P fw_object" all rule groups are always
+	printed expanded.
+
 2008-11-18  vadim  <vadim@vk.crocodile.org>
 
 	* prefsdialog_q.ui: better layout of the first page of Preferences
