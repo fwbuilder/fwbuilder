@@ -334,7 +334,7 @@ contains( HAVE_ANTLR_RUNTIME, 1 ){
 }
 
 !win32 {
-    QMAKE_COPY = ../../install.sh -m 0755 -s
+    QMAKE_INSTALL_PROGRAM = ../../install.sh -m 0755 -s
 }
 
 RESOURCES += MainRes.qrc
