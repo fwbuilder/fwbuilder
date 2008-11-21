@@ -902,6 +902,7 @@ namespace fwcompiler {
 						const std::string &action,
 						const std::string &interf,
 						const std::string &chain,
+                                                const std::string &ruleset,
 						const std::string &rule_label,
 						const std::string &prefix);
             virtual std::string _printLogPrefix(libfwbuilder::PolicyRule *r,

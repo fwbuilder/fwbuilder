@@ -1,3 +1,10 @@
+2008-11-20  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_printLogPrefix): fixed
+	bug #2318639: "bug in logging (rule number)". Added logging prefix
+	macro %R that gets expanded to the ruleset name. This can be
+	useful in logging prefixes for rules in branch rulesets.
+
 2008-11-19  vadim  <vadim@vk.crocodile.org>
 
 	* printerStream.cpp (printerStream::begin): fixed printing with QT

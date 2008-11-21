@@ -607,9 +607,8 @@
     <ObjectRef ref="id44F7082928576"/>
     <ObjectRef ref="id4848F19020246"/>
     <ServiceRef ref="id38142X1137"/>
-    <ObjectRef ref="sysid0"/>
-    <ServiceRef ref="sysid1"/>
     <ObjectRef ref="id4833F62B6131"/>
+    <ServiceRef ref="sysid1"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -27385,7 +27384,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4848A4294626" host_OS="linux24" inactive="False" lastCompiled="1215360866" lastInstalled="1142003872" lastModified="1212696562" platform="iptables" version="" name="firewall-base-rulesets" comment="this firewall is used to test a rule in the global policy of object &quot;firewall&quot;&#10;" ro="False">
+      <Firewall id="id4848A4294626" host_OS="linux24" inactive="False" lastCompiled="1215360866" lastInstalled="1142003872" lastModified="1227249554" platform="iptables" version="" name="firewall-base-rulesets" comment="this firewall is used to test a rule in the global policy of object &quot;firewall&quot;&#10;" ro="False">
         <NAT id="id4848A4304626" name="NAT" comment="" ro="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id4848A42F4626" name="Policy" comment="" ro="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id4848A4414626" name="web_server_inbound" comment="Basic rules for web servers.&#10;" ro="False" ipv6_rule_set="False" top_rule_set="False">
@@ -27428,6 +27427,48 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id38434X42665" disabled="False" group="" log="True" position="2" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id3B4FEEEE"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix">%R/%N -- %A</Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
@@ -27637,7 +27678,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id484A05C44626" host_OS="linux24" inactive="False" lastCompiled="1215360289" lastInstalled="1142003872" lastModified="1212694117" platform="iptables" version="" name="firewall51" comment="testing branching rules that point&#10;at rule sets defined in object&#10;firewall-base-rulesets" ro="False">
+      <Firewall id="id484A05C44626" host_OS="linux24" inactive="False" lastCompiled="1227249571" lastInstalled="1142003872" lastModified="1212694117" platform="iptables" version="" name="firewall51" comment="testing branching rules that point&#10;at rule sets defined in object&#10;firewall-base-rulesets" ro="False">
         <NAT id="id484A06174626" name="NAT" comment="" ro="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id484A05CA4626" name="Policy" comment="" ro="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id484A05CB4626" disabled="False" log="False" position="0" action="Branch" direction="Both" comment="">

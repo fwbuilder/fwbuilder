@@ -504,38 +504,46 @@ string PolicyCompiler_ipt::PrintRule::_printLogPrefix(const string &rule_num,
 						      const string &action,
 						      const string &interf,
 						      const string &chain,
+                                                      const string &ruleset,
 						      const string &rule_label,
 						      const string &prefix)
 {
-    string s=prefix;
+    string s = prefix;
 
 /* deal with our logging macros:
  * %N - rule number  ('2', or '2/3' for rule in a branch)
  * %A - action
  * %I - interface name
  * %C - chain name
+ * %R - ruleset name
  */
     string::size_type n;
     if ((n=s.find("%N"))!=string::npos ) 
     {
-      s.replace(n,2,rule_num);
+      s.replace(n, 2, rule_num);
     }
     if ((n=s.find("%A"))!=string::npos ) 
     {
-      s.replace(n,2,action);
+      s.replace(n, 2, action);
     }
     if ((n=s.find("%I"))!=string::npos ) 
     {
-      s.replace(n,2,interf);
+      s.replace(n, 2, interf);
     }
     if ((n=s.find("%C"))!=string::npos ) 
     {
-      s.replace(n,2,chain);
+      s.replace(n, 2, chain);
+    }
+    if ((n=s.find("%R"))!=string::npos ) 
+    {
+      s.replace(n, 2, ruleset);
     }
 
     if (s.length()>29)
     {
-        compiler->warning(_("Log prefix has been truncated to 29 characters in rule ")+rule_label);
+        compiler->warning(
+            "Log prefix has been truncated to 29 characters in rule " + 
+            rule_label);
         s=s.substr(0,29);
     }
 
@@ -545,28 +553,31 @@ string PolicyCompiler_ipt::PrintRule::_printLogPrefix(const string &rule_num,
 string PolicyCompiler_ipt::PrintRule::_printLogPrefix(PolicyRule *rule,
                                                       const string &prefix)
 {
-  char action[64];
-  strncpy(action,rule->getStr("stored_action").c_str(),sizeof(action));
-  for (char *cptr=action; *cptr; cptr++)  *cptr=toupper(*cptr);
+    FWObject *ruleset = rule->getParent();
 
-  string rule_iface =  rule->getInterfaceStr();
-  if (rule_iface=="")  rule_iface = "global";
+    char action[64];
+    strncpy(action,rule->getStr("stored_action").c_str(),sizeof(action));
+    for (char *cptr=action; *cptr; cptr++)  *cptr=toupper(*cptr);
 
-  std::ostringstream s1;
-  int pos=rule->getPosition();
-  // parent_rule_num is set by processor "Branching" for branch rules
-  string ppos = rule->getStr("parent_rule_num");
+    string rule_iface =  rule->getInterfaceStr();
+    if (rule_iface=="")  rule_iface = "global";
 
-  if (ppos != "")
-      s1 << ppos << "/";
-  s1 << pos;
+    std::ostringstream s1;
+    int pos=rule->getPosition();
+    // parent_rule_num is set by processor "Branching" for branch rules
+    string ppos = rule->getStr("parent_rule_num");
 
-  return _printLogPrefix(s1.str(),
-			 action,
-			 rule_iface,
-			 rule->getStr("ipt_chain"),
-			 rule->getLabel(),
-			 prefix);
+    if (ppos != "")
+        s1 << ppos << "/";
+    s1 << pos;
+
+    return _printLogPrefix(s1.str(),
+                           action,
+                           rule_iface,
+                           rule->getStr("ipt_chain"),
+                           ruleset->getName(),
+                           rule->getLabel(),
+                           prefix);
 }
 
 string PolicyCompiler_ipt::PrintRule::_printLogParameters(PolicyRule *rule)
@@ -591,7 +602,7 @@ string PolicyCompiler_ipt::PrintRule::_printLogParameters(PolicyRule *rule)
         s=ruleopt->getStr("log_prefix");
         if (s.empty())  s=compiler->getCachedFwOpt()->getStr("log_prefix");
         if (!s.empty()) 
-            str << " --ulog-prefix " << _printLogPrefix(rule,s);
+            str << " --ulog-prefix " << _printLogPrefix(rule, s);
 
         int r=compiler->getCachedFwOpt()->getInt("ulog_cprange");
         if (r!=0)  str << " --ulog-cprange " << r << " ";
@@ -621,7 +632,7 @@ string PolicyCompiler_ipt::PrintRule::_printLogParameters(PolicyRule *rule)
         s=ruleopt->getStr("log_prefix");
         if (s.empty())  s=compiler->getCachedFwOpt()->getStr("log_prefix");
         if (!s.empty())
-            str << " --log-prefix " << _printLogPrefix(rule,s);
+            str << " --log-prefix " << _printLogPrefix(rule, s);
 
         if (ruleopt->getBool("log_tcp_seq") || compiler->getCachedFwOpt()->getBool("log_tcp_seq"))  
             str << " --log-tcp-sequence ";
@@ -1677,9 +1688,16 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
 	    if (s.empty())
 	        s = "INVALID state -- DENY ";
 
-	    res << _printLogPrefix("-1", "DENY","global","drop_invalid","BLOCK INVALID",s)
+	    res << _printLogPrefix("-1",
+                                   "DENY",
+                                   "global",
+                                   "drop_invalid",
+                                   "Policy",
+                                   "BLOCK INVALID",
+                                   s)
 	        << _endRuleLine()
-                << _startRuleLine() << "drop_invalid  -j DROP" << _endRuleLine();
+                << _startRuleLine() << "drop_invalid  -j DROP"
+                << _endRuleLine();
  
 	}
         res << endl;
