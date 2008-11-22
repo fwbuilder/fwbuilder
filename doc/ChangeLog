@@ -4,6 +4,16 @@
 	in fwb_ipf". Compiler for ipfilter aborted processing with error
 	"basic_string::erase" when compilation was launched from the GUI.
 
+2008-11-21  vadim  <vadim@vk.crocodile.org>
+
+	* Improved Mac OS X bundle: included qt.conf file to make it look
+	only inside the bundle for QT libraries and plugins, this
+	eliminated warnings about QT libraries being loaded from two
+	places if the system where fwbuilder GUI was running had QT
+	installed on it. Now packaging QT accessibility plugin library,
+	this should make the GUI run with acessibility features if
+	accessibility aids are turned on system-wide.
+
 2008-11-20  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printLogPrefix): fixed
