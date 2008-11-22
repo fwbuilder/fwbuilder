@@ -129,16 +129,18 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
     public:
     virtual bool operator()(const string&) const 
     { 
-	cout << _("Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it.") << endl;
+	cout << "Data file has been created in the old version of ";
+        cout << "Firewall Builder. Use fwbuilder GUI to convert it." << endl;
 	return false;
     }
 };
     
 void usage(const char *name)
 {
-    cout << _("Firewall Builder:  policy compiler for ipfilter") << endl;
-    cout << _("Version ") << VERSION << RELEASE_NUM << endl;
-    cout << _("Usage: ") << name << " [-x] [-v] [-V] [-f filename.xml] [-o output.fw] [-d destdir] [-m] firewall_object_name" << endl;
+    cout << "Firewall Builder:  policy compiler for ipfilter" << endl;
+    cout << "Version " << VERSION << RELEASE_NUM << endl;
+    cout << "Usage: " << name
+         << " [-x] [-v] [-V] [-f filename.xml] [-o output.fw] [-d destdir] [-m] firewall_object_name" << endl;
 }
 
 string printActivationCommandWithSubstitution(Firewall *fw,string filePath,string cmd)
@@ -248,7 +250,7 @@ int main(int argc, char * const *argv)
     chdir(wdir)
 #endif
     ) {
-	cerr << _("Can't change to: ") << wdir << endl;
+	cerr << "Can't change to: " << wdir << endl;
 	exit(1);
     }
 
@@ -263,7 +265,7 @@ int main(int argc, char * const *argv)
 	/* load the data file */
 	UpgradePredicate upgrade_predicate; 
 
-	if (verbose) cout << _(" *** Loading data ...");
+	if (verbose) cout << " *** Loading data ...";
 
         objdb->setReadOnly( false );
         objdb->load( sysfname, &upgrade_predicate, librespath);
@@ -276,7 +278,7 @@ int main(int argc, char * const *argv)
         objdb->reIndex();
 
 //	objdb->load(filename,  &upgrade_predicate, librespath);
-	if (verbose) cout << _(" done\n");
+	if (verbose) cout << " done\n";
 
         FWObject *slib = objdb->getById(FWObjectDatabase::STANDARD_LIB_ID);
         if (slib && slib->isReadOnly()) slib->setReadOnly(false);
@@ -301,18 +303,21 @@ int main(int argc, char * const *argv)
             output_dir = "";
         } else
         {
-            string::size_type n = fw_file_name.rfind(".");
             ipf_file_name = getFileName(fw_file_name);
+            string::size_type n = ipf_file_name.rfind(".");
             ipf_file_name.erase(n);
             ipf_file_name.append("-ipf.conf");
+
             nat_file_name = getFileName(fw_file_name);
+            n = nat_file_name.rfind(".");
             nat_file_name.erase(n);
             nat_file_name.append("-nat.conf");
+
             output_dir = getDir(fw_file_name);
             if (!output_dir.empty()) output_dir += "/";
         }
 
-	if (verbose) cout << _(" *** Data checks ...");
+	if (verbose) cout << " *** Data checks ...";
 
         /* some initial sanity checks */
         list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
@@ -327,17 +332,21 @@ int main(int argc, char * const *argv)
                 if (l3.size()>0)
                 {
                     char errstr[256];
-                    for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) 
+                    for (list<FWObject*>::iterator j=l3.begin();
+                         j!=l3.end(); ++j) 
                         if ( objdb->findAllReferences(*j).size()!=0 )
                         {
                             sprintf(errstr,
-                                    _("Dynamic interface %s has an IP address that is used in the firewall policy rule.\n"),
+                                    "Dynamic interface %s has an IP address "
+                                    "that is used in the firewall policy rule.\n",
                                     iface->getName().c_str() );
                             throw FWException(errstr);
                         }
 
                     sprintf(errstr,
-                            _("Dynamic interface %s should not have an IP address object attached to it. This IP address object will be ignored.\n"),
+                            "Dynamic interface %s should not have an IP address"
+                            " object attached to it. This IP address object "
+                            "will be ignored.\n",
                             iface->getName().c_str() );
                     cerr << errstr;
                     for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) 
@@ -350,7 +359,7 @@ int main(int argc, char * const *argv)
                 if ( iface->isRegular() && la.empty() )
                 {
                     char errstr[256];
-                    sprintf(errstr,_("Missing IP address for interface %s\n"),
+                    sprintf(errstr, "Missing IP address for interface %s\n",
                             iface->getName().c_str() );
                     throw FWException(errstr);
                 }
@@ -362,7 +371,7 @@ int main(int argc, char * const *argv)
                     {
                         char errstr[256];
                         sprintf(errstr,
-                      _("Interface %s has IP address \"0.0.0.0\".\n"),
+                                "Interface %s has IP address \"0.0.0.0\".\n",
                                 iface->getName().c_str() );
                         throw FWException(errstr);
                     }
@@ -371,7 +380,7 @@ int main(int argc, char * const *argv)
 
         }
 
-	if (verbose) cout << _(" done\n");
+	if (verbose) cout << " done\n";
 
 	FWOptions* options=fw->getOptionsObject();
 	string s;
@@ -401,7 +410,8 @@ int main(int argc, char * const *argv)
             oscnf=new OSConfigurator_freebsd(objdb , fwobjectname, false);
 
 	if (oscnf==NULL)
-	    throw FWException(_("Unrecognized host OS ")+fw->getStr("host_OS")+"  (family "+family+")");
+	    throw FWException("Unrecognized host OS " + 
+                              fw->getStr("host_OS")+"  (family "+family+")");
 
 	oscnf->prolog();
 
@@ -460,7 +470,7 @@ int main(int argc, char * const *argv)
             user_name=getenv("LOGNAME");
             if (user_name==NULL)
             {
-                cerr << _("Can't figure out your user name, aborting") << endl;
+                cerr << "Can't figure out your user name, aborting" << endl;
                 exit(1);
             }
         }
@@ -475,12 +485,12 @@ int main(int argc, char * const *argv)
 #endif
 	fw_file << "#!/bin/sh " << shell_dbg << endl << endl;
 
-        fw_file << _("#\n\
+        fw_file << "#\n\
 #  This is automatically generated file. DO NOT MODIFY !\n\
 #\n\
-#  Firewall Builder  fwb_ipf v") << VERSION << "-" << RELEASE_NUM << _(" \n\
+#  Firewall Builder  fwb_ipf v" << VERSION << "-" << RELEASE_NUM << " \n\
 #\n\
-#  Generated ") << timestr << " " << tzname[stm->tm_isdst] << _(" by ") 
+#  Generated " << timestr << " " << tzname[stm->tm_isdst] << " by "
                << user_name << "\n#\n#\n";
 
         fw_file << MANIFEST_MARKER << "* " << getFileName(fw_file_name) << endl;
@@ -510,8 +520,8 @@ int main(int argc, char * const *argv)
         fw_file << endl;
 
         fw_file << "log '";
-        fw_file << _("Activating firewall script generated ")
-               << timestr << " " << _(" by ")
+        fw_file << "Activating firewall script generated "
+               << timestr << " " << " by "
                << user_name;
         fw_file << "'" << endl;
 
@@ -644,7 +654,7 @@ int main(int argc, char * const *argv)
         chmod(fw_file_name.c_str(),S_IXUSR|S_IRUSR|S_IWUSR|S_IRGRP);
 #endif
         
-        cout << _(" Compiled successfully") << endl << flush;
+        cout << " Compiled successfully" << endl << flush;
         
         return 0;
 
@@ -665,7 +675,7 @@ int main(int argc, char * const *argv)
 	cerr << ex.what();
         return 1;
     } catch (...) {
-	cerr << _("Unsupported exception");
+	cerr << "Unsupported exception";
         return 1;
     }
 

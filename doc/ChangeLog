@@ -1,3 +1,9 @@
+2008-11-22  vadim  <vadim@vk.crocodile.org>
+
+	* ipf.cpp (main): fixed bug #2328330: "basic_string::erase error
+	in fwb_ipf". Compiler for ipfilter aborted processing with error
+	"basic_string::erase" when compilation was launched from the GUI.
+
 2008-11-20  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printLogPrefix): fixed
