@@ -48,6 +48,7 @@ Help::Help(QWidget *parent, const QString &help_file, const QString &title) :
     raise();
 
     QString locale = QLocale::system().name(); //"en_US";
+    if (locale=="C") locale = "en_US";
 
     QFile f;
     QTextStream ts;
@@ -64,7 +65,9 @@ Help::Help(QWidget *parent, const QString &help_file, const QString &title) :
         }
     }
     else
+    {
         setText(QString("Help file %1 not found.").arg(help_file));
+    }
 };
 
 

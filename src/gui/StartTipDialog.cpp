@@ -49,6 +49,7 @@ StartTipDialog::StartTipDialog()
     m_dialog->setupUi(this);
 
     QString locale = QLocale::system().name(); //"en_US";
+    if (locale=="C") locale = "en_US";
 
     QFile f;
     QTextStream ts;
