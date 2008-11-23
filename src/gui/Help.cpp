@@ -37,6 +37,7 @@
 
 using namespace std;
 
+
 Help::Help(QWidget *parent, const QString &help_file, const QString &title) :
     SimpleTextView(parent)
 {
@@ -47,27 +48,7 @@ Help::Help(QWidget *parent, const QString &help_file, const QString &title) :
     resize(500, 600);
     raise();
 
-    QString locale = QLocale::system().name(); //"en_US";
-    if (locale=="C") locale = "en_US";
-
-    QFile f;
-    QTextStream ts;
-    f.setFileName(QString(respath.c_str()) + "/help/" + help_file +
-                  "_" + locale + ".html");
-
-    if (f.exists())
-    {
-        if (f.open(QIODevice::ReadOnly ))
-        {
-            ts.setDevice(&f);
-            setText(ts.readAll());
-            f.close();
-        }
-    }
-    else
-    {
-        setText(QString("Help file %1 not found.").arg(help_file));
-    }
+    setText(getHelpFileContents(help_file));
 };
 
 
@@ -77,4 +58,38 @@ void Help::scrollToAnchor(const QString &anchor)
 }
 
 
+QString Help::getHelpFileContents(const QString &help_file)
+{
+    QString locale = QLocale::system().name(); //"en_US";
+
+    QString res;
+    QFile f;
+    QTextStream ts;
+
+    if (!Help::getFile(help_file, locale, f))
+    {
+        // We do not have help file for this locale (including locale "C")
+        // Show English one as a default
+        locale = "en_US";
+    }
+
+    if (Help::getFile(help_file, locale, f) && f.open(QIODevice::ReadOnly ))
+    {
+        ts.setDevice(&f);
+        res = ts.readAll();
+        f.close();
+    } else
+    {
+        res = QString("Help file %1 not found.").arg(f.fileName());
+    }
+    return res;
+}
+
+bool Help::getFile(const QString &help_file, const QString &locale, QFile &file)
+{
+    file.setFileName(QString(respath.c_str()) + "/help/" + help_file +
+                     "_" + locale + ".html");
+
+    return file.exists();
+}
 

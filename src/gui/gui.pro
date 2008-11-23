@@ -1,5 +1,6 @@
 #-*- mode: makefile; tab-width: 4; -*-
 #
+# $Id:$
 #
 TEMPLATE = app
 LANGUAGE = C++

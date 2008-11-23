@@ -29,6 +29,7 @@
 
 #include "StartTipDialog.h"
 #include "FWBSettings.h"
+#include "Help.h"
 
 #include <QCheckBox>
 #include <QFile>
@@ -48,23 +49,7 @@ StartTipDialog::StartTipDialog()
     m_dialog = new Ui::StartTipDialog_q;
     m_dialog->setupUi(this);
 
-    QString locale = QLocale::system().name(); //"en_US";
-    if (locale=="C") locale = "en_US";
-
-    QFile f;
-    QTextStream ts;
-    f.setFileName(QString(respath.c_str()) + "/help/main" +
-                  "_" + locale + ".html");
-
-    if (f.exists())
-    {
-        if (f.open(QIODevice::ReadOnly ))
-        {
-            ts.setDevice(&f);
-            m_dialog->textview->setText(ts.readAll());
-            f.close();
-        }
-    }
+    m_dialog->textview->setText(Help::getHelpFileContents("main"));
 }
 
 void StartTipDialog::close()

@@ -1,3 +1,11 @@
+2008-11-23  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Help.cpp, StartTipDialog.cpp: the GUI will use English help
+	files for online help (where available) and "start tip" dialog if
+	it is started in the non-enligsh locale and help file for this
+	locale inot available. This is better than to show an empty
+	dialog.
+
 2008-11-22  vadim  <vadim@vk.crocodile.org>
 
 	* StartTipDialog.cpp (StartTipDialog::StartTipDialog): Added

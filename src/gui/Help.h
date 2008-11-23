@@ -42,6 +42,11 @@ public:
     virtual ~Help() {};
 
     void scrollToAnchor(const QString &anchor);
+
+    static QString getHelpFileContents(const QString &help_file);
+    static bool getFile(const QString &help_file, const QString &locale,
+                        QFile &file);
+
 };
 
 #endif 
