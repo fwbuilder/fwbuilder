@@ -2,9 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2005 NetCitadel, LLC
+                 Copyright (C) 2008 NetCitadel, LLC
 
-  Author:  Illiya Yalovoy <yalovoy@gmail.com>
+  Author:  Vadim Kurland <vadim@fwbuilder.org>
 
   $Id$
 
@@ -32,10 +32,6 @@
 #include "Help.h"
 
 #include <QCheckBox>
-#include <QFile>
-#include <QDir>
-#include <QTextStream>
-#include <QLocale>
 
 
 using namespace std;
@@ -54,7 +50,6 @@ StartTipDialog::StartTipDialog()
 
 void StartTipDialog::close()
 {
-    if (m_dialog->donotshow->isChecked())
-        st->setBool("UI/NoStartTip", true);
+    if (m_dialog->donotshow->isChecked()) st->setBool("UI/NoStartTip", true);
     QDialog::close();
 }
