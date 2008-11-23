@@ -336,9 +336,9 @@ contains( HAVE_ANTLR_RUNTIME, 1 ){
     DEFINES += $$ANTLR_DEFINES
 }
 
-!win32 {
-    QMAKE_INSTALL_PROGRAM = ../../install.sh -m 0755 -s
-}
+#!win32 {
+#    QMAKE_INSTALL_PROGRAM = ../../install.sh -m 0755 -s
+#}
 
 RESOURCES += MainRes.qrc
 
