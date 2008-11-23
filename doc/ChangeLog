@@ -1,5 +1,15 @@
 2008-11-22  vadim  <vadim@vk.crocodile.org>
 
+	* StartTipDialog.cpp (StartTipDialog::StartTipDialog): Added
+	"start tip" dialog that shows brief information on the online
+	resources available to the user (web site URL, links to the
+	Firewall Builder FAQ, HOWTOs, Cook Book). Linked pages open in the
+	standard browser.
+
+	* FWWindow.cpp: added menu item Help/Firewall Builder Help that
+	opens a page with information about online resources for Firewall
+	Builder (the same page that is shown in the "start tip" dialog).
+
 	* ipf.cpp (main): fixed bug #2328330: "basic_string::erase error
 	in fwb_ipf". Compiler for ipfilter aborted processing with error
 	"basic_string::erase" when compilation was launched from the GUI.

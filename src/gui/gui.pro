@@ -134,6 +134,7 @@ HEADERS += ../../config.h \
 	RuleRowInfo.h \
 	Help.h \
 	HttpGet.h \
+	StartTipDialog.h \
 	check_update_url.h
 
 SOURCES += ProjectPanel.cpp \
@@ -250,7 +251,8 @@ SOURCES += ProjectPanel.cpp \
     AskLibForCopyDialog.cpp \
 	ObjectListViewItem.cpp \
 	Help.cpp \
-	HttpGet.cpp
+	HttpGet.cpp \
+	StartTipDialog.cpp
 
 FORMS = FWBMainWindow_q.ui \
 	customservicedialog_q.ui \
@@ -325,7 +327,8 @@ FORMS = FWBMainWindow_q.ui \
 	findwhereusedwidget_q.ui \
 	confirmdeleteobjectdialog_q.ui\
     projectpanel_q.ui\
-    asklibforcopydialog_q.ui
+    asklibforcopydialog_q.ui \
+	starttipdialog_q.ui
 
 contains( HAVE_ANTLR_RUNTIME, 1 ){
     INCLUDEPATH += $$ANTLR_INCLUDEPATH

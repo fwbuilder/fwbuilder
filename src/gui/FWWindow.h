@@ -110,7 +110,8 @@ public slots:
     virtual void helpContents();
     virtual void helpContentsAction();
     virtual void helpIndex();
-     
+    virtual void help();
+
     virtual void fileNew();
     virtual void fileOpen();
     virtual void fileClose();

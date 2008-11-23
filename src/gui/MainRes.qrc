@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/" >
+    <file>Images/fwbuilder3-128x128.png</file>
     <file alias="Icons/Tag-tree" >Icons/service-tag_16.png</file>
     <file alias="Icons/Tag" >Icons/service-tag_25.png</file>
     <file alias="Icons/Routing/icon-tree" >Icons/route_16.png</file>

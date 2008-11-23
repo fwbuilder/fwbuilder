@@ -68,6 +68,7 @@
 #include "ObjectEditor.h"
 #include "findDialog.h"
 #include "ProjectPanel.h"
+#include "StartTipDialog.h"
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Tools.h"
@@ -694,6 +695,13 @@ int main( int argc, char *argv[] )
 
         // setup single shot timer to call startupLoad()
         QTimer::singleShot(0.5, mw, SLOT(startupLoad()));
+
+        if (! st->getBool("UI/NoStartTip"))
+        {
+            StartTipDialog *stdlg = new StartTipDialog();
+            stdlg->show();
+            stdlg->raise();
+        }
 
         app->exec();
 

@@ -24,24 +24,27 @@
 */
 
 
-#ifndef __HELP_H_
-#define __HELP_H_
+#ifndef __STARTTIPDIALOG_H_
+#define __STARTTIPDIALOG_H_
 
 #include "../../config.h"
-#include "SimpleTextView.h"
 
+#include "ui_starttipdialog_q.h"
+#include <QDialog>
 
-
-class Help : public SimpleTextView
+class StartTipDialog : public QDialog
 {
-    
-public:
-    
-    Help(QWidget *parent, const QString &_file, const QString &title);
-    
-    virtual ~Help() {};
+    Q_OBJECT
 
-    void scrollToAnchor(const QString &anchor);
+public:
+    Ui::StartTipDialog_q *m_dialog;
+
+    StartTipDialog();
+    
+    virtual ~StartTipDialog() {};
+
+public slots:
+    virtual void close();
 };
 
 #endif 

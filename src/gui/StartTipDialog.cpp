@@ -2,9 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2008 NetCitadel, LLC
+                 Copyright (C) 2005 NetCitadel, LLC
 
-  Author:  Vadim Kurland <vadim@fwbuilder.org>
+  Author:  Illiya Yalovoy <yalovoy@gmail.com>
 
   $Id$
 
@@ -27,8 +27,10 @@
 #include "global.h"
 #include "utils.h"
 
-#include "Help.h"
+#include "StartTipDialog.h"
+#include "FWBSettings.h"
 
+#include <QCheckBox>
 #include <QFile>
 #include <QDir>
 #include <QTextStream>
@@ -36,22 +38,21 @@
 
 
 using namespace std;
+using namespace libfwbuilder;
 
-Help::Help(QWidget *parent, const QString &help_file, const QString &title) :
-    SimpleTextView(parent)
+StartTipDialog::StartTipDialog()
 {
     setAttribute(Qt::WA_DeleteOnClose);
-
     setModal(false);
-    setName(title);
-    resize(500, 600);
-    raise();
+
+    m_dialog = new Ui::StartTipDialog_q;
+    m_dialog->setupUi(this);
 
     QString locale = QLocale::system().name(); //"en_US";
 
     QFile f;
     QTextStream ts;
-    f.setFileName(QString(respath.c_str()) + "/help/" + help_file +
+    f.setFileName(QString(respath.c_str()) + "/help/main" +
                   "_" + locale + ".html");
 
     if (f.exists())
@@ -59,19 +60,15 @@ Help::Help(QWidget *parent, const QString &help_file, const QString &title) :
         if (f.open(QIODevice::ReadOnly ))
         {
             ts.setDevice(&f);
-            setText(ts.readAll());
+            m_dialog->textview->setText(ts.readAll());
             f.close();
         }
     }
-    else
-        setText(QString("Help file %1 not found.").arg(help_file));
-};
-
-
-void Help::scrollToAnchor(const QString &anchor)
-{
-    m_dialog->textview->scrollToAnchor(anchor);
 }
 
-
-
+void StartTipDialog::close()
+{
+    if (m_dialog->donotshow->isChecked())
+        st->setBool("UI/NoStartTip", true);
+    QDialog::close();
+}

@@ -50,6 +50,7 @@
 #include "FindObjectWidget.h"
 #include "FindWhereUsedWidget.h"
 #include "longTextDialog.h"
+#include "Help.h"
 
 #include "FWBAboutDialog.h"
 #include "debugDialog.h"
@@ -1687,5 +1688,11 @@ void FWWindow::checkForUpgrade(const QString& server_response)
 void FWWindow::projectWindowClosed()
 {
 //    if (m_space->subWindowList().size() == 0) QCoreApplication::exit(0);
+}
+
+void FWWindow::help()
+{
+    Help *h = new Help(this, "main", "Firewall Builder");
+    h->show();
 }
 

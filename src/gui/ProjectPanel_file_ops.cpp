@@ -7,7 +7,7 @@
   Author:  alek@codeminders.com
            refactoring and bugfixes: vadim@fwbuilder.org
 
-  $Id: ProjectPanel.cpp 417 2008-07-26 06:55:44Z vadim $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms

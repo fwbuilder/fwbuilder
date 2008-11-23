@@ -28,26 +28,15 @@
    <string>Firewall Builder</string>
   </property>
   <property name="windowIcon" >
-   <iconset resource="MainRes.qrc" >:/Images/fwbuilder3.png</iconset>
+   <iconset resource="MainRes.qrc" >
+    <normaloff>:/Images/fwbuilder3.png</normaloff>:/Images/fwbuilder3.png</iconset>
   </property>
   <widget class="QWidget" name="widget" >
    <layout class="QGridLayout" >
-    <property name="leftMargin" >
+    <property name="margin" >
      <number>0</number>
     </property>
-    <property name="topMargin" >
-     <number>0</number>
-    </property>
-    <property name="rightMargin" >
-     <number>0</number>
-    </property>
-    <property name="bottomMargin" >
-     <number>0</number>
-    </property>
-    <property name="horizontalSpacing" >
-     <number>0</number>
-    </property>
-    <property name="verticalSpacing" >
+    <property name="spacing" >
      <number>0</number>
     </property>
    </layout>
@@ -76,7 +65,7 @@
      <x>0</x>
      <y>0</y>
      <width>741</width>
-     <height>29</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="editMenu" >
@@ -117,6 +106,7 @@
     </property>
     <addaction name="helpAboutAction" />
     <addaction name="debugAction" />
+    <addaction name="helpAction" />
    </widget>
    <widget class="QMenu" name="RulesMenu" >
     <property name="title" >
@@ -174,7 +164,9 @@
   </widget>
   <action name="fileNewAction" >
    <property name="icon" >
-    <iconset/>
+    <iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text" >
     <string>&amp;New Object File</string>
@@ -185,7 +177,9 @@
   </action>
   <action name="fileOpenAction" >
    <property name="icon" >
-    <iconset/>
+    <iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text" >
     <string>&amp;Open...</string>
@@ -199,7 +193,9 @@
   </action>
   <action name="fileSaveAction" >
    <property name="icon" >
-    <iconset/>
+    <iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text" >
     <string>&amp;Save</string>
@@ -357,7 +353,8 @@
   </action>
   <action name="toolbarFileNew" >
    <property name="icon" >
-    <iconset>newfile_25.png</iconset>
+    <iconset>
+     <normaloff>newfile_25.png</normaloff>newfile_25.png</iconset>
    </property>
    <property name="text" >
     <string>New</string>
@@ -368,7 +365,8 @@
   </action>
   <action name="toolbarFileOpen" >
    <property name="icon" >
-    <iconset resource="MainRes.qrc" >:/Icons/openfile_25.png</iconset>
+    <iconset resource="MainRes.qrc" >
+     <normaloff>:/Icons/openfile_25.png</normaloff>:/Icons/openfile_25.png</iconset>
    </property>
    <property name="text" >
     <string>Open</string>
@@ -379,7 +377,8 @@
   </action>
   <action name="toolbarFileSave" >
    <property name="icon" >
-    <iconset resource="MainRes.qrc" >:/Icons/save_25.png</iconset>
+    <iconset resource="MainRes.qrc" >
+     <normaloff>:/Icons/save_25.png</normaloff>:/Icons/save_25.png</iconset>
    </property>
    <property name="text" >
     <string>Save</string>
@@ -398,7 +397,8 @@
   </action>
   <action name="compileAction" >
    <property name="icon" >
-    <iconset resource="MainRes.qrc" >:/Icons/compile_25.png</iconset>
+    <iconset resource="MainRes.qrc" >
+     <normaloff>:/Icons/compile_25.png</normaloff>:/Icons/compile_25.png</iconset>
    </property>
    <property name="text" >
     <string>Compile</string>
@@ -412,7 +412,8 @@
   </action>
   <action name="installAction" >
    <property name="icon" >
-    <iconset resource="MainRes.qrc" >:/Icons/install_25.png</iconset>
+    <iconset resource="MainRes.qrc" >
+     <normaloff>:/Icons/install_25.png</normaloff>:/Icons/install_25.png</iconset>
    </property>
    <property name="text" >
     <string>Install</string>
@@ -429,7 +430,8 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset>back_25.png</iconset>
+    <iconset>
+     <normaloff>back_25.png</normaloff>back_25.png</iconset>
    </property>
    <property name="text" >
     <string>Back</string>
@@ -446,7 +448,9 @@
   </action>
   <action name="newObjectAction" >
    <property name="icon" >
-    <iconset/>
+    <iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text" >
     <string>&amp;New Object</string>
@@ -463,7 +467,8 @@
   </action>
   <action name="findAction" >
    <property name="icon" >
-    <iconset resource="MainRes.qrc" >:/Icons/search_25.png</iconset>
+    <iconset resource="MainRes.qrc" >
+     <normaloff>:/Icons/search_25.png</normaloff>:/Icons/search_25.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Find Object</string>
@@ -697,6 +702,11 @@
    </property>
    <property name="iconText" >
     <string>Import Policy</string>
+   </property>
+  </action>
+  <action name="helpAction" >
+   <property name="text" >
+    <string>Firewall Builder Help</string>
    </property>
   </action>
  </widget>
@@ -1425,5 +1435,24 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>helpAction</sender>
+   <signal>triggered()</signal>
+   <receiver>FWBMainWindow_q</receiver>
+   <slot>help()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>370</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>help()</slot>
+ </slots>
 </ui>
