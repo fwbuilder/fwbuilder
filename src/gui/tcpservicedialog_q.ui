@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>849</width>
-    <height>261</height>
+    <width>894</width>
+    <height>308</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -32,9 +32,6 @@
     <layout class="QVBoxLayout" >
      <property name="spacing" >
       <number>2</number>
-     </property>
-     <property name="margin" >
-      <number>0</number>
      </property>
      <item>
       <widget class="QFrame" name="frame3" >
@@ -113,7 +110,7 @@
         <item rowspan="2" row="0" column="0" >
          <widget class="QFrame" name="frame35" >
           <property name="sizePolicy" >
-           <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -182,9 +179,6 @@
                 </property>
                 <property name="verticalSpacing" >
                  <number>4</number>
-                </property>
-                <property name="margin" >
-                 <number>0</number>
                 </property>
                 <item row="1" column="3" >
                  <widget class="QCheckBox" name="psh_m" >
@@ -523,6 +517,12 @@ by the target firewall platform</string>
         </item>
         <item rowspan="2" row="0" column="1" >
          <widget class="QFrame" name="frame36" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="frameShape" >
            <enum>QFrame::Box</enum>
           </property>
@@ -541,6 +541,21 @@ by the target firewall platform</string>
            </property>
            <item row="0" column="0" >
             <widget class="QGroupBox" name="groupBox1" >
+             <property name="styleSheet" >
+              <string notr="true" >QGroupBox {
+	margin-top: 1ex;
+	margin-bottom: 8px;
+	padding-top: 1ex;
+	padding-bottom: 6px;
+	padding-left: 2px;
+}
+
+QGroupBox::title {  
+	subcontrol-origin: margin;
+	subcontrol-position: top left;
+	padding: 0 3px;
+}</string>
+             </property>
              <property name="title" >
               <string>Source Port Range</string>
              </property>
@@ -553,6 +568,9 @@ by the target firewall platform</string>
               </property>
               <item row="0" column="1" >
                <widget class="QSpinBox" name="ss" >
+                <property name="styleSheet" >
+                 <string notr="true" />
+                </property>
                 <property name="buttonSymbols" >
                  <enum>QAbstractSpinBox::UpDownArrows</enum>
                 </property>
@@ -563,6 +581,9 @@ by the target firewall platform</string>
               </item>
               <item row="1" column="1" >
                <widget class="QSpinBox" name="se" >
+                <property name="styleSheet" >
+                 <string notr="true" />
+                </property>
                 <property name="buttonSymbols" >
                  <enum>QAbstractSpinBox::UpDownArrows</enum>
                 </property>
@@ -602,6 +623,20 @@ by the target firewall platform</string>
            </item>
            <item row="1" column="0" >
             <widget class="QGroupBox" name="groupBox1_2" >
+             <property name="styleSheet" >
+              <string notr="true" >QGroupBox {
+	margin-top: 1ex;
+	padding-top: 1ex;
+	padding-bottom: 6px;
+	padding-left: 2px;
+}
+
+QGroupBox::title {  
+	subcontrol-origin: margin;
+	subcontrol-position: top left;
+	padding: 0 3px;
+}</string>
+             </property>
              <property name="title" >
               <string>Destination Port Range</string>
              </property>
@@ -660,22 +695,6 @@ by the target firewall platform</string>
               </item>
              </layout>
             </widget>
-           </item>
-           <item row="2" column="0" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::MinimumExpanding</enum>
-             </property>
-             <property name="sizeHint" stdset="0" >
-              <size>
-               <width>20</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
            </item>
           </layout>
          </widget>

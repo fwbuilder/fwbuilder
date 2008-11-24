@@ -33,9 +33,6 @@
      <property name="spacing" >
       <number>2</number>
      </property>
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <item>
       <widget class="QFrame" name="frame3" >
        <property name="sizePolicy" >
@@ -118,6 +115,12 @@
        <layout class="QGridLayout" >
         <item row="0" column="0" >
          <widget class="QGroupBox" name="buttonGroup2" >
+          <property name="styleSheet" >
+           <string notr="true" >GroupBox {
+	margin-top: 0px;
+	padding-top: 0px;
+}</string>
+          </property>
           <layout class="QGridLayout" >
            <property name="topMargin" >
             <number>2</number>
