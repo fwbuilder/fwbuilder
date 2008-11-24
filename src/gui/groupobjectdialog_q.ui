@@ -116,93 +116,19 @@
         <item row="0" column="0" >
          <widget class="QGroupBox" name="buttonGroup2" >
           <property name="styleSheet" >
-           <string>QGroupBox {
+           <string notr="true" >QGroupBox {
 	margin: 0px;
-    padding: 4px;
-}
-</string>
+	padding: 4px;
+}</string>
           </property>
-          <property name="title" >
-           <string/>
-          </property>
-            <layout class="QHBoxLayout" >
-             <item>
-              <spacer>
-               <property name="orientation" >
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" >
-                <size>
-                 <width>31</width>
-                 <height>26</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QToolButton" name="iconViewBtn" >
-               <property name="sizePolicy" >
-                <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize" >
-                <size>
-                 <width>20</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="text" >
-                <string>I</string>
-               </property>
-               <property name="checkable" >
-                <bool>true</bool>
-               </property>
-               <property name="checked" >
-                <bool>true</bool>
-               </property>
-               <property name="autoExclusive" >
-                <bool>true</bool>
-               </property>
-               <property name="autoRaise" >
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QToolButton" name="listViewBtn" >
-               <property name="sizePolicy" >
-                <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize" >
-                <size>
-                 <width>20</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="text" >
-                <string>L</string>
-               </property>
-               <property name="checkable" >
-                <bool>true</bool>
-               </property>
-               <property name="autoExclusive" >
-                <bool>true</bool>
-               </property>
-               <property name="autoRepeatInterval" >
-                <number>100</number>
-               </property>
-               <property name="autoRaise" >
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
-=======
+          <layout class="QGridLayout" >
+           <property name="topMargin" >
+            <number>2</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>2</number>
+           </property>
+           <item row="0" column="0" >
             <spacer>
              <property name="orientation" >
               <enum>Qt::Horizontal</enum>
@@ -245,10 +171,7 @@
               <bool>false</bool>
              </property>
             </widget>
->>>>>>> .r666
            </item>
-<<<<<<< .mine
-=======
            <item row="0" column="2" >
             <widget class="QToolButton" name="listViewBtn" >
              <property name="sizePolicy" >
@@ -280,7 +203,6 @@
              </property>
             </widget>
            </item>
->>>>>>> .r666
           </layout>
          </widget>
         </item>
