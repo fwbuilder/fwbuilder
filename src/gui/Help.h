@@ -30,6 +30,7 @@
 #include "../../config.h"
 #include "SimpleTextView.h"
 
+#include <QFile>
 
 
 class Help : public SimpleTextView

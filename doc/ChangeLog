@@ -1,5 +1,10 @@
 2008-11-24  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* Build fixes for FreeBSD. 
+
+	* Added GUI elements for krcmd and ekshell options for ipfilter
+	Thanks to Cy.Schubert@komquats.com for the patch!
+
 	* Using QT4 stylesheet to improve layout of TCP Service, UDP
 	Service and group object dialogs when program is used with KDE
 	theme Oxygen.
