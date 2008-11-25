@@ -11,15 +11,15 @@ SO_VERSION    = @LIBFWBUILDER_SOLIB_VERSION@
 DEFINES      += $$(DEFINES)
 LANGUAGE      = C++
 UI_DIR        = ui
-MANDIR        = /home/vadim/src/fwb3-branch-v3/install_root/share/man/
-DOCDIR        = /home/vadim/src/fwb3-branch-v3/install_root/share/doc/fwbuilder-3.0.2
+MANDIR        = /Users/vadim/src/fwb3-branch-v3/install_root/share/man/
+DOCDIR        = /Users/vadim/src/fwb3-branch-v3/install_root/share/doc/fwbuilder-3.0.2
 
 HAVE_ANTLR_RUNTIME = 1
 HAVE_EXTERNAL_ANTLR = 0
 
 unix {
-    ANTLR_INCLUDEPATH =  /home/vadim/src/fwb3-branch-v3/source/fwbuilder/src/
-    ANTLR_LIBS =  /home/vadim/src/fwb3-branch-v3/source/fwbuilder/src/antlr/libantlr.a
+    ANTLR_INCLUDEPATH =  /Users/vadim/src/fwb3-branch-v3/source/fwbuilder/src/
+    ANTLR_LIBS =  /Users/vadim/src/fwb3-branch-v3/source/fwbuilder/src/antlr/libantlr.a
     FWBPARSER_LIB = ../parsers/libfwbparser.a
 }
 
@@ -30,38 +30,38 @@ unix {
 	MOC_DIR = .moc
 	OBJECTS_DIR = .obj
 
-	PREFIX                  = /home/vadim/src/fwb3-branch-v3/install_root
+	PREFIX                  = /Users/vadim/src/fwb3-branch-v3/install_root
 	exec_prefix             = @EXEC_PREFIX@
 	DESTDIR                 =
-	ICONSDIR                = /home/vadim/src/fwb3-branch-v3/install_root/share//icons/hicolor/
+	ICONSDIR                = 
 
-    INCLUDEPATH  += .. ../.. $$(INCLUDEPATH) /home/vadim/src/fwb3-branch-v3/install_root/include/ /home/vadim/src/fwb3-branch-v3/install_root/include/fwb-3 /usr/include/libxml2
+    INCLUDEPATH  += .. ../.. $$(INCLUDEPATH) /Users/vadim/src/fwb3-branch-v3/install_root/include/ /Users/vadim/src/fwb3-branch-v3/install_root/include/fwb-3 /usr/include/libxml2
 
-    LIBS_FWCOMPILER         = -L/home/vadim/src/fwb3-branch-v3/install_root/lib -pthread -lfwcompiler -lfwbuilder -lxslt -lxml2 -lz -lm -lcrypto -lsensors -lnetsnmp
-    LIBS_FWBUILDER          = -L/home/vadim/src/fwb3-branch-v3/install_root/lib -pthread -lfwbuilder -lxslt -lxml2 -lz -lm -lcrypto -lsensors -lnetsnmp
+    LIBS_FWCOMPILER         = -L/Users/vadim/src/fwb3-branch-v3/install_root/lib -lfwcompiler -lfwbuilder -lxslt -lxml2 -lz -lpthread -licucore -lm -lnetsnmp
+    LIBS_FWBUILDER          = -L/Users/vadim/src/fwb3-branch-v3/install_root/lib -lfwbuilder -lxslt -lxml2 -lz -lpthread -licucore -lm -lnetsnmp
 
 	target.path             = $$PREFIX/bin
 	dtd.path                = @TEMPLATE_DIR@/
 	migration.path          = @TEMPLATE_DIR@/migration
-	doc.path                = /home/vadim/src/fwb3-branch-v3/install_root/share/doc/fwbuilder-3.0.2
-	datadir.path		    = /home/vadim/src/fwb3-branch-v3/install_root/share/
+	doc.path                = /Users/vadim/src/fwb3-branch-v3/install_root/share/doc/fwbuilder-3.0.2
+	datadir.path		    = /Users/vadim/src/fwb3-branch-v3/install_root/share/
 
 
 #	win32:target.path    = $$PREFIX/
 #	unix:target.path     = $$PREFIX/share/fwbuilder/
 #	macx:target.path     = $$PREFIX/
 
-	res.path			= /home/vadim/src/fwb3-branch-v3/install_root/share/fwbuilder-3.0.2
-	res_os.path 		= /home/vadim/src/fwb3-branch-v3/install_root/share/fwbuilder-3.0.2/os/
-	res_platform.path 	= /home/vadim/src/fwb3-branch-v3/install_root/share/fwbuilder-3.0.2/platform/
-	res_help.path 	    = /home/vadim/src/fwb3-branch-v3/install_root/share/fwbuilder-3.0.2/help/
-	res_desktop.path	= /home/vadim/src/fwb3-branch-v3/install_root/share//applications/
+	res.path			= ../Resources
+	res_os.path 		= ../Resources/os/
+	res_platform.path 	= ../Resources/platform/
+	res_help.path 	    = ../Resources/help/
+	res_desktop.path	= /Users/vadim/src/fwb3-branch-v3/install_root/share//applications/
 
     INSTALLS		   += res 
     INSTALLS		   += res_os
     INSTALLS		   += res_platform
 #        INSTALLS   += icns
-	LIBS                   += $$LIBS_FWBUILDER -lutil 
+	LIBS                   += $$LIBS_FWBUILDER  -L/sw/lib -lpoll
 
 	PKGLOCALEDIR			= $$res.path/locale
 

@@ -79,6 +79,19 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="styleSheet" >
+      <string notr="true" >
+QGroupBox {
+	margin-top: 1ex;
+    padding: 0px;
+}
+
+QComboBox {
+	margin-top: 0px;
+    padding: 0px;
+}
+</string>
+     </property>
      <layout class="QGridLayout" >
       <property name="margin" >
        <number>2</number>
@@ -141,6 +154,10 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="styleSheet" >
+         <string notr="true" >QComboBox { padding: 2px;}
+</string>
         </property>
        </widget>
       </item>
