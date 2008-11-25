@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>894</width>
-    <height>308</height>
+    <width>885</width>
+    <height>222</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -25,7 +25,16 @@
    <property name="spacing" >
     <number>2</number>
    </property>
-   <property name="margin" >
+   <property name="leftMargin" >
+    <number>2</number>
+   </property>
+   <property name="topMargin" >
+    <number>2</number>
+   </property>
+   <property name="rightMargin" >
+    <number>2</number>
+   </property>
+   <property name="bottomMargin" >
     <number>2</number>
    </property>
    <item>
@@ -57,10 +66,22 @@
         <enum>QFrame::Sunken</enum>
        </property>
        <layout class="QGridLayout" >
-        <property name="margin" >
+        <property name="leftMargin" >
          <number>2</number>
         </property>
-        <property name="spacing" >
+        <property name="topMargin" >
+         <number>2</number>
+        </property>
+        <property name="rightMargin" >
+         <number>2</number>
+        </property>
+        <property name="bottomMargin" >
+         <number>2</number>
+        </property>
+        <property name="horizontalSpacing" >
+         <number>2</number>
+        </property>
+        <property name="verticalSpacing" >
          <number>2</number>
         </property>
         <item row="0" column="2" >
@@ -122,10 +143,22 @@
            <enum>QFrame::Sunken</enum>
           </property>
           <layout class="QGridLayout" >
-           <property name="margin" >
+           <property name="leftMargin" >
             <number>8</number>
            </property>
-           <property name="spacing" >
+           <property name="topMargin" >
+            <number>8</number>
+           </property>
+           <property name="rightMargin" >
+            <number>8</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>8</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>8</number>
+           </property>
+           <property name="verticalSpacing" >
             <number>8</number>
            </property>
            <item row="0" column="0" >
@@ -167,6 +200,14 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="styleSheet" >
+              <string>QGroupBox {
+    margin-top: 0px;
+	padding-top: 1ex;
+    padding-bottom: 0px;
+}
+</string>
              </property>
              <property name="title" >
               <string/>
@@ -501,7 +542,7 @@ by the target firewall platform</string>
                 <property name="sizeType" >
                  <enum>QSizePolicy::Expanding</enum>
                 </property>
-                <property name="sizeHint" stdset="0" >
+                <property name="sizeHint" >
                  <size>
                   <width>172</width>
                   <height>16</height>
@@ -530,23 +571,31 @@ by the target firewall platform</string>
            <enum>QFrame::Sunken</enum>
           </property>
           <layout class="QGridLayout" >
+           <property name="leftMargin" >
+            <number>8</number>
+           </property>
+           <property name="topMargin" >
+            <number>2</number>
+           </property>
+           <property name="rightMargin" >
+            <number>8</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>2</number>
+           </property>
            <property name="horizontalSpacing" >
             <number>2</number>
            </property>
            <property name="verticalSpacing" >
-            <number>8</number>
-           </property>
-           <property name="margin" >
-            <number>8</number>
+            <number>0</number>
            </property>
            <item row="0" column="0" >
             <widget class="QGroupBox" name="groupBox1" >
              <property name="styleSheet" >
-              <string notr="true" >QGroupBox {
+              <string>QGroupBox {
 	margin-top: 1ex;
-	margin-bottom: 8px;
 	padding-top: 1ex;
-	padding-bottom: 6px;
+	padding-bottom: 0px;
 	padding-left: 2px;
 }
 
@@ -554,23 +603,38 @@ QGroupBox::title {
 	subcontrol-origin: margin;
 	subcontrol-position: top left;
 	padding: 0 3px;
-}</string>
+}
+
+QSpinBox {
+	margin: 0px;
+	padding: 0px;
+}
+</string>
              </property>
              <property name="title" >
               <string>Source Port Range</string>
              </property>
              <layout class="QGridLayout" >
-              <property name="margin" >
+              <property name="leftMargin" >
                <number>2</number>
               </property>
-              <property name="spacing" >
+              <property name="topMargin" >
+               <number>2</number>
+              </property>
+              <property name="rightMargin" >
+               <number>2</number>
+              </property>
+              <property name="bottomMargin" >
+               <number>2</number>
+              </property>
+              <property name="horizontalSpacing" >
+               <number>2</number>
+              </property>
+              <property name="verticalSpacing" >
                <number>2</number>
               </property>
               <item row="0" column="1" >
                <widget class="QSpinBox" name="ss" >
-                <property name="styleSheet" >
-                 <string notr="true" />
-                </property>
                 <property name="buttonSymbols" >
                  <enum>QAbstractSpinBox::UpDownArrows</enum>
                 </property>
@@ -581,9 +645,6 @@ QGroupBox::title {
               </item>
               <item row="1" column="1" >
                <widget class="QSpinBox" name="se" >
-                <property name="styleSheet" >
-                 <string notr="true" />
-                </property>
                 <property name="buttonSymbols" >
                  <enum>QAbstractSpinBox::UpDownArrows</enum>
                 </property>
@@ -624,10 +685,10 @@ QGroupBox::title {
            <item row="1" column="0" >
             <widget class="QGroupBox" name="groupBox1_2" >
              <property name="styleSheet" >
-              <string notr="true" >QGroupBox {
+              <string>QGroupBox {
 	margin-top: 1ex;
 	padding-top: 1ex;
-	padding-bottom: 6px;
+	padding-bottom: 0px;
 	padding-left: 2px;
 }
 
@@ -635,16 +696,34 @@ QGroupBox::title {
 	subcontrol-origin: margin;
 	subcontrol-position: top left;
 	padding: 0 3px;
-}</string>
+}
+
+QSpinBox {
+	margin: 0px;
+	padding: 0px;
+}
+</string>
              </property>
              <property name="title" >
               <string>Destination Port Range</string>
              </property>
              <layout class="QGridLayout" >
-              <property name="margin" >
+              <property name="leftMargin" >
                <number>2</number>
               </property>
-              <property name="spacing" >
+              <property name="topMargin" >
+               <number>2</number>
+              </property>
+              <property name="rightMargin" >
+               <number>2</number>
+              </property>
+              <property name="bottomMargin" >
+               <number>2</number>
+              </property>
+              <property name="horizontalSpacing" >
+               <number>2</number>
+              </property>
+              <property name="verticalSpacing" >
                <number>2</number>
               </property>
               <item row="0" column="1" >

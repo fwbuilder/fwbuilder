@@ -1,5 +1,8 @@
 2008-11-24  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* tcpservicedialog_q.ui: fixed bug #2333759: "A really small camp".
+	Fixes in dialog layouts for KDE4 theme Oxygen
+
 	* Build fixes for FreeBSD. 
 
 	* Added GUI elements for krcmd and ekshell options for ipfilter
