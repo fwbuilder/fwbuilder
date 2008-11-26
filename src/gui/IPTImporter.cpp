@@ -395,13 +395,13 @@ void IPTImporter::addSrv()
 
 void IPTImporter::pushRule()
 {
-    assert(current_ruleset!=NULL);
+//    assert(current_ruleset!=NULL);
     if (current_rule==NULL) return;
 
     if (current_table=="nat")  pushNATRule();
     else                       pushPolicyRule();
 }
-
+ 
 void IPTImporter::pushPolicyRule()
 {
     // populate all elements of the rule

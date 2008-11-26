@@ -79,6 +79,7 @@ public:
 	public: void mMATCH_MARK(bool _createToken);
 	public: void mMATCH_LIMIT(bool _createToken);
 	public: void mMATCH_LIMIT_BURST(bool _createToken);
+	public: void mMATCH_COMMENT(bool _createToken);
 	public: void mREJECT_WITH(bool _createToken);
 	public: void mSET_MARK(bool _createToken);
 	public: void mSAVE_MARK(bool _createToken);

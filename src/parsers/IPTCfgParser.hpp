@@ -97,6 +97,7 @@ public:
 	public: void m_udp();
 	public: void m_mark();
 	public: void m_limit();
+	public: void m_comment();
 	public: void m_unknown_module();
 	public: void protocol_word();
 	public: void target_options();
@@ -124,10 +125,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 121;
+	static const int NUM_TOKENS = 123;
 #else
 	enum {
-		NUM_TOKENS = 121
+		NUM_TOKENS = 123
 	};
 #endif
 	

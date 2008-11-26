@@ -267,7 +267,7 @@ unknown_parameter :
 
 //****************************************************************
 
-module   : OPT_MODULE ( m_state | m_mport | m_icmp | m_tcp | m_udp | m_mark | m_limit | m_unknown_module) 
+module   : OPT_MODULE ( m_state | m_mport | m_icmp | m_tcp | m_udp | m_mark | m_limit | m_comment | m_unknown_module) 
     ;
 
 //****************************************************************
@@ -669,6 +669,15 @@ m_mport : M_MPORT
 
 //****************************************************************
 
+m_comment : M_COMMENT MATCH_COMMENT STRING
+        {
+            *dbg << " COMMENT=" << LT(0)->getText();
+        }
+
+    ;
+
+//****************************************************************
+
 multiport_tcp_udp_port_spec :
         (
             ( (MATCH_SRC_MULTIPORT | MATCH_SRC_MULTIPORT_SHORT)
@@ -944,6 +953,7 @@ tokens
     COMMIT = "COMMIT";
 
     M_STATE = "state";
+    M_COMMENT = "comment";
     M_MPORT = "multiport";
     M_MARK = "mark";
     M_LIMIT = "limit" ;
@@ -1043,6 +1053,8 @@ MATCH_ICMP_TYPE : "--icmp-type" ;
 MATCH_MARK : "--mark" ;
 MATCH_LIMIT : "--limit" ;
 MATCH_LIMIT_BURST : "--limit-burst" ;
+
+MATCH_COMMENT : "--comment" ;
 
 // ----------------------------------------------------------------
 //  target options

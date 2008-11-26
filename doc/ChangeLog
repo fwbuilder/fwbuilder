@@ -1,3 +1,11 @@
+2008-11-26  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* IPTImporter.cpp (IPTImporter::pushRule): fixed crash in the
+	importer for iptables
+
+	* iptables.g (m_comment): rudimentary support for iptables module
+	"comment"
+
 2008-11-24  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* tcpservicedialog_q.ui: fixed bug #2333759: "A really small camp".

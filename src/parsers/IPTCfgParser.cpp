@@ -454,6 +454,11 @@ void IPTCfgParser::module() {
 			m_limit();
 			break;
 		}
+		case M_COMMENT:
+		{
+			m_comment();
+			break;
+		}
 		case WORD:
 		{
 			m_unknown_module();
@@ -480,7 +485,7 @@ void IPTCfgParser::src() {
 		
 		*dbg << " SRC=";
 		
-#line 484 "IPTCfgParser.cpp"
+#line 489 "IPTCfgParser.cpp"
 		{
 		switch ( LA(1)) {
 		case EXCLAMATION:
@@ -490,7 +495,7 @@ void IPTCfgParser::src() {
 			
 			importer->src_neg = true;
 			
-#line 494 "IPTCfgParser.cpp"
+#line 499 "IPTCfgParser.cpp"
 			break;
 		}
 		case WORD:
@@ -528,7 +533,7 @@ void IPTCfgParser::src() {
 		importer->src_a = LT(0)->getText();
 		*dbg << LT(0)->getText();
 		
-#line 532 "IPTCfgParser.cpp"
+#line 537 "IPTCfgParser.cpp"
 		{
 		switch ( LA(1)) {
 		case SLASH:
@@ -557,7 +562,7 @@ void IPTCfgParser::src() {
 			importer->src_nm = LT(0)->getText();
 			*dbg << "/" << LT(0)->getText();
 			
-#line 561 "IPTCfgParser.cpp"
+#line 566 "IPTCfgParser.cpp"
 			break;
 		}
 		case NEWLINE:
@@ -612,7 +617,7 @@ void IPTCfgParser::dst() {
 		
 		*dbg << " DST=";
 		
-#line 616 "IPTCfgParser.cpp"
+#line 621 "IPTCfgParser.cpp"
 		{
 		switch ( LA(1)) {
 		case EXCLAMATION:
@@ -622,7 +627,7 @@ void IPTCfgParser::dst() {
 			
 			importer->dst_neg = true;
 			
-#line 626 "IPTCfgParser.cpp"
+#line 631 "IPTCfgParser.cpp"
 			break;
 		}
 		case WORD:
@@ -660,7 +665,7 @@ void IPTCfgParser::dst() {
 		importer->dst_a = LT(0)->getText();
 		*dbg << LT(0)->getText();
 		
-#line 664 "IPTCfgParser.cpp"
+#line 669 "IPTCfgParser.cpp"
 		{
 		switch ( LA(1)) {
 		case SLASH:
@@ -689,7 +694,7 @@ void IPTCfgParser::dst() {
 			importer->dst_nm = LT(0)->getText();
 			*dbg << "/" << LT(0)->getText();
 			
-#line 693 "IPTCfgParser.cpp"
+#line 698 "IPTCfgParser.cpp"
 			break;
 		}
 		case NEWLINE:
@@ -750,7 +755,7 @@ void IPTCfgParser::i_intf() {
 			
 			importer->intf_neg = true;
 			
-#line 754 "IPTCfgParser.cpp"
+#line 759 "IPTCfgParser.cpp"
 			break;
 		}
 		case WORD:
@@ -770,7 +775,7 @@ void IPTCfgParser::i_intf() {
 		importer->i_intf = LT(0)->getText();
 		*dbg << " I_INTF=" << i->getText();
 		
-#line 774 "IPTCfgParser.cpp"
+#line 779 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -792,7 +797,7 @@ void IPTCfgParser::o_intf() {
 			
 			importer->intf_neg = true;
 			
-#line 796 "IPTCfgParser.cpp"
+#line 801 "IPTCfgParser.cpp"
 			break;
 		}
 		case WORD:
@@ -812,7 +817,7 @@ void IPTCfgParser::o_intf() {
 		importer->o_intf = LT(0)->getText();
 		*dbg << " O_INTF=" << i->getText();
 		
-#line 816 "IPTCfgParser.cpp"
+#line 821 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -833,7 +838,7 @@ void IPTCfgParser::proto() {
 			
 			importer->srv_neg = true;
 			
-#line 837 "IPTCfgParser.cpp"
+#line 842 "IPTCfgParser.cpp"
 			break;
 		}
 		case WORD:
@@ -861,7 +866,7 @@ void IPTCfgParser::proto() {
 		::tolower);
 		*dbg << " PROTO=" << importer->protocol;
 		
-#line 865 "IPTCfgParser.cpp"
+#line 870 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -881,7 +886,7 @@ void IPTCfgParser::target() {
 		importer->target = LT(0)->getText();
 		*dbg << " TARGET=" << t->getText();
 		
-#line 885 "IPTCfgParser.cpp"
+#line 890 "IPTCfgParser.cpp"
 		{ // ( ... )*
 		for (;;) {
 			if ((_tokenSet_5.member(LA(1)))) {
@@ -910,7 +915,7 @@ void IPTCfgParser::fragm() {
 		importer->fragments = true;
 		*dbg << " FRAGM";
 		
-#line 914 "IPTCfgParser.cpp"
+#line 919 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -927,37 +932,37 @@ void IPTCfgParser::icmp_type_spec() {
 		case WORD:
 		{
 			match(WORD);
-#line 719 "iptables.g"
+#line 728 "iptables.g"
 			
 			importer->icmp_spec = LT(0)->getText();
 			*dbg << " ICMP_SPEC=" << LT(0)->getText();
 			
-#line 936 "IPTCfgParser.cpp"
+#line 941 "IPTCfgParser.cpp"
 			break;
 		}
 		case INT_CONST:
 		{
 			{
 			match(INT_CONST);
-#line 726 "iptables.g"
+#line 735 "iptables.g"
 			
 			importer->icmp_type = LT(0)->getText();
 			importer->icmp_code = "-1";
 			*dbg << " ICMP_TYPE=" << LT(0)->getText();
 			
-#line 949 "IPTCfgParser.cpp"
+#line 954 "IPTCfgParser.cpp"
 			{
 			switch ( LA(1)) {
 			case SLASH:
 			{
 				match(SLASH);
 				match(INT_CONST);
-#line 733 "iptables.g"
+#line 742 "iptables.g"
 				
 				importer->icmp_code = LT(0)->getText();
 				*dbg << " ICMP_CODE=" << LT(0)->getText();
 				
-#line 961 "IPTCfgParser.cpp"
+#line 966 "IPTCfgParser.cpp"
 				break;
 			}
 			case NEWLINE:
@@ -1042,11 +1047,11 @@ void IPTCfgParser::basic_tcp_udp_port_spec() {
 			case EXCLAMATION:
 			{
 				match(EXCLAMATION);
-#line 794 "iptables.g"
+#line 803 "iptables.g"
 				
 				importer->srv_neg = true;
 				
-#line 1050 "IPTCfgParser.cpp"
+#line 1055 "IPTCfgParser.cpp"
 				break;
 			}
 			case WORD:
@@ -1061,11 +1066,11 @@ void IPTCfgParser::basic_tcp_udp_port_spec() {
 			}
 			}
 			port_def_with_range();
-#line 799 "iptables.g"
+#line 808 "iptables.g"
 			
 			importer->pushTmpPortSpecToSrcPortList();
 			
-#line 1069 "IPTCfgParser.cpp"
+#line 1074 "IPTCfgParser.cpp"
 			break;
 		}
 		case MATCH_DST_PORT:
@@ -1094,11 +1099,11 @@ void IPTCfgParser::basic_tcp_udp_port_spec() {
 			case EXCLAMATION:
 			{
 				match(EXCLAMATION);
-#line 806 "iptables.g"
+#line 815 "iptables.g"
 				
 				importer->srv_neg = true;
 				
-#line 1102 "IPTCfgParser.cpp"
+#line 1107 "IPTCfgParser.cpp"
 				break;
 			}
 			case WORD:
@@ -1113,11 +1118,11 @@ void IPTCfgParser::basic_tcp_udp_port_spec() {
 			}
 			}
 			port_def_with_range();
-#line 811 "iptables.g"
+#line 820 "iptables.g"
 			
 			importer->pushTmpPortSpecToDstPortList();
 			
-#line 1121 "IPTCfgParser.cpp"
+#line 1126 "IPTCfgParser.cpp"
 			break;
 		}
 		default:
@@ -1159,37 +1164,37 @@ void IPTCfgParser::multiport_tcp_udp_port_spec() {
 			}
 			}
 			}
-#line 675 "iptables.g"
+#line 684 "iptables.g"
 			
 			importer->startSrcMultiPort();
 			*dbg << " SRC MULTIPORT=";
 			
-#line 1168 "IPTCfgParser.cpp"
+#line 1173 "IPTCfgParser.cpp"
 			port_def_no_range();
-#line 680 "iptables.g"
+#line 689 "iptables.g"
 			
 			importer->pushTmpPortSpecToSrcPortList();
 			
-#line 1174 "IPTCfgParser.cpp"
+#line 1179 "IPTCfgParser.cpp"
 			{ // ( ... )+
-			int _cnt86=0;
+			int _cnt87=0;
 			for (;;) {
 				if ((LA(1) == COMMA)) {
 					match(COMMA);
 					port_def_no_range();
-#line 684 "iptables.g"
+#line 693 "iptables.g"
 					
 					importer->pushTmpPortSpecToSrcPortList();
 					
-#line 1185 "IPTCfgParser.cpp"
+#line 1190 "IPTCfgParser.cpp"
 				}
 				else {
-					if ( _cnt86>=1 ) { goto _loop86; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());}
+					if ( _cnt87>=1 ) { goto _loop87; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());}
 				}
 				
-				_cnt86++;
+				_cnt87++;
 			}
-			_loop86:;
+			_loop87:;
 			}  // ( ... )+
 			}
 			break;
@@ -1216,37 +1221,37 @@ void IPTCfgParser::multiport_tcp_udp_port_spec() {
 			}
 			}
 			}
-#line 690 "iptables.g"
+#line 699 "iptables.g"
 			
 			importer->startDstMultiPort();
 			*dbg << " DST MULTIPORT=";
 			
-#line 1225 "IPTCfgParser.cpp"
+#line 1230 "IPTCfgParser.cpp"
 			port_def_no_range();
-#line 695 "iptables.g"
+#line 704 "iptables.g"
 			
 			importer->pushTmpPortSpecToDstPortList();
 			
-#line 1231 "IPTCfgParser.cpp"
+#line 1236 "IPTCfgParser.cpp"
 			{ // ( ... )+
-			int _cnt90=0;
+			int _cnt91=0;
 			for (;;) {
 				if ((LA(1) == COMMA)) {
 					match(COMMA);
 					port_def_no_range();
-#line 699 "iptables.g"
+#line 708 "iptables.g"
 					
 					importer->pushTmpPortSpecToDstPortList();
 					
-#line 1242 "IPTCfgParser.cpp"
+#line 1247 "IPTCfgParser.cpp"
 				}
 				else {
-					if ( _cnt90>=1 ) { goto _loop90; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());}
+					if ( _cnt91>=1 ) { goto _loop91; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());}
 				}
 				
-				_cnt90++;
+				_cnt91++;
 			}
-			_loop90:;
+			_loop91:;
 			}  // ( ... )+
 			}
 			break;
@@ -1272,9 +1277,9 @@ void IPTCfgParser::tcp_options() {
 		case EXCLAMATION:
 		{
 			match(EXCLAMATION);
-#line 840 "iptables.g"
+#line 849 "iptables.g"
 			importer->srv_neg = true;
-#line 1278 "IPTCfgParser.cpp"
+#line 1283 "IPTCfgParser.cpp"
 			break;
 		}
 		case MATCH_SYN:
@@ -1329,7 +1334,7 @@ void IPTCfgParser::match_mark() {
 		importer->match_mark = LT(0)->getText();
 		*dbg << " MATCH MARK " << LT(0)->getText();
 		
-#line 1333 "IPTCfgParser.cpp"
+#line 1338 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -1359,7 +1364,7 @@ void IPTCfgParser::match_limit_burst() {
 		importer->limit_burst = LT(0)->getText();
 		*dbg << " LIMIT BURST " << LT(0)->getText();
 		
-#line 1363 "IPTCfgParser.cpp"
+#line 1368 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -1380,7 +1385,7 @@ void IPTCfgParser::unknown_option() {
 			std::string("Unknown option: -")+LT(0)->getText());
 			*dbg << " UNKNOWN OPTION=-" << LT(0)->getText();
 			
-#line 1384 "IPTCfgParser.cpp"
+#line 1389 "IPTCfgParser.cpp"
 			{
 			switch ( LA(1)) {
 			case WORD:
@@ -1441,7 +1446,7 @@ void IPTCfgParser::unknown_option() {
 			std::string("Unknown option: --")+LT(0)->getText());
 			*dbg << " UNKNOWN OPTION=--" << LT(0)->getText();
 			
-#line 1445 "IPTCfgParser.cpp"
+#line 1450 "IPTCfgParser.cpp"
 			{
 			switch ( LA(1)) {
 			case WORD:
@@ -1498,7 +1503,7 @@ void IPTCfgParser::unknown_option() {
 			std::string("Unknown option: ")+LT(0)->getText());
 			*dbg << " UNKNOWN OPTION=" << LT(0)->getText();
 			
-#line 1502 "IPTCfgParser.cpp"
+#line 1507 "IPTCfgParser.cpp"
 			{
 			switch ( LA(1)) {
 			case WORD:
@@ -1563,7 +1568,7 @@ void IPTCfgParser::unknown_parameter() {
 		if ((LA(1) == INT_CONST || LA(1) == DIGIT) && (LA(2) == SLASH)) {
 #line 240 "iptables.g"
 			std::string s;
-#line 1567 "IPTCfgParser.cpp"
+#line 1572 "IPTCfgParser.cpp"
 			{
 			{
 			{
@@ -1573,7 +1578,7 @@ void IPTCfgParser::unknown_parameter() {
 				match(DIGIT);
 #line 244 "iptables.g"
 				s+=LT(0)->getText();
-#line 1577 "IPTCfgParser.cpp"
+#line 1582 "IPTCfgParser.cpp"
 				break;
 			}
 			case INT_CONST:
@@ -1581,7 +1586,7 @@ void IPTCfgParser::unknown_parameter() {
 				match(INT_CONST);
 #line 246 "iptables.g"
 				s+=LT(0)->getText();
-#line 1585 "IPTCfgParser.cpp"
+#line 1590 "IPTCfgParser.cpp"
 				break;
 			}
 			default:
@@ -1593,11 +1598,11 @@ void IPTCfgParser::unknown_parameter() {
 			match(SLASH);
 #line 248 "iptables.g"
 			s+=LT(0)->getText();
-#line 1597 "IPTCfgParser.cpp"
+#line 1602 "IPTCfgParser.cpp"
 			match(WORD);
 #line 249 "iptables.g"
 			s+=LT(0)->getText();
-#line 1601 "IPTCfgParser.cpp"
+#line 1606 "IPTCfgParser.cpp"
 			}
 #line 251 "iptables.g"
 			
@@ -1605,7 +1610,7 @@ void IPTCfgParser::unknown_parameter() {
 			std::string("Unknown parameter: ")+s);
 			*dbg << " UNKNOWN PARMETER=" << s;
 			
-#line 1609 "IPTCfgParser.cpp"
+#line 1614 "IPTCfgParser.cpp"
 			}
 		}
 		else if ((LA(1) == WORD || LA(1) == INT_CONST || LA(1) == DIGIT) && (_tokenSet_4.member(LA(2)))) {
@@ -1639,7 +1644,7 @@ void IPTCfgParser::unknown_parameter() {
 			std::string("Unknown parameter: ")+LT(0)->getText());
 			*dbg << " UNKNOWN PARMETER=" << LT(0)->getText();
 			
-#line 1643 "IPTCfgParser.cpp"
+#line 1648 "IPTCfgParser.cpp"
 			}
 		}
 		else {
@@ -1662,13 +1667,13 @@ void IPTCfgParser::m_state() {
 		
 		importer->current_state = "";
 		
-#line 1666 "IPTCfgParser.cpp"
+#line 1671 "IPTCfgParser.cpp"
 		state_word();
 #line 599 "iptables.g"
 		
 		importer->current_state += LT(0)->getText();
 		
-#line 1672 "IPTCfgParser.cpp"
+#line 1677 "IPTCfgParser.cpp"
 		{
 		switch ( LA(1)) {
 		case COMMA:
@@ -1679,7 +1684,7 @@ void IPTCfgParser::m_state() {
 			
 			importer->current_state += std::string(",") + LT(0)->getText();
 			
-#line 1683 "IPTCfgParser.cpp"
+#line 1688 "IPTCfgParser.cpp"
 			break;
 		}
 		case NEWLINE:
@@ -1722,7 +1727,7 @@ void IPTCfgParser::m_state() {
 		
 		*dbg << " STATE MATCH=" << importer->current_state;
 		
-#line 1726 "IPTCfgParser.cpp"
+#line 1731 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -1738,7 +1743,7 @@ void IPTCfgParser::m_mport() {
 		
 		*dbg << " MULTIPORT";
 		
-#line 1742 "IPTCfgParser.cpp"
+#line 1747 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -1750,12 +1755,12 @@ void IPTCfgParser::m_icmp() {
 	
 	try {      // for error handling
 		match(ICMP);
-#line 709 "iptables.g"
+#line 718 "iptables.g"
 		
 		importer->protocol = "icmp";
 		*dbg << " ICMP";
 		
-#line 1759 "IPTCfgParser.cpp"
+#line 1764 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -1767,12 +1772,12 @@ void IPTCfgParser::m_tcp() {
 	
 	try {      // for error handling
 		match(TCP);
-#line 829 "iptables.g"
+#line 838 "iptables.g"
 		
 		importer->protocol = "tcp";
 		*dbg << " TCP";
 		
-#line 1776 "IPTCfgParser.cpp"
+#line 1781 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -1784,12 +1789,12 @@ void IPTCfgParser::m_udp() {
 	
 	try {      // for error handling
 		match(UDP);
-#line 820 "iptables.g"
+#line 829 "iptables.g"
 		
 		importer->protocol = "udp";
 		*dbg << " UDP";
 		
-#line 1793 "IPTCfgParser.cpp"
+#line 1798 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -1805,7 +1810,7 @@ void IPTCfgParser::m_mark() {
 		
 		*dbg << " MARK";
 		
-#line 1809 "IPTCfgParser.cpp"
+#line 1814 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -1821,7 +1826,25 @@ void IPTCfgParser::m_limit() {
 		
 		*dbg << " LIMIT";
 		
-#line 1825 "IPTCfgParser.cpp"
+#line 1830 "IPTCfgParser.cpp"
+	}
+	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
+		reportError(ex);
+		recover(ex,_tokenSet_4);
+	}
+}
+
+void IPTCfgParser::m_comment() {
+	
+	try {      // for error handling
+		match(M_COMMENT);
+		match(MATCH_COMMENT);
+		match(STRING);
+#line 673 "iptables.g"
+		
+		*dbg << " COMMENT=" << LT(0)->getText();
+		
+#line 1848 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -1839,7 +1862,7 @@ void IPTCfgParser::m_unknown_module() {
 		importer->markCurrentRuleBad(
 		std::string("Unknown module: ")+LT(0)->getText());
 		
-#line 1843 "IPTCfgParser.cpp"
+#line 1866 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -1904,7 +1927,7 @@ void IPTCfgParser::target_options() {
 			importer->action_params["reject_with"] = LT(0)->getText();
 			*dbg << " REJECT WITH=" << LT(0)->getText();
 			
-#line 1908 "IPTCfgParser.cpp"
+#line 1931 "IPTCfgParser.cpp"
 			break;
 		}
 		case LOG_PREFIX:
@@ -1933,7 +1956,7 @@ void IPTCfgParser::target_options() {
 			importer->action_params["log_prefix"] = LT(0)->getText();
 			*dbg << " LOG PREFIX=" << LT(0)->getText();
 			
-#line 1937 "IPTCfgParser.cpp"
+#line 1960 "IPTCfgParser.cpp"
 			break;
 		}
 		case LOG_TCP_SEQ:
@@ -1944,7 +1967,7 @@ void IPTCfgParser::target_options() {
 			importer->action_params["log_tcp_seq"] = LT(0)->getText();
 			*dbg << " LOG TCP SEQUENCE=";
 			
-#line 1948 "IPTCfgParser.cpp"
+#line 1971 "IPTCfgParser.cpp"
 			break;
 		}
 		case LOG_TCP_OPT:
@@ -1955,7 +1978,7 @@ void IPTCfgParser::target_options() {
 			importer->action_params["log_tcp_options"] = LT(0)->getText();
 			*dbg << " LOG TCP OPTIONS=";
 			
-#line 1959 "IPTCfgParser.cpp"
+#line 1982 "IPTCfgParser.cpp"
 			break;
 		}
 		case LOG_IP_OPT:
@@ -1966,7 +1989,7 @@ void IPTCfgParser::target_options() {
 			importer->action_params["log_ip_options"] = LT(0)->getText();
 			*dbg << " LOG IP OPTIONS=";
 			
-#line 1970 "IPTCfgParser.cpp"
+#line 1993 "IPTCfgParser.cpp"
 			break;
 		}
 		case ULOG_PREFIX:
@@ -1995,7 +2018,7 @@ void IPTCfgParser::target_options() {
 			importer->action_params["log_prefix"] = LT(0)->getText();
 			*dbg << " ULOG PREFIX=" << LT(0)->getText();
 			
-#line 1999 "IPTCfgParser.cpp"
+#line 2022 "IPTCfgParser.cpp"
 			break;
 		}
 		case LOG_LEVEL:
@@ -2007,7 +2030,7 @@ void IPTCfgParser::target_options() {
 			importer->action_params["log_level"] = LT(0)->getText();
 			*dbg << " LOG LEVEL=" << LT(0)->getText();
 			
-#line 2011 "IPTCfgParser.cpp"
+#line 2034 "IPTCfgParser.cpp"
 			break;
 		}
 		case SET_MARK:
@@ -2036,7 +2059,7 @@ void IPTCfgParser::target_options() {
 			importer->action_params["set_mark"] = LT(0)->getText();
 			*dbg << " SET MARK=" << LT(0)->getText();
 			
-#line 2040 "IPTCfgParser.cpp"
+#line 2063 "IPTCfgParser.cpp"
 			break;
 		}
 		case SAVE_MARK:
@@ -2047,7 +2070,7 @@ void IPTCfgParser::target_options() {
 			importer->action_params["connmark_save_mark"] = "--save-mark";
 			*dbg << " SAVE MARK";
 			
-#line 2051 "IPTCfgParser.cpp"
+#line 2074 "IPTCfgParser.cpp"
 			break;
 		}
 		case RESTORE_MARK:
@@ -2058,7 +2081,7 @@ void IPTCfgParser::target_options() {
 			importer->action_params["connmark_restore_mark"] = "--restore-mark";
 			*dbg << " RESTORE MARK";
 			
-#line 2062 "IPTCfgParser.cpp"
+#line 2085 "IPTCfgParser.cpp"
 			break;
 		}
 		case CONTINUE:
@@ -2069,7 +2092,7 @@ void IPTCfgParser::target_options() {
 			importer->action_params["route_continue"] = "--continue";
 			*dbg << " CONTINUE";
 			
-#line 2073 "IPTCfgParser.cpp"
+#line 2096 "IPTCfgParser.cpp"
 			break;
 		}
 		case ROUTE_IIF:
@@ -2081,7 +2104,7 @@ void IPTCfgParser::target_options() {
 			importer->action_params["route_iif"] = LT(0)->getText();
 			*dbg << " ROUTE_IIF=" << LT(0)->getText();
 			
-#line 2085 "IPTCfgParser.cpp"
+#line 2108 "IPTCfgParser.cpp"
 			break;
 		}
 		case ROUTE_OIF:
@@ -2093,7 +2116,7 @@ void IPTCfgParser::target_options() {
 			importer->action_params["route_oif"] = LT(0)->getText();
 			*dbg << " ROUTE_OIF=" << LT(0)->getText();
 			
-#line 2097 "IPTCfgParser.cpp"
+#line 2120 "IPTCfgParser.cpp"
 			break;
 		}
 		case ROUTE_GW:
@@ -2105,7 +2128,7 @@ void IPTCfgParser::target_options() {
 			importer->action_params["route_gw"] = LT(0)->getText();
 			*dbg << " ROUTE_GW=" << LT(0)->getText();
 			
-#line 2109 "IPTCfgParser.cpp"
+#line 2132 "IPTCfgParser.cpp"
 			break;
 		}
 		case ROUTE_TEE:
@@ -2116,7 +2139,7 @@ void IPTCfgParser::target_options() {
 			importer->action_params["route_tee"] = "--tee";
 			*dbg << " ROUTE_TEE";
 			
-#line 2120 "IPTCfgParser.cpp"
+#line 2143 "IPTCfgParser.cpp"
 			break;
 		}
 		case TO_SOURCE:
@@ -2126,7 +2149,7 @@ void IPTCfgParser::target_options() {
 			
 			*dbg << " TO-SOURCE";
 			
-#line 2130 "IPTCfgParser.cpp"
+#line 2153 "IPTCfgParser.cpp"
 			nat_spec();
 			break;
 		}
@@ -2137,7 +2160,7 @@ void IPTCfgParser::target_options() {
 			
 			*dbg << " TO-DESTINATION";
 			
-#line 2141 "IPTCfgParser.cpp"
+#line 2164 "IPTCfgParser.cpp"
 			nat_spec();
 			break;
 		}
@@ -2154,7 +2177,7 @@ void IPTCfgParser::target_options() {
 			
 			*dbg << " TO-NETMAP";
 			
-#line 2158 "IPTCfgParser.cpp"
+#line 2181 "IPTCfgParser.cpp"
 			{
 			match(IPV4);
 #line 508 "iptables.g"
@@ -2163,7 +2186,7 @@ void IPTCfgParser::target_options() {
 			importer->nat_addr2 = LT(0)->getText();
 			*dbg << LT(0)->getText();
 			
-#line 2167 "IPTCfgParser.cpp"
+#line 2190 "IPTCfgParser.cpp"
 			match(SLASH);
 			{
 			switch ( LA(1)) {
@@ -2188,7 +2211,7 @@ void IPTCfgParser::target_options() {
 			importer->nat_nm = LT(0)->getText();
 			*dbg << "/" << LT(0)->getText();
 			
-#line 2192 "IPTCfgParser.cpp"
+#line 2215 "IPTCfgParser.cpp"
 			}
 			break;
 		}
@@ -2200,7 +2223,7 @@ void IPTCfgParser::target_options() {
 			importer->action_params["clamp-mss-to-pmtu"] = "--clamp-mss-to-pmtu";
 			*dbg << " TO-NETMAP";
 			
-#line 2204 "IPTCfgParser.cpp"
+#line 2227 "IPTCfgParser.cpp"
 			break;
 		}
 		default:
@@ -2212,7 +2235,7 @@ void IPTCfgParser::target_options() {
 				importer->action_params["set_tos"] = LT(0)->getText();
 				*dbg << " SET TOS=" << LT(0)->getText();
 				
-#line 2216 "IPTCfgParser.cpp"
+#line 2239 "IPTCfgParser.cpp"
 			}
 			else if ((LA(1) == SET_TOS) && (LA(2) == WORD)) {
 				match(SET_TOS);
@@ -2222,7 +2245,7 @@ void IPTCfgParser::target_options() {
 				importer->action_params["set_tos"] = LT(0)->getText();
 				*dbg << " SET TOS=" << LT(0)->getText();
 				
-#line 2226 "IPTCfgParser.cpp"
+#line 2249 "IPTCfgParser.cpp"
 			}
 		else {
 			throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());
@@ -2316,7 +2339,7 @@ void IPTCfgParser::nat_spec() {
 		<< "-"
 		<< importer->nat_port_range_end;
 		
-#line 2320 "IPTCfgParser.cpp"
+#line 2343 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -2338,7 +2361,7 @@ void IPTCfgParser::redirect_spec() {
 		<< importer->nat_port_range_start
 		<< importer->nat_port_range_end;
 		
-#line 2342 "IPTCfgParser.cpp"
+#line 2365 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -2357,14 +2380,14 @@ void IPTCfgParser::nat_addr_range() {
 		importer->nat_addr1 = LT(0)->getText();
 		importer->nat_addr2 = LT(0)->getText();
 		
-#line 2361 "IPTCfgParser.cpp"
+#line 2384 "IPTCfgParser.cpp"
 		{
 		if ((LA(1) == MINUS) && (LA(2) == IPV4)) {
 			match(MINUS);
 			match(IPV4);
 #line 554 "iptables.g"
 			importer->nat_addr2 = LT(0)->getText();
-#line 2368 "IPTCfgParser.cpp"
+#line 2391 "IPTCfgParser.cpp"
 		}
 		else if ((_tokenSet_7.member(LA(1))) && (_tokenSet_8.member(LA(2)))) {
 		}
@@ -2401,13 +2424,13 @@ void IPTCfgParser::nat_port_def_with_range() {
 		}
 		}
 		}
-#line 775 "iptables.g"
+#line 784 "iptables.g"
 		
 		importer->nat_port_range_start = LT(0)->getText();
 		importer->nat_port_range_end = LT(0)->getText();
 		*dbg << " PORT=" << LT(0)->getText();
 		
-#line 2411 "IPTCfgParser.cpp"
+#line 2434 "IPTCfgParser.cpp"
 		{
 		if ((LA(1) == MINUS) && (LA(2) == WORD || LA(2) == INT_CONST)) {
 			match(MINUS);
@@ -2429,12 +2452,12 @@ void IPTCfgParser::nat_port_def_with_range() {
 			}
 			}
 			}
-#line 782 "iptables.g"
+#line 791 "iptables.g"
 			
 			importer->nat_port_range_end = LT(0)->getText();
 			*dbg << ":" << LT(0)->getText();
 			
-#line 2438 "IPTCfgParser.cpp"
+#line 2461 "IPTCfgParser.cpp"
 		}
 		else if ((_tokenSet_6.member(LA(1))) && (_tokenSet_8.member(LA(2)))) {
 		}
@@ -2494,19 +2517,19 @@ void IPTCfgParser::limit_rate() {
 		match(INT_CONST);
 #line 645 "iptables.g"
 		importer->limit_val = LT(0)->getText();
-#line 2498 "IPTCfgParser.cpp"
+#line 2521 "IPTCfgParser.cpp"
 		match(SLASH);
 		match(WORD);
 #line 647 "iptables.g"
 		importer->limit_suffix = LT(0)->getText();
-#line 2503 "IPTCfgParser.cpp"
+#line 2526 "IPTCfgParser.cpp"
 #line 648 "iptables.g"
 		
 		*dbg << " MATCH LIMIT "
 		<< importer->limit_val << "/"
 		<< importer->limit_suffix;
 		
-#line 2510 "IPTCfgParser.cpp"
+#line 2533 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -2535,13 +2558,13 @@ void IPTCfgParser::port_def_no_range() {
 		}
 		}
 		}
-#line 745 "iptables.g"
+#line 754 "iptables.g"
 		
 		importer->tmp_port_range_start = LT(0)->getText();
 		importer->tmp_port_range_end = LT(0)->getText();
 		*dbg << " PORT=" << LT(0)->getText();
 		
-#line 2545 "IPTCfgParser.cpp"
+#line 2568 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -2570,13 +2593,13 @@ void IPTCfgParser::port_def_with_range() {
 		}
 		}
 		}
-#line 756 "iptables.g"
+#line 765 "iptables.g"
 		
 		importer->tmp_port_range_start = LT(0)->getText();
 		importer->tmp_port_range_end = LT(0)->getText();
 		*dbg << " PORT=" << LT(0)->getText();
 		
-#line 2580 "IPTCfgParser.cpp"
+#line 2603 "IPTCfgParser.cpp"
 		{
 		switch ( LA(1)) {
 		case COLON:
@@ -2600,12 +2623,12 @@ void IPTCfgParser::port_def_with_range() {
 			}
 			}
 			}
-#line 763 "iptables.g"
+#line 772 "iptables.g"
 			
 			importer->tmp_port_range_end = LT(0)->getText();
 			*dbg << ":" << LT(0)->getText();
 			
-#line 2609 "IPTCfgParser.cpp"
+#line 2632 "IPTCfgParser.cpp"
 			break;
 		}
 		case NEWLINE:
@@ -2655,7 +2678,7 @@ void IPTCfgParser::syn() {
 	
 	try {      // for error handling
 		match(MATCH_SYN);
-#line 845 "iptables.g"
+#line 854 "iptables.g"
 		
 		importer->tcp_flags_mask.clear();
 		importer->tcp_flags_mask.push_back(libfwbuilder::TCPService::SYN);
@@ -2665,7 +2688,7 @@ void IPTCfgParser::syn() {
 		importer->tcp_flags_comp.clear();
 		importer->tcp_flags_comp.push_back(libfwbuilder::TCPService::SYN);
 		
-#line 2669 "IPTCfgParser.cpp"
+#line 2692 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -2678,14 +2701,14 @@ void IPTCfgParser::tcp_flags() {
 	try {      // for error handling
 		match(MATCH_TCP_FLAGS);
 		tcp_flags_list();
-#line 896 "iptables.g"
+#line 905 "iptables.g"
 		
 		importer->tcp_flags_mask = importer->tmp_tcp_flags_list;
 		importer->tmp_tcp_flags_list.clear();
 		
-#line 2687 "IPTCfgParser.cpp"
+#line 2710 "IPTCfgParser.cpp"
 		tcp_flags_list();
-#line 901 "iptables.g"
+#line 910 "iptables.g"
 		
 		importer->tcp_flags_comp = importer->tmp_tcp_flags_list;
 		importer->tmp_tcp_flags_list.clear();
@@ -2699,7 +2722,7 @@ void IPTCfgParser::tcp_flags() {
 		i!=importer->tcp_flags_comp.end(); ++i)
 		*dbg << *i << "|";
 		
-#line 2703 "IPTCfgParser.cpp"
+#line 2726 "IPTCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -2745,65 +2768,65 @@ void IPTCfgParser::tcp_flag_word() {
 		case SYN:
 		{
 			match(SYN);
-#line 858 "iptables.g"
+#line 867 "iptables.g"
 			importer->tmp_tcp_flag_code = libfwbuilder::TCPService::SYN;
-#line 2751 "IPTCfgParser.cpp"
+#line 2774 "IPTCfgParser.cpp"
 			break;
 		}
 		case ACK:
 		{
 			match(ACK);
-#line 860 "iptables.g"
+#line 869 "iptables.g"
 			importer->tmp_tcp_flag_code = libfwbuilder::TCPService::ACK;
-#line 2759 "IPTCfgParser.cpp"
+#line 2782 "IPTCfgParser.cpp"
 			break;
 		}
 		case FIN:
 		{
 			match(FIN);
-#line 862 "iptables.g"
+#line 871 "iptables.g"
 			importer->tmp_tcp_flag_code = libfwbuilder::TCPService::FIN;
-#line 2767 "IPTCfgParser.cpp"
+#line 2790 "IPTCfgParser.cpp"
 			break;
 		}
 		case RST:
 		{
 			match(RST);
-#line 864 "iptables.g"
+#line 873 "iptables.g"
 			importer->tmp_tcp_flag_code = libfwbuilder::TCPService::RST;
-#line 2775 "IPTCfgParser.cpp"
+#line 2798 "IPTCfgParser.cpp"
 			break;
 		}
 		case URG:
 		{
 			match(URG);
-#line 866 "iptables.g"
+#line 875 "iptables.g"
 			importer->tmp_tcp_flag_code = libfwbuilder::TCPService::URG;
-#line 2783 "IPTCfgParser.cpp"
+#line 2806 "IPTCfgParser.cpp"
 			break;
 		}
 		case PSH:
 		{
 			match(PSH);
-#line 868 "iptables.g"
+#line 877 "iptables.g"
 			importer->tmp_tcp_flag_code = libfwbuilder::TCPService::PSH;
-#line 2791 "IPTCfgParser.cpp"
+#line 2814 "IPTCfgParser.cpp"
 			break;
 		}
 		case ALL:
 		{
 			match(ALL);
-#line 870 "iptables.g"
+#line 879 "iptables.g"
 			importer->tmp_tcp_flag_code = 99;
-#line 2799 "IPTCfgParser.cpp"
+#line 2822 "IPTCfgParser.cpp"
 			break;
 		}
 		case NONE:
 		{
 			match(NONE);
-#line 872 "iptables.g"
+#line 881 "iptables.g"
 			importer->tmp_tcp_flag_code = 98;
-#line 2807 "IPTCfgParser.cpp"
+#line 2830 "IPTCfgParser.cpp"
 			break;
 		}
 		default:
@@ -2822,36 +2845,36 @@ void IPTCfgParser::tcp_flag_word() {
 void IPTCfgParser::tcp_flags_list() {
 	
 	try {      // for error handling
-#line 877 "iptables.g"
+#line 886 "iptables.g"
 		
 		importer->tmp_tcp_flags_list.clear();
 		importer->tmp_tcp_flag_code = 0;
 		
-#line 2831 "IPTCfgParser.cpp"
+#line 2854 "IPTCfgParser.cpp"
 		tcp_flag_word();
-#line 882 "iptables.g"
+#line 891 "iptables.g"
 		
 		importer->tmp_tcp_flags_list.push_back(importer->tmp_tcp_flag_code);
 		
-#line 2837 "IPTCfgParser.cpp"
+#line 2860 "IPTCfgParser.cpp"
 		{ // ( ... )*
 		for (;;) {
 			if ((LA(1) == COMMA)) {
 				match(COMMA);
 				tcp_flag_word();
-#line 887 "iptables.g"
+#line 896 "iptables.g"
 				
 				importer->tmp_tcp_flags_list.push_back(
 				importer->tmp_tcp_flag_code);
 				
-#line 2848 "IPTCfgParser.cpp"
+#line 2871 "IPTCfgParser.cpp"
 			}
 			else {
-				goto _loop121;
+				goto _loop122;
 			}
 			
 		}
-		_loop121:;
+		_loop122:;
 		} // ( ... )*
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2936,6 +2959,8 @@ const char* IPTCfgParser::tokenNames[] = {
 	"MATCH_LIMIT",
 	"MATCH_LIMIT_BURST",
 	"\"multiport\"",
+	"\"comment\"",
+	"MATCH_COMMENT",
 	"MATCH_SRC_MULTIPORT",
 	"MATCH_SRC_MULTIPORT_SHORT",
 	"MATCH_DST_MULTIPORT",
@@ -2994,21 +3019,21 @@ const ANTLR_USE_NAMESPACE(antlr)BitSet IPTCfgParser::_tokenSet_0(_tokenSet_0_dat
 const unsigned long IPTCfgParser::_tokenSet_1_data_[] = { 540914UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE LINE_COMMENT "COMMIT" STAR COLON ADD_RULE 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IPTCfgParser::_tokenSet_1(_tokenSet_1_data_,4);
-const unsigned long IPTCfgParser::_tokenSet_2_data_[] = { 999325696UL, 67108870UL, 201588584UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long IPTCfgParser::_tokenSet_2_data_[] = { 999325696UL, 67108870UL, 806354024UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // MINUS UNSUPPORTED_OPTION OPT_MODULE OPT_SRC EXCLAMATION OPT_DST OPT_IN_INTF 
 // OPT_OUT_INTF OPT_PROTO OPT_TARGET OPT_FRAGM MATCH_MARK MATCH_LIMIT MATCH_LIMIT_BURST 
 // MATCH_SRC_MULTIPORT MATCH_SRC_MULTIPORT_SHORT MATCH_DST_MULTIPORT MATCH_DST_MULTIPORT_SHORT 
 // MATCH_ICMP_TYPE MATCH_SRC_PORT MATCH_SRC_PORT_SHORT MATCH_DST_PORT MATCH_DST_PORT_SHORT 
 // MATCH_SYN MATCH_TCP_FLAGS MATCH_TCP_OPTION 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IPTCfgParser::_tokenSet_2(_tokenSet_2_data_,8);
-const unsigned long IPTCfgParser::_tokenSet_3_data_[] = { 999325952UL, 67108870UL, 201588584UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long IPTCfgParser::_tokenSet_3_data_[] = { 999325952UL, 67108870UL, 806354024UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // WORD MINUS UNSUPPORTED_OPTION OPT_MODULE OPT_SRC EXCLAMATION OPT_DST 
 // OPT_IN_INTF OPT_OUT_INTF OPT_PROTO OPT_TARGET OPT_FRAGM MATCH_MARK MATCH_LIMIT 
 // MATCH_LIMIT_BURST MATCH_SRC_MULTIPORT MATCH_SRC_MULTIPORT_SHORT MATCH_DST_MULTIPORT 
 // MATCH_DST_MULTIPORT_SHORT MATCH_ICMP_TYPE MATCH_SRC_PORT MATCH_SRC_PORT_SHORT 
 // MATCH_DST_PORT MATCH_DST_PORT_SHORT MATCH_SYN MATCH_TCP_FLAGS MATCH_TCP_OPTION 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IPTCfgParser::_tokenSet_3(_tokenSet_3_data_,8);
-const unsigned long IPTCfgParser::_tokenSet_4_data_[] = { 999325712UL, 67108870UL, 201588584UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long IPTCfgParser::_tokenSet_4_data_[] = { 999325712UL, 67108870UL, 806354024UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE MINUS UNSUPPORTED_OPTION OPT_MODULE OPT_SRC EXCLAMATION OPT_DST 
 // OPT_IN_INTF OPT_OUT_INTF OPT_PROTO OPT_TARGET OPT_FRAGM MATCH_MARK MATCH_LIMIT 
 // MATCH_LIMIT_BURST MATCH_SRC_MULTIPORT MATCH_SRC_MULTIPORT_SHORT MATCH_DST_MULTIPORT 
@@ -3021,7 +3046,7 @@ const unsigned long IPTCfgParser::_tokenSet_5_data_[] = { 0UL, 67104728UL, 0UL, 
 // ROUTE_OIF ROUTE_GW ROUTE_TEE TO_SOURCE TO_DESTINATION TO_PORTS TO_NETMAP 
 // CLAMP_MSS 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IPTCfgParser::_tokenSet_5(_tokenSet_5_data_,4);
-const unsigned long IPTCfgParser::_tokenSet_6_data_[] = { 999325712UL, 134213598UL, 201588584UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long IPTCfgParser::_tokenSet_6_data_[] = { 999325712UL, 134213598UL, 806354024UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE MINUS UNSUPPORTED_OPTION OPT_MODULE OPT_SRC EXCLAMATION OPT_DST 
 // OPT_IN_INTF OPT_OUT_INTF OPT_PROTO OPT_TARGET REJECT_WITH LOG_PREFIX 
 // LOG_TCP_SEQ LOG_TCP_OPT LOG_IP_OPT ULOG_PREFIX LOG_LEVEL SET_MARK SET_TOS 
@@ -3032,7 +3057,7 @@ const unsigned long IPTCfgParser::_tokenSet_6_data_[] = { 999325712UL, 134213598
 // MATCH_SRC_PORT_SHORT MATCH_DST_PORT MATCH_DST_PORT_SHORT MATCH_SYN MATCH_TCP_FLAGS 
 // MATCH_TCP_OPTION 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IPTCfgParser::_tokenSet_6(_tokenSet_6_data_,8);
-const unsigned long IPTCfgParser::_tokenSet_7_data_[] = { 999342096UL, 134213598UL, 201588584UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long IPTCfgParser::_tokenSet_7_data_[] = { 999342096UL, 134213598UL, 806354024UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE COLON MINUS UNSUPPORTED_OPTION OPT_MODULE OPT_SRC EXCLAMATION 
 // OPT_DST OPT_IN_INTF OPT_OUT_INTF OPT_PROTO OPT_TARGET REJECT_WITH LOG_PREFIX 
 // LOG_TCP_SEQ LOG_TCP_OPT LOG_IP_OPT ULOG_PREFIX LOG_LEVEL SET_MARK SET_TOS 
@@ -3043,7 +3068,7 @@ const unsigned long IPTCfgParser::_tokenSet_7_data_[] = { 999342096UL, 134213598
 // MATCH_SRC_PORT_SHORT MATCH_DST_PORT MATCH_DST_PORT_SHORT MATCH_SYN MATCH_TCP_FLAGS 
 // MATCH_TCP_OPTION 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IPTCfgParser::_tokenSet_7(_tokenSet_7_data_,8);
-const unsigned long IPTCfgParser::_tokenSet_8_data_[] = { 4290429426UL, 2281701375UL, 536870908UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long IPTCfgParser::_tokenSet_8_data_[] = { 4290429426UL, 2281701375UL, 2147483132UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE LINE_COMMENT "COMMIT" STAR WORD COLON MINUS INT_CONST ADD_RULE 
 // UNSUPPORTED_OPTION DIGIT OPT_MODULE OPT_SRC EXCLAMATION IPV4 OPT_DST 
 // OPT_IN_INTF OPT_OUT_INTF "tcp" "udp" "icmp" OPT_PROTO OPT_TARGET REJECT_WITH 
@@ -3051,12 +3076,13 @@ const unsigned long IPTCfgParser::_tokenSet_8_data_[] = { 4290429426UL, 22817013
 // SET_MARK HEX_CONST SET_TOS SAVE_MARK RESTORE_MARK CONTINUE ROUTE_IIF 
 // ROUTE_OIF ROUTE_GW ROUTE_TEE TO_SOURCE TO_DESTINATION TO_PORTS TO_NETMAP 
 // CLAMP_MSS OPT_FRAGM "state" "mark" MATCH_MARK "limit" MATCH_LIMIT MATCH_LIMIT_BURST 
-// "multiport" MATCH_SRC_MULTIPORT MATCH_SRC_MULTIPORT_SHORT MATCH_DST_MULTIPORT 
-// MATCH_DST_MULTIPORT_SHORT MATCH_ICMP_TYPE MATCH_SRC_PORT MATCH_SRC_PORT_SHORT 
-// MATCH_DST_PORT MATCH_DST_PORT_SHORT MATCH_SYN "SYN" "ACK" "FIN" "RST" 
-// "URG" "PSH" "ALL" "NONE" MATCH_TCP_FLAGS MATCH_TCP_OPTION NUMBER 
+// "multiport" "comment" MATCH_SRC_MULTIPORT MATCH_SRC_MULTIPORT_SHORT 
+// MATCH_DST_MULTIPORT MATCH_DST_MULTIPORT_SHORT MATCH_ICMP_TYPE MATCH_SRC_PORT 
+// MATCH_SRC_PORT_SHORT MATCH_DST_PORT MATCH_DST_PORT_SHORT MATCH_SYN "SYN" 
+// "ACK" "FIN" "RST" "URG" "PSH" "ALL" "NONE" MATCH_TCP_FLAGS MATCH_TCP_OPTION 
+// NUMBER 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IPTCfgParser::_tokenSet_8(_tokenSet_8_data_,8);
-const unsigned long IPTCfgParser::_tokenSet_9_data_[] = { 999325712UL, 67108870UL, 201588586UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long IPTCfgParser::_tokenSet_9_data_[] = { 999325712UL, 67108870UL, 806354026UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE MINUS UNSUPPORTED_OPTION OPT_MODULE OPT_SRC EXCLAMATION OPT_DST 
 // OPT_IN_INTF OPT_OUT_INTF OPT_PROTO OPT_TARGET OPT_FRAGM COMMA MATCH_MARK 
 // MATCH_LIMIT MATCH_LIMIT_BURST MATCH_SRC_MULTIPORT MATCH_SRC_MULTIPORT_SHORT 
@@ -3064,7 +3090,7 @@ const unsigned long IPTCfgParser::_tokenSet_9_data_[] = { 999325712UL, 67108870U
 // MATCH_SRC_PORT_SHORT MATCH_DST_PORT MATCH_DST_PORT_SHORT MATCH_SYN MATCH_TCP_FLAGS 
 // MATCH_TCP_OPTION 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IPTCfgParser::_tokenSet_9(_tokenSet_9_data_,8);
-const unsigned long IPTCfgParser::_tokenSet_10_data_[] = { 999325712UL, 67108870UL, 268435306UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long IPTCfgParser::_tokenSet_10_data_[] = { 999325712UL, 67108870UL, 1073740906UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE MINUS UNSUPPORTED_OPTION OPT_MODULE OPT_SRC EXCLAMATION OPT_DST 
 // OPT_IN_INTF OPT_OUT_INTF OPT_PROTO OPT_TARGET OPT_FRAGM COMMA MATCH_MARK 
 // MATCH_LIMIT MATCH_LIMIT_BURST MATCH_SRC_MULTIPORT MATCH_SRC_MULTIPORT_SHORT 
@@ -3072,7 +3098,7 @@ const unsigned long IPTCfgParser::_tokenSet_10_data_[] = { 999325712UL, 67108870
 // MATCH_SRC_PORT_SHORT MATCH_DST_PORT MATCH_DST_PORT_SHORT MATCH_SYN "SYN" 
 // "ACK" "FIN" "RST" "URG" "PSH" "ALL" "NONE" MATCH_TCP_FLAGS MATCH_TCP_OPTION 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IPTCfgParser::_tokenSet_10(_tokenSet_10_data_,8);
-const unsigned long IPTCfgParser::_tokenSet_11_data_[] = { 999325712UL, 67108870UL, 268435304UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long IPTCfgParser::_tokenSet_11_data_[] = { 999325712UL, 67108870UL, 1073740904UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE MINUS UNSUPPORTED_OPTION OPT_MODULE OPT_SRC EXCLAMATION OPT_DST 
 // OPT_IN_INTF OPT_OUT_INTF OPT_PROTO OPT_TARGET OPT_FRAGM MATCH_MARK MATCH_LIMIT 
 // MATCH_LIMIT_BURST MATCH_SRC_MULTIPORT MATCH_SRC_MULTIPORT_SHORT MATCH_DST_MULTIPORT 
