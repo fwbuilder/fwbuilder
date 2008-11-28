@@ -945,7 +945,15 @@ void FWWindow::prepareEditMenu()
 
 void FWWindow::prepareObjectMenu()
 {
-    if (!activeProject())return;
+    if (!activeProject())
+    {
+        m_mainWindow->newObjectAction->setEnabled(false);
+        m_mainWindow->findAction->setEnabled(false);
+        m_mainWindow->ObjectLockAction->setEnabled(false);
+        m_mainWindow->ObjectUnlockAction->setEnabled(false);
+        return;
+    }
+
     ObjectTreeView* otv = activeProject()->getCurrentObjectTree();
     m_mainWindow->ObjectUnlockAction->setEnabled(otv->isUnlockable());
     m_mainWindow->ObjectLockAction->setEnabled(otv->isLockable());
@@ -962,6 +970,8 @@ void FWWindow::prepareFileMenu()
         m_mainWindow->fileCommitAction->setEnabled(false);
         m_mainWindow->fileDiscardAction->setEnabled(false);
         m_mainWindow->filePropAction->setEnabled(false);
+        m_mainWindow->libImportAction->setEnabled(false);
+        m_mainWindow->policyImportAction->setEnabled(false);
         return;
     }
 

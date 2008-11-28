@@ -1,5 +1,9 @@
 2008-11-28  vadim  <vadim@vk.crocodile.org>
 
+	* FWWindow.cpp (FWWindow::prepareFileMenu): fixed bug #2353052
+	"fwbuilder crashes on import without open object file". Fixed in
+	rev 676.
+
 	* ipt.cpp (dumpScript): fixed bug 2356131 "Iptables-restore option
 	broken for multiple policy sets". If firewall was configured to
 	use iptables-restore to activate policy and if it had two or more
