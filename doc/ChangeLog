@@ -5,7 +5,8 @@
 	use iptables-restore to activate policy and if it had two or more
 	policy rule sets, compiler used to put "echo COMMIT" line at the
 	bottom of each ruleset. This was incorrect, iptables-restore
-	expects only one COMMIT line at the end of each table.
+	expects only one COMMIT line at the end of each table. Fixed in
+	rev 675.
 
 2008-11-28  User Vadim  <vadim@vk.crocodile.org>
 
