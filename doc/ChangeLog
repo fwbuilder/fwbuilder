@@ -1,3 +1,19 @@
+2008-11-28  User Vadim  <vadim@vk.crocodile.org>
+
+	* InetAddr.cpp (InetAddr::toString): Our included copy of
+	inet_net_ntop does not add "/netmask" to IPv6 addresses if
+	argument #3 is -1 (bits).  However, the same function included in
+	libc on FreeBSD returns EINVAL for bits=-1. It appears the
+	function in libc in FreeBSD is based on the same code as our copy,
+	but has been updated and instead of doing check "if ((bits < -1)
+	|| (bits > 128))" probably checks for (bits < 0). Because of this,
+	fwbuilder GUI crashed when user tried to create IPv6 network
+	object on FreeBSD. To fix, will use bits=0 in call to
+	inet_net_ntop in InetAddr::toString and then strip /0 that
+	inet_net_ntop adds to the generated string. Both our copy of
+	inet_net_ntop and the one shipped with FreeBSD add "/0"
+	consistently, so this works on all platforms.
+
 2008-11-01  vadim  <vadim@vk.crocodile.org>
 
 	* fwbuilder/Rule.cpp (PolicyRule::PolicyRule): create rule
