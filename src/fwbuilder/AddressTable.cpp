@@ -48,12 +48,14 @@ const char *AddressTable::TYPENAME={"AddressTable"};
 AddressTable::AddressTable() : MultiAddress() 
 {
     setRunTime(false);
+    setStr("filename", "");
 }
 
 AddressTable::AddressTable(const FWObject *root,bool prepopulate) :
     MultiAddress(root,prepopulate) 
 {
     setRunTime(false);
+    setStr("filename", "");
 }
 
 string AddressTable::getSourceName()

@@ -14,6 +14,15 @@
 	inet_net_ntop and the one shipped with FreeBSD add "/0"
 	consistently, so this works on all platforms.
 
+2008-11-15  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* AddressTable.cpp (AddressTable::AddressTable): fixed bug#
+	2293052 "Saving file with empy AddressTable produces corrupt XML".
+	When new AddressTable object is created, its "filename" attribute
+	is empty. If data file was saved right after such new AddressTable
+	object was created, resultant file could not be loaded back into
+	the program becaise it violated XML DTD.
+
 2008-11-01  vadim  <vadim@vk.crocodile.org>
 
 	* fwbuilder/Rule.cpp (PolicyRule::PolicyRule): create rule
