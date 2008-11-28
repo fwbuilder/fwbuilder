@@ -111,7 +111,7 @@ static bool             ipv4_run       = true;
 static bool             ipv6_run       = true;
 static bool             fw_by_id       = false;
 
-FWObjectDatabase       *objdb = NULL;
+FWObjectDatabase *objdb = NULL;
 
 static map<string,RuleSet*> branches;
 
@@ -259,9 +259,23 @@ string dumpScript(bool nocomm, Firewall *fw,
                 nocomm, fw->getOptionsObject()->getStr("prolog_script"));
         }
 
-        if (!filter_script.empty())  script << filter_script;
-        if (!mangle_script.empty()) script << mangle_script;
-        if (!nat_script.empty()) script << nat_script;
+        if (!filter_script.empty())
+        {
+            script << filter_script;
+            script << "echo COMMIT\n";
+        }
+
+        if (!mangle_script.empty())
+        {
+            script << mangle_script;
+            script << "echo COMMIT\n";
+        }
+
+        if (!nat_script.empty())
+        {
+            script << nat_script;
+            script << "echo COMMIT\n";
+        }
 
         if (script.tellp() > 0)
         {
@@ -293,6 +307,148 @@ string dumpScript(bool nocomm, Firewall *fw,
 
     return res.str();
 }
+ 
+bool processPolicyRuleSet(
+    const QString &fwobjectname,
+    FWObject *ruleset,
+    ostringstream &filter_table_stream,
+    ostringstream &mangle_table_stream,
+    ostringstream &reset_rules_stream,
+    OSConfigurator_linux24 *oscnf,
+    bool ipv6_policy,
+    std::map<const std::string, bool> &minus_n_commands_filter,
+    std::map<const std::string, bool> &minus_n_commands_mangle)
+{
+    int policy_rules_count  = 0;
+    int mangle_rules_count  = 0;
+    bool have_connmark = false;
+    bool have_connmark_in_output = false;
+    bool empty_output = true;
+
+    Policy *policy = Policy::cast(ruleset);
+    assignRuleSetChain(policy);
+    string branch_name = policy->getName();
+
+    if (policy->isV6()!=ipv6_policy) return true;
+
+    MangleTableCompiler_ipt m(
+        objdb , fwobjectname.toUtf8().constData(),
+        ipv6_policy , oscnf,
+        &minus_n_commands_mangle );
+
+    if (!policy->isTop())
+        m.registerRuleSetChain(branch_name);
+
+    m.setSourceRuleSet( policy );
+    m.setRuleSetName(branch_name);
+
+    m.setDebugLevel( dl );
+    m.setDebugRule(  drp );
+    m.setVerbose( (bool)(verbose) );
+    m.setHaveDynamicInterfaces(have_dynamic_interfaces);
+    if (test_mode) m.setTestMode();
+
+    if ( (mangle_rules_count = m.prolog()) > 0 )
+    {
+        m.compile();
+        m.epilog();
+
+        // We need to generate automatic rules in mangle
+        // table (-j CONNMARK --restore-mark) if CONNMARK
+        // target is present in any ruleset, not only in
+        // the top-level ruleset. So we keep global
+        // boolean flags for this condition which will
+        // become true if any ruleset has such
+        // rules. We'll call
+        // MangleTableCompiler_ipt::flushAndSetDefaultPolicy
+        // later if either of these flags is true after
+        // all rulesets have been processed.
+
+        have_connmark |= m.haveConnMarkRules();
+        have_connmark_in_output |= m.haveConnMarkRulesInOutput();
+
+        long m_str_pos = mangle_table_stream.tellp();
+
+        if (policy->isTop())
+        {
+            mangle_table_stream << "# ================ Table 'mangle', ";
+            mangle_table_stream << "automatic rules";
+            mangle_table_stream << "\n";
+            mangle_table_stream << m.flushAndSetDefaultPolicy();
+        }
+
+        if (m.getCompiledScriptLength() > 0)
+        {
+            mangle_table_stream << "# ================ Table 'mangle', rule set "
+                  << branch_name << "\n";
+            if (m.haveErrorsAndWarnings())
+            {
+                mangle_table_stream << "# Policy compiler errors and warnings:"
+                      << "\n";
+                mangle_table_stream << m.getErrors("# ");
+            }
+
+            mangle_table_stream << m.getCompiledScript();
+        }
+
+        if (m_str_pos!=mangle_table_stream.tellp())
+        {
+            //mangle_table_stream << m.commit();
+            mangle_table_stream << "\n";
+            empty_output = false;
+        }
+    }
+
+    PolicyCompiler_ipt c(
+        objdb,fwobjectname.toUtf8().constData(), ipv6_policy, oscnf,
+        &minus_n_commands_filter);
+
+    if (!policy->isTop())
+        c.registerRuleSetChain(branch_name);
+
+    c.setSourceRuleSet( policy );
+    c.setRuleSetName(branch_name);
+
+    c.setDebugLevel( dl );
+    c.setDebugRule(  drp );
+    c.setVerbose( (bool)(verbose) );
+    c.setHaveDynamicInterfaces(have_dynamic_interfaces);
+    if (test_mode) c.setTestMode();
+
+    if ( (policy_rules_count=c.prolog()) > 0 )
+    {
+        c.compile();
+        c.epilog();
+
+        if (c.getCompiledScriptLength() > 0)
+        {
+            filter_table_stream << "# ================ Table 'filter', rule set "
+                  << branch_name << "\n";
+            if (c.haveErrorsAndWarnings())
+            {
+                filter_table_stream << "# Policy compiler errors and warnings:"
+                      << "\n";
+                filter_table_stream << c.getErrors("# ");
+            }
+            filter_table_stream << c.getCompiledScript();
+            //filter_table_stream << c.commit();
+            filter_table_stream << "\n";
+            empty_output = false;
+        }
+    }
+
+    if (policy->isTop())
+    {
+        reset_rules_stream
+            << "# ================ Table 'filter', automatic rules"
+            << "\n";
+        reset_rules_stream << c.flushAndSetDefaultPolicy();
+        empty_output = false;
+    }
+
+    return empty_output;
+}
+
 
 void usage(const char *name)
 {
@@ -623,8 +779,6 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
         list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
 
-        int policy_rules_count  = 0;
-        int mangle_rules_count  = 0;
         int nat_rules_count     = 0;
         int routing_rules_count = 0;
         bool have_nat = false;
@@ -696,6 +850,8 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 if (nat->isV6()==ipv6_policy) nat_count++;
             }
 
+            
+
             for (list<FWObject*>::iterator p=all_policies.begin();
                  p!=all_policies.end(); ++p)
             {
@@ -716,9 +872,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             ostringstream m_str;
             ostringstream n_str;
             bool empty_output = true;
-            bool have_connmark = false;
-            bool have_connmark_in_output = false;
-            MangleTableCompiler_ipt *top_level_mangle_compiler = NULL;
+            //MangleTableCompiler_ipt *top_level_mangle_compiler = NULL;
 
             for (list<FWObject*>::iterator p=all_nat.begin();
                  p!=all_nat.end(); ++p )
@@ -768,7 +922,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                         n_str << n.flushAndSetDefaultPolicy();
 
                     n_str << n.getCompiledScript();
-                    n_str << n.commit();
+                    //n_str << n.commit();
                     n_str << "\n";
                     empty_output = false;
                 }
@@ -777,128 +931,18 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             for (list<FWObject*>::iterator p=all_policies.begin();
                  p!=all_policies.end(); ++p )
             {
-                Policy *policy = Policy::cast(*p);
-                assignRuleSetChain(policy);
-                string branch_name = policy->getName();
+                bool empty_policy = processPolicyRuleSet(
+                    fwobjectname,
+                    *p,
+                    c_str,
+                    m_str,
+                    reset_rules,
+                    oscnf,
+                    ipv6_policy,
+                    minus_n_commands_filter,
+                    minus_n_commands_mangle);
 
-                if (policy->isV6()!=ipv6_policy) continue;
-
-                MangleTableCompiler_ipt m(
-                    objdb , fwobjectname.toUtf8().constData(),
-                    ipv6_policy , oscnf,
-                    &minus_n_commands_mangle );
-
-                if (!policy->isTop())
-                    m.registerRuleSetChain(branch_name);
-
-                m.setSourceRuleSet( policy );
-                m.setRuleSetName(branch_name);
-
-                m.setDebugLevel( dl );
-                m.setDebugRule(  drp );
-                m.setVerbose( (bool)(verbose) );
-                m.setHaveDynamicInterfaces(have_dynamic_interfaces);
-                if (test_mode) m.setTestMode();
-
-                if ( (mangle_rules_count = m.prolog()) > 0 )
-                {
-                    m.compile();
-                    m.epilog();
-
-                    // We need to generate automatic rules in mangle
-                    // table (-j CONNMARK --restore-mark) if CONNMARK
-                    // target is present in any ruleset, not only in
-                    // the top-level ruleset. So we keep global
-                    // boolean flags for this condition which will
-                    // become true if any ruleset has such
-                    // rules. We'll call
-                    // MangleTableCompiler_ipt::flushAndSetDefaultPolicy
-                    // later if either of these flags is true after
-                    // all rulesets have been processed.
-
-                    have_connmark |= m.haveConnMarkRules();
-                    have_connmark_in_output |= m.haveConnMarkRulesInOutput();
-
-                    long m_str_pos = m_str.tellp();
-
-                    if (policy->isTop())
-                    {
-                        m_str << "# ================ Table 'mangle', ";
-                        m_str << "automatic rules";
-                        m_str << "\n";
-                        m_str << m.flushAndSetDefaultPolicy();
-                    }
-
-                    if (m.getCompiledScriptLength() > 0)
-                    {
-                        m_str << "# ================ Table 'mangle', rule set "
-                              << branch_name << "\n";
-                        if (m.haveErrorsAndWarnings())
-                        {
-                            m_str << "# Policy compiler errors and warnings:"
-                                  << "\n";
-                            m_str << m.getErrors("# ");
-                        }
-
-                        m_str << m.getCompiledScript();
-                    }
-
-                    if (m_str_pos!=m_str.tellp())
-                    {
-                        m_str << m.commit();
-                        m_str << "\n";
-                        empty_output = false;
-                    }
-                }
-
-
-                PolicyCompiler_ipt c(
-                    objdb,fwobjectname.toUtf8().constData(), ipv6_policy, oscnf,
-                    &minus_n_commands_filter);
-
-                if (!policy->isTop())
-                    c.registerRuleSetChain(branch_name);
-
-                c.setSourceRuleSet( policy );
-                c.setRuleSetName(branch_name);
-
-                c.setDebugLevel( dl );
-                c.setDebugRule(  drp );
-                c.setVerbose( (bool)(verbose) );
-                c.setHaveDynamicInterfaces(have_dynamic_interfaces);
-                if (test_mode) c.setTestMode();
-
-                if ( (policy_rules_count=c.prolog()) > 0 )
-                {
-                    c.compile();
-                    c.epilog();
-
-                    if (c.getCompiledScriptLength() > 0)
-                    {
-                        c_str << "# ================ Table 'filter', rule set "
-                              << branch_name << "\n";
-                        if (c.haveErrorsAndWarnings())
-                        {
-                            c_str << "# Policy compiler errors and warnings:"
-                                  << "\n";
-                            c_str << c.getErrors("# ");
-                        }
-                        c_str << c.getCompiledScript();
-                        c_str << c.commit();
-                        c_str << "\n";
-                        empty_output = false;
-                    }
-                }
-
-                if (policy->isTop())
-                {
-                    reset_rules
-                        << "# ================ Table 'filter', automatic rules"
-                        << "\n";
-                    reset_rules << c.flushAndSetDefaultPolicy();
-                    empty_output = false;
-                }
-
+                if (!empty_policy) empty_output = false;
             }
 
             if (!empty_output)
