@@ -1,3 +1,8 @@
+2008-12-01  vadim  <vadim@vk.crocodile.org>
+
+	* v3.0.2 released, merged -r565:676 to trunk. This changelog
+	record is in rev 678
+
 2008-11-28  vadim  <vadim@vk.crocodile.org>
 
 	* FWWindow.cpp (FWWindow::prepareFileMenu): fixed bug #2353052
