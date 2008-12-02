@@ -149,7 +149,10 @@ ObjectManipulator::ObjectManipulator( QWidget *parent):
     currentObj   = NULL;
     active       = false;
     current_tree_view=NULL;
-    
+
+    // used in duplicateWithDependencies()
+    dedup_marker_global_counter = time(NULL);
+
 //    setFocusPolicy( QWidget::StrongFocus  );
 
 /* Adding pop-down menu to the button "New" */
@@ -329,8 +332,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject( ObjectTreeViewItem *itm,
     return nitm;
 }
 
-void ObjectManipulator::insertSubtree( ObjectTreeViewItem *itm,
-                                       FWObject *obj )
+void ObjectManipulator::insertSubtree( ObjectTreeViewItem *itm, FWObject *obj )
 {
 //    obj->dump(false,false);
     ObjectTreeViewItem *nitm = insertObject(itm, obj);
@@ -1697,12 +1699,20 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
     {
 /* clipboard holds a copy of the object */
 
-        if (m_project->isSystem(ta) &&
-            (Firewall::isA(obj) || Group::cast(obj)) &&
-            obj->getRoot()!=ta->getRoot())
+//        if (m_project->isSystem(ta) &&
+//            (Firewall::isA(obj) || Group::cast(obj)) &&
+//            obj->getRoot()!=ta->getRoot())
+
+
+        if (obj->getRoot()!=ta->getRoot())
         {
+            if (fwbdebug)
+                qDebug("Copy object to a different object tree");
+
             FWObject *nobj = duplicateWithDependencies(target, obj);
-            insertSubtree( allItems[ta], nobj);
+            //insertSubtree( allItems[ta], nobj);
+            loadObjects();
+            openObject(nobj);
             return nobj;
         }
 
@@ -1763,155 +1773,10 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
 FWObject* ObjectManipulator::duplicateWithDependencies(FWObject *target,
                                                        FWObject *obj)
 {
-    FWObject *nobj = NULL;
-    int marker = time(NULL);
     map<int,int> map_ids;
-    list<FWObject*> deps;
-
-    // Find dependencies and set ".dedup_marker" attribute
-    // before creating copy of the firewall so that interfaces
-    // of the firewall and their addresses get .dedup_marker attribute.
-
-    // need to copy dependencies and repoint references
-                
-    // get a list of all objects used in rules and groups
-    // Note - we use original object rather than new one to get
-    // dependencies
-    obj->findDependencies(deps);
-
-    if (fwbdebug)
-        qDebug("pasteTo: object %s has %d dependencies",
-               obj->getName().c_str(), int(deps.size()));
-
-    for (list<FWObject*>::iterator i=deps.begin(); i!=deps.end(); ++i)
-    {
-        FWObject *old_obj = *i;
-        ostringstream str;
-        str << ++marker;
-        old_obj->setStr(".dedup_marker", str.str());
-    }
-
-    nobj = m_project->db()->create(obj->getTypeName());
-    assert (nobj!=NULL);
-    nobj->ref();
-    //if renew_id == true creates new object ID
-    nobj->duplicate(obj, true);
-    if (target)
-    {
-        makeNameUnique(target, nobj);
-        target->add( nobj );
-    }
-
-    map_ids[obj->getId()] = nobj->getId();
-
-    // Note that each dependency object has different value
-    // of the .dedup_marker attribute
-
-    for (list<FWObject*>::iterator i=deps.begin(); i!=deps.end(); ++i)
-    {
-        FWObject *old_obj = *i;
-        if (map_ids.count(old_obj->getId()) > 0) continue;
-
-        string dedup_marker = old_obj->getStr(".dedup_marker");
-
-        // check if we already have this object
-        if (m_project->db()->findInIndex(old_obj->getId()))
-        {
-            if (fwbdebug)
-                qDebug("Object %s present, skipping",
-                       old_obj->getName().c_str());
-            continue;
-        }
-        // create copy of this object
-        if (fwbdebug) qDebug("Create object %s", old_obj->getName().c_str());
-
-        if (Interface::isA(old_obj) ||
-            (
-                (IPv4::isA(old_obj) ||
-                 IPv6::isA(old_obj) ||
-                 physAddress::isA(old_obj)) && 
-                Interface::isA(old_obj->getParent())
-            )
-        )
-        {
-            FWObject *host = old_obj;
-            while (host && Host::cast(host)==NULL)
-                host = host->getParent();
-            assert(host);
-
-            FWObject *copy_obj;
-            if (map_ids.count(host->getId()) == 0)
-            {
-                copy_obj = createObject(
-                    host->getTypeName().c_str(),
-                    host->getName().c_str(), host);
-                map_ids[host->getId()] = copy_obj->getId();
-            } else
-                copy_obj = m_project->db()->findInIndex(
-                    map_ids[host->getId()]);
-
-            FWObject *new_obj = copy_obj->findObjectByAttribute(
-                ".dedup_marker", dedup_marker);
-            assert(new_obj!=NULL);
-            map_ids[old_obj->getId()] = new_obj->getId();
-        } else
-        {
-            FWObject *copy_obj;
-            if (map_ids.count(old_obj->getId()) == 0)
-            {
-                copy_obj = createObject(
-                    old_obj->getTypeName().c_str(),
-                    old_obj->getName().c_str(), old_obj);
-                map_ids[old_obj->getId()] = copy_obj->getId();
-            } else
-                copy_obj = m_project->db()->findInIndex(
-                    map_ids[old_obj->getId()]);
-        }
-    }
-
-    if (fwbdebug)
-    {
-        for (map<int,int>::iterator it=map_ids.begin(); it!=map_ids.end(); ++it)
-            qDebug("ID mapping %d -> %d", it->first, it->second);
-    }
-    
-    int repl_counter = fixReferences(nobj, map_ids);
-    if (fwbdebug) qDebug("Replaced %d references in object %s",
-                         repl_counter, nobj->getName().c_str());
-
-    // one more pass to fix ferences in other firewalls we might have
-    // copied and groups.
-    for (list<FWObject*>::iterator i=deps.begin(); i!=deps.end(); ++i)
-    {
-        FWObject *old_obj = *i;
-        //if (map_ids.count(old_obj->getId()) > 0) continue;
-        if (Firewall::cast(old_obj) || Group::cast(old_obj))
-        {
-            FWObject *other_new_obj = m_project->db()->findInIndex(
-                map_ids[old_obj->getId()]);
-            assert(other_new_obj);
-
-            repl_counter = fixReferences(other_new_obj, map_ids);
-            if (fwbdebug)
-                qDebug("Replaced %d references in object %s",
-                       repl_counter, other_new_obj->getName().c_str());
-        }
-    }
-
-    return nobj;
+    return m_project->db()->recursivelyCopySubtree(target, obj, map_ids);
 }     
 
-/*
- * fix references in children of obj according to the map_ids which
- * maps old IDs to the new ones. Return the number of fixed references.
- */
-int ObjectManipulator::fixReferences(FWObject *obj, map<int,int> &map_ids)
-{
-    int total_counter = 0;
-    for (map<int,int>::iterator it=map_ids.begin(); it!=map_ids.end(); ++it)
-        total_counter += obj->replaceRef(it->first, it->second);
-    return total_counter;
-}
 
 void ObjectManipulator::lockObject()
 {
@@ -2505,8 +2370,9 @@ void ObjectManipulator::openObject(FWObject *obj)
 void ObjectManipulator::openObject(FWObject *obj, bool /*register_in_history*/)
 {
     if (fwbdebug)
-        qDebug("ObjectManipulator::openObject   obj=%s",
-               (obj)?obj->getName().c_str():"NULL");
+        qDebug("ObjectManipulator::openObject   obj=%s (%d)",
+               (obj)?obj->getName().c_str():"NULL",
+               (obj)?obj->getId():0);
 
     if (obj==NULL) return;
 
@@ -2523,10 +2389,12 @@ void ObjectManipulator::openObject(FWObject *obj, bool /*register_in_history*/)
         getIdxForLib( obj->getLibrary()));
 
     if (fwbdebug)
-        qDebug("ObjectManipulator::openObject:  currentIndex=%d",
+        qDebug("ObjectManipulator::openObject:  libs->currentIndex=%d",
                m_objectManipulator->libs->currentIndex());
 
     updateCreateObjectMenu(obj->getLibrary());
+
+    if (fwbdebug) qDebug("ObjectManipulator::openObject: done");
 }
 
 void ObjectManipulator::showObjectInTree(ObjectTreeViewItem *otvi)

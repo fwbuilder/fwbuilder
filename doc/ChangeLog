@@ -1,5 +1,18 @@
+2008-12-02  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWObjectDatabase_tree_ops.cpp (recursivelyCopySubtree): (change
+	in libfwbuilder) fixed bug #2375327: "Crash copying multiple
+	groups between different data files". Using better algorithm to
+	copy objects between different data files.
+
+	* ObjectManipulator.cpp (ObjectManipulator::duplicateWithDependencies): 
+	using FWObjectDatabase::recusrivelyCopySubtree() to copy objects if
+	they are located in different data files.
+
 2008-12-01  vadim  <vadim@vk.crocodile.org>
 
+	* Started v3.0.3
+	
 	* v3.0.2 released, merged -r565:676 to trunk. This changelog
 	record is in rev 678
 

@@ -101,6 +101,8 @@ class ObjectManipulator : public QWidget/*ObjectManipulator_q*/ {
     std::map<libfwbuilder::FWObject*, ObjectTreeViewItem*> allItems;
     
 
+    int dedup_marker_global_counter;
+    
     ObjectTreeViewItem* insertObject( ObjectTreeViewItem *itm,
                                       libfwbuilder::FWObject *obj );
     void insertSubtree( ObjectTreeViewItem *itm,libfwbuilder::FWObject *obj );
@@ -129,8 +131,6 @@ class ObjectManipulator : public QWidget/*ObjectManipulator_q*/ {
             libfwbuilder::ObjectGroup *gr,
             std::set<libfwbuilder::Firewall*> &fo);
 
-    int fixReferences(libfwbuilder::FWObject *obj, std::map<int,int> &map_ids);
-    
     ProjectPanel *m_project;
 
     
