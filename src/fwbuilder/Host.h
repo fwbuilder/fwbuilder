@@ -86,6 +86,8 @@ class Host : public Address
      * similar to hasInetAddress() but counts addresses
      */
     virtual int countInetAddresses(bool skip_loopback) const;
+
+    virtual bool isPrimaryObject() const { return true; }
     
     protected:
     

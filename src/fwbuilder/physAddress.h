@@ -53,6 +53,8 @@ class physAddress : public Address
     virtual FWReference* createRef();
 
     bool isAny() const;
+
+    virtual bool isPrimaryObject() const { return false; }
 };
 
 }

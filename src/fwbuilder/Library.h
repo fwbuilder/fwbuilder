@@ -55,6 +55,8 @@ class Library : public Group
      * verify whether given object type is approppriate as a child
      */
     virtual bool    validateChild(FWObject *o);
+
+    virtual bool isPrimaryObject() const { return true; }
 };
 
 }

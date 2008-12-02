@@ -90,6 +90,8 @@ class RuleSet : public FWObject
     
     virtual Rule*   createRule()  =0;
     
+    virtual bool isPrimaryObject() const { return false; }
+
 }; //__RULESET_HH_FLAG__
 
 }

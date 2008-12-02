@@ -69,6 +69,7 @@ public:
     virtual void setNetmask(const InetAddr &nm);
     virtual void setAddressNetmask(const std::string& s);
 
+    virtual bool isPrimaryObject() const { return true; }
 };
 
 }

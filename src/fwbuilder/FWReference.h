@@ -68,6 +68,9 @@ class FWReference : public FWObject
     void setPointerId(int ref_id);
 
     virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0);
+
+    virtual bool isPrimaryObject() const { return false; }
+    
 };
 
 }

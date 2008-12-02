@@ -59,6 +59,8 @@ class MultiAddress : public ObjectGroup
     void setRunTime(const bool b); 
 
     virtual bool validateChild(FWObject *o);
+
+    virtual bool isPrimaryObject() const { return true; }
 };
 
 /*
@@ -92,6 +94,8 @@ public:
 
     bool isCompileTime() const { return !run_time; }
     bool isRunTime() const { return run_time; }
+
+    virtual bool isPrimaryObject() const { return true; }
 };
 
 }

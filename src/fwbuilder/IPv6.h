@@ -70,6 +70,8 @@ public:
     virtual void setAddressNetmask(const std::string& s);
 
     virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0);
+
+    virtual bool isPrimaryObject() const;
 };
 
 }

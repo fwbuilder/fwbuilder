@@ -68,6 +68,8 @@ class AddressRange : public Address
    
     virtual void       fromXML (xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML   (xmlNodePtr xml_parent_node) throw(FWException);
+
+    virtual bool isPrimaryObject() const { return true; }
     
     DECLARE_FWOBJECT_SUBTYPE(AddressRange);
     

@@ -56,6 +56,8 @@ class Service : public FWObject
     virtual int    getProtocolNumber();
 
     bool isAny() const;
+
+    virtual bool isPrimaryObject() const { return true; }
 };
 
 }

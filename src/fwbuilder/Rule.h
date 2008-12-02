@@ -113,6 +113,7 @@ class Rule : public Group
     virtual RuleSet* getBranch();
     virtual void setBranch(RuleSet *ruleset);
 
+    virtual bool isPrimaryObject() const { return false; }
 };
 
 class PolicyRule : public Rule 

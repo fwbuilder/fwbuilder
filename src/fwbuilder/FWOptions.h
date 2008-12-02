@@ -41,6 +41,7 @@ class FWOptions : public FWObject
     DECLARE_FWOBJECT_SUBTYPE(FWOptions);
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
+    virtual bool isPrimaryObject() const { return false; }
 };
 
 class HostOptions : public FWOptions 

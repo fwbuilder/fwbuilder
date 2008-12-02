@@ -173,6 +173,7 @@ public:
          */
         virtual int countInetAddresses(bool skip_loopback) const;
     
+        virtual bool isPrimaryObject() const { return false; }
     };
 
 }

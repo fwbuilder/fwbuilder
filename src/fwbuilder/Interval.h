@@ -63,6 +63,8 @@ public:
     virtual FWReference* createRef();
 
     bool isAny();
+
+    virtual bool isPrimaryObject() const { return true; }
 };
 
 }

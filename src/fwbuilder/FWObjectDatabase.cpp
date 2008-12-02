@@ -38,7 +38,6 @@
 #include <fwbuilder/FWObject.h>
 #include <fwbuilder/FWObjectDatabase.h>
 
-#include <fwbuilder/FWObject.h>
 #include <fwbuilder/Library.h>
 #include <fwbuilder/Interval.h>
 #include <fwbuilder/ICMPService.h>
@@ -103,12 +102,10 @@ static int cached_pid = getpid();
 // these two dictionaries must be static to ensure uniqueness of integer
 // ids across multiple FWObjectDatabase objects
 
-map<int, string>       id_dict;
-map<string, int>       id_dict_reverse;
+map<int, string> id_dict;
+map<string, int> id_dict_reverse;
 
-const char*        FWObjectDatabase::TYPENAME  = {"FWObjectDatabase"};
-//long               FWObjectDatabase::IDcounter = 0;
-//Mutex FWObjectDatabase::IDmutex;
+const char*  FWObjectDatabase::TYPENAME  = {"FWObjectDatabase"};
 const string FWObjectDatabase::DTD_FILE_NAME  = "fwbuilder.dtd"    ;
 
 
@@ -117,8 +114,6 @@ FWObjectDatabase::FWObjectDatabase() : FWObject(false), data_file()
     setRoot(this);
     index_hits = index_misses = 0;
     init_id_dict();
-
-//    if(db==NULL) db=this;
 
     searchId =0;
     lastModified = 0;
@@ -650,472 +645,6 @@ Firewall* FWObjectDatabase::findFirewallByName(const string &name) throw(FWExcep
     return _findFirewallByNameRecursive(this,name);
 }
 
-
-/*
- * This method removes all references to child objects of obj, then
- * removes obj.  FWObject::remove moves obj to the "DeletedObjects"
- * library so we want to preserve subtree structure under obj. There
- * is no need to delete child objects, but we must remove all
- * references to them.
- *
- * Note: there is no need to search for references pointing at certain
- * types of objects, such as references and rules/rule sets. This
- * dramatically speeds up deleting firewalls with large policies and
- * groups with lots of objects
- */
-void FWObjectDatabase::recursivelyRemoveObjFromTree(FWObject* obj,
-                                                    bool remove_ref)
-{
-    obj->checkReadOnly();
-
-    for (FWObject::iterator i=obj->begin(); i!=obj->end(); ++i)
-    {
-        if (FWReference::cast(*i)!=NULL ||
-            RuleSet::cast(*i)!=NULL) continue;
-        recursivelyRemoveObjFromTree( *i , true);
-    }
-
-    if (remove_ref)  removeAllReferences(obj);
-    else             removeAllInstances(obj);
-}
-
-
-
-
-class FWObjectTreeScanner {
-
-    FWObjectDatabase         *treeRoot;
-    map<int,FWObject*>        srcMap;
-    map<int,FWObject*>        dstMap;
-    FWObjectDatabase::ConflictResolutionPredicate *crp;
-    bool                         defaultCrp;
-    int                          reference_object_id_offset;
-    void walkTree(map<int,FWObject*> &m,FWObject *root);
-    void addRecursively(FWObject *src);
-
-    public:
-
-    FWObjectTreeScanner(FWObject *r,
-                        FWObjectDatabase::ConflictResolutionPredicate *_crp=NULL)
-    {
-        reference_object_id_offset = 1000000;
-        treeRoot=FWObjectDatabase::cast(r);
-        defaultCrp=false;
-        if (_crp==NULL)
-        {
-            crp=new FWObjectDatabase::ConflictResolutionPredicate();
-            defaultCrp=true;
-        }
-        else            crp=_crp;
-    }
-    ~FWObjectTreeScanner() { if (defaultCrp) delete crp; }
-
-    void scanAndAdd(FWObject *dst,FWObject *source);
-    void merge(     FWObject *dst,FWObject *source);
-};
-
-/*
- * why does FWReference not have an 'id' attribute ? Marginal savings
- * in the size of the data file turns into a major headache in coding
- * things such as tree merge.
- *
- * Here, in effect, I am artifically adding IDs to references.
- */
-void FWObjectTreeScanner::walkTree(map<int,FWObject*> &m,
-                                   FWObject *root)
-{
-    if (root->haveId())  m[root->getId()]=root;
-
-    if (FWReference::cast(root)!=NULL)
-    {
-        FWReference *r=FWReference::cast(root);
-        // need to add reference to the map, but references do not have
-        // their own Id. Create new id using id of the object reference
-        // points to, plus some offset.
-        // I can not just generate new uniq id because I need to be able
-        // to find this object later, and for that its id must be predictable.
-        m[reference_object_id_offset+r->getPointerId()]=root;
-    }
-
-    for (FWObject::iterator i=root->begin(); i!=root->end(); i++)
-    {
-        walkTree(m, *i);
-    }
-}
-
-void FWObjectTreeScanner::addRecursively(FWObject *src)
-{
-    if (treeRoot->getId()==src->getId()) return ;
-
-    addRecursively(src->getParent());
-
-    if (dstMap[src->getId()]==NULL)
-    {
-        FWObject *o1 = treeRoot->create(src->getTypeName(), -1, false);
-        FWObject *pdst = dstMap[src->getParent()->getId()];
-        assert(pdst!=NULL);
-
-        pdst->add(o1);
-
-        if (src->size()==0) o1->shallowDuplicate(src, false);
-        else 
-        {
-            if (Firewall::isA(src) ||
-                Host::isA(src) ||
-                Interface::isA(src) )  o1->duplicate(src, false);
-            else
-            {
-               /* copy system groups (folders) partially, but user's
-                * groups should be copied as a whole. There is no
-                * definite and simple * way to tell them apart, except
-                * that user groups contain references * while system
-                * groups contain objects.
-                */
-                if (Group::cast(src)!=NULL && FWReference::cast(src->front())!=NULL)
-                    o1->duplicate(src, false);
-                else
-                    o1->shallowDuplicate(src, false);
-            }
-        }
-
-        walkTree( dstMap , o1 );  // there are children objects if we did a deep copy
-    }
-}
-
-/*
- * scans tree treeRoot and finds references to missing objects. Tries
- * to add an object from 'source' by adding all missing objects
- * between it and a tree root. Method addRecusrively climbs up from
- * the objects that it needs to add to the root by doing recursive
- * calls to itself, then while it exist invokations it adds objects to
- * the tree. Since added objects are appended to the end of each level
- * of the tree, method scanAndAdd finds them later. For example, if
- * 'Standard' library was added because some standard object was
- * referenced but missing, this library will be found in the loop in
- * scanAndAdd even if it wasn't there when the loop started. This
- * ensures that this method will pull in any objects referenced from
- * objects it included, recursively.
- *
- */
-void FWObjectTreeScanner::scanAndAdd(FWObject *dst,FWObject *source)
-{
-    if (dst==NULL)
-    {
-        dst=treeRoot;
-        walkTree(dstMap,treeRoot);
-        walkTree(srcMap, source);
-    }
-
-    for (FWObject::iterator i=dst->begin(); i!=dst->end(); i++)
-    {
-        FWObject *o1=*i;
-        if (FWReference::cast(o1)!=NULL)
-        {
-            int pid   = FWReference::cast(o1)->getPointerId();
-            FWObject *o2   = dstMap[pid];
-
-            if (o2==NULL)
-            {
-                FWObject *osrc = srcMap[ pid ];
-                if (osrc==NULL)
-                    cerr << "Object with ID=" << pid
-                         << " (" << FWObjectDatabase::getStringId(pid) << ") "
-                         << " disappeared" << endl;
-                else
-                    addRecursively( osrc);
-            }
-        } else
-            scanAndAdd( o1 , source );
-    }
-    // TODO: do the same for the objects referenced by
-    // rule actions Branch and Tag - find those objects and add.
-    // Wrap operations with network_zone in methods of class Interface,
-    // setNetworkZone(FWObject*) getNetworkZone()
-    // (Just like Rule::getBranch Rule::setBranch)
-    //
-    if (Interface::isA(dst))
-    {
-        string sid = dst->getStr("network_zone");
-        if ( !sid.empty() )
-        {
-            int pid = FWObjectDatabase::getIntId(sid);
-            FWObject *o2 = dstMap[pid];
-            if (o2==NULL)
-            {
-                FWObject *osrc = srcMap[ pid ];
-                addRecursively( osrc);
-            }
-        }
-    }
-}
-
-//#define DEBUG_MERGE 1
-
-void FWObjectTreeScanner::merge(FWObject *dst,FWObject *src)
-{
-    int dobjId = FWObjectDatabase::DELETED_OBJECTS_ID;
-
-    if (dst==NULL)
-    {
-        dst=treeRoot;
-        walkTree(dstMap,treeRoot);
-        walkTree(srcMap, src);
-
-        /**
-         * find deleted objects library in src and check if any object
-         * from it is present in dst
-         */
-        FWObjectDatabase *dstroot = dst->getRoot();
-
-        /*
-         * find deleted objects library in dst and delete objects from
-         * it if they are present and not deleted in src
-         */
-        list<FWObject*> deletedObjects;
-        FWObject *dstdobj = dstroot->findInIndex( dobjId );
-        if (dstdobj)
-        {
-            for (FWObject::iterator i=dstdobj->begin(); i!=dstdobj->end(); i++)
-            {
-                FWObject *sobj = srcMap[ (*i)->getId() ];
-                if(sobj!=NULL && sobj->getParent()->getId()!=dobjId)
-                    deletedObjects.push_back(*i);
-            }
-            for (FWObject::iterator i=deletedObjects.begin(); i!=deletedObjects.end(); i++)
-            {
-                dstroot->recursivelyRemoveObjFromTree( *i );
-                dstMap[ (*i)->getId() ] = NULL;
-            }
-        }
-    }
-
-    for (FWObject::iterator i=src->begin(); i!=src->end(); i++)
-    {
-        /*
-         * commented 12/04/04. We now delete "deleted objects"
-         * from libraries we are merging in before calling
-         * FWObjectDatabase::merge.  Ignoring "Deleted objects" here
-         * caused problems; in particular, deleted objects disappeared
-         * from a data file whenever it was opened. This happened
-         * because we merged user's data file into standard objects
-         * tree, so user's file was _source_ here, and deleted objects
-         * in it were ignored.
-         */
-//        if ((*i)->getId()==dobjId) continue;
-
-        FWObject *dobj;
-        FWObject *sobj;
-        if (FWReference::cast( *i ))
-        {
-            FWReference *r=FWReference::cast(*i);
-            dobj= dstMap[reference_object_id_offset + r->getPointerId()];
-        } else dobj= dstMap[ (*i)->getId() ];
-
-        if (dobj==NULL)
-        {
-            sobj = *i;
-            FWObject *o1=treeRoot->create( sobj->getTypeName());
-
-            FWObject *pdst = dstMap[ src->getId() ];
-            assert(pdst!=NULL);
-
-            pdst->add(o1);
-
-#ifdef DEBUG_MERGE
-            cerr << "--------------------------------" << endl;
-            cerr << "merge: duplicate #1 " << endl;
-            cerr << "dobj: " << endl;
-            o1->dump(true,true);
-            cerr << endl;
-            cerr << "sobj: " << endl;
-            sobj->dump(true,true);
-#endif
-
-            o1->duplicate( sobj, false); // copy IDs as well
-
-#ifdef DEBUG_MERGE
-            cerr << "duplicate #1 done" << endl;
-#endif
-
-/* there may be children objects since we did a deep copy         */
-            walkTree( dstMap , o1 );
-
-        } else
-        {
-/* need to compare objects, looking into attributes. This is different
- * from Compiler::operator== operators because fwcompiler assumes that
- * objects with the same ID are equal. Here we specifically look for a
- * case when objects with the same ID have different attributes.
- */
-            if (dobj->cmp( *i )) continue;
-
-/* such object exists in destination tree but is different Since we
- * traverse the tree from the root towards leaves, it won't help much
- * if we ask the user if they want to overwrite the old library or a
- * high-level system group only because a single object somewhere deep
- * down the tree is different. Need to traverse the tree further until
- * the actual object that differs is found.
- *
- * There still is a problem because we do want to ask the user if the
- * group we are looking at is user-defined as opposed to our standard
- * top level one. There is no reliable way to distinguish them though
- * because both are represented by the same class. We use simple hack:
- * all children of our system groups are regular objects, while
- * children of user-defined groups are always references.
- */
-
-
-            if (Group::cast(dobj)!=NULL)
-            {
-                // at one point I've got bunch of data files where
-                // DeletedObjects library contained references for
-                // some reason. This should not happen, but at the
-                // same time this is valid file structure so the code
-                // should be able to handle it.
-                if (dobj->getId()==FWObjectDatabase::DELETED_OBJECTS_ID)
-                    merge( dobj , *i );
-                else
-                {
-
-                    FWObject *firstChild=NULL;
-                    if (dobj->size()>0)         firstChild= dobj->front();
-                    else
-                    {
-                        if ( (*i)->size()>0 )   firstChild= (*i)->front();
-                    }
-                    if (firstChild==NULL || FWReference::cast(firstChild)!=NULL)
-                    {
-                        if (crp!=NULL && crp->askUser( dobj, *i ))
-                        {
-#ifdef DEBUG_MERGE
-                            cerr << "--------------------------------" << endl;
-                            cerr << "merge: duplicate #2 " << endl;
-                            dobj->dump(true,true);
-                            cerr << endl;
-#endif
-                            dobj->duplicate( (*i), false );
-                        }
-                    } else merge( dobj , *i );
-                }
-            }
-            else
-            {
-                if (crp!=NULL && crp->askUser( dobj, *i ))
-                {
-#ifdef DEBUG_MERGE
-                    cerr << "--------------------------------" << endl;
-                    cerr << "merge: duplicate #3 " << endl;
-                    dobj->dump(true,true);
-                    cerr << endl;
-#endif
-                    dobj->duplicate( (*i), false );
-                }
-            }
-        }
-    }
-}
-
-
-FWObjectDatabase* FWObjectDatabase::exportSubtree( const list<FWObject*> &libs )
-{
-    FWObjectDatabase *ndb = new FWObjectDatabase();
-
-    ndb->init = true;
-
-    for (list<FWObject*>::const_iterator i=libs.begin(); i!=libs.end(); i++)
-    {
-        FWObject *lib = *i;
-        FWObject *nlib = ndb->create(lib->getTypeName());
-        ndb->add(nlib);
-        *nlib = *lib;
-    }
-
-    FWObjectTreeScanner scanner(ndb);
-    scanner.scanAndAdd(NULL, this);
-
-    ndb->init = false;
-
-    return ndb;
-}
-
-FWObjectDatabase* FWObjectDatabase::exportSubtree( FWObject *lib )
-{
-    FWObjectDatabase *ndb = new FWObjectDatabase();
-
-    ndb->init = true;
-
-    FWObject *nlib = ndb->create(lib->getTypeName());
-    ndb->add(nlib);
-    *nlib = *lib;
-
-    FWObjectTreeScanner scanner(ndb);
-    scanner.scanAndAdd(NULL, this);
-
-    ndb->init = false;
-
-    return ndb;
-}
-
-void FWObjectDatabase::merge( FWObjectDatabase *ndb,
-                              ConflictResolutionPredicate *crp)
-{
-    init = true;
-
-    FWObjectTreeScanner scanner(this, crp);
-    scanner.merge(NULL, ndb);
-
-    init = false;
-}
-
-/*
- * find all objects used by the group 'gr'. REsolves references
- * recursively (that is, if a group member is another group, this
- * method descends into it and scans all objects that group uses)
- */
-void FWObjectDatabase::findObjectsInGroup(Group *g,set<FWObject *> &res)
-{
-    searchId++;
-    _findObjectsInGroup(g, res);
-}
-
-void FWObjectDatabase::_findObjectsInGroup(Group *g,set<FWObject *> &res)
-{
-    if (g->size()==0 || g->getInt(".searchId")==searchId) return;
-    
-    g->setInt(".searchId",searchId);
-    FWObjectReference *ref;
-    Group *sg;
-    FWObject *obj;
-    FWObject::iterator i=g->begin();
-    for(;i!=g->end();++i)
-    {
-        
-       ref=FWObjectReference::cast(*i);
-       if (ref==NULL) 
-       {
-           res.insert(*i);
-           continue;
-       }
-       
-       obj=ref->getPointer();
-       sg=Group::cast(obj);
-       
-       if (sg==NULL)
-       {
-           res.insert(obj);
-           continue;
-       }
-       
-       _findObjectsInGroup(sg,res);
-    }    
-}
-
-bool FWObjectDatabase::_isInIgnoreList(FWObject *o)
-{
-    return (FWOptions::cast(o)!=NULL);
-}
-
-
 /**
  *  find which firewalls and groups use object 'o' in a subtree rooted
  *  at object 'p' skip 'deleted objects' library, avoid circular group
@@ -1142,6 +671,11 @@ void FWObjectDatabase::findWhereUsed(FWObject *o,
 }
 
 //#define DEBUG_WHERE_USED 1
+
+bool FWObjectDatabase::_isInIgnoreList(FWObject *o)
+{
+    return (FWOptions::cast(o)!=NULL);
+}
 
 bool FWObjectDatabase::_findWhereUsed(FWObject *o,
                                       FWObject *p,
@@ -1243,4 +777,34 @@ bool FWObjectDatabase::_findWhereUsed(FWObject *o,
     //if (res) resset.insert(p);
     return res;
 }
+
+
+/*
+ * This method removes all references to child objects of obj, then
+ * removes obj.  FWObject::remove moves obj to the "DeletedObjects"
+ * library so we want to preserve subtree structure under obj. There
+ * is no need to delete child objects, but we must remove all
+ * references to them.
+ *
+ * Note: there is no need to search for references pointing at certain
+ * types of objects, such as references and rules/rule sets. This
+ * dramatically speeds up deleting firewalls with large policies and
+ * groups with lots of objects
+ */
+void FWObjectDatabase::recursivelyRemoveObjFromTree(FWObject* obj,
+                                                    bool remove_ref)
+{
+    obj->checkReadOnly();
+
+    for (FWObject::iterator i=obj->begin(); i!=obj->end(); ++i)
+    {
+        if (FWReference::cast(*i)!=NULL ||
+            RuleSet::cast(*i)!=NULL) continue;
+        recursivelyRemoveObjFromTree( *i , true);
+    }
+
+    if (remove_ref)  removeAllReferences(obj);
+    else             removeAllInstances(obj);
+}
+
 

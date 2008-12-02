@@ -107,6 +107,8 @@ public:
     virtual bool cmp(const FWObject *obj) throw(FWException);
 
     bool isAny() const;
+
+    virtual bool isPrimaryObject() const { return true; }
 };
 
 }

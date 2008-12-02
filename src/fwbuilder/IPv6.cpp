@@ -47,7 +47,7 @@
 #include <fwbuilder/Inet6AddrMask.h>
 
 #include <fwbuilder/IPv6.h>
-#include <fwbuilder/InterfacePolicy.h>
+#include <fwbuilder/Interface.h>
 #include <fwbuilder/XMLTools.h>
 
 using namespace std;
@@ -151,3 +151,9 @@ void IPv6::dump(std::ostream &f,bool recursive,bool brief,int offset)
     FWObject::dump(f, recursive, brief, offset);
     f << inet_addr_mask->getAddressPtr()->toString() << endl;
 }
+
+bool IPv6::isPrimaryObject() const
+{
+    return (!Interface::isA(getParent()));
+}
+

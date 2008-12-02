@@ -79,8 +79,12 @@ protected:
 
     std::string data_file;
 
-    Firewall* _findFirewallByNameRecursive(FWObject* db,const std::string &name) throw(FWException);
+    Firewall* _findFirewallByNameRecursive(
+        FWObject* db, const std::string &name) throw(FWException);
     void init_id_dict();
+    FWObject* _recursivelyCopySubtree(FWObject *target,
+                                      FWObject *source,
+                                      std::map<int,int> &id_map);
     
 
 public:
@@ -214,6 +218,31 @@ public:
     void recursivelyRemoveObjFromTree(FWObject* obj, bool remove_ref=false);
 
     /**
+     * Copy <source> object and all its children, recursively, into <this>
+     * object tree starting from <target>. <target> is a parent of the copy
+     * of <source> that will be created.
+     * Store ID mapping in <id_map> (as a dictionary old_id -> new_id)
+     */
+    FWObject* recursivelyCopySubtree(FWObject *target,
+                                     FWObject *source,
+                                     std::map<int,int> &id_map);
+
+    /**
+     * Create groups to reproduce path inside given library. If groups
+     * with required names exist, do nothing. Return pointer to the
+     * last object created to copy the path. Do not copy <source> object.
+     * This means returned object can be a parent for the copy of <source>.
+     */
+    FWObject* reproduceRelativePath(FWObject *lib, const FWObject *source);
+
+    
+    /**
+     * fix references in children of obj according to the map_ids which
+     * maps old IDs to the new ones. Return the number of fixed references.
+     */
+    int fixReferences(FWObject *obj, const std::map<int,int> &map_ids);
+    
+    /**
      * this predicate is used to hand control over to user in case
      * when a conflict is detected while merging trees. By default the
      * old object is overwritten with new one. 
@@ -230,7 +259,7 @@ public:
 
     void merge( FWObjectDatabase *ndb , ConflictResolutionPredicate *mp=NULL);
 
-    void setFileName (const std::string &filename);
+    void setFileName(const std::string &filename);
     const std::string& getFileName ();
     const std::string  getFileDir ();
 

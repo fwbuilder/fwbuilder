@@ -1331,3 +1331,5 @@ void FWObject::_findDependencies_internal(FWObject *obj,
     }
 }
 
+bool FWObject::isPrimaryObject() const { return false; }
+

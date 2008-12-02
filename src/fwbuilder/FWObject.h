@@ -394,7 +394,8 @@ public:
      * whose getTypeName() same as given.
      * If not found, end() is returned.
      */
-    virtual FWObjectTypedChildIterator findByType(const std::string &type_name) const;
+    virtual FWObjectTypedChildIterator findByType(
+        const std::string &type_name) const;
 
     /**
      * Returns first of direct children of current object
@@ -428,8 +429,8 @@ public:
     void findDependencies(std::list<FWObject*> &deps);
 
     
-    virtual void    setDirty(bool f);
-    virtual bool    isDirty();
+    virtual void setDirty(bool f);
+    virtual bool isDirty();
 
     /**
      * sets read-only flag for the object. FWObject checks all objects
@@ -437,10 +438,19 @@ public:
      * is read-only. Marking an object read-only automatically makes
      * the whole tree branch under it read-only.
      */
-    virtual void    setReadOnly(bool f);
-    virtual bool    isReadOnly();
-    virtual void    checkReadOnly() throw(FWException);
+    virtual void setReadOnly(bool f);
+    virtual bool isReadOnly();
+    virtual void checkReadOnly() throw(FWException);
 
+    /**
+     * return true if this object can be copied around and put in the
+     * tree in one of the system folders. False if it must be a child
+     * of some other primary obejct. The latter category includes
+     * physAddress, interface, IPv4 and IPv6 if they are children of
+     * interface, rulesets, rule elements and rules.
+     */
+    virtual bool isPrimaryObject() const;
+    
     // Attributes iterator
     std::map<std::string, std::string>::const_iterator dataBegin() { return data.begin(); }
     std::map<std::string, std::string>::const_iterator dataEnd  () { return data.end();   }

@@ -19,6 +19,7 @@ SOURCES  = 	InetAddr.cpp \
 			FWIntervalReference.cpp \
 			FWObject.cpp \
 			FWObjectDatabase.cpp \
+			FWObjectDatabase_tree_ops.cpp \
 			FWObjectReference.cpp \
 			FWOptions.cpp \
 			FWReference.cpp \
