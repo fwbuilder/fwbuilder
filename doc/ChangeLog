@@ -1,3 +1,8 @@
+2008-12-01  User Vadim  <vadim@vk.crocodile.org>
+
+	* v3.0.2 released, merged -r195:221 to trunk. This changelog record
+	goes to rev 223
+
 2008-11-28  User Vadim  <vadim@vk.crocodile.org>
 
 	* InetAddr.cpp (InetAddr::toString): Our included copy of
