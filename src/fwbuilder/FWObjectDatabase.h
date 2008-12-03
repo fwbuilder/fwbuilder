@@ -84,7 +84,8 @@ protected:
     void init_id_dict();
     FWObject* _recursivelyCopySubtree(FWObject *target,
                                       FWObject *source,
-                                      std::map<int,int> &id_map);
+                                      std::map<int,int> &id_map,
+                                      const std::string &dedup_attribute);
     
 
 public:

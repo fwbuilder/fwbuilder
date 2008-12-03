@@ -23,6 +23,8 @@
 
 */
 
+#include <stdlib.h>
+
 #include <fwbuilder/libfwbuilder-config.h>
 
 #include <fwbuilder/FWObject.h>
@@ -483,7 +485,12 @@ FWObject* FWObjectDatabase::recursivelyCopySubtree(FWObject *target,
                                                    FWObject *source,
                                                    std::map<int,int> &id_map)
 {
-    FWObject *nobj = _recursivelyCopySubtree(target, source, id_map);
+    ostringstream str;
+    str << ".copy_from_" << source->getRoot();
+    string dedup_attribute = str.str();
+
+    FWObject *nobj = _recursivelyCopySubtree(target, source, id_map,
+                                             dedup_attribute);
 
     fixReferences(nobj, id_map);
 
@@ -513,9 +520,9 @@ int FWObjectDatabase::fixReferences(FWObject *obj, const map<int,int> &map_ids)
     return total_counter;
 }
 
-FWObject* FWObjectDatabase::_recursivelyCopySubtree(FWObject *target,
-                                                    FWObject *source,
-                                                    std::map<int,int> &id_map)
+FWObject* FWObjectDatabase::_recursivelyCopySubtree(
+    FWObject *target, FWObject *source, std::map<int,int> &id_map,
+    const string &dedup_attribute)
 {
     target->checkReadOnly();
 
@@ -523,6 +530,7 @@ FWObject* FWObjectDatabase::_recursivelyCopySubtree(FWObject *target,
     nobj->clearChildren();
     nobj->shallowDuplicate(source, true);
     id_map[source->getId()] = nobj->getId();
+    nobj->setInt(dedup_attribute, source->getId());
     target->add(nobj);
 
     for(list<FWObject*>::iterator m=source->begin(); m!=source->end(); ++m) 
@@ -540,6 +548,16 @@ FWObject* FWObjectDatabase::_recursivelyCopySubtree(FWObject *target,
                 findInIndex(old_ptr_obj->getId())!=NULL)
             {
                 nobj->addRef(old_ptr_obj);
+                continue;
+            }
+
+            // Check if we have already copied the same object before
+            char s[64];
+            sprintf(s, "%d", old_ptr_obj->getId());
+            FWObject *n_old_ptr_obj = findObjectByAttribute(dedup_attribute, s);
+            if (n_old_ptr_obj)
+            {
+                nobj->addRef(n_old_ptr_obj);
                 continue;
             }
 
@@ -563,13 +581,13 @@ FWObject* FWObjectDatabase::_recursivelyCopySubtree(FWObject *target,
                     target->getLibrary(), parent_old_ptr_obj);
                 _recursivelyCopySubtree(new_parent,
                                         parent_old_ptr_obj,
-                                        id_map);
+                                        id_map, dedup_attribute);
             }
 
             nobj->addRef(old_ptr_obj);
 
         } else
-            _recursivelyCopySubtree(nobj, old_obj, id_map);
+            _recursivelyCopySubtree(nobj, old_obj, id_map, dedup_attribute);
     }
 
     return nobj;
