@@ -9,6 +9,28 @@
 	using FWObjectDatabase::recusrivelyCopySubtree() to copy objects if
 	they are located in different data files.
 
+	* FWObjectDatabase_tree_ops.cpp (_recursivelyCopySubtree): (change
+	in libfwbuilder) Implemented additional check for object
+	duplicates while copying objects. The problem happened when
+	several object were copied in a batch operation (e.g. when user
+	selected several objects in the GUI and then used copy/paste to
+	copy them all). If some of these objects were groups that referred
+	to other objects from the same batch, the program would copy the
+	object and then create another copy of it when it copied the group
+	using it. To avoid such multiplication it now creates special
+	hidden attribute in the object when it makes a copy to keep track
+	of the original object. When the same original object needs to be
+	copied again, the program can find its copy in the target data
+	tree using this attribute. This creates another problem because
+	the attribute used to track original object is persistent for the
+	duration of the program run. The scenario that leads to this is as
+	follows: user copies object A, modifies it and then copies group B
+	using the orignal of A. The end result is that the program does
+	not recognize that the copy of A has changed and makes copy of
+	group B use it anyway. This means the new group points at modified
+	object A. This can not be easily fixed because we do not have
+	"last_modified" attribute in each object.
+	
 2008-12-01  vadim  <vadim@vk.crocodile.org>
 
 	* Started v3.0.3
