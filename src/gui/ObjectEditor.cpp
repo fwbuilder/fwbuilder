@@ -494,8 +494,8 @@ bool ObjectEditor::validateAndSave()
             QMessageBox::warning(
                 dialogs[current_dialog_idx],
                 "Firewall Builder",
-                tr("This object has been modified but not saved.\n"
-                   "Do you want to save it ?"),
+                tr("Object %1 has been modified but not saved.\n"
+                   "Do you want to save it ?").arg(opened->getName().c_str()),
                 tr("&Save"), tr("&Discard"), tr("&Continue editing"),
                 0, 2 ) )
         {

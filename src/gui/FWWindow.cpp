@@ -531,8 +531,7 @@ void FWWindow::save()
 
 void FWWindow::loadLibrary(const string &libfpath)
 {
-    if (activeProject())
-        activeProject()->loadLibrary(libfpath);
+    if (activeProject()) activeProject()->loadLibrary(libfpath);
 }
 
 void FWWindow::fileImport()
@@ -1348,14 +1347,12 @@ void FWWindow::updateLastModifiedTimestampForAllFirewalls(FWObject *o)
 
 void FWWindow::updateLastInstalledTimestamp(FWObject *o)
 {
-    if (activeProject())
-        activeProject()->updateLastInstalledTimestamp(o);
+    if (activeProject()) activeProject()->updateLastInstalledTimestamp(o);
 }
 
 void FWWindow::updateLastCompiledTimestamp(FWObject *o)
 {
-    if (activeProject())
-        activeProject()->updateLastCompiledTimestamp(o);
+    if (activeProject()) activeProject()->updateLastCompiledTimestamp(o);
 }
 
 
@@ -1376,34 +1373,29 @@ void FWWindow::delObj(FWObject *obj,bool openobj)
 
 ObjectTreeView* FWWindow::getCurrentObjectTree()
 {
-    if (activeProject())
-        return activeProject()->getCurrentObjectTree();
+    if (activeProject()) return activeProject()->getCurrentObjectTree();
     return 0;
 }
 
 void FWWindow::openObject(QTreeWidgetItem *otvi)
 {
-    if (activeProject())
-        activeProject()->openObject(otvi);
+    if (activeProject()) activeProject()->openObject(otvi);
 }
 
 void FWWindow::openObject(FWObject *obj)
 {
-    if (activeProject())
-        activeProject()->openObject(obj);
+    if (activeProject()) activeProject()->openObject(obj);
 }
 
 bool FWWindow::editObject(FWObject *obj)
 {
-    if (activeProject())
-        return activeProject()->editObject(obj);
+    if (activeProject()) return activeProject()->editObject(obj);
     return false;
 }
 
 void FWWindow::findAllFirewalls (std::list<Firewall *> &fws)
 {
-    if (activeProject())
-        activeProject()->findAllFirewalls (fws);
+    if (activeProject()) activeProject()->findAllFirewalls (fws);
 }
 
 FWObject* FWWindow::duplicateObject(FWObject *target,
@@ -1419,129 +1411,109 @@ FWObject* FWWindow::duplicateObject(FWObject *target,
 
 void FWWindow::showDeletedObjects(bool f)
 {
-    if (activeProject())
-        activeProject()->showDeletedObjects(f);
+    if (activeProject()) activeProject()->showDeletedObjects(f);
 }
 
 void FWWindow::select()
 {
-    if (activeProject())
-        activeProject()->select();
+    if (activeProject()) activeProject()->select();
 }
 
 void FWWindow::unselect()
 {
-    if (activeProject())
-        activeProject()->unselect();
+    if (activeProject()) activeProject()->unselect();
 }
 
 void FWWindow::info()
 {
-    if (activeProject())
-        info(activeProject()->getSelectedObject(), true);
+    if (activeProject()) info(activeProject()->getSelectedObject(), true);
 }
 
 void FWWindow::setManipulatorFocus()
 {
-    if (activeProject())
-        activeProject()->setManipulatorFocus();
+    if (activeProject()) activeProject()->setManipulatorFocus();
 }
 
 void FWWindow::clearManipulatorFocus()
 {
-    if (activeProject())
-        activeProject()->clearManipulatorFocus();
+    if (activeProject()) activeProject()->clearManipulatorFocus();
 }
 
 //wrapers for some Object Editor functions
 bool FWWindow::isEditorVisible()
 {
-    if (activeProject())
-        return activeProject()->isEditorVisible();
+    if (activeProject()) return activeProject()->isEditorVisible();
     return false;
 }
 
 bool FWWindow::isEditorModified()
 {
-    if (activeProject())
-        return activeProject()->isEditorModified();
+    if (activeProject()) return activeProject()->isEditorModified();
     return false;
 }
 
 void FWWindow::showEditor()
 {    
-    if (activeProject())
-        activeProject()->showEditor();
+    if (activeProject()) activeProject()->showEditor();
 }
 
 void FWWindow::hideEditor()
 {
-    if (activeProject())
-        activeProject()->hideEditor();
+    if (activeProject()) activeProject()->hideEditor();
 }
 
 void FWWindow::closeEditor()
 {
-    if (activeProject())
-        activeProject()->closeEditor();
+    if (activeProject()) activeProject()->closeEditor();
 }
 
 void FWWindow::openEditor(FWObject *o)
 {
-    if (activeProject())
-        activeProject()->openEditor(o);
+    if (activeProject()) activeProject()->openEditor(o);
 }
 
 void FWWindow::openOptEditor(FWObject *o, ObjectEditor::OptType t)
 {
-    if (activeProject())
-        activeProject()->openOptEditor(o, t);
+    if (activeProject()) activeProject()->openOptEditor(o, t);
 }
 
 void FWWindow::blankEditor()
 {
-    if (activeProject())
-        activeProject()->blankEditor();
+    if (activeProject()) activeProject()->blankEditor();
 }
 
 
 FWObject* FWWindow::getOpenedEditor()
 {
-    if (activeProject())
-        return activeProject()->getOpenedEditor();
+    if (activeProject()) return activeProject()->getOpenedEditor();
     return 0;
 }
 
 ObjectEditor::OptType FWWindow::getOpenedOptEditor()
 {
-    if (activeProject())
-        return activeProject()->getOpenedOptEditor();
+    if (activeProject()) return activeProject()->getOpenedOptEditor();
     return ObjectEditor::optNone;
 }
 
 void FWWindow::selectObjectInEditor(FWObject *o)
 {
-    if (activeProject())
-        activeProject()->selectObjectInEditor(o);
+    if (activeProject()) activeProject()->selectObjectInEditor(o);
 }
 
 void FWWindow::actionChangedEditor(FWObject *o)
 {
-    if (activeProject())
-        activeProject()->actionChangedEditor(o);
+    if (activeProject()) activeProject()->actionChangedEditor(o);
 }
 
 bool FWWindow::validateAndSaveEditor()
 {
-    if (activeProject())
-        return activeProject()->validateAndSaveEditor();
+    if (activeProject()) return activeProject()->validateAndSaveEditor();
     return false;
 }
 
 void FWWindow::setFDObject(FWObject *o)
 {
-    if (activeProject())
-        activeProject()->setFDObject(o);
+    if (activeProject()) activeProject()->setFDObject(o);
 }
 
 QPrinter* FWWindow::getPrinter()
@@ -1551,15 +1523,13 @@ QPrinter* FWWindow::getPrinter()
 
 FWObjectDatabase* FWWindow::db() 
 { 
-    if (activeProject())
-        return activeProject()->db(); 
+    if (activeProject()) return activeProject()->db(); 
     return 0;
 }
 
 QString FWWindow::printHeader()
 {
-    if (activeProject())
-        return activeProject()->printHeader();
+    if (activeProject()) return activeProject()->printHeader();
     return "";
 }
 
@@ -1567,16 +1537,14 @@ QString FWWindow::printHeader()
 // TODO: remove this.
 listOfLibraries *FWWindow::getAddOnLibs()
 {
-    if (activeProject())
-        return activeProject()->getAddOnLibs();
+    if (activeProject()) return activeProject()->getAddOnLibs();
     return 0;
 }
 
 
 bool FWWindow::isSystem(FWObject *obj)
 {
-    if (activeProject())
-        return activeProject()->isSystem(obj);
+    if (activeProject()) return activeProject()->isSystem(obj);
     return false;
 }
 
@@ -1585,7 +1553,8 @@ void FWWindow::closeEvent(QCloseEvent* ev)
 {
     if (fwbdebug) qDebug("FWWindow::closeEvent");
 
-    st->setInt("Window/maximized", activeProject()->isMaximized());
+    if (activeProject())
+        st->setInt("Window/maximized", activeProject()->isMaximized());
 
     QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
     for (int i = 0 ; i < subWindowList.size();i++)

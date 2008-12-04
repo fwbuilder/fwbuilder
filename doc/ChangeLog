@@ -1,3 +1,15 @@
+2008-12-04  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ProjectPanel.cpp (ProjectPanel::closeEvent): (fixed bug (no #):
+	need to check if object in the object editor panel has been
+	modified and needs to be saved when user closes internal window
+	using "close" button in its title bar.
+
+	* FWWindow.cpp (FWWindow::closeEvent): fixed bug (no #): GUI
+	crashed if user closed internal window so no object files were
+	left open, then closed application using "close" button in the
+	main window title bar.
+
 2008-12-03  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* iosacl.g (certificate): fixed bug #2334007: "Problem parsing

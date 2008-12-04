@@ -1287,6 +1287,17 @@ void ProjectPanel::closeEvent(QCloseEvent * ev)
     if (fwbdebug) qDebug("ProjectPanel::closeEvent %p title=%s",
                          this, getPageTitle().toAscii().constData());
 
+    if (isEditorVisible())
+    {
+        if (!oe->validateAndSave())
+        {
+            ev->ignore();
+            return;
+        }
+        closeEditorPanel();
+    }
+
+
 //    if (!closing)
     saveState();
     //storeLastOpenedLib();
