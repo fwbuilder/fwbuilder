@@ -8,7 +8,7 @@
 
 #line 10 "IOSCfgParser.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.4: "iosacl.g" -> "IOSCfgParser.hpp"$ */
+/* $ANTLR 2.7.6 (20070910): "iosacl.g" -> "IOSCfgParser.hpp"$ */
 #include <antlr/TokenStream.hpp>
 #include <antlr/TokenBuffer.hpp>
 #include "IOSCfgParserTokenTypes.hpp"
@@ -71,14 +71,18 @@ public:
 	public: void hostname();
 	public: void ip_commands();
 	public: void intrface();
+	public: void controller();
 	public: void vlan();
 	public: void access_list_commands();
 	public: void exit();
 	public: void description();
 	public: void shutdown();
+	public: void certificate();
+	public: void quit();
 	public: void unknown_command();
 	public: void ip_access_list_ext();
 	public: void interface_known_ip_commands();
+	public: void community_list_command();
 	public: void permit_std();
 	public: void deny_std();
 	public: void permit_ext();
@@ -112,10 +116,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 74;
+	static const int NUM_TOKENS = 79;
 #else
 	enum {
-		NUM_TOKENS = 74
+		NUM_TOKENS = 79
 	};
 #endif
 	

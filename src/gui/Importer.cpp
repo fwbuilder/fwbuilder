@@ -255,9 +255,16 @@ void Importer::addInterfaceAddress(const std::string &a,
 
 void Importer::addInterfaceComment(const std::string &descr)
 {
-    assert(current_interface!=NULL);
-    current_interface->setComment(descr);
-    *logger << "Interface comment: " << descr << "\n";
+    // current_interface can be NULL if parser encountered command
+    // that looked like interface description but in reality was 
+    // description of something else. For example this happens when
+    // it finds command "description" under "controller" in Cisco router
+    // configuration.
+    if (current_interface!=NULL)
+    {
+        current_interface->setComment(descr);
+        *logger << "Interface comment: " << descr << "\n";
+    }
 }
 
 void Importer::addRuleComment(const std::string &comm)
@@ -274,9 +281,6 @@ UnidirectionalRuleSet* Importer::checkUnidirRuleSet(
 
 UnidirectionalRuleSet* Importer::getUnidirRuleSet(const std::string &ruleset_name)
 {
-    if (fwbdebug)
-        qDebug("Importer::getUnidirRuleSet %s", ruleset_name.c_str());
-
     UnidirectionalRuleSet *rs = all_rulesets[ruleset_name];
     if (rs==NULL)
     {
@@ -315,10 +319,6 @@ void Importer::setInterfaceAndDirectionForRuleSet(const std::string &ruleset_nam
                                                   const std::string &_intf_name,
                                                   const std::string &_dir)
 {
-    if (fwbdebug)
-        qDebug("Importer::setInterfaceAndDirectionForRuleSet %s",
-               ruleset_name.c_str());
-
     UnidirectionalRuleSet *rs = getUnidirRuleSet(ruleset_name);
     std::string intf;
     if ( !_intf_name.empty()) intf = _intf_name;
@@ -342,8 +342,6 @@ void Importer::setInterfaceAndDirectionForRuleSet(const std::string &ruleset_nam
 
 void Importer::newUnidirRuleSet(const std::string &ruleset_name)
 {
-    if (fwbdebug) qDebug("Importer::newUnidirRuleSet %s",
-                         ruleset_name.c_str());
     current_ruleset = getUnidirRuleSet(ruleset_name);  // creates if new
     *logger << "Ruleset: " << ruleset_name << "\n";
 }

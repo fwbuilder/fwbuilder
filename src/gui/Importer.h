@@ -91,7 +91,7 @@ protected:
     
     std::string platform;
 
-    libfwbuilder::Interface*       current_interface;
+    libfwbuilder::Interface* current_interface;
     
     // map :  ruleset name : ruleset
     // in case of IOS ACls or PIX policy ruleset name == acl name

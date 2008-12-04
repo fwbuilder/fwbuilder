@@ -93,6 +93,8 @@ cfgfile :
         |
             intrface
         |
+            controller
+        |
             vlan
         |
             access_list_commands
@@ -103,6 +105,10 @@ cfgfile :
         |
             shutdown
         | 
+            certificate
+        |
+            quit
+        |
             unknown_command
         |
             NEWLINE
@@ -111,13 +117,35 @@ cfgfile :
 
 //****************************************************************
 
-ip_commands : IP ( ip_access_list_ext | interface_known_ip_commands | unknown_command )
+ip_commands : IP ( ip_access_list_ext | interface_known_ip_commands | community_list_command | unknown_command )
+    ;
+
+//****************************************************************
+quit : QUIT
+        {
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+//****************************************************************
+community_list_command : COMMUNITY_LIST 
+        {
+            consumeUntil(NEWLINE);
+        }
     ;
 
 //****************************************************************
 unknown_command : WORD 
         {
             consumeUntil(NEWLINE);
+        }
+    ;
+
+//****************************************************************
+certificate : CERTIFICATE WORD 
+        {
+            consumeUntil(NEWLINE);
+            consumeUntil(QUIT);
         }
     ;
 
@@ -439,6 +467,15 @@ vlan  : VLAN (WORD | INT_CONST )
 
 //****************************************************************
 
+controller : CONTROLLER
+        {
+            importer->clearCurrentInterface();
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+//****************************************************************
+
 intrface  : INTRFACE in:WORD
         {
             importer->newInterface( in->getText() );
@@ -460,7 +497,7 @@ description : DESCRIPTION
                 consume();
             }
             importer->addInterfaceComment( descr );
-            *dbg << " INTERFACE DESCRIPTION " << descr << std::endl;
+            *dbg << " DESCRIPTION " << descr << std::endl;
             //consumeUntil(NEWLINE);
         }
     ;
@@ -585,11 +622,14 @@ options {
 tokens
 {
     EXIT = "exit";
+    QUIT = "quit";
 
     IOSVERSION = "version";
     HOSTNAME = "hostname";
+    CERTIFICATE = "certificate";
 
     INTRFACE = "interface";
+    CONTROLLER = "controller";
     DESCRIPTION = "description";
     REMARK = "remark";
     SHUTDOWN = "shutdown";
@@ -601,6 +641,8 @@ tokens
 
     ADDRESS = "address";
     SECONDARY = "secondary";
+
+    COMMUNITY_LIST = "community-list";
 
     PERMIT = "permit";
     DENY = "deny";
@@ -683,13 +725,13 @@ NUMBER :
         )
     ;
 
-WORD : ( 'a'..'z' | 'A'..'Z' | '$' ) ( '!'..'/' | '0'..'9' | ':' | ';' | '<' | '=' | '>' | '?' | '@' | 'A'..'Z' | '\\' | '^' | '_' | '`' | 'a'..'z'  )*
+WORD : ( 'a'..'z' | 'A'..'Z' | '$' ) ( '!'..'/' | '0'..'9' | ':' | ';' | '<' | '=' | '>' | '?' | '@' | 'A'..'Z' | '\\' | '^' | '_' | '`' | 'a'..'z' )*
     ;
 
 STRING : '"' (~'"')* '"';
 
 
-
+PIPE_CHAR : '|';
 NUMBER_SIGN : '#' ;
 // DOLLAR : '$' ;
 PERCENT : '%' ;

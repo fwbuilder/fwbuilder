@@ -1158,7 +1158,10 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             fw_str << script_buffer;
             fw_file.close();
             fw_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
-                                   QFile::ReadGroup | QFile::ReadOther);
+                                   QFile::ReadGroup | QFile::ReadOther |
+                                   QFile::ExeOwner | 
+                                   QFile::ExeGroup |
+                                   QFile::ExeOther );
         }
 
         cout << _(" Compiled successfully") << std::endl << flush;

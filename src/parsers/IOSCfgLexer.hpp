@@ -8,7 +8,7 @@
 
 #line 10 "IOSCfgLexer.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.4: "iosacl.g" -> "IOSCfgLexer.hpp"$ */
+/* $ANTLR 2.7.6 (20070910): "iosacl.g" -> "IOSCfgLexer.hpp"$ */
 #include <antlr/CommonToken.hpp>
 #include <antlr/InputBuffer.hpp>
 #include <antlr/BitSet.hpp>
@@ -58,6 +58,7 @@ public:
 	public: void mDOT(bool _createToken);
 	public: void mWORD(bool _createToken);
 	public: void mSTRING(bool _createToken);
+	public: void mPIPE_CHAR(bool _createToken);
 	public: void mNUMBER_SIGN(bool _createToken);
 	public: void mPERCENT(bool _createToken);
 	public: void mAMPERSAND(bool _createToken);

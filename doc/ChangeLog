@@ -1,3 +1,16 @@
+2008-12-03  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* iosacl.g (certificate): fixed bug #2334007: "Problem parsing
+	Cisco config". Parser now recognizes IOS configuration lines
+	"certificate", "ip community-list", "controller
+	... description". These lines are recognized and ignored, they
+	should not stop parser from processing the rest of the
+	configuration.
+
+	* ipt.cpp (main): fixed bug #2378672: "fwb 3.0.2 build 676
+	iptables script is not executable". Generated .fw file should have
+	executable permissions.
+
 2008-12-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWObjectDatabase_tree_ops.cpp (recursivelyCopySubtree): (change

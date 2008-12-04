@@ -1,4 +1,4 @@
-/* $ANTLR 2.7.4: "iosacl.g" -> "IOSCfgParser.cpp"$ */
+/* $ANTLR 2.7.6 (20070910): "iosacl.g" -> "IOSCfgParser.cpp"$ */
 #line 42 "iosacl.g"
 
     // gets inserted before the antlr generated includes in the cpp
@@ -78,6 +78,11 @@ void IOSCfgParser::cfgfile() {
 				intrface();
 				break;
 			}
+			case CONTROLLER:
+			{
+				controller();
+				break;
+			}
 			case VLAN:
 			{
 				vlan();
@@ -103,6 +108,16 @@ void IOSCfgParser::cfgfile() {
 				shutdown();
 				break;
 			}
+			case CERTIFICATE:
+			{
+				certificate();
+				break;
+			}
+			case QUIT:
+			{
+				quit();
+				break;
+			}
 			case WORD:
 			{
 				unknown_command();
@@ -126,8 +141,7 @@ void IOSCfgParser::cfgfile() {
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_0);
+			recover(ex,_tokenSet_0);
 		} else {
 			throw;
 		}
@@ -142,8 +156,7 @@ void IOSCfgParser::comment() {
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_1);
+			recover(ex,_tokenSet_1);
 		} else {
 			throw;
 		}
@@ -158,18 +171,17 @@ void IOSCfgParser::version() {
 		v = LT(1);
 		match(NUMBER);
 		if ( inputState->guessing==0 ) {
-#line 126 "iosacl.g"
+#line 154 "iosacl.g"
 			
 			*dbg << "VERSION " << v->getText() << std::endl;
 			
-#line 166 "IOSCfgParser.cpp"
+#line 179 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_2);
+			recover(ex,_tokenSet_2);
 		} else {
 			throw;
 		}
@@ -199,21 +211,20 @@ void IOSCfgParser::hostname() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 133 "iosacl.g"
+#line 161 "iosacl.g"
 			
 			importer->setHostName( LT(0)->getText() );
 			*dbg << "HOSTNAME "
 			<< "LT0=" << LT(0)->getText()
 			<< std::endl;
 			
-#line 210 "IOSCfgParser.cpp"
+#line 222 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_2);
+			recover(ex,_tokenSet_2);
 		} else {
 			throw;
 		}
@@ -237,6 +248,11 @@ void IOSCfgParser::ip_commands() {
 			interface_known_ip_commands();
 			break;
 		}
+		case COMMUNITY_LIST:
+		{
+			community_list_command();
+			break;
+		}
 		case WORD:
 		{
 			unknown_command();
@@ -252,8 +268,7 @@ void IOSCfgParser::ip_commands() {
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_2);
+			recover(ex,_tokenSet_2);
 		} else {
 			throw;
 		}
@@ -268,21 +283,43 @@ void IOSCfgParser::intrface() {
 		in = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 443 "iosacl.g"
+#line 480 "iosacl.g"
 			
 			importer->newInterface( in->getText() );
 			*dbg << in->getLine() << ":"
 			<< " INTRFACE: " << in->getText() << std::endl;
 			
-#line 278 "IOSCfgParser.cpp"
+#line 293 "IOSCfgParser.cpp"
 		}
 		match(NEWLINE);
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_2);
+			recover(ex,_tokenSet_2);
+		} else {
+			throw;
+		}
+	}
+}
+
+void IOSCfgParser::controller() {
+	
+	try {      // for error handling
+		match(CONTROLLER);
+		if ( inputState->guessing==0 ) {
+#line 471 "iosacl.g"
+			
+			importer->clearCurrentInterface();
+			consumeUntil(NEWLINE);
+			
+#line 317 "IOSCfgParser.cpp"
+		}
+	}
+	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
+		if( inputState->guessing == 0 ) {
+			reportError(ex);
+			recover(ex,_tokenSet_2);
 		} else {
 			throw;
 		}
@@ -312,19 +349,18 @@ void IOSCfgParser::vlan() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 434 "iosacl.g"
+#line 462 "iosacl.g"
 			
 			importer->clearCurrentInterface();
 			consumeUntil(NEWLINE);
 			
-#line 321 "IOSCfgParser.cpp"
+#line 358 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_2);
+			recover(ex,_tokenSet_2);
 		} else {
 			throw;
 		}
@@ -339,13 +375,13 @@ void IOSCfgParser::access_list_commands() {
 		acl_num = LT(1);
 		match(INT_CONST);
 		if ( inputState->guessing==0 ) {
-#line 148 "iosacl.g"
+#line 176 "iosacl.g"
 			
 			importer->newUnidirRuleSet( std::string("acl_") + acl_num->getText() );
 			*dbg << acl_num->getLine() << ":"
 			<< " ACL #" << acl_num->getText() << " ";
 			
-#line 349 "IOSCfgParser.cpp"
+#line 385 "IOSCfgParser.cpp"
 		}
 		{
 		if ((LA(1) == PERMIT) && (LA(2) == IPV4 || LA(2) == ANY)) {
@@ -372,8 +408,7 @@ void IOSCfgParser::access_list_commands() {
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_2);
+			recover(ex,_tokenSet_2);
 		} else {
 			throw;
 		}
@@ -388,8 +423,7 @@ void IOSCfgParser::exit() {
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_2);
+			recover(ex,_tokenSet_2);
 		} else {
 			throw;
 		}
@@ -401,7 +435,7 @@ void IOSCfgParser::description() {
 	try {      // for error handling
 		match(DESCRIPTION);
 		if ( inputState->guessing==0 ) {
-#line 454 "iosacl.g"
+#line 491 "iosacl.g"
 			
 			*dbg << LT(1)->getLine() << ":";
 			std::string descr;
@@ -411,17 +445,16 @@ void IOSCfgParser::description() {
 			consume();
 			}
 			importer->addInterfaceComment( descr );
-			*dbg << " INTERFACE DESCRIPTION " << descr << std::endl;
+			*dbg << " DESCRIPTION " << descr << std::endl;
 			//consumeUntil(NEWLINE);
 			
-#line 418 "IOSCfgParser.cpp"
+#line 452 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_2);
+			recover(ex,_tokenSet_2);
 		} else {
 			throw;
 		}
@@ -433,19 +466,64 @@ void IOSCfgParser::shutdown() {
 	try {      // for error handling
 		match(SHUTDOWN);
 		if ( inputState->guessing==0 ) {
-#line 487 "iosacl.g"
+#line 524 "iosacl.g"
 			
 			*dbg<< LT(1)->getLine() << ":"
 			<< " INTERFACE SHUTDOWN " << std::endl;
 			
-#line 442 "IOSCfgParser.cpp"
+#line 475 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_2);
+			recover(ex,_tokenSet_2);
+		} else {
+			throw;
+		}
+	}
+}
+
+void IOSCfgParser::certificate() {
+	
+	try {      // for error handling
+		match(CERTIFICATE);
+		match(WORD);
+		if ( inputState->guessing==0 ) {
+#line 146 "iosacl.g"
+			
+			consumeUntil(NEWLINE);
+			consumeUntil(QUIT);
+			
+#line 499 "IOSCfgParser.cpp"
+		}
+	}
+	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
+		if( inputState->guessing == 0 ) {
+			reportError(ex);
+			recover(ex,_tokenSet_2);
+		} else {
+			throw;
+		}
+	}
+}
+
+void IOSCfgParser::quit() {
+	
+	try {      // for error handling
+		match(QUIT);
+		if ( inputState->guessing==0 ) {
+#line 125 "iosacl.g"
+			
+			consumeUntil(NEWLINE);
+			
+#line 521 "IOSCfgParser.cpp"
+		}
+	}
+	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
+		if( inputState->guessing == 0 ) {
+			reportError(ex);
+			recover(ex,_tokenSet_2);
 		} else {
 			throw;
 		}
@@ -457,18 +535,17 @@ void IOSCfgParser::unknown_command() {
 	try {      // for error handling
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 119 "iosacl.g"
+#line 139 "iosacl.g"
 			
 			consumeUntil(NEWLINE);
 			
-#line 465 "IOSCfgParser.cpp"
+#line 543 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_2);
+			recover(ex,_tokenSet_2);
 		} else {
 			throw;
 		}
@@ -484,17 +561,17 @@ void IOSCfgParser::ip_access_list_ext() {
 		name = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 169 "iosacl.g"
+#line 197 "iosacl.g"
 			
 			importer->newUnidirRuleSet( name->getText() );
 			*dbg << name->getLine() << ":"
 			<< " ACL ext " << name->getText() << std::endl;
 			
-#line 494 "IOSCfgParser.cpp"
+#line 571 "IOSCfgParser.cpp"
 		}
 		match(NEWLINE);
 		{ // ( ... )+
-		int _cnt14=0;
+		int _cnt17=0;
 		for (;;) {
 			switch ( LA(1)) {
 			case PERMIT:
@@ -520,27 +597,26 @@ void IOSCfgParser::ip_access_list_ext() {
 					match(NEWLINE);
 				}
 			else {
-				if ( _cnt14>=1 ) { goto _loop14; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());}
+				if ( _cnt17>=1 ) { goto _loop17; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());}
 			}
 			}
-			_cnt14++;
+			_cnt17++;
 		}
-		_loop14:;
+		_loop17:;
 		}  // ( ... )+
 		if ( inputState->guessing==0 ) {
-#line 186 "iosacl.g"
+#line 214 "iosacl.g"
 			
 			*dbg << LT(0)->getLine() << ":"
 			<< " ACL end" << std::endl << std::endl;
 			
-#line 537 "IOSCfgParser.cpp"
+#line 614 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_2);
+			recover(ex,_tokenSet_2);
 		} else {
 			throw;
 		}
@@ -570,8 +646,29 @@ void IOSCfgParser::interface_known_ip_commands() {
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_2);
+			recover(ex,_tokenSet_2);
+		} else {
+			throw;
+		}
+	}
+}
+
+void IOSCfgParser::community_list_command() {
+	
+	try {      // for error handling
+		match(COMMUNITY_LIST);
+		if ( inputState->guessing==0 ) {
+#line 132 "iosacl.g"
+			
+			consumeUntil(NEWLINE);
+			
+#line 666 "IOSCfgParser.cpp"
+		}
+	}
+	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
+		if( inputState->guessing == 0 ) {
+			reportError(ex);
+			recover(ex,_tokenSet_2);
 		} else {
 			throw;
 		}
@@ -583,29 +680,28 @@ void IOSCfgParser::permit_std() {
 	try {      // for error handling
 		match(PERMIT);
 		if ( inputState->guessing==0 ) {
-#line 219 "iosacl.g"
+#line 247 "iosacl.g"
 			
 			importer->newPolicyRule();
 			importer->action = "permit";
 			*dbg << LT(1)->getLine() << ":" << " permit ";
 			
-#line 593 "IOSCfgParser.cpp"
+#line 690 "IOSCfgParser.cpp"
 		}
 		rule_std();
 		match(NEWLINE);
 		if ( inputState->guessing==0 ) {
-#line 225 "iosacl.g"
+#line 253 "iosacl.g"
 			
 			importer->pushRule();
 			
-#line 602 "IOSCfgParser.cpp"
+#line 699 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_2);
+			recover(ex,_tokenSet_2);
 		} else {
 			throw;
 		}
@@ -617,29 +713,28 @@ void IOSCfgParser::deny_std() {
 	try {      // for error handling
 		match(DENY);
 		if ( inputState->guessing==0 ) {
-#line 231 "iosacl.g"
+#line 259 "iosacl.g"
 			
 			importer->newPolicyRule();
 			importer->action = "deny";
 			*dbg << LT(1)->getLine() << ":" << " deny   ";
 			
-#line 627 "IOSCfgParser.cpp"
+#line 723 "IOSCfgParser.cpp"
 		}
 		rule_std();
 		match(NEWLINE);
 		if ( inputState->guessing==0 ) {
-#line 237 "iosacl.g"
+#line 265 "iosacl.g"
 			
 			importer->pushRule();
 			
-#line 636 "IOSCfgParser.cpp"
+#line 732 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_2);
+			recover(ex,_tokenSet_2);
 		} else {
 			throw;
 		}
@@ -651,29 +746,28 @@ void IOSCfgParser::permit_ext() {
 	try {      // for error handling
 		match(PERMIT);
 		if ( inputState->guessing==0 ) {
-#line 194 "iosacl.g"
+#line 222 "iosacl.g"
 			
 			importer->newPolicyRule();
 			importer->action = "permit";
 			*dbg << LT(1)->getLine() << ":" << " permit ";
 			
-#line 661 "IOSCfgParser.cpp"
+#line 756 "IOSCfgParser.cpp"
 		}
 		rule_ext();
 		match(NEWLINE);
 		if ( inputState->guessing==0 ) {
-#line 200 "iosacl.g"
+#line 228 "iosacl.g"
 			
 			importer->pushRule();
 			
-#line 670 "IOSCfgParser.cpp"
+#line 765 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_1);
+			recover(ex,_tokenSet_1);
 		} else {
 			throw;
 		}
@@ -685,29 +779,28 @@ void IOSCfgParser::deny_ext() {
 	try {      // for error handling
 		match(DENY);
 		if ( inputState->guessing==0 ) {
-#line 206 "iosacl.g"
+#line 234 "iosacl.g"
 			
 			importer->newPolicyRule();
 			importer->action = "deny";
 			*dbg << LT(1)->getLine() << ":" << " deny   ";
 			
-#line 695 "IOSCfgParser.cpp"
+#line 789 "IOSCfgParser.cpp"
 		}
 		rule_ext();
 		match(NEWLINE);
 		if ( inputState->guessing==0 ) {
-#line 212 "iosacl.g"
+#line 240 "iosacl.g"
 			
 			importer->pushRule();
 			
-#line 704 "IOSCfgParser.cpp"
+#line 798 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_1);
+			recover(ex,_tokenSet_1);
 		} else {
 			throw;
 		}
@@ -719,7 +812,7 @@ void IOSCfgParser::remark() {
 	try {      // for error handling
 		match(REMARK);
 		if ( inputState->guessing==0 ) {
-#line 472 "iosacl.g"
+#line 509 "iosacl.g"
 			
 			*dbg << LT(1)->getLine() << ":";
 			std::string rem;
@@ -732,14 +825,13 @@ void IOSCfgParser::remark() {
 			*dbg << " REMARK " << rem << std::endl;
 			//consumeUntil(NEWLINE);
 			
-#line 736 "IOSCfgParser.cpp"
+#line 829 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_1);
+			recover(ex,_tokenSet_1);
 		} else {
 			throw;
 		}
@@ -757,15 +849,15 @@ void IOSCfgParser::rule_ext() {
 			ip_protocols();
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 247 "iosacl.g"
+#line 275 "iosacl.g"
 				importer->SaveTmpAddrToSrc(); *dbg << "(src) ";
-#line 763 "IOSCfgParser.cpp"
+#line 855 "IOSCfgParser.cpp"
 			}
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 248 "iosacl.g"
+#line 276 "iosacl.g"
 				importer->SaveTmpAddrToDst(); *dbg << "(dst) ";
-#line 769 "IOSCfgParser.cpp"
+#line 861 "IOSCfgParser.cpp"
 			}
 			{
 			switch ( LA(1)) {
@@ -830,24 +922,24 @@ void IOSCfgParser::rule_ext() {
 		{
 			match(ICMP);
 			if ( inputState->guessing==0 ) {
-#line 254 "iosacl.g"
+#line 282 "iosacl.g"
 				
 				importer->protocol = LT(0)->getText();
 				*dbg << "protocol " << LT(0)->getText() << " ";
 				
-#line 839 "IOSCfgParser.cpp"
+#line 931 "IOSCfgParser.cpp"
 			}
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 258 "iosacl.g"
+#line 286 "iosacl.g"
 				importer->SaveTmpAddrToSrc(); *dbg << "(src) ";
-#line 845 "IOSCfgParser.cpp"
+#line 937 "IOSCfgParser.cpp"
 			}
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 259 "iosacl.g"
+#line 287 "iosacl.g"
 				importer->SaveTmpAddrToDst(); *dbg << "(dst) ";
-#line 851 "IOSCfgParser.cpp"
+#line 943 "IOSCfgParser.cpp"
 			}
 			{
 			switch ( LA(1)) {
@@ -952,18 +1044,18 @@ void IOSCfgParser::rule_ext() {
 			}
 			}
 			if ( inputState->guessing==0 ) {
-#line 266 "iosacl.g"
+#line 294 "iosacl.g"
 				
 				importer->protocol = LT(0)->getText();
 				*dbg << "protocol " << LT(0)->getText() << " ";
 				
-#line 961 "IOSCfgParser.cpp"
+#line 1053 "IOSCfgParser.cpp"
 			}
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 270 "iosacl.g"
+#line 298 "iosacl.g"
 				importer->SaveTmpAddrToSrc(); *dbg << "(src) ";
-#line 967 "IOSCfgParser.cpp"
+#line 1059 "IOSCfgParser.cpp"
 			}
 			{
 			switch ( LA(1)) {
@@ -975,9 +1067,9 @@ void IOSCfgParser::rule_ext() {
 			{
 				xoperator();
 				if ( inputState->guessing==0 ) {
-#line 271 "iosacl.g"
+#line 299 "iosacl.g"
 					importer->SaveTmpPortToSrc();
-#line 981 "IOSCfgParser.cpp"
+#line 1073 "IOSCfgParser.cpp"
 				}
 				break;
 			}
@@ -995,9 +1087,9 @@ void IOSCfgParser::rule_ext() {
 			}
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 272 "iosacl.g"
+#line 300 "iosacl.g"
 				importer->SaveTmpAddrToDst(); *dbg << "(dst) ";
-#line 1001 "IOSCfgParser.cpp"
+#line 1093 "IOSCfgParser.cpp"
 			}
 			{
 			switch ( LA(1)) {
@@ -1009,9 +1101,9 @@ void IOSCfgParser::rule_ext() {
 			{
 				xoperator();
 				if ( inputState->guessing==0 ) {
-#line 273 "iosacl.g"
+#line 301 "iosacl.g"
 					importer->SaveTmpPortToDst();
-#line 1015 "IOSCfgParser.cpp"
+#line 1107 "IOSCfgParser.cpp"
 				}
 				break;
 			}
@@ -1117,18 +1209,17 @@ void IOSCfgParser::rule_ext() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 279 "iosacl.g"
+#line 307 "iosacl.g"
 			
 			*dbg << std::endl;
 			
-#line 1125 "IOSCfgParser.cpp"
+#line 1217 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_4);
+			recover(ex,_tokenSet_4);
 		} else {
 			throw;
 		}
@@ -1141,9 +1232,9 @@ void IOSCfgParser::rule_std() {
 		{
 		hostaddr_std();
 		if ( inputState->guessing==0 ) {
-#line 287 "iosacl.g"
+#line 315 "iosacl.g"
 			importer->SaveTmpAddrToSrc(); *dbg << "(std) ";
-#line 1147 "IOSCfgParser.cpp"
+#line 1238 "IOSCfgParser.cpp"
 		}
 		{
 		switch ( LA(1)) {
@@ -1165,18 +1256,17 @@ void IOSCfgParser::rule_std() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 290 "iosacl.g"
+#line 318 "iosacl.g"
 			
 			*dbg << std::endl;
 			
-#line 1173 "IOSCfgParser.cpp"
+#line 1264 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_4);
+			recover(ex,_tokenSet_4);
 		} else {
 			throw;
 		}
@@ -1205,19 +1295,18 @@ void IOSCfgParser::ip_protocols() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 298 "iosacl.g"
+#line 326 "iosacl.g"
 			
 			importer->protocol = LT(0)->getText();
 			*dbg << "protocol " << LT(0)->getText() << " ";
 			
-#line 1214 "IOSCfgParser.cpp"
+#line 1304 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_5);
+			recover(ex,_tokenSet_5);
 		} else {
 			throw;
 		}
@@ -1239,13 +1328,13 @@ void IOSCfgParser::hostaddr_ext() {
 			match(IPV4);
 			}
 			if ( inputState->guessing==0 ) {
-#line 350 "iosacl.g"
+#line 378 "iosacl.g"
 				
 				importer->tmp_a = h->getText();
 				importer->tmp_nm = "0.0.0.0";
 				*dbg << h->getText() << "/0.0.0.0";
 				
-#line 1249 "IOSCfgParser.cpp"
+#line 1338 "IOSCfgParser.cpp"
 			}
 			break;
 		}
@@ -1258,13 +1347,13 @@ void IOSCfgParser::hostaddr_ext() {
 			match(IPV4);
 			}
 			if ( inputState->guessing==0 ) {
-#line 357 "iosacl.g"
+#line 385 "iosacl.g"
 				
 				importer->tmp_a = a->getText();
 				importer->tmp_nm = m->getText();
 				*dbg << a->getText() << "/" << m->getText();
 				
-#line 1268 "IOSCfgParser.cpp"
+#line 1357 "IOSCfgParser.cpp"
 			}
 			break;
 		}
@@ -1272,13 +1361,13 @@ void IOSCfgParser::hostaddr_ext() {
 		{
 			match(ANY);
 			if ( inputState->guessing==0 ) {
-#line 364 "iosacl.g"
+#line 392 "iosacl.g"
 				
 				importer->tmp_a = "0.0.0.0";
 				importer->tmp_nm = "0.0.0.0";
 				*dbg << "0.0.0.0/0.0.0.0";
 				
-#line 1282 "IOSCfgParser.cpp"
+#line 1371 "IOSCfgParser.cpp"
 			}
 			break;
 		}
@@ -1291,8 +1380,7 @@ void IOSCfgParser::hostaddr_ext() {
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_6);
+			recover(ex,_tokenSet_6);
 		} else {
 			throw;
 		}
@@ -1307,19 +1395,18 @@ void IOSCfgParser::time_range() {
 		tr_name = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 416 "iosacl.g"
+#line 444 "iosacl.g"
 			
 			importer->time_range_name = tr_name->getText();
 			*dbg << "time_range " << tr_name->getText() << " ";
 			
-#line 1316 "IOSCfgParser.cpp"
+#line 1404 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_7);
+			recover(ex,_tokenSet_7);
 		} else {
 			throw;
 		}
@@ -1331,19 +1418,18 @@ void IOSCfgParser::fragments() {
 	try {      // for error handling
 		match(FRAGMENTS);
 		if ( inputState->guessing==0 ) {
-#line 409 "iosacl.g"
+#line 437 "iosacl.g"
 			
 			importer->fragments = true;
 			*dbg << "fragments ";
 			
-#line 1340 "IOSCfgParser.cpp"
+#line 1427 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_8);
+			recover(ex,_tokenSet_8);
 		} else {
 			throw;
 		}
@@ -1372,19 +1458,18 @@ void IOSCfgParser::log() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 395 "iosacl.g"
+#line 423 "iosacl.g"
 			
 			importer->logging = true;
 			*dbg << "logging ";
 			
-#line 1381 "IOSCfgParser.cpp"
+#line 1467 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_4);
+			recover(ex,_tokenSet_4);
 		} else {
 			throw;
 		}
@@ -1408,7 +1493,7 @@ void IOSCfgParser::icmp_spec() {
 			match(INT_CONST);
 			}
 			if ( inputState->guessing==0 ) {
-#line 306 "iosacl.g"
+#line 334 "iosacl.g"
 				
 				importer->icmp_type = icmp_type->getText();
 				importer->icmp_code = icmp_code->getText();
@@ -1416,7 +1501,7 @@ void IOSCfgParser::icmp_spec() {
 				*dbg << icmp_type->getText() << " "
 				<< icmp_code->getText() << " ";
 				
-#line 1420 "IOSCfgParser.cpp"
+#line 1505 "IOSCfgParser.cpp"
 			}
 			break;
 		}
@@ -1425,12 +1510,12 @@ void IOSCfgParser::icmp_spec() {
 			icmp_word = LT(1);
 			match(WORD);
 			if ( inputState->guessing==0 ) {
-#line 315 "iosacl.g"
+#line 343 "iosacl.g"
 				
 				importer->icmp_spec = icmp_word->getText();
 				*dbg << icmp_word->getText() << " ";
 				
-#line 1434 "IOSCfgParser.cpp"
+#line 1519 "IOSCfgParser.cpp"
 			}
 			break;
 		}
@@ -1444,8 +1529,7 @@ void IOSCfgParser::icmp_spec() {
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_9);
+			recover(ex,_tokenSet_9);
 		} else {
 			throw;
 		}
@@ -1478,8 +1562,7 @@ void IOSCfgParser::xoperator() {
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_10);
+			recover(ex,_tokenSet_10);
 		} else {
 			throw;
 		}
@@ -1491,19 +1574,18 @@ void IOSCfgParser::established() {
 	try {      // for error handling
 		match(ESTABLISHED);
 		if ( inputState->guessing==0 ) {
-#line 402 "iosacl.g"
+#line 430 "iosacl.g"
 			
 			importer->established = true;
 			*dbg << "established ";
 			
-#line 1500 "IOSCfgParser.cpp"
+#line 1583 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_9);
+			recover(ex,_tokenSet_9);
 		} else {
 			throw;
 		}
@@ -1522,13 +1604,13 @@ void IOSCfgParser::hostaddr_std() {
 			match(IPV4);
 			}
 			if ( inputState->guessing==0 ) {
-#line 373 "iosacl.g"
+#line 401 "iosacl.g"
 				
 				importer->tmp_a = h->getText();
 				importer->tmp_nm = "0.0.0.0";
 				*dbg << h->getText() << "/0.0.0.0";
 				
-#line 1532 "IOSCfgParser.cpp"
+#line 1614 "IOSCfgParser.cpp"
 			}
 		}
 		else if ((LA(1) == IPV4) && (LA(2) == IPV4)) {
@@ -1539,25 +1621,25 @@ void IOSCfgParser::hostaddr_std() {
 			match(IPV4);
 			}
 			if ( inputState->guessing==0 ) {
-#line 380 "iosacl.g"
+#line 408 "iosacl.g"
 				
 				importer->tmp_a = a->getText();
 				importer->tmp_nm = m->getText();
 				*dbg << a->getText() << "/" << m->getText();
 				
-#line 1549 "IOSCfgParser.cpp"
+#line 1631 "IOSCfgParser.cpp"
 			}
 		}
 		else if ((LA(1) == ANY)) {
 			match(ANY);
 			if ( inputState->guessing==0 ) {
-#line 387 "iosacl.g"
+#line 415 "iosacl.g"
 				
 				importer->tmp_a = "0.0.0.0";
 				importer->tmp_nm = "0.0.0.0";
 				*dbg << "0.0.0.0/0.0.0.0";
 				
-#line 1561 "IOSCfgParser.cpp"
+#line 1643 "IOSCfgParser.cpp"
 			}
 		}
 		else {
@@ -1568,8 +1650,7 @@ void IOSCfgParser::hostaddr_std() {
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_8);
+			recover(ex,_tokenSet_8);
 		} else {
 			throw;
 		}
@@ -1608,20 +1689,19 @@ void IOSCfgParser::single_port_op() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 326 "iosacl.g"
+#line 354 "iosacl.g"
 			
 			importer->tmp_port_op = LT(0)->getText();
 			*dbg << LT(0)->getText() << " ";
 			
-#line 1617 "IOSCfgParser.cpp"
+#line 1698 "IOSCfgParser.cpp"
 		}
 		port_spec();
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_10);
+			recover(ex,_tokenSet_10);
 		} else {
 			throw;
 		}
@@ -1633,12 +1713,12 @@ void IOSCfgParser::port_range() {
 	try {      // for error handling
 		match(P_RANGE);
 		if ( inputState->guessing==0 ) {
-#line 334 "iosacl.g"
+#line 362 "iosacl.g"
 			
 			importer->tmp_port_op = LT(0)->getText();
 			*dbg << LT(0)->getText() << " ";
 			
-#line 1642 "IOSCfgParser.cpp"
+#line 1722 "IOSCfgParser.cpp"
 		}
 		port_spec();
 		port_spec();
@@ -1646,8 +1726,7 @@ void IOSCfgParser::port_range() {
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_10);
+			recover(ex,_tokenSet_10);
 		} else {
 			throw;
 		}
@@ -1676,19 +1755,18 @@ void IOSCfgParser::port_spec() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 342 "iosacl.g"
+#line 370 "iosacl.g"
 			
 			importer->tmp_port_spec += (std::string(" ") + LT(0)->getText());
 			*dbg << LT(0)->getText() << " ";
 			
-#line 1685 "IOSCfgParser.cpp"
+#line 1764 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_11);
+			recover(ex,_tokenSet_11);
 		} else {
 			throw;
 		}
@@ -1706,7 +1784,7 @@ void IOSCfgParser::access_group_by_name() {
 		dir = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 513 "iosacl.g"
+#line 550 "iosacl.g"
 			
 			importer->setInterfaceAndDirectionForRuleSet(
 			acln->getText(),
@@ -1716,14 +1794,13 @@ void IOSCfgParser::access_group_by_name() {
 			<< " INTRFACE: ACL '" << acln->getText() << "'"
 			<< " " << dir->getText() << std::endl;
 			
-#line 1720 "IOSCfgParser.cpp"
+#line 1798 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_4);
+			recover(ex,_tokenSet_4);
 		} else {
 			throw;
 		}
@@ -1741,7 +1818,7 @@ void IOSCfgParser::access_group_by_number() {
 		dir = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 528 "iosacl.g"
+#line 565 "iosacl.g"
 			
 			importer->setInterfaceAndDirectionForRuleSet(
 			std::string("acl_") + acln->getText(),
@@ -1751,14 +1828,13 @@ void IOSCfgParser::access_group_by_number() {
 			<< " INTRFACE: ACL '" << acln->getText() << "'"
 			<< " " << dir->getText() << std::endl;
 			
-#line 1755 "IOSCfgParser.cpp"
+#line 1832 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_4);
+			recover(ex,_tokenSet_4);
 		} else {
 			throw;
 		}
@@ -1795,7 +1871,7 @@ void IOSCfgParser::intf_address() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 540 "iosacl.g"
+#line 577 "iosacl.g"
 			
 			importer->addInterfaceAddress(a->getText(), m->getText());
 			*dbg << LT(1)->getLine() << ":"
@@ -1807,14 +1883,13 @@ void IOSCfgParser::intf_address() {
 			}
 			*dbg <<  std::endl;
 			
-#line 1811 "IOSCfgParser.cpp"
+#line 1887 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			consume();
-			consumeUntil(_tokenSet_4);
+			recover(ex,_tokenSet_4);
 		} else {
 			throw;
 		}
@@ -1831,7 +1906,10 @@ const char* IOSCfgParser::tokenNames[] = {
 	"NULL_TREE_LOOKAHEAD",
 	"NEWLINE",
 	"\"ip\"",
+	"\"quit\"",
+	"\"community-list\"",
 	"WORD",
+	"\"certificate\"",
 	"\"version\"",
 	"NUMBER",
 	"\"hostname\"",
@@ -1858,6 +1936,7 @@ const char* IOSCfgParser::tokenNames[] = {
 	"\"fragments\"",
 	"\"time-range\"",
 	"\"vlan\"",
+	"\"controller\"",
 	"\"interface\"",
 	"\"description\"",
 	"\"remark\"",
@@ -1873,6 +1952,7 @@ const char* IOSCfgParser::tokenNames[] = {
 	"NEG_INT_CONST",
 	"DIGIT",
 	"HEXDIGIT",
+	"PIPE_CHAR",
 	"NUMBER_SIGN",
 	"PERCENT",
 	"AMPERSAND",
@@ -1905,41 +1985,42 @@ const char* IOSCfgParser::tokenNames[] = {
 const unsigned long IOSCfgParser::_tokenSet_0_data_[] = { 2UL, 0UL, 0UL, 0UL };
 // EOF 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IOSCfgParser::_tokenSet_0(_tokenSet_0_data_,4);
-const unsigned long IOSCfgParser::_tokenSet_1_data_[] = { 51954UL, 799UL, 0UL, 0UL };
-// EOF NEWLINE "ip" WORD "version" "hostname" "access-list" "permit" "deny" 
-// "vlan" "interface" "description" "remark" "shutdown" "exit" LINE_COMMENT 
+const unsigned long IOSCfgParser::_tokenSet_1_data_[] = { 415602UL, 12792UL, 0UL, 0UL };
+// EOF NEWLINE "ip" "quit" WORD "certificate" "version" "hostname" "access-list" 
+// "permit" "deny" "vlan" "controller" "interface" "description" "remark" 
+// "shutdown" "exit" LINE_COMMENT 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IOSCfgParser::_tokenSet_1(_tokenSet_1_data_,4);
-const unsigned long IOSCfgParser::_tokenSet_2_data_[] = { 2802UL, 791UL, 0UL, 0UL };
-// EOF NEWLINE "ip" WORD "version" "hostname" "access-list" "vlan" "interface" 
-// "description" "shutdown" "exit" LINE_COMMENT 
+const unsigned long IOSCfgParser::_tokenSet_2_data_[] = { 22386UL, 12664UL, 0UL, 0UL };
+// EOF NEWLINE "ip" "quit" WORD "certificate" "version" "hostname" "access-list" 
+// "vlan" "controller" "interface" "description" "shutdown" "exit" LINE_COMMENT 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IOSCfgParser::_tokenSet_2(_tokenSet_2_data_,4);
-const unsigned long IOSCfgParser::_tokenSet_3_data_[] = { 458848UL, 0UL, 0UL, 0UL };
+const unsigned long IOSCfgParser::_tokenSet_3_data_[] = { 3670304UL, 0UL, 0UL, 0UL };
 // "ip" WORD "icmp" "tcp" "udp" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IOSCfgParser::_tokenSet_3(_tokenSet_3_data_,4);
 const unsigned long IOSCfgParser::_tokenSet_4_data_[] = { 16UL, 0UL, 0UL, 0UL };
 // NEWLINE 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IOSCfgParser::_tokenSet_4(_tokenSet_4_data_,4);
-const unsigned long IOSCfgParser::_tokenSet_5_data_[] = { 117440512UL, 0UL, 0UL, 0UL };
+const unsigned long IOSCfgParser::_tokenSet_5_data_[] = { 939524096UL, 0UL, 0UL, 0UL };
 // "host" IPV4 "any" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IOSCfgParser::_tokenSet_5(_tokenSet_5_data_,4);
-const unsigned long IOSCfgParser::_tokenSet_6_data_[] = { 4294447184UL, 0UL, 0UL, 0UL };
+const unsigned long IOSCfgParser::_tokenSet_6_data_[] = { 4290806032UL, 7UL, 0UL, 0UL };
 // NEWLINE WORD INT_CONST "eq" "gt" "lt" "neq" "range" "host" IPV4 "any" 
 // "log" "log-input" "established" "fragments" "time-range" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IOSCfgParser::_tokenSet_6(_tokenSet_6_data_,4);
-const unsigned long IOSCfgParser::_tokenSet_7_data_[] = { 1476395024UL, 0UL, 0UL, 0UL };
+const unsigned long IOSCfgParser::_tokenSet_7_data_[] = { 3221225488UL, 2UL, 0UL, 0UL };
 // NEWLINE "log" "log-input" "fragments" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IOSCfgParser::_tokenSet_7(_tokenSet_7_data_,4);
-const unsigned long IOSCfgParser::_tokenSet_8_data_[] = { 402653200UL, 0UL, 0UL, 0UL };
+const unsigned long IOSCfgParser::_tokenSet_8_data_[] = { 3221225488UL, 0UL, 0UL, 0UL };
 // NEWLINE "log" "log-input" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IOSCfgParser::_tokenSet_8(_tokenSet_8_data_,4);
-const unsigned long IOSCfgParser::_tokenSet_9_data_[] = { 3623878672UL, 0UL, 0UL, 0UL };
+const unsigned long IOSCfgParser::_tokenSet_9_data_[] = { 3221225488UL, 6UL, 0UL, 0UL };
 // NEWLINE "log" "log-input" "fragments" "time-range" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IOSCfgParser::_tokenSet_9(_tokenSet_9_data_,4);
-const unsigned long IOSCfgParser::_tokenSet_10_data_[] = { 4278190096UL, 0UL, 0UL, 0UL };
+const unsigned long IOSCfgParser::_tokenSet_10_data_[] = { 4160749584UL, 7UL, 0UL, 0UL };
 // NEWLINE "host" IPV4 "any" "log" "log-input" "established" "fragments" 
 // "time-range" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IOSCfgParser::_tokenSet_10(_tokenSet_10_data_,4);
-const unsigned long IOSCfgParser::_tokenSet_11_data_[] = { 4278194256UL, 0UL, 0UL, 0UL };
+const unsigned long IOSCfgParser::_tokenSet_11_data_[] = { 4160782608UL, 7UL, 0UL, 0UL };
 // NEWLINE WORD INT_CONST "host" IPV4 "any" "log" "log-input" "established" 
 // "fragments" "time-range" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet IOSCfgParser::_tokenSet_11(_tokenSet_11_data_,4);
