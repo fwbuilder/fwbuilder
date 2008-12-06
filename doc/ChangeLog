@@ -1,3 +1,10 @@
+2008-12-05  User Vadim  <vadim@vk.crocodile.org>
+
+	* InetAddr.cpp (InetAddr::toString): Should use bits==128 because
+	inet_net_ntop_ipv6 on FreeBSD applies mask constructed from the
+	bits argument to the result, so with bits==0 it always returned
+	"::/0"
+
 2008-12-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWObjectDatabase_tree_ops.cpp (recursivelyCopySubtree): fixed

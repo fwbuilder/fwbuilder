@@ -249,16 +249,17 @@ string InetAddr::toString() const
         char ntop_buf[sizeof
                       "ffff:ffff:ffff:ffff:ffff:ffff:255.255.255.255/128"];
         /*
-         * Our included copy of inet_net_ntop does not add /netmask if bits==-1
-         * (argument #3). However, the same function included in libc on FreeBSD
-         * returns EINVAL for bits=-1. Here is a hack: use bits=0 and then
-         * strip /0 that inet_net_ntop adds to the generated string. Both
-         * our included inet_net_ntop and the one shipped with FreeBSD add "/0"
+         * Our included copy of inet_net_ntop does not add /netmask if
+         * bits==-1 (argument #3). However, the same function included
+         * in libc on FreeBSD returns EINVAL for bits=-1. Here is a
+         * hack: use bits=128 and then strip /128 that inet_net_ntop
+         * adds to the generated string. Both our included
+         * inet_net_ntop and the one shipped with FreeBSD add "/128"
          * consistently, so this works on all platforms.
          */
         char *cp;
         cp = inet_net_ntop(AF_INET6, (const void*)(&ipv6),
-                           0, ntop_buf, sizeof(ntop_buf));
+                           128, ntop_buf, sizeof(ntop_buf));
         if (cp==NULL)
         {
             ostringstream err;
