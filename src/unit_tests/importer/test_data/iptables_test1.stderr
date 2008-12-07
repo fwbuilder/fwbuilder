@@ -1,5 +1,3 @@
-argv0=./importer_test
-appRootDir=./
 TABLE filter
 NEW CHAIN INPUT
 NEW CHAIN FORWARD
@@ -8,15 +6,19 @@ NEW CHAIN user_chain
 
 add_rule: line=9 chain=FORWARD STATE MATCH=RELATED,ESTABLISHED TARGET=ACCEPT
 add_rule: line=12 chain=FORWARD STATE MATCH=INVALID TARGET=drop_invalid
+Unknown target drop_invalid, creating branch
 add_rule: line=15 chain=OUTPUT STATE MATCH=RELATED,ESTABLISHED TARGET=ACCEPT
 add_rule: line=19 chain=OUTPUT DST=21.21.21.21 PROTO=tcp TCP PORT=22 STATE MATCH=RELATED,ESTABLISHED TARGET=ACCEPT
 Creating tcp service
 src range: 22 - 22
 dst range: 0 - 0
 add_rule: line=22 chain=OUTPUT STATE MATCH=INVALID TARGET=drop_invalid
+Unknown target drop_invalid, creating branch
 add_rule: line=25 chain=INPUT I_INTF=lo TARGET=ACCEPT
 add_rule: line=26 chain=INPUT TARGET=user_chain
+Unknown target user_chain, creating branch
 add_rule: line=27 chain=INPUT TARGET=scan_checks_chain
+Unknown target scan_checks_chain, creating branch
 add_rule: line=30 chain=INPUT PROTO=tcp PORT=0:8000 TARGET=REJECT REJECT WITH=tcp-reset
 Creating tcp service
 src range: 0 - 0
@@ -26,6 +28,7 @@ Creating udp service
 src range: 0 - 0
 dst range: 0 - 8000
 add_rule: line=37 chain=OUTPUT TARGET=user_chain
+Unknown target user_chain, creating branch
 add_rule: line=39 chain=FORWARD SRC=192.168.0.0/16 STATE MATCH=NEW TARGET=ACCEPT
 add_rule: line=42 chain=FORWARD TARGET=LOG LOG PREFIX="FORWARD catch-all"
 add_rule: line=46 chain=user_chain SRC=128.143.0.0/16 PROTO=icmp TARGET=ACCEPT
@@ -221,61 +224,80 @@ add_rule: line=129 chain=FORWARD I_INTF=eth1 PROTO=tcp PORT=smtp TARGET=MARK SET
 Creating tcp service
 src range: 0 - 0
 dst range: smtp - smtp
-add_rule: line=132 chain=PREROUTING I_INTF=eth1 PROTO=tcp PORT=smtp TARGET=MARK SET MARK=16
+add_rule: line=132 chain=FORWARD I_INTF=eth1 PROTO=tcp PORT=smtp TARGET=MARK SET MARK=0xa
 Creating tcp service
 src range: 0 - 0
 dst range: smtp - smtp
-add_rule: line=135 chain=PREROUTING TARGET=CONNMARK RESTORE MARK
-add_rule: line=138 chain=POSTROUTING O_INTF=eth1 PROTO=tcp PORT=smtp TARGET=MARK SET MARK=16
+add_rule: line=133 chain=FORWARD I_INTF=eth1 PROTO=tcp PORT=smtp TARGET=MARK SET MARK=0xB
+Creating tcp service
+src range: 0 - 0
+dst range: smtp - smtp
+add_rule: line=136 chain=PREROUTING I_INTF=eth1 PROTO=tcp PORT=smtp TARGET=MARK SET MARK=16
+Creating tcp service
+src range: 0 - 0
+dst range: smtp - smtp
+add_rule: line=139 chain=PREROUTING TARGET=CONNMARK RESTORE MARK
+add_rule: line=142 chain=POSTROUTING O_INTF=eth1 PROTO=tcp PORT=smtp TARGET=MARK SET MARK=16
 Creating tcp service
 src range: smtp - smtp
 dst range: 0 - 0
-add_rule: line=139 chain=POSTROUTING TARGET=CONNMARK SAVE MARK
-add_rule: line=142 chain=POSTROUTING MARK MATCH MARK 1 TARGET=ROUTE ROUTE_OIF=eth0 CONTINUE
-add_rule: line=143 chain=POSTROUTING MARK MATCH MARK 2 TARGET=ROUTE ROUTE_OIF=eth2 CONTINUE
-add_rule: line=147 chain=POSTROUTING DST=192.168.1.1 TARGET=TOS SET TOS=Minimize-Delay(unsupported)
-add_rule: line=148 chain=POSTROUTING DST=192.168.1.1 TARGET=TOS SET TOS=0x10(unsupported) COMMIT
+add_rule: line=143 chain=POSTROUTING TARGET=CONNMARK SAVE MARK
+add_rule: line=146 chain=POSTROUTING MARK MATCH MARK 1 TARGET=ROUTE ROUTE_OIF=eth0 CONTINUE
+add_rule: line=147 chain=POSTROUTING MARK MATCH MARK 2 TARGET=ROUTE ROUTE_OIF=eth2 CONTINUE
+add_rule: line=151 chain=POSTROUTING DST=192.168.1.1 TARGET=TOS SET TOS=Minimize-Delay
+add_rule: line=152 chain=POSTROUTING DST=192.168.1.1 TARGET=TOS SET TOS=0x10 COMMIT
 TABLE nat
 NEW CHAIN PREROUTING
 NEW CHAIN POSTROUTING
 NEW CHAIN OUTPUT
 
-add_rule: line=157 chain=POSTROUTING O_INTF=eth1 SRC=192.168.1.0/24 TARGET=SNAT TO-SOURCE 222.222.222.222-222.222.222.222:-
-add_rule: line=158 chain=POSTROUTING O_INTF=eth0 SRC=192.168.1.0/24 TARGET=SNAT TO-SOURCE 192.168.1.1-192.168.1.1:-
-add_rule: line=159 chain=POSTROUTING O_INTF=eth+ SRC=192.168.1.32/27 TARGET=SNAT TO-SOURCE 222.222.222.10-222.222.222.100:-
-add_rule: line=160 chain=POSTROUTING O_INTF=eth+ PROTO=tcp TCP SRC=192.168.1.0/24 DST=192.168.1.20 PORT=80 TARGET=SNAT TO-SOURCE 192.168.1.1-192.168.1.1:-
+add_rule: line=161 chain=POSTROUTING O_INTF=eth1 SRC=192.168.1.0/24 TARGET=SNAT TO-SOURCE 222.222.222.222-222.222.222.222:-
+add_rule: line=162 chain=POSTROUTING O_INTF=eth0 SRC=192.168.1.0/24 TARGET=SNAT TO-SOURCE 192.168.1.1-192.168.1.1:-
+add_rule: line=163 chain=POSTROUTING O_INTF=eth+ SRC=192.168.1.32/27 TARGET=SNAT TO-SOURCE 222.222.222.100-222.222.222.100:-
+add_rule: line=164 chain=POSTROUTING O_INTF=eth+ PROTO=tcp TCP SRC=192.168.1.0/24 DST=192.168.1.20 PORT=80 TARGET=SNAT TO-SOURCE 192.168.1.1-192.168.1.1:-
 Creating tcp service
 src range: 0 - 0
 dst range: 80 - 80
-add_rule: line=161 chain=POSTROUTING O_INTF=eth1 PROTO=tcp TCP SRC=192.168.1.10 PORT=1000:1010 TARGET=SNAT TO-SOURCE PORT=1000:1010 222.222.222.222-222.222.222.222:1000-1010
+add_rule: line=165 chain=POSTROUTING O_INTF=eth+ PROTO=tcp TCP SRC=192.168.1.0/24 DST=192.168.1.20 PORT=80 TARGET=SNAT TO-SOURCE 192.168.1.10-192.168.1.10:-
+Creating tcp service
+src range: 0 - 0
+dst range: 80 - 80
+add_rule: line=166 chain=POSTROUTING O_INTF=eth1 PROTO=tcp TCP SRC=192.168.1.10 PORT=1000:1010 TARGET=SNAT TO-SOURCE PORT=1000:1010 222.222.222.222-222.222.222.222:1000-1010
 Creating tcp service
 src range: 1000 - 1010
 dst range: 0 - 0
 Creating tcp service
 src range: 1000 - 1010
 dst range: 0 - 0
-add_rule: line=163 chain=POSTROUTING O_INTF=eth2 SRC=192.168.1.0/24 TARGET=MASQUERADE
-add_rule: line=165 chain=POSTROUTING SRC=192.168.1.0/24 TARGET=NETMAP TO-NETMAP222.222.222.0/24
-add_rule: line=167 chain=PREROUTING PROTO=tcp TCP DST=222.222.222.222 PORT=25 TARGET=DNAT TO-DESTINATION PORT=25 192.168.1.10-192.168.1.10:25-25
+add_rule: line=168 chain=POSTROUTING O_INTF=eth2 SRC=192.168.1.0/24 TARGET=MASQUERADE
+add_rule: line=170 chain=POSTROUTING SRC=192.168.1.0/24 TARGET=NETMAP TO-NETMAP222.222.222.0/24
+add_rule: line=172 chain=PREROUTING PROTO=tcp TCP DST=222.222.222.222 PORT=25 TARGET=DNAT TO-DESTINATION PORT=25 192.168.1.10-192.168.1.10:25-25
 Creating tcp service
 src range: 0 - 0
 dst range: 25 - 25
 Creating tcp service
 src range: 0 - 0
 dst range: 25 - 25
-add_rule: line=168 chain=PREROUTING PROTO=icmp ICMP DST=222.222.222.222 ICMP_TYPE=8 ICMP_CODE=0 TARGET=DNAT TO-DESTINATION 192.168.1.10-192.168.1.10:-
-add_rule: line=169 chain=PREROUTING PROTO=tcp TCP PORT=1000:1010 DST=222.222.222.222 TARGET=DNAT TO-DESTINATION 192.168.1.10-192.168.1.10:-
+add_rule: line=173 chain=PREROUTING PROTO=tcp TCP DST=222.222.222.222 PORT=25 TARGET=DNAT TO-DESTINATION PORT=25:50 192.168.1.10-192.168.1.10:25-50
+Creating tcp service
+src range: 0 - 0
+dst range: 25 - 25
+Creating tcp service
+src range: 0 - 0
+dst range: 25 - 50
+add_rule: line=174 chain=PREROUTING PROTO=icmp ICMP DST=222.222.222.222 ICMP_TYPE=8 ICMP_CODE=0 TARGET=DNAT TO-DESTINATION 192.168.1.10-192.168.1.10:-
+add_rule: line=175 chain=PREROUTING PROTO=tcp TCP PORT=1000:1010 DST=222.222.222.222 TARGET=DNAT TO-DESTINATION 192.168.1.10-192.168.1.10:-
 Creating tcp service
 src range: 1000 - 1010
 dst range: 0 - 0
-add_rule: line=170 chain=PREROUTING PROTO=tcp TCP DST=222.222.222.222 PORT=4000:4010 TARGET=DNAT TO-DESTINATION PORT=4000:4010 192.168.1.10-192.168.1.10:4000-4010
+add_rule: line=176 chain=PREROUTING PROTO=tcp TCP DST=222.222.222.222 PORT=4000:4010 TARGET=DNAT TO-DESTINATION PORT=4000:4010 192.168.1.10-192.168.1.10:4000-4010
 Creating tcp service
 src range: 0 - 0
 dst range: 4000 - 4010
 Creating tcp service
 src range: 0 - 0
 dst range: 4000 - 4010
-add_rule: line=171 chain=PREROUTING PROTO=tcp TCP MULTIPORT DST=222.222.222.222 DST MULTIPORT= PORT=6667 PORT=3128 PORT=113 PORT=53 PORT=21 PORT=80 PORT=119 PORT=25 PORT=22 PORT=23 PORT=540 PORT=70 PORT=13 PORT=2105 PORT=443 TARGET=DNAT TO-DESTINATION 192.168.1.10-192.168.1.10:-
+add_rule: line=177 chain=PREROUTING PROTO=tcp TCP MULTIPORT DST=222.222.222.222 DST MULTIPORT= PORT=6667 PORT=3128 PORT=113 PORT=53 PORT=21 PORT=80 PORT=119 PORT=25 PORT=22 PORT=23 PORT=540 PORT=70 PORT=13 PORT=2105 PORT=443 TARGET=DNAT TO-DESTINATION 192.168.1.10-192.168.1.10:-
 Creating tcp service
 src range: 0 - 0
 dst range: 6667 - 6667
@@ -322,18 +344,18 @@ Creating tcp service
 src range: 0 - 0
 dst range: 443 - 443
 Group of tcp services with name 'tcp group 1', sig 'tcp dst 6667:6667_3128:3128_113:113_53:53_21:21_80:80_119:119_25:25_22:22_23:23_540:540_70:70_13:13_2105:2105_443:443_'
-add_rule: line=174 chain=PREROUTING DST=192.168.3.145 I_INTF=eth0 PROTO=47 TARGET=DNAT TO-DESTINATION 1.1.1.1-1.1.1.1:-
-add_rule: line=177 chain=POSTROUTING SRC=192.168.1.0/24 DST=192.168.2.0/24 TARGET=ACCEPT
-add_rule: line=180 chain=PREROUTING SRC=192.168.1.0/24 PROTO=tcp TCP PORT=80 TARGET=REDIRECT PORT=3128 TO-PORTS -:31283128
+add_rule: line=180 chain=PREROUTING DST=192.168.3.145 I_INTF=eth0 PROTO=47 TARGET=DNAT TO-DESTINATION 1.1.1.1-1.1.1.1:-
+add_rule: line=183 chain=POSTROUTING SRC=192.168.1.0/24 DST=192.168.2.0/24 TARGET=ACCEPT
+add_rule: line=186 chain=PREROUTING SRC=192.168.1.0/24 PROTO=tcp TCP PORT=80 TARGET=REDIRECT PORT=3128 TO-PORTS -:3128-3128
 Creating tcp service
 src range: 0 - 0
 dst range: 80 - 80
-add_rule: line=183 chain=OUTPUT PROTO=tcp TCP DST=192.168.1.22 PORT=80 TARGET=DNAT TO-DESTINATION PORT=80 192.168.2.10-192.168.2.10:80-80
+add_rule: line=189 chain=OUTPUT PROTO=tcp TCP DST=192.168.1.22 PORT=80 TARGET=DNAT TO-DESTINATION PORT=80 192.168.2.10-192.168.2.10:80-80
 Creating tcp service
 src range: 0 - 0
 dst range: 80 - 80
 Creating tcp service
 src range: 0 - 0
 dst range: 80 - 80
-add_rule: line=184 chain=OUTPUT PROTO=icmp ICMP DST=22.22.22.23 ICMP_TYPE=11 ICMP_CODE=0 TARGET=DNAT TO-DESTINATION 192.168.1.10-192.168.1.10:- COMMIT
+add_rule: line=190 chain=OUTPUT PROTO=icmp ICMP DST=22.22.22.23 ICMP_TYPE=11 ICMP_CODE=0 TARGET=DNAT TO-DESTINATION 192.168.1.10-192.168.1.10:- COMMIT
 IPTImporter::finalize()

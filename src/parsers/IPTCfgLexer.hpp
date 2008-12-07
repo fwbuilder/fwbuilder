@@ -49,13 +49,17 @@ public:
 	public: void mLINE_COMMENT(bool _createToken);
 	public: void mNEWLINE(bool _createToken);
 	public: void mWhitespace(bool _createToken);
+	protected: void mIPV4(bool _createToken);
+	protected: void mIPV6(bool _createToken);
+	protected: void mMAC_ADDRESS(bool _createToken);
 	protected: void mINT_CONST(bool _createToken);
 	protected: void mHEX_CONST(bool _createToken);
 	protected: void mNEG_INT_CONST(bool _createToken);
 	protected: void mDIGIT(bool _createToken);
 	protected: void mHEXDIGIT(bool _createToken);
+	protected: void mNUM_3DIGIT(bool _createToken);
+	protected: void mNUM_HEX_4DIGIT(bool _createToken);
 	public: void mNUMBER(bool _createToken);
-	public: void mDOT(bool _createToken);
 	public: void mWORD(bool _createToken);
 	public: void mSTRING(bool _createToken);
 	protected: void mUNSUPPORTED_OPTION(bool _createToken);
@@ -123,6 +127,7 @@ public:
 	public: void mPLUS(bool _createToken);
 	public: void mCOMMA(bool _createToken);
 	public: void mMINUS(bool _createToken);
+	public: void mDOT(bool _createToken);
 	public: void mSLASH(bool _createToken);
 	public: void mCOLON(bool _createToken);
 	public: void mSEMICOLON(bool _createToken);

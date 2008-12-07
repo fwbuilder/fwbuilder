@@ -236,8 +236,9 @@ unknown_option :
         )
     ;
 
-unknown_parameter :
+unknown_parameter
         { std::string s; }
+:
         (
             (
                 (
@@ -543,6 +544,16 @@ nat_spec :
 
 //****************************************************************
 nat_addr_range : 
+        (IPV4 MINUS) => (
+          IPV4 MINUS s:IPV4
+          {
+            importer->nat_port_range_start = "";
+            importer->nat_port_range_end = "";
+            importer->nat_addr1 = LT(0)->getText();
+            importer->nat_addr2 = s->getText();
+          }
+        )
+    |
         IPV4
         {
             importer->nat_port_range_start = "";
@@ -550,9 +561,6 @@ nat_addr_range :
             importer->nat_addr1 = LT(0)->getText();
             importer->nat_addr2 = LT(0)->getText();
         }
-        (
-            MINUS IPV4  { importer->nat_addr2 = LT(0)->getText(); }
-        )?
     ;
 
 //****************************************************************
@@ -564,6 +572,7 @@ redirect_spec : nat_port_def_with_range
                 << importer->nat_addr2
                 << ":"
                 << importer->nat_port_range_start
+                << "-"
                 << importer->nat_port_range_end;
         }
     ;
@@ -780,19 +789,26 @@ port_def_with_range :
 // nat port definition that allows for port range
 // (uses '-' instead of ':')
 nat_port_def_with_range : 
-        (WORD|INT_CONST)
+        ((WORD | INT_CONST) MINUS) => (
+          (WORD | INT_CONST)
+          {
+            importer->nat_port_range_start = LT(0)->getText();
+            importer->nat_port_range_end = LT(0)->getText();
+            *dbg << " PORT=" << LT(0)->getText();
+          }
+          MINUS (WORD | INT_CONST)
+          {
+            importer->nat_port_range_end = LT(0)->getText();
+            *dbg << ":" << LT(0)->getText();
+          }
+        )
+    |
+        (WORD | INT_CONST)
         {
             importer->nat_port_range_start = LT(0)->getText();
             importer->nat_port_range_end = LT(0)->getText();
             *dbg << " PORT=" << LT(0)->getText();
         }
-        (
-            MINUS (WORD|INT_CONST)
-            {
-                importer->nat_port_range_end = LT(0)->getText();
-                *dbg << ":" << LT(0)->getText();
-            }
-        )?
     ;
 
 //****************************************************************
@@ -923,7 +939,7 @@ tcp_flags : MATCH_TCP_FLAGS
     ;
 
 // --tcp-option is not supported in fwbuilder at this time
-tcp_option : MATCH_TCP_OPTION (NUMBER | EXCLAMATION NUMBER)
+tcp_option : MATCH_TCP_OPTION (INT_CONST | EXCLAMATION INT_CONST)
     ;
 
 //****************************************************************
@@ -981,6 +997,15 @@ Whitespace :  ( '\003'..'\010' | '\t' | '\013' | '\f' | '\016'.. '\037' | '\177'
 NEWLINE : ( "\r\n" | '\r' | '\n' ) { newline(); resetText(); } ;
 
 protected
+IPV4:;
+
+protected
+IPV6:;
+
+protected 
+MAC_ADDRESS:;
+
+protected
 INT_CONST:;
 
 protected
@@ -995,18 +1020,54 @@ DIGIT : '0'..'9'  ;
 protected
 HEXDIGIT : '0'..'9' | 'A'..'F' | 'a'..'f';
 
-NUMBER : 
-		(
-            ( (DIGIT)+ DOT (DIGIT)+ DOT (DIGIT)+ )=> ( (DIGIT)+ DOT (DIGIT)+ DOT (DIGIT)+ DOT (DIGIT)+ )
-            { _ttype = IPV4; }
-		|
-            ( (DIGIT)+ DOT (DIGIT)+ )=> ( (DIGIT)+ DOT (DIGIT)+ )
-        |
-            ( DIGIT )+ { _ttype = INT_CONST; }
-		|
-            ( '0' 'x' ( HEXDIGIT )+ )  { _ttype = HEX_CONST; }   
-        )
-    ;
+// ################################
+// Rules for IPv4 and IPv6 partially based on ideas from
+// http://www.antlr.org:8080/pipermail/antlr-interest/2005-June/012661.html
+// Ruleset copied from the posting does not compile, antlr 2.7.7 seems to
+// hang while processing it. Commenting out rules for MAC_ADDRESS and
+// IPV6 makes antlr process grammar successfully (but defeats the purpose).
+
+protected
+NUM_3DIGIT: ('0'..'9') (('0'..'9') ('0'..'9')?)?;
+
+protected
+NUM_HEX_4DIGIT: HEXDIGIT ((HEXDIGIT) ((HEXDIGIT) (HEXDIGIT)?)?)?;
+
+
+
+// IPV6
+// Note that '::' can only appear once in the address
+// but can be used to compress leading and/or trailing zeros in an address
+//
+// As of 12/2008 these rules do not work, antlr seems to hang while compiling
+// this grammar.
+//
+// IPV6_1: (NUM_HEX_4DIGIT ':' (NUM_HEX_4DIGIT | ':')* NUM_HEX_4DIGIT)
+//         { $setType(IPV6); };
+//
+// IPV6_2: (':' ':' (NUM_HEX_4DIGIT | ':')* NUM_HEX_4DIGIT) { $setType(IPV6); };
+//
+// IPV6_3: ((NUM_HEX_4DIGIT | ':')* NUM_HEX_4DIGIT ':' ':') { $setType(IPV6); };
+//
+// IPV6_4: ':' ':' { $setType(IPV6); };
+
+
+NUMBER
+options { testLiterals = true; }
+:
+// IPv4 RULE
+  (NUM_3DIGIT '.' NUM_3DIGIT '.') => (
+    NUM_3DIGIT '.' NUM_3DIGIT '.' NUM_3DIGIT '.' NUM_3DIGIT { $setType(IPV4); }
+  )
+
+| ( '0' 'x' ( HEXDIGIT )+ )  { $setType(HEX_CONST); }
+
+| ( DIGIT )+ { $setType(INT_CONST); }
+
+;
+
+
+
 
 WORD : ( 'a'..'z' | 'A'..'Z' | '$' ) ( '!'..'+' | '-' | '.' | '/' | '0'..'9' | ':' | ';' | '<' | '=' | '>' | '?' | '@' | 'A'..'Z' | '^' | '_' | '`' | 'a'..'z'  )*
     ;
@@ -1020,13 +1081,13 @@ protected
 UNSUPPORTED_OPTION:;
 
 //"--seconds" confuses lexer because it interprets it as "-" "-s" "econds"
-SECONDS : "--seconds" { _ttype = UNSUPPORTED_OPTION; };
+SECONDS : "--seconds" { $setType(UNSUPPORTED_OPTION); };
 
 //"--seconds" confuses lexer because it interprets it as "-" "-s" "econds"
-SET : "--set" { _ttype = UNSUPPORTED_OPTION; };
+SET : "--set" { $setType(UNSUPPORTED_OPTION); };
 
 // "--rsource" also confuses lexer which expects "--reject"
-RSOURCE : "--rsource" { _ttype = UNSUPPORTED_OPTION; };
+RSOURCE : "--rsource" { $setType(UNSUPPORTED_OPTION); };
 // ------------------------------------------------------------------------
 
 ADD_RULE : "-A" ;
@@ -1076,9 +1137,9 @@ LOG_TCP_OPT : "--log-tcp-options";
 LOG_IP_OPT : "--log-ip-options";
 
 ULOG_PREFIX : "--ulog-prefix" ;
-ULOG_QTHR : "--ulog-qthreshold" { _ttype = UNSUPPORTED_OPTION; };
-ULOG_NLG : "--ulog-nlgroup" { _ttype = UNSUPPORTED_OPTION; };
-ULOG_CPR : "--ulog-cprange" { _ttype = UNSUPPORTED_OPTION; };
+ULOG_QTHR : "--ulog-qthreshold" { $setType(UNSUPPORTED_OPTION); };
+ULOG_NLG : "--ulog-nlgroup" { $setType(UNSUPPORTED_OPTION); };
+ULOG_CPR : "--ulog-cprange" { $setType(UNSUPPORTED_OPTION); };
 
 TO_SOURCE : "--to-source" ;
 TO_DESTINATION : "--to-destination" ;

@@ -69,17 +69,20 @@ Parser error: Original rule defines outbound interface 'eth1'.
 Parser error: Original rule defines outbound interface 'eth0'.
  Replace address in TSrc with matching interface of the firewall.
 Network object: net-192.168.1.32/27
-AddressRange object: range-222.222.222.10-222.222.222.100
+Address object: h-222.222.222.100
 Parser error: Original rule defines outbound interface 'eth+'.
  Replace address in TSrc with matching interface of the firewall.
 Address object: h-192.168.1.20
 Parser error: Original rule defines outbound interface 'eth+'.
  Replace address in TSrc with matching interface of the firewall.
 Address object: h-192.168.1.10
+Parser error: Original rule defines outbound interface 'eth+'.
+ Replace address in TSrc with matching interface of the firewall.
 TCP Service object: tcp 1000-1010:
 Parser error: Original rule defines outbound interface 'eth1'.
  Replace address in TSrc with matching interface of the firewall.
 Network object: net-222.222.222.0/24
+TCP Service object: tcp 25-50
 ICMP Service object: icmp 8/0
 TCP Service object: tcp 4000-4010
 TCP Service object: tcp 6667-6667

@@ -1,3 +1,11 @@
+2008-12-06  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* iptables.g: Changes in grammar for iptables: removed
+	ambiguitiesin parser; added lexer rules for elements of ipv6
+	address. Rules for IPV6 address parsing do not work yet, commented
+	out as work in progress. No new functionality in the parser for
+	iptables, only clean-up and preparations for ipv6.
+
 2008-12-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* InetAddr.cpp (InetAddr::toString): (change in libfwbuilder):

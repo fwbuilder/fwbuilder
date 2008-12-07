@@ -125,10 +125,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 123;
+	static const int NUM_TOKENS = 127;
 #else
 	enum {
-		NUM_TOKENS = 123
+		NUM_TOKENS = 127
 	};
 #endif
 	
@@ -154,8 +154,6 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_9;
 	static const unsigned long _tokenSet_10_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_10;
-	static const unsigned long _tokenSet_11_data_[];
-	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_11;
 };
 
 #endif /*INC_IPTCfgParser_hpp_*/
