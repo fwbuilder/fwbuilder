@@ -1,3 +1,10 @@
+2008-12-07  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWObjectDatabase_tree_ops.cpp (_recursivelyCopySubtree):
+	additional fixes in algorithm that recursively copies object
+	subtree between different data files. Making sure we do not create
+	duplicates of groups referred to by other groups.
+
 2008-12-05  User Vadim  <vadim@vk.crocodile.org>
 
 	* InetAddr.cpp (InetAddr::toString): Should use bits==128 because

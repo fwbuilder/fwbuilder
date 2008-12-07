@@ -485,9 +485,9 @@ FWObject* FWObjectDatabase::recursivelyCopySubtree(FWObject *target,
                                                    FWObject *source,
                                                    std::map<int,int> &id_map)
 {
-    ostringstream str;
-    str << ".copy_from_" << source->getRoot();
-    string dedup_attribute = str.str();
+    char s[64];
+    sprintf(s, ".copy_of_%p", source->getRoot());
+    string dedup_attribute = s;
 
     FWObject *nobj = _recursivelyCopySubtree(target, source, id_map,
                                              dedup_attribute);
@@ -541,11 +541,19 @@ FWObject* FWObjectDatabase::_recursivelyCopySubtree(
             FWReference *old_ref_obj = FWReference::cast(old_obj);
             FWObject *old_ptr_obj = old_ref_obj->getPointer();
 
-            // check if we have seen old_ptr_obj already. Also
+            FWObject *n_ptr_obj = NULL;
+
+            // check if we have seen old_ptr_obj already.
+            if (id_map.count(old_ptr_obj->getId()) > 0)
+            {
+                n_ptr_obj = findInIndex(id_map[old_ptr_obj->getId()]);
+                nobj->addRef(n_ptr_obj);
+                continue;
+            }
+
             // search for old_ptr_obj in the index. If it is found, we do not
             // need to copy it and its ID is valid (perhaps standard object?)
-            if (id_map.count(old_ptr_obj->getId()) > 0 ||
-                findInIndex(old_ptr_obj->getId())!=NULL)
+            if (findInIndex(old_ptr_obj->getId())!=NULL)
             {
                 nobj->addRef(old_ptr_obj);
                 continue;
@@ -554,10 +562,10 @@ FWObject* FWObjectDatabase::_recursivelyCopySubtree(
             // Check if we have already copied the same object before
             char s[64];
             sprintf(s, "%d", old_ptr_obj->getId());
-            FWObject *n_old_ptr_obj = findObjectByAttribute(dedup_attribute, s);
-            if (n_old_ptr_obj)
+            n_ptr_obj = findObjectByAttribute(dedup_attribute, s);
+            if (n_ptr_obj)
             {
-                nobj->addRef(n_old_ptr_obj);
+                nobj->addRef(n_ptr_obj);
                 continue;
             }
 
@@ -579,12 +587,26 @@ FWObject* FWObjectDatabase::_recursivelyCopySubtree(
             {
                 FWObject *new_parent = reproduceRelativePath(
                     target->getLibrary(), parent_old_ptr_obj);
-                _recursivelyCopySubtree(new_parent,
-                                        parent_old_ptr_obj,
-                                        id_map, dedup_attribute);
-            }
 
-            nobj->addRef(old_ptr_obj);
+                // (parent_old_ptr_obj at this point is either pointer
+                // to the same old_ptr_obj or pointer to its parent
+                // object that we can copy as a whole. The latter
+                // happens if old_ptr_obj is an interface or address
+                // of an interface.
+                new_parent = _recursivelyCopySubtree(new_parent,
+                                                     parent_old_ptr_obj,
+                                                     id_map,
+                                                     dedup_attribute);
+                // we just copied old object to the target data tree.
+                // Copy of old_ptr_obj is either new_parent, or one of its
+                // children. In the process of making this copy,
+                // its ID should have been added to id_map.
+                assert(id_map.count(old_ptr_obj->getId()) > 0);
+
+                n_ptr_obj = new_parent->getById(
+                    id_map[old_ptr_obj->getId()], true);
+                nobj->addRef(n_ptr_obj);
+            }
 
         } else
             _recursivelyCopySubtree(nobj, old_obj, id_map, dedup_attribute);
