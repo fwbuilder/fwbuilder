@@ -1617,36 +1617,68 @@ void ObjectManipulator::cutObj()
 
 void ObjectManipulator::pasteObj()
 {
-    FWObject *nobj=NULL;
-
     if (getCurrentObjectTree()->getNumSelected()==0) return;
-    FWObject *obj = getCurrentObjectTree()->getSelectedObjects().front();
-    if (obj==NULL) return;
+    FWObject *target_object = getCurrentObjectTree()->getSelectedObjects().front();
+    if (target_object==NULL) return;
 
     vector<std::pair<int,ProjectPanel*> >::iterator i;
     int idx = 0;
+    FWObject *last_object = NULL;
+    bool need_to_reload = false;
+    map<int,int> map_ids;
+    if (fwbdebug) qDebug("**************** pasteObj loop starts");
+
+// If we copy many objects in the following loop, and some of them are
+// groups that refer other objects in the same batch, then it is
+// possible that an object would be copied by
+// FWObjectDatabase::recursivelyCopySubtree() by the way of a
+// reference from a group, and then the same object is found in the
+// list of objects to be copied AGAIN. Since this object is already
+// present in the target object tree by the time it needs to be copied
+// again, actuallyPasteTo() chooses the path for copying of objects
+// inside the same tree and creates a copy.  To avoid this, prepare a
+// list of objects to be copied before copy operation starts.
+
+    list<FWObject*> copy_objects;
+
     for (i= FWObjectClipboard::obj_clipboard->begin();
             i!=FWObjectClipboard::obj_clipboard->end(); ++i)
     {
         FWObject *co = FWObjectClipboard::obj_clipboard->getObjectByIdx(idx);
-        if (Interface::isA(co) && (Firewall::isA(obj) || Host::isA(obj)))
-        {            
-            pasteTo(obj, co, true);
-            continue ;
-        }
-
-        if ((IPv4::isA(co) || IPv6::isA(co) || physAddress::isA(co)) &&
-            Interface::isA(obj))
-        {            
-            pasteTo(obj, co, true);
-            continue ;
-        }
-
-        nobj = pasteTo(obj, co, true);
-        openObject(nobj);
-
+        copy_objects.push_back(co);
         idx++;
     }
+
+    for (list<FWObject*>::iterator i=copy_objects.begin(); i!=copy_objects.end(); ++i)
+    {
+        FWObject *co = *i;
+
+        if (fwbdebug)
+            qDebug("Copy object %s (id=%d, root=%p)",
+                   co->getName().c_str(), co->getId(), co->getRoot());
+        if (map_ids.count(co->getId()) > 0)
+            continue;
+
+        // Check if we have already copied the same object before
+        char s[64];
+        sprintf(s, ".copy_of_%p", co->getRoot());
+        string dedup_attribute = s;
+
+        sprintf(s, "%d", co->getId());
+        FWObject *n_obj =
+            target_object->getRoot()->findObjectByAttribute(dedup_attribute, s);
+        if (n_obj) continue;
+
+        if (target_object->getRoot() != co->getRoot()) need_to_reload = true;
+
+        last_object = actuallyPasteTo(target_object, co, map_ids);
+    }
+    if (fwbdebug) qDebug("**************** pasteObj loop done");
+
+
+    if (need_to_reload) loadObjects();
+    openObject(last_object);
+
     mw->reloadAllWindowsWithFile(m_project);
 }
 
@@ -1672,8 +1704,15 @@ bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj)
     return false;
 }
 
-FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
-                                      bool renew_id)
+FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj)
+{
+    map<int,int> map_ids;
+    return actuallyPasteTo(target, obj, map_ids);
+}
+
+FWObject*  ObjectManipulator::actuallyPasteTo(FWObject *target,
+                                              FWObject *obj,
+                                              std::map<int,int> &map_ids)
 {
     if (!validateForPaste(target, obj))
     {
@@ -1693,27 +1732,17 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
     FWObject *ta = target;
 
 
-    if (IPv4::isA(ta) || IPv6::isA(ta)) ta=ta->getParent();
+    if (IPv4::isA(ta) || IPv6::isA(ta)) ta = ta->getParent();
 
     try
     {
 /* clipboard holds a copy of the object */
 
-//        if (m_project->isSystem(ta) &&
-//            (Firewall::isA(obj) || Group::cast(obj)) &&
-//            obj->getRoot()!=ta->getRoot())
-
-
-        if (obj->getRoot()!=ta->getRoot())
+        if (obj->getRoot() != ta->getRoot())
         {
-            if (fwbdebug)
-                qDebug("Copy object to a different object tree");
-
-            FWObject *nobj = duplicateWithDependencies(target, obj);
-            //insertSubtree( allItems[ta], nobj);
-            loadObjects();
-            openObject(nobj);
-            return nobj;
+            if (fwbdebug) qDebug("Copy object %s (%d) to a different object tree",
+                                 obj->getName().c_str(), obj->getId());
+            return m_project->db()->recursivelyCopySubtree(target, obj, map_ids);
         }
 
         if ( m_project->isSystem(ta) ||
@@ -1722,11 +1751,12 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
 /* add a copy of the object to system group , or
  * add ruleset object to a firewall.
  */
-
+            if (fwbdebug) qDebug("Copy object %s (%d) to a system group, firewall or ruleset",
+                                 obj->getName().c_str(), obj->getId());
             FWObject *nobj= m_project->db()->create(obj->getTypeName());
             assert (nobj!=NULL);
             nobj->ref();
-            nobj->duplicate(obj, renew_id);
+            nobj->duplicate(obj, true);
 
             makeNameUnique(ta,nobj);
             ta->add( nobj );
@@ -1735,11 +1765,12 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
             return nobj;
         }
 
-        Group *grp=Group::cast(ta);
+        Group *grp = Group::cast(ta);
 
         if (grp!=NULL)
         {
-
+            if (fwbdebug) qDebug("Copy object %s (%d) to a group",
+                                 obj->getName().c_str(), obj->getId());
 /* check for duplicates. We just won't add an object if it is already there */
             int cp_id = obj->getId();
             list<FWObject*>::iterator j;
@@ -1769,14 +1800,6 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj,
 
     //return ret;
 }
-
-FWObject* ObjectManipulator::duplicateWithDependencies(FWObject *target,
-                                                       FWObject *obj)
-{
-    map<int,int> map_ids;
-    return m_project->db()->recursivelyCopySubtree(target, obj, map_ids);
-}     
-
 
 void ObjectManipulator::lockObject()
 {

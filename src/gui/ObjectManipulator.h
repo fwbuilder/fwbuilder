@@ -100,6 +100,7 @@ class ObjectManipulator : public QWidget/*ObjectManipulator_q*/ {
  */
     std::map<libfwbuilder::FWObject*, ObjectTreeViewItem*> allItems;
     
+    ProjectPanel *m_project;
 
     int dedup_marker_global_counter;
     
@@ -131,7 +132,12 @@ class ObjectManipulator : public QWidget/*ObjectManipulator_q*/ {
             libfwbuilder::ObjectGroup *gr,
             std::set<libfwbuilder::Firewall*> &fo);
 
-    ProjectPanel *m_project;
+     libfwbuilder::FWObject* actuallyPasteTo(libfwbuilder::FWObject *target,
+                                             libfwbuilder::FWObject *obj,
+                                             std::map<int,int> &map_ids);
+
+     bool validateForPaste(libfwbuilder::FWObject *target,
+                           libfwbuilder::FWObject *obj);
 
     
 public slots:
@@ -265,14 +271,14 @@ public:
                                              const QString &name = QString::null,
                                              bool  askForAutorename=true);
 
-     libfwbuilder::FWObject* duplicateWithDependencies(
-         libfwbuilder::FWObject *target, libfwbuilder::FWObject *obj);
-     
      void moveObject(libfwbuilder::FWObject *target,
                      libfwbuilder::FWObject *obj);
 
      void moveObject(const QString &targetLibName, libfwbuilder::FWObject *obj);
-    
+
+     libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
+                                     libfwbuilder::FWObject *obj);
+     
      libfwbuilder::FWObject* getOpened() { return currentObj; }
 
      void updateLibColor(libfwbuilder::FWObject *lib);
@@ -305,13 +311,6 @@ public:
       *  the user's libraries is already opened, it does nothing.
       */
      void closeSystemLib();
-
-     libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
-                                     libfwbuilder::FWObject *obj,
-                                     bool renew_id);
-
-     bool validateForPaste(libfwbuilder::FWObject *target,
-                           libfwbuilder::FWObject *obj);
 
      void delObj(libfwbuilder::FWObject *obj,bool openobj=true);
 

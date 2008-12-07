@@ -1,3 +1,18 @@
+2008-12-07  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWObjectDatabase_tree_ops.cpp (_recursivelyCopySubtree): (change
+	in libfwbuilder) additional fixes in algorithm that recursively
+	copies object subtree between different data files. Making sure we
+	do not create duplicates of groups referred to by other groups.
+
+	* ObjectManipulator.cpp (ObjectManipulator::pasteObj): changes to
+	speed up GUI when user copies many objects between different data
+	files (do not reload and redraw object tree widget until last
+	object is copied). Refactoring of the pasteObj to keep the same
+	object ID mapping table for the duration of the bulk paste
+	operation, this helps deduplicate objects. Also using the same
+	".copy_of_NNNN" object attribute to deduplicate objects.
+
 2008-12-06  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* iptables.g: Changes in grammar for iptables: removed

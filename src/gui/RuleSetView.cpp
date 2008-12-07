@@ -4572,7 +4572,15 @@ void RuleSetView::pasteRuleAbove()
         } else 
         {
             // rule is being copied from another project file
-            co = m_project->m_panel->om->duplicateWithDependencies(NULL, co);
+            // TODO: recursivelyCopySubtree() will insert copy of the rule
+            // into ruleset object, but we really need to insert it here
+            // so we can enforce correct order. Either add parameter to
+            // recursivelyCopySubtree() to let it create copy of all objects
+            // but not add object passed as arg. <source> to <target>, or
+            // remove co from ruleset and add it back via insertRule()
+            map<int,int> map_ids;
+            co = m_project->db()->recursivelyCopySubtree(ruleset, co, map_ids);
+            //co = m_project->m_panel->om->duplicateWithDependencies(NULL, co);
             Rule *current_rule_at_pos = ruleIndex[firstSelectedRow];
             insertRule(current_rule_at_pos, insertBefore, co);
         }

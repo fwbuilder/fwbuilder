@@ -706,7 +706,7 @@ void ProjectPanel::updateLastCompiledTimestamp(FWObject *o)
 
 FWObject* ProjectPanel::pasteTo(FWObject *target, FWObject *obj)
 {
-    return m_panel->om->pasteTo(target, obj, true);
+    return m_panel->om->pasteTo(target, obj);
 }
 
 void ProjectPanel::delObj(FWObject *obj,bool openobj)
