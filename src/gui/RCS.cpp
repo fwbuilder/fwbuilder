@@ -362,6 +362,7 @@ RCS::RCS(const QString &file)
                 r.log += log_rx.cap(1);
 
             r.log.replace('\r',"");
+            
 
             if (r.rev != "")
             {
@@ -920,9 +921,9 @@ QString RCS::rlog() throw(libfwbuilder::FWException)
     proc->waitForFinished();
 
     if (fwbdebug) qDebug("Running rlog: finished reading");
-
-    QString rlogTxt = QString::fromLocal8Bit(
-        stdoutBuffer.toAscii().constData());
+    // Note: we convert rlog comments to Utf8. Local8Bit does not seem
+    // to work on windows, produces '????'
+    QString rlogTxt = QString::fromUtf8(stdoutBuffer.toAscii().constData());
 
     if (proc->state() == QProcess::NotRunning && proc->exitCode()==0)
         return rlogTxt;
