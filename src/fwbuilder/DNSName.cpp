@@ -46,12 +46,16 @@ const char *DNSName::TYPENAME={"DNSName"};
 DNSName::DNSName() : MultiAddress() 
 {
     setRunTime(false);
+    setStr("dnsrec", "");
+    setStr("dnsrectype", "A");
 }
 
 DNSName::DNSName(const FWObject *root,bool prepopulate) :
     MultiAddress(root,prepopulate) 
 {
     setRunTime(false);
+    setStr("dnsrec", "");
+    setStr("dnsrectype", "A");
 }
 
 string DNSName::getSourceName()

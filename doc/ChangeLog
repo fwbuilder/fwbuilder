@@ -1,3 +1,9 @@
+2008-12-08  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* DNSName.cpp (DNSName::DNSName): Need to set default values for
+	the "dnsrec" and "dnsrectype" attributes because they must be
+	preset to satisfy DTD.
+
 2008-12-07  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWObjectDatabase_tree_ops.cpp (_recursivelyCopySubtree):
