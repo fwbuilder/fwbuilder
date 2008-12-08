@@ -1,3 +1,13 @@
+2008-12-08  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RCS.cpp: fixed bug #2405909: "Umlauts in RCS log". RCS log is
+	stored in RCS file in Utf8, need to convert it back from Utf8 on
+	read. Technical note: rcs tools on windows do not seem to process
+	properly rcs comments converted with toLocal8Bit, comment text
+	comes out as '????' when inspected with rlog.exe from the command
+	line. Comment text stored in Utf8, on the other hand, appears
+	intact even though it can not be read in the output of rlog.exe.
+
 2008-12-07  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWObjectDatabase_tree_ops.cpp (_recursivelyCopySubtree): (change
