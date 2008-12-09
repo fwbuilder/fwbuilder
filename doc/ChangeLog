@@ -1,5 +1,10 @@
 2008-12-08  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* RuleSetView.cpp (RuleSetView::contextMenu): fixed bug #2407141
+	"label markers". Color label text set in Preferences was not used
+	in the contet menus where user can actually apply those colors to
+	rules.
+
 	* RCS.cpp: fixed bug #2405909: "Umlauts in RCS log". RCS log is
 	stored in RCS file in Utf8, need to convert it back from Utf8 on
 	read. Technical note: rcs tools on windows do not seem to process

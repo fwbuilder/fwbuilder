@@ -3102,34 +3102,49 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
             popup->addAction( tr("Rename group"), this, SLOT( renameGroup() ));
             popup->addSeparator();
 
-            QMenu *subcolor = popup->addMenu( tr("Change color") );
+            QMenu *subcolor = popup->addMenu(tr("Change color") );
 
             QPixmap pcolor(16,16);
             pcolor.fill(QColor(255,255,255));
-            subcolor->addAction( QIcon(pcolor), tr("No color"), this, SLOT ( setColorEmpty() ));
+            subcolor->addAction(QIcon(pcolor), tr("No color"),
+                                 this, SLOT(setColorEmpty() ));
 
             pcolor.fill(st->getLabelColor(FWBSettings::RED));
-            subcolor->addAction( QIcon(pcolor), tr("Red"), this, SLOT ( setColorRed() ));
+            subcolor->addAction(QIcon(pcolor),
+                                 st->getLabelText(FWBSettings::RED),
+                                 this, SLOT(setColorRed() ));
 
             pcolor.fill(st->getLabelColor(FWBSettings::ORANGE));
-            subcolor->addAction( QIcon(pcolor), tr("Orange"), this, SLOT ( setColorOrange() ));
+            subcolor->addAction(QIcon(pcolor),
+                                 st->getLabelText(FWBSettings::ORANGE),
+                                 this, SLOT(setColorOrange() ));
 
             pcolor.fill(st->getLabelColor(FWBSettings::YELLOW));
-            subcolor->addAction( QIcon(pcolor), tr("Yellow"), this, SLOT ( setColorYellow() ));
+            subcolor->addAction(QIcon(pcolor),
+                                 st->getLabelText(FWBSettings::YELLOW),
+                                 this, SLOT(setColorYellow() ));
 
             pcolor.fill(st->getLabelColor(FWBSettings::GREEN));
-            subcolor->addAction( QIcon(pcolor), tr("Green"), this, SLOT ( setColorGreen() ));
+            subcolor->addAction(QIcon(pcolor),
+                                 st->getLabelText(FWBSettings::GREEN),
+                                 this, SLOT(setColorGreen() ));
 
             pcolor.fill(st->getLabelColor(FWBSettings::BLUE));
-            subcolor->addAction( QIcon(pcolor), tr("Blue"), this, SLOT ( setColorBlue() ));
+            subcolor->addAction(QIcon(pcolor),
+                                 st->getLabelText(FWBSettings::BLUE),
+                                 this, SLOT(setColorBlue() ));
 
             pcolor.fill(st->getLabelColor(FWBSettings::PURPLE));
-            subcolor->addAction( QIcon(pcolor), tr("Purple"), this, SLOT ( setColorPurple() ));
+            subcolor->addAction(QIcon(pcolor),
+                                 st->getLabelText(FWBSettings::PURPLE),
+                                 this, SLOT(setColorPurple() ));
 
             pcolor.fill(st->getLabelColor(FWBSettings::GRAY));
-            subcolor->addAction( QIcon(pcolor), tr("Gray"), this, SLOT ( setColorGray() ));
+            subcolor->addAction(QIcon(pcolor),
+                                 st->getLabelText(FWBSettings::GRAY),
+                                 this, SLOT(setColorGray() ));
 
-            popup->exec( pos );
+            popup->exec(pos );
 
             delete popup;
             return ;
@@ -3362,28 +3377,43 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
 
                 QPixmap pcolor(16,16);
                 pcolor.fill(QColor(255,255,255));
-                subcolor->addAction( QIcon(pcolor), tr("No color"), this, SLOT ( setColorEmpty() ));
+                subcolor->addAction( QIcon(pcolor), tr("No color"),
+                                     this, SLOT ( setColorEmpty() ));
 
                 pcolor.fill(st->getLabelColor(FWBSettings::RED));
-                subcolor->addAction( QIcon(pcolor), tr("Red"), this, SLOT ( setColorRed() ));
+                subcolor->addAction( QIcon(pcolor),
+                                     st->getLabelText(FWBSettings::RED),
+                                     this, SLOT ( setColorRed() ));
 
                 pcolor.fill(st->getLabelColor(FWBSettings::ORANGE));
-                subcolor->addAction( QIcon(pcolor), tr("Orange"), this, SLOT ( setColorOrange() ));
+                subcolor->addAction( QIcon(pcolor),
+                                     st->getLabelText(FWBSettings::ORANGE),
+                                     this, SLOT ( setColorOrange() ));
 
                 pcolor.fill(st->getLabelColor(FWBSettings::YELLOW));
-                subcolor->addAction( QIcon(pcolor), tr("Yellow"), this, SLOT ( setColorYellow() ));
+                subcolor->addAction( QIcon(pcolor),
+                                     st->getLabelText(FWBSettings::YELLOW),
+                                     this, SLOT ( setColorYellow() ));
 
                 pcolor.fill(st->getLabelColor(FWBSettings::GREEN));
-                subcolor->addAction( QIcon(pcolor), tr("Green"), this, SLOT ( setColorGreen() ));
+                subcolor->addAction( QIcon(pcolor),
+                                     st->getLabelText(FWBSettings::GREEN),
+                                     this, SLOT ( setColorGreen() ));
 
                 pcolor.fill(st->getLabelColor(FWBSettings::BLUE));
-                subcolor->addAction( QIcon(pcolor), tr("Blue"), this, SLOT ( setColorBlue() ));
+                subcolor->addAction( QIcon(pcolor),
+                                     st->getLabelText(FWBSettings::BLUE),
+                                     this, SLOT ( setColorBlue() ));
 
                 pcolor.fill(st->getLabelColor(FWBSettings::PURPLE));
-                subcolor->addAction( QIcon(pcolor), tr("Purple"), this, SLOT ( setColorPurple() ));
+                subcolor->addAction( QIcon(pcolor),
+                                     st->getLabelText(FWBSettings::PURPLE),
+                                     this, SLOT ( setColorPurple() ));
 
                 pcolor.fill(st->getLabelColor(FWBSettings::GRAY));
-                subcolor->addAction( QIcon(pcolor), tr("Gray"), this, SLOT ( setColorGray() ));
+                subcolor->addAction( QIcon(pcolor),
+                                     st->getLabelText(FWBSettings::GRAY),
+                                     this, SLOT ( setColorGray() ));
 
                 popup->addSeparator();
 
