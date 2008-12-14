@@ -1,3 +1,7 @@
+2008-12-13  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* v3.0.3 released, merged to trunk. This comment is -r689
+
 2008-12-08  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* RuleSetView.cpp (RuleSetView::contextMenu): fixed bug #2407141
