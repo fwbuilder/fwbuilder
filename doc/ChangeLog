@@ -1,5 +1,7 @@
 2008-12-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* VERSION (VERSION): started v3.0.4
+
 	* v3.0.3 released, merged to trunk. This comment is -r689
 
 2008-12-08  Vadim Kurland  <vadim@vk.crocodile.org>
