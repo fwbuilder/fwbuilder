@@ -1,3 +1,7 @@
+2008-12-13  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* v3.0.3 released, merged to the trunk, this comment is r229
+
 2008-12-08  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* DNSName.cpp (DNSName::DNSName): Need to set default values for
