@@ -60,7 +60,6 @@ Preprocessor::Preprocessor(FWObjectDatabase *_db,
 void Preprocessor::convertObject(FWObject *obj)
 {
     MultiAddress *adt = MultiAddress::cast(obj);
-
     if (adt!=NULL && adt->isCompileTime() && isUsedByThisFirewall(obj))
     {
         try

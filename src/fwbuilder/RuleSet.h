@@ -31,6 +31,7 @@
 
 #include <fwbuilder/FWObject.h>
 #include <fwbuilder/Rule.h>
+#include <fwbuilder/InetAddr.h>
 
 namespace libfwbuilder
 {
@@ -39,6 +40,7 @@ class RuleSet : public FWObject
 {
     private:
 
+    bool ipv4;
     bool ipv6;
     bool top;
 
@@ -60,9 +62,25 @@ class RuleSet : public FWObject
     virtual FWObject& shallowDuplicate(const FWObject *obj,
                                        bool preserve_id = true)
         throw(FWException);
+
+    // Both ipv4 and ipv6 variables can be set to true, which means
+    // this is "dual" rule set. When both are false, this is ipv4-only
+    // rule set (for backwards compatibility and to avoid having to
+    // increment DTD version number)
     
-    bool isV6() const { return ipv6; }
-    void setV6(bool f) { ipv6=f; }
+    bool isV4() const { return (ipv4 || (!ipv4 && !ipv6)); }
+    bool isV6() const { return (ipv6); }
+    bool isDual() const { return (ipv4 && ipv6); }
+    bool matchingAddressFamily(int af)
+    {
+        if (af == AF_INET && isV4()) return true;
+        if (af == AF_INET6 && isV6()) return true;
+        return false;
+    }
+    
+    void setV4() { ipv4=true; ipv6=false; }
+    void setV6() { ipv4=false; ipv6=true; }
+    void setDual() { ipv4=true; ipv6=true; }
     
     bool isTop() const { return top; }
     void setTop(bool f) { top=f; }

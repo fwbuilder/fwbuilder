@@ -128,7 +128,6 @@ void DNSName::loadFromSource(bool ipv6) throw(FWException)
                 getRoot()->create((ipv6)?IPv6::TYPENAME:IPv4::TYPENAME));
             a->setAddress( *i );
             addRef(a);
-
         }
     } catch (const FWException &ex)
     {

@@ -1,3 +1,16 @@
+2008-12-15  vadim  <vadim@vk.crocodile.org>
+
+	* RuleSet.h (libfwbuilder): changes for bug #2431602: "Feature
+	request: Unified policies (IPv4/v6)". RuleSet object now has two
+	variables that define which address family it should be compiled
+	for - ipv4 or ipv6. It is possible to have both set, in which case
+	the same ruleset will be compiled for both address
+	families. Compilers already drop address objects that do not match
+	address family of the ruleset, this means ruleset can contain a
+	mix of ipv4 and ipv6 objects and compiler can produce two correct
+	policies from the same rules. New attribute of the RuleSet object
+	is "implied" in XML DTD for backward compatibility.
+
 2008-12-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* VERSION (VERSION): started v3.0.4

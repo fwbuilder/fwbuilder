@@ -510,6 +510,7 @@ Interface can have the following attributes:
 <!ELEMENT NAT (NATRule*)>
 <!ATTLIST NAT
  %STD_ATTRIBUTES;
+ ipv4_rule_set       %BOOLEAN; #IMPLIED
  ipv6_rule_set       %BOOLEAN; #IMPLIED
  top_rule_set        %BOOLEAN; #IMPLIED
 >
@@ -517,6 +518,7 @@ Interface can have the following attributes:
 <!ELEMENT Policy (PolicyRule*)>
 <!ATTLIST Policy
  %STD_ATTRIBUTES;
+ ipv4_rule_set       %BOOLEAN; #IMPLIED
  ipv6_rule_set       %BOOLEAN; #IMPLIED
  top_rule_set        %BOOLEAN; #IMPLIED
 >
@@ -524,6 +526,7 @@ Interface can have the following attributes:
 <!ELEMENT Routing (RoutingRule*)>
 <!ATTLIST Routing
  %STD_ATTRIBUTES;
+ ipv4_rule_set       %BOOLEAN; #IMPLIED
  ipv6_rule_set       %BOOLEAN; #IMPLIED
  top_rule_set        %BOOLEAN; #IMPLIED
 >

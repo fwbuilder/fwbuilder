@@ -42,11 +42,15 @@ const char *RuleSet::TYPENAME={"Ruleset"};
 RuleSet::RuleSet()
 {
     setName("RuleSet");
+    ipv4 = false;
+    ipv6 = false;
+    top = false;
 }
 
 RuleSet::RuleSet(const FWObject*,bool)
 {
     setName("RuleSet");
+    ipv4 = false;
     ipv6 = false;
     top = false;
 }
@@ -59,7 +63,19 @@ void RuleSet::fromXML(xmlNodePtr root) throw(FWException)
 
     const char *n;
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("ipv6_rule_set")));
+    // Both ipv4_rule_set and ipv6_rule_set attributes can be set to
+    // true, which means this is "dual" rule set When both are false,
+    // this is ipv4-only rule set (for backwards compatibility and to
+    // avoid having to increment DTD version number)
+
+    n=FROMXMLCAST(xmlGetProp(root, TOXMLCAST("ipv4_rule_set")));
+    if (n!=NULL)
+    {
+        ipv4 = (string(n)=="True" || string(n)=="true");
+        FREEXMLBUFF(n);
+    }
+
+    n=FROMXMLCAST(xmlGetProp(root, TOXMLCAST("ipv6_rule_set")));
     if (n!=NULL)
     {
         ipv6 = (string(n)=="True" || string(n)=="true");
@@ -80,17 +96,16 @@ xmlNodePtr RuleSet::toXML(xmlNodePtr parent) throw(FWException)
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
     xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
     xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, TOXMLCAST("ipv4_rule_set"),
+               TOXMLCAST(((ipv4) ? "True" : "False")));
 
-    string ipv6_s = (ipv6)?"True":"False";
-    string top_s = (top)?"True":"False";
-    xmlNewProp(me, 
-               TOXMLCAST("ipv6_rule_set"),
-               STRTOXMLCAST(ipv6_s));
-    xmlNewProp(me, 
-               TOXMLCAST("top_rule_set"),
-               STRTOXMLCAST(top_s));
+    xmlNewProp(me, TOXMLCAST("ipv6_rule_set"),
+               TOXMLCAST(((ipv6) ? "True" : "False")));
 
-    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
+    xmlNewProp(me, TOXMLCAST("top_rule_set"), 
+               TOXMLCAST(((top) ? "True" : "False")));
+
+    for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j)
         (*j)->toXML(me);
 
     return me;
@@ -101,8 +116,9 @@ FWObject& RuleSet::shallowDuplicate(const FWObject *o, bool preserve_id)
 {
     const RuleSet *other = RuleSet::constcast(o);
 
-    FWObject::shallowDuplicate(o,preserve_id);
+    FWObject::shallowDuplicate(o, preserve_id);
 
+    ipv4 = other->ipv4;
     ipv6 = other->ipv6;
     top = other->top;
 
