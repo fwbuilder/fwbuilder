@@ -2,7 +2,22 @@
 
 	* ipt.cpp, ipfw.cpp, pf.cpp, iosacl.cpp: changes for FR #2431602:
 	support for rulesets configured as "dual address family", that is,
-	rulesets that should be compiled for both ipv4 and ipv6.
+	rulesets that should be compiled for both ipv4 and ipv6.  Compiler
+	processes rulesets like this twice, first for ipv4 and then for
+	ipv6. On each pass it will only use address and service objects
+	that match address family it uses for the ruleset. This also
+	applies to "compile-time" DNSName objects, that is, it will use
+	getaddrinfo() to get AF_INET address on ipv4 pass and AF_INET6 on
+	ipv6 pass.
+
+	Rules with "any" in rule elements in the "dual address family"
+	ruleset yield iptables commands for both families. This was the
+	reason I made setting exclusive in the first place. This means
+	that users who do not want fwbuilder to generate ipv6 policy for
+	them and want all ipv6 accepted, should not use "dual address
+	family" setting. If the do, the bottom catch-all rule will install
+	ip6tables command to block all ipv6 automatically even if all
+	rules have absolutely no ipv6 objects at all.
 
 	* RuleSetDialog.cpp (RuleSetDialog::applyChanges): implemented
 	feature request #2431602: "Feature request: Unified
