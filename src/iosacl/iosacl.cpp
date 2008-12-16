@@ -351,7 +351,7 @@ int main(int argc, char * const * argv)
 
         int policy_rules_count  = 0;
 
-        vector<bool> ipv4_6_runs;
+        vector<int> ipv4_6_runs;
         string generated_script;
 
         // command line options -4 and -6 control address family for which
@@ -362,20 +362,21 @@ int main(int argc, char * const * argv)
         if (options->getStr("ipv4_6_order").empty() ||
             options->getStr("ipv4_6_order") == "ipv4_first")
         {
-            if (ipv4_run) ipv4_6_runs.push_back(false);
-            if (ipv6_run) ipv4_6_runs.push_back(true);
+            if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
+            if (ipv6_run) ipv4_6_runs.push_back(AF_INET6);
         }
 
         if (options->getStr("ipv4_6_order") == "ipv6_first")
         {
-            if (ipv6_run) ipv4_6_runs.push_back(true);
-            if (ipv4_run) ipv4_6_runs.push_back(false);
+            if (ipv6_run) ipv4_6_runs.push_back(AF_INET6);
+            if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
         }
 
-        for (vector<bool>::iterator i=ipv4_6_runs.begin(); 
+        for (vector<int>::iterator i=ipv4_6_runs.begin(); 
              i!=ipv4_6_runs.end(); ++i)
         {
-            bool ipv6_policy = *i;
+            int policy_af = *i;
+            bool ipv6_policy = (policy_af == AF_INET6);
 
             // Count rules for each address family
             int policy_count = 0;
@@ -384,7 +385,7 @@ int main(int argc, char * const * argv)
                  p!=all_policies.end(); ++p)
             {
                 Policy *policy = Policy::cast(*p);
-                if (policy->isV6()==ipv6_policy) policy_count++;
+                if (policy->matchingAddressFamily(policy_af)) policy_count++;
             }
             if (policy_count)
             {
@@ -398,7 +399,7 @@ int main(int argc, char * const * argv)
             {
                 Policy *policy = Policy::cast(*p);
 
-                if (policy->isV6()!=ipv6_policy) continue;
+                if (!policy->matchingAddressFamily(policy_af)) continue;
 
                 PolicyCompiler_iosacl c(objdb, fwobjectname,
                                         ipv6_policy, oscnf);

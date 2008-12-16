@@ -9,7 +9,7 @@
     <x>0</x>
     <y>0</y>
     <width>848</width>
-    <height>240</height>
+    <height>260</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -154,33 +154,26 @@
               <string/>
              </property>
              <layout class="QGridLayout" name="gridLayout" >
-              <property name="leftMargin" >
-               <number>10</number>
-              </property>
-              <property name="topMargin" >
-               <number>10</number>
-              </property>
-              <property name="rightMargin" >
-               <number>2</number>
-              </property>
-              <property name="bottomMargin" >
-               <number>10</number>
-              </property>
-              <property name="verticalSpacing" >
-               <number>10</number>
-              </property>
               <item row="0" column="0" >
-               <widget class="QRadioButton" name="ipv4_rule_set" >
-                <property name="text" >
-                 <string>This is IPv4 rule set</string>
+               <widget class="QComboBox" name="ipv4_6_rule_set" >
+                <property name="frame" >
+                 <bool>false</bool>
                 </property>
-               </widget>
-              </item>
-              <item row="1" column="0" >
-               <widget class="QRadioButton" name="ipv6_rule_set" >
-                <property name="text" >
-                 <string>This is IPv6 rule set</string>
-                </property>
+                <item>
+                 <property name="text" >
+                  <string>This is IPv4 rule set</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text" >
+                  <string>This is IPv6 rule set</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text" >
+                  <string>This is combined IPv4 and IPv6 rule set</string>
+                 </property>
+                </item>
                </widget>
               </item>
              </layout>
@@ -347,38 +340,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>ipv4_rule_set</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>RuleSetDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>123</x>
-     <y>113</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>442</x>
-     <y>107</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ipv6_rule_set</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>RuleSetDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>123</x>
-     <y>139</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>442</x>
-     <y>107</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>ipt_filter_table</sender>
    <signal>toggled(bool)</signal>
    <receiver>RuleSetDialog_q</receiver>
@@ -407,6 +368,22 @@
     <hint type="destinationlabel" >
      <x>442</x>
      <y>107</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ipv4_6_rule_set</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>RuleSetDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>130</x>
+     <y>125</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>423</x>
+     <y>129</y>
     </hint>
    </hints>
   </connection>

@@ -1,3 +1,16 @@
+2008-12-15  vadim  <vadim@vk.crocodile.org>
+
+	* ipt.cpp, ipfw.cpp, pf.cpp, iosacl.cpp: changes for FR #2431602:
+	support for rulesets configured as "dual address family", that is,
+	rulesets that should be compiled for both ipv4 and ipv6.
+
+	* RuleSetDialog.cpp (RuleSetDialog::applyChanges): implemented
+	feature request #2431602: "Feature request: Unified
+	policies (IPv4/v6)". RuleSet object now has two variables that
+	define which address family it should be compiled for - ipv4 or
+	ipv6. It is possible to have both set, in which case the same
+	ruleset will be compiled for both address families.
+
 2008-12-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* VERSION (VERSION): started v3.0.4

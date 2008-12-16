@@ -315,7 +315,7 @@ bool processPolicyRuleSet(
     ostringstream &mangle_table_stream,
     ostringstream &reset_rules_stream,
     OSConfigurator_linux24 *oscnf,
-    bool ipv6_policy,
+    int policy_af,
     std::map<const std::string, bool> &minus_n_commands_filter,
     std::map<const std::string, bool> &minus_n_commands_mangle)
 {
@@ -329,7 +329,9 @@ bool processPolicyRuleSet(
     assignRuleSetChain(policy);
     string branch_name = policy->getName();
 
-    if (policy->isV6()!=ipv6_policy) return true;
+    if (!policy->matchingAddressFamily(policy_af)) return true;
+
+    bool ipv6_policy = (policy_af == AF_INET6);
 
     MangleTableCompiler_ipt m(
         objdb , fwobjectname.toUtf8().constData(),
@@ -794,7 +796,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         std::map<const std::string, bool> minus_n_commands_nat;
 
 
-        vector<bool> ipv4_6_runs;
+        vector<int> ipv4_6_runs;
         string generated_script;
 
         findImportedRuleSets(fw, all_policies);
@@ -808,20 +810,21 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         if (options->getStr("ipv4_6_order").empty() ||
             options->getStr("ipv4_6_order") == "ipv4_first")
         {
-            if (ipv4_run) ipv4_6_runs.push_back(false);
-            if (ipv6_run) ipv4_6_runs.push_back(true);
+            if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
+            if (ipv6_run) ipv4_6_runs.push_back(AF_INET6);
         }
 
         if (options->getStr("ipv4_6_order") == "ipv6_first")
         {
-            if (ipv6_run) ipv4_6_runs.push_back(true);
-            if (ipv4_run) ipv4_6_runs.push_back(false);
+            if (ipv6_run) ipv4_6_runs.push_back(AF_INET6);
+            if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
         }
 
-        for (vector<bool>::iterator i=ipv4_6_runs.begin(); 
+        for (vector<int>::iterator i=ipv4_6_runs.begin(); 
              i!=ipv4_6_runs.end(); ++i)
         {
-            bool ipv6_policy = *i;
+            int policy_af = *i;
+            bool ipv6_policy = (policy_af == AF_INET6);
 
             /*
               clear chain tracker map only between ipv4/ipv6 runs
@@ -847,16 +850,14 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                  p!=all_nat.end(); ++p)
             {
                 NAT *nat = NAT::cast(*p);
-                if (nat->isV6()==ipv6_policy) nat_count++;
+                if (nat->matchingAddressFamily(policy_af)) nat_count++;
             }
-
-            
 
             for (list<FWObject*>::iterator p=all_policies.begin();
                  p!=all_policies.end(); ++p)
             {
                 Policy *policy = Policy::cast(*p);
-                if (policy->isV6()==ipv6_policy) policy_count++;
+                if (policy->matchingAddressFamily(policy_af)) policy_count++;
             }
 
             if (nat_count || policy_count)
@@ -881,14 +882,14 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 assignRuleSetChain(nat);
                 string branch_name = nat->getName();
                 
-                if (nat->isV6()!=ipv6_policy) continue;
+                if (!nat->matchingAddressFamily(policy_af)) continue;
 
                 // compile NAT rules before policy rules because policy
                 // compiler needs to know the number of virtual addresses
                 // being created for NAT
                 NATCompiler_ipt n(
-                    objdb, fwobjectname.toUtf8().constData(), ipv6_policy, oscnf,
-                    &minus_n_commands_nat);
+                    objdb, fwobjectname.toUtf8().constData(), ipv6_policy,
+                    oscnf, &minus_n_commands_nat);
                 n.setSourceRuleSet( nat );
                 n.setRuleSetName(branch_name);
 
@@ -938,7 +939,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     m_str,
                     reset_rules,
                     oscnf,
-                    ipv6_policy,
+                    policy_af,
                     minus_n_commands_filter,
                     minus_n_commands_mangle);
 

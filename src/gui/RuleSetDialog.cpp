@@ -78,8 +78,16 @@ void RuleSetDialog::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
-    m_dialog->ipv4_rule_set->setChecked(!s->isV6());
-    m_dialog->ipv6_rule_set->setChecked(s->isV6());
+    // ipv4_6_rule_set QComboBox:
+    // 0 - ipv4
+    // 1 - ipv6
+    // 2 - dual
+    int idx = 0;
+    if (s->isV4()) idx = 0;
+    if (s->isV6()) idx = 1;
+    if (s->isDual()) idx = 2;
+    m_dialog->ipv4_6_rule_set->setCurrentIndex(idx);
+
     m_dialog->top_rule_set->setChecked(s->isTop());
 
     string platform = "";
@@ -198,7 +206,14 @@ void RuleSetDialog::applyChanges()
     obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     obj->setComment(
         string(m_dialog->comment->toPlainText().toUtf8().constData()) );
-    s->setV6(m_dialog->ipv6_rule_set->isChecked());
+
+    switch (m_dialog->ipv4_6_rule_set->currentIndex())
+    {
+    case 1: s->setV6(); break;
+    case 2: s->setDual(); break;
+    default: s->setV4(); break;
+    }
+
     s->setTop(m_dialog->top_rule_set->isChecked());
 
     QStringList mangle_rulesets = 
