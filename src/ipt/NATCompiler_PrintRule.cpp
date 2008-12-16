@@ -96,7 +96,8 @@ string NATCompiler_ipt::PrintRule::_createChain(const string &chain)
 
     if ( ipt_comp->minus_n_commands->count(chain)==0 )
     {
-	res << "$IPTABLES -t nat -N " << chain << endl;
+        res << (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
+	res << "-t nat -N " << chain << endl;
 	(*(ipt_comp->minus_n_commands))[chain] = true;
     }
     return res.str();
@@ -104,7 +105,9 @@ string NATCompiler_ipt::PrintRule::_createChain(const string &chain)
 
 string NATCompiler_ipt::PrintRule::_startRuleLine()
 {            
-    return string("$IPTABLES -t nat -A ");
+    NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
+    string res = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
+    return res + string("-t nat -A ");
 }
 
 string NATCompiler_ipt::PrintRule::_endRuleLine()

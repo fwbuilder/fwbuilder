@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1229396880" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1229403916" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -790,6 +790,8 @@
         </PolicyRuleOptions>
       </PolicyRule>
     </Policy>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -35610,8 +35612,31 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id39576X8300" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1229397003" platform="iptables" version="" name="firewall-ipv6-3" comment="Simple policy that makes sense in ipv4 but translates into a few wide-matching rules in ipv6. Policy is configured as dual address family" ro="False">
-        <NAT id="id39944X8300" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+      <Firewall id="id39576X8300" host_OS="linux24" inactive="False" lastCompiled="1229403994" lastInstalled="0" lastModified="1229403984" platform="iptables" version="" name="firewall-ipv6-3" comment="Simple policy that makes sense in ipv4 but translates into a few wide-matching rules in ipv6. Policy is configured as dual address family" ro="False">
+        <NAT id="id39944X8300" name="NAT" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="True" top_rule_set="True">
+          <NATRule id="id39859X15057" disabled="False" position="0" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id86936X27543"/>
+              <ObjectRef ref="id4834B9206131"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id39576X8300"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+        </NAT>
         <Policy id="id39582X8300" name="Policy" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="True" top_rule_set="True">
           <PolicyRule id="id39667X8300" disabled="False" log="True" position="0" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -35819,6 +35844,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <IPv4 id="id39949X8300" name="firewall-ipv6-3:eth0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
           <IPv6 id="id39950X8300" name="firewall-ipv6-3:eth0:ip6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
         </Interface>
+        <Interface id="id94008X15057" bridgeport="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False"/>
         <Management address="1.1.1.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
           <FWBDManagement enabled="False" identity="" port="-1"/>
