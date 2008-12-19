@@ -873,7 +873,7 @@ QString RuleSetView::getFullRuleGroupTitle(int row)
         RuleRowInfo *rri = rowsInfo[row];
         if (rri) groupName = rri->groupName;
     } else
-        groupName = QString(rule->getRuleGroupName().c_str());
+        groupName = QString::fromUtf8(rule->getRuleGroupName().c_str());
 
     if (!groupName.isEmpty())
     {
@@ -1104,7 +1104,7 @@ void RuleSetView::updateGroups()
         if (ruleIndex[i]!=NULL)
         {
             Rule * r = ruleIndex[i];
-            QString groupName = r->getRuleGroupName().c_str();
+            QString groupName = QString::fromUtf8(r->getRuleGroupName().c_str());
 
 #if DEBUG_RULE_GROUPS
             if (fwbdebug) qDebug("row %d: group %s",
@@ -1122,7 +1122,7 @@ void RuleSetView::updateGroups()
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
         Rule * r = ruleIndex[i];
-        group = r->getRuleGroupName().c_str();
+        group = QString::fromUtf8(r->getRuleGroupName().c_str());
         QString color = groupColors[group];
 
         RuleRowInfo *rri;
@@ -1853,7 +1853,7 @@ void RuleSetView::paintCell(QPainter *pntr,
 
 
 #ifdef DRAW_RULE_GROUP_FRAME
-    QString group = rule->getRuleGroupName ().c_str();
+    QString group = QString::fromUtf8(rule->getRuleGroupName ().c_str());
     if (group!= "")
     {
         if (groupEnd!=-1 && groupEnd==row+1)
@@ -2015,7 +2015,7 @@ void RuleSetView::drawRuleGroupHandle(QPainter *pntr, int row, int,
     }
     else
     {
-        QString group = rule->getRuleGroupName().c_str();
+        QString group = QString::fromUtf8(rule->getRuleGroupName().c_str());
         if (group != "")
         {
             if (groupEnd!=-1 && groupEnd==row+1)
@@ -2796,7 +2796,7 @@ void RuleSetView::createGroup(int row, int count, const QString &groupName)
     if (!isTreeReadWrite(this,ruleset)) return;
 
     for (int idx=0 ; idx<count; idx++)
-        ruleIndex[row + idx]->setRuleGroupName(groupName.toAscii().data());
+        ruleIndex[row + idx]->setRuleGroupName(groupName.toUtf8().data());
     // Note that ProjectPanel::reopenFirewall destroys all RuleSetView
     // objects and creates new ones. Save stored inside RuleSetView
     // object does not survive call to reopenFirewall()
@@ -2818,19 +2818,19 @@ void RuleSetView::renameGroup()
         this, "Rename group",
         tr("Enter group name:"), QLineEdit::Normal,
         oldGroup, &ok);
-     if (ok && !text.isEmpty())
+    if (ok && !text.isEmpty())
     {
-        if (oldGroup==""||text=="")
-            return ;
+        if (oldGroup=="" || text=="") return ;
         QString postfix = "";
         for (int i =0 ; i < rowsInfo.size(); i++)
         {
             Rule * r = ruleIndex[i];
             if (r!=NULL)
             {
-                if (r->getRuleGroupName ().c_str() ==  oldGroup)
+                if (QString::fromUtf8(r->getRuleGroupName().c_str()) ==
+                    oldGroup)
                 {
-                    r->setRuleGroupName (text.toAscii().data());
+                    r->setRuleGroupName(text.toUtf8().data());
                 }
             }
         }
@@ -2862,7 +2862,7 @@ void RuleSetView::addToGroupAbove ()
         Rule *r = ruleIndex[row+i];
         if (r)
         {
-            r->setRuleGroupName(ru->groupName.toAscii().data());
+            r->setRuleGroupName(ru->groupName.toUtf8().data());
             //ruleIndex[row+i] =r ;
             if (ru->collapsedGroup) showHideRuleGroup(row);
         }
@@ -2889,7 +2889,7 @@ void RuleSetView::addToGroupBelow()
         Rule *r = ruleIndex[row+i];
         if (r)
         {
-            r->setRuleGroupName (ru->groupName.toAscii().data());
+            r->setRuleGroupName (ru->groupName.toUtf8().data());
             //ruleIndex[row+i] =r ;
             if (ru->collapsedGroup) showHideRuleGroup(row);
         }
@@ -2980,7 +2980,7 @@ void RuleSetView::removeFromGroup(int row, int count)
 
 QString RuleSetView::getGroupColorForRule(Rule *rule)
 {
-    QString group = rule->getRuleGroupName().c_str();
+    QString group = QString::fromUtf8(rule->getRuleGroupName().c_str());
     return groupColors[group];
 }
 

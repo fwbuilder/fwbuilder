@@ -1,3 +1,9 @@
+2008-12-18  vadim  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::renameGroup): fixed bug #2412310:
+	"Umlauts in group names". The GUI should properly handle non-ascii
+	characters in the rule group names
+
 2008-12-15  vadim  <vadim@vk.crocodile.org>
 
 	* ipt.cpp, ipfw.cpp, pf.cpp, iosacl.cpp: changes for FR #2431602:

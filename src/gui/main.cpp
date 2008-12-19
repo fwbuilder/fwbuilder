@@ -591,148 +591,141 @@ int main( int argc, char *argv[] )
     if ( (argc-1)==optind)
         filename = strdup( argv[optind++] );
 
-//    try
-//    {
-        if (fwbdebug) qDebug("Initializing ...");
+    if (fwbdebug) qDebug("Initializing ...");
 
-        if (fwbdebug) qDebug("Creating app ...");
-        //QApplication::setDesktopSettingsAware(desktopaware);
-        app = new QApplication( argc, argv );
-        app->setOrganizationName(QLatin1String("NetCitadel LLC"));
-        app->setApplicationName(QLatin1String("Firewall Builder"));
+    if (fwbdebug) qDebug("Creating app ...");
+    //QApplication::setDesktopSettingsAware(desktopaware);
+    app = new QApplication( argc, argv );
+    app->setOrganizationName(QLatin1String("NetCitadel LLC"));
+    app->setApplicationName(QLatin1String("Firewall Builder"));
 
 /* need to initialize in order to be able to use FWBSettings */
-        init(argv);
-        init_platforms();
+    init(argv);
+    init_platforms();
 
-        Q_INIT_RESOURCE(MainRes);
+    Q_INIT_RESOURCE(MainRes);
 
-        if (fwbdebug) qDebug("Reading settings ...");
-        st = new FWBSettings();
-        st->init();
-        if (fwbdebug) qDebug("done");
+    if (fwbdebug) qDebug("Reading settings ...");
+    st = new FWBSettings();
+    st->init();
+    if (fwbdebug) qDebug("done");
 
-        QPixmapCache::setCacheLimit(4096);
+    QPixmapCache::setCacheLimit(4096);
 
 //        app->setFont(st->getTreeFont());
 
 #ifdef ELC
-        registered = init2(argv0,
-                           "Firewall Builder",
-                           "fwb_gui30",
-                           "3.0",
-                           true, true, fwbdebug);
+    registered = init2(argv0,
+                       "Firewall Builder",
+                       "fwb_gui30",
+                       "3.0",
+                       true, true, fwbdebug);
 #endif
 
-        string full_res_path = respath + FS_SEPARATOR + "resources.xml";
+    string full_res_path = respath + FS_SEPARATOR + "resources.xml";
 
-        if (fwbdebug)
-        {
-            qDebug("reading resources from '%s' ...", full_res_path.c_str());
-        }
+    if (fwbdebug)
+    {
+        qDebug("reading resources from '%s' ...", full_res_path.c_str());
+    }
 
-        //respath = RES_DIR;
-        new Resources(full_res_path);
-        if (fwbdebug) qDebug("done");
+    //respath = RES_DIR;
+    new Resources(full_res_path);
+    if (fwbdebug) qDebug("done");
 
-        vector<std::string> platforms = Resources::getListOfPlatforms();
-        if (platforms.empty() || (
-                platforms.size()==1 && platforms.front()=="unknown" ))
-        {
-            qDebug("Failed to load list of supported platforms");
-            exit(1);
-        }
+    vector<std::string> platforms = Resources::getListOfPlatforms();
+    if (platforms.empty() || (
+            platforms.size()==1 && platforms.front()=="unknown" ))
+    {
+        qDebug("Failed to load list of supported platforms");
+        exit(1);
+    }
 
-        if (cli_print)
-        {
-            if (fwbdebug) qDebug("Print from command line");
-            FWWindow::printFirewallFromFile(filename,
-                                            cli_print_fwname,
-                                            print_output_file_name);
-            return 0;
-        }
-
-
-        if (fwbdebug) qDebug("creating widgets ...");
-
-        new FWObjectDatabase();
-        new FWObjectClipboard();
-
-        if (fwbdebug) qDebug("loading translation for the current locale ...");
-
-        QString local = QLocale::system().name();//"en_US";//
-        QTranslator translator(0);
-        translator.load(QLatin1String("fwbuilder_") +
-                        QString(local), localepath.c_str());
-        app->installTranslator (&translator);
-
-        QString qt_resource_dir =
-            QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+    if (cli_print)
+    {
+        if (fwbdebug) qDebug("Print from command line");
+        FWWindow::printFirewallFromFile(filename,
+                                        cli_print_fwname,
+                                        print_output_file_name);
+        return 0;
+    }
 
 
-        QTranslator qt_translator(0);
-        qt_translator.load(QLatin1String("qt_") + QLocale::system().name(),
-                           qt_resource_dir);
-        app->installTranslator (&qt_translator);
+    if (fwbdebug) qDebug("creating widgets ...");
+
+    new FWObjectDatabase();
+    new FWObjectClipboard();
+
+    if (fwbdebug) qDebug("loading translation for the current locale ...");
+
+    QString local = QLocale::system().name();//"en_US";//
+    QTranslator translator(0);
+    translator.load(QLatin1String("fwbuilder_") +
+                    QString(local), localepath.c_str());
+    app->installTranslator (&translator);
+
+    QString qt_resource_dir =
+        QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+
+
+    QTranslator qt_translator(0);
+    qt_translator.load(QLatin1String("qt_") + QLocale::system().name(),
+                       qt_resource_dir);
+    app->installTranslator (&qt_translator);
 
 
 /* must build list of available libraries _after_ creation of
  * FWObjectDatabase and settings */
 
-        if (fwbdebug) qDebug("loading libraries ...");
+    if (fwbdebug) qDebug("loading libraries ...");
 
-        mw  = new FWWindow();
-        //mw->setSafeMode(safemode);
-        if (filename!="") mw->openDocFiles << filename;
+    mw  = new FWWindow();
+    //mw->setSafeMode(safemode);
+    if (filename!="") mw->openDocFiles.append(filename);
 
-        mw->show();
+    mw->show();
 
-        app->connect(app, SIGNAL( lastWindowClosed() ), app, SLOT( quit()));
+    app->connect(app, SIGNAL( lastWindowClosed() ), app, SLOT( quit()));
 
 #if defined(Q_WS_MAC)
-        connectOdocHandler();
+    connectOdocHandler();
 #endif
 
-        // setup single shot timer to call startupLoad()
-        QTimer::singleShot(0.5, mw, SLOT(startupLoad()));
+    // setup single shot timer to call startupLoad()
+    QTimer::singleShot(0.5, mw, SLOT(startupLoad()));
 
-        if (! st->getBool("UI/NoStartTip"))
-        {
-            StartTipDialog *stdlg = new StartTipDialog();
-            stdlg->show();
-            stdlg->raise();
-        }
+    if (! st->getBool("UI/NoStartTip"))
+    {
+        StartTipDialog *stdlg = new StartTipDialog();
+        stdlg->show();
+        stdlg->raise();
+    }
 
-        app->exec();
+    app->exec();
 
-        mw->hide();  // must do this before settings object is destroyed
-        if (mw->getAddOnLibs()!=NULL)
-            mw->getAddOnLibs()->save();  // ditto
+    mw->hide();  // must do this before settings object is destroyed
+    if (mw->getAddOnLibs()!=NULL)
+        mw->getAddOnLibs()->save();  // ditto
 
-        if ( st->getStartupAction()==1 )
-        {
+    if ( st->getStartupAction()==1 )
+    {
 /* save the state of the GUI (opened firewall, opened object tree page, etc */
-            FWObject *o=mw->getVisibleFirewalls();
+        FWObject *o=mw->getVisibleFirewalls();
 
-            if (fwbdebug) qDebug("Main: closing. VisibleFirewall = %p",o);
+        if (fwbdebug) qDebug("Main: closing. VisibleFirewall = %p",o);
 
-            if (o) st->setStr("UI/visibleFirewall",
-                              FWObjectDatabase::getStringId(
-                                  o->getId()).c_str());
+        if (o) st->setStr("UI/visibleFirewall",
+                          FWObjectDatabase::getStringId(
+                              o->getId()).c_str());
 
-            o=mw->getOpened();
-            if (o) st->setStr("UI/visibleObject",
-                              FWObjectDatabase::getStringId(
-                                  o->getId()).c_str());
-        }
+        o=mw->getOpened();
+        if (o) st->setStr("UI/visibleObject",
+                          FWObjectDatabase::getStringId(
+                              o->getId()).c_str());
+    }
 
-        st->save();
-        delete st;
-//    }
-//    catch (FWException &ex)
-//    {
-//        qDebug("Exception: %s",ex.toString().c_str());
-//    }
+    st->save();
+    delete st;
 }
 
 
