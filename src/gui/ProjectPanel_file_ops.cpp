@@ -191,46 +191,55 @@ bool ProjectPanel::fileOpen()
         return false;
     }
 
-    return loadFile(fileName);
+    return loadFile(fileName, false);
 }
 
-bool ProjectPanel::loadFile(const QString &fileName)
+bool ProjectPanel::loadFile(const QString &fileName, bool load_rcs_head)
 {
-    if (fwbdebug) qDebug("ProjectPanel::loadFile  fileName=%s",
-                         fileName.toLocal8Bit().constData());
+    if (fwbdebug) qDebug("ProjectPanel::loadFile  fileName=%s load_rcs_head=%d",
+                         fileName.toLocal8Bit().constData(), load_rcs_head);
 
     RCSFilePreview  fp(this);
     bool hasRCS = fp.showFileRLog(fileName);
 
-    if ( (!hasRCS) || (fp.exec() == QDialog::Accepted) )
+    // class RCS automatically selected head revision when it opens
+    // file and reads RCS log. User can choose different revision
+    // using RCSFilePreview. If they do, RCSFilePreview::getSelectedRev()
+    // returns selected revision. However if they do not choose, or
+    // dialog is never executed, getSelectedRev() returns head.
+
+    // if load_rcs_head == true, we do not run RCSFilePreview dialog
+    // which meand it will return head revision automatically.
+
+    int dlg_res = QDialog::Accepted;
+    if (hasRCS && !load_rcs_head) dlg_res = fp.exec();
+    if (dlg_res!=QDialog::Accepted) return false;
+
+    if (!saveIfModified() || !checkin(true)) return false;
+    if (!systemFile && rcs!=NULL) fileClose();
+
+    //try to get simple rcs instance from RCS preview
+    RCS *new_rcs = fp.getSelectedRev();
+
+    //if preview cannot give RCS,
+    //get a new RCS from file dialog
+    if (new_rcs==NULL) new_rcs = new RCS(fileName);
+    if (new_rcs==NULL) return false;
+
+    try
     {
-        if (!saveIfModified() || !checkin(true)) return false;
-        if (!systemFile && rcs!=NULL) fileClose();
-
-        //try to get simple rcs instance from RCS preview
-        RCS *new_rcs = fp.getSelectedRev();
-
-        //if preview cannot give RCS,
-        //get a new RCS from file dialog
-        if (new_rcs==NULL) new_rcs = new RCS(fileName);
-        if (new_rcs==NULL) return false;
-
-        try
-        {
-            new_rcs->co();
-        } catch (FWException &ex)
-        {
-            return false;
-        }
-
-        loadFromRCS(new_rcs);
-
-        if (new_rcs->isTemp())
-            unlink(new_rcs->getFileName().toLocal8Bit().constData());
-
-        return true;
+        new_rcs->co();
+    } catch (FWException &ex)
+    {
+        return false;
     }
-    return false;
+
+    loadFromRCS(new_rcs);
+
+    if (new_rcs->isTemp())
+        unlink(new_rcs->getFileName().toLocal8Bit().constData());
+
+    return true;
 }
 
 void ProjectPanel::fileClose()
@@ -370,7 +379,7 @@ void ProjectPanel::fileDiscard()
         /* loadFile calls fileClose, but only if file is currently
          * open, which it isn't because we reset rcs to NULL
          */
-        loadFile(fname);
+        loadFile(fname, false);
     }
 }
 

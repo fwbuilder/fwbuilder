@@ -151,10 +151,12 @@ using namespace std;
 using namespace Ui;
 
 FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
-    m_space(0),
-    instd(0), autosaveTimer(new QTimer(static_cast<QObject*>(this))), 
-    instDialogOnScreenTimer(new QTimer(static_cast<QObject*>(this))), 
-    printer(0), searchObject(0), replaceObject(0)
+                       m_space(0),
+                       instd(0),
+                       autosaveTimer(new QTimer(static_cast<QObject*>(this))), 
+                       instDialogOnScreenTimer(new QTimer(static_cast<QObject*>(this))), 
+                       printer(0), searchObject(0), replaceObject(0),
+                       auto_load_from_rcs_head_revision(0)
 {
     if (fwbdebug)
     {
@@ -223,6 +225,13 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 FWWindow::~FWWindow()
 {
     delete m_mainWindow;
+}
+
+void FWWindow::registerAutoOpenDocFile(const QString &filename,
+                                       bool load_from_rcs_head)
+{
+    openDocFiles.append(filename);
+    auto_load_from_rcs_head_revision = load_from_rcs_head;
 }
 
 ProjectPanel *FWWindow::newProjectPanel()
@@ -298,7 +307,7 @@ void FWWindow::startupLoad()
     for (QStringList::iterator it=openDocFiles.begin(); it!=openDocFiles.end();
          it++)
     {
-        loadFile(*it);
+        loadFile(*it, auto_load_from_rcs_head_revision);
     }
 }
 
@@ -394,12 +403,12 @@ void FWWindow::fileOpen()
     }
 }
 
-void FWWindow::loadFile(const QString &filename)
+void FWWindow::loadFile(const QString &filename, bool load_rcs_head)
 {
     if (activeProject() && activeProject()->getFileName().isEmpty())
     {
         ProjectPanel *proj = activeProject();
-        if (proj->loadFile(filename))
+        if (proj->loadFile(filename, load_rcs_head))
         {
             proj->readyStatus(true);
             proj->loadState(true);
@@ -407,7 +416,7 @@ void FWWindow::loadFile(const QString &filename)
     } else
     {
         std::auto_ptr<ProjectPanel> proj(newProjectPanel());
-        if (proj->loadFile(filename))
+        if (proj->loadFile(filename, load_rcs_head))
         {
             showSub(proj.get());
             proj->readyStatus(true);

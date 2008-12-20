@@ -335,7 +335,7 @@ public:
     void createRCS( const QString &filename);
     void loadFromRCS(RCS *rcs);
     void loadStandardObjects();
-    bool loadFile(const QString &fileName);
+    bool loadFile(const QString &fileName, bool load_rcs_head);
 
     void save();
 

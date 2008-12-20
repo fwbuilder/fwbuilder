@@ -77,6 +77,8 @@ class FWWindow : public QMainWindow {
     libfwbuilder::FWObject *searchObject;
     libfwbuilder::FWObject *replaceObject;
     //int                                    lastFirewallIdx;
+    QStringList openDocFiles;
+    bool auto_load_from_rcs_head_revision;
     
     void clearFirewallTabs();
     ProjectPanel *newProjectPanel();
@@ -85,11 +87,10 @@ class FWWindow : public QMainWindow {
 public:
     QVector <QString> windowsTitles;
     QVector <QMdiSubWindow*> windowsPainters;
-    QStringList openDocFiles;
 
     ProjectPanel* activeProject();
-    void updateWindowTitle ();
-    void updateTreeFont ();
+    void updateWindowTitle();
+    void updateTreeFont();
     
 public slots:
     void selectActiveSubWindow (/*const QString & text*/);
@@ -187,10 +188,13 @@ public slots:
     RCS * getRCS(); 
 
     libfwbuilder::FWObject* getVisibleFirewalls();
+
+    void registerAutoOpenDocFile(const QString &file_name,
+                                 bool load_from_rcs_head);
     void load(QWidget *dialogs_parent,RCS *rcs);
     void load(QWidget *dialogs_parent);
     void loadLibrary(const std::string &libfpath);
-    void loadFile(const QString &filename);
+    void loadFile(const QString &filename, bool load_rcs_head);
     void save();
     bool checkin(bool unlock);
     int  findFirewallInList(libfwbuilder::FWObject *f);

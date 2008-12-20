@@ -63,14 +63,12 @@ int RCSViewItem::compare(QTreeWidgetItem *itm, int col, bool ) const
     return 0;
 }
 
-
 RCSFilePreview::RCSFilePreview(QWidget *parent): QDialog(parent)
 {
     if (fwbdebug) qDebug("RCSFilePreview: constructor");
 
     m_widget = new Ui::RCSFilePreview_q;
     m_widget->setupUi(this);
-
 
     connect( m_widget->cancelButton, SIGNAL( clicked() ),
              this, SLOT( reject() ) );
@@ -86,13 +84,13 @@ RCSFilePreview::RCSFilePreview(QWidget *parent): QDialog(parent)
 
     if (fwbdebug) qDebug("RCSFilePreview: constructor done");
 
-    rcs=NULL;
+    rcs = NULL;
     RO = false;
 }
 
 RCSFilePreview::~RCSFilePreview()
 {
-    if (fwbdebug) qDebug("~RCSFilePreview()  rcs=%p",rcs);
+    if (fwbdebug) qDebug("~RCSFilePreview()  rcs=%p", rcs);
 //    if (rcs!=NULL) delete rcs;
 }
 
@@ -112,12 +110,13 @@ void RCSFilePreview::selectedRevision(QTreeWidgetItem *itm)
 {
     if (itm == m_widget->RCSTreeView->topLevelItem(0)) return;
 
-    QString rev=itm->text(0);
+    QString rev = itm->text(0);
     assert(rcs!=NULL);
     rcs->setSelectedRev(rev);
     m_widget->comment->setText( rcsComments[rev] );
     if (fwbdebug)
-        qDebug("RCSFilePreview::selectedRevision : %s",rev.toAscii().constData());
+        qDebug("RCSFilePreview::selectedRevision : %s",
+               rev.toAscii().constData());
 }
 
 bool RCSFilePreview::showFileRLog( const QString &filename )
@@ -132,7 +131,7 @@ bool RCSFilePreview::showFileRLog( const QString &filename )
 
     if (rcs->revisions.size()==0)
     {
-        QTreeWidgetItem *itm=new QTreeWidgetItem(m_widget->RCSTreeView);
+        QTreeWidgetItem *itm = new QTreeWidgetItem(m_widget->RCSTreeView);
         itm->setText( 0, tr("File is not in RCS") );
 //        addToRCS->setEnabled(true);
         m_widget->comment->setText("");
@@ -194,7 +193,6 @@ bool RCSFilePreview::showFileRLog( const QString &filename )
 //    m_widget->RCSTreeView->sortByColumn(0, Qt::AscendingOrder);
     m_widget->RCSTreeView->resizeColumnToContents ( 0 );
     m_widget->RCSTreeView->resizeColumnToContents ( 1 );
-
 
     lastItem->setSelected( true );
     m_widget->RCSTreeView->setCurrentItem( lastItem );

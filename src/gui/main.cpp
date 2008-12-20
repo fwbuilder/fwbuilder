@@ -130,18 +130,18 @@ extern void connectOdocHandler();
 using namespace libfwbuilder;
 using namespace std;
 
-static QString    filename;
-static QString    print_output_file_name;
-
-QApplication      *app        = NULL;
-FWWindow          *mw         = NULL;
-FWBSettings       *st         = NULL;
-int                fwbdebug   = 0;
-bool               safemode   = false;
-bool               registered = false;
-bool               gui_experiment1 = false;
-bool               cli_print        = false;
-QString            cli_print_fwname = "";
+static QString filename;
+static QString print_output_file_name;
+bool auto_load_from_rcs_head_revision = false;
+QApplication *app = NULL;
+FWWindow *mw = NULL;
+FWBSettings *st = NULL;
+int fwbdebug = 0;
+bool safemode = false;
+bool registered = false;
+bool gui_experiment1 = false;
+bool cli_print = false;
+QString cli_print_fwname = "";
 
 #ifndef _WIN32
 #ifndef HAVE_CFMAKERAW
@@ -333,7 +333,7 @@ char* strndup(const char* s,int n)
 
 void usage()
 {
-    cerr << "Usage: fwbuilder [-hv] [-P object_name] [-o file_name] [ [-f] filename]\n";
+    cerr << "Usage: fwbuilder [-hv] [-P object_name] [-o file_name] [-r] [ [-f] filename]\n";
     cerr << endl;
 }
 
@@ -557,7 +557,7 @@ int main( int argc, char *argv[] )
     // started via Finder.
 
     int c;
-    while ((c = getopt (argc , argv , "hvf:o:P:dxg")) != EOF )
+    while ((c = getopt (argc , argv , "hvf:o:P:dxgr")) != EOF )
 	switch (c) {
 	case 'h':
 	    usage();
@@ -570,6 +570,10 @@ int main( int argc, char *argv[] )
 	case 'o':
 	    print_output_file_name=optarg;
 	    break;
+
+        case 'r':
+            auto_load_from_rcs_head_revision = true;
+            break;
 
         case 'd':
             fwbdebug++;
@@ -681,7 +685,8 @@ int main( int argc, char *argv[] )
 
     mw  = new FWWindow();
     //mw->setSafeMode(safemode);
-    if (filename!="") mw->openDocFiles.append(filename);
+    if (filename!="")
+        mw->registerAutoOpenDocFile(filename, auto_load_from_rcs_head_revision);
 
     mw->show();
 

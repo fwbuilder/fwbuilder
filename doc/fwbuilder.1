@@ -13,6 +13,7 @@ fwbuilder \- Multiplatform firewall configuration tool
 .RB [-h]
 .RB [-o file]
 .RB [-P object_name]
+.RB [-r]
 .RB [-v]
  
 
@@ -44,6 +45,12 @@ and 7.x) and Cisco IOS extended access lists.
 
 .IP "-f FILE"
 Specify the name of the file to be loaded when program starts.
+
+.IP "-r"
+When this command line option is given in combination with -f file,
+the program automatically opens RCS head revision of the file if file
+is in RCS. If file is not in RCS, this option does nothing and the
+file is opened as usual.
 
 .IP "-d"
 Turns on debug mode. Note that in this mode the program generates

@@ -1,3 +1,12 @@
+2008-12-19  vadim  <vadim@vk.crocodile.org>
+
+	* ProjectPanel_file_ops.cpp (ProjectPanel::loadFile): Implemented
+	feature request #2412323: "feature request: command line flag to
+	skip RCSFilePreview". New command line switch "-r" makes the GUI
+	automatically open RCS head revision of the file given on command
+	line if the file is in RCS. If the file is not in RCS, the new
+	switch does nothing and the file is opened as usual.
+
 2008-12-18  vadim  <vadim@vk.crocodile.org>
 
 	* RuleSetView.cpp (RuleSetView::renameGroup): fixed bug #2412310:
