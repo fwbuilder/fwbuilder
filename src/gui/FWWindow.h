@@ -36,6 +36,7 @@
 #include <qstring.h>
 #include <QShowEvent>
 #include <QHideEvent>
+#include <QTableWidget>
 
 #include <vector>
 #include <list>
