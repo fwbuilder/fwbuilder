@@ -36,6 +36,7 @@
 #include "ProjectPanel.h"
 
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/RuleSet.h"
 
 #include <ui_pagesetupdialog_q.h>
 
@@ -44,6 +45,7 @@
 #include <QPrintDialog>
 #include <QAbstractPrintDialog>
 #include <QMessageBox>
+#include <QStatusBar>
 #include <QMdiArea>
 #include <QMdiSubWindow>
 
