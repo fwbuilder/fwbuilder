@@ -1,6 +1,6 @@
 #-*- mode: makefile; tab-width: 4; -*-
 #
-# $Id:$
+# $Id$
 #
 TEMPLATE = app
 LANGUAGE = C++
@@ -54,6 +54,7 @@ HEADERS += ../../config.h \
 	global.h \
 	printerStream.h \
 	PrintingProgressDialog.h \
+	PrintingController.h \
 	FWObjectPropertiesFactory.h \
 	ObjectManipulator.h \
 	ObjectEditor.h \
@@ -171,6 +172,7 @@ SOURCES += ProjectPanel.cpp \
 	FWWindowPrint.cpp \
 	printerStream.cpp \
 	PrintingProgressDialog.cpp \
+	PrintingController.cpp \
 	FWObjectPropertiesFactory.cpp \
 	ObjectManipulator.cpp \
 	ObjectEditor.cpp \

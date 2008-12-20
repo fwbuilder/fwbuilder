@@ -277,11 +277,12 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
                tbl->viewport()->width(), tbl->viewport()->height());
         /*qDebug("Clipper: %dx%d",
           tbl->clipper()->width(),tbl->clipper()->height());*/
+
+        qDebug("YSpace: %d", getYSpace());
+        qDebug("pageBody.height(): %d", pageBody.height());
+        qDebug("yPos: %d", yPos);
     }
 
-    qDebug("YSpace: %d", getYSpace());
-    qDebug("pageBody.height(): %d", pageBody.height());
-    qDebug("yPos: %d", yPos);
     int firstRow = 0;
     int lastRow = 1;
     int tblHeight = tbl->horizontalHeader()->height();
@@ -340,8 +341,6 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
         int firstRowPos = tbl->verticalHeader()->sectionPosition(firstRow);
         int lastRowPos = tbl->verticalHeader()->sectionPosition(lastRow);
 
-        qDebug("    firstRowPos: %d lastRowPos: %d", firstRowPos, lastRowPos);
-
         tbl->resize(tblWidth, tblHeight);
 
         tbl->verticalHeader()->resize(
@@ -357,12 +356,6 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
             qDebug("    Size: %dx%d", tbl->width(), tbl->height());
             qDebug("    Visible: %dx%d",
                    tbl->contentsRect().width(), tbl->contentsRect().height());
-            /*qDebug("    Visible: %dx%d",
-                   tbl->visibleWidth(),tbl->visibleHeight());
-            qDebug("    Viewport: %dx%d",
-                   tbl->viewport()->width(),tbl->viewport()->height());
-            qDebug("    Clipper: %dx%d",
-                   tbl->clipper()->width(),tbl->clipper()->height());*/
             qDebug("    vheader size: %dx%d",
                    tbl->verticalHeader()->width(),
                    tbl->verticalHeader()->height());

@@ -530,7 +530,6 @@ class PolicyView : public RuleSetView
     virtual ~PolicyView() {}
 
     virtual void init();
-    
 };
 
 class NATView : public RuleSetView
@@ -544,8 +543,6 @@ class NATView : public RuleSetView
     virtual ~NATView() {}
 
     virtual void init();
-    
-
 };
 
 class RoutingView : public RuleSetView
@@ -560,7 +557,12 @@ class RoutingView : public RuleSetView
     virtual ~RoutingView() {}
 
     virtual void init();
-    
-
 };
 
+class RuleSetViewFactory
+{
+public:
+    static RuleSetView* getRuleSetViewByType(ProjectPanel *project,
+                                             libfwbuilder::RuleSet *ruleset,
+                                             QWidget *parent);
+};

@@ -31,6 +31,7 @@
 #include "RCS.h"
 #include "ObjectEditor.h"
 #include "HttpGet.h"
+#include "printerStream.h"
 
 #include <qstring.h>
 #include <QShowEvent>
@@ -372,13 +373,15 @@ public slots:
 
     bool isSystem(libfwbuilder::FWObject *obj);
 
+    static void configureQTableForPrint(QTableWidget &tbl,
+                                        printerStream &pr_stream);
 
  protected:
 
     virtual void showEvent( QShowEvent *ev);
     virtual void hideEvent( QHideEvent *ev);
     virtual void closeEvent( QCloseEvent * );
-    
+
 };
 
 #endif

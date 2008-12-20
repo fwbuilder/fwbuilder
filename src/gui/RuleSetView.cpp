@@ -117,6 +117,19 @@ int QMIN(int a, int b)
     return(a<b)?a:b;
 }
 
+RuleSetView* RuleSetViewFactory::getRuleSetViewByType(ProjectPanel *project,
+                                                      RuleSet *ruleset,
+                                                      QWidget *parent)
+{
+    if (Policy::isA(ruleset))
+        return new PolicyView(project, Policy::cast(ruleset), parent);
+    if (NAT::isA(ruleset))
+        return new NATView(project, NAT::cast(ruleset), parent);
+    if (Routing::isA(ruleset))
+        return new RoutingView(project, Routing::cast(ruleset), parent);
+    return NULL;
+}
+
 
 RuleTableModel::RuleTableModel(const int rows, const int columns,
                                RuleSetView *ruleView) :
