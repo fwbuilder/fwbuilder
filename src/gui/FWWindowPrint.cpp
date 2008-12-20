@@ -35,10 +35,15 @@
 #include "PrintingController.h"
 #include "ProjectPanel.h"
 
+#include "fwbuilder/Firewall.h"
+
 #include <ui_pagesetupdialog_q.h>
 
 #include <qglobal.h>
 
+#include <QPrintDialog>
+#include <QAbstractPrintDialog>
+#include <QMessageBox>
 #include <QMdiArea>
 #include <QMdiSubWindow>
 
