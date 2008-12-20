@@ -69,6 +69,7 @@
 #include <algorithm>
 
 #include <qstring.h>
+#include <QPixmapCache>
 
 using namespace libfwbuilder;
 using namespace std;
