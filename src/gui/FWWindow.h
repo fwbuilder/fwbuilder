@@ -36,7 +36,6 @@
 #include <qstring.h>
 #include <QShowEvent>
 #include <QHideEvent>
-#include <QTableWidget>
 
 #include <vector>
 #include <list>
@@ -373,9 +372,6 @@ public slots:
     listOfLibraries *getAddOnLibs();
 
     bool isSystem(libfwbuilder::FWObject *obj);
-
-    static void configureQTableForPrint(QTableWidget &tbl,
-                                        printerStream &pr_stream);
 
  protected:
 
