@@ -349,29 +349,23 @@ bool PolicyCompiler_pf::fillDirection::processNext()
  */
     if (rule->getDirectionAsString()=="" || rule->getInterfaceId()==-1 )
     {
-	if ( compiler->getCachedFwOpt()->getBool("pass_all_out") )
-        {
-            if (!rule->isFallback()) rule->setDirection( PolicyRule::Inbound );
-	} else 
-        {
-	    rule->setDirection( PolicyRule::Both );
+        rule->setDirection( PolicyRule::Both );
 
-	    Address  *src = compiler->getFirstSrc(rule);
-	    Address  *dst = compiler->getFirstDst(rule);
-	    //int fwid = compiler->getFwId();
+        Address  *src = compiler->getFirstSrc(rule);
+        Address  *dst = compiler->getFirstDst(rule);
+        //int fwid = compiler->getFwId();
 
-            if (src==NULL || dst==NULL)
-                compiler->abort("Broken src or dst in rule "+rule->getLabel());
+        if (src==NULL || dst==NULL)
+            compiler->abort("Broken src or dst in rule "+rule->getLabel());
 
-            if (!src->isAny() && !dst->isAny() &&
-                compiler->complexMatch(compiler->fw, src) &&
-                compiler->complexMatch(compiler->fw, dst)) return true;
+        if (!src->isAny() && !dst->isAny() &&
+            compiler->complexMatch(compiler->fw, src) &&
+            compiler->complexMatch(compiler->fw, dst)) return true;
 
-            if (!src->isAny() && compiler->complexMatch(compiler->fw, src))
-                rule->setDirection( PolicyRule::Outbound );
-            if (!dst->isAny() && compiler->complexMatch(compiler->fw, dst))
-                rule->setDirection( PolicyRule::Inbound );
-	}
+        if (!src->isAny() && compiler->complexMatch(compiler->fw, src))
+            rule->setDirection( PolicyRule::Outbound );
+        if (!dst->isAny() && compiler->complexMatch(compiler->fw, dst))
+            rule->setDirection( PolicyRule::Inbound );
     }
     return true;
 }
@@ -466,55 +460,20 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
             combined_ruleset->push_front(r);
         }
 
-        if ( getCachedFwOpt()->getBool("pass_all_out") )
-        {
-            PolicyRule *r;
-            FWOptions *ruleopt;
-
-            r= PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );
-            temp_ruleset->add(r);
-            r->setAction(PolicyRule::Accept);
-            r->setLogging( getCachedFwOpt()->getBool("fallback_log") );
-            r->setDirection(PolicyRule::Outbound);
-            r->setPosition(10000);
-            r->setComment("   fallback rule ");
-            r->setHidden(true);
-            r->setFallback(true);
-            r->setLabel("fallback rule");
-            combined_ruleset->push_back(r);
-
-            r= PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );
-            temp_ruleset->add(r);
-            r->setAction(PolicyRule::Deny);
-            r->setLogging( getCachedFwOpt()->getBool("fallback_log") );
-            r->setDirection(PolicyRule::Inbound);
-            r->setPosition(10001);
-            r->setComment("   fallback rule ");
-            r->setHidden(true);
-            r->setFallback(true);
-            r->setLabel("fallback rule");
-            ruleopt = r->getOptionsObject();
-            ruleopt->setBool("stateless", true);
-            combined_ruleset->push_back(r);
-        } else
-        {
-            PolicyRule *r=
-                PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );
-            FWOptions *ruleopt;
-
-            temp_ruleset->add(r);
-            r->setAction(PolicyRule::Deny);
-            r->setLogging( getCachedFwOpt()->getBool("fallback_log") );
-            r->setDirection(PolicyRule::Both);
-            r->setPosition(10000);
-            r->setComment("   fallback rule ");
-            r->setHidden(true);
-            r->setFallback(true);
-            r->setLabel("fallback rule");
-            ruleopt = r->getOptionsObject();
-            ruleopt->setBool("stateless", true);
-            combined_ruleset->push_back(r);
-        }
+        PolicyRule *r = PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );
+        FWOptions *ruleopt;
+        temp_ruleset->add(r);
+        r->setAction(PolicyRule::Deny);
+        r->setLogging( getCachedFwOpt()->getBool("fallback_log") );
+        r->setDirection(PolicyRule::Both);
+        r->setPosition(10000);
+        r->setComment("   fallback rule ");
+        r->setHidden(true);
+        r->setFallback(true);
+        r->setLabel("fallback rule");
+        ruleopt = r->getOptionsObject();
+        ruleopt->setBool("stateless", true);
+        combined_ruleset->push_back(r);
     }
 }
 

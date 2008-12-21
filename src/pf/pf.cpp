@@ -1010,6 +1010,10 @@ int main(int argc, char * const *argv)
                         << " || exit 1"
                         << endl;
         }
+
+        if (options->getBool("pf_flush_states") && fw->getStr("version")=="4.x")
+            fw_file << "$PFCTL -F states" << endl;
+
         fw_file << endl;
         fw_file << "#" << endl;
         fw_file << "# Epilog script" << endl;

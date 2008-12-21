@@ -126,75 +126,6 @@
         </widget>
        </item>
        <item row="3" column="0" colspan="2" >
-        <widget class="QGroupBox" name="buttonGroup2" >
-         <property name="title" >
-          <string/>
-         </property>
-         <property name="flat" >
-          <bool>true</bool>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_4" >
-          <item row="0" column="0" >
-           <widget class="QLabel" name="label571" >
-            <property name="text" >
-             <string>There are two ways compiler can generate code for rules in the Global Policy: it can either create two pf rules to control both incoming and outgoing packets for each rule, or it can create only one pf rule for incoming packets and permit all outgoing ones.You get more control over the packets crossing the firewall in the first mode, but generated script is going to be smaller if you choose the second.</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-            <property name="wordWrap" >
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" >
-           <layout class="QHBoxLayout" name="horizontalLayout_5" >
-            <item>
-             <spacer name="horizontalSpacer_2" >
-              <property name="orientation" >
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0" >
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="pf_in_out_code" >
-              <property name="text" >
-               <string>Generate both 'in' and 'out' rules</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="pf_pass_all_out" >
-              <property name="text" >
-               <string>Pass all outgoing</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_3" >
-              <property name="orientation" >
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0" >
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="4" column="0" colspan="2" >
         <widget class="QGroupBox" name="groupBox" >
          <property name="title" >
           <string/>
@@ -203,18 +134,27 @@
           <bool>true</bool>
          </property>
          <layout class="QGridLayout" name="gridLayout_6" >
-          <property name="horizontalSpacing" >
+          <property name="spacing" >
            <number>20</number>
           </property>
-          <property name="verticalSpacing" >
-           <number>-1</number>
-          </property>
-          <item row="0" column="0" colspan="3" >
-           <widget class="QCheckBox" name="pf_accept_new_tcp_with_no_syn" >
-            <property name="text" >
-             <string>Accept TCP sessions opened prior to firewall restart</string>
+          <item row="4" column="2" >
+           <spacer name="spacer" >
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
             </property>
-           </widget>
+            <property name="sizeType" >
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0" >
+             <size>
+              <width>354</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="4" column="1" >
+           <widget class="QComboBox" name="pf_optimization" />
           </item>
           <item row="1" column="0" colspan="3" >
            <widget class="QCheckBox" name="pf_modulate_state" >
@@ -226,22 +166,6 @@
             </property>
             <property name="text" >
              <string>Modulate state for all stateful rules (applies only to TCP services)</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" colspan="3" >
-           <widget class="QCheckBox" name="pf_check_shadowing" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="toolTip" >
-             <string>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</string>
-            </property>
-            <property name="text" >
-             <string>Detect rule shadowing in policy</string>
             </property>
            </widget>
           </item>
@@ -261,6 +185,22 @@
             </property>
            </widget>
           </item>
+          <item row="2" column="0" colspan="3" >
+           <widget class="QCheckBox" name="pf_check_shadowing" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip" >
+             <string>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</string>
+            </property>
+            <property name="text" >
+             <string>Detect rule shadowing in policy</string>
+            </property>
+           </widget>
+          </item>
           <item row="4" column="0" >
            <widget class="QLabel" name="textLabel3" >
             <property name="text" >
@@ -274,24 +214,12 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="1" >
-           <widget class="QComboBox" name="pf_optimization" />
-          </item>
-          <item row="4" column="2" >
-           <spacer name="spacer" >
-            <property name="orientation" >
-             <enum>Qt::Horizontal</enum>
+          <item row="0" column="0" colspan="3" >
+           <widget class="QCheckBox" name="pf_accept_new_tcp_with_no_syn" >
+            <property name="text" >
+             <string>Accept TCP sessions opened prior to firewall restart</string>
             </property>
-            <property name="sizeType" >
-             <enum>QSizePolicy::Expanding</enum>
-            </property>
-            <property name="sizeHint" stdset="0" >
-             <size>
-              <width>354</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
+           </widget>
           </item>
          </layout>
          <zorder>spacer</zorder>
@@ -301,10 +229,9 @@
          <zorder>pf_check_shadowing</zorder>
          <zorder>textLabel3</zorder>
          <zorder>pf_accept_new_tcp_with_no_syn</zorder>
-         <zorder>groupBox_2</zorder>
         </widget>
        </item>
-       <item row="5" column="0" colspan="2" >
+       <item row="4" column="0" colspan="2" >
         <widget class="QGroupBox" name="groupBox_2" >
          <property name="title" >
           <string/>
@@ -347,7 +274,7 @@ with this address:</string>
          </layout>
         </widget>
        </item>
-       <item row="6" column="1" >
+       <item row="5" column="1" >
         <spacer name="verticalSpacer" >
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -2104,13 +2031,39 @@ with this address:</string>
       <attribute name="title" >
        <string>Script</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="margin" >
-        <number>6</number>
-       </property>
-       <property name="spacing" >
+      <layout class="QGridLayout" name="gridLayout_4" >
+       <property name="verticalSpacing" >
         <number>20</number>
        </property>
+       <item row="0" column="2" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0" colspan="3" >
+        <widget class="QLabel" name="textLabel8" >
+         <property name="text" >
+          <string>These options enable auxiliary sections in the generated shell script.</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
        <item rowspan="3" row="2" column="0" >
         <spacer>
          <property name="orientation" >
@@ -2127,10 +2080,10 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="4" column="1" colspan="2" >
-        <widget class="QCheckBox" name="pf_manage_virtual_addr" >
+       <item row="2" column="1" colspan="2" >
+        <widget class="QCheckBox" name="pf_debug" >
          <property name="text" >
-          <string>Add virtual addresses for NAT</string>
+          <string>Turn debugging on in generated script</string>
          </property>
         </widget>
        </item>
@@ -2141,23 +2094,17 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1" colspan="2" >
-        <widget class="QCheckBox" name="pf_debug" >
+       <item row="4" column="1" colspan="2" >
+        <widget class="QCheckBox" name="pf_manage_virtual_addr" >
          <property name="text" >
-          <string>Turn debugging on in generated script</string>
+          <string>Add virtual addresses for NAT</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="3" >
-        <widget class="QLabel" name="textLabel8" >
+       <item row="5" column="1" colspan="2" >
+        <widget class="QCheckBox" name="pf_flush_states" >
          <property name="text" >
-          <string>These options enable auxiliary sections in the generated shell script.</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>true</bool>
+          <string>Flush pf states after reloading rules</string>
          </property>
         </widget>
        </item>
@@ -2173,22 +2120,6 @@ with this address:</string>
           <size>
            <width>20</width>
            <height>230</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="2" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>20</width>
-           <height>20</height>
           </size>
          </property>
         </spacer>
@@ -2318,8 +2249,6 @@ with this address:</string>
   <tabstop>compiler</tabstop>
   <tabstop>compilerArgs</tabstop>
   <tabstop>outputFileName</tabstop>
-  <tabstop>pf_in_out_code</tabstop>
-  <tabstop>pf_pass_all_out</tabstop>
   <tabstop>buttonOk</tabstop>
   <tabstop>buttonCancel</tabstop>
   <tabstop>pf_scrub_no_df</tabstop>

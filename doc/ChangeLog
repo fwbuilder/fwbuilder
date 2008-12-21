@@ -1,3 +1,25 @@
+2008-12-21  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_pf.cpp (PolicyCompiler_pf::addDefaultPolicyRule):
+	Deprecated options "generate commands for both in and out" and
+	"pass all outgoing" in compiler for PF. Before, user could choose
+	whether compiler was to generate only commands to match inbound
+	packets or both inbound and outbound. The distinction between
+	these two modes became very minimal in the recent versions of
+	fwbuilder because algorithm was mostly controlled by the setting
+	of "direction" in the policy rules. Now these two options have
+	been removed completely, the behavior of the compiler is as if
+	option "generate both in and out" was used.
+
+	* pf.cpp (main): Compiler can add command "pfctl -F states" after
+	command "pfctl -f file.conf" to flush states that existed in
+	memory from sessions opened prior to the policy reload. The reason
+	is that some of these sessions might be denied by the new policy,
+	but if state is not flushed, they will still work after policy
+	reload. This is optional and is controller by checkbox in the
+	"Script" tab of the "advanced" settings dialog for the PF
+	firewall.
+
 2008-12-20  vadim  <vadim@vk.crocodile.org>
 
 	* PrintingController.cpp (PrintingController::addObjectsToTable):
