@@ -96,8 +96,8 @@ string NATCompiler_ipt::PrintRule::_createChain(const string &chain)
 
     if ( ipt_comp->minus_n_commands->count(chain)==0 )
     {
-        res << (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
-	res << "-t nat -N " << chain << endl;
+        string ipt_cmd = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
+	res << ipt_cmd << "-t nat -N " << chain << endl;
 	(*(ipt_comp->minus_n_commands))[chain] = true;
     }
     return res.str();
