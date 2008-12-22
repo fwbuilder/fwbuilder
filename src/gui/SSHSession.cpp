@@ -387,6 +387,7 @@ void SSHSession::stopHeartBeat()
 void SSHSession::heartBeat()
 {
     if (fwbdebug) qDebug("SSHSession::heartBeat");
+    proc->write("\n");
     readFromStderr();
     readFromStdout();
     if (endOfCopy && closeStdin)

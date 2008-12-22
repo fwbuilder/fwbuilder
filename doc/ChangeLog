@@ -1,5 +1,11 @@
 2008-12-21  vadim  <vadim@vk.crocodile.org>
 
+	* SSHSession.cpp (SSHSession::heartBeat): built-in installer
+	periodically "pings" the other end to keep ssh session alive. This
+	helps recreate state in the firewall state table if it is cleared
+	when rules are reloaded, which in turn prevents installer from
+	hanging.
+
 	* PolicyCompiler_pf.cpp (PolicyCompiler_pf::addDefaultPolicyRule):
 	Deprecated options "generate commands for both in and out" and
 	"pass all outgoing" in compiler for PF. Before, user could choose

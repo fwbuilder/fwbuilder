@@ -13900,7 +13900,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id47B07CD419082" host_OS="openbsd" inactive="False" lastCompiled="1202686003" lastInstalled="1202686020" lastModified="1202685992" platform="pf" version="4.x" name="openbsd-4.2" comment="firewall protects host it is running on&#10;&#10;Note that we set output file name to  /tmp/labfw.fw to test what compiler is going to do (since it generates three files rather than one), as well as to test installer in this case&#10;" ro="False">
+      <Firewall id="id47B07CD419082" host_OS="openbsd" inactive="False" lastCompiled="1229922308" lastInstalled="1229922366" lastModified="1229921217" platform="pf" version="4.x" name="openbsd-4.2" comment="firewall protects host it is running on&#10;&#10;Note that we set output file name to  /tmp/labfw.fw to test what compiler is going to do (since it generates three files rather than one), as well as to test installer in this case&#10;" ro="False">
         <NAT id="id47B07D4319082" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id47B07CDA19082" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id47B07CDB19082" disabled="True" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -14105,6 +14105,7 @@
           <Option name="inst_cmdline"></Option>
           <Option name="inst_script"></Option>
           <Option name="install_script"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">0</Option>
@@ -14120,7 +14121,7 @@
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">False</Option>
-          <Option name="mgmt_addr">10.3.14.42</Option>
+          <Option name="mgmt_addr">10.3.14.30</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_iochains_for_any">False</Option>
@@ -14143,6 +14144,7 @@
           <Option name="pf_do_scrub">True</Option>
           <Option name="pf_do_timeout_frag">False</Option>
           <Option name="pf_do_timeout_interval">False</Option>
+          <Option name="pf_flush_states">True</Option>
           <Option name="pf_icmp_error">0</Option>
           <Option name="pf_icmp_first">0</Option>
           <Option name="pf_limit_frags">5000</Option>
@@ -14192,6 +14194,7 @@
           <Option name="platform">iptables</Option>
           <Option name="prolog_place">fw_file</Option>
           <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
           <Option name="script_env_path"></Option>
           <Option name="snmp_contact"></Option>
           <Option name="snmp_description"></Option>
