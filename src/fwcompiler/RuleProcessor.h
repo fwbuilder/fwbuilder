@@ -4,7 +4,7 @@
 
                  Copyright (C) 2002 NetCitadel, LLC
 
-  Author:  Vadim Zaliva  <lord@crocodile.org> ,  Vadim Kurland <vadim@vk.crocodile.org>
+  Author:  Vadim Zaliva  <lord@crocodile.org> ,  Vadim Kurland <vadim@fwbuilder.org>
 
   $Id$
 
@@ -47,7 +47,7 @@ namespace fwcompiler
      * This is abstract class. Implementator should subclass it
      * and implement processNext() method.
      *
-     * @author Vadim Zaliva <lord@crocodile.org>, Vadim Kurland <vadim@vk.crocodile.org>
+     * @author Vadim Zaliva <lord@crocodile.org>, Vadim Kurland <vadim@fwbuilder.org>
      */
 
     class BasicRuleProcessor

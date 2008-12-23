@@ -4,7 +4,7 @@
 
                  Copyright (C) 2001 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@vk.crocodile.org
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   $Id$
 

@@ -2,9 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2000 NetCitadel, LLC
+                 Copyright (C) 2008 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@vk.crocodile.org
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   $Id$
 
@@ -33,6 +33,7 @@
 #include <fwbuilder/libfwbuilder-config.h>
 
 namespace libfwbuilder {
+    class InetAddr;
     class FWObject;
     class Address;
     class IPv4;
@@ -56,6 +57,8 @@ namespace libfwbuilder
         bool recognize_multicasts;
         bool ipv6;
         
+        bool checkComplexMatchForSingleAddress(const InetAddr *addr1,
+                                               FWObject *obj2);
         bool checkComplexMatchForSingleAddress(Address *obj1, FWObject *obj2);
         
 public:

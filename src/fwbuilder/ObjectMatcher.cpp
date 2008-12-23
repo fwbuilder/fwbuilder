@@ -4,7 +4,7 @@
 
                  Copyright (C) 2008 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@vk.crocodile.org
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   $Id$
 
@@ -28,6 +28,7 @@
 #include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/ObjectMatcher.h"
 
+#include "fwbuilder/InetAddr.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Firewall.h"
@@ -68,31 +69,26 @@ bool ObjectMatcher::complexMatch(Address *obj1, Address *obj2)
     return obj1->dispatchComplexMatch(this, obj2);
 }
 
-bool ObjectMatcher::checkComplexMatchForSingleAddress(Address *obj1,
+bool ObjectMatcher::checkComplexMatchForSingleAddress(const InetAddr *obj1_addr,
                                                       FWObject *obj2)
 {
-    const InetAddr *obj1_addr = obj1->getAddressPtr();
-    // obj1_addr may be NULL if obj1 does not have any real address,
-    // one case when this happens is when obj1 is physAddress
-    if (obj1_addr)
-    {
-        if (!obj1_addr->isAny() && 
-            ( (recognize_broadcasts && obj1_addr->isBroadcast()) || 
-              (recognize_multicasts && obj1_addr->isMulticast()) )
-        ) return true;
+    if (!obj1_addr->isAny() && 
+        ( (recognize_broadcasts && obj1_addr->isBroadcast()) || 
+          (recognize_multicasts && obj1_addr->isMulticast()) )
+    ) return true;
 
-        string addr_type = (ipv6) ? IPv6::TYPENAME : IPv4::TYPENAME;
-        list<FWObject*> all_addresses = obj2->getByTypeDeep(addr_type);
-        for (list<FWObject*>::iterator it = all_addresses.begin();
-             it != all_addresses.end(); ++it)
+    string addr_type = (ipv6) ? IPv6::TYPENAME : IPv4::TYPENAME;
+    list<FWObject*> all_addresses = obj2->getByTypeDeep(addr_type);
+    for (list<FWObject*>::iterator it = all_addresses.begin();
+         it != all_addresses.end(); ++it)
+    {
+        Address *addr_obj = Address::cast(*it);
+        if ( *(addr_obj->getAddressPtr())==*(obj1_addr) ) return true;
+        const InetAddr *addr = addr_obj->getAddressPtr();
+        const InetAddr *netm = addr_obj->getNetmaskPtr();
+        if (addr)
         {
-            Address *addr_obj = Address::cast(*it);
-            if ( *(addr_obj->getAddressPtr())==*(obj1_addr) ) return true;
-            const InetAddr *addr = addr_obj->getAddressPtr();
-            const InetAddr *netm = addr_obj->getNetmaskPtr();
-            if (addr)
-            {
-                InetAddrMask n(*addr, *netm);
+            InetAddrMask n(*addr, *netm);
 /*
  * bug #1040773: need to match network address as well as
  * broadcast. Packets sent to the network address (192.168.1.0 for net
@@ -100,13 +96,23 @@ bool ObjectMatcher::checkComplexMatchForSingleAddress(Address *obj1,
  * broadcast packets (sent to 192.168.1.1255 for the same net)
  *
  */
-                if (recognize_broadcasts && (
-                        *(n.getNetworkAddressPtr())==*(obj1_addr) ||
-                        *(n.getBroadcastAddressPtr())==*(obj1_addr)
-                    )) return true;
-            }
+            if (recognize_broadcasts && (
+                    *(n.getNetworkAddressPtr())==*(obj1_addr) ||
+                    *(n.getBroadcastAddressPtr())==*(obj1_addr)
+                )) return true;
         }
     }
+    return false;
+}
+
+bool ObjectMatcher::checkComplexMatchForSingleAddress(Address *obj1,
+                                                      FWObject *obj2)
+{
+    const InetAddr *obj1_addr = obj1->getAddressPtr();
+    // obj1_addr may be NULL if obj1 does not have any real address,
+    // one case when this happens is when obj1 is physAddress
+    if (obj1_addr)
+        return checkComplexMatchForSingleAddress(obj1_addr, obj2);
 
     return false;
 }
@@ -222,17 +228,18 @@ bool ObjectMatcher::checkComplexMatch(AddressRange *obj1, FWObject *obj2)
     const InetAddr &range_start = obj1->getRangeStart();
     const InetAddr &range_end = obj1->getRangeEnd();
 
-    if (!range_start.isAny() && 
-        ( (recognize_broadcasts && range_start.isBroadcast()) || 
-          (recognize_multicasts && range_start.isMulticast()) )
-    ) return true;
-
-    if (!range_end.isAny() && 
-        ( (recognize_broadcasts && range_end.isBroadcast()) || 
-          (recognize_multicasts && range_end.isMulticast()) )
-    ) return true;
-
-
-    return checkComplexMatchForSingleAddress(obj1, obj2);
+    string addr_type = (ipv6) ? IPv6::TYPENAME : IPv4::TYPENAME;
+    list<FWObject*> all_addresses = obj2->getByTypeDeep(addr_type);
+    for (list<FWObject*>::iterator it = all_addresses.begin();
+         it != all_addresses.end(); ++it)
+    {
+        const InetAddr *addr = Address::cast(*it)->getAddressPtr();
+        if (addr)
+        {
+            if (range_start == *addr || *addr == range_end) return true;
+            if (range_start < *addr && *addr < range_end) return true;
+        }
+    }
+    return false;
 }
 

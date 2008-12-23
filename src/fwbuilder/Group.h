@@ -4,7 +4,7 @@
 
                  Copyright (C) 2000 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@vk.crocodile.org
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   $Id$
 
@@ -23,10 +23,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-
-/*
- * $Id$
- */
 
 #ifndef __GROUP_HH_FLAG__
 #define __GROUP_HH_FLAG__
