@@ -7,6 +7,7 @@ VERSION = $$SO_VERSION
 SOURCES  = 	Compiler.cpp \
 			Compiler_helpers.cpp \
 			Compiler_ops.cpp \
+			Compiler_object_match.cpp \
 			Preprocessor.cpp \
 			NATCompiler.cpp \
 			OSConfigurator.cpp \

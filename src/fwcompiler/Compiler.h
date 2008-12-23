@@ -46,7 +46,13 @@ namespace libfwbuilder {
     class Address;
     class Service;
     class Interval;
+    class IPv4;
+    class IPv6;
     class Network;
+    class NetworkIPv6;
+    class AddressRange;
+    class Host;
+    class physAddress;
     class Firewall;
     class Interface;
     class Rule;
@@ -127,14 +133,14 @@ namespace fwcompiler {
                                     libfwbuilder::FWObject *s,
                                     std::list<libfwbuilder::FWObject*> &ol);
 
-        bool _complexMatchWithInterface(libfwbuilder::Address   *obj1,
-                                        libfwbuilder::Interface *iface,
-                                        bool recognize_broadcasts=true);
+        /* bool _complexMatchWithInterface(libfwbuilder::Address   *obj1, */
+        /*                                 libfwbuilder::Interface *iface, */
+        /*                                 bool recognize_broadcasts=true); */
 
-        bool _complexMatchWithAddress(const libfwbuilder::InetAddr *obj1_addr,
-                                      libfwbuilder::Interface *iface,
-                                      const std::string &address_type,
-                                      bool recognize_broadcasts);
+        /* bool _complexMatchWithAddress(const libfwbuilder::InetAddr *obj1_addr, */
+        /*                               libfwbuilder::Interface *iface, */
+        /*                               const std::string &address_type, */
+        /*                               bool recognize_broadcasts); */
 
         bool checkIfAddressesMatch(const libfwbuilder::Address *a1,
                                    const libfwbuilder::Address *a2);
@@ -553,6 +559,7 @@ protected:
                           bool recognize_broadcasts=true,
                           bool recognize_multicasts=true);
 
+        
         /**
          * This method finds interface of obj2 (which is usually
          * firewall object, but not necessarily so) which is connected
@@ -560,8 +567,8 @@ protected:
          * obj1 is a network object, in this case it looks for the
          * interface that belongs to that network.
          */
-        libfwbuilder::Interface* findInterfaceFor(const libfwbuilder::Address *obj1,
-                                                  const libfwbuilder::Address *obj2);
+        libfwbuilder::Interface* findInterfaceFor(
+            const libfwbuilder::Address *o1, const libfwbuilder::Address *o2);
         
         /**
          * This method finds an interface of the firewall obj2 which
@@ -573,8 +580,8 @@ protected:
          * If obj1 is an Interface object, then corresponding Interface
          * object belonging to the firewall is returned (if found).
          */
-        libfwbuilder::FWObject* findAddressFor(const libfwbuilder::Address *o1,
-                                               const libfwbuilder::Address *o2);
+        libfwbuilder::FWObject* findAddressFor(
+            const libfwbuilder::Address *o1, const libfwbuilder::Address *o2);
         
 
         /**

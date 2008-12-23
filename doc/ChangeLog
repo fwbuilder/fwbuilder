@@ -1,3 +1,11 @@
+2008-12-22  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectMatcher.h (libfwbuilder): refactored methods
+	Compiler::complexMatch() and related into separate class
+	ObjectMatcher in fwbuilder. Using duple dispatch pattern to
+	properly dispatch calls depending on the obbject type to avoid
+	multiple 'if' by object type.
+
 2008-12-15  vadim  <vadim@vk.crocodile.org>
 
 	* RuleSet.h (libfwbuilder): changes for bug #2431602: "Feature

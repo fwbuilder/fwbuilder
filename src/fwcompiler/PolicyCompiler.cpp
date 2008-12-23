@@ -497,11 +497,12 @@ Rule* PolicyCompiler::getDifference(PolicyRule &r1, PolicyRule &r2)
 
 
 list<FWObject*>::iterator 
-PolicyCompiler::find_more_specific_rule(PolicyRule *rule,
-					bool check_interface,
-					const list<FWObject*>::iterator &start_here,
-					const list<FWObject*>::iterator &stop_here,
-					PolicyRule **intersection)
+PolicyCompiler::find_more_specific_rule(
+    PolicyRule *rule,
+    bool check_interface,
+    const list<FWObject*>::iterator &start_here,
+    const list<FWObject*>::iterator &stop_here,
+    PolicyRule **intersection)
 {
     list<FWObject*>::iterator  j;
     for (j=start_here ; j!=stop_here; j++) {
@@ -513,10 +514,10 @@ PolicyCompiler::find_more_specific_rule(PolicyRule *rule,
 		if (! intersect( *rule, *r )) continue;
 
 		if (debug>=9) {
-		    cerr << "*********  getIntersection: --------------------\n";
+		    cerr << "*********  getIntersection: ------------------\n";
 		    cerr << debugPrintRule(rule);
 		    cerr << debugPrintRule(r);
-		    cerr << "------------------------------------------------\n";
+		    cerr << "----------------------------------------------\n";
 		}
 
 		PolicyRule *ir=new PolicyRule();

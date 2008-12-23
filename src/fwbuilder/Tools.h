@@ -68,14 +68,6 @@ namespace libfwbuilder
     void init();
 
     /**
-     * Reentrant-safe version of strtok. It is available on Linux and *BSD,
-     * but does not exist on Windows. We reimplement it if it does not exist.
-     *
-     * pthread_win32 defines macro "strtok_r", so we can't use this name
-     */
-    char *cxx_strtok_r(char *s, const char *delim, char **save_ptr);
-
-    /**
      * case insensitive string comparison. We reimplement it on win32
      */
     int   cxx_strcasecmp(const char *s1, const char *s2);

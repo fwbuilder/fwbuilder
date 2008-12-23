@@ -33,6 +33,7 @@
 #include <fwbuilder/Address.h>
 #include <fwbuilder/IPv4.h>
 #include <fwbuilder/FWOptions.h>
+#include <fwbuilder/ObjectMatcher.h>
 
 namespace libfwbuilder
 {
@@ -88,7 +89,10 @@ class Host : public Address
     virtual int countInetAddresses(bool skip_loopback) const;
 
     virtual bool isPrimaryObject() const { return true; }
-    
+
+    virtual bool dispatchComplexMatch(ObjectMatcher *om, FWObject *obj)
+    { return om->checkComplexMatch(this, obj); }
+
     protected:
     
     Management *mgmt;

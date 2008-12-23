@@ -40,6 +40,7 @@
 
 #include <fwbuilder/libfwbuilder-config.h>
 #include <fwbuilder/FWException.h>
+#include <fwbuilder/ObjectMatcher.h>
 
 namespace libfwbuilder
 {
@@ -215,7 +216,8 @@ public:
      * ones are issued. All children of 'this' are destroyed and new ones
      * are created recursively as copies of corresponding children of obj.
      */
-    virtual FWObject& duplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+    virtual FWObject& duplicate(const FWObject *obj,
+                                bool preserve_id = true) throw(FWException);
     
     /**
      * This method works just like  duplicate, except it does not destroy
@@ -351,7 +353,7 @@ public:
     /*
      * verify whether given object type is approppriate as a child
      */
-    virtual bool  validateChild(FWObject *o);
+    virtual bool validateChild(FWObject *o);
 
     /**
      * forcefully destroys all objects in the subtree under this,
@@ -379,15 +381,22 @@ public:
      * and itslef. If it is true, method proceeds to all chidren of all
      * objects starting from current one.
      */
-    virtual FWObject* getById  (int id, bool recursive=false);
+    virtual FWObject* getById(int id, bool recursive=false);
 
 
     /**
-     * Returns list of direct children of current object
-     * whose getTypeName() same as given.
-     * If not found, empty list is returned.
+     * Returns list of direct children of current object whose
+     * getTypeName() is equal type_name.  If not found, empty list is
+     * returned.
      */
     virtual std::list<FWObject*> getByType(const std::string &type_name) const;
+
+    /**
+     * Returns list of children of current object whose getTypeName()
+     * is equal type_name.  If not found, empty list is
+     * returned. Search recursively including all direct children of this.
+     */
+    virtual std::list<FWObject*> getByTypeDeep(const std::string &type_name) const;
 
     /**
      * Returns list of direct children of current object
@@ -450,10 +459,24 @@ public:
      * interface, rulesets, rule elements and rules.
      */
     virtual bool isPrimaryObject() const;
-    
+
+    /**
+     * virtual dispatch method for the double dispatch
+     * pattern. Compiler::complexMatch() calls this virt. method,
+     * which in turn calls Compiler::checkComplexMatch where first
+     * argument has specific type. Only classes for which we implement
+     * special algorithm in corresponding checkComplexMatch() have
+     * virtual dispatchComplexMatch reimplemented. For other classes
+     * this base method is called (which always returns false).
+     */
+    virtual bool dispatchComplexMatch(ObjectMatcher*, FWObject*)
+    { return false; }
+
     // Attributes iterator
-    std::map<std::string, std::string>::const_iterator dataBegin() { return data.begin(); }
-    std::map<std::string, std::string>::const_iterator dataEnd  () { return data.end();   }
+    std::map<std::string, std::string>::const_iterator dataBegin()
+    { return data.begin(); }
+    std::map<std::string, std::string>::const_iterator dataEnd()
+    { return data.end();   }
 
 };
 

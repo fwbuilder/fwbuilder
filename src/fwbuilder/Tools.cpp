@@ -137,42 +137,6 @@ string substituteMacros(const string &source, const map<string, string> &macros,
     return res;
 }
 
-char *cxx_strtok_r(char *s, const char *delim, char **save_ptr)
-{
-#if !defined(HAVE_STRTOK_R) && !defined(HAVE_STRTOK_S)
-    char *token;
-
-    token = 0;     /* Initialize to no token. */
-
-    if (s == 0) {  			/* If not first time called... */
-        s = *save_ptr;          /* restart from where we left off. */
-    }
-        
-    if (s != 0) { 	/* If not finished... */
-        *save_ptr = 0;
-
-        s += strspn(s, delim); /* Skip past any leading delimiters. */
-        if (*s != '\0') {      /* We have a token. */
-            token = s;
-            *save_ptr = strpbrk(token, delim); /* Find token's end. */
-            if (*save_ptr != 0) {
-                /* Terminate the token and make SAVE_PTR point past it.  */
-                *(*save_ptr)++ = '\0';
-            }
-        }
-    }
-    
-    return token;
-#else
-#ifdef HAVE_STRTOK_S
-    return strtok_s(s, delim, save_ptr);
-#else
-//    return ::strtok_r(s, delim, save_ptr);
-    return strtok_r(s, delim, save_ptr);
-#endif
-#endif
-}
-
 int  cxx_strcasecmp(const char *s1, const char *s2)
 {
 #ifndef _WIN32

@@ -4,9 +4,9 @@
 
                  Copyright (C) 2008 NetCitadel, LLC
 
-  Author:  Vadim Zaliva lord@crocodile.org
+  Author:  Vadim Kurland vadim@fwbuilder.org
 
-  $Id: FWObjectDatabase.cpp 193 2008-09-24 13:20:49Z vadim $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms

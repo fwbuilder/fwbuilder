@@ -32,6 +32,7 @@
 #include <fwbuilder/Address.h>
 #include <fwbuilder/physAddress.h>
 #include <fwbuilder/FWException.h>
+#include <fwbuilder/ObjectMatcher.h>
 
 namespace libfwbuilder
 {
@@ -174,7 +175,10 @@ public:
         virtual int countInetAddresses(bool skip_loopback) const;
     
         virtual bool isPrimaryObject() const { return false; }
-    };
+
+        virtual bool dispatchComplexMatch(ObjectMatcher *om, FWObject *obj)
+        { return om->checkComplexMatch(this, obj); }
+};
 
 }
 

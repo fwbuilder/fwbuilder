@@ -32,6 +32,7 @@
 #include <fwbuilder/InetAddrMask.h>
 #include <fwbuilder/Address.h>
 #include <fwbuilder/FWException.h>
+#include <fwbuilder/ObjectMatcher.h>
 
 namespace libfwbuilder
 {
@@ -72,6 +73,9 @@ public:
     virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0);
 
     virtual bool isPrimaryObject() const;
+
+    virtual bool dispatchComplexMatch(ObjectMatcher *om, FWObject *obj)
+    { return om->checkComplexMatch(this, obj); }
 };
 
 }

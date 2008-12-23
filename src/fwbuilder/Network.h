@@ -31,6 +31,7 @@
 #include <fwbuilder/InetAddrMask.h>
 #include <fwbuilder/InetAddr.h>
 #include <fwbuilder/InetAddrMask.h>
+#include <fwbuilder/ObjectMatcher.h>
 
 namespace libfwbuilder
 {
@@ -66,6 +67,10 @@ public:
     virtual void setAddressNetmask(const std::string& s);
 
     virtual bool isPrimaryObject() const { return true; }
+
+    virtual bool dispatchComplexMatch(ObjectMatcher *om, FWObject *obj)
+    { return om->checkComplexMatch(this, obj); }
+
 };
 
 }

@@ -29,6 +29,7 @@
 
 #include <fwbuilder/FWObject.h>
 #include <fwbuilder/Address.h>
+#include <fwbuilder/ObjectMatcher.h>
 
 namespace libfwbuilder
 {
@@ -55,6 +56,9 @@ class physAddress : public Address
     bool isAny() const;
 
     virtual bool isPrimaryObject() const { return false; }
+
+    virtual bool dispatchComplexMatch(ObjectMatcher *om, FWObject *obj)
+    { return om->checkComplexMatch(this, obj); }
 };
 
 }
