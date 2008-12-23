@@ -953,10 +953,10 @@ bool PolicyCompiler_ipt::singleSrcNegation::processNext()
         // note: src can be NULL if object in this rule element is a group
         // or MultiAddress
         if (src!=NULL && src->countInetAddresses(true)==1 &&
-            !compiler->complexMatch(src,compiler->fw)) 
+            !compiler->complexMatch(src, compiler->fw)) 
         {
             srcrel->setNeg(false);
-            srcrel->setBool("single_object_negation",true);
+            srcrel->setBool("single_object_negation", true);
         }
     }
 
@@ -974,10 +974,10 @@ bool PolicyCompiler_ipt::singleDstNegation::processNext()
     {
         Address *dst = compiler->getFirstDst(rule);  
         if (dst!=NULL && dst->countInetAddresses(true)==1 &&
-            !compiler->complexMatch(dst,compiler->fw)) 
+            !compiler->complexMatch(dst, compiler->fw)) 
         {
             dstrel->setNeg(false);
-            dstrel->setBool("single_object_negation",true);
+            dstrel->setBool("single_object_negation", true);
         }
     }
 
@@ -3857,6 +3857,7 @@ void PolicyCompiler_ipt::addRuleFilter()
 void PolicyCompiler_ipt::compile()
 {
     printRule=NULL;
+    string version = fw->getStr("version");
 
     cout << " Compiling ruleset " << getRuleSetName() << " for '" << my_table << "' table";
     if (ipv6) cout << ", IPv6";
@@ -4054,15 +4055,19 @@ void PolicyCompiler_ipt::compile()
     add( new processMultiAddressObjectsInDst(
              "process MultiAddress objects in Dst"));
 
-/*
- * should expand address range before splitIfSrcMatchesFw because some
- * addresses in the range may match firewall
- */
-    add( new addressRanges(              "process address ranges"   ) );
+    if (XMLTools::version_compare(version, "1.2.11") < 0)
+    {
+        /* Use module iprange for iptables v1.2.11 and later.
+         * should expand address range before splitIfSrcMatchesFw because some
+         * addresses in the range may match firewall
+         */
+        add( new addressRanges("process address ranges"));
+    }
+
     add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
-    add( new splitIfSrcMatchesFw( "split rule if src matches FW"    ) );
-    add( new splitIfDstMatchesFw( "split rule if dst matches FW"    ) );
+    add( new splitIfSrcMatchesFw("split rule if src matches FW"));
+    add( new splitIfDstMatchesFw("split rule if dst matches FW"));
 
 /*  at this point in all rules where firewall is in either src or dst,
  *  firewall is a single object in that rule element. Other rule

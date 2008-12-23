@@ -864,40 +864,43 @@ namespace fwcompiler {
         {
             protected:
             
-            bool                             init;
-            bool                             print_once_on_top;
-            bool                             minus_n_tracker_initialized;
-            std::string                      current_rule_label;
+            bool init;
+            bool print_once_on_top;
+            bool minus_n_tracker_initialized;
+            bool have_m_iprange;
+            std::string current_rule_label;
 
             void InitializeMinusNTracker();
             
             virtual std::string _createChain(const std::string &chain);
             virtual std::string _printRuleLabel(libfwbuilder::PolicyRule *r);
-
-            virtual std::string _printSrcService(libfwbuilder::RuleElementSrv  *o);
-            virtual std::string _printDstService(libfwbuilder::RuleElementSrv  *o);
+            virtual std::string _printSrcService(
+                libfwbuilder::RuleElementSrv  *o);
+            virtual std::string _printDstService(
+                libfwbuilder::RuleElementSrv  *o);
             virtual std::string _printProtocol(libfwbuilder::Service *srv);
-
             virtual std::string _printPorts(int rs,int re);
             virtual std::string _printSrcPorts(libfwbuilder::Service *srv);
             virtual std::string _printDstPorts(libfwbuilder::Service *srv);
             virtual std::string _printICMP(libfwbuilder::ICMPService *srv);
             virtual std::string _printIP(libfwbuilder::IPService *srv);
-
             virtual std::string _printTCPFlags(libfwbuilder::TCPService *srv);
-
-            virtual std::string _printAddr(libfwbuilder::Address  *o);
-            virtual std::string _printSingleObjectNegation(libfwbuilder::RuleElement *rel);
-
+            virtual std::string _printSrcAddr(libfwbuilder::RuleElement *rel,
+                                              libfwbuilder::Address *o);
+            virtual std::string _printDstAddr(libfwbuilder::RuleElement *rel,
+                                              libfwbuilder::Address *o);
+            virtual std::string _printAddr(libfwbuilder::Address *o);
+            virtual std::string _printSingleObjectNegation(
+                libfwbuilder::RuleElement *rel);
             virtual std::string _printChain(libfwbuilder::PolicyRule *r);
             virtual std::string _printTarget(libfwbuilder::PolicyRule *r);
             virtual std::string _printModules(libfwbuilder::PolicyRule *r);
-            virtual std::string _printDirectionAndInterface(libfwbuilder::PolicyRule *r);
+            virtual std::string _printDirectionAndInterface(
+                libfwbuilder::PolicyRule *r);
             virtual std::string _printMultiport(libfwbuilder::PolicyRule *r);
-
             virtual std::string _printTimeInterval(libfwbuilder::PolicyRule *r);
-
-            virtual std::string _printLogParameters(libfwbuilder::PolicyRule *r);
+            virtual std::string _printLogParameters(
+                libfwbuilder::PolicyRule *r);
             virtual std::string _printLogPrefix(const std::string &rule_n,
 						const std::string &action,
 						const std::string &interf,
@@ -907,7 +910,8 @@ namespace fwcompiler {
 						const std::string &prefix);
             virtual std::string _printLogPrefix(libfwbuilder::PolicyRule *r,
 						const std::string &prefix);
-            virtual std::string _printActionOnReject(libfwbuilder::PolicyRule *r);
+            virtual std::string _printActionOnReject(
+                libfwbuilder::PolicyRule *r);
             virtual std::string _printLimit(libfwbuilder::PolicyRule *r);
 
             public:

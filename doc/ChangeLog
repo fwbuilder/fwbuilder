@@ -1,3 +1,10 @@
+2008-12-23  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_printSrcAddr):
+	implemented feature req. #2353737 "use -m iprange". Using module
+	iprange for AddressRange objects if iptables version is set to
+	>=1.2.11.
+
 2008-12-21  vadim  <vadim@vk.crocodile.org>
 
 	* SSHSession.cpp (SSHSession::heartBeat): built-in installer

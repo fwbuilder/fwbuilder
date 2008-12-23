@@ -37,6 +37,7 @@
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/DNSName.h"
+#include "fwbuilder/AddressRange.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -1052,6 +1053,46 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
     return ostr.str();
 }
 
+string PolicyCompiler_ipt::PrintRule::_printSrcAddr(RuleElement *rel,
+                                                    Address  *o)
+{
+    string res;
+    if (AddressRange::cast(o)!=NULL)
+    {
+        AddressRange *ar = AddressRange::cast(o);
+        const InetAddr &range_start = ar->getRangeStart();
+        const InetAddr &range_end = ar->getRangeEnd();
+        if (range_start != range_end)
+        {
+            if (!have_m_iprange) { res = "-m iprange "; have_m_iprange = true; }
+            res += _printSingleObjectNegation(rel) + "--src-range ";
+            res += range_start.toString() + "-" + range_end.toString() + " ";
+            return res;
+        }
+    }
+    return string(" -s ") + _printSingleObjectNegation(rel) + _printAddr(o);
+}
+
+string PolicyCompiler_ipt::PrintRule::_printDstAddr(RuleElement *rel,
+                                                    Address  *o)
+{
+    string res;
+    if (AddressRange::cast(o)!=NULL)
+    {
+        AddressRange *ar = AddressRange::cast(o);
+        const InetAddr &range_start = ar->getRangeStart();
+        const InetAddr &range_end = ar->getRangeEnd();
+        if (range_start != range_end)
+        {
+            if (!have_m_iprange) { res = "-m iprange "; have_m_iprange = true; }
+            res += _printSingleObjectNegation(rel) + "--dst-range ";
+            res += range_start.toString() + "-" + range_end.toString() + " ";
+            return res;
+        }
+    }
+    return string(" -d ") + _printSingleObjectNegation(rel) + _printAddr(o);
+}
+
 string PolicyCompiler_ipt::PrintRule::_printAddr(Address  *o)
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
@@ -1321,6 +1362,8 @@ string PolicyCompiler_ipt::PrintRule::PolicyRuleToString(PolicyRule *rule)
 
     std::ostringstream  command_line;
 
+    have_m_iprange = false;
+
     command_line << _startRuleLine();
 
     command_line << _printChain(rule);
@@ -1371,23 +1414,17 @@ string PolicyCompiler_ipt::PrintRule::PolicyRuleToString(PolicyRule *rule)
  *
  */
             if (src->hasInetAddress() && !src->getAddressPtr()->isAny())
-            {
-                command_line << " -s " << _printSingleObjectNegation(srcrel);
-                command_line << _printAddr(src);
-            }
+                command_line << _printSrcAddr(srcrel, src);
+
         } else
-        {
-            command_line << " -s " << _printSingleObjectNegation(srcrel);
-            command_line << _printAddr(src);
-        }
+            command_line << _printSrcAddr(srcrel, src);
+
     }
     command_line << _printSrcService(srvrel);
 
     if (!dst->isAny()) 
-    {
-	command_line << " -d " << _printSingleObjectNegation(dstrel);
-	command_line << _printAddr(dst);
-    }
+	command_line << _printDstAddr(dstrel, dst);
+
     command_line << _printDstService(srvrel);
 
 /* keeping state does not apply to deny/reject 
