@@ -1,3 +1,10 @@
+2008-12-23  vadim  <vadim@vk.crocodile.org>
+
+	* InetAddrMask.cpp (InetAddrMask::dimension): fixed bug #2462927:
+	"ip6tables: objects with netmask /32 lose netmask in
+	script". InetAddrMask::dimension() returned incorrect value for
+	ipv6 addresses with mask <= 32.
+
 2008-12-22  vadim  <vadim@vk.crocodile.org>
 
 	* ObjectMatcher.h (libfwbuilder): refactored methods

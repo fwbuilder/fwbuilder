@@ -87,8 +87,8 @@ class InetAddr
     }
 
     void init_from_string(const char* data);
-    void init_from_int(int n);
-    
+    void init_from_int(unsigned int n);
+
     public:
     
     explicit InetAddr()
@@ -102,6 +102,12 @@ class InetAddr
     }
         
     virtual ~InetAddr() {}
+
+    inline unsigned int addressLengthBits() const
+    {
+        if (address_family == AF_INET) return sizeof(ipv4) * 8;
+        return sizeof(ipv6) * 8;
+    }
 
     InetAddr(const char *data) throw(FWException);
     InetAddr(int af, const char *data) throw(FWException);

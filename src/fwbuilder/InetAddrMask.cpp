@@ -161,11 +161,11 @@ unsigned int InetAddrMask::dimension()  const
  * maximum length of netmask  
  */
     int masklength = netmask->getLength();
-    if (masklength==0) return INT_MAX;
-    if (masklength>32) return INT_MAX;
+    int host_part = netmask->addressLengthBits() - masklength;
+    if (host_part>=32) return INT_MAX;  // can be >32 if ipv6
 
     unsigned int u = 1;
-    for (int i=0; i<32-masklength; ++i) u<<=1;
+    for (int i=0; i<host_part; ++i) u<<=1;
 
     return u;
 }
@@ -231,7 +231,7 @@ bool libfwbuilder::_convert_range_to_networks(const InetAddr &start,
     int   mask_bits = 0;
     while ( l!=0 ) { l>>=1; mask_bits++; }
     mask_bits--;
-    mask_bits = 32 - mask_bits;
+    mask_bits = start.addressLengthBits() - mask_bits;
 
 /* mask_bits  represents number of '1'in the netmask for the new subnet */
 

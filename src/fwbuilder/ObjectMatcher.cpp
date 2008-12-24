@@ -228,6 +228,16 @@ bool ObjectMatcher::checkComplexMatch(AddressRange *obj1, FWObject *obj2)
     const InetAddr &range_start = obj1->getRangeStart();
     const InetAddr &range_end = obj1->getRangeEnd();
 
+    if (!range_start.isAny() && 
+        ( (recognize_broadcasts && range_start.isBroadcast()) || 
+          (recognize_multicasts && range_start.isMulticast()) )
+    ) return true;
+
+    if (!range_end.isAny() && 
+        ( (recognize_broadcasts && range_end.isBroadcast()) || 
+          (recognize_multicasts && range_end.isMulticast()) )
+    ) return true;
+
     string addr_type = (ipv6) ? IPv6::TYPENAME : IPv4::TYPENAME;
     list<FWObject*> all_addresses = obj2->getByTypeDeep(addr_type);
     for (list<FWObject*>::iterator it = all_addresses.begin();

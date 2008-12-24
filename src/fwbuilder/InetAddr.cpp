@@ -86,11 +86,15 @@ void InetAddr::init_from_string(const char* data)
     }
 }
 
-void InetAddr::init_from_int(int len)
+void InetAddr::init_from_int(unsigned int len)
 {
    if (address_family == AF_INET)
    {
-       if (len<0 || len>32) throw FWException(string("Invalid netmask length"));
+       if (len > addressLengthBits())
+       {
+           throw FWException(string("Invalid netmask length"));
+       }
+
        unsigned long nm_bits = 0;
        int i = len;
        while (i>0)
@@ -102,8 +106,10 @@ void InetAddr::init_from_int(int len)
        ipv4.s_addr = htonl(nm_bits);
    } else
    {
-       if (len<0 || len>128)
+       if (len > addressLengthBits())
+       {
            throw FWException(string("Invalid netmask length"));
+       }
 
        ((uint32_t *) (&ipv6))[0] = 0xffffffff;
        ((uint32_t *) (&ipv6))[1] = 0xffffffff;
@@ -111,7 +117,7 @@ void InetAddr::init_from_int(int len)
        ((uint32_t *) (&ipv6))[3] = 0xffffffff;
 
        // bits is number of zeros counting from the right end
-       int nbits = 128 - len;
+       unsigned int nbits = addressLengthBits() - len;
        for (int i=3; i>=0; --i)
        {
            if (nbits >= 32)
@@ -205,7 +211,7 @@ int InetAddr::getLength() const
 {
     if (address_family==AF_INET)
     {
-        if (ipv4.s_addr == INADDR_BROADCAST) return 32;
+        if (ipv4.s_addr == INADDR_BROADCAST) return addressLengthBits();
         if (ipv4.s_addr == 0) return 0;
 
         unsigned int n = ntohl(ipv4.s_addr);

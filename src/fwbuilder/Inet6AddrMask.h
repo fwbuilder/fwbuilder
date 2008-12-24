@@ -54,6 +54,7 @@ namespace libfwbuilder
 
 class Inet6AddrMask : public InetAddrMask
 {
+protected:
 
 public:
 
