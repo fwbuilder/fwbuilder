@@ -40,7 +40,6 @@
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/RuleSet.h"
 #include "fwbuilder/Policy.h"
-#include "fwbuilder/InterfacePolicy.h"
 #include "fwbuilder/NAT.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"

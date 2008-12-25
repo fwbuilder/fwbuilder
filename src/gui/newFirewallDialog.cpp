@@ -38,7 +38,6 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Policy.h"
-#include "fwbuilder/InterfacePolicy.h"
 #include "fwbuilder/BackgroundOp.h"
 
 #include <qlineedit.h>

@@ -62,7 +62,6 @@
 
 #include "fwbuilder/FWReference.h"
 #include "fwbuilder/Policy.h"
-#include "fwbuilder/InterfacePolicy.h"
 #include "fwbuilder/NAT.h"
 #include "fwbuilder/Routing.h"
 #include "fwbuilder/Tools.h"
