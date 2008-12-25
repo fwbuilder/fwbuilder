@@ -45,7 +45,7 @@ class FWIntervalReference : public FWReference
     DECLARE_FWOBJECT_SUBTYPE(FWIntervalReference);
 
     FWIntervalReference();
-    FWIntervalReference(const FWObject *root,bool prepopulate);
+    FWIntervalReference(const FWObjectDatabase *root,bool prepopulate);
 
     void setPointer(Interval *o);
     void setPointer(IntervalGroup *o);

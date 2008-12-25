@@ -51,7 +51,7 @@ AddressTable::AddressTable() : MultiAddress()
     setStr("filename", "");
 }
 
-AddressTable::AddressTable(const FWObject *root,bool prepopulate) :
+AddressTable::AddressTable(const FWObjectDatabase *root,bool prepopulate) :
     MultiAddress(root,prepopulate) 
 {
     setRunTime(false);
@@ -133,9 +133,7 @@ void AddressTable::loadFromSource(bool ipv6) throw(FWException)
                     {
                         InetAddr(AF_INET6, buf); // to test address
 
-                        NetworkIPv6 *net;
-                        net = NetworkIPv6::cast(getRoot()->create(
-                                                    NetworkIPv6::TYPENAME));
+                        NetworkIPv6 *net = getRoot()->createNetworkIPv6();
                         net->setAddressNetmask(buf);
                         new_addr = net;
                     } catch (FWException &ex)
@@ -154,9 +152,7 @@ void AddressTable::loadFromSource(bool ipv6) throw(FWException)
                     {
                         InetAddr(AF_INET, buf); // to test address
 
-                        Network *net;
-                        net = Network::cast(getRoot()->create(
-                                                Network::TYPENAME));
+                        Network *net = getRoot()->createNetwork();
                         net->setAddressNetmask(buf);
                         new_addr = net;
                     } catch (FWException &ex)

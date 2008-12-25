@@ -48,7 +48,7 @@ class Host : public Address
     public:
 
     Host();
-    Host(const FWObject *root,bool prepopulate);
+    Host(const FWObjectDatabase *root,bool prepopulate);
     virtual ~Host();
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);

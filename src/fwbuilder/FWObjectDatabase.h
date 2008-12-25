@@ -42,11 +42,76 @@
 
 #include <time.h>   // for time_t
 
+#define DECLARE_CREATE_OBJ_METHOD(classname) \
+    FWObject* createFWObject##classname(int id=-1, bool prepopulate=true); \
+    classname * create##classname(int id=-1, bool prepopulate=true);
+
+
 namespace libfwbuilder
 {
     class Group;
-    class Firewall;
 
+    // forward declarations for specialized create() methods
+    class Library;
+    class Policy;
+    class NAT;
+    class Routing;
+    class PolicyRule;
+    class NATRule;
+    class RoutingRule;
+    class RuleElementSrc;
+    class RuleElementDst;
+    class RuleElementSrv;
+    class RuleElementItf;
+    class RuleElementOSrc;
+    class RuleElementODst;
+    class RuleElementOSrv;
+    class RuleElementTSrc;
+    class RuleElementTDst;
+    class RuleElementTSrv;
+    class RuleElementInterval;
+    class RuleElementRDst;
+    class RuleElementRGtw;
+    class RuleElementRItf;
+    class HostOptions;
+    class FirewallOptions;
+    class PolicyRuleOptions;
+    class NATRuleOptions;
+    class RoutingRuleOptions;
+    class Host;
+    class AddressRange;
+    class Management;
+    class PolicyInstallScript;
+    class SNMPManagement;
+    class FWBDManagement;
+    class Firewall;
+    class Network;
+    class NetworkIPv6;
+    class Interface;
+    class IPv4;
+    class IPv6;
+    class physAddress;
+    class DNSName;
+    class AddressTable;
+    class FWObjectReference;
+    class FWServiceReference;
+    class FWIntervalReference;
+    class TCPService;
+    class UDPService;
+    class TagService;
+    class ICMPService;
+    class ICMP6Service;
+    class IPService;
+    class CustomService;
+    class UserService;
+    class Interval;
+    class ObjectGroup;
+    class ServiceGroup;
+    class IntervalGroup;
+
+
+
+    
 class IDcounter {
 
  protected:
@@ -56,12 +121,16 @@ class IDcounter {
     IDcounter();
     long get() { ++cntr; return cntr; }
 };
-    
+
+class FWObjectDatabase;
+typedef FWObject*(FWObjectDatabase::*create_function_ptr)(int,bool);
+
 /**
  * Database of objects.
  */
 class FWObjectDatabase : public FWObject
 {
+
 private:
     void _clearReferenceCounters(FWObject *o);
     void _fixReferenceCounters(FWObject *o);
@@ -69,16 +138,17 @@ private:
     
 protected:
 
-    static const std::string         DTD_FILE_NAME ;
-    time_t                           lastModified;
+    static const std::string DTD_FILE_NAME ;
 
-    int                              index_hits;
-    int                              index_misses;
-    std::map<int, FWObject*>         obj_index;
-    int                              searchId;
-
+    time_t lastModified;
+    int index_hits;
+    int index_misses;
     std::string data_file;
+    std::map<int, FWObject*> obj_index;
+    int searchId;
 
+    void init_create_methods_table();
+    
     Firewall* _findFirewallByNameRecursive(
         FWObject* db, const std::string &name) throw(FWException);
     void init_id_dict();
@@ -112,7 +182,7 @@ public:
      */
     FWObjectDatabase(FWObjectDatabase& d);
 
-    virtual ~FWObjectDatabase() {};
+    virtual ~FWObjectDatabase();
 
     // --- methods dealing with object index
 
@@ -162,21 +232,6 @@ public:
 
     // --- XML import/export ---
     
-    /**
-     * This is the main "Create" method:
-     * it creates instance of FWObject of given type
-     *
-     * if parameter 'create_with_root' is true, this method will create
-     * objects using constructor that uses pointer to this as a parameter,
-     * otherwise empty constructor is used
-     */
-    FWObject *create(const std::string &type, int id=-1, bool prepopulate=true);
-
-    /**
-     * Creates instance of FWObject using its XML representation
-     */
-    virtual FWObject *createFromXML(xmlNodePtr data);
-
     virtual void       fromXML    (xmlNodePtr xml_parent_node) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     
@@ -268,7 +323,86 @@ public:
     static int registerStringId(const std::string &s_id);
     static int getIntId(const std::string &s_id);
     static std::string getStringId(int i_id);
-       
+
+
+    /**
+     * This is the main "Create" method:
+     * it creates instance of FWObject of given type
+     *
+     * if parameter 'create_with_root' is true, this method will create
+     * objects using constructor that uses pointer to this as a parameter,
+     * otherwise empty constructor is used
+     */
+    FWObject *create(const std::string &type, int id=-1, bool prepopulate=true);
+
+    /**
+     * Creates instance of FWObject using its XML representation
+     */
+    virtual FWObject *createFromXML(xmlNodePtr data);
+
+    /**
+     * Specialized createClass() methods: class name is part of the method
+     * name, e.g. createLibrary(), also these return a pointer to the
+     * corresponding class. Note that each macro declares two methods:
+     * Class* createClass(int,bool) and FWObject* createFWObjectClass(int,bool)
+     */
+    DECLARE_CREATE_OBJ_METHOD(Library);
+    DECLARE_CREATE_OBJ_METHOD(Policy);
+    DECLARE_CREATE_OBJ_METHOD(NAT);
+    DECLARE_CREATE_OBJ_METHOD(Routing);
+    DECLARE_CREATE_OBJ_METHOD(PolicyRule);
+    DECLARE_CREATE_OBJ_METHOD(NATRule);
+    DECLARE_CREATE_OBJ_METHOD(RoutingRule);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementSrc);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementDst);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementSrv);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementItf);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementOSrc);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementODst);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementOSrv);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementTSrc);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementTDst);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementTSrv);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementInterval);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementRDst);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementRGtw);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementRItf);
+    DECLARE_CREATE_OBJ_METHOD(HostOptions);
+    DECLARE_CREATE_OBJ_METHOD(FirewallOptions);
+    DECLARE_CREATE_OBJ_METHOD(PolicyRuleOptions);
+    DECLARE_CREATE_OBJ_METHOD(NATRuleOptions);
+    DECLARE_CREATE_OBJ_METHOD(RoutingRuleOptions);
+    DECLARE_CREATE_OBJ_METHOD(Host);
+    DECLARE_CREATE_OBJ_METHOD(AddressRange);
+    DECLARE_CREATE_OBJ_METHOD(Management);
+    DECLARE_CREATE_OBJ_METHOD(PolicyInstallScript);
+    DECLARE_CREATE_OBJ_METHOD(SNMPManagement);
+    DECLARE_CREATE_OBJ_METHOD(FWBDManagement);
+    DECLARE_CREATE_OBJ_METHOD(Firewall);
+    DECLARE_CREATE_OBJ_METHOD(Network);
+    DECLARE_CREATE_OBJ_METHOD(NetworkIPv6);
+    DECLARE_CREATE_OBJ_METHOD(Interface);
+    DECLARE_CREATE_OBJ_METHOD(IPv4);
+    DECLARE_CREATE_OBJ_METHOD(IPv6);
+    DECLARE_CREATE_OBJ_METHOD(physAddress);
+    DECLARE_CREATE_OBJ_METHOD(DNSName);
+    DECLARE_CREATE_OBJ_METHOD(AddressTable);
+    DECLARE_CREATE_OBJ_METHOD(FWObjectReference);
+    DECLARE_CREATE_OBJ_METHOD(FWServiceReference);
+    DECLARE_CREATE_OBJ_METHOD(FWIntervalReference);
+    DECLARE_CREATE_OBJ_METHOD(TCPService);
+    DECLARE_CREATE_OBJ_METHOD(UDPService);
+    DECLARE_CREATE_OBJ_METHOD(TagService);
+    DECLARE_CREATE_OBJ_METHOD(ICMPService);
+    DECLARE_CREATE_OBJ_METHOD(ICMP6Service);
+    DECLARE_CREATE_OBJ_METHOD(IPService);
+    DECLARE_CREATE_OBJ_METHOD(CustomService);
+    DECLARE_CREATE_OBJ_METHOD(UserService);
+    DECLARE_CREATE_OBJ_METHOD(Interval);
+    DECLARE_CREATE_OBJ_METHOD(ObjectGroup);
+    DECLARE_CREATE_OBJ_METHOD(ServiceGroup);
+    DECLARE_CREATE_OBJ_METHOD(IntervalGroup);
+    
 };
 
 }

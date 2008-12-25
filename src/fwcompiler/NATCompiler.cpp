@@ -30,7 +30,6 @@
 
 #include "fwbuilder/NAT.h"
 #include "fwbuilder/Rule.h"
-#include "fwbuilder/InterfacePolicy.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/RuleSet.h"
 #include "fwbuilder/InetAddr.h"
@@ -357,8 +356,7 @@ bool NATCompiler::ConvertToAtomicForOriginal::processNext()
         {
 	    for (FWObject::iterator i3=osrv->begin(); i3!=osrv->end(); ++i3) 
             {
-                NATRule *r = NATRule::cast(
-                    compiler->dbcopy->create(NATRule::TYPENAME) );
+                NATRule *r = compiler->dbcopy->createNATRule();
                 r->duplicate(rule);
                 compiler->temp_ruleset->add(r);
                 
@@ -406,8 +404,7 @@ bool NATCompiler::ConvertToAtomicForAddresses::processNext()
             {
 		for (FWObject::iterator i5=tdst->begin(); i5!=tdst->end(); ++i5) 
                 {
-		    NATRule *r = NATRule::cast(
-			compiler->dbcopy->create(NATRule::TYPENAME) );
+		    NATRule *r = compiler->dbcopy->createNATRule();
 		    r->duplicate(rule);
                     compiler->temp_ruleset->add(r);
 
@@ -453,8 +450,7 @@ bool NATCompiler::ConvertToAtomicForTSrc::processNext()
 
     for (FWObject::iterator i1=tsrc->begin(); i1!=tsrc->end(); ++i1) 
     {
-        NATRule *r = NATRule::cast(
-            compiler->dbcopy->create(NATRule::TYPENAME) );
+        NATRule *r = compiler->dbcopy->createNATRule();
         r->duplicate(rule);
         compiler->temp_ruleset->add(r);
 
@@ -479,8 +475,7 @@ bool NATCompiler::ConvertToAtomicForTDst::processNext()
 
     for (FWObject::iterator i1=tsrc->begin(); i1!=tsrc->end(); ++i1) 
     {
-        NATRule *r = NATRule::cast(
-            compiler->dbcopy->create(NATRule::TYPENAME) );
+        NATRule *r = compiler->dbcopy->createNATRule();
         r->duplicate(rule);
         compiler->temp_ruleset->add(r);
 
@@ -505,8 +500,7 @@ bool NATCompiler::ConvertToAtomicForTSrv::processNext()
 
     for (FWObject::iterator i1=tsrc->begin(); i1!=tsrc->end(); ++i1) 
     {
-        NATRule *r = NATRule::cast(
-            compiler->dbcopy->create(NATRule::TYPENAME) );
+        NATRule *r = compiler->dbcopy->createNATRule();
         r->duplicate(rule);
         compiler->temp_ruleset->add(r);
 
@@ -549,8 +543,7 @@ bool NATCompiler::ConvertToAtomic::processNext()
                     {
 			for (FWObject::iterator i6=tsrv->begin(); i6!=tsrv->end(); ++i6) 
                         {
-			    NATRule *r = NATRule::cast(
-				compiler->dbcopy->create(NATRule::TYPENAME) );
+			    NATRule *r = compiler->dbcopy->createNATRule();
 			    r->duplicate(rule);
                             compiler->temp_ruleset->add(r);
 
@@ -598,8 +591,7 @@ bool NATCompiler::MACFiltering::checkRuleElement(RuleElement *re)
     std::list<FWObject*> lst;
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++) 
     {
-        FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        FWObject *o = FWReference::getObject(*i);
         if (physAddress::isA(o)) 
         {
             lst.push_back(o);
@@ -663,8 +655,7 @@ bool NATCompiler::splitODstForSNAT::processNext()
             map<string, list<FWObject*> > il;
             for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++)
             {
-                FWObject *o= *i;
-                if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+                FWObject *o = FWReference::getObject(*i);
                 Address *a=Address::cast(o);
                 string iid="";
                 Interface *iface=compiler->findInterfaceFor( a , compiler->fw );
@@ -676,8 +667,7 @@ bool NATCompiler::splitODstForSNAT::processNext()
                 map<string, list<FWObject*> >::iterator j;
                 for (j=il.begin(); j!=il.end(); j++)
                 {
-                    NATRule *r= NATRule::cast(
-                        compiler->dbcopy->create(NATRule::TYPENAME) );
+                    NATRule *r= compiler->dbcopy->createNATRule();
                     compiler->temp_ruleset->add(r);
                     r->duplicate(rule);
                     RuleElementODst *nodst=r->getODst();
@@ -788,43 +778,37 @@ string NATCompiler::debugPrintRule(libfwbuilder::Rule *r)
         int tsrv_id = -1;
 
         if (i1!=osrcrel->end()) {
-            FWObject *o=*i1;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+            FWObject *o = FWReference::getObject(*i1);
             osrc=o->getName();
             osrc_id=o->getId();
         }
 
         if (i2!=odstrel->end()) {
-            FWObject *o=*i2;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+            FWObject *o = FWReference::getObject(*i2);
             odst=o->getName();
             odst_id=o->getId();
         }
 
         if (i3!=osrvrel->end()) {
-            FWObject *o=*i3;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+            FWObject *o = FWReference::getObject(*i3);
             osrv=o->getName();
             osrv_id=o->getId();
         }
 
         if (i4!=tsrcrel->end()) {
-            FWObject *o=*i4;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+            FWObject *o = FWReference::getObject(*i4);
             tsrc=o->getName();
             tsrc_id=o->getId();
         }
 
         if (i5!=tdstrel->end()) {
-            FWObject *o=*i5;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+            FWObject *o = FWReference::getObject(*i5);
             tdst=o->getName();
             tdst_id=o->getId();
         }
 
         if (i6!=tsrvrel->end()) {
-            FWObject *o=*i6;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+            FWObject *o = FWReference::getObject(*i6);
             tsrv=o->getName();
             tsrv_id=o->getId();
         }

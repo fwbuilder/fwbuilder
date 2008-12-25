@@ -41,7 +41,7 @@ IPService::IPService()
     setStr("protocol_num", "");
 }
 
-IPService::IPService(const FWObject *root,bool prepopulate) : Service(root,prepopulate)
+IPService::IPService(const FWObjectDatabase *root,bool prepopulate) : Service(root,prepopulate)
 {
     setStr("protocol_num", "");
 }

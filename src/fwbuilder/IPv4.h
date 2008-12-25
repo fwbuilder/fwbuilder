@@ -42,7 +42,7 @@ class IPv4 : public Address
 public:
     
     IPv4();
-    IPv4(const FWObject *root, bool prepopulate);
+    IPv4(const FWObjectDatabase *root, bool prepopulate);
 
     virtual ~IPv4();
 

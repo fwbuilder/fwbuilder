@@ -42,7 +42,7 @@ class DNSName : public MultiAddress
     DECLARE_FWOBJECT_SUBTYPE(DNSName);
 
     DNSName();
-    DNSName(const FWObject *root,bool prepopulate);
+    DNSName(const FWObjectDatabase *root,bool prepopulate);
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);

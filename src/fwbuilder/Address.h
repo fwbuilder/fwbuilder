@@ -53,7 +53,7 @@ public:
     DECLARE_FWOBJECT_SUBTYPE(Address);
 
     Address();
-    Address(const FWObject *root,bool prepopulate);
+    Address(const FWObjectDatabase *root,bool prepopulate);
     Address(const Address&);
     virtual ~Address();
 

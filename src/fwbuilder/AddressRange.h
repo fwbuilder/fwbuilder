@@ -44,7 +44,7 @@ class AddressRange : public Address
     public:
     
     AddressRange();
-    AddressRange(const FWObject *root,bool prepopulate);
+    AddressRange(const FWObjectDatabase *root,bool prepopulate);
     AddressRange(AddressRange &);
 
     const InetAddr &getRangeStart() const { return start_address; }

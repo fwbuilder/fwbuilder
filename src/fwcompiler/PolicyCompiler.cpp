@@ -40,7 +40,6 @@
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Rule.h"
-#include "fwbuilder/InterfacePolicy.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/RuleSet.h"
 #include "fwbuilder/InetAddr.h"
@@ -105,9 +104,7 @@ int PolicyCompiler::prolog()
             string interfaces = "";
             for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
             {
-                FWObject *o=*i;
-                if (FWReference::cast(o)!=NULL)
-                    o = FWReference::cast(o)->getPointer();
+                FWObject *o = FWReference::getObject(*i);
                 if (interfaces!="") interfaces += ",";
                 interfaces += o->getName();
             }
@@ -332,10 +329,7 @@ bool PolicyCompiler::ItfNegation::processNext()
     {
         for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
         {
-            FWObject *o=*i;
-            if (FWReference::cast(o)!=NULL)
-                o=FWReference::cast(o)->getPointer();
-
+            FWObject *o = FWReference::getObject(*i);
             allInterfaces.remove(o);
         }
         itfre->reset();
@@ -361,9 +355,7 @@ bool  PolicyCompiler::InterfacePolicyRules::processNext()
     }
     for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
     {
-        FWObject *o=*i;
-        if (FWReference::cast(o)!=NULL)
-            o=FWReference::cast(o)->getPointer();
+        FWObject *o = FWReference::getObject(*i);
 
         if (ObjectGroup::isA(o))
         {
@@ -371,16 +363,13 @@ bool  PolicyCompiler::InterfacePolicyRules::processNext()
             // interfaces are allowed in such group, but we should check anyway.
             for (FWObject::iterator i=o->begin(); i!=o->end(); ++i)
             {
-                FWObject *o1=*i;
-                if (FWReference::cast(o1)!=NULL)
-                    o1=FWReference::cast(o1)->getPointer();
+                FWObject *o1 = FWReference::getObject(*i);
                 if (!Interface::isA(o1))
                 {
                     compiler->warning("Object '" + o1->getName() + "', which is not an interface, is a member of the group '" + o->getName() + "' used in 'Interface' element of a rule.   Rule: " + rule->getLabel());
                     continue;
                 }
-                PolicyRule *r= PolicyRule::cast(
-                    compiler->dbcopy->create(PolicyRule::TYPENAME) );
+                PolicyRule *r= compiler->dbcopy->createPolicyRule();
                 compiler->temp_ruleset->add(r);
                 r->duplicate(rule);
                 r->setInterfaceId(o1->getId());
@@ -389,8 +378,7 @@ bool  PolicyCompiler::InterfacePolicyRules::processNext()
         } else
         {
 
-            PolicyRule *r= PolicyRule::cast(
-                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             r->setInterfaceId(o->getId());
@@ -566,8 +554,7 @@ bool PolicyCompiler::splitServices::processNext()
 
     for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
     {
-        FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        FWObject *o = FWReference::getObject(*i);
 
         Service *s=Service::cast( o );
         assert(s);
@@ -581,8 +568,7 @@ bool PolicyCompiler::splitServices::processNext()
     {
         list<Service*> &sl=(*i1).second;
 
-        PolicyRule *r= PolicyRule::cast(
-            compiler->dbcopy->create(PolicyRule::TYPENAME) );
+        PolicyRule *r= compiler->dbcopy->createPolicyRule();
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
         RuleElementSrv *nsrv=r->getSrv();
@@ -620,16 +606,14 @@ bool PolicyCompiler::separateTCPWithFlags::processNext()
     list<Service*> services;
     for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++)
     {
-        FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        FWObject *o = FWReference::getObject(*i);
 	    
         TCPService *s=TCPService::cast( o );
         if (s==NULL) continue;
 
         if ( s->inspectFlags() )
         {
-            PolicyRule *r= PolicyRule::cast(
-        	compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             RuleElementSrv *nsrv=r->getSrv();
@@ -656,9 +640,9 @@ bool PolicyCompiler::verifyCustomServices::processNext()
 
     RuleElementSrv *srv=rule->getSrv();
 
-    for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++) {
-	FWObject *o= *i;
-	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+    for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
+    {
+        FWObject *o = FWReference::getObject(*i);
 	assert(o!=NULL);
 	if (CustomService::isA(o) && 
 	    CustomService::cast(o)->getCodeForPlatform(compiler->myPlatformName()).empty())
@@ -682,8 +666,7 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
 
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++) 
     {
-	FWObject *o= *i;
-	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        FWObject *o = FWReference::getObject(*i);
 	assert(o!=NULL);
 
         MultiAddress *maddr = MultiAddress::cast(o);
@@ -726,8 +709,7 @@ Address* PolicyCompiler::checkForZeroAddr::findHostWithNoInterfaces(
 
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++) 
     {
-	FWObject *o= *i;
-	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        FWObject *o = FWReference::getObject(*i);
 	assert(o!=NULL);
         Host *addr = Host::cast(o);
         // if host has child of type Interface, it must be first of the children
@@ -814,8 +796,7 @@ bool PolicyCompiler::ConvertToAtomicForAddresses::processNext()
     for (FWObject::iterator i1=src->begin(); i1!=src->end(); ++i1) {
 	for (FWObject::iterator i2=dst->begin(); i2!=dst->end(); ++i2) {
 
-	    PolicyRule *r = PolicyRule::cast(
-		compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	    PolicyRule *r = compiler->dbcopy->createPolicyRule();
 	    r->duplicate(rule);
 	    compiler->temp_ruleset->add(r);
 
@@ -847,8 +828,7 @@ bool PolicyCompiler::ConvertToAtomicForIntervals::processNext()
 
     for (FWObject::iterator i1=ivl->begin(); i1!=ivl->end(); ++i1) {
 
-        PolicyRule *r = PolicyRule::cast(
-            compiler->dbcopy->create(PolicyRule::TYPENAME) );
+        PolicyRule *r = compiler->dbcopy->createPolicyRule();
         r->duplicate(rule);
         compiler->temp_ruleset->add(r);
         
@@ -866,10 +846,9 @@ bool PolicyCompiler::ConvertToAtomicForIntervals::processNext()
 bool  PolicyCompiler::ConvertToAtomic::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-
-    RuleElementSrc      *src=rule->getSrc();  assert(src);
-    RuleElementDst      *dst=rule->getDst();  assert(dst);
-    RuleElementSrv      *srv=rule->getSrv();  assert(srv);
+    RuleElementSrc *src=rule->getSrc();  assert(src);
+    RuleElementDst *dst=rule->getDst();  assert(dst);
+    RuleElementSrv *srv=rule->getSrv();  assert(srv);
 
     for (FWObject::iterator i1=src->begin(); i1!=src->end(); i1++)
     {
@@ -877,8 +856,7 @@ bool  PolicyCompiler::ConvertToAtomic::processNext()
         {
 	    for (FWObject::iterator i3=srv->begin(); i3!=srv->end(); i3++)
             {
-                PolicyRule *r = PolicyRule::cast(
-                    compiler->dbcopy->create(PolicyRule::TYPENAME) );
+                PolicyRule *r = compiler->dbcopy->createPolicyRule();
                 r->duplicate(rule);
                 compiler->temp_ruleset->add(r);
 
@@ -1028,8 +1006,7 @@ bool PolicyCompiler::MACFiltering::checkRuleElement(RuleElement *re)
     std::list<FWObject*> lst;
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++) 
     {
-        FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        FWObject *o = FWReference::getObject(*i);
         if (physAddress::isA(o)) 
         {
             lst.push_back(o);
@@ -1086,8 +1063,7 @@ bool PolicyCompiler::CheckForTCPEstablished::processNext()
 
     for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
     {
-        FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        FWObject *o = FWReference::getObject(*i);
 
         TCPService *s = TCPService::cast( o );
         if (s==NULL) continue;
@@ -1108,8 +1084,7 @@ bool PolicyCompiler::CheckForUnsupportedUserService::processNext()
 
     for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
     {
-        FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        FWObject *o = FWReference::getObject(*i);
 
         if (UserService::isA(o))
             compiler->abort(string("UserService object is not supported by ") +
@@ -1217,23 +1192,23 @@ string PolicyCompiler::debugPrintRule(Rule *r)
         if (dstrel->getNeg()) dst="!";
         if (srvrel->getNeg()) srv="!";
 
-        if (i1!=srcrel->end()) {
-            FWObject *o=*i1;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (i1!=srcrel->end())
+        {
+            FWObject *o = FWReference::getObject(*i1);
             src += o->getName();
             src_id = o->getId();
         }
 
-        if (i2!=dstrel->end()) {
-            FWObject *o=*i2;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (i2!=dstrel->end())
+        {
+            FWObject *o = FWReference::getObject(*i2);
             dst += o->getName();
             dst_id = o->getId();
         }
 
-        if (i3!=srvrel->end()) {
-            FWObject *o=*i3;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (i3!=srvrel->end())
+        {
+            FWObject *o = FWReference::getObject(*i3);
             srv += o->getName();
             srv_id = o->getId();
         }

@@ -37,7 +37,7 @@ class FWOptions : public FWObject
 {
     public:
     FWOptions();
-    FWOptions(const FWObject *root,bool prepopulate);
+    FWOptions(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(FWOptions);
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
@@ -48,7 +48,7 @@ class HostOptions : public FWOptions
 {
     public:
     HostOptions();
-    HostOptions(const FWObject *root,bool prepopulate);
+    HostOptions(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(HostOptions);
 };
 
@@ -56,7 +56,7 @@ class FirewallOptions : public FWOptions
 {
     public:
     FirewallOptions();
-    FirewallOptions(const FWObject *root,bool prepopulate);
+    FirewallOptions(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(FirewallOptions);
 };
 
@@ -65,7 +65,7 @@ class PolicyRuleOptions : public FWOptions
     public:
     
     PolicyRuleOptions();
-    PolicyRuleOptions(const FWObject *root,bool prepopulate);
+    PolicyRuleOptions(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(PolicyRuleOptions);
 };
 
@@ -74,7 +74,7 @@ class NATRuleOptions : public FWOptions
     public:
 
     NATRuleOptions();
-    NATRuleOptions(const FWObject *root,bool prepopulate);
+    NATRuleOptions(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(NATRuleOptions);
 };
 
@@ -83,7 +83,7 @@ class RoutingRuleOptions : public FWOptions
     public:
 
     RoutingRuleOptions();
-    RoutingRuleOptions(const FWObject *root,bool prepopulate);
+    RoutingRuleOptions(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(RoutingRuleOptions);
 };
 

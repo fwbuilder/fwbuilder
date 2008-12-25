@@ -62,7 +62,6 @@ string FWObject::NOT_FOUND="";
 void FWObject::fromXML(xmlNodePtr root) throw(FWException)
 {
     assert(root!=NULL);
-
     const char *n;
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("name")));
@@ -93,15 +92,15 @@ void FWObject::fromXML(xmlNodePtr root) throw(FWException)
         FREEXMLBUFF(n);
     }
 
-    ref_counter=0;
-    FWObjectDatabase *dbroot = getRoot();
+    ref_counter = 0;
+    FWObjectDatabase *dbr = getRoot();
 
-    for(xmlNodePtr cur=root->xmlChildrenNode; cur; cur=cur->next) 
+    for (xmlNodePtr cur=root->xmlChildrenNode; cur; cur=cur->next)
     {
-        if(cur && !xmlIsBlankNode(cur))  
+        if (cur && !xmlIsBlankNode(cur))
         {
-            FWObject *o=dbroot->createFromXML(cur);
-            if(o!=NULL) 
+            FWObject *o = dbr->createFromXML(cur);
+            if (o!=NULL) 
             {
 		add(o);
                 try
@@ -110,14 +109,13 @@ void FWObject::fromXML(xmlNodePtr root) throw(FWException)
                 } catch(FWException &ex)
                 {
                     map<string, string> &properties = ex.getProperties();
-                    if(properties.find("failed_element")==properties.end())
+                    if (properties.find("failed_element")==properties.end())
                         properties["failed_element"]=o->getTypeName();
                     throw;
                 }
 	    }
         }
     }
-    
     setDirty(false);
 }
 
@@ -205,12 +203,12 @@ FWObject::FWObject(const FWObject &c) : list<FWObject*>(c)
     *this = c;
 }
 
-FWObject::FWObject(const FWObject *root, bool )
+FWObject::FWObject(const FWObjectDatabase *root, bool )
 {
     init        = false;
     ref_counter = 0    ;
     parent      = NULL ;
-    dbroot      = (FWObject*)root;
+    dbroot      = (FWObjectDatabase*)root;
     name        = "";
     comment     = "";
     id          = -1;
@@ -224,7 +222,7 @@ FWObject::FWObject(const FWObject *root, bool )
 
 FWObject::~FWObject() 
 {
-    init        = true;  // ignore read-only
+    init = true;  // ignore read-only
     deleteChildren();
     data.clear();
 }
@@ -419,7 +417,7 @@ FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
     }
 
     if (dbroot==NULL) setRoot(x->getRoot());
-    if (dbroot!=NULL) FWObjectDatabase::cast(dbroot)->addToIndex(this);
+    if (dbroot!=NULL) dbroot->addToIndex(this);
 
     setReadOnly(x->ro);
     setDirty(true);
@@ -451,7 +449,7 @@ FWObject*  FWObject::getLibrary() const
 
 FWObjectDatabase* FWObject::getRoot() const
 {
-    return FWObjectDatabase::cast(dbroot);
+    return dbroot;
 }
 
 string FWObject::getPath(bool relative) const
@@ -494,8 +492,7 @@ void FWObject::setId(int c)
 {
     id = c;
     setDirty(true);
-    if (dbroot!=NULL)
-        FWObjectDatabase::cast(dbroot)->addToIndex(this);
+    if (dbroot!=NULL) dbroot->addToIndex(this);
 }
 
 bool FWObject::exists(const string &name) const 
@@ -690,7 +687,7 @@ void FWObject::add(FWObject *obj, bool validate)
 FWReference* FWObject::createRef()
 {
 //    FWObjectReference *ref=new FWObjectReference();
-    FWObjectReference *ref=FWObjectReference::cast(getRoot()->create(FWObjectReference::TYPENAME));
+    FWObjectReference *ref = getRoot()->createFWObjectReference();
     ref->setPointer(this);
     return ref;
 }
@@ -778,7 +775,7 @@ void FWObject::_moveToDeletedObjects(FWObject *obj)
             
     if (dobj==NULL)
     {
-        dobj=root->create(Library::TYPENAME);
+        dobj = root->createLibrary();
         dobj->setId(FWObjectDatabase::DELETED_OBJECTS_ID);
         dobj->setName("Deleted Objects");
         dobj->setReadOnly(false);
@@ -840,7 +837,7 @@ void FWObject::findAllReferences(const FWObject *obj, std::set<FWReference*> &re
     for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
     {
         FWObject *o=*m;
-        FWReference *oref=FWReference::cast(o);
+        FWReference *oref = FWReference::cast(o);
         if(oref)
         {
 	    if(oref->getPointerId()==obj_id) 
@@ -865,8 +862,8 @@ void FWObject::removeRef(FWObject *obj)
     for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
     {
         FWObject *o=*m;
-        FWReference *oref=FWReference::cast(o);
-        if(oref && oref->getPointerId()==obj_id)
+        FWReference *oref = FWReference::cast(o);
+        if (oref && oref->getPointerId()==obj_id)
         {
             // do not delete object even if this reference was the last one (?)
             obj->unref();  
@@ -911,12 +908,12 @@ bool FWObject::validateChild(FWObject *obj)
 
 void FWObject::destroyChildren()
 {
-    FWObjectDatabase *dbroot = getRoot();
+    FWObjectDatabase *dbr = getRoot();
     for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
     {
         FWObject *o=*m;
         o->destroyChildren();
-        if (dbroot) dbroot->removeFromIndex( o->getId() );
+        if (dbr) dbr->removeFromIndex( o->getId() );
         delete o;
     }
     clear();
@@ -945,7 +942,7 @@ void FWObject::destroyChildren()
  */
 void FWObject::clearChildren(bool recursive)
 {
-    FWObjectDatabase *dbroot = getRoot();
+    FWObjectDatabase *dbr = getRoot();
 
     checkReadOnly();
 
@@ -956,7 +953,7 @@ void FWObject::clearChildren(bool recursive)
         o->unref();
         if(o->ref_counter==0) 
         {
-            if (dbroot) dbroot->removeFromIndex( o->getId() );
+            if (dbr) dbr->removeFromIndex( o->getId() );
             delete o;
         }
     }
@@ -970,13 +967,13 @@ void FWObject::clearChildren(bool recursive)
  */
 void FWObject::deleteChildren()
 {
-    FWObjectDatabase *dbroot = getRoot();
+    FWObjectDatabase *dbr = getRoot();
 
     for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
     {
         FWObject *o=*m;
         o->deleteChildren();
-        if (dbroot) dbroot->removeFromIndex( o->getId() );
+        if (dbr && !dbr->init) dbr->removeFromIndex( o->getId() );
         delete o;
     }
     clear();
@@ -1064,17 +1061,17 @@ FWObjectTypedChildIterator FWObject::findByType(const std::string &type_name) co
  */
 void  FWObject::setDirty(bool f)
 {
-    FWObjectDatabase *dbroot = getRoot();
-    if (dbroot==NULL) return;
-    if (dbroot==this) dirty = f;
-    else              dbroot->dirty = f;
+    FWObjectDatabase *dbr = getRoot();
+    if (dbr==NULL) return;
+    if (dbr==this) dirty = f;
+    else dbr->dirty = f;
 }
 
 bool FWObject::isDirty()
 {
-    FWObjectDatabase *dbroot = getRoot();
-    if (dbroot==NULL) return false;
-    return (dbroot->dirty);
+    FWObjectDatabase *dbr = getRoot();
+    if (dbr==NULL) return false;
+    return (dbr->dirty);
 }
 
 /*
@@ -1084,13 +1081,13 @@ bool FWObject::isDirty()
 void FWObject::setReadOnly(bool f)
 {
     ro = f;
-    FWObjectDatabase *dbroot = getRoot();
-    if (dbroot)
+    FWObjectDatabase *dbr = getRoot();
+    if (dbr)
     {
-        bool ri = dbroot->init;
-        dbroot->init = true;
+        bool ri = dbr->init;
+        dbr->init = true;
         setDirty(true);
-        dbroot->init = ri;
+        dbr->init = ri;
     }
 }
 
@@ -1105,8 +1102,8 @@ void FWObject::setReadOnly(bool f)
  */
 bool FWObject::isReadOnly()
 {
-    FWObjectDatabase *dbroot = getRoot();
-    if (dbroot==NULL || dbroot->init) return false;
+    FWObjectDatabase *dbr = getRoot();
+    if (dbr==NULL || dbr->init) return false;
     FWObject *p=this;
     while (p)
     {

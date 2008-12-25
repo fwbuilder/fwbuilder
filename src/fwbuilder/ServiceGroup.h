@@ -38,7 +38,7 @@ class ServiceGroup : public Group
     public:
 
     ServiceGroup();
-    ServiceGroup(const FWObject *root,bool prepopulate);
+    ServiceGroup(const FWObjectDatabase *root,bool prepopulate);
     virtual ~ServiceGroup();
 
     DECLARE_FWOBJECT_SUBTYPE(ServiceGroup);

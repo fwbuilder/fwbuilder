@@ -118,12 +118,11 @@ string RoutingCompiler::debugPrintRule(Rule *r)
 
     string dst, itf, gtw;
    
-    FWObject* obj = itfrel;
-    if (FWReference::cast(itfrel)!=NULL) obj=FWReference::cast( obj)->getPointer();
-    itf=obj->getName();
+    FWObject *obj = FWReference::getObject(itfrel);
+    itf = obj->getName();
 
-    if (FWReference::cast(gtwrel)!=NULL) obj=FWReference::cast( obj)->getPointer();
-    gtw=obj->getName();    
+    obj = FWReference::getObject(gtwrel);
+    gtw = obj->getName();    
      
     
     int no=0;
@@ -134,9 +133,9 @@ string RoutingCompiler::debugPrintRule(Rule *r)
 
         dst=" ";
 
-        if (i1!=dstrel->end()) {
-            FWObject *o=*i1;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (i1!=dstrel->end())
+        {
+            FWObject *o = FWReference::getObject(*i1);
             dst=o->getName();
         }
 
@@ -187,8 +186,7 @@ bool RoutingCompiler::ConvertToAtomicForDST::processNext()
 
     for (FWObject::iterator it=dst->begin(); it!=dst->end(); ++it) {
 
-        RoutingRule *r = RoutingRule::cast(
-            compiler->dbcopy->create(RoutingRule::TYPENAME) );
+        RoutingRule *r = compiler->dbcopy->createRoutingRule();
         r->duplicate(rule);
         compiler->temp_ruleset->add(r);
 
@@ -252,10 +250,11 @@ bool RoutingCompiler::singleAdressInRGtw::processNext()
     
     
     RuleElementRGtw *gtwrel=rule->getRGtw();
-    FWObject *o = FWReference::cast(gtwrel->front())->getPointer();
+
+    FWObject *o = FWReference::getObject(gtwrel->front());
               
-    if( gtwrel->checkSingleIPAdress(o) == false) {
-        
+    if( gtwrel->checkSingleIPAdress(o) == false)
+    {       
         string msg;
         msg = "The object \"" + o->getName() + "\" used as gateway in the routing rule "\
             + rule->getLabel() + " has more than one interface resp. IP adress!";

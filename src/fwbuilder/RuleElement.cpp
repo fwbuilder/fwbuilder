@@ -56,7 +56,7 @@ RuleElement::RuleElement()
     setNeg(false);
 }
 
-RuleElement::RuleElement(const FWObject *root, bool prepopulate) :
+RuleElement::RuleElement(const FWObjectDatabase *root, bool prepopulate) :
     FWObject(root,prepopulate)
 {
     setNeg(false);
@@ -111,7 +111,7 @@ void RuleElement::removeRef(FWObject *obj)
     
     if (getChildrenCount()==0)
     {   // there is nothing left
-	obj=obj->getRoot()->findInIndex( getAnyElementId() );
+	obj = obj->getRoot()->findInIndex( getAnyElementId() );
 	if (obj) addRef(obj);
     }
 }
@@ -121,15 +121,11 @@ bool RuleElement::isAny()
     if (getChildrenCount()!=1) return(false);
 
     FWObject *o;
-    list<FWObject*>::iterator m=begin();
+    list<FWObject*>::iterator m = begin();
     if (  (o=(*m))!=NULL ) 
     {
-	if ( FWObjectReference::isA(o) ||
-	     FWServiceReference::isA(o) ||
-	     FWIntervalReference::isA(o) ) 
-        {
-	    if ((FWReference::cast(o))->getPointerId()==getAnyElementId()) return(true);
-	}
+        if ((FWReference::cast(o))->getPointerId() == getAnyElementId())
+            return(true);
     }
     return(false);
 }
@@ -138,8 +134,7 @@ bool RuleElement::isAny()
 void RuleElement::setAnyElement()
 {
     int any_id = getAnyElementId();
-    
-    FWObject *any=getRoot()->findInIndex( any_id );
+    FWObject *any = getRoot()->findInIndex( any_id );
     if (any)  addRef( any );
 }
 
@@ -157,7 +152,7 @@ void RuleElement::reset()
  *
  * this method is intended for internal use only
  */
-void RuleElement::_initialize(const FWObject *root)
+void RuleElement::_initialize(const FWObjectDatabase *root)
 {
     setRoot(root);
 
@@ -182,7 +177,7 @@ int RuleElement::getAnyElementId()
 
 const char *RuleElementSrc::TYPENAME={"Src"};
 RuleElementSrc::RuleElementSrc() {}
-RuleElementSrc::RuleElementSrc(const FWObject *root,bool prepopulate) :
+RuleElementSrc::RuleElementSrc(const FWObjectDatabase *root,bool prepopulate) :
     ObjectGroup(root,prepopulate),RuleElement(root,prepopulate) 
 {
     if (prepopulate)
@@ -209,7 +204,7 @@ xmlNodePtr RuleElementSrc::toXML(xmlNodePtr parent) throw(FWException)
 
 const char *RuleElementDst::TYPENAME={"Dst"};
 RuleElementDst::RuleElementDst() {}
-RuleElementDst::RuleElementDst(const FWObject *root,bool prepopulate) :
+RuleElementDst::RuleElementDst(const FWObjectDatabase *root,bool prepopulate) :
     ObjectGroup(root,prepopulate),RuleElement(root,prepopulate)
 {
     if (prepopulate)
@@ -236,7 +231,7 @@ xmlNodePtr RuleElementDst::toXML(xmlNodePtr parent) throw(FWException)
 
 const char *RuleElementSrv::TYPENAME={"Srv"};
 RuleElementSrv::RuleElementSrv() {}
-RuleElementSrv::RuleElementSrv(const FWObject *root,bool prepopulate) :
+RuleElementSrv::RuleElementSrv(const FWObjectDatabase *root,bool prepopulate) :
     ServiceGroup(root,prepopulate),RuleElement(root,prepopulate)
 {
     if (prepopulate)
@@ -263,7 +258,7 @@ xmlNodePtr RuleElementSrv::toXML(xmlNodePtr parent) throw(FWException)
 
 const char *RuleElementItf::TYPENAME={"Itf"};
 RuleElementItf::RuleElementItf() {}
-RuleElementItf::RuleElementItf(const FWObject *root,bool prepopulate) :
+RuleElementItf::RuleElementItf(const FWObjectDatabase *root,bool prepopulate) :
     RuleElement(root,prepopulate)
 {
     if (prepopulate)
@@ -298,9 +293,7 @@ bool RuleElementItf::validateChild(FWObject *o)
       bool all_intf = true;
       for (FWObject::iterator i=o->begin(); i!=o->end(); ++i)
       {
-          FWObject *o1= *i;
-          if (FWReference::cast(o1)!=NULL)
-              o1=FWReference::cast(o1)->getPointer();
+          FWObject *o1 = FWReference::getObject(*i);
           if (!Interface::isA(o1)) { all_intf = false; break; }
       }
       return all_intf;  // group is allowed if all members are interfaces
@@ -350,7 +343,7 @@ bool RuleElementItf::checkItfChildOfThisFw(FWObject *o)
 
 const char *RuleElementOSrc::TYPENAME={"OSrc"};
 RuleElementOSrc::RuleElementOSrc() {}
-RuleElementOSrc::RuleElementOSrc(const FWObject *root,bool prepopulate) :
+RuleElementOSrc::RuleElementOSrc(const FWObjectDatabase *root,bool prepopulate) :
     RuleElement(root,prepopulate)
 {
     if (prepopulate)
@@ -377,7 +370,7 @@ xmlNodePtr RuleElementOSrc::toXML(xmlNodePtr parent) throw(FWException)
 
 const char *RuleElementODst::TYPENAME={"ODst"};
 RuleElementODst::RuleElementODst() {}
-RuleElementODst::RuleElementODst(const FWObject *root,bool prepopulate) :
+RuleElementODst::RuleElementODst(const FWObjectDatabase *root,bool prepopulate) :
     RuleElement(root,prepopulate)
 {
     if (prepopulate)
@@ -404,7 +397,7 @@ xmlNodePtr RuleElementODst::toXML(xmlNodePtr parent) throw(FWException)
 
 const char *RuleElementOSrv::TYPENAME={"OSrv"};
 RuleElementOSrv::RuleElementOSrv() {}
-RuleElementOSrv::RuleElementOSrv(const FWObject *root,bool prepopulate) :
+RuleElementOSrv::RuleElementOSrv(const FWObjectDatabase *root,bool prepopulate) :
     RuleElement(root,prepopulate)
 {
     if (prepopulate)
@@ -433,7 +426,7 @@ xmlNodePtr RuleElementOSrv::toXML(xmlNodePtr parent) throw(FWException)
 
 const char *RuleElementTSrc::TYPENAME={"TSrc"};
 RuleElementTSrc::RuleElementTSrc() {}
-RuleElementTSrc::RuleElementTSrc(const FWObject *root,bool prepopulate) :
+RuleElementTSrc::RuleElementTSrc(const FWObjectDatabase *root,bool prepopulate) :
     RuleElement(root,prepopulate)
 {
     if (prepopulate)
@@ -460,7 +453,7 @@ xmlNodePtr RuleElementTSrc::toXML(xmlNodePtr parent) throw(FWException)
 
 const char *RuleElementTDst::TYPENAME={"TDst"};
 RuleElementTDst::RuleElementTDst() {}
-RuleElementTDst::RuleElementTDst(const FWObject *root,bool prepopulate) :
+RuleElementTDst::RuleElementTDst(const FWObjectDatabase *root,bool prepopulate) :
     RuleElement(root,prepopulate)
 {
     if (prepopulate)
@@ -487,7 +480,7 @@ xmlNodePtr RuleElementTDst::toXML(xmlNodePtr parent) throw(FWException)
 
 const char *RuleElementTSrv::TYPENAME={"TSrv"};
 RuleElementTSrv::RuleElementTSrv()  {}
-RuleElementTSrv::RuleElementTSrv(const FWObject *root,bool prepopulate) :
+RuleElementTSrv::RuleElementTSrv(const FWObjectDatabase *root,bool prepopulate) :
     RuleElement(root,prepopulate)
 {
     if (prepopulate)
@@ -516,7 +509,7 @@ xmlNodePtr RuleElementTSrv::toXML(xmlNodePtr parent) throw(FWException)
 
 const char *RuleElementInterval::TYPENAME={"When"};
 RuleElementInterval::RuleElementInterval() {}
-RuleElementInterval::RuleElementInterval(const FWObject *root,bool prepopulate) :
+RuleElementInterval::RuleElementInterval(const FWObjectDatabase *root,bool prepopulate) :
     RuleElement(root,prepopulate)
 {
     if (prepopulate)
@@ -545,7 +538,7 @@ xmlNodePtr RuleElementInterval::toXML(xmlNodePtr parent) throw(FWException)
 
 const char *RuleElementRDst::TYPENAME={"RDst"};
 RuleElementRDst::RuleElementRDst() {}
-RuleElementRDst::RuleElementRDst(const FWObject *root,bool prepopulate) :
+RuleElementRDst::RuleElementRDst(const FWObjectDatabase *root,bool prepopulate) :
     RuleElement(root,prepopulate)
 {
     if (prepopulate)
@@ -571,7 +564,7 @@ xmlNodePtr RuleElementRDst::toXML(xmlNodePtr parent) throw(FWException)
 
 const char *RuleElementRGtw::TYPENAME={"RGtw"};
 RuleElementRGtw::RuleElementRGtw() {}
-RuleElementRGtw::RuleElementRGtw(const FWObject *root,bool prepopulate) :
+RuleElementRGtw::RuleElementRGtw(const FWObjectDatabase *root,bool prepopulate) :
     RuleElement(root,prepopulate)
 {
     if (prepopulate)
@@ -639,7 +632,7 @@ bool RuleElementRGtw::checkSingleIPAdress(FWObject *o) {
 
 const char *RuleElementRItf::TYPENAME={"RItf"};
 RuleElementRItf::RuleElementRItf()  {}
-RuleElementRItf::RuleElementRItf(const FWObject *root,bool prepopulate) :
+RuleElementRItf::RuleElementRItf(const FWObjectDatabase *root,bool prepopulate) :
     RuleElementItf(root,prepopulate) {}
 
 /**

@@ -36,7 +36,7 @@ using namespace libfwbuilder;
 const char *IntervalGroup::TYPENAME={"IntervalGroup"};
 
 IntervalGroup::IntervalGroup() : Group() {}
-IntervalGroup::IntervalGroup(const FWObject *root,bool prepopulate) :
+IntervalGroup::IntervalGroup(const FWObjectDatabase *root,bool prepopulate) :
     FWObject(root,prepopulate) {}
 
 IntervalGroup::~IntervalGroup() {}
@@ -53,7 +53,7 @@ bool  IntervalGroup::validateChild(FWObject *o)
 FWReference* IntervalGroup::createRef()
 {
 //    FWIntervalReference *ref=new FWIntervalReference();
-    FWIntervalReference *ref=FWIntervalReference::cast(getRoot()->create(FWIntervalReference::TYPENAME));
+    FWIntervalReference *ref = getRoot()->createFWIntervalReference();
     ref->setPointer(this);
     return ref;
 }

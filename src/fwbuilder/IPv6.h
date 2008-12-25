@@ -42,7 +42,7 @@ class IPv6 : public Address
 public:
     
     IPv6();
-    IPv6(const FWObject *root, bool prepopulate);
+    IPv6(const FWObjectDatabase *root, bool prepopulate);
 
     virtual ~IPv6();
 

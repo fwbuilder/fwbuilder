@@ -46,7 +46,7 @@ class CustomService : public Service
     public:
     
     CustomService();
-    CustomService(const FWObject *root,bool prepopulate);
+    CustomService(const FWObjectDatabase *root,bool prepopulate);
     virtual ~CustomService();
     
     virtual void       fromXML(xmlNodePtr parent) throw(FWException);

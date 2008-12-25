@@ -41,7 +41,7 @@ class IPService : public Service
     public:
     
     IPService();
-    IPService(const FWObject *root,bool prepopulate);
+    IPService(const FWObjectDatabase *root,bool prepopulate);
     virtual ~IPService();
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);

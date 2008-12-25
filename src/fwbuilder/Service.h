@@ -49,7 +49,7 @@ class Service : public FWObject
     DECLARE_FWOBJECT_SUBTYPE(Service);
 
     Service() {}
-    Service(const FWObject *root,bool prepopulate);
+    Service(const FWObjectDatabase *root,bool prepopulate);
 
     virtual FWReference* createRef();
     virtual std::string getProtocolName();

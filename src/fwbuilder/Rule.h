@@ -63,7 +63,7 @@ class Rule : public Group
     public:
 
     Rule();
-    Rule(const FWObject *root,bool prepopulate);
+    Rule(const FWObjectDatabase *root,bool prepopulate);
 
     DECLARE_FWOBJECT_SUBTYPE(Rule);
 
@@ -189,7 +189,7 @@ private:
 public:    
 
     PolicyRule();
-    PolicyRule(const FWObject *root,bool prepopulate);
+    PolicyRule(const FWObjectDatabase *root,bool prepopulate);
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML      (xmlNodePtr parent) throw(FWException);
     virtual FWObject& shallowDuplicate(const FWObject *obj,
@@ -268,7 +268,7 @@ class NATRule : public Rule
     public:
 
     NATRule();
-    NATRule(const FWObject *root,bool prepopulate);
+    NATRule(const FWObjectDatabase *root,bool prepopulate);
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML      (xmlNodePtr parent) throw(FWException);
 
@@ -312,7 +312,7 @@ class RoutingRule : public Rule
     public:
                     
     RoutingRule();
-    RoutingRule(const FWObject *root,bool prepopulate);
+    RoutingRule(const FWObjectDatabase *root,bool prepopulate);
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML      (xmlNodePtr parent) throw(FWException);
 

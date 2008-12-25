@@ -48,7 +48,7 @@ MultiAddress::MultiAddress() : FWObject()
     setRunTime(false);
 }
 
-MultiAddress::MultiAddress(const FWObject *root,bool prepopulate) :
+MultiAddress::MultiAddress(const FWObjectDatabase *root,bool prepopulate) :
     FWObject(root,prepopulate) 
 {
     setRunTime(false);

@@ -45,18 +45,18 @@ Policy::Policy() : RuleSet()
     setName("Policy");
 }
 
-Policy::Policy(const FWObject *root,bool prepopulate) : RuleSet(root,prepopulate)
+Policy::Policy(const FWObjectDatabase *root,bool prepopulate) : RuleSet(root,prepopulate)
 {
     setName("Policy");
 }
 
 Policy::~Policy() {}
 
-Rule*   Policy::createRule()
+Rule* Policy::createRule()
 {
     FWObjectDatabase* db=getRoot();
     assert(db!=NULL);
-    return Rule::cast( db->create(PolicyRule::TYPENAME) );
+    return db->createPolicyRule();
 }
 
 

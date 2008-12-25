@@ -51,7 +51,7 @@ FWReference::FWReference()
     setPointer(NULL);
 }
 
-FWReference::FWReference(const FWObject *root,bool prepopulate) : FWObject(root,prepopulate)
+FWReference::FWReference(const FWObjectDatabase *root,bool prepopulate) : FWObject(root,prepopulate)
 {
     setPointer(NULL);
 }
@@ -149,7 +149,7 @@ int FWReference::getPointerId()
 }
 
 
-void   FWReference::dump(std::ostream &f,bool recursive,bool brief,int offset)
+void FWReference::dump(std::ostream &f, bool recursive, bool brief, int offset)
 {
     FWObject::dump(f, recursive, brief, offset);
 
@@ -162,4 +162,10 @@ void   FWReference::dump(std::ostream &f,bool recursive,bool brief,int offset)
 	f << string(offset,' ') << "Ptr.name: " << ptr->getName() <<endl;
 	f << string(offset,' ') << "Ptr.id: "   << ptr->getId() <<endl;
     }
+}
+
+FWObject* FWReference::getObject(FWObject* o)
+{
+    if (FWReference::cast(o)!=NULL) return FWReference::cast(o)->getPointer();
+    return o;
 }

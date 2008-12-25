@@ -40,7 +40,6 @@
 #include <fwbuilder/IPv6.h>
 
 #include <fwbuilder/Policy.h>
-#include <fwbuilder/InterfacePolicy.h>
 #include <fwbuilder/NAT.h>
 
 #include <fwbuilder/Routing.h>
@@ -67,7 +66,7 @@ Firewall::Firewall()
    
 }
 
-Firewall::Firewall(const FWObject *root,bool prepopulate) : Host(root,prepopulate)
+Firewall::Firewall(const FWObjectDatabase *root,bool prepopulate) : Host(root,prepopulate)
 {
     setStr("platform","unknown");
     setStr("host_OS" ,"unknown");
@@ -77,15 +76,15 @@ Firewall::Firewall(const FWObject *root,bool prepopulate) : Host(root,prepopulat
 
     if (prepopulate)
     {
-        add( getRoot()->create(FirewallOptions::TYPENAME) );
+        add( getRoot()->createFirewallOptions() );
         RuleSet *p;
-        p = RuleSet::cast(getRoot()->create(Policy::TYPENAME));
+        p = getRoot()->createPolicy();
         p->setTop(true);
         add(p);
-        p = RuleSet::cast(getRoot()->create(NAT::TYPENAME));
+        p = getRoot()->createNAT();
         p->setTop(true);
         add(p);
-        p = RuleSet::cast(getRoot()->create(Routing::TYPENAME));
+        p = getRoot()->createRouting();
         p->setTop(true);
         add(p);
     }

@@ -45,10 +45,10 @@ Host::Host()
 {
 }
 
-Host::Host(const FWObject *root,bool prepopulate) : Address(root,prepopulate)
+Host::Host(const FWObjectDatabase *root,bool prepopulate) : Address(root,prepopulate)
 {
     if (prepopulate)
-        add( getRoot()->create(HostOptions::TYPENAME) );
+        add( getRoot()->createHostOptions() );
         //add(new HostOptions() );
 }
 
@@ -121,7 +121,7 @@ Management *Host::getManagementObject()
     Management *res = dynamic_cast<Management *>(
         getFirstByType(Management::TYPENAME));
     if(!res)
-        add( res = Management::cast(getRoot()->create(Management::TYPENAME)) );
+        add( res = getRoot()->createManagement() );
 //        add(res = new Management());
     return res;
 }

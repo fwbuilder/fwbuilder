@@ -40,7 +40,7 @@ using namespace std;
 
 const char *physAddress::TYPENAME={"physAddress"};
 
-physAddress::physAddress(const FWObject *root,bool prepopulate) :
+physAddress::physAddress(const FWObjectDatabase *root,bool prepopulate) :
     Address(root,prepopulate) 
 {
     setPhysAddress("00:00:00:00:00:00");
@@ -79,7 +79,7 @@ void physAddress::setPhysAddress(const std::string &s)
 FWReference* physAddress::createRef()
 {
 //    FWObjectReference *ref=new FWObjectReference();
-    FWObjectReference *ref=FWObjectReference::cast(getRoot()->create(FWObjectReference::TYPENAME));
+    FWObjectReference *ref = getRoot()->createFWObjectReference();
     ref->setPointer(this);
     return ref;
 }

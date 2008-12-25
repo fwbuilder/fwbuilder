@@ -42,7 +42,7 @@ ICMPService::ICMPService()
     setStr("code", "-1");
 }
 
-ICMPService::ICMPService(const FWObject *root,bool prepopulate) : Service(root,prepopulate) 
+ICMPService::ICMPService(const FWObjectDatabase *root,bool prepopulate) : Service(root,prepopulate) 
 {
     setStr("type", "-1");
     setStr("code", "-1");

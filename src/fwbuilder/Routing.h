@@ -40,7 +40,7 @@ class Routing : public RuleSet
     public:
     
     Routing();
-    Routing(const FWObject *root,bool prepopulate);
+    Routing(const FWObjectDatabase *root,bool prepopulate);
     virtual ~Routing();
     
     DECLARE_FWOBJECT_SUBTYPE(Routing);

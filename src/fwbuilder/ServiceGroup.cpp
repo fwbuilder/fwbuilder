@@ -41,7 +41,7 @@ using namespace libfwbuilder;
 const char *ServiceGroup::TYPENAME={"ServiceGroup"};
 
 ServiceGroup::ServiceGroup() : Group() {}
-ServiceGroup::ServiceGroup(const FWObject *root,bool prepopulate) : Group(root,prepopulate) {}
+ServiceGroup::ServiceGroup(const FWObjectDatabase *root,bool prepopulate) : Group(root,prepopulate) {}
 
 ServiceGroup::~ServiceGroup() {}
 
@@ -58,7 +58,7 @@ bool  ServiceGroup::validateChild(FWObject *o)
 FWReference* ServiceGroup::createRef()
 {
 //    FWServiceReference *ref=new FWServiceReference();
-    FWServiceReference *ref=FWServiceReference::cast(getRoot()->create(FWServiceReference::TYPENAME));
+    FWServiceReference *ref = getRoot()->createFWServiceReference();
     ref->setPointer(this);
     return ref;
 }

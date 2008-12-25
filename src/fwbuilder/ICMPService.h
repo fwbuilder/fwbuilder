@@ -41,7 +41,7 @@ private:
 public:
 
     ICMPService();
-    ICMPService(const FWObject *root,bool prepopulate);
+    ICMPService(const FWObjectDatabase *root,bool prepopulate);
     virtual ~ICMPService();
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);

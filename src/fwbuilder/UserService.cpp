@@ -38,7 +38,7 @@ using namespace libfwbuilder;
 const char *UserService::TYPENAME={"UserService"};
 
 UserService::UserService() {}
-UserService::UserService(const FWObject *root, bool prepopulate) :
+UserService::UserService(const FWObjectDatabase *root, bool prepopulate) :
     Service(root, prepopulate) {}
 UserService::~UserService() {}
 

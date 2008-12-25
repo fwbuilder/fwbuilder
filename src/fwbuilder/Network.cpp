@@ -45,7 +45,7 @@ Network::Network() : Address()
     setNetmask(InetAddr(AF_INET, 32));
 }
 
-Network::Network(const FWObject *root,bool prepopulate) :
+Network::Network(const FWObjectDatabase *root,bool prepopulate) :
     Address(root, prepopulate)
 {
     setNetmask(InetAddr(AF_INET, 32));

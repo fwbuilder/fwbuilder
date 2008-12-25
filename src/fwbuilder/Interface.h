@@ -67,7 +67,7 @@ private:
 public:
     
         Interface();
-        Interface(const FWObject *root,bool prepopulate);
+        Interface(const FWObjectDatabase *root,bool prepopulate);
         Interface(const Interface &i);
         virtual ~Interface();
 

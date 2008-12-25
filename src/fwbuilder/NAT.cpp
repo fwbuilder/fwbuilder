@@ -42,7 +42,7 @@ NAT::NAT() : RuleSet()
     setName("NAT");
 }
 
-NAT::NAT(const FWObject *root,bool prepopulate) : RuleSet(root,prepopulate) 
+NAT::NAT(const FWObjectDatabase *root,bool prepopulate) : RuleSet(root,prepopulate) 
 {
     setName("NAT");
 }
@@ -53,7 +53,7 @@ Rule* NAT::createRule()
 {
     FWObjectDatabase* db=getRoot();
     assert(db!=NULL);
-    return Rule::cast( db->create(NATRule::TYPENAME) );
+    return db->createNATRule();
 }
 
 

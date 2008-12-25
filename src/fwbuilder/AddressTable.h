@@ -42,7 +42,7 @@ class AddressTable : public MultiAddress
     DECLARE_FWOBJECT_SUBTYPE(AddressTable);
 
     AddressTable();
-    AddressTable(const FWObject *root,bool prepopulate);
+    AddressTable(const FWObjectDatabase *root,bool prepopulate);
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);

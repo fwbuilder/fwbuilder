@@ -47,7 +47,7 @@ RuleSet::RuleSet()
     top = false;
 }
 
-RuleSet::RuleSet(const FWObject*,bool)
+RuleSet::RuleSet(const FWObjectDatabase*, bool)
 {
     setName("RuleSet");
     ipv4 = false;

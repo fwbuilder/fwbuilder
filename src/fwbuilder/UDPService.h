@@ -38,7 +38,7 @@ class UDPService : public TCPUDPService
     public:
 
     UDPService();
-    UDPService(const FWObject *root,bool prepopulate);
+    UDPService(const FWObjectDatabase *root,bool prepopulate);
     virtual ~UDPService();
     
     DECLARE_FWOBJECT_SUBTYPE(UDPService);

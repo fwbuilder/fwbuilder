@@ -39,7 +39,7 @@ using namespace libfwbuilder;
 const char *CustomService::TYPENAME={"CustomService"};
 
 CustomService::CustomService() {}
-CustomService::CustomService(const FWObject *root,bool prepopulate) :
+CustomService::CustomService(const FWObjectDatabase *root,bool prepopulate) :
     Service(root,prepopulate) {}
 CustomService::~CustomService() {}
 

@@ -43,7 +43,7 @@ FWOptions::FWOptions()
     remStr("id"     );
 }
 
-FWOptions::FWOptions(const FWObject *root,bool prepopulate) :
+FWOptions::FWOptions(const FWObjectDatabase *root,bool prepopulate) :
     FWObject(root,prepopulate)
 {
     remStr("comment");
@@ -100,22 +100,22 @@ xmlNodePtr FWOptions::toXML(xmlNodePtr root) throw(FWException)
 
 const char *HostOptions::TYPENAME  ={"HostOptions"};
 HostOptions::HostOptions() : FWOptions() {}
-HostOptions::HostOptions(const FWObject *root,bool prepopulate) : FWOptions(root,prepopulate) {}
+HostOptions::HostOptions(const FWObjectDatabase *root,bool prepopulate) : FWOptions(root,prepopulate) {}
 
 const char *FirewallOptions::TYPENAME  ={"FirewallOptions"};
 FirewallOptions::FirewallOptions() : FWOptions() {}
-FirewallOptions::FirewallOptions(const FWObject *root,bool prepopulate) : FWOptions(root,prepopulate) {}
+FirewallOptions::FirewallOptions(const FWObjectDatabase *root,bool prepopulate) : FWOptions(root,prepopulate) {}
 
 const char *PolicyRuleOptions::TYPENAME={"PolicyRuleOptions"};
 PolicyRuleOptions::PolicyRuleOptions() : FWOptions() {}
-PolicyRuleOptions::PolicyRuleOptions(const FWObject *root,bool prepopulate) : FWOptions(root,prepopulate) {}
+PolicyRuleOptions::PolicyRuleOptions(const FWObjectDatabase *root,bool prepopulate) : FWOptions(root,prepopulate) {}
 
 const char *NATRuleOptions::TYPENAME={"NATRuleOptions"};
 
 NATRuleOptions::NATRuleOptions() : FWOptions() {}
-NATRuleOptions::NATRuleOptions(const FWObject *root,bool prepopulate) : FWOptions(root,prepopulate) {}
+NATRuleOptions::NATRuleOptions(const FWObjectDatabase *root,bool prepopulate) : FWOptions(root,prepopulate) {}
 
 const char *RoutingRuleOptions::TYPENAME={"RoutingRuleOptions"};
 RoutingRuleOptions::RoutingRuleOptions() : FWOptions() {}
-RoutingRuleOptions::RoutingRuleOptions(const FWObject *root,bool prepopulate) : FWOptions(root,prepopulate) {}
+RoutingRuleOptions::RoutingRuleOptions(const FWObjectDatabase *root,bool prepopulate) : FWOptions(root,prepopulate) {}
 

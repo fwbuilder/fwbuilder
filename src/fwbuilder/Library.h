@@ -43,7 +43,7 @@ class Library : public Group
     public:
 
     Library();
-    Library(const FWObject *root,bool prepopulate);
+    Library(const FWObjectDatabase *root,bool prepopulate);
     virtual ~Library();
 
     DECLARE_FWOBJECT_SUBTYPE(Library);

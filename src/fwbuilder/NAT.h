@@ -39,7 +39,7 @@ class NAT : public RuleSet
     public:
     
     NAT();
-    NAT(const FWObject *root,bool prepopulate);
+    NAT(const FWObjectDatabase *root,bool prepopulate);
     virtual ~NAT();
     
     DECLARE_FWOBJECT_SUBTYPE(NAT);

@@ -49,7 +49,7 @@ private:
 public:
 
     TCPService();
-    TCPService(const FWObject *root,bool prepopulate);
+    TCPService(const FWObjectDatabase *root,bool prepopulate);
     virtual ~TCPService();
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);

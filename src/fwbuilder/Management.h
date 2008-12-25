@@ -39,7 +39,7 @@ namespace libfwbuilder
         public:
 
         PolicyInstallScript();
-	PolicyInstallScript(const FWObject *root,bool prepopulate);
+	PolicyInstallScript(const FWObjectDatabase *root,bool prepopulate);
         DECLARE_FWOBJECT_SUBTYPE(PolicyInstallScript);
 
         virtual void fromXML(xmlNodePtr parent) throw(FWException);
@@ -70,7 +70,7 @@ namespace libfwbuilder
         public:
 
         SNMPManagement();
-	SNMPManagement(const FWObject *root,bool prepopulate);
+	SNMPManagement(const FWObjectDatabase *root,bool prepopulate);
         DECLARE_FWOBJECT_SUBTYPE(SNMPManagement);
 
         virtual void fromXML(xmlNodePtr parent) throw(FWException);
@@ -101,7 +101,7 @@ namespace libfwbuilder
         public:
 
         FWBDManagement();
-	FWBDManagement(const FWObject *root,bool prepopulate);
+	FWBDManagement(const FWObjectDatabase *root,bool prepopulate);
         virtual ~FWBDManagement();
         DECLARE_FWOBJECT_SUBTYPE(FWBDManagement);
         virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
@@ -133,7 +133,7 @@ namespace libfwbuilder
         public:
 
         Management();
-	Management(const FWObject *root,bool prepopulate);
+	Management(const FWObjectDatabase *root,bool prepopulate);
         DECLARE_FWOBJECT_SUBTYPE(Management);
 
         virtual void fromXML(xmlNodePtr parent) throw(FWException);

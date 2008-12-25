@@ -53,11 +53,11 @@ protected:
 
     bool negation;
     
-    void  _initialize(const FWObject *root);
+    void  _initialize(const FWObjectDatabase *root);
 
 public:
     RuleElement();
-    RuleElement(const FWObject *root,bool prepopulate);
+    RuleElement(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(RuleElement);
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
@@ -95,7 +95,7 @@ class RuleElementSrc : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementSrc);
     RuleElementSrc();
-    RuleElementSrc(const FWObject *root,bool prepopulate);
+    RuleElementSrc(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
@@ -105,7 +105,7 @@ class RuleElementDst : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementDst);
     RuleElementDst();
-    RuleElementDst(const FWObject *root,bool prepopulate);
+    RuleElementDst(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
@@ -115,7 +115,7 @@ class RuleElementSrv : public ServiceGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementSrv);
     RuleElementSrv();
-    RuleElementSrv(const FWObject *root,bool prepopulate);
+    RuleElementSrv(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
@@ -125,7 +125,7 @@ class RuleElementItf : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementItf);
     RuleElementItf();
-    RuleElementItf(const FWObject *root,bool prepopulate);
+    RuleElementItf(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
     virtual bool validateChild(FWObject *o);
     bool checkItfChildOfThisFw(FWObject *o);
@@ -137,7 +137,7 @@ class RuleElementInterval : public IntervalGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementInterval);
     RuleElementInterval();
-    RuleElementInterval(const FWObject *root,bool prepopulate);
+    RuleElementInterval(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
@@ -147,7 +147,7 @@ class RuleElementOSrc : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementOSrc);
     RuleElementOSrc();
-    RuleElementOSrc(const FWObject *root,bool prepopulate);
+    RuleElementOSrc(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
@@ -157,7 +157,7 @@ class RuleElementODst : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementODst);
     RuleElementODst();
-    RuleElementODst(const FWObject *root,bool prepopulate);
+    RuleElementODst(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
@@ -167,7 +167,7 @@ class RuleElementOSrv : public ServiceGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementOSrv);
     RuleElementOSrv();
-    RuleElementOSrv(const FWObject *root,bool prepopulate);
+    RuleElementOSrv(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
@@ -177,7 +177,7 @@ class RuleElementTSrc : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementTSrc);
     RuleElementTSrc();
-    RuleElementTSrc(const FWObject *root,bool prepopulate);
+    RuleElementTSrc(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
@@ -187,7 +187,7 @@ class RuleElementTDst : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementTDst);
     RuleElementTDst();
-    RuleElementTDst(const FWObject *root,bool prepopulate);
+    RuleElementTDst(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
@@ -197,7 +197,7 @@ class RuleElementTSrv : public ServiceGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementTSrv);
     RuleElementTSrv();
-    RuleElementTSrv(const FWObject *root,bool prepopulate);
+    RuleElementTSrv(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
@@ -207,7 +207,7 @@ class RuleElementRDst : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementRDst);
     RuleElementRDst();
-    RuleElementRDst(const FWObject *root,bool prepopulate);
+    RuleElementRDst(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
@@ -217,7 +217,7 @@ class RuleElementRGtw : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementRGtw);
     RuleElementRGtw();
-    RuleElementRGtw(const FWObject *root,bool prepopulate);
+    RuleElementRGtw(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
     virtual bool validateChild(FWObject *o);
     bool checkSingleIPAdress(FWObject *o);
@@ -230,7 +230,7 @@ class RuleElementRItf : public RuleElementItf {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementRItf);
     RuleElementRItf();
-    RuleElementRItf(const FWObject *root,bool prepopulate);
+    RuleElementRItf(const FWObjectDatabase *root,bool prepopulate);
     virtual bool validateChild(FWObject *o);
     virtual bool isPrimaryObject() const { return false; }
 };

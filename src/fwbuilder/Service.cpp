@@ -35,7 +35,7 @@ using namespace std;
 
 const char *Service::TYPENAME={"Service"};
 
-Service::Service(const FWObject *root,bool prepopulate) : FWObject(root,prepopulate) {}
+Service::Service(const FWObjectDatabase *root,bool prepopulate) : FWObject(root,prepopulate) {}
 
 string Service::getProtocolName()
 {
@@ -50,7 +50,7 @@ int    Service::getProtocolNumber()
 FWReference* Service::createRef()
 {
 //    FWServiceReference *ref=new FWServiceReference();
-    FWServiceReference *ref=FWServiceReference::cast(getRoot()->create(FWServiceReference::TYPENAME));
+    FWServiceReference *ref = getRoot()->createFWServiceReference();
     ref->setPointer(this);
     return ref;
 }

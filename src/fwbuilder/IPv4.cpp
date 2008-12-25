@@ -57,7 +57,7 @@ IPv4::IPv4() : Address()
 {
 }
 
-IPv4::IPv4(const FWObject *root, bool prepopulate) : Address(root, prepopulate)
+IPv4::IPv4(const FWObjectDatabase *root, bool prepopulate) : Address(root, prepopulate)
 {
 }
 

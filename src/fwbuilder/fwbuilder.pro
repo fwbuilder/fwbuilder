@@ -19,6 +19,7 @@ SOURCES  = 	InetAddr.cpp \
 			FWIntervalReference.cpp \
 			FWObject.cpp \
 			FWObjectDatabase.cpp \
+			FWObjectDatabase_create_object.cpp \
 			FWObjectDatabase_tree_ops.cpp \
 			FWObjectReference.cpp \
 			FWOptions.cpp \
@@ -31,7 +32,6 @@ SOURCES  = 	InetAddr.cpp \
 			ICMP6Service.cpp \
 			Interface.cpp \
 			InterfaceData.cpp \
-			InterfacePolicy.cpp \
 			Interval.cpp \
 			IntervalGroup.cpp \
 			IPService.cpp \
@@ -97,7 +97,6 @@ HEADERS  = 	inet_net.h \
 			ICMP6Service.h \
 			Interface.h \
 			InterfaceData.h \
-			InterfacePolicy.h \
 			IntervalGroup.h \
 			Interval.h \
 			IPService.h \

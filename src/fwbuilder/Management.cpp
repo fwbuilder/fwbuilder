@@ -50,7 +50,7 @@ Management::Management()
     setId(-1);
 }
 
-Management::Management(const FWObject *root,bool prepopulate) :
+Management::Management(const FWObjectDatabase *root,bool prepopulate) :
     FWObject(root,prepopulate)
 {
     // This object does not have standard attributes
@@ -141,8 +141,7 @@ PolicyInstallScript *Management::getPolicyInstallScript()
 {
     PolicyInstallScript *res = dynamic_cast<PolicyInstallScript *>(getFirstByType(PolicyInstallScript::TYPENAME));
     if(!res)
-        add( res=
-  PolicyInstallScript::cast(getRoot()->create(PolicyInstallScript::TYPENAME) ));
+        add( res= getRoot()->createPolicyInstallScript() );
     //add(res = new PolicyInstallScript());
     return res;
 }
@@ -151,8 +150,7 @@ SNMPManagement *Management::getSNMPManagement()
 {
     SNMPManagement *res = dynamic_cast<SNMPManagement *>(getFirstByType(SNMPManagement::TYPENAME));
     if(!res)
-        add( res=
-             SNMPManagement::cast(getRoot()->create(SNMPManagement::TYPENAME)) );
+        add( res = getRoot()->createSNMPManagement() );
     //add(res = new SNMPManagement());
     return res;
 }
@@ -161,8 +159,7 @@ FWBDManagement *Management::getFWBDManagement()
 {
     FWBDManagement *res = dynamic_cast<FWBDManagement *>(getFirstByType(FWBDManagement::TYPENAME));
     if(!res)
-        add( res=
-             FWBDManagement::cast(getRoot()->create(FWBDManagement::TYPENAME)) );
+        add( res = getRoot()->createFWBDManagement() );
     //add(res = new FWBDManagement());
     return res;
 }
@@ -178,7 +175,7 @@ PolicyInstallScript::PolicyInstallScript()
     enabled = false ;
 }
 
-PolicyInstallScript::PolicyInstallScript(const FWObject *root,
+PolicyInstallScript::PolicyInstallScript(const FWObjectDatabase *root,
                                          bool prepopulate) :
     FWObject(root,prepopulate)
 {
@@ -281,7 +278,7 @@ SNMPManagement::SNMPManagement()
     setId(-1);
 }
 
-SNMPManagement::SNMPManagement(const FWObject *root,bool prepopulate) :
+SNMPManagement::SNMPManagement(const FWObjectDatabase *root,bool prepopulate) :
     FWObject(root,prepopulate)
 {
     // This object does not have standard attributes
@@ -386,7 +383,7 @@ FWBDManagement::FWBDManagement()
     setId(-1);
 }
 
-FWBDManagement::FWBDManagement(const FWObject *root,bool prepopulate) :
+FWBDManagement::FWBDManagement(const FWObjectDatabase *root,bool prepopulate) :
     FWObject(root,prepopulate)
 {
     port = -1 ;

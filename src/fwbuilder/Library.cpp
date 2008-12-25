@@ -36,7 +36,7 @@ using namespace std;
 const char *Library::TYPENAME={"Library"};
 
 Library::Library()  {}
-Library::Library(const FWObject *root,bool prepopulate) :
+Library::Library(const FWObjectDatabase *root,bool prepopulate) :
     FWObject(root,prepopulate) {}
 
 Library::~Library() 

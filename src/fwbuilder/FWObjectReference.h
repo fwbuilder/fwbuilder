@@ -45,7 +45,7 @@ class FWObjectReference : public FWReference
     DECLARE_FWOBJECT_SUBTYPE(FWObjectReference);
 
     FWObjectReference();
-    FWObjectReference(const FWObject *root,bool prepopulate);
+    FWObjectReference(const FWObjectDatabase *root,bool prepopulate);
 
     void setPointer(FWObject *o);
     void setPointer(ObjectGroup *o);

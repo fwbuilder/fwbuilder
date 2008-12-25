@@ -56,7 +56,7 @@ Rule::Rule()
     setRuleGroupName("");
 }
 
-Rule::Rule(const FWObject *root,bool prepopulate) : Group(root,prepopulate)
+Rule::Rule(const FWObjectDatabase *root,bool prepopulate) : Group(root,prepopulate)
 {
     setInt("position",0);
     enable();
@@ -114,7 +114,7 @@ PolicyRule::PolicyRule()
     when_re = NULL;
 }
 
-PolicyRule::PolicyRule(const FWObject *root,bool prepopulate) : Rule(root,prepopulate)
+PolicyRule::PolicyRule(const FWObjectDatabase *root,bool prepopulate) : Rule(root,prepopulate)
 {
 //    setStr("action","Deny");
     setAction(PolicyRule::Deny);
@@ -132,22 +132,22 @@ PolicyRule::PolicyRule(const FWObject *root,bool prepopulate) : Rule(root,prepop
         assert(db);
 
 // <!ELEMENT PolicyRule (Src,Dst,Srv?,Itf?,When?,PolicyRuleOptions?)>
-        re=db->create("Src");  assert(re!=NULL);
+        re = db->createRuleElementSrc();  assert(re!=NULL);
         add(re); src_re = RuleElementSrc::cast(re);
 
-        re=db->create("Dst");  assert(re!=NULL);
+        re = db->createRuleElementDst();  assert(re!=NULL);
         add(re); dst_re = RuleElementDst::cast(re);
 
-        re=db->create("Srv");  assert(re!=NULL);
+        re = db->createRuleElementSrv();  assert(re!=NULL);
         add(re); srv_re = RuleElementSrv::cast(re);
 
-        re=db->create("Itf");  assert(re!=NULL);
+        re = db->createRuleElementItf();  assert(re!=NULL);
         add(re); itf_re = RuleElementItf::cast(re);
 
-        re=db->create("When"); assert(re!=NULL);
+        re = db->createRuleElementInterval(); assert(re!=NULL);
         add(re); when_re = RuleElementInterval::cast(re);
 
-        add( db->create(PolicyRuleOptions::TYPENAME) );
+        add( db->createPolicyRuleOptions() );
     }
 }
 
@@ -231,6 +231,7 @@ string PolicyRule::getActionAsString() const
 {
     switch (action) {
     case Accept:     return "Accept";
+    case Deny:       return "Deny";
     case Reject:     return "Reject";
     case Scrub:      return "Scrub";
     case Return:     return "Return";
@@ -244,6 +245,7 @@ string PolicyRule::getActionAsString() const
     case Custom:     return "Custom";
     case Branch:     return "Branch";
     case Route:      return "Route";
+    default:         return "Unknown";
     }
     return "Deny";
 }
@@ -274,6 +276,7 @@ string PolicyRule::getDirectionAsString() const
     {
     case Inbound:   return "Inbound";
     case Outbound:  return "Outbound";
+    case Both:      return "Both";
     }
     return "Both";
 }
@@ -500,7 +503,7 @@ NATRule::NATRule() : Rule()
     when_re = NULL;
 }
 
-NATRule::NATRule(const FWObject *root,bool prepopulate) : Rule(root,prepopulate)
+NATRule::NATRule(const FWObjectDatabase *root,bool prepopulate) : Rule(root,prepopulate)
 {
     rule_type=Unknown;
 
@@ -518,15 +521,15 @@ NATRule::NATRule(const FWObject *root,bool prepopulate) : Rule(root,prepopulate)
         FWObjectDatabase *db=(FWObjectDatabase*)(root);
         assert(db);
 
-        re=db->create("OSrc");  assert(re!=NULL); add(re);
-        re=db->create("ODst");  assert(re!=NULL); add(re);
-        re=db->create("OSrv");  assert(re!=NULL); add(re);
+        re = db->createRuleElementOSrc();  assert(re!=NULL); add(re);
+        re = db->createRuleElementODst();  assert(re!=NULL); add(re);
+        re = db->createRuleElementOSrv();  assert(re!=NULL); add(re);
 
-        re=db->create("TSrc");  assert(re!=NULL); add(re);
-        re=db->create("TDst");  assert(re!=NULL); add(re);
-        re=db->create("TSrv");  assert(re!=NULL); add(re);
+        re = db->createRuleElementTSrc();  assert(re!=NULL); add(re);
+        re = db->createRuleElementTDst();  assert(re!=NULL); add(re);
+        re = db->createRuleElementTSrv();  assert(re!=NULL); add(re);
 
-        add( db->create(NATRuleOptions::TYPENAME) );
+        add( db->createNATRuleOptions() );
     }
 }
 
@@ -750,7 +753,7 @@ RoutingRule::RoutingRule() : Rule()
     setMetric(0);
 }
 
-RoutingRule::RoutingRule(const FWObject *root,bool prepopulate) : Rule(root,prepopulate)
+RoutingRule::RoutingRule(const FWObjectDatabase *root,bool prepopulate) : Rule(root,prepopulate)
 {
     if (prepopulate)
     {
@@ -758,13 +761,13 @@ RoutingRule::RoutingRule(const FWObject *root,bool prepopulate) : Rule(root,prep
         FWObjectDatabase *db=(FWObjectDatabase*)(root);
         assert(db);
 
-        re=db->create("RDst");  assert(re!=NULL); add(re);
-        re=db->create("RGtw");  assert(re!=NULL); add(re);
-        re=db->create("RItf");  assert(re!=NULL); add(re);
+        re = db->createRuleElementRDst();  assert(re!=NULL); add(re);
+        re = db->createRuleElementRGtw();  assert(re!=NULL); add(re);
+        re = db->createRuleElementRItf();  assert(re!=NULL); add(re);
     
         setMetric(0);
 
-        add( db->create(RoutingRuleOptions::TYPENAME) );
+        add( db->createRoutingRuleOptions() );
     }
 }
 

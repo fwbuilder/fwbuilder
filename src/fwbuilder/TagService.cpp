@@ -45,7 +45,7 @@ TagService::TagService()
     setStr("tagcode", "");
 }
 
-TagService::TagService(const FWObject *root,bool prepopulate) : Service(root,prepopulate)
+TagService::TagService(const FWObjectDatabase *root,bool prepopulate) : Service(root,prepopulate)
 {
     setStr("tagcode", "");
 }

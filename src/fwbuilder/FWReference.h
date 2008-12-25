@@ -46,7 +46,7 @@ class FWReference : public FWObject
     protected:
     
     FWReference();
-    FWReference(const FWObject *root, bool prepopulate);
+    FWReference(const FWObjectDatabase *root, bool prepopulate);
 
     public:
     
@@ -57,7 +57,8 @@ class FWReference : public FWObject
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 
-    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+    virtual FWObject& shallowDuplicate(
+        const FWObject *obj, bool preserve_id = true) throw(FWException);
     
     virtual void add(FWObject *obj);
 
@@ -70,7 +71,14 @@ class FWReference : public FWObject
     virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0);
 
     virtual bool isPrimaryObject() const { return false; }
-    
+
+    /**
+     * If obj is FWReference object, return pointer to the object this
+     * reference points to. Otherwise return obj. This is a typical
+     * operation repeated in many places where we loop over children
+     * of some object.
+     */
+    static FWObject* getObject(FWObject* obj);
 };
 
 }

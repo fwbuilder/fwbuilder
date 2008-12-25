@@ -57,7 +57,6 @@
 #include <fwbuilder/physAddress.h>
 #include <fwbuilder/DNSName.h>
 #include <fwbuilder/AddressTable.h>
-#include <fwbuilder/InterfacePolicy.h>
 #include <fwbuilder/Group.h>
 #include <fwbuilder/Rule.h>
 #include <fwbuilder/RuleElement.h>
@@ -109,8 +108,10 @@ const char*  FWObjectDatabase::TYPENAME  = {"FWObjectDatabase"};
 const string FWObjectDatabase::DTD_FILE_NAME  = "fwbuilder.dtd"    ;
 
 
-FWObjectDatabase::FWObjectDatabase() : FWObject(false), data_file()
+FWObjectDatabase::FWObjectDatabase() : FWObject(false), data_file(), obj_index()
 {
+    init_create_methods_table();
+
     setRoot(this);
     index_hits = index_misses = 0;
     init_id_dict();
@@ -124,8 +125,11 @@ FWObjectDatabase::FWObjectDatabase() : FWObject(false), data_file()
     setDirty(false);
 }
 
-FWObjectDatabase::FWObjectDatabase(FWObjectDatabase& d) : FWObject(false)
+FWObjectDatabase::FWObjectDatabase(FWObjectDatabase& d) :
+    FWObject(false), data_file(), obj_index()
 {
+    init_create_methods_table();
+
     setRoot(this);
     index_hits = index_misses = 0;
     init_id_dict();
@@ -149,6 +153,11 @@ FWObjectDatabase::FWObjectDatabase(FWObjectDatabase& d) : FWObject(false)
 
     setDirty(false);
     init = false;
+}
+
+FWObjectDatabase::~FWObjectDatabase()
+{
+    init = true;
 }
 
 void FWObjectDatabase::init_id_dict()
@@ -481,159 +490,21 @@ void FWObjectDatabase::addToIndexRecursive(FWObject *o)
 /*
  ***********************************************************************
  */
-FWObject *FWObjectDatabase::createFromXML(xmlNodePtr data)
-{
-    const char *n;
-    string typen;
-    int id = -1;
-
-    n=FROMXMLCAST(data->name);
-    if(!n)
-        return NULL;
-    typen = n;
-
-    n=FROMXMLCAST(xmlGetProp(data,TOXMLCAST("id")));
-    if(n)
-    {
-        id = registerStringId(n);
-        FREEXMLBUFF(n);
-    }
-
-// create new object but do not prepopulate objects that
-// automatically create children in constructor
-    return create(typen, id, false);
-}
-
-
-#define CREATE_OBJ(classname,str,id,prepopulate)     \
-if(strcmp(classname::TYPENAME,str)==SAME) \
-{ \
-  nobj=new classname(this,prepopulate); \
-  if (id > -1) nobj->setId(id); \
-  addToIndex(nobj); \
-  return nobj; \
-}
-
-
-FWObject *FWObjectDatabase::create(const string &type_name,
-                                   int id,
-                                   bool prepopulate)
-{
-    const char *n = type_name.c_str();
-    FWObject   *nobj;
-
-    if (strcmp("comment",n)==SAME) return NULL;
-
-    if(strcmp("AnyNetwork"  ,n)==SAME)
-    {
-        nobj = new Network(this,prepopulate);
-        if (id > -1) nobj->setId(id);
-        nobj->setXMLName("AnyNetwork");
-        addToIndex(nobj);
-        return nobj;
-    }
-
-    if(strcmp("AnyIPService",n)==SAME)
-    {
-        nobj = new IPService(this,prepopulate);
-        if (id > -1) nobj->setId(id);
-        nobj->setXMLName("AnyIPService");
-        addToIndex(nobj);
-        return nobj;
-    }
-
-    if(strcmp("AnyInterval" ,n)==SAME)
-    {
-        nobj = new Interval(this,prepopulate);
-        if (id > -1) nobj->setId(id);
-        nobj->setXMLName("AnyInterval");
-        addToIndex(nobj);
-        return nobj;
-    }
-
-
-    CREATE_OBJ(Library             ,n, id, prepopulate);
-    CREATE_OBJ(Policy              ,n, id, prepopulate);
-    CREATE_OBJ(InterfacePolicy     ,n, id, prepopulate);
-    CREATE_OBJ(NAT                 ,n, id, prepopulate);
-    CREATE_OBJ(Routing             ,n, id, prepopulate);
-    CREATE_OBJ(PolicyRule          ,n, id, prepopulate);
-    CREATE_OBJ(NATRule             ,n, id, prepopulate);
-    CREATE_OBJ(RoutingRule         ,n, id, prepopulate);
-    CREATE_OBJ(RuleElementSrc      ,n, id, prepopulate);
-    CREATE_OBJ(RuleElementDst      ,n, id, prepopulate);
-    CREATE_OBJ(RuleElementSrv      ,n, id, prepopulate);
-    CREATE_OBJ(RuleElementItf      ,n, id, prepopulate);
-    CREATE_OBJ(RuleElementOSrc     ,n, id, prepopulate);
-    CREATE_OBJ(RuleElementODst     ,n, id, prepopulate);
-    CREATE_OBJ(RuleElementOSrv     ,n, id, prepopulate);
-    CREATE_OBJ(RuleElementTSrc     ,n, id, prepopulate);
-    CREATE_OBJ(RuleElementTDst     ,n, id, prepopulate);
-    CREATE_OBJ(RuleElementTSrv     ,n, id, prepopulate);
-    CREATE_OBJ(RuleElementInterval ,n, id, prepopulate);
-    CREATE_OBJ(RuleElementRDst     ,n, id, prepopulate);
-    CREATE_OBJ(RuleElementRGtw     ,n, id, prepopulate);
-    CREATE_OBJ(RuleElementRItf     ,n, id, prepopulate);
-    CREATE_OBJ(HostOptions         ,n, id, prepopulate);
-    CREATE_OBJ(FirewallOptions     ,n, id, prepopulate);
-    CREATE_OBJ(PolicyRuleOptions   ,n, id, prepopulate);
-    CREATE_OBJ(NATRuleOptions      ,n, id, prepopulate);
-    CREATE_OBJ(RoutingRuleOptions  ,n, id, prepopulate);
-    CREATE_OBJ(Host                ,n, id, prepopulate);
-    CREATE_OBJ(AddressRange        ,n, id, prepopulate);
-    CREATE_OBJ(Management          ,n, id, prepopulate);
-    CREATE_OBJ(PolicyInstallScript ,n, id, prepopulate);
-    CREATE_OBJ(SNMPManagement      ,n, id, prepopulate);
-    CREATE_OBJ(FWBDManagement      ,n, id, prepopulate);
-    CREATE_OBJ(Firewall            ,n, id, prepopulate);
-    CREATE_OBJ(Network             ,n, id, prepopulate);
-    CREATE_OBJ(NetworkIPv6         ,n, id, prepopulate);
-    CREATE_OBJ(Interface           ,n, id, prepopulate);
-    CREATE_OBJ(IPv4                ,n, id, prepopulate);
-    CREATE_OBJ(IPv6                ,n, id, prepopulate);
-    CREATE_OBJ(physAddress         ,n, id, prepopulate);
-    CREATE_OBJ(DNSName             ,n, id, prepopulate);
-    CREATE_OBJ(AddressTable        ,n, id, prepopulate);
-    CREATE_OBJ(FWObjectReference   ,n, id, prepopulate);
-    CREATE_OBJ(FWServiceReference  ,n, id, prepopulate);
-    CREATE_OBJ(FWIntervalReference ,n, id, prepopulate);
-    CREATE_OBJ(TCPService          ,n, id, prepopulate);
-    CREATE_OBJ(UDPService          ,n, id, prepopulate);
-    CREATE_OBJ(TagService          ,n, id, prepopulate);
-    CREATE_OBJ(ICMPService         ,n, id, prepopulate);
-    CREATE_OBJ(ICMP6Service        ,n, id, prepopulate);
-    CREATE_OBJ(IPService           ,n, id, prepopulate);
-    CREATE_OBJ(CustomService       ,n, id, prepopulate);
-    CREATE_OBJ(UserService         ,n, id, prepopulate);
-    CREATE_OBJ(Interval            ,n, id, prepopulate);
-    CREATE_OBJ(ObjectGroup         ,n, id, prepopulate);
-    CREATE_OBJ(ServiceGroup        ,n, id, prepopulate);
-    CREATE_OBJ(IntervalGroup       ,n, id, prepopulate);
-
-    cerr << "FWObjectDatabase::create: ERROR: attempt to create object of unknown type '" 
-         << type_name << "'" << endl;
-
-    //TODO: throw exception
-    nobj = NULL;
-
-    return nobj;
-}
-
 Firewall* FWObjectDatabase::_findFirewallByNameRecursive(FWObject* db,
                                          const string &name) throw(FWException)
 {
     if (Firewall::isA(db) &&
         db->getName()==name &&
         db->getParent()->getId()!=FWObjectDatabase::DELETED_OBJECTS_ID)
-        return Firewall::cast(db);
+        return static_cast<Firewall*>(db);
 
     list<FWObject*>::iterator j;
     for(j=db->begin(); j!=db->end(); ++j)     
     {
         FWObject *o=*j;
 
-        o=_findFirewallByNameRecursive(o,name);
-        if(o) return Firewall::cast(o);
+        o = _findFirewallByNameRecursive(o,name);
+        if(o) return static_cast<Firewall*>(o);
     }
     if (db==this)
         throw FWException("Firewall object '"+name+"' not found");
@@ -714,10 +585,10 @@ bool FWObjectDatabase::_findWhereUsed(FWObject *o,
 // set flags to break indefinite recursion in case we encounter circular groups
     p->setInt(".searchId", searchId);
     p->setBool(".searchResult", res);   // res==false at this time
-
-    if (PolicyRule::cast(p))
+ 
+    PolicyRule *rule = PolicyRule::cast(p);
+    if (rule)
     {
-        PolicyRule *rule = PolicyRule::cast(p);
         switch (rule->getAction()) {
         case PolicyRule::Tag:
         {
@@ -798,8 +669,7 @@ void FWObjectDatabase::recursivelyRemoveObjFromTree(FWObject* obj,
 
     for (FWObject::iterator i=obj->begin(); i!=obj->end(); ++i)
     {
-        if (FWReference::cast(*i)!=NULL ||
-            RuleSet::cast(*i)!=NULL) continue;
+        if (FWReference::cast(*i)!=NULL || RuleSet::cast(*i)!=NULL) continue;
         recursivelyRemoveObjFromTree( *i , true);
     }
 

@@ -46,7 +46,7 @@ class MultiAddress : public ObjectGroup
     DECLARE_FWOBJECT_SUBTYPE(MultiAddress);
 
     MultiAddress();
-    MultiAddress(const FWObject *root,bool prepopulate);
+    MultiAddress(const FWObjectDatabase *root,bool prepopulate);
     virtual ~MultiAddress();
 
     virtual std::string getSourceName();

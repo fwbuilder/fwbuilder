@@ -46,7 +46,7 @@ class TCPUDPService : public Service
     public:
 
     TCPUDPService();
-    TCPUDPService(const FWObject *root,bool prepopulate);
+    TCPUDPService(const FWObjectDatabase *root,bool prepopulate);
     virtual ~TCPUDPService();
     
     virtual void fromXML(xmlNodePtr parent) throw(FWException);

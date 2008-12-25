@@ -46,7 +46,7 @@ class Firewall : public Host
 public:
     
     Firewall();
-    Firewall(const FWObject *root,bool prepopulate);
+    Firewall(const FWObjectDatabase *root,bool prepopulate);
     virtual ~Firewall();
     
     virtual void fromXML(xmlNodePtr parent) throw(FWException);

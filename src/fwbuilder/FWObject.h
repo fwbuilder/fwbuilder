@@ -92,7 +92,7 @@ private:
      *
      * dbroot is assigned by method FWObjectDatabase::create 
      */
-    FWObject *dbroot;
+    FWObjectDatabase *dbroot;
     int id;
     bool ro;
     std::string name;
@@ -145,7 +145,7 @@ protected:
      *  Parameter 'root' is a pointer at the root object of the tree,
      *  we are going to add this newly created object to.
      */
-    FWObject(const FWObject *root,bool prepopulate);
+    FWObject(const FWObjectDatabase *root, bool prepopulate);
 
 public:
 
@@ -154,7 +154,7 @@ public:
     class tree_iterator {
         friend class libfwbuilder::FWObject;
 
-        FWObject                       *node;
+        FWObject *node;
 
       public:
         tree_iterator()                        { node=NULL;    }
@@ -284,7 +284,8 @@ public:
     /**
      * Sets pointer to the database root
      */
-    void setRoot(const FWObject *_dbroot) { dbroot = (FWObject*)_dbroot; }
+    void setRoot(const FWObjectDatabase *_dbroot)
+    { dbroot = (FWObjectDatabase*)_dbroot; }
 
     /**
      *   Returns a string that represents a path to the object

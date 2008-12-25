@@ -51,7 +51,7 @@ class RuleSet : public FWObject
     public:
     
     RuleSet();
-    RuleSet(const FWObject *root,bool prepopulate);
+    RuleSet(const FWObjectDatabase *root,bool prepopulate);
     virtual ~RuleSet();
     
     DECLARE_FWOBJECT_SUBTYPE(RuleSet);

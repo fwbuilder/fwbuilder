@@ -37,7 +37,7 @@ const char *UDPService::TYPENAME={"UDPService"};
 
 UDPService::UDPService()  {}
 
-UDPService::UDPService(const FWObject *root, bool prepopulate) :
+UDPService::UDPService(const FWObjectDatabase *root, bool prepopulate) :
     TCPUDPService(root, prepopulate) {}
 
 UDPService::~UDPService() {}

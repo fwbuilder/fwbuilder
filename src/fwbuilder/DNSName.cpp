@@ -50,7 +50,7 @@ DNSName::DNSName() : MultiAddress()
     setStr("dnsrectype", "A");
 }
 
-DNSName::DNSName(const FWObject *root,bool prepopulate) :
+DNSName::DNSName(const FWObjectDatabase *root,bool prepopulate) :
     MultiAddress(root,prepopulate) 
 {
     setRunTime(false);
@@ -124,8 +124,11 @@ void DNSName::loadFromSource(bool ipv6) throw(FWException)
         list<InetAddr> v = DNS::getHostByName(getSourceName(), af_type);
         for (list<InetAddr>::iterator i=v.begin(); i!=v.end(); ++i)
         {
-            Address *a = Address::cast(
-                getRoot()->create((ipv6)?IPv6::TYPENAME:IPv4::TYPENAME));
+            //Address *a = Address::cast(
+            //    getRoot()->create((ipv6)?IPv6::TYPENAME:IPv4::TYPENAME));
+            Address *a = NULL;
+            if (ipv6) a = getRoot()->createIPv6();
+            else a = getRoot()->createIPv4();
             a->setAddress( *i );
             addRef(a);
         }

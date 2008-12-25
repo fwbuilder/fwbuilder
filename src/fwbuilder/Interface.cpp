@@ -30,7 +30,6 @@
 #include <fwbuilder/libfwbuilder-config.h>
 
 #include <fwbuilder/Interface.h>
-#include <fwbuilder/InterfacePolicy.h>
 #include <fwbuilder/XMLTools.h>
 #include <fwbuilder/IPv4.h>
 #include <fwbuilder/IPv6.h>
@@ -64,7 +63,7 @@ Interface::Interface():Address()
     snmp_type        = -1   ;     
 }
 
-Interface::Interface(const FWObject *root,bool prepopulate) :
+Interface::Interface(const FWObjectDatabase *root,bool prepopulate) :
     Address(root,prepopulate)
 {
     setName("unknown");
@@ -202,8 +201,6 @@ xmlNodePtr Interface::toXML(xmlNodePtr parent) throw(FWException)
         if((o=(*j2))!=NULL )
             o->toXML(me);
     }
-    o=getFirstByType( InterfacePolicy::TYPENAME );
-    if (o) o->toXML(me);
 
     return me;
 }
@@ -261,8 +258,7 @@ bool  Interface::validateChild(FWObject *o)
     string otype=o->getTypeName();
     return (otype==IPv4::TYPENAME ||
             otype==IPv6::TYPENAME ||
-            otype==physAddress::TYPENAME ||
-            otype==InterfacePolicy::TYPENAME );
+            otype==physAddress::TYPENAME);
 }
 
 bool Interface::isLoopback() const
@@ -287,7 +283,7 @@ void  Interface::setPhysicalAddress(const std::string &paddr)
         pa->setPhysAddress(paddr);
     } else
     {
-        pa=physAddress::cast( getRoot()->create(physAddress::TYPENAME) );
+        pa = getRoot()->createphysAddress();
         pa->setPhysAddress(paddr);
         add(pa);
     }
@@ -313,14 +309,14 @@ const Address* Interface::getAddressObject() const
 
 IPv4*  Interface::addIPv4()
 {
-    IPv4* ipv4 = IPv4::cast( getRoot()->create(IPv4::TYPENAME) );
+    IPv4* ipv4 = getRoot()->createIPv4();
     add(ipv4);
     return ipv4;
 }
 
 IPv6*  Interface::addIPv6()
 {
-    IPv6* ipv6 = IPv6::cast( getRoot()->create(IPv6::TYPENAME) );
+    IPv6* ipv6 = getRoot()->createIPv6();
     add(ipv6);
     return ipv6;
 }

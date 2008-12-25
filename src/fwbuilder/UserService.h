@@ -46,7 +46,7 @@ class UserService : public Service
     public:
     
     UserService();
-    UserService(const FWObject *root, bool prepopulate);
+    UserService(const FWObjectDatabase *root, bool prepopulate);
     virtual ~UserService();
     
     virtual void       fromXML(xmlNodePtr parent) throw(FWException);

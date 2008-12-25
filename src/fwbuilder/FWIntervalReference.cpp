@@ -39,7 +39,7 @@ const char *FWIntervalReference::TYPENAME={"IntervalRef"};
 //FWIntervalReference::FWIntervalReference(IntervalGroup *p):FWReference(p){}
 
 FWIntervalReference::FWIntervalReference():FWReference(){}
-FWIntervalReference::FWIntervalReference(const FWObject *root,bool prepopulate) :
+FWIntervalReference::FWIntervalReference(const FWObjectDatabase *root,bool prepopulate) :
     FWReference(root,prepopulate) {} 
 
 void FWIntervalReference::setPointer(Interval *p)

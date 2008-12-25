@@ -46,7 +46,7 @@ TCPService::TCPService()
     clearAllTCPFlagMasks();
 }
 
-TCPService::TCPService(const FWObject *root, bool prepopulate) :
+TCPService::TCPService(const FWObjectDatabase *root, bool prepopulate) :
     TCPUDPService(root,prepopulate) 
 {
     init();

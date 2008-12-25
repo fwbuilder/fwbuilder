@@ -1,4 +1,31 @@
+2008-12-25  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler.cpp (Compiler::_expandAddressRanges): using
+	FWObjectDatabase::createClass methods to create rules and other
+	objects in compilers wherever the type is known at the (code)
+	compile time. This makes code cleaner and speeds it up a little
+	because of eliminated cast() and string comparison.
+
+2008-12-24  vadim  <vadim@vk.crocodile.org>
+
+	* FWObjectDatabase_create_object.cpp (init_create_methods_table):
+	using table of pointers to methods that create objects of
+	different types to dispatch call to createFWObjectClass methods
+	and avoid long chains of "if" operators that compare type names.
+
+	* FWObjectDatabase_create_object.cpp (CALL_CREATE_OBJ_METHOD):
+	added bunch of FWObjectDatabase::createClass methods for all known
+	object types to create objects of the corresponding class and
+	return a pointer to it. This provides a way to create an object
+	without excessive use of dynamic_cast() and many 'if' operators to
+	compare type name.
+
 2008-12-23  vadim  <vadim@vk.crocodile.org>
+
+	* FWObject.cpp (FWObject::FWObject): Code refactoring and
+	cleanup. Constructor that attached new object to the tree takes
+	argument pointer to FWObjectDatabase instead of pointer to
+	FWObject. This helps eliminate some unnecessary cast().
 
 	* InetAddrMask.cpp (InetAddrMask::dimension): fixed bug #2462927:
 	"ip6tables: objects with netmask /32 lose netmask in
@@ -8,8 +35,8 @@
 2008-12-22  vadim  <vadim@vk.crocodile.org>
 
 	* ObjectMatcher.h (libfwbuilder): refactored methods
-	Compiler::complexMatch() and related into separate class
-	ObjectMatcher in fwbuilder. Using duple dispatch pattern to
+	Compiler::complexMatch() and similar into separate class
+	ObjectMatcher in fwbuilder. Using double dispatch pattern to
 	properly dispatch calls depending on the obbject type to avoid
 	multiple 'if' by object type.
 

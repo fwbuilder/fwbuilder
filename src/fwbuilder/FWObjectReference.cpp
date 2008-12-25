@@ -43,7 +43,7 @@ FWObjectReference::FWObjectReference():FWReference()
 {
 }
 
-FWObjectReference::FWObjectReference(const FWObject *root,bool prepopulate) :
+FWObjectReference::FWObjectReference(const FWObjectDatabase *root,bool prepopulate) :
     FWReference(root,prepopulate)
 {}
 

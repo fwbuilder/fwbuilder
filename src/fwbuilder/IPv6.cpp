@@ -61,7 +61,7 @@ IPv6::IPv6() : Address()
     inet_addr_mask = new Inet6AddrMask();
 }
 
-IPv6::IPv6(const FWObject *root, bool prepopulate) : Address(root, prepopulate)
+IPv6::IPv6(const FWObjectDatabase *root, bool prepopulate) : Address(root, prepopulate)
 {
     delete inet_addr_mask;
     inet_addr_mask = new Inet6AddrMask();

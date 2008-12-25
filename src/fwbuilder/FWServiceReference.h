@@ -45,7 +45,7 @@ class FWServiceReference : public FWReference
     DECLARE_FWOBJECT_SUBTYPE(FWServiceReference);
 
     FWServiceReference();
-    FWServiceReference(const FWObject *root,bool prepopulate);
+    FWServiceReference(const FWObjectDatabase *root,bool prepopulate);
 
     void setPointer(Service *o);
     void setPointer(ServiceGroup *o);

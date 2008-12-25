@@ -56,7 +56,7 @@ Interval::Interval()
     setStr("days_of_week", "");
 }
 
-Interval::Interval(const FWObject *root,bool prepopulate) : FWObject(root,prepopulate)
+Interval::Interval(const FWObjectDatabase *root,bool prepopulate) : FWObject(root,prepopulate)
 {
     setInt("from_minute", -1);
     setInt("from_hour", -1);
@@ -313,7 +313,7 @@ xmlNodePtr Interval::toXML(xmlNodePtr parent) throw(FWException)
 FWReference* Interval::createRef()
 {
 //    FWIntervalReference *ref=new FWIntervalReference();
-    FWIntervalReference *ref=FWIntervalReference::cast(getRoot()->create(FWIntervalReference::TYPENAME));
+    FWIntervalReference *ref = getRoot()->createFWIntervalReference();
     ref->setPointer(this);
     return ref;
 }

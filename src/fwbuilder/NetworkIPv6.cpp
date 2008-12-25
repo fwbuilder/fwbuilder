@@ -48,7 +48,7 @@ NetworkIPv6::NetworkIPv6() : Address()
     setNetmask(InetAddr(AF_INET6, 64));
 }
 
-NetworkIPv6::NetworkIPv6(const FWObject *root, bool prepopulate) :
+NetworkIPv6::NetworkIPv6(const FWObjectDatabase *root, bool prepopulate) :
     Address(root, prepopulate)
 {
     delete inet_addr_mask;

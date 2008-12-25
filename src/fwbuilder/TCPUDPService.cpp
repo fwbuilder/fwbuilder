@@ -43,7 +43,7 @@ TCPUDPService::TCPUDPService()
     dst_range_end = 0;
 }
 
-TCPUDPService::TCPUDPService(const FWObject *root, bool prepopulate) :
+TCPUDPService::TCPUDPService(const FWObjectDatabase *root, bool prepopulate) :
     Service(root,prepopulate) 
 {
     src_range_start = 0;

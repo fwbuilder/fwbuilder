@@ -40,7 +40,7 @@ ICMP6Service::ICMP6Service() : ICMPService()
 {
 }
 
-ICMP6Service::ICMP6Service(const FWObject *root, bool prepopulate) :
+ICMP6Service::ICMP6Service(const FWObjectDatabase *root, bool prepopulate) :
     ICMPService(root, prepopulate) 
 {
 }

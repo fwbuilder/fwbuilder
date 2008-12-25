@@ -43,7 +43,7 @@ class physAddress : public Address
     DECLARE_FWOBJECT_SUBTYPE(physAddress);
 
     physAddress() {}
-    physAddress(const FWObject *root,bool prepopulate);
+    physAddress(const FWObjectDatabase *root,bool prepopulate);
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);

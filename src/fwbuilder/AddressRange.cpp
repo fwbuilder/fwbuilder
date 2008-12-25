@@ -39,7 +39,7 @@ AddressRange::AddressRange() : Address(), start_address(), end_address()
 {
 }
 
-AddressRange::AddressRange(const FWObject *root, bool prepopulate) :
+AddressRange::AddressRange(const FWObjectDatabase *root, bool prepopulate) :
     Address(root, prepopulate), start_address(), end_address()
 {
 }

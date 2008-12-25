@@ -125,7 +125,7 @@ Logger* BackgroundOp::start_operation() throw(FWException)
 
     pthread_t tid;
     pthread_attr_setdetachstate(&tattr, PTHREAD_CREATE_DETACHED);
-    int err=pthread_create(&tid, &tattr, background_thread, void_pair);
+    int err = pthread_create(&tid, &tattr, background_thread, void_pair);
     switch (err)
     {
     case EAGAIN:

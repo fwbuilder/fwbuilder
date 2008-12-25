@@ -45,7 +45,7 @@ Address::Address() : FWObject()
     setName("address");
 }
 
-Address::Address(const FWObject *root, bool prepopulate) :
+Address::Address(const FWObjectDatabase *root, bool prepopulate) :
     FWObject(root, prepopulate)
 {
     inet_addr_mask = new InetAddrMask();
@@ -73,8 +73,7 @@ FWObject& Address::shallowDuplicate(const FWObject *other,
 
 FWReference* Address::createRef()
 {
-    FWObjectReference *ref =
-        FWObjectReference::cast(getRoot()->create(FWObjectReference::TYPENAME));
+    FWObjectReference *ref = getRoot()->createFWObjectReference();
     ref->setPointer(this);
     return ref;
 }
