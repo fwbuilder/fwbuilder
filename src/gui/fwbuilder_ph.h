@@ -36,7 +36,6 @@
 #include "fwbuilder/InetAddr.h"
 #include "fwbuilder/InetAddrMask.h"
 #include "fwbuilder/Interface.h"
-#include "fwbuilder/InterfacePolicy.h"
 #include "fwbuilder/Interval.h"
 #include "fwbuilder/IntervalGroup.h"
 #include "fwbuilder/Library.h"
