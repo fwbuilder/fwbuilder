@@ -45,7 +45,7 @@ class combinedAddress : public IPv4
     DECLARE_FWOBJECT_SUBTYPE(combinedAddress);
 
     combinedAddress() {}
-    combinedAddress(const FWObject *root,bool prepopulate);
+    combinedAddress(const FWObjectDatabase *root,bool prepopulate);
     virtual ~combinedAddress();
 
     virtual FWObject& shallowDuplicate(const FWObject *obj,

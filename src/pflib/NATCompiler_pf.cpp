@@ -93,7 +93,7 @@ int NATCompiler_pf::prolog()
  * NAT rules
  */
     //FWObject    *grp;
-    loopback_address = dbcopy->create(IPv4::TYPENAME);
+    loopback_address = dbcopy->createIPv4();
     loopback_address->setName("__loopback_address__");
     loopback_address->setId(FWObjectDatabase::generateUniqueId()); // "__loopback_address_id__");
 
@@ -197,7 +197,7 @@ bool NATCompiler_pf::splitSDNATRule::processNext()
 
 /* first rule translates destination and may translate service (depends
  * on the original rule) */
-        NATRule *r = NATRule::cast( compiler->dbcopy->create(NATRule::TYPENAME) );
+        NATRule *r =  compiler->dbcopy->createNATRule();
         r->duplicate(rule);
         compiler->temp_ruleset->add(r);
         r->setRuleType(NATRule::Unknown);
@@ -211,7 +211,7 @@ bool NATCompiler_pf::splitSDNATRule::processNext()
 /* the second rule translates source and uses translated object in
  * ODst. Since the service could have been translated by the first
  * rule, we use TSrv in OSrv */
-        r = NATRule::cast( compiler->dbcopy->create(NATRule::TYPENAME) );
+        r = compiler->dbcopy->createNATRule();
         r->duplicate(rule);
         compiler->temp_ruleset->add(r);
         r->setRuleType(NATRule::Unknown);
@@ -350,7 +350,7 @@ bool NATCompiler_pf::splitOnOSrv::processNext()
 	    Service *s=Service::cast( o );
 	    assert(s);
 
-	    NATRule *r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	    NATRule *r= compiler->dbcopy->createNATRule();
 	    compiler->temp_ruleset->add(r);
 	    r->duplicate(rule);
 	    RuleElementOSrv *nosrv=r->getOSrv();
@@ -439,8 +439,7 @@ bool NATCompiler_pf::splitForTSrc::processNext()
             list<FWObject*> &objSubset = (*i).second;
 
             RuleElementTSrc  *ntsrc = NULL;
-            NATRule *r = NATRule::cast(
-                compiler->dbcopy->create(NATRule::TYPENAME) );
+            NATRule *r = compiler->dbcopy->createNATRule();
             r->duplicate(rule);
             compiler->temp_ruleset->add(r);
                 
@@ -827,7 +826,7 @@ bool NATCompiler_pf::processMultiAddressObjectsInRE::processNext()
 
         for (FWObject::iterator i=cl.begin(); i!=cl.end(); i++)
         {
-            NATRule *r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+            NATRule *r= compiler->dbcopy->createNATRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             nre=RuleElement::cast( r->getFirstByType(re_type) );
@@ -1004,7 +1003,7 @@ void NATCompiler_pf::compile()
         add( new AssignInterface( "assign rules to interfaces" ) );
         add( new convertInterfaceIdToStr("prepare interface assignments") );
 
-        add( new createTables(      "create tables"    ) );
+        add( new createTables("create tables"));
 //        add( new PrintTables(       "print tables"     ) );
 
         add( new PrintRule("generate pf code") );

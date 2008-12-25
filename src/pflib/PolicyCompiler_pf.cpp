@@ -216,7 +216,7 @@ bool PolicyCompiler_pf::processMultiAddressObjectsInRE::processNext()
 
         for (FWObject::iterator i=maddr_runtime.begin(); i!=maddr_runtime.end(); i++)
         {
-            PolicyRule *r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             nre=RuleElement::cast( r->getFirstByType(re_type) );
@@ -266,7 +266,7 @@ bool PolicyCompiler_pf::splitIfFirewallInSrc::processNext()
 
 	    RuleElementSrc *nsrc;
 
-	    r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	    r= compiler->dbcopy->createPolicyRule();
 	    compiler->temp_ruleset->add(r);
 	    r->duplicate(rule);
 	    nsrc=r->getSrc();
@@ -311,7 +311,7 @@ bool PolicyCompiler_pf::splitIfFirewallInDst::processNext()
 
 	    RuleElementDst *ndst;
 
-	    r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	    r= compiler->dbcopy->createPolicyRule();
 	    compiler->temp_ruleset->add(r);
 	    r->duplicate(rule);
 	    ndst=r->getDst();
@@ -382,8 +382,7 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
              !getCachedFwOpt()->getStr("mgmt_addr").empty() )
         {
             PolicyRule *r;
-            TCPService *ssh =
-                TCPService::cast(dbcopy->create(TCPService::TYPENAME) );
+            TCPService *ssh = dbcopy->createTCPService();
             ssh->setDstRangeStart(22);
             ssh->setDstRangeEnd(22);
 
@@ -422,8 +421,7 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
                 abort( errstr );
             }
 
-            Network *mgmt_workstation =
-                Network::cast(dbcopy->create(Network::TYPENAME));
+            Network *mgmt_workstation = dbcopy->createNetwork();
             mgmt_workstation->setName("mgmt_addr");
             mgmt_workstation->setAddress( addr );
             mgmt_workstation->setNetmask( netmask );
@@ -433,7 +431,7 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
             cacheObj(mgmt_workstation); // to keep cache consistent
 
 
-            r= PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );
+            r= dbcopy->createPolicyRule();
             temp_ruleset->add(r);
             r->setAction(PolicyRule::Accept);
             r->setLogging(false);
@@ -460,7 +458,7 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
             combined_ruleset->push_front(r);
         }
 
-        PolicyRule *r = PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );
+        PolicyRule *r = dbcopy->createPolicyRule();
         FWOptions *ruleopt;
         temp_ruleset->add(r);
         r->setAction(PolicyRule::Deny);
@@ -505,15 +503,13 @@ bool PolicyCompiler_pf::SplitDirection::processNext()
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     if (rule->getDirection()==PolicyRule::Both) {
-	PolicyRule *r= PolicyRule::cast(
-	    compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	PolicyRule *r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setDirection(PolicyRule::Inbound);
 	tmp_queue.push_back(r);
 
-	r= PolicyRule::cast(
-	    compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setDirection(PolicyRule::Outbound);
@@ -543,8 +539,7 @@ bool PolicyCompiler_pf::ProcessScrubOption::processNext()
 	    return true;
 	}
 
-	PolicyRule *r= PolicyRule::cast(
-	    compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	PolicyRule *r = compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setAction(PolicyRule::Scrub);
@@ -564,8 +559,7 @@ bool PolicyCompiler_pf::ProcessScrubOption::processNext()
     if ( (srv->getBool("short_fragm") || srv->getBool("fragm")) &&
 	 ( rule->getAction()==PolicyRule::Deny || rule->getAction()==PolicyRule::Reject) ) {
 
-	PolicyRule *r= PolicyRule::cast(
-	    compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	PolicyRule *r = compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setAction(PolicyRule::Scrub);
@@ -604,18 +598,20 @@ bool PolicyCompiler_pf::doSrcNegation::processNext()
         RuleElementSrc *nsrc;
 	PolicyRule     *r;
 
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
-	if (rule->getAction()==PolicyRule::Accept)  r->setAction(PolicyRule::Deny);
-	else	                                    r->setAction(PolicyRule::Accept);
+	if (rule->getAction()==PolicyRule::Accept)
+            r->setAction(PolicyRule::Deny);
+	else
+            r->setAction(PolicyRule::Accept);
         nsrc=r->getSrc();
         nsrc->setNeg(false);
 	r->setBool("quick",true);
         r->setLogging(false);
 	tmp_queue.push_back(r);
 
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         nsrc=r->getSrc();
@@ -641,18 +637,20 @@ bool PolicyCompiler_pf::doDstNegation::processNext()
         RuleElementDst *ndst;
 	PolicyRule     *r;
 
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
-	if (rule->getAction()==PolicyRule::Accept)  r->setAction(PolicyRule::Deny);
-	else	                                    r->setAction(PolicyRule::Accept);
+	if (rule->getAction()==PolicyRule::Accept)
+            r->setAction(PolicyRule::Deny);
+	else
+            r->setAction(PolicyRule::Accept);
         ndst=r->getDst();
         ndst->setNeg(false);
 	r->setBool("quick",true);
         r->setLogging(false);
 	tmp_queue.push_back(r);
 
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         ndst=r->getDst();
@@ -812,19 +810,21 @@ bool PolicyCompiler_pf::splitIfInterfaceInRE::processNext()
     {
         RuleElement *nre;
 
-        PolicyRule *r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+        PolicyRule *r= compiler->dbcopy->createPolicyRule();
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
         nre=RuleElement::cast( r->getFirstByType(re_type) );
         nre->clearChildren();
-        for (FWObject::iterator i=cl.begin(); i!=cl.end(); i++) nre->addRef( *i );
+        for (FWObject::iterator i=cl.begin(); i!=cl.end(); i++)
+            nre->addRef( *i );
         tmp_queue.push_back(r);
 
-        r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+        r= compiler->dbcopy->createPolicyRule();
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
         nre=RuleElement::cast( r->getFirstByType(re_type) );
-        for (FWObject::iterator i=cl.begin(); i!=cl.end(); i++) nre->removeRef( *i );
+        for (FWObject::iterator i=cl.begin(); i!=cl.end(); i++)
+            nre->removeRef( *i );
         tmp_queue.push_back(r);
 
         return true;
@@ -901,8 +901,7 @@ bool PolicyCompiler_pf::separateServiceObject::processNext()
 
 	if (condition(s))
         {
-            PolicyRule *r= PolicyRule::cast(
-                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *r = compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             RuleElementSrv *nsrv=r->getSrv();

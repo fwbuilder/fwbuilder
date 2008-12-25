@@ -294,7 +294,7 @@ bool PolicyCompiler_pix::SplitSRCForICMPCmd::processNext()
             Address *a=Address::cast(obj);
             assert(a!=NULL);
 
-            PolicyRule *new_rule= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *new_rule= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(new_rule);
             new_rule->duplicate(rule);
             RuleElementSrc *new_re=new_rule->getSrc();
@@ -382,8 +382,7 @@ bool PolicyCompiler_pix::replaceNATtedObjects::processNext()
                     if (t->dst->getId()==rule_iface->getId() ||
                         p->getId()==rule_iface->getId())
                     {
-                        PolicyRule  *r = PolicyRule::cast(
-                            compiler->dbcopy->create(PolicyRule::TYPENAME) );
+                        PolicyRule  *r = compiler->dbcopy->createPolicyRule();
                         compiler->temp_ruleset->add(r);
                         r->duplicate(rule);
 
@@ -442,7 +441,7 @@ bool PolicyCompiler_pix::splitIfTelnetSSHICMPtoFw::processNext()
             FWObject *obj = o;
             if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
 
-            PolicyRule  *r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule  *r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
 
@@ -488,8 +487,7 @@ bool PolicyCompiler_pix::AvoidObjectGroup::processNext()
  */
         for (FWObject::iterator i1=srv->begin(); i1!=srv->end(); ++i1)
         {
-            PolicyRule *r = PolicyRule::cast(
-                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *r = compiler->dbcopy->createPolicyRule();
             r->duplicate(rule);
             compiler->temp_ruleset->add(r);
 

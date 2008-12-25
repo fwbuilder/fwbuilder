@@ -223,7 +223,7 @@ int main(int argc, char * const * argv)
     try
     {
         new Resources(respath+FS_SEPARATOR+"resources.xml");
-
+ 
 /* create database */
         objdb = new FWObjectDatabase();
 

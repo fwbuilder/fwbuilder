@@ -92,8 +92,7 @@ bool MangleTableCompiler_ipt::keepMangleTableRules::processNext()
                 rule->getDirection()==PolicyRule::Both ||
                 rule->getDirection()==PolicyRule::Inbound)
             {
-                r= PolicyRule::cast(
-                    compiler->dbcopy->create(PolicyRule::TYPENAME));
+                r= compiler->dbcopy->createPolicyRule();
                 compiler->temp_ruleset->add(r);
                 r->duplicate(rule);
                 r->setStr("ipt_chain","PREROUTING");
@@ -104,8 +103,7 @@ bool MangleTableCompiler_ipt::keepMangleTableRules::processNext()
                 rule->getDirection()==PolicyRule::Both ||
                 rule->getDirection()==PolicyRule::Outbound)
             {
-                r= PolicyRule::cast(
-                    compiler->dbcopy->create(PolicyRule::TYPENAME));
+                r= compiler->dbcopy->createPolicyRule();
                 compiler->temp_ruleset->add(r);
                 r->duplicate(rule);
                 r->setStr("ipt_chain","POSTROUTING");

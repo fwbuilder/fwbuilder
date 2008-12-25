@@ -123,7 +123,7 @@ void TableFactory::createTablesForRE(RuleElement *re,Rule *rule)
         tblgrp = tables[tblID];
     } else
     {
-        tblgrp=ObjectGroup::cast(dbroot->create(ObjectGroup::TYPENAME));
+        tblgrp = dbroot->createObjectGroup();
 // TODO: can two rules yeild the same name for the group using this method?
         std::ostringstream tblname;
         if (!ruleSetName.empty()) tblname << ruleSetName << ":";

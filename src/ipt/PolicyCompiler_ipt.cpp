@@ -443,13 +443,13 @@ int PolicyCompiler_ipt::prolog()
     Address     *bcast255;
     TCPService  *tcpsyn;
 
-    anytcp=Service::cast(dbcopy->create(TCPService::TYPENAME) );
+    anytcp=dbcopy->createTCPService();
     anytcp->setId(FWObjectDatabase::registerStringId(ANY_TCP_OBJ_ID));
     anytcp->setName("AnyTCP");
     dbcopy->add(anytcp);
     cacheObj(anytcp); // to keep cache consistent
 
-    tcpsyn=TCPService::cast(dbcopy->create(TCPService::TYPENAME) );
+    tcpsyn=dbcopy->createTCPService();
     tcpsyn->setId(FWObjectDatabase::registerStringId(TCP_SYN_OBJ_ID));
     tcpsyn->setName("tcpSYN");
     tcpsyn->setTCPFlag(TCPService::SYN,true);
@@ -457,25 +457,25 @@ int PolicyCompiler_ipt::prolog()
     dbcopy->add(tcpsyn);
     cacheObj(tcpsyn); // to keep cache consistent
 
-    anyudp=Service::cast(dbcopy->create(UDPService::TYPENAME) );
+    anyudp=dbcopy->createUDPService();
     anyudp->setId(FWObjectDatabase::registerStringId(ANY_UDP_OBJ_ID));
     anyudp->setName("AnyUDP");
     dbcopy->add(anyudp);
     cacheObj(anyudp); // to keep cache consistent
 
-    anyicmp=Service::cast(dbcopy->create(ICMPService::TYPENAME) );
+    anyicmp=dbcopy->createICMPService();
     anyicmp->setId(FWObjectDatabase::registerStringId(ANY_ICMP_OBJ_ID));
     anyicmp->setName("AnyICMP");
     dbcopy->add(anyicmp);
     cacheObj(anyicmp); // to keep cache consistent
 
-    anyip=Service::cast(dbcopy->create(IPService::TYPENAME) );
+    anyip=dbcopy->createIPService();
     anyip->setId(FWObjectDatabase::registerStringId(ANY_IP_OBJ_ID));
     anyip->setName("AnyIP");
     dbcopy->add(anyip);
     cacheObj(anyip); // to keep cache consistent
 
-    bcast255=Address::cast(dbcopy->create(IPv4::TYPENAME) );
+    bcast255=dbcopy->createIPv4();
     bcast255->setId(FWObjectDatabase::registerStringId(BCAST_255_OBJ_ID));
     bcast255->setName("Broadcast_addr");
     bcast255->setAddress(InetAddr::getAllOnes());
@@ -569,7 +569,7 @@ bool  PolicyCompiler_ipt::splitNonTerminatingTargets::processNext()
             !nitfre->isAny())
         {
             new_chain = ipt_comp->getNewTmpChainName(rule);
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             r->setStr("subrule_suffix","ntt");
@@ -577,7 +577,7 @@ bool  PolicyCompiler_ipt::splitNonTerminatingTargets::processNext()
             tmp_queue.push_back(r);
         }
 
-        r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+        r= compiler->dbcopy->createPolicyRule();
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
         nsrc = r->getSrc();   nsrc->reset();
@@ -598,7 +598,7 @@ bool  PolicyCompiler_ipt::splitNonTerminatingTargets::processNext()
         ipt_comp->insertUpstreamChain(this_chain, new_chain);
         tmp_queue.push_back(r);
 
-        r2= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+        r2= compiler->dbcopy->createPolicyRule();
         compiler->temp_ruleset->add(r2);
         r2->duplicate(r);
         r2->setAction(PolicyRule::Accept);
@@ -651,8 +651,7 @@ bool  PolicyCompiler_ipt::InterfacePolicyRulesWithOptimization::processNext()
                     compiler->warning("Object '" + o1->getName() + "', which is not an interface, is a member of the group '" + o->getName() + "' used in 'Interface' element of a rule.   Rule: " + rule->getLabel());
                     continue;
                 }
-                r= PolicyRule::cast(compiler->dbcopy->create(
-                                        PolicyRule::TYPENAME) );
+                r= compiler->dbcopy->createPolicyRule();
                 compiler->temp_ruleset->add(r);
                 r->duplicate(rule);
                 r->setStr("subrule_suffix","i1");
@@ -662,7 +661,7 @@ bool  PolicyCompiler_ipt::InterfacePolicyRulesWithOptimization::processNext()
             }
         } else
         {
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             r->setStr("subrule_suffix","i1");
@@ -699,14 +698,13 @@ bool PolicyCompiler_ipt::Route::processNext()
 
         if (ruleopt->getBool("ipt_tee"))
         {
-            PolicyRule *r= PolicyRule::cast(
-                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             ipt_comp->setChain(rule, "PREROUTING");
             tmp_queue.push_back(r);
 
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             ipt_comp->setChain(rule, "POSTROUTING");
@@ -819,7 +817,7 @@ bool PolicyCompiler_ipt::Logging2::processNext()
  */
         if (need_new_chain) 
         {
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             ruleopt =r->getOptionsObject();
@@ -841,7 +839,7 @@ bool PolicyCompiler_ipt::Logging2::processNext()
  * %I in log prefix
  *
  */
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         ruleopt =r->getOptionsObject();
@@ -866,7 +864,7 @@ bool PolicyCompiler_ipt::Logging2::processNext()
         ruleopt->setInt("hashlimit_value",-1);
  	tmp_queue.push_back(r);
 
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         ruleopt =r->getOptionsObject();
@@ -1037,7 +1035,7 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
         rule->setBool("upstream_rule_neg",true);
 
 /*     any  B C D  TMP_CHAIN  */
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         r->setStr("subrule_suffix","1");
@@ -1053,7 +1051,7 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   A  any any any  RETURN  */
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         r->setStr("subrule_suffix","2");
@@ -1083,7 +1081,7 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   any any any any  ACTION  */
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         r->setStr("subrule_suffix","3");
@@ -1160,7 +1158,7 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
         rule->setBool("upstream_rule_neg",true);
 
 /*     A any C D  TMP_CHAIN  */
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         r->setStr("subrule_suffix","1");
@@ -1176,7 +1174,7 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   any B any any RETURN  */
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         r->setStr("subrule_suffix","2");
@@ -1207,7 +1205,7 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   any  any any any  ACTION  */
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         r->setStr("subrule_suffix","3");
@@ -1285,7 +1283,7 @@ bool PolicyCompiler_ipt::SrvNegation::processNext()
 
 
 /*     A B any D TMP_CHAIN  */
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         r->setStr("subrule_suffix","1");
@@ -1300,7 +1298,7 @@ bool PolicyCompiler_ipt::SrvNegation::processNext()
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   any  any  C any RETURN  */
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         r->setStr("subrule_suffix","2");
@@ -1331,7 +1329,7 @@ bool PolicyCompiler_ipt::SrvNegation::processNext()
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   any  any any any ACTION  */
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         r->setStr("subrule_suffix","3");
@@ -1396,7 +1394,7 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
         rule->setBool("upstream_rule_neg",true);
 
 /*     A B C any  TMP_CHAIN  */
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         r->setStr("subrule_suffix","1");
@@ -1412,7 +1410,7 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   any  any any  D  RETURN  */
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         r->setStr("subrule_suffix","2");
@@ -1443,7 +1441,7 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   any  any any any  ACTION  */
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         r->setStr("subrule_suffix","3");
@@ -1682,7 +1680,7 @@ bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
         string this_chain  = rule->getStr("ipt_chain");
 	string new_chain=ipt_comp->getNewChainName(rule,rule_iface);
 
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setStr("ipt_target",new_chain);
@@ -1695,7 +1693,7 @@ bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
 
 	tmp_queue.push_back(r);
 
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setStr("ipt_chain",new_chain);
@@ -1719,7 +1717,7 @@ bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
 
 	tmp_queue.push_back(r);
 
-	r1= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r1= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r1);
 	r1->duplicate(r);
 	r1->setStr("ipt_target","CONNMARK");
@@ -1734,8 +1732,7 @@ bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
 
         if (make_terminating)
         {
-            r1 = PolicyRule::cast(
-                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r1 = compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r1);
             r1->duplicate(r);
             r1->setStr("ipt_target","ACCEPT");
@@ -1767,8 +1764,7 @@ bool PolicyCompiler_ipt::splitIfIfaceAndDirectionBoth::processNext()
         // direction 'inbound' does not make sense for it.
         if (rule->getStr("ipt_chain") != "POSTROUTING")
         {
-            r = PolicyRule::cast(
-                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r = compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             r->setDirection( PolicyRule::Inbound );
@@ -1779,7 +1775,7 @@ bool PolicyCompiler_ipt::splitIfIfaceAndDirectionBoth::processNext()
         // direction 'Outbound' does not make sense for it.
         if (rule->getStr("ipt_chain") != "PREROUTING")
         {
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
+            r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             r->setDirection( PolicyRule::Outbound );
@@ -1889,8 +1885,7 @@ bool PolicyCompiler_ipt::bridgingFw::processNext()
             ) ipt_comp->setChain(rule, "FORWARD");
             else
             {
-                PolicyRule *r= PolicyRule::cast(
-                    compiler->dbcopy->create(PolicyRule::TYPENAME) );
+                PolicyRule *r= compiler->dbcopy->createPolicyRule();
                 compiler->temp_ruleset->add(r);
                 r->duplicate(rule);
                 ipt_comp->setChain(r, "FORWARD");
@@ -1953,8 +1948,7 @@ bool PolicyCompiler_ipt::splitIfSrcNegAndFw::processNext()
 
         if (fwLikes.size() != 0)
         {
-            PolicyRule *r= PolicyRule::cast(
-                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             ipt_comp->setChain(r,"OUTPUT");
@@ -2032,8 +2026,7 @@ bool PolicyCompiler_ipt::splitIfDstNegAndFw::processNext()
 
         if (fwLikes.size() != 0)
         {
-            PolicyRule *r= PolicyRule::cast(
-                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             ipt_comp->setChain(r,"INPUT");
@@ -2103,8 +2096,7 @@ bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
          ) 
     )
     {
-        PolicyRule *r= PolicyRule::cast(
-            compiler->dbcopy->create(PolicyRule::TYPENAME) );
+        PolicyRule *r= compiler->dbcopy->createPolicyRule();
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
         ipt_comp->setChain(r,"OUTPUT");
@@ -2118,7 +2110,7 @@ bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
         if (ipt_comp->my_table=="mangle" &&
             rule->getAction()==PolicyRule::Classify)
         {
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
+            r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             ipt_comp->setChain(r,"POSTROUTING");
@@ -2171,8 +2163,7 @@ bool PolicyCompiler_ipt::splitIfDstAny::processNext()
          ) 
     )
     {
-	PolicyRule *r= PolicyRule::cast(
-	    compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	PolicyRule *r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	ipt_comp->setChain(r,"INPUT");
@@ -2185,7 +2176,7 @@ bool PolicyCompiler_ipt::splitIfDstAny::processNext()
         // such as CLASSIFY
         if (ipt_comp->my_table=="mangle" && rule->getAction()==PolicyRule::Classify)
         {
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             ipt_comp->setChain(r,"PREROUTING");
@@ -2218,8 +2209,7 @@ bool PolicyCompiler_ipt::splitIfSrcAnyForShadowing::processNext()
          rule->getDirection()!=PolicyRule::Inbound && 
          srcrel->isAny() )
     {
-        PolicyRule *r= PolicyRule::cast(
-            compiler->dbcopy->create(PolicyRule::TYPENAME) );
+        PolicyRule *r= compiler->dbcopy->createPolicyRule();
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
         ipt_comp->setChain(r,"OUTPUT");
@@ -2252,8 +2242,7 @@ bool PolicyCompiler_ipt::splitIfDstAnyForShadowing::processNext()
          rule->getDirection()!=PolicyRule::Outbound && 
          dstrel->isAny() )
     {
-        PolicyRule *r= PolicyRule::cast(
-            compiler->dbcopy->create(PolicyRule::TYPENAME) );
+        PolicyRule *r= compiler->dbcopy->createPolicyRule();
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
         ipt_comp->setChain(r,"INPUT");
@@ -2316,8 +2305,7 @@ bool PolicyCompiler_ipt::splitIfSrcFWNetwork::processNext()
 
         if ( ! obj_subst.empty() )
         {
-            PolicyRule *r= PolicyRule::cast(
-                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             ipt_comp->setChain(r,"OUTPUT");
@@ -2390,8 +2378,7 @@ bool PolicyCompiler_ipt::splitIfDstFWNetwork::processNext()
 
         if ( ! obj_subst.empty() )
         {
-            PolicyRule *r= PolicyRule::cast(
-                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             ipt_comp->setChain(r,"INPUT");
@@ -2480,13 +2467,13 @@ bool PolicyCompiler_ipt::specialCaseWithFW1::processNext()
     {
 	PolicyRule *r;
 
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setDirection( PolicyRule::Inbound );
 	tmp_queue.push_back(r);
 
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setDirection( PolicyRule::Outbound );
@@ -2738,7 +2725,7 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
     {
 	PolicyRule *r;
 
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         ipt_comp->setChain(r,"FORWARD");
@@ -2816,7 +2803,7 @@ bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
     {
 	PolicyRule *r;
 
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         ipt_comp->setChain(r,"FORWARD");
@@ -3204,8 +3191,7 @@ bool PolicyCompiler_ipt::separateUserServices::processNext()
 
 	if (UserService::isA(s))
         {
-            PolicyRule *r= PolicyRule::cast(
-                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             RuleElementSrv *nsrv=r->getSrv();
@@ -3267,8 +3253,7 @@ bool PolicyCompiler_ipt::separatePortRanges::processNext()
 
             if (srs!=sre || drs!=dre) 
             {
-                PolicyRule *r= PolicyRule::cast(
-                    compiler->dbcopy->create(PolicyRule::TYPENAME) );
+                PolicyRule *r= compiler->dbcopy->createPolicyRule();
                 compiler->temp_ruleset->add(r);
                 r->duplicate(rule);
                 RuleElementSrv *nsrv=r->getSrv();
@@ -3315,8 +3300,7 @@ bool PolicyCompiler_ipt::separateSrcPort::processNext()
             compiler->normalizePortRange(srs,sre);
 
             if (srs!=0 || sre!=0) {
-                PolicyRule *r= PolicyRule::cast(
-                    compiler->dbcopy->create(PolicyRule::TYPENAME) );
+                PolicyRule *r= compiler->dbcopy->createPolicyRule();
                 compiler->temp_ruleset->add(r);
                 r->duplicate(rule);
                 RuleElementSrv *nsrv=r->getSrv();
@@ -3377,7 +3361,7 @@ bool PolicyCompiler_ipt::splitRuleIfSrvAnyActionReject::processNext()
         PolicyRule *r;
         RuleElementSrv *nsrv;
 
-        r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+        r= compiler->dbcopy->createPolicyRule();
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
         nsrv=r->getSrv();
@@ -3453,7 +3437,7 @@ bool PolicyCompiler_ipt::splitServicesIfRejectWithTCPReset::processNext()
         PolicyRule *r;
         RuleElementSrv *nsrv;
 
-        r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+        r= compiler->dbcopy->createPolicyRule();
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
         nsrv=r->getSrv();
@@ -3466,7 +3450,7 @@ bool PolicyCompiler_ipt::splitServicesIfRejectWithTCPReset::processNext()
         r->setStr("subrule_suffix","1");
         tmp_queue.push_back(r);
 
-        r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+        r= compiler->dbcopy->createPolicyRule();
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
         nsrv=r->getSrv();
@@ -3516,8 +3500,7 @@ bool PolicyCompiler_ipt::prepareForMultiport::processNext()
 	    Service *s=Service::cast( o );
 	    assert(s);
 
-	    PolicyRule *r= PolicyRule::cast(
-		compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	    PolicyRule *r= compiler->dbcopy->createPolicyRule();
 	    compiler->temp_ruleset->add(r);
 	    r->duplicate(rule);
 	    RuleElementSrv *nsrv=r->getSrv();
@@ -3549,8 +3532,7 @@ bool PolicyCompiler_ipt::prepareForMultiport::processNext()
 
 		if (n==0)
                 {
-		    r= PolicyRule::cast(
-			compiler->dbcopy->create(PolicyRule::TYPENAME) );
+		    r= compiler->dbcopy->createPolicyRule();
 		    compiler->temp_ruleset->add(r);
 		    r->duplicate(rule);
 		    nsrv=r->getSrv();
@@ -3603,8 +3585,7 @@ bool PolicyCompiler_ipt::specialCasesWithCustomServices::processNext()
             if (code.find("ESTABLISHED")!=string::npos ||
                 code.find("RELATED")!=string::npos) 
             {
-                PolicyRule *r= PolicyRule::cast(
-                    compiler->dbcopy->create(PolicyRule::TYPENAME) );
+                PolicyRule *r= compiler->dbcopy->createPolicyRule();
                 compiler->temp_ruleset->add(r);
                 r->duplicate(rule);
                 RuleElementSrv *nsrv=r->getSrv();
@@ -3649,7 +3630,7 @@ bool PolicyCompiler_ipt::convertAnyToNotFWForShadowing::processNext()
 //            srcrel->addRef(compiler->fw);
 //            srcrel->setNeg(true);
 
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
+            r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             r->setAction( PolicyRule::Return );
@@ -3664,7 +3645,7 @@ bool PolicyCompiler_ipt::convertAnyToNotFWForShadowing::processNext()
 //            dstrel->addRef(compiler->fw);
 //            dstrel->setNeg(true);
 
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
+            r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             r->setAction( PolicyRule::Return );
@@ -3728,7 +3709,7 @@ bool PolicyCompiler_ipt::processMultiAddressObjectsInRE::processNext()
         for (list<MultiAddressRunTime*>::iterator i=cl.begin(); i!=cl.end(); i++) 
         {
             MultiAddressRunTime *atrt = *i;
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             nre=RuleElement::cast( r->getFirstByType(re_type) );
@@ -3783,7 +3764,7 @@ bool PolicyCompiler_ipt::accounting::processNext()
  * add copy of original rule, but turn off logging and set target
  * chain to new_chain.
  */
-            r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             nsrc=r->getSrc();  nsrc->reset();

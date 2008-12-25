@@ -71,7 +71,7 @@ void PolicyCompiler_ipt::optimize1::optimizeForRuleElement(
     string this_chain = rule->getStr("ipt_chain");
     string new_chain  = ipt_comp->getNewTmpChainName(rule);
 
-    r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+    r= compiler->dbcopy->createPolicyRule();
     compiler->temp_ruleset->add(r);
     r->duplicate(rule);
 

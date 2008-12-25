@@ -52,17 +52,17 @@ int PolicyCompiler_ipf::prolog()
 {
     int n= PolicyCompiler_pf::prolog();
 
-    anytcp=TCPService::cast(dbcopy->create(TCPService::TYPENAME) );
+    anytcp = dbcopy->createTCPService();
     anytcp->setId(FWObjectDatabase::generateUniqueId()); //ANY_TCP_OBJ_ID);
     dbcopy->add(anytcp,false);
     cacheObj(anytcp); // to keep cache consistent
 
-    anyudp=UDPService::cast(dbcopy->create(UDPService::TYPENAME) );
+    anyudp=dbcopy->createUDPService();
     anyudp->setId(FWObjectDatabase::generateUniqueId()); //ANY_UDP_OBJ_ID);
     dbcopy->add(anyudp,false);
     cacheObj(anyudp); // to keep cache consistent
 
-    anyicmp=ICMPService::cast(dbcopy->create(ICMPService::TYPENAME) );
+    anyicmp=dbcopy->createICMPService();
     anyicmp->setId(FWObjectDatabase::generateUniqueId()); //ANY_ICMP_OBJ_ID);
     dbcopy->add(anyicmp,false);
     cacheObj(anyicmp); // to keep cache consistent
@@ -80,8 +80,7 @@ bool PolicyCompiler_ipf::expandAnyService::processNext()
 
     if (srv->isAny() && ! ruleopt->getBool("stateless") && rule->getAction()==PolicyRule::Accept) {
 
-	PolicyRule *r= PolicyRule::cast(
-	    compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	PolicyRule *r = compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	RuleElementSrv *nsrv=r->getSrv();
@@ -89,8 +88,7 @@ bool PolicyCompiler_ipf::expandAnyService::processNext()
 	nsrv->addRef(pcomp->anyicmp); //compiler->dbcopy->findInIndex(ANY_ICMP_OBJ_ID));
 	tmp_queue.push_back(r);
 
-	r= PolicyRule::cast(
-	    compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r = compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	nsrv=r->getSrv();
@@ -98,8 +96,7 @@ bool PolicyCompiler_ipf::expandAnyService::processNext()
 	nsrv->addRef(pcomp->anytcp); //compiler->dbcopy->findInIndex(ANY_TCP_OBJ_ID));
 	tmp_queue.push_back(r);
 
-	r= PolicyRule::cast(
-	    compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r = compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	nsrv=r->getSrv();
@@ -107,8 +104,7 @@ bool PolicyCompiler_ipf::expandAnyService::processNext()
 	nsrv->addRef(pcomp->anyudp); //compiler->dbcopy->findInIndex(ANY_UDP_OBJ_ID));
 	tmp_queue.push_back(r);
 
-	r= PolicyRule::cast(
-	    compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r = compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	FWOptions *ruleopt =r->getOptionsObject();
@@ -132,7 +128,7 @@ bool PolicyCompiler_ipf::doSrcNegation::processNext()
 	PolicyRule     *r;
         FWOptions *ruleopt;
 
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setAction(PolicyRule::Continue);
@@ -145,7 +141,7 @@ bool PolicyCompiler_ipf::doSrcNegation::processNext()
         ruleopt->setBool("stateless", true);
 	tmp_queue.push_back(r);
 
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         nsrc=r->getSrc();
@@ -173,7 +169,7 @@ bool PolicyCompiler_ipf::doDstNegation::processNext()
 	PolicyRule     *r;
         FWOptions *ruleopt;
 
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setAction(PolicyRule::Continue);
@@ -186,7 +182,7 @@ bool PolicyCompiler_ipf::doDstNegation::processNext()
         ruleopt->setBool("stateless", true);
 	tmp_queue.push_back(r);
 
-	r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         ndst=r->getDst();

@@ -299,8 +299,7 @@ bool NATCompiler_ipt::ConvertLoadBalancingRules::processNext()
             a1 = *j;
         }
 
-        AddressRange *ar = AddressRange::cast(
-            compiler->dbcopy->create(AddressRange::TYPENAME) );
+        AddressRange *ar = compiler->dbcopy->createAddressRange();
         ar->setRangeStart( *(al.front()) );
         ar->setRangeEnd( *(al.back()) );
         ar->setName(string("%")+al.front()->toString()
@@ -340,7 +339,7 @@ bool NATCompiler_ipt::splitSDNATRule::processNext()
 
 /* first rule translates destination and may translate service (depends
  * on the original rule) */
-        NATRule *r = NATRule::cast( compiler->dbcopy->create(NATRule::TYPENAME) );
+        NATRule *r = compiler->dbcopy->createNATRule();
         r->duplicate(rule);
         compiler->temp_ruleset->add(r);
         r->setRuleType(NATRule::Unknown);
@@ -354,7 +353,7 @@ bool NATCompiler_ipt::splitSDNATRule::processNext()
 /* the second rule translates source and uses translated object in
  * ODst. Since the service could have been translated by the first
  * rule, we use TSrv in OSrv */
-        r = NATRule::cast( compiler->dbcopy->create(NATRule::TYPENAME) );
+        r = compiler->dbcopy->createNATRule();
         r->duplicate(rule);
         compiler->temp_ruleset->add(r);
         r->setRuleType(NATRule::Unknown);
@@ -546,8 +545,7 @@ bool NATCompiler_ipt::convertToAtomicportForOSrv::processNext()
 
         for (FWObject::iterator i1=osrv->begin(); i1!=osrv->end(); ++i1) 
         {
-            NATRule *r = NATRule::cast(
-                compiler->dbcopy->create(NATRule::TYPENAME) );
+            NATRule *r = compiler->dbcopy->createNATRule();
             r->duplicate(rule);
             compiler->temp_ruleset->add(r);
 
@@ -617,7 +615,7 @@ bool NATCompiler_ipt::splitOnODst::processNext()
 	    Address *a=Address::cast( o );
 	    assert(a);
 
-	    NATRule *r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	    NATRule *r= compiler->dbcopy->createNATRule();
 	    compiler->temp_ruleset->add(r);
 	    r->duplicate(rule);
 	    RuleElementODst *nodst=r->getODst();
@@ -648,7 +646,7 @@ bool NATCompiler_ipt::splitOnOSrv::processNext()
 	    Service *s=Service::cast( o );
 	    assert(s);
 
-	    NATRule *r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	    NATRule *r= compiler->dbcopy->createNATRule();
 	    compiler->temp_ruleset->add(r);
 	    r->duplicate(rule);
 	    RuleElementOSrv *nosrv=r->getOSrv();
@@ -746,7 +744,7 @@ bool NATCompiler_ipt::splitRuleIfRuleElementIsDynamicInterface::processNext()
 	    cl.push_back(o);   // can not remove right now because remove invalidates iterator
             nre--;
 
-	    NATRule  *new_rule= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	    NATRule  *new_rule= compiler->dbcopy->createNATRule();
 	    compiler->temp_ruleset->add(new_rule);
 	    new_rule->duplicate(rule);
             RuleElement *new_re=RuleElement::cast(new_rule->getFirstByType(re_type));
@@ -1029,7 +1027,7 @@ bool NATCompiler_ipt::splitMultiSrcAndDst::processNext()
 // get old chain name create new chain name
         string new_chain=NATCompiler_ipt::getNewTmpChainName(rule);
 // create new rule
-        NATRule *r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+        NATRule *r= compiler->dbcopy->createNATRule();
         compiler->temp_ruleset->add(r);
         r->duplicate(rule); 
 // move existing rule onto new chain
@@ -1183,8 +1181,7 @@ bool NATCompiler_ipt::splitServices::processNext()
     for (map<int, list<Service*> >::iterator i=services.begin(); i!=services.end(); i++) {
 	list<Service*> &sl=(*i).second;
 
-	NATRule *r= NATRule::cast(
-	    compiler->dbcopy->create(NATRule::TYPENAME) );
+	NATRule *r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	RuleElementOSrv *nsrv=r->getOSrv();
@@ -1229,8 +1226,7 @@ bool NATCompiler_ipt::separatePortRanges::processNext()
             compiler->normalizePortRange(drs,dre);
 
             if (srs!=sre || drs!=dre) {
-                NATRule *r= NATRule::cast(
-                    compiler->dbcopy->create(NATRule::TYPENAME) );
+                NATRule *r= compiler->dbcopy->createNATRule();
                 compiler->temp_ruleset->add(r);
                 r->duplicate(rule);
                 RuleElementOSrv *nsrv=r->getOSrv();
@@ -1282,8 +1278,7 @@ bool NATCompiler_ipt::separateSourcePorts::processNext()
             {
                 if (rule_4_src_ports==NULL)
                 {
-                    rule_4_src_ports= NATRule::cast(
-                        compiler->dbcopy->create(NATRule::TYPENAME) );
+                    rule_4_src_ports= compiler->dbcopy->createNATRule();
                     compiler->temp_ruleset->add(rule_4_src_ports);
                     rule_4_src_ports->duplicate(rule);
                     nsrv=rule_4_src_ports->getOSrv();
@@ -1340,8 +1335,7 @@ bool NATCompiler_ipt::separateSourceAndDestinationPorts::processNext()
             {
                 if (nrule==NULL)
                 {
-                    nrule= NATRule::cast(
-                        compiler->dbcopy->create(NATRule::TYPENAME) );
+                    nrule= compiler->dbcopy->createNATRule();
                     compiler->temp_ruleset->add(nrule);
                     nrule->duplicate(rule);
                     nsrv=nrule->getOSrv();
@@ -1399,8 +1393,7 @@ bool NATCompiler_ipt::prepareForMultiport::processNext()
 
 		if (n==0) 
                 {
-		    r= NATRule::cast(
-			compiler->dbcopy->create(NATRule::TYPENAME) );
+		    r= compiler->dbcopy->createNATRule();
 		    compiler->temp_ruleset->add(r);
 		    r->duplicate(rule);
 		    nsrv=r->getOSrv();
@@ -1445,7 +1438,7 @@ bool NATCompiler_ipt::splitMultipleICMP::processNext()
             Service *s=Service::cast( o );
             assert(s);
 
-            r= NATRule::cast( compiler->dbcopy->create(NATRule::TYPENAME) );
+            r= compiler->dbcopy->createNATRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             nsrv=r->getOSrv();
@@ -1511,7 +1504,7 @@ bool NATCompiler_ipt::doOSrcNegation::processNext()
  * TMP_CHAIN   A   any  any   RETURN     RETURN
  * TMP_CHAIN  any  any   C   SNAT/DNAT  ---------
  */
-	r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	nsrc=r->getOSrc();  nsrc->clearChildren();  nsrc->setAnyElement();
@@ -1523,7 +1516,7 @@ bool NATCompiler_ipt::doOSrcNegation::processNext()
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   A  any  any  RETURN  */
-	r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	ndst=r->getODst();   ndst->clearChildren();   ndst->setAnyElement();
@@ -1541,7 +1534,7 @@ bool NATCompiler_ipt::doOSrcNegation::processNext()
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   any any C  ACTION  */
-	r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	nsrc=r->getOSrc();  nsrc->clearChildren();  nsrc->setAnyElement();
@@ -1589,7 +1582,7 @@ bool NATCompiler_ipt::doODstNegation::processNext()
  * TMP_CHAIN  any   B   any   RETURN     RETURN
  * TMP_CHAIN  any  any   C    SNAT/DNAT  ---------
  */
-	r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	ndst=r->getODst();   ndst->clearChildren();   ndst->setAnyElement();
@@ -1601,7 +1594,7 @@ bool NATCompiler_ipt::doODstNegation::processNext()
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   any  B  any  RETURN  */
-	r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	nsrc=r->getOSrc();   nsrc->clearChildren();   nsrc->setAnyElement();
@@ -1619,7 +1612,7 @@ bool NATCompiler_ipt::doODstNegation::processNext()
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   any  any  C  ACTION  */
-	r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	nsrc=r->getOSrc();  nsrc->clearChildren();  nsrc->setAnyElement();
@@ -1666,7 +1659,7 @@ bool NATCompiler_ipt::doOSrvNegation::processNext()
  * TMP_CHAIN  any  any   C    RETURN     RETURN
  * TMP_CHAIN  any  any  any   SNAT/DNAT  ---------
  */
-	r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	nsrv=r->getOSrv();  nsrv->clearChildren();  nsrv->setAnyElement();
@@ -1678,7 +1671,7 @@ bool NATCompiler_ipt::doOSrvNegation::processNext()
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   any  any  C  RETURN  */
-	r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	nsrc=r->getOSrc();  nsrc->clearChildren();  nsrc->setAnyElement();
@@ -1695,7 +1688,7 @@ bool NATCompiler_ipt::doOSrvNegation::processNext()
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   any  any  any  ACTION  */
-	r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	nsrc=r->getOSrc();  nsrc->clearChildren();  nsrc->setAnyElement();
@@ -1730,7 +1723,7 @@ bool NATCompiler_ipt::splitNONATRule::processNext()
  * both these chains because there may be other rules in POSTROUTING
  * chain that may accidentally match the packet and translate it.
  */
-        NATRule *r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+        NATRule *r= compiler->dbcopy->createNATRule();
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
         r->setStr("ipt_chain","POSTROUTING");  
@@ -1818,8 +1811,7 @@ bool NATCompiler_ipt::splitIfOSrcAny::processNext()
         // split if osrc is any OR if it has a single object with negation
         if (osrc->isAny() || osrcrel->getBool("single_object_negation"))
         {
-            NATRule *r = NATRule::cast(
-                compiler->dbcopy->create(NATRule::TYPENAME) );
+            NATRule *r = compiler->dbcopy->createNATRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             RuleElementOSrc *nosrcrel = r->getOSrc();
@@ -2000,8 +1992,7 @@ bool NATCompiler_ipt::AssignInterface::processNext()
         int n=0;
         for (list<string>::iterator i=regular_interfaces.begin(); i!=regular_interfaces.end(); i++)
         {
-            NATRule *r = NATRule::cast(
-                compiler->dbcopy->create(NATRule::TYPENAME) );
+            NATRule *r = compiler->dbcopy->createNATRule();
             r->duplicate(rule);
             compiler->temp_ruleset->add(r);
 
@@ -2147,7 +2138,7 @@ bool NATCompiler_ipt::processMultiAddressObjectsInRE::processNext()
         for (list<MultiAddressRunTime*>::iterator i=cl.begin(); i!=cl.end(); i++)
         {
             MultiAddressRunTime *atrt = *i;
-            r = NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+            r = compiler->dbcopy->createNATRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             nre=RuleElement::cast( r->getFirstByType(re_type) );

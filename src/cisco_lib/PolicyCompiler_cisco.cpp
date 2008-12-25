@@ -107,22 +107,20 @@ void PolicyCompiler_cisco::addDefaultPolicyRule()
          !getCachedFwOpt()->getStr("mgmt_addr").empty() )
     {
         PolicyRule *r;
-        TCPService *ssh = TCPService::cast(
-            dbcopy->create(TCPService::TYPENAME) );
+        TCPService *ssh = dbcopy->createTCPService();
         ssh->setDstRangeStart(22);
         ssh->setDstRangeEnd(22);
         dbcopy->add(ssh,false);
         cacheObj(ssh); // to keep cache consistent
 
-        Network *mgmt_workstation = Network::cast(
-            dbcopy->create(Network::TYPENAME));
+        Network *mgmt_workstation = dbcopy->createNetwork();
         mgmt_workstation->setAddressNetmask(
             getCachedFwOpt()->getStr("mgmt_addr"));
 
         dbcopy->add(mgmt_workstation, false);
         cacheObj(mgmt_workstation); // to keep cache consistent
 
-        r= PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );
+        r= dbcopy->createPolicyRule();
         temp_ruleset->add(r);
         r->setAction(PolicyRule::Accept);
         r->setLogging(false);
@@ -155,7 +153,7 @@ void PolicyCompiler_cisco::addDefaultPolicyRule()
     // 'deny any any' rule for such interfaces and screws things big
     // time.
 #if 0
-    PolicyRule *r= PolicyRule::cast(dbcopy->create(PolicyRule::TYPENAME) );
+    PolicyRule *r= dbcopy->createPolicyRule();
 
     temp_ruleset->add(r);
     r->setAction(PolicyRule::Deny);
@@ -188,8 +186,7 @@ bool PolicyCompiler_cisco::splitIfSrcAny::processNext()
     )
     {
          
-        PolicyRule *r= PolicyRule::cast(
-            compiler->dbcopy->create(PolicyRule::TYPENAME) );
+        PolicyRule *r= compiler->dbcopy->createPolicyRule();
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
         r->setDirection( PolicyRule::Outbound );
@@ -244,8 +241,7 @@ bool PolicyCompiler_cisco::splitIfDstAny::processNext()
          )
     )
     {
-	PolicyRule *r= PolicyRule::cast(
-	    compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	PolicyRule *r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setDirection( PolicyRule::Inbound );
@@ -294,8 +290,7 @@ bool PolicyCompiler_cisco::NegationPhase1::processNext()
     
     if (src->getNeg()) {
 
-	PolicyRule *r= PolicyRule::cast(
-	    getCompiler()->dbcopy->create(PolicyRule::TYPENAME) );
+	PolicyRule *r= getCompiler()->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setStr("action","CONTINUE");
@@ -304,8 +299,7 @@ bool PolicyCompiler_cisco::NegationPhase1::processNext()
 	nsrc->setNeg(false);
 	vr->push_back(r);
 
-	r= PolicyRule::cast(
-	    getCompiler()->dbcopy->create(PolicyRule::TYPENAME) );
+	r= getCompiler()->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 
@@ -316,10 +310,9 @@ bool PolicyCompiler_cisco::NegationPhase1::processNext()
 	vr->push_back(r);
     }
 
-    if (dst->getNeg()) {
-
-	PolicyRule *r= PolicyRule::cast(
-	    getCompiler()->dbcopy->create(PolicyRule::TYPENAME) );
+    if (dst->getNeg())
+    {
+	PolicyRule *r= getCompiler()->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setStr("action","CONTINUE");
@@ -328,8 +321,7 @@ bool PolicyCompiler_cisco::NegationPhase1::processNext()
 	ndst->setNeg(false);
 	vr->push_back(r);
 
-	r= PolicyRule::cast(
-	    getCompiler()->dbcopy->create(PolicyRule::TYPENAME) );
+	r= getCompiler()->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 
@@ -340,10 +332,9 @@ bool PolicyCompiler_cisco::NegationPhase1::processNext()
 	vr->push_back(r);
     }
 
-    if (srv->getNeg()) {
-
-	PolicyRule *r= PolicyRule::cast(
-	    getCompiler()->dbcopy->create(PolicyRule::TYPENAME) );
+    if (srv->getNeg())
+    {
+	PolicyRule *r= getCompiler()->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setStr("action","CONTINUE");
@@ -352,8 +343,7 @@ bool PolicyCompiler_cisco::NegationPhase1::processNext()
 	nsrv->setNeg(false);
 	vr->push_back(r);
 
-	r= PolicyRule::cast(
-	    getCompiler()->dbcopy->create(PolicyRule::TYPENAME) );
+	r= getCompiler()->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 
@@ -364,9 +354,9 @@ bool PolicyCompiler_cisco::NegationPhase1::processNext()
 	vr->push_back(r);
     }
 
-    if (vr->empty()) {
-	PolicyRule *r= PolicyRule::cast(
-	    getCompiler()->dbcopy->create(PolicyRule::TYPENAME) );
+    if (vr->empty())
+    {
+	PolicyRule *r= getCompiler()->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 
 	if (compiler->debug>=5) {
@@ -421,7 +411,7 @@ bool PolicyCompiler_cisco::splitIfRuleElementMatchesFW::processNext()
 	    cl.push_back(o);   // can not remove right now because remove invalidates iterator
             nre--;
 
-	    PolicyRule  *new_rule= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+	    PolicyRule  *new_rule= compiler->dbcopy->createPolicyRule();
 	    compiler->temp_ruleset->add(new_rule);
 	    new_rule->duplicate(rule);
             RuleElement *new_re=RuleElement::cast(new_rule->getFirstByType(re_type));
@@ -546,7 +536,7 @@ bool PolicyCompiler_cisco::tcpServiceToFW::processNext()
         if (!cl.empty()) 
         {
 
-            PolicyRule  *r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule  *r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             RuleElementDst *ndst=r->getDst();
@@ -667,8 +657,7 @@ void PolicyCompiler_cisco::splitByNetworkZonesForRE::AddToInterface(
     new_rule = rules[interface_id];
     if (new_rule==NULL) 
     {
-        new_rule = PolicyRule::cast(compiler->dbcopy->create(
-                                        PolicyRule::TYPENAME) );
+        new_rule = compiler->dbcopy->createPolicyRule();
         compiler->temp_ruleset->add(new_rule);
         new_rule->duplicate(rule);
         rules[interface_id]=new_rule;

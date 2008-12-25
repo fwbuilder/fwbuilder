@@ -66,13 +66,13 @@ bool NATCompiler_pf::doOSrcNegation::processNext()
 
 	osrcrel->setNeg(false);
 
-	r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setRuleType(NATRule::Continue);
 	tmp_queue.push_back(r);
 
-	r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	RuleElementOSrc *nsrc=r->getOSrc();  nsrc->clearChildren();  nsrc->setAnyElement();
@@ -103,13 +103,13 @@ bool NATCompiler_pf::doODstNegation::processNext()
 
 	odstrel->setNeg(false);
 
-	r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setRuleType(NATRule::Continue);
 	tmp_queue.push_back(r);
 
-	r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	RuleElementODst *ndst=r->getODst();  ndst->clearChildren();  ndst->setAnyElement();
@@ -143,13 +143,13 @@ bool NATCompiler_pf::doOSrvNegation::processNext()
 
 	osrvrel->setNeg(false);
 
-	r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	r->setRuleType(NATRule::Continue);
 	tmp_queue.push_back(r);
 
-	r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+	r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
 	RuleElementOSrv *nsrv=r->getOSrv();  nsrv->clearChildren();  nsrv->setAnyElement();

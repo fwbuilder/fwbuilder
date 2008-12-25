@@ -110,15 +110,13 @@ bool PolicyCompiler_pix::SplitDirection_v6::processNext()
     {
         if (rule_iface!=NULL)
         {
-            PolicyRule *r= PolicyRule::cast(
-                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             r->setDirection(PolicyRule::Inbound);
             tmp_queue.push_back(r);
 
-            r= PolicyRule::cast(
-                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             r->setDirection(PolicyRule::Outbound);
@@ -214,8 +212,7 @@ bool PolicyCompiler_pix::EmulateOutboundACL_v6::processNext()
                     {
                         if ( (*i)->getId()==iface2_id ) continue;
 
-                        PolicyRule *r= PolicyRule::cast(
-                            compiler->dbcopy->create(PolicyRule::TYPENAME) );
+                        PolicyRule *r= compiler->dbcopy->createPolicyRule();
                         compiler->temp_ruleset->add(r);
 
                         r->duplicate(rule);
@@ -306,8 +303,7 @@ bool PolicyCompiler_pix::assignRuleToInterface_v6::processNext()
                 list<FWObject*> l2=compiler->fw->getByType(Interface::TYPENAME);
                 for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) 
                 {
-                    PolicyRule *r= PolicyRule::cast(
-                        compiler->dbcopy->create(PolicyRule::TYPENAME) );
+                    PolicyRule *r= compiler->dbcopy->createPolicyRule();
                     compiler->temp_ruleset->add(r);
 
                     r->duplicate(rule);

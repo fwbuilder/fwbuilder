@@ -163,8 +163,7 @@ bool NATCompiler_ipf::ExpandPortRange::processNext()
 
         for (int p=rs; p<=re; ++p)
         {
-            NATRule *r = NATRule::cast(
-                compiler->dbcopy->create(NATRule::TYPENAME) );
+            NATRule *r = compiler->dbcopy->createNATRule();
             r->duplicate(rule);
 
             FWObject *newSrv = compiler->dbcopy->create(newSrvType);
@@ -252,8 +251,7 @@ bool NATCompiler_ipf::AssignInterface::processNext()
                  iface->isBridgePort() || 
                  iface->isLoopback()) continue;
 
-            NATRule *r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) 
-);
+            NATRule *r= compiler->dbcopy->createNATRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             r->setInterfaceId( iface->getId() );
@@ -290,8 +288,7 @@ bool NATCompiler_ipf::AssignInterface::processNext()
                 iface->isUnnumbered() ||
                 iface->isBridgePort()) continue;
 
-            NATRule *r = NATRule::cast(
-                compiler->dbcopy->create(NATRule::TYPENAME) );
+            NATRule *r = compiler->dbcopy->createNATRule();
             r->duplicate(rule);
             compiler->temp_ruleset->add(r);
 
@@ -333,7 +330,7 @@ bool NATCompiler_ipf::prepareForLB::processNext()
                 cl.push_back(o);
                 if (cl.size()==2)
                 {
-                    NATRule *r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+                    NATRule *r= compiler->dbcopy->createNATRule();
                     compiler->temp_ruleset->add(r);
                     r->duplicate(rule);
                     RuleElementTDst *notdst=r->getTDst();
@@ -347,7 +344,7 @@ bool NATCompiler_ipf::prepareForLB::processNext()
 
             if (cl.size()!=0)
             {
-                NATRule *r= NATRule::cast(compiler->dbcopy->create(NATRule::TYPENAME) );
+                NATRule *r= compiler->dbcopy->createNATRule();
                 compiler->temp_ruleset->add(r);
                 r->duplicate(rule);
                 RuleElementTDst *notdst=r->getTDst();
@@ -489,8 +486,7 @@ bool NATCompiler_ipf::expandAnyService::processNext()
 
     if (rule->getRuleType()==NATRule::SNAT && srv->isAny())
     {
-	NATRule *r= NATRule::cast(
-	    compiler->dbcopy->create(NATRule::TYPENAME) );
+	NATRule *r= compiler->dbcopy->createNATRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         r->setBool("needs_portmap",true);

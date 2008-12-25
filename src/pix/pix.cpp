@@ -435,7 +435,7 @@ int main(int argc, char * const * argv)
             list<FWObject*> ol;
             helper.expand_group_recursive_no_cache(netzone,ol);
 
-            FWObject *nz=objdb->create(ObjectGroup::TYPENAME);
+            FWObject *nz = objdb->createObjectGroup();
             assert(nz!=NULL);
             nz->setName("netzone_"+iface->getLabel());
             objdb->add(nz);

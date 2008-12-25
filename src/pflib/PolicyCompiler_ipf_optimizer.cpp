@@ -56,7 +56,7 @@ void PolicyCompiler_ipf::optimize1::optimizeForRuleElement(PolicyRule *rule,
 
     PolicyRule     *r;
 
-    r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+    r= compiler->dbcopy->createPolicyRule();
     compiler->temp_ruleset->add(r);
     r->duplicate(rule);
 
@@ -85,7 +85,7 @@ void PolicyCompiler_ipf::optimize1::optimizeForRuleElement(PolicyRule *rule,
     r->setStr("skip_to",skip_target);
     tmp_queue.push_back(r);
 
-    r= PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME) );
+    r= compiler->dbcopy->createPolicyRule();
     compiler->temp_ruleset->add(r);
     r->duplicate(rule);
 

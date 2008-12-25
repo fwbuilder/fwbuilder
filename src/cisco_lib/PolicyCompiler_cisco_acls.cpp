@@ -87,8 +87,7 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionBySrc::processNext()
             assert(ifs);
             if (ifs->isUnprotected()) continue;   // skip!
 
-            PolicyRule *new_rule = PolicyRule::cast(
-                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *new_rule = compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(new_rule);
             new_rule->duplicate(rule);
             new_rule->setInterfaceId(intf_id);
@@ -139,8 +138,7 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionByDst::processNext()
             assert(ifs);
             if (ifs->isUnprotected()) continue;   // skip!
 
-            PolicyRule *new_rule = PolicyRule::cast(
-                compiler->dbcopy->create(PolicyRule::TYPENAME) );
+            PolicyRule *new_rule = compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(new_rule);
             new_rule->duplicate(rule);
             new_rule->setInterfaceId(intf_id);
@@ -176,8 +174,7 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionIfInterfaceSet::processNext()
 
         if (rule->getDirection()==PolicyRule::Both)
         {
-            new_rule =
-                PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
+            new_rule =compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(new_rule);
             new_rule->duplicate(rule);
             new_rule->setInterfaceId( rule_iface_id );
@@ -185,8 +182,7 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionIfInterfaceSet::processNext()
             new_rule->setBool("interface_and_direction_set",true);
             tmp_queue.push_back(new_rule);
 
-            new_rule =
-                PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
+            new_rule =compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(new_rule);
             new_rule->duplicate(rule);
             new_rule->setInterfaceId( rule_iface_id );
@@ -195,8 +191,7 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionIfInterfaceSet::processNext()
             tmp_queue.push_back(new_rule);
         } else
         {
-            new_rule =
-                PolicyRule::cast(compiler->dbcopy->create(PolicyRule::TYPENAME));
+            new_rule =compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(new_rule);
             new_rule->duplicate(rule);
             new_rule->setInterfaceId( rule_iface_id );

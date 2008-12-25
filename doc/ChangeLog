@@ -1,3 +1,15 @@
+2008-12-25  vadim  <vadim@vk.crocodile.org>
+
+	* All policy compilers: using FWObjectDatabase::createClass
+	methods to create rules and other objects in compilers wherever
+	the type is known at the (code) compile time. This makes code
+	cleaner and speeds it up a little because of eliminated cast() and
+	string comparison.
+
+	* changes in libfbuilder: eliminated excessive use of dynamic_cast
+	and long chains of "if" comparing object type names in
+	FWObjectDatabase in methods that create new objects of given type.
+
 2008-12-23  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printSrcAddr):

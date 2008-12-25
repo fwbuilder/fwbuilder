@@ -39,7 +39,7 @@ using namespace std;
 
 const char *combinedAddress::TYPENAME={"combinedAddress"};
 
-combinedAddress::combinedAddress(const FWObject *root,bool prepopulate) : IPv4(root,prepopulate) {}
+combinedAddress::combinedAddress(const FWObjectDatabase *root,bool prepopulate) : IPv4(root,prepopulate) {}
 combinedAddress::~combinedAddress() {}
 
 std::string combinedAddress::getPhysAddress() const
