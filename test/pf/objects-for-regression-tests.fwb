@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1228758183" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1230465686" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <Library id="id40E233F3" color="#FFFFFF" name="West Coast" comment="" ro="False">
@@ -352,7 +352,7 @@
         </PolicyRuleOptions>
       </PolicyRule>
     </Policy>
-    <ServiceRef ref="sysid1"/>
+    <ServiceRef ref="id41F9FFBA"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -871,7 +871,7 @@
           <CustomServiceCommand platform="pix"></CustomServiceCommand>
           <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
-        <CustomService id="id41F9FFBA" name="natproto" comment="" ro="False" protocol=" {tcp udp icmp gre}" address_family="ipv4">
+        <CustomService id="id41F9FFBA" name="natproto" comment="for bug 1111267: should add proto {tcp udp icmp gre}" ro="False" protocol=" {tcp udp icmp gre}" address_family="ipv4">
           <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
           <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
           <CustomServiceCommand platform="ipf"></CustomServiceCommand>
@@ -888,6 +888,16 @@
           <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
           <CustomServiceCommand platform="iptables"></CustomServiceCommand>
           <CustomServiceCommand platform="pf"> </CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+        </CustomService>
+        <CustomService id="id15832X50242" name="natproto (old style)" comment="for bug 1111267: should add proto {tcp udp icmp gre}, compiler&#10;should recognize &quot;proto ...&quot; in the code string" ro="False" protocol="any" address_family="ipv4">
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="iptables"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf">proto  {tcp udp icmp gre}</CustomServiceCommand>
           <CustomServiceCommand platform="pix"></CustomServiceCommand>
           <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
@@ -2705,7 +2715,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AFB66C6" host_OS="openbsd" inactive="False" lastCompiled="1157930805" lastInstalled="0" lastModified="1230447763" platform="pf" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
+      <Firewall id="id3AFB66C6" host_OS="openbsd" inactive="False" lastCompiled="1230465811" lastInstalled="0" lastModified="1230466470" platform="pf" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
         <NAT id="id3AFB66C7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3AFB66C8" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -3328,7 +3338,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id41F9FFBB" disabled="False" position="28" comment="">
+          <NATRule id="id41F9FFBB" disabled="False" position="28" comment="for bug 1111267: this custom service object has&#10;&quot;proto ...&quot; in the protocol string, compiler can put&#10;it in generated nat command in the right place.">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3349,7 +3359,28 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id41FA0A82" disabled="False" position="29" comment="">
+          <NATRule id="id15833X50242" disabled="False" group="" position="29" comment="for bug 1111267: this custom service object&#10;has &quot;proto ..&quot; in the code string but we can't insert&#10;it in the generated nat command b/c it would appear &#10;in the wrong place, after &quot;from&quot;.&#10;">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id15832X50242"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3AFB6706-ipv4"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id41FA0A82" disabled="False" position="30" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>

@@ -416,15 +416,20 @@ void PolicyCompiler_pf::PrintRule::_printProtocol(Service *srv)
     // However CustomService can return protocol name "any", which we should
     // just skip.
 
+    // CustomService returns protocol name starting with v3.0.4
     if (CustomService::isA(srv))
     {
+        // check if the code string for this custom service already includes
+        // "proto ..." fragment
+        string code = CustomService::cast(srv)->getCodeForPlatform(
+            compiler->myPlatformName());
+        std::size_t minus_p = code.find("proto ");
+        if (minus_p != string::npos) return;
         string pn = srv->getProtocolName();
         if (pn == "any") return;
     }
 
-    if (!srv->isAny() &&
-        !TagService::isA(srv) && 
-        !UserService::isA(srv) && 
+    if (!srv->isAny() && !TagService::isA(srv) && !UserService::isA(srv) && 
         srv->getProtocolName()!="ip")
     {
 	compiler->output << "proto ";

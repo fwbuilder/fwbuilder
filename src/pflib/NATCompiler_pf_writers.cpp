@@ -126,20 +126,22 @@ bool NATCompiler_pf::PrintRule::processNext()
 
     char errstr[1024];
 
-    if (osrc==NULL ||
-        odst==NULL ||
-        osrv==NULL ||
-        tsrc==NULL ||
-        tdst==NULL ||
-        tsrv==NULL) 
+    if (osrc==NULL || odst==NULL || osrv==NULL ||
+        tsrc==NULL || tdst==NULL || tsrv==NULL) 
     {
-        if (osrc==NULL)sprintf(errstr, "NAT rule %s: osrc==NULL", rule->getLabel().c_str() );
-        if (odst==NULL)sprintf(errstr, "NAT rule %s: odst==NULL", rule->getLabel().c_str() );
-        if (osrv==NULL)sprintf(errstr, "NAT rule %s: osrv==NULL", rule->getLabel().c_str() );
+        if (osrc==NULL)
+            sprintf(errstr,"NAT rule %s: osrc==NULL", rule->getLabel().c_str());
+        if (odst==NULL)
+            sprintf(errstr,"NAT rule %s: odst==NULL", rule->getLabel().c_str());
+        if (osrv==NULL)
+            sprintf(errstr,"NAT rule %s: osrv==NULL", rule->getLabel().c_str());
 
-        if (tsrc==NULL)sprintf(errstr, "NAT rule %s: tsrc==NULL", rule->getLabel().c_str() );
-        if (tdst==NULL)sprintf(errstr, "NAT rule %s: tdst==NULL", rule->getLabel().c_str() );
-        if (tsrv==NULL)sprintf(errstr, "NAT rule %s: tsrv==NULL", rule->getLabel().c_str() );
+        if (tsrc==NULL)
+            sprintf(errstr,"NAT rule %s: tsrc==NULL", rule->getLabel().c_str());
+        if (tdst==NULL)
+            sprintf(errstr,"NAT rule %s: tdst==NULL", rule->getLabel().c_str());
+        if (tsrv==NULL)
+            sprintf(errstr,"NAT rule %s: tsrv==NULL", rule->getLabel().c_str());
 
         compiler->abort(errstr);
     }
@@ -228,6 +230,17 @@ bool NATCompiler_pf::PrintRule::processNext()
 
 void NATCompiler_pf::PrintRule::_printProtocol(Service *srv)
 {
+    // CustomService returns protocol name starting with v3.0.4
+    if (CustomService::isA(srv))
+    {
+        // check if the code string for this custom service already includes
+        // "proto ..." fragment
+        string code = CustomService::cast(srv)->getCodeForPlatform(
+            compiler->myPlatformName());
+        std::size_t minus_p = code.find("proto ");
+        if (minus_p != string::npos) return;
+    }
+
     if ( !TagService::isA(srv))
     {
         string s = srv->getProtocolName();
@@ -238,9 +251,10 @@ void NATCompiler_pf::PrintRule::_printProtocol(Service *srv)
 
 void NATCompiler_pf::PrintRule::_printPort(Service *srv, bool print_range_end)
 {
-    if (TCPService::isA(srv) || UDPService::isA(srv)) {
-	int drs=TCPUDPService::cast(srv)->getDstRangeStart();
-	int dre=TCPUDPService::cast(srv)->getDstRangeEnd();
+    if (TCPService::isA(srv) || UDPService::isA(srv))
+    {
+	int drs = TCPUDPService::cast(srv)->getDstRangeStart();
+	int dre = TCPUDPService::cast(srv)->getDstRangeEnd();
 	if (drs!=0)
         {
             compiler->output << "port " << drs;
@@ -256,11 +270,12 @@ void NATCompiler_pf::PrintRule::_printPort(Service *srv, bool print_range_end)
     }
     if (TagService::isA(srv)) 
     {
-	compiler->output << "tagged " << TagService::constcast(srv)->getCode() << " ";
+	compiler->output << "tagged "
+                         << TagService::constcast(srv)->getCode() << " ";
     }
 }
 
-void NATCompiler_pf::PrintRule::_printNegation(libfwbuilder::RuleElement  *rel)
+void NATCompiler_pf::PrintRule::_printNegation(RuleElement  *rel)
 {
     if (rel->getNeg())
 	compiler->output << "! ";
