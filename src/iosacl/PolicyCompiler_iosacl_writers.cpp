@@ -311,7 +311,7 @@ string PolicyCompiler_iosacl::PrintRule::_printLog(PolicyRule *rule)
     return "";
 }
 
-string PolicyCompiler_iosacl::PrintRule::_printSrcService(libfwbuilder::Service *srv)
+string PolicyCompiler_iosacl::PrintRule::_printSrcService(Service *srv)
 {
     ostringstream  str;
 
@@ -333,6 +333,7 @@ string PolicyCompiler_iosacl::PrintRule::_printSrcService(libfwbuilder::Service 
 			str << "range " << rs << " " << re << " ";
 	}
     }
+
     return str.str();
 }
 
@@ -386,6 +387,11 @@ string PolicyCompiler_iosacl::PrintRule::_printDstService(Service *srv)
 
     if (ICMPService::isA(srv) && srv->getInt("type")!=-1)
 	    str << srv->getStr("type") << " ";
+
+    if (CustomService::isA(srv)) 
+	str << CustomService::cast(srv)->getCodeForPlatform(
+            compiler->myPlatformName() ) << " ";
+
     return str.str();
 }
 

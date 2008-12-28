@@ -1,5 +1,9 @@
 2008-12-28  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printDstService):
+	support for the CustomService in compiler for IOS ACL, including
+	support for address family, protocol and code string parameters.
+
 	* PolicyCompiler_ipfw_writers.cpp (PrintRule::_printProtocol):
 	support for the new "protocol" parameter of the CustomService
 	object in compilers for ipfilter and ipfw.

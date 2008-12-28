@@ -334,16 +334,20 @@ void PolicyCompiler_iosacl::compile()
                  "expand objects with multiple addresses in DST" ) );
         add( new MACFiltering(
                  "check for MAC address filtering" ) );
-        add( new dropRuleWithEmptyRE(
-                 "drop rules with empty rule elements"));
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+
 //        add( new splitByNetworkZonesForDst ("split rule if objects in Dst belong to different network zones " ) );
 
-        add( new checkForUnnumbered(
-                 "check for unnumbered interfaces" ) );
+        if (ipv6)
+            add( new DropIPv4Rules("drop ipv4 rules"));
+        else
+            add( new DropIPv6Rules("drop ipv6 rules"));
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+
+        add( new checkForUnnumbered("check for unnumbered interfaces"));
 
         add( new addressRanges ("process address ranges" ) );
-        add( new dropRuleWithEmptyRE(
-                 "drop rules with empty rule elements"));
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
         add( new setInterfaceAndDirectionBySrc(
     "Set interface and direction for rules with interface 'all' using SRC"));
