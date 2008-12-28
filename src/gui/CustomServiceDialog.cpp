@@ -69,34 +69,71 @@ void CustomServiceDialog::loadFWObject(FWObject *o)
 
     init=true;
 
-    m_dialog->protocol_string_label->setVisible (false); //!REM 
-    m_dialog->protocol_string->setVisible (false); //!REM 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
-    //!NEW m_dialog->protocl_string->setText(QString::fromUtf8(s->getProtocolStringForPlatform().c_str()));
+
 /* fill in m_dialog->platform */
     m_dialog->platform->clear();
 
     int cp=0;
-    showPlatform=st->value(SETTINGS_PATH_PREFIX"/CustomService/Platform").toString();
+    QString default_platform = 
+        st->value(SETTINGS_PATH_PREFIX"/CustomService/Platform").toString();
     QMap<QString,QString> platforms = getAllPlatforms();
     QMap<QString,QString>::iterator i;
     for (i=platforms.begin(); i!=platforms.end(); i++,cp++)
     {
-//        cerr << "m_dialog->platform: key=" << i.key() << "  data=" << i.data() << endl;
+//        cerr << "m_dialog->platform: key=" << i.key()
+//             << "  data=" << i.data() << endl;
 
-/* here i.key is m_dialog->platform m_dialog->code ( "ipf", "ipfw", "iptables", "pf")
- * while i.data is human readable name ("ipfilter", "PF" )
+/*
+ * here i.key is m_dialog->platform m_dialog->code ( "ipf", "ipfw",
+ * "iptables", "pf") while i.data is human readable name ("ipfilter",
+ * "PF" )
  */
-        platformReverseMap[i.value()]=i.key();
+        platformReverseMap[i.value()] = i.key();
 
-        m_dialog->platform->addItem( i.value() );
-        if (showPlatform=="") showPlatform = i.key();
-        if (showPlatform==i.key()) m_dialog->platform->setCurrentIndex( cp );
-        allCodes[ i.key() ]=s->getCodeForPlatform( i.key().toLatin1().constData() ).c_str();
+        m_dialog->platform->addItem(i.value());
+        if (default_platform=="") default_platform = i.key();
+        if (default_platform==i.key()) m_dialog->platform->setCurrentIndex(cp);
+
+        const char *platform_cptr = i.key().toLatin1().constData();
+
+        allCodes[i.key()] = s->getCodeForPlatform(platform_cptr).c_str();
     }
 
-    m_dialog->code->setText( allCodes[showPlatform] ); //fromUtf8
+    fillDialogInputFields();
+
+    QString protocol = s->getProtocol().c_str();
+    if (protocol == "") protocol = "any";
+
+    m_dialog->protocol->clear();
+    m_dialog->protocol->addItem("any");
+    m_dialog->protocol->addItem("tcp");
+    m_dialog->protocol->addItem("udp");
+    m_dialog->protocol->addItem("icmp");
+
+    bool standard_protocol = false;
+    int proto_index = 0;
+    for (; proto_index < m_dialog->protocol->count(); ++proto_index)
+    {
+        if (protocol == m_dialog->protocol->itemText(proto_index))
+        {
+            m_dialog->protocol->setCurrentIndex(proto_index);
+            standard_protocol = true;
+            break;
+        }
+    }
+    if (!standard_protocol)
+    {
+        m_dialog->protocol->addItem(protocol);
+        m_dialog->protocol->setCurrentIndex(proto_index);
+    }
+
+    int af = s->getAddressFamily();
+    if (af == AF_INET6)
+        m_dialog->ipv6->setChecked(true);
+    else
+        m_dialog->ipv4->setChecked(true);
 
     //apply->setEnabled( false );
 
@@ -132,7 +169,11 @@ void CustomServiceDialog::validate(bool *res)
 {
     *res=true;
     if (!isTreeReadWrite(this,obj)) { *res=false; return; }
-    if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
+    if (!validateName(this,obj,m_dialog->obj_name->text()))
+    {
+        *res=false;
+        return;
+    }
 }
 
 void CustomServiceDialog::isChanged(bool*)
@@ -148,10 +189,7 @@ void CustomServiceDialog::libChanged()
 void CustomServiceDialog::platformChanged()
 {
     init=true;
-    QString npl = platformReverseMap[m_dialog->platform->currentText()];
-    m_dialog->code->setText( allCodes[ npl ] ); //fromUtf8
-    showPlatform = npl;
-    st->setValue(SETTINGS_PATH_PREFIX"/CustomService/Platform",showPlatform);
+    fillDialogInputFields();
     init=false;
 //    changed();
 }
@@ -163,18 +201,28 @@ void CustomServiceDialog::applyChanges()
 
     string oldname=obj->getName();
     obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    string commText = string(m_dialog->comment->toPlainText().toUtf8().constData());
+    string commText = string(
+        m_dialog->comment->toPlainText().toUtf8().constData());
     obj->setComment( commText );
-    //!NEW s->setProtocolStringForPlatform(string(m_dialog->protocol_string->text().toUtf8().constData()));
+    QMap<QString,QString> platforms = getAllPlatforms();
     QMap<QString,QString>::iterator i;
-    for (i=allCodes.begin(); i!=allCodes.end(); ++i)
+    for (i=platforms.begin(); i!=platforms.end(); i++)
     {
-        string code = string(i.value().toUtf8().constData());
-        if (fwbdebug)
-            qDebug("Storing custom service m_dialog->code %s :: %s",
-                   i.key().toLatin1().constData(),code.c_str());
-        s->setCodeForPlatform( i.key().toLatin1().constData(), code );
+        QString platform = i.key();
+        QString code = allCodes[platform];
+        s->setCodeForPlatform( platform.toUtf8().constData(),
+                               string(code.toUtf8().constData()));
     }
+    int protocol_index = m_dialog->protocol->currentIndex();
+    QString protocol;
+    if (protocol_index >= 0)
+        protocol = m_dialog->protocol->itemText(protocol_index).toUtf8().constData();
+    else
+        protocol = m_dialog->protocol->lineEdit()->text();
+    s->setProtocol(string(protocol.toUtf8().constData()));
+    int af = (m_dialog->ipv6->isChecked()) ? AF_INET6 : AF_INET;
+    s->setAddressFamily(af);
+
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     //apply->setEnabled( false );
@@ -194,5 +242,13 @@ void CustomServiceDialog::closeEvent(QCloseEvent *e)
 {
     emit close_sign(e);
 
+}
+
+void CustomServiceDialog::fillDialogInputFields()
+{
+    QString npl = platformReverseMap[m_dialog->platform->currentText()];
+    showPlatform = npl;
+    st->setValue(SETTINGS_PATH_PREFIX"/CustomService/Platform", showPlatform);
+    m_dialog->code->setText(allCodes[showPlatform]);
 }
 

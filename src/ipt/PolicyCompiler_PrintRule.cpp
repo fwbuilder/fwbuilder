@@ -433,17 +433,18 @@ string PolicyCompiler_ipt::PrintRule::_printDirectionAndInterface(PolicyRule *ru
     return ostr.str();
 }
 
-string PolicyCompiler_ipt::PrintRule::_printActionOnReject(libfwbuilder::PolicyRule *rule)
+string PolicyCompiler_ipt::PrintRule::_printActionOnReject(PolicyRule *rule)
 {
     std::ostringstream str;
 
-    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
 
 //    RuleElementSrv *srvrel=rule->getSrv();
-    Service        *srv   =compiler->getFirstSrv(rule);  assert(srv);
+    Service *srv = compiler->getFirstSrv(rule);
+    assert(srv);
 
-    string version=compiler->fw->getStr("version");
-    string s=ipt_comp->getActionOnReject(rule);
+    string version = compiler->fw->getStr("version");
+    string s = ipt_comp->getActionOnReject(rule);
     if (!s.empty()) 
     {
         if (ipt_comp->isActionOnRejectTCPRST(rule))
@@ -672,16 +673,30 @@ string PolicyCompiler_ipt::PrintRule::_printLimit(libfwbuilder::PolicyRule *rule
     return str.str();
 }
 
-string PolicyCompiler_ipt::PrintRule::_printProtocol(libfwbuilder::Service *srv)
+string PolicyCompiler_ipt::PrintRule::_printProtocol(Service *srv)
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     string version = compiler->fw->getStr("version");
     string s;
-    if (! srv->isAny() && !CustomService::isA(srv) &&
-        !TagService::isA(srv) && !UserService::isA(srv))
+    // CustomService returns protocol name starting with v3.0.4
+    // However CustomService can return protocol name "any", which we should
+    // just skip.
+    if (CustomService::isA(srv))
+    {
+        // check if the code string for this custom service already includes
+        // "-p proto" fragment
+        string code = CustomService::cast(srv)->getCodeForPlatform(
+            compiler->myPlatformName());
+        std::size_t minus_p = code.find("-p ");
+        if (minus_p != string::npos) return "";
+        string pn = srv->getProtocolName();
+        if (pn == "any") return "";
+    }
+
+    if (!srv->isAny() && !TagService::isA(srv) && !UserService::isA(srv))
     {
         string pn = srv->getProtocolName();
-        if (pn=="ip") pn = "all";
+        if (pn=="ip" || pn=="any") pn = "all";
 
         if (ipt_comp->ipv6)
         { 

@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>748</width>
-    <height>307</height>
+    <width>754</width>
+    <height>251</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -26,9 +26,6 @@
     <layout class="QVBoxLayout" >
      <property name="spacing" >
       <number>2</number>
-     </property>
-     <property name="margin" >
-      <number>0</number>
      </property>
      <item>
       <widget class="QFrame" name="frame3" >
@@ -103,7 +100,7 @@
        <property name="frameShadow" >
         <enum>QFrame::Sunken</enum>
        </property>
-       <layout class="QGridLayout" >
+       <layout class="QGridLayout" name="gridLayout_3" >
         <item rowspan="2" row="0" column="0" >
          <widget class="QFrame" name="frame13" >
           <property name="frameShape" >
@@ -112,7 +109,7 @@
           <property name="frameShadow" >
            <enum>QFrame::Sunken</enum>
           </property>
-          <layout class="QGridLayout" >
+          <layout class="QGridLayout" name="gridLayout_2" >
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
              <property name="text" >
@@ -164,7 +161,8 @@
            <item row="1" column="1" >
             <widget class="QComboBox" name="platform" >
              <property name="toolTip" >
-              <string>Custom service object has separate code string for each supported firewall platform.</string>
+              <string>Custom service object has separate code string for each
+supported firewall platform.</string>
              </property>
             </widget>
            </item>
@@ -199,7 +197,8 @@
               </size>
              </property>
              <property name="toolTip" >
-              <string>Custom service object has separate code string for each supported firewall platform.</string>
+              <string>Custom service object has separate code string for each
+supported firewall platform.</string>
              </property>
              <property name="alignment" >
               <set>Qt::AlignLeading</set>
@@ -215,32 +214,86 @@
               </sizepolicy>
              </property>
              <property name="text" >
-              <string>Protocol String:</string>
+              <string>Protocol Name:</string>
              </property>
             </widget>
            </item>
            <item row="3" column="1" >
-            <widget class="QLineEdit" name="protocol_string" >
+            <widget class="QComboBox" name="protocol" >
+             <property name="toolTip" >
+              <string>Choose one of the standard protocols from the menu or enter custom
+protocol string. Policy compilers can use this information to add correct
+protocol-specific parameters to the generated configuration. For example,
+iptables compiler is allowed to add "--reject-with tcp-reset" to the target
+REJECT only if service object belongs to protocol "tcp".
+</string>
+             </property>
+             <property name="editable" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0" >
+            <widget class="QLabel" name="label_2" >
+             <property name="text" >
+              <string>Address Family:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1" >
+            <widget class="QGroupBox" name="groupBox" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip" >
+              <string>Like with protocol, setting address family helps
+policy compiler generate more accurate configuration
+using this custom service object. For example, if
+address family is set to ipv6, this custom service
+will only be used in ipv6 policies.
+</string>
+             </property>
+             <property name="title" >
+              <string/>
+             </property>
+             <property name="flat" >
+              <bool>true</bool>
+             </property>
+             <property name="checkable" >
+              <bool>false</bool>
+             </property>
+             <layout class="QGridLayout" name="gridLayout" >
+              <property name="topMargin" >
+               <number>4</number>
+              </property>
+              <property name="bottomMargin" >
+               <number>4</number>
+              </property>
+              <item row="0" column="0" >
+               <widget class="QRadioButton" name="ipv4" >
+                <property name="text" >
+                 <string>IPv4</string>
+                </property>
+                <property name="checked" >
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1" >
+               <widget class="QRadioButton" name="ipv6" >
+                <property name="text" >
+                 <string>IPv6</string>
+                </property>
+                <property name="checked" >
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
-           </item>
-           <item row="4" column="1" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0" >
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
            </item>
           </layout>
          </widget>
@@ -363,20 +416,71 @@
    </hints>
   </connection>
   <connection>
-   <sender>protocol_string</sender>
-   <signal>textChanged(QString)</signal>
+   <sender>protocol</sender>
+   <signal>editTextChanged(QString)</signal>
    <receiver>CustomServiceDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>161</x>
-     <y>257</y>
+     <x>250</x>
+     <y>172</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>384</x>
-     <y>155</y>
+     <x>376</x>
+     <y>125</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>protocol</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>CustomServiceDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>250</x>
+     <y>172</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>376</x>
+     <y>125</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ipv4</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>CustomServiceDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>200</x>
+     <y>210</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>376</x>
+     <y>125</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ipv6</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>CustomServiceDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>298</x>
+     <y>210</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>376</x>
+     <y>125</y>
     </hint>
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>changed()</slot>
+ </slots>
 </ui>

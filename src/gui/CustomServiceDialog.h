@@ -50,8 +50,11 @@ class CustomServiceDialog : public QWidget
     QString                    showPlatform;
     Ui::CustomServiceDialog_q *m_dialog;
     ProjectPanel *m_project;
-    
- public:
+
+protected:
+    void fillDialogInputFields();
+
+public:
     CustomServiceDialog(ProjectPanel *project, QWidget *parent);
     ~CustomServiceDialog();
     

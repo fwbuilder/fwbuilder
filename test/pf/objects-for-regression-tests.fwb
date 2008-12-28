@@ -352,6 +352,7 @@
         </PolicyRuleOptions>
       </PolicyRule>
     </Policy>
+    <ServiceRef ref="sysid1"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -858,16 +859,35 @@
       </ServiceGroup>
       <ServiceGroup id="stdid08_1" name="UDP" comment="" ro="False"/>
       <ServiceGroup id="stdid13_1" name="Custom" comment="" ro="False">
-        <CustomService id="id3B64FE22" name="talk" comment="Talk support" ro="False">
+        <CustomService id="id3B64FE22" name="talk" comment="Talk support" ro="False" protocol="any" address_family="ipv4">
           <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
           <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
           <CustomServiceCommand platform="iptables">-m ip_conntrack_talk -m ip_nat_talk</CustomServiceCommand>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
-        <CustomService id="id41F9FFBA" name="natproto" comment="" ro="False">
+        <CustomService id="id41F9FFBA" name="natproto" comment="" ro="False" protocol=" {tcp udp icmp gre}" address_family="ipv4">
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
           <CustomServiceCommand platform="ipf"></CustomServiceCommand>
           <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
           <CustomServiceCommand platform="iptables"></CustomServiceCommand>
-          <CustomServiceCommand platform="pf">proto {tcp udp icmp gre}</CustomServiceCommand>
+          <CustomServiceCommand platform="pf"> </CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+        </CustomService>
+        <CustomService id="id78051X16372" name="all protocols pf" comment="" ro="False" protocol="{tcp udp icmp gre}" address_family="ipv4">
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="iptables"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"> </CustomServiceCommand>
           <CustomServiceCommand platform="pix"></CustomServiceCommand>
           <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
@@ -879,7 +899,7 @@
       </ServiceGroup>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="openbsd" inactive="False" lastCompiled="1157930800" lastInstalled="0" lastModified="1202682308" platform="pf" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="openbsd" inactive="False" lastCompiled="1157930800" lastInstalled="0" lastModified="1230447370" platform="pf" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -1411,7 +1431,27 @@
               <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="pol-firewall2-7" disabled="False" log="True" position="19" action="Deny" direction="Both" comment="Automatically generated 'catch all' rule">
+          <PolicyRule id="id15806X38936" disabled="False" group="" log="False" position="19" action="Accept" direction="Both" comment="test for bug 1111267: &quot;CustomService should specify protocol and parameters for it&quot;&#10;Should generate &quot;proto { tcp udp icmp gre}&quot;&#10;">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id78051X16372"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="pol-firewall2-7" disabled="False" log="True" position="20" action="Deny" direction="Both" comment="Automatically generated 'catch all' rule">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2665,7 +2705,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AFB66C6" host_OS="openbsd" inactive="False" lastCompiled="1157930805" lastInstalled="0" lastModified="1215407591" platform="pf" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
+      <Firewall id="id3AFB66C6" host_OS="openbsd" inactive="False" lastCompiled="1157930805" lastInstalled="0" lastModified="1230447763" platform="pf" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
         <NAT id="id3AFB66C7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3AFB66C8" disabled="False" position="0" comment="">
             <OSrc neg="False">

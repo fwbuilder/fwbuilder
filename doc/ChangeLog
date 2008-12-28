@@ -1,3 +1,24 @@
+2008-12-27  vadim  <vadim@vk.crocodile.org>
+
+	* feature req. #1111267 "CustomService should specify protocol and
+	parameters for it". Support for protocol string in Custom Service
+	in compilers for iptables and PF.
+
+	* CustomServiceDialog.cpp (CustomServiceDialog::loadFWObject):
+	feature requests #1111267 "CustomService should specify protocol
+	and parameters for it" and #2463048 "custom services should have
+	IPv4/v6 setting". Added corresponding input elements to the
+	CustomService object dialog.
+
+	* CustomService.h (libfwbuilder): feature requests #1111267
+	"CustomService should specify protocol and parameters for it" and
+	#2463048 "custom services should have IPv4/v6 setting". Added
+	attributes "protocol" and "address_family" to the CustomService
+	object. Corresponding XML attributes are "#IMPLIED", this helps
+	avoid having to provide XSLT auto-upgrade script for this
+	version. Class CustomService returns "any" for the protocol and
+	"ipv4" for address family if these attributes are missing.
+
 2008-12-25  vadim  <vadim@vk.crocodile.org>
 
 	* All policy compilers: using FWObjectDatabase::createClass

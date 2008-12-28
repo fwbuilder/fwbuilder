@@ -791,8 +791,7 @@
       </PolicyRule>
     </Policy>
     <ObjectRef ref="id3CEBFF26"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
+    <ServiceRef ref="tcp-HTTP"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -1794,9 +1793,10 @@
         <UDPService id="id3ED59BF1" name="udp-src-67" comment="" ro="False" src_range_start="67" src_range_end="67" dst_range_start="0" dst_range_end="0"/>
       </ServiceGroup>
       <ServiceGroup id="stdid13_1" name="Custom" comment="" ro="False">
-        <CustomService id="id3B64FE22" name="talk" comment="Talk support" ro="False">
+        <CustomService id="id3B64FE22" name="talk" comment="Talk support" ro="False" protocol="any" address_family="ipv4">
           <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
           <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
           <CustomServiceCommand platform="ipf"></CustomServiceCommand>
           <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
           <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
@@ -1805,7 +1805,9 @@
           <CustomServiceCommand platform="pix"></CustomServiceCommand>
           <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
-        <CustomService id="id3D34B329" name="test-custom-1" comment="" ro="False">
+        <CustomService id="id3D34B329" name="test-custom-1" comment="" ro="False" protocol="any" address_family="ipv4">
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
           <CustomServiceCommand platform="ipf"></CustomServiceCommand>
           <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
           <CustomServiceCommand platform="iptables">-p tcp -m state --state ESTABLISHED --tcp-flags SYN,ACK,RST,URG ACK</CustomServiceCommand>
@@ -1813,7 +1815,9 @@
           <CustomServiceCommand platform="pix"></CustomServiceCommand>
           <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
-        <CustomService id="id3D34B32A" name="test-custom-2" comment="" ro="False">
+        <CustomService id="id3D34B32A" name="test-custom-2" comment="" ro="False" protocol="any" address_family="ipv4">
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
           <CustomServiceCommand platform="ipf"></CustomServiceCommand>
           <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
           <CustomServiceCommand platform="iptables">-p tcp -m state --state ESTABLISHED --tcp-flags SYN,FIN,RST,URG,PSH RST</CustomServiceCommand>
@@ -1821,7 +1825,9 @@
           <CustomServiceCommand platform="pix"></CustomServiceCommand>
           <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
-        <CustomService id="id3FADE3CC" name="string" comment="" ro="False">
+        <CustomService id="id3FADE3CC" name="string" comment="" ro="False" protocol="any" address_family="ipv4">
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
           <CustomServiceCommand platform="ipf">-m string --string test_pattern</CustomServiceCommand>
           <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
           <CustomServiceCommand platform="iptables">-m string --string test_pattern</CustomServiceCommand>
@@ -1829,10 +1835,32 @@
           <CustomServiceCommand platform="pix"></CustomServiceCommand>
           <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
-        <CustomService id="id4003B1AC" name="old AIM session" comment="" ro="False">
+        <CustomService id="id4003B1AC" name="old AIM session" comment="" ro="False" protocol="any" address_family="ipv4">
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
           <CustomServiceCommand platform="ipf"></CustomServiceCommand>
           <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
           <CustomServiceCommand platform="iptables">-p tcp ! --syn -dport 5190 -m state --state NEW</CustomServiceCommand>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+        </CustomService>
+        <CustomService id="id45862X16372" name="ipv6 source route" comment="" ro="False" protocol="any" address_family="ipv6">
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="iptables">-m rt --rt-type 0</CustomServiceCommand>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+        </CustomService>
+        <CustomService id="id45863X16372" name="reject syn-ack" comment="" ro="False" protocol="tcp" address_family="ipv4">
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="iptables">-m tcp --tcp-flags SYN,ACK SYN,ACK -m state --state NEW</CustomServiceCommand>
           <CustomServiceCommand platform="pf"></CustomServiceCommand>
           <CustomServiceCommand platform="pix"></CustomServiceCommand>
           <CustomServiceCommand platform="unknown"></CustomServiceCommand>
@@ -9825,7 +9853,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3D4DF34B" host_OS="linux24" lastCompiled="1215360300" lastInstalled="1142003872" lastModified="1219534909" platform="iptables" name="firewall9" comment="testing rules with  action-on-reject &quot;TCP reset&quot;&#10;" ro="False">
+      <Firewall id="id3D4DF34B" host_OS="linux24" lastCompiled="1230445350" lastInstalled="1142003872" lastModified="1230445726" platform="iptables" name="firewall9" comment="testing rules with  action-on-reject &quot;TCP reset&quot;&#10;" ro="False">
         <NAT id="id3D4DF34C" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id3D4DF34D" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id3D4DF362" disabled="False" log="True" position="0" action="Reject" direction="Both" comment="">
@@ -10141,6 +10169,153 @@
               <Option name="limit_value">0</Option>
               <Option name="log_level"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id77415X37109" disabled="False" group="" log="False" position="12" action="Reject" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id45863X16372"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject">TCP RST</Option>
+              <Option name="classify_str"></Option>
+              <Option name="custom_str"></Option>
+              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_route_load_option">none</Option>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id206275X37109" disabled="False" group="" log="False" position="13" action="Reject" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id45863X16372"/>
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject">TCP RST</Option>
+              <Option name="classify_str"></Option>
+              <Option name="custom_str"></Option>
+              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_route_load_option">none</Option>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id206293X37109" disabled="False" group="" log="False" position="14" action="Reject" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id45863X16372"/>
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="udp-DNS"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject">TCP RST</Option>
+              <Option name="classify_str"></Option>
+              <Option name="custom_str"></Option>
+              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_route_load_option">none</Option>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="rule_name_accounting"></Option>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -13354,7 +13529,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3EFBC648" host_OS="linux24" lastCompiled="1215360888" lastInstalled="1142003872" lastModified="1142003913" platform="iptables" version="" name="firewall20" comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface&#10;has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it&#10;(interface used to be static and had an address, then got&#10;converted to dynamic but address object is still there). Compiler&#10;should ignore this address object and issue a warning.&#10;" ro="False">
+      <Firewall id="id3EFBC648" host_OS="linux24" lastCompiled="1215360888" lastInstalled="1142003872" lastModified="1230444061" platform="iptables" version="" name="firewall20" comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface&#10;has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it&#10;(interface used to be static and had an address, then got&#10;converted to dynamic but address object is still there). Compiler&#10;should ignore this address object and issue a warning.&#10;" ro="False">
         <NAT id="id3EFBC649" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3EFBC64A" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -13784,7 +13959,27 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3EFBC6E7" disabled="False" log="True" position="18" action="Deny" direction="Both" comment="Automatically generated 'catch all' rule">
+          <PolicyRule id="id40551X29621" disabled="False" group="" log="True" position="18" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id45862X16372"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3EFBC6E7" disabled="False" log="True" position="19" action="Deny" direction="Both" comment="Automatically generated 'catch all' rule">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -29185,7 +29380,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id30191X26784" host_OS="linux24" inactive="False" lastCompiled="1218679089" lastInstalled="1142003872" lastModified="1229388198" platform="iptables" version="" name="firewall20-ipv6" comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it (interface used to be static and had an address, then got converted to dynamic but address object is still there). Compiler should ignore this address object and issue a warning.&#10;" ro="False">
+      <Firewall id="id30191X26784" host_OS="linux24" inactive="False" lastCompiled="1218679089" lastInstalled="1142003872" lastModified="1230444087" platform="iptables" version="" name="firewall20-ipv6" comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it (interface used to be static and had an address, then got converted to dynamic but address object is still there). Compiler should ignore this address object and issue a warning.&#10;" ro="False">
         <NAT id="id30432X26784" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="True">
           <NATRule id="id30433X26784" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -29615,7 +29810,27 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id30420X26784" disabled="False" log="True" position="18" action="Deny" direction="Both" comment="Automatically generated 'catch all' rule">
+          <PolicyRule id="id58934X29621" disabled="False" group="" log="True" position="18" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id45862X16372"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id30420X26784" disabled="False" log="True" position="19" action="Deny" direction="Both" comment="Automatically generated 'catch all' rule">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -35431,7 +35646,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id55972X87590" host_OS="linux24" inactive="False" lastCompiled="1229388489" lastInstalled="0" lastModified="1229390432" platform="iptables" version="" name="firewall-ipv6-2" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
+      <Firewall id="id55972X87590" host_OS="linux24" inactive="False" lastCompiled="1230445064" lastInstalled="0" lastModified="1230444846" platform="iptables" version="" name="firewall-ipv6-2" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
         <NAT id="id56353X87590" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id56087X87590" name="Policy" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="True" top_rule_set="True">
           <PolicyRule id="id56088X87590" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="this rule shadows the next.&#10;Note that we add command line&#10;flag -xt to the compiler">
@@ -36015,7 +36230,27 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id111075X88392" disabled="False" group="" log="True" position="29" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id77330X29621" disabled="False" group="" log="True" position="29" action="Deny" direction="Both" comment="test for bug 2463048 &#10;&quot;custom services should have IPv4/v6 setting&quot;&#10;&#10;rule should compile for ipv6 b/c custom service&#10;object &quot;ipv6 source route&quot; is configured as &quot;ipv6&quot;&#10;&#10;">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id45862X16372"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id111075X88392" disabled="False" group="" log="True" position="30" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -36546,10 +36781,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <TCPService id="id3B4FF09A" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="squid" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="3128" dst_range_end="3128"/>
         <TCPService id="tcp-SSH" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ssh" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="22" dst_range_end="22"/>
         <TCPService id="tcp-Telnet" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="telnet" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="23" dst_range_end="23"/>
+        <TCPService id="tcp-HTTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="http" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="80" dst_range_end="80"/>
         <TCPService id="tcp-Auth" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="auth" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="113" dst_range_end="113"/>
         <TCPService id="tcp-DNS_zone_transf" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="dns-tcp" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
         <TCPService id="tcp-FTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ftp" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="21" dst_range_end="21"/>
-        <TCPService id="tcp-HTTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="http" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="80" dst_range_end="80"/>
         <TCPService id="tcp-NNTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="nntp" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="119" dst_range_end="119"/>
         <TCPService id="tcp-uucp" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="uucp" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="540" dst_range_end="540"/>
         <TCPService id="id3AEDBE6E" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="daytime" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="13" dst_range_end="13"/>

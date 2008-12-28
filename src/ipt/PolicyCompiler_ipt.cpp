@@ -375,7 +375,7 @@ string PolicyCompiler_ipt::getActionOnReject(PolicyRule *rule)
 
 bool   PolicyCompiler_ipt::isActionOnRejectTCPRST(PolicyRule *rule)
 {
-    string s=getActionOnReject(rule);
+    string s = getActionOnReject(rule);
     return ( ! s.empty() && s.find("TCP ")!=string::npos );
 }
 
@@ -396,19 +396,19 @@ bool   PolicyCompiler_ipt::isActionOnRejectTCPRST(PolicyRule *rule)
 void PolicyCompiler_ipt::resetActionOnReject(PolicyRule *rule)
 {
     FWOptions  *ruleopt =rule->getOptionsObject();            
-    string go=getCachedFwOpt()->getStr("action_on_reject");
+    string go = getCachedFwOpt()->getStr("action_on_reject");
 
     if (!go.empty())
     {
         if ( go.find("TCP ")!=string::npos )
         {
-            ruleopt->setStr("action_on_reject","NOP"); // hack.
+            ruleopt->setStr("action_on_reject", "NOP"); // hack.
         } else
         {
-            ruleopt->setStr("action_on_reject",go);
+            ruleopt->setStr("action_on_reject", go);
         }
     } else
-        ruleopt->setStr("action_on_reject","none"); // hack.
+        ruleopt->setStr("action_on_reject", "none"); // hack.
 }
 
 void PolicyCompiler_ipt::registerRuleSetChain(const std::string &chain_name)
@@ -3400,27 +3400,27 @@ bool PolicyCompiler_ipt::splitServicesIfRejectWithTCPReset::processNext()
 
     RuleElementSrv *srv= rule->getSrv();
 
-    if ( rule->getAction()==PolicyRule::Reject && ipt_comp->isActionOnRejectTCPRST(rule))
+    if ( rule->getAction()==PolicyRule::Reject &&
+         ipt_comp->isActionOnRejectTCPRST(rule))
     {
         list<Service*> tcp;
         list<Service*> other;
 
         for (FWObject::iterator i=srv->begin(); i!=srv->end(); ++i) 
         {
-            FWObject *o= *i;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-	    
-            Service *s1=Service::cast( o );
+            Service *s1 = Service::cast(FWReference::getObject(*i));
             assert(s1);
-
-            if ( TCPService::isA(s1) ) tcp.push_back(s1);
-            else                       other.push_back(s1);
+            // Protocol name is more reliable reference because CustomService
+            // allows user to set protocol name
+            if (s1->getProtocolName()=="tcp") tcp.push_back(s1);
+            else other.push_back(s1);
         }
 
         if ( !other.empty() && tcp.empty() )
         {
             if (seen_rules[rule->getPosition()]==false) 
-                compiler->warning(_("Rule action 'Reject' with TCP RST can be used only with TCP services. Rule ")+rule->getLabel());
+                compiler->warning(
+                    "Rule action 'Reject' with TCP RST can be used only with TCP services. Rule " + rule->getLabel());
             ipt_comp->resetActionOnReject(rule);
             tmp_queue.push_back(rule);
             seen_rules[rule->getPosition()]=true;

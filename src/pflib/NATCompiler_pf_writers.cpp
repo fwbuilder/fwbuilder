@@ -228,10 +228,10 @@ bool NATCompiler_pf::PrintRule::processNext()
 
 void NATCompiler_pf::PrintRule::_printProtocol(Service *srv)
 {
-    if ( ! CustomService::isA(srv) && ! TagService::isA(srv))
+    if ( !TagService::isA(srv))
     {
-        string s=srv->getProtocolName();
-        if (s=="ip") s="{tcp udp icmp}";
+        string s = srv->getProtocolName();
+        if (s=="ip" || s=="any") s="{tcp udp icmp}";
         compiler->output << "proto " <<  s << " ";
     }
 }

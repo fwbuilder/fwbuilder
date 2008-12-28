@@ -32,6 +32,7 @@
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
+#include "fwbuilder/UserService.h"
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/TagService.h"
 #include "fwbuilder/Policy.h"
@@ -195,14 +196,27 @@ string NATCompiler_ipt::PrintRule::_printChainDirectionAndInterface(NATRule *rul
     return ostr.str();
 }
 
-
-
 string NATCompiler_ipt::PrintRule::_printProtocol(Service *srv)
 {
     std::ostringstream  ostr;
-    if (!srv->isAny() && !CustomService::isA(srv) && !TagService::isA(srv))
+    // CustomService returns protocol name starting with v3.0.4
+    // However CustomService can return protocol name "any", which we should
+    // just skip.
+    if (CustomService::isA(srv))
     {
-        string pn=srv->getProtocolName();
+        // check if the code string for this custom service already includes
+        // "-p proto" fragment
+        string code = CustomService::cast(srv)->getCodeForPlatform(
+            compiler->myPlatformName());
+        std::size_t minus_p = code.find("-p ");
+        if (minus_p != string::npos) return "";
+        string pn = srv->getProtocolName();
+        if (pn == "any") return "";
+    }
+
+    if (!srv->isAny() && !TagService::isA(srv) && !UserService::isA(srv))
+    {
+        string pn = srv->getProtocolName();
         if (pn=="ip") pn="all";
         ostr << "-p " <<  pn << " ";
         if (pn == "tcp")  ostr << "-m tcp ";

@@ -410,11 +410,19 @@ void PolicyCompiler_pf::PrintRule::_printAF(PolicyRule*)
     else compiler->output << "inet ";
 }
 
-void PolicyCompiler_pf::PrintRule::_printProtocol(libfwbuilder::Service *srv)
+void PolicyCompiler_pf::PrintRule::_printProtocol(Service *srv)
 {
+    // CustomService returns protocol name starting with v3.0.4
+    // However CustomService can return protocol name "any", which we should
+    // just skip.
+
+    if (CustomService::isA(srv))
+    {
+        string pn = srv->getProtocolName();
+        if (pn == "any") return;
+    }
 
     if (!srv->isAny() &&
-        !CustomService::isA(srv) &&
         !TagService::isA(srv) && 
         !UserService::isA(srv) && 
         srv->getProtocolName()!="ip")
