@@ -33,6 +33,7 @@
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
+#include "fwbuilder/CustomService.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Interface.h"
@@ -181,10 +182,17 @@ void NATCompiler_ipf::PrintRule::_printAddr_R_LB(RuleElementTDst *tdst)
     compiler->output << " ";
 }
 
-
-
 void NATCompiler_ipf::PrintRule::_printProtocol(Service *srv)
 {
+    if ( CustomService::isA(srv) )
+    {
+        // CustomService returns protocol name starting with v3.0.4
+        // However CustomService can return protocol name "any", which we should
+        // just skip.
+        string pn = srv->getProtocolName();
+        if (pn == "any") return;
+    }
+
     compiler->output << srv->getProtocolName() << " ";
 }
 

@@ -82,26 +82,11 @@ void PolicyCompiler_ipfw::PrintRule::_printProtocol(Service *srv)
 
     if ( CustomService::isA(srv) )
     {
-	string cscode=
-            CustomService::cast(srv)->getCodeForPlatform( compiler->myPlatformName() );
-/*
- * This is really a hack
- *
- * CustomService object does not imply any specific protocol so
- * generally we can't add protocol name if Custom Service object is
- * used. However, there is one particular case where we have to
- * specify protocol 'tcp' instead of 'all', that is when CustomService
- * object is used to add an option 'established' which is only valid
- * for tcp protocol.
- *
- * Perhaps better solution would be to add optional protocol
- * specification to the CustomService object
- */
-        if (cscode=="established")
-            compiler->output << "tcp ";
-        else
-            compiler->output << "all ";
-        return;
+        // CustomService returns protocol name starting with v3.0.4
+        // However CustomService can return protocol name "any", which we should
+        // just skip.
+        string pn = srv->getProtocolName();
+        if (pn == "any") return;
     }
 
     compiler->output << srv->getProtocolName();

@@ -1,5 +1,9 @@
 2008-12-28  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipfw_writers.cpp (PrintRule::_printProtocol):
+	support for the new "protocol" parameter of the CustomService
+	object in compilers for ipfilter and ipfw.
+
 	* NATCompiler_pf_writers.cpp (PrintRule::_printProtocol):
 	'checking for "proto ..." in the custom service code string before
 	printing protocol part in policy and nat compilers for pf.
