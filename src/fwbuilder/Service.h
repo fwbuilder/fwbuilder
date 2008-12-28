@@ -58,6 +58,11 @@ class Service : public FWObject
     bool isAny() const;
 
     virtual bool isPrimaryObject() const { return true; }
+
+    // All service objects except for ICMPService, ICMP6Service and
+    // CustomService can be used in both ipv4 and ipv6 contexts.
+    virtual bool isV4Only() { return false; }
+    virtual bool isV6Only() { return false; }
 };
 
 }

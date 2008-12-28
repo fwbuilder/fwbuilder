@@ -33,6 +33,16 @@
 #include <fwbuilder/CustomService.h>
 #include <fwbuilder/XMLTools.h>
 
+#ifndef _WIN32
+#  include <sys/types.h>
+#  include <sys/socket.h>
+#  include <netinet/in.h>
+#  include <arpa/inet.h>
+#else
+#  include <winsock2.h>
+#  include <wtypes.h>
+#endif
+
 using namespace std;
 using namespace libfwbuilder;
 
@@ -40,17 +50,21 @@ const char *CustomService::TYPENAME={"CustomService"};
 
 CustomService::CustomService() {}
 CustomService::CustomService(const FWObjectDatabase *root,bool prepopulate) :
-    Service(root,prepopulate) {}
+    Service(root, prepopulate) {}
 CustomService::~CustomService() {}
 
-string CustomService::getProtocolName()     {    return "custom_service";}
-int    CustomService::getProtocolNumber()   {    return 65000; }
+string CustomService::getProtocolName()   { return getProtocol(); }
+int    CustomService::getProtocolNumber() { return 65000; }
 
 
-FWObject& CustomService::shallowDuplicate(const FWObject *x, bool preserve_id) throw(FWException)
+FWObject& CustomService::shallowDuplicate(const FWObject *x,
+                                          bool preserve_id) throw(FWException)
 {
     const CustomService *cs = dynamic_cast<const CustomService *>(x);
     codes = cs->codes;
+    protocol = cs->protocol;
+    address_family = cs->address_family;
+
     return FWObject::shallowDuplicate(x, preserve_id);
 }
 
@@ -60,27 +74,43 @@ void CustomService::fromXML(xmlNodePtr root) throw(FWException)
     const char *cont;
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("name")));
-    if(n)
+    if (n)
     {
         setName(n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("id")));
-    if(n)
+    if (n)
     {
         setId(FWObjectDatabase::registerStringId(n));
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("comment")));
-    if(n)
+    if (n)
     {
         setComment(XMLTools::unquote_linefeeds(n));
         FREEXMLBUFF(n);
     }
 
-    for(xmlNodePtr cur=root->xmlChildrenNode; cur; cur=cur->next)
+    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("protocol")));
+    if (n)
+    {
+        setProtocol(XMLTools::unquote_linefeeds(n));
+        FREEXMLBUFF(n);
+    }
+
+    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address_family")));
+    if (n)
+    {
+        string af(XMLTools::unquote_linefeeds(n));
+        if (af=="ipv6") setAddressFamily(AF_INET6);
+        else setAddressFamily(AF_INET);
+        FREEXMLBUFF(n);
+    }
+
+    for (xmlNodePtr cur=root->xmlChildrenNode; cur; cur=cur->next)
     {
         if(cur && !xmlIsBlankNode(cur))
         {
@@ -106,6 +136,12 @@ xmlNodePtr CustomService::toXML(xmlNodePtr parent) throw(FWException)
     xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
     xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
 
+    xmlNewProp(me, TOXMLCAST("protocol"), STRTOXMLCAST(getProtocol()));
+    string af;
+    if (getAddressFamily() == AF_INET6) af ="ipv6";
+    else af = "ipv4";
+    xmlNewProp(me, TOXMLCAST("address_family"), STRTOXMLCAST(af));
+
     map<string, string>::const_iterator i;
     for(i=codes.begin(); i!=codes.end(); ++i)  
     {
@@ -125,10 +161,13 @@ bool CustomService::cmp(const FWObject *obj) throw(FWException)
     if (CustomService::constcast(obj)==NULL) return false;
     if (!FWObject::cmp(obj)) return false;
     
-    const CustomService *o2=CustomService::constcast(obj);
+    const CustomService *o2 = CustomService::constcast(obj);
+
+    if (protocol!=o2->protocol || address_family!=o2->address_family)
+        return false;
 
     map<string, string>::const_iterator i;
-    for(i=codes.begin(); i!=codes.end(); ++i)  
+    for (i=codes.begin(); i!=codes.end(); ++i)  
     {
         const string &platform  = (*i).first;
         const string &code      = (*i).second;
@@ -140,7 +179,8 @@ bool CustomService::cmp(const FWObject *obj) throw(FWException)
     return true;
 }
 
-void  CustomService::setCodeForPlatform(const string& platform, const string& code)
+void  CustomService::setCodeForPlatform(const string& platform,
+                                        const string& code)
 {
     codes[platform]=code;
 }
@@ -150,11 +190,34 @@ const string& CustomService::getCodeForPlatform(const string& platform)
     return codes[platform];
 }
 
+void  CustomService::setProtocol(const string& proto)
+{
+    protocol = proto;
+}
 
+const string& CustomService::getProtocol()
+{
+    if (protocol.empty()) protocol = "any";
+    return protocol;
+}
 
+void  CustomService::setAddressFamily(int af)
+{
+    address_family = af;
+}
 
+int CustomService::getAddressFamily()
+{
+    if (address_family==-1) return AF_INET;
+    return address_family;
+}
 
+bool CustomService::isV4Only()
+{
+    return (getAddressFamily() == AF_INET);
+}
 
-
-
-
+bool CustomService::isV6Only()
+{
+    return (getAddressFamily() == AF_INET6);
+}

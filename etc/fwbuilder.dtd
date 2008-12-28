@@ -480,6 +480,8 @@ Interface can have the following attributes:
 <!ELEMENT CustomService  (CustomServiceCommand*)>
 <!ATTLIST CustomService
  %STD_ATTRIBUTES;
+ protocol       %STRING;    #IMPLIED
+ address_family %STRING;    #IMPLIED
 >
 
 <!ELEMENT UserService EMPTY>

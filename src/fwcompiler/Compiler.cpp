@@ -1086,17 +1086,19 @@ void Compiler::DropByServiceTypeInRE(RuleElement *rel, bool drop_ipv6)
     {
         FWObject *o = FWReference::getObject(*i);
         // skip "Any"
-        if (o->getId() == FWObjectDatabase::ANY_SERVICE_ID)
-            continue;
+        if (o->getId() == FWObjectDatabase::ANY_SERVICE_ID) continue;
 
-        // Note that all service objects except for ICMPService can be
-        // used in both ipv4 and ipv6 contexts.
+        Service *svc = Service::cast(o);
+        assert(svc);
+
+        // Note that all service objects except for ICMPService and
+        // CustomService can be used in both ipv4 and ipv6 contexts.
         if (drop_ipv6)
         {
-            if (ICMP6Service::isA(o)) objects_to_remove.push_back(o);
+            if (svc->isV6Only()) objects_to_remove.push_back(o);
         } else
         {
-            if (ICMPService::isA(o)) objects_to_remove.push_back(o);
+            if (svc->isV4Only()) objects_to_remove.push_back(o);
         }
     }
 

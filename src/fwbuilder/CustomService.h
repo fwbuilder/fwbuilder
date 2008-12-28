@@ -42,6 +42,8 @@ class CustomService : public Service
     private:
     
     std::map<std::string,std::string>   codes;
+    std::string protocol;
+    int address_family;
     
     public:
     
@@ -53,15 +55,26 @@ class CustomService : public Service
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool cmp(const FWObject *obj) throw(FWException);
     
-    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+    virtual FWObject& shallowDuplicate(
+        const FWObject *obj, bool preserve_id = true) throw(FWException);
     
     DECLARE_FWOBJECT_SUBTYPE(CustomService);
 
     virtual std::string getProtocolName();
-    virtual int    getProtocolNumber();
+    virtual int getProtocolNumber();
 
-    void setCodeForPlatform(const std::string& platform, const std::string& code);
+    void setCodeForPlatform(const std::string& platform,
+                            const std::string& code);
     const std::string& getCodeForPlatform(const std::string& platform);
+
+    void setProtocol(const std::string& proto);
+    const std::string& getProtocol();
+
+    void setAddressFamily(int af);
+    int getAddressFamily();
+
+    virtual bool isV4Only();
+    virtual bool isV6Only();
 };
 
 }

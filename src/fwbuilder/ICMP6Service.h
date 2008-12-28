@@ -48,6 +48,9 @@ public:
 
     virtual std::string getProtocolName();
     virtual int getProtocolNumber();
+
+    virtual bool isV4Only() { return false; }
+    virtual bool isV6Only() { return true; }
 };
 
 }
