@@ -34,6 +34,18 @@
 
 #include <map>
 
+// for AF_INET and AF_INET6
+#ifndef _WIN32
+#  include <sys/types.h>
+#  include <sys/socket.h>
+#  include <netinet/in.h>
+#  include <arpa/inet.h>
+#else
+#  include <winsock2.h>
+#  include <wtypes.h>
+#endif
+
+
 namespace libfwbuilder
 {
 
