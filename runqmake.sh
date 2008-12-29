@@ -2,8 +2,8 @@
 
 test -z "${QMAKE}" && QMAKE="qmake"
 C=""
-test -n "$QMAKESPEC" && C+="-spec $QMAKESPEC "
-test -n "$CCACHE" && C+='QMAKE_CXX="ccache	g++" '
+test -n "$QMAKESPEC" && C="$C -spec $QMAKESPEC "
+test -n "$CCACHE" && C="$C QMAKE_CXX=\"ccache	g++\" "
 
 echo "QTDIR=\"$QTDIR\""
 echo "Running qmake: $QMAKE $C"
@@ -13,42 +13,4 @@ IFS="
 "
 
 $QMAKE $C -recursive
-
-
-# test -n "$CCACHE" && C='QMAKE_CXX="ccache g++"'
-# test -n "$QMAKESPEC" && C="-spec $QMAKESPEC $C"
-
-# echo "QTDIR=$QTDIR"
-# echo "Running qmake: ${QMAKE} ${C}"
-
-# oIFS=$IFS
-# IFS=
-
-# ${QMAKE} $C
-
-# for d in src/ \
-#     src/res/ \
-#     src/tools/ \
-#     doc/ \
-#     src/antlr/ \
-#     src/gui/ \
-#     src/fwbedit/ \
-#     src/ipt/ \
-#     src/pflib/ \
-#     src/pf/ \
-#     src/ipf/ \
-#     src/ipfw/ \
-#     src/cisco_lib \
-#     src/iosacl \
-#     src/pix \
-#     src/parsers/
-# do
-#   (cd $d; ${QMAKE} $C)
-# done
-
-# test -d src/unit_tests && {
-#   (cd src/unit_tests/importer/; ${QMAKE} $C)
-# }
-
-# IFS=$oIFS
 
