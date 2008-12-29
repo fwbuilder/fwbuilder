@@ -582,6 +582,28 @@ online <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=pf.conf">http://www
   interface on top of the firewall activation script.
 
 
+
+  <h3>Flush pf states after reloading rules</h3>
+<p>
+  Compiler can add command "pfctl -F states" after command "pfctl -f
+  file.conf" to flush states that existed in memory from sessions
+  opened prior to the policy reload. The reason is that some of these
+  sessions might be denied by the new policy, but if state is not
+  flushed, they will still work after the policy has been
+  reloaded. This is optional and is off by default.
+
+<p>
+  Note that ssh session used by the built-in installer to upload new
+  pf configuration and activate it on the firewall is also subject to
+  the state tracking and can hang if state is flushed. However,
+  command added by the policy compiler when option "Always permit ssh
+  access from the management station with given address" is used is
+  immune to this.  This command is written in a such way that firewall
+  will automatically restore the state used to track ssh session
+  opened by the installer so it will never hang. This option is
+  located in the tab "Compiler" of the same dialog.
+
+
 <a name="ipv6">
 <hr>
 <h2>Tab IPv6</h2>
