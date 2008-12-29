@@ -52,6 +52,7 @@
 #include <QTextCodec>
 #include <QTimer>
 #include <QMessageBox>
+#include <QFile>
 
 using namespace std;
 using namespace libfwbuilder;

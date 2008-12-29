@@ -46,6 +46,7 @@
 #include "FWBSettings.h"
 
 #include "FWWindow.h"
+
 using namespace libfwbuilder;
 using namespace std;
 
