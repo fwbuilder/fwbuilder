@@ -44,6 +44,7 @@
 
 #include <vector>
 #include <map>
+#include <algorithm>
 
 #include <qlineedit.h>
 #include <qspinbox.h>
