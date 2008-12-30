@@ -1,5 +1,10 @@
 2008-12-29  vadim  <vadim@vk.crocodile.org>
 
+	* FirewallInstallerUnx.cpp (FirewallInstallerUnx::executeInstallScript)
+	bug #2474949: "External install script: trailing spaces". Trimming
+	leading and trailing white spaces in the external installation script
+	and its arguments before running it.
+
 	* runqmake.sh: starting with v3.0.4 build 717, building universal
 	binary for Mac OS X (both x86 and ppc architectures)
 

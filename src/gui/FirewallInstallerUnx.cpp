@@ -169,14 +169,14 @@ void FirewallInstallerUnx::executeInstallScript()
 {
     Management *mgmt = cnf->fwobj->getManagementObject();
     assert(mgmt!=NULL);
-    PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
-
+    PolicyInstallScript *pis = mgmt->getPolicyInstallScript();
+    QString command = pis->getCommand().c_str();
     QString wdir = getFileDir( mw->getRCS()->getFileName() );
     QStringList args;
-    args.push_back(pis->getCommand().c_str());
+    args.push_back(command.trimmed());
 
     QString qs = pis->getArguments().c_str();
-    args += qs.split(" ", QString::SkipEmptyParts);
+    args += qs.trimmed().split(" ", QString::SkipEmptyParts);
 
     args.push_back("-f");
     args.push_back(mw->db()->getFileName().c_str());
