@@ -3,6 +3,10 @@
 	* runqmake.sh: starting with v3.0.4 build 717, building universal
 	binary for Mac OS X (both x86 and ppc architectures)
 
+	* bug #2474194 "Please Provide MacOS X PowerPC Builds": debugging
+	universal binary package for Mac OS X, trying to make it work on
+	Tiger as well
+
 2008-12-28  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printDstService):
