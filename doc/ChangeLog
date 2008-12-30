@@ -1,3 +1,8 @@
+2008-12-30  vadim  <vadim@vk.crocodile.org>
+
+	* still (remotely) debugging universal binary on Tiger. Now not
+	packing snmp libraries with the bundle.
+
 2008-12-29  vadim  <vadim@vk.crocodile.org>
 
 	* FirewallInstallerUnx.cpp (FirewallInstallerUnx::executeInstallScript)
