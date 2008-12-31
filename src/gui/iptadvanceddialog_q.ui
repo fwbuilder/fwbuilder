@@ -271,6 +271,13 @@ no known connection</string>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="toolTip" >
+          <string>This adds a rule on top of the policy with iptables target TCPMSS
+and option --clamp-mss-to-pmtu. Generation of this command is
+version-dependent and also depends on the setting of ip or ipv6 forwarding
+in host settings dialog.
+</string>
+         </property>
          <property name="text" >
           <string>Clamp MSS to MTU</string>
          </property>

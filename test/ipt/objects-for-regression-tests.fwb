@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1230681599" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1230684364" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -792,7 +792,6 @@
     </Policy>
     <ObjectRef ref="id3CEBFF26"/>
     <ServiceRef ref="tcp-HTTP"/>
-    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -27974,7 +27973,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4845077415791" host_OS="linux24" inactive="False" lastCompiled="1224444769" lastInstalled="0" lastModified="1224446177" platform="iptables" version="1.4.0" name="firewall61-1.4" comment="testing time litmiting for iptables 1.4.0&#10;" ro="False">
+      <Firewall id="id4845077415791" host_OS="linux24" inactive="False" lastCompiled="1230684803" lastInstalled="0" lastModified="1230686952" platform="iptables" version="1.4.0" name="firewall61-1.4" comment="testing time litmiting for iptables 1.4.0&#10;" ro="False">
         <NAT id="id484507B715791" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id4845077A15791" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id195154X64488" disabled="False" group="" log="True" position="0" action="Branch" direction="Both" comment="">
@@ -28021,6 +28020,28 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
+        <Policy id="id59239X78859" name="Policy_ipv6" comment="v6 policy to test conditional generation of TCPMSS rule&#10;for ip6tables depending on version&#10;bug #2477775" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="True">
+          <PolicyRule id="id59240X78859" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
         <Routing id="id484507B815791" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id484507B915791" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id484507BB15791" name="firewall61-1.4:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -28061,10 +28082,36 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
           <Option name="iosacl_include_comments">true</Option>
+          <Option name="ipt_mangle_only_rulesets"></Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>
+          <Option name="linux24_accept_redirects"></Option>
+          <Option name="linux24_accept_source_route"></Option>
+          <Option name="linux24_icmp_echo_ignore_all"></Option>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
+          <Option name="linux24_ip_dynaddr"></Option>
           <Option name="linux24_ip_forward">1</Option>
+          <Option name="linux24_ipv6_forward">1</Option>
+          <Option name="linux24_log_martians"></Option>
+          <Option name="linux24_path_ip"></Option>
+          <Option name="linux24_path_ip6tables"></Option>
+          <Option name="linux24_path_ip6tables_restore"></Option>
+          <Option name="linux24_path_iptables"></Option>
+          <Option name="linux24_path_iptables_restore"></Option>
+          <Option name="linux24_path_logger"></Option>
+          <Option name="linux24_path_lsmod"></Option>
+          <Option name="linux24_path_modprobe"></Option>
+          <Option name="linux24_rp_filter"></Option>
+          <Option name="linux24_tcp_ecn"></Option>
+          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_tcp_fin_timeout">0</Option>
+          <Option name="linux24_tcp_keepalive_interval">0</Option>
+          <Option name="linux24_tcp_sack"></Option>
+          <Option name="linux24_tcp_syncookies"></Option>
+          <Option name="linux24_tcp_timestamps"></Option>
+          <Option name="linux24_tcp_window_scaling"></Option>
           <Option name="load_modules">True</Option>
           <Option name="local_nat">False</Option>
           <Option name="log_all">False</Option>
@@ -35090,7 +35137,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id37848X15403" host_OS="linux24" inactive="False" lastCompiled="1224444763" lastInstalled="0" lastModified="1224446330" platform="iptables" version="lt_1.2.6" name="firewall61-1.2.5" comment="testing time litmiting for iptables 1.2.5&#10;" ro="False">
+      <Firewall id="id37848X15403" host_OS="linux24" inactive="False" lastCompiled="1230684465" lastInstalled="0" lastModified="1230686938" platform="iptables" version="lt_1.2.6" name="firewall61-1.2.5" comment="testing time litmiting for iptables 1.2.5&#10;" ro="False">
         <NAT id="id37939X15403" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id37854X15403" name="fw61-Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id37855X15403" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
@@ -35274,6 +35321,28 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
+        <Policy id="id40740X78859" name="Policy_ipv6" comment="v6 policy to test conditional generation of TCPMSS rule&#10;for ip6tables depending on version&#10;bug #2477775&#10;" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="True">
+          <PolicyRule id="id40741X78859" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
         <Routing id="id37940X15403" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id37941X15403" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id37943X15403" name="firewall61-1.2.5:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -35369,7 +35438,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id72587X64488" host_OS="linux24" inactive="False" lastCompiled="1224444765" lastInstalled="0" lastModified="1224446427" platform="iptables" version="ge_1.2.6" name="firewall61-1.2.6" comment="testing time litmiting for iptables 1.2.6" ro="False">
+      <Firewall id="id72587X64488" host_OS="linux24" inactive="False" lastCompiled="1230684468" lastInstalled="0" lastModified="1230686944" platform="iptables" version="ge_1.2.6" name="firewall61-1.2.6" comment="testing time litmiting for iptables 1.2.6" ro="False">
         <NAT id="id72702X64488" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id72593X64488" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id212560X64488" disabled="False" group="" log="True" position="0" action="Branch" direction="Both" comment="">
@@ -35436,6 +35505,28 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
+        <Policy id="id59213X78859" name="Policy_ipv6" comment="v6 policy to test conditional generation of TCPMSS rule&#10;for ip6tables depending on version&#10;bug #2477775" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="True">
+          <PolicyRule id="id59214X78859" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
         <Routing id="id72703X64488" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id72704X64488" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id72706X64488" name="firewall61-1.2.6:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -35476,6 +35567,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
           <Option name="iosacl_include_comments">true</Option>
+          <Option name="ipt_mangle_only_rulesets"></Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>
@@ -35530,7 +35622,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id72715X64488" host_OS="linux24" inactive="False" lastCompiled="1224444767" lastInstalled="0" lastModified="1224446434" platform="iptables" version="1.3.0" name="firewall61-1.3.x" comment="testing time litmiting for iptables 1.3.x&#10;" ro="False">
+      <Firewall id="id72715X64488" host_OS="linux24" inactive="False" lastCompiled="1230684471" lastInstalled="0" lastModified="1230686948" platform="iptables" version="1.3.0" name="firewall61-1.3.x" comment="testing time litmiting for iptables 1.3.x&#10;" ro="False">
         <NAT id="id72830X64488" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id72721X64488" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id212543X64488" disabled="False" group="" log="True" position="0" action="Branch" direction="Both" comment="">
@@ -35577,6 +35669,28 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
+        <Policy id="id59226X78859" name="Policy_ipv6" comment="v6 policy to test conditional generation of TCPMSS rule&#10;for ip6tables depending on version&#10;bug #2477775" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="True">
+          <PolicyRule id="id59227X78859" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
         <Routing id="id72831X64488" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id72832X64488" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id72834X64488" name="firewall61-1.3.x:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -35617,6 +35731,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
           <Option name="iosacl_include_comments">true</Option>
+          <Option name="ipt_mangle_only_rulesets"></Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>

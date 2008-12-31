@@ -212,7 +212,18 @@ void findBranchesInMangleTable(Firewall*, list<FWObject*> &all_policies)
 }
 
 /* Find rulesets that belong to other firewall objects but are
- * referenced by rules of this firewall using action Branch
+ * referenced by rules of this firewall using action Branch.
+ *
+ * Important: rulesets that belong to other firewalls may be marked as
+ * "top rulesets", which means they should be translated into the
+ * built-in chains INPUT/OUTPUT/FORWARD rather then into named chain
+ * with the name the same as the name of the ruleset. However this
+ * does not make sense if we want to jump to that ruleset from a rule
+ * from a ruleset that belongs to the firewall we are compiling. If we
+ * compile such "foreighn" ruleset as "top ruleset", then we do not
+ * create chain we would jump to. To avoid this will reset "top
+ * ruleset" flag of rulesets of other firewalls referenced by
+ * branching rules of the firewall being compiled.
  */
 void findImportedRuleSets(Firewall *fw, list<FWObject*> &all_policies)
 {
@@ -229,6 +240,7 @@ void findImportedRuleSets(Firewall *fw, list<FWObject*> &all_policies)
                 (ruleset = rule->getBranch())!=NULL &&
                 !ruleset->isChildOf(fw))
             {
+                ruleset->setTop(false);
                 imported_policies.push_back(ruleset);
             }
         }
@@ -381,8 +393,8 @@ bool processPolicyRuleSet(
 
         if (m.getCompiledScriptLength() > 0)
         {
-            mangle_table_stream << "# ================ Table 'mangle', rule set "
-                  << branch_name << "\n";
+            mangle_table_stream << "# ================ Table 'mangle', ";
+            mangle_table_stream << "rule set " << branch_name << "\n";
             if (m.haveErrorsAndWarnings())
             {
                 mangle_table_stream << "# Policy compiler errors and warnings:"
@@ -424,8 +436,8 @@ bool processPolicyRuleSet(
 
         if (c.getCompiledScriptLength() > 0)
         {
-            filter_table_stream << "# ================ Table 'filter', rule set "
-                  << branch_name << "\n";
+            filter_table_stream << "# ================ Table 'filter', ";
+            filter_table_stream << "rule set " << branch_name << "\n";
             if (c.haveErrorsAndWarnings())
             {
                 filter_table_stream << "# Policy compiler errors and warnings:"

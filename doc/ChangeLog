@@ -1,7 +1,18 @@
 2008-12-30  vadim  <vadim@vk.crocodile.org>
 
-	* still (remotely) debugging universal binary on Tiger. Now not
-	packing snmp libraries with the bundle.
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_clampTcpToMssRule):
+	bug #2477775: "Clamp MTU doesn't work in ip6tables". iptables
+	target TCPMSS is available in ip6tables only in 1.3.8 and later.
+
+	* unfortunately the package is not going to work on Tiger because
+	of the mismatch in versions of libnetsnmp library. If this library
+	is packaged with the bundle, the program crashes because the code
+	in libnetsnmp v15.1.0 (that comes with Leopard) depends on
+	functions missing in libSystem on Tiger. If libnetsnmp is not
+	packaged with the bundle, then stubs linked with the GUI on
+	Leopard do not match libnetsnmp that comes with Tiger (older
+	version). So, even though we now have universal Mac OS X binary,
+	it will only work on Leopard.
 
 2008-12-29  vadim  <vadim@vk.crocodile.org>
 

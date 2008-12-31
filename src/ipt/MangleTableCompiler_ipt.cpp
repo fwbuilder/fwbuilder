@@ -159,8 +159,11 @@ string MangleTableCompiler_ipt::printAutomaticRulesForMangleTable(
         res << endl;
     }
 
+    // iptables accepted TCPMSS target in filter table, FORWARD chain 
+    // in the older versions, but requires it to be in mangle filter
+    // starting somewhere 1.3.x
     string version = fw->getStr("version");
-    if (version == "1.3.0" || version == "1.4.0")
+    if (XMLTools::version_compare(version, "1.3.0")>=0)
         res << prp->_clampTcpToMssRule();
 
     return res.str();

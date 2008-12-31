@@ -1538,19 +1538,44 @@ string PolicyCompiler_ipt::PrintRule::_commit()
 
 string PolicyCompiler_ipt::PrintRule::_clampTcpToMssRule()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     ostringstream res;
-    bool ipforward = false;
-    string s = compiler->getCachedFwOpt()->getStr("linux24_ip_forward");
-    ipforward= (s.empty() || s=="1" || s=="On" || s=="on");
 
-    if ( compiler->getCachedFwOpt()->getBool("clamp_mss_to_mtu") &&
-         ipforward)
+    if ( compiler->getCachedFwOpt()->getBool("clamp_mss_to_mtu"))
     {
-        res << _startRuleLine()
-            << "FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu"
-            << _endRuleLine();
-        
-        res << endl;
+        bool add_rule = false;
+        bool ipforw;
+        if (ipt_comp->ipv6)
+        {
+            string s = compiler->getCachedFwOpt()->getStr("linux24_ipv6_forward");
+            ipforw = (s.empty() || s=="1" || s=="On" || s=="on");
+            // bug #2477775: target TCPMSS is not available in ip6tables
+            // before 1.4.0 In fact I am not sure of the minimal required
+            // version. According to the netfilter git log, it was added in
+            // 1.3.8
+            string version = compiler->fw->getStr("version");
+            if (XMLTools::version_compare(version, "1.3.8")<0)
+            {
+                if (ipforw)
+                {
+                    res << "target TCPMSS is not supported by ip6tables before v1.3.8";
+                    compiler->warning(res.str());
+                    return "# " + res.str() + "\n\n";
+                } else return "";
+            }
+        } else
+        {
+            string s = compiler->getCachedFwOpt()->getStr("linux24_ip_forward");
+            ipforw = (s.empty() || s=="1" || s=="On" || s=="on");
+        }
+
+        if (ipforw)
+        {
+            res << _startRuleLine()
+                << "FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu"
+                << _endRuleLine();
+            res << endl;
+        }
     }
     return res.str();
 }
@@ -1566,9 +1591,12 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
  * Need rules in FORWARD chain only if ip forwarding is on or set to
  * "no change"
  */
-    bool ipforward = false;
     string s = compiler->getCachedFwOpt()->getStr("linux24_ip_forward");
-    ipforward= (s.empty() || s=="1" || s=="On" || s=="on");
+    bool ipforward= (s.empty() || s=="1" || s=="On" || s=="on");
+    s = compiler->getCachedFwOpt()->getStr("linux24_ipv6_forward");
+    bool ip6forward= (s.empty() || s=="1" || s=="On" || s=="on");
+    bool ipforw = ((!ipt_comp->ipv6 && ipforward) ||
+                   (ipt_comp->ipv6 && ip6forward));
 
     if ( compiler->getCachedFwOpt()->getBool("accept_established") &&
          ipt_comp->my_table=="filter") 
@@ -1581,7 +1609,7 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
             << "OUTPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT"
             << _endRuleLine();
 
-        if (ipforward)
+        if (ipforw)
             res << _startRuleLine()
                 << "FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT"
                 << _endRuleLine();
@@ -1663,7 +1691,7 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
             << "OUTPUT  -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP"
             << _endRuleLine();
 
-        if (ipforward)
+        if (ipforw)
             res << _startRuleLine()
                 << "FORWARD -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP"
                 << _endRuleLine();
@@ -1687,7 +1715,7 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
                 << "INPUT    -m state --state INVALID  -j DROP"
                 << _endRuleLine();
 
-            if (ipforward)
+            if (ipforw)
                 res << _startRuleLine()
                     << "FORWARD  -m state --state INVALID  -j DROP"
                     << _endRuleLine();
@@ -1703,7 +1731,7 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
                 << "INPUT    -m state --state INVALID  -j drop_invalid"
                 << _endRuleLine();
 
-            if (ipforward)
+            if (ipforw)
                 res << _startRuleLine()
                     << "FORWARD  -m state --state INVALID  -j drop_invalid"
                     << _endRuleLine();

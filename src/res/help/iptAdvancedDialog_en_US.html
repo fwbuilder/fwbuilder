@@ -154,7 +154,15 @@ online on the project web site at <a href="http://www.netfilter.org">http://www.
 <p>
   This adds a rule on top of the policy with iptables target TCPMSS
   and option --clamp-mss-to-pmtu which automatically clamps MSS value
-  to (path_MTU - 40).
+  to (path_MTU - 40). This iptables rule is added only if ip
+  forwarding is turned on in the host settings dialog. since ip
+  forwarding for ipv4 and ipv6 can be configured separately, rules
+  with target TCPMSS for iptables and ip6tables are also added
+  separately if corresponding ip forwarding setting is
+  enabled. Finally, this target is only available in ip6tables
+  starting with version 1.3.8 and compiler will not add it to the
+  generated script if version is set to less than "1.4.x" in the
+  firewall object dialog.
 
 
 <h3>Make Tag and Classify actions terminating</h3>
