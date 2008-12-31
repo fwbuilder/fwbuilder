@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1230076713" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1230681599" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -792,6 +792,7 @@
     </Policy>
     <ObjectRef ref="id3CEBFF26"/>
     <ServiceRef ref="tcp-HTTP"/>
+    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -3612,7 +3613,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AF5AA0A" host_OS="linux24" inactive="False" lastCompiled="1215360871" lastInstalled="1142003872" lastModified="1215290981" platform="iptables" version="" name="firewall1" comment="this object is used to test all kinds of negation in policy and NAT rules" ro="False">
+      <Firewall id="id3AF5AA0A" host_OS="linux24" inactive="False" lastCompiled="1230681639" lastInstalled="1142003872" lastModified="1230681629" platform="iptables" version="" name="firewall1" comment="this object is used to test all kinds of negation in policy and NAT rules" ro="False">
         <NAT id="id3AF5AA0D" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3C98491C" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -4935,6 +4936,29 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
+        <Policy id="id40709X74808" name="GOOD_GUYS" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False">
+          <PolicyRule id="id40710X74808" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="True">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id86936X27543"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
         <Routing id="id3AF5AA0A-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id3AF5AA96" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3AF5AA96-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -4980,6 +5004,7 @@
           <Option name="inst_cmdline"></Option>
           <Option name="inst_script"></Option>
           <Option name="install_script"></Option>
+          <Option name="ipt_mangle_only_rulesets"></Option>
           <Option name="limit_suffix">/second</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_accept_redirects"></Option>
