@@ -1053,7 +1053,8 @@ void RuleSetView::refreshGroups()
 
 void RuleSetView::updateGroups()
 {
-    if (fwbdebug) qDebug("RuleSetView::updateGroups");
+    if (fwbdebug) qDebug("RuleSetView::updateGroups  ruleset name=%s",
+                         ruleset->getName().c_str());
 
     reset();
 
@@ -1078,7 +1079,7 @@ void RuleSetView::updateGroups()
     groupColors.clear();
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
-        if (ruleIndex[i]==NULL)
+        if (ruleIndex.count(i)!=0 && ruleIndex[i]==NULL)
         {        
             if (rowsInfo[i]->isFirstRow)
             {
@@ -2356,9 +2357,10 @@ Rule* RuleSetView::insertRule(Rule *next_to_rule, insertRuleOp rule_op,
 
     if (fwbdebug)
         qDebug("RuleSetView::insertRule next_to_rule=%p next_to_position=%d "
-               "rule_op=%d table_row=%d ruleset->getRuleSetSize()=%d",
+               "rule_op=%d table_row=%d ruleset->getRuleSetSize()=%d "
+               "rowsInfo.size()=%d ruleIndex.size()=%d ",
                next_to_rule, next_to_position, rule_op, table_row,
-               ruleset->getRuleSetSize());
+               ruleset->getRuleSetSize(), rowsInfo.size(), ruleIndex.size());
 
     if (old_rule!=NULL &&
         ruleset->getTypeName()==Policy::TYPENAME &&
@@ -2372,6 +2374,8 @@ Rule* RuleSetView::insertRule(Rule *next_to_rule, insertRuleOp rule_op,
     Rule *newrule = NULL;
     if ( ruleset->getRuleSetSize()==0 || next_to_rule==NULL)
     {
+        // inserting into an empty ruleset or at the top of any ruleset
+        // if next_to_rule==NULL
         newrule = ruleset->insertRuleAtTop();
         for (int i=ruleIndex.size(); i>table_row; --i)  
             ruleIndex[i] = ruleIndex[i-1];
@@ -2503,6 +2507,8 @@ void RuleSetView::removeRule()
         setUpdatesEnabled(false);
         for (int rn=lastSelectedRow; rn>=firstSelectedRow; --rn)
         {
+            if (ruleIndex.count(rn)==0 || ruleIndex[rn]==NULL) continue;
+
             int rule_n = ruleIndex[rn]->getPosition();
             if (fwbdebug) qDebug("rule #%d", rule_n);
 
@@ -2707,19 +2713,23 @@ void RuleSetView::setSelectedObject(FWObject* obj)
 
 void RuleSetView::insertRuleIndex (int idx)
 {
-   for ( int i=ruleIndex.size(); i>idx; --i) 
+    for ( int i=ruleIndex.size(); i>idx; --i) 
     { 
         ruleIndex[i]=ruleIndex[i-1];
     }
- 
 }
-void RuleSetView::removeRuleIndex (int idx)
+
+void RuleSetView::removeRuleIndex(int idx)
 {
-    
-   for ( int i=idx; i<ruleIndex.size()-1; ++i) 
-    { 
-        ruleIndex[i]=ruleIndex[i+1];
-    }
+    if (fwbdebug)
+        qDebug("RuleSetView::removeRuleIndex idx=%d  ruleIndex.size()=%d",
+               idx, ruleIndex.size());
+
+    for ( int i=idx; i<ruleIndex.size()-1; ++i) 
+        ruleIndex[i] = ruleIndex[i+1];
+
+    if (fwbdebug) qDebug("RuleSetView::removeRuleIndex done");
+
  //   ruleIndex.remove (ruleIndex.size());
 }
 
@@ -4547,35 +4557,18 @@ void RuleSetView::copyRule()
 {
     if (!hasFocus()) return;
 
-    /*int firstSelectedRow=-1;
-    int lastSelectedRow=-1;
-
-    QTableSelection sel=selection(0);
-    if (sel.isActive())
-    {
-        firstSelectedRow=sel.topRow();
-        lastSelectedRow=sel.bottomRow();
-//        removeSelection(0);
-//        verticalHeader()->update();
-    } else
-    {
-        firstSelectedRow=currentRow();
-        lastSelectedRow=currentRow();
-    }*/
-
     if ( firstSelectedRow!=-1 )
     {
         FWObjectClipboard::obj_clipboard->clear();
         for (int i=firstSelectedRow; i<=lastSelectedRow; ++i)
         {
-            FWObject *rule = ruleIndex[i];
+            FWObject *rule = getRule(i);
 
-            if (fwbdebug && PolicyRule::cast(rule)!=NULL)
-                qDebug(QString("RuleSetView::copyRule: direction=%1")
-                        .arg(PolicyRule::cast(rule)->getDirectionAsString().c_str())
-                        .toAscii().constData());
+            if (fwbdebug)
+                qDebug("Adding rule to clipboard, row=%d rule=%p", i, rule);
 
-            FWObjectClipboard::obj_clipboard->add( rule, m_project );
+            if (rule)
+                FWObjectClipboard::obj_clipboard->add( rule, m_project );
         }
     }
     updateGroups();
@@ -4589,16 +4582,15 @@ void RuleSetView::cutRule()
 
 void RuleSetView::pasteRuleAbove()
 {
-    if (getFirewall()==NULL) return;
+    if (fwbdebug)
+        qDebug("RuleSetView::pasteRuleAbove rowsInfo.size()=%d "
+               "ruleIndex.size()=%d firstSelectedRow=%d",
+               rowsInfo.size(), ruleIndex.size(), firstSelectedRow);
 
+    if (getFirewall()==NULL) return;
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    /*int firstSelectedRow=-1;
-    int lastSelectedRow=-1;*/
-
     changingRules = true;
-
-    if (fwbdebug) qDebug("Firewall: pasteRuleAbove");
 
     /* pick rules in reverse order */
     vector<std::pair<int,ProjectPanel*> >::reverse_iterator i;
@@ -4608,22 +4600,24 @@ void RuleSetView::pasteRuleAbove()
         ProjectPanel *proj_p = i->second;
         FWObject *co = proj_p->db()->findInIndex(i->first);
         if (!Rule::cast(co)) continue;
-        if (proj_p==m_project)
-        {
-            Rule *current_rule_at_pos = ruleIndex[firstSelectedRow];
-            insertRule(current_rule_at_pos, insertBefore, co);
-        } else 
+        if (proj_p!=m_project)
         {
             // rule is being copied from another project file
-            // TODO: recursivelyCopySubtree() will insert copy of the rule
-            // into ruleset object, but we really need to insert it here
-            // so we can enforce correct order. Either add parameter to
-            // recursivelyCopySubtree() to let it create copy of all objects
-            // but not add object passed as arg. <source> to <target>, or
-            // remove co from ruleset and add it back via insertRule()
             map<int,int> map_ids;
             co = m_project->db()->recursivelyCopySubtree(ruleset, co, map_ids);
-            //co = m_project->m_panel->om->duplicateWithDependencies(NULL, co);
+            // Note that FWObjectDatabase::recursivelyCopySubtree adds
+            // a copy it creates to the end of the list of children of
+            // the object passed as its first arg., which is in this
+            // case ruleset. This works only if we paste rule at the
+            // bottom of ruleset, otherwise need to move them to the
+            // proper location.
+            co->ref();
+            ruleset->remove(co);
+        }
+        if (firstSelectedRow<0 || ruleIndex.count(firstSelectedRow)==0)
+            insertRule(NULL, insertBefore, co);
+        else
+        {
             Rule *current_rule_at_pos = ruleIndex[firstSelectedRow];
             insertRule(current_rule_at_pos, insertBefore, co);
         }
@@ -4637,27 +4631,15 @@ void RuleSetView::pasteRuleAbove()
 
 void RuleSetView::pasteRuleBelow()
 {
-    if (getFirewall()==NULL) return;
+    if (fwbdebug)
+        qDebug("RuleSetView::pasteRuleBelow rowsInfo.size()=%d "
+               "ruleIndex.size()=%d firstSelectedRow=%d",
+               rowsInfo.size(), ruleIndex.size(), firstSelectedRow);
 
+    if (getFirewall()==NULL) return;
     if (!isTreeReadWrite(this,ruleset)) return;
 
-    /*int firstSelectedRow=-1;
-    int lastSelectedRow=-1;*/
-
     changingRules = true;
-
-    /*QTableSelection sel=selection(0);
-    if (sel.isActive())
-    {
-        firstSelectedRow=sel.topRow();
-        lastSelectedRow=sel.bottomRow();
-        removeSelection(0);
-        verticalHeader()->update();
-    } else
-    {
-        firstSelectedRow=currentRow();
-        lastSelectedRow=currentRow();
-    }*/
 
     int position;
     if (lastSelectedRow != -1)
@@ -4670,17 +4652,36 @@ void RuleSetView::pasteRuleBelow()
     for (i= FWObjectClipboard::obj_clipboard->begin();
          i!=FWObjectClipboard::obj_clipboard->end(); ++i,++n)
     {
-        FWObject *co= m_project->db()->findInIndex(i->first);
+        ProjectPanel *proj_p = i->second;
+        FWObject *co = proj_p->db()->findInIndex(i->first);
         if (!Rule::cast(co)) continue;
-        Rule *current_rule_at_pos = ruleIndex[position+n];
-        insertRule(current_rule_at_pos, appendAfter, co);
+        if (proj_p!=m_project)
+        {
+            // rule is being copied from another project file
+            map<int,int> map_ids;
+            co = m_project->db()->recursivelyCopySubtree(ruleset, co, map_ids);
+            // Note that FWObjectDatabase::recursivelyCopySubtree adds
+            // a copy it creates to the end of the list of children of
+            // the object passed as its first arg., which is in this
+            // case ruleset. This works only if we paste rule at the
+            // bottom of ruleset, otherwise need to move them to the
+            // proper location.
+            co->ref();
+            ruleset->remove(co);
+        }
+        int target_position = position + n;
+        if (ruleIndex.count(target_position)==0)
+            insertRule(NULL, appendAfter, co);
+        else
+        {
+            Rule *current_rule_at_pos = ruleIndex[target_position];
+            insertRule(current_rule_at_pos, appendAfter, co);
+        }
     }
 
     changingRules = false;
     m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
     updateGroups();
-//    if (FWObjectClipboard::obj_clipboard->getObject()!=NULL)
-//        insertRule( rn+1, Rule::cast(FWObjectClipboard::obj_clipboard->getObject()) );
 }
 
 void RuleSetView::enableRule()

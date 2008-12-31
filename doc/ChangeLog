@@ -1,3 +1,10 @@
+2008-12-31  vadim  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::copyRule): fixed bug #2478528:
+	"Crash when copying multiple policy rules". GUI crashed if user
+	tried to copy/paste several rules, some of which belonged to rule
+	group and some did not.
+
 2008-12-30  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_clampTcpToMssRule):
