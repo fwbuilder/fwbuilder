@@ -6,22 +6,25 @@
 
   Author:  Tidei Maurizio     <fwbuilder-routing at compal.de>
   
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-  of the Software, and to permit persons to whom the Software is furnished to do
-  so, subject to the following conditions: 
+  Permission is hereby granted, free of charge, to any person
+  obtaining a copy of this software and associated documentation files
+  (the "Software"), to deal in the Software without restriction,
+  including without limitation the rights to use, copy, modify, merge,
+  publish, distribute, sublicense, and/or sell copies of the Software,
+  and to permit persons to whom the Software is furnished to do so,
+  subject to the following conditions:
 
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software. 
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-  INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-  PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+  BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
 
 */
 
@@ -566,8 +569,10 @@ bool RoutingCompiler::competingRules::processNext()
                 ///std::cout << "SAME METRIC" << std::endl;
                 
                 string msg;
-                msg = "The routing rules " + gtwitf_it->second.second + " and " + rule->getLabel() +
-                      "are identical,\n skipping the second. Please delete one of them to avoid this warning!";
+                msg = "The routing rules " + gtwitf_it->second.second +
+                    " and " + rule->getLabel() +
+                    " are identical, skipping the second. " +
+                    "Please delete one of them to avoid this warning!";
                 compiler->warning( msg.c_str() );
             
             } else {
@@ -576,8 +581,10 @@ bool RoutingCompiler::competingRules::processNext()
                 ///std::cout << "DIFFERENT METRIC" << std::endl;
                 
                 string msg;
-                msg = "The routing rules " + gtwitf_it->second.second + " and " + rule->getLabel() +
-                      "are identical\n except the metric, please delete one of them!";
+                msg = "The routing rules " + gtwitf_it->second.second +
+                    " and " + rule->getLabel() +
+                    " are identical except for the metric, " +
+                    "please delete one of them!";
                 compiler->abort( msg.c_str() );
             }
         
@@ -591,8 +598,6 @@ bool RoutingCompiler::competingRules::processNext()
                 //               iterate all gtwitf combis in the map dest_it->second and search for the current metric
                 
                 // ... but has the same metric => what route should I use for this destination? => abort
-                
-                
                     
                 string msg;
                 msg = "The routing rules " + gtwitf_it->second.second + " and " + rule->getLabel() + " have the same destination,\
