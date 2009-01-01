@@ -1,0 +1,139 @@
+/*
+ * Copyright (c) 2008 Steven Mestdagh
+ *
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
+#ifndef __ROUTINGCOMPILER_PIX_HH__
+#define __ROUTINGCOMPILER_PIX_HH__
+
+#include <fwbuilder/libfwbuilder-config.h>
+
+#include "fwcompiler/RoutingCompiler.h"
+#include "fwbuilder/RuleElement.h"
+#include "config.h"
+namespace libfwbuilder {
+    class RuleElementRDst;
+    class RuleElementRItf;
+    class RuleElementRGtw;
+};
+
+
+namespace fwcompiler {
+
+    class RoutingCompiler_pix : public RoutingCompiler {
+
+    protected:
+     
+        /**
+         * prints rule in some universal format (close to that visible
+         * to user in the GUI). Used for debugging purposes. This method
+         * calls RoutingCompiler::debugPrintRule
+         */
+        virtual std::string debugPrintRule(libfwbuilder::Rule *rule);
+
+	/**
+	 * processes rules with negation in Dst if it holds only one object
+	 */
+        DECLARE_ROUTING_RULE_PROCESSOR(singleDstNegation);
+
+	/**
+	 * processes rules with negation in Dst
+	 */
+        DECLARE_ROUTING_RULE_PROCESSOR(DstNegation);
+
+
+        /**
+         * remove duplicate rules
+         */
+	class PrintRule;
+
+        /**
+         *  eliminates duplicate objects in DST. Uses default comparison
+         *  in eliminateDuplicatesInRE which compares IDs
+         */
+        class eliminateDuplicatesInDST : public eliminateDuplicatesInRE
+        {
+            
+        public:
+            
+            eliminateDuplicatesInDST(const std::string &n) :
+                eliminateDuplicatesInRE(n,libfwbuilder::RuleElementRDst::TYPENAME) {}
+        };
+        
+        /**
+         *  eliminates duplicate rules
+         */
+        class eliminateDuplicateRules : public RoutingRuleProcessor
+        {
+            std::map<std::string, std::string> rules_seen_so_far;
+            std::map<std::string, std::string>::iterator rules_it;
+            RoutingCompiler_pix::PrintRule *printRule;
+            
+        public:
+                
+            eliminateDuplicateRules(const std::string &name) : RoutingRuleProcessor(name){
+                printRule=NULL;
+            }
+            virtual bool processNext();
+        };
+
+
+	/**
+	 *  prints single policy rule, assuming all groups have been
+	 *  expanded, destination holds exactly one object, and this
+	 *  object is not a group.  Negation should also have been taken
+	 *  care of before this method is called.
+         *
+         *  This processor is not necessarily the last in the
+         *  conveyor, so it should push rules back to tmp_queue (for
+         *  example there could be progress indicator processor after
+         *  this one)
+	 */
+        class PrintRule : public RoutingRuleProcessor
+        {
+            std::string current_rule_label;
+
+            virtual std::string _printAddr(libfwbuilder::Address  *o);
+            
+        public:
+
+            PrintRule(const std::string &name);
+            virtual bool processNext();
+
+            std::string RoutingRuleToString(libfwbuilder::RoutingRule *r);
+            std::string _printRGtw(libfwbuilder::RoutingRule *r);
+            std::string _printRItf(libfwbuilder::RoutingRule *r);
+            std::string _printRDst(libfwbuilder::RoutingRule *r);
+
+        };
+        friend class RoutingCompiler_pix::PrintRule;
+
+	virtual std::string myPlatformName();
+
+    public:
+
+	RoutingCompiler_pix(libfwbuilder::FWObjectDatabase *_db,
+                            const std::string &fwname, bool ipv6_policy,
+                            fwcompiler::OSConfigurator *_oscnf) :
+        RoutingCompiler(_db, fwname, ipv6_policy, _oscnf) {}
+
+	virtual int  prolog();
+	virtual void compile();
+	virtual void epilog();
+
+    };
+
+}
+
+#endif

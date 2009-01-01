@@ -1,3 +1,9 @@
+2009-01-01  vadim  <vadim@vk.crocodile.org>
+
+	* RoutingCompiler_pix.cpp: applied patch by Steven Mestdagh
+	<steven@openbsd.org> that adds support for static routing
+	configuration for PIX.
+
 2008-12-31  vadim  <vadim@vk.crocodile.org>
 
 	* RuleSetView.cpp (RuleSetView::copyRule): fixed bug #2478528:

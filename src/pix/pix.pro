@@ -16,13 +16,16 @@ SOURCES	 =  NATCompiler_pix.cpp             \
 			PIXObjectGroup.cpp              \
 			PolicyCompiler_pix.cpp          \
 			PolicyCompiler_pix_writers.cpp  \
-			PolicyCompiler_pix_v6_acls.cpp
+			PolicyCompiler_pix_v6_acls.cpp	\
+			RoutingCompiler_pix.cpp          \
+			RoutingCompiler_pix_writers.cpp
 
 HEADERS	 = ../../config.h                   \
 			NATCompiler_pix.h               \
 			OSConfigurator_pix_os.h         \
 			PIXObjectGroup.h                \
 			PolicyCompiler_pix.h            \
+			RoutingCompiler_pix.h            \
 			../cisco_lib/PolicyCompiler_cisco.h \
 			../cisco_lib/ACL.h 				\
 			../cisco_lib/Helper.h 

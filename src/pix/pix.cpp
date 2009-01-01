@@ -47,6 +47,7 @@
 #include <cstring>
 
 #include "PolicyCompiler_pix.h"
+#include "RoutingCompiler_pix.h"
 #include "NATCompiler_pix.h"
 #include "OSConfigurator_pix_os.h"
 
@@ -235,7 +236,8 @@ int main(int argc, char * const * argv)
 
 
     if (test_mode)
-        cout << "*** Running in test mode, all errors are ignored" << endl << endl;
+        cout << "*** Running in test mode, all errors are ignored"
+             << endl << endl;
 
     try
     {
@@ -550,6 +552,22 @@ int main(int argc, char * const * argv)
         } else
             cout << " Nothing to compile in Policy \n" << flush;
 
+        RoutingCompiler_pix *r = new RoutingCompiler_pix( objdb ,
+                                                        fwobjectname ,
+                                                        false,
+                                                        oscnf);
+//                                                        oscnf , n);
+
+        if (test_mode) r->setTestMode();
+        r->setDebugLevel( dl );
+        r->setDebugRule(  drp );
+        r->setVerbose( verbose );
+
+        if ( r->prolog() > 0 ) {
+            r->compile();
+            r->epilog();
+        } else
+            cout << " Nothing to compile in Routing \n" << flush;
 
 #ifdef _WIN32
         ofstream ofile(ofname.c_str(), ios::out|ios::binary);
@@ -560,7 +578,7 @@ int main(int argc, char * const * argv)
         ofile << "!\n\
 !  This is automatically generated file. DO NOT MODIFY !\n\
 !\n\
-!  Firewall Builder  fwb_pix v" << VERSION << "-" << RELEASE_NUM << " \n\
+!  Firewall Builder  fwb_pix v" << VERSION << "-" << BUILD_NUM << " \n\
 !\n\
 !  Generated " << timestr
               << " "
@@ -641,6 +659,16 @@ int main(int argc, char * const * argv)
         ofile << n->getCompiledScript();
         
         ofile << endl;
+
+        if (r->haveErrorsAndWarnings())
+        {
+            ofile << "! Routing compiler errors and warnings:"
+                    << endl;
+            ofile << r->getErrors("! ");
+        }
+
+        ofile << r->getCompiledScript();
+
         ofile << "!" << endl;
         ofile << "! Epilog script:" << endl;
         ofile << "!" << endl;

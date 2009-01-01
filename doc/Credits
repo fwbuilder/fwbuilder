@@ -6,7 +6,7 @@ ways to make this project happen:
 Special thanks to Friedhelm Düsterhöft <fd@msdd.net> for help with XML
 development and initial XSLT filters implementation.
 
-For icons : Hector Rivera Falu <misha@phreaker.net>
+For icons for Firewall Builder v2.x : Hector Rivera Falu <misha@phreaker.net>
 
 For icons and a first web site: Tanya Soussokolova <ts@vk.crocodile.org>
 
@@ -29,7 +29,8 @@ For French translation for Firewall Builder v2.x
 For Japanese translation for Firewall Builder v2.x
     Tadashi Jokagi <elf@elf.no-ip.org>
 
-For Swedish translation: Daniel Nylander <yeager@lidkoping.net>
+For Swedish translation  for Firewall Builder v2.x:
+     Daniel Nylander <yeager@lidkoping.net>
 
 For ideas, suggestions, patches and contributions:
 -------------------------------------------------------------
@@ -54,7 +55,7 @@ Jochen Friedrich <jochen+fwbuilder-dev@scram.de>
 
 
 Vadim Fedukovich <vf@unity.net> 
-- help with OpenSSL and answering related questins.
+- help with OpenSSL and answering related questions.
 
 
 David Gullasch <gullasch@secunet.de> and
@@ -64,6 +65,8 @@ stephan_r@users.sourceforge.net
 
 Igor Morozov <igor@grad.kiev.ua>
 - first attempt at Win32 porting and a prototype
+
+
 
 
 Mark Vevers <mark@vevers.net>
@@ -91,6 +94,25 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+Steven Mestdagh <steven@openbsd.org>
+- for the code for the static routing configutation for PIX
+
+ Copyright (c) 2008 Steven Mestdagh
+
+ Permission to use, copy, modify, and distribute this software for any
+ purpose with or without fee is hereby granted, provided that the above
+ copyright notice and this permission notice appear in all copies.
+
+ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 
 

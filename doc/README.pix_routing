@@ -1,0 +1,29 @@
+
+Code for the static routing configutation for PIX has been contributed
+to the poroject by Steven Mestdagh <steven@openbsd.org> under the
+terms of MIT license.
+
+
+
+From: Steven Mestdagh <steven@openbsd.org>
+To: Vadim Kurland ??? <vadim@fwbuilder.org>
+Subject: Re: fwbuilder: routing for pix compiler
+
+
+It supports compiling rules to add static routes, i.e. if the routing
+table contains entries as:
+   destination, gateway, interface, metric
+
+then these are written as:
+   route <iflabel> <dstaddr> <dstmask> <gateway> <metric>
+
+The default metric on PIX is 1, so the GUI default value of 0 becomes 1 in
+the compiled rules.
+Below is an example of a typically generated rule:
+
+   route outside 10.0.1.0 255.255.255.0 172.17.0.1 1
+
+It does not support compiling any rules for routing protocols like OSPF,
+BGP, etc. Configuration of routing protocols should just be added to the
+prolog or epilog.
+
