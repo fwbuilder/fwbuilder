@@ -31,6 +31,7 @@ doc.files   = AUTHORS                 \
               README.ipt              \
               README.pf               \
               README.pix              \
+              README.pix_routing      \
               README.routing          \
 			  README.iosacl           \
 			  README.policy_import    \
