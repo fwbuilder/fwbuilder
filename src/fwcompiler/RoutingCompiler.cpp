@@ -121,38 +121,39 @@ string RoutingCompiler::debugPrintRule(Rule *r)
 
     string dst, itf, gtw;
    
-    FWObject *obj = FWReference::getObject(itfrel);
+    FWObject *obj = FWReference::getObject(itfrel->front());
     itf = obj->getName();
 
-    obj = FWReference::getObject(gtwrel);
+    obj = FWReference::getObject(gtwrel->front());
     gtw = obj->getName();    
      
     
     int no=0;
     FWObject::iterator i1=dstrel->begin();
-    while ( i1!=dstrel->end()) {
-
+    while ( i1!=dstrel->end())
+    {
         str << endl;
 
-        dst=" ";
+        dst = " ";
 
         if (i1!=dstrel->end())
         {
             FWObject *o = FWReference::getObject(*i1);
-            dst=o->getName();
+            dst = o->getName();
         }
 
         int w=0;
-        if (no==0) {
+        if (no==0)
+        {
             str << rule->getLabel();
-            w=rule->getLabel().length();
+            w = rule->getLabel().length();
         }
         
         str <<  setw(10-w)  << setfill(' ') << " ";
 
-        str <<  setw(18) << setfill(' ') << dst.c_str();
-        str <<  setw(18) << setfill(' ') << itf.c_str();
-        str <<  setw(12) << setfill(' ') << gtw.c_str();
+        str <<  setw(18) << setfill(' ') << dst.c_str() << " ";
+        str <<  setw(18) << setfill(' ') << itf.c_str() << " ";
+        str <<  setw(18) << setfill(' ') << gtw.c_str() << " ";
         str <<  setw(18) << setfill(' ') << " ";
 
         ++no;
@@ -162,22 +163,18 @@ string RoutingCompiler::debugPrintRule(Rule *r)
     return str.str();
 }
 
-
 bool RoutingCompiler::ExpandMultipleAddresses::processNext()
 {
     RoutingRule *rule=getNext(); if (rule==NULL) return false;
-
     tmp_queue.push_back(rule);
 
-    RuleElementRDst *dst=rule->getRDst();    assert(dst);
-    RuleElementRGtw *gtw=rule->getRGtw();    assert(gtw);
-    
-    compiler->_expandAddr(rule,dst);
-    compiler->_expandAddr(rule,gtw);
+    RuleElementRDst *dst = rule->getRDst();    assert(dst);
+    RuleElementRGtw *gtw = rule->getRGtw();    assert(gtw);
 
+    compiler->_expandAddr(rule, dst);
+    compiler->_expandAddr(rule, gtw);
     return true;
 }
-
 
 bool RoutingCompiler::ConvertToAtomicForDST::processNext()
 {
@@ -187,8 +184,8 @@ bool RoutingCompiler::ConvertToAtomicForDST::processNext()
     RuleElementRDst *dst=rule->getRDst();    assert(dst);
 
 
-    for (FWObject::iterator it=dst->begin(); it!=dst->end(); ++it) {
-
+    for (FWObject::iterator it=dst->begin(); it!=dst->end(); ++it)
+    {
         RoutingRule *r = compiler->dbcopy->createRoutingRule();
         r->duplicate(rule);
         compiler->temp_ruleset->add(r);
@@ -212,13 +209,10 @@ bool RoutingCompiler::ConvertToAtomicForDST::processNext()
 bool RoutingCompiler::ExpandGroups::processNext()
 {
     RoutingRule *rule=getNext(); if (rule==NULL) return false;
-
     tmp_queue.push_back(rule);
 
     RuleElementRDst *dst=rule->getRDst();   assert(dst);
-    
     compiler->expandGroupsInRuleElement(dst);
-
     return true;
 }
 
@@ -226,7 +220,6 @@ bool RoutingCompiler::ExpandGroups::processNext()
 bool RoutingCompiler::emptyRDstAndRItf::processNext()
 {
     RoutingRule *rule=getNext(); if (rule==NULL) return false;
-    
     tmp_queue.push_back(rule);
     
     
@@ -234,10 +227,11 @@ bool RoutingCompiler::emptyRDstAndRItf::processNext()
     RuleElementRItf *itfrel=rule->getRItf();
 
     if ( (FWReference::cast(itfrel->front())->getPointer())->getName()=="Any" &&\
-         (FWReference::cast(gtwrel->front())->getPointer())->getName()=="Any") {
-        
+         (FWReference::cast(gtwrel->front())->getPointer())->getName()=="Any")
+    {
         string msg;
-        msg = "Gateway and interface are both empty in the rule " + rule->getLabel();
+        msg = "Gateway and interface are both empty in the rule " +
+            rule->getLabel();
         compiler->abort( msg.c_str() );
     }
 
@@ -248,9 +242,7 @@ bool RoutingCompiler::emptyRDstAndRItf::processNext()
 bool RoutingCompiler::singleAdressInRGtw::processNext()
 {
     RoutingRule *rule=getNext(); if (rule==NULL) return false;
-    
     tmp_queue.push_back(rule);
-    
     
     RuleElementRGtw *gtwrel=rule->getRGtw();
 
@@ -503,31 +495,15 @@ bool RoutingCompiler::rItfChildOfFw::processNext()
     RuleElementRItf *itfrel = rule->getRItf();
     FWObject *o = FWReference::cast(itfrel->front())->getPointer();
 
-    /*
-     * check if an object 'o' is a child of the firewall being
-     * processed
-     */
-    FWObject* o_tmp = o;
-    bool same_fw = false;
-    while (o_tmp)
-    {
-        if (Firewall::cast(o_tmp) && o_tmp->getId()==compiler->fw->getId())
-        {
-            same_fw = true;
-            break;
-        }
-        o_tmp = o_tmp->getParent();
-    }
-              
-    if (!same_fw)
+    if (!o->isChildOf(compiler->fw))
     {
         string msg;
         msg = "The object \"" + o->getName() + 
             "\" used as interface in the routing rule " +
             rule->getLabel() +
-            " is not a child of the firewall the rule belongs to!";
+            " is not a child of the firewall the rule belongs to";
         compiler->abort( msg.c_str() );
-    } 
+    }
     return true;
 }
 

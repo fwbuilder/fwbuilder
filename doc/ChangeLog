@@ -1,3 +1,8 @@
+2009-01-02  vadim  <vadim@vk.crocodile.org>
+
+	* RoutingCompiler.cpp (rItfChildOfFw::processNext): using
+	FWObject::isChildOf() instead of custom implementation.
+
 2008-12-27  vadim  <vadim@vk.crocodile.org>
 
 	* CustomService.h (libfwbuilder): feature requests #1111267
