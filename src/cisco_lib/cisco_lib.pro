@@ -6,13 +6,16 @@ TEMPLATE = lib
 #
 SOURCES	 =  PolicyCompiler_cisco.cpp \
 			PolicyCompiler_cisco_acls.cpp \
+			RoutingCompiler_cisco.cpp \
+			RoutingCompiler_cisco_writers.cpp \
 			ACL.cpp \
 			Helper.cpp
 
 HEADERS	 = ../../config.h \
 			ACL.h \
 			Helper.h \
-			PolicyCompiler_cisco.h
+			PolicyCompiler_cisco.h \
+			RoutingCompiler_cisco.h
 
 !macx:LIBS  += $$LIBS_FWCOMPILER
 # macx:LIBS   += -L../../../libfwbuilder2-2.0.0/src/fwcompiler -lfwcompiler-2.0 

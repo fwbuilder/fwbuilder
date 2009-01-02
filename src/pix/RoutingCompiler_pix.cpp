@@ -43,81 +43,34 @@
 
 using namespace libfwbuilder;
 using namespace fwcompiler;
-using namespace std;
 
-static std::map<std::string,int> tmp_chain_no;
 
 string RoutingCompiler_pix::myPlatformName() { return "pix"; }
 
-
 int RoutingCompiler_pix::prolog()
 {
-    int n = RoutingCompiler::prolog();    
+    int n = RoutingCompiler_cisco::prolog();    
 
     if (fw->getStr("platform")!="pix") 
-	abort(_("Unsupported platform ") + fw->getStr("platform") );
+	abort("Unsupported platform " + fw->getStr("platform") );
 
     return n;
 }
 
-/*
- *  this processor eliminates duplicate atomic routing rules in one routing table
- */
-bool RoutingCompiler_pix::eliminateDuplicateRules::processNext()
+void RoutingCompiler_pix::epilog()
 {
-    RoutingRule *rule;
-    rule = getNext();
-    if (rule == NULL)
-	return false;
-
-    if (rule->isFallback() || rule->isHidden())
-    {
-        tmp_queue.push_back(rule);
-        return true;
-    }
-
-    if (printRule == NULL)
-    {
-        printRule = new PrintRule("");
-        printRule->setContext(compiler);
-    }
-    
-    string label = rule->getLabel();
-    int bracepos = label.find("(");
-    label.erase(0, bracepos);
-    
-    string thisRule = label + " " + printRule->RoutingRuleToString(rule);
-    
-    rules_it = rules_seen_so_far.find(thisRule);
-            
-    if (rules_it != rules_seen_so_far.end()) {
-        
-        string msg;
-        msg = "Two of the sub rules created from the gui routing rules " +
-            rules_it->second + " and " + rule->getLabel() +
-            " are identical, skipping the second. " +
-            "Please revise them to avoid this warning!";
-        compiler->warning( msg.c_str() );
-        return true;
-    }
-
-    tmp_queue.push_back(rule);
-    rules_seen_so_far[thisRule]=rule->getLabel();
-
-    return true;
 }
-
 
 /**
  *-----------------------------------------------------------------------
  */
 void RoutingCompiler_pix::compile()
 {
-    cout << _(" Compiling routing rules for ")
+    cout << " Compiling routing rules for "
          << fw->getName() << " ..." <<  endl << flush;
 
-    try {
-
+    try 
+    {
 	Compiler::compile();
 
         add(new RoutingCompiler::Begin());
@@ -167,15 +120,3 @@ void RoutingCompiler_pix::compile()
 }
 
 
-string RoutingCompiler_pix::debugPrintRule(Rule *r)
-{
-    RoutingRule *rule = RoutingRule::cast(r);
-
-    string s = RoutingCompiler::debugPrintRule(rule);
-
-    return s;
-}
-
-void RoutingCompiler_pix::epilog()
-{
-}

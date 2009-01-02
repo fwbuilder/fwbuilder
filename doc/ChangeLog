@@ -1,8 +1,12 @@
 2009-01-01  vadim  <vadim@vk.crocodile.org>
 
+	* RoutingCompiler_cisco.cpp: refactored PIX routing compiler by
+	steven@openbsd.org to use it as a foundation of the routing
+	compiler for both PIX and Cisco IOS (r731).
+
 	* RoutingCompiler_pix.cpp: applied patch by Steven Mestdagh
 	<steven@openbsd.org> that adds support for static routing
-	configuration for PIX.
+	configuration for PIX. Patch tested and applied in r726.
 
 2008-12-31  vadim  <vadim@vk.crocodile.org>
 
