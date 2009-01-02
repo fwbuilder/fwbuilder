@@ -67,6 +67,7 @@ class SSHSession : public QObject {
     bool       enable;
     bool       configure;
     bool       endOfCopy;
+    bool       send_keepalive;
     
     enum State { NONE,
                  LOGGEDIN,

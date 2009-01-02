@@ -81,6 +81,7 @@ SSHSession::SSHSession(QWidget *_par,
     closeStdin = false;
     error = false;
     endOfCopy = false;
+    send_keepalive = false;
 
     proc = NULL;
     retcode = 0;
@@ -382,12 +383,13 @@ void SSHSession::stopHeartBeat()
 {
     if (fwbdebug) qDebug("SSHSession::stopHeartBeat");
     heartBeatTimer->stop();
+    send_keepalive = false;
 }
 
 void SSHSession::heartBeat()
 {
     if (fwbdebug) qDebug("SSHSession::heartBeat");
-    proc->write("\n");
+    if (send_keepalive) proc->write("\n");
     readFromStderr();
     readFromStdout();
     if (endOfCopy && closeStdin)

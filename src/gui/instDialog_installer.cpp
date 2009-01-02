@@ -189,5 +189,6 @@ void instDialog::installerError()
     opError(cnf.fwobj);
     currentProgressBar->setValue(currentProgressBar->maximum());
     QTimer::singleShot( 0, this, SLOT(mainLoopInstall()));
+    opListMapping[cnf.fwobj->getId()]->setText(1, tr("Failure"));
 }
 

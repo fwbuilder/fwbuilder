@@ -206,9 +206,9 @@ void SSHPIX::stateMachine()
 
             stopHeartBeat();
 
-            int res =QMessageBox::warning( parent, tr("New RSA key"), msg,
-                                           tr("Yes"), tr("No"), 0,
-                                           0, -1 );
+            int res = QMessageBox::warning( parent, tr("New RSA key"), msg,
+                                            tr("Yes"), tr("No"), 0,
+                                            0, -1 );
 
             if (fwbdebug)
                 qDebug("User said: res=%d", res);

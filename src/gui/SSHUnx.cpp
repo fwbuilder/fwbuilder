@@ -151,18 +151,20 @@ void SSHUnx::stateMachine()
             proc->write( "\n" );
             break;
         }
-/* we may get to LOGGEDIN state directly from NONE, for example when
- * password is supplied on command line to plink.exe
- */
+        // we may get to LOGGEDIN state directly from NONE, for
+        // example when password is supplied on command line to
+        // plink.exe
         if (cmpPrompt(stdoutBuffer,normal_prompt) ||
             cmpPrompt(stdoutBuffer,fwb_prompt))
         {
-            state=PUSHING_CONFIG;
+            state = PUSHING_CONFIG;
+            // start sending keepalive chars (just "\n", done in
+            // SSHSession::heartBeat()) to keep session alive and to
+            // force firewall to restore session state after policy
+            // has been reloaded  and state possibly purged.
+            send_keepalive = true;
             if (!quiet) emit printStdout_sign( tr("Logged in") + "\n" );
-            if (fwbdebug)
-                qDebug("SSHUnx::stateMachine logged in");
-//            proc->write( "\n" );
-//            stdoutBuffer="";
+            if (fwbdebug) qDebug("SSHUnx::stateMachine logged in");
             goto push_files;
         }
 
@@ -242,7 +244,8 @@ void SSHUnx::stateMachine()
 
 /* we get to this state when previous ssh or scp command terminates */
     case FINISH:
-        if ( (proc->state()==QProcess::NotRunning) && (proc->exitStatus()==QProcess::NormalExit))
+        if ( (proc->state()==QProcess::NotRunning) &&
+             (proc->exitStatus()==QProcess::NormalExit))
         {
             emit printStdout_sign( "\n");
             emit printStdout_sign( tr("Done") );
