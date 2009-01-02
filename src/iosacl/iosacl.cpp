@@ -47,6 +47,7 @@
 #include <cstring>
 
 #include "PolicyCompiler_iosacl.h"
+#include "RoutingCompiler_iosacl.h"
 #include "OSConfigurator_ios.h"
 
 #include "fwcompiler/Preprocessor.h"
@@ -439,6 +440,34 @@ int main(int argc, char * const * argv)
 
                 } else
                     cout << " Nothing to compile in Policy \n" << flush;
+            }
+
+            if (!ipv6_policy)
+            {
+                // currently routing is supported only for ipv4
+                RoutingCompiler_iosacl r( objdb, fwobjectname, false, oscnf);
+
+                if (test_mode) r.setTestMode();
+                r.setDebugLevel( dl );
+                r.setDebugRule(  drp );
+                r.setVerbose( verbose );
+                
+                if ( r.prolog() > 0 )
+                {
+                    r.compile();
+                    r.epilog();
+
+                    if (r.haveErrorsAndWarnings())
+                    {
+                        generated_script +=
+                            "! Routing compiler errors and warnings:";
+                        generated_script += "\n";
+                        generated_script += r.getErrors("! ");
+                    }
+
+                    generated_script += r.getCompiledScript();
+                } else
+                    cout << " Nothing to compile in Routing \n" << flush;
             }
         }
 

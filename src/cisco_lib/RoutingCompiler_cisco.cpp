@@ -52,14 +52,14 @@ int RoutingCompiler_cisco::prolog()
 }
 
 /*
- *  this processor eliminates duplicate atomic routing rules in one routing table
+ *  this processor eliminates duplicate atomic routing rules in one
+ *  routing table
  */
 bool RoutingCompiler_cisco::eliminateDuplicateRules::processNext()
 {
     RoutingRule *rule;
     rule = getNext();
-    if (rule == NULL)
-	return false;
+    if (rule == NULL) return false;
 
     if (rule->isFallback() || rule->isHidden())
     {
@@ -81,8 +81,8 @@ bool RoutingCompiler_cisco::eliminateDuplicateRules::processNext()
     
     rules_it = rules_seen_so_far.find(thisRule);
             
-    if (rules_it != rules_seen_so_far.end()) {
-        
+    if (rules_it != rules_seen_so_far.end())
+    {
         string msg;
         msg = "Two of the sub rules created from the gui routing rules " +
             rules_it->second + " and " + rule->getLabel() +
@@ -93,7 +93,7 @@ bool RoutingCompiler_cisco::eliminateDuplicateRules::processNext()
     }
 
     tmp_queue.push_back(rule);
-    rules_seen_so_far[thisRule]=rule->getLabel();
+    rules_seen_so_far[thisRule] = rule->getLabel();
 
     return true;
 }

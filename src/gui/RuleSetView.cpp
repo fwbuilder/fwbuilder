@@ -1254,25 +1254,29 @@ void RuleSetView::iinit()
     item_h   = ( (pixmap_h>text_h)?pixmap_h:text_h ) + RuleElementSpacing;
     //qDebug("pixmap_h = %d text_h = %d item_h = %d", pixmap_h, text_h, item_h);
 
-    FWObject *f = getFirewall();
+    FWObject *fw = getFirewall();
 
 // f is a pointer at firewall object
-    supports_logging      =false;
-    supports_rule_options =false;
-    supports_time         =false;
+    supports_logging      = false;
+    supports_rule_options = false;
+    supports_time         = false;
+    supports_routing_itf  = false;
 
-    if (f)
+    if (fw)
     {
         try {
-            supports_logging=
-                Resources::getTargetCapabilityBool(f->getStr("platform"),
+            supports_logging =
+                Resources::getTargetCapabilityBool(fw->getStr("platform"),
                                                    "logging_in_policy");
-            supports_rule_options=
-                Resources::getTargetCapabilityBool(f->getStr("platform"),
+            supports_rule_options =
+                Resources::getTargetCapabilityBool(fw->getStr("platform"),
                                                    "options_in_policy");
-            supports_time=
-                Resources::getTargetCapabilityBool(f->getStr("platform"),
+            supports_time =
+                Resources::getTargetCapabilityBool(fw->getStr("platform"),
                                                    "supports_time");
+            supports_routing_itf =
+                Resources::getTargetCapabilityBool(fw->getStr("platform"),
+                                                   "supports_routing_itf");
         } catch(FWException &ex)    {    }
     }
 
@@ -5201,8 +5205,11 @@ void RoutingView::init()
     qsl << "Gateway";
     colTypes[col++] = Object;
 
-    qsl << "Interface";
-    colTypes[col++] = Object;
+    if (supports_routing_itf)
+    {
+        qsl << "Interface";
+        colTypes[col++] = Object;
+    }
 
     qsl << "Metric";
     colTypes[col++] = Metric;

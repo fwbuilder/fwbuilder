@@ -34,6 +34,7 @@
         <supports_nat>True</supports_nat>
         <supports_time>True</supports_time>
         <supports_accounting>True</supports_accounting>
+        <supports_routing_itf>True</supports_routing_itf>
         <security_levels>False</security_levels>
         <network_zones>False</network_zones>
         <unprotected_interfaces>False</unprotected_interfaces>

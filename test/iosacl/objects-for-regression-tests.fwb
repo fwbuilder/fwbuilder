@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1230499757" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1230880304" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ServiceRef ref="id151F20845"/>
     <ServiceRef ref="id464147DA29061"/>
@@ -13,7 +13,10 @@
     <ServiceRef ref="sysid1"/>
     <ServiceRef ref="id8888X64279"/>
     <ServiceRef ref="id26068X65694"/>
-    <ServiceRef ref="sysid1"/>
+    <ObjectRef ref="id46435A0816989"/>
+    <ObjectRef ref="id46412C3F26611"/>
+    <ObjectRef ref="id46435A0C16989"/>
+    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="id4511636323682" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id4511636423682" name="Objects" comment="" ro="False">
@@ -30,6 +33,7 @@
         <IPv6 id="id19179X65694" name="altavista" comment="" ro="False" address="3ffe:1200:2001:1:8000::1" netmask="128"/>
         <IPv4 id="id19241X65694" name="net_address" comment="" ro="False" address="192.168.1.0" netmask="255.255.255.255"/>
         <IPv4 id="id19243X65694" name="sapmhost1" comment="" ro="False" address="61.150.47.112" netmask="255.255.255.255"/>
+        <IPv4 id="id4204X90642" name="internal gw" comment="" ro="False" address="10.3.14.254" netmask="0.0.0.0"/>
       </ObjectGroup>
       <ObjectGroup id="id4511636623682" name="DNS Names" comment="" ro="False"/>
       <ObjectGroup id="id4511636723682" name="Address Tables" comment="" ro="False"/>
@@ -1545,7 +1549,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id464359FE16989" host_OS="ios" inactive="False" lastCompiled="1178816547" lastInstalled="0" lastModified="1219850505" platform="iosacl" version="12.x" name="c3620" comment="" ro="False">
+      <Firewall id="id464359FE16989" host_OS="ios" inactive="False" lastCompiled="1230880328" lastInstalled="0" lastModified="1230884082" platform="iosacl" version="12.x" name="c3620" comment="" ro="False">
         <NAT id="id46435A0216989" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id46435A0116989" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id464D2B0E24319" disabled="False" log="False" position="0" action="Accept" direction="Inbound" comment="interface eth 1/1 has only&#10;inbound access list">
@@ -1709,7 +1713,44 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id46435A0316989" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Routing id="id46435A0316989" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RoutingRule id="id4195X90642" disabled="False" metric="1" position="0" comment="">
+            <RDst neg="False">
+              <ObjectRef ref="id46412C3F26611"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id4204X90642"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+          <RoutingRule id="id8772X90642" disabled="False" group="" metric="0" position="1" comment="">
+            <RDst neg="False">
+              <ObjectRef ref="id46412C4026611"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id46435A0816989"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+          <RoutingRule id="id4235X98918" disabled="False" group="" metric="0" position="2" comment="">
+            <RDst neg="False">
+              <ObjectRef ref="id46412C4126611"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id46435A0816989"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+        </Routing>
         <Interface id="id46435A0416989" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="Ethernet1/0" comment="" ro="False">
           <IPv4 id="id46435A0516989" name="c3620:Ethernet1/0:ip" comment="" ro="False" address="192.168.171.2" netmask="255.255.255.0"/>
         </Interface>

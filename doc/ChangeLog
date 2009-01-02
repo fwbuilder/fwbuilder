@@ -1,3 +1,17 @@
+2009-01-02  vadim  <vadim@vk.crocodile.org>
+
+	* RoutingCompiler_iosacl.cpp (RoutingCompiler_iosacl::compile):
+	Added support for generation of "ip route" commands for Cisco IOS.
+	Variant of Cisco IOS "ip route" command where gateway is the name
+	of one of the interfaces of the router is also supported. To get
+	this, put interface object in the "gateway" column of the routing
+	rule.
+
+	* pix.xml.in, RuleSetView.cpp: Routing ruleset view shows column
+	"interface" only for platforms that require it. Currently IOS does
+	not require it, while other platforms for which routing commands
+	generation is supported require it (iptables and PIX).
+
 2009-01-01  vadim  <vadim@vk.crocodile.org>
 
 	* RoutingCompiler_cisco.cpp: refactored PIX routing compiler by

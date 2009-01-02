@@ -109,9 +109,9 @@ namespace fwcompiler {
             PrintRule(const std::string &name);
             virtual bool processNext();
             virtual std::string RoutingRuleToString(libfwbuilder::RoutingRule *r);
-            std::string _printRGtw(libfwbuilder::RoutingRule *r);
-            std::string _printRItf(libfwbuilder::RoutingRule *r);
-            std::string _printRDst(libfwbuilder::RoutingRule *r);
+            virtual std::string _printRGtw(libfwbuilder::RoutingRule *r);
+            virtual std::string _printRItf(libfwbuilder::RoutingRule *r);
+            virtual std::string _printRDst(libfwbuilder::RoutingRule *r);
 
         };
         friend class RoutingCompiler_cisco::PrintRule;

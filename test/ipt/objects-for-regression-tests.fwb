@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1230684364" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1230884286" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -792,6 +792,10 @@
     </Policy>
     <ObjectRef ref="id3CEBFF26"/>
     <ServiceRef ref="tcp-HTTP"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="id3CEBFDFC"/>
+    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -825,6 +829,7 @@
         <IPv6 id="id483426D16131" name="ipv6-2" comment="" ro="False" address="fe80::aaaa:bbbb:cccc:2" netmask="128"/>
         <IPv6 id="id48416A7116880" name="altavista" comment="" ro="False" address="3ffe:1200:2001:1:8000::1" netmask="128"/>
         <IPv6 id="id48416A7216880" name="6bone.net" comment="" ro="False" address="2001:5c0:0:2::24" netmask="128"/>
+        <IPv4 id="id40860X98946" name="internal gw" comment="" ro="False" address="192.168.1.254" netmask="0.0.0.0"/>
       </ObjectGroup>
       <ObjectGroup id="stdid04_1" name="Groups" comment="" ro="False">
         <ObjectGroup id="id3B4572AF" name="group1" comment="" ro="False">
@@ -19689,7 +19694,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id43A2BF7416451" host_OS="linux24" inactive="False" lastCompiled="1215360266" lastInstalled="1142003872" lastModified="1150347820" platform="iptables" version="" name="firewall36" comment="&#10;testing routing rules - both actually routing  and ROUTE target&#10;" ro="False">
+      <Firewall id="id43A2BF7416451" host_OS="linux24" inactive="False" lastCompiled="1215360266" lastInstalled="1142003872" lastModified="1230884346" platform="iptables" version="" name="firewall36" comment="&#10;testing routing rules - both actually routing  and ROUTE target&#10;" ro="False">
         <NAT id="id43A2C00E16451" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id43A2C01D16451" disabled="False" position="0" comment="Translate source address&#10;for outgoing connections">
             <OSrc neg="False">
@@ -19985,6 +19990,18 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </RGtw>
             <RItf neg="False">
               <ObjectRef ref="id43A2C04416451"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+          <RoutingRule id="id40851X98946" disabled="False" group="" metric="0" position="2" comment="">
+            <RDst neg="False">
+              <ObjectRef ref="id4733FFE419714"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id40860X98946"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="id43A2C03E16451"/>
             </RItf>
             <RoutingRuleOptions/>
           </RoutingRule>

@@ -343,7 +343,8 @@ public:
     bool supports_time;
     bool supports_logging;
     bool supports_rule_options;
- 
+    bool supports_routing_itf;
+    
     int RuleElementSpacing;
 
     int pixmap_h;

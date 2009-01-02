@@ -12,6 +12,8 @@ SOURCES	 =  OSConfigurator_ios.cpp             \
 			iosacl.cpp                         \
 			PolicyCompiler_iosacl.cpp          \
 			PolicyCompiler_iosacl_writers.cpp  \
+			RoutingCompiler_iosacl.cpp         \
+			RoutingCompiler_iosacl_writers.cpp
 
 HEADERS	 = ../../config.h                      \
 			OSConfigurator_ios.h               \

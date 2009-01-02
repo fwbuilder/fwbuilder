@@ -125,6 +125,7 @@ nameif %in %il security%sl
         <supports_nat>True</supports_nat>
         <supports_time>False</supports_time>
         <supports_accounting>False</supports_accounting>
+        <supports_routing_itf>True</supports_routing_itf>
         <security_levels>True</security_levels>
         <network_zones>True</network_zones>
         <unprotected_interfaces>False</unprotected_interfaces>
