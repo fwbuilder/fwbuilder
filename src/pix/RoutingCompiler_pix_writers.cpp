@@ -84,7 +84,9 @@ string RoutingCompiler_pix::PrintRule::_printAddr(Address  *o)
                !Firewall::isA(obj)  && 
                !Network::isA(obj))  obj=obj->getParent();
 
-        compiler->abort(_("Problem with address or netmask in the object or one of its interfaces: '")+obj->getName()+"'");
+        compiler->abort(
+            "Problem with address or netmask in the object or one "
+            "of its interfaces: '" + obj->getName() + "'");
     }
 
     if (addr->isAny() && mask->isAny()) 
@@ -107,7 +109,8 @@ string RoutingCompiler_pix::PrintRule::_printAddr(Address  *o)
     return ostr.str();
 }
 
-RoutingCompiler_pix::PrintRule::PrintRule(const std::string &name) : RoutingRuleProcessor(name)
+RoutingCompiler_pix::PrintRule::PrintRule(const std::string &name) :
+    RoutingRuleProcessor(name)
 {
 }
 
@@ -124,18 +127,19 @@ bool RoutingCompiler_pix::PrintRule::processNext()
     string::size_type c1, c2;
     c1 = 0;
     
-    if (rl != current_rule_label) {
+    if (rl != current_rule_label)
+    {
             compiler->output << "! " << endl;
             compiler->output << "! Rule " << rl << endl;
             compiler->output << "! " << endl;
-            compiler->output << "echo \"Routing rule " << rl << "\"" << endl;
+            compiler->output << "! \"Routing rule " << rl << "\"" << endl;
             compiler->output << "! " << endl;
     }
     
-    if( rule->getRuleType() != RoutingRule::MultiPath ) {
-    
-        if (rl != current_rule_label) {
-
+    if( rule->getRuleType() != RoutingRule::MultiPath )
+    {
+        if (rl != current_rule_label)
+        {
             while ( (c2 = comm.find('\n',c1)) != string::npos ) {
                 compiler->output << "! " << comm.substr(c1,c2-c1) << endl;
                 c1 = c2 + 1;
@@ -150,10 +154,9 @@ bool RoutingCompiler_pix::PrintRule::processNext()
         string command_line = RoutingRuleToString(rule);
         compiler->output << command_line;
     
-    } else {
-           
-        throw FWException(_("MultiPath routing not supported by platform"));
-
+    } else
+    {
+        throw FWException("MultiPath routing not supported by platform");
     }
     return true;
 }
@@ -166,7 +169,7 @@ string RoutingCompiler_pix::PrintRule::RoutingRuleToString(RoutingRule *rule)
     ref = dstrel->front();
     Address *dst = Address::cast(FWReference::cast(ref)->getPointer());
     if(dst == NULL)
-	throw FWException(_("Broken DST in ")+rule->getLabel());
+	throw FWException("Broken DST in " + rule->getLabel());
         
     std::ostringstream command_line;
 
@@ -193,15 +196,11 @@ string RoutingCompiler_pix::PrintRule::_printRGtw(RoutingRule *rule)
     RuleElementRGtw *gtwrel = rule->getRGtw();
     ref = gtwrel->front();
     Address *gtw = Address::cast(FWReference::cast(ref)->getPointer());
-    if (gtw == NULL)
-        throw FWException(_("Broken GTW in ")+rule->getLabel());
-    
+    if (gtw == NULL) throw FWException("Broken GTW in " + rule->getLabel());
+
     string gateway = _printAddr(gtw);
-    
-    if (gateway != "default ")
-	return gateway;
-    else
-	return " ";
+    if (gateway != "default ") return gateway;
+    else return " ";
 }
     
 string RoutingCompiler_pix::PrintRule::_printRItf(RoutingRule *rule)
@@ -212,10 +211,8 @@ string RoutingCompiler_pix::PrintRule::_printRItf(RoutingRule *rule)
     ref = itfrel->front();
     Interface *itf = Interface::cast(FWReference::cast(ref)->getPointer());
     
-    if (itf != NULL)
-	return itf->getLabel() + " ";
-    else
-	return "";
+    if (itf != NULL) return itf->getLabel() + " ";
+    else return "";
 }
 
 string RoutingCompiler_pix::PrintRule::_printRDst(RoutingRule *rule)
@@ -225,13 +222,10 @@ string RoutingCompiler_pix::PrintRule::_printRDst(RoutingRule *rule)
     RuleElementRDst *dstrel = rule->getRDst();
     ref = dstrel->front();
     Address *dst = Address::cast(FWReference::cast(ref)->getPointer());
-    if (dst==NULL)
-        throw FWException(_("Broken DST in ")+rule->getLabel());
+    if (dst==NULL) throw FWException("Broken DST in " + rule->getLabel());
     
     string dest = _printAddr(dst);
 
-    if (dest != "default ")
-	return dest;
-    else
-	return "0.0.0.0 0.0.0.0 ";
+    if (dest != "default ") return dest;
+    else return "0.0.0.0 0.0.0.0 ";
 }

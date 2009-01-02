@@ -3,8 +3,6 @@
 <FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1230842501" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -13901,7 +13899,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id47B7A69C21818" host_OS="pix_os" inactive="False" lastCompiled="1230842577" lastInstalled="1203142969" lastModified="1230842614" platform="pix" version="7.0" name="pix515" comment="Similar to fw 1, but the firewall is used as DHCP and DNS server for internal network.&#10;This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall can send DNS queries to servers out on the Internet. Another rule permits DNS queries from internal network to the firewall. Special rules permit DHCP requests from internal network and replies sent by the firewall." ro="False">
+      <Firewall id="id47B7A69C21818" host_OS="pix_os" inactive="False" lastCompiled="1230855485" lastInstalled="1230855510" lastModified="1230855132" platform="pix" version="7.0" name="pix515" comment="Similar to fw 1, but the firewall is used as DHCP and DNS server for internal network.&#10;This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall can send DNS queries to servers out on the Internet. Another rule permits DNS queries from internal network to the firewall. Special rules permit DHCP requests from internal network and replies sent by the firewall." ro="False">
         <NAT id="id47B7A71321818" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id47B7A71421818" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -14076,7 +14074,7 @@ no sysopt nodnsalias outbound
             </RItf>
             <RoutingRuleOptions/>
           </RoutingRule>
-          <RoutingRule id="id16316X21455" disabled="False" metric="1" position="1" comment="">
+          <RoutingRule id="id16316X21455" disabled="True" metric="1" position="1" comment="">
             <RDst neg="False">
               <ObjectRef ref="id3DAF6080"/>
             </RDst>
