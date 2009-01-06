@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1230842501" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1231213988" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="id16325X21455"/>
     <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
@@ -22,6 +35,10 @@
       <ObjectGroup id="stdid16_1" name="Addresses" comment="" ro="False">
         <IPv4 id="id4388C37D674" name="spamhost1" comment="" ro="False" address="61.150.47.112" netmask="255.255.255.255"/>
         <IPv4 id="id16325X21455" name="internal gw" comment="" ro="False" address="10.3.14.254" netmask="0.0.0.0"/>
+        <IPv4 id="id23261X67574" name="external gw 1" comment="" ro="False" address="22.22.22.254" netmask="0.0.0.0"/>
+        <IPv4 id="id23284X67574" name="internal gw 2" comment="" ro="False" address="192.168.1.254" netmask="0.0.0.0"/>
+        <IPv4 id="id23297X67574" name="external gw2" comment="" ro="False" address="22.22.22.100" netmask="0.0.0.0"/>
+        <IPv4 id="id30235X67574" name="internal gw1" comment="" ro="False" address="192.168.1.254" netmask="0.0.0.0"/>
       </ObjectGroup>
       <ObjectGroup id="stdid04_1" name="Groups" comment="" ro="False">
         <ObjectGroup id="id3D420A09" name="dmz-netzone" comment="" ro="False">
@@ -848,7 +865,7 @@
       <ServiceGroup id="stdid05_1_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="pix_os" inactive="False" lastCompiled="1163922727" lastInstalled="0" lastModified="1176515435" platform="pix" version="6.2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="pix_os" inactive="False" lastCompiled="1163922727" lastInstalled="0" lastModified="1231214031" platform="pix" version="6.2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -1676,7 +1693,56 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="fw-firewall2-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Routing id="fw-firewall2-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RoutingRule id="id16355X67574" disabled="False" metric="0" position="0" comment="">
+            <RDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id23261X67574"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="if-FW-firewall2-eth1"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+          <RoutingRule id="id23264X67574" disabled="False" group="" metric="0" position="1" comment="">
+            <RDst neg="False">
+              <ObjectRef ref="id47B7C22921818"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id30235X67574"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="if-FW-firewall2-eth0"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+          <RoutingRule id="id23275X67574" disabled="False" group="" metric="0" position="2" comment="">
+            <RDst neg="False">
+              <ObjectRef ref="id3FA34EFA"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id23284X67574"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="if-FW-firewall2-eth0"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+          <RoutingRule id="id23287X67574" disabled="False" group="" metric="0" position="3" comment="">
+            <RDst neg="False">
+              <ObjectRef ref="id3B665643"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id23297X67574"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="if-FW-firewall2-eth1"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+        </Routing>
         <Interface id="if-FW-firewall2-eth1" bridgeport="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="if-FW-firewall2-eth1-ipv4" name="a1" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>

@@ -57,8 +57,10 @@ int RoutingCompiler_cisco::prolog()
  */
 bool RoutingCompiler_cisco::eliminateDuplicateRules::processNext()
 {
-    RoutingRule *rule;
-    rule = getNext();
+    RoutingCompiler_cisco *cisco_comp =
+        dynamic_cast<RoutingCompiler_cisco*>(compiler);
+
+    RoutingRule *rule = getNext();
     if (rule == NULL) return false;
 
     if (rule->isFallback() || rule->isHidden())
@@ -67,17 +69,12 @@ bool RoutingCompiler_cisco::eliminateDuplicateRules::processNext()
         return true;
     }
 
-    if (printRule == NULL)
-    {
-        printRule = new PrintRule("");
-        printRule->setContext(compiler);
-    }
-    
     string label = rule->getLabel();
     int bracepos = label.find("(");
     label.erase(0, bracepos);
     
-    string thisRule = label + " " + printRule->RoutingRuleToString(rule);
+    string thisRule = label + " " +
+        cisco_comp->printRule->RoutingRuleToString(rule);
     
     rules_it = rules_seen_so_far.find(thisRule);
             
@@ -87,7 +84,7 @@ bool RoutingCompiler_cisco::eliminateDuplicateRules::processNext()
         msg = "Two of the sub rules created from the gui routing rules " +
             rules_it->second + " and " + rule->getLabel() +
             " are identical, skipping the second. " +
-            "Please revise them to avoid this warning!";
+            "Please revise them to avoid this warning";
         compiler->warning( msg.c_str() );
         return true;
     }
@@ -100,6 +97,7 @@ bool RoutingCompiler_cisco::eliminateDuplicateRules::processNext()
 
 void RoutingCompiler_cisco::compile()
 {
+    printRule = new RoutingCompiler_cisco::PrintRule("");
 }
 
 string RoutingCompiler_cisco::debugPrintRule(Rule *r)

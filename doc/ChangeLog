@@ -1,3 +1,10 @@
+2009-01-05  vadim  <vadim@vk.crocodile.org>
+
+	* RoutingCompiler_cisco.cpp (RoutingCompiler_cisco::compile):
+	fixed bug (no #): routing compiler for pix refused to add more
+	than one routing rule with an error saying that other rules were
+	duplicates. Error was introduced in build 732.
+
 2009-01-02  vadim  <vadim@vk.crocodile.org>
 
 	* RoutingCompiler_iosacl.cpp (RoutingCompiler_iosacl::compile):

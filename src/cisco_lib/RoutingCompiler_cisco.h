@@ -52,23 +52,17 @@ namespace fwcompiler {
 	 */
         DECLARE_ROUTING_RULE_PROCESSOR(DstNegation);
 
-
-        /**
-         * remove duplicate rules
-         */
-	class PrintRule;
-
         /**
          *  eliminates duplicate objects in DST. Uses default comparison
          *  in eliminateDuplicatesInRE which compares IDs
          */
         class eliminateDuplicatesInDST : public eliminateDuplicatesInRE
         {
-            
         public:
-            
-            eliminateDuplicatesInDST(const std::string &n) :
-                eliminateDuplicatesInRE(n,libfwbuilder::RuleElementRDst::TYPENAME) {}
+            eliminateDuplicatesInDST(const std::string &name) :
+                eliminateDuplicatesInRE(name,
+                                        libfwbuilder::RuleElementRDst::TYPENAME)
+                {}
         };
         
         /**
@@ -78,13 +72,11 @@ namespace fwcompiler {
         {
             std::map<std::string, std::string> rules_seen_so_far;
             std::map<std::string, std::string>::iterator rules_it;
-            RoutingCompiler_cisco::PrintRule *printRule;
             
         public:
                 
-            eliminateDuplicateRules(const std::string &name) : RoutingRuleProcessor(name){
-                printRule=NULL;
-            }
+            eliminateDuplicateRules(const std::string &name) :
+                RoutingRuleProcessor(name) {}
             virtual bool processNext();
         };
 
@@ -112,12 +104,12 @@ namespace fwcompiler {
             virtual std::string _printRGtw(libfwbuilder::RoutingRule *r);
             virtual std::string _printRItf(libfwbuilder::RoutingRule *r);
             virtual std::string _printRDst(libfwbuilder::RoutingRule *r);
-
         };
         friend class RoutingCompiler_cisco::PrintRule;
 
     public:
-
+        RoutingCompiler_cisco::PrintRule *printRule;
+        
 	RoutingCompiler_cisco(libfwbuilder::FWObjectDatabase *_db,
                               const std::string &fwname, bool ipv6_policy,
                               fwcompiler::OSConfigurator *_oscnf) :
@@ -125,7 +117,6 @@ namespace fwcompiler {
 
 	virtual int  prolog();
 	virtual void compile();
-
     };
 
 }

@@ -66,6 +66,8 @@ void RoutingCompiler_pix::epilog()
  */
 void RoutingCompiler_pix::compile()
 {
+    printRule = new RoutingCompiler_pix::PrintRule("");
+
     cout << " Compiling routing rules for "
          << fw->getName() << " ..." <<  endl << flush;
 
