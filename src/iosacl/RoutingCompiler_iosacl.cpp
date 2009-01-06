@@ -102,6 +102,8 @@ bool RoutingCompiler_iosacl::ExpandMultipleAddressesExceptInterface::processNext
  */
 void RoutingCompiler_iosacl::compile()
 {
+    printRule = new RoutingCompiler_iosacl::PrintRule("");
+
     cout << " Compiling routing rules for "
          << fw->getName() << " ..." <<  endl << flush;
 

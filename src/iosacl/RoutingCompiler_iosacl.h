@@ -42,10 +42,11 @@ namespace libfwbuilder {
 };
 
 
-namespace fwcompiler {
+namespace fwcompiler
+{
 
-    class RoutingCompiler_iosacl : public RoutingCompiler_cisco {
-
+    class RoutingCompiler_iosacl : public RoutingCompiler_cisco
+    {
     protected:
 
 	virtual std::string myPlatformName();
@@ -57,7 +58,6 @@ namespace fwcompiler {
          *  intact.
          */
         DECLARE_ROUTING_RULE_PROCESSOR(ExpandMultipleAddressesExceptInterface);
-           
         
         class PrintRule : public RoutingCompiler_cisco::PrintRule
         {

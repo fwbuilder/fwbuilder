@@ -69,9 +69,7 @@ RoutingCompiler_iosacl::PrintRule::PrintRule(const std::string &name) :
 
 bool RoutingCompiler_iosacl::PrintRule::processNext()
 {
-    RoutingRule *rule = getNext(); 
-    if (rule == NULL) return false;
-
+    RoutingRule *rule = getNext(); if (rule == NULL) return false;
     tmp_queue.push_back(rule);
     
     string rl = rule->getLabel();
