@@ -53,7 +53,7 @@ using namespace std;
  *                    Methods for printing
  */
 RoutingCompiler_pix::PrintRule::PrintRule(const std::string &name) :
-    RoutingCompiler_cisco::PrintRule::PrintRule(name)
+    RoutingCompiler_cisco::PrintRule(name)
 {
 }
 

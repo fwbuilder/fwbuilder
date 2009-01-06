@@ -31,9 +31,10 @@ namespace libfwbuilder {
 };
 
 
-namespace fwcompiler {
-
-    class RoutingCompiler_cisco : public RoutingCompiler {
+namespace fwcompiler
+{
+    class RoutingCompiler_cisco : public RoutingCompiler
+    {
 
     protected:
      
