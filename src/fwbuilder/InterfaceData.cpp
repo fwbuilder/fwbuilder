@@ -32,11 +32,60 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/InetAddr.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
+
+#include <iostream>
 
 using namespace libfwbuilder;
 using namespace std;
 
-InterfaceData::InterfaceData(const libfwbuilder::Interface &iface) 
+InterfaceData::InterfaceData() : addr_mask()
+{
+    ext = false;
+    isDyn = false;
+    isUnnumbered = false;
+    isBridgePort = false;
+    securityLevel = 0;
+    snmp_type = 0;
+    ostatus = 0;
+}
+
+InterfaceData::InterfaceData(const InterfaceData& other) : addr_mask()
+{
+    id = other.id;
+    name = other.name;
+    label = other.label;
+    if (other.addr_mask.size())
+    {
+        for (list<InetAddrMask*>::const_iterator i=other.addr_mask.begin();
+             i!=other.addr_mask.end(); ++i)
+        {
+            InetAddrMask *am;
+            const InetAddr *ad = (*i)->getAddressPtr();
+            const InetAddr *nm = (*i)->getNetmaskPtr();
+            if (ad==NULL) continue;
+            if (ad->isV6())
+            {
+                am = new Inet6AddrMask();
+                am->setAddress(*(ad));
+                am->setNetmask(*(nm));
+            } else
+                am = new InetAddrMask(*(*i));
+            addr_mask.push_back(am);
+        }
+    }
+
+    ext = other.ext;
+    isDyn = other.isDyn;
+    isUnnumbered = other.isUnnumbered;
+    isBridgePort = other.isBridgePort;
+    securityLevel = other.securityLevel;
+    mac_addr = other.mac_addr;
+    snmp_type = other.snmp_type;
+    ostatus = other.ostatus;
+}
+
+InterfaceData::InterfaceData(const Interface &iface)  : addr_mask()
 {
     id = iface.getId();
     name = iface.getName();
@@ -44,8 +93,15 @@ InterfaceData::InterfaceData(const libfwbuilder::Interface &iface)
     IPv4 *addr = IPv4::cast(iface.getFirstByType(IPv4::TYPENAME));
     if (addr)
     {
-        addr_mask.setAddress(*(addr->getAddressPtr()));
-        addr_mask.setNetmask(*(addr->getNetmaskPtr()));
+        addr_mask.push_back(new InetAddrMask(*(addr->getAddressPtr()),
+                                             *(addr->getNetmaskPtr())));
+    }
+
+    IPv6 *addr6 = IPv6::cast(iface.getFirstByType(IPv6::TYPENAME));
+    if (addr6)
+    {
+        addr_mask.push_back(new Inet6AddrMask(*(addr6->getAddressPtr()),
+                                              *(addr6->getNetmaskPtr())));
     }
 
     securityLevel = iface.getSecurityLevel();
@@ -57,6 +113,12 @@ InterfaceData::InterfaceData(const libfwbuilder::Interface &iface)
         mac_addr = pa->getPhysAddress();
     label = iface.getLabel();
     networkZone = iface.getStr("network_zone");
+}
+
+InterfaceData::~InterfaceData()
+{
+    // TODO: memory leak! need to delete items in the list addr_mask. 
+    addr_mask.clear();
 }
 
 void InterfaceData::guessLabel(const string&)
@@ -78,11 +140,10 @@ void InterfaceData::guessLabel(const string&)
     if (!isDyn &&
         !isUnnumbered &&
         !isBridgePort &&
-        addr_mask.getAddressPtr()->toString() == InetAddr::getLoopbackAddr().toString())
+        addr_mask.size()!=0 &&
+        addr_mask.front()->getAddressPtr()->toString() == InetAddr::getLoopbackAddr().toString())
         label="loopback";
 }
-
-
 
 void InterfaceData::guessSecurityLevel(const string&)
 {
@@ -114,15 +175,15 @@ void InterfaceData::guessSecurityLevel(const string&)
          llbl=="internal_net" ||
          llbl=="internal net" )      securityLevel=100;
 
-    if ( (*(addr_mask.getAddressPtr()))==InetAddr::getLoopbackAddr())
+    if ( (*(addr_mask.front()->getAddressPtr()))==InetAddr::getLoopbackAddr())
         securityLevel=100; 
     if ( name=="Null0" )       securityLevel=100; 
 
     if (securityLevel==-1 && !isDyn && !isUnnumbered && !isBridgePort)
     {
-        if (n10.belongs(  InetAddr( *(addr_mask.getAddressPtr()) ) )) securityLevel=100;
-        if (n172.belongs( InetAddr( *(addr_mask.getAddressPtr()) ) )) securityLevel=100;
-        if (n192.belongs( InetAddr( *(addr_mask.getAddressPtr()) ) )) securityLevel=100;
+        if (n10.belongs(  InetAddr( *(addr_mask.front()->getAddressPtr()) ) )) securityLevel=100;
+        if (n172.belongs( InetAddr( *(addr_mask.front()->getAddressPtr()) ) )) securityLevel=100;
+        if (n192.belongs( InetAddr( *(addr_mask.front()->getAddressPtr()) ) )) securityLevel=100;
     }
 
     if (isDyn || isUnnumbered || isBridgePort) securityLevel=0;
@@ -167,14 +228,14 @@ void  InterfaceData::guessSecurityLevel(const string &platform,
 
     if (ifaces.size()==2)
     {
-        const InetAddr *address = ifaces.front().addr_mask.getAddressPtr();
+        const InetAddr *address = ifaces.front().addr_mask.front()->getAddressPtr();
         if (*address==InetAddr::getLoopbackAddr())
         {
             ifaces.front().securityLevel=100;
             ifaces.back().securityLevel=0;
         } else
         {
-            const InetAddr *address = ifaces.back().addr_mask.getAddressPtr();
+            const InetAddr *address = ifaces.back().addr_mask.front()->getAddressPtr();
             if (*address==InetAddr::getLoopbackAddr()) 
             {
                 ifaces.front().securityLevel=0;

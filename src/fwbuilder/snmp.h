@@ -123,11 +123,11 @@ class SNMPVariable_Bits : public SNMPVariable
     
     SNMPVariable_Bits(u_char *v, size_t l) 
     { 
-        type=snmp_bits; 
-        if(v)
+        type = snmp_bits; 
+        if (v)
         {
             len=l; 
-            value=new unsigned char[len];
+            value = (uint32_t*)(new unsigned char[len]);
             memcpy((void*)value, v, len);
         } else
         {
@@ -136,7 +136,7 @@ class SNMPVariable_Bits : public SNMPVariable
         }
     }
 
-    const unsigned char *value;
+    const uint32_t *value;
     size_t len;
 };
 
@@ -154,8 +154,8 @@ class SNMPVariable_IPaddr  : public SNMPVariable
     
     virtual std::string toString();
 
-    virtual InetAddr    getInetAddrValue() throw(FWException);
-    virtual InetAddr getNetmaskValue  () throw(FWException);
+    virtual InetAddr getInetAddrValue() throw(FWException);
+    virtual InetAddr getNetmaskValue() throw(FWException);
 
     protected:
     
@@ -305,6 +305,10 @@ class SNMPQuery : public BackgroundOp
     static const char *RFC1213_MIB_PREFIX ;
     static const char *RFC1213_MIB_PREFIX_IPROUTEDEST_PREFIX ;
 
+    static const char* SNMP_IP_MIB_RFC4293_V4_INDEX;
+    static const char* SNMP_IP_MIB_RFC4293_V6_INDEX;
+    static const char* SNMP_IP_MIB_RFC4293_V6_PREFIX;
+    
     std::string  hostname, community;
     std::string  descr, contact, location, sysname;
     std::map<int, InterfaceData> interfaces;
@@ -313,7 +317,17 @@ class SNMPQuery : public BackgroundOp
     int  retries;
     long timeout;
 
-    public:
+    void walkInterfaceIndexTable(Logger *logger,
+                                 SNMPConnection *c,
+                                 const char* OID,
+                                 std::map<long, std::list<std::string> > &addr);
+    void getAddressAndNetmask(Logger *logger,
+                              SNMPConnection *c,
+                              std::string adentry,
+                              InetAddr **addr,
+                              InetAddr **netmask);
+
+public:
 
     SNMPQuery() {}
 
@@ -339,9 +353,9 @@ class SNMPQuery : public BackgroundOp
     void fetchRoutingTable(Logger *,SyncFlag *stop_program,
                            SNMPConnection *connection=NULL) throw(FWException);
     
-    const std::map<int, InterfaceData> &getInterfaces() ;
-    const std::map<InetAddr, std::string> &getArtpTable()  ;
-    const std::vector<IPRoute> &getRoutes()     ;
+    std::map<int, InterfaceData>* getInterfaces();
+    std::map<InetAddr, std::string>* getArpTable();
+    std::vector<IPRoute>* getRoutes();
 
     const std::string& getSysname  ();
     const std::string& getDescr    ();
@@ -439,14 +453,14 @@ class SNMPCrawler : public BackgroundOp
     private:
 
     const std::vector<InetAddrMask> *include    ;
-    static const InetAddr ZERO_IP      ;
     static const InetAddrMask LOOPBACK_NET ;
+    static const InetAddrMask IPV6_LOOPBACK_NET ;
     static const InetAddr PTP_NETMASK  ;
 
-    std::map<InetAddr, std::string>       queue        ;
-    std::map<InetAddr, CrawlerFind>  found        ;
-    std::set<InetAddrMask>               networks     ;
-    std::string                       community    ;
+    std::map<InetAddr, std::string> queue;
+    std::map<InetAddr, CrawlerFind> found;
+    std::set<InetAddrMask*> networks;
+    std::string community;
     int                          snmp_retries ;
     long                         snmp_timeout ;
     bool                         recursive    ;
@@ -503,11 +517,14 @@ class SNMPCrawler : public BackgroundOp
 	      const std::vector<InetAddrMask> *include=NULL);
 
     std::map<InetAddr, CrawlerFind>  getAllIPs();
-    std::set<InetAddrMask> getNetworks();
+    std::set<InetAddrMask*> getNetworks();
         
-    virtual void run_impl(Logger *logger,SyncFlag *stop_program) throw(FWException);
-    void remove_virtual(Logger *logger,SyncFlag *stop_program) throw(FWException);
-    void bacresolve_results(Logger *logger,SyncFlag *stop_program) throw(FWException);
+    virtual void run_impl(Logger *logger,SyncFlag *stop_program)
+        throw(FWException);
+    void remove_virtual(Logger *logger,SyncFlag *stop_program)
+        throw(FWException);
+    void bacresolve_results(Logger *logger,SyncFlag *stop_program)
+        throw(FWException);
 
 };
 

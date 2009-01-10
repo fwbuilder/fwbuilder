@@ -178,14 +178,25 @@ InetAddrMask& InetAddrMask::operator=(const InetAddrMask &o)
     return *this;
 }
 
+bool InetAddrMask::operator<(const InetAddrMask &b)
+{
+    if (this->getAddressPtr()->addressFamily() !=
+        b.getAddressPtr()->addressFamily()) return false;
+    return *(this->getAddressPtr()) < *(b.getAddressPtr());
+}
+
 bool libfwbuilder::operator==(const InetAddrMask &a, const InetAddrMask &b)
 {
+    if (a.getAddressPtr()->addressFamily() !=
+        b.getAddressPtr()->addressFamily()) return false;
     return ( *(a.getNetmaskPtr()) == *(b.getNetmaskPtr()) &&
              *(a.getAddressPtr()) == *(b.getAddressPtr()));
 }
 
 bool libfwbuilder::operator<(const InetAddrMask &a, const InetAddrMask &b)
 {
+    if (a.getAddressPtr()->addressFamily() !=
+        b.getAddressPtr()->addressFamily()) return false;
     return *(a.getAddressPtr()) < *(b.getAddressPtr());
 }
 

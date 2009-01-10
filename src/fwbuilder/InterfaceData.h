@@ -33,14 +33,19 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/physAddress.h"
 #include "fwbuilder/InetAddrMask.h"
+#include "fwbuilder/Inet6AddrMask.h"
+
+#include <list>
 
 namespace libfwbuilder
 {
-    struct InterfaceData
+    class InterfaceData
     {
+public:
+        
         std::string id;
         std::string name;
-        libfwbuilder::InetAddrMask addr_mask;
+        std::list<libfwbuilder::InetAddrMask*> addr_mask;
         bool ext;
         int snmp_type;
         int ostatus;
@@ -52,34 +57,10 @@ namespace libfwbuilder
         std::string label;
         std::string networkZone;
 
-        InterfaceData()
-        {
-            ext = false;
-            isDyn = false;
-            isUnnumbered = false;
-            isBridgePort = false;
-            securityLevel = 0;
-            snmp_type = 0;
-            ostatus = 0;
-        }
-
-        InterfaceData(const InterfaceData& other)
-        {
-            id = other.id;
-            name = other.name;
-            label = other.label;
-            addr_mask = other.addr_mask;
-            ext = other.ext;
-            isDyn = other.isDyn;
-            isUnnumbered = other.isUnnumbered;
-            isBridgePort = other.isBridgePort;
-            securityLevel = other.securityLevel;
-            mac_addr = other.mac_addr;
-            snmp_type = other.snmp_type;
-            ostatus = other.ostatus;
-        }
-    
+        InterfaceData();
+        InterfaceData(const InterfaceData& other);
         InterfaceData(const libfwbuilder::Interface &iface);
+        virtual ~InterfaceData();
 
 /**
  *  this method is a collection of heuristics that allow us to assign

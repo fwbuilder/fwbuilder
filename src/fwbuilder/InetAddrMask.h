@@ -101,6 +101,7 @@ public:
 
     
     InetAddrMask& operator=(const InetAddrMask &o);
+    bool operator<(const InetAddrMask &b);
 
     friend bool operator==(const InetAddrMask &a, const InetAddrMask &b);
     friend bool operator<(const InetAddrMask &a, const InetAddrMask &b);

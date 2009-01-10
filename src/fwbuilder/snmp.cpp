@@ -33,6 +33,8 @@
 #include <time.h>
 
 #include <fwbuilder/physAddress.h>
+#include <fwbuilder/InetAddrMask.h>
+#include <fwbuilder/Inet6AddrMask.h>
 #include <fwbuilder/IPv4.h>
 
 /*
@@ -57,6 +59,7 @@
 #include <algorithm>
 #include <memory>
 #include <sstream>
+#include <iterator>
 
 /**
  * Define this if you need extra debug output.
@@ -66,70 +69,36 @@
 using namespace std;
 using namespace libfwbuilder;
 
-/*
- *  symbolic OID names - this requires MIB installed on the system,
- *  which may be a problem. In particular, we do not ship MIBs with
- *  windows package so the symbolic OID names won't work there at all
-
-const char *SNMPQuery::SNMP_INTERFACE_ASTATUS= "interfaces.ifTable.ifEntry.ifAdminStatus"  ;
-const char *SNMPQuery::SNMP_INTERFACE_OSTATUS= "interfaces.ifTable.ifEntry.ifOperStatus"   ;
-const char *SNMPQuery::SNMP_INTERFACE_INDEX  = "interfaces.ifTable.ifEntry.ifIndex"        ;
-const char *SNMPQuery::SNMP_INTERFACES_DESCR = "interfaces.ifTable.ifEntry.ifDescr"        ;
-const char *SNMPQuery::SNMP_INTERFACES_PHYSA = "interfaces.ifTable.ifEntry.ifPhysAddress"  ;
-const char *SNMPQuery::SNMP_INTERFACES_TYPE  = "interfaces.ifTable.ifEntry.ifType"         ;
-const char *SNMPQuery::SNMP_ADDR_INDEX_TABLE = "ip.ipAddrTable.ipAddrEntry.ipAdEntIfIndex" ;
-const char *SNMPQuery::SNMP_NMASK_TABLE      = "ip.ipAddrTable.ipAddrEntry.ipAdEntNetMask" ;
-const char *SNMPQuery::SNMP_ADDR_TABLE       = "ip.ipAddrTable.ipAddrEntry.ipAdEntAddr"    ;
-const char *SNMPQuery::SNMP_BCAST_TABLE      = "ip.ipAddrTable.ipAddrEntry.ipAdEntBcastAddr" ;
-const char *SNMPQuery::SNMP_AT_TABLE_NET     = "at.atTable.atEntry.atNetAddress";
-const char *SNMPQuery::SNMP_AT_TABLE_PHYS    = "at.atTable.atEntry.atPhysAddress";
-const char *SNMPQuery::IP_MIB_PREFIX         = "IP-MIB::"             ;
-const char *SNMPQuery::IP_MIB_ENTIFINDEX_PREFIX = "IP-MIB::ipAdEntIfIndex";
-
-const char *SNMPQuery::RFC1213_MIB_PREFIX    = "RFC1213-MIB::"        ;
-const char *SNMPQuery::RFC1213_MIB_PREFIX_IPROUTEDEST_PREFIX = 
-						"RFC1213-MIB::ipRouteDest" ;
-
-const char *SNMPQuery::SNMP_SYSNAME          = "system.sysName.0"     ;
-const char *SNMPQuery::SNMP_SYSDESCR         = "system.sysDescr.0"    ;
-const char *SNMPQuery::SNMP_CONTACT          = "system.sysContact.0"  ;
-const char *SNMPQuery::SNMP_LOCATION         = "system.sysLocation.0" ;
-
-const char *SNMPQuery::SNMP_ROUTE_DST_TABLE  = "ip.ipRouteTable.ipRouteEntry.ipRouteDest"    ;
-const char *SNMPQuery::SNMP_ROUTE_NM_TABLE   = "ip.ipRouteTable.ipRouteEntry.ipRouteMask"    ;
-const char *SNMPQuery::SNMP_ROUTE_TYPE_TABLE = "ip.ipRouteTable.ipRouteEntry.ipRouteType"    ;
-const char *SNMPQuery::SNMP_ROUTE_IF_TABLE   = "ip.ipRouteTable.ipRouteEntry.ipRouteIfIndex" ;
-const char *SNMPQuery::SNMP_ROUTE_GW_TABLE   = "ip.ipRouteTable.ipRouteEntry.ipRouteNextHop" ;
-const int   SNMPQuery::SNMP_DIRECT_ROUTE     = 3;
-*/
-
-
 /* Compiled OIDs */
-const char *SNMPQuery::SNMP_INTERFACE_ASTATUS= ".1.3.6.1.2.1.2.2.1.7"  ;
-const char *SNMPQuery::SNMP_INTERFACE_OSTATUS= ".1.3.6.1.2.1.2.2.1.8"   ;
-const char *SNMPQuery::SNMP_INTERFACE_INDEX  = ".1.3.6.1.2.1.2.2.1.1"        ;
-const char *SNMPQuery::SNMP_INTERFACES_DESCR = ".1.3.6.1.2.1.2.2.1.2"        ;
-const char *SNMPQuery::SNMP_INTERFACES_PHYSA = ".1.3.6.1.2.1.2.2.1.6"  ;
-const char *SNMPQuery::SNMP_INTERFACES_TYPE  = ".1.3.6.1.2.1.2.2.1.3"         ;
-const char *SNMPQuery::SNMP_ADDR_INDEX_TABLE = ".1.3.6.1.2.1.4.20.1.2" ;
-const char *SNMPQuery::SNMP_NMASK_TABLE      = ".1.3.6.1.2.1.4.20.1.3" ;
-const char *SNMPQuery::SNMP_ADDR_TABLE       = ".1.3.6.1.2.1.4.20.1.1"    ;
-const char *SNMPQuery::SNMP_BCAST_TABLE      = ".1.3.6.1.2.1.4.20.1.4" ;
+const char *SNMPQuery::SNMP_INTERFACE_ASTATUS= ".1.3.6.1.2.1.2.2.1.7";
+const char *SNMPQuery::SNMP_INTERFACE_OSTATUS= ".1.3.6.1.2.1.2.2.1.8";
+const char *SNMPQuery::SNMP_INTERFACE_INDEX  = ".1.3.6.1.2.1.2.2.1.1";
+const char *SNMPQuery::SNMP_INTERFACES_DESCR = ".1.3.6.1.2.1.2.2.1.2";
+const char *SNMPQuery::SNMP_INTERFACES_PHYSA = ".1.3.6.1.2.1.2.2.1.6";
+const char *SNMPQuery::SNMP_INTERFACES_TYPE  = ".1.3.6.1.2.1.2.2.1.3";
+const char *SNMPQuery::SNMP_ADDR_INDEX_TABLE = ".1.3.6.1.2.1.4.20.1.2";
+const char *SNMPQuery::SNMP_NMASK_TABLE      = ".1.3.6.1.2.1.4.20.1.3";
+const char *SNMPQuery::SNMP_ADDR_TABLE       = ".1.3.6.1.2.1.4.20.1.1";
+const char *SNMPQuery::SNMP_BCAST_TABLE      = ".1.3.6.1.2.1.4.20.1.4";
 const char *SNMPQuery::SNMP_AT_TABLE_NET     = ".1.3.6.1.2.1.3.1.1.3";
 const char *SNMPQuery::SNMP_AT_TABLE_PHYS    = ".1.3.6.1.2.1.3.1.1.2";
 
-const char *SNMPQuery::SNMP_SYSNAME          = ".1.3.6.1.2.1.1.5.0"     ;
-const char *SNMPQuery::SNMP_SYSDESCR         = ".1.3.6.1.2.1.1.1.0"    ;
-const char *SNMPQuery::SNMP_CONTACT          = ".1.3.6.1.2.1.1.4.0"  ;
-const char *SNMPQuery::SNMP_LOCATION         = ".1.3.6.1.2.1.1.6.0" ;
+const char *SNMPQuery::SNMP_SYSNAME          = ".1.3.6.1.2.1.1.5.0";
+const char *SNMPQuery::SNMP_SYSDESCR         = ".1.3.6.1.2.1.1.1.0";
+const char *SNMPQuery::SNMP_CONTACT          = ".1.3.6.1.2.1.1.4.0";
+const char *SNMPQuery::SNMP_LOCATION         = ".1.3.6.1.2.1.1.6.0";
 
-const char *SNMPQuery::SNMP_ROUTE_DST_TABLE  = ".1.3.6.1.2.1.4.21.1.1"    ;
-const char *SNMPQuery::SNMP_ROUTE_NM_TABLE   = ".1.3.6.1.2.1.4.21.1.11"    ;
-const char *SNMPQuery::SNMP_ROUTE_TYPE_TABLE = ".1.3.6.1.2.1.4.21.1.8"    ;
-const char *SNMPQuery::SNMP_ROUTE_IF_TABLE   = ".1.3.6.1.2.1.4.21.1.2" ;
-const char *SNMPQuery::SNMP_ROUTE_GW_TABLE   = ".1.3.6.1.2.1.4.21.1.7" ;
+const char *SNMPQuery::SNMP_ROUTE_DST_TABLE  = ".1.3.6.1.2.1.4.21.1.1";
+const char *SNMPQuery::SNMP_ROUTE_NM_TABLE   = ".1.3.6.1.2.1.4.21.1.11";
+const char *SNMPQuery::SNMP_ROUTE_TYPE_TABLE = ".1.3.6.1.2.1.4.21.1.8";
+const char *SNMPQuery::SNMP_ROUTE_IF_TABLE   = ".1.3.6.1.2.1.4.21.1.2";
+const char *SNMPQuery::SNMP_ROUTE_GW_TABLE   = ".1.3.6.1.2.1.4.21.1.7";
 const int   SNMPQuery::SNMP_DIRECT_ROUTE     = 3;
 
+const char* SNMPQuery::SNMP_IP_MIB_RFC4293_V6_INDEX =
+    ".1.3.6.1.2.1.4.34.1.3.2.16";
+const char* SNMPQuery::SNMP_IP_MIB_RFC4293_V6_PREFIX =
+    ".1.3.6.1.2.1.4.34.1.5.2.16";
 
 
 /**
@@ -162,40 +131,40 @@ static FWObjectDatabase *snmp_tmp_db = NULL;
 
 SNMPQuery::SNMPQuery(string h,string c, int retries_, long timeout_)
 {
-    hostname  = h  ;
-    community = c  ;
+    hostname  = h;
+    community = c;
     retries   = retries_;
     timeout   = timeout_;
 
-    descr     = "" ;
-    contact   = "" ;
-    location  = "" ;
+    descr     = "";
+    contact   = "";
+    location  = "";
 }
 
 void SNMPQuery::init(string h, string c, int retries_, long timeout_)
 {
-    hostname  = h  ;
-    community = c  ;
+    hostname  = h;
+    community = c;
     retries   = retries_;
     timeout   = timeout_;
 
-    descr     = "" ;
-    contact   = "" ;
-    location  = "" ;
+    descr     = "";
+    contact   = "";
+    location  = "";
 
     char *snmp_out_opt = (char*)("n");
     snmp_out_toggle_options(snmp_out_opt);
 
     if (snmp_tmp_db==NULL)
         snmp_tmp_db = new FWObjectDatabase();
-
 }
 
 SNMPQuery::~SNMPQuery()
 {
 }
 
-void SNMPQuery::fetchAll(Logger *logger,SyncFlag *stop_program) throw(FWException)
+void SNMPQuery::fetchAll(Logger *logger,SyncFlag *stop_program)
+    throw(FWException)
 {
     if(community.empty())
         throw FWException("No SNMP community specified");
@@ -206,19 +175,19 @@ void SNMPQuery::fetchAll(Logger *logger,SyncFlag *stop_program) throw(FWExceptio
     SNMPConnection c(hostname, community);
     c.connect(retries, timeout);
 
-    CHECK_STOP_AND_THROW_EXCEPTION
+    CHECK_STOP_AND_THROW_EXCEPTION;
     
     fetchSysInfo   (logger,stop_program, &c);
-    CHECK_STOP_AND_THROW_EXCEPTION
+    CHECK_STOP_AND_THROW_EXCEPTION;
     
     fetchInterfaces(logger,stop_program, &c);
-    CHECK_STOP_AND_THROW_EXCEPTION
+    CHECK_STOP_AND_THROW_EXCEPTION;
     
     fetchArpTable  (logger,stop_program, &c);
-    CHECK_STOP_AND_THROW_EXCEPTION
+    CHECK_STOP_AND_THROW_EXCEPTION;
 
     fetchRoutingTable  (logger,stop_program, &c);
-    CHECK_STOP_AND_THROW_EXCEPTION
+    CHECK_STOP_AND_THROW_EXCEPTION;
 }
 
 void SNMPQuery::fetchArpTable(Logger *logger,SyncFlag *stop_program, SNMPConnection *connection) throw(FWException)
@@ -256,17 +225,17 @@ void SNMPQuery::fetchArpTable(Logger *logger,SyncFlag *stop_program, SNMPConnect
     {
         *logger << "Walking atNetAddress table...\n";
         multimap<string, SNMPVariable* > nw=c->walk(SNMP_AT_TABLE_NET  );
-        CHECK_STOP_AND_THROW_EXCEPTION
+        CHECK_STOP_AND_THROW_EXCEPTION;
         *logger << "Walking atPhysAddress table...\n";
         multimap<string, SNMPVariable* > pw=c->walk(SNMP_AT_TABLE_PHYS );
-        CHECK_STOP_AND_THROW_EXCEPTION
+        CHECK_STOP_AND_THROW_EXCEPTION;
 
         try
         {
 //            int preflen = strlen(SNMP_AT_TABLE_NET);
             for(multimap<string, SNMPVariable* >::iterator j = nw.begin(); j!=nw.end(); ++j)
             {
-                CHECK_STOP_AND_THROW_EXCEPTION
+                CHECK_STOP_AND_THROW_EXCEPTION;
                 if((*j).second->type!=SNMPVariable::snmp_ipaddr)
                 {
                     *logger << "unexpected result type in '" << 
@@ -353,7 +322,7 @@ void SNMPQuery::fetchRoutingTable(Logger *logger,SyncFlag *stop_program, SNMPCon
         }
     }
 
-    CHECK_STOP_AND_THROW_EXCEPTION
+    CHECK_STOP_AND_THROW_EXCEPTION;
     
     vector<SNMPVariable*> v;
     try
@@ -361,12 +330,12 @@ void SNMPQuery::fetchRoutingTable(Logger *logger,SyncFlag *stop_program, SNMPCon
         // Get Indices and destinations
         
         multimap<string, SNMPVariable* > w=c->walk(SNMP_ROUTE_DST_TABLE);
-        CHECK_STOP_AND_THROW_EXCEPTION
+        CHECK_STOP_AND_THROW_EXCEPTION;
         try
         {
             for(multimap<string, SNMPVariable* >::iterator j = w.begin(); j!=w.end(); ++j)
             {
-                CHECK_STOP_AND_THROW_EXCEPTION
+                CHECK_STOP_AND_THROW_EXCEPTION;
                 if((*j).second->type!=SNMPVariable::snmp_ipaddr)
                 {
                     str << "unexpected result type in '"
@@ -485,7 +454,136 @@ bool SNMPQuery::isDefault(const IPRoute &r) const
     r.getDestination() == InetAddr("0.0.0.0");
 }
 
-void SNMPQuery::fetchInterfaces(Logger *logger,SyncFlag *stop_program,
+void SNMPQuery::walkInterfaceIndexTable(Logger *logger, 
+                                        SNMPConnection *c,
+                                        const char* oid,
+                                        map<long, list<string> > &addr)
+{
+    std::ostringstream str;
+    multimap<string, SNMPVariable* > w;
+    w = c->walk(oid);
+    CHECK_STOP_AND_THROW_EXCEPTION;
+
+    for (multimap<string, SNMPVariable* >::iterator j = w.begin();
+         j!=w.end(); ++j)
+    {
+        CHECK_STOP_AND_THROW_EXCEPTION;
+        if ((*j).second->type != SNMPVariable::snmp_int)
+        {
+            str << "unexpected result type in '"
+                << oid << "' table. Skipping it.\n";
+            *logger << str;
+                
+            continue;
+        }
+        long ind = SNMPVariable::var2Int((*j).second);
+
+        string iname = (*j).first.substr(strlen(oid)+1);
+
+/*
+ * Example (two interfaces, first has two addresses):
+ *
+ * ip.ipAddrTable.ipAddrEntry.ipAdEntIfIndex.10.3.14.201 = 1
+ * ip.ipAddrTable.ipAddrEntry.ipAdEntIfIndex.192.168.100.100 = 1
+ * ip.ipAddrTable.ipAddrEntry.ipAdEntIfIndex.222.22.22.222 = 2
+ *
+ * at this point iname is watever text we get after
+ * "ip.ipAddrTable.ipAddrEntry.ipAdEntIfIndex." , ind is an index
+ */
+        addr[ind].push_back(iname);
+        str << "interface #" << ind << ": " << iname << "\n";
+        *logger << str;
+    }
+
+    for (multimap<string, SNMPVariable* >::iterator j = w.begin();
+         j!=w.end(); ++j)
+    {
+        delete (*j).second;
+    }
+    w.clear();
+}
+
+void SNMPQuery::getAddressAndNetmask(Logger *logger,
+                                     SNMPConnection *c,
+                                     std::string adentry,
+                                     InetAddr **addr,
+                                     InetAddr **netmask)
+{
+    std::ostringstream str;
+    vector<SNMPVariable*> v;
+    list<string> components;
+    istringstream iss(adentry);
+
+    char item[4];
+    while (iss.getline(item, 4, '.'))
+    {
+        components.push_back(item);
+    }
+
+    if (components.size()==4)
+    {
+        // IPv4 address
+
+        // get netmasks
+        v = c->get(string(SNMP_NMASK_TABLE)+"."+adentry);
+        if (v.size()!=1)
+            throw FWException("Can't get netmask");
+        if (v[0]->type!=SNMPVariable::snmp_ipaddr)
+            throw FWException("Wrong return type for netmask");
+        *netmask = new InetAddr(dynamic_cast<SNMPVariable_IPaddr*>(
+                                    v[0])->getNetmaskValue().toString());
+        SNMPVariable::freeVarList(v);
+            
+        // get addresss
+        v = c->get(string(SNMP_ADDR_TABLE)+"."+adentry);
+        if(v.size()!=1)
+            throw FWException("Can't get IP address");
+        if(v[0]->type!=SNMPVariable::snmp_ipaddr)
+            throw FWException("Wrong return type for IP address");
+        *addr = new InetAddr(dynamic_cast<SNMPVariable_IPaddr*>(
+                                 v[0])->getInetAddrValue().toString());
+        SNMPVariable::freeVarList(v);
+    }
+    else
+    {
+        // Assuming everything that is not IPv4 is IPv6
+
+        // get prefix
+        string oid = string(SNMP_IP_MIB_RFC4293_V6_PREFIX) + "." + adentry;
+
+        v = c->get(oid);
+        if (v.size()!=1) throw FWException("Can't get prefix data");
+
+        string pref = v[0]->toString();
+        SNMPVariable::freeVarList(v);
+
+        // response to this query has type OBJECT_ID. Corresponding
+        // SNMPVariable class returns dot-separated string representation
+        // (SNMPVariable_Bits)
+        // We need to find the last octet, which is the prefix we need.
+        
+        pref = pref.substr(pref.rfind(".") + 1);
+
+        *netmask = new InetAddr(AF_INET6, atoi(pref.c_str()));
+
+        // to build proper ipv6 address need to convert adentry to
+        // a ':' separated hex representation
+        ostringstream str_addr;
+        bool first = true;
+        for (list<string>::iterator i=components.begin();
+             i!=components.end(); ++i)
+        {
+            if (!first) str_addr << ":";
+            str_addr << hex << atoi(i->c_str());
+            ++i;
+            str_addr << hex << atoi(i->c_str());
+            first = false;
+        }
+        *addr = new InetAddr(AF_INET6, str_addr.str());
+    }
+}
+
+void SNMPQuery::fetchInterfaces(Logger *logger, SyncFlag *stop_program,
                                 SNMPConnection *connection) throw(FWException)
 {
     std::ostringstream str;
@@ -516,74 +614,51 @@ void SNMPQuery::fetchInterfaces(Logger *logger,SyncFlag *stop_program,
         }
     }
     
-    CHECK_STOP_AND_THROW_EXCEPTION
+    CHECK_STOP_AND_THROW_EXCEPTION;
             
     multimap<string, SNMPVariable* > w;
     vector<SNMPVariable*>            v;
     try
     {
-        *logger << "Index of interface addresses.\n";
 
         map<long, list<string> > addr;
-        w=c->walk(SNMP_ADDR_INDEX_TABLE);
-        CHECK_STOP_AND_THROW_EXCEPTION
 
-        for(multimap<string, SNMPVariable* >::iterator j = w.begin(); j!=w.end(); ++j)
-        {
-            CHECK_STOP_AND_THROW_EXCEPTION
-            if((*j).second->type!=SNMPVariable::snmp_int)
-            {
-                str << "unexpected result type in '"
-                    << SNMP_ADDR_INDEX_TABLE << "' table. Skipping it.\n";
-                *logger << str;
-                
-                continue;
-            }
-            long ind = SNMPVariable::var2Int((*j).second);
+        *logger << "Getting IPv4 addresses.";
+        walkInterfaceIndexTable(logger, c, SNMP_ADDR_INDEX_TABLE, addr);
 
-	    string iname=(*j).first.substr(strlen(SNMP_ADDR_INDEX_TABLE)+1);
+        *logger << "Getting IPv6 addresses using IP-MIB RFC4293.\n";
+        *logger << "This MIB is only supported by latest versions of net-snmp\n";
+        walkInterfaceIndexTable(logger, c, SNMP_IP_MIB_RFC4293_V6_INDEX, addr);
 
-/*
- * Example (two interfaces, first has two addresses):
- *
- * ip.ipAddrTable.ipAddrEntry.ipAdEntIfIndex.10.3.14.201 = 1
- * ip.ipAddrTable.ipAddrEntry.ipAdEntIfIndex.192.168.100.100 = 1
- * ip.ipAddrTable.ipAddrEntry.ipAdEntIfIndex.222.22.22.222 = 2
- *
- * at this point iname is watever text we get after
- * "ip.ipAddrTable.ipAddrEntry.ipAdEntIfIndex." , ind is an index
- */
-            addr[ind].push_back(iname);
-            str << "interface #" << ind << ": " << iname << "\n";
-            *logger << str;
+        // ****************************************************************
+        *logger << "Collecting full interfaces info\n";
+
+        w = c->walk(SNMP_INTERFACE_INDEX);
+        CHECK_STOP_AND_THROW_EXCEPTION;
+        
+        str << w.size() << " interfaces found\n";
+        *logger << str;
             
-        }
-
-        for(multimap<string, SNMPVariable* >::iterator j = w.begin(); j!=w.end(); ++j)
-            delete (*j).second;
-        w.clear();
-
-        *logger << "Full interfaces info.\n";
-
-        w=c->walk(SNMP_INTERFACE_INDEX);
-        CHECK_STOP_AND_THROW_EXCEPTION
-        for(multimap<string, SNMPVariable* >::iterator j = w.begin(); j!=w.end(); ++j)
+        for (multimap<string, SNMPVariable* >::iterator j = w.begin();
+             j!=w.end(); ++j)
         {
-            CHECK_STOP_AND_THROW_EXCEPTION
-
+            CHECK_STOP_AND_THROW_EXCEPTION;
+                
             // Get index
             long ifindex = SNMPVariable::var2Int((*j).second);
             char oid[1024];
 
             // Get admin status
-            sprintf(oid,"%s.%ld", SNMP_INTERFACE_ASTATUS , ifindex);
+            sprintf(oid, "%s.%ld", SNMP_INTERFACE_ASTATUS , ifindex);
             v=c->get(oid);
             if(v.size()!=1)
-                throw FWException(string("Unexpected response length for OID: ")+oid);
+                throw FWException(
+                    string("Unexpected response length for OID: ") + oid);
+
             int astatus = SNMPVariable::varList2Int(v);
             SNMPVariable::freeVarList(v);
 
-            if(!astatus)
+            if (!astatus)
             {
                 str << "Interface #" << ifindex
                     << " disabled by admin - skipping.\n";
@@ -593,43 +668,33 @@ void SNMPQuery::fetchInterfaces(Logger *logger,SyncFlag *stop_program,
             }
             
             // Get operational status
-            sprintf(oid,"%s.%ld", SNMP_INTERFACE_OSTATUS , ifindex);
+            sprintf(oid, "%s.%ld", SNMP_INTERFACE_OSTATUS , ifindex);
             v=c->get(oid);
             if(v.size()!=1)
-                throw FWException(string("Unexpected response length for OID: ")+oid);
+                throw FWException(
+                    string("Unexpected response length for OID: ") + oid);
+
             int ostatus = SNMPVariable::varList2Int(v);
             SNMPVariable::freeVarList(v);
 
-
 /* gather all information for interface ifindex and create Interface object */
 
-            list<string> &addlist=addr[ifindex];
-            if (addlist.empty())
-            {
-                str << "Interface #" << ifindex << " has no IP address.\n";
-                *logger << str;
-                
-//                continue;
-            }
-/*
-            map<long, string>::const_iterator ici=addr.find(ifindex);
-            if(ici==addr.end())
-            {
-                *logger << "Interface #" << ifindex << " does not have IP address. Skipping it.\n";
-                continue;
-            } else
-            {
-                aprefix=(*ici).second;
-            }
-*/
             // Get desriptions
             sprintf(oid,"%s.%ld", SNMP_INTERFACES_DESCR , ifindex);
             v=c->get(oid);
             string descr = SNMPVariable::varList2String(v);
             SNMPVariable::freeVarList(v);
 
+            list<string> &addlist = addr[ifindex];
+            if (addlist.empty())
+            {
+                str << "Interface #" << ifindex << " " << descr
+                    << " has no IP address.\n";
+                *logger << str;
+            }
+
             // Get physical address
-            sprintf(oid,"%s.%ld", SNMP_INTERFACES_PHYSA , ifindex);
+            sprintf(oid, "%s.%ld", SNMP_INTERFACES_PHYSA , ifindex);
             v=c->get(oid);
             if(v.size()!=1)
                 throw FWException(string("Unexpected response length for OID: ")+oid);
@@ -646,57 +711,52 @@ void SNMPQuery::fetchInterfaces(Logger *logger,SyncFlag *stop_program,
             int itype = SNMPVariable::varList2Int(v);
             SNMPVariable::freeVarList(v);
 
-            interfaces[ifindex] = InterfaceData();
-            interfaces[ifindex].name = descr;
-            interfaces[ifindex].snmp_type = itype;
-            interfaces[ifindex].ext = false;
-            interfaces[ifindex].ostatus = ostatus;
+            InterfaceData idata;
+            idata.name = descr;
+            idata.snmp_type = itype;
+            idata.ext = false;
+            idata.ostatus = ostatus;
 
             //snmp_tmp_db->add( &interfaces[ifindex] );
 
-            if (physa!="") interfaces[ifindex].mac_addr = physa;
+            if (physa!="") idata.mac_addr = physa;
 
-            for (list<string>::iterator ali=addlist.begin(); ali!=addlist.end(); ali++)
+            for (list<string>::iterator ali = addlist.begin();
+                 ali!=addlist.end(); ali++)
             {
-                string aprefix= *ali;
+                CHECK_STOP_AND_THROW_EXCEPTION;
 
-                // get netmasks
-                CHECK_STOP_AND_THROW_EXCEPTION
-                v = c->get(string(SNMP_NMASK_TABLE)+"."+aprefix);
-                if(v.size()!=1)
-                    throw FWException("Can't get netmask");
-                if(v[0]->type!=SNMPVariable::snmp_ipaddr)
-                    throw FWException("Wrong return type for netmask");
-                string nm = dynamic_cast<SNMPVariable_IPaddr*>(v[0])->getNetmaskValue().toString();
-                SNMPVariable::freeVarList(v);
-            
-                // get addresss
-                v = c->get(string(SNMP_ADDR_TABLE)+"."+aprefix);
-                if(v.size()!=1)
-                    throw FWException("Can't get IP address");
-                if(v[0]->type!=SNMPVariable::snmp_ipaddr)
-                    throw FWException("Wrong return type for IP address");
-                string ad = dynamic_cast<SNMPVariable_IPaddr*>(v[0])->getInetAddrValue().toString();
-                SNMPVariable::freeVarList(v);
+                InetAddr *ad = NULL;
+                InetAddr *nm = NULL;
+                getAddressAndNetmask(logger, c, *ali, &ad, &nm);
 
-                v = c->get(string(SNMP_BCAST_TABLE)+"."+aprefix);
-                if(v.size()!=1)
-                    throw FWException("Can't get broadcast address");
-//                long bcast_bits = SNMPVariable::varList2Int(v);
-                SNMPVariable::freeVarList(v);
+                InetAddrMask *iam = NULL;
 
-                interfaces[ifindex].addr_mask.setAddress(InetAddr(ad));
-                interfaces[ifindex].addr_mask.setNetmask(InetAddr(nm));
+                if (ad->isV6()) iam = new Inet6AddrMask();
+                else iam = new InetAddrMask();
+                iam->setAddress(*ad);
+                iam->setNetmask(*nm);
+                idata.addr_mask.push_back(iam);
 
                 str << "Adding interface #" << ifindex 
-                    << ": " << ad << "/" << nm
+                    << " " << descr
+                    << " " << iam->toString()
                     << "\n";
                 *logger << str;
                 
+                if (ad) delete ad;
+                if (nm) delete nm;
             }
+
+            interfaces[ifindex] = idata;
+
         } // index walk.
-        for(multimap<string, SNMPVariable* >::iterator j = w.begin(); j!=w.end(); ++j)
+
+        for (multimap<string, SNMPVariable* >::iterator j = w.begin();
+             j!=w.end(); ++j)
+        {
             delete (*j).second;
+        }
         w.clear();
 
     } catch (FWException &ex)
@@ -704,28 +764,32 @@ void SNMPQuery::fetchInterfaces(Logger *logger,SyncFlag *stop_program,
 
         SNMPVariable::freeVarList(v);
 
-        for(multimap<string, SNMPVariable* >::iterator j = w.begin(); j!=w.end(); ++j)
+        for (multimap<string, SNMPVariable* >::iterator j = w.begin();
+             j!=w.end(); ++j)
+        {
             delete (*j).second;
+        }
         w.clear();
 
-        if(!connection)
-            delete c;
+        if (!connection) delete c;
+
         // If program was stopped, show this, rather
         // than error.
         throw;
     }
-    if(!connection)
-        delete c;
+    if (!connection) delete c;
     *logger << "Done fetching interfaces\n";
 }
 
-void SNMPQuery::fetchSysInfo(Logger *logger,SyncFlag *stop_program, SNMPConnection *connection) throw(FWException)
+void SNMPQuery::fetchSysInfo(Logger *logger,
+                             SyncFlag *stop_program,
+                             SNMPConnection *connection) throw(FWException)
 {
     std::ostringstream str;
-    descr     = "" ;
-    contact   = "" ;
-    location  = "" ;
-    sysname   = "" ;
+    descr     = "";
+    contact   = "";
+    location  = "";
+    sysname   = "";
 
     SNMPConnection *c;
     if(connection)
@@ -761,27 +825,27 @@ void SNMPQuery::fetchSysInfo(Logger *logger,SyncFlag *stop_program, SNMPConnecti
         
         *logger << "Getting System name\n";
         v=c->get(SNMP_SYSNAME);
-        sysname    = SNMPVariable::varList2String(v);
+        sysname = SNMPVariable::varList2String(v);
         SNMPVariable::freeVarList(v);
-        CHECK_STOP_AND_THROW_EXCEPTION
+        CHECK_STOP_AND_THROW_EXCEPTION;
 
         *logger << "Getting Description\n";
         v=c->get(SNMP_SYSDESCR);
-        descr    = SNMPVariable::varList2String(v);
+        descr = SNMPVariable::varList2String(v);
         SNMPVariable::freeVarList(v);
-        CHECK_STOP_AND_THROW_EXCEPTION
+        CHECK_STOP_AND_THROW_EXCEPTION;
         
         *logger << "Getting Location\n";
         v=c->get(SNMP_LOCATION);
         location = SNMPVariable::varList2String(v);
         SNMPVariable::freeVarList(v);
-        CHECK_STOP_AND_THROW_EXCEPTION
+        CHECK_STOP_AND_THROW_EXCEPTION;
         
         *logger << "Getting Contact Info\n";
         v=c->get(SNMP_CONTACT);
         contact  = SNMPVariable::varList2String(v);
         SNMPVariable::freeVarList(v);
-        CHECK_STOP_AND_THROW_EXCEPTION
+        CHECK_STOP_AND_THROW_EXCEPTION;
     } catch(...)
     {
         if(!connection)
@@ -795,19 +859,19 @@ void SNMPQuery::fetchSysInfo(Logger *logger,SyncFlag *stop_program, SNMPConnecti
     *logger << "Done fetching sysinfo\n";
 }
 
-const vector<IPRoute> &SNMPQuery::getRoutes()
+vector<IPRoute>* SNMPQuery::getRoutes()
 {
-    return routes;
+    return &routes;
 }
 
-const map<InetAddr, string> &SNMPQuery::getArtpTable()
+map<InetAddr, string>* SNMPQuery::getArpTable()
 {
-    return arptable;
+    return &arptable;
 }
 
-const map<int, InterfaceData> &SNMPQuery::getInterfaces()
+map<int, InterfaceData>* SNMPQuery::getInterfaces()
 {
-    return interfaces;
+    return &interfaces;
 }
 
 const string& SNMPQuery::getSysname()
@@ -836,10 +900,10 @@ bool SNMPConnection::lib_initialized = false;
 
 SNMPConnection::SNMPConnection(const string &p, const string &c)
 {
-    connected    = false ;
-    session_data = NULL  ;
-    peer         = p     ;
-    community    = c     ;
+    connected    = false;
+    session_data = NULL;
+    peer         = p;
+    community    = c;
     if(!lib_initialized)
     {
         init_snmp("fwbuilder");
@@ -927,7 +991,8 @@ multimap<string, SNMPVariable* > SNMPConnection::walk(const string &variable) th
                 )
                 {
                     if ((vars->name_length < rootlen) ||
-                        (memcmp(root, vars->name, rootlen * sizeof(oid))!=0)) {
+                        (memcmp(root, vars->name, rootlen * sizeof(oid))!=0))
+                    {
                         /* not part of this subtree */
                         running = false;
                         continue;
@@ -992,7 +1057,8 @@ multimap<string, SNMPVariable* > SNMPConnection::walk(const string &variable) th
     return res;
 }
 
-vector<SNMPVariable*> SNMPConnection::get(const string &variable) throw(FWException)
+vector<SNMPVariable*> SNMPConnection::get(const string &variable)
+    throw(FWException)
 {
     if(!connected)
         throw FWException("SNMPSession: not connected");
@@ -1048,35 +1114,38 @@ SNMPVariable *SNMPVariable::create(struct variable_list *vars) throw(FWException
     case ASN_APP_COUNTER64:
         return new SNMPVariable_Counter64(vars->val.counter64);
     case ASN_OBJECT_ID:
-        return new SNMPVariable_OID(*vars->val.objid);
+        return new SNMPVariable_Bits(vars->val.bitstring, vars->val_len);
+//        return new SNMPVariable_OID(*vars->val.objid);
     case ASN_IPADDRESS:
         return new SNMPVariable_IPaddr(vars->val.string, vars->val_len);
     default: 
         char x[32];
-        sprintf(x,"%d", (int)vars->type);
-        throw FWException(string("Unknown SNMP variable type: ")+x);
+        sprintf(x, "%d", (int)vars->type);
+        throw FWException(string("Unknown SNMP variable type: ") + x);
     }
 }
 
 string SNMPVariable_Int::toString()
 {
     char x[32];
-    sprintf(x,"%ld", value);
+    sprintf(x, "%ld", value);
     return x;
 }
 
 string SNMPVariable_Bits::toString()
 {
-    string res="[";
-    for(size_t i=0;i<len;i++)
+    string res;
+    for (unsigned int i=0; i<len / 4; i++)
     {
+        res += ".";
+
         char x[8];
         //TODO: now we print it in hex
         // we should print it in binary.
-        sprintf(x,"%2x", (unsigned int)value[i]);
-        res+=x;
+        sprintf(x, "%d", (uint32_t)value[i]);
+        //i += 4;
+        res += x;
     }
-    res+="]";
     return res;
 }
 
@@ -1122,6 +1191,7 @@ string SNMPVariable_String::toString()
 {
     return value;
 }
+
 const string SNMPVariable_String::toHexString()
 {
     string res;
@@ -1137,7 +1207,6 @@ const string SNMPVariable_String::toHexString()
     return res;
 }
 
-
 string SNMPVariable_Counter64::toString()
 {
     char x[70];
@@ -1151,7 +1220,6 @@ string SNMPVariable_OID::toString()
     sprintf(x,"%ld", (long)value);
     return x;
 }
-
 
 void SNMPVariable::freeVarList(vector<SNMPVariable*> &v)
 {
@@ -1225,20 +1293,23 @@ void SNMPCrawler::init(const InetAddr &_seed,
 		       int  _dns_timeout,
 		       const vector<InetAddrMask> *_include)
 {
-    include      = _include      ;
-    community    = _community    ;
-    snmp_retries = _snmp_retries ;
-    snmp_timeout = _snmp_timeout ;
-    recursive    = _recursive    ;
-    skip_virtual = _skip_virtual ;
-    do_dns       = _do_dns       ;
-    follow_ptp   = _follow_ptp   ;
-    dns_threads  = _dns_threads  ;
-    dns_retries  = _dns_retries  ;
-    dns_timeout  = _dns_timeout  ;
+    include      = _include;
+    community    = _community;
+    snmp_retries = _snmp_retries;
+    snmp_timeout = _snmp_timeout;
+    recursive    = _recursive;
+    skip_virtual = _skip_virtual;
+    do_dns       = _do_dns;
+    follow_ptp   = _follow_ptp;
+    dns_threads  = _dns_threads;
+    dns_retries  = _dns_retries;
+    dns_timeout  = _dns_timeout;
 
     queue.clear();
     found.clear();
+
+    for (set<InetAddrMask*>::iterator i=networks.begin(); i!=networks.end();++i)
+        delete *i;
     networks.clear();
 
     queue[_seed]="";
@@ -1255,20 +1326,31 @@ list<InterfaceData> SNMPCrawler::guessInterface(
     map<int, InterfaceData>::const_iterator i;
     for(i=intf.begin(); i!=intf.end(); ++i)
     {
-        if ((*i).second.addr_mask.belongs(r.getGateway()))
-            res.push_back((*i).second);
+        for (list<InetAddrMask*>::const_iterator j=i->second.addr_mask.begin();
+             j!=i->second.addr_mask.end(); ++j)
+        {
+            if ((*j)->belongs(r.getGateway())) 
+            {
+                res.push_back((*i).second);
+                break;
+            }
+        }
     }
     return res;
 }
 
 bool SNMPCrawler::included(const InetAddr &a) const
 {
-    if(!include)
+    if (!include)
         return true; // no include list provided. All hosts are OK.
     
-    for(vector<InetAddrMask>::const_iterator i=include->begin(); i!=include->end(); ++i) {
-        if((*i).belongs(a)) 
-            return true;
+    // currently we allow the user to specify only ipv4 in the inlcude list
+    if (a.isV6()) return true;
+
+    for (vector<InetAddrMask>::const_iterator i=include->begin();
+         i!=include->end(); ++i)
+    {
+        if ((*i).belongs(a)) return true;
     }
     return false;
 }
@@ -1281,29 +1363,36 @@ bool SNMPCrawler::alreadyseen(const InetAddr &a) const
 /**
  * loopback  :  All addresses on the net  127.0.0.0/255.0.0.0
  */
-const InetAddrMask SNMPCrawler::LOOPBACK_NET(InetAddr::getLoopbackAddr(),
-                                          InetAddr("255.0.0.0"));
+const InetAddrMask SNMPCrawler::LOOPBACK_NET(
+    InetAddr::getLoopbackAddr(), InetAddr("255.0.0.0"));
+const InetAddrMask SNMPCrawler::IPV6_LOOPBACK_NET(
+    InetAddr::getLoopbackAddr(AF_INET6), InetAddr(AF_INET6, 128));
+
 const InetAddr SNMPCrawler::PTP_NETMASK(InetAddr::getAllOnes());
-const InetAddr SNMPCrawler::ZERO_IP("0.0.0.0");
 
-bool SNMPCrawler::isvirtual(const InetAddr &addr, const string &pa) const 
+bool SNMPCrawler::isvirtual(const InetAddr&, const string&) const 
 {
-    if(!pa.length())
-        return false;
-
-    for(map<InetAddr, CrawlerFind>::const_iterator i=found.begin(); i!=found.end(); ++i)
+// 01/10/2009 : this code is very old. We used to explicitly check and skip
+// virtual interfaces, however on Linux at least virtual interfaces
+// are just secondary ip addresses that belong to normal interfaces and
+// should not be skipped.
+#if 0
+    if (!pa.length()) return false;
+    for (map<InetAddr, CrawlerFind>::const_iterator i=found.begin();
+         i!=found.end(); ++i)
     {
-        const CrawlerFind &c = (*i).second ;
+        const CrawlerFind &c = i->second;
         
         map<int, InterfaceData>::const_iterator j;
         for(j=c.interfaces.begin(); j!=c.interfaces.end(); ++j)
         {
+            if (!j->second.addr_mask) continue; // no ip addr.
             try
             {
                 const InetAddr *intf_addr =
-                    (*j).second.addr_mask.getAddressPtr();
+                    j->second.addr_mask->getAddressPtr();
 
-                string paddr = (*j).second.mac_addr;
+                string paddr = j->second.mac_addr;
                 if (paddr!="" && pa == paddr &&
                     intf_addr!=NULL && addr != *intf_addr)
                     return true;
@@ -1314,7 +1403,7 @@ bool SNMPCrawler::isvirtual(const InetAddr &addr, const string &pa) const
             }
         }
     }
-    
+#endif    
     return false;
 }
 
@@ -1346,12 +1435,15 @@ bool SNMPCrawler::point2point(const InterfaceData& intf) const
  */
 bool SNMPCrawler::special(const InetAddr &a) const 
 {
-    return LOOPBACK_NET.belongs(a) || ZERO_IP==a;
+    if (a.isAny()) return true;
+    if (a.isV4()) return LOOPBACK_NET.belongs(a);
+    if (a.isV6()) return IPV6_LOOPBACK_NET.belongs(a);
+    return false;
 }
 
 bool SNMPCrawler::special(const InetAddrMask &n) const
 {
-    return n==LOOPBACK_NET ||
+    return n==LOOPBACK_NET || n==IPV6_LOOPBACK_NET ||
         n.getAddressPtr()->isBroadcast() ||
         n.getAddressPtr()->isMulticast() ||
         n.getAddressPtr()->isAny();
@@ -1374,15 +1466,15 @@ void SNMPCrawler::run_impl(Logger *logger,
 
     SNMP_discover_query q;
     do {
-        CHECK_STOP_AND_RETURN
+        CHECK_STOP_AND_RETURN;
 
         map<InetAddr,string>::iterator i=queue.begin();
         if(i==queue.end())
         {
             break;
         }
-        InetAddr task = (*i).first  ;
-        string task_phys_address = (*i).second ;
+        InetAddr task = (*i).first;
+        string task_phys_address = (*i).second;
         queue.erase(i);
         
         str << "\nProcessing " << task.toString() << "\n";
@@ -1400,7 +1492,7 @@ void SNMPCrawler::run_impl(Logger *logger,
         
         CrawlerFind *res = new CrawlerFind();
         found[task] = *res; delete res;
-        found[task].found_phys_addr = task_phys_address ;
+        found[task].found_phys_addr = task_phys_address;
         try
         {
             q.fetchArpTable(logger,stop_program);
@@ -1408,13 +1500,16 @@ void SNMPCrawler::run_impl(Logger *logger,
         } catch(const FWException &ex)
         {
             // fetch failed
+            str << ex.toString() << "\n";
             str << "Failed to fetch ARP table from " << task.toString();
             if (!ex.toString().empty()) str << " : " << ex.toString();
             str << "\n";
             *logger << str;
             
             continue;
-        } catch (std::string s) {
+        } catch (std::string s)
+        {
+            str << s << "\n";
             str << "Failed to fetch ARP table from " << task.toString();
             str << " : " << s;
             str << "\n";
@@ -1423,18 +1518,19 @@ void SNMPCrawler::run_impl(Logger *logger,
             continue;
         }
 
-        map<InetAddr, string> at=q.getArtpTable();    
-        str << "Got " << long(at.size()) << " entries\n";
+        map<InetAddr, string>* at = q.getArpTable();    
+        str << "Got " << long(at->size()) << " entries\n";
         *logger << str;
         
         int qplus=0, rplus=0, dplus=0;
-        for(map<InetAddr, string>::iterator j=at.begin();j!=at.end();++j)
+        for(map<InetAddr, string>::iterator j=at->begin();j!=at->end();++j)
         {
-            CHECK_STOP_AND_RETURN
+            CHECK_STOP_AND_RETURN;
 
             InetAddr  c = (*j).first;
             string    pa = (*j).second;
-            if(included(c) && !alreadyseen(c) && !isvirtual(c,pa) && !special(c))
+            if (included(c) && !alreadyseen(c) &&
+                !isvirtual(c,pa) && !special(c))
             {
                 if(recursive)
                 {
@@ -1451,21 +1547,19 @@ void SNMPCrawler::run_impl(Logger *logger,
         }
         if (qplus)
         {
-            str << "Adding "   << qplus << " hosts to queue\n"   ;
+            str << "Adding "   << qplus << " hosts to queue\n";
             *logger << str;
-            
         }
         if (rplus)
         {
-            str << "Adding "   << rplus << " hosts to results\n" ;
+            str << "Adding "   << rplus << " hosts to results\n";
             *logger << str;
-            
         }
         if (dplus)
         {
-            *logger << "Skipping " << dplus << " hosts as duplicate, excluded or virtual\n" ;
+            str << "Skipping " << dplus
+                << " hosts as duplicate, excluded or virtual\n";
             *logger << str;
-            
         }
 
         set<InetAddr> interface_broadcasts;
@@ -1475,38 +1569,56 @@ void SNMPCrawler::run_impl(Logger *logger,
             q.fetchInterfaces(logger,stop_program);
             found[task].have_snmpd = true;
 
-            map<int, InterfaceData> intf = q.getInterfaces();
+            //cerr << "Copying list of interfaces" << endl;
+            //map<int, InterfaceData> intf = q.getInterfaces();
+            //cerr << "Done" << endl;
+
+            map<int, InterfaceData>* intf = q.getInterfaces();
             map<int, InterfaceData>::iterator j;
-            for(j=intf.begin(); j!=intf.end(); ++j)
+            for (j=intf->begin(); j!=intf->end(); ++j)
             {
-                // If interface is down it will be ignored.
-                if (!(*j).second.ostatus)
-                    continue;
+                // If interface is down or does not have ip address, it
+                // will be ignored.
+                if (!j->second.ostatus) continue;
+                if (j->second.addr_mask.size()==0) continue;
 
-                const InetAddr *addr = (*j).second.addr_mask.getAddressPtr();
-                const InetAddr *netm = (*j).second.addr_mask.getNetmaskPtr();
-                if (addr==NULL) continue;
-
-                InetAddrMask net(*addr, *netm);
-                interface_broadcasts.insert(*(net.getBroadcastAddressPtr()));
-
-                if(!special(net) && included(*(net.getAddressPtr())) &&
-                   !point2point(net, (*j).second))
+                list<InetAddrMask*>::iterator n;
+                for (n=j->second.addr_mask.begin();
+                     n!=j->second.addr_mask.end(); ++n)
                 {
-                    str << "Network " << net.toString() << " found.\n";
-                    *logger << str;
-                    
-                    networks.insert(net);
+                    InetAddrMask *net = *n;
+                    const InetAddr *addr = net->getAddressPtr();
+                    const InetAddr *netm = net->getNetmaskPtr();
+                    if (addr==NULL) continue;
+
+                    //InetAddrMask net(*addr, *netm);
+                    interface_broadcasts.insert(
+                        *(net->getBroadcastAddressPtr()));
+
+                    if (!special(*net) &&
+                        included(*(net->getAddressPtr())) &&
+                        !point2point(*net, j->second))
+                    {
+                        str << "Network " << net->toString() << " found"
+                            << " (" << networks.size() << ")";
+                        *logger << str;
+
+                        // NOTE: net is a pointer to InetAddrMask object
+                        // created in fetchInterfaces when we filled
+                        // map interfaces with InterfaceData objects.
+                        // This object is destroyed when all InterfaceData
+                        // objects are destroyed. Create a copy.
+                        networks.insert(new InetAddrMask(*addr, *netm));
+                    }
                 }
             }
-//        } catch(const FWException &ex)
         } catch(FWException &ex)
         {
             // fetch failed
+            str << ex.toString() << "\n";
             str << "Failed to fetch list of interfaces from "
                 << task.toString() << "\n";
             *logger << str;
-            
         }
 
         try
@@ -1518,9 +1630,10 @@ void SNMPCrawler::run_impl(Logger *logger,
             found[task].descr    = q.getDescr    ();
             found[task].contact  = q.getContact  ();
             found[task].location = q.getLocation ();
-        } catch(const FWException &ex)
+        } catch (const FWException &ex)
         {
             // fetch failed
+            str << ex.toString() << "\n";
             str << "Failed to fetch sysinfo from " << task.toString() << "\n";
             *logger << str;
             
@@ -1531,30 +1644,31 @@ void SNMPCrawler::run_impl(Logger *logger,
             q.fetchRoutingTable(logger,stop_program);
             found[task].have_snmpd = true;
             
-            vector<IPRoute> routes = q.getRoutes();
+            vector<IPRoute>* routes = q.getRoutes();
             
             qplus=0; rplus=0; dplus=0; 
             int nplus=0;
 
-            for(vector<IPRoute>::iterator j=routes.begin(); j!=routes.end(); ++j)
+            for (vector<IPRoute>::iterator j=routes->begin();
+                 j!=routes->end(); ++j)
             {
                 InterfaceData intf;
                 bool have_intf;
                 
-                const InterfaceData& real_i = (*j).getInterface();
+                const InterfaceData& real_i = j->getInterface();
                 intf      = real_i;
                 have_intf = !intf.name.empty();
                 
-                InetAddrMask net((*j).getDestination(),
-                                 (*j).getNetmask());
+                InetAddrMask net(j->getDestination(),
+                                 j->getNetmask());
                 
-                if(!have_intf)
+                if (!have_intf)
                 {
                     // No interface reported for this route by SNMP 
-                    // by we can try to guess it by route information.
+                    // we can try to guess it by route information.
                     // Since interface is used.
                     list<InterfaceData> gi =
-                        guessInterface(*j, q.getInterfaces());
+                        guessInterface(*j, *(q.getInterfaces()));
                     
                     // From all resulting interfaces we select one
                     // using following rules:
@@ -1593,7 +1707,7 @@ void SNMPCrawler::run_impl(Logger *logger,
                         if(have_intf && intf.ostatus && point2point(intf))
                             break;
                     }
-                    if(have_intf)
+                    if (have_intf)
                         str << "Guessed that network " << net.toString()
                             << " is using interface " << intf.name << "\n";
                     *logger << str;
@@ -1602,18 +1716,18 @@ void SNMPCrawler::run_impl(Logger *logger,
 
                 // If route is associated with an interface which is down,
                 // ignore it.
-                if(have_intf && !intf.ostatus)
+                if (have_intf && !intf.ostatus)
                 {
                     str << "Skipping route for network " << net.toString()
-                        << " which is associated with interface which is currently down.\n";
+                        << " which is associated with interface which is"
+                        << " currently down.";
                     *logger << str;
-                    
                     continue; 
                 }
 
-                if(!special(net) && included(*(net.getAddressPtr())) )
+                if (!special(net) && included(*(net.getAddressPtr())) )
                 {
-                    if(point2point(net, intf))
+                    if (point2point(net, intf))
                     {
                         const InetAddr *c = net.getAddressPtr();
 
@@ -1622,9 +1736,9 @@ void SNMPCrawler::run_impl(Logger *logger,
                         // for some of our interfaces, and if yes, ignore them.
                         // (see task #36520).
 
-                        if(included(*c) && !alreadyseen(*c) && 
-                           !isvirtual(*c,"") && !special(*c) && 
-                           !interface_broadcasts.count(*c))
+                        if (included(*c) && !alreadyseen(*c) && 
+                            !isvirtual(*c,"") && !special(*c) && 
+                            !interface_broadcasts.count(*c))
                         {
                             if(recursive && follow_ptp)
                             {
@@ -1633,7 +1747,7 @@ void SNMPCrawler::run_impl(Logger *logger,
                             } else
                             {
                                 rplus++;
-                                found[*c]=CrawlerFind();
+                                found[*c] = CrawlerFind();
                             }
                         } else
                         {
@@ -1646,15 +1760,18 @@ void SNMPCrawler::run_impl(Logger *logger,
                             << string(((*j).isDirect())?"direct":"indirect") 
                             << " route).\n";
                         *logger << str;
+
+                        networks.insert(
+                            new InetAddrMask(j->getDestination(),
+                                             j->getNetmask()));
                         
-                        
-                        networks.insert(net);
                         nplus++;
                     }
                 }
 
                 InetAddr gw((*j).getGateway());
-                if(included(gw) && !alreadyseen(gw) && !isvirtual(gw, "") && !special(gw) && !interface_broadcasts.count(gw))
+                if (included(gw) && !alreadyseen(gw) && !isvirtual(gw, "") &&
+                    !special(gw) && !interface_broadcasts.count(gw))
                 {
                     bool isptp=point2point(net, intf);
                     if(recursive && (!isptp || (isptp && follow_ptp)))
@@ -1671,29 +1788,30 @@ void SNMPCrawler::run_impl(Logger *logger,
 
             if (qplus)
             {
-                str << "Adding "   << qplus << " hosts to queue\n"   ;
+                str << "Adding "   << qplus << " hosts to queue\n";
                 *logger << str;
             }
             if (nplus)
             {
-                str << "Adding "   << nplus << " networks to results\n"   ;
+                str << "Adding "   << nplus << " networks to results\n";
                 *logger << str;
             }
             if (rplus)
             {
-                str << "Adding "   << rplus << " hosts to results\n" ;
+                str << "Adding "   << rplus << " hosts to results\n";
                 *logger << str;
             }
             if (dplus)
             {
                 str << "Skipping " << dplus
-                    << " hosts as duplicate, excluded or virtual\n" ;
+                    << " hosts as duplicate, excluded or virtual\n";
                 *logger << str;
             }
 
         } catch(const FWException &ex)
         {
             // fetch failed
+            str << ex.toString() << "\n";
             str << "Failed to fetch routing table from "
                 << task.toString() << "\n";
             *logger << str;
@@ -1706,7 +1824,7 @@ void SNMPCrawler::run_impl(Logger *logger,
         // We add interfaces _after_ fetching routing table,
         // since it's updates 'ext' attribute based on rounting
         // table.
-        found[task].interfaces = q.getInterfaces();
+        found[task].interfaces = *(q.getInterfaces());
         
     } while(recursive);
 
@@ -1752,7 +1870,7 @@ void SNMPCrawler::bacresolve_results(Logger *logger,
 }
 
 
-set<InetAddrMask> SNMPCrawler::getNetworks()
+set<InetAddrMask*> SNMPCrawler::getNetworks()
 {
     return networks;
 }

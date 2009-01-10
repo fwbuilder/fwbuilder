@@ -28,6 +28,7 @@
 
 #include <fwbuilder/libfwbuilder-config.h>
 
+#include <fwbuilder/InetAddr.h>
 #include <fwbuilder/Inet6AddrMask.h>
 
 extern "C" {
@@ -48,6 +49,7 @@ extern "C" {
 #endif
 
 #include <errno.h>
+#include <iostream>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -77,8 +79,13 @@ Inet6AddrMask::Inet6AddrMask(const string &s) throw(FWException) :
 }
 
 Inet6AddrMask::Inet6AddrMask(const InetAddr &a, const InetAddr &n) :
-    InetAddrMask(a, n)
+    InetAddrMask(true)
 {    
+    address = new InetAddr(a & n);
+    netmask = new InetAddr(AF_INET6, n.getLength());
+    broadcast_address = new InetAddr();
+    network_address = new InetAddr();
+    setNetworkAndBroadcastAddress();
 }
 
 Inet6AddrMask::~Inet6AddrMask()

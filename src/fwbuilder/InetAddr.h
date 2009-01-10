@@ -123,7 +123,8 @@ class InetAddr
     explicit InetAddr(int af, int n) throw(FWException);
 
     InetAddr& operator=(const InetAddr &addr);
-    
+
+    int addressFamily() const { return address_family; }
     bool isV4() const { return (address_family==AF_INET); }
     bool isV6() const { return (address_family==AF_INET6); }
 

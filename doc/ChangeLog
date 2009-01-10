@@ -1,3 +1,26 @@
+2009-01-10  vadim  <vadim@vk.crocodile.org>
+
+	* fwbuilder/snmp.cpp (SNMPVariable::create): using
+	SNMPVariable_Bits for snmp repsonses of type OBJECT_ID. This is
+	used in getAddressAndNetmask for IP-MIB data.
+
+	* fwbuilder/snmp.cpp (SNMPVariable_Bits::toString): This class of
+	SNMP variable now returns dot-separated text representation of its
+	value.
+
+	* InterfaceData.cpp (InterfaceData::InterfaceData): Converted
+	InterfaceDatra to a proper class with constructors and
+	destructor. Member addr_mask is now a list of InetAddrMask* so
+	that it can contain both InetAddrMask and Inet6AddrMask objects.
+
+	* snmp.cpp (SNMPQuery::getAddressAndNetmask): bug #2023261 "IPv6 -
+	SNMP discovery of interfaces not working for IPv6". SNMP discovery
+	can now read IPv6 addresses of interfaces using IP-MIB
+	RFC4293. Not all snmp agents support this MIB, for example only
+	recent versions of net-snmp support it.
+
+	* snmp.cpp: code reformatting and refactoring in many places.
+
 2009-01-02  vadim  <vadim@vk.crocodile.org>
 
 	* RoutingCompiler.cpp (rItfChildOfFw::processNext): using
