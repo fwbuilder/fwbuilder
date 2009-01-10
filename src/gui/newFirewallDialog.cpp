@@ -39,6 +39,8 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/BackgroundOp.h"
+#include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 
 #include <qlineedit.h>
 #include <qtextedit.h>
@@ -228,32 +230,35 @@ void  newFirewallDialog::monitor()
 
     timer->stop();
 
-    const map<int, InterfaceData> &intf = q->getInterfaces();
-    map<int, InterfaceData>::const_iterator i;
-    for(i=intf.begin();i!=intf.end(); ++i)
+    map<int, InterfaceData>* intf = q->getInterfaces();
+    map<int, InterfaceData>::iterator i;
+    for (i=intf->begin(); i!=intf->end(); ++i)
     {
-        if ( i->second.ostatus )
-        {
-            InterfaceData idata( i->second );
+        InterfaceData* idata = &(i->second);
 
-            idata.guessLabel( readPlatform(m_dialog->platform).toLatin1().constData() );
+        if ( idata->ostatus )
+        {
+            idata->guessLabel(
+                readPlatform(m_dialog->platform).toLatin1().constData() );
 
             QString dn;
-            if (idata.isDyn)        dn+="dyn";
-            if (idata.isUnnumbered) dn+="unn";
-            if (idata.isBridgePort) dn+="bridge";
+            if (idata->isDyn)        dn+="dyn";
+            if (idata->isUnnumbered) dn+="unn";
+            if (idata->isBridgePort) dn+="bridge";
 
             QStringList qsl;
-            qsl << idata.name.c_str()
-                << idata.label.c_str()
-                << idata.addr_mask.getAddressPtr()->toString().c_str()
-                << idata.addr_mask.getNetmaskPtr()->toString().c_str()
-                << dn
-                << idata.mac_addr.c_str();
+            qsl << idata->name.c_str() << idata->label.c_str();
+            // TODO: redesign the way we pass information from the snmp crawler
+            // down the line so that multiple ip addresses per interface
+            // can be processed.
+            if (idata->addr_mask.size())
+                qsl << idata->addr_mask.front()->getAddressPtr()->toString().c_str()
+                    << idata->addr_mask.front()->getNetmaskPtr()->toString().c_str();
+            else
+                qsl << "" << "";
+
+            qsl << dn << idata->mac_addr.c_str();
             new QTreeWidgetItem(m_dialog->iface_list, qsl);
-
-//            cerr << "Added interface " << idata.name << endl;
-
         }
     }
 
@@ -386,8 +391,9 @@ void newFirewallDialog::showPage(const int page)
     {
         m_dialog->iface_name->setFocus();
 
-        if (!Resources::getTargetCapabilityBool(readPlatform(m_dialog->platform).toLatin1().constData(),
-                                                "security_levels") )
+        if (!Resources::getTargetCapabilityBool(
+                readPlatform(m_dialog->platform).toLatin1().constData(),
+                "security_levels") )
         {
 /* if chosen fw platform does not support security levels,
  * this is the last page
@@ -408,6 +414,7 @@ void newFirewallDialog::showPage(const int page)
 
         fillInterfaceSLList();
 
+        setNextEnabled( 3, false );
         setFinishEnabled( 3, true );
         break;
     }
@@ -434,7 +441,8 @@ void newFirewallDialog::showPage(const int page)
             findFirewalls(*libiter, fl, false);
 
 
-        QString icn = QString( Resources::global_res->getObjResourceStr(fl.front(), "icon-tree").c_str() );
+        QString icn = QString(
+            Resources::global_res->getObjResourceStr(fl.front(), "icon-tree").c_str() );
 
         m_dialog->templateList->clear();
 
@@ -483,11 +491,12 @@ void newFirewallDialog::fillInterfaceSLList()
         idata.isUnnumbered =  itm->text(4).indexOf("Unn")!=-1;
         idata.isBridgePort =  itm->text(4).indexOf("Bridge")!=-1;
 
+        InetAddrMask *iam = new InetAddrMask();
         if (!idata.isDyn && !idata.isUnnumbered && !idata.isBridgePort)
-            idata.addr_mask.setAddress(itm->text(2).toLatin1().constData());
-        else
-            idata.addr_mask.setAddress(
-                QObject::tr("dynamic").toLatin1().constData());
+        {
+            iam->setAddress(itm->text(2).toLatin1().constData());
+        }
+        idata.addr_mask.push_back(iam);
 
         try
         {
@@ -506,7 +515,7 @@ void newFirewallDialog::fillInterfaceSLList()
         QStringList qsl;
         qsl << idata.name.c_str()
             << idata.label.c_str()
-            << idata.addr_mask.getAddressPtr()->toString().c_str()
+            << idata.addr_mask.front()->getAddressPtr()->toString().c_str()
             << QString::number(idata.securityLevel);
         new QTreeWidgetItem(m_dialog->iface_sl_list, qsl);
 
@@ -787,6 +796,7 @@ void newFirewallDialog::finishClicked()
 
     if (p==4)
     {
+        // Creating from a template
         QListWidgetItem *itm = m_dialog->templateList->currentItem();
         FWObject *template_fw=templates[itm];
         assert (template_fw!=NULL);
@@ -818,8 +828,10 @@ void newFirewallDialog::finishClicked()
         nfw=Firewall::cast(no);
     } else
     {
+        // Create from interface list (obtained either manually or via snmp)
+
         FWObject *o;
-        o=mw->createObject(Firewall::TYPENAME, m_dialog->obj_name->text() );
+        o = mw->createObject(Firewall::TYPENAME, m_dialog->obj_name->text() );
 
         if (o==NULL)
         {
@@ -841,7 +853,7 @@ void newFirewallDialog::finishClicked()
         o->setStr("host_OS",
                   readHostOS(m_dialog->hostOS).toLatin1().constData() );
 
-        nfw=Firewall::cast(o);
+        nfw = Firewall::cast(o);
 
 /* create interfaces */
 
@@ -865,7 +877,7 @@ void newFirewallDialog::finishClicked()
             QTreeWidgetItem *itm2 = ltwi[0];
             assert(itm2!=NULL);
 
-            int     sl = itm2->text(3).toInt();
+            int sl = itm2->text(3).toInt();
 
             Interface *oi = Interface::cast(mw->createObject(
                                                 nfw,
@@ -878,58 +890,61 @@ void newFirewallDialog::finishClicked()
             oi->setBridgePort(bridgeport);
             oi->setSecurityLevel(sl);
 
-            if (!dyn && !unnum && !bridgeport)
+            if (!dyn && !unnum && !bridgeport &&
+                !addr.isEmpty() && addr!="0.0.0.0")
             {
-                QString addrname = QString("%1:%2:ip").arg(
-                    m_dialog->obj_name->text()).arg(name);
-                IPv4 *oa = IPv4::cast(mw->createObject(oi,
-                                                      IPv4::TYPENAME,addrname));
-                oa->setAddress( InetAddr(addr.toLatin1().constData()) );
+                if (addr.indexOf(':')!=-1)
+                {
+                    // ipv6 address
+                    QString addrname = QString("%1:%2:ip6")
+                        .arg(m_dialog->obj_name->text()).arg(name);
+                    IPv6 *oa = IPv6::cast(
+                        mw->createObject(oi, IPv6::TYPENAME, addrname)
+                    );
+                    oa->setAddress(
+                        InetAddr(AF_INET6, addr.toLatin1().constData()) );
+                    bool ok = false ;
+                    int inetmask = netmask.toInt(&ok);
+                    if (ok)
+                    {
+                        oa->setNetmask( InetAddr(AF_INET6, inetmask) );
+                    }
+                    else
+                    {
+                        oa->setNetmask(
+                            InetAddr(AF_INET6, netmask.toLatin1().constData()));
+                    }
 
-                bool ok = false ;
-                int inetmask = netmask.toInt(&ok);
-                if (ok)
+                } else
                 {
-                    oa->setNetmask( InetAddr(inetmask) );
-                }
-                else
-                {
-                    oa->setNetmask( InetAddr(netmask.toLatin1().constData()) );
+                    QString addrname = QString("%1:%2:ip").arg(
+                        m_dialog->obj_name->text()).arg(name);
+                    IPv4 *oa = IPv4::cast(
+                        mw->createObject(oi, IPv4::TYPENAME,addrname)
+                    );
+                    oa->setAddress( InetAddr(addr.toLatin1().constData()) );
+
+                    bool ok = false ;
+                    int inetmask = netmask.toInt(&ok);
+                    if (ok)
+                    {
+                        oa->setNetmask( InetAddr(inetmask) );
+                    }
+                    else
+                    {
+                        oa->setNetmask(
+                            InetAddr(netmask.toLatin1().constData()) );
+                    }
                 }
             }
-            // updateObjName has a side effect: it causes redraw of the ruleset
-            // views in the main window
-            mw->updateObjName(oi,"","",false);
 
             itm_index++;
-            itm=m_dialog->iface_list->topLevelItem(itm_index);
+            itm = m_dialog->iface_list->topLevelItem(itm_index);
         }
+        mw->reloadAllWindowsWithFile(mw->activeProject());
     }
     if (unloadTemplatesLib)
     {
-#if 0
-        FWObject *tlib = mw->db()->getById(TEMPLATE_LIB);
-        assert (tlib!=NULL);
-        string tlibID = tlib->getId();
-        if (fwbdebug)
-            qDebug("newFirewallDialog::accept  Delete template library");
-        mw->delObj(tlib,false);
-
-/*
- * deleting an object places it in the "Deleted objects" library, so
- * we need to remove "templates" library from there.
- *
- * TODO: need to add flags to the API to be able to delete objects
- * without placing them in "Deleted objects" automatically
- */
-        FWObject *delObjLib = mw->db()->getById( FWObjectDatabase::DELETED_OBJECTS_ID );
-        if (delObjLib!=NULL && delObjLib->getById(tlibID)!=NULL)
-        {
-            if (fwbdebug) qDebug("newFirewallDialog::accept  Delete library of templates from 'Deleted objects'");
-            mw->delObj(tlib,false);  // this time from deleted objects lib
-        }
-#endif
-
         delete tmpldb;
         tmpldb = NULL;
         unloadTemplatesLib=false;

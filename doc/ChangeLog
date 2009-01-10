@@ -1,3 +1,11 @@
+2009-01-10  vadim  <vadim@vk.crocodile.org>
+
+	* DiscoveryDruid.cpp (DiscoveryDruid::loadDataFromCrawler): bug
+	#2023261 "IPv6 - SNMP discovery of interfaces not working for
+	IPv6". SNMP discovery can now read IPv6 addresses of interfaces
+	using IP-MIB RFC4293. Not all snmp agents support this MIB, for
+	example only recent versions of net-snmp support it.
+
 2009-01-06  vadim  <vadim@vk.crocodile.org>
 
 	* RoutingCompiler_iosacl_writers.cpp (PrintRule::PrintRule): fixes

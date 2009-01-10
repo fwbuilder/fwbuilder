@@ -40,6 +40,8 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/BackgroundOp.h"
+#include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 
 #include <qlineedit.h>
 #include <qtextedit.h>
@@ -222,31 +224,32 @@ void  newHostDialog::monitor()
 
     timer->stop();
 
-    const map<int, InterfaceData> &intf = q->getInterfaces();
-    map<int, InterfaceData>::const_iterator i;
-    for(i=intf.begin();i!=intf.end(); ++i)
+    map<int, InterfaceData>* intf = q->getInterfaces();
+    map<int, InterfaceData>::iterator i;
+    for(i=intf->begin(); i!=intf->end(); ++i)
     {
-        if ( i->second.ostatus )
+        InterfaceData* idata = &(i->second);
+        if ( idata->ostatus )
         {
-            InterfaceData idata( i->second );
-
-            idata.guessLabel("");
+            idata->guessLabel("");
 
             QString dn;
-            if (idata.isDyn)        dn+="dyn";
-            if (idata.isUnnumbered) dn+="unn";
+            if (idata->isDyn)        dn+="dyn";
+            if (idata->isUnnumbered) dn+="unn";
 
             QStringList qsl;
-            qsl << idata.name.c_str()
-                << idata.label.c_str()
-                << idata.addr_mask.getAddressPtr()->toString().c_str()
-                << idata.addr_mask.getNetmaskPtr()->toString().c_str()
-                << dn
-                << idata.mac_addr.c_str();
+            qsl << idata->name.c_str() << idata->label.c_str();
+            // TODO: redesign the way we pass information from the snmp crawler
+            // down the line so that multiple ip addresses per interface
+            // can be processed.
+            if (idata->addr_mask.size())
+                qsl << idata->addr_mask.front()->getAddressPtr()->toString().c_str()
+                    << idata->addr_mask.front()->getNetmaskPtr()->toString().c_str();
+            else
+                qsl << "" << "";
+
+            qsl << dn << idata->mac_addr.c_str();
             new QTreeWidgetItem(m_dialog->iface_list, qsl);
-
-//            cerr << "Added interface " << idata.name << endl;
-
         }
     }
 
@@ -696,57 +699,63 @@ void newHostDialog::finishClicked()
             {
                 QString addrname=QString("%1:%2:mac")
                     .arg(m_dialog->obj_name->text()).arg(name);
-                physAddress * pa = physAddress::cast(mw->createObject(oi,physAddress::TYPENAME,addrname));
+                physAddress * pa =
+                    physAddress::cast(mw->createObject(oi,
+                                                       physAddress::TYPENAME,
+                                                       addrname));
                 pa->setPhysAddress(physaddr.toLatin1().constData());
             }
-            if (!dyn && !unnum)
+            if (!dyn && !unnum && !addr.isEmpty() && addr!="0.0.0.0")
             {
-                QString addrname=QString("%1:%2:ip")
-                    .arg(m_dialog->obj_name->text()).arg(name);
-                IPv4 *oa = IPv4::cast(
-                    mw->createObject(oi, IPv4::TYPENAME,addrname)
-                );
-                oa->setAddress( InetAddr(addr.toLatin1().constData()) );
-                bool ok = false ;
-                int inetmask = netmask.toInt(&ok);
-                if (ok)
+                if (addr.indexOf(':')!=-1)
                 {
-                    oa->setNetmask( InetAddr(inetmask) );
-                }
-                else
-                {
-                    oa->setNetmask( InetAddr(netmask.toLatin1().constData()) );
-                }
+                    // ipv6 address
+                    QString addrname = QString("%1:%2:ip6")
+                        .arg(m_dialog->obj_name->text()).arg(name);
+                    IPv6 *oa = IPv6::cast(
+                        mw->createObject(oi, IPv6::TYPENAME, addrname)
+                    );
+                    oa->setAddress(
+                        InetAddr(AF_INET6, addr.toLatin1().constData()) );
+                    bool ok = false ;
+                    int inetmask = netmask.toInt(&ok);
+                    if (ok)
+                    {
+                        oa->setNetmask( InetAddr(AF_INET6, inetmask) );
+                    }
+                    else
+                    {
+                        oa->setNetmask(
+                            InetAddr(AF_INET6, netmask.toLatin1().constData()));
+                    }
 
+                } else
+                {
+                    // ipv4 address
+                    QString addrname = QString("%1:%2:ip")
+                        .arg(m_dialog->obj_name->text()).arg(name);
+                    IPv4 *oa = IPv4::cast(
+                        mw->createObject(oi, IPv4::TYPENAME,addrname)
+                    );
+                    oa->setAddress( InetAddr(addr.toLatin1().constData()) );
+                    bool ok = false ;
+                    int inetmask = netmask.toInt(&ok);
+                    if (ok)
+                    {
+                        oa->setNetmask( InetAddr(inetmask) );
+                    }
+                    else
+                    {
+                        oa->setNetmask(
+                            InetAddr(netmask.toLatin1().constData()));
+                    }
+                }
             }
-
-            mw->updateObjName(oi,"","",false);
         }
+        mw->reloadAllWindowsWithFile(mw->activeProject());
     }
     if (unloadTemplatesLib)
     {
-#if 0
-        FWObject *tlib = mw->db()->getById(FWObjectDatabase::TEMPLATE_LIB_ID);
-        assert (tlib!=NULL);
-        string tlibID = tlib->getId();
-        if (fwbdebug) qDebug("  Delete library of templates");
-        mw->delObj(tlib,false);
-
-/*
- * deleting an object places it in the "Deleted objects" library, so
- * we need to remove "templates" library from there.
- *
- * TODO: need to add flags to the API to be able to delete objects
- * without placing them in "Deleted objects" automatically
- */
-        FWObject *delObjLib = mw->db()->getById( FWObjectDatabase::DELETED_OBJECTS_ID );
-        if (delObjLib!=NULL && delObjLib->getById(tlibID)!=NULL)
-        {
-            if (fwbdebug) qDebug("  Delete library of templates from 'Deleted objects'");
-            mw->delObj(tlib,false);  // this time from deleted objects lib
-        }
-#endif
-
         delete tmpldb;
         tmpldb = NULL;
 

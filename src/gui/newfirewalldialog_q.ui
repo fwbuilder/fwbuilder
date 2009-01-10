@@ -5,11 +5,11 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>580</width>
-    <height>600</height>
+    <width>615</width>
+    <height>703</height>
    </rect>
   </property>
-  <layout class="QGridLayout" >
+  <layout class="QGridLayout" name="gridLayout_2" >
    <item row="0" column="0" >
     <widget class="QLabel" name="titleLabel" >
      <property name="sizePolicy" >
@@ -50,7 +50,7 @@
       </size>
      </property>
      <property name="currentIndex" >
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="page1" >
       <layout class="QGridLayout" name="gridLayout" >
@@ -248,8 +248,11 @@
           <string/>
          </property>
          <layout class="QGridLayout" >
+          <property name="verticalSpacing" >
+           <number>10</number>
+          </property>
           <property name="margin" >
-           <number>0</number>
+           <number>12</number>
           </property>
           <item row="0" column="0" >
            <widget class="QRadioButton" name="use_manual" >
@@ -358,7 +361,7 @@
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
            <horstretch>0</horstretch>
-           <verstretch>255</verstretch>
+           <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <property name="text" >
@@ -387,14 +390,20 @@
        </item>
        <item>
         <widget class="QFrame" name="frame149" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="frameShape" >
           <enum>QFrame::Box</enum>
          </property>
          <property name="frameShadow" >
           <enum>QFrame::Sunken</enum>
          </property>
-         <layout class="QVBoxLayout" >
-          <item>
+         <layout class="QGridLayout" name="gridLayout_3" >
+          <item row="0" column="0" colspan="3" >
            <widget class="QTreeWidget" name="iface_list" >
             <property name="minimumSize" >
              <size>
@@ -434,302 +443,270 @@
             </column>
            </widget>
           </item>
-          <item>
-           <layout class="QHBoxLayout" >
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label633" >
+            <property name="text" >
+             <string>Name:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" >
+           <widget class="QLineEdit" name="iface_name" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>32767</width>
+              <height>32767</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item rowspan="5" row="1" column="2" >
+           <widget class="QGroupBox" name="buttonGroup4" >
+            <property name="title" >
+             <string/>
+            </property>
+            <layout class="QGridLayout" >
+             <property name="horizontalSpacing" >
+              <number>0</number>
+             </property>
+             <property name="verticalSpacing" >
+              <number>-1</number>
+             </property>
+             <property name="margin" >
+              <number>12</number>
+             </property>
+             <item row="3" column="0" >
+              <widget class="QRadioButton" name="iface_bridgeport" >
+               <property name="text" >
+                <string>Bridge port</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0" >
+              <widget class="QRadioButton" name="iface_unnum" >
+               <property name="text" >
+                <string>Unnumbered interface</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0" >
+              <widget class="QRadioButton" name="iface_dyn" >
+               <property name="text" >
+                <string>Dynamic address</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0" >
+              <widget class="QRadioButton" name="iface_reg" >
+               <property name="text" >
+                <string>Regular interface</string>
+               </property>
+               <property name="checked" >
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="label659" >
+            <property name="text" >
+             <string>Label:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1" >
+           <widget class="QLineEdit" name="iface_label" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>32767</width>
+              <height>32767</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" >
+           <widget class="QLabel" name="label634" >
+            <property name="text" >
+             <string>Address:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1" >
+           <widget class="QLineEdit" name="iface_addr" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>32767</width>
+              <height>32767</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" >
+           <widget class="QLabel" name="label635" >
+            <property name="text" >
+             <string>Netmask:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1" >
+           <widget class="QLineEdit" name="iface_netmask" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>32767</width>
+              <height>32767</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0" >
+           <widget class="QLabel" name="label636" >
+            <property name="text" >
+             <string>MAC:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1" >
+           <widget class="QLineEdit" name="iface_physaddr" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>32767</width>
+              <height>32767</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0" colspan="3" >
+           <layout class="QHBoxLayout" name="horizontalLayout" >
             <item>
-             <layout class="QGridLayout" >
-              <item row="0" column="1" >
-               <widget class="QLineEdit" name="iface_name" >
-                <property name="sizePolicy" >
-                 <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize" >
-                 <size>
-                  <width>50</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize" >
-                 <size>
-                  <width>100</width>
-                  <height>32767</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1" >
-               <widget class="QLineEdit" name="iface_netmask" >
-                <property name="sizePolicy" >
-                 <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize" >
-                 <size>
-                  <width>50</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize" >
-                 <size>
-                  <width>100</width>
-                  <height>32767</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0" >
-               <widget class="QLabel" name="label633" >
-                <property name="text" >
-                 <string>Name:</string>
-                </property>
-                <property name="alignment" >
-                 <set>Qt::AlignCenter</set>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1" >
-               <widget class="QLineEdit" name="iface_addr" >
-                <property name="sizePolicy" >
-                 <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize" >
-                 <size>
-                  <width>50</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize" >
-                 <size>
-                  <width>100</width>
-                  <height>32767</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0" >
-               <widget class="QLabel" name="label634" >
-                <property name="text" >
-                 <string>Address:</string>
-                </property>
-                <property name="alignment" >
-                 <set>Qt::AlignCenter</set>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0" >
-               <widget class="QLabel" name="label635" >
-                <property name="text" >
-                 <string>Netmask:</string>
-                </property>
-                <property name="alignment" >
-                 <set>Qt::AlignCenter</set>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0" >
-               <widget class="QLabel" name="label636" >
-                <property name="text" >
-                 <string>MAC:</string>
-                </property>
-                <property name="alignment" >
-                 <set>Qt::AlignCenter</set>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1" >
-               <widget class="QLineEdit" name="iface_physaddr" >
-                <property name="sizePolicy" >
-                 <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize" >
-                 <size>
-                  <width>50</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize" >
-                 <size>
-                  <width>100</width>
-                  <height>32767</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" >
-              <item>
-               <layout class="QHBoxLayout" >
-                <item>
-                 <widget class="QLabel" name="label659" >
-                  <property name="text" >
-                   <string>Label:</string>
-                  </property>
-                  <property name="alignment" >
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="wordWrap" >
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLineEdit" name="iface_label" >
-                  <property name="sizePolicy" >
-                   <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize" >
-                   <size>
-                    <width>50</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize" >
-                   <size>
-                    <width>100</width>
-                    <height>32767</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <widget class="QGroupBox" name="buttonGroup4" >
-                <property name="title" >
-                 <string/>
-                </property>
-                <layout class="QGridLayout" >
-                 <property name="margin" >
-                  <number>0</number>
-                 </property>
-                 <property name="spacing" >
-                  <number>0</number>
-                 </property>
-                 <item row="3" column="0" >
-                  <widget class="QRadioButton" name="iface_bridgeport" >
-                   <property name="text" >
-                    <string>Bridge port</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="0" >
-                  <widget class="QRadioButton" name="iface_unnum" >
-                   <property name="text" >
-                    <string>Unnumbered interface</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0" >
-                  <widget class="QRadioButton" name="iface_dyn" >
-                   <property name="text" >
-                    <string>Dynamic address</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="0" >
-                  <widget class="QRadioButton" name="iface_reg" >
-                   <property name="text" >
-                    <string>Regular interface</string>
-                   </property>
-                   <property name="checked" >
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" >
-              <property name="spacing" >
-               <number>3</number>
+             <widget class="QPushButton" name="addBtn" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
-              <item>
-               <spacer>
-                <property name="orientation" >
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeType" >
-                 <enum>QSizePolicy::Preferred</enum>
-                </property>
-                <property name="sizeHint" stdset="0" >
-                 <size>
-                  <width>20</width>
-                  <height>21</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QPushButton" name="delBtn" >
-                <property name="sizePolicy" >
-                 <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text" >
-                 <string>Delete</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="updBtn" >
-                <property name="sizePolicy" >
-                 <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text" >
-                 <string>Update</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="addBtn" >
-                <property name="sizePolicy" >
-                 <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text" >
-                 <string>Add</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
+              <property name="text" >
+               <string>Add</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="updBtn" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>Update</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="delBtn" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>Delete</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>

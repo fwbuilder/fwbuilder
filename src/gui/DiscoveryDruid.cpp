@@ -60,10 +60,13 @@
 
 #include "fwbuilder/HostsFile.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/InetAddr.h"
 #include "fwbuilder/InetAddrMask.h"
+#include "fwbuilder/Inet6AddrMask.h"
 #include "fwbuilder/Firewall.h"
 
 #include "fwbuilder/dns.h"
@@ -1185,9 +1188,7 @@ void DiscoveryDruid::fillNetworks()
     m_dialog->networklist->clear();
     bool f=false;
     QMap<QString,ObjectDescriptor >::iterator i;
-    for(i=Networks.begin();
-        i!=Networks.end();
-        ++i)
+    for(i=Networks.begin(); i!=Networks.end(); ++i)
     {
         buf=i.value();
         if (buf.isSelected)
@@ -1414,23 +1415,39 @@ void DiscoveryDruid::loadDataFromCrawler()
     Objects.clear();
     Networks.clear();
     
-    set<InetAddrMask>::iterator m;
-    set<InetAddrMask> s = q->getNetworks();
+    set<InetAddrMask*>::iterator m;
+    set<InetAddrMask*> discovered_networks = q->getNetworks();
 
     if (fwbdebug)
-        qDebug(QString("got %1 networks").arg(s.size()).toAscii().constData());
+        qDebug(QString("got %1 networks").arg(
+                   discovered_networks.size()).toAscii().constData());
 
-    for (m=s.begin(); m!=s.end(); ++m)
+    for (m=discovered_networks.begin(); m!=discovered_networks.end(); ++m)
     {
         ObjectDescriptor od;
-        
-        od.sysname = m->toString();
-        od.addr = *(m->getAddressPtr());
-        od.netmask = *(m->getNetmaskPtr());
-        od.type = Network::TYPENAME;
+        InetAddrMask *net = *m;
+
+        if (fwbdebug)
+            qDebug(QString("network %1").arg(
+                       net->toString().c_str()).toAscii().constData());
+
+        // if address in *m is ipv6, recreate it as Inet6AddrMask and 
+        // use type NetworkIPv6
+        if (net->getAddressPtr()->isV6())
+        {
+            Inet6AddrMask in6am(*(net->getAddressPtr()),
+                                *(net->getNetmaskPtr()));
+            od.sysname = in6am.toString(); // different from ipv6
+            od.type = NetworkIPv6::TYPENAME;
+        } else
+        {
+            od.sysname = net->toString();
+            od.type = Network::TYPENAME;
+        }
+        od.addr = *(net->getAddressPtr());
+        od.netmask = *(net->getNetmaskPtr());
         od.isSelected = false;
-        
-        Networks[od.sysname.c_str()]= od ;
+        Networks[od.sysname.c_str()]= od;
     }
 
     map<InetAddr, CrawlerFind>  t = q->getAllIPs();
@@ -1506,9 +1523,7 @@ void DiscoveryDruid::fillListOfNetworks()
         QProgressDialog pd(tr("Copying results ..."), tr("Cancel"), 0, count,this);
         
         QMap<QString, ObjectDescriptor>::iterator i;
-        for(i=Networks.begin();
-            i!=Networks.end();
-            ++i)
+        for (i=Networks.begin(); i!=Networks.end(); ++i)
         {
             
             if ( flt_net->test(i.value()) )
@@ -1675,8 +1690,7 @@ void DiscoveryDruid::updateLog()
             }
             if (Objects.size()>0 || Networks.size()>0)
             {
-                if (Networks.size()==0) 
-                    setAppropriate( 8,0);
+                if (Networks.size()==0) setAppropriate( 8,0);
                 nextButton->setEnabled(true);
                 nextButton->setDefault(true);
                 nextButton->setFocus();
@@ -2010,44 +2024,44 @@ void DiscoveryDruid::typeFirewall()
 
 void DiscoveryDruid::createRealObjects()
 {
-    
     ObjectDescriptor od;
-    string type,name,a;
+    string type, name, a;
     
     int t=0;
     m_dialog->lastprogress->setValue(0);
     m_dialog->lastprogress->setMaximum( Objects.size());
     
     QMap<QString,ObjectDescriptor >::iterator i;
-    for(i=Networks.begin(); i!=Networks.end(); ++i)
+    for (i=Networks.begin(); i!=Networks.end(); ++i)
     {
         od=i.value();
         if (od.isSelected)
         {
-            type = od.type;
-            name=od.sysname;
+            type = od.type; // Network or NetworkIPv6
+            name = od.sysname;
             a = od.addr.toString().c_str();
             
-            Network *net=dynamic_cast<Network*>(
-                mw->createObject(type.c_str(),name.c_str())
-            );
+            Address *net = Address::cast(
+                mw->createObject(type.c_str(), name.c_str()));
             assert(net!=NULL);
             net->setName(name);
-            net->setAddress(InetAddr(a));
-            net->setNetmask(InetAddr(InetAddr(a)));
+            net->setAddress(od.addr);
+            net->setNetmask(od.netmask);
+
             mw->moveObject(m_dialog->libs->currentText(), net);
         }
     }
     
-    for(i=Objects.begin(); i!=Objects.end(); ++i)
+    for (i=Objects.begin(); i!=Objects.end(); ++i)
     {
         od = i.value();
         type = od.type;
         
         name = od.sysname;
+
         a = od.addr.toString();
 
-        if(od.isSelected)
+        if (od.isSelected)
         {
             if (type==Host::TYPENAME || type==Firewall::TYPENAME) 
             {
@@ -2061,20 +2075,34 @@ void DiscoveryDruid::createRealObjects()
                     Interface *itf= Interface::cast(
                         mw->createObject(o,Interface::TYPENAME,"nic1")
                     );
-                    IPv4 *ipv4= IPv4::cast(
-                        mw->createObject(itf,IPv4::TYPENAME,a.c_str())
-                    );
-                    
-                    
-                    ipv4->setAddress(InetAddr(a));
-                    ipv4->setNetmask(InetAddr());
+
+                    if (od.addr.isV4())
+                    {
+                        IPv4 *ipv4= IPv4::cast(
+                            mw->createObject(itf, IPv4::TYPENAME, a.c_str())
+                        );
+                        ipv4->setAddress(od.addr);
+                        ipv4->setNetmask(InetAddr());
+                    }
+
+                    if (od.addr.isV6())
+                    {
+                        IPv6 *ipv6 = IPv6::cast(
+                            mw->createObject(itf, IPv6::TYPENAME, a.c_str())
+                        );
+                        ipv6->setAddress(od.addr);
+                        ipv6->setNetmask(InetAddr());
+                    }
+
                 } else
                 {
                     map<int,InterfaceData>::const_iterator i;
                     for (i=od.interfaces.begin(); i!=od.interfaces.end(); ++i)
                     {
                         InterfaceData in = i->second;
-                        if (in.addr_mask.getAddressPtr()->isAny()) continue;
+                        if (in.addr_mask.size()==0) continue;
+                        if (in.addr_mask.front()->getAddressPtr()->isAny())
+                            continue;
 
                         Interface *itf = Interface::cast(
                             mw->createObject(o,
@@ -2086,15 +2114,33 @@ void DiscoveryDruid::createRealObjects()
                         itf->setExt(in.ext);
                         itf->setSecurityLevel(in.securityLevel);
 
-                        const InetAddr *addr = in.addr_mask.getAddressPtr();
-                        IPv4 *ipv4= IPv4::cast(
-                            mw->createObject(itf, IPv4::TYPENAME,
-                                             addr->toString().c_str())
-                        );
-                        ipv4->setAddress(*addr);
-                        ipv4->setNetmask(*(in.addr_mask.getNetmaskPtr()));
+                        list<InetAddrMask*>::iterator n;
+                        for (n=in.addr_mask.begin(); n!=in.addr_mask.end(); ++n)
+                        {
+                            const InetAddr *addr = (*n)->getAddressPtr();
+                            const InetAddr *netm = (*n)->getNetmaskPtr();
+                            if (addr->isV4())
+                            {
+                                IPv4 *ipv4= IPv4::cast(
+                                    mw->createObject(itf, IPv4::TYPENAME,
+                                                     addr->toString().c_str())
+                                );
+                                ipv4->setAddress(*addr);
+                                ipv4->setNetmask(*netm);
+                                mw->autorename(itf, IPv4::TYPENAME, "ip");
+                            }
 
-                        mw->autorename(itf, IPv4::TYPENAME, "ip");
+                            if (addr->isV6())
+                            {
+                                IPv6 *ipv6 = IPv6::cast(
+                                    mw->createObject(itf, IPv6::TYPENAME,
+                                                     addr->toString().c_str())
+                                );
+                                ipv6->setAddress(*addr);
+                                ipv6->setNetmask(*netm);
+                                mw->autorename(itf, IPv6::TYPENAME, "ip6");
+                            }
+                        }
                         mw->autorename(itf, physAddress::TYPENAME, "mac");
                     }
                 }

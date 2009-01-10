@@ -2752,12 +2752,13 @@ void ObjectManipulator::newNATRuleSet ()
     if (fw!=NULL)
     {
         int count = 0;
-        for (FWObjectTypedChildIterator it = fw->findByType(NAT::TYPENAME);it != it.end(); ++it)
-            count++;
+        for (FWObjectTypedChildIterator it = fw->findByType(NAT::TYPENAME);
+             it != it.end(); ++it) count++;
+
         if (count>0)
         {
-            name+="_";
-            name+=QString().setNum(count);
+            name += "_";
+            name += QString().setNum(count);
         }
     }
     FWObject *o=createObject(currentObj,NAT::TYPENAME,name);
