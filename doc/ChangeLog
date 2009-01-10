@@ -6,6 +6,9 @@
 	using IP-MIB RFC4293. Not all snmp agents support this MIB, for
 	example only recent versions of net-snmp support it.
 
+	* starting with v3.0.4 build 739 snmp discovery is supported on
+	Windows.
+
 2009-01-06  vadim  <vadim@vk.crocodile.org>
 
 	* RoutingCompiler_iosacl_writers.cpp (PrintRule::PrintRule): fixes
