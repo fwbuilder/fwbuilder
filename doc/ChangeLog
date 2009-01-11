@@ -1,3 +1,8 @@
+2009-01-11  vadim  <vadim@vk.crocodile.org>
+
+	* unknown.xml.in: fixed bug #2486558 "firewall platform "unknown"
+	should support basic actions".
+
 2009-01-10  vadim  <vadim@vk.crocodile.org>
 
 	* DiscoveryDruid.cpp (DiscoveryDruid::loadDataFromCrawler): bug
