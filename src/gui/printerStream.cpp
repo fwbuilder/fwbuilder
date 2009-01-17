@@ -127,7 +127,9 @@ bool printerStream::begin()
 
 void printerStream::end()
 {
-    pr.end();
+    // according to QT docs, there is no need to explicitly call QPainter::end()
+    // because its destructor does it
+    //    pr.end();
 }
 
 int printerStream::getWorkspaceWidth()
@@ -137,7 +139,8 @@ int printerStream::getWorkspaceWidth()
 
 int printerStream::getWorkspaceHeight()
 {
-    return (printHeader)?(pageBody.height()-headerBox.height()):pageBody.height();
+    return (printHeader) ? (pageBody.height()-headerBox.height()) :
+        pageBody.height();
 }
 
 void printerStream::beginPage()
@@ -241,8 +244,8 @@ void printerStream::printPixmap(const QPixmap &pm, bool newLine)
         }
     }
 
-    int target_w = pm.width() * pixmap_scaling_ratio;
-    int target_h = pm.height() * pixmap_scaling_ratio;
+    int target_w = (int)(pm.width() * pixmap_scaling_ratio);
+    int target_h = (int)(pm.height() * pixmap_scaling_ratio);
 
     int pmYOffset = 0;
     while ( getYSpace()<(pm.height()-pmYOffset) )
@@ -285,7 +288,8 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
 
     int firstRow = 0;
     int lastRow = 1;
-    int tblHeight = tbl->horizontalHeader()->height();
+    int tblHeight = (int)((float)(tbl->horizontalHeader()->height()) *
+                          pixmap_scaling_ratio);
 
     int columnsWidth = 0;
     int i = 0;
@@ -295,7 +299,7 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
         i++;
     }
 
-    if ( tblHeight + tbl->rowHeight(0) > getYSpace() )
+    if ( tblHeight + tbl->rowHeight(0)*pixmap_scaling_ratio > getYSpace() )
     {
         // even one row of the table won't fit on the space left on page
         flushPage();
@@ -306,19 +310,37 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
     while (firstRow<=(rowCount-1))
     {
         int row = 0;
+        /* ===================================================================
+         * Row height is screen pixels, getYSpace returns remaining
+         * space in printer resolution units. Keep track of both to
+         * resize pixmap
+         * ===================================================================
+         */
+        int pixMapHeight = tbl->horizontalHeader()->height();
+
         for (row=firstRow; row < rowCount; ++row)
         {
-            int nth = tblHeight + tbl->rowHeight(row);
-            if ( nth==getYSpace() )  break;
-            if ( nth>getYSpace() ) { row--; break; }
-            tblHeight  = nth;
 
+            int nth = tblHeight + (int)((float)(tbl->rowHeight(row)) *
+                                        pixmap_scaling_ratio);
+            int pmh = pixMapHeight + tbl->rowHeight(row);
+
+            if ( nth==getYSpace() )  break;
+
+            if ( nth>getYSpace() ) 
+            { 
+                row--; 
+                break; 
+            }
+            tblHeight = nth;
+            pixMapHeight  = pmh;
         }
+        
         // if row < firstRow then even single row does not fit on the page
         if (row < firstRow)
         {
             row = firstRow;
-            tblHeight = tbl->rowHeight(firstRow);
+            pixMapHeight = tbl->rowHeight(firstRow);
         }
 
         int left_hdr_w = 0;
@@ -334,6 +356,7 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
         if (row == rowCount) row--;
 
         lastRow = row;
+
         if (fwbdebug)
             qDebug("Page %d -- (%d-%d of %d rows) tblWidth: %d   tblHeight: %d",
                    pageNo, firstRow, lastRow, rowCount, tblWidth, tblHeight);
@@ -341,7 +364,11 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
         int firstRowPos = tbl->verticalHeader()->sectionPosition(firstRow);
         int lastRowPos = tbl->verticalHeader()->sectionPosition(lastRow);
 
-        tbl->resize(tblWidth, tblHeight);
+        if (fwbdebug)
+            qDebug("    firstRowPos: %d lastRowPos: %d  pixMapHeight: %d",
+                   firstRowPos, lastRowPos, pixMapHeight);
+
+        tbl->resize(tblWidth, pixMapHeight);
 
         tbl->verticalHeader()->resize(
             tbl->verticalHeader()->width(),
@@ -378,7 +405,7 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
                    tbl->verticalHeader()->logicalIndexAt(offset));
         }
 
-        printPixmap(QPixmap::grabWidget(tbl));  //,0,0,-1,tblHeight));
+        printPixmap(QPixmap::grabWidget(tbl));  //,0,0,-1,pixMapHeight));
 
         if (lastRow>=(rowCount-1)) break;
 
@@ -386,7 +413,7 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
         beginPage();
 
         firstRow = lastRow + 1;
-        tblHeight = tbl->horizontalHeader()->height();
+        tblHeight = (int)((float)(tbl->horizontalHeader()->height())*pixmap_scaling_ratio);
     }
 }
 

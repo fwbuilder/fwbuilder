@@ -1,3 +1,16 @@
+2009-01-17  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWWindowPrint.cpp (FWWindow::filePrint): fixed bug (no #): the
+	GUI crashed if user tried to use File/Print function when no
+	ruleset was opened in the right hand panel.
+
+	* printerStream.cpp (printerStream::printQTable): Applied patch by
+	Paul@Auroragrp.Com that fixes problems with printing long rule
+	sets. If rule set printout exceeded the length of the page, some
+	rules at the bottom were cut off and lost. The patch corrects the
+	problem by taking into account printer dpi while calculating
+	position for page breaks.
+
 2009-01-11  vadim  <vadim@vk.crocodile.org>
 
 	* unknown.xml.in: fixed bug #2486558 "firewall platform "unknown"

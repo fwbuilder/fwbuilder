@@ -73,8 +73,19 @@ void FWWindow::filePrint()
     bool  newPageForSection = false;
     int   tableResolution = 2;   // 50%, 75%, 100%, 150%, 200%, default 100%
 
-    FWObject *firewall_to_print =
-        activeProject()->getCurrentRuleSet()->getParent();
+    FWObject *firewall_to_print = NULL;
+    FWObject *current_ruleset = activeProject()->getCurrentRuleSet();
+    if (current_ruleset)
+        firewall_to_print = current_ruleset->getParent();
+    else
+    {
+        // no ruleset is open in the right panel
+        firewall_to_print = activeProject()->getSelectedObject();
+    }
+
+    // Need error dialog
+    if (!Firewall::isA(firewall_to_print)) return;
+
 
     if (!st->getStr("PrintSetup/newPageForSection").isEmpty())
         newPageForSection = st->getBool("PrintSetup/newPageForSection");
