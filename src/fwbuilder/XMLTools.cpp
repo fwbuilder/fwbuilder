@@ -62,7 +62,7 @@
 #include <iostream>
 
 #undef FW_XMLTOOLS_VERBOSE
-// #define FW_XMLTOOLS_VERBOSE
+// #define FW_XMLTOOLS_VERBOSE 1
 
 #define DTD_LOAD_BITS (1|XML_DETECT_IDS|XML_COMPLETE_ATTRS)
 
@@ -338,10 +338,12 @@ xmlDocPtr XMLTools::loadFile(const string &data_file ,
     if (data_file=="-") return doc;
 
 
-    xmlDocPtr newdoc=convert(doc, data_file, type, template_dir, current_version);
+    xmlDocPtr newdoc = convert(doc, data_file, type,
+                               template_dir, current_version);
     if(newdoc)
     {
-        const string upgrade_msg="The file '"+data_file+"' was saved with\n\
+        const string upgrade_msg = "The file '" + data_file +
+            "' was saved with\n\
 an older version of Firewall Builder.  Opening it in this version will\n\
 cause it to be upgraded, which may prevent older versions of the program\n\
 from reading it. Backup copy of your file in the old format will be made\n\
@@ -351,6 +353,7 @@ in the same directory with extension '.bak'. Are you sure you want to open it?";
         if(!(*upgrade)(upgrade_msg))
         {
             xmlFreeDoc(newdoc);
+            xmlCleanupParser();
             throw FWException("Load operation cancelled for file: '"+data_file);
         }
      
@@ -367,7 +370,9 @@ in the same directory with extension '.bak'. Are you sure you want to open it?";
         if(rename(data_file.c_str(), backup_file.c_str()))
         {
             xmlFreeDoc(doc);
-            throw FWException("Error making backup copy of file: '"+data_file+"' as '"+backup_file+"'");
+            xmlCleanupParser();
+            throw FWException("Error making backup copy of file: '" + 
+                              data_file + "' as '" + backup_file + "'");
         }
 
         try
@@ -379,14 +384,17 @@ in the same directory with extension '.bak'. Are you sure you want to open it?";
             // let's restore backup
             if(rename(backup_file.c_str(), data_file.c_str()))
             {
-                throw FWException(ex.toString()+"\nRestoring backup copy failed "+
-                                  "your old data could be found in the file: '"+backup_file+"'");
+                throw FWException(ex.toString() +
+                                  "\nRestoring backup copy failed " +
+                                  "your old data could be found in the file: '"+
+                                  backup_file+"'");
             } else
                 throw;
         }
     } 
     assert(doc!=NULL);
     xmlFreeDoc(doc);
+    xmlCleanupParser();
 
     // Now we know the version is OK,
     // let us load for real, checking DTD.
@@ -490,8 +498,8 @@ void XMLTools::dumpToMemory(xmlDocPtr doc,
 void XMLTools::transformFileToFile(const string &src_file,
 				   const string &stylesheet_file,
 				   const char **params,
-				   const string &dst_file
-) throw(FWException)
+				   const string &dst_file)
+    throw(FWException)
 {
     string xslt_errors;
     xsltStylesheetPtr ss = NULL;
@@ -522,8 +530,10 @@ void XMLTools::transformFileToFile(const string &src_file,
         xsltSetGenericDebugFunc (NULL, NULL);
         xml_parser_mutex.unlock();    
         xslt_processor_mutex.unlock();
-        throw FWException("File conversion error: Error loading stylesheet: "+stylesheet_file+
-          (xslt_errors.length()?(string("\nXSLT reports: \n")+xslt_errors):string(""))
+        throw FWException("File conversion error: Error loading stylesheet: " + 
+                          stylesheet_file+
+                          (xslt_errors.length()?(string("\nXSLT reports: \n") +
+                                                 xslt_errors):string(""))
         );
     }
     
@@ -546,8 +556,10 @@ void XMLTools::transformFileToFile(const string &src_file,
     if(!res)
     {
         xsltFreeStylesheet(ss);
-        throw FWException("File conversion Error: Error during conversion: "+stylesheet_file+
-          (xslt_errors.length()?(string("XSLT reports: \n")+xslt_errors):string(""))
+        throw FWException("File conversion Error: Error during conversion: " +
+                          stylesheet_file+
+                          (xslt_errors.length()?(string("XSLT reports: \n") +
+                                                 xslt_errors):string(""))
         );
     }
 
@@ -574,22 +586,22 @@ void XMLTools::transformDocumentToFile(xmlDocPtr doc,
     xmlSetGenericErrorFunc (&xslt_errors, xslt_error_handler);
 
     // Following line is workaround for bug #73088 in Gnome
-    // bugzilla. To be removed than it will be fixed.
+    // bugzilla. To be removed when it is fixed.
     xsltSetGenericDebugFunc (&xslt_errors, xslt_error_handler);
-
     
 #ifdef FW_XMLTOOLS_VERBOSE
     xmlSaveFormatFileEnc(".backup_copy.xml", doc, "utf-8", 1);
-    cerr << "Backup copy of the XML tree is saved to file .backup_copy.xml" << endl;
+    cerr << "Backup copy of XML tree is saved to file .backup_copy.xml" << endl;
 #endif
 
     xmlDoValidityCheckingDefaultValue = 0;
-    xmlLoadExtDtdDefaultValue         = 0;
-    xsltStylesheetPtr ss = xsltParseStylesheetFile(STRTOXMLCAST(stylesheet_file));
+    xmlLoadExtDtdDefaultValue = 0;
+    xsltStylesheetPtr ss = xsltParseStylesheetFile(
+        STRTOXMLCAST(stylesheet_file));
     xmlDoValidityCheckingDefaultValue = 1;
-    xmlLoadExtDtdDefaultValue         = DTD_LOAD_BITS;
+    xmlLoadExtDtdDefaultValue = DTD_LOAD_BITS;
 
-    if(!ss)
+    if (!ss)
     {
         xsltSetGenericErrorFunc(NULL, NULL);
         xmlSetGenericErrorFunc (NULL, NULL);
@@ -599,8 +611,10 @@ void XMLTools::transformDocumentToFile(xmlDocPtr doc,
         xsltSetGenericDebugFunc (NULL, NULL);
         xml_parser_mutex.unlock();    
         xslt_processor_mutex.unlock();    
-        throw FWException("File conversion error: Error loading stylesheet: "+stylesheet_file+
-                          (xslt_errors.length()?(string("\nXSLT reports: \n")+xslt_errors):string(""))
+        throw FWException("File conversion error: Error loading stylesheet: " + 
+                          stylesheet_file+
+                          (xslt_errors.length()?(string("\nXSLT reports: \n") +
+                                                 xslt_errors) : string(""))
         );
     }
     
@@ -616,27 +630,30 @@ void XMLTools::transformDocumentToFile(xmlDocPtr doc,
     xml_parser_mutex.unlock();    
     xslt_processor_mutex.unlock();    
     
-    if(!res)
+    if (!res)
     {
         xsltFreeStylesheet(ss);
-        throw FWException("File conversion Error: Error during conversion: "+stylesheet_file+
-                          (xslt_errors.length()?(string("XSLT reports: \n")+xslt_errors):string(""))
+        throw FWException("File conversion Error: Error during conversion: " + 
+                          stylesheet_file +
+                          (xslt_errors.length()?(string("XSLT reports: \n") +
+                                                 xslt_errors) : string(""))
         );
     }
 
-    if(dst_file=="-")
+    if (dst_file=="-")
         xsltSaveResultToFile(stdout, res, ss);
     else
         xsltSaveResultToFilename(dst_file.c_str(), res, ss, 0 /* compression */ );
 
     xmlFreeDoc(res);
+    xmlCleanupParser();
     xsltFreeStylesheet(ss);
 }
 
 xmlDocPtr XMLTools::transformDocument(xmlDocPtr doc, 
                                       const string &stylesheet_file,
-                                      const char **params
-) throw(FWException)
+                                      const char **params)
+    throw(FWException)
 {
     string xslt_errors;
 
@@ -647,15 +664,17 @@ xmlDocPtr XMLTools::transformDocument(xmlDocPtr doc,
     xmlSetGenericErrorFunc (&xslt_errors, xslt_error_handler);
 
     // Following line is workaround for bug #73088 in Gnome
-    // bugzilla. To be removed than it will be fixed.
-    xsltSetGenericDebugFunc (&xslt_errors, xslt_error_handler);
+    // bugzilla. To be removed than it is fixed.
+    xsltSetGenericDebugFunc(&xslt_errors, xslt_error_handler);
 
     xmlDoValidityCheckingDefaultValue = 0;
     xmlLoadExtDtdDefaultValue         = 0;
-    xsltStylesheetPtr ss = xsltParseStylesheetFile(STRTOXMLCAST(stylesheet_file));
+    xsltStylesheetPtr ss = xsltParseStylesheetFile(
+        STRTOXMLCAST(stylesheet_file));
     xmlDoValidityCheckingDefaultValue = 1;
     xmlLoadExtDtdDefaultValue         = DTD_LOAD_BITS;
-    if(!ss)
+
+    if (!ss)
     {
         xsltSetGenericErrorFunc(NULL, NULL);
         xmlSetGenericErrorFunc (NULL, NULL);
@@ -682,7 +701,7 @@ xmlDocPtr XMLTools::transformDocument(xmlDocPtr doc,
     xml_parser_mutex.unlock();    
     xslt_processor_mutex.unlock();    
     
-    if(!res)
+    if (!res)
     {
         throw FWException("File conversion Error: Error during conversion: "+stylesheet_file+
                           (xslt_errors.length()?(string("XSLT reports: \n")+xslt_errors):string(""))
@@ -700,16 +719,17 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
 {
     xmlDocPtr  res = NULL;
     
-    xmlNodePtr root=xmlDocGetRootElement(doc);
-    if(!root || !root->name || type_name!=FROMXMLCAST(root->name))
+    xmlNodePtr root = xmlDocGetRootElement(doc);
+    if (!root || !root->name || type_name!=FROMXMLCAST(root->name))
     {
-	    xmlFreeDoc(doc);
+        xmlFreeDoc(doc);
+        xmlCleanupParser();
         throw FWException("XML file '"+file_name+ "' has invalid structure.");
     }
 
     string vers;
-    const char *v=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("version")));
-    if(v==NULL)
+    const char *v = FROMXMLCAST(xmlGetProp(root,TOXMLCAST("version")));
+    if (v==NULL)
     {
         // no version.
         v="0.8.7"; // at this version attribute has been introduced
@@ -729,7 +749,7 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
 #endif
 
     int c;
-    while(!vers.empty() && (c=version_compare(current_version,vers))!=0)
+    while (!vers.empty() && (c=version_compare(current_version,vers))!=0)
     {
         if(c<0)
         {
@@ -745,7 +765,7 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
             throw FWException(err);
         }
 
-        string oldversion=vers;
+        string oldversion = vers;
         
 #ifdef FW_XMLTOOLS_VERBOSE
         cerr << "Converting from version: " << oldversion << endl;
@@ -757,46 +777,57 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
 
         fname = fname+FS_SEPARATOR+"migration"+FS_SEPARATOR+type_name+"_"+vers+".xslt";
 
-        if(access(fname.c_str() , R_OK )!=0) 
+        if (access(fname.c_str() , R_OK )!=0) 
         {
             xmlFreeDoc(doc);
-            throw FWException(string("File '"+file_name+ "' conversion error: no converter found for version: ")+oldversion+".\n"+
-                              string("Supposed to be a file ")+fname );
+            xmlCleanupParser();
+            throw FWException(
+                string("File '" + file_name +
+                       "' conversion error: no converter found for version: ") +
+                oldversion+".\n" + string("Supposed to be a file ")+fname );
         }
         
         try
         {
-            res=transformDocument(doc, fname, NULL);
+            res = transformDocument(doc, fname, NULL);
         } catch(FWException &ex)
         {
             ex.getProperties()["failed_transformation"]=fname;
             xmlFreeDoc(doc);
+            xmlCleanupParser();
             throw;
         }
         xmlFreeDoc(doc);
+        xmlCleanupParser();
         doc = res;
         
-        root=xmlDocGetRootElement(doc);
-        if(!root || !root->name || type_name!=FROMXMLCAST(root->name))
+        root = xmlDocGetRootElement(doc);
+        if (!root || !root->name || type_name!=FROMXMLCAST(root->name))
         {
             xmlFreeDoc(doc);
-            throw FWException("File '"+file_name+ "' conversion Error: conversion produced file with invalid structure.");
+            xmlCleanupParser();
+            throw FWException("File '" + file_name +
+                              "' conversion Error: conversion produced file with invalid structure.");
         }
 
-        v=FROMXMLCAST(xmlGetProp(root, TOXMLCAST("version")));
-        if(v==NULL)
+        v = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("version")));
+        if (v==NULL)
         {
             xmlFreeDoc(doc);
-            throw FWException("File '"+file_name+ "' conversion error: converted to unknown version.");
+            xmlCleanupParser();
+            throw FWException("File '" + file_name +
+                              "' conversion error: converted to unknown version.");
         } 
 
         vers=v;
         FREEXMLBUFF(v);
         
-        if(version_compare(vers, oldversion) <= 0)
+        if (version_compare(vers, oldversion) <= 0)
         {
             xmlFreeDoc(doc);
-            throw FWException("File '"+file_name+ "' conversion error: conversion did not advance version number!.");
+            xmlCleanupParser();
+            throw FWException("File '" + file_name +
+                              "' conversion error: conversion did not advance version number!.");
         }
     }
 

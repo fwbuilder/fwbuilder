@@ -152,6 +152,7 @@ xmlNodePtr Firewall::toXML(xmlNodePtr parent) throw(FWException)
     xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
 
     FWObject *o;
+
     for (FWObjectTypedChildIterator it = findByType(NAT::TYPENAME);
          it != it.end(); ++it)
     {

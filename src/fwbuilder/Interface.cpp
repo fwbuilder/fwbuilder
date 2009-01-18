@@ -186,19 +186,19 @@ xmlNodePtr Interface::toXML(xmlNodePtr parent) throw(FWException)
     for(FWObjectTypedChildIterator j1=findByType(IPv4::TYPENAME);
         j1!=j1.end(); ++j1)
     {
-        if((o=(*j1))!=NULL )
+        if ((o=(*j1))!=NULL )
             o->toXML(me);
     }
     for(FWObjectTypedChildIterator j1=findByType(IPv6::TYPENAME);
         j1!=j1.end(); ++j1)
     {
-        if((o=(*j1))!=NULL )
+        if ((o=(*j1))!=NULL )
             o->toXML(me);
     }
     for(FWObjectTypedChildIterator j2=findByType(physAddress::TYPENAME);
         j2!=j2.end(); ++j2)
     {
-        if((o=(*j2))!=NULL )
+        if ((o=(*j2))!=NULL )
             o->toXML(me);
     }
 

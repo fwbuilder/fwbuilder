@@ -254,6 +254,7 @@ void FWObjectDatabase::load(const string &f,
                                       FWObjectDatabase::TYPENAME)!=SAME)
     {
 	xmlFreeDoc(doc);
+        xmlCleanupParser();
         throw FWException("Data file has invalid structure: "+f);
     }
     
@@ -276,62 +277,61 @@ void FWObjectDatabase::load(const string &f,
     init = false;
 }
 
-void FWObjectDatabase::saveXML(xmlDocPtr doc) throw(FWException)
-{
-    doc->children = xmlNewDocNode(doc, NULL, STRTOXMLCAST(getName()), NULL);
-    xmlNewNs(doc->children, TOXMLCAST("http://www.fwbuilder.org/1.0/"), NULL);
-
-    toXML(xmlDocGetRootElement(doc));
-
-    XMLTools::setDTD(doc, FWObjectDatabase::TYPENAME, FWObjectDatabase::DTD_FILE_NAME);
-}
-
 void FWObjectDatabase::saveFile(const string &filename) throw(FWException)
 {
 /* need to set flag 'init' so we ignore read-only status. Some objects
- * modify themselves in toXML (e.g. Management) so if they belong to a
- * read-only library, we can't save them to a file. It should be safe
- * to ignore read-only flag but save it though.
+ * modify themselves in toXML() (e.g. Management) so if they belong to
+ * a read-only library, we can't save them to a file. It should be
+ * safe to ignore read-only flag but save it though.
  */
-    init=true;
+    init = true;
 
     xmlDocPtr doc = xmlNewDoc(TOXMLCAST("1.0"));
-  
-    doc->children = xmlNewDocNode(doc, NULL, STRTOXMLCAST(getName()), NULL);
-    xmlNewNs(doc->children, TOXMLCAST("http://www.fwbuilder.org/1.0/"), NULL);
+    xmlNodePtr node = xmlNewDocNode(doc, NULL, STRTOXMLCAST(getName()), NULL);
+    xmlDocSetRootElement(doc, node);
+    xmlNewNs(node, TOXMLCAST("http://www.fwbuilder.org/1.0/"), NULL);
 
     toXML(xmlDocGetRootElement(doc));
 
-    XMLTools::saveFile(doc, filename, FWObjectDatabase::TYPENAME, FWObjectDatabase::DTD_FILE_NAME);
+    XMLTools::saveFile(doc,
+                       filename,
+                       FWObjectDatabase::TYPENAME,
+                       FWObjectDatabase::DTD_FILE_NAME);
 
-    xmlFreeDoc(doc);  
+    xmlFreeDoc(doc);
+    xmlCleanupParser();
+
     setDirty(false);
-
-    init=false;
+    init = false;
 }
 
-void FWObjectDatabase::saveToBuffer(xmlChar **buffer,int *size) throw(FWException)
+void FWObjectDatabase::saveToBuffer(xmlChar **buffer, int *size)
+    throw(FWException)
 {
 /* need to set flag 'init' so we ignore read-only status. Some objects
- * modify themselves in toXML (e.g. Management) so if they belong to a
+ * modify themselves in toXML() (e.g. Management) so if they belong to a
  * read-only library, we can't save them to a file. It should be safe
  * to ignore read-only flag but save it though.
  */
-    init=true;
+    init = true;
 
     xmlDocPtr doc = xmlNewDoc(TOXMLCAST("1.0"));
-  
-    doc->children = xmlNewDocNode(doc, NULL, STRTOXMLCAST(getName()), NULL);
-    xmlNewNs(doc->children, TOXMLCAST("http://www.fwbuilder.org/1.0/"), NULL);
+    xmlNodePtr node = xmlNewDocNode(doc, NULL, STRTOXMLCAST(getName()), NULL);
+    xmlDocSetRootElement(doc, node);
+    xmlNewNs(node, TOXMLCAST("http://www.fwbuilder.org/1.0/"), NULL);
 
     toXML(xmlDocGetRootElement(doc));
 
-    XMLTools::dumpToMemory(doc, buffer, size, FWObjectDatabase::TYPENAME, FWObjectDatabase::DTD_FILE_NAME);
-
+    XMLTools::dumpToMemory(doc,
+                           buffer,
+                           size,
+                           FWObjectDatabase::TYPENAME,
+                           FWObjectDatabase::DTD_FILE_NAME);
     xmlFreeDoc(doc);  
+    xmlCleanupParser();
 //    setDirty(false);
 
-    init=false;
+    init = false;
 }
 
 void FWObjectDatabase::fromXML(xmlNodePtr root) throw(FWException)
@@ -354,7 +354,7 @@ xmlNodePtr FWObjectDatabase::toXML(xmlNodePtr parent) throw(FWException)
 {
     FWObject *o;
 
-    xmlNewProp(parent,NULL,NULL);
+    xmlNewProp(parent, NULL, NULL);
 
     xmlNewProp(parent, 
                TOXMLCAST("version") , 
@@ -364,8 +364,6 @@ xmlNodePtr FWObjectDatabase::toXML(xmlNodePtr parent) throw(FWException)
     {
         ostringstream str;
         str << lastModified;
-        //char lmbuf[32];
-        //sprintf(lmbuf,"%ld",lastModified);
         xmlNewProp(parent, 
                    TOXMLCAST("lastModified"),
                    TOXMLCAST(str.str().c_str()));
@@ -379,11 +377,10 @@ xmlNodePtr FWObjectDatabase::toXML(xmlNodePtr parent) throw(FWException)
 
     xmlAddID(NULL, parent->doc, STRTOXMLCAST(id_dict[rootid]), pr);
 
-
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
-        if((o=(*j))!=NULL)   
-            o->toXML(parent);
-    
+    {
+        if ((o=(*j))!=NULL) o->toXML(parent);
+    }
     return parent;
 }
 

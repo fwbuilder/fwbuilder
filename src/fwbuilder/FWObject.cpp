@@ -154,10 +154,11 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
         xmlNewProp(me, STRTOXMLCAST(name), STRTOXMLCAST(value));
     }
 
-    if(process_children)
+    if (process_children)
+    {
         for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
             (*j)->toXML(me);
-    
+    }
     return me;
 }
 

@@ -31,6 +31,8 @@
 #include <fwbuilder/FWOptions.h>
 #include <fwbuilder/Firewall.h>
 
+#include <iostream>
+
 using namespace std;
 using namespace libfwbuilder;
 
@@ -56,13 +58,13 @@ void FWOptions::fromXML(xmlNodePtr root) throw(FWException)
     const char *n;
     const char *cont;
 
-    for(xmlNodePtr cur=root->xmlChildrenNode; cur; cur=cur->next)   
+    for (xmlNodePtr cur = root->xmlChildrenNode; cur; cur = cur->next)   
     {
-        if(cur && !xmlIsBlankNode(cur))    
+        if (cur && !xmlIsBlankNode(cur))    
         {
-            n=FROMXMLCAST(xmlGetProp(cur,TOXMLCAST("name")));
+            n = FROMXMLCAST(xmlGetProp(cur,TOXMLCAST("name")));
             assert(n!=NULL);
-            cont=FROMXMLCAST( xmlNodeGetContent(cur) );
+            cont = FROMXMLCAST( xmlNodeGetContent(cur) );
             if (cont)
             {
                 setStr(n, cont );
@@ -82,40 +84,52 @@ xmlNodePtr FWOptions::toXML(xmlNodePtr root) throw(FWException)
         xml_name.empty() ? STRTOXMLCAST(getTypeName()) : STRTOXMLCAST(xml_name),
         NULL);
 
-    map<string, string>::iterator i;
-    for(i=data.begin(); i!=data.end(); ++i)  
+    for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i)
     {
-        string name  = (*i).first;
-        string value = (*i).second;
+        const string &name  = (*i).first;
+        const string &value = (*i).second;
 
         if (name[0]=='.') continue;
         
-        xmlChar *valbuf = xmlEncodeSpecialChars(NULL, STRTOXMLCAST(value) );
-        opt=xmlNewChild(me,NULL,TOXMLCAST("Option"),valbuf);
+        xmlChar *valbuf = xmlEncodeSpecialChars(root->doc,
+                                                STRTOXMLCAST(value) );
+//        xmlChar *valbuf = xmlEncodeEntitiesReentrant(root->doc,
+//                                                     STRTOXMLCAST(value) );
+        opt = xmlNewChild(me, NULL, TOXMLCAST("Option"), valbuf);
         FREEXMLBUFF(valbuf);
+
         xmlNewProp(opt, TOXMLCAST("name") , STRTOXMLCAST(name));
     }
+
     return me;
 }
 
 const char *HostOptions::TYPENAME  ={"HostOptions"};
 HostOptions::HostOptions() : FWOptions() {}
-HostOptions::HostOptions(const FWObjectDatabase *root,bool prepopulate) : FWOptions(root,prepopulate) {}
+HostOptions::HostOptions(const FWObjectDatabase *root, bool prepopulate) :
+    FWOptions(root,prepopulate) {}
 
 const char *FirewallOptions::TYPENAME  ={"FirewallOptions"};
 FirewallOptions::FirewallOptions() : FWOptions() {}
-FirewallOptions::FirewallOptions(const FWObjectDatabase *root,bool prepopulate) : FWOptions(root,prepopulate) {}
+FirewallOptions::FirewallOptions(const FWObjectDatabase *root,
+                                 bool prepopulate) :
+    FWOptions(root,prepopulate) {}
 
 const char *PolicyRuleOptions::TYPENAME={"PolicyRuleOptions"};
 PolicyRuleOptions::PolicyRuleOptions() : FWOptions() {}
-PolicyRuleOptions::PolicyRuleOptions(const FWObjectDatabase *root,bool prepopulate) : FWOptions(root,prepopulate) {}
+PolicyRuleOptions::PolicyRuleOptions(const FWObjectDatabase *root,
+                                     bool prepopulate) :
+    FWOptions(root,prepopulate) {}
 
 const char *NATRuleOptions::TYPENAME={"NATRuleOptions"};
 
 NATRuleOptions::NATRuleOptions() : FWOptions() {}
-NATRuleOptions::NATRuleOptions(const FWObjectDatabase *root,bool prepopulate) : FWOptions(root,prepopulate) {}
+NATRuleOptions::NATRuleOptions(const FWObjectDatabase *root, bool prepopulate) :
+    FWOptions(root,prepopulate) {}
 
 const char *RoutingRuleOptions::TYPENAME={"RoutingRuleOptions"};
 RoutingRuleOptions::RoutingRuleOptions() : FWOptions() {}
-RoutingRuleOptions::RoutingRuleOptions(const FWObjectDatabase *root,bool prepopulate) : FWOptions(root,prepopulate) {}
+RoutingRuleOptions::RoutingRuleOptions(const FWObjectDatabase *root,
+                                       bool prepopulate) :
+    FWOptions(root,prepopulate) {}
 

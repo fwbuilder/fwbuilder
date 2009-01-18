@@ -135,7 +135,20 @@ private:
     void _clearReferenceCounters(FWObject *o);
     void _fixReferenceCounters(FWObject *o);
     bool _isInIgnoreList(FWObject *o);
-    
+    bool _findWhereUsed(
+            libfwbuilder::FWObject *o,
+            libfwbuilder::FWObject *p,
+            std::set<libfwbuilder::FWObject *> &resset);
+    void _findObjectsInGroup(
+            libfwbuilder::Group *g,
+            std::set<libfwbuilder::FWObject *> &res);
+    Firewall* _findFirewallByNameRecursive(
+        FWObject* db, const std::string &name) throw(FWException);
+    FWObject* _recursivelyCopySubtree(FWObject *target,
+                                      FWObject *source,
+                                      std::map<int,int> &id_map,
+                                      const std::string &dedup_attribute);
+
 protected:
 
     static const std::string DTD_FILE_NAME ;
@@ -148,15 +161,7 @@ protected:
     int searchId;
 
     void init_create_methods_table();
-    
-    Firewall* _findFirewallByNameRecursive(
-        FWObject* db, const std::string &name) throw(FWException);
     void init_id_dict();
-    FWObject* _recursivelyCopySubtree(FWObject *target,
-                                      FWObject *source,
-                                      std::map<int,int> &id_map,
-                                      const std::string &dedup_attribute);
-    
 
 public:
 
@@ -232,42 +237,32 @@ public:
 
     // --- XML import/export ---
     
-    virtual void       fromXML    (xmlNodePtr xml_parent_node) throw(FWException);
+    virtual void fromXML(xmlNodePtr xml_parent_node) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     
-    time_t getTimeLastModified()           { return lastModified; }
-    void   resetTimeLastModified(time_t t) { lastModified=t; }
+    time_t getTimeLastModified() { return lastModified; }
+    void resetTimeLastModified(time_t t) { lastModified=t; }
 
     // --- Load/Save ---
     
-    virtual void saveFile ( const std::string &filename) throw(FWException); 
-    virtual void saveXML  ( xmlDocPtr                  ) throw(FWException); 
+    virtual void saveFile(const std::string &filename) throw(FWException); 
     virtual void saveToBuffer(xmlChar **buffer,int *size) throw(FWException);
-    virtual void load     ( const std::string &filename,
-                            XMLTools::UpgradePredicate *upgrade,
-                            const std::string &template_dir) throw(FWException);
-    virtual void    setDirty(bool f);
+    virtual void load( const std::string &filename,
+                       XMLTools::UpgradePredicate *upgrade,
+                       const std::string &template_dir) throw(FWException);
+    virtual void setDirty(bool f);
 
     Firewall* findFirewallByName(const std::string &name) throw(FWException);
 
     FWObjectDatabase* exportSubtree( FWObject *lib );
     FWObjectDatabase* exportSubtree( const std::list<FWObject*> &libs );
 
-
     void findWhereUsed(
-            libfwbuilder::FWObject *o,
-            libfwbuilder::FWObject *p,
-            std::set<libfwbuilder::FWObject *> &resset);
-
-    bool _findWhereUsed(
             libfwbuilder::FWObject *o,
             libfwbuilder::FWObject *p,
             std::set<libfwbuilder::FWObject *> &resset);
     
     void findObjectsInGroup(
-            libfwbuilder::Group *g,
-            std::set<libfwbuilder::FWObject *> &res);
-    void _findObjectsInGroup(
             libfwbuilder::Group *g,
             std::set<libfwbuilder::FWObject *> &res);
     
