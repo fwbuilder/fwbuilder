@@ -152,8 +152,8 @@ using namespace Ui;
 FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
                        m_space(0),
                        instd(0),
-                       autosaveTimer(new QTimer(static_cast<QObject*>(this))), 
-                       instDialogOnScreenTimer(new QTimer(static_cast<QObject*>(this))), 
+                       instDialogOnScreenTimer(
+                           new QTimer(static_cast<QObject*>(this))), 
                        printer(0), searchObject(0), replaceObject(0),
                        auto_load_from_rcs_head_revision(0)
 {

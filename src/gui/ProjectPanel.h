@@ -315,16 +315,18 @@ public:
     
     virtual void search();
 
-     virtual void compile(std::set<libfwbuilder::Firewall * > vf);
-     virtual void compile();
-     virtual void install(std::set<libfwbuilder::Firewall * > vf);
-     virtual void install();
+    virtual void compile(std::set<libfwbuilder::Firewall * > vf);
+    virtual void compile();
+    virtual void install(std::set<libfwbuilder::Firewall * > vf);
+    virtual void install();
      
-     virtual void rollBackSelectionSameWidget();
-     virtual void rollBackSelectionDifferentWidget();
-     void splitterMoved ( int pos, int index );
-     void stateChanged(Qt::WindowStates oldState, Qt::WindowStates newState);
-     
+    virtual void rollBackSelectionSameWidget();
+    virtual void rollBackSelectionDifferentWidget();
+    void splitterMoved ( int pos, int index );
+    void stateChanged(Qt::WindowStates oldState, Qt::WindowStates newState);
+
+    virtual void autoSave();
+    
  signals:
      void restoreSelection_sign(bool same_widget);
 

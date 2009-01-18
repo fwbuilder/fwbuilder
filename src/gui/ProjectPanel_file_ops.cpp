@@ -271,14 +271,25 @@ void ProjectPanel::fileClose()
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): done");
 }
 
+/*
+ * slot that is called by a timer if user turned on auto-save feature
+ * using controls in the Preferences dialog. Need to save only if data
+ * was modified (flag "dirty" is set).
+ */
+void ProjectPanel::autoSave()
+{
+    if (db() && db()->isDirty() && rcs && !rcs->getFileName().isEmpty())
+        fileSave();
+}
+
 void ProjectPanel::fileSave()
 {
     QStatusBar *sb = mainW->statusBar();
     sb->showMessage( tr("Saving data to file...") );
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
+    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
     save();
     sb->clearMessage();
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
+    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 }
 
 void ProjectPanel::fileSaveAs()
@@ -813,7 +824,7 @@ void ProjectPanel::setupAutoSave()
     {
         int p = st->getInt("Environment/autoSaveFilePeriod");
         autosaveTimer->start( p*1000*60 );
-        connect( autosaveTimer, SIGNAL(timeout()), this, SLOT(fileSave()) );
+        connect( autosaveTimer, SIGNAL(timeout()), this, SLOT(autoSave()) );
     } else
         autosaveTimer->stop();
 }
@@ -1325,7 +1336,7 @@ void ProjectPanel::save()
             else
             {
 /* editingLibfile is true if user edits a library or master library file */
-                bool editingLibfile=editingLibrary();
+                bool editingLibfile = editingLibrary();
 
                 if (st->getDontSaveStdLib())  // this is now default
                 {

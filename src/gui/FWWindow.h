@@ -71,7 +71,6 @@ class FWWindow : public QMainWindow {
     QWidget *instd;
     HttpGet *current_version_http_getter;
     
-    QTimer *autosaveTimer;
     QTimer *instDialogOnScreenTimer;
     QString noFirewalls;
     QPrinter *printer;

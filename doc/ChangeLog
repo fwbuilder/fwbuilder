@@ -1,3 +1,11 @@
+2009-01-19  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ProjectPanel_file_ops.cpp (ProjectPanel::autoSave): fixed bug
+	#2499569: "fwbuilder crashes after some hours". The auto-save
+	function now saves data file only if it has been
+	modified. Frequent saves exasperate small memory leaks that appear
+	in some old versions of libxml2.
+
 2009-01-17  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWWindowPrint.cpp (FWWindow::filePrint): fixed bug (no #): the
