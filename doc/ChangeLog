@@ -1,7 +1,8 @@
 2009-01-19  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWWindow.cpp (FWWindow::prepareFileOpenRecentMenu): Added menu
-	Files/Open Recent.
+	Files/Open Recent. This implements feature req. #2499615 "open
+	last used file".
 
 	* FWWindow.cpp (FWWindow::startupLoad): open StartTipDialog from
 	FWWindow rather than main() to make sure this dialog always
