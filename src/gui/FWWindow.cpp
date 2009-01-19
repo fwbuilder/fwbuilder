@@ -383,12 +383,18 @@ void FWWindow::startupLoad()
         activeProject()->loadState(true);
     }
 
-    for (QStringList::iterator it=openDocFiles.begin(); it!=openDocFiles.end();
-         it++)
+    foreach (QString file, openDocFiles)
     {
-        loadFile(*it, auto_load_from_rcs_head_revision);
-        updateOpenRecentMenu(*it);
-    }
+        loadFile(file, auto_load_from_rcs_head_revision);
+        updateOpenRecentMenu(file);
+     }
+
+    // for (QStringList::iterator it=openDocFiles.begin(); it!=openDocFiles.end();
+    //      it++)
+    // {
+    //     loadFile(*it, auto_load_from_rcs_head_revision);
+    //     updateOpenRecentMenu(*it);
+    // }
 
     if (! st->getBool("UI/NoStartTip"))
     {
