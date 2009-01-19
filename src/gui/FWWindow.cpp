@@ -59,6 +59,7 @@
 #include "instConf.h"
 #include "instDialog.h"
 #include "HttpGet.h"
+#include "StartTipDialog.h"
 
 #include "fwbuilder/FWReference.h"
 #include "fwbuilder/Policy.h"
@@ -168,6 +169,8 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     m_mainWindow = new Ui::FWBMainWindow_q();
     m_mainWindow->setupUi(dynamic_cast<QMainWindow*>(this));
 
+    prepareFileOpenRecentMenu();
+
     m_space = new QMdiArea(this);
     setCentralWidget(m_space);
     ProjectPanel *proj = newProjectPanel();
@@ -224,6 +227,83 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 FWWindow::~FWWindow()
 {
     delete m_mainWindow;
+}
+
+void FWWindow::prepareFileOpenRecentMenu()
+{
+    for (int i = 0; i < MAXRECENTFILES; ++i)
+    {
+        recentFileActs[i] = new QAction(this);
+        recentFileActs[i]->setVisible(false);
+        connect(recentFileActs[i], SIGNAL(triggered()),
+                this, SLOT(openRecentFile()));
+
+        m_mainWindow->menuOpen_Recent->addAction(recentFileActs[i]);
+    }
+    openRecentSeparatorAct = m_mainWindow->menuOpen_Recent->addSeparator();
+    m_mainWindow->menuOpen_Recent->addAction(
+        m_mainWindow->actionClearRecentFiles);
+    updateRecentFileActions();
+}
+
+void FWWindow::clearRecentFilesMenu()
+{
+    QStringList empty_list;
+    st->setRecentFiles(empty_list);
+    updateRecentFileActions();
+}
+
+void FWWindow::updateRecentFileActions()
+{
+    QStringList files = st->getRecentFiles();
+    QMap<QString, int> file_name_counters;
+
+    int numRecentFiles = qMin(files.size(), (int)MAXRECENTFILES);
+
+    for (int i = 0; i < numRecentFiles; ++i)
+    {
+        QString file_name = QFileInfo(files[i]).fileName();
+        int c = file_name_counters[file_name]; // default constructed value is 0
+        file_name_counters[file_name] = c + 1;
+    }
+
+    for (int i = 0; i < numRecentFiles; ++i)
+    {
+        QString file_name = QFileInfo(files[i]).fileName();
+        int c = file_name_counters[file_name];
+        // if c > 1, we have two files with the same name but different path
+        QString text = (c > 1) ? files[i] : file_name;
+        recentFileActs[i]->setText(text);
+        recentFileActs[i]->setData(files[i]);
+        recentFileActs[i]->setVisible(true);
+    }
+    for (int j = numRecentFiles; j < MAXRECENTFILES; ++j)
+        recentFileActs[j]->setVisible(false);
+
+    openRecentSeparatorAct->setVisible(numRecentFiles > 0);
+}
+
+/*
+ * Add file name to the "File/Open Recent" menu.
+ */
+void FWWindow::updateOpenRecentMenu(const QString &fileName)
+{
+    QStringList files = st->getRecentFiles();
+    files.removeAll(fileName);
+    files.prepend(fileName);
+    while (files.size() > MAXRECENTFILES)
+        files.removeLast();
+
+    st->setRecentFiles(files);
+
+    updateRecentFileActions();
+}
+
+void FWWindow::openRecentFile()
+{
+    QAction *action = qobject_cast<QAction *>(sender());
+    if (action)
+        loadFile(action->data().toString(), false);
 }
 
 void FWWindow::registerAutoOpenDocFile(const QString &filename,
@@ -307,6 +387,14 @@ void FWWindow::startupLoad()
          it++)
     {
         loadFile(*it, auto_load_from_rcs_head_revision);
+        updateOpenRecentMenu(*it);
+    }
+
+    if (! st->getBool("UI/NoStartTip"))
+    {
+        StartTipDialog *stdlg = new StartTipDialog();
+        stdlg->show();
+        stdlg->raise();
     }
 }
 
@@ -929,7 +1017,7 @@ void FWWindow::unlockObject()
 
 void FWWindow::prepareEditMenu()
 {
-    if (!activeProject())  return;
+    if (!activeProject()) return;
 
     bool dupMenuItem=true;
     bool moveMenuItem=true;
@@ -941,8 +1029,9 @@ void FWWindow::prepareEditMenu()
 
     activeProject()->m_panel->om->getMenuState(
         false,
-        dupMenuItem,moveMenuItem,copyMenuItem,pasteMenuItem,
-        delMenuItem,newMenuItem,inDeletedObjects);
+        dupMenuItem, moveMenuItem, copyMenuItem, pasteMenuItem,
+        delMenuItem, newMenuItem, inDeletedObjects
+    );
 
     m_mainWindow->editCopyAction->setEnabled(copyMenuItem);
     m_mainWindow->editDeleteAction->setEnabled(delMenuItem);
@@ -1014,7 +1103,7 @@ void FWWindow::prepareWindowsMenu()
     m_mainWindow->menuWindow->clear();
     QAction * close = m_mainWindow->menuWindow->addAction ("Close");
     QAction * closeAll = m_mainWindow->menuWindow->addAction ("Close All");
-    QAction * title = m_mainWindow->menuWindow->addAction ("Tile");
+    QAction * tile = m_mainWindow->menuWindow->addAction ("Tile");
     QAction * cascade = m_mainWindow->menuWindow->addAction ("Cascade");
     QAction * next = m_mainWindow->menuWindow->addAction ("Next");
     QAction * previous = m_mainWindow->menuWindow->addAction ("Previous");
@@ -1027,7 +1116,7 @@ void FWWindow::prepareWindowsMenu()
     connect(maximize, SIGNAL(triggered()), this, SLOT(maximize()));
     connect(close, SIGNAL(triggered()),m_space, SLOT(closeActiveSubWindow()));
     connect(closeAll, SIGNAL(triggered()),m_space, SLOT(closeAllSubWindows()));
-    connect(title, SIGNAL(triggered()), m_space, SLOT(tileSubWindows()));
+    connect(tile, SIGNAL(triggered()), m_space, SLOT(tileSubWindows()));
     connect(cascade, SIGNAL(triggered()), m_space, SLOT(cascadeSubWindows()));
     connect(next, SIGNAL(triggered()),m_space, SLOT(activateNextSubWindow()));
     connect(previous, SIGNAL(triggered()),m_space, SLOT(activatePreviousSubWindow()));

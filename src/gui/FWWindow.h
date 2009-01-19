@@ -63,6 +63,8 @@ class QTreeWidgetItem;
 class RuleSetView;
 class findDialog;
 
+#define MAXRECENTFILES 5
+
 class FWWindow : public QMainWindow {
 
     Q_OBJECT
@@ -79,7 +81,9 @@ class FWWindow : public QMainWindow {
     //int                                    lastFirewallIdx;
     QStringList openDocFiles;
     bool auto_load_from_rcs_head_revision;
-    
+    QAction *recentFileActs[MAXRECENTFILES];
+    QAction *openRecentSeparatorAct;
+
     void clearFirewallTabs();
     ProjectPanel *newProjectPanel();
     void showSub(ProjectPanel *projectW);
@@ -91,13 +95,15 @@ public:
     ProjectPanel* activeProject();
     void updateWindowTitle();
     void updateTreeFont();
-    
+    void updateRecentFileActions();
+    void updateOpenRecentMenu(const QString &fileName);
+
 public slots:
     void selectActiveSubWindow (/*const QString & text*/);
 
-    void minimize ();
-    void maximize ();
-    void changeActiveSubwindow (  );
+    void minimize();
+    void maximize();
+    void changeActiveSubwindow();
     virtual void search();
 
     virtual void reopenFirewall();
@@ -115,6 +121,8 @@ public slots:
 
     virtual void fileNew();
     virtual void fileOpen();
+    virtual void openRecentFile();
+    virtual void clearRecentFilesMenu();
     virtual void fileClose();
     virtual void fileSave();
     virtual void fileSaveAs();
@@ -164,7 +172,8 @@ public slots:
     virtual void prepareEditMenu();
     virtual void prepareObjectMenu();
     virtual void prepareFileMenu();
-    virtual void prepareWindowsMenu ();
+    virtual void prepareWindowsMenu();
+    virtual void prepareFileOpenRecentMenu();
 
     virtual void toolsDiscoveryDruid();
     virtual void closeAuxiliaryPanel();

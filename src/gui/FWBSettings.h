@@ -123,6 +123,9 @@ class FWBSettings : public QSettings {
     int     getInt(const QString &attribute);
     void    setInt(const QString &attribute, int v );
 
+    QStringList getList(const QString &attribute);
+    void    setList(const QString &attribute, QStringList &list);
+    
     bool    haveGeometry(QWidget *w);
     void    restoreGeometry(QWidget *w);
     void    restoreGeometry(QWidget *w, const QRect &defaultGeometry);
@@ -194,7 +197,10 @@ class FWBSettings : public QSettings {
                                 const QString &firewall,
                                 const QString &ruleset,
                                 const QStringList &collapsed_groups);
-                                
+
+    QStringList getRecentFiles();
+    void setRecentFiles(QStringList &list);
+
 private:
     QFont getFontByType(const char*type);
 };

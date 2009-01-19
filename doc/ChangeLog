@@ -1,5 +1,12 @@
 2009-01-19  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWWindow.cpp (FWWindow::prepareFileOpenRecentMenu): Added menu
+	Files/Open Recent.
+
+	* FWWindow.cpp (FWWindow::startupLoad): open StartTipDialog from
+	FWWindow rather than main() to make sure this dialog always
+	remains on top of the main window.
+
 	* ProjectPanel_file_ops.cpp (ProjectPanel::autoSave): fixed bug
 	#2499569: "fwbuilder crashes after some hours". The auto-save
 	function now saves data file only if it has been

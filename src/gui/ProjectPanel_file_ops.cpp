@@ -191,7 +191,9 @@ bool ProjectPanel::fileOpen()
         return false;
     }
 
-    return loadFile(fileName, false);
+    bool res = loadFile(fileName, false);
+    if (res) mw->updateOpenRecentMenu(fileName);
+    return res;
 }
 
 bool ProjectPanel::loadFile(const QString &fileName, bool load_rcs_head)
@@ -310,21 +312,19 @@ void ProjectPanel::fileSaveAs()
 
     QString oldFileName = rcs->getFileName();
 
-    QString nfn = chooseNewFileName(
+    QString newFileName = chooseNewFileName(
         oldFileName, tr("Choose name and location for the file"));
 
-    if (!nfn.isEmpty())
+    if (!newFileName.isEmpty())
     {
         db()->setDirty(false);  // so it wont ask if user wants to save
         rcs->abandon();
-
         if (rcs!=NULL) delete rcs;
-
         rcs = new RCS("");
-
-        setFileName(nfn);
-
+        setFileName(newFileName);
         save();
+
+        mw->updateOpenRecentMenu(newFileName);
     }
 }
 
@@ -1087,7 +1087,7 @@ void ProjectPanel::loadFromRCS(RCS *_rcs)
                 qDebug("            filePath: %s",
                        ofinfo.absoluteFilePath().toAscii().constData());
             }
-            QString nfn = ofinfo.dir().absolutePath()
+            QString newFileName = ofinfo.dir().absolutePath()
                 + "/" + ofinfo.completeBaseName() + ".fwb";
 
             bool needToRename = true;
@@ -1096,8 +1096,8 @@ void ProjectPanel::loadFromRCS(RCS *_rcs)
              * "Existing .fwb file gets overwritten if has wrong
              * extension"
              */
-            QFileInfo nfinfo(nfn);
-            if (nfinfo.exists() && ofinfo.isSymLink() && ofinfo.readLink()==nfn)
+            QFileInfo nfinfo(newFileName);
+            if (nfinfo.exists() && ofinfo.isSymLink() && ofinfo.readLink()==newFileName)
             {
                 // .xml file is a symlink pointing at .fwb file
                 // no need to rename
@@ -1130,13 +1130,13 @@ void ProjectPanel::loadFromRCS(RCS *_rcs)
                            "needs to rename old data file '%1' to '%2',\n"
                            "but file '%3' already exists.\n"
                            "Choose a different name for the new file.")
-                        .arg(fn).arg(nfn).arg(nfn),
+                        .arg(fn).arg(newFileName).arg(newFileName),
                         tr("&Continue"), QString::null,QString::null,
                         0, 1 );
 
-                    nfn = chooseNewFileName(
+                    newFileName = chooseNewFileName(
                         fn, tr("Choose name and location for the new file"));
-                    if (nfn.isEmpty())
+                    if (newFileName.isEmpty())
                     {
                         QString oldFileName = ofinfo.absoluteFilePath()
                             + ".bak";
@@ -1153,22 +1153,22 @@ void ProjectPanel::loadFromRCS(RCS *_rcs)
                         loadStandardObjects();
                         return;
                     }
-                    nfinfo.setFile(nfn);
+                    nfinfo.setFile(newFileName);
                 }
 
                 rename(fn.toLocal8Bit().constData(),
-                       nfn.toLocal8Bit().constData());
+                       newFileName.toLocal8Bit().constData());
 
                 QMessageBox::warning(
                 this,"Firewall Builder",
                 tr("Firewall Builder 2 uses file extension '.fwb'. Your data"
                    "file '%1' \nhas been renamed '%2'")
-                .arg(fn).arg(nfn),
+                .arg(fn).arg(newFileName),
                 tr("&Continue"), QString::null,QString::null,
                 0, 1 );
             }
 
-            fn = nfn;
+            fn = newFileName;
         }
 
         rcs->setFileName(fn);

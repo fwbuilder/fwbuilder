@@ -129,8 +129,15 @@
     <property name="title" >
      <string>&amp;File</string>
     </property>
+    <widget class="QMenu" name="menuOpen_Recent" >
+     <property name="title" >
+      <string>Open Recent</string>
+     </property>
+    </widget>
     <addaction name="fileNewAction" />
     <addaction name="fileOpenAction" />
+    <addaction name="menuOpen_Recent" />
+    <addaction name="separator" />
     <addaction name="fileSaveAction" />
     <addaction name="fileSaveAsAction" />
     <addaction name="fileCloseAction" />
@@ -163,6 +170,9 @@
    <addaction name="helpMenu" />
   </widget>
   <action name="fileNewAction" >
+   <property name="enabled" >
+    <bool>true</bool>
+   </property>
    <property name="icon" >
     <iconset>
      <normaloff/>
@@ -707,6 +717,17 @@
   <action name="helpAction" >
    <property name="text" >
     <string>Firewall Builder Help</string>
+   </property>
+  </action>
+  <action name="actionClearRecentFiles" >
+   <property name="enabled" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Clear Menu</string>
+   </property>
+   <property name="iconText" >
+    <string>New Object File</string>
    </property>
   </action>
  </widget>
@@ -1451,5 +1472,24 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionClearRecentFiles</sender>
+   <signal>triggered()</signal>
+   <receiver>FWBMainWindow_q</receiver>
+   <slot>clearRecentFilesMenu()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>370</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>clearRecentFilesMenu()</slot>
+ </slots>
 </ui>

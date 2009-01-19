@@ -206,79 +206,88 @@ QString FWBSettings::getStr(const QString &attribute)
     return value(path).toString();
 }
 
-void    FWBSettings::setStr(const QString &attribute,
+void FWBSettings::setStr(const QString &attribute,
                             const QString &val)
 {
     QString path=SETTINGS_PATH_PREFIX "/"+attribute;
     setValue(path,val);
 }
 
-bool    FWBSettings::getBool(const QString &attribute)
+bool FWBSettings::getBool(const QString &attribute)
 {
     QString path=SETTINGS_PATH_PREFIX "/"+attribute;
     return value(path).toBool();
 }
 
-void    FWBSettings::setBool(const QString &attribute, bool val )
+void FWBSettings::setBool(const QString &attribute, bool val )
 {
     QString path=SETTINGS_PATH_PREFIX "/"+attribute;
     setValue(path,val);
 }
 
-
-int     FWBSettings::getInt(const QString &attribute)
+int FWBSettings::getInt(const QString &attribute)
 {
     QString path=SETTINGS_PATH_PREFIX "/"+attribute;
     return value(path).toInt();
 }
 
-void    FWBSettings::setInt(const QString &attribute, int val )
+void FWBSettings::setInt(const QString &attribute, int val )
 {
     QString path=SETTINGS_PATH_PREFIX "/"+attribute;
     setValue(path,val);
 }
 
+QStringList FWBSettings::getList(const QString &attribute)
+{
+    QString path=SETTINGS_PATH_PREFIX "/"+attribute;
+    return value(path).toStringList();
+}
 
+void FWBSettings::setList(const QString &attribute, QStringList &list)
+{
+    QString path=SETTINGS_PATH_PREFIX "/"+attribute;
+    setValue(path, list);
+}
 
 QString FWBSettings::getWDir() { return value(wdirSetpath).toString();}
-void    FWBSettings::setWDir( const QString &wd ) { setValue(wdirSetpath,wd);}
-int     FWBSettings::getInfoStyle() { return value(infoStyleSetpath).toInt();}
-void    FWBSettings::setInfoStyle(int s) { setValue(infoStyleSetpath,s);}
-int     FWBSettings::getInfoWindowHeight() { return value(infoWindowHSetpath).toInt();}
-void    FWBSettings::setInfoWindowHeight(int h) { setValue(infoWindowHSetpath,h);}
+void FWBSettings::setWDir( const QString &wd ) { setValue(wdirSetpath,wd);}
+int FWBSettings::getInfoStyle() { return value(infoStyleSetpath).toInt();}
+void FWBSettings::setInfoStyle(int s) { setValue(infoStyleSetpath,s);}
+int FWBSettings::getInfoWindowHeight() { return value(infoWindowHSetpath).toInt();}
+void FWBSettings::setInfoWindowHeight(int h) { setValue(infoWindowHSetpath,h);}
 
 QString FWBSettings::getGroupViewMode() { return value(groupModeSetpath).toString();}
-void    FWBSettings::setGroupViewMode(const QString &m) { setValue(groupModeSetpath,m);}
+void FWBSettings::setGroupViewMode(const QString &m) { setValue(groupModeSetpath,m);}
 
 QString FWBSettings::getGroupViewColumns() { return value(groupColsSetpath).toString();}
-void    FWBSettings::setGroupViewColumns(const QString &m) { setValue(groupColsSetpath,m);}
+void FWBSettings::setGroupViewColumns(const QString &m) { setValue(groupColsSetpath,m);}
 
 
-int     FWBSettings::getStartupAction() { return value(startupActionSetpath).toInt();}
-void    FWBSettings::setStartupAction(int sa) { setValue( startupActionSetpath , sa );}
+int FWBSettings::getStartupAction() { return value(startupActionSetpath).toInt();}
+void FWBSettings::setStartupAction(int sa) { setValue( startupActionSetpath , sa );}
 
-int     FWBSettings::getExpandTree() {  return value(expandTreeSetpath).toInt(); }
-void    FWBSettings::setExpandTree(int f) { setValue( expandTreeSetpath , f ); }
+int FWBSettings::getExpandTree() {  return value(expandTreeSetpath).toInt(); }
+void FWBSettings::setExpandTree(int f) { setValue( expandTreeSetpath , f ); }
 
-int     FWBSettings::getMergeLibs() {  return value(MergeLibsSetpath).toInt(); }
-void    FWBSettings::setMergeLibs(int f) { setValue( MergeLibsSetpath , f ); }
+int FWBSettings::getMergeLibs() {  return value(MergeLibsSetpath).toInt(); }
+void FWBSettings::setMergeLibs(int f) { setValue( MergeLibsSetpath , f ); }
 
-bool    FWBSettings::getObjTooltips() {  return value( objTooltips ).toBool();}
-void    FWBSettings::setObjTooltips(bool f) {  setValue( objTooltips, f); }
+bool FWBSettings::getObjTooltips() {  return value( objTooltips ).toBool();}
+void FWBSettings::setObjTooltips(bool f) {  setValue( objTooltips, f); }
 
-int     FWBSettings::getTooltipDelay() { return value( tooltipDelay ).toInt(); }
-void    FWBSettings::setTooltipDelay(int v) { setValue( tooltipDelay, v); }
+int FWBSettings::getTooltipDelay() { return value( tooltipDelay ).toInt(); }
+void FWBSettings::setTooltipDelay(int v) { setValue( tooltipDelay, v); }
 
 
 QString FWBSettings::getLastEdited() { return value(lastEditedSetpath).toString();}
-void    FWBSettings::setLastEdited(const QString &file) { setValue(lastEditedSetpath,file);}
+void FWBSettings::setLastEdited(const QString &file) { setValue(lastEditedSetpath,file);}
 
 QString FWBSettings::getOpenFileDir()
 {
     return value(ofdirSetpath).toString();
 }
 
-void    FWBSettings::setOpenFileDir( const QString &d )
+void FWBSettings::setOpenFileDir( const QString &d )
 {
      setValue(ofdirSetpath,d);
 }
@@ -288,31 +297,31 @@ QString FWBSettings::getSaveFileDir()
     return value(sfdirSetpath).toString();
 }
 
-void    FWBSettings::setSaveFileDir( const QString &d )
+void FWBSettings::setSaveFileDir( const QString &d )
 {
      setValue(sfdirSetpath,d);
 }
 
 
-void    FWBSettings::save()
+void FWBSettings::save()
 {
     if (mw->db()!=NULL)
         setLastEdited( mw->db()->getFileName().c_str() );
 }
 
-bool    FWBSettings::getRCSLogState() { return value( emptyRCSLog ).toBool(); }
-void    FWBSettings::setRCSLogState(bool f) { setValue( emptyRCSLog , f ); }
+bool FWBSettings::getRCSLogState() { return value( emptyRCSLog ).toBool(); }
+void FWBSettings::setRCSLogState(bool f) { setValue( emptyRCSLog , f ); }
 
-bool    FWBSettings::getAutoSave() { return value( autoSave ).toBool(); }
-void    FWBSettings::setAutoSave(bool f) { setValue( autoSave, f); }
+bool FWBSettings::getAutoSave() { return value( autoSave ).toBool(); }
+void FWBSettings::setAutoSave(bool f) { setValue( autoSave, f); }
 
-bool    FWBSettings::getCompression() { return value(compression).toBool(); }
-void    FWBSettings::setCompression(bool f) { setValue(compression, f); }
+bool FWBSettings::getCompression() { return value(compression).toBool(); }
+void FWBSettings::setCompression(bool f) { setValue(compression, f); }
 
-bool    FWBSettings::getDontSaveStdLib() {return value(dontSaveStdLib).toBool();}
-void    FWBSettings::setDontSaveStdLib( bool f) { setValue(dontSaveStdLib,f);}
+bool FWBSettings::getDontSaveStdLib() {return value(dontSaveStdLib).toBool();}
+void FWBSettings::setDontSaveStdLib( bool f) { setValue(dontSaveStdLib,f);}
 
-bool    FWBSettings::haveScreenPosition(const QString &wname)
+bool FWBSettings::haveScreenPosition(const QString &wname)
 {
     QString val = value(QString(screenPositionSetpath)+wname ).toString();
     bool res=(!val.isEmpty());
@@ -326,7 +335,7 @@ bool    FWBSettings::haveScreenPosition(const QString &wname)
     return res;
 }
 
-QPoint  FWBSettings::getScreenPosition(const QString &wname)
+QPoint FWBSettings::getScreenPosition(const QString &wname)
 {
     QString val = value(QString(screenPositionSetpath)+wname ).toString();
     int     x  = val.section(',',0,0).toInt();
@@ -352,7 +361,7 @@ QPoint  FWBSettings::getScreenPosition(const QString &wname)
     return QPoint(x,y);
 }
 
-void    FWBSettings::saveScreenPosition(const QString &wname, const QPoint &p)
+void FWBSettings::saveScreenPosition(const QString &wname, const QPoint &p)
 {
     int x = p.x();
     int y = p.y();
@@ -370,14 +379,14 @@ void    FWBSettings::saveScreenPosition(const QString &wname, const QPoint &p)
     setValue(QString(screenPositionSetpath)+wname, val );
 }
 
-bool    FWBSettings::haveGeometry(QWidget *w)
+bool FWBSettings::haveGeometry(QWidget *w)
 {
     QString name=w->objectName();
     QString val = value(QString(WindowGeometrySetpath)+name,"").toString();
     return (!val.isEmpty());
 }
 
-void    FWBSettings::restoreGeometry(QWidget *w)
+void FWBSettings::restoreGeometry(QWidget *w)
 {
     QString name=w->objectName();
     QString val = value(QString(WindowGeometrySetpath)+name ).toString();
@@ -404,7 +413,7 @@ void    FWBSettings::restoreGeometry(QWidget *w)
     w->resize( QSize(width,height) );
 }
 
-void    FWBSettings::restoreGeometry(QWidget *w, const QRect &dg)
+void FWBSettings::restoreGeometry(QWidget *w, const QRect &dg)
 {
     QString name=w->objectName();
     QString defval =QString("%1,%2,%3,%4")
@@ -434,7 +443,7 @@ void    FWBSettings::restoreGeometry(QWidget *w, const QRect &dg)
     w->resize( QSize(width,height) );
 }
 
-void    FWBSettings::saveGeometry(QWidget *w)
+void FWBSettings::saveGeometry(QWidget *w)
 {
     QString name = w->objectName();
 //    QRect   g = w->geometry();
@@ -483,7 +492,7 @@ QString FWBSettings::getLabelColor(enum LabelColors c)
     return value(QString(labelColorPath) + getLabelColorStr(c)).toString();
 }
 
-void    FWBSettings::setLabelColor(enum LabelColors c,const QString &s)
+void FWBSettings::setLabelColor(enum LabelColors c,const QString &s)
 {
     setValue(QString(labelColorPath) + getLabelColorStr(c), s);
 }
@@ -493,7 +502,7 @@ QString FWBSettings::getLabelText(enum LabelColors c)
     return value(QString(labelTextPath) + getLabelColorStr(c)).toString();
 }
 
-void    FWBSettings::setLabelText(enum LabelColors c, const QString &s)
+void FWBSettings::setLabelText(enum LabelColors c, const QString &s)
 {
     setValue(QString(labelTextPath) + getLabelColorStr(c),s);
 }
@@ -744,4 +753,14 @@ void FWBSettings::setCollapsedRuleGroups(const QString &filename,
              "Window/" + filename + "/" + firewall + "/" + ruleset +
              "/CollapsedRuleGroups",
              collapsed_groups.join(","));
+}
+
+QStringList FWBSettings::getRecentFiles()
+{
+    return getList("recentFiles");
+}
+
+void FWBSettings::setRecentFiles(QStringList &list)
+{
+    return setList("recentFiles", list);
 }
