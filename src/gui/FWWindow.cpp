@@ -383,18 +383,12 @@ void FWWindow::startupLoad()
         activeProject()->loadState(true);
     }
 
+    // foreach is QT macro
     foreach (QString file, openDocFiles)
     {
         loadFile(file, auto_load_from_rcs_head_revision);
         updateOpenRecentMenu(file);
      }
-
-    // for (QStringList::iterator it=openDocFiles.begin(); it!=openDocFiles.end();
-    //      it++)
-    // {
-    //     loadFile(*it, auto_load_from_rcs_head_revision);
-    //     updateOpenRecentMenu(*it);
-    // }
 
     if (! st->getBool("UI/NoStartTip"))
     {
