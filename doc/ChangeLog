@@ -1,3 +1,20 @@
+2009-01-23  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_printAddr): fixed bug
+	#2526173: "fwb_ipt crashes due to old-broadcast". This bug was
+	introduced when support for module iprange was sadded. Need
+	special check for AddressRange objects where start and end of
+	range addresses are equal.
+
+	* NetworkDialog.cpp (NetworkDialog::addressEntered): fixed bug (no
+	#): the GUI used to check ip address entered for the network
+	object whenever user switched focus from the address input widget
+	in the network object dialog to another widget or even a different
+	application to look up the address. This caused the program to
+	show error dialog if this happened when the address was
+	incomplete. This change makes the program verify the address only
+	when user clicks "Apply".
+
 2009-01-19  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWWindow.cpp (FWWindow::prepareFileOpenRecentMenu): Added menu

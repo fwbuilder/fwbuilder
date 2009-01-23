@@ -103,7 +103,11 @@ void NetworkDialogIPv6::validate(bool *res)
     *res=true;
 
     if (!isTreeReadWrite(this,obj)) { *res=false; return; }
-    if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
+    if (!validateName(this,obj,m_dialog->obj_name->text()))
+    {
+        *res=false;
+        return;
+    }
 
     NetworkIPv6 *s = dynamic_cast<NetworkIPv6*>(obj);
     assert(s!=NULL);
@@ -153,11 +157,13 @@ void NetworkDialogIPv6::applyChanges()
 
     string oldname=obj->getName();
     obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    obj->setComment(
+        string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     try
     {
         s->setAddress(
-            InetAddr(AF_INET6, m_dialog->address->text().toLatin1().constData()) );
+            InetAddr(AF_INET6,
+                     m_dialog->address->text().toLatin1().constData()) );
         bool ok = false;
         s->setNetmask(
             InetAddr(AF_INET6, m_dialog->netmask->text().toInt(&ok)) );
@@ -202,15 +208,13 @@ void NetworkDialogIPv6::addressEntered()
             m_dialog->address->setText(
                 address_and_mask.getAddressPtr()->toString().c_str());
             m_dialog->netmask->setText(
-                QString().setNum(address_and_mask.getNetmaskPtr()->getLength()));
+                QString().setNum(
+                    address_and_mask.getNetmaskPtr()->getLength()));
         }
     } catch (FWException &ex)
     {
 // exception thrown if user types illegal m_dialog->address 
-        QMessageBox::critical(this, "Firewall Builder",
-                              tr("Illegal IPv6 address '%1'").arg(m_dialog->address->text()),
-                              tr("&Continue"), 0, 0,
-                              0 );
+
     }
 
 }

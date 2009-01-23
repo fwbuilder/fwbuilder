@@ -16,7 +16,6 @@
     <ObjectRef ref="id46435A0816989"/>
     <ObjectRef ref="id46412C3F26611"/>
     <ObjectRef ref="id46435A0C16989"/>
-    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="id4511636323682" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id4511636423682" name="Objects" comment="" ro="False">

@@ -96,12 +96,16 @@ void NetworkDialog::changed()
     emit changed_sign();
 }
 
-void NetworkDialog::validate(bool *res)
+void NetworkDialog::validate(bool *result)
 {
-    *res=true;
+    *result=true;
 
-    if (!isTreeReadWrite(this,obj)) { *res=false; return; }
-    if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
+    if (!isTreeReadWrite(this,obj)) { *result=false; return; }
+    if (!validateName(this,obj,m_dialog->obj_name->text()))
+    {
+        *result=false;
+        return;
+    }
 
     Network *s = dynamic_cast<Network*>(obj);
     assert(s!=NULL);
@@ -110,11 +114,12 @@ void NetworkDialog::validate(bool *res)
         InetAddr( m_dialog->address->text().toLatin1().constData() );
     } catch (FWException &ex)
     {
-        *res=false;
-        QMessageBox::critical(this, "Firewall Builder",
-                              tr("Illegal IP address '%1'").arg(m_dialog->address->text()),
-                              tr("&Continue"), 0, 0,
-                              0 );
+        *result=false;
+        QMessageBox::critical(
+            this, "Firewall Builder",
+            tr("Illegal IP address '%1'").arg(m_dialog->address->text()),
+            tr("&Continue"), 0, 0,
+            0 );
     }
     try
     {
@@ -129,29 +134,31 @@ void NetworkDialog::validate(bool *res)
             }
             else
             {
-                    *res=false;
-        QMessageBox::critical(this, "Firewall Builder",
-                              tr("Illegal netmask '%1'").arg( m_dialog->netmask->text() ),
-                              tr("&Continue"), 0, 0,
-                              0 );
-
+                *result=false;
+                QMessageBox::critical(
+                    this, "Firewall Builder",
+                    tr("Illegal netmask '%1'").arg( m_dialog->netmask->text() ),
+                    tr("&Continue"), 0, 0,
+                    0 );
+                
             }
         }
         InetAddr( m_dialog->netmask->text().toLatin1().constData() );
     } catch (FWException &ex)
     {
 
-        *res=false;
-        QMessageBox::critical(this, "Firewall Builder",
-                              tr("Illegal netmask '%1'").arg( m_dialog->netmask->text() ),
-                              tr("&Continue"), 0, 0,
-                              0 );
+        *result=false;
+        QMessageBox::critical(
+            this, "Firewall Builder",
+            tr("Illegal netmask '%1'").arg( m_dialog->netmask->text() ),
+            tr("&Continue"), 0, 0,
+            0 );
     }
 }
 
 void NetworkDialog::isChanged(bool*)
 {
-    //*res=(!init && apply->isEnabled());
+    //*result=(!init && apply->isEnabled());
 }
 
 void NetworkDialog::libChanged()
@@ -164,17 +171,18 @@ void NetworkDialog::applyChanges()
     Network *s = dynamic_cast<Network*>(obj);
     assert(s!=NULL);
 
-    string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    string oldname = obj->getName();
+    obj->setName(string(m_dialog->obj_name->text().toUtf8().constData()));
+    obj->setComment(string(
+                        m_dialog->comment->toPlainText().toUtf8().constData()));
     try
     {
         s->setAddress(
             InetAddr(m_dialog->address->text().toLatin1().constData()) );
     } catch (FWException &ex)
     {
-/* exception thrown if user types illegal m_dialog->address or m_dialog->netmask */
-
+// exception thrown if user types illegal m_dialog->address or
+// m_dialog->netmask
     }
 
     try
@@ -193,11 +201,10 @@ void NetworkDialog::applyChanges()
         }
     } catch (FWException &ex)
     {
-/* exception thrown if user types illegal m_dialog->address or m_dialog->netmask */
+// exception thrown if user types illegal m_dialog->address or
+// m_dialog->netmask
 //        bool ok = false ;
     }
-
-
 
     mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
@@ -236,11 +243,13 @@ void NetworkDialog::addressEntered()
         }
     } catch (FWException &ex)
     {
-// exception thrown if user types illegal m_dialog->address 
-        QMessageBox::critical(this, "Firewall Builder",
-                              tr("Illegal IP address '%1'").arg(m_dialog->address->text()),
-                              tr("&Continue"), 0, 0,
-                              0 );
+        // exception thrown if user types illegal m_dialog->address do
+        // not show error dialog. This method is called by
+        // editingFinished signal and therefore is invoked when user
+        // switches focus from the address input widget to some other
+        // widget or even when user switches to another application to
+        // look up the address. Error dialog interrupts the workflow
+        // in the latter case which is annoying.
     }
 
 }

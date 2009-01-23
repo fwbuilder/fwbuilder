@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1230884286" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1232746340" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -792,9 +792,16 @@
     </Policy>
     <ObjectRef ref="id3CEBFF26"/>
     <ServiceRef ref="tcp-HTTP"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
     <ObjectRef ref="id3CEBFDFC"/>
+    <ObjectRef ref="sysid0"/>
+    <Interface id="id78170X59595" bridgeport="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="ppp0" comment="" ro="False"/>
+    <ObjectRef ref="id78158X59595"/>
+    <Interface id="id78158X59595" bridgeport="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+      <IPv4 id="id78160X59595" name="firewall70:eth2:ip" comment="" ro="False" address="66.66.66.1" netmask="255.255.255.128"/>
+    </Interface>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
     <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
@@ -5070,7 +5077,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AFB66C6" host_OS="linux24" inactive="False" lastCompiled="1215360886" lastInstalled="1142003872" lastModified="1230020167" platform="iptables" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
+      <Firewall id="id3AFB66C6" host_OS="linux24" inactive="False" lastCompiled="1215360886" lastInstalled="1142003872" lastModified="1232745604" platform="iptables" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
         <NAT id="id3AFB66C7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3AFB66C8" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -6541,7 +6548,28 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3DD1E1E0" disabled="False" log="True" position="19" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id40876X59595" disabled="False" group="" log="True" position="19" action="Deny" direction="Both" comment="using module iprange if&#10;iptables version is &gt;= 1.2.11&#10;also test for bug #2526173">
+            <Src neg="False">
+              <ObjectRef ref="id40D153ED"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3DD1E1E0" disabled="False" log="True" position="20" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3B022266"/>
             </Src>
@@ -6559,7 +6587,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3D8FC846" disabled="False" log="False" position="20" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3D8FC846" disabled="False" log="False" position="21" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3B4572AF"/>
               <ObjectRef ref="id3D8FC56A"/>
@@ -6578,7 +6606,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3D8FC984" disabled="False" log="False" position="21" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3D8FC984" disabled="False" log="False" position="22" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="host-secondary1-com"/>
             </Src>
@@ -6597,7 +6625,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3DCBFEA0" disabled="False" log="False" position="22" action="Reject" direction="Both" comment="">
+          <PolicyRule id="id3DCBFEA0" disabled="False" log="False" position="23" action="Reject" direction="Both" comment="">
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B022266"/>
@@ -6618,7 +6646,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3DCBFEAD" disabled="False" log="False" position="23" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3DCBFEAD" disabled="False" log="False" position="24" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B022266"/>
@@ -6637,7 +6665,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3DD4C015" disabled="False" log="True" position="24" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id3DD4C015" disabled="False" log="True" position="25" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -6657,7 +6685,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3C447B8D" disabled="False" log="True" position="25" action="Accept" direction="Both" comment="host-fw2 has the same address as &#10;        one of the firewall's interfaces">
+          <PolicyRule id="id3C447B8D" disabled="False" log="True" position="26" action="Accept" direction="Both" comment="host-fw2 has the same address as &#10;        one of the firewall's interfaces">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -6682,7 +6710,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3C447BCB" disabled="False" log="True" position="26" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3C447BCB" disabled="False" log="True" position="27" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -6700,7 +6728,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3AFB66F9" disabled="False" log="True" position="27" action="Deny" direction="Both" comment="'catch all' rule">
+          <PolicyRule id="id3AFB66F9" disabled="False" log="True" position="28" action="Deny" direction="Both" comment="'catch all' rule">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -30028,7 +30056,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id31158X1798" host_OS="linux24" inactive="False" lastCompiled="1215360886" lastInstalled="1142003872" lastModified="1230020232" platform="iptables" version="lt_1.2.6" name="firewall2-1" comment="copy of firewall2 but old iptables version" ro="False">
+      <Firewall id="id31158X1798" host_OS="linux24" inactive="False" lastCompiled="1215360886" lastInstalled="1142003872" lastModified="1232745617" platform="iptables" version="lt_1.2.6" name="firewall2-1" comment="copy of firewall2 but old iptables version" ro="False">
         <NAT id="id31415X1798" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id31416X1798" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -31499,7 +31527,28 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id31303X1798" disabled="False" log="True" position="19" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id59411X59595" disabled="False" group="" log="True" position="19" action="Deny" direction="Both" comment="using module iprange if&#10;iptables version is &gt;= 1.2.11&#10;also test for bug #2526173">
+            <Src neg="False">
+              <ObjectRef ref="id40D153ED"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id31303X1798" disabled="False" log="True" position="20" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3B022266"/>
             </Src>
@@ -31517,7 +31566,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id31315X1798" disabled="False" log="False" position="20" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id31315X1798" disabled="False" log="False" position="21" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3B4572AF"/>
               <ObjectRef ref="id3D8FC56A"/>
@@ -31536,7 +31585,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id31328X1798" disabled="False" log="False" position="21" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id31328X1798" disabled="False" log="False" position="22" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="host-secondary1-com"/>
             </Src>
@@ -31555,7 +31604,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id31341X1798" disabled="False" log="False" position="22" action="Reject" direction="Both" comment="">
+          <PolicyRule id="id31341X1798" disabled="False" log="False" position="23" action="Reject" direction="Both" comment="">
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B022266"/>
@@ -31576,7 +31625,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id31354X1798" disabled="False" log="False" position="23" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id31354X1798" disabled="False" log="False" position="24" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B022266"/>
@@ -31595,7 +31644,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id31367X1798" disabled="False" log="True" position="24" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id31367X1798" disabled="False" log="True" position="25" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -31615,7 +31664,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id31379X1798" disabled="False" log="True" position="25" action="Accept" direction="Both" comment="host-fw2 has the same address as &#10;        one of the firewall's interfaces">
+          <PolicyRule id="id31379X1798" disabled="False" log="True" position="26" action="Accept" direction="Both" comment="host-fw2 has the same address as &#10;        one of the firewall's interfaces">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -31640,7 +31689,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id31391X1798" disabled="False" log="True" position="26" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id31391X1798" disabled="False" log="True" position="27" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -31658,7 +31707,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id31403X1798" disabled="False" log="True" position="27" action="Deny" direction="Both" comment="'catch all' rule">
+          <PolicyRule id="id31403X1798" disabled="False" log="True" position="28" action="Deny" direction="Both" comment="'catch all' rule">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -31794,7 +31843,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id32114X1798" host_OS="linux24" inactive="False" lastCompiled="1215360886" lastInstalled="1142003872" lastModified="1230020236" platform="iptables" version="1.4.0" name="firewall2-2" comment="another copy of firewall2 but new iptables version" ro="False">
+      <Firewall id="id32114X1798" host_OS="linux24" inactive="False" lastCompiled="1215360886" lastInstalled="1142003872" lastModified="1232745623" platform="iptables" version="1.4.0" name="firewall2-2" comment="another copy of firewall2 but new iptables version" ro="False">
         <NAT id="id32371X1798" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id32372X1798" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -33265,7 +33314,28 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id32259X1798" disabled="False" log="True" position="19" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id59428X59595" disabled="False" group="" log="True" position="19" action="Deny" direction="Both" comment="using module iprange if&#10;iptables version is &gt;= 1.2.11&#10;also test for bug #2526173">
+            <Src neg="False">
+              <ObjectRef ref="id40D153ED"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id32259X1798" disabled="False" log="True" position="20" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3B022266"/>
             </Src>
@@ -33283,7 +33353,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id32271X1798" disabled="False" log="False" position="20" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id32271X1798" disabled="False" log="False" position="21" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3B4572AF"/>
               <ObjectRef ref="id3D8FC56A"/>
@@ -33302,7 +33372,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id32284X1798" disabled="False" log="False" position="21" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id32284X1798" disabled="False" log="False" position="22" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="host-secondary1-com"/>
             </Src>
@@ -33321,7 +33391,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id32297X1798" disabled="False" log="False" position="22" action="Reject" direction="Both" comment="">
+          <PolicyRule id="id32297X1798" disabled="False" log="False" position="23" action="Reject" direction="Both" comment="">
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B022266"/>
@@ -33342,7 +33412,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id32310X1798" disabled="False" log="False" position="23" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id32310X1798" disabled="False" log="False" position="24" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B022266"/>
@@ -33361,7 +33431,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id32323X1798" disabled="False" log="True" position="24" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id32323X1798" disabled="False" log="True" position="25" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -33381,7 +33451,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id32335X1798" disabled="False" log="True" position="25" action="Accept" direction="Both" comment="host-fw2 has the same address as &#10;        one of the firewall's interfaces">
+          <PolicyRule id="id32335X1798" disabled="False" log="True" position="26" action="Accept" direction="Both" comment="host-fw2 has the same address as &#10;        one of the firewall's interfaces">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -33406,7 +33476,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id32347X1798" disabled="False" log="True" position="26" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id32347X1798" disabled="False" log="True" position="27" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -33424,7 +33494,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id32359X1798" disabled="False" log="True" position="27" action="Deny" direction="Both" comment="'catch all' rule">
+          <PolicyRule id="id32359X1798" disabled="False" log="True" position="28" action="Deny" direction="Both" comment="'catch all' rule">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -36888,6 +36958,133 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="ulog_qthreshold">1</Option>
           <Option name="use_ULOG">True</Option>
           <Option name="use_iptables_restore">False</Option>
+          <Option name="use_numeric_log_levels">False</Option>
+          <Option name="verify_interfaces">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id77991X59595" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1232746552" platform="iptables" version="" name="firewall70" comment="this firewall translates outgoing connections using address of the particular interface (not external one). Also testing different cmbinations of objects in the policy rules on loopback interface. Finally, testing for a situation when dynamic interface &quot;shades&quot; a rule with old broadcast" ro="False">
+        <NAT id="id78058X59595" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Policy id="id77997X59595" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Policy id="id78176X59595" name="very_long_ruleset_name_should_be_gt_30_chars" comment="testing for bug #2507239&#10;iptables does not allow chain names &gt;30 chars&#10;" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False">
+          <PolicyRule id="id96844X59595" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Policy id="id190154X59595" name="not_quite_long_ruleset_name" comment="this ruleset name is under 30 chars, but&#10;automatically generated chain names&#10;become to long" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False">
+          <PolicyRule id="id208737X59595" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3B665643"/>
+              <ObjectRef ref="id3B665641"/>
+            </Src>
+            <Dst neg="True">
+              <ObjectRef ref="id77991X59595"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Routing id="id78157X59595" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id78161X59595" bridgeport="False" dyn="False" label="" security_level="33" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <IPv4 id="id78163X59595" name="firewall70:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id78164X59595" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+          <IPv4 id="id78166X59595" name="firewall70:eth1:ip" comment="" ro="False" address="66.66.66.130" netmask="255.255.255.128"/>
+        </Interface>
+        <Interface id="id78167X59595" bridgeport="False" dyn="False" label="" security_level="99" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id78169X59595" name="firewall70:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
+          <FWBDManagement enabled="True" identity="" port="9999"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">True</Option>
+          <Option name="accept_new_tcp_with_no_syn">True</Option>
+          <Option name="action_on_reject">ICMP host prohibited</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="bridging_fw">False</Option>
+          <Option name="check_shading">True</Option>
+          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="debug">False</Option>
+          <Option name="firewall_dir"></Option>
+          <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="ipt_mangle_only_rulesets"></Option>
+          <Option name="limit_suffix"></Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_accept_redirects"></Option>
+          <Option name="linux24_accept_source_route"></Option>
+          <Option name="linux24_icmp_echo_ignore_all"></Option>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
+          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="linux24_log_martians"></Option>
+          <Option name="linux24_path_ip"></Option>
+          <Option name="linux24_path_iptables"></Option>
+          <Option name="linux24_path_logger"></Option>
+          <Option name="linux24_path_lsmod"></Option>
+          <Option name="linux24_path_modprobe"></Option>
+          <Option name="linux24_rp_filter"></Option>
+          <Option name="linux24_tcp_ecn"></Option>
+          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_tcp_fin_timeout">30</Option>
+          <Option name="linux24_tcp_keepalive_interval">1800</Option>
+          <Option name="linux24_tcp_sack"></Option>
+          <Option name="linux24_tcp_syncookies"></Option>
+          <Option name="linux24_tcp_timestamps"></Option>
+          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="load_modules">True</Option>
+          <Option name="local_nat">False</Option>
+          <Option name="log_all">False</Option>
+          <Option name="log_all_dropped">False</Option>
+          <Option name="log_ip_opt">False</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="log_tcp_opt">False</Option>
+          <Option name="log_tcp_seq">False</Option>
+          <Option name="loopback_interface">lo</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
+          <Option name="ulog_cprange">0</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="ulog_qthreshold">1</Option>
+          <Option name="use_ULOG">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>

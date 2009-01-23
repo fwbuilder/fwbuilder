@@ -177,8 +177,15 @@ string PolicyCompiler_ipt::PrintRule::_printRuleLabel(PolicyRule *rule)
  */
 string PolicyCompiler_ipt::PrintRule::_printChain(PolicyRule *rule)
 {
-    string s=rule->getStr("ipt_chain");
-    if (s.empty()) s="UNKNOWN";
+    string s = rule->getStr("ipt_chain");
+    if (s.empty()) s = "UNKNOWN";
+    if (s.length() > 30)
+    {
+        ostringstream str;
+        str << "Chain name '" << s << "' ";
+        str << "is longer than 30 characters. Rule " << rule->getLabel();
+        compiler->abort(str.str());
+    }
     s= s + " ";
     return s;
 }
@@ -766,8 +773,8 @@ string PolicyCompiler_ipt::PrintRule::_printSrcPorts(Service *srv)
     std::ostringstream  str;
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
     {
-	int rs=TCPUDPService::cast(srv)->getSrcRangeStart();
-	int re=TCPUDPService::cast(srv)->getSrcRangeEnd();
+	int rs = TCPUDPService::cast(srv)->getSrcRangeStart();
+	int re = TCPUDPService::cast(srv)->getSrcRangeEnd();
 	str << _printPorts(rs,re);
     }
     return str.str();
@@ -778,8 +785,8 @@ string PolicyCompiler_ipt::PrintRule::_printDstPorts(Service *srv)
     std::ostringstream  str;
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
     {
-	int rs=TCPUDPService::cast(srv)->getDstRangeStart();
-	int re=TCPUDPService::cast(srv)->getDstRangeEnd();
+	int rs = TCPUDPService::cast(srv)->getDstRangeStart();
+	int re = TCPUDPService::cast(srv)->getDstRangeEnd();
 	str << _printPorts(rs,re);
     }
     return str.str();
@@ -1154,7 +1161,8 @@ string PolicyCompiler_ipt::PrintRule::_printAddr(Address  *o)
         return ostr.str();
     }
 
-    if (addr->isAny() && mask->isAny())
+    // Note that mask can be NULL, for example if o is AddressRange.
+    if (addr->isAny() && (mask==NULL || mask->isAny()))
     {
         ostr << "0/0 ";
     } else 

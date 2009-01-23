@@ -135,12 +135,16 @@ void IPv4Dialog::changed()
     emit changed_sign();
 }
 
-void IPv4Dialog::validate(bool *res)
+void IPv4Dialog::validate(bool *result)
 {
-    *res=true;
+    *result=true;
 
-    if (!isTreeReadWrite(this,obj)) { *res=false; return; }
-    if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
+    if (!isTreeReadWrite(this,obj)) { *result=false; return; }
+    if (!validateName(this,obj,m_dialog->obj_name->text()))
+    {
+        *result=false;
+        return;
+    }
 
     IPv4 *s = dynamic_cast<IPv4*>(obj);
     assert(s!=NULL);
@@ -149,11 +153,12 @@ void IPv4Dialog::validate(bool *res)
         InetAddr( m_dialog->address->text().toLatin1().constData() );
     } catch (FWException &ex)
     {
-        *res=false;
-        QMessageBox::critical(this, "Firewall Builder",
-                              tr("Illegal IP address '%1'").arg(m_dialog->address->text()),
-                              tr("&Continue"), 0, 0,
-                              0 );
+        *result=false;
+        QMessageBox::critical(
+            this, "Firewall Builder",
+            tr("Illegal IP address '%1'").arg(m_dialog->address->text()),
+            tr("&Continue"), 0, 0,
+            0 );
     }
 
     if ( showNetmask )
@@ -163,19 +168,19 @@ void IPv4Dialog::validate(bool *res)
             InetAddr( m_dialog->netmask->text().toLatin1().constData() );
         } catch (FWException &ex)
         {
-            *res=false;
-            QMessageBox::critical(this, "Firewall Builder",
-                                  tr("Illegal netmask '%1'").arg(m_dialog->netmask->text()),
-                                  tr("&Continue"), 0, 0,
-                                  0 );
+            *result=false;
+            QMessageBox::critical(
+                this, "Firewall Builder",
+                tr("Illegal netmask '%1'").arg(m_dialog->netmask->text()),
+                tr("&Continue"), 0, 0,
+                0 );
         }
     }
 }
 
 void IPv4Dialog::isChanged(bool *)
 {
-    //*res=(!init && apply->isEnabled());
-
+    //*result=(!init && apply->isEnabled());
 }
 
 void IPv4Dialog::libChanged()
@@ -188,9 +193,10 @@ void IPv4Dialog::applyChanges()
     IPv4 *s = dynamic_cast<IPv4*>(obj);
     assert(s!=NULL);
 
-    string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    string oldname = obj->getName();
+    obj->setName(string(m_dialog->obj_name->text().toUtf8().constData()) );
+    obj->setComment(
+        string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
     try
     {
