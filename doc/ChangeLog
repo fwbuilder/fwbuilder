@@ -1,3 +1,8 @@
+2009-01-23  vadim  <vadim@vk.crocodile.org>
+
+	* DNSName.cpp (DNSName::loadFromSource): fixed bug #2526193: "typo
+	in error message"
+
 2009-01-10  vadim  <vadim@vk.crocodile.org>
 
 	* fwbuilder/snmp.cpp (SNMPVariable::create): using

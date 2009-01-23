@@ -35,12 +35,23 @@ using namespace libfwbuilder;
 
 const char *AddressRange::TYPENAME={"AddressRange"};
 
-AddressRange::AddressRange() : Address(), start_address(), end_address()
+/**
+ * Empty constructor. Make sure start and end addresses are
+ * initialized to 0.
+ */
+AddressRange::AddressRange() :
+    Address(),
+    start_address(InetAddr::getAny()), end_address(InetAddr::getAny())
 {
 }
 
+/**
+ * Empty constructor. Make sure start and end addresses are
+ * initialized to 0.
+ */
 AddressRange::AddressRange(const FWObjectDatabase *root, bool prepopulate) :
-    Address(root, prepopulate), start_address(), end_address()
+    Address(root, prepopulate),
+    start_address(InetAddr::getAny()), end_address(InetAddr::getAny())
 {
 }
 

@@ -139,7 +139,7 @@ void DNSName::loadFromSource(bool ipv6) throw(FWException)
 
         err << "DNSName object \""
             << getName()
-            << "\" (compile time) can not resole dns name \""
+            << "\" (compile time) can not resolve dns name \""
             << getSourceName()
             << "\" "
             << "(" << af_type_name << ")"
