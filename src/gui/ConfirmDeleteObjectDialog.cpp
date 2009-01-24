@@ -67,11 +67,6 @@ ConfirmDeleteObjectDialog::ConfirmDeleteObjectDialog(QWidget*p) : QDialog(p)
 {
     m_dialog = new Ui::ConfirmDeleteObjectDialog_q;
     m_dialog->setupUi(this);
-    //QVBoxLayout *b=new QVBoxLayout((QWidget*)FrameForList);
-    //fwu = new FindWhereUsedWidget((QWidget*)FrameForList,0,0,  true);
-    //b->addWidget(fwu);
-
-    //connect(objectsList, SIGNAL(selectionChanged(QListBoxItem *)), this, SLOT(listItemSelected(QListBoxItem *)));
 }
 
 ConfirmDeleteObjectDialog::~ConfirmDeleteObjectDialog()
@@ -106,7 +101,8 @@ void ConfirmDeleteObjectDialog::findForObject(FWObject *obj)
         QPixmapCache::insert( icn_file, pm0);
     }
 
-    mw->db()->findWhereUsed(obj,mw->db(),resset);
+    mw->db()->findWhereObjectIsUsed(obj, mw->db(), resset);
+    FindWhereUsedWidget::humanizeSearchResults(resset);
 
     if (fwbdebug)
     {
@@ -116,94 +112,31 @@ void ConfirmDeleteObjectDialog::findForObject(FWObject *obj)
     }
 
     set<FWObject*>::iterator i=resset.begin();
-    QTreeWidgetItem *item;
-    QString c1;
-    QString c2;
-    FWObject* o;
-    Rule* r;
-    RuleSet* rs;
-    FWObject* fw=NULL;
 
     int itemCounter = 0;
 
-    for(;i!=resset.end();++i)
+    for (;i!=resset.end();++i)
     {
-        o=*i;
-        fw=NULL;
-        r=NULL;
-        rs=NULL;
+        FWObject* o = *i;
 
-        if (findRef(obj,o)==NULL) continue;
-
-        if (RuleElement::cast(o)!=NULL)
-        {
-            fw=o->getParent();
-
-            while (fw!=NULL && !Firewall::isA(fw))
-            {
-                if (Rule::cast(fw))
-                {
-                    r=Rule::cast(fw);
-                } else if (RuleSet::cast(fw))
-                {
-                    rs=RuleSet::cast(fw);
-                }
-
-                fw=fw->getParent();
-            }
-            if (fw==NULL || r==NULL || rs==NULL) continue;
-
-            c1=QString::fromUtf8(fw->getName().c_str());
-
-            if (NAT::isA(rs))
-            {
-                c2=tr("NAT");
-            } else if (Policy::isA(rs))
-            {
-                c2=tr("Policy");
-            } else if (Routing::isA(rs))
-            {
-                c2=tr("Routing");
-            } else
-            {
-                c2=tr("Unknown rule set");
-            }
-            c2+=tr("/Rule%1").arg(r->getPosition());
-
-        } else if (
-                mw->isSystem(o) ||
-                Rule::cast(o) ||
-                RuleSet::cast(o) ||
-                Firewall::cast(o) ||
-                Library::cast(o))
-        {
-            continue;
-        }
-        else
-        {
-            c1=QString::fromUtf8(o->getName().c_str());
-            c2=tr("Type: ")+QString::fromUtf8(o->getTypeName().c_str());
-        }
-
-        string icn="icon-tree";
-//        FWObject *pixobj=(fw==NULL)?o:fw;
-//        QPixmap pm = QPixmap::fromMimeSource(
-//            Resources::global_res->getObjResourceStr(pixobj, icn).c_str() );
-
-        QStringList qsl;
-        qsl << QString::fromUtf8( obj->getName().c_str()) << c1 << c2;
-        item = new QTreeWidgetItem(m_dialog->objectsView, qsl);
-        item->setIcon(0,QIcon(pm0));
-
+        // one of the objects returned by findWhereObjectIsUsed is a group
+        // object <o> belongs to. We need to skip this group.
+        //if (findRef(obj,o)==NULL) continue;
+        QTreeWidgetItem *item = FindWhereUsedWidget::createQTWidgetItem(obj, o);
+        if (item==NULL) continue;
+        m_dialog->objectsView->addTopLevelItem(item);
         itemCounter++;
     }
 
     if (itemCounter==0)
     {
         QStringList qsl;
-        qsl << QString::fromUtf8( obj->getName().c_str())
-            << tr("Not used anywhere") << "";
-        item = new QTreeWidgetItem(m_dialog->objectsView, qsl);
+        qsl << QString::fromUtf8( obj->getName().c_str()) << ""
+            << tr("Not used anywhere");
+        QTreeWidgetItem *item = new QTreeWidgetItem(m_dialog->objectsView, qsl);
         item->setIcon(0,QIcon(pm0));
     }
+
+    m_dialog->objectsView->resizeColumnToContents(0);
+    m_dialog->objectsView->resizeColumnToContents(1);
 }

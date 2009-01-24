@@ -516,3 +516,14 @@ QString wordWrap(const QString& s, int maxchinline)
     return res;
 }
 
+void loadIcon(QPixmap &pm, libfwbuilder::FWObject *obj)
+{
+    QString icn_file = (":/Icons/" + obj->getTypeName()+"/icon-tree").c_str();
+
+    if ( ! QPixmapCache::find( icn_file, pm) )
+    {
+        pm.load( icn_file );
+        QPixmapCache::insert( icn_file, pm);
+    }
+}
+

@@ -44,6 +44,7 @@
 #include "newGroupDialog.h"
 #include "FindObjectWidget.h"
 #include "AskLibForCopyDialog.h"
+#include "FindWhereUsedWidget.h"
 
 #include <QTextEdit>
 #include <QTime>
@@ -395,7 +396,7 @@ void ObjectManipulator::showDeletedObjects(bool f)
 
         if (dobj==NULL)
         {
-            dobj=m_project->db()->create(Library::TYPENAME);
+            dobj = m_project->db()->create(Library::TYPENAME);
             dobj->setId(FWObjectDatabase::DELETED_OBJECTS_ID);
             dobj->setName("Deleted Objects");
             dobj->setReadOnly(false);
@@ -3190,7 +3191,8 @@ list<Firewall *> ObjectManipulator::findFirewallsForObject(FWObject *o)
     FWObject *f=o;
     while (f!=NULL && !Firewall::isA(f)) f=f->getParent();
     if (f) fws.push_back(Firewall::cast(f));
-    m_project->db()->findWhereUsed(o,m_project->db(),resset);
+    m_project->db()->findWhereObjectIsUsed(o, m_project->db(), resset);
+    FindWhereUsedWidget::humanizeSearchResults(resset);
 
     set<FWObject *>::iterator i=resset.begin();
     for ( ;i!=resset.end();++i)

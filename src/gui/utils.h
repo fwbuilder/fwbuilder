@@ -124,6 +124,8 @@ extern QString readHostOS(QComboBox *hostOS);
 extern void setPlatform(QComboBox *platform,const QString &pl);
 extern void setHostOS(QComboBox *hostOS,const QString &os);
 
+extern void loadIcon(QPixmap &pm, libfwbuilder::FWObject *obj);
+
 extern void setDisabledPalette(QWidget *w);
 
 extern QString getAddrByName(const QString &name, int af_type);

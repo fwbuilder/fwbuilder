@@ -1,5 +1,21 @@
 2009-01-23  vadim  <vadim@vk.crocodile.org>
 
+	* FindWhereUsedWidget.cpp (FindWhereUsedWidget::createQTWidgetItem):
+	fixed bug #2412334: "feature request: where used ->
+	directly". There has been a change in the "Where used" function in
+	v3.0 compared to the implementation in v2.1. New version showed
+	not only rule elements and groups that referred to the given
+	object, but also found all groups that referred to other groups
+	that referred to the given object. Such recursive action was not
+	always obvious to the user and was inconvenient when the function
+	was used to find all places where given object was used with the
+	goal to replace it with some other object. This fix reverts to the
+	old behavior where only direct usages are reported by the "Where
+	used" function. Elements of UI in this function have also been
+	cleaned up and further unified with confirmation dialog shown when
+	user tries to delete an object that is used in some groups and
+	rules.
+
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printAddr): fixed bug
 	#2526173: "fwb_ipt crashes due to old-broadcast". This bug was
 	introduced when support for module iprange was sadded. Need

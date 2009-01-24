@@ -48,19 +48,35 @@ namespace libfwbuilder {
 class FindWhereUsedWidget : public QWidget
 {
     Q_OBJECT
- private:
+
+private:
     bool flShowObject;
     libfwbuilder::FWObject* object;
     std::set<libfwbuilder::FWObject *> resset;
-    std::map<QTreeWidgetItem*,libfwbuilder::FWObject *> mapping;
     Ui::findWhereUsedWidget_q *m_widget;
     
     void showObject(libfwbuilder::FWObject*);
- public:
-    FindWhereUsedWidget(QWidget*p, const char * n = 0, Qt::WindowFlags f = 0, bool f_mini=false);
+
+public:
+    FindWhereUsedWidget(QWidget*p, const char * n = 0,
+                        Qt::WindowFlags f = 0, bool f_mini=false);
     ~FindWhereUsedWidget();
+
     void setShowObject(bool fl);
 
+    /**
+     * Post-process set of FWObject* returned by
+     * FWObjectDatabase::findWhereObjectIsUsed to make it more
+     * suitable for the user. Since findWhereObjectIsUsed returns
+     * actual reference objects that point at the object we search
+     * for, humanizeSearchResults replaces them with appropriate
+     * parent objects. These can be either groups that hold
+     * references, or rules, which are two levels up.
+     */
+    static void humanizeSearchResults(std::set<libfwbuilder::FWObject *>&);
+    static QTreeWidgetItem* createQTWidgetItem(libfwbuilder::FWObject* obj,
+                                               libfwbuilder::FWObject* container);
+    
 public slots:
     virtual void hidePanel() {emit close();}; 
    

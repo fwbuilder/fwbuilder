@@ -51,8 +51,6 @@ using namespace std;
 void ProjectPanel::stateChanged(Qt::WindowStates oldState,
                                 Qt::WindowStates newState)
 {
-    if (fwbdebug) qDebug("ProjectPanel::stateChanged");
-
 #if 0
 // vk 09/16
     bool is_maximized = ((newState & Qt::WindowMaximized) != 0);

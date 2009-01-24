@@ -1558,9 +1558,10 @@ void RuleSetView::paintEvent(QPaintEvent * event)
     int last_visual_row = verticalHeader()->visualIndexAt(height());
     if (last_visual_row >= 0)
     {
+#ifdef DEBUG_PAINT_CELL
         if (fwbdebug) qDebug("RuleSetView::paintEvent: last_visual_row=%d",
                              last_visual_row);
-
+#endif
         QPainter painter(viewport());
         for (int col=0; col < ncols; col++)
             ruleDelegate->paint(&painter, QStyleOptionViewItem(),

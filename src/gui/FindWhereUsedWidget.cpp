@@ -95,7 +95,7 @@ FindWhereUsedWidget::FindWhereUsedWidget(QWidget *p,
     }
     else
     {
-        connect (m_widget->dropArea,SIGNAL(objectDeleted()),this,SLOT(init()));
+        connect(m_widget->dropArea,SIGNAL(objectDeleted()),this,SLOT(init()));
     }
 }
 
@@ -111,12 +111,11 @@ void FindWhereUsedWidget::setShowObject(bool fl)
 
 void FindWhereUsedWidget::itemActivated(QTreeWidgetItem* item)
 {
-    FWObject *o;
-    o = mapping[item];
+    FWObject *container = (FWObject*)(qVariantValue<void*>(item->data(1, Qt::UserRole)));
 
-    if (flShowObject && o!=NULL)
+    if (flShowObject && container!=NULL)
     {
-        showObject(o);
+        showObject(container);
     }
 }
 
@@ -135,105 +134,40 @@ void FindWhereUsedWidget::_find(FWObject *obj)
 {
     object = obj;
     m_widget->resListView->clear();
-    mapping.clear();
     resset.clear();
 
     if (fwbdebug) qDebug("FindWhereUsedWidget: initiate search for %s",
                          obj->getName().c_str());
 
-    mw->db()->findWhereUsed(obj, mw->db(), resset);
+    mw->db()->findWhereObjectIsUsed(obj, mw->db(), resset);
+    humanizeSearchResults(resset);
 
     set<FWObject*>::iterator i=resset.begin();
-    QTreeWidgetItem *item;
-    QString c1;
-    QString c2;
-    FWObject* o;
-    Rule* r;
-    RuleSet* rs;
-    FWObject* fw=NULL;
-    for(;i!=resset.end();++i)
-    {
-        o=*i;
-        fw=NULL;
-        r=NULL;
-        rs=NULL;
 
+    for (;i!=resset.end();++i)
+    {
+        FWObject *o = *i;
 
         if (fwbdebug) qDebug("Search result object id=%d type=%s name=%s",
                              o->getId(),
                              o->getTypeName().c_str(),
                              o->getName().c_str());
 
-//        if (findRef(object,o)==NULL) continue;
-
-        if (mw->isSystem(o) || RuleSet::cast(o) ||
-            Firewall::cast(o) || Library::cast(o)) continue;
-
-        c1 = QString::fromUtf8(o->getName().c_str());
-        c2 = tr("Type: ")+QString::fromUtf8(o->getTypeName().c_str());
-
-        if (RuleElement::cast(o)!=NULL || Rule::cast(o)!=NULL)
-        {
-            fw = o;
-            while (fw!=NULL && !Firewall::isA(fw))
-            {
-                if (Rule::cast(fw))
-                {
-                    r=Rule::cast(fw);
-                } else if (RuleSet::cast(fw))
-                {
-                    rs=RuleSet::cast(fw);
-                }
-                fw=fw->getParent();
-            }
-            if (fw==NULL || r==NULL || rs==NULL) continue;
-
-            c1 = QString::fromUtf8(fw->getName().c_str());
-
-            if (NAT::isA(rs))
-            {
-                c2=tr("NAT");
-            } else if (Policy::isA(rs))
-            {
-                c2=tr("Policy");
-            } else if (Routing::isA(rs))
-            {
-                c2=tr("Routing");
-            } else
-            {
-                c2=tr("Unknown rule set");
-            }
-            c2+=tr("/Rule%1").arg(r->getPosition());
-        }
-
-        FWObject *pixobj=(fw==NULL)?o:fw;
-
-        QString icn_file =
-            (":/Icons/"+pixobj->getTypeName()+"/icon-tree").c_str();
-
-        QPixmap pm;
-        if ( ! QPixmapCache::find( icn_file, pm) )
-        {
-            pm.load( icn_file );
-            QPixmapCache::insert( icn_file, pm);
-        }
-
-        QStringList qsl;
-        qsl << c1 << c2;
-        item = new QTreeWidgetItem(m_widget->resListView, qsl);
-        item->setIcon(0, QIcon(pm));
-        mapping[item] = o;
+        QTreeWidgetItem *item = createQTWidgetItem(obj, o);
+        if (item==NULL) continue;
+        m_widget->resListView->addTopLevelItem(item);
     }
+    m_widget->resListView->resizeColumnToContents(0);
+    m_widget->resListView->resizeColumnToContents(1);
     show();
 }
+
 
 void FindWhereUsedWidget::init()
 {
     object=NULL;
     m_widget->resListView->clear();
-    mapping.clear();
     resset.clear();
-
 }
 
 void FindWhereUsedWidget::findFromDrop()
@@ -247,8 +181,6 @@ void FindWhereUsedWidget::showObject(FWObject* o)
                          o->getName().c_str(), o->getTypeName().c_str());
 
     if (object==NULL || o==NULL) return;
-
-    FWReference* ref = NULL;
 
     if (RuleElement::cast(o)!=NULL)
     {
@@ -295,3 +227,113 @@ void FindWhereUsedWidget::showObject(FWObject* o)
     //mw->closeEditor();
     //mw->openObject( o );
 }
+
+void FindWhereUsedWidget::humanizeSearchResults(std::set<FWObject *> &resset)
+{
+    set<FWObject*> tmp_res;  // set deduplicates items automatically
+    set<FWObject*>::iterator i = resset.begin();
+    for (;i!=resset.end();++i)
+    {
+        FWReference  *ref = FWReference::cast(*i);
+
+        if (ref)
+        {
+            FWObject *o = ref->getParent();  // NB! We need parent of this ref.
+            tmp_res.insert(o);
+            if (fwbdebug)
+                qDebug("humanizeSearchResults: adding %s (%s)",
+                       o->getName().c_str(), o->getTypeName().c_str());
+#if 0
+            if (RuleElement::cast(o)!=NULL)
+            {
+                tmp_res.insert(o->getParent());  // rule
+                continue;
+            }
+            if (Group::cast(o)!=NULL)
+            {
+                tmp_res.insert(o);
+                continue;
+            }
+#endif
+        } else
+            tmp_res.insert(*i);
+    }
+    resset.clear();
+    resset = tmp_res;
+}
+
+QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject* o,
+                                                         FWObject *container)
+{
+    QString c1, c2;
+    FWObject *fw = NULL;
+    Rule *r = NULL;
+    RuleSet *rs = NULL;
+    QPixmap object_icon;
+    QPixmap parent_icon;
+
+    if (mw->isSystem(container) || Library::cast(container)) return NULL;
+
+    if (RuleElement::cast(container)!=NULL || Rule::cast(container)!=NULL)
+    {
+        fw = container;
+        while (fw!=NULL && !Firewall::isA(fw))
+        {
+            if (Rule::cast(fw)) r = Rule::cast(fw);
+            if (RuleSet::cast(fw)) rs = RuleSet::cast(fw);
+            fw = fw->getParent();
+        }
+        if (fw==NULL || r==NULL || rs==NULL) return NULL;
+
+        c1 = QString::fromUtf8(fw->getName().c_str());
+        QString ruleset_kind;
+
+        if (NAT::isA(rs))
+        {
+            ruleset_kind = tr("NAT rule set");
+        } else if (Policy::isA(rs))
+        {
+            ruleset_kind = tr("Policy rule set");
+        } else if (Routing::isA(rs))
+        {
+            ruleset_kind = tr("Routing rule set");
+        } else
+        {
+            ruleset_kind = tr("Rule set of unknown type");
+        }
+
+        QString rule_element_name;
+        if (RuleElement::cast(container)!=NULL)
+            rule_element_name = container->getTypeName().c_str();
+        if (Rule::cast(container)!=NULL)
+            rule_element_name = "Action";
+
+        c2 += tr("%1 \"%2\" / Rule %3 / %4").
+            arg(ruleset_kind).
+            arg(rs->getName().c_str()).
+            arg(Rule::cast(r)->getPosition()).
+            arg(rule_element_name);
+
+        loadIcon(parent_icon, fw);
+    } else
+    {
+        c1 = QString::fromUtf8(container->getName().c_str());
+        c2 = tr("Type: ")+QString::fromUtf8(container->getTypeName().c_str());
+
+        loadIcon(parent_icon, container);
+    }
+    
+    loadIcon(object_icon, o);
+
+    QStringList qsl;
+    qsl << QString::fromUtf8(o->getName().c_str()) << c1 << c2;
+    QTreeWidgetItem* item = new QTreeWidgetItem(qsl);
+
+    item->setIcon(1, QIcon(parent_icon));
+    item->setIcon(0, QIcon(object_icon));
+
+    item->setData(1, Qt::UserRole, qVariantFromValue((void*)container));
+
+    return item;
+}
+

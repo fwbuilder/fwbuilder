@@ -93,14 +93,18 @@ void findByObjectType(FWObject *o,
     }
 }
 
-
-FWReference* findRef(FWObject *o, FWObject *p)
+/** 
+ * Find reference to object <o> in the group <container> and return
+ * pointer to that reference object. If no such reference exists,
+ * return NULL.
+ */
+FWReference* findRef(FWObject *o, FWObject *container)
 {
     FWReference* ref=NULL;
-    FWObject::iterator i=p->begin();
-    for(;i!=p->end();++i)
+    FWObject::iterator i = container->begin();
+    for(; i!=container->end(); ++i)
     {
-        ref=FWReference::cast(*i);
+        ref = FWReference::cast(*i);
         if (ref!=NULL && ref->getPointer() == o)
         {
             break;
