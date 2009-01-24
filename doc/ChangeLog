@@ -1,3 +1,10 @@
+2009-01-24  vadim  <vadim@vk.crocodile.org>
+
+	* platforms.cpp (getReadableRuleElementName): code refactoring:
+	made it possible to translate ruleset table column
+	names ("Source", "Destination" etc.). Currently only Russian
+	translation is provided.
+
 2009-01-23  vadim  <vadim@vk.crocodile.org>
 
 	* FindWhereUsedWidget.cpp (FindWhereUsedWidget::createQTWidgetItem):

@@ -530,7 +530,8 @@ QString getScreenName(QString s, const QStringList &sl)
  * files and are not pulled using Rule::getActionAsString.
  */
 
-QString getActionNameForPlatform(PolicyRule::Action action,const QString &platform)
+QString getActionNameForPlatform(PolicyRule::Action action,
+                                 const QString &platform)
 {
     QString action_name = "";
     switch (action)
@@ -603,4 +604,40 @@ bool getStatelessFlagForAction(PolicyRule *rule)
         act==PolicyRule::Route) return false;
     else
         return true;
+}
+
+/**
+ * Returns translatable string - name of the corresponding rule element.
+ */
+QString getReadableRuleElementName(const string &rule_element_type_name)
+{
+    // The following map TYPENAME of RuleElement classes to readable
+    // translatable names.
+    if (rule_element_type_name == "Src") return QObject::tr("Source");
+    if (rule_element_type_name == "Dst") return QObject::tr("Destination");
+    if (rule_element_type_name == "Srv") return QObject::tr("Service");
+    if (rule_element_type_name == "Itf") return QObject::tr("Interface");
+    if (rule_element_type_name == "When") return QObject::tr("Time");
+
+    if (rule_element_type_name == "OSrc") return QObject::tr("Original Src");
+    if (rule_element_type_name == "ODst") return QObject::tr("Original Dst");
+    if (rule_element_type_name == "OSrv") return QObject::tr("Original Srv");
+
+    if (rule_element_type_name == "TSrc") return QObject::tr("Translated Src");
+    if (rule_element_type_name == "TDst") return QObject::tr("Translated Dst");
+    if (rule_element_type_name == "TSrv") return QObject::tr("Translated Srv");
+
+    if (rule_element_type_name == "RDst") return QObject::tr("Destination");
+    if (rule_element_type_name == "RGtw") return QObject::tr("Gateway");
+    if (rule_element_type_name == "RItf") return QObject::tr("Interface");
+
+    // as of v3.0.x the following are not real rule elements (not separate
+    // classes with names) but just attributes of corresponding Rule class.
+    if (rule_element_type_name == "Direction") return QObject::tr("Direction");
+    if (rule_element_type_name == "Action") return QObject::tr("Action");
+    if (rule_element_type_name == "Options") return QObject::tr("Options");
+    if (rule_element_type_name == "Metric") return QObject::tr("Metric");
+    if (rule_element_type_name == "Comment") return QObject::tr("Comment");
+
+    return QString();
 }

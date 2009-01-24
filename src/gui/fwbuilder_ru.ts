@@ -1,1081 +1,868 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="ru">
+<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
-        <location filename="" line="112"/>
         <source>A</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>F</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>I</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>L</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>P</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>R</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>S</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>U</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>--</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>IP</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>OK</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>No</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>On</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>RO</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>hh</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>mm</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ss</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>up</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;OK</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Add</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Del</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Cut</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Dyn</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>MAC</source>
         <translation type="obsolete">MAC</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>NAT</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>NTP</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Off</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>SSH</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>TCP</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Red</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>UDP</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Yes</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>any</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>dns</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ftp</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ils</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ip:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>rev</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>rpc</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>rsh</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>sip</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ssh</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>udp</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Destination</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Cut</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>/day</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Back</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Blue</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Copy</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Date</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Edit</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>End:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Exit</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Find</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ICMP</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>IPv4</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Gray</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Host</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>MAC:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Load</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Name</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Open</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Path</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Poll</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>SNMP</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Redo</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Save</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Stop</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Time</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Undo</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>conn</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>crit</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Use ACL remarks</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>h323</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>down</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>dump</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>http</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>info</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ipf:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>mgcp</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>pptp</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>rtsp</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>skip</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>smtp</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>tftp</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Set device id for syslog messages (v6.3 and later):</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Working directory %1 does not seem to exist.
 Do you want to create it ?</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>all fragments</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Here you can add or edit interfaces manually. &apos;Name&apos; corresponds to the name of the physical interface, such as &apos;eth0&apos;, &apos;fxp0&apos;, &apos;ethernet0&apos; etc. &apos;Label&apos; is used to mark interface to reflect network topology, e.g. &apos;outside&apos; or &apos;inside&apos;. Label is mandatory for PIX firewall.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Click here to change amount of information shown about object selected in the tree</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Ignore bogus ICMP errors</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>These options control algorithms used by the policy compiler to generate iptables commands.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Range Start:</source>
         <translation type="obsolete"> :</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Edit</source>
         <translation type="obsolete">&amp;Редактировать</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;File</source>
         <translation type="obsolete">&amp;Файл</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Clear DF bit</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Help</source>
         <translation type="obsolete">&amp;Помощь</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Move</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Redo</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Save</source>
         <translation type="obsolete">&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Undo</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Custom service object has separate code string for each supported firewall platform.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>/hour</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>File is read-only</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Timeouts</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>*** Fatal error :</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>C&amp;opy</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>About</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>E&amp;xit</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Alt+C</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Alt+I</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Alt+M</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Alt+W</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Close</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Code:</source>
         <translation type="obsolete">:</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Date:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Debug</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Fixup</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Green</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Group</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Index</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Label</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>You are connecting to the firewall &lt;b&gt;&apos;%1&apos;&lt;/b&gt; for the first time. It has provided you its identification in a form of its host public key. The fingerprint of the host public key is: &quot;%2&quot; You can save the host key to the local database by pressing YES, or you can cancel connection by pressing NO. You should press YES only if you are sure you are really connected to the firewall &lt;b&gt;&apos;%3&apos;&lt;/b&gt;.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Mask:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Name:</source>
         <translation type="obsolete">:</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Paste</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Block if can not log</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Print</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Rules</source>
         <translation type="obsolete">Правила</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Tab 1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Install</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Time:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Traps</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Check for overlapping global pools</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Accept ESTABLISHED and RELATED packets before the first rule</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Move back to the previous object</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>alert</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>type: %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>bytes</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>debug</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>error</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Use preconfigured template firewall objects</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ipfw:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>lsmod</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Poll and Traps</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>port:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>state table size:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Discard changes</source>
         <translation type="obsolete">&amp;Отмена</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>xlate</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Group similar commands together</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Firewall</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Use h323 proxy in NAT rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New UDP Service</source>
         <translation type="obsolete"> UDP </translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New TCP Service</source>
         <translation type="obsolete"> TCP </translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Revision: </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Check option &apos;dynamic address&apos; for the interface that gets its IP address dynamically via DHCP or PPP protocol.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Missing SNMP community string.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Tooltip delay:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>use text string</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ICMP admin prohibited</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Stateless rule</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Use ipsec proxy in NAT rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New &amp;IP Service</source>
         <translation type="obsolete">IP сервис</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Library %1: Firewall &apos;%2&apos; (global policy rule #%3) uses object &apos;%4&apos; from library &apos;%5&apos;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>These options enable auxiliary sections in the generated shell script.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Executing external command</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Security Level</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Illegal IP address &apos;%1&apos;</source>
         <translation type="obsolete"> IP  &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Log record for the new revision</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Keep information on fragmented
 packets, to be applied to later
 fragments</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Failed transformation : %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Original Src</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Original Srv</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Original Dst</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&lt;p&gt;Each interface of the firewall must have security level associated with it.&lt;br&gt;Security level can be any number between 0 and 100, 0 being least secure and 100 being most secure levels. Interface with security level 0 ususally serves Internet connection.&lt;/p&gt;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Error creating temporary file </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Firewall platform is not specified in this object.
 Can&apos;t compile firewall policy.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Interface: %1 (%2)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Allow dynamic addresses</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>User name used to authenticate to the firewall (leave this empty if you use putty session):</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>use hostname</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Object with name &apos;%1&apos; already exists, please choose different name.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>In nat rules where network zone object is used in OSrc, ODst and OSrv are &apos;any&apos; and TSrc defines a global pool for the translation, replace object in OSrc with &apos;any&apos; to produce PIX command &quot;nat (interface) N 0.0.0.0 0.0.0.0&quot;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enable or change the port assignment for the Session Initiation Protocol (SIP) for Voice over IP TCP connections.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Locked by user:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>No color</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>use numeric syslog levels</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Use rcmd proxy in NAT rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Compiler Options</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Color Label:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New &amp;Network</source>
         <translation type="obsolete">Сеть</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>SSH terminated, exit status: %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>* firewall name : %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>5 - Normal but significant condition</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Object &lt;b&gt;&apos;%1&apos;&lt;/b&gt; in the objects tree</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Replaces the IP identification field of outgoing packets with random values to compensate for operating systems that use predictable values.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Not enough memory.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>place in library %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New &amp;Custom Service</source>
         <translation type="obsolete">Специальный сервис</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Open read-only</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Packet forwarding</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>In enable mode.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Replace with this object</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Computer Telephony Interface Quick Buffer Encoding (CTIQBE) protocol inspection module that supports NAT, PAT, and bi-directional NAT.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Actively reset inbound TCP connections with RST on outside interface</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Revision %1 of this file has been checked out and locked by you earlier.
 The file may be opened in another copy of Firewall Builder or was left opened
 after the program crashed.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>reassembly pool:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Add MAC Address</source>
         <translation type="obsolete"> MAC </translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Choose a file to import</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Add File to RCS</source>
         <translation type="obsolete">testОшибка добавления файла в RCS
 %1</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Respond to echo broadcast</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Group Name:</source>
         <translation type="obsolete">:</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>When you delete a library, all objects that belong to it
 disappear from the tree and all groups and rules that reference them.
 You won&apos;t be able to reverse this operation later.
@@ -1083,119 +870,96 @@ Do you still want to delete library %1?</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Translated Dst</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Translated Srv</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Translated Src</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enable Rule</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Configure interfaces manually</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Buffer and reassemble fragments (default)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>TCP Flags</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ICMP Code:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Text to be found in object names:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Send ICMP &apos;unreachable&apos; packet
 masquerading as being from
 the original destination</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>TCP window scaling</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ICMP Type:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Verification of NAT rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>icmp error</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Solaris: advanced settings</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>File Path</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>OpenBSD: advanced settings</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>File is not in RCS</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>lastModified</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Find working directory</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Undelete...</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>PIX inspects packets with ACLs before it does NAT, while many other firewalls do NAT first and then apply ACLs. Policy compiler can emulate the latter behaviour if this options is turned on.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Assume firewall is part
 of &apos;any&apos; (this setting only
 affects code generated
@@ -1203,407 +967,327 @@ for this rule)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Check file &amp;in</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>* host OS : %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;About</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Close</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Debug</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Date (Y/M/D):</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Paste</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Error activating firewall policy</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Date (Y/D/M):</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enable TCP resource control for AAA Authentication Proxy</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Reading current firewall configuration</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>sip&amp;media</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Remove Rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>max length:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New &amp;Address</source>
         <translation type="obsolete">Адрес</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Save &amp;As...</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Library</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Detect rule shadowing in the policy</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enable all protocols</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Error checking file out: %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Causes duplicate fragments to be dropped and any overlaps to be cropped.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Log record for this revision: </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>SNMP Get</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Do not ask me anymore, always check files in with empty log</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Dynamic address</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Library file %1 is corrupted.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New Object File</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;New Object File</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Choose name and folder for the new file</source>
         <translation type="obsolete">Выберите имя и фолдер для нового файла</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>logger:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Logging</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Modulate state for all stateful rules (applies only to TCP services)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>This object has been modified but not saved.
 Do you want to save it before switching to another object?</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>The following commands will be added verbatim on top of generated configuration</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Reassemble fragments</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enable password:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Force each TCP connection to linger in a shortened TIME&amp;WAIT</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Clamp MSS to MTU</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Kernel anti-spoofing protection</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enable Rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>to library %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Masquerade returned icmp as being from original
 packet&apos;s destination</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Can not open file %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>XML element : %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Find Secure File Transfer utility</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Failed to start ssh</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Choose libraries to be exported:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Drop duplicate fragments, do not buffer and reassemble</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ICMP host unreachable</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>MacOS X: advanced settings</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ICMP port unreachable</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>(The default for both parameters is 0, which means unlimited number of connections.)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enable SIP-over-UDP application inspection.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enter authentication information below and click &apos;Next&apos;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Syslog host (name or IP address):</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>timestamp</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Do not ask for the log record when checking in new file revision.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enter new position for selected rules:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enable SCCP application inspection.  SCCP protocol supports IP telephony and can coexist in an H.323 environment. An application layer ensures that all SCCP signaling and media packets can traverse the PIX Firewall and interoperate with H.323 terminals.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Running command &apos;%1&apos;
 
 </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Find Secure Shell utility</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Periodically save data to file every </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>log IP options</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Group PIX commands in the script so that similar commands appear next to each other, just like PIX does it when you use &apos;show config&apos;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>minutes</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>These parameters make sense for connections to or from the firewall host</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enable TFTP application inspection.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>half-closed</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Error loading file %1:
 %2</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Address of this interface is assigned dynamically using DHCP or PPP protocol</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ipfw: advanced settings</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Some protocols involve multiple associated network connections. Firewall can keep track of such connections automatically if you activate one or all of the following options:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ipf: advanced settings</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New &amp;Firewall</source>
         <translation type="obsolete">Файрволл</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>pf: advanced settings</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Incremental install</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>* Incremental install</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>If rule action is &apos;Reject&apos;, this option defines firewall&apos;s reaction to the packet matching the rule</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Prolog/Epilog</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>The name of the interface &apos;%1&apos; has changed. The program can also
 rename IP address objects that belong to this interface,
 using standard naming scheme &apos;host_name:interface_name:ip&apos;.
@@ -1617,504 +1301,405 @@ Do you want to rename child IP and MAC address objects now?
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>For high latency</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Use SNMP to discover interfaces of the firewall</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Compiler:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>User name:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Templates</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Fatal error running rcsdiff for file %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Scrub rule options</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Add...</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Action</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>state expiration timeout:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Disable SNMP Agent</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>This interface is
 external (insecure)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Directory on the firewall where script should be installed</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Address of %1 could not be obtained via DNS</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Author</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>TCP timestamps</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Cancel</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Burst:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Similar to &apos;Drop duplicate fragments&apos; except that all duplicate or overlapping fragments will be dropped as well as any further corresponding fragments.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Color:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Object Manipulator</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Ctrl+C</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Ctrl+F</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Ctrl+N</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Ctrl+O</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Ctrl+P</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Ctrl+S</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Ctrl+V</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Ctrl+X</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Ctrl+Y</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Ctrl+Z</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Delete</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Index...</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Move Rule Down</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Script formatting</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Drop duplicate and subsequent fragments</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Generate both &apos;in&apos; and &apos;out&apos; rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>File Properties</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Use &apos;EMBLEM&apos; format for syslog messages</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&lt;p&gt;Check if this interface is used for management (SNMP queries, remote policy install etc.)&lt;p&gt;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New IC&amp;MP Service</source>
         <translation type="obsolete">ICMP сервис</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Exception: %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Netmask</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Network</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Export</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Description:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>When you delete an object, it is removed from the tree and
 all groups and firewall policy rules that reference it.
 Do you want to delete selected objects ?</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Add virtual addresses for NAT</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>This operation will create a new group and put selected objects in it</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Error loading file:
 %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Logging limit:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Forward source routed packets</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Log packet body</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Generate commands to configure addresses for interfaces</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>TCP keepalive time (sec)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Label:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Labels</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>maximum number of simultaneous TCP and UDP connections</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>One interface of the firewall must be marked as &apos;external&apos;. This interface should be connected to the least secure network, usually the Internet.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Skip all protocols</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enable directed broadcast</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Search hit the end of the object tree.</source>
         <translation type="obsolete">   .</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>1.2.9 or later</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&lt;a href=&quot;http://www.fwbuilder.org/&quot;&gt;http://www.fwbuilder.org&lt;/a&gt;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Negate</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>This option is provisional and will change or disappear in future releases because we expect to make this a default behavior.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Normal</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>h323 h225</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Object</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New IP Service</source>
         <translation type="obsolete"> IP </translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New Object</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Orange</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Normally policy compiler uses stateful inspection in each rule. Activating next option makes this rule stateless.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Firewall Builder</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>reassembly timeout:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;New Object</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Policy</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>seconds before an unassembled fragment is expired.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Alternative address to communicate with the firewall:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Purple</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Log Prefix</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Find add-on library</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Activate Revision Control System for this file
 (if you do not do this now, you can always activate it later)</source>
         <translation type="obsolete">testАктивизировать систему контроля версий для этого файла
 (если Вы не сделаете это сейчас, Вы всегда можете активизироват ее позже)</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>completely disable logging
 for this rule</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Remove</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Ignore broadcast pings</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source> objects</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>location</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>lockedBy</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Firewall Builder: Policy Installer</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Source</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>code: %1</source>
         <translation type="obsolete">:</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Start:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Syslog</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Update</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Check option &apos;Unnumbered interface&apos; for the interface that does not have an IP address. Examples of interfaces of this kind are those used to terminate PPPoE or VPN tunnels.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Set all to defaults..</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Progress:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Emptying of the &apos;Deleted Objects&apos; in a library file is not recommended.
 When you remove deleted objects from a library file, Firewall Builder
 loses ability to track them. If a group or a policy rule in some
@@ -2124,619 +1709,497 @@ Do you want to delete selected objects anyway ?</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enforces a maximum Maximum Segment Size (MSS) in TCP packet headers.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Yellow</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>PIX Firewall Version 6.3 introduces support for EMBLEM format, which is required when using the CiscoWorks Resource Manager Essentials (RME) syslog analyzer.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Protocol Helpers</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Remove comments from configuration</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Fatal error running rlog for %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&lt;p&gt;Each interface of the firewall must have security level associated with it.&lt;br&gt;
 Security level can be any number between 0 and 100, 0 being least secure and 100 being most secure levels. Interface with security level 0 ususally serves Internet connection.&lt;/p&gt;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enables Point-to-Point Tunneling Protocol (PPTP) application inspection.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Move Selected Rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Import from file ...</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Specifies the maximum number of embryonic connections per host. An embryonic connection is a connection request that has not finished the necessary handshake between source and destination. Set a small value for slower systems, and a higher value for faster systems. The default is 0, which means unlimited embryonic connections.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>PIX Options</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Check for overlapping statics</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Configure Interfaces of the firewall machine</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Recognize regular expressions in search pattern</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Conflict Resolution</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>/minute</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Comment:</source>
         <translation type="obsolete">:</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Compiler</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>DNS lookup failed for both names of the address object &apos;%1&apos; and the name of the host &apos;%2&apos;.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>h323 ras</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New &amp;Interface</source>
         <translation type="obsolete">Интерфейс</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Contact:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Contents</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Continue</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Load standard objects</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Syslog message queue size (messages):</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Open...</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Optimization</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Firewall Builder 2 uses file extension &apos;.fwb&apos;. Your data file &apos;%1&apos; 
 has been renamed &apos;%2&apos;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Options</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Here you can add or edit interfaces manually. &apos;Name&apos; corresponds to the name of the physical interface, such as &apos;eth0&apos;, &apos;fxp0&apos;, &apos;ethernet0&apos; etc. &apos;Label&apos; is used to mark interface to reflect network topology, e.g. &apos;outside&apos; or &apos;inside&apos;.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Available libraries:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Verify interfaces before loading firewall policy</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>No firewalls defined</source>
         <translation type="obsolete">Нет ни одного файрволла</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Default action on &apos;Reject&apos;:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>syslog level (&apos;logging trap&apos;):</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Saving data to file...</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>/second</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Data format</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>No change</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>SNMP community:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>code: </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Host OS:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ctiqbe</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Generating configuration diff</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>protocol </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Date (M/D/Y):</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Find and eliminate duplicate rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>enable</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Disable Rule</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Move ...</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Properties</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Gateway Port:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>use address of interface</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Properties</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Browse...</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Accept ICMP redirects</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Optimization:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ipnat:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Detect shadowing in policy rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Error checking in file %1:
 %2</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Expand all branches in the object tree</source>
         <translation type="obsolete">   .</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Create new project file</source>
         <translation type="obsolete">Создать новый проект</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Unnumbered interface</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New RSA key</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Log level:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>(read-only)</source>
         <translation type="obsolete">(только для чтения)</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>The default port for HTTP is 80.  Use the port option to change the HTTP port, or specify a range of HTTP ports.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&lt;p&gt;Network zone consists of hosts and networks that can be reached through this interface of the firewall. Subnet to which this interface is directly attached must be part of its network zone. Other subnets reachable by means of routing should alse be added to the network zone.
 &lt;br&gt;
 If network zone for this interface consists of only one subnet, you can simply choose that network&apos;s object in the pull-down below. If your network zone should include multiple subnets, you need to create an Object Group, then put all hosts and networks which are going to be part of the network zone into that group and finally choose this group in the pull-down below.&lt;/p&gt;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enables the Media Gateway Control Protocol (MGCP) fixup.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>notice</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Move Rules</source>
         <translation type="obsolete">Правила</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Accept source route</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>pfctl:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Load modules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Store configuration diff in a file</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Ignore empty groups in rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>skinny</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Use tables</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>sqlnet</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>A full path to the Secure Shell utility (remote command execution; for example ssh on Unix or plink.exe or vsh.exe on Windows):</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Address</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>telnet</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Library %1: Firewall &apos;%2&apos; (interface %3 policy rule #%4) uses object &apos;%5&apos; from library &apos;%6&apos;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New &amp;Library</source>
         <translation type="obsolete">Библиотека</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Copy Rule</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>type: </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>unauth</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Physical address (MAC):</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>log TCP seq. numbers</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Turn debugging on in generated script</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>PIX Advanced Configuration Options</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Log prefix:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>maximum number of entries in the memory pool used for packet reassembly</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>physAddress</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Host OS Settings ...</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Install firewall policy</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>queue threshold:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Optimize &apos;default nat&apos; rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Find Object</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Deactivate a rule on:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Activate a rule on:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>In order to be able to build firewall policy properly, Firewall Builder needs information about &apos;security level&apos; of the firewall&apos;s interfaces. Interface that connects it to the Internet is considered &apos;insecure&apos; and has security level &apos;0&apos;, while interface connected to the internal network is supposed to be &apos;secure&apos; (security level &apos;100&apos;). You can arrange interfaces in the order of their security level below.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Based on this maximum-length configured by the user, the DNS fixup checks to see if the DNS packet length is within this limit. Every UDP DNS packet (request/response) undergoes the above check.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Install old copy</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Regular interface</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enter New Position For The Rule</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Forward directed broadcasts</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>A full path to the Secure Copy utility (secure file copy; for example scp on Unix or pscp.exe or vcp.exe on Windows):</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Copyright 2002-2004  NetCitadel, LLC</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>TCP fack</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>TCP sack</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Show deleted objects</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Call Agent port:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Some objects have been modified but not saved.
 Do you want to save changes now ?</source>
         <translation type="obsolete">testНекоторые объекты были модифицированы
 но не сохранены. Хотите ли Вы сохранить изменения ?</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Check for duplicate nat rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Use random ID</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>RCS log:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>TCP ECN</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>TCP RST</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Some objects have been modified since
 you compiled the policy last time.
 Do you want to recompile it before you install ?</source>
@@ -2744,7 +2207,6 @@ Do you want to recompile it before you install ?</source>
 но не сохранены. Хотите ли Вы сохранить изменения ?</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>The name of the object &apos;%1&apos; has changed. The program can also
 rename IP address objects that belong to this object,
 using standard naming scheme &apos;host_name:interface_name:ip&apos;.
@@ -2758,883 +2220,709 @@ Do you want to rename child IP and MAC address objects now?
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enter the name of the new object below:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Platform:</source>
         <translation type="obsolete">:</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Please select a library you want to export.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Error saving file %1: %2</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Direction</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Aggressive</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>File %1 has been added to RCS.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>6 - Informational</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Set SNMP communities using data from the firewall object dialog</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>If you remove libraries from the list, changes get in effect next time you start the program</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Linux 2.4: advanced settings</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enable the IP Frag Guard feature (deprecated in v6.3 and later).</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Ignore all pings</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Original</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Print...</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>* Test run, commands will not be executed on the firewall</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Revision history:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Using libfwbuilder API v</source>
         <translation type="obsolete">  libfwbuilder v</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Running command on the firewall: </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New &amp;Host</source>
         <translation type="obsolete">Хост</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Insert Rule</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Only one interface of the firewall &apos;%1&apos; must be marked as management interface.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Insert comments into generated PIX configuration file</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>7 - Debug Message</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>check this option to make compiler add &apos;clear&apos; statements to remove all pre-existing ACLs and NAT commands</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Destination Port Range</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>This is unnumbered interface, that is, it does not have an IP address. You can use this for interfaces that terminate PPPoE or other VPN tunnels</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>place here</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>These options are only valid for PIX running software v6.3 or later</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>use ULOG</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>2 - Critical Condition</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Libraries</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Location:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Save As</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>The file %1 already exists.
 Do you want to overwrite it ?</source>
         <translation type="obsolete">Файл %1 уже существует. Переписать?</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Specify directory path and a file name for each utility on your firewall machine. Leave these empty if you want to use default values.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enables support for SQL*Net protocol.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>NTP Servers:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Absolute</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Let the program automatically open this file when I start it next time
 (you can activate this option later using Preferences dialog)</source>
         <translation type="obsolete">testПрограмма должна автоматически открывать этот файл при
 старте (эта функция также может быть активизирована  в диалоге Установки)</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Rules: %1-%2</source>
         <translation type="obsolete">:</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Firewall Settings ...</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>There are two ways compiler can generate code for rules in the Global Policy: it can either create two ipf rules to control both incoming and outgoing packets for each rule, or it can create only one ipf rule for incoming packets and permit all outgoing ones.You get more control over the packets crossing the firewall in the first mode, but generated script is going to be smaller if you choose the second.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enables the Mail Guard feature, which only lets mail servers receive the RFC 821, section 4.5.1, commands of HELO, MAIL, RCPT, DATA, RSET, NOOP, and QUIT. All other commands are translated into X&apos;s which are rejected by the internal server.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Unsupported exception</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Revision %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Choose template object in the list and click &apos;Finish&apos; when ready. Template objects use generic interface names that will be iherited by the firewall object you create. You may need to rename them later to reflect real names of interfaces on your firewall machine.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Rule %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ICMP net unreachable</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Service</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Server 1:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Server 2:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Server 3:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Network zone:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Choose firewall software it is running:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Use ACL remarks to relate ACL commands and policy rules in the GUI</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Pushing firewall configuration</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>sip udp</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Disable all protocols</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Could not open file %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Choose file that contains PIX commands</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Generate &apos;clear&apos; commands</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Change TCP MSS to</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Locked by</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enforce Maximum MSS:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Actively reset inbound TCP connections with RST</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enforce Minimum TTL:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>DNS lookup failed for name of the address object &apos;%1&apos;.</source>
         <translation type="obsolete"> %1    DNS</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>File %1 not found.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Always choose this
 object if there is a conflict</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Warning: loading from file discards current contents of the script.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Policy installer uses Secure Shell to communicate with the firewall.
 Please configure directory path to the secure file copy and secure 
 shell utilities installed on your machine using Preferences dialog</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Drop here firewall objects that should be used as policy templates for this firewall. Rules will be added on top of the rules of this firewall and will be taken from policies of the template objects in the order they were added, from top to bottom:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Ignore ICMP redirects</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Error writing to temporary file </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Policy Compiler Options</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>netlink group:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&lt;b&gt;Summary:&lt;/b&gt;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Comment</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Compile</source>
         <translation type="obsolete">&amp;Файл</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Compile</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>maximum number of entries in the memory pool used for state table entries</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Console</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Load last edited file</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Paste Rule</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>cprange</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>iptables:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Discover Interfaces using SNMP</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Do you want to open existing project file or create a new one?</source>
         <translation type="obsolete">Хотите ли Вы открыть существующий проект или создать новый ?</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Outbound </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Library %1: Group &apos;%2&apos; uses object &apos;%3&apos; from library &apos;%4&apos;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Cancel</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Pass all outgoing</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Installer</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Empty configuration diff</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes &apos;any&apos; after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>* user name : %1</source>
         <translation type="obsolete">Имя файла: %1</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Inactivity</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Quiet install: do not print anything as commands are executed on the firewall</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Address:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>strict:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Generate rules assuming the firewall is part of &quot;Any&quot;. This makes a difference in rules that use services &apos;ssh&apos; and &apos;telnet&apos; since PIX uses special commands to control ssh and telnet access to the firewall machine</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Log facility:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Other logging destinations and levels:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>syslog facility:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Provides NAT support for Microsoft NetMeeting, SiteServer, and Active Directory products that use LightWeight Directory Access Protocol (LDAP) to exchange directory information with an for Internet Locator Service (ILS) server.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Interface</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Logging interval:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Edit Preferences</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Working directory:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Revision Control</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>SNMP Server 1:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>SNMP Server 2:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Disable outbound DNS A record replies</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Contents...</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>IP address:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>disable</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Discard</source>
         <translation type="obsolete">&amp;Отмена</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&amp;Discard</source>
         <translation type="obsolete">&amp;Отмена</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>sysctl:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>SNMP &apos;read&apos; community string:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Click &apos;Finish&apos; when done.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enables NAT of ICMP error messages. This creates translations for intermediate hops based on the static or network address translation configuration on the firewall.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New Ti&amp;me Interval</source>
         <translation type="obsolete">интервал времени</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>File name: %1</source>
         <translation type="obsolete">Имя файла: %1</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Specify directory path and a file name for the following utilities on the OS your firewall machine is running. Leave these empty if you want to use default values.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Object &lt;b&gt;&apos;%1&apos;&lt;/b&gt; in file %2</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Directory on the firewall where configuration files should be installed</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&lt;p&gt;One interface of the firewall must be marked as &apos;external&apos;. This interface should be connected to the least secure network, usually the Internet.&lt;/p&gt;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Lets PIX Firewall pass Real Time Streaming Protocol (RTSP) packets. RTSP is used by RealAudio, RealNetworks, Apple QuickTime 4, RealPlayer, and Cisco IP/TV connections.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Fatal error during initial RCS checkin of file %1 :
  %2
 Exit status %3</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Toolbar</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New &amp;TCP Service</source>
         <translation type="obsolete">TCP сервис</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New &amp;UDP Service</source>
         <translation type="obsolete">UDP сервис</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>modprobe:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Rule Options for ipt</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Ctrl+Del</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Verbose: print all commands as they are executed on the firewall</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Object &lt;b&gt;&apos;%1&apos;&lt;/b&gt; has been deleted</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Click &apos;Next&apos; when done.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Detect rule shadowing in policy</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>seconds between purges of expired states and packet fragments.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Replace NAT&apos;ted objects with their 
 translations in policy rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Settings:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Library %1: Firewall &apos;%2&apos; (NAT rule #%3) uses object &apos;%4&apos; from library &apos;%5&apos;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New &amp;Service Group</source>
         <translation type="obsolete">группа сервисов</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>The following parameters are used for all NAT rules:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Create a group</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Network: </source>
         <translation type="obsolete">:</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Assume firewall is part of &apos;any&apos;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Activated support for FTP protocol and allows to change the ftp control connection port number.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Generate ICMP redirects</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Impossible to insert object %1 (type %2) into %3
 because of incompatible type.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>PIX Firewall Settings</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Import Library From a File</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Too many opened file descriptors in the system.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>dynamic</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Current Object </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Accounting </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>TCP SYN cookies</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Preferences...</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>P&amp;references...</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>A Rule Set</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Rule: %1</source>
         <translation type="obsolete">:</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>FWB Files (*.fwb);;All Files (*)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Remove Rule</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Export Library To a File</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enable:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>SNMP servers</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>%1 objects&lt;br&gt;
 </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Disable Rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Internal buffer</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Specify that when an incoming packet does a route lookup,
 the incoming interface is used to determine which interface
 the packet should go to, and which is the next hop
@@ -3642,676 +2930,544 @@ the packet should go to, and which is the next hop
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Cut Rule</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Move Rule</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Keep current object</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>This will export a library to a file which can later be imported back into Firewall Builder</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Generated fixup commands:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New Item</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>use LOG</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Version:</source>
         <translation type="obsolete">:</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>esp ike</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>* Loading configuration from file %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>4 - Warning Message</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>A command that installer should execute on the firewall in order to activate the policy (if this field is blank, installer runs firewall script in the directory specified above; it uses sudo if user name is not &apos;root&apos;)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Password or passphrase:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Netmask:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Use preconfigured template host objects</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ICMP host prohibited</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>*** End </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enforces a minimum Time To Live (TTL) in IP packet headers.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Preffered:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Time of last modification:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Revision</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Firewalls:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>The logging timestamp command requires that the clock command be set.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Welcome to Firewall Builder</source>
         <translation type="obsolete">Добро пожаловать в Firewall Builder</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Specifies to use RAS with H.323 to enable dissimilar communication devices to communicate with each other.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Rule matches if it hits this often
 or less: </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Preferences</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Script Options</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Command line options for the compiler:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>lsrr (loose source route)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>FreeBSD: advanced settings</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Open existing file</source>
         <translation type="obsolete">Открыть существующий проект</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Move Rule Up</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Disable inbound embedded DNS A record fixups</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Revision:</source>
         <translation type="obsolete">:</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Script Editor</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>DNS Lookup...</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Specifies to use H.225, the ITU standard that governs H.225.0 session establishment and packetization, with H.323</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New ICMP Service</source>
         <translation type="obsolete"> ICMP </translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Compile rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Always permit ssh access from
 the management workstation
 with this address:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Add Rule Below</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Clears the don&apos;t fragment bit from the IP packet header.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Paste Rule Above</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Paste Rule Below</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source> ( read only )</source>
         <translation type="obsolete"> (только для чтения)</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Bridging firewall</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New &amp;Object Group</source>
         <translation type="obsolete">Группа объектов</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>New Address &amp;Range</source>
         <translation type="obsolete">Диапазон адресов</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>0 - System Unusable</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Conservative</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Making backup copy of the firewall configuration</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Range End:</source>
         <translation type="obsolete"> :</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Make a backup copy of the firewall configuration in this file:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Choose OS the new firewall runs on:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>warning</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>1 - Take Immediate Action</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Policy install script (using built-in installer if this field is blank):</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Verification of policy rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Activate logging in all rules
 (overrides rule options, use for debugging)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Log martians</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Logged in
 </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it.
 </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Date (D/M/Y):</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Comment the code</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>MAC matching</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Calculate difference between current firewall state and generated configuration and install only those commands that update state of the firewall</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>The following commands will be added verbatim after generated configuration</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>General</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>( 0 - any protocol )</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Next step is to add interfaces to the new firewall. There are two ways to do it: using SNMP query or manually. Adding them using SNMP query is fast and automatic, but is only possible if firewall runs SNMP agent and you know SNMP community string &apos;read&apos;.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Add IP Address</source>
         <translation type="obsolete"> IP </translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enable object tooltips</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Logged in</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Revision Control:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Security level:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Buffers incoming packet fragments and reassembles them into a complete packet before passing them to the filter engine.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>* management address : %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>On startup: </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Netlink group
 (if using ULOG): </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Management interface does not have IP address, can not communicate with the firewall.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Command line options for the script:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enable support for NAT of locally originated connections</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>iptables: advanced settings</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Use SNMP to discover interfaces of the host</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Set PIX host name using object&apos;s name</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Accept TCP sessions opened prior to firewall restart</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Day of week (0-6):</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enables PAT for Encapsulating Security Payload (ESP), single tunnel.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>If this option is on, policy compiler adds virtual addresses to the interfaces to make the firewall answer to ARP queries for addresses used in NAT rules.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Fork failed for %1</source>
         <translation type="obsolete"> %1    DNS</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Emulate outbound ACLs</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Do not save a copy of objects form add-on libraries in each data file</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Group: </source>
         <translation type="obsolete">:</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>File is opened and locked by %1.
 You can only open it read-only.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Discard Changes and Overwrite With Clean Copy Of The Head Revision From RCS</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&apos;short&apos; fragments</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Check option &apos;Unnumbered interface&apos; for the interface that does not have an IP address. Examples of interfaces of this kind are those used to terminate PPPoE or VPN tunnels and interfaces of the bridging firewall.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Next step is to add interfaces to the new host. There are two ways to do it: using SNMP query or manually. Adding them using SNMP query is fast and automatic, but is only possible if the host runs SNMP agent and you know SNMP community string &apos;read&apos;.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Address is assigned
 dynamically</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Use these labels to mark rules in the firewall policy</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>* Configuration diff will be saved in file %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>maximum number of embryonic connections per host</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Management interface</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Error: Failed to start program</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>TCP FIN timeout (sec)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Error opening file:
 %1</source>
         <translation type="obsolete">testОшибка добавления файла в RCS
 %1</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Error adding file to RCS:
 %1</source>
         <translation type="obsolete">testОшибка добавления файла в RCS
 %1</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Protocol number:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ssrr (strict source route)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Tree of Objects</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>One of the interfaces of the firewall &apos;%1&apos; must be marked as management interface.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Test run (commands won&apos;t be executed on the firewall)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ICMP protocol unreachable</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Find object in the tree</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Debugging Info</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Installing policy rules on firewall &apos;%1&apos;. Logging in</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>ICMP net prohibited</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Normally PIX does not support ouotbound ACL, however policy compiler can emulate them if this option is turned on</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>log TCP options</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Pushing firewall configuration
 </source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Illegal address &apos;%1/%2&apos;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>protocol: %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Use raudio proxy in NAT rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Specifies the maximum number of simultaneous TCP and UDP connections for the entire subnet. The default is 0, which means unlimited connections. (Idle connections are closed after the idle timeout specified by the timeout conn command.)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>There is a conflict between an object in your tree and object in the file you are trying to open. Choose which version of this object you want to use:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enables inspection of RSH protocol.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Installing policy rules on firewall &apos;%1&apos;.</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>rr (record route)</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>File %1 is read-only, you can not save changes to it.</source>
         <translation type="obsolete">Файл %1 защищен от записи, Вы не сможете сохранить изменения.</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>A library that you are trying to export contains references
 to objects in the other libraries and can not be exported.
 The following objects need to be moved outside of it or
@@ -4319,68 +3475,55 @@ objects that they refer to moved in it:</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>3 - Error Message</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>- any -</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Create New Object</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Use ftp proxy in NAT rules</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enable sending log messages as SNMP trap notifications</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Source Port Range</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Check for overlapping global pools and statics</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Library:</source>
         <translation type="obsolete">:</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Impossible to apply changes because object is located in read-only
 part of the tee or data file was opened read-only</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Enable logging timestamps on syslog file</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Illegal netmask &apos;%1&apos;</source>
         <translation type="obsolete">  &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Automatically save data in dialogs when switching between objects</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>This operation discards all changes that have been saved
 into the file so far, closes it and replaces it with a clean
 copy of its head revision from RCS.
@@ -4391,28 +3534,23 @@ All changes will be lost if you do this.
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>&lt;b&gt;Firewall Builder 2.0&lt;/b&gt;</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>* platform : %1</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Add File to &amp;RCS</source>
         <translation type="obsolete">testОшибка добавления файла в RCS
 %1</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>RCSFilePreview</source>
         <translation type="obsolete">test</translation>
     </message>
     <message>
-        <location filename="" line="112"/>
         <source>Switching to enable mode...</source>
         <translation type="obsolete">test</translation>
     </message>
@@ -4925,35 +4063,35 @@ object properties dialog.</source>
     <message>
         <location filename="ConfirmDeleteObjectDialog.cpp" line="160"/>
         <source>NAT</source>
-        <translation>Сетевая трансляция адресов (NAT)</translation>
+        <translation type="obsolete">Сетевая трансляция адресов (NAT)</translation>
     </message>
     <message>
         <location filename="ConfirmDeleteObjectDialog.cpp" line="163"/>
         <source>Policy</source>
-        <translation>Набор правил</translation>
+        <translation type="obsolete">Набор правил</translation>
     </message>
     <message>
         <location filename="ConfirmDeleteObjectDialog.cpp" line="166"/>
         <source>Routing</source>
-        <translation>Маршрутизация</translation>
+        <translation type="obsolete">Маршрутизация</translation>
     </message>
     <message>
         <location filename="ConfirmDeleteObjectDialog.cpp" line="169"/>
         <source>Unknown rule set</source>
-        <translation>Неизвестный набор правил</translation>
+        <translation type="obsolete">Неизвестный набор правил</translation>
     </message>
     <message>
         <location filename="ConfirmDeleteObjectDialog.cpp" line="171"/>
         <source>/Rule%1</source>
-        <translation>/Правило%1</translation>
+        <translation type="obsolete">/Правило%1</translation>
     </message>
     <message>
         <location filename="ConfirmDeleteObjectDialog.cpp" line="185"/>
         <source>Type: </source>
-        <translation>Тип:</translation>
+        <translation type="obsolete">Тип:</translation>
     </message>
     <message>
-        <location filename="ConfirmDeleteObjectDialog.cpp" line="205"/>
+        <location filename="ConfirmDeleteObjectDialog.cpp" line="135"/>
         <source>Not used anywhere</source>
         <translation>Нигде не используется</translation>
     </message>
@@ -5004,12 +4142,12 @@ object properties dialog.</source>
 <context>
     <name>CustomServiceDialog_q</name>
     <message>
-        <location filename="customservicedialog_q.ui" line="72"/>
+        <location filename="customservicedialog_q.ui" line="69"/>
         <source>Custom Service</source>
         <translation>Пользовательский сервис</translation>
     </message>
     <message>
-        <location filename="customservicedialog_q.ui" line="119"/>
+        <location filename="customservicedialog_q.ui" line="116"/>
         <source>Name:</source>
         <translation>Название:</translation>
     </message>
@@ -5021,10 +4159,10 @@ object properties dialog.</source>
     <message>
         <location filename="customservicedialog_q.ui" line="202"/>
         <source>Custom service object has separate code string for each supported firewall platform.</source>
-        <translation>Пользовательский сервис должен содержать отдельное определение для каждого типа межсетевого экрана.</translation>
+        <translation type="obsolete">Пользовательский сервис должен содержать отдельное определение для каждого типа межсетевого экрана.</translation>
     </message>
     <message>
-        <location filename="customservicedialog_q.ui" line="157"/>
+        <location filename="customservicedialog_q.ui" line="154"/>
         <source>Platform:</source>
         <translation>Тип межсетевого экрана:</translation>
     </message>
@@ -5039,19 +4177,60 @@ object properties dialog.</source>
         <translation type="obsolete">Определение:</translation>
     </message>
     <message>
-        <location filename="customservicedialog_q.ui" line="257"/>
+        <location filename="customservicedialog_q.ui" line="310"/>
         <source>Comment:</source>
         <translation>Комментарий:</translation>
     </message>
     <message>
-        <location filename="customservicedialog_q.ui" line="180"/>
+        <location filename="customservicedialog_q.ui" line="178"/>
         <source>Code String:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="customservicedialog_q.ui" line="218"/>
-        <source>Protocol String:</source>
+        <location filename="customservicedialog_q.ui" line="200"/>
+        <source>Custom service object has separate code string for each
+supported firewall platform.</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="customservicedialog_q.ui" line="217"/>
+        <source>Protocol Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="customservicedialog_q.ui" line="224"/>
+        <source>Choose one of the standard protocols from the menu or enter custom
+protocol string. Policy compilers can use this information to add correct
+protocol-specific parameters to the generated configuration. For example,
+iptables compiler is allowed to add &quot;--reject-with tcp-reset&quot; to the target
+REJECT only if service object belongs to protocol &quot;tcp&quot;.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="customservicedialog_q.ui" line="239"/>
+        <source>Address Family:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="customservicedialog_q.ui" line="252"/>
+        <source>Like with protocol, setting address family helps
+policy compiler generate more accurate configuration
+using this custom service object. For example, if
+address family is set to ipv6, this custom service
+will only be used in ipv6 policies.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="customservicedialog_q.ui" line="278"/>
+        <source>IPv4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="customservicedialog_q.ui" line="288"/>
+        <source>IPv6</source>
+        <translation type="unfinished">IPv6</translation>
     </message>
 </context>
 <context>
@@ -5095,62 +4274,62 @@ object properties dialog.</source>
 <context>
     <name>DiscoveryDruid</name>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="638"/>
+        <location filename="DiscoveryDruid.cpp" line="641"/>
         <source>Hosts file parsing ...</source>
         <translation>Обработка файла узлов ...</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="647"/>
+        <location filename="DiscoveryDruid.cpp" line="650"/>
         <source>DNS zone transfer ...</source>
         <translation>Получение зоны DNS ...</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="657"/>
+        <location filename="DiscoveryDruid.cpp" line="660"/>
         <source>Network discovery using SNMP ...</source>
         <translation>Получение информации через SNMP ...</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="1081"/>
+        <location filename="DiscoveryDruid.cpp" line="1084"/>
         <source>Adding objects ...</source>
         <translation>Добавление объектов ...</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="1548"/>
+        <location filename="DiscoveryDruid.cpp" line="1563"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="1269"/>
+        <location filename="DiscoveryDruid.cpp" line="1270"/>
         <source>Prepare objects ...</source>
         <translation>Подготовка объектов ...</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="1547"/>
+        <location filename="DiscoveryDruid.cpp" line="1562"/>
         <source>Copying results ...</source>
         <translation>Копирование результатов ...</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="1720"/>
+        <location filename="DiscoveryDruid.cpp" line="1734"/>
         <source>Discovery error</source>
         <translation>Ошибка получения информации</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="1871"/>
+        <location filename="DiscoveryDruid.cpp" line="1885"/>
         <source>Incomlete network specification.</source>
         <translation>Неполная сетевая спецификация.</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="1959"/>
+        <location filename="DiscoveryDruid.cpp" line="1973"/>
         <source>Empty community string</source>
         <translation>Пустая строка SNMP community</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="667"/>
+        <location filename="DiscoveryDruid.cpp" line="670"/>
         <source>Import configuration from file ...</source>
         <translation>Импортировать конфигурацию из файла ...</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="767"/>
+        <location filename="DiscoveryDruid.cpp" line="770"/>
         <source>Could not open file %1</source>
         <translation>Не удалось открыть файл %1</translation>
     </message>
@@ -5158,17 +4337,17 @@ object properties dialog.</source>
 <context>
     <name>DiscoveryDruid_q</name>
     <message>
-        <location filename="discoverydruid_q.ui" line="2466"/>
+        <location filename="discoverydruid_q.ui" line="2027"/>
         <source>Object</source>
         <translation>Объект</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2471"/>
+        <location filename="discoverydruid_q.ui" line="2032"/>
         <source>Interfaces</source>
         <translation>Интерфейсы</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2476"/>
+        <location filename="discoverydruid_q.ui" line="2037"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
@@ -5178,42 +4357,42 @@ object properties dialog.</source>
         <translation type="obsolete">Менеджер получения информации</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="93"/>
+        <location filename="discoverydruid_q.ui" line="75"/>
         <source>Choose discovery method used to collect information about network objects from the list below and click &apos;Next&apos; to continue.</source>
         <translation>Выберите метод получения информации о сетевых объектов ниже и нажмите &apos;Далее&apos; для продолжения.</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="138"/>
+        <location filename="discoverydruid_q.ui" line="104"/>
         <source>Discovery method:</source>
         <translation>Метод получения информации:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="162"/>
+        <location filename="discoverydruid_q.ui" line="119"/>
         <source>Read file in hosts format</source>
         <translation>Прочитать файл узлов (в формате /etc/hosts)</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="172"/>
+        <location filename="discoverydruid_q.ui" line="129"/>
         <source>Import DNS zone</source>
         <translation>Импортировать зону DNS</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="179"/>
+        <location filename="discoverydruid_q.ui" line="136"/>
         <source>Perform network discovery using SNMP</source>
         <translation type="unfinished">Метод получения информации</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="215"/>
+        <location filename="discoverydruid_q.ui" line="163"/>
         <source>Enter full path and file name below or click &quot;Browse&quot; to find it:</source>
         <translation>Введите ниже полный путь и название файла или нажмите &apos;Просмотр&apos; ниже для его поиска:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="244"/>
+        <location filename="discoverydruid_q.ui" line="192"/>
         <source>File in hosts format</source>
         <translation>Файл узлов (в формате /etc/hosts)</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="301"/>
+        <location filename="discoverydruid_q.ui" line="231"/>
         <source>Browse ...</source>
         <translation>Выбрать...</translation>
     </message>
@@ -5223,94 +4402,94 @@ object properties dialog.</source>
         <translation type="obsolete">Чтение файла узлов (в формате /etc/hosts)</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="561"/>
+        <location filename="discoverydruid_q.ui" line="470"/>
         <source>This discovery method creates objects for all &apos;A&apos; records found in DNS domain. You will later have a chance to accept only those objects you wish and ignore others.
 Please enter the domain name below:</source>
         <translation>Этот метод получения информации создает объекты согласно записи типа &apos;A&apos; DNS указанного домена. На следующем шаге можно выбрать те объекты, которые вы хотите добавить (и соответственно не добавлять ненужные).
 Введите имя домена:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="591"/>
+        <location filename="discoverydruid_q.ui" line="500"/>
         <source>Domain name</source>
         <translation>Имя домена</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="666"/>
+        <location filename="discoverydruid_q.ui" line="566"/>
         <source>Objects created using this method may have long or short names. long name consists of the host name and full domain name (this is called &lt;i&gt;Fully Qualified Domain Name&lt;/i&gt;). Short name consists of only host name. Check in the box below if you wish to use long name, then click next to continue:</source>
         <translation>Объекты создаваемые этим методом могут иметь как длинные, так и короткие имена. Длинные имена состоят из имени узла и полного доменного имени (FQDN). Короткие имена состоят из имени узла. Поставьте отметку ниже, если вы хотите получить объекты с длинными именами и нажмите Далее:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="679"/>
+        <location filename="discoverydruid_q.ui" line="579"/>
         <source>Use long names</source>
         <translation>Использовать длинные имена</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="705"/>
+        <location filename="discoverydruid_q.ui" line="596"/>
         <source>DNS zone information has to be transferred from the name server authoritative for the domain. Pick the name server:</source>
         <translation>Информация о зоне DNS будет получена от указанного DNS сервера:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="718"/>
+        <location filename="discoverydruid_q.ui" line="609"/>
         <source>Name server</source>
         <translation>DNS сервер</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="742"/>
+        <location filename="discoverydruid_q.ui" line="621"/>
         <source>choose name server from the list below</source>
         <translation>выберите DNS сервер из списка ниже</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="755"/>
+        <location filename="discoverydruid_q.ui" line="634"/>
         <source>server name or its IP address here if you wish to use different one:</source>
         <translation>альтернативное имя сервера или IP адрес:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="835"/>
+        <location filename="discoverydruid_q.ui" line="705"/>
         <source>DNS Query options</source>
         <translation>Опции DNS запроса</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="859"/>
+        <location filename="discoverydruid_q.ui" line="717"/>
         <source>Timeout (sec)</source>
         <translation>Таймаут (сек)</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="869"/>
+        <location filename="discoverydruid_q.ui" line="727"/>
         <source>Retries</source>
         <translation>Количество повторов</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="969"/>
+        <location filename="discoverydruid_q.ui" line="818"/>
         <source>This discovery method scans networks looking for hosts or gateways responding to SNMP queries. It pulls host&apos;s ARP table and uses all the entries found in it to create objects. Scan starts from the host called &quot;seed&quot;. Enter &quot;seed&quot; host name or address below:</source>
         <translation>Этот метод получения информации создает объекты согласно результатам опроса узлов и маршрутизаторов по протоколу SNMP. Он получает ARP таблицы узлов и использует все записи этих таблиц. Сканирование начинается с узла, называемого &quot;seed&quot;. Введите имя или IP адрес узла &quot;seed&quot;:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="982"/>
+        <location filename="discoverydruid_q.ui" line="831"/>
         <source>&apos;Seed&apos; host</source>
         <translation>Узел &quot;seed&quot;</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1074"/>
+        <location filename="discoverydruid_q.ui" line="893"/>
         <source>Enter a valid host name or address.</source>
         <translation>Введите имя или IP адрес узла.</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1124"/>
+        <location filename="discoverydruid_q.ui" line="943"/>
         <source>The scanner process can be confined to a certain network, so it won&apos;t discover hosts on adjacent networks. If you leave these fields blank, scanner will visit all networks it can find:</source>
         <translation>Сканер может быть настроен на определенную подсеть и не использовать ненужные подсети. Если поля ниже будут пусты, то сканер будет использовать все подсети, которые сможет найти:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1137"/>
+        <location filename="discoverydruid_q.ui" line="956"/>
         <source>Confine scan to this network:</source>
         <translation>Сканировать только подсеть:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1199"/>
+        <location filename="discoverydruid_q.ui" line="1006"/>
         <source>Netmask:</source>
         <translation>Маска подсети:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1209"/>
+        <location filename="discoverydruid_q.ui" line="1016"/>
         <source>Address:</source>
         <translation>Адрес:</translation>
     </message>
@@ -5320,42 +4499,42 @@ Please enter the domain name below:</source>
         <translation type="obsolete">Получение информации через SNMP</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1267"/>
+        <location filename="discoverydruid_q.ui" line="1065"/>
         <source>The scanner process can repeat its algorithm recursively using each new host it finds as a new &quot;seed&quot;. This allows it to find as many objects on your network as possible. On the other hand, it takes more time and may find some objects you do not really need. You can turn recursive scanning on below:</source>
         <translation>Сканер может работать рекурсивно, то есть пытаться использовать каждый найденый узел как &quot;seed&quot; узел. С одной стороны, это позволяет получить информацию по максимуму объектов вашей сети, с другой - сканирование займет слишком много времени. Включить рекурсивное сканирование:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1280"/>
+        <location filename="discoverydruid_q.ui" line="1078"/>
         <source>Run network scan recursively</source>
         <translation>Выполнять рекурсивное сканирование</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1300"/>
+        <location filename="discoverydruid_q.ui" line="1098"/>
         <source>The scanner process can find nodes beyond the boundaries of your network by following point-to-point links connecting it to the Internet or other parts of WAN.</source>
         <translation>Сканер может найти объекты за пределами вашей сети через каналы типа точка-точка, которые могут соединять вашу сеть как с Internet, так и с другими частями вашей сети.</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1313"/>
+        <location filename="discoverydruid_q.ui" line="1111"/>
         <source>Follow point-to-point links</source>
         <translation>Использовать каналы типа точка-точка</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1333"/>
+        <location filename="discoverydruid_q.ui" line="1131"/>
         <source>The scanner process can distinguish virtual IP addresses created on hosts as static &quot;published&quot; ARP entries or as secondary addresses on interfaces.</source>
         <translation>Сканер может различать виртуальные IP адреса созданные на узлах как статические записи в ARP таблице, либо как вторичные адреса на интерфейсе.</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1346"/>
+        <location filename="discoverydruid_q.ui" line="1144"/>
         <source>Include virtual addresses</source>
         <translation>Обрабатывать виртуальные адреса</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1366"/>
+        <location filename="discoverydruid_q.ui" line="1164"/>
         <source>Analysis of ARP table yields IP addresses for hosts on your network. In order to determine their names, scanner can run reverse name lookup queries using your name servers (DNS):</source>
         <translation>Получать DNS имена узлов для IP адресов, найденых в ARP таблицах. Для получения DNS имен сканер будет использовать обратные DNS запросы на ваши DNS серверы:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1379"/>
+        <location filename="discoverydruid_q.ui" line="1177"/>
         <source>Run reverse name lookup DNS queries to determine host names</source>
         <translation>Получать DNS имена узлов для IP адресов через обратные DNS запросы</translation>
     </message>
@@ -5365,47 +4544,47 @@ Please enter the domain name below:</source>
         <translation type="obsolete">Опции сканирования сети</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1408"/>
+        <location filename="discoverydruid_q.ui" line="1197"/>
         <source>Enter parameters for SNMP and DNS reverse lookup queries below. (If unsure, just leave default values):</source>
         <translation>Введите параметры для SNMP и DNS обратных запросов (вы можете не изменять это поле, чтобы использовать значения по-умолчанию):</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1421"/>
+        <location filename="discoverydruid_q.ui" line="1210"/>
         <source>SNMP query parameters:</source>
         <translation>Параметры SNMP запросов:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1445"/>
+        <location filename="discoverydruid_q.ui" line="1222"/>
         <source>SNMP &apos;read&apos; community string:</source>
         <translation>Строка SNMP community для чтения:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1593"/>
+        <location filename="discoverydruid_q.ui" line="1358"/>
         <source>number of retries:</source>
         <translation>количество попыток:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1465"/>
+        <location filename="discoverydruid_q.ui" line="1242"/>
         <source>timeout (sec):</source>
         <translation>таймаут (сек):</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1495"/>
+        <location filename="discoverydruid_q.ui" line="1272"/>
         <source>public</source>
         <translation>public</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1553"/>
+        <location filename="discoverydruid_q.ui" line="1330"/>
         <source>DNS parameters:</source>
         <translation>Параметры DNS:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1603"/>
+        <location filename="discoverydruid_q.ui" line="1368"/>
         <source>timeout (sec) :</source>
         <translation>таймаут (сек):</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1613"/>
+        <location filename="discoverydruid_q.ui" line="1378"/>
         <source>Number of threads:</source>
         <translation>Количество потоков:</translation>
     </message>
@@ -5415,57 +4594,57 @@ Please enter the domain name below:</source>
         <translation type="obsolete">Параметры для SNMP и DNS обратных запросов</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1732"/>
+        <location filename="discoverydruid_q.ui" line="1479"/>
         <source>Process name</source>
         <translation>Имя процесса</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1776"/>
+        <location filename="discoverydruid_q.ui" line="1511"/>
         <source>Stop</source>
         <translation>Стоп</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1783"/>
+        <location filename="discoverydruid_q.ui" line="1518"/>
         <source>Save scan log to file</source>
         <translation>Сохранить журнал сканирования в файл</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1809"/>
+        <location filename="discoverydruid_q.ui" line="1544"/>
         <source>Process log:</source>
         <translation type="unfinished">Выполняется получение информации</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1859"/>
+        <location filename="discoverydruid_q.ui" line="1576"/>
         <source>These are the networks found by the scanner process. Choose the ones you wish to use from the list below, then click &apos;Next&apos;:</source>
         <translation>Ниже перечислены найденые сканером подсети. Выберите те, которые вы будет использовать и нажмите &apos;Далее&apos;:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2405"/>
+        <location filename="discoverydruid_q.ui" line="1975"/>
         <source>Select All</source>
         <translation>Выбрать все</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2382"/>
+        <location filename="discoverydruid_q.ui" line="1952"/>
         <source>Filter ...</source>
         <translation>Фильтр ...</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2368"/>
+        <location filename="discoverydruid_q.ui" line="1938"/>
         <source>Unselect All</source>
         <translation>Снять выбор со всех</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2375"/>
+        <location filename="discoverydruid_q.ui" line="1945"/>
         <source>Remove Filter</source>
         <translation>Удалить фильтр</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2217"/>
+        <location filename="discoverydruid_q.ui" line="1829"/>
         <source>-&gt;</source>
         <translation>-&gt;</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2224"/>
+        <location filename="discoverydruid_q.ui" line="1836"/>
         <source>&lt;-</source>
         <translation>&lt;-</translation>
     </message>
@@ -5475,7 +4654,7 @@ Please enter the domain name below:</source>
         <translation type="obsolete">Подсети</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2094"/>
+        <location filename="discoverydruid_q.ui" line="1745"/>
         <source>Choose objects you wish to use, then click &apos;Next&apos;:</source>
         <translation>Выберите объект, который вы хотите использовать и нажмите &apos;Далее&apos;:</translation>
     </message>
@@ -5485,27 +4664,27 @@ Please enter the domain name below:</source>
         <translation type="obsolete">Объекты</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2412"/>
+        <location filename="discoverydruid_q.ui" line="1982"/>
         <source>Change type of selected objects:</source>
         <translation>Изменить тип выбранных объектов:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2433"/>
+        <location filename="discoverydruid_q.ui" line="1994"/>
         <source>Address</source>
         <translation>Адрес</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2440"/>
+        <location filename="discoverydruid_q.ui" line="2001"/>
         <source>Host</source>
         <translation>Узел</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2447"/>
+        <location filename="discoverydruid_q.ui" line="2008"/>
         <source>Firewall</source>
         <translation>Межсетевой экран</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2484"/>
+        <location filename="discoverydruid_q.ui" line="2045"/>
         <source>Here you can change type of the objects to be created for each address discovered by the scanner. By default, an &quot;Address&quot; object is created for the host with just one interface with single IP address and &quot;Host&quot; object is created for the host with multiple interfaces, however you can change their types on this page.</source>
         <translation>Сейчас вы можете изменить тип объекта для каждого адреса, найденного сканером. По-умолчанию для узлов с одним интерфейсом и IP-адресом создается объект типа &apos;Адрес&apos;, для узлов с несколькими интерфейсами создается объект типа &apos;Узел&apos;.</translation>
     </message>
@@ -5515,12 +4694,12 @@ Please enter the domain name below:</source>
         <translation type="obsolete">Изменить типы объектов</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2516"/>
+        <location filename="discoverydruid_q.ui" line="2068"/>
         <source>Select target library</source>
         <translation type="unfinished">Библиотека для объектов</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2601"/>
+        <location filename="discoverydruid_q.ui" line="2135"/>
         <source>Adding new objects to library ...</source>
         <translation>Добавление новых объектов в библиотеку ...</translation>
     </message>
@@ -5530,72 +4709,72 @@ Please enter the domain name below:</source>
         <translation type="obsolete">Прочитать файл узлов (формата /etc/hosts)</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="52"/>
+        <location filename="discoverydruid_q.ui" line="43"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="186"/>
+        <location filename="discoverydruid_q.ui" line="143"/>
         <source>Import configuration of a firewall or a router</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="367"/>
+        <location filename="discoverydruid_q.ui" line="285"/>
         <source>All objects created during import will be placed in the library currently opened in the tree.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="396"/>
+        <location filename="discoverydruid_q.ui" line="314"/>
         <source>Policy import tries to parse given configuration file and preserve its logic as close as possible. However, very often target firewall configuration allows for more commands, options and their combinations than importer can understand. Rules that importer could not parse exactly are colored red in the rule sets it creates. Always inspect firewall policy created by the importer and compare it with the original. Manual changes and corrections may be required. Comments in the rules that could not be parsed show fragments of the original configuration parser did not understand.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="409"/>
+        <location filename="discoverydruid_q.ui" line="327"/>
         <source>Import from file: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="428"/>
+        <location filename="discoverydruid_q.ui" line="346"/>
         <source>Browse...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="436"/>
+        <location filename="discoverydruid_q.ui" line="354"/>
         <source>Cisco IOS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="441"/>
+        <location filename="discoverydruid_q.ui" line="359"/>
         <source>iptables</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="449"/>
+        <location filename="discoverydruid_q.ui" line="367"/>
         <source>Platform:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="481"/>
+        <location filename="discoverydruid_q.ui" line="399"/>
         <source>textLabel1</source>
         <translation type="unfinished">textLabel1</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2690"/>
+        <location filename="discoverydruid_q.ui" line="2215"/>
         <source>&lt; &amp;Back</source>
         <translation type="unfinished">&lt; Назад</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2697"/>
+        <location filename="discoverydruid_q.ui" line="2222"/>
         <source>&amp;Next &gt;</source>
         <translation type="unfinished">Дальше &gt;</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2707"/>
+        <location filename="discoverydruid_q.ui" line="2232"/>
         <source>&amp;Finish</source>
         <translation type="unfinished">Готово</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2717"/>
+        <location filename="discoverydruid_q.ui" line="2242"/>
         <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5603,22 +4782,22 @@ Please enter the domain name below:</source>
 <context>
     <name>FWBAboutDialog</name>
     <message>
-        <location filename="FWBAboutDialog.h" line="27"/>
+        <location filename="FWBAboutDialog.h" line="28"/>
         <source>Revision: %1 ( Build: %2 )</source>
         <translation>Ревизия: %1 (Сборка: %2)</translation>
     </message>
     <message>
-        <location filename="FWBAboutDialog.h" line="30"/>
+        <location filename="FWBAboutDialog.h" line="31"/>
         <source>Using Firewall Builder API %1</source>
         <translation>Используется Firewall Builder API версии %1</translation>
     </message>
     <message>
-        <location filename="FWBAboutDialog.h" line="34"/>
+        <location filename="FWBAboutDialog.h" line="35"/>
         <source>Registered</source>
         <translation>Зарегистрированая копия программы</translation>
     </message>
     <message>
-        <location filename="FWBAboutDialog.h" line="35"/>
+        <location filename="FWBAboutDialog.h" line="36"/>
         <source>Unregistered</source>
         <translation>Незарегистрированная копия программы</translation>
     </message>
@@ -5651,27 +4830,27 @@ Please enter the domain name below:</source>
         <translation type="obsolete">Межсетевые экраны:</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="140"/>
+        <location filename="FWBMainWindow_q.ui" line="130"/>
         <source>&amp;File</source>
         <translation>Проект</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="84"/>
+        <location filename="FWBMainWindow_q.ui" line="73"/>
         <source>&amp;Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="99"/>
+        <location filename="FWBMainWindow_q.ui" line="88"/>
         <source>Object</source>
         <translation>Объект</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="123"/>
+        <location filename="FWBMainWindow_q.ui" line="113"/>
         <source>Rules</source>
         <translation>Правила</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="116"/>
+        <location filename="FWBMainWindow_q.ui" line="105"/>
         <source>&amp;Help</source>
         <translation>Помощь</translation>
     </message>
@@ -5681,347 +4860,347 @@ Please enter the domain name below:</source>
         <translation type="obsolete">Панель инструментов</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="183"/>
+        <location filename="FWBMainWindow_q.ui" line="730"/>
         <source>New Object File</source>
         <translation>Создать новый</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="180"/>
+        <location filename="FWBMainWindow_q.ui" line="182"/>
         <source>&amp;New Object File</source>
         <translation>Создать новый</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="377"/>
+        <location filename="FWBMainWindow_q.ui" line="385"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="191"/>
+        <location filename="FWBMainWindow_q.ui" line="195"/>
         <source>&amp;Open...</source>
         <translation>Открыть...</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="197"/>
+        <location filename="FWBMainWindow_q.ui" line="201"/>
         <source>Ctrl+O</source>
         <translation>Ctrl-O</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="388"/>
+        <location filename="FWBMainWindow_q.ui" line="397"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="205"/>
+        <location filename="FWBMainWindow_q.ui" line="211"/>
         <source>&amp;Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="211"/>
+        <location filename="FWBMainWindow_q.ui" line="217"/>
         <source>Ctrl+S</source>
         <translation>Ctrl-S</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="219"/>
+        <location filename="FWBMainWindow_q.ui" line="225"/>
         <source>Save As</source>
         <translation>Сохранить как</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="216"/>
+        <location filename="FWBMainWindow_q.ui" line="222"/>
         <source>Save &amp;As...</source>
         <translation>Сохранить как...</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="233"/>
+        <location filename="FWBMainWindow_q.ui" line="239"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="230"/>
+        <location filename="FWBMainWindow_q.ui" line="236"/>
         <source>&amp;Print...</source>
         <translation>Печать...</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="236"/>
+        <location filename="FWBMainWindow_q.ui" line="242"/>
         <source>Ctrl+P</source>
         <translation>Ctrl-P</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="244"/>
+        <location filename="FWBMainWindow_q.ui" line="250"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="241"/>
+        <location filename="FWBMainWindow_q.ui" line="247"/>
         <source>E&amp;xit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="258"/>
+        <location filename="FWBMainWindow_q.ui" line="264"/>
         <source>Undo</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="255"/>
+        <location filename="FWBMainWindow_q.ui" line="261"/>
         <source>&amp;Undo</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="261"/>
+        <location filename="FWBMainWindow_q.ui" line="267"/>
         <source>Ctrl+Z</source>
         <translation>Ctrl-Z</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="272"/>
+        <location filename="FWBMainWindow_q.ui" line="278"/>
         <source>Redo</source>
         <translation>Повторить отмененное действие</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="269"/>
+        <location filename="FWBMainWindow_q.ui" line="275"/>
         <source>&amp;Redo</source>
         <translation>Повторить отмененное действие</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="275"/>
+        <location filename="FWBMainWindow_q.ui" line="281"/>
         <source>Ctrl+Y</source>
         <translation>Ctrl-Y</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="283"/>
+        <location filename="FWBMainWindow_q.ui" line="289"/>
         <source>Cut</source>
         <translation>Вырезать</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="280"/>
+        <location filename="FWBMainWindow_q.ui" line="286"/>
         <source>&amp;Cut</source>
         <translation>Вырезать</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="286"/>
+        <location filename="FWBMainWindow_q.ui" line="292"/>
         <source>Ctrl+X</source>
         <translation>Ctrl-X</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="297"/>
+        <location filename="FWBMainWindow_q.ui" line="303"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="294"/>
+        <location filename="FWBMainWindow_q.ui" line="300"/>
         <source>C&amp;opy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="300"/>
+        <location filename="FWBMainWindow_q.ui" line="306"/>
         <source>Ctrl+C</source>
         <translation>Ctrl-C</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="308"/>
+        <location filename="FWBMainWindow_q.ui" line="314"/>
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="305"/>
+        <location filename="FWBMainWindow_q.ui" line="311"/>
         <source>&amp;Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="311"/>
+        <location filename="FWBMainWindow_q.ui" line="317"/>
         <source>Ctrl+V</source>
         <translation>Ctrl-V</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="481"/>
+        <location filename="FWBMainWindow_q.ui" line="496"/>
         <source>Ctrl+F</source>
         <translation>Ctrl-F</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="330"/>
+        <location filename="FWBMainWindow_q.ui" line="336"/>
         <source>Contents</source>
         <translation>Содержимое</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="327"/>
+        <location filename="FWBMainWindow_q.ui" line="333"/>
         <source>&amp;Contents...</source>
         <translation>Содержимое</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="341"/>
+        <location filename="FWBMainWindow_q.ui" line="347"/>
         <source>Index</source>
         <translation>Содержание</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="338"/>
+        <location filename="FWBMainWindow_q.ui" line="344"/>
         <source>&amp;Index...</source>
         <translation>Содержание</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="352"/>
+        <location filename="FWBMainWindow_q.ui" line="358"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="349"/>
+        <location filename="FWBMainWindow_q.ui" line="355"/>
         <source>&amp;About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="366"/>
+        <location filename="FWBMainWindow_q.ui" line="373"/>
         <source>New</source>
         <translation>Создать</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="396"/>
+        <location filename="FWBMainWindow_q.ui" line="405"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="393"/>
+        <location filename="FWBMainWindow_q.ui" line="402"/>
         <source>&amp;Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="407"/>
+        <location filename="FWBMainWindow_q.ui" line="417"/>
         <source>Compile</source>
         <translation>Компилировать</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="410"/>
+        <location filename="FWBMainWindow_q.ui" line="420"/>
         <source>Compile rules</source>
         <translation>Компилировать правила</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="421"/>
+        <location filename="FWBMainWindow_q.ui" line="432"/>
         <source>Install</source>
         <translation>Установить</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="424"/>
+        <location filename="FWBMainWindow_q.ui" line="435"/>
         <source>Install firewall policy</source>
         <translation>Установить набор правил</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="438"/>
+        <location filename="FWBMainWindow_q.ui" line="450"/>
         <source>Back</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="444"/>
+        <location filename="FWBMainWindow_q.ui" line="456"/>
         <source>Move back to the previous object</source>
         <translation>Вернуться к предидущему объекту</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="455"/>
+        <location filename="FWBMainWindow_q.ui" line="469"/>
         <source>New Object</source>
         <translation>Создать объект</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="452"/>
+        <location filename="FWBMainWindow_q.ui" line="466"/>
         <source>&amp;New Object</source>
         <translation>Создать объект</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="458"/>
+        <location filename="FWBMainWindow_q.ui" line="472"/>
         <source>Create New Object</source>
         <translation>Создать новый объект</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="461"/>
+        <location filename="FWBMainWindow_q.ui" line="475"/>
         <source>Ctrl+N</source>
         <translation>Ctrl-N</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="472"/>
+        <location filename="FWBMainWindow_q.ui" line="487"/>
         <source>Find Object</source>
         <translation>Найти объект</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="469"/>
+        <location filename="FWBMainWindow_q.ui" line="484"/>
         <source>&amp;Find Object</source>
         <translation>Найти объект...</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="478"/>
+        <location filename="FWBMainWindow_q.ui" line="493"/>
         <source>Find object in the tree</source>
         <translation>Поиск объекта по дереву</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="489"/>
+        <location filename="FWBMainWindow_q.ui" line="504"/>
         <source>Preferences...</source>
         <translation>Настройки...</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="486"/>
+        <location filename="FWBMainWindow_q.ui" line="501"/>
         <source>P&amp;references...</source>
         <translation>Настройки...</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="492"/>
+        <location filename="FWBMainWindow_q.ui" line="507"/>
         <source>Edit Preferences</source>
         <translation>Редактировать настройки</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="500"/>
+        <location filename="FWBMainWindow_q.ui" line="515"/>
         <source>Insert Rule</source>
         <translation>Вставить правило</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="508"/>
+        <location filename="FWBMainWindow_q.ui" line="523"/>
         <source>Move Rule Up</source>
         <translation>Переместить правило выше</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="516"/>
+        <location filename="FWBMainWindow_q.ui" line="531"/>
         <source>Move Rule Down</source>
         <translation>Переместить правило ниже</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="524"/>
+        <location filename="FWBMainWindow_q.ui" line="539"/>
         <source>Add Rule Below</source>
         <translation>Добавить правило ниже</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="532"/>
+        <location filename="FWBMainWindow_q.ui" line="547"/>
         <source>Remove Rule</source>
         <translation>Удалить правило</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="535"/>
+        <location filename="FWBMainWindow_q.ui" line="550"/>
         <source>Ctrl+Del</source>
         <translation>Ctrl-Del</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="543"/>
+        <location filename="FWBMainWindow_q.ui" line="558"/>
         <source>Copy Rule</source>
         <translation>Копировать правило</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="551"/>
+        <location filename="FWBMainWindow_q.ui" line="566"/>
         <source>Cut Rule</source>
         <translation>Вырезать правило</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="559"/>
+        <location filename="FWBMainWindow_q.ui" line="574"/>
         <source>Paste Rule Above</source>
         <translation>Вставить правило выше</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="567"/>
+        <location filename="FWBMainWindow_q.ui" line="582"/>
         <source>Paste Rule Below</source>
         <translation>Вставить правило ниже</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="575"/>
+        <location filename="FWBMainWindow_q.ui" line="590"/>
         <source>Add File to RCS</source>
         <translation>Добавить файл в систему контроля версий</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="572"/>
+        <location filename="FWBMainWindow_q.ui" line="587"/>
         <source>Add File to &amp;RCS</source>
         <translation>Добавить файл в систему контроля версий</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="583"/>
+        <location filename="FWBMainWindow_q.ui" line="598"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
@@ -6031,17 +5210,17 @@ Please enter the domain name below:</source>
         <translation type="obsolete">Del</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="591"/>
+        <location filename="FWBMainWindow_q.ui" line="606"/>
         <source>Export Library To a File</source>
         <translation>Экспортировать библиотеку в файл</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="588"/>
+        <location filename="FWBMainWindow_q.ui" line="603"/>
         <source>&amp;Export Library</source>
         <translation>Экспортировать библиотеку</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="599"/>
+        <location filename="FWBMainWindow_q.ui" line="614"/>
         <source>Import Library From a File</source>
         <translation>Импортировать библиотеку из файла</translation>
     </message>
@@ -6051,12 +5230,12 @@ Please enter the domain name below:</source>
         <translation type="obsolete">Импортировать библиотеку</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="607"/>
+        <location filename="FWBMainWindow_q.ui" line="622"/>
         <source>Debug</source>
         <translation>Отладка</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="604"/>
+        <location filename="FWBMainWindow_q.ui" line="619"/>
         <source>&amp;Debug</source>
         <translation>Отладка</translation>
     </message>
@@ -6066,22 +5245,22 @@ Please enter the domain name below:</source>
         <translation type="obsolete">Свойства</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="629"/>
+        <location filename="FWBMainWindow_q.ui" line="644"/>
         <source>Move Selected Rules</source>
         <translation>Переместить выбранные правила</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="637"/>
+        <location filename="FWBMainWindow_q.ui" line="652"/>
         <source>Discard</source>
         <translation>Отменить изменения</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="634"/>
+        <location filename="FWBMainWindow_q.ui" line="649"/>
         <source>&amp;Discard</source>
         <translation>Отменить изменения</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="640"/>
+        <location filename="FWBMainWindow_q.ui" line="655"/>
         <source>Discard Changes and Overwrite With Clean Copy Of The Head Revision From RCS</source>
         <translation>Отменить изменения и перезаписать копией из основной ветки системы контроля версий</translation>
     </message>
@@ -6091,85 +5270,100 @@ Please enter the domain name below:</source>
         <translation type="obsolete">Применить</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="618"/>
+        <location filename="FWBMainWindow_q.ui" line="633"/>
         <source>Show File Properties</source>
         <translation>
 Показать свойства файла</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="648"/>
+        <location filename="FWBMainWindow_q.ui" line="663"/>
         <source>Commit</source>
         <translation type="unfinished">Принять изменения</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="651"/>
+        <location filename="FWBMainWindow_q.ui" line="666"/>
         <source>Commit Opened File to RCS and Continue Editing</source>
         <translation>Принять изменения открытого файла в систему контроля версия и продолжить редактирование</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="659"/>
+        <location filename="FWBMainWindow_q.ui" line="674"/>
         <source>Lock</source>
         <translation>Заблокировать</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="667"/>
+        <location filename="FWBMainWindow_q.ui" line="682"/>
         <source>Unlock</source>
         <translation>Разблокировать</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="675"/>
+        <location filename="FWBMainWindow_q.ui" line="690"/>
         <source>Discovery Druid</source>
         <translation>Менеджер получения информации</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="683"/>
+        <location filename="FWBMainWindow_q.ui" line="698"/>
         <source>new item</source>
         <translation>новый элемент</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="109"/>
+        <location filename="FWBMainWindow_q.ui" line="98"/>
         <source>Tools</source>
         <translation>Утилиты</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="645"/>
+        <location filename="FWBMainWindow_q.ui" line="660"/>
         <source>Co&amp;mmit</source>
         <translation>Записать в систему контроля ревизий</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="691"/>
+        <location filename="FWBMainWindow_q.ui" line="706"/>
         <source>Find Conflicting Objects in Two Files</source>
         <translation>Найти конфликтующие объекты в двух файлах</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="696"/>
+        <location filename="FWBMainWindow_q.ui" line="711"/>
         <source>Import Po&amp;licy</source>
         <translation>Импортировать правила из файла</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="164"/>
+        <location filename="FWBMainWindow_q.ui" line="161"/>
         <source>Window</source>
         <translation>Окно</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="596"/>
+        <location filename="FWBMainWindow_q.ui" line="611"/>
         <source>Import &amp;Library</source>
         <translation>Импортировать библиотеку</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="615"/>
+        <location filename="FWBMainWindow_q.ui" line="630"/>
         <source>Propert&amp;ies</source>
         <translation>Свойства</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="621"/>
+        <location filename="FWBMainWindow_q.ui" line="636"/>
         <source>Ctrl+I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="699"/>
+        <location filename="FWBMainWindow_q.ui" line="714"/>
         <source>Import Policy</source>
         <translation>Импортировать правила из файла</translation>
+    </message>
+    <message>
+        <location filename="FWBMainWindow_q.ui" line="134"/>
+        <source>Open Recent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FWBMainWindow_q.ui" line="719"/>
+        <source>Firewall Builder Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FWBMainWindow_q.ui" line="727"/>
+        <source>Clear Menu</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6422,7 +5616,7 @@ shell utilities installed on your machine using Preferences dialog</source>
 Определите в настройках программы пути к утилитам scp и ssh.</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="971"/>
+        <location filename="FWWindowPrint.cpp" line="202"/>
         <source>&amp;Continue</source>
         <translation type="unfinished">Компилировать</translation>
     </message>
@@ -6462,20 +5656,20 @@ Do you want to recompile it before you install ?</source>
     <message>
         <location filename="FWWindowPrint.cpp" line="1086"/>
         <source>Legend</source>
-        <translation>Условные обозначения</translation>
+        <translation type="obsolete">Условные обозначения</translation>
     </message>
     <message>
         <location filename="FWWindowPrint.cpp" line="616"/>
         <source>Objects</source>
-        <translation>Объекты</translation>
+        <translation type="obsolete">Объекты</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="970"/>
+        <location filename="FWWindowPrint.cpp" line="201"/>
         <source>Printing aborted</source>
         <translation>Печать отменена</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="974"/>
+        <location filename="FWWindowPrint.cpp" line="205"/>
         <source>Printing completed</source>
         <translation>Печать завершена</translation>
     </message>
@@ -6492,12 +5686,12 @@ Do you want to recompile it before you install ?</source>
     <message>
         <location filename="FWWindowPrint.cpp" line="899"/>
         <source>Groups</source>
-        <translation>Группы</translation>
+        <translation type="obsolete">Группы</translation>
     </message>
     <message>
         <location filename="FWWindowPrint.cpp" line="945"/>
         <source>EMPTY</source>
-        <translation>Пусто</translation>
+        <translation type="obsolete">Пусто</translation>
     </message>
     <message>
         <location filename="FWWindow.cpp" line="948"/>
@@ -6571,12 +5765,12 @@ objects that they refer to moved in it:</source>
         <translation type="obsolete">Маршрутизация</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="978"/>
+        <location filename="FWWindowPrint.cpp" line="209"/>
         <source>Printing &lt;ed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWWindow.cpp" line="1669"/>
+        <location filename="FWWindow.cpp" line="1746"/>
         <source>A new version of Firewall Builder is available at http://www.fwbuilder.org</source>
         <translation>Новая версия программы может быть загружена с http://www.fwbuilder.org</translation>
     </message>
@@ -6775,43 +5969,68 @@ objects that they refer to moved in it:</source>
     <message>
         <location filename="FindWhereUsedWidget.cpp" line="195"/>
         <source>NAT</source>
-        <translation>Сетевая трансляция адресов (NAT)</translation>
+        <translation type="obsolete">Сетевая трансляция адресов (NAT)</translation>
     </message>
     <message>
         <location filename="FindWhereUsedWidget.cpp" line="198"/>
         <source>Policy</source>
-        <translation>Набор правил</translation>
+        <translation type="obsolete">Набор правил</translation>
     </message>
     <message>
         <location filename="FindWhereUsedWidget.cpp" line="201"/>
         <source>Routing</source>
-        <translation>Маршрутизация</translation>
+        <translation type="obsolete">Маршрутизация</translation>
     </message>
     <message>
         <location filename="FindWhereUsedWidget.cpp" line="204"/>
         <source>Unknown rule set</source>
-        <translation>Неизвестный набор правил</translation>
+        <translation type="obsolete">Неизвестный набор правил</translation>
     </message>
     <message>
         <location filename="FindWhereUsedWidget.cpp" line="206"/>
         <source>/Rule%1</source>
-        <translation>/Правило%1</translation>
+        <translation type="obsolete">/Правило%1</translation>
     </message>
     <message>
-        <location filename="FindWhereUsedWidget.cpp" line="173"/>
+        <location filename="FindWhereUsedWidget.cpp" line="322"/>
         <source>Type: </source>
         <translation>Тип:</translation>
+    </message>
+    <message>
+        <location filename="FindWhereUsedWidget.cpp" line="293"/>
+        <source>NAT rule set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FindWhereUsedWidget.cpp" line="296"/>
+        <source>Policy rule set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FindWhereUsedWidget.cpp" line="299"/>
+        <source>Routing rule set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FindWhereUsedWidget.cpp" line="302"/>
+        <source>Rule set of unknown type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FindWhereUsedWidget.cpp" line="313"/>
+        <source>%1 &quot;%2&quot; / Rule %3 / %4</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>FirewallDialog</name>
     <message>
-        <location filename="FirewallDialog.cpp" line="336"/>
+        <location filename="FirewallDialog.cpp" line="337"/>
         <source>FWBuilder API error: %1</source>
         <translation>Ошибка API FWBuilder: %1</translation>
     </message>
     <message>
-        <location filename="FirewallDialog.cpp" line="337"/>
+        <location filename="FirewallDialog.cpp" line="338"/>
         <source>&amp;Continue</source>
         <translation>Продолжить</translation>
     </message>
@@ -6927,23 +6146,23 @@ objects that they refer to moved in it:</source>
 <context>
     <name>FirewallInstallerUnx</name>
     <message>
-        <location filename="FirewallInstallerUnx.cpp" line="143"/>
+        <location filename="FirewallInstallerUnx.cpp" line="142"/>
         <source>Generated script file %1 not found.</source>
         <translation>Сгенерированный компилятором файл %1 не найден.</translation>
     </message>
     <message>
-        <location filename="FirewallInstallerUnx.cpp" line="144"/>
+        <location filename="FirewallInstallerUnx.cpp" line="143"/>
         <source>&amp;Continue</source>
         <translation>Продолжить работу</translation>
     </message>
     <message>
-        <location filename="FirewallInstallerUnx.cpp" line="230"/>
+        <location filename="FirewallInstallerUnx.cpp" line="229"/>
         <source>Copying %1 -&gt; %2:%3
 </source>
         <translation>Копируется файл %1 -&gt; %2:%3</translation>
     </message>
     <message>
-        <location filename="FirewallInstallerUnx.cpp" line="291"/>
+        <location filename="FirewallInstallerUnx.cpp" line="290"/>
         <source>Error: Failed to start program:</source>
         <translation>Не удалось запустить программу:</translation>
     </message>
@@ -6994,22 +6213,22 @@ objects that they refer to moved in it:</source>
 <context>
     <name>GroupObjectDialog_q</name>
     <message>
-        <location filename="groupobjectdialog_q.ui" line="78"/>
+        <location filename="groupobjectdialog_q.ui" line="75"/>
         <source>Group</source>
         <translation>Группа</translation>
     </message>
     <message>
-        <location filename="groupobjectdialog_q.ui" line="187"/>
+        <location filename="groupobjectdialog_q.ui" line="190"/>
         <source>L</source>
         <translation>L</translation>
     </message>
     <message>
-        <location filename="groupobjectdialog_q.ui" line="156"/>
+        <location filename="groupobjectdialog_q.ui" line="159"/>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <location filename="groupobjectdialog_q.ui" line="289"/>
+        <location filename="groupobjectdialog_q.ui" line="292"/>
         <source>Name:</source>
         <translation>Название:</translation>
     </message>
@@ -7024,7 +6243,7 @@ objects that they refer to moved in it:</source>
         <translation type="obsolete">Применить</translation>
     </message>
     <message>
-        <location filename="groupobjectdialog_q.ui" line="229"/>
+        <location filename="groupobjectdialog_q.ui" line="232"/>
         <source>Comment:</source>
         <translation>Комментарий:</translation>
     </message>
@@ -7231,27 +6450,27 @@ objects that they refer to moved in it:</source>
 <context>
     <name>IPv4Dialog</name>
     <message>
-        <location filename="IPv4Dialog.cpp" line="154"/>
+        <location filename="IPv4Dialog.cpp" line="159"/>
         <source>Illegal IP address &apos;%1&apos;</source>
         <translation>Некорректный IP адрес %1</translation>
     </message>
     <message>
-        <location filename="IPv4Dialog.cpp" line="169"/>
+        <location filename="IPv4Dialog.cpp" line="175"/>
         <source>&amp;Continue</source>
         <translation>Продолжить</translation>
     </message>
     <message>
-        <location filename="IPv4Dialog.cpp" line="168"/>
+        <location filename="IPv4Dialog.cpp" line="174"/>
         <source>Illegal netmask &apos;%1&apos;</source>
         <translation>Некорректная маска подсети %1</translation>
     </message>
     <message>
-        <location filename="IPv4Dialog.cpp" line="266"/>
+        <location filename="IPv4Dialog.cpp" line="272"/>
         <source>DNS lookup failed for both names of the address object &apos;%1&apos; and the name of the host &apos;%2&apos;.</source>
         <translation>Не удалось получить данные используя DNS запрос как для адреса %1, так и для имени %2.</translation>
     </message>
     <message>
-        <location filename="IPv4Dialog.cpp" line="273"/>
+        <location filename="IPv4Dialog.cpp" line="279"/>
         <source>DNS lookup failed for name of the address object &apos;%1&apos;.</source>
         <translation>Не удалось получить имя используя DNS запрос для адреса %1.</translation>
     </message>
@@ -7770,17 +6989,17 @@ objects that they refer to moved in it:</source>
 <context>
     <name>NetworkDialog</name>
     <message>
-        <location filename="NetworkDialog.cpp" line="241"/>
+        <location filename="NetworkDialog.cpp" line="120"/>
         <source>Illegal IP address &apos;%1&apos;</source>
         <translation>Некорректный IP адрес %1</translation>
     </message>
     <message>
-        <location filename="NetworkDialog.cpp" line="242"/>
+        <location filename="NetworkDialog.cpp" line="154"/>
         <source>&amp;Continue</source>
         <translation>Продолжить</translation>
     </message>
     <message>
-        <location filename="NetworkDialog.cpp" line="146"/>
+        <location filename="NetworkDialog.cpp" line="153"/>
         <source>Illegal netmask &apos;%1&apos;</source>
         <translation>Некорректная маска подсети %1</translation>
     </message>
@@ -7788,17 +7007,17 @@ objects that they refer to moved in it:</source>
 <context>
     <name>NetworkDialogIPv6</name>
     <message>
-        <location filename="NetworkDialogIPv6.cpp" line="211"/>
+        <location filename="NetworkDialogIPv6.cpp" line="121"/>
         <source>Illegal IPv6 address &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="NetworkDialogIPv6.cpp" line="212"/>
+        <location filename="NetworkDialogIPv6.cpp" line="138"/>
         <source>&amp;Continue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="NetworkDialogIPv6.cpp" line="132"/>
+        <location filename="NetworkDialogIPv6.cpp" line="136"/>
         <source>Illegal netmask &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7990,9 +7209,9 @@ Do you want to continue editing it ?</source>
     </message>
     <message>
         <location filename="ObjectEditor.cpp" line="498"/>
-        <source>This object has been modified but not saved.
+        <source>Object %1 has been modified but not saved.
 Do you want to save it ?</source>
-        <translation>Этот объект был изменен, но не сохранен.
+        <translation type="unfinished">Этот объект был изменен, но не сохранен.
 Сохранить его?</translation>
     </message>
     <message>
@@ -8022,14 +7241,14 @@ Do you want to save it ?</source>
 <context>
     <name>ObjectManipulator</name>
     <message>
-        <location filename="ObjectManipulator.cpp" line="140"/>
+        <location filename="ObjectManipulator.cpp" line="141"/>
         <source>Object Manipulator</source>
         <translation>Объектный манипулятор</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="162"/>
+        <location filename="ObjectManipulator.cpp" line="166"/>
         <source>New &amp;Library</source>
-        <translation type="unfinished">Новый межсетевой экран</translation>
+        <translation type="unfinished">Новый адрес</translation>
     </message>
     <message>
         <location filename="ObjectManipulator.cpp" line="165"/>
@@ -8045,11 +7264,6 @@ Do you want to save it ?</source>
         <location filename="ObjectManipulator.cpp" line="164"/>
         <source>New &amp;Network</source>
         <translation type="obsolete">Новая подсеть</translation>
-    </message>
-    <message>
-        <location filename="ObjectManipulator.cpp" line="166"/>
-        <source>New &amp;Address</source>
-        <translation type="obsolete">Новый адрес</translation>
     </message>
     <message>
         <location filename="ObjectManipulator.cpp" line="169"/>
@@ -8139,17 +7353,17 @@ Do you want to rename child IP and MAC address objects now?
 (в случае отказа будут сохранены старые названия)</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="944"/>
+        <location filename="ObjectManipulator.cpp" line="947"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="985"/>
+        <location filename="ObjectManipulator.cpp" line="988"/>
         <source>place in library %1</source>
         <translation>поместить в библиотеку %1</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="996"/>
+        <location filename="ObjectManipulator.cpp" line="999"/>
         <source>to library %1</source>
         <translation>в библиотеку %1</translation>
     </message>
@@ -8159,132 +7373,132 @@ Do you want to rename child IP and MAC address objects now?
         <translation type="obsolete">поместить тут</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="952"/>
+        <location filename="ObjectManipulator.cpp" line="955"/>
         <source>Duplicate ...</source>
         <translation>Дублировать...</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="953"/>
+        <location filename="ObjectManipulator.cpp" line="956"/>
         <source>Move ...</source>
         <translation>Переместить...</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1005"/>
+        <location filename="ObjectManipulator.cpp" line="1008"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1007"/>
+        <location filename="ObjectManipulator.cpp" line="1010"/>
         <source>Cut</source>
         <translation>Вырезать</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1009"/>
+        <location filename="ObjectManipulator.cpp" line="1012"/>
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1014"/>
+        <location filename="ObjectManipulator.cpp" line="1017"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1027"/>
+        <location filename="ObjectManipulator.cpp" line="1030"/>
         <source>Add Interface</source>
         <translation>Добавить интерфейс</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1040"/>
+        <location filename="ObjectManipulator.cpp" line="1043"/>
         <source>Add IP Address</source>
         <translation>Добавить IP адрес</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1044"/>
+        <location filename="ObjectManipulator.cpp" line="1047"/>
         <source>Add MAC Address</source>
         <translation>Добавить MAC адрес</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1049"/>
+        <location filename="ObjectManipulator.cpp" line="1052"/>
         <source>New Firewall</source>
         <translation>Новый межсетевой экран</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2980"/>
+        <location filename="ObjectManipulator.cpp" line="2883"/>
         <source>New Address</source>
         <translation>Новый адрес</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3123"/>
+        <location filename="ObjectManipulator.cpp" line="3026"/>
         <source>New Address Range</source>
         <translation>Новый диапазон адресов</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1076"/>
+        <location filename="ObjectManipulator.cpp" line="1079"/>
         <source>New Host</source>
         <translation>Новый узел</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2931"/>
+        <location filename="ObjectManipulator.cpp" line="2834"/>
         <source>New Network</source>
         <translation>Новая подсеть</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1119"/>
+        <location filename="ObjectManipulator.cpp" line="1122"/>
         <source>New Group</source>
         <translation>Новая группа</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3146"/>
+        <location filename="ObjectManipulator.cpp" line="3049"/>
         <source>New Custom Service</source>
         <translation>Новый пользовательский сервис</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3157"/>
+        <location filename="ObjectManipulator.cpp" line="3060"/>
         <source>New IP Service</source>
         <translation>Новый IP сервис</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3168"/>
+        <location filename="ObjectManipulator.cpp" line="3071"/>
         <source>New ICMP Service</source>
         <translation>Новый ICMP сервис</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3190"/>
+        <location filename="ObjectManipulator.cpp" line="3093"/>
         <source>New TCP Service</source>
         <translation>Новый TCP сервис</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3201"/>
+        <location filename="ObjectManipulator.cpp" line="3104"/>
         <source>New UDP Service</source>
         <translation>Новый ICMP сервис</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3224"/>
+        <location filename="ObjectManipulator.cpp" line="3127"/>
         <source>New Time Interval</source>
         <translation>Новый интервал времени</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1127"/>
+        <location filename="ObjectManipulator.cpp" line="1130"/>
         <source>Find</source>
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1140"/>
+        <location filename="ObjectManipulator.cpp" line="1143"/>
         <source>Compile</source>
         <translation>Компилировать</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1141"/>
+        <location filename="ObjectManipulator.cpp" line="1144"/>
         <source>Install</source>
         <translation>Установить</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1132"/>
+        <location filename="ObjectManipulator.cpp" line="1135"/>
         <source>Group</source>
         <translation>Группа</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1159"/>
+        <location filename="ObjectManipulator.cpp" line="1162"/>
         <source>dump</source>
         <translation>дамп</translation>
     </message>
@@ -8315,7 +7529,7 @@ Do you want to delete selected objects ?</source>
 Удалить выбранные объекты?</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2105"/>
+        <location filename="ObjectManipulator.cpp" line="2004"/>
         <source>When you delete a library, all objects that belong to it
 disappear from the tree and all groups and rules that reference them.
 You won&apos;t be able to reverse this operation later.
@@ -8326,27 +7540,27 @@ Do you still want to delete library %1?</source>
 Вы уверены, что хотите удалить библиотеку %1?</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2914"/>
+        <location filename="ObjectManipulator.cpp" line="2817"/>
         <source>New Interface</source>
         <translation>Новый интерфейс</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3134"/>
+        <location filename="ObjectManipulator.cpp" line="3037"/>
         <source>New Object Group</source>
         <translation>Новая группа объектов</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3212"/>
+        <location filename="ObjectManipulator.cpp" line="3115"/>
         <source>New Service Group</source>
         <translation>Новая группа сервисов</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2106"/>
+        <location filename="ObjectManipulator.cpp" line="2005"/>
         <source>&amp;Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2106"/>
+        <location filename="ObjectManipulator.cpp" line="2005"/>
         <source>&amp;No</source>
         <translation>Нет</translation>
     </message>
@@ -8366,37 +7580,37 @@ Do you still want to delete library %1?</source>
         <translation type="obsolete">Новый сервис пометок</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3010"/>
+        <location filename="ObjectManipulator.cpp" line="2913"/>
         <source>New DNS Name</source>
         <translation>Новое DNS имя</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3021"/>
+        <location filename="ObjectManipulator.cpp" line="2924"/>
         <source>New Address Table</source>
         <translation>Новая таблица адресов</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3079"/>
+        <location filename="ObjectManipulator.cpp" line="2982"/>
         <source>New TagService</source>
         <translation>Новый сервис пометок</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1129"/>
+        <location filename="ObjectManipulator.cpp" line="1132"/>
         <source>Where used</source>
         <translation>Используется</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1148"/>
+        <location filename="ObjectManipulator.cpp" line="1151"/>
         <source>Lock</source>
         <translation>Заблокировать</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1150"/>
+        <location filename="ObjectManipulator.cpp" line="1153"/>
         <source>Unlock</source>
         <translation>Разблокировать</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2028"/>
+        <location filename="ObjectManipulator.cpp" line="1927"/>
         <source>Emptying the &apos;Deleted Objects&apos; in a library file is not recommended.
 When you remove deleted objects from a library file, Firewall Builder
 loses ability to track them. If a group or a policy rule in some
@@ -8411,37 +7625,37 @@ Do you want to delete selected objects anyway ?</source>
 Вы все равно хотите удалить выбранные объекты?</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3338"/>
+        <location filename="ObjectManipulator.cpp" line="3242"/>
         <source>Searching for firewalls affected by the change...</source>
         <translation>Поиск межсетевых экранов, на которые повлияет изменение ...</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2940"/>
+        <location filename="ObjectManipulator.cpp" line="2843"/>
         <source>New Network IPv6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2997"/>
+        <location filename="ObjectManipulator.cpp" line="2900"/>
         <source>New Address IPv6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3179"/>
+        <location filename="ObjectManipulator.cpp" line="3082"/>
         <source>New ICMP6 Service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="207"/>
+        <location filename="ObjectManipulator.cpp" line="211"/>
         <source>New TCP Serivce</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3089"/>
+        <location filename="ObjectManipulator.cpp" line="2992"/>
         <source>New User Service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="586"/>
+        <location filename="ObjectManipulator.cpp" line="589"/>
         <source>The name of the object &apos;%1&apos; has changed. The program can also
 rename IP address objects that belong to this object,
 using standard naming scheme &apos;host_name:interface_name:ip&apos;.
@@ -8462,7 +7676,7 @@ Do you want to rename child IP and MAC address objects now?
 (в случае отказа будут сохранены старые названия) {1&apos;?} {2 ?}</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="618"/>
+        <location filename="ObjectManipulator.cpp" line="621"/>
         <source>The name of the interface &apos;%1&apos; has changed. The program can also
 rename IP address objects that belong to this interface,
 using standard naming scheme &apos;host_name:interface_name:ip&apos;.
@@ -8476,17 +7690,17 @@ interface &apos;%2&apos; will stay the same.)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1033"/>
+        <location filename="ObjectManipulator.cpp" line="1036"/>
         <source>Add Policy Rule Set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1035"/>
+        <location filename="ObjectManipulator.cpp" line="1038"/>
         <source>Add NAT Rule Set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1042"/>
+        <location filename="ObjectManipulator.cpp" line="1045"/>
         <source>Add IPv6 Address</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8499,22 +7713,22 @@ interface &apos;%2&apos; will stay the same.)</source>
         <translation>Дерево объектов</translation>
     </message>
     <message>
-        <location filename="objectmanipulator_q.ui" line="92"/>
+        <location filename="objectmanipulator_q.ui" line="105"/>
         <source>Back</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location filename="objectmanipulator_q.ui" line="95"/>
+        <location filename="objectmanipulator_q.ui" line="108"/>
         <source>Go back to the previous object</source>
         <translation>Назад, к предидущему объекту</translation>
     </message>
     <message>
-        <location filename="objectmanipulator_q.ui" line="150"/>
+        <location filename="objectmanipulator_q.ui" line="167"/>
         <source>New Object</source>
         <translation>Создать объект</translation>
     </message>
     <message>
-        <location filename="objectmanipulator_q.ui" line="153"/>
+        <location filename="objectmanipulator_q.ui" line="170"/>
         <source>Create New Object</source>
         <translation>Создать новый объект</translation>
     </message>
@@ -8698,7 +7912,7 @@ interface &apos;%2&apos; will stay the same.)</source>
         <translation type="obsolete">Строится представление ветки набора правил &apos;%1&apos; ...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel.cpp" line="404"/>
+        <location filename="ProjectPanel.cpp" line="406"/>
         <source>Building policy view...</source>
         <translation>Строится представление набора правил ...</translation>
     </message>
@@ -8723,7 +7937,7 @@ interface &apos;%2&apos; will stay the same.)</source>
         <translation>Отбросить изменения</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="341"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="361"/>
         <source>&amp;Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -8733,38 +7947,38 @@ interface &apos;%2&apos; will stay the same.)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="617"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="637"/>
         <source>The file %1 already exists.
 Do you want to overwrite it ?</source>
         <translation>Файл %1 уже существует.\nПереписать ?</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="618"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="638"/>
         <source>&amp;Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="618"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="638"/>
         <source>&amp;No</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1118"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1138"/>
         <source>Choose name and location for the new file</source>
         <translation>Выберите имя и папку для нового файла</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="268"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="290"/>
         <source>Saving data to file...</source>
         <translation>Данные записываются в файл...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="294"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="316"/>
         <source>Choose name and location for the file</source>
         <translation>Выберите имя и папку для размещения файла</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="339"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="359"/>
         <source>This operation discards all changes that have been saved
 into the file so far, closes it and replaces it with a clean
 copy of its head revision from RCS.
@@ -8775,49 +7989,49 @@ All changes will be lost if you do this.
         <translation>Эта операция отбрасывает все изменения сохраненные в файл\nданных до сих пор, закрывает его и заменяет его\nчистой копией самой последней ревизии из RCS.\n\nВсе изменения сделанные до сих пор будут потеряны.</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="340"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="360"/>
         <source>&amp;Discard changes</source>
         <translation>Отбросить изменения</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="390"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="410"/>
         <source>File %1 has been added to RCS.</source>
         <translation>Файл %1 добавлен в систему контроля ревизий (RCS).</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1395"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1415"/>
         <source>&amp;Continue</source>
         <translation>Продолжать</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="399"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="419"/>
         <source>Error adding file to RCS:
 %1</source>
         <translation>Произошла ошибка во время добавления файла в RCS: %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel.cpp" line="198"/>
+        <location filename="ProjectPanel.cpp" line="200"/>
         <source>(read-only)</source>
         <translation>(только для чтения)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="958"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="978"/>
         <source>Loading system objects...</source>
         <translation>Загрузка системных объектов...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="923"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="943"/>
         <source>Error loading file:
 %1</source>
         <translation>Произошла ошибка во время загрузки файла: %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="966"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="986"/>
         <source>Reading and parsing data file...</source>
         <translation>Чтение и обработка файла данных...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1005"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1025"/>
         <source>Merging with system objects...</source>
         <translation>Смешивание с системными объектами...</translation>
     </message>
@@ -8838,106 +8052,106 @@ Choose a different name for the new file.</source>
         <translation type="obsolete">Операция открытия файла была отменена, поэтому файл не был изменен.</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1174"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1194"/>
         <source>Exception: %1</source>
         <translation>Ошибка: %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1178"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1198"/>
         <source>Failed transformation : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1183"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1203"/>
         <source>XML element : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1218"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1238"/>
         <source>Building object tree...</source>
         <translation>Построение дерева объектов...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1224"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1244"/>
         <source>Indexing...</source>
         <translation>Индексация...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1258"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1278"/>
         <source>Checking file %1 in RCS</source>
         <translation>Добавление файла %1 в систему контроля версий</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1292"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1312"/>
         <source>Error checking in file %1:
 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1388"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1408"/>
         <source>File is read-only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1394"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1414"/>
         <source>Error saving file %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="491"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="511"/>
         <source>Error loading file %1:
 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="413"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="433"/>
         <source>Choose a file to import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="430"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="450"/>
         <source>This operation inspects two data files (either .fwb or .fwl) and finds conflicting objects. Conflicting objects have the same internal ID but different attributes. Two data files can not be merged, or one imported into another, if they contain such objects. This operation also helps identify changes made to objects in two copies of the same data file.&lt;br&gt;&lt;br&gt;This operation does not find objects present in one file but not in the other, such objects present no problem for merge or import operations.&lt;br&gt;&lt;br&gt;This operation works with two external files, neither of which needs to be opened in the program. Currently opened data file is not affected by this operation and objects in the tree do not change.&lt;br&gt;&lt;br&gt;Do you want to proceed ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="439"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="459"/>
         <source>Choose the first file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="447"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="467"/>
         <source>Choose the second file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="514"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="534"/>
         <source>Total number of conflicting objects: %1.
 Do you want to generate report?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="524"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="544"/>
         <source>Choose name and location for the report file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="526"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="546"/>
         <source>TXT Files (*.txt);;All Files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="551"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="571"/>
         <source>Can not open report file for writing. File &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="563"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="583"/>
         <source>Unexpected error comparing files %1 and %2:
 %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="750"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="770"/>
         <source>A library that you are trying to export contains references
 to objects in the other libraries and can not be exported.
 The following objects need to be moved outside of it or
@@ -8945,12 +8159,12 @@ objects that they refer to moved in it:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="593"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="613"/>
         <source>Please select a library you want to export.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel.cpp" line="193"/>
+        <location filename="ProjectPanel.cpp" line="195"/>
         <source>Untitled</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8960,26 +8174,26 @@ objects that they refer to moved in it:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1197"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1217"/>
         <source>(Long error message was truncated)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="860"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="880"/>
         <source>The program encountered error trying to load file %1.
 The file has not been loaded. Error:
 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1203"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1223"/>
         <source>The program encountered error trying to load data file.
 The file has not been loaded. Error:
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1113"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1133"/>
         <source>Firewall Builder 2 uses file extension &apos;.fwb&apos; and
 needs to rename old data file &apos;%1&apos; to &apos;%2&apos;,
 but file &apos;%3&apos; already exists.
@@ -8987,12 +8201,12 @@ Choose a different name for the new file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1129"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1149"/>
         <source>Load operation cancelled and data file revertedto original version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1146"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1166"/>
         <source>Firewall Builder 2 uses file extension &apos;.fwb&apos;. Your datafile &apos;%1&apos; 
 has been renamed &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
@@ -9634,7 +8848,7 @@ Do you want to create it ?</source>
 Создать его?</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1672"/>
+        <location filename="ObjectManipulator.cpp" line="1724"/>
         <source>Impossible to insert object %1 (type %2) into %3
 because of incompatible type.</source>
         <translation>Невозможно вставить объект %1 (%2) в объект %3
@@ -9758,12 +8972,12 @@ because of incompatible type.</source>
         <translation type="obsolete">Управляющий интерфейс не имеет IP адреса, не могу связаться с межсетевым экраном.</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="353"/>
+        <location filename="SSHPIX.cpp" line="358"/>
         <source>Can not open file %1</source>
         <translation>Не могу открыть файл %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="713"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="733"/>
         <source>Library %1: Firewall &apos;%2&apos; (global policy rule #%3) uses object &apos;%4&apos; from library &apos;%5&apos;</source>
         <translation>Библиотека %1: Межсетевой экран %2 (правило в наборе #%3) использует объект %4 из библиотеки %5</translation>
     </message>
@@ -9773,32 +8987,32 @@ because of incompatible type.</source>
         <translation type="obsolete">Библиотека %1: Межсетевой экран %2 (правило интерфейса %3 в наборе #%4) использует объект %5 из библиотеки %6</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="723"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="743"/>
         <source>Library %1: Firewall &apos;%2&apos; (NAT rule #%3) uses object &apos;%4&apos; from library &apos;%5&apos;</source>
         <translation>Библиотека %1: Межсетевой экран %2 (правило NAT в наборе #%3) использует объект %4 из библиотеки %5</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="733"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="753"/>
         <source>Library %1: Group &apos;%2&apos; uses object &apos;%3&apos; from library &apos;%4&apos;</source>
         <translation>Библиотека %1: Группа %2 использует объект %3 из библиотеки %4</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="789"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="809"/>
         <source>File is read-only</source>
         <translation>Файл доступен только для чтения</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="794"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="814"/>
         <source>Error saving file %1: %2</source>
         <translation type="unfinished">Файл библиотеки %1 поврежден.</translation>
     </message>
     <message>
         <location filename="newFirewallDialog.cpp" line="491"/>
         <source>dynamic</source>
-        <translation>динамический</translation>
+        <translation type="obsolete">динамический</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="274"/>
+        <location filename="ObjectManipulator.cpp" line="278"/>
         <source> ( read only )</source>
         <translation>(только для чтения)</translation>
     </message>
@@ -9853,7 +9067,7 @@ because of incompatible type.</source>
         <translation type="obsolete">1.2.9 или старше</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="534"/>
+        <location filename="RCS.cpp" line="535"/>
         <source>Fatal error during initial RCS checkin of file %1 :
  %2
 Exit status %3</source>
@@ -9862,12 +9076,12 @@ Exit status %3</source>
 Код возврата %3</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="930"/>
+        <location filename="RCS.cpp" line="931"/>
         <source>Fatal error running rlog for %1</source>
         <translation>Фатальная ошибка при выполнении rlog для %1</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="976"/>
+        <location filename="RCS.cpp" line="977"/>
         <source>Fatal error running rcsdiff for file %1</source>
         <translation>Фатальная ошибка при выполнении rcsdiff для файла %1</translation>
     </message>
@@ -9931,12 +9145,12 @@ Ignoring this setting.</source>
 Этот параметр будет проигнорирован.</translation>
     </message>
     <message>
-        <location filename="SSHSession.cpp" line="503"/>
+        <location filename="SSHSession.cpp" line="506"/>
         <source>ERROR</source>
         <translation>ОШИБКА</translation>
     </message>
     <message>
-        <location filename="SSHSession.cpp" line="503"/>
+        <location filename="SSHSession.cpp" line="506"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -10044,104 +9258,104 @@ Are you sure you want to open it?</source>
         <translation type="obsolete">Серый</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="97"/>
+        <location filename="PrintingController.cpp" line="78"/>
         <source>Firewall</source>
         <translation>Межсетевой экран</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="98"/>
+        <location filename="PrintingController.cpp" line="79"/>
         <source>Host</source>
         <translation>Узел</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="100"/>
+        <location filename="PrintingController.cpp" line="81"/>
         <source>Address</source>
         <translation>Адрес</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="101"/>
+        <location filename="PrintingController.cpp" line="82"/>
         <source>Addres Range</source>
         <translation>Диапазон адресов</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="102"/>
+        <location filename="platforms.cpp" line="632"/>
         <source>Interface</source>
         <translation>Интерфейс</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="103"/>
+        <location filename="PrintingController.cpp" line="84"/>
         <source>Network</source>
         <translation>Подсеть</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="104"/>
+        <location filename="PrintingController.cpp" line="85"/>
         <source>Group of objects</source>
         <translation>Группа объектов</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="105"/>
+        <location filename="PrintingController.cpp" line="86"/>
         <source>Custom Service</source>
         <translation>Пользовательский сервис</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="106"/>
+        <location filename="PrintingController.cpp" line="87"/>
         <source>IP Service</source>
         <translation>IP сервис</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="108"/>
+        <location filename="PrintingController.cpp" line="89"/>
         <source>ICMP Service</source>
         <translation>ICMP сервис</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="109"/>
+        <location filename="PrintingController.cpp" line="90"/>
         <source>TCP Service</source>
         <translation>TCP сервис</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="110"/>
+        <location filename="PrintingController.cpp" line="91"/>
         <source>UDP Service</source>
         <translation>UDP сервис</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="111"/>
+        <location filename="PrintingController.cpp" line="92"/>
         <source>Group of services</source>
         <translation>Группа сервисов</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="112"/>
+        <location filename="PrintingController.cpp" line="93"/>
         <source>Time Interval</source>
         <translation>Интервал времени</translation>
     </message>
     <message>
-        <location filename="printerStream.cpp" line="147"/>
+        <location filename="printerStream.cpp" line="156"/>
         <source>Page %1</source>
         <translation>Страница %1</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="284"/>
+        <location filename="PrintingController.cpp" line="329"/>
         <source>Firewall name: %1</source>
         <translation>Название межсетевого экрана: %1</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="285"/>
+        <location filename="PrintingController.cpp" line="331"/>
         <source>Platform: </source>
         <translation>Тип межсетевого экрана: </translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="286"/>
+        <location filename="PrintingController.cpp" line="332"/>
         <source>Version: </source>
         <translation>Версия межсетевого экрана: </translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="287"/>
+        <location filename="PrintingController.cpp" line="333"/>
         <source>Host OS: </source>
         <translation>Операционная система межсетевого экрана: </translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="298"/>
+        <location filename="PrintingController.cpp" line="283"/>
         <source>Policy: </source>
-        <translation type="unfinished"></translation>
+        <translation>Политика:</translation>
     </message>
     <message>
         <location filename="FWWindowPrint.cpp" line="361"/>
@@ -10356,7 +9570,7 @@ Are you sure you want to open it?</source>
         <translation type="obsolete">Установка наборов правил межсетевого экрана: &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2736"/>
+        <location filename="ObjectManipulator.cpp" line="2638"/>
         <source>Type &apos;%1&apos;: new object can not be created because
 corresponding branch is missing in the object tree.
 Please repair the tree using command &apos;fwbedit -s -f file.fwb&apos;.</source>
@@ -10620,112 +9834,112 @@ Please repair the tree using command &apos;fwbedit -s -f file.fwb&apos;.</source
         <translation type="obsolete">1.3.0 или старше</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="537"/>
+        <location filename="platforms.cpp" line="539"/>
         <source>Accept</source>
         <translation>Разрешить</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="539"/>
+        <location filename="platforms.cpp" line="541"/>
         <source>Deny</source>
         <translation>Блокировать</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="541"/>
+        <location filename="platforms.cpp" line="543"/>
         <source>Reject</source>
         <translation>Блокировать с уведомлением</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="543"/>
+        <location filename="platforms.cpp" line="545"/>
         <source>Scrub</source>
         <translation>Чистить [SCRUB]</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="545"/>
+        <location filename="platforms.cpp" line="547"/>
         <source>Return</source>
         <translation>Вернуть</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="547"/>
+        <location filename="platforms.cpp" line="549"/>
         <source>Skip</source>
         <translation>Пропустить</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="549"/>
+        <location filename="platforms.cpp" line="551"/>
         <source>Continue</source>
         <translation>Продолжить</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="551"/>
+        <location filename="platforms.cpp" line="553"/>
         <source>Modify</source>
         <translation>Изменить</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="553"/>
+        <location filename="platforms.cpp" line="555"/>
         <source>Classify</source>
         <translation>Классифицировать</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="555"/>
+        <location filename="platforms.cpp" line="557"/>
         <source>Custom</source>
         <translation>Определенное пользователем</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="558"/>
+        <location filename="platforms.cpp" line="560"/>
         <source>Branch</source>
         <translation>Ветка</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="559"/>
+        <location filename="platforms.cpp" line="561"/>
         <source>Chain</source>
         <translation>Цепочка</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="560"/>
+        <location filename="platforms.cpp" line="562"/>
         <source>Anchor</source>
         <translation>Прикрепить</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="564"/>
+        <location filename="platforms.cpp" line="566"/>
         <source>Accounting</source>
         <translation>Учитывать</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="565"/>
+        <location filename="platforms.cpp" line="567"/>
         <source>Count</source>
         <translation>Считать</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="569"/>
+        <location filename="platforms.cpp" line="571"/>
         <source>Tag</source>
         <translation>Пометить</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="570"/>
+        <location filename="platforms.cpp" line="572"/>
         <source>Mark</source>
         <translation>Маркировать</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="574"/>
+        <location filename="platforms.cpp" line="576"/>
         <source>Pipe</source>
         <translation>Передать</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="575"/>
+        <location filename="platforms.cpp" line="577"/>
         <source>Queue</source>
         <translation>Поставить в очередь</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="578"/>
+        <location filename="platforms.cpp" line="580"/>
         <source>Routing</source>
         <translation>Маршрутизировать</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="2191"/>
+        <location filename="DiscoveryDruid.cpp" line="2237"/>
         <source>Firewall Builder can import Cisco IOS access lists from the router configuration saved using &apos;show run&apos; or any other command that saves running config. The name of the created firewall object, all of its interfaces and their addresses will be configured automatically if this information can be found in the configuration file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="2201"/>
+        <location filename="DiscoveryDruid.cpp" line="2247"/>
         <source>Firewall Builder can import iptables rules from a file in iptables-save format. Firewall name and addresses of its interfaces need to be configured manually because iptables-save file does not have this information. </source>
         <translation type="unfinished"></translation>
     </message>
@@ -10794,17 +10008,17 @@ Builder GUI and save back to file again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="414"/>
+        <location filename="platforms.cpp" line="415"/>
         <source>3.x</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="415"/>
+        <location filename="platforms.cpp" line="416"/>
         <source>3.7 to 3.9</source>
-        <translation type="unfinished">с 1.2.9 по 3.9 {3.7 ?}</translation>
+        <translation type="unfinished">с 3.7 по 3.9</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="416"/>
+        <location filename="platforms.cpp" line="417"/>
         <source>4.x</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10814,12 +10028,7 @@ Builder GUI and save back to file again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="343"/>
-        <source>NAT: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="instDialog_compile.cpp" line="91"/>
+        <location filename="instDialog_compile.cpp" line="92"/>
         <source>Compiling rule sets for firewall: %1
 </source>
         <translation type="unfinished"></translation>
@@ -10910,12 +10119,112 @@ Builder GUI and save back to file again.</source>
     <message>
         <location filename="platforms.cpp" line="396"/>
         <source>1.3.x</source>
-        <translation type="unfinished"></translation>
+        <translation>1.3.0 и старше</translation>
     </message>
     <message>
         <location filename="platforms.cpp" line="397"/>
         <source>1.4.0 or later</source>
-        <translation type="unfinished">1.3.0 или старше {1.4.0 ?}</translation>
+        <translation>1.4.0 и старше</translation>
+    </message>
+    <message>
+        <location filename="PrintingController.cpp" line="356"/>
+        <source>Legend</source>
+        <translation>Условные обозначения</translation>
+    </message>
+    <message>
+        <location filename="PrintingController.cpp" line="434"/>
+        <source>Objects</source>
+        <translation>Объекты</translation>
+    </message>
+    <message>
+        <location filename="PrintingController.cpp" line="522"/>
+        <source>Groups</source>
+        <translation>Группы</translation>
+    </message>
+    <message>
+        <location filename="PrintingController.cpp" line="564"/>
+        <source>EMPTY</source>
+        <translation>Пусто</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="616"/>
+        <source>Source</source>
+        <translation>Источник</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="630"/>
+        <source>Destination</source>
+        <translation>Назначение</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="618"/>
+        <source>Service</source>
+        <translation>Сервис</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="620"/>
+        <source>Time</source>
+        <translation>Время</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="622"/>
+        <source>Original Src</source>
+        <translation>Оригинальный Источник</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="623"/>
+        <source>Original Dst</source>
+        <translation>Оригинальное Назначение</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="624"/>
+        <source>Original Srv</source>
+        <translation>Оригинальный Сервис</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="626"/>
+        <source>Translated Src</source>
+        <translation>Транслированный Источник</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="627"/>
+        <source>Translated Dst</source>
+        <translation>Транслированное Назначение</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="628"/>
+        <source>Translated Srv</source>
+        <translation>Транслированный Сервис</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="631"/>
+        <source>Gateway</source>
+        <translation>Маршрутизатор</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="636"/>
+        <source>Direction</source>
+        <translation>Направление</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="637"/>
+        <source>Action</source>
+        <translation>Действие</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="638"/>
+        <source>Options</source>
+        <translation>Параметры</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="639"/>
+        <source>Metric</source>
+        <translation>Метрика</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="640"/>
+        <source>Comment</source>
+        <translation>Комментарий</translation>
     </message>
 </context>
 <context>
@@ -10985,34 +10294,34 @@ Builder GUI and save back to file again.</source>
 <context>
     <name>RCS</name>
     <message>
-        <location filename="RCS.cpp" line="785"/>
+        <location filename="RCS.cpp" line="786"/>
         <source>Error checking file out: %1</source>
         <translation>Ошибка при получении файла %1 из системы контроля версий</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="786"/>
+        <location filename="RCS.cpp" line="787"/>
         <source>&amp;Continue</source>
         <translation>Продолжить</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="664"/>
+        <location filename="RCS.cpp" line="665"/>
         <source>Error creating temporary file </source>
         <translation>Ошибка при создании временного файла</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="677"/>
+        <location filename="RCS.cpp" line="678"/>
         <source>Error writing to temporary file </source>
         <translation>Ошибка при записи во временный файл</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="710"/>
+        <location filename="RCS.cpp" line="711"/>
         <source>File is opened and locked by %1.
 You can only open it read-only.</source>
         <translation>Файл уже открыт и заблокирован %1.
 Вы можете открыть его только для чтения.</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="724"/>
+        <location filename="RCS.cpp" line="725"/>
         <source>Revision %1 of this file has been checked out and locked by you earlier.
 The file may be opened in another copy of Firewall Builder or was left opened
 after the program crashed.</source>
@@ -11021,17 +10330,17 @@ after the program crashed.</source>
 возможно остался открытым после краха предидущей копии программы.</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="725"/>
+        <location filename="RCS.cpp" line="726"/>
         <source>Open &amp;read-only</source>
         <translation>Открыть только для чтения</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="725"/>
+        <location filename="RCS.cpp" line="726"/>
         <source>&amp;Open and continue editing</source>
         <translation>Открыть и продолжить редактирование</translation>
     </message>
     <message>
-        <location filename="RCS.cpp" line="725"/>
+        <location filename="RCS.cpp" line="726"/>
         <source>&amp;Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -11039,7 +10348,7 @@ after the program crashed.</source>
 <context>
     <name>RCSFilePreview</name>
     <message>
-        <location filename="RCSFilePreview.cpp" line="136"/>
+        <location filename="RCSFilePreview.cpp" line="135"/>
         <source>File is not in RCS</source>
         <translation>Файл не находится в системе контроля версий</translation>
     </message>
@@ -11084,12 +10393,12 @@ after the program crashed.</source>
     <message>
         <location filename="rcsfilepreview_q.ui" line="173"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть</translation>
     </message>
     <message>
         <location filename="rcsfilepreview_q.ui" line="199"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -11718,12 +11027,12 @@ for this rule</source>
 <context>
     <name>RuleSetDialog</name>
     <message>
-        <location filename="RuleSetDialog.cpp" line="167"/>
+        <location filename="RuleSetDialog.cpp" line="176"/>
         <source>Rule set name &apos;%1&apos; is invalid. Only &apos;[a-z][A-Z][0-9]_-+=@%^&apos; characters are allowed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetDialog.cpp" line="168"/>
+        <location filename="RuleSetDialog.cpp" line="177"/>
         <source>&amp;Continue</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11731,7 +11040,7 @@ for this rule</source>
 <context>
     <name>RuleSetDialog_q</name>
     <message>
-        <location filename="RuleSetDialog.cpp" line="101"/>
+        <location filename="RuleSetDialog.cpp" line="110"/>
         <source>On iptables &quot;top&quot; rule set goes into 
 the built-in chains INPUT, OUTPUT,
 FORWARD; if this flag is unchecked,
@@ -11741,14 +11050,14 @@ the rule set.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetDialog.cpp" line="130"/>
+        <location filename="RuleSetDialog.cpp" line="139"/>
         <source>If this flag is unchecked, rules go 
 into anchor with the name the same as
 the name of the rule set.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetDialog.cpp" line="141"/>
+        <location filename="RuleSetDialog.cpp" line="150"/>
         <source>If this flag is unchecked, generated
 access list will not be assigned to
 interfaces with &quot;ip access-group&quot;
@@ -11773,33 +11082,38 @@ access access lists generated for it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="rulesetdialog_q.ui" line="175"/>
+        <location filename="rulesetdialog_q.ui" line="164"/>
         <source>This is IPv4 rule set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="rulesetdialog_q.ui" line="182"/>
+        <location filename="rulesetdialog_q.ui" line="169"/>
         <source>This is IPv6 rule set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="rulesetdialog_q.ui" line="230"/>
+        <location filename="rulesetdialog_q.ui" line="223"/>
         <source>Top ruleset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="rulesetdialog_q.ui" line="259"/>
+        <location filename="rulesetdialog_q.ui" line="252"/>
         <source>Comment:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="rulesetdialog_q.ui" line="213"/>
+        <location filename="rulesetdialog_q.ui" line="206"/>
         <source>filter+mangle table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="rulesetdialog_q.ui" line="220"/>
+        <location filename="rulesetdialog_q.ui" line="213"/>
         <source>mangle table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="rulesetdialog_q.ui" line="174"/>
+        <source>This is combined IPv4 and IPv6 rule set</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -11816,52 +11130,52 @@ access access lists generated for it.</source>
         <translation type="obsolete">Учёт</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1388"/>
+        <location filename="RuleSetView.cpp" line="1412"/>
         <source>Outbound </source>
         <translation>Исходящее</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1475"/>
+        <location filename="RuleSetView.cpp" line="1499"/>
         <source>Original</source>
         <translation>Исходный</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3385"/>
+        <location filename="RuleSetView.cpp" line="3450"/>
         <source>Insert Rule</source>
         <translation>Вставить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3038"/>
+        <location filename="RuleSetView.cpp" line="3073"/>
         <source>Paste Rule</source>
         <translation>Вставить правило из буфера обмена</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3437"/>
+        <location filename="RuleSetView.cpp" line="3502"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3288"/>
+        <location filename="RuleSetView.cpp" line="3338"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3290"/>
+        <location filename="RuleSetView.cpp" line="3340"/>
         <source>Cut</source>
         <translation>Вырезать</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3291"/>
+        <location filename="RuleSetView.cpp" line="3341"/>
         <source>Paste</source>
         <translation>Вставить из буфера обмена</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3294"/>
+        <location filename="RuleSetView.cpp" line="3344"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3302"/>
+        <location filename="RuleSetView.cpp" line="3352"/>
         <source>Negate</source>
         <translation>Отрицание</translation>
     </message>
@@ -11881,67 +11195,67 @@ access access lists generated for it.</source>
         <translation type="obsolete">Цветовая метка:</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3387"/>
+        <location filename="RuleSetView.cpp" line="3452"/>
         <source>Add Rule Below</source>
         <translation>Добавить правило ниже</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3390"/>
+        <location filename="RuleSetView.cpp" line="3455"/>
         <source>Remove Rule</source>
         <translation>Удалить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3391"/>
+        <location filename="RuleSetView.cpp" line="3456"/>
         <source>Remove Rules</source>
         <translation>Удалить правила</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3394"/>
+        <location filename="RuleSetView.cpp" line="3459"/>
         <source>Move Rule</source>
         <translation>Переместить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3395"/>
+        <location filename="RuleSetView.cpp" line="3460"/>
         <source>Move Rules</source>
         <translation>Переместить правила</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3401"/>
+        <location filename="RuleSetView.cpp" line="3466"/>
         <source>Copy Rule</source>
         <translation>Копировать правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3403"/>
+        <location filename="RuleSetView.cpp" line="3468"/>
         <source>Cut Rule</source>
         <translation>Вырезать правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3405"/>
+        <location filename="RuleSetView.cpp" line="3470"/>
         <source>Paste Rule Above</source>
         <translation>Вставить правило выше</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3407"/>
+        <location filename="RuleSetView.cpp" line="3472"/>
         <source>Paste Rule Below</source>
         <translation>Вставить правило ниже</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3414"/>
+        <location filename="RuleSetView.cpp" line="3479"/>
         <source>Enable Rule</source>
         <translation>Включить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3415"/>
+        <location filename="RuleSetView.cpp" line="3480"/>
         <source>Enable Rules</source>
         <translation>Включить правила</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3419"/>
+        <location filename="RuleSetView.cpp" line="3484"/>
         <source>Disable Rule</source>
         <translation>Отключить правило</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3420"/>
+        <location filename="RuleSetView.cpp" line="3485"/>
         <source>Disable Rules</source>
         <translation>Отключить правила</translation>
     </message>
@@ -11951,7 +11265,7 @@ access access lists generated for it.</source>
         <translation type="obsolete">Редактор комментариев</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1488"/>
+        <location filename="RuleSetView.cpp" line="1512"/>
         <source>Any</source>
         <translation>Любой</translation>
     </message>
@@ -11976,143 +11290,113 @@ access access lists generated for it.</source>
         <translation type="obsolete">Учитывать</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3249"/>
+        <location filename="RuleSetView.cpp" line="3299"/>
         <source>Inbound</source>
         <translation>Входящее</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3252"/>
+        <location filename="RuleSetView.cpp" line="3302"/>
         <source>Outbound</source>
         <translation>Исходящее</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3255"/>
+        <location filename="RuleSetView.cpp" line="3305"/>
         <source>Both</source>
         <translation>Оба</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3263"/>
+        <location filename="RuleSetView.cpp" line="3313"/>
         <source>Rule Options</source>
         <translation>Опции правила</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3270"/>
+        <location filename="RuleSetView.cpp" line="3320"/>
         <source>Logging On</source>
         <translation>Включить протоколирование</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3273"/>
+        <location filename="RuleSetView.cpp" line="3323"/>
         <source>Logging Off</source>
         <translation>Отключить протоколирование</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1476"/>
+        <location filename="RuleSetView.cpp" line="1500"/>
         <source>Default</source>
         <translation>По-умолчанию</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1479"/>
+        <location filename="RuleSetView.cpp" line="1503"/>
         <source>All</source>
         <translation>Все</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3233"/>
+        <location filename="RuleSetView.cpp" line="3283"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3299"/>
+        <location filename="RuleSetView.cpp" line="3349"/>
         <source>Reveal in tree</source>
         <translation>Показывать в дереве</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3297"/>
+        <location filename="RuleSetView.cpp" line="3347"/>
         <source>Where used</source>
         <translation type="unfinished">Используется</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3349"/>
+        <location filename="RuleSetView.cpp" line="3399"/>
         <source>Rules %1-%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3352"/>
+        <location filename="RuleSetView.cpp" line="3402"/>
         <source>Rule %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3354"/>
+        <location filename="RuleSetView.cpp" line="3404"/>
         <source>Change color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3358"/>
+        <location filename="RuleSetView.cpp" line="3408"/>
         <source>No color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3361"/>
-        <source>Red</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="RuleSetView.cpp" line="3364"/>
-        <source>Orange</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="RuleSetView.cpp" line="3367"/>
-        <source>Yellow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="RuleSetView.cpp" line="3370"/>
-        <source>Green</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="RuleSetView.cpp" line="3373"/>
-        <source>Blue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="RuleSetView.cpp" line="3376"/>
-        <source>Purple</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="RuleSetView.cpp" line="3379"/>
-        <source>Gray</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="RuleSetView.cpp" line="2812"/>
+        <location filename="RuleSetView.cpp" line="2847"/>
         <source>Enter group name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3063"/>
+        <location filename="RuleSetView.cpp" line="3098"/>
         <source>New group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3076"/>
+        <location filename="RuleSetView.cpp" line="3111"/>
         <source>Add to the group </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3084"/>
+        <location filename="RuleSetView.cpp" line="3119"/>
         <source>Remove from the group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3092"/>
+        <location filename="RuleSetView.cpp" line="3127"/>
         <source>Insert Rule Above</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3095"/>
+        <location filename="RuleSetView.cpp" line="3130"/>
         <source>Rename group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="RuleSetView.cpp" line="2797"/>
+        <source></source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12131,77 +11415,77 @@ Logged in</source>
 Вошли в систему</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="174"/>
+        <location filename="SSHPIX.cpp" line="175"/>
         <source>Switching to enable mode...</source>
         <translation>Переключение в режим включения...</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="208"/>
+        <location filename="SSHPIX.cpp" line="209"/>
         <source>New RSA key</source>
         <translation>Новый RSA ключ</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="209"/>
+        <location filename="SSHPIX.cpp" line="210"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="209"/>
+        <location filename="SSHPIX.cpp" line="210"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="255"/>
+        <location filename="SSHPIX.cpp" line="256"/>
         <source>In enable mode.</source>
         <translation>Нахожусь в режиме включения.</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="803"/>
+        <location filename="SSHPIX.cpp" line="814"/>
         <source>Pushing firewall configuration</source>
         <translation>Пересылка конфигурации межсетевого экрана</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="701"/>
+        <location filename="SSHPIX.cpp" line="706"/>
         <source>*** End </source>
         <translation>*** Конец</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="430"/>
+        <location filename="SSHPIX.cpp" line="435"/>
         <source>Rule %1</source>
         <translation>Правило %1</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="539"/>
+        <location filename="SSHPIX.cpp" line="544"/>
         <source>Making backup copy of the firewall configuration</source>
         <translation>Создание резервной копии конфигурации межсетевого экрана</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="712"/>
+        <location filename="SSHPIX.cpp" line="717"/>
         <source>Reading current firewall configuration</source>
         <translation>Чтение текущей конфигурации межсетевого экрана</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="737"/>
+        <location filename="SSHPIX.cpp" line="746"/>
         <source>Generating configuration diff</source>
         <translation>Сравнение конфигураций</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="752"/>
+        <location filename="SSHPIX.cpp" line="763"/>
         <source>Fork failed for %1</source>
         <translation>Ответвление не удалось для %1</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="758"/>
+        <location filename="SSHPIX.cpp" line="769"/>
         <source>Not enough memory.</source>
         <translation>Не достаточно памяти.</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="763"/>
+        <location filename="SSHPIX.cpp" line="774"/>
         <source>Too many opened file descriptors in the system.</source>
         <translation>Слишком много открытых файловых дескрипторов в системе.</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="789"/>
+        <location filename="SSHPIX.cpp" line="800"/>
         <source>Empty configuration diff</source>
         <translation type="unfinished">Сохранение конфигурации в запасной PIX
 </translation>
@@ -12235,29 +11519,29 @@ Logged in</source>
 </translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="612"/>
+        <location filename="SSHPIX.cpp" line="617"/>
         <source>*** Clearing unused access lists</source>
         <translation>*** Очищаются неиспользуемые списки доступа</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="679"/>
+        <location filename="SSHPIX.cpp" line="684"/>
         <source>*** Clearing unused object groups</source>
         <translation>*** Очищаются неиспользуемые группы объектов</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="139"/>
+        <location filename="SSHPIX.cpp" line="140"/>
         <source>
 *** Fatal error :</source>
         <translation>
 *** Критическая ошибка:</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="173"/>
+        <location filename="SSHPIX.cpp" line="174"/>
         <source>Logged in</source>
         <translation>Произведен вход</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="456"/>
+        <location filename="SSHPIX.cpp" line="461"/>
         <source>End</source>
         <translation>Конец</translation>
     </message>
@@ -12280,17 +11564,17 @@ Logged in</source>
 <context>
     <name>SSHSession</name>
     <message>
-        <location filename="SSHSession.cpp" line="90"/>
+        <location filename="SSHSession.cpp" line="91"/>
         <source>You are connecting to the firewall &lt;b&gt;&apos;%1&apos;&lt;/b&gt; for the first time. It has provided you its identification in a form of its host public key. The fingerprint of the host public key is: &quot;%2&quot; You can save the host key to the local database by pressing YES, or you can cancel connection by pressing NO. You should press YES only if you are sure you are really connected to the firewall &lt;b&gt;&apos;%3&apos;&lt;/b&gt;.</source>
         <translation>Вы соединяетесь с межсетевым экраном &lt;b&gt;%1&lt;/b&gt; первый раз, его идентификация осуществляется с помощью открытого ключа. Открытый ключ этого межсетевого экрана: %2. Если вы уверены, что это открытый ключ межсетевого экрана %3, нажмите &apos;Да&apos;, иначе - нажмите &apos;Нет&apos;.</translation>
     </message>
     <message>
-        <location filename="SSHSession.cpp" line="203"/>
+        <location filename="SSHSession.cpp" line="204"/>
         <source>Failed to start ssh</source>
         <translation type="unfinished">Работа программы ssh была прервана, код возврата: %1</translation>
     </message>
     <message>
-        <location filename="SSHSession.cpp" line="505"/>
+        <location filename="SSHSession.cpp" line="508"/>
         <source>SSH session terminated, exit status: %1</source>
         <translation>SSH сессия прервалась, статус выхода: %1</translation>
     </message>
@@ -12312,28 +11596,28 @@ Logged in
 </translation>
     </message>
     <message>
-        <location filename="SSHUnx.cpp" line="188"/>
+        <location filename="SSHUnx.cpp" line="190"/>
         <source>New RSA key</source>
         <translation>Новый RSA ключ</translation>
     </message>
     <message>
-        <location filename="SSHUnx.cpp" line="189"/>
+        <location filename="SSHUnx.cpp" line="191"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="SSHUnx.cpp" line="189"/>
+        <location filename="SSHUnx.cpp" line="191"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="SSHUnx.cpp" line="260"/>
+        <location filename="SSHUnx.cpp" line="263"/>
         <source>Error in SSH</source>
         <translation type="unfinished">Вход произведен
 </translation>
     </message>
     <message>
-        <location filename="SSHUnx.cpp" line="248"/>
+        <location filename="SSHUnx.cpp" line="251"/>
         <source>Done</source>
         <translation>Завершено</translation>
     </message>
@@ -12345,7 +11629,7 @@ Logged in
 *** Критическая ошибка:</translation>
     </message>
     <message>
-        <location filename="SSHUnx.cpp" line="161"/>
+        <location filename="SSHUnx.cpp" line="166"/>
         <source>Logged in</source>
         <translation>Произведен вход</translation>
     </message>
@@ -12417,14 +11701,32 @@ Logged in
         <translation>Просмотр текста</translation>
     </message>
     <message>
-        <location filename="simpletextview_q.ui" line="61"/>
+        <location filename="simpletextview_q.ui" line="40"/>
         <source>Object Name</source>
         <translation>Название объекта</translation>
     </message>
     <message>
-        <location filename="simpletextview_q.ui" line="112"/>
+        <location filename="simpletextview_q.ui" line="91"/>
         <source>Close</source>
         <translation>Закрыть</translation>
+    </message>
+</context>
+<context>
+    <name>StartTipDialog_q</name>
+    <message>
+        <location filename="starttipdialog_q.ui" line="13"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="starttipdialog_q.ui" line="60"/>
+        <source>Do not show this again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="starttipdialog_q.ui" line="80"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -12435,7 +11737,7 @@ Logged in
         <translation>TCP</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="143"/>
+        <location filename="tcpservicedialog_q.ui" line="173"/>
         <source>Name:</source>
         <translation>Название:</translation>
     </message>
@@ -12445,22 +11747,22 @@ Logged in
         <translation type="obsolete">Библиотека:</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="606"/>
+        <location filename="tcpservicedialog_q.ui" line="708"/>
         <source>Destination Port Range</source>
         <translation>Диапазон портов назначения</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="638"/>
+        <location filename="tcpservicedialog_q.ui" line="752"/>
         <source>Start:</source>
         <translation>Начало:</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="651"/>
+        <location filename="tcpservicedialog_q.ui" line="765"/>
         <source>End:</source>
         <translation>Конец:</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="545"/>
+        <location filename="tcpservicedialog_q.ui" line="615"/>
         <source>Source Port Range</source>
         <translation>Диапазон портов источника</translation>
     </message>
@@ -12470,7 +11772,7 @@ Logged in
         <translation type="obsolete">Применить</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="692"/>
+        <location filename="tcpservicedialog_q.ui" line="790"/>
         <source>Comment:</source>
         <translation>Комментарий:</translation>
     </message>
@@ -12480,74 +11782,106 @@ Logged in
         <translation type="obsolete">Флаги TCP</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="431"/>
+        <location filename="tcpservicedialog_q.ui" line="466"/>
         <source>A</source>
         <translation>A</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="224"/>
+        <location filename="tcpservicedialog_q.ui" line="259"/>
         <source>U</source>
         <translation>U</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="360"/>
+        <location filename="tcpservicedialog_q.ui" line="395"/>
         <source>Mask:</source>
         <translation>Маска:</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="237"/>
+        <location filename="tcpservicedialog_q.ui" line="272"/>
         <source>Settings:</source>
         <translation>Установки:</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="447"/>
+        <location filename="tcpservicedialog_q.ui" line="482"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="476"/>
+        <location filename="tcpservicedialog_q.ui" line="511"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="321"/>
+        <location filename="tcpservicedialog_q.ui" line="356"/>
         <source>P</source>
         <translation>P</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="305"/>
+        <location filename="tcpservicedialog_q.ui" line="340"/>
         <source>R</source>
         <translation>R</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="78"/>
+        <location filename="tcpservicedialog_q.ui" line="96"/>
         <source>TCP Service</source>
         <translation>TCP сервис</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="234"/>
+        <location filename="tcpservicedialog_q.ui" line="269"/>
         <source>TCP flags that must be set (see man iptables, option --tcp-flags)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="357"/>
+        <location filename="tcpservicedialog_q.ui" line="392"/>
         <source>TCP flags that should be examined (see man iptables, option --tcp-flags)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="402"/>
+        <location filename="tcpservicedialog_q.ui" line="437"/>
         <source>Flags:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="494"/>
+        <location filename="tcpservicedialog_q.ui" line="529"/>
         <source>Option &quot;established&quot; can be used if supported
 by the target firewall platform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="498"/>
+        <location filename="tcpservicedialog_q.ui" line="533"/>
         <source>Established</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="tcpservicedialog_q.ui" line="205"/>
+        <source>QGroupBox {
+    margin-top: 0px;
+<byte value="x9"/>padding-top: 1ex;
+    padding-bottom: 0px;
+}
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="tcpservicedialog_q.ui" line="688"/>
+        <source>QGroupBox {
+<byte value="x9"/>margin-top: 1ex;
+<byte value="x9"/>padding-top: 1ex;
+<byte value="x9"/>padding-bottom: 0px;
+<byte value="x9"/>padding-left: 2px;
+}
+
+QGroupBox::title {  
+<byte value="x9"/>subcontrol-origin: margin;
+<byte value="x9"/>subcontrol-position: top left;
+<byte value="x9"/>padding: 0 3px;
+}
+
+QSpinBox {
+<byte value="x9"/>margin: 0px;
+<byte value="x9"/>padding: 0px;
+}
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12738,7 +12072,7 @@ by the target firewall platform</source>
         <translation>UDP</translation>
     </message>
     <message>
-        <location filename="udpservicedialog_q.ui" line="159"/>
+        <location filename="udpservicedialog_q.ui" line="186"/>
         <source>Name:</source>
         <translation>Название:</translation>
     </message>
@@ -12753,34 +12087,56 @@ by the target firewall platform</source>
         <translation type="obsolete">Применить</translation>
     </message>
     <message>
-        <location filename="udpservicedialog_q.ui" line="337"/>
+        <location filename="udpservicedialog_q.ui" line="443"/>
         <source>Comment:</source>
         <translation>Комментарий:</translation>
     </message>
     <message>
-        <location filename="udpservicedialog_q.ui" line="267"/>
+        <location filename="udpservicedialog_q.ui" line="361"/>
         <source>Destination Port Range</source>
         <translation>Диапазон портов назначения</translation>
     </message>
     <message>
-        <location filename="udpservicedialog_q.ui" line="279"/>
+        <location filename="udpservicedialog_q.ui" line="385"/>
         <source>Start:</source>
         <translation>Начало:</translation>
     </message>
     <message>
-        <location filename="udpservicedialog_q.ui" line="302"/>
+        <location filename="udpservicedialog_q.ui" line="408"/>
         <source>End:</source>
         <translation>Конец:</translation>
     </message>
     <message>
-        <location filename="udpservicedialog_q.ui" line="206"/>
+        <location filename="udpservicedialog_q.ui" line="268"/>
         <source>Source Port Range</source>
         <translation>Диапазон портов источника</translation>
     </message>
     <message>
-        <location filename="udpservicedialog_q.ui" line="78"/>
+        <location filename="udpservicedialog_q.ui" line="99"/>
         <source>UDP Service</source>
         <translation>UDP сервис</translation>
+    </message>
+    <message>
+        <location filename="udpservicedialog_q.ui" line="341"/>
+        <source>QGroupBox {
+<byte value="x9"/>margin-top: 1ex;
+<byte value="x9"/>padding-top: 1ex;
+<byte value="x9"/>padding-bottom: 0px;
+<byte value="x9"/>padding-left: 2px;
+}
+
+QGroupBox::title {  
+<byte value="x9"/>subcontrol-origin: margin;
+<byte value="x9"/>subcontrol-position: top left;
+<byte value="x9"/>padding: 0 3px;
+}
+
+QSpinBox {
+<byte value="x9"/>margin: 0px;
+<byte value="x9"/>padding: 0px;
+}
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -13215,37 +12571,47 @@ by the target firewall platform</source>
     <message>
         <location filename="findwhereusedwidget_q.ui" line="109"/>
         <source>Parent Object</source>
-        <translation>Родительский объект</translation>
+        <translation type="obsolete">Родительский объект</translation>
     </message>
     <message>
-        <location filename="findwhereusedwidget_q.ui" line="114"/>
+        <location filename="findwhereusedwidget_q.ui" line="104"/>
         <source>Details</source>
         <translation>Подробности</translation>
     </message>
     <message>
-        <location filename="findwhereusedwidget_q.ui" line="21"/>
+        <location filename="findwhereusedwidget_q.ui" line="19"/>
         <source>Form1</source>
         <translation>Форма1</translation>
     </message>
     <message>
-        <location filename="findwhereusedwidget_q.ui" line="33"/>
+        <location filename="findwhereusedwidget_q.ui" line="28"/>
         <source>Object:</source>
         <translation>Объект:</translation>
     </message>
     <message>
-        <location filename="findwhereusedwidget_q.ui" line="93"/>
+        <location filename="findwhereusedwidget_q.ui" line="81"/>
         <source>Object is found in :</source>
         <translation>Объект обнаружен в:</translation>
     </message>
     <message>
-        <location filename="findwhereusedwidget_q.ui" line="156"/>
+        <location filename="findwhereusedwidget_q.ui" line="144"/>
         <source>Find</source>
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="findwhereusedwidget_q.ui" line="163"/>
+        <location filename="findwhereusedwidget_q.ui" line="151"/>
         <source>Close</source>
         <translation>Закрыть</translation>
+    </message>
+    <message>
+        <location filename="findwhereusedwidget_q.ui" line="94"/>
+        <source>Object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="findwhereusedwidget_q.ui" line="99"/>
+        <source>Parent</source>
+        <translation type="unfinished">Наследует от</translation>
     </message>
 </context>
 <context>
@@ -13347,7 +12713,7 @@ by the target firewall platform</source>
         <translation type="obsolete">Не найден файл %1.</translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="179"/>
+        <location filename="instDialog_compile.cpp" line="180"/>
         <source>&amp;Continue</source>
         <translation>Продолжить</translation>
     </message>
@@ -13445,12 +12811,12 @@ Copying %1 -&gt; %2:%3
 </translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="123"/>
+        <location filename="instDialog_compile.cpp" line="124"/>
         <source>Error: Failed to start program</source>
         <translation>Ошибка: не могу запустить программу</translation>
     </message>
     <message>
-        <location filename="instDialog.cpp" line="413"/>
+        <location filename="instDialog.cpp" line="414"/>
         <source>Policy installer uses Secure Shell to communicate with the firewall.
 Please configure directory path to the secure shell utility 
 installed on your machine using Preferences dialog</source>
@@ -13464,7 +12830,7 @@ installed on your machine using Preferences dialog</source>
         <translation type="obsolete">Набор правил для межсетевого экрана не скомпилирован.</translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="178"/>
+        <location filename="instDialog_compile.cpp" line="179"/>
         <source>Firewall platform is not specified in this object.
 Can&apos;t compile firewall policy.</source>
         <translation>Не указан межесетевой экран для этого объекта.
@@ -13488,12 +12854,12 @@ Can&apos;t compile firewall policy.</source>
         <translation type="obsolete">Пропущен</translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="84"/>
+        <location filename="instDialog_compile.cpp" line="85"/>
         <source>Compiling ...</source>
         <translation>Компиляция ...</translation>
     </message>
     <message>
-        <location filename="instDialog_installer.cpp" line="138"/>
+        <location filename="instDialog_installer.cpp" line="192"/>
         <source>Failure</source>
         <translation>Ошибка</translation>
     </message>
@@ -13543,7 +12909,7 @@ Can&apos;t compile firewall policy.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="71"/>
+        <location filename="instDialog_compile.cpp" line="72"/>
         <source>Compiling rule sets for firewall: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -14021,87 +13387,87 @@ You can revert to the last working configuration by rebooting the firewall.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="48"/>
+        <location filename="iosacladvanceddialog_q.ui" line="1067"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="65"/>
+        <location filename="iosacladvanceddialog_q.ui" line="1084"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="80"/>
+        <location filename="iosacladvanceddialog_q.ui" line="29"/>
         <source>Compiler Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="95"/>
+        <location filename="iosacladvanceddialog_q.ui" line="41"/>
         <source>Output file name (if left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot;)</source>
         <translation type="unfinished">Имя файла (по-умолчанию, если пустое, имя будет состоять из названия объекта межсетевого экрана и расширения &apos;.fw&apos;)</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="130"/>
+        <location filename="iosacladvanceddialog_q.ui" line="120"/>
         <source>Policy Compiler Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="148"/>
+        <location filename="iosacladvanceddialog_q.ui" line="138"/>
         <source>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes &apos;any&apos; after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="151"/>
+        <location filename="iosacladvanceddialog_q.ui" line="141"/>
         <source>Ignore empty groups in rules</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="158"/>
+        <location filename="iosacladvanceddialog_q.ui" line="148"/>
         <source>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="161"/>
+        <location filename="iosacladvanceddialog_q.ui" line="151"/>
         <source>Detect rule shadowing in the policy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="224"/>
+        <location filename="iosacladvanceddialog_q.ui" line="214"/>
         <source>Script Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="248"/>
+        <location filename="iosacladvanceddialog_q.ui" line="238"/>
         <source>Insert comments into generated IOSACL configuration file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="251"/>
+        <location filename="iosacladvanceddialog_q.ui" line="241"/>
         <source>Comment the code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="258"/>
+        <location filename="iosacladvanceddialog_q.ui" line="248"/>
         <source>Group IOSACL commands in the script so that similar commands appear next to each other, just like IOSACL does it when you use &apos;show config&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="261"/>
+        <location filename="iosacladvanceddialog_q.ui" line="251"/>
         <source>Group similar commands together</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="289"/>
+        <location filename="iosacladvanceddialog_q.ui" line="279"/>
         <source>Clear all access lists then install new ones. This method may interrupt access to the firewall if you manage it remotely via IPSEC tunnel. This is the way access lists were generated in older versions of Firewall Builder for IOSACL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="308"/>
+        <location filename="iosacladvanceddialog_q.ui" line="298"/>
         <source>Do not clear access lists and object group, just generate IOSACL commands for the new ones. Use this optin if you have your own policy installation scripts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="340"/>
+        <location filename="iosacladvanceddialog_q.ui" line="330"/>
         <source>&quot;Safety net&quot; method:
 
 First, create temporary access list to permit connections from the management subnet specified below to the firewall and assign it to outside interface. This temporary ACL helps maintain session between management station and the firewall while access lists are reloaded in case connection comes over IPSEC tunnel. Then clear permanent lists, recreate them and assign to interfaces. This method ensures that remote access to the firewall is maintained without interruption  at a cost of slightly larger configuration.</source>
@@ -14111,161 +13477,190 @@ First, create temporary access list to permit connections from the management su
 правил, временные списки доступа удаляются. Этот метод гарантирует удаленный доступ к межсетевому экрану без прерываний, за счет немного большего размера конфигурации.</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="370"/>
+        <location filename="iosacladvanceddialog_q.ui" line="360"/>
         <source>Temporary access list should permit access from this address or subnet (use prefix notation to specify subnet, e.g. 192.0.2.0/24):</source>
         <translation type="unfinished">Временный список доступа должен разрешить доступ с указанного адреса узла или подсети (используйте нотацию с пркфикосм для указания подсети, например - 10.0.0.0/24):</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="483"/>
+        <location filename="iosacladvanceddialog_q.ui" line="473"/>
         <source>Installer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="607"/>
+        <location filename="iosacladvanceddialog_q.ui" line="597"/>
         <source>External install script</source>
         <translation type="unfinished">Внешний скрипт для установки</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="624"/>
+        <location filename="iosacladvanceddialog_q.ui" line="614"/>
         <source>Policy install script (using built-in installer if this field is blank):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="663"/>
+        <location filename="iosacladvanceddialog_q.ui" line="653"/>
         <source>Command line options for the script:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="489"/>
+        <location filename="iosacladvanceddialog_q.ui" line="479"/>
         <source>Built-in installer</source>
         <translation type="unfinished">Встроенный установщик</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="521"/>
+        <location filename="iosacladvanceddialog_q.ui" line="511"/>
         <source>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="498"/>
+        <location filename="iosacladvanceddialog_q.ui" line="488"/>
         <source>User name used to authenticate to the firewall (leave this empty if you use putty session):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="546"/>
+        <location filename="iosacladvanceddialog_q.ui" line="536"/>
         <source>Additional command line parameters for ssh</source>
         <translation type="unfinished">Дполнительные опции командной строки для ssh</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="714"/>
+        <location filename="iosacladvanceddialog_q.ui" line="704"/>
         <source>Prolog/Epilog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="783"/>
+        <location filename="iosacladvanceddialog_q.ui" line="773"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="755"/>
+        <location filename="iosacladvanceddialog_q.ui" line="745"/>
         <source>The following commands will be added verbatim on top of generated configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="809"/>
+        <location filename="iosacladvanceddialog_q.ui" line="799"/>
         <source>The following commands will be added verbatim after generated configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="832"/>
+        <location filename="iosacladvanceddialog_q.ui" line="822"/>
         <source>Logging</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="845"/>
+        <location filename="iosacladvanceddialog_q.ui" line="835"/>
         <source>Syslog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="857"/>
+        <location filename="iosacladvanceddialog_q.ui" line="847"/>
         <source>Syslog host (name or IP address):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="870"/>
+        <location filename="iosacladvanceddialog_q.ui" line="860"/>
         <source>syslog facility:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="883"/>
+        <location filename="iosacladvanceddialog_q.ui" line="873"/>
         <source>syslog level (&apos;logging trap&apos;):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="928"/>
+        <location filename="iosacladvanceddialog_q.ui" line="918"/>
         <source>The logging timestamp command requires that the clock command be set.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="941"/>
+        <location filename="iosacladvanceddialog_q.ui" line="931"/>
         <source>Enable logging timestamps on syslog file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="951"/>
+        <location filename="iosacladvanceddialog_q.ui" line="941"/>
         <source>Other logging destinations and levels:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="960"/>
+        <location filename="iosacladvanceddialog_q.ui" line="950"/>
         <source>Internal buffer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="967"/>
+        <location filename="iosacladvanceddialog_q.ui" line="957"/>
         <source>Console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="171"/>
+        <location filename="iosacladvanceddialog_q.ui" line="161"/>
         <source>Always permit ssh access from the management
 workstation with this address:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="576"/>
+        <location filename="iosacladvanceddialog_q.ui" line="566"/>
         <source>Additional command line parameters for scp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="838"/>
+        <location filename="iosacladvanceddialog_q.ui" line="828"/>
         <source>Generate logging commands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="1000"/>
+        <location filename="iosacladvanceddialog_q.ui" line="990"/>
         <source>IPv6</source>
         <translation type="unfinished">IPv6</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="1006"/>
+        <location filename="iosacladvanceddialog_q.ui" line="996"/>
         <source>The order in which ipv4 and ipv6 rules should be generated:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="1027"/>
+        <location filename="iosacladvanceddialog_q.ui" line="1017"/>
         <source>IPv4 before IPv6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="1032"/>
+        <location filename="iosacladvanceddialog_q.ui" line="1022"/>
         <source>IPv6 before IPv4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="iosacladvanceddialog_q.ui" line="82"/>
+        <source>Compiler creates multiple access lists from the same policy,
+two for each interface: one for inbound and another for
+outbound. If the policy is written in a such way that no rule
+can possibly be associated with an interface, this interface
+gets no access list at all. Also, interfaces marked as 
+&quot;unprotected&quot; never get access list regardless of how the policy
+rules are designed.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="iosacladvanceddialog_q.ui" line="92"/>
+        <source>Generate separate access list for each interface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="iosacladvanceddialog_q.ui" line="99"/>
+        <source>Compiler creates one access list and assigns it to all
+interfaces.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="iosacladvanceddialog_q.ui" line="104"/>
+        <source>Create one access list and attach it to all interfaces</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ipfAdvancedDialog</name>
     <message>
-        <location filename="ipfAdvancedDialog.cpp" line="187"/>
+        <location filename="ipfAdvancedDialog.cpp" line="189"/>
         <source>Script Editor</source>
         <translation>Редактор скриптов</translation>
     </message>
@@ -14288,22 +13683,22 @@ workstation with this address:</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="204"/>
+        <location filename="ipfadvanceddialog_q.ui" line="218"/>
         <source>Compiler</source>
         <translation>Компилятор</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="213"/>
+        <location filename="ipfadvanceddialog_q.ui" line="227"/>
         <source>Compiler:</source>
         <translation>Компилятор:</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="226"/>
+        <location filename="ipfadvanceddialog_q.ui" line="240"/>
         <source>There are two ways compiler can generate code for rules in the Global Policy: it can either create two ipf rules to control both incoming and outgoing packets for each rule, or it can create only one ipf rule for incoming packets and permit all outgoing ones.You get more control over the packets crossing the firewall in the first mode, but generated script is going to be smaller if you choose the second.</source>
         <translation>Компиляция правил глобальной политики может проходить двумя путями: или путем создания двух правил межсетевого экрана для входящих и исходящих пакетов соответственно для каждого правила политики или путем создания одного правила для входящих пакетов (в этом случае все исходящие пакеты будут разрешены). В первом случае вы лучше контролируете межсетевой экран, во втором - уменьшается создаваемый скрипт.</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="239"/>
+        <location filename="ipfadvanceddialog_q.ui" line="253"/>
         <source>Masquerade returned icmp as being from original
 packet&apos;s destination</source>
         <translation>Отправлять ICMP пакеты используя маскарадинг,
@@ -14311,47 +13706,47 @@ packet&apos;s destination</source>
 оригинального узла назначения</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="256"/>
+        <location filename="ipfadvanceddialog_q.ui" line="270"/>
         <source>Generate both &apos;in&apos; and &apos;out&apos; rules</source>
         <translation>Генерировать правила как входящие, так и исходящие</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="263"/>
+        <location filename="ipfadvanceddialog_q.ui" line="277"/>
         <source>Pass all outgoing</source>
         <translation>Разрешить все исходящие</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="273"/>
+        <location filename="ipfadvanceddialog_q.ui" line="287"/>
         <source>Accept TCP sessions opened prior to firewall restart</source>
         <translation>Не сбрасывать TCP сессии открытые до загрузки нового набора правил межсетевого экрана</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="280"/>
+        <location filename="ipfadvanceddialog_q.ui" line="294"/>
         <source>Find and eliminate duplicate rules</source>
         <translation>Находить и упрощать все дублирующие правила</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="290"/>
+        <location filename="ipfadvanceddialog_q.ui" line="304"/>
         <source>Detect rule shadowing in policy</source>
         <translation>Находить &apos;затенение&apos; правил в наборе</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="287"/>
+        <location filename="ipfadvanceddialog_q.ui" line="301"/>
         <source>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</source>
         <translation>Затенение происходит, когда одно правило идущее ранее делает одно или несколько следующующих правил не рабочими. Это происходит из-за того, что пакеты, которые должны попадать под условия следующих правил будут попадать под условие первого правило.</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="300"/>
+        <location filename="ipfadvanceddialog_q.ui" line="314"/>
         <source>Ignore empty groups in rules</source>
         <translation>Игнорировать пустые группы в правилах</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="297"/>
+        <location filename="ipfadvanceddialog_q.ui" line="311"/>
         <source>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes &apos;any&apos; after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</source>
         <translation>При выключении этой опции компилятор будет воспринимать пустые группы в наборе правил как ошибку, а при включении - будет удалять при компиляции пустые группы из всех правил. Во втором случае если после удаления группы правило окажется пустым в том месте, где была группа (окажется с полем любой), то такое правило будет игнорироваться. Используйте эту опцию очень внимательно и осторожно!</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="355"/>
+        <location filename="ipfadvanceddialog_q.ui" line="369"/>
         <source>Always permit ssh access from
 the management workstation
 with this address:</source>
@@ -14360,7 +13755,7 @@ with this address:</source>
 рабочей станции с адресом:</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="370"/>
+        <location filename="ipfadvanceddialog_q.ui" line="384"/>
         <source>Default action on &apos;Reject&apos;:</source>
         <translation type="unfinished">ICMP protocol unreachable</translation>
     </message>
@@ -14395,12 +13790,12 @@ with this address:</source>
         <translation type="obsolete">TCP RST</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="476"/>
+        <location filename="ipfadvanceddialog_q.ui" line="490"/>
         <source>Command line options for the compiler:</source>
         <translation>Опции командной строки для компилятора:</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="495"/>
+        <location filename="ipfadvanceddialog_q.ui" line="509"/>
         <source>Output file name (if left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot;)</source>
         <translation>Имя файла (по-умолчанию, если пустое, имя будет состоять из названия объекта межсетевого экрана и расширения &apos;.fw&apos;)</translation>
     </message>
@@ -14410,7 +13805,7 @@ with this address:</source>
         <translation>Расширенная поддержка протоколов</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="190"/>
+        <location filename="ipfadvanceddialog_q.ui" line="204"/>
         <source>Some protocols involve multiple associated network connections. Firewall can keep track of such connections automatically if you activate one or all of the following options:</source>
         <translation>Некоторые протоколы допускают наличие нескольких взаимосвязанных соединений. Межсетевой экран может отслеживать такие соединения автоматически, если вы включите одну или несколько из следующих опций:</translation>
     </message>
@@ -14440,178 +13835,188 @@ with this address:</source>
         <translation>Использовать rcmd прокси для NAT правил</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="539"/>
+        <location filename="ipfadvanceddialog_q.ui" line="553"/>
         <source>Installer</source>
         <translation>Установщик</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="775"/>
+        <location filename="ipfadvanceddialog_q.ui" line="789"/>
         <source>Command line options for the script:</source>
         <translation>Опции командной строки для скрипта:</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="736"/>
+        <location filename="ipfadvanceddialog_q.ui" line="750"/>
         <source>Policy install script (using built-in installer if this field is blank):</source>
         <translation>Скрипт установки набора правил (не заполняйте для использования встроенного скрипта установки):</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="551"/>
+        <location filename="ipfadvanceddialog_q.ui" line="565"/>
         <source>Directory on the firewall where configuration files should be installed</source>
         <translation>Каталог на межсетевом экране, в который должны быть установлены файлы конфигурации</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="574"/>
+        <location filename="ipfadvanceddialog_q.ui" line="588"/>
         <source>User name used to authenticate to the firewall (leave this empty if you use putty session):</source>
         <translation>Имя пользователя, используемое для аутентификации на межсетевом экране (не заполняйте, если используете putty сессию):</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="597"/>
+        <location filename="ipfadvanceddialog_q.ui" line="611"/>
         <source>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</source>
         <translation>Альтернативный адрес или имя межсетевого экрана для связи с ним (в Windows поддерживаются названия сессий putty)</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="620"/>
+        <location filename="ipfadvanceddialog_q.ui" line="634"/>
         <source>A command that installer should execute on the firewall in order to activate the policy (if this field is blank, installer runs firewall script in the directory specified above; it uses sudo if user name is not &apos;root&apos;)</source>
         <translation>Команда, используемая установщиком для загрузки нового набора правил (если это поле пустое, установщик будет выполнять скрипт межсетевого экрана в указанном выше каталоге, он также будет использовать sudo, если имя пользователя не root)</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="952"/>
+        <location filename="ipfadvanceddialog_q.ui" line="966"/>
         <source>Logging</source>
         <translation>Запись в журнал (протоколирование)</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1025"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1039"/>
         <source>Log facility:</source>
         <translation>Log facility:</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1038"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1052"/>
         <source>Log level:</source>
         <translation>Log level:</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1051"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1065"/>
         <source>Log packet body</source>
         <translation>Протоколировать тело пакета</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1058"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1072"/>
         <source>Block if can not log</source>
         <translation>Блокировать при невозможности протоколировать</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1082"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1096"/>
         <source>Script Options</source>
         <translation>Опции скрипта</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1107"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1121"/>
         <source>Add virtual addresses for NAT</source>
         <translation>Добавлять виртуальные адреса для NAT</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1114"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1128"/>
         <source>Configure Interfaces of the firewall machine</source>
         <translation>Конфигурировать интерфейсы межсетевого экрана</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1121"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1135"/>
         <source>Turn debugging on in generated script</source>
         <translation>Включить режим отладки в генерируемом скрипте</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1131"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1145"/>
         <source>Optimization</source>
         <translation>Оптимизация</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1128"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1142"/>
         <source>If this option is on, policy compiler adds virtual addresses to the interfaces to make the firewall answer to ARP queries for addresses used in NAT rules.</source>
         <translation>При включении этой опции, компилятор добавит виртуальные адреса к интерфейсам межсетевого экрана для того, чтобы он отвечал на ARP-запросы адресов, используемых в правилах сетевой трансляции адресов (NAT).</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1138"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1152"/>
         <source>These options enable auxiliary sections in the generated shell script.</source>
         <translation>Эти опции подключают внешние секции в генерируемом shell-скрипте.</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="826"/>
+        <location filename="ipfadvanceddialog_q.ui" line="840"/>
         <source>Prolog/Epilog</source>
         <translation>Prolog/Epilog</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="902"/>
+        <location filename="ipfadvanceddialog_q.ui" line="916"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="867"/>
+        <location filename="ipfadvanceddialog_q.ui" line="881"/>
         <source>The following commands will be added verbatim on top of generated configuration</source>
         <translation>Следующие команду будут добавлены в начало генерируемого скрипта конфигурации</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="935"/>
+        <location filename="ipfadvanceddialog_q.ui" line="949"/>
         <source>The following commands will be added verbatim after generated configuration</source>
         <translation>Следующие команду будут добавлены в конец генерируемого скрипта конфигурации</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="722"/>
+        <location filename="ipfadvanceddialog_q.ui" line="736"/>
         <source>External install script</source>
         <translation>Внешний скрипт для установки</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="545"/>
+        <location filename="ipfadvanceddialog_q.ui" line="559"/>
         <source>Built-in installer</source>
         <translation>Встроенный установщик</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="645"/>
+        <location filename="ipfadvanceddialog_q.ui" line="659"/>
         <source>Additional command line parameters for ssh</source>
         <translation>Дполнительные опции командной строки для ssh</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1183"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1197"/>
         <source>Determine addresses of dynamic interfaces at run time</source>
         <translation>Определять адреса динамических интерфейсов во время запуска</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="170"/>
+        <location filename="ipfadvanceddialog_q.ui" line="184"/>
         <source>Use PPTP proxy in NAT rules</source>
         <translation>Использовать pptp прокси для NAT правил</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="177"/>
+        <location filename="ipfadvanceddialog_q.ui" line="191"/>
         <source>Use IRC proxy in NAT rules for DCC</source>
         <translation>Использовать irc прокси для DCC в NAT правилах</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="675"/>
+        <location filename="ipfadvanceddialog_q.ui" line="689"/>
         <source>Additional command line parameters for scp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1191"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1205"/>
         <source>IPv6</source>
         <translation type="unfinished">IPv6</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1197"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1211"/>
         <source>Enable IPv6 support</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1204"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1218"/>
         <source>The order in which ipv4 and ipv6 rules should be generated:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1225"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1239"/>
         <source>IPv4 before IPv6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1230"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1244"/>
         <source>IPv6 before IPv4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipfadvanceddialog_q.ui" line="154"/>
+        <source>Use Kerberos rcmd proxy in NAT rules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipfadvanceddialog_q.ui" line="161"/>
+        <source>Use Kerberos ekshell proxy in NAT rules</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -14837,12 +14242,12 @@ known sessions on top of the policy (action &apos;check-state&apos;)</source>
         <translation>iptables: расширенные настройки</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1285"/>
+        <location filename="iptadvanceddialog_q.ui" line="1292"/>
         <source>&amp;OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1301"/>
+        <location filename="iptadvanceddialog_q.ui" line="1308"/>
         <source>&amp;Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -14857,7 +14262,7 @@ known sessions on top of the policy (action &apos;check-state&apos;)</source>
         <translation>Опции командной строки для компилятора:</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="343"/>
+        <location filename="iptadvanceddialog_q.ui" line="350"/>
         <source>Always permit ssh access from
 the management workstation
 with this address:</source>
@@ -14896,7 +14301,7 @@ with this address:</source>
         <translation type="unfinished">Блокировать пакеты, которые не относятся к разрешенным соединениям</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="275"/>
+        <location filename="iptadvanceddialog_q.ui" line="282"/>
         <source>Clamp MSS to MTU</source>
         <translation>Выравнивать MSS до MTU</translation>
     </message>
@@ -14906,7 +14311,7 @@ with this address:</source>
         <translation>Разрешить NAT для локальных соединений</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="288"/>
+        <location filename="iptadvanceddialog_q.ui" line="295"/>
         <source>Ignore empty groups in rules</source>
         <translation>Игнорировать пустые группы в правилах</translation>
     </message>
@@ -14961,77 +14366,77 @@ with this address:</source>
         <translation type="obsolete">TCP RST</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="368"/>
+        <location filename="iptadvanceddialog_q.ui" line="375"/>
         <source>Default action on &apos;Reject&apos;:</source>
         <translation>Уведомление по-умолчанию для действия &apos;Блокировать с уведомлением&apos;:</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="402"/>
+        <location filename="iptadvanceddialog_q.ui" line="409"/>
         <source>Installer</source>
         <translation>Установщик</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="622"/>
+        <location filename="iptadvanceddialog_q.ui" line="629"/>
         <source>Command line options for the script:</source>
         <translation>Опции командной строки для скрипта:</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="414"/>
+        <location filename="iptadvanceddialog_q.ui" line="421"/>
         <source>Directory on the firewall where script should be installed</source>
         <translation>Каталог на межсетевом экране, в которые должны быть установлены файлы конфигурации</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="437"/>
+        <location filename="iptadvanceddialog_q.ui" line="444"/>
         <source>User name used to authenticate to the firewall (leave this empty if you use putty session):</source>
         <translation>Имя пользователя, используемое для аутентификации на межсетевом экране (не заполняйте, если используете putty сессию):</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="460"/>
+        <location filename="iptadvanceddialog_q.ui" line="467"/>
         <source>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</source>
         <translation>Альтернативный адрес или имя межсетевого экрана для связи с ним (в Windows поддерживаются названия сессий putty)</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="583"/>
+        <location filename="iptadvanceddialog_q.ui" line="590"/>
         <source>Policy install script (using built-in installer if this field is blank):</source>
         <translation>Скрипт установки набора правил (не заполняйте для использования встроенного скрипта установки):</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="483"/>
+        <location filename="iptadvanceddialog_q.ui" line="490"/>
         <source>A command that installer should execute on the firewall in order to activate the policy (if this field is blank, installer runs firewall script in the directory specified above; it uses sudo if user name is not &apos;root&apos;)</source>
         <translation>Команда, используемая установщиком для загрузки нового набора правил (если это поле пустое, установщик будет выполнять скрипт межсетевого экрана в указанном выше каталоге, он также будет использовать sudo, если имя пользователя не root)</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="804"/>
+        <location filename="iptadvanceddialog_q.ui" line="811"/>
         <source>Logging</source>
         <translation>Запись в журнал (протоколирование)</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="822"/>
+        <location filename="iptadvanceddialog_q.ui" line="829"/>
         <source>use ULOG</source>
         <translation>исользовать ULOG</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="829"/>
+        <location filename="iptadvanceddialog_q.ui" line="836"/>
         <source>use LOG</source>
         <translation>исользовать LOG</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="849"/>
+        <location filename="iptadvanceddialog_q.ui" line="856"/>
         <source>log TCP seq. numbers</source>
         <translation>протоколировать номера последовательностей TCP</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="856"/>
+        <location filename="iptadvanceddialog_q.ui" line="863"/>
         <source>log IP options</source>
         <translation>Протоколировать опции IP</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="863"/>
+        <location filename="iptadvanceddialog_q.ui" line="870"/>
         <source>use numeric syslog levels</source>
         <translation>использовать цифры-номера уровней syslog</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="870"/>
+        <location filename="iptadvanceddialog_q.ui" line="877"/>
         <source>Log level:</source>
         <translation>Log level:</translation>
     </message>
@@ -15071,32 +14476,32 @@ with this address:</source>
         <translation type="obsolete">debug</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="883"/>
+        <location filename="iptadvanceddialog_q.ui" line="890"/>
         <source>log TCP options</source>
         <translation>Протоколировать опции TCP</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="907"/>
+        <location filename="iptadvanceddialog_q.ui" line="914"/>
         <source>cprange</source>
         <translation>cprange</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="924"/>
+        <location filename="iptadvanceddialog_q.ui" line="931"/>
         <source>queue threshold:</source>
         <translation>queue threshold:</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="934"/>
+        <location filename="iptadvanceddialog_q.ui" line="941"/>
         <source>netlink group:</source>
         <translation>группа netlink:</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1002"/>
+        <location filename="iptadvanceddialog_q.ui" line="1009"/>
         <source>Log prefix:</source>
         <translation>Log prefix:</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1019"/>
+        <location filename="iptadvanceddialog_q.ui" line="1026"/>
         <source>Logging limit:</source>
         <translation>Ограничение протоколирования:</translation>
     </message>
@@ -15121,7 +14526,7 @@ with this address:</source>
         <translation type="obsolete">в секунду</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1046"/>
+        <location filename="iptadvanceddialog_q.ui" line="1053"/>
         <source>Activate logging in all rules
 (overrides rule options, use for debugging)</source>
         <translation>Включить протоколирование для всех правил
@@ -15133,32 +14538,32 @@ with this address:</source>
         <translation type="obsolete">Опции скрипта</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1096"/>
+        <location filename="iptadvanceddialog_q.ui" line="1103"/>
         <source>These options enable auxiliary sections in the generated shell script.</source>
         <translation>Эти опции подключают внешние секции в генерируемом shell-скрипте.</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1179"/>
+        <location filename="iptadvanceddialog_q.ui" line="1186"/>
         <source>Configure Interfaces of the firewall machine</source>
         <translation>Конфигурировать интерфейсы межсетевого экрана</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1135"/>
+        <location filename="iptadvanceddialog_q.ui" line="1142"/>
         <source>Add virtual addresses for NAT</source>
         <translation>Добавлять виртуальные адреса для NAT</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1172"/>
+        <location filename="iptadvanceddialog_q.ui" line="1179"/>
         <source>Turn debugging on in generated script</source>
         <translation>Включить режим отладки в генерируемом скрипте</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1165"/>
+        <location filename="iptadvanceddialog_q.ui" line="1172"/>
         <source>Verify interfaces before loading firewall policy</source>
         <translation>Проверять наличие необходимых интерфейсов межсетевого экрана перед загрузкой набора правил</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1158"/>
+        <location filename="iptadvanceddialog_q.ui" line="1165"/>
         <source>Load modules</source>
         <translation>Загружать необходимые модули ядра</translation>
     </message>
@@ -15170,109 +14575,118 @@ no known connection</source>
 к известным соединениям</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="673"/>
+        <location filename="iptadvanceddialog_q.ui" line="680"/>
         <source>Prolog/Epilog</source>
         <translation>Prolog/Epilog</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="758"/>
+        <location filename="iptadvanceddialog_q.ui" line="765"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="717"/>
+        <location filename="iptadvanceddialog_q.ui" line="724"/>
         <source>The following commands will be added verbatim after generated configuration</source>
         <translation>Следующие команду будут добавлены в конец генерируемого скрипта конфигурации</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="745"/>
+        <location filename="iptadvanceddialog_q.ui" line="752"/>
         <source>The following commands will be added verbatim on top of generated configuration</source>
         <translation>Следующие команду будут добавлены в начало генерируемого скрипта конфигурации</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="765"/>
+        <location filename="iptadvanceddialog_q.ui" line="772"/>
         <source>Insert prolog script </source>
         <translation>Вставить скрипт пролога</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="782"/>
+        <location filename="iptadvanceddialog_q.ui" line="789"/>
         <source>on top of the script</source>
         <translation>в начало скрипта</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="787"/>
+        <location filename="iptadvanceddialog_q.ui" line="794"/>
         <source>after interface configuration</source>
         <translation>после конфигурирования интерфейсов</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="792"/>
+        <location filename="iptadvanceddialog_q.ui" line="799"/>
         <source>after policy reset</source>
         <translation>после удаления страрого набора правил</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1128"/>
+        <location filename="iptadvanceddialog_q.ui" line="1135"/>
         <source>Use iptables-restore to activate policy</source>
         <translation>Использовать команду iptables-restore для включения набора правил</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1125"/>
+        <location filename="iptadvanceddialog_q.ui" line="1132"/>
         <source>iptables-restore replaces firewall policy in one atomic transaction</source>
         <translation>iptables-restore заменяет набор правил межсетевого экрана единой атомарной транзакцией</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="569"/>
+        <location filename="iptadvanceddialog_q.ui" line="576"/>
         <source>External install script</source>
         <translation>Внешний скрипт для установки</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="408"/>
+        <location filename="iptadvanceddialog_q.ui" line="415"/>
         <source>Built-in installer</source>
         <translation>Встроенный установщик</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="508"/>
+        <location filename="iptadvanceddialog_q.ui" line="515"/>
         <source>Additional command line parameters for ssh</source>
         <translation>Дполнительные опции командной строки для ssh</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="394"/>
+        <location filename="iptadvanceddialog_q.ui" line="401"/>
         <source>Make Tag and Classify actions terminating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="538"/>
+        <location filename="iptadvanceddialog_q.ui" line="545"/>
         <source>Additional command line parameters for scp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1087"/>
+        <location filename="iptadvanceddialog_q.ui" line="1094"/>
         <source>Script</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1203"/>
+        <location filename="iptadvanceddialog_q.ui" line="1210"/>
         <source>IPv6</source>
         <translation type="unfinished">IPv6</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1209"/>
+        <location filename="iptadvanceddialog_q.ui" line="1216"/>
         <source>The order in which ipv4 and ipv6 rules should be generated:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1217"/>
+        <location filename="iptadvanceddialog_q.ui" line="1224"/>
         <source>IPv4 before IPv6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1222"/>
+        <location filename="iptadvanceddialog_q.ui" line="1229"/>
         <source>IPv6 before IPv4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1262"/>
+        <location filename="iptadvanceddialog_q.ui" line="1269"/>
         <source>Help</source>
         <translation type="unfinished">Справка</translation>
+    </message>
+    <message>
+        <location filename="iptadvanceddialog_q.ui" line="275"/>
+        <source>This adds a rule on top of the policy with iptables target TCPMSS
+and option --clamp-mss-to-pmtu. Generation of this command is
+version-dependent and also depends on the setting of ip or ipv6 forwarding
+in host settings dialog.
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -15657,57 +15071,57 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
 <context>
     <name>newFirewallDialog</name>
     <message>
-        <location filename="newFirewallDialog.cpp" line="286"/>
+        <location filename="newFirewallDialog.cpp" line="290"/>
         <source>Missing SNMP community string.</source>
         <translation>Не указана строка SNMP community.</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="306"/>
+        <location filename="newFirewallDialog.cpp" line="310"/>
         <source>Address of %1 could not be obtained via DNS</source>
         <translation>Для имени %1 не может быть получен адрес при помощи DNS запроса</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="576"/>
+        <location filename="newFirewallDialog.cpp" line="584"/>
         <source>Interface: %1 (%2)</source>
         <translation>Интерфейс: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="583"/>
+        <location filename="newFirewallDialog.cpp" line="591"/>
         <source>Dynamic address</source>
         <translation>Динамический адрес</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="585"/>
+        <location filename="newFirewallDialog.cpp" line="593"/>
         <source>Unnumbered interface</source>
         <translation>Интерфейс без адреса</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="642"/>
+        <location filename="newFirewallDialog.cpp" line="650"/>
         <source>Illegal address &apos;%1/%2&apos;</source>
         <translation>Некорректный адрес %1/%2</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="121"/>
+        <location filename="newFirewallDialog.cpp" line="122"/>
         <source>Check option &apos;dynamic address&apos; for the interface that gets its IP address dynamically via DHCP or PPP protocol.</source>
         <translation>Включите опцию &apos;Динамический адрес&apos; для интерфейсов получающих IP адрес динамически. Чаще всего это необходимо для интерфейсов, которые получают адрес через DHCP запрос или используют PPP.</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="122"/>
+        <location filename="newFirewallDialog.cpp" line="123"/>
         <source>Check option &apos;Unnumbered interface&apos; for the interface that does not have an IP address. Examples of interfaces of this kind are those used to terminate PPPoE or VPN tunnels.</source>
         <translation>Включите опцию &apos;Интерфейс без адреса&apos; для интерфейсов не имеющих IP адреса. Чаще всего это необходимо для интерфейсов, которые используются для создания: PPPoE или VPN туннелей, мостов.</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="587"/>
+        <location filename="newFirewallDialog.cpp" line="595"/>
         <source>Bridge port</source>
         <translation>Порт моста</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="130"/>
+        <location filename="newFirewallDialog.cpp" line="131"/>
         <source>FWBuilder template files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="130"/>
+        <location filename="newFirewallDialog.cpp" line="131"/>
         <source>FWBuilder template files (*.xml *.fwb)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15745,22 +15159,22 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
         <translation>Теперь необходимо добавить интерфейсы для создаваемого межсетевого экрана. Это можно сделать автоматически, используя SNMP запрос или вручную. SNMP запрос выполнится только для межсетевых экранов с включенным SNMP сервисом и правильно указанной строкой community (для чтения).</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="257"/>
+        <location filename="newfirewalldialog_q.ui" line="260"/>
         <source>Configure interfaces manually</source>
         <translation>Сконфигурировать интерфейсы вручную</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="267"/>
+        <location filename="newfirewalldialog_q.ui" line="270"/>
         <source>Use SNMP to discover interfaces of the firewall</source>
         <translation>Использовать SNMP запрос для получения конфигурации интерфейсов</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="298"/>
+        <location filename="newfirewalldialog_q.ui" line="301"/>
         <source>Discover Interfaces using SNMP</source>
         <translation>Использовать SNMP запрос для получения конфигурации интерфейсов</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="305"/>
+        <location filename="newfirewalldialog_q.ui" line="308"/>
         <source>SNMP &apos;read&apos; community string:</source>
         <translation>SNMP строка community (для чтения):</translation>
     </message>
@@ -15775,27 +15189,27 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
         <translation type="obsolete">Включите опцию &apos;Динамический адрес&apos; для интерфейсов получающих IP адрес динамически. Чаще всего это необходимо для интерфейсов, которые получают адрес через DHCP запрос или используют PPP.</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="378"/>
+        <location filename="newfirewalldialog_q.ui" line="381"/>
         <source>Click &apos;Next&apos; when done.</source>
         <translation>Для продолжения нажмите &apos;Далее&apos;.</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="488"/>
+        <location filename="newfirewalldialog_q.ui" line="449"/>
         <source>Name:</source>
         <translation>Название:</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="590"/>
+        <location filename="newfirewalldialog_q.ui" line="533"/>
         <source>Label:</source>
         <translation>Метка:</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="523"/>
+        <location filename="newfirewalldialog_q.ui" line="568"/>
         <source>Address:</source>
         <translation>Адрес:</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="646"/>
+        <location filename="newfirewalldialog_q.ui" line="506"/>
         <source>Unnumbered interface</source>
         <translation>Интерфейс без адреса</translation>
     </message>
@@ -15805,42 +15219,42 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
         <translation type="obsolete">Это интерфейс без адреса, то есть он не имеет IP адреса. Включаите эту опцию для интерфейсов, которые используются для создания: PPPoE или VPN туннелей, мостов</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="802"/>
+        <location filename="newfirewalldialog_q.ui" line="779"/>
         <source>Name</source>
         <translation>Название</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="807"/>
+        <location filename="newfirewalldialog_q.ui" line="784"/>
         <source>Label</source>
         <translation>Метка</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="812"/>
+        <location filename="newfirewalldialog_q.ui" line="789"/>
         <source>Address</source>
         <translation>Адрес</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="422"/>
+        <location filename="newfirewalldialog_q.ui" line="431"/>
         <source>Netmask</source>
         <translation>Маска подсети</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="427"/>
+        <location filename="newfirewalldialog_q.ui" line="436"/>
         <source>Dyn</source>
         <translation>Dyn</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="432"/>
+        <location filename="newfirewalldialog_q.ui" line="441"/>
         <source>MAC</source>
         <translation>MAC</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="549"/>
+        <location filename="newfirewalldialog_q.ui" line="638"/>
         <source>MAC:</source>
         <translation>MAC:</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="653"/>
+        <location filename="newfirewalldialog_q.ui" line="513"/>
         <source>Dynamic address</source>
         <translation>Динамический адрес</translation>
     </message>
@@ -15850,67 +15264,67 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
         <translation type="obsolete">Интерфейс получаюет IP адрес динамически. Включаите эту опцию для интерфейсов, которые получают адрес через DHCP запрос или используют PPP</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="536"/>
+        <location filename="newfirewalldialog_q.ui" line="603"/>
         <source>Netmask:</source>
         <translation>Маска подсети:</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="728"/>
+        <location filename="newfirewalldialog_q.ui" line="681"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="715"/>
+        <location filename="newfirewalldialog_q.ui" line="694"/>
         <source>Update</source>
         <translation>Обновить</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="702"/>
+        <location filename="newfirewalldialog_q.ui" line="707"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="365"/>
+        <location filename="newfirewalldialog_q.ui" line="368"/>
         <source>Here you can add or edit interfaces manually. &apos;Name&apos; corresponds to the name of the physical interface, such as &apos;eth0&apos;, &apos;fxp0&apos;, &apos;ethernet0&apos; etc. &apos;Label&apos; is used to mark interface to reflect network topology, e.g. &apos;outside&apos; or &apos;inside&apos;. Label is mandatory for PIX firewall.</source>
         <translation>Здесь вы можете редактировать интерфейсы вручную. &apos;Название&apos; соответствует названию физического интерфейса, например: &apos;eth0&apos; или &apos;fxp0&apos;. Метка маркирует интерфейс для отражения сетевой топологии (например &apos;внешний&apos; или &apos;внутренний&apos;). Указание метки обязательно для межсетевого экрана PIX.</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="787"/>
+        <location filename="newfirewalldialog_q.ui" line="764"/>
         <source>up</source>
         <translation>вверх</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="794"/>
+        <location filename="newfirewalldialog_q.ui" line="771"/>
         <source>down</source>
         <translation>вниз</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="817"/>
+        <location filename="newfirewalldialog_q.ui" line="794"/>
         <source>Security Level</source>
         <translation>Уровень безопасности</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="828"/>
+        <location filename="newfirewalldialog_q.ui" line="805"/>
         <source>Click &apos;Finish&apos; when done.</source>
         <translation>Для продолжения нажмите &apos;Готово&apos;.</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="841"/>
+        <location filename="newfirewalldialog_q.ui" line="818"/>
         <source>In order to be able to build firewall policy properly, Firewall Builder needs information about &apos;security level&apos; of the firewall&apos;s interfaces. Interface that connects it to the Internet is considered &apos;insecure&apos; and has security level &apos;0&apos;, while interface connected to the internal network is supposed to be &apos;secure&apos; (security level &apos;100&apos;). You can arrange interfaces in the order of their security level below.</source>
         <translation>Каждому интерфейсу межсетевого экрана должен быть назначен уровень безопасности в диапазоне от 0 до 100. 0 означает меньшую безопасность, 100 - бОльшую. Нулевой уровень безопасности чаще всего присваивается интерфейсу, подключенному к сети Internet. Распределите интерфейсы в порядке их уровня безопасности ниже.</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="1107"/>
+        <location filename="newfirewalldialog_q.ui" line="1084"/>
         <source>Choose template object in the list and click &apos;Finish&apos; when ready. Template objects use generic interface names that will be iherited by the firewall object you create. You may need to rename them later to reflect real names of interfaces on your firewall machine.</source>
         <translation>Выберите объект - шаблон и нажмите &apos;Готово&apos;. После добавления шаблона необходимо проверить и при необходимости переименовать названия интерфейсов межсетевого экрана.</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="639"/>
+        <location filename="newfirewalldialog_q.ui" line="499"/>
         <source>Bridge port</source>
         <translation>Порт моста</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="660"/>
+        <location filename="newfirewalldialog_q.ui" line="520"/>
         <source>Regular interface</source>
         <translation>Обычный интерфейс с адресом</translation>
     </message>
@@ -15920,22 +15334,22 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="1171"/>
+        <location filename="newfirewalldialog_q.ui" line="1148"/>
         <source>&lt; &amp;Back</source>
         <translation type="unfinished">&lt; Назад</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="1178"/>
+        <location filename="newfirewalldialog_q.ui" line="1155"/>
         <source>&amp;Next &gt;</source>
         <translation type="unfinished">Дальше &gt;</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="1188"/>
+        <location filename="newfirewalldialog_q.ui" line="1165"/>
         <source>&amp;Finish</source>
         <translation type="unfinished">Готово</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="1198"/>
+        <location filename="newfirewalldialog_q.ui" line="1175"/>
         <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15991,42 +15405,42 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
 <context>
     <name>newHostDialog</name>
     <message>
-        <location filename="newHostDialog.cpp" line="279"/>
+        <location filename="newHostDialog.cpp" line="281"/>
         <source>Missing SNMP community string.</source>
         <translation>Не указана строка SNMP community.</translation>
     </message>
     <message>
-        <location filename="newHostDialog.cpp" line="299"/>
+        <location filename="newHostDialog.cpp" line="301"/>
         <source>Address of %1 could not be obtained via DNS</source>
         <translation>Для имени %1 не может быть получен адрес при помощи DNS запроса</translation>
     </message>
     <message>
-        <location filename="newHostDialog.cpp" line="487"/>
+        <location filename="newHostDialog.cpp" line="489"/>
         <source>Interface: %1 (%2)</source>
         <translation>Интерфейс: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="newHostDialog.cpp" line="494"/>
+        <location filename="newHostDialog.cpp" line="496"/>
         <source>Dynamic address</source>
         <translation>Динамический адрес</translation>
     </message>
     <message>
-        <location filename="newHostDialog.cpp" line="496"/>
+        <location filename="newHostDialog.cpp" line="498"/>
         <source>Unnumbered interface</source>
         <translation>Интерфейс без адреса</translation>
     </message>
     <message>
-        <location filename="newHostDialog.cpp" line="551"/>
+        <location filename="newHostDialog.cpp" line="553"/>
         <source>Illegal address &apos;%1/%2&apos;</source>
         <translation>Некорректный адрес %1/%2</translation>
     </message>
     <message>
-        <location filename="newHostDialog.cpp" line="113"/>
+        <location filename="newHostDialog.cpp" line="114"/>
         <source>FWBuilder template files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newHostDialog.cpp" line="113"/>
+        <location filename="newHostDialog.cpp" line="114"/>
         <source>FWBuilder template files (*.xml *.fwb)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16411,12 +15825,12 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
         <translation>pf: расширенные настройки</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2285"/>
+        <location filename="pfadvanceddialog_q.ui" line="2216"/>
         <source>&amp;OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2301"/>
+        <location filename="pfadvanceddialog_q.ui" line="2232"/>
         <source>&amp;Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -16436,7 +15850,7 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
         <translation>Опции командной строки для компилятора:</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="325"/>
+        <location filename="pfadvanceddialog_q.ui" line="252"/>
         <source>Always permit ssh access from
 the management workstation
 with this address:</source>
@@ -16465,7 +15879,7 @@ with this address:</source>
         <translation type="obsolete">Нормальный</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="267"/>
+        <location filename="pfadvanceddialog_q.ui" line="207"/>
         <source>Optimization:</source>
         <translation>Оптимизация:</translation>
     </message>
@@ -16475,7 +15889,7 @@ with this address:</source>
         <translation type="obsolete">размер таблицы состояний:</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="689"/>
+        <location filename="pfadvanceddialog_q.ui" line="616"/>
         <source>maximum number of entries in the memory pool used for state table entries</source>
         <translation>макисмальное количество записей в пуле памяти, используемого для записей таблицы состояний</translation>
     </message>
@@ -16485,37 +15899,37 @@ with this address:</source>
         <translation type="obsolete">пересобирающий пул:</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="632"/>
+        <location filename="pfadvanceddialog_q.ui" line="559"/>
         <source>maximum number of entries in the memory pool used for packet reassembly</source>
         <translation>макисмальное количество записей в пуле памяти, используемого пересборки пакетов</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="215"/>
+        <location filename="pfadvanceddialog_q.ui" line="220"/>
         <source>Accept TCP sessions opened prior to firewall restart</source>
         <translation>Не сбрасывать TCP сессии открытые до загрузки нового набора правил межсетевого экрана</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="228"/>
+        <location filename="pfadvanceddialog_q.ui" line="168"/>
         <source>Modulate state for all stateful rules (applies only to TCP services)</source>
         <translation>Моделировать состояние для всех правил с фильтрацией по состоянию (только для TCP сервисов)</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="244"/>
+        <location filename="pfadvanceddialog_q.ui" line="200"/>
         <source>Detect rule shadowing in policy</source>
         <translation>Находить &apos;затенение&apos; правил в наборе</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="241"/>
+        <location filename="pfadvanceddialog_q.ui" line="197"/>
         <source>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</source>
         <translation>Затенение происходит, когда одно правило идущее ранее делает одно или несколько следующующих правил не рабочими. Это происходит из-за того, что пакеты, которые должны попадать под условия следующих правил будут попадать под условие первого правило.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="260"/>
+        <location filename="pfadvanceddialog_q.ui" line="184"/>
         <source>Ignore empty groups in rules</source>
         <translation>Игнорировать пустые группы в правилах</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="257"/>
+        <location filename="pfadvanceddialog_q.ui" line="181"/>
         <source>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes &apos;any&apos; after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</source>
         <translation>При выключении этой опции компилятор будет воспринимать пустые группы в наборе правил как ошибку, а при включении - будет удалять при компиляции пустые группы из всех правил. Во втором случае если после удаления группы правило окажется пустым в том месте, где была группа (окажется с полем любой), то такое правило будет игнорироваться. Используйте эту опцию очень внимательно и осторожно!</translation>
     </message>
@@ -16527,12 +15941,12 @@ with this address:</source>
     <message>
         <location filename="pfadvanceddialog_q.ui" line="175"/>
         <source>Pass all outgoing</source>
-        <translation>Разрешить все исходящие</translation>
+        <translation type="obsolete">Разрешить все исходящие</translation>
     </message>
     <message>
         <location filename="pfadvanceddialog_q.ui" line="168"/>
         <source>Generate both &apos;in&apos; and &apos;out&apos; rules</source>
-        <translation>Генерировать правила как входящие, так и исходящие</translation>
+        <translation type="obsolete">Генерировать правила как входящие, так и исходящие</translation>
     </message>
     <message>
         <location filename="pfadvanceddialog_q.ui" line="352"/>
@@ -16545,267 +15959,267 @@ with this address:</source>
         <translation type="obsolete">Подчищать опции правил</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="430"/>
+        <location filename="pfadvanceddialog_q.ui" line="357"/>
         <source>Enforce Minimum TTL:</source>
         <translation>Задать минимальный TTL:</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="470"/>
+        <location filename="pfadvanceddialog_q.ui" line="397"/>
         <source>Enforce Maximum MSS:</source>
         <translation>Задать максимальный MSS:</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="477"/>
+        <location filename="pfadvanceddialog_q.ui" line="404"/>
         <source>Enforces a maximum Maximum Segment Size (MSS) in TCP packet headers.</source>
         <translation>Задает максимальный размер сегмента (MSS) в заголовках TCP пакетов.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="437"/>
+        <location filename="pfadvanceddialog_q.ui" line="364"/>
         <source>Enforces a minimum Time To Live (TTL) in IP packet headers.</source>
         <translation>Задает минимальное время жизни (TTL) в заголовках IP пакетов.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="524"/>
+        <location filename="pfadvanceddialog_q.ui" line="451"/>
         <source>Reassemble fragments</source>
         <translation>Пересобирать фрагменты</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="395"/>
+        <location filename="pfadvanceddialog_q.ui" line="322"/>
         <source>Clear DF bit</source>
         <translation>Очищать бит DF</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="392"/>
+        <location filename="pfadvanceddialog_q.ui" line="319"/>
         <source>Clears the don&apos;t fragment bit from the IP packet header.</source>
         <translation>Очищать бит не фрагментированный в заголовках IP-пакетов.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="405"/>
+        <location filename="pfadvanceddialog_q.ui" line="332"/>
         <source>Use random ID</source>
         <translation>Использовать случайный ID</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="402"/>
+        <location filename="pfadvanceddialog_q.ui" line="329"/>
         <source>Replaces the IP identification field of outgoing packets with random values to compensate for operating systems that use predictable values.</source>
         <translation>Заменить значение поля идентификации исходящих IP пакетов на случайное значение для защиты от атак на операционные системы, использующие легко предсказуемые значения.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="555"/>
+        <location filename="pfadvanceddialog_q.ui" line="482"/>
         <source>Buffer and reassemble fragments (default)</source>
         <translation>Буферизовать и пересобирать фрагменты (по-умолчанию)</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="552"/>
+        <location filename="pfadvanceddialog_q.ui" line="479"/>
         <source>Buffers incoming packet fragments and reassembles them into a complete packet before passing them to the filter engine.</source>
         <translation>Буферизовать входящие фрагменты пакетов и пересобирать их в целый пакет перед отправкой в фильтр межсетевого экрана.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="571"/>
+        <location filename="pfadvanceddialog_q.ui" line="498"/>
         <source>Drop duplicate fragments, do not buffer and reassemble</source>
         <translation>Блокировать дубликаты фрагментов, не буферизовать и не пересобирать их</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="568"/>
+        <location filename="pfadvanceddialog_q.ui" line="495"/>
         <source>Causes duplicate fragments to be dropped and any overlaps to be cropped.</source>
         <translation>Блокировать дубликаты фрагментов и вырезать любые наложения фрагментов.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="587"/>
+        <location filename="pfadvanceddialog_q.ui" line="514"/>
         <source>Drop duplicate and subsequent fragments</source>
         <translation>Блокировать дубликаты и последующие за ними фрагменты</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="584"/>
+        <location filename="pfadvanceddialog_q.ui" line="511"/>
         <source>Similar to &apos;Drop duplicate fragments&apos; except that all duplicate or overlapping fragments will be dropped as well as any further corresponding fragments.</source>
         <translation>То же, что и Блокировать дубликаты фрагментов, но также будут блокироваться все накладывающиеся и все последующие за ними фрагменты.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="851"/>
+        <location filename="pfadvanceddialog_q.ui" line="778"/>
         <source>Timeouts</source>
         <translation>Таймауты</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="863"/>
+        <location filename="pfadvanceddialog_q.ui" line="790"/>
         <source>When a packet matches a stateful connection, the seconds to live for the connection will be updated to the value which corresponds to the connection state.</source>
         <translation>При соответствии пакета фильруемому по состоянию соединению, количество секунд жизни соединения будет обновлено и установлено в значение, которое соответствует состоянию соединения.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="876"/>
+        <location filename="pfadvanceddialog_q.ui" line="803"/>
         <source>TCP</source>
         <translation>TCP</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1255"/>
+        <location filename="pfadvanceddialog_q.ui" line="1182"/>
         <source>first</source>
         <translation>first</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1326"/>
+        <location filename="pfadvanceddialog_q.ui" line="1253"/>
         <source>The state after the first packet.</source>
         <translation>Состояние после первого пакета.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="920"/>
+        <location filename="pfadvanceddialog_q.ui" line="847"/>
         <source>opening</source>
         <translation>opening</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="933"/>
+        <location filename="pfadvanceddialog_q.ui" line="860"/>
         <source> The state before the destination host ever sends a packet.</source>
         <translation>Состояние перед тем, как узел назначения ответил на пакет.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="949"/>
+        <location filename="pfadvanceddialog_q.ui" line="876"/>
         <source>established</source>
         <translation>established</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="962"/>
+        <location filename="pfadvanceddialog_q.ui" line="889"/>
         <source>The fully established state.</source>
         <translation>Состяние успешно установленного соединения.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="987"/>
+        <location filename="pfadvanceddialog_q.ui" line="914"/>
         <source>The state after the first FIN has been sent.</source>
         <translation>Состояние после отправки первого пакета с установленным флагом FIN.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1003"/>
+        <location filename="pfadvanceddialog_q.ui" line="930"/>
         <source>closing</source>
         <translation>closing</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1016"/>
+        <location filename="pfadvanceddialog_q.ui" line="943"/>
         <source>The state after both FINs have been exchanged and the connection is closed.</source>
         <translation>Состояние после отправки обоих пакетов с установленным флагом FIN и закрытия соединения.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1032"/>
+        <location filename="pfadvanceddialog_q.ui" line="959"/>
         <source>finwait</source>
         <translation>finwait</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1045"/>
+        <location filename="pfadvanceddialog_q.ui" line="972"/>
         <source>The state after one endpoint sends an RST.</source>
         <translation>Состояние после отправки одной из сторон пакета с установленным флагом RST.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1061"/>
+        <location filename="pfadvanceddialog_q.ui" line="988"/>
         <source>closed</source>
         <translation>closed</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1071"/>
+        <location filename="pfadvanceddialog_q.ui" line="998"/>
         <source>UDP</source>
         <translation>UDP</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1284"/>
+        <location filename="pfadvanceddialog_q.ui" line="1211"/>
         <source>single</source>
         <translation>single</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1122"/>
+        <location filename="pfadvanceddialog_q.ui" line="1049"/>
         <source>The state if the source host sends more than one packet but the destination host has never sent one back.</source>
         <translation>Состояние после отправики одной из сторон нескольких пакетов и неполучении от второй стороны ни одного пакета в ответ.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1291"/>
+        <location filename="pfadvanceddialog_q.ui" line="1218"/>
         <source>multiple</source>
         <translation>multiple</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1151"/>
+        <location filename="pfadvanceddialog_q.ui" line="1078"/>
         <source> The state if both hosts have sent packets.</source>
         <translation>Состояние после отправки обеими сторонами пакетов.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1170"/>
+        <location filename="pfadvanceddialog_q.ui" line="1097"/>
         <source>ICMP</source>
         <translation>ICMP</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1207"/>
+        <location filename="pfadvanceddialog_q.ui" line="1134"/>
         <source>The state after an ICMP error came back in response to an ICMP packet.</source>
         <translation>Состояние после получения ICMP сообщения об ошибке в ответ на отправленный ICMP пакет.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1230"/>
+        <location filename="pfadvanceddialog_q.ui" line="1157"/>
         <source>error</source>
         <translation>ошибка</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1240"/>
+        <location filename="pfadvanceddialog_q.ui" line="1167"/>
         <source>Other Protocols</source>
         <translation>Другие протоколы</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1345"/>
+        <location filename="pfadvanceddialog_q.ui" line="1272"/>
         <source>Fragments</source>
         <translation>Фрагменты</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1354"/>
+        <location filename="pfadvanceddialog_q.ui" line="1281"/>
         <source>reassembly timeout</source>
         <translation>таймаут пересборки</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1361"/>
+        <location filename="pfadvanceddialog_q.ui" line="1288"/>
         <source>state expiration timeout</source>
         <translation>таймаут для состояния соединения</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1374"/>
+        <location filename="pfadvanceddialog_q.ui" line="1301"/>
         <source>seconds between purges of expired states and packet fragments.</source>
         <translation>количество секунд для таймаута очистки состояния соединения и фрагментов пакетов.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1396"/>
+        <location filename="pfadvanceddialog_q.ui" line="1323"/>
         <source>seconds before an unassembled fragment is expired.</source>
         <translation>количество секунд для таймаута несобранных фрагментов.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1431"/>
+        <location filename="pfadvanceddialog_q.ui" line="1358"/>
         <source>Adaptive scaling</source>
         <translation>Адаптивное масштабирование</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1440"/>
+        <location filename="pfadvanceddialog_q.ui" line="1367"/>
         <source>Timeout values can be reduced adaptively as the number of state table entries grows (see man page pf.conf(5) for details)</source>
         <translation>Значения таймаутов могут изменяться адаптивно в зависимости от ситуации (количества записей в таблице состояний соединений, см. страницу руководства man pf.conf(5))</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1459"/>
+        <location filename="pfadvanceddialog_q.ui" line="1386"/>
         <source>adaptive start</source>
         <translation>начало адаптивного масштабирования</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1475"/>
+        <location filename="pfadvanceddialog_q.ui" line="1402"/>
         <source>When the number of state entries exceeds this value, adaptive scaling begins.</source>
         <translation>Когда, количество записей в таблице соединений превысит это значение, включится адаптивное масштабирование.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1497"/>
+        <location filename="pfadvanceddialog_q.ui" line="1424"/>
         <source>adaptive end</source>
         <translation>конец адаптивного масштабирования</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1513"/>
+        <location filename="pfadvanceddialog_q.ui" line="1440"/>
         <source>When reaching this number of state entries, all timeout val- ues become zero, effectively purging all state entries imme- diately.</source>
         <translation>Когда, количество записей в таблице соединений достигнет этого значения, все таймауты записей в таблице соединений установятся в ноль, таким образом произойдет немедленная и эффективная её очистка.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1529"/>
+        <location filename="pfadvanceddialog_q.ui" line="1456"/>
         <source>Activate adaptive timeout scaling</source>
         <translation>Включить адаптивное масштабирование таймаутов</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1556"/>
+        <location filename="pfadvanceddialog_q.ui" line="1483"/>
         <source>Installer</source>
         <translation>Установщик</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1779"/>
+        <location filename="pfadvanceddialog_q.ui" line="1706"/>
         <source>Command line options for the script:</source>
         <translation>Опции командной строки для скрипта:</translation>
     </message>
@@ -16815,37 +16229,37 @@ with this address:</source>
         <translation type="obsolete">Каталог на межсетевом экране, в который должны быть установлены файлы конфигурации</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1594"/>
+        <location filename="pfadvanceddialog_q.ui" line="1521"/>
         <source>User name used to authenticate to the firewall (leave this empty if you use putty session):</source>
         <translation>Имя пользователя, используемое для аутентификации на межсетевом экране (не заполняйте, если используете putty сессию):</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1617"/>
+        <location filename="pfadvanceddialog_q.ui" line="1544"/>
         <source>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</source>
         <translation>Альтернативный адрес или имя межсетевого экрана для связи с ним (в Windows поддерживаются названия сессий putty)</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1740"/>
+        <location filename="pfadvanceddialog_q.ui" line="1667"/>
         <source>Policy install script (using built-in installer if this field is blank):</source>
         <translation>Скрипт установки набора правил (не заполняйте для использования встроенного скрипта установки):</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1640"/>
+        <location filename="pfadvanceddialog_q.ui" line="1567"/>
         <source>A command that installer should execute on the firewall in order to activate the policy (if this field is blank, installer runs firewall script in the directory specified above; it uses sudo if user name is not &apos;root&apos;)</source>
         <translation>Команда, используемая установщиком для загрузки нового набора правил (если это поле пустое, установщик будет выполнять скрипт межсетевого экрана в указанном выше каталоге, он также будет использовать sudo, если имя пользователя не root)</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2005"/>
+        <location filename="pfadvanceddialog_q.ui" line="1932"/>
         <source>Logging</source>
         <translation>Запись в журнал (протоколирование)</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2033"/>
+        <location filename="pfadvanceddialog_q.ui" line="1960"/>
         <source>Log Prefix</source>
         <translation>Log prefix</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2097"/>
+        <location filename="pfadvanceddialog_q.ui" line="2024"/>
         <source>Fallback &quot;deny all&quot; rule should log blocked packets</source>
         <translation>Записывать в журнал блокированные пакеты (только правилом по-умолчанию блокировать все)</translation>
     </message>
@@ -16855,169 +16269,169 @@ with this address:</source>
         <translation type="obsolete">Опции скрипта</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2133"/>
+        <location filename="pfadvanceddialog_q.ui" line="2100"/>
         <source>Add virtual addresses for NAT</source>
         <translation>Добавлять виртуальные адреса для NAT</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2140"/>
+        <location filename="pfadvanceddialog_q.ui" line="2093"/>
         <source>Configure Interfaces of the firewall machine</source>
         <translation>Конфигурировать интерфейсы межсетевого экрана</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2147"/>
+        <location filename="pfadvanceddialog_q.ui" line="2086"/>
         <source>Turn debugging on in generated script</source>
         <translation>Включить режим отладки в генерируемом скрипте</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2154"/>
+        <location filename="pfadvanceddialog_q.ui" line="2057"/>
         <source>These options enable auxiliary sections in the generated shell script.</source>
         <translation>Эти опции подключают внешние секции в генерируемом shell-скрипте.</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1830"/>
+        <location filename="pfadvanceddialog_q.ui" line="1757"/>
         <source>Prolog/Epilog</source>
         <translation>Prolog/Epilog</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1909"/>
+        <location filename="pfadvanceddialog_q.ui" line="1836"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1884"/>
+        <location filename="pfadvanceddialog_q.ui" line="1811"/>
         <source>The following commands will be added verbatim after generated configuration</source>
         <translation>Следующие команду будут добавлены в конец генерируемого скрипта конфигурации</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1926"/>
+        <location filename="pfadvanceddialog_q.ui" line="1853"/>
         <source>The following commands will be added verbatim on top of generated configuration</source>
         <translation>Следующие команду будут добавлены в начало генерируемого скрипта конфигурации</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1726"/>
+        <location filename="pfadvanceddialog_q.ui" line="1653"/>
         <source>External install script</source>
         <translation>Внешний скрипт для установки</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1565"/>
+        <location filename="pfadvanceddialog_q.ui" line="1492"/>
         <source>Built-in installer</source>
         <translation>Встроенный установщик</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1571"/>
+        <location filename="pfadvanceddialog_q.ui" line="1498"/>
         <source>Directory on the firewall where script should be installed</source>
         <translation>Каталог на межсетевом экране, в которые должны быть установлены файлы конфигурации</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1665"/>
+        <location filename="pfadvanceddialog_q.ui" line="1592"/>
         <source>Additional command line parameters for ssh</source>
         <translation>Дполнительные опции командной строки для ssh</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="708"/>
+        <location filename="pfadvanceddialog_q.ui" line="635"/>
         <source>state table size: </source>
         <translation>размер таблицы состояний: </translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="715"/>
+        <location filename="pfadvanceddialog_q.ui" line="642"/>
         <source>reassembly pool: </source>
         <translation>пул пересборки: </translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="614"/>
+        <location filename="pfadvanceddialog_q.ui" line="541"/>
         <source>Limits</source>
         <translation type="unfinished">Ограничения</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="651"/>
+        <location filename="pfadvanceddialog_q.ui" line="578"/>
         <source>table-entries</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="664"/>
+        <location filename="pfadvanceddialog_q.ui" line="591"/>
         <source>maximum number of addresses that canbe stored in tables</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="744"/>
+        <location filename="pfadvanceddialog_q.ui" line="671"/>
         <source>maximum number of entries in the memory pool used for tracking source IP addresses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="769"/>
+        <location filename="pfadvanceddialog_q.ui" line="696"/>
         <source>maximum number of tables that can exist in the memory simultaneously</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="788"/>
+        <location filename="pfadvanceddialog_q.ui" line="715"/>
         <source>tables</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="795"/>
+        <location filename="pfadvanceddialog_q.ui" line="722"/>
         <source>src-nodes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1939"/>
+        <location filename="pfadvanceddialog_q.ui" line="1866"/>
         <source>Insert prolog and epilog scripts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1956"/>
+        <location filename="pfadvanceddialog_q.ui" line="1883"/>
         <source>in the activation shell script (.fw file)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1961"/>
+        <location filename="pfadvanceddialog_q.ui" line="1888"/>
         <source>in the pf rule file (.conf file)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="140"/>
-        <source>There are two ways compiler can generate code for rules in the Global Policy: it can either create two pf rules to control both incoming and outgoing packets for each rule, or it can create only one pf rule for incoming packets and permit all outgoing ones.You get more control over the packets crossing the firewall in the first mode, but generated script is going to be smaller if you choose the second.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="pfadvanceddialog_q.ui" line="367"/>
+        <location filename="pfadvanceddialog_q.ui" line="294"/>
         <source>Scrub</source>
         <translation type="unfinished">Чистить [SCRUB]</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1695"/>
+        <location filename="pfadvanceddialog_q.ui" line="1622"/>
         <source>Additional command line parameters for scp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2105"/>
+        <location filename="pfadvanceddialog_q.ui" line="2032"/>
         <source>Script</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2200"/>
+        <location filename="pfadvanceddialog_q.ui" line="2131"/>
         <source>IPv6</source>
         <translation type="unfinished">IPv6</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2209"/>
+        <location filename="pfadvanceddialog_q.ui" line="2140"/>
         <source>The order in which ipv4 and ipv6 rules should be generated:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2230"/>
+        <location filename="pfadvanceddialog_q.ui" line="2161"/>
         <source>IPv4 before IPv6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2235"/>
+        <location filename="pfadvanceddialog_q.ui" line="2166"/>
         <source>IPv6 before IPv4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2262"/>
+        <location filename="pfadvanceddialog_q.ui" line="2193"/>
         <source>Help</source>
         <translation type="unfinished">Справка</translation>
+    </message>
+    <message>
+        <location filename="pfadvanceddialog_q.ui" line="2107"/>
+        <source>Flush pf states after reloading rules</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -18067,12 +17481,12 @@ workstation with this address:</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="954"/>
+        <location filename="prefsdialog_q.ui" line="938"/>
         <source>&amp;OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="970"/>
+        <location filename="prefsdialog_q.ui" line="954"/>
         <source>&amp;Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -18087,7 +17501,7 @@ workstation with this address:</source>
         <translation>Рабочий каталог:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="499"/>
+        <location filename="prefsdialog_q.ui" line="483"/>
         <source>Browse...</source>
         <translation>Выбрать...</translation>
     </message>
@@ -18112,32 +17526,32 @@ workstation with this address:</source>
         <translation type="obsolete">Раскрыть все дерево объектов</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="276"/>
+        <location filename="prefsdialog_q.ui" line="260"/>
         <source>Tooltip delay:</source>
         <translation>Задержка всплывающей подсказки:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="233"/>
+        <location filename="prefsdialog_q.ui" line="217"/>
         <source>Automatically save data in dialogs when switching between objects</source>
         <translation>Автоматически сохранять данные в диалогах при переключении между объектами</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="362"/>
+        <location filename="prefsdialog_q.ui" line="346"/>
         <source>Periodically save data to file every </source>
         <translation>Периодически сохранять данные в файл, каждые</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="391"/>
+        <location filename="prefsdialog_q.ui" line="375"/>
         <source>minutes</source>
         <translation>минут</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="256"/>
+        <location filename="prefsdialog_q.ui" line="240"/>
         <source>Enable object tooltips</source>
         <translation>Включить всплывающие подсказки для объектов</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="309"/>
+        <location filename="prefsdialog_q.ui" line="293"/>
         <source>Show deleted objects</source>
         <translation>Показывать удаленные объекты</translation>
     </message>
@@ -18147,12 +17561,12 @@ workstation with this address:</source>
         <translation type="obsolete">Управление версиями (ревизиями)</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="414"/>
+        <location filename="prefsdialog_q.ui" line="398"/>
         <source>Do not ask for the log record when checking in new file revision.</source>
         <translation>Всегда помещать файл в систему контроля версий с пустой записью в журнал.</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="442"/>
+        <location filename="prefsdialog_q.ui" line="426"/>
         <source>SSH</source>
         <translation>SSH</translation>
     </message>
@@ -18207,47 +17621,47 @@ workstation with this address:</source>
         <translation type="obsolete">Путь к файлу</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="563"/>
+        <location filename="prefsdialog_q.ui" line="547"/>
         <source>Labels</source>
         <translation>Метки</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="572"/>
+        <location filename="prefsdialog_q.ui" line="556"/>
         <source>Use these labels to mark rules in the firewall policy</source>
         <translation>Использовать эти метки для маркировки правил в наборе</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="687"/>
+        <location filename="prefsdialog_q.ui" line="671"/>
         <source>Green</source>
         <translation>Зеленый</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="673"/>
+        <location filename="prefsdialog_q.ui" line="657"/>
         <source>Purple</source>
         <translation>Пурпурный</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="610"/>
+        <location filename="prefsdialog_q.ui" line="594"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="638"/>
+        <location filename="prefsdialog_q.ui" line="622"/>
         <source>Orange</source>
         <translation>Оранжевый</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="617"/>
+        <location filename="prefsdialog_q.ui" line="601"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="694"/>
+        <location filename="prefsdialog_q.ui" line="678"/>
         <source>Gray</source>
         <translation>Серый</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="624"/>
+        <location filename="prefsdialog_q.ui" line="608"/>
         <source>Yellow</source>
         <translation>Желтый</translation>
     </message>
@@ -18272,62 +17686,62 @@ workstation with this address:</source>
         <translation type="obsolete">Спросить, что делать дальше</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="733"/>
+        <location filename="prefsdialog_q.ui" line="717"/>
         <source>Icons</source>
         <translation>Иконки</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="761"/>
+        <location filename="prefsdialog_q.ui" line="745"/>
         <source>Show icons in rules</source>
         <translation>Показывать иконки в правилах</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="778"/>
+        <location filename="prefsdialog_q.ui" line="762"/>
         <source>Icon size:</source>
         <translation>Размер иконок:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="797"/>
+        <location filename="prefsdialog_q.ui" line="781"/>
         <source>25x25</source>
         <translation>25x25</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="790"/>
+        <location filename="prefsdialog_q.ui" line="774"/>
         <source>16x16</source>
         <translation>16x16</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="316"/>
+        <location filename="prefsdialog_q.ui" line="300"/>
         <source>Clip comments in rules</source>
         <translation>Обрезать в правилах комментарии по размеру ячейки</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="736"/>
+        <location filename="prefsdialog_q.ui" line="720"/>
         <source>Icons settings</source>
         <translation>Настройки иконок</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="824"/>
+        <location filename="prefsdialog_q.ui" line="808"/>
         <source>Fonts</source>
         <translation>Шрифты</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="861"/>
+        <location filename="prefsdialog_q.ui" line="845"/>
         <source>Choose font for rules sets</source>
         <translation>Выберите шрифт для правил</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="864"/>
+        <location filename="prefsdialog_q.ui" line="848"/>
         <source>Rules font </source>
         <translation>Шрифт правил</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="896"/>
+        <location filename="prefsdialog_q.ui" line="880"/>
         <source>Choose font for tree</source>
         <translation>Выберите шрифт для дерева</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="899"/>
+        <location filename="prefsdialog_q.ui" line="883"/>
         <source>Tree font</source>
         <translation>Шрифт дерева</translation>
     </message>
@@ -18342,52 +17756,52 @@ workstation with this address:</source>
         <translation type="obsolete">Шрифт интерфейса</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="131"/>
+        <location filename="prefsdialog_q.ui" line="115"/>
         <source>Software Updates:</source>
         <translation>Проверка наличия новых версий программы:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="138"/>
+        <location filename="prefsdialog_q.ui" line="122"/>
         <source>Check for updates automatically</source>
         <translation>Проверять автоматически</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="158"/>
+        <location filename="prefsdialog_q.ui" line="142"/>
         <source>Check Now</source>
         <translation>Проверить сейчас</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="178"/>
+        <location filename="prefsdialog_q.ui" line="162"/>
         <source>Use http proxy while checking for updates  (host:port)</source>
         <translation>Использовать http proxy при проверке на наличие новых версий (host:port)</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="771"/>
+        <location filename="prefsdialog_q.ui" line="755"/>
         <source>Show text descriptions in columns &quot;Direction&quot;, &quot;Action&quot;</source>
         <translation>Показывать текстовые пояснения в колонках &quot;Направление&quot; и &quot;Действие&quot;</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="877"/>
+        <location filename="prefsdialog_q.ui" line="861"/>
         <source>rules font description</source>
         <translation>описание шрифта для правил</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="912"/>
+        <location filename="prefsdialog_q.ui" line="896"/>
         <source>tree font description</source>
         <translation>описание шрифта для дерева объектов</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="451"/>
+        <location filename="prefsdialog_q.ui" line="435"/>
         <source>A full path to the Secure Shell utility (remote command execution; for example ssh on Unix or plink.exe  on Windows):</source>
         <translation>Полный путь к утилите SSH (исполнение команд на другом компьютере; наример ssh на Unix или plink.exe на Windows):</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="480"/>
+        <location filename="prefsdialog_q.ui" line="464"/>
         <source>A full path to the SCP utility (file copy over ssh; for example scp on Unix or pscp.exe on Windows):</source>
         <translation>Полный путь к утилите SCP (копирование файлов на другой компьютер; наример scp на Unix или pscp.exe на Windows):</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="531"/>
+        <location filename="prefsdialog_q.ui" line="515"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -18397,17 +17811,17 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="208"/>
+        <location filename="prefsdialog_q.ui" line="192"/>
         <source>Objects</source>
         <translation>Объекты</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="337"/>
+        <location filename="prefsdialog_q.ui" line="321"/>
         <source>Data File</source>
         <translation>Файл данных</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="421"/>
+        <location filename="prefsdialog_q.ui" line="405"/>
         <source>Enable compression of the data file</source>
         <translation>Включить сжатие файла данных</translation>
     </message>

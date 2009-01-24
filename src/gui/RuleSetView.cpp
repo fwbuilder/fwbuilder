@@ -4998,37 +4998,37 @@ void PolicyView::init()
     qsl << "";
     colTypes[col++] = GroupHandle;
 
-    qsl << "Source";      // 0
+    qsl << getReadableRuleElementName(RuleElementSrc::TYPENAME);      // 0
     colTypes[col++] = Object;
 
-    qsl << "Destination"; // 1
+    qsl << getReadableRuleElementName(RuleElementDst::TYPENAME); // 1
     colTypes[col++] = Object;
 
-    qsl << "Service";     // 2
+    qsl << getReadableRuleElementName(RuleElementSrv::TYPENAME);     // 2
     colTypes[col++] = Object;
 
-    qsl << "Interface";   // 3
+    qsl << getReadableRuleElementName(RuleElementItf::TYPENAME);   // 3
     colTypes[col++] = Object;
 
-    qsl << "Direction";   // 4
+    qsl << getReadableRuleElementName("Direction");   // 4
     colTypes[col++] = Direction;
 
-    qsl << "Action";      // 5
+    qsl << getReadableRuleElementName("Action");      // 5
     colTypes[col++] = Action;
 
     if (supports_time)
     {
-        qsl << "Time";    // 6
+        qsl << getReadableRuleElementName(RuleElementInterval::TYPENAME); // 6
         colTypes[col++] = Time;
     } 
 
     if (supports_logging && supports_rule_options)
     {
-        qsl << "Options";
+        qsl << getReadableRuleElementName("Options");
         colTypes[col++] = Options;
     } 
 
-    qsl << "Comment";
+    qsl << getReadableRuleElementName("Comment");
     colTypes[col] = Comment;
 
     ruleModel->setHeader(qsl);
@@ -5108,28 +5108,28 @@ void NATView::init()
     qsl << "";
     colTypes[col++] = GroupHandle;
 
-    qsl << "Original Src";
+    qsl << getReadableRuleElementName(RuleElementOSrc::TYPENAME);
     colTypes[col++] = Object;
 
-    qsl << "Original Dst";
+    qsl << getReadableRuleElementName(RuleElementODst::TYPENAME);
     colTypes[col++] = Object;
 
-    qsl << "Original Srv";
+    qsl << getReadableRuleElementName(RuleElementOSrv::TYPENAME);
     colTypes[col++] = Object;
 
-    qsl << "Translated Src";
+    qsl << getReadableRuleElementName(RuleElementTSrc::TYPENAME);
     colTypes[col++] = Object;
 
-    qsl << "Translated Dst";
+    qsl << getReadableRuleElementName(RuleElementTDst::TYPENAME);
     colTypes[col++] = Object;
 
-    qsl << "Translated Srv";
+    qsl << getReadableRuleElementName(RuleElementTSrv::TYPENAME);
     colTypes[col++] = Object;
 
-    qsl << "Options";
+    qsl << getReadableRuleElementName("Options");
     colTypes[col++] = Options;
 
-    qsl << "Comment";
+    qsl << getReadableRuleElementName("Comment");
     colTypes[col++] = Comment;
 
     ruleModel->setHeader(qsl);
@@ -5200,25 +5200,25 @@ void RoutingView::init()
     qsl << "";
     colTypes[col++] = GroupHandle;
 
-    qsl << "Destination";
+    qsl << getReadableRuleElementName(RuleElementRDst::TYPENAME);
     colTypes[col++] = Object;
 
-    qsl << "Gateway";
+    qsl << getReadableRuleElementName(RuleElementRGtw::TYPENAME);
     colTypes[col++] = Object;
 
     if (supports_routing_itf)
     {
-        qsl << "Interface";
+        qsl << getReadableRuleElementName(RuleElementRItf::TYPENAME);
         colTypes[col++] = Object;
     }
 
-    qsl << "Metric";
+    qsl << getReadableRuleElementName("Metric");
     colTypes[col++] = Metric;
 
-    qsl << "Options";
+    qsl << getReadableRuleElementName("Options");
     colTypes[col++] = Options;
 
-    qsl << "Comment";
+    qsl << getReadableRuleElementName("Comment");
     colTypes[col] = Comment;
 
     ruleModel->setHeader(qsl);
