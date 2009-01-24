@@ -432,49 +432,6 @@ void FWObjectDatabase::merge( FWObjectDatabase *ndb,
     init = false;
 }
 
-/*
- * find all objects used by the group 'gr'. REsolves references
- * recursively (that is, if a group member is another group, this
- * method descends into it and scans all objects that group uses)
- */
-void FWObjectDatabase::findObjectsInGroup(Group *g,set<FWObject *> &res)
-{
-    searchId++;
-    _findObjectsInGroup(g, res);
-}
-
-void FWObjectDatabase::_findObjectsInGroup(Group *g,set<FWObject *> &res)
-{
-    if (g->size()==0 || g->getInt(".searchId")==searchId) return;
-    
-    g->setInt(".searchId",searchId);
-    FWObjectReference *ref;
-    Group *sg;
-    FWObject *obj;
-    FWObject::iterator i=g->begin();
-    for(;i!=g->end();++i)
-    {
-        
-       ref=FWObjectReference::cast(*i);
-       if (ref==NULL) 
-       {
-           res.insert(*i);
-           continue;
-       }
-       
-       obj=ref->getPointer();
-       sg=Group::cast(obj);
-       
-       if (sg==NULL)
-       {
-           res.insert(obj);
-           continue;
-       }
-       
-       _findObjectsInGroup(sg,res);
-    }    
-}
-
 /**
  * Copy <source> object and all its children, recursively, into <this>
  * object tree starting from <target>. <target> is a parent of the copy

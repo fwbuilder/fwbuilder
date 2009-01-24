@@ -135,10 +135,17 @@ private:
     void _clearReferenceCounters(FWObject *o);
     void _fixReferenceCounters(FWObject *o);
     bool _isInIgnoreList(FWObject *o);
-    bool _findWhereUsed(
-            libfwbuilder::FWObject *o,
-            libfwbuilder::FWObject *p,
-            std::set<libfwbuilder::FWObject *> &resset);
+
+    /* bool _findWhereUsed( */
+    /*         libfwbuilder::FWObject *o, */
+    /*         libfwbuilder::FWObject *p, */
+    /*         std::set<libfwbuilder::FWObject *> &resset); */
+
+    bool _findWhereObjectIsUsed(libfwbuilder::FWObject *o,
+                                libfwbuilder::FWObject *p,
+                                std::set<libfwbuilder::FWObject *> &resset,
+                                int search_id);
+    
     void _findObjectsInGroup(
             libfwbuilder::Group *g,
             std::set<libfwbuilder::FWObject *> &res);
@@ -257,14 +264,32 @@ public:
     FWObjectDatabase* exportSubtree( FWObject *lib );
     FWObjectDatabase* exportSubtree( const std::list<FWObject*> &libs );
 
-    void findWhereUsed(
+   
+    /* void findWhereUsed( */
+    /*         libfwbuilder::FWObject *o, */
+    /*         libfwbuilder::FWObject *p, */
+    /*         std::set<libfwbuilder::FWObject *> &resset); */
+
+    /**
+     * Find reference to object <o> in the subtree rooted at <p>. Do
+     * not search for indirect usage, i.e. when an object has a
+     * reference to a group that in turn has reference to <o>. Search
+     * also includes references to objects used in rule actions Tag
+     * and Branch.
+     */
+    void findWhereObjectIsUsed(
             libfwbuilder::FWObject *o,
             libfwbuilder::FWObject *p,
             std::set<libfwbuilder::FWObject *> &resset);
-    
+
+    /**
+     * find all objects used by the group 'gr'. Resolve references
+     * recursively (that is, if a group member is another group, this
+     * method descends into it and scans all objects that group uses)
+     */
     void findObjectsInGroup(
             libfwbuilder::Group *g,
-            std::set<libfwbuilder::FWObject *> &res);
+            std::set<libfwbuilder::FWObject *> &resset);
     
     void recursivelyRemoveObjFromTree(FWObject* obj, bool remove_ref=false);
 

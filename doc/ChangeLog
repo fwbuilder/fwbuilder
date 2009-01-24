@@ -1,5 +1,15 @@
 2009-01-23  vadim  <vadim@vk.crocodile.org>
 
+	* FWObjectDatabase_search.cpp (FWObjectDatabase::findWhereObjectIsUsed):
+	fixes for bug #2412334: "feature request: where used -> directly".
+	Function FWObjectDatabase::findWhereObjectIsUsed returns a set of
+	pointers FWObject*. These pointers can be either parent of the
+	given object, or FWReference objects pointing to it. Note the
+	change: in previous versions this function tried to clean up
+	returned set and replaced references with pointers to the group or
+	rule that owns those references. This substitution is in fact
+	task-specific and should be done in the caller.
+
 	* DNSName.cpp (DNSName::loadFromSource): fixed bug #2526193: "typo
 	in error message"
 

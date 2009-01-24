@@ -133,14 +133,14 @@ const InetAddr* Address::getBroadcastAddressPtr() const
     return NULL;
 }
 
-void Address::setAddress(const InetAddr&)
+void Address::setAddress(const InetAddr& a)
 {
-    assert(false);
+    inet_addr_mask->setAddress(a);
 }
 
-void Address::setNetmask(const InetAddr&)
+void Address::setNetmask(const InetAddr& nm)
 {
-    assert(false);
+    inet_addr_mask->setNetmask(nm);
 }
 
 void Address::setAddressNetmask(const std::string&)

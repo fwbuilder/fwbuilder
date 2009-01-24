@@ -43,6 +43,7 @@ AddressRange::AddressRange() :
     Address(),
     start_address(InetAddr::getAny()), end_address(InetAddr::getAny())
 {
+    Address::setNetmask(InetAddr::getAny());
 }
 
 /**
@@ -53,6 +54,7 @@ AddressRange::AddressRange(const FWObjectDatabase *root, bool prepopulate) :
     Address(root, prepopulate),
     start_address(InetAddr::getAny()), end_address(InetAddr::getAny())
 {
+    Address::setNetmask(InetAddr::getAny());
 }
 
 AddressRange::AddressRange(AddressRange &o) : Address() , 

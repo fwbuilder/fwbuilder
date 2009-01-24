@@ -85,12 +85,17 @@ bool Preprocessor::isUsedByThisFirewall(FWObject *obj)
                 infinite_recursion_breaker);
 
     set<FWObject*> resset;
-    obj->getRoot()->findWhereUsed(obj, obj->getRoot(), resset);
+    obj->getRoot()->findWhereObjectIsUsed(obj, obj->getRoot(), resset);
 
     set<FWObject*>::iterator i;
     for (i=resset.begin(); i!=resset.end(); ++i)
     {
-        FWObject *p = *i;
+        FWObject *p;
+        if (FWReference::cast(*i))
+            p = (*i)->getParent();  // NB! We need parent of this ref.
+        else
+            p = *i;
+
         if (obj->getId() == p->getId()) continue;
 
         if (RuleElement::cast(p)!=NULL || Rule::cast(p)!=NULL)
@@ -101,10 +106,13 @@ bool Preprocessor::isUsedByThisFirewall(FWObject *obj)
             continue;
         }
 
-        if (ObjectGroup::isA(p) || ServiceGroup::isA(p))
+        if (ObjectGroup::isA(p) || ServiceGroup::isA(p) || IntervalGroup::isA(p))
         {
-            // object (*i) is used in a group. Check if the group
-            // is used in any rule
+            // object (*i) is used in a group. Check if the group is
+            // used in any rule. Note that this recursive call back to
+            // isUsedByThisFirewall() also covers the case where group
+            // <p> might belong to another group which is used in a
+            // rule of the firewall (and so on, recursively, if necessary).
             if (isUsedByThisFirewall(p)) return true;
             // but if this group is not used in any rule of this firewall
             // we should keep scanning objects in resset

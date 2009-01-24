@@ -21,6 +21,7 @@ SOURCES  = 	InetAddr.cpp \
 			FWObjectDatabase.cpp \
 			FWObjectDatabase_create_object.cpp \
 			FWObjectDatabase_tree_ops.cpp \
+			FWObjectDatabase_search.cpp \
 			FWObjectReference.cpp \
 			FWOptions.cpp \
 			FWReference.cpp \
