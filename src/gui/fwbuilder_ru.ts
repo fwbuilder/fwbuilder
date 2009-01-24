@@ -5999,27 +5999,27 @@ objects that they refer to moved in it:</source>
     <message>
         <location filename="FindWhereUsedWidget.cpp" line="293"/>
         <source>NAT rule set</source>
-        <translation type="unfinished"></translation>
+        <translation>Набор правил трансляции адресов</translation>
     </message>
     <message>
         <location filename="FindWhereUsedWidget.cpp" line="296"/>
         <source>Policy rule set</source>
-        <translation type="unfinished"></translation>
+        <translation>Набор правил политики</translation>
     </message>
     <message>
         <location filename="FindWhereUsedWidget.cpp" line="299"/>
         <source>Routing rule set</source>
-        <translation type="unfinished"></translation>
+        <translation>Набор правил роутинга</translation>
     </message>
     <message>
         <location filename="FindWhereUsedWidget.cpp" line="302"/>
         <source>Rule set of unknown type</source>
-        <translation type="unfinished"></translation>
+        <translation>Набо правил неизвестного типа</translation>
     </message>
     <message>
         <location filename="FindWhereUsedWidget.cpp" line="313"/>
         <source>%1 &quot;%2&quot; / Rule %3 / %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 &quot;%2&quot; / Правило %3 / %4</translation>
     </message>
 </context>
 <context>
@@ -6339,12 +6339,12 @@ objects that they refer to moved in it:</source>
     <message>
         <location filename="IPServiceDialog.cpp" line="70"/>
         <source>DSCP code or class:</source>
-        <translation type="unfinished"></translation>
+        <translation>Код или класс DSCP:</translation>
     </message>
     <message>
         <location filename="IPServiceDialog.cpp" line="75"/>
         <source>TOS code (numeric):</source>
-        <translation type="unfinished"></translation>
+        <translation>Код TOS (числовой):</translation>
     </message>
 </context>
 <context>
@@ -6423,28 +6423,28 @@ objects that they refer to moved in it:</source>
         <location filename="ipservicedialog_q.ui" line="151"/>
         <source>Protocol number:
  (0- any protocol)</source>
-        <translation type="unfinished"></translation>
+        <translation>Номер протокола: (0-любой)</translation>
     </message>
     <message>
         <location filename="ipservicedialog_q.ui" line="169"/>
         <source>DiffServ</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ipservicedialog_q.ui" line="175"/>
         <source>Use DSCP</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать DSCP</translation>
     </message>
     <message>
         <location filename="ipservicedialog_q.ui" line="185"/>
         <source>Use TOS</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать TOS</translation>
     </message>
     <message>
         <location filename="ipservicedialog_q.ui" line="192"/>
         <source>DSCP or TOS code
 (numerical, dec or hex):</source>
-        <translation type="unfinished"></translation>
+        <translation>Код DSCP или TOS (числовой, dec или hex):</translation>
     </message>
 </context>
 <context>
@@ -6556,37 +6556,37 @@ objects that they refer to moved in it:</source>
     <message>
         <location filename="ipv6dialog_q.ui" line="16"/>
         <source>IPv6</source>
-        <translation type="unfinished">IPv6</translation>
+        <translation>IPv6</translation>
     </message>
     <message>
         <location filename="ipv6dialog_q.ui" line="87"/>
         <source>Address IPv6</source>
-        <translation type="unfinished"></translation>
+        <translation>Адрес IPv6</translation>
     </message>
     <message>
         <location filename="ipv6dialog_q.ui" line="161"/>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя:</translation>
     </message>
     <message>
         <location filename="ipv6dialog_q.ui" line="199"/>
         <source>Address:</source>
-        <translation type="unfinished"></translation>
+        <translation>Адрес:</translation>
     </message>
     <message>
         <location filename="ipv6dialog_q.ui" line="243"/>
         <source>Network (bit length)</source>
-        <translation type="unfinished"></translation>
+        <translation>Сеть (длина в битах)</translation>
     </message>
     <message>
         <location filename="ipv6dialog_q.ui" line="287"/>
         <source>DNS Lookup...</source>
-        <translation type="unfinished"></translation>
+        <translation>Опеределить адрес при помощи DNS...</translation>
     </message>
     <message>
         <location filename="ipv6dialog_q.ui" line="305"/>
         <source>Comment:</source>
-        <translation type="unfinished"></translation>
+        <translation>Комментарий:</translation>
     </message>
 </context>
 <context>
