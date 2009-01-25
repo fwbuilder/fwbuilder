@@ -83,10 +83,20 @@ void PolicyCompiler_ipfw::PrintRule::_printProtocol(Service *srv)
     if ( CustomService::isA(srv) )
     {
         // CustomService returns protocol name starting with v3.0.4
-        // However CustomService can return protocol name "any", which we should
-        // just skip.
+        // However CustomService can return protocol name "any", which
+        // we should just skip. Also, in ipfw option "established" is
+        // only defined for tcp, so we should set protocol to "tcp" if
+        // custom service inserts this option.
         string pn = srv->getProtocolName();
-        if (pn == "any") return;
+        if (pn != "any") compiler->output << pn << " ";
+        else
+        {
+            string cscode = CustomService::cast(srv)->getCodeForPlatform(
+                compiler->myPlatformName() );
+            if (cscode=="established") compiler->output << "tcp ";
+            // custom service does not define protocol - do not add any.
+        }
+        return;
     }
 
     compiler->output << srv->getProtocolName();
@@ -421,8 +431,9 @@ void PolicyCompiler_ipfw::PrintRule::_printDstService(RuleElementSrv  *rel)
 
     compiler->output << " ";
 /*
- *  TCP services with flags were separated in rule processor separateTCPWithFlags.
- *  We can count on objects like that being a single object in the SRV.
+ *  TCP services with flags were separated in rule processor
+ *  separateTCPWithFlags.  We can count on objects like that being a
+ *  single object in the SRV.
  */
     if (TCPService::isA(s1)) 
     {
@@ -435,7 +446,7 @@ void PolicyCompiler_ipfw::PrintRule::_printDstService(RuleElementSrv  *rel)
 
 string PolicyCompiler_ipfw::PrintRule::_printDstService(Service *srv,bool neg)
 {
-    string         res;
+    string  res;
 
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
     {
@@ -452,7 +463,8 @@ string PolicyCompiler_ipfw::PrintRule::_printDstService(Service *srv,bool neg)
 
     if (CustomService::isA(srv)) 
     {
-	res= CustomService::cast(srv)->getCodeForPlatform( compiler->myPlatformName() ) + " ";
+	res= CustomService::cast(srv)->getCodeForPlatform(
+            compiler->myPlatformName() ) + " ";
     }
 
     return res;

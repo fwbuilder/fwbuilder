@@ -1,5 +1,16 @@
 2009-01-24  vadim  <vadim@vk.crocodile.org>
 
+	* objects_init.xml.in: Added CustomService object "ESTABLISHED
+	ipv6" which defines code for iptables, ipfw and IOS extended
+	access lists for IPv6.
+
+	* PolicyCompiler_ipfw_writers.cpp (PrintRule::_printProtocol):
+	fixed behavior or policy compiler for ipfw which was broken in
+	rev714 - it should print protocol "tcp" when custom service object
+	that adds option "established" is used. This compiler worked like
+	that before attribute "protocol" was added to the CustomService
+	object.
+
 	* platforms.cpp (getReadableRuleElementName): code refactoring:
 	made it possible to translate ruleset table column
 	names ("Source", "Destination" etc.). Currently only Russian
@@ -22,6 +33,11 @@
 	cleaned up and further unified with confirmation dialog shown when
 	user tries to delete an object that is used in some groups and
 	rules.
+
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_printChain): fixed bug
+	#2507239: "length of iptables rule chain names not
+	checked". Iptables does not allow chain names longer than 30
+	characters; policy compiler fwb_ipt should check for this.
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printAddr): fixed bug
 	#2526173: "fwb_ipt crashes due to old-broadcast". This bug was
@@ -5460,11 +5476,11 @@
 	properly created on FreeBSD". Mutexes gethostbyname_mutex and
 	gethostbyaddr_mutex were never created but used on OS where
 	thread-safe resolver is not available.
-	
+
 2005-02-17    <vadim@vk.crocodile.org>
 
 	* v2.0.6 released
-	
+
 2005-02-17    <vadim@vk.crocodile.org>
 
 	* ipt.cpp (main): fixed bug #1123933 "iptables add_addr() expr

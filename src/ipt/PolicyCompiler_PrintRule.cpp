@@ -179,6 +179,7 @@ string PolicyCompiler_ipt::PrintRule::_printChain(PolicyRule *rule)
 {
     string s = rule->getStr("ipt_chain");
     if (s.empty()) s = "UNKNOWN";
+    // check chain name length per bug report #2507239
     if (s.length() > 30)
     {
         ostringstream str;
