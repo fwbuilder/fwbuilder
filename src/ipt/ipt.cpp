@@ -112,6 +112,7 @@ static bool             ipv6_run       = true;
 static bool             fw_by_id       = false;
 
 FWObjectDatabase *objdb = NULL;
+bool prolog_done = false;
 
 static map<string,RuleSet*> branches;
 
@@ -133,34 +134,10 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
     public:
     virtual bool operator()(const string&) const 
     { 
-	cout << _("Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it.") << std::endl;
+	cout << "Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it." << std::endl;
 	return false;
     }
 };
-
-string addPrologScript(bool nocomment,const string &script)
-{
-    string res="";
-
-    if ( !nocomment )
-    {
-        res += "\n";
-        res += "#\n";
-        res += "# Prolog script\n";
-        res += "#\n";
-    }
-
-    res += script;
-    res += "\n";
-
-    if ( !nocomment )
-    {
-        res += "#\n";
-        res += "# End of prolog script\n";
-        res += "#\n";
-    }
-    return res;
-}
 
 void assignRuleSetChain(RuleSet *ruleset)
 {
@@ -259,17 +236,11 @@ string dumpScript(bool nocomm, Firewall *fw,
 {
     ostringstream res;
     ostringstream script;
-    string prolog_place= fw->getOptionsObject()->getStr("prolog_place");
+    string prolog_place = fw->getOptionsObject()->getStr("prolog_place");
 
     if (fw->getOptionsObject()->getBool("use_iptables_restore"))
     {
         script << reset_script;
-
-        if (prolog_place == "after_flush")
-        {
-            script << addPrologScript(
-                nocomm, fw->getOptionsObject()->getStr("prolog_script"));
-        }
 
         if (!filter_script.empty())
         {
@@ -295,23 +266,21 @@ string dumpScript(bool nocomm, Firewall *fw,
             res << script.str();
             res << "#" << "\n";
             if (ipv6_policy)
-                res << ") | $IP6TABLES_RESTORE; IPTABLES_RESTORE_RES=$?"
-                    << "\n";
-            else
-                res << ") | $IPTABLES_RESTORE; IPTABLES_RESTORE_RES=$?"
-                    << "\n";
+            {
+                res << ") | $IP6TABLES_RESTORE; IPTABLES_RESTORE_RES=$?\n";
+                res << "test $IPTABLES_RESTORE_RES != 0 && ";
+                res << "run_epilog_and_exit $IPTABLES_RESTORE_RES\n";
+            } else
+            {
+                res << ") | $IPTABLES_RESTORE; IPTABLES_RESTORE_RES=$?\n";
+                res << "test $IPTABLES_RESTORE_RES != 0 && ";
+                res << "run_epilog_and_exit $IPTABLES_RESTORE_RES\n";
+            }
         }
         return res.str();
     } else
     {
         res << reset_script;
-
-        if (prolog_place == "after_flush")
-        {
-            res << addPrologScript(
-                nocomm, fw->getOptionsObject()->getStr("prolog_script"));
-        }
-
         if (!nat_script.empty()) res << nat_script;
         if (!mangle_script.empty()) res << mangle_script;
         if (!filter_script.empty())  res << filter_script;
@@ -321,7 +290,7 @@ string dumpScript(bool nocomm, Firewall *fw,
 }
  
 bool processPolicyRuleSet(
-    const QString &fwobjectname,
+    Firewall *fw,
     FWObject *ruleset,
     ostringstream &filter_table_stream,
     ostringstream &mangle_table_stream,
@@ -331,11 +300,13 @@ bool processPolicyRuleSet(
     std::map<const std::string, bool> &minus_n_commands_filter,
     std::map<const std::string, bool> &minus_n_commands_mangle)
 {
+    const QString &fwobjectname = fw->getName().c_str();
     int policy_rules_count  = 0;
     int mangle_rules_count  = 0;
     bool have_connmark = false;
     bool have_connmark_in_output = false;
     bool empty_output = true;
+    string prolog_place = fw->getOptionsObject()->getStr("prolog_place");
 
     Policy *policy = Policy::cast(ruleset);
     assignRuleSetChain(policy);
@@ -389,6 +360,7 @@ bool processPolicyRuleSet(
             mangle_table_stream << "automatic rules";
             mangle_table_stream << "\n";
             mangle_table_stream << m.flushAndSetDefaultPolicy();
+            mangle_table_stream << m.printAutomaticRules();
         }
 
         if (m.getCompiledScriptLength() > 0)
@@ -457,6 +429,15 @@ bool processPolicyRuleSet(
             << "# ================ Table 'filter', automatic rules"
             << "\n";
         reset_rules_stream << c.flushAndSetDefaultPolicy();
+
+        if (!prolog_done && prolog_place == "after_flush" &&
+            !fw->getOptionsObject()->getBool("use_iptables_restore"))
+        {
+            reset_rules_stream << "prolog_commands" << endl << endl;
+            prolog_done = true;
+        }
+
+        reset_rules_stream << c.printAutomaticRules();
         empty_output = false;
     }
 
@@ -932,7 +913,10 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     }
 
                     if (nat->isTop())
+                    {
                         n_str << n.flushAndSetDefaultPolicy();
+                        n_str << n.printAutomaticRules();
+                    }
 
                     n_str << n.getCompiledScript();
                     //n_str << n.commit();
@@ -945,7 +929,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                  p!=all_policies.end(); ++p )
             {
                 bool empty_policy = processPolicyRuleSet(
-                    fwobjectname,
+                    fw,
                     *p,
                     c_str,
                     m_str,
@@ -1088,26 +1072,34 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
  * in firewall options.
  */
         script << oscnf->printPathForAllTools(DISTRO);
+        script << oscnf->printShellFunctions(nocomm);
 
-        string prolog_place= fw->getOptionsObject()->getStr("prolog_place");
+        string prolog_place = fw->getOptionsObject()->getStr("prolog_place");
         if (prolog_place == "") prolog_place="top";
 
-        if (prolog_place == "top")
+        /* there is no way to stick prolog commands between iptables
+         * reset and iptables rules if we use iptables-restore to
+         * activate policy. Therefore, if prolog needs to be ran after
+         * iptables flush and we use iptables-restore, we run prolog
+         * on top of the script.
+         */
+        if (!prolog_done &&
+            (prolog_place == "top" ||
+             (prolog_place == "after_flush" && 
+              fw->getOptionsObject()->getBool("use_iptables_restore"))))
         {
-            script <<
-                addPrologScript(
-                    nocomm, fw->getOptionsObject()->getStr("prolog_script"));
+            script << "prolog_commands" << endl << endl;
+            prolog_done = true;
         }
 
 	script << oscnf->getCompiledScript();
 
         script << "\n";
 
-        if (prolog_place == "after_interfaces")
+        if (!prolog_done && prolog_place == "after_interfaces")
         {
-            script <<
-                addPrologScript(
-                    nocomm, fw->getOptionsObject()->getStr("prolog_script"));
+            script << "prolog_commands" << endl << endl;
+            prolog_done = true;
         }
 
         script << "log '";
@@ -1128,41 +1120,30 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                << user_name;
         }
 
-        script << "'" << "\n";
-
-	script << "\n";
+        script << "'" << endl;
+	script << endl;
 
         script << generated_script;
 
         script << r.getCompiledScript();
 
-        oscnf->epilog();
 	script << oscnf->getCompiledScript();
 
-        if ( !nocomm )
-        {
-            script << "\n";
-            script << "#" << "\n";
-            script << "# Epilog script" << "\n";
-            script << "#" << "\n";
-        }
+	script << endl;
+        script << "epilog_commands" << endl;
 
-        string post_hook= fw->getOptionsObject()->getStr("epilog_script");
-        script << post_hook << "\n";
+        script << oscnf->printIPForwardingCommands(nocomm);
+        script << endl;
 
-        if ( !nocomm )
-        {
-            script << "\n";
-            script << "# End of epilog script" << "\n";
-            script << "#" << "\n";
-        }
+        // no need to do this because we now abort the script if
+        // iptables-restore returned an error and exit with the same
+        // error code. This means we can only get to this point in
+        // the script if iptables-restore returned "0"
+        //
+        // if (options->getBool("use_iptables_restore"))
+        //     script << "exit $IPTABLES_RESTORE_RES";
 
-        script << "\n";
-
-        if (options->getBool("use_iptables_restore"))
-            script << "exit $IPTABLES_RESTORE_RES";
-
-	script << "\n";
+	script << endl;
 
         QFile fw_file(fw_file_name);
         if (fw_file.open(QIODevice::WriteOnly))
@@ -1177,7 +1158,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                                    QFile::ExeOther );
         }
 
-        cout << _(" Compiled successfully") << std::endl << flush;
+        cout << " Compiled successfully" << std::endl << flush;
         
         return 0;
 

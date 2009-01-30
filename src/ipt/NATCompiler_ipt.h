@@ -583,7 +583,8 @@ namespace fwcompiler {
 	
         void setHaveDynamicInterfaces(bool f) { have_dynamic_interfaces=f; }
         
-        std::string flushAndSetDefaultPolicy();
+        virtual std::string flushAndSetDefaultPolicy();
+        virtual std::string printAutomaticRules();
         std::string commit();
 
 	static std::string getNewTmpChainName(libfwbuilder::NATRule *rule);

@@ -68,8 +68,9 @@ namespace fwcompiler {
 
         void registerMultiAddressObject(libfwbuilder::MultiAddressRunTime *at);
         void printChecksForRunTimeMultiAddress();
-        void printShellFunctions();
+        std::string printShellFunctions(bool no_comment);
         std::string printPathForAllTools(const std::string &os);
+        std::string printIPForwardingCommands(bool no_comment);
         void configureInterfaces();
         void printCommandsToAddVirtualAddressesForNAT();
         

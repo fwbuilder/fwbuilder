@@ -2395,6 +2395,11 @@ string NATCompiler_ipt::flushAndSetDefaultPolicy()
     return res;
 }
 
+string NATCompiler_ipt::printAutomaticRules()
+{
+    return "";
+}
+
 string NATCompiler_ipt::commit()
 {
     string res="";

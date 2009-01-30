@@ -131,10 +131,14 @@ void MangleTableCompiler_ipt::addRuleFilter()
 
 string MangleTableCompiler_ipt::flushAndSetDefaultPolicy()
 {
+    return "";
+}
+
+string MangleTableCompiler_ipt::printAutomaticRules()
+{
     return printAutomaticRulesForMangleTable(have_connmark,
                                              have_connmark_in_output);
 }
-
 
 string MangleTableCompiler_ipt::printAutomaticRulesForMangleTable(
     bool have_connmark, bool have_connmark_in_output)

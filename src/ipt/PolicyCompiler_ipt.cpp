@@ -4354,6 +4354,12 @@ string PolicyCompiler_ipt::flushAndSetDefaultPolicy()
     res += printRule->_declareTable();
     res += printRule->_flushAndSetDefaultPolicy();
 
+    return res;
+}
+
+std::string PolicyCompiler_ipt::printAutomaticRules()
+{
+    string res="";
     // iptables accepted TCPMSS target in filter table, FORWARD chain 
     // in the older versions, but requires it to be in mangle filter
     // starting somewhere 1.3.x
@@ -4362,7 +4368,6 @@ string PolicyCompiler_ipt::flushAndSetDefaultPolicy()
         res += printRule->_clampTcpToMssRule();
 
     res += printRule->_printOptionalGlobalRules();
-
     return res;
 }
 

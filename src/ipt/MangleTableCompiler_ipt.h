@@ -60,6 +60,7 @@ namespace fwcompiler {
         virtual void addRuleFilter();
 	
         virtual std::string flushAndSetDefaultPolicy();
+        virtual std::string printAutomaticRules();
 
         std::string printAutomaticRulesForMangleTable(
             bool have_connmark, bool have_connmark_in_output);

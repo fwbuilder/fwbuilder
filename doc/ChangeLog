@@ -1,3 +1,30 @@
+2009-01-27  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ipt.cpp (main): bug #535146: "firewall script: exit code for
+	ip6tables overwrites iptables". If generated iptables script used
+	iptables-restore to activate the policy and contained both ipv4
+	and ipv6 iptables policies, return code from iptables-restore was
+	overwritten with return code from ip6tables-restore and only the
+	latter was returned as the return code of the script. To fix this,
+	prolog and epilog commands were moved to shell functions
+	prolog_commands and epilog_commands which are called from various
+	places in the script. Script checks return code of
+	iptables-restore and ip6tables-restore and if an error is detected
+	from either, it runs epilog_commands and terminates, returning
+	error code obtained from iptables-restore (or
+	ip6tables-restore). In case of error, we always run epilog but do
+	not turn ip forwarding on in the kernel. Also, if prolog place is
+	set to "After iptables reset" in the GUI and script uses
+	iptables-restore, prolog commands are executed just before
+	iptables rules are sent to iptables-restore. This means if
+	iptables-restore is used, position "after iptables reset" is
+	equivalent to position "on top of the script". If iptables-restore
+	is not used and prolog position is "after iptables reset", then
+	prolog commands are executed right after the script flushes all
+	chains in all tables and sets deault policy for all chains. Other
+	positions of prolog commands in the script (on top and after
+	interface configuration) are naffected and work as before.
+
 2009-01-24  vadim  <vadim@vk.crocodile.org>
 
 	* objects_init.xml.in: Added CustomService object "ESTABLISHED

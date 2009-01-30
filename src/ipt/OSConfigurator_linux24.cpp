@@ -422,94 +422,88 @@ void OSConfigurator_linux24::configureInterfaces()
 
 int  OSConfigurator_linux24::prolog()
 {
-    printShellFunctions();
-
-/*
- * Process firewall options, build OS network configuration script
- */
-//    processFirewallOptions();
-
-    output << endl;
-
-//    configureInterfaces();
-
     return 0;
 }
 
-void  OSConfigurator_linux24::printShellFunctions()
+/**
+ * Print shell functions used by the script. If argument (boolean) is true,
+ * do not add comments.
+ */
+string OSConfigurator_linux24::printShellFunctions(bool )
 {
-    FWOptions* options=fw->getOptionsObject();
+    ostringstream str;
+    FWOptions* options = fw->getOptionsObject();
     
-    output                                                      << endl;
-    output << "log() {"                                         << endl;
-    output << "  echo \"$1\""                                   << endl;
-    output << "  test -x \"$LOGGER\" && $LOGGER -p info \"$1\"" << endl;
-    output << "}"                                               << endl;
-    output                                                      << endl;
+    str << endl;
+    str << "log() {" << endl;
+    str << "  echo \"$1\"" << endl;
+    str << "  test -x \"$LOGGER\" && $LOGGER -p info \"$1\"" << endl;
+    str << "}" << endl;
+    str << endl;
     
-    output << "check_file() {"                             << endl;
-    output << "  test -r \"$2\" || {"                      << endl;
-    output << "    echo \"Can not find file $2 referenced by AddressTable object $1\"" << endl;
-    output << "    exit 1"                                 << endl;
-    output << "  }"                                        << endl;
-    output << "}"                                          << endl;
-    output                                                 << endl;
+    str << "check_file() {" << endl;
+    str << "  test -r \"$2\" || {" << endl;
+    str << "    echo \"Can not find file $2 referenced by AddressTable object $1\"" << endl;
+    str << "    exit 1" << endl;
+    str << "  }" << endl;
+    str << "}" << endl;
+    str << endl;
 
-    output << "va_num=1"                                   << endl;
+    str << "va_num=1" << endl;
 
-    output << "add_addr() {"                               << endl;
-    output << "  addr=$1"                                  << endl;
-    output << "  nm=$2"                                    << endl;
-    output << "  dev=$3"                                   << endl;
-    output << ""                                           << endl;
-    output << "  type=\"\""                                << endl;
-    output << "  aadd=\"\""                                << endl;
-    output << ""                                           << endl;
-    output << "  L=`$IP -4 link ls $dev | head -n1`"       << endl;
-    output << "  if test -n \"$L\"; then"                  << endl;
-    output << "    OIFS=$IFS"                              << endl;
-    output << "    IFS=\" /:,<\""                          << endl;
-    output << "    set $L"                                 << endl;
-    output << "    type=$4"                                << endl;
-    output << "    IFS=$OIFS"                              << endl;
-    output << "    if test \"$type\" = \"NO-CARRIER\"; then" << endl;
-    output << "      type=$5"                              << endl;
-    output << "    fi"                                     << endl;
-    output << ""                                           << endl;
+    str << "add_addr() {" << endl;
+    str << "  addr=$1" << endl;
+    str << "  nm=$2" << endl;
+    str << "  dev=$3" << endl;
+    str << "" << endl;
+    str << "  type=\"\"" << endl;
+    str << "  aadd=\"\"" << endl;
+    str << "" << endl;
+    str << "  L=`$IP -4 link ls $dev | head -n1`" << endl;
+    str << "  if test -n \"$L\"; then" << endl;
+    str << "    OIFS=$IFS" << endl;
+    str << "    IFS=\" /:,<\"" << endl;
+    str << "    set $L" << endl;
+    str << "    type=$4" << endl;
+    str << "    IFS=$OIFS" << endl;
+    str << "    if test \"$type\" = \"NO-CARRIER\"; then" << endl;
+    str << "      type=$5" << endl;
+    str << "    fi" << endl;
+    str << "" << endl;
 
 /*
  *  see comment about using grep with or without regex below
  */
-    output << "    L=`$IP -4 addr ls $dev to $addr | grep inet | grep -v :`" << endl;
-    output << "    if test -n \"$L\"; then"                << endl;
-    output << "      OIFS=$IFS"                            << endl;
-    output << "      IFS=\" /\""                           << endl;
-    output << "      set $L"                               << endl;
-    output << "      aadd=$2"                              << endl;
-    output << "      IFS=$OIFS"                            << endl;
-    output << "    fi"                                     << endl;
-    output << "  fi"                                       << endl;
-    output << "  if test -z \"$aadd\"; then"               << endl;
-    output << "    if test \"$type\" = \"POINTOPOINT\"; then"<< endl;
-    output << "      $IP -4 addr add $addr dev $dev scope global label $dev:FWB${va_num}"            << endl;
-    output << "      va_num=`expr $va_num + 1`"             << endl;
-    output << "    fi"                                      << endl;
-    output << "    if test \"$type\" = \"BROADCAST\"; then" << endl;
-    output << "      $IP -4 addr add $addr/$nm dev $dev brd + scope global label $dev:FWB${va_num}"  << endl;
-    output << "      va_num=`expr $va_num + 1`"             << endl;
-    output << "    fi"                                      << endl;
-    output << "  fi"                                        << endl;
-    output << "}"                                           << endl;
-    output << endl;
+    str << "    L=`$IP -4 addr ls $dev to $addr | grep inet | grep -v :`" << endl;
+    str << "    if test -n \"$L\"; then" << endl;
+    str << "      OIFS=$IFS" << endl;
+    str << "      IFS=\" /\"" << endl;
+    str << "      set $L" << endl;
+    str << "      aadd=$2" << endl;
+    str << "      IFS=$OIFS" << endl;
+    str << "    fi" << endl;
+    str << "  fi" << endl;
+    str << "  if test -z \"$aadd\"; then" << endl;
+    str << "    if test \"$type\" = \"POINTOPOINT\"; then"<< endl;
+    str << "      $IP -4 addr add $addr dev $dev scope global label $dev:FWB${va_num}" << endl;
+    str << "      va_num=`expr $va_num + 1`" << endl;
+    str << "    fi" << endl;
+    str << "    if test \"$type\" = \"BROADCAST\"; then" << endl;
+    str << "      $IP -4 addr add $addr/$nm dev $dev brd + scope global label $dev:FWB${va_num}" << endl;
+    str << "      va_num=`expr $va_num + 1`" << endl;
+    str << "    fi" << endl;
+    str << "  fi" << endl;
+    str << "}" << endl;
+    str << endl;
 
-    output << "getInterfaceVarName() {"                     << endl;
-    output << "  echo $1 | sed 's/\\./_/'"                  << endl;
-    output << "}"                                           << endl;
-    output << endl;
+    str << "getInterfaceVarName() {" << endl;
+    str << "  echo $1 | sed 's/\\./_/'" << endl;
+    str << "}" << endl;
+    str << endl;
 
-    output << "getaddr() {"                                 << endl;
-    output << "  dev=$1"                                    << endl;
-    output << "  name=$2"                                   << endl;
+    str << "getaddr() {" << endl;
+    str << "  dev=$1" << endl;
+    str << "  name=$2" << endl;
 /*
  * originally this command looked like this:
  * $IP -4 addr ls $dev to $addr | grep inet | grep -E \"$dev$\"`
@@ -523,74 +517,89 @@ void  OSConfigurator_linux24::printShellFunctions()
  *  support for regular expressions. Using "grep -v :" seems to be an
  *  easy way to filter out secondary addresses without using regex
  */
-    output << "  L=`$IP -4 addr show dev $dev | grep inet | grep -v :`"
-           << endl;
-    output << "  test -z \"$L\" && { "                      << endl;
-    output << "    eval \"$name=''\""                       << endl;
-    output << "    return"                                  << endl;
-    output << "  }"                                         << endl;
-    output << "  OIFS=$IFS"                                 << endl;
-    output << "  IFS=\" /\""                                << endl;
-    output << "  set $L"                                    << endl;
-    output << "  eval \"$name=$2\""                         << endl;
-    output << "  IFS=$OIFS"                                 << endl;
-    output << "}"                                           << endl;
-    output << endl;
+    str << "  L=`$IP -4 addr show dev $dev | grep inet | grep -v :`" << endl;
+    str << "  test -z \"$L\" && { " << endl;
+    str << "    eval \"$name=''\"" << endl;
+    str << "    return" << endl;
+    str << "  }" << endl;
+    str << "  OIFS=$IFS" << endl;
+    str << "  IFS=\" /\"" << endl;
+    str << "  set $L" << endl;
+    str << "  eval \"$name=$2\"" << endl;
+    str << "  IFS=$OIFS" << endl;
+    str << "}" << endl;
+    str << endl;
 
 
-    output << "getaddr6() {"                                 << endl;
-    output << "  dev=$1"                                    << endl;
-    output << "  name=$2"                                   << endl;
-    output << "  L=`$IP -6 addr show dev $dev | grep inet6 | grep -v :`"
-           << endl;
-    output << "  test -z \"$L\" && { "                      << endl;
-    output << "    eval \"$name=''\""                       << endl;
-    output << "    return"                                  << endl;
-    output << "  }"                                         << endl;
-    output << "  OIFS=$IFS"                                 << endl;
-    output << "  IFS=\" /\""                                << endl;
-    output << "  set $L"                                    << endl;
-    output << "  eval \"$name=$2\""                         << endl;
-    output << "  IFS=$OIFS"                                 << endl;
-    output << "}"                                           << endl;
-    output << endl;
+    str << "getaddr6() {" << endl;
+    str << "  dev=$1" << endl;
+    str << "  name=$2" << endl;
+    str << "  L=`$IP -6 addr show dev $dev | grep inet6 | grep -v :`" << endl;
+    str << "  test -z \"$L\" && { " << endl;
+    str << "    eval \"$name=''\"" << endl;
+    str << "    return" << endl;
+    str << "  }" << endl;
+    str << "  OIFS=$IFS" << endl;
+    str << "  IFS=\" /\"" << endl;
+    str << "  set $L" << endl;
+    str << "  eval \"$name=$2\"" << endl;
+    str << "  IFS=$OIFS" << endl;
+    str << "}" << endl;
+    str << endl;
 
-    output << endl;
+    str << endl;
 
 /* we use function getinterfaces to process wildcard interfaces */
 
-    output << "getinterfaces() {"                           << endl;
-    output << "  NAME=$1"                                   << endl;
-    output << "  $IP link show | grep \": $NAME\" | while read L; do" << endl;
-    output << "    OIFS=$IFS"                               << endl;
-    output << "    IFS=\" :\""                              << endl;
-    output << "    set $L"                                  << endl;
-    output << "    IFS=$OIFS"                               << endl;
-    output << "    echo $2"                                 << endl;
-    output << "  done"                                      << endl;
-    output << "}"                                           << endl;
-    output << endl;
-    output << endl;
+    str << "getinterfaces() {" << endl;
+    str << "  NAME=$1" << endl;
+    str << "  $IP link show | grep \": $NAME\" | while read L; do" << endl;
+    str << "    OIFS=$IFS" << endl;
+    str << "    IFS=\" :\"" << endl;
+    str << "    set $L" << endl;
+    str << "    IFS=$OIFS" << endl;
+    str << "    echo $2" << endl;
+    str << "  done" << endl;
+    str << "}" << endl;
+    str << endl;
+    str << endl;
 
-    output << "# increment ip address"                      << endl;
-    output << "incaddr()"                                   << endl;
-    output << "{"                                           << endl;
-    output << "  n1=$4"                                     << endl;
-    output << "  n2=$3"                                     << endl;
-    output << "  n3=$2"                                     << endl;
-    output << "  n4=$1"                                     << endl;
-    output                                                  << endl;
-    output << "  vn1=`eval  \"echo \\\\$$n1\"`"             << endl;
-    output                                                  << endl;
-    output << "  R=`expr $vn1 \\< 255`"                     << endl;
-    output << "  if test $R = \"1\"; then"                  << endl;
-    output << "    eval \"$n1=`expr $vn1 + 1`\""            << endl;
-    output << "  else"                                      << endl;
-    output << "    eval \"$n1=0\""                          << endl;
-    output << "    incaddr XX $n4 $n3 $n2"                  << endl;
-    output << "  fi"                                        << endl;
-    output << "}"                                           << endl;
-    output                                                  << endl;
+    str << "# increment ip address" << endl;
+    str << "incaddr()" << endl;
+    str << "{" << endl;
+    str << "  n1=$4" << endl;
+    str << "  n2=$3" << endl;
+    str << "  n3=$2" << endl;
+    str << "  n4=$1" << endl;
+    str << endl;
+    str << "  vn1=`eval  \"echo \\\\$$n1\"`" << endl;
+    str << endl;
+    str << "  R=`expr $vn1 \\< 255`" << endl;
+    str << "  if test $R = \"1\"; then" << endl;
+    str << "    eval \"$n1=`expr $vn1 + 1`\"" << endl;
+    str << "  else" << endl;
+    str << "    eval \"$n1=0\"" << endl;
+    str << "    incaddr XX $n4 $n3 $n2" << endl;
+    str << "  fi" << endl;
+    str << "}" << endl;
+    str << endl;
+
+    str << endl;
+    str << "prolog_commands() {" << endl;
+    str << "echo \"Running prolog script\"" << endl;
+    str << fw->getOptionsObject()->getStr("prolog_script");
+    str << "}" << endl;
+    str << endl;
+    str << "epilog_commands() {" << endl;
+    str << "echo \"Running epilog script\"" << endl;
+    str << fw->getOptionsObject()->getStr("epilog_script");
+    str << "}" << endl;
+    str << endl;
+    str << "run_epilog_and_exit() {" << endl;
+    str << "  epilog_commands" << endl;
+    str << "  exit $1" << endl;
+    str << "}" << endl;
+    str << endl;
 
 /* check if package iproute2 is installed, but do this only if
  * we really need /usr/sbin/ip 
@@ -599,15 +608,16 @@ void  OSConfigurator_linux24::printShellFunctions()
         options->getBool("manage_virtual_addr") ||
         options->getBool("configure_interfaces") )
     {
-        output << "if $IP link ls >/dev/null 2>&1; then" << endl;
-        output << "  echo;"                              << endl;
-        output << "else"                                 << endl;
-        output << "  echo \"iproute not found\""         << endl;
-        output << "  exit 1"                             << endl;
-        output << "fi"                                   << endl;
+        str << "if $IP link ls >/dev/null 2>&1; then" << endl;
+        str << "  echo;" << endl;
+        str << "else" << endl;
+        str << "  echo \"iproute not found\"" << endl;
+        str << "  exit 1" << endl;
+        str << "fi" << endl;
+        str << endl;
     }
 
-    output << endl;
+    return str.str();
 }
 
 string  OSConfigurator_linux24::printPathForAllTools(const string &os)
@@ -798,13 +808,14 @@ string  OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
     return res.str();
 }
 
-void OSConfigurator_linux24::epilog()
+string OSConfigurator_linux24::printIPForwardingCommands(bool )
 {
+    ostringstream str;
     FWOptions* options = fw->getOptionsObject();
 
-    try {
-	output << "#" << endl;
-	output << "#" << endl;
+    try
+    {
+	str << endl;
 
 /* Turn on packet forwarding if we have to */
 
@@ -813,8 +824,7 @@ void OSConfigurator_linux24::epilog()
         {
             if (s=="1" || s=="On" || s=="on") s="1";
             else                              s="0";
-            output << "echo " << s
-                   << " > /proc/sys/net/ipv4/ip_forward\n\n";
+            str << "echo " << s << " > /proc/sys/net/ipv4/ip_forward\n\n";
         }
 
         s = options->getStr("linux24_ipv6_forward");
@@ -822,15 +832,22 @@ void OSConfigurator_linux24::epilog()
         {
             if (s=="1" || s=="On" || s=="on") s="1";
             else                              s="0";
-            output << "echo " << s
-                   << " > /proc/sys/net/ipv6/conf/all/forwarding\n\n";
+            str << "echo "
+                << s << " > /proc/sys/net/ipv6/conf/all/forwarding\n\n";
         }
 
 //        else
-//            output << "echo \"$FWD\" > /proc/sys/net/ipv4/ip_forward\n\n";
+//            str << "echo \"$FWD\" > /proc/sys/net/ipv4/ip_forward\n\n";
 
-    } catch (FWException ex) {
+    } catch (FWException ex)
+    {
 	error(ex.toString());
 	exit(1);
     }
+
+    return str.str();
+}
+
+void OSConfigurator_linux24::epilog()
+{
 }
