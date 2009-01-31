@@ -1,3 +1,10 @@
+2009-01-31  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ipt.cpp (processPolicyRuleSet): fixed bug #2550074: "Automatic
+	rules for filter table included twice in iptables". If user had
+	two policy ruleset objects marked as "top" rule set, then
+	automaitc rules were added twice.
+
 2009-01-27  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ipt.cpp (main): bug #535146: "firewall script: exit code for
@@ -1639,7 +1646,7 @@
 	properties of the CHAIN action.". PolicyRule::removeRef removes
 	references to RuleSets and TagSErvice objects from rule options
 	when corresponding RuleSet or TagService object is deleted.
-	
+
 2008-08-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ObjectTreeView.cpp (ObjectTreeView::edit): double-clicking on an

@@ -294,7 +294,7 @@ bool processPolicyRuleSet(
     FWObject *ruleset,
     ostringstream &filter_table_stream,
     ostringstream &mangle_table_stream,
-    ostringstream &reset_rules_stream,
+    ostringstream &automatic_rules_stream,
     OSConfigurator_linux24 *oscnf,
     int policy_af,
     std::map<const std::string, bool> &minus_n_commands_filter,
@@ -423,21 +423,29 @@ bool processPolicyRuleSet(
         }
     }
 
-    if (policy->isTop())
+    /* bug #2550074: "Automatic rules for filter table included twice
+     * in iptables". If user had two policy ruleset objects marked as
+     * "top" rule set, then automaitc rules were added twice. Since we
+     * add rules to automatic_rules_stream only in this one place, it
+     * is sufficient to check if the stream is empty to avoid
+     * duplication.
+     */
+    long auto_rules_stream_position = automatic_rules_stream.tellp();
+    if (policy->isTop() && auto_rules_stream_position == 0)
     {
-        reset_rules_stream
+        automatic_rules_stream
             << "# ================ Table 'filter', automatic rules"
             << "\n";
-        reset_rules_stream << c.flushAndSetDefaultPolicy();
+        automatic_rules_stream << c.flushAndSetDefaultPolicy();
 
         if (!prolog_done && prolog_place == "after_flush" &&
             !fw->getOptionsObject()->getBool("use_iptables_restore"))
         {
-            reset_rules_stream << "prolog_commands" << endl << endl;
+            automatic_rules_stream << "prolog_commands" << endl << endl;
             prolog_done = true;
         }
 
-        reset_rules_stream << c.printAutomaticRules();
+        automatic_rules_stream << c.printAutomaticRules();
         empty_output = false;
     }
 
@@ -861,10 +869,10 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 prep->compile();
             }
 
-            ostringstream reset_rules;
-            ostringstream c_str;
-            ostringstream m_str;
-            ostringstream n_str;
+            ostringstream automaitc_rules_stream;
+            ostringstream filter_rules_stream;
+            ostringstream mangle_rules_stream;
+            ostringstream nat_rules_stream;
             bool empty_output = true;
             //MangleTableCompiler_ipt *top_level_mangle_compiler = NULL;
 
@@ -902,25 +910,26 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
                 if (n.getCompiledScriptLength() > 0)
                 {
-                    n_str << "# ================ Table 'nat', rule set "
-                          << branch_name << "\n";
+                    nat_rules_stream << "# ================ Table 'nat', "
+                                     << " rule set "
+                                     << branch_name << "\n";
 
                     if (n.haveErrorsAndWarnings())
                     {
-                        n_str << "# NAT compiler errors and warnings:"
-                              << "\n";
-                        n_str << n.getErrors("# ");
+                        nat_rules_stream << "# NAT compiler errors and "
+                                         << "warnings:\n";
+                        nat_rules_stream << n.getErrors("# ");
                     }
 
                     if (nat->isTop())
                     {
-                        n_str << n.flushAndSetDefaultPolicy();
-                        n_str << n.printAutomaticRules();
+                        nat_rules_stream << n.flushAndSetDefaultPolicy();
+                        nat_rules_stream << n.printAutomaticRules();
                     }
 
-                    n_str << n.getCompiledScript();
-                    //n_str << n.commit();
-                    n_str << "\n";
+                    nat_rules_stream << n.getCompiledScript();
+                    //nat_rules_stream << n.commit();
+                    nat_rules_stream << "\n";
                     empty_output = false;
                 }
             }
@@ -931,9 +940,9 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 bool empty_policy = processPolicyRuleSet(
                     fw,
                     *p,
-                    c_str,
-                    m_str,
-                    reset_rules,
+                    filter_rules_stream,
+                    mangle_rules_stream,
+                    automaitc_rules_stream,
                     oscnf,
                     policy_af,
                     minus_n_commands_filter,
@@ -958,10 +967,10 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             }
 
             generated_script += dumpScript(nocomm, fw,
-                                           reset_rules.str(),
-                                           n_str.str(),
-                                           m_str.str(),
-                                           c_str.str(),
+                                           automaitc_rules_stream.str(),
+                                           nat_rules_stream.str(),
+                                           mangle_rules_stream.str(),
+                                           filter_rules_stream.str(),
                                            ipv6_policy);
         }
 
