@@ -428,10 +428,12 @@ bool processPolicyRuleSet(
      * "top" rule set, then automaitc rules were added twice. Since we
      * add rules to automatic_rules_stream only in this one place, it
      * is sufficient to check if the stream is empty to avoid
-     * duplication.
+     * duplication.  Note that on windows tellp() seems to return -1
+     * if no data has ever been written to the stream.
      */
     long auto_rules_stream_position = automatic_rules_stream.tellp();
-    if (policy->isTop() && auto_rules_stream_position == 0)
+
+    if (policy->isTop() && auto_rules_stream_position <= 0)
     {
         automatic_rules_stream
             << "# ================ Table 'filter', automatic rules"
