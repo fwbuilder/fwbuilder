@@ -1,3 +1,16 @@
+2009-02-05  vadim  <vadim@vk.crocodile.org>
+
+	* src/res/os/linux24.xml.in: fixed bug #2568819 "generated script
+	created on windows is not executable". If the GUI runs on Windows,
+	produced .fw script lacks executable permission bit ('x') when it
+	is copied over to the firewall with pscp.exe. Because of this,
+	activation command "sudo -S /etc/fw/script.fw" can not run it and
+	installation fails. Need to run "chmod" as part of the activation
+	sequence. (We used to run chmod as part of the copy sequence when
+	copying was done with ssh/plink.exe. Now that the copy is done
+	with scp/pscp.exe, there is no way to change permissions bits on
+	the firewall side during copy).
+
 2009-01-31  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ipt.cpp (processPolicyRuleSet): fixed bug #2550074: "Automatic
