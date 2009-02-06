@@ -11,6 +11,11 @@
 	with scp/pscp.exe, there is no way to change permissions bits on
 	the firewall side during copy).
 
+	* OSConfigurator_linux24.cpp: add empty line after user's code
+	in prolog and epilog shell functions to make sure shell syntax
+	is not violated if user does not end prolog or epilog code
+	with linefeed.
+
 2009-01-31  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ipt.cpp (processPolicyRuleSet): fixed bug #2550074: "Automatic

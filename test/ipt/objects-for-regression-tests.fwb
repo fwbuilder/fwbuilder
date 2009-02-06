@@ -798,10 +798,6 @@
     <Interface id="id78158X59595" bridgeport="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
       <IPv4 id="id78160X59595" name="firewall70:eth2:ip" comment="" ro="False" address="66.66.66.1" netmask="255.255.255.128"/>
     </Interface>
-<<<<<<< .mine
-=======
-    <ObjectRef ref="id41068X6647"/>
->>>>>>> .r752
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -37090,7 +37086,6 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-<<<<<<< .mine
       <Firewall id="id41068X54933" host_OS="linux24" inactive="False" lastCompiled="1232903301" lastInstalled="0" lastModified="1232903288" platform="iptables" version="" name="firewall-ipv6-4" comment="Simple policy that makes sense in ipv4 but translates into a few wide-matching rules in ipv6. Policy is configured as dual address family. Using iptables-restore." ro="False">
         <NAT id="id41195X54933" name="NAT" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="True" top_rule_set="True">
           <NATRule id="id41196X54933" disabled="False" position="0" comment="">
@@ -37438,7 +37433,6 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-=======
       <Firewall id="id41068X6647" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1233079338" platform="iptables" version="" name="firewall-ipv6-ipt-reset-prolog-top" comment="Policy is configured as dual address family. Usigng iptables-restore. Prolog is on top of the policy" ro="False">
         <NAT id="id41195X6647" name="NAT" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="True" top_rule_set="True">
           <NATRule id="id41196X6647" disabled="False" position="0" comment="">
@@ -38597,7 +38591,6 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
->>>>>>> .r752
     </ObjectGroup>
     <IntervalGroup id="stdid11_1" name="Time" comment="" ro="False">
       <Interval id="id3D6864D0" days_of_week="0,1" from_day="-1" from_hour="1" from_minute="1" from_month="-1" from_weekday="0" from_year="-1" to_day="-1" to_hour="2" to_minute="2" to_month="-1" to_weekday="1" to_year="-1" name="test time 1" comment="" ro="False"/>

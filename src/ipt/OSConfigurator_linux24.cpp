@@ -588,11 +588,13 @@ string OSConfigurator_linux24::printShellFunctions(bool )
     str << "prolog_commands() {" << endl;
     str << "echo \"Running prolog script\"" << endl;
     str << fw->getOptionsObject()->getStr("prolog_script");
+    str << endl;
     str << "}" << endl;
     str << endl;
     str << "epilog_commands() {" << endl;
     str << "echo \"Running epilog script\"" << endl;
     str << fw->getOptionsObject()->getStr("epilog_script");
+    str << endl;
     str << "}" << endl;
     str << endl;
     str << "run_epilog_and_exit() {" << endl;
