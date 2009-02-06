@@ -1,3 +1,11 @@
+2009-02-06  vadim  <vadim@vk.crocodile.org>
+
+	* src/gui/Icons/accept_25.png: fixed bug #2565164 "Colorblind
+	friendly Accept & Deny Icons". Accept and Deny icons were
+	indistinguishable for red-green colorblind people. New icons
+	incorporate standard symbolics for the "Aceept" and "deny"
+	functions to make them sufficiently different besides the color.
+
 2009-02-05  vadim  <vadim@vk.crocodile.org>
 
 	* src/res/os/linux24.xml.in: fixed bug #2568819 "generated script
