@@ -131,13 +131,13 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
             QDateTime dt;
             time_t t;
             
-            t=obj->getInt("lastModified");dt.setTime_t(t);
+            t = obj->getInt("lastModified");dt.setTime_t(t);
             QString t_modified  = (t)? dt.toString():"-";
             
-            t=obj->getInt("lastCompiled");dt.setTime_t(t);
+            t = obj->getInt("lastCompiled");dt.setTime_t(t);
             QString t_compiled  = (t)? dt.toString():"-";
             
-            t=obj->getInt("lastInstalled");dt.setTime_t(t);
+            t = obj->getInt("lastInstalled");dt.setTime_t(t);
             QString t_installed = (t)? dt.toString():"-";
             
             str <<  platform << "(" << readableVersion << ") / " << hostOS;

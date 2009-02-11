@@ -283,9 +283,9 @@ void instDialog::fillCompileSelectList()
     {
         f=*i;
 
-        time_t lm=f->getInt("lastModified");
-        time_t lc=f->getInt("lastCompiled");
-        time_t li=f->getInt("lastInstalled");
+        time_t lm = f->getInt("lastModified");
+        time_t lc = f->getInt("lastCompiled");
+        time_t li = f->getInt("lastInstalled");
 
         citem = new QTableWidgetItem;
         citem->setText(QString::fromUtf8(f->getName().c_str()));
@@ -312,7 +312,7 @@ void instDialog::fillCompileSelectList()
         m_dialog->selectTable->setItem(row,0,citem);
         compileMapping[f]=citem;
 
-        citem=new QTableWidgetItem; //usual type
+        citem = new QTableWidgetItem; //usual type
         checked = (operation==BATCH_INSTALL) &&
                 ((f->needsInstall() && reqFirewalls.empty() && !f->getInactive()) ||
                 (!reqFirewalls.empty() && reqFirewalls.find(f)!=reqFirewalls.end()));
@@ -322,17 +322,17 @@ void instDialog::fillCompileSelectList()
 
         dt.setTime_t(lm);
         citem = new QTableWidgetItem;
-        citem->setText((lm)?dt.toString():QString("---"));
+        citem->setText((lm)?dt.toString():QString("Never"));
         m_dialog->selectTable->setItem(row,4,citem);
 
         dt.setTime_t(lc);
         citem = new QTableWidgetItem;
-        citem->setText((lm)?dt.toString():QString("---"));
+        citem->setText((lc)?dt.toString():QString("Never"));
         m_dialog->selectTable->setItem(row,5,citem);
 
         dt.setTime_t(li);
         citem = new QTableWidgetItem;
-        citem->setText((lm)?dt.toString():QString("---"));
+        citem->setText((li)?dt.toString():QString("Never"));
         m_dialog->selectTable->setItem(row,6,citem);
 
         row++;
