@@ -349,8 +349,9 @@ void iosaclAdvancedDialog::accept()
 //    pis->setCommand( installScript->text() );
 //    pis->setArguments( installScriptArgs->text() );
 
-    mgmt->setAddress( *((Firewall::cast(obj))->getAddressPtr()) );
-
+    const InetAddr *mgmt_addr = Firewall::cast(obj)->getManagementAddress();
+    if (mgmt_addr)
+        mgmt->setAddress(*mgmt_addr);
 
     PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData() );

@@ -622,20 +622,22 @@ bool  PolicyCompiler_ipt::InterfacePolicyRulesWithOptimization::processNext()
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     RuleElementItf *itfre=rule->getItf();   assert(itfre);
-    if (itfre->isAny())
+    // sometimes for whatever reason itf rule element appears to be broken
+    // (it is just empty, not even "any")
+    if (itfre->isAny() || itfre->size()==0)
     {
         rule->setInterfaceId(-1);
         tmp_queue.push_back(rule);
         return true;
     }
+
     RuleElementItf *nitfre;
-    PolicyRule     *r;
+    PolicyRule *r;
 
     for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
     {
-        FWObject *o=*i;
-        if (FWReference::cast(o)!=NULL)
-            o=FWReference::cast(o)->getPointer();
+        FWObject *o = *i;
+        if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
 
         if (ObjectGroup::isA(o))
         {
@@ -643,7 +645,7 @@ bool  PolicyCompiler_ipt::InterfacePolicyRulesWithOptimization::processNext()
             // interfaces are allowed in such group, but we should check anyway.
             for (FWObject::iterator i=o->begin(); i!=o->end(); ++i)
             {
-                FWObject *o1=*i;
+                FWObject *o1 = *i;
                 if (FWReference::cast(o1)!=NULL)
                     o1=FWReference::cast(o1)->getPointer();
                 if (!Interface::isA(o1))
@@ -651,22 +653,22 @@ bool  PolicyCompiler_ipt::InterfacePolicyRulesWithOptimization::processNext()
                     compiler->warning("Object '" + o1->getName() + "', which is not an interface, is a member of the group '" + o->getName() + "' used in 'Interface' element of a rule.   Rule: " + rule->getLabel());
                     continue;
                 }
-                r= compiler->dbcopy->createPolicyRule();
+                r = compiler->dbcopy->createPolicyRule();
                 compiler->temp_ruleset->add(r);
                 r->duplicate(rule);
                 r->setStr("subrule_suffix","i1");
                 r->setInterfaceId(o1->getId());
-                nitfre=r->getItf(); nitfre->reset(); nitfre->addRef(o1);
+                nitfre = r->getItf(); nitfre->reset(); nitfre->addRef(o1);
                 tmp_queue.push_back(r);
             }
         } else
         {
-            r= compiler->dbcopy->createPolicyRule();
+            r = compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
-            r->setStr("subrule_suffix","i1");
+            r->setStr("subrule_suffix", "i1");
             r->setInterfaceId(o->getId());
-            nitfre=r->getItf(); nitfre->reset(); nitfre->addRef(o);
+            nitfre = r->getItf(); nitfre->reset(); nitfre->addRef(o);
             tmp_queue.push_back(r);
         }
     }
@@ -2878,6 +2880,14 @@ bool PolicyCompiler_ipt::decideOnChainIfLoopback::processNext()
     assert(itfre);
     assert(itfre->size()<=1);
 
+    // sometimes for whatever reason itf rule element appears to be broken
+    // (it is just empty, not even "any")
+    if (itfre->size()==0)
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
+
     Interface *rule_iface = compiler->getFirstItf(rule);
 
     RuleElementSrc *srcrel=rule->getSrc();
@@ -2897,7 +2907,6 @@ bool PolicyCompiler_ipt::decideOnChainIfLoopback::processNext()
     }
 
     tmp_queue.push_back(rule);
-
     return true;
 }
 
@@ -3019,9 +3028,19 @@ bool PolicyCompiler_ipt::finalizeChain::processNext()
  *
  * If ip forwarding is set to "no change", assume it is on.
  */
-    bool ipforw=true;
-    string s=compiler->getCachedFwOpt()->getStr("linux24_ip_forward");
-    if (!s.empty() && (s=="0" || s=="Off" || s=="off")) ipforw=false;
+    bool ipforw = true;
+    string ip_forward_option;
+    if (ipt_comp->ipv6)
+        ip_forward_option =
+            compiler->getCachedFwOpt()->getStr("linux24_ipv6_forward");
+    else
+        ip_forward_option =
+            compiler->getCachedFwOpt()->getStr("linux24_ip_forward");
+
+    if (!ip_forward_option.empty() &&
+        (ip_forward_option=="0" ||
+         ip_forward_option=="Off" ||
+         ip_forward_option=="off")) ipforw = false;
 
     if (rule->getStr("ipt_chain")=="FORWARD" && !ipforw) return true;
 
@@ -4292,8 +4311,8 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
     str << " c=" << printChains(rule);
 
     str << " t=" << rule->getStr("ipt_target")
-        << " intfId=" + rule->getInterfaceId()
-        << " intfstr=" + rule->getInterfaceStr();
+        << " intfId=" << rule->getInterfaceId()
+        << " intfstr=" << rule->getInterfaceStr();
 
     if (rule->getAction()==PolicyRule::Reject)
         str << " " + ruleopt->getStr("action_on_reject");

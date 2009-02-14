@@ -1,3 +1,18 @@
+2009-02-13  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt.cpp (finalizeChain::processNext): fixed bug
+	#2597959 "rules disappear in ipv6 policy unless ipv4 forwarding is
+	on". Example: IPv6 policy, rule where fw object and internal
+	network are in source, destination is "any". If option "assume
+	firewall is part of any" was turned off and ipv6 forwarding was on
+	but ipv4 forwarding was off, this rule did not yield any iptables
+	commands in generated script.
+
+	* iosaclAdvancedDialog.cpp (iosaclAdvancedDialog::accept): fixed
+	bug #2597949 "GUI crash in IOS ACL "advanced" settings
+	dialog". GUI crashed upon click OK in the firewall settings dialog
+	for the IOS ACL firewall.
+
 2009-02-06  vadim  <vadim@vk.crocodile.org>
 
 	* src/gui/Icons/accept_25.png: fixed bug #2565164 "Colorblind
