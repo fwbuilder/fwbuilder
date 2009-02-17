@@ -73,6 +73,10 @@ unix {
 }
 }
 
+macx {
+    PREFIX = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root
+}
+
 win32 {
     CONFIG -= debug
 }

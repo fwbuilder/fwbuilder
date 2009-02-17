@@ -73,6 +73,10 @@ unix {
 }
 }
 
+macx {
+    PREFIX = @PREFIX@
+}
+
 win32 {
     CONFIG -= debug
 }
