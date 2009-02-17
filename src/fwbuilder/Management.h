@@ -44,7 +44,8 @@ namespace libfwbuilder
 
         virtual void fromXML(xmlNodePtr parent) throw(FWException);
         virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
-        virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+        virtual FWObject& shallowDuplicate(
+            const FWObject *obj, bool preserve_id = true) throw(FWException);
         virtual bool cmp(const FWObject *obj) throw(FWException);
 
         const std::string& getCommand () const;
@@ -75,7 +76,8 @@ namespace libfwbuilder
 
         virtual void fromXML(xmlNodePtr parent) throw(FWException);
         virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
-        virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+        virtual FWObject& shallowDuplicate(
+            const FWObject *obj, bool preserve_id = true) throw(FWException);
         virtual bool cmp(const FWObject *obj) throw(FWException);
 
         const std::string& getReadCommunity () const;
@@ -104,7 +106,8 @@ namespace libfwbuilder
 	FWBDManagement(const FWObjectDatabase *root,bool prepopulate);
         virtual ~FWBDManagement();
         DECLARE_FWOBJECT_SUBTYPE(FWBDManagement);
-        virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+        virtual FWObject& shallowDuplicate(
+            const FWObject *obj, bool preserve_id = true) throw(FWException);
         virtual bool cmp(const FWObject *obj) throw(FWException);
 
         virtual void fromXML(xmlNodePtr parent) throw(FWException);
@@ -138,7 +141,8 @@ namespace libfwbuilder
 
         virtual void fromXML(xmlNodePtr parent) throw(FWException);
         virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
-        virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+        virtual FWObject& shallowDuplicate(
+            const FWObject *obj, bool preserve_id = true) throw(FWException);
         virtual bool  cmp(const FWObject *obj) throw(FWException);
 	virtual bool  validateChild(FWObject *o);
 

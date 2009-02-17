@@ -50,26 +50,35 @@ Management::Management()
     setId(-1);
 }
 
-Management::Management(const FWObjectDatabase *root,bool prepopulate) :
+Management::Management(const FWObjectDatabase *root, bool prepopulate) :
     FWObject(root,prepopulate)
 {
     // This object does not have standard attributes
     setId(-1);
 }
 
-
 void Management::fromXML(xmlNodePtr root) throw(FWException)
 {
     FWObject::fromXML(root);
     const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
     if(!n)
-        throw FWException("Missing required address attributre in Management element");
+        throw FWException(
+            "Missing required address attribute in Management element");
     try
     {
         addr = InetAddr(n);
-    } catch(FWNotSupportedException ex)
+    } catch(FWException &ex)
     {
-        throw FWException(string("Invalid address attributre in Management element: ")+ex.toString());
+        // try ipv6
+        try
+        {
+            addr = InetAddr(AF_INET6, n);
+        } catch(FWException &ex)
+        {
+            throw FWException(
+                string("Invalid address attribute in Management element: ") +
+                ex.toString());
+        }
     }
 }
 
@@ -116,19 +125,24 @@ bool Management::validateChild(FWObject *o)
 }
 
 
-FWObject& Management::shallowDuplicate(const FWObject *o, bool preserve_id) throw(FWException)
+FWObject& Management::shallowDuplicate(const FWObject *o,
+                                       bool preserve_id) throw(FWException)
 {
-    const Management *n=dynamic_cast<const Management *>(o);
-    addr = n->getAddress();
+    const Management *other = dynamic_cast<const Management*>(o);
+    addr = other->getAddress();
     FWObject::shallowDuplicate(o, preserve_id);
     return *this;
 }
 
 bool Management::isEmpty() const
 {
-    const SNMPManagement *sm = dynamic_cast<SNMPManagement *>(getFirstByType(SNMPManagement::TYPENAME));
-    const FWBDManagement *fm = dynamic_cast<FWBDManagement *>(getFirstByType(FWBDManagement::TYPENAME));
-    const PolicyInstallScript *pi = dynamic_cast<PolicyInstallScript *>(getFirstByType(PolicyInstallScript::TYPENAME));
+    const SNMPManagement *sm =
+        dynamic_cast<SNMPManagement*>(getFirstByType(SNMPManagement::TYPENAME));
+    const FWBDManagement *fm =
+        dynamic_cast<FWBDManagement*>(getFirstByType(FWBDManagement::TYPENAME));
+    const PolicyInstallScript *pi =
+        dynamic_cast<PolicyInstallScript*>(
+            getFirstByType(PolicyInstallScript::TYPENAME));
     
     return 
 	(!pi || pi->isEmpty()) && 
@@ -139,27 +153,27 @@ bool Management::isEmpty() const
 
 PolicyInstallScript *Management::getPolicyInstallScript()
 {
-    PolicyInstallScript *res = dynamic_cast<PolicyInstallScript *>(getFirstByType(PolicyInstallScript::TYPENAME));
-    if(!res)
-        add( res= getRoot()->createPolicyInstallScript() );
+    PolicyInstallScript *res = dynamic_cast<PolicyInstallScript*>(
+        getFirstByType(PolicyInstallScript::TYPENAME));
+    if (!res) add( res= getRoot()->createPolicyInstallScript() );
     //add(res = new PolicyInstallScript());
     return res;
 }
 
 SNMPManagement *Management::getSNMPManagement()
 {
-    SNMPManagement *res = dynamic_cast<SNMPManagement *>(getFirstByType(SNMPManagement::TYPENAME));
-    if(!res)
-        add( res = getRoot()->createSNMPManagement() );
+    SNMPManagement *res = dynamic_cast<SNMPManagement*>(
+        getFirstByType(SNMPManagement::TYPENAME));
+    if (!res) add( res = getRoot()->createSNMPManagement() );
     //add(res = new SNMPManagement());
     return res;
 }
 
 FWBDManagement *Management::getFWBDManagement()
 {
-    FWBDManagement *res = dynamic_cast<FWBDManagement *>(getFirstByType(FWBDManagement::TYPENAME));
-    if(!res)
-        add( res = getRoot()->createFWBDManagement() );
+    FWBDManagement *res = dynamic_cast<FWBDManagement*>(
+        getFirstByType(FWBDManagement::TYPENAME));
+    if (!res) add( res = getRoot()->createFWBDManagement() );
     //add(res = new FWBDManagement());
     return res;
 }

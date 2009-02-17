@@ -1,3 +1,9 @@
+2009-02-17  vadim  <vadim@vk.crocodile.org>
+
+	* Management.cpp (Management::fromXML): fixed bug #2609796
+	"internal object Management does not accept ipv6 address". Class
+	Management should accept ipv6 address.
+
 2009-01-23  vadim  <vadim@vk.crocodile.org>
 
 	* FWObjectDatabase_search.cpp (FWObjectDatabase::findWhereObjectIsUsed):
