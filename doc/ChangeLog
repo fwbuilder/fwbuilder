@@ -1,3 +1,21 @@
+2009-02-17  vadim  <vadim@vk.crocodile.org>
+
+	* Management.cpp (Management::fromXML): (change in libfwbuilder):
+	fixed bug #2609796 "internal object Management does not accept
+	ipv6 address". Class Management should accept ipv6 address. The
+	problem was that if an interface of the firewall had only ipv6
+	address and was marked as "management" interface, saving such
+	configuration to .fwb file created broken data file that could not
+	be loaded back. The error was:
+
+	The program encountered error trying to load data file.
+	The file has not been loaded. Error:
+	Exception: Invalid IP address: 'aaaa:bbbb:cccc::1'
+	XML element : Management
+
+	where aaaa:bbbb:cccc: is ipv6 address.
+
+
 2009-02-13  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (finalizeChain::processNext): fixed bug

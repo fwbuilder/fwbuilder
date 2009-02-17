@@ -438,37 +438,3 @@ void instDialog::blockInstallForFirewall(Firewall *fw)
     installMapping[fw]->setCheckState(Qt::Unchecked);
 }
 
-#if 0
-void instDialog::analyseInstallQueue(bool &fPix, bool &fCustInst)
-{
-    if (fwbdebug) qDebug("instDialog::analyseInstallQueue");
-    Firewall *f;
-    //FWOptions *fwopt;
-    Management *mgmt;
-    PolicyInstallScript *pis;
-
-    fPix=false;
-    fCustInst=true;
-
-    t_fwList::iterator i;
-    for(i=opList.begin(); i!=opList.end(); ++i)
-    {
-        f=(*i);
-        //fwopt=f->getOptionsObject();
-        mgmt=f->getManagementObject();
-        pis   = mgmt->getPolicyInstallScript();
-
-        fPix = fPix || f->getStr("platform")=="pix" || f->getStr("platform")=="fwsm" || f->getStr("platform")=="iosacl";
-        fCustInst =  fCustInst && !( pis->getCommand()=="" );
-
-        if (fwbdebug)
-        {
-            qDebug(("f:"+f->getName()).c_str());
-            qDebug(("p:"+f->getStr("platform")).c_str());
-            qDebug((QString("fPix:")+(fPix?"true":"false")).toAscii().constData());
-        }
-
-        if (fPix && !fCustInst) return;// nothing can change if we continue loop
-    }
-}
-#endif

@@ -935,6 +935,9 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
         if (!aaddr.isEmpty()) cnf.maddr = aaddr;
         else
         {
+            // Note that Host::getManagementAddress() scans interfaces and
+            // finds one marked as "management" and takes its address.
+            // It does not use Management child object.
             const InetAddr *mgmt_addr = cnf.fwobj->getManagementAddress();
             if (mgmt_addr)
                 cnf.maddr = mgmt_addr->toString().c_str();
