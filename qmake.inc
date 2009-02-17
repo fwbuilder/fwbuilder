@@ -42,6 +42,10 @@ unix {
 				    -lz -lnetsnmp 
 }
 
+macx {
+    prefix = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root
+}
+
 exists(qmake2.inc) {
   include( qmake2.inc)
 }

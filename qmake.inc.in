@@ -42,6 +42,10 @@ unix {
 				   @LIB_RESOLV@ @LIBS@
 }
 
+macx {
+    prefix = @prefix@
+}
+
 exists(qmake2.inc) {
   include( qmake2.inc)
 }
