@@ -137,6 +137,8 @@ void FirewallInstaller::packSCPArgs(const QString &file_name,
 
     args.push_back(file_with_path);
 
+    QString mgmt_addr = cnf->maddr;
+
     // bug #2618686 "built-in installer can not handle ipv6 management
     // address". If cnf->maddr is ipv6 address, it needs to be placed in
     // [ ] for scp (otherwise scp interprets ':' as a separator between
@@ -157,7 +159,7 @@ void FirewallInstaller::packSCPArgs(const QString &file_name,
         // InetAddr throws exception if it is given ipv4 address.
         // Only add [ ] if this is legitimate ipv6 address (not '::')
         if (!addr.isAny())
-            cnf->maddr = '[' + cnf->maddr + ']';
+            mgmt_addr = '[' + cnf->maddr + ']';
     } catch(FWException &ex)
     {
         // Assume cnf->maddr is ipv4 or host name
@@ -166,9 +168,9 @@ void FirewallInstaller::packSCPArgs(const QString &file_name,
 
 
     if (!cnf->user.isEmpty())
-        args.push_back(cnf->user + "@" + cnf->maddr + ":" + cnf->fwdir);
+        args.push_back(cnf->user + "@" + mgmt_addr + ":" + cnf->fwdir);
     else
-        args.push_back(cnf->maddr + ":" + cnf->fwdir);
+        args.push_back(mgmt_addr + ":" + cnf->fwdir);
 }
 
 /*
