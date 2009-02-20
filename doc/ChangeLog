@@ -1,3 +1,11 @@
+2009-02-19  vadim  <vadim@vk.crocodile.org>
+
+	* FirewallInstaller.cpp (FirewallInstaller::packSCPArgs): fix bug
+	#2618686 "built-in installer can not handle ipv6 management
+	address". Built-in installer did not properly for scp and ssh
+	command like when it had to use IPv6 address to communicate with
+	firewall.
+
 2009-02-17  vadim  <vadim@vk.crocodile.org>
 
 	* Management.cpp (Management::fromXML): (change in libfwbuilder):
