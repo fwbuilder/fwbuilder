@@ -92,6 +92,7 @@ public:
     void packSSHArgs(QStringList &args);
     void packSCPArgs(const QString &file_name, QStringList &args);
     QString getActivationCmd();
+    QString getDestinationDir();
 
     virtual bool packInstallJobsList(libfwbuilder::Firewall*);
     virtual void copyFile(const QString &file_name);

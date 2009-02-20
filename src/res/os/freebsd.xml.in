@@ -22,8 +22,7 @@
           <reg_user>
             <run>
               <copy>
-echo '%FWBPROMPT%';
-cat > %FWDIR%/%FWSCRIPT%;
+%FWDIR%
               </copy>
 
               <compression>
@@ -40,9 +39,7 @@ sudo -S %FWDIR%/%FWSCRIPT% &#38;&#38; sudo -S pkill shutdown; echo 'Policy activ
 
             <test>
               <copy>
-echo '%FWBPROMPT%';
-mkdir -p %FWDIR%/tmp;
-cat > %FWDIR%/tmp/%FWSCRIPT%;
+%FWDIR%/tmp
               </copy>
 
               <rollback>
@@ -62,8 +59,7 @@ sudo -S %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
           <root>
             <run>
               <copy>
-echo '%FWBPROMPT%';
-cat > %FWDIR%/%FWSCRIPT%;
+%FWDIR%
               </copy>
 
               <compression>
@@ -78,9 +74,7 @@ sh %FWDIR%/%FWSCRIPT% &#38;&#38; pkill shutdown; echo 'Policy activated'
 
             <test>
               <copy>
-echo '%FWBPROMPT%';
-mkdir -p %FWDIR%/tmp;
-cat > %FWDIR%/tmp/%FWSCRIPT%;
+%FWDIR%/tmp
               </copy>
 
               <rollback>

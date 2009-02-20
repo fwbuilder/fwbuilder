@@ -166,11 +166,17 @@ void FirewallInstaller::packSCPArgs(const QString &file_name,
         ;
     }
 
+    // bug #2618772: "test install" option does not work.  To fix, I
+    // put macro for the temp dir. in in res/os/host_os.xml XML
+    // elements root/test/copy reg_user/test/copy. That macro
+    // is read and processed by getDestinationDir()
+
+    QString dest_dir = getDestinationDir();
 
     if (!cnf->user.isEmpty())
-        args.push_back(cnf->user + "@" + mgmt_addr + ":" + cnf->fwdir);
+        args.push_back(cnf->user + "@" + mgmt_addr + ":" + dest_dir);
     else
-        args.push_back(mgmt_addr + ":" + cnf->fwdir);
+        args.push_back(mgmt_addr + ":" + dest_dir);
 }
 
 /*
@@ -278,9 +284,9 @@ QString FirewallInstaller::getActivationCmd()
         return cnf->activationCmd;
     }
 
-    QString cmd="";
+    QString cmd = "";
 
-    string optpath="activation/";
+    string optpath = "activation/";
 
     if (cnf->user=="root") optpath += "root/";
     else                   optpath += "reg_user/";
@@ -300,6 +306,33 @@ QString FirewallInstaller::getActivationCmd()
     cmd = Resources::getTargetOptionStr(cnf->fwobj->getStr("host_OS"),
                                         optpath).c_str();
     return inst_dlg->replaceMacrosInCommand(cmd);
+}
+
+QString FirewallInstaller::getDestinationDir()
+{
+    if (!cnf->activationCmd.isEmpty())
+    {
+        return cnf->activationCmd;
+    }
+
+    QString dir = "";
+
+    string optpath = "activation/";
+
+    if (cnf->user=="root") optpath += "root/";
+    else                   optpath += "reg_user/";
+
+    if (cnf->testRun) optpath += "test/copy/";
+    else              optpath += "run/copy/";
+
+    dir = Resources::getTargetOptionStr(cnf->fwobj->getStr("host_OS"),
+                                        optpath).c_str();
+    // need to trim dir because it picks up '\n' and possibly spaces
+    // from XML element body text formatting
+    dir = dir.trimmed();
+    if (dir.isEmpty()) return cnf->fwdir;
+    if (!dir.endsWith('/')) dir = dir + "/";
+    return inst_dlg->replaceMacrosInCommand(dir);
 }
 
 QString FirewallInstaller::getGeneratedFileFullPath(Firewall *fw)

@@ -20,8 +20,7 @@
 
           <reg_user>
             <copy>
-echo '%FWBPROMPT%';
-cat > %FWDIR%/%FWSCRIPT%;
+%FWDIR%
             </copy>
 
             <run>
@@ -38,6 +37,10 @@ sudo -S %FWDIR%/%FWSCRIPT% &#38;&#38; (sudo -S ps ax|awk '/shutdown/ &#38;&#38; 
             </run>
 
             <test>
+              <copy>
+%FWDIR%/tmp
+              </copy>
+
               <rollback>
 echo '%FWBPROMPT%';
 chmod +x /tmp/%FWSCRIPT%;
@@ -54,8 +57,7 @@ sudo -S /tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
 
           <root>
             <copy>
-echo '%FWBPROMPT%';
-cat > %FWDIR%/%FWSCRIPT%;
+%FWDIR%
             </copy>
 
             <run>
@@ -70,6 +72,10 @@ sh %FWDIR%/%FWSCRIPT% &#38;&#38; (ps ax|awk '/shutdown/ &#38;&#38; \!/awk/ {prin
             </run>
 
             <test>
+              <copy>
+%FWDIR%/tmp
+              </copy>
+
               <rollback>
 echo '%FWBPROMPT%';
 /sbin/shutdown -r +%RBTIMEOUT%;

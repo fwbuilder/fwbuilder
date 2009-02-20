@@ -25,8 +25,7 @@
           <root>
             <run>
               <copy>
-echo '%FWBPROMPT%';
-cat > /tmp/%FWSCRIPT%
+/tmp/
               </copy>
 
               <compression>
@@ -63,8 +62,7 @@ echo "Activating policy";
 
             <test>
               <copy>
-echo '%FWBPROMPT%';
-cat > /tmp/%FWSCRIPT%
+/tmp/
               </copy>
 
               <rollback>

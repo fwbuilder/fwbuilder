@@ -1,5 +1,11 @@
 2009-02-19  vadim  <vadim@vk.crocodile.org>
 
+	* FirewallInstaller.cpp (FirewallInstaller::getDestinationDir):
+	fixed bug #2618772 ""test install" option does not work". If "test
+	install" checkbox was checked in the installer options dialog, the
+	program copied file to directory /etc/fw on the firewall but tried
+	to find it in /etc/fw/tmp to run.
+
 	* FirewallInstaller.cpp (FirewallInstaller::packSCPArgs): fix bug
 	#2618686 "built-in installer can not handle ipv6 management
 	address". Built-in installer did not properly for scp and ssh

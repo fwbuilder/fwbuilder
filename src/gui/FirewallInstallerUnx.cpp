@@ -227,7 +227,7 @@ void FirewallInstallerUnx::copyFile(const QString &file_name)
     QString file_with_path = getFullPath(file_name);
     inst_dlg->addToLog( tr("Copying %1 -> %2:%3\n")
                         .arg(QString::fromUtf8(file_with_path.toAscii().constData()))
-                        .arg(cnf->maddr).arg(cnf->fwdir));
+                        .arg(cnf->maddr).arg(getDestinationDir()));
 
     if (cnf->verbose) inst_dlg->displayCommand(args);
     qApp->processEvents();
