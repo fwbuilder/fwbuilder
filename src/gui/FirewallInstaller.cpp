@@ -137,6 +137,34 @@ void FirewallInstaller::packSCPArgs(const QString &file_name,
 
     args.push_back(file_with_path);
 
+    // bug #2618686 "built-in installer can not handle ipv6 management
+    // address". If cnf->maddr is ipv6 address, it needs to be placed in
+    // [ ] for scp (otherwise scp interprets ':' as a separator between
+    // host name and port number).
+    // Note that this is only necessary for scp; ssh takes ipv6 addresses
+    // without [ ] just fine.
+
+    // try ipv6
+    try
+    {
+        InetAddr addr(AF_INET6, cnf->maddr.toAscii().constData());
+        if (fwbdebug)
+            qDebug("SCP will talk to the firewall using address %s ( %s )",
+                   cnf->maddr.toAscii().constData(),
+                   addr.toString().c_str());
+        // It looks like if cnf->maddr is a host name, then InetAddr
+        // does not fail but just creates address '::'.
+        // InetAddr throws exception if it is given ipv4 address.
+        // Only add [ ] if this is legitimate ipv6 address (not '::')
+        if (!addr.isAny())
+            cnf->maddr = '[' + cnf->maddr + ']';
+    } catch(FWException &ex)
+    {
+        // Assume cnf->maddr is ipv4 or host name
+        ;
+    }
+
+
     if (!cnf->user.isEmpty())
         args.push_back(cnf->user + "@" + cnf->maddr + ":" + cnf->fwdir);
     else
