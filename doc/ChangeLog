@@ -1,3 +1,8 @@
+2009-02-21  vadim  <vadim@vk.crocodile.org>
+
+	* VERSION (LIBFWBUILDER_REVISION): because of internal changes in
+	libfwbuilder in v3.0.4, bumping up so version to 8.2.0
+
 2009-02-17  vadim  <vadim@vk.crocodile.org>
 
 	* Management.cpp (Management::fromXML): fixed bug #2609796
