@@ -1,5 +1,12 @@
 2009-02-21  vadim  <vadim@vk.crocodile.org>
 
+	* FirewallInstaller.cpp (FirewallInstaller::getDestinationDir):
+	bugfix (bug was introduced in build 768). If user entered
+	alternative activation command in the "installer" tab of the
+	firewall object settings dialog, the program confused it with
+	destination directory and tried to execute incorrect command to
+	copy files to the firewall. This build (770) fixes this problem.
+
 	* SSHUnx.cpp (SSHUnx::SSHUnx): New feature: built-in installer can
 	now enter sudo password. There is no need to configure firewall
 	management account for password-less sudo access anymore.

@@ -436,6 +436,12 @@ with this address:</string>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize" >
+             <size>
+              <width>250</width>
+              <height>0</height>
+             </size>
+            </property>
            </widget>
           </item>
           <item row="1" column="0" >
@@ -458,6 +464,12 @@ with this address:</string>
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>250</width>
+              <height>0</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -482,6 +494,12 @@ with this address:</string>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize" >
+             <size>
+              <width>250</width>
+              <height>0</height>
+             </size>
+            </property>
            </widget>
           </item>
           <item row="3" column="0" >
@@ -504,6 +522,12 @@ with this address:</string>
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>250</width>
+              <height>0</height>
+             </size>
             </property>
            </widget>
           </item>

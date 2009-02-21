@@ -310,11 +310,6 @@ QString FirewallInstaller::getActivationCmd()
 
 QString FirewallInstaller::getDestinationDir()
 {
-    if (!cnf->activationCmd.isEmpty())
-    {
-        return cnf->activationCmd;
-    }
-
     QString dir = "";
 
     string optpath = "activation/";
