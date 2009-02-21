@@ -1,3 +1,9 @@
+2009-02-21  vadim  <vadim@vk.crocodile.org>
+
+	* SSHUnx.cpp (SSHUnx::SSHUnx): New feature: built-in installer can
+	now enter sudo password. There is no need to configure firewall
+	management account for password-less sudo access anymore.
+
 2009-02-19  vadim  <vadim@vk.crocodile.org>
 
 	* FirewallInstaller.cpp (FirewallInstaller::getDestinationDir):

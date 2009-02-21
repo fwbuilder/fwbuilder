@@ -125,7 +125,8 @@ class SSHSession : public QObject {
     QString     ssoft_prompt1;
     QString     ssoft_prompt2;
     QString     ssoft_config_prompt;
-    QString     sudo_pwd_prompt;
+    QString     sudo_pwd_prompt_1;
+    QString     sudo_pwd_prompt_2;
     QString     passphrase_prompt;
     QString     epwd_prompt;
     

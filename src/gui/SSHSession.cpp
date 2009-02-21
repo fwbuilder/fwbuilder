@@ -512,24 +512,23 @@ void SSHSession::finished(int retcode)
 //    emit sessionFinished_sign();
 }
 
-bool SSHSession::cmpPrompt(const QString &str,const QString &prompt)
+bool SSHSession::cmpPrompt(const QString &str, const QString &prompt)
 {
     if (fwbdebug)
         qDebug("SSHSession::cmpPrompt: str='%s' prompt='%s'",
                str.toAscii().constData(),prompt.toAscii().constData());
 
-    if (str.isEmpty()) return false;
-
-    bool res=(str.lastIndexOf(prompt,-1)!=-1);
-    if (!res)
+    bool res = false;
+    if (!str.isEmpty())
     {
-        QString s=str.trimmed();
-        res=(s.lastIndexOf(prompt,-1)!=-1);
+        res = (str.lastIndexOf(prompt,-1) != -1);
+        if (!res)
+        {
+            QString s = str.trimmed();
+            res = (s.lastIndexOf(prompt,-1) != -1);
+        }
     }
-
-    if (fwbdebug)
-        qDebug("SSHSession::cmpPrompt: res=%d",res);
-
+    if (fwbdebug) qDebug("SSHSession::cmpPrompt: res=%d",res);
     return res;
 }
 

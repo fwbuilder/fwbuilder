@@ -56,7 +56,8 @@ SSHUnx::SSHUnx(QWidget *_par,
     epwd_prompt="Password: ";
     ssh_pwd_prompt="'s password: ";
     ssoft_config_prompt="> ";
-    sudo_pwd_prompt="Password:";
+    sudo_pwd_prompt_1="Password:";
+    sudo_pwd_prompt_2="[sudo] password for ";
     putty_pwd_prompt="Password: ";
     passphrase_prompt="Enter passphrase for key ";
 
@@ -88,10 +89,10 @@ bool SSHUnx::checkForErrors(QStringList *errptr)
 
     for (QStringList::const_iterator i=errptr->begin(); i!=errptr->end(); ++i)
     {
-        if (fwbdebug)
-            qDebug(
-                QString("SSHUnx::stateMachine:  error='%1'").
-                arg(*i).toAscii().constData());
+        // if (fwbdebug)
+        //     qDebug(
+        //         QString("SSHUnx::stateMachine:  error='%1'").
+        //         arg(*i).toAscii().constData());
 
         if ( stdoutBuffer.lastIndexOf(QRegExp(*i),-1)!=-1 )
         {
@@ -142,9 +143,11 @@ void SSHUnx::stateMachine()
              cmpPrompt(stdoutBuffer, putty_pwd_prompt) ||
              cmpPrompt(stdoutBuffer, thinkfinger_pwd_prompt) ||
              stdoutBuffer.lastIndexOf(passphrase_prompt, -1)!=-1 ||
-
-             cmpPrompt(stdoutBuffer, sudo_pwd_prompt) ||
-             cmpPrompt(stderrBuffer, sudo_pwd_prompt) )
+             cmpPrompt(stdoutBuffer, sudo_pwd_prompt_1) ||
+             cmpPrompt(stderrBuffer, sudo_pwd_prompt_1) ||
+             cmpPrompt(stdoutBuffer, sudo_pwd_prompt_2) ||
+             cmpPrompt(stderrBuffer, sudo_pwd_prompt_2)
+        )
         {
             stdoutBuffer="";
             proc->write( pwd.toAscii() );
@@ -216,8 +219,11 @@ void SSHUnx::stateMachine()
 /* in this state we may need to enter sudo password */
     case PUSHING_CONFIG:
  push_files:
-        if ( cmpPrompt(stdoutBuffer, sudo_pwd_prompt) ||
-             cmpPrompt(stderrBuffer, sudo_pwd_prompt) )
+        if ( cmpPrompt(stdoutBuffer, sudo_pwd_prompt_1) ||
+             cmpPrompt(stderrBuffer, sudo_pwd_prompt_1) ||
+             cmpPrompt(stdoutBuffer, sudo_pwd_prompt_2) ||
+             cmpPrompt(stderrBuffer, sudo_pwd_prompt_2)
+        )
         {
             stdoutBuffer="";
             proc->write( pwd.toAscii() );

@@ -54,7 +54,6 @@ SSHIOS::SSHIOS(QWidget *_par,
     epwd_prompt="Password: ";
     ssh_pwd_prompt="'s password: ";
     ssoft_config_prompt="> ";
-    sudo_pwd_prompt="Password:";
     putty_pwd_prompt="Password: ";
     passphrase_prompt="Enter passphrase for key ";
 
