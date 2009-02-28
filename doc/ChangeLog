@@ -1,16 +1,17 @@
 2009-02-27  vadim  <vadim@vk.crocodile.org>
 
 	* RoutingCompiler_ipt_writers.cpp (PrintRule::processNext): fixed
-	bug #2540389: "Routing Broken from 2.1 to 3.0.3". Generated script
-	preserved default route when it deleted route entries before
-	installing new ones. This was different compared to the behavior
-	of the v2.1 where default was deleted together with other routing
-	entries. The reason for this change (made some time in summer of
-	2008) was that if user did not define default route in their
-	routing ruleset, the script would delete existing default without
-	installing new one, leaving firewall with no default route at all.
-	Now the script deletes default if there is new one to install and
-	preserves it otherwise.
+	bugs #2540389: "Routing Broken from 2.1 to 3.0.3" and #2356151
+	"Routing broken when default route has a 0 metric". Generated
+	script preserved default route when it deleted route entries
+	before installing new ones. This was different in v2.1 where
+	default was deleted together with other routing entries. The
+	reason for this change (made some time in summer of 2008) was that
+	if user did not define default route in their routing ruleset, the
+	script would delete existing default without installing new one,
+	leaving firewall with no default route at all.  Now the script
+	deletes default if there is new one to install and preserves it
+	otherwise.
 
 	* RoutingCompiler_ipt_writers.cpp (PrintRule::processNext): fixed
 	bug (no #): if generated firewall script detects an error from one
