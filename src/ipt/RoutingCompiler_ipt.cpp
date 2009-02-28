@@ -93,7 +93,7 @@ bool RoutingCompiler_ipt::optimize3::processNext()
 
     if (printRule==NULL)
     {
-        printRule=new PrintRule("");
+        printRule = new PrintRule("");
         printRule->setContext(compiler);
     }
     
@@ -102,7 +102,7 @@ bool RoutingCompiler_ipt::optimize3::processNext()
     if (rules_seen_so_far.count(thisRule)!=0) return true;
 
     tmp_queue.push_back(rule);
-    rules_seen_so_far[thisRule]=true;
+    rules_seen_so_far[thisRule] = true;
 
     return true;
 }
@@ -113,7 +113,7 @@ bool RoutingCompiler_ipt::optimize3::processNext()
 bool RoutingCompiler_ipt::eliminateDuplicateRules::processNext()
 {
     RoutingRule *rule;
-    rule=getNext(); if (rule==NULL) return false;
+    rule = getNext(); if (rule==NULL) return false;
 
     if (rule->isFallback() || rule->isHidden())
     {
@@ -123,7 +123,7 @@ bool RoutingCompiler_ipt::eliminateDuplicateRules::processNext()
 
     if (printRule==NULL)
     {
-        printRule=new PrintRule("");
+        printRule = new PrintRule("");
         printRule->setContext(compiler);
     }
     
@@ -135,18 +135,34 @@ bool RoutingCompiler_ipt::eliminateDuplicateRules::processNext()
     
     rules_it = rules_seen_so_far.find(thisRule);
             
-    if (rules_it != rules_seen_so_far.end()) {
-        
+    if (rules_it != rules_seen_so_far.end())
+    {
         string msg;
-        msg = "Two of the sub rules created from the gui routing rules " + rules_it->second + " and " + rule->getLabel() +
-                "\nare identical, skipping the second. Please revise them to avoid this warning!";
+        msg = "Two of the sub rules created from the gui routing rules " +
+            rules_it->second + " and " + rule->getLabel() +
+            "\nare identical, skipping the second. " +
+            "Please revise them to avoid this warning!";
         compiler->warning( msg.c_str() );
         return true;
     }
 
     tmp_queue.push_back(rule);
-    rules_seen_so_far[thisRule]=rule->getLabel();
+    rules_seen_so_far[thisRule] = rule->getLabel();
+    return true;
+}
 
+bool RoutingCompiler_ipt::FindDefaultRoute::processNext()
+{
+    RoutingCompiler_ipt *ipt_comp = dynamic_cast<RoutingCompiler_ipt*>(compiler);
+    RoutingRule *rule;
+    rule=getNext(); if (rule==NULL) return false;
+
+    RuleElementRDst *dstrel = rule->getRDst();
+    FWObject *ref = dstrel->front();
+    Address *dst = Address::cast(FWReference::cast(ref)->getPointer());
+    if (dst->isAny()) ipt_comp->have_default_route = true;
+
+    tmp_queue.push_back(rule);
     return true;
 }
 
@@ -184,13 +200,15 @@ void RoutingCompiler_ipt::compile()
                 "Expand objects with multiple addresses in DST"));
         add(new eliminateDuplicatesInDST("Eliminate duplicates in DST"));
         
+        add(new FindDefaultRoute("Find rules that install default route"));
+
         add(new createSortedDstIdsLabel(
                 "Create label with a sorted dst-id-list for 'competingRules'"));
         add(new competingRules("Check for competing rules"));
 
         add(new ConvertToAtomicForDST(
                 "Convert to atomic rules by dst address elements"));
-        
+
         add(new createSortedDstIdsLabel(
                 "Create label with a sorted dst-id-list for 'classifyRoutingRules'"));
         add(new classifyRoutingRules(
@@ -212,7 +230,6 @@ void RoutingCompiler_ipt::compile()
     }
 }
 
-
 string RoutingCompiler_ipt::debugPrintRule(Rule *r)
 {
     RoutingRule *rule=RoutingRule::cast(r);
@@ -222,26 +239,32 @@ string RoutingCompiler_ipt::debugPrintRule(Rule *r)
     return s;
 }
 
-
 void RoutingCompiler_ipt::epilog()
 {
     ///int total = ecmp_comments_buffer.size();
     int nb = 0;
     
-    // ecmp roules can only be generated after all the rules have been parsed, that is the reason for putting this code in the epilog function
-    if(ecmp_rules_buffer.size() > 0) {
-            
-        output << "\n#\n# ======================================= EQUAL COST MULTI PATH ========================================\n#" << endl;
+    // ecmp roules can only be generated after all the rules have been
+    // parsed, that is the reason for putting this code in the epilog
+    // function
+    if (ecmp_rules_buffer.size() > 0)
+    {
+        output << "\n#\n# ============== EQUAL COST MULTI PATH ============\n#"
+               << endl;
         
         output << "echo \"Activating ecmp routing rules...\"" << endl;
                 
-        for (map<string,string>::iterator ecmp_comments_buffer_it = ecmp_comments_buffer.begin(); ecmp_comments_buffer_it != ecmp_comments_buffer.end(); ++ecmp_comments_buffer_it) {
-        
+        for (map<string,string>::iterator
+                 ecmp_comments_buffer_it = ecmp_comments_buffer.begin();
+             ecmp_comments_buffer_it != ecmp_comments_buffer.end();
+             ++ecmp_comments_buffer_it)
+        {
             output << ecmp_comments_buffer_it->second << "#\n" << flush;
     
             output << ecmp_rules_buffer[ecmp_comments_buffer_it->first] << flush;
            
             output << " \\\n|| routeFailed " << "\"" << ++nb << "\"" << endl;
+
             //echo \"Error: The ECMP routing rule #" << ++nb <<" couldn't be activated! Please make sure your kernel is compiled with the CONFIG_IP_ROUTE_MULTIPATH option.\"" << endl;
             
         }

@@ -132,7 +132,8 @@ RoutingCompiler_ipt::PrintRule::PrintRule(const std::string &name) : RoutingRule
 
 bool RoutingCompiler_ipt::PrintRule::processNext()
 {
-    RoutingRule         *rule    =getNext(); 
+    RoutingCompiler_ipt *ipt_comp = dynamic_cast<RoutingCompiler_ipt*>(compiler);
+    RoutingRule *rule = getNext(); 
     if (rule==NULL) return false;
 
     tmp_queue.push_back(rule);
@@ -140,42 +141,74 @@ bool RoutingCompiler_ipt::PrintRule::processNext()
     static int ecmp_nb = 0;    
     stringstream ecmp_nb_string; 
     
-    if (print_once_on_top) {
+    if (print_once_on_top)
+    {
+        compiler->output
+            << "#\n#\n# ============== ROUTING RULES ============== \n#"
+            << endl;
         
-        compiler->output << "#\n#\n# ========================================== ROUTING RULES =============================================\n#" << endl;
-        
-        compiler->output << "# if any routing rule fails we do our best to prevent freezing the firewall"          << endl;
-        compiler->output << "routeFailed()"                                                                        << endl;
-        compiler->output << "{"                                                                                    << endl;
-        compiler->output << "  echo \"Error: Routing rule $1 couldn't be activated!\""                             << endl;
-        compiler->output << "  echo \"Recovering previous routing configuration...\""                              << endl;
-        compiler->output << "  # delete current routing rules"                                                     << endl;
-        compiler->output << "  $IP route show | while read route ; do $IP route del $route ; done"                 << endl;
-        compiler->output << "  # restore old routing rules"                                                        << endl;
-        
-        /* this shell code has been tested with bash, zsh, ash, sash, csh and tcsh */
-        compiler->output << "  (IFS=\"\n\"; for route in $oldRoutes; do (IFS=' '; $IP route add $route); done)"    << endl;
-        compiler->output << "  echo \"...done\""                                                                   << endl;
-        compiler->output << "  exit 1"                                                                             << endl;
-        compiler->output << "}"                                                                                    << endl << endl;
-        
-        compiler->output << "# store previous routing configuration (sort: 'via' GW has to be inserted after device routes)" << endl;
+        compiler->output << "# if any routing rule fails we do our best to prevent freezing the firewall" << endl;
+        compiler->output << "routeFailed()" << endl;
+        compiler->output << "{" << endl;
+        compiler->output << "  echo \"Error: Routing rule $1 couldn't be activated!\"" << endl;
+        compiler->output << "  echo \"Recovering previous routing configuration...\"" << endl;
+        compiler->output << "  # delete current routing rules" << endl;
+        compiler->output << "  $IP route show | while read route ; do $IP route del $route ; done" << endl;
+        compiler->output << "  # restore old routing rules" << endl;
+ 
+        /* this shell code has been tested with bash, zsh, ash, sash,
+         * csh and tcsh */
+        compiler->output << "  (IFS=\"\n\"; for route in $oldRoutes; do (IFS=' '; $IP route add $route); done)" << endl;
+        compiler->output << "  echo \"...done\"" << endl;
+        /* Note that we call epilog_commands in case when
+         * iptables-restore returns with an error. We should also call
+         * it if routing commands fail.
+         */
+        compiler->output << "  epilog_commands" << endl;
+        compiler->output << "  exit 1" << endl;
+        compiler->output << "}" << endl << endl;
+ 
+        compiler->output << "# store previous routing configuration "
+                         << "(sort: 'via' GW has to be inserted after device routes)" << endl;
         compiler->output << "oldRoutes=$($IP route show | sort -k 2)" << endl << endl;
-        
-        compiler->output << "echo \"Deleting routing rules previously set by user space processes...\"" << endl;
-        compiler->output << "$IP route show | grep -v '\\( proto kernel \\)\\|\\(default via \\)'  | while read route ; do $IP route del $route ; done\n" << endl;
-        
-        compiler->output << "echo \"Activating non-ecmp routing rules...\"" << endl << endl;
+ 
+        compiler->output << "echo \"Deleting routing rules previously set by user space processes...\""
+                         << endl;
+
+        // we should delete default route if we have a new one to
+        // install. IF user did not define any routes that look like
+        // default (i.e. where destination is "any"), then we should
+        // preserve default so that we won't leave machine with no
+        // default at all.
+        string route_pattern = "";
+        if (ipt_comp->have_default_route)
+        {
+            // If we will install default route, delete it now
+            route_pattern = "'proto kernel'";
+        } else
+        {
+            // do not delete default if we won't install new one
+            route_pattern = "'\\( proto kernel \\)\\|\\(default via \\)'";
+        }
+
+        compiler->output << "$IP route show | grep -v "
+                         << route_pattern
+                         << " | while read route ; do $IP route del $route ; done\n"
+                         << endl;
+ 
+        compiler->output << "echo \"Activating non-ecmp routing rules...\""
+                         << endl << endl;
                 
         print_once_on_top=false;
     }
     
-    string rl=rule->getLabel();
-    string comm=rule->getComment();
+    string rl = rule->getLabel();
+    string comm = rule->getComment();
     string::size_type c1,c2;
     c1=0;
     
-    if (rl!=current_rule_label) {
+    if (rl!=current_rule_label)
+    {
             compiler->output << "# " << endl;
             compiler->output << "# Rule " << rl << endl;
             //compiler->output << "# " << rule->getRuleTypeAsString() << endl;
@@ -184,59 +217,63 @@ bool RoutingCompiler_ipt::PrintRule::processNext()
             compiler->output << "# " << endl;
     }
     
-    if( rule->getRuleType() != RoutingRule::MultiPath ) {
-    
-        if (rl!=current_rule_label) {
-
-            while ( (c2=comm.find('\n',c1))!=string::npos ) {
+    if( rule->getRuleType() != RoutingRule::MultiPath )
+    {
+        if (rl!=current_rule_label)
+        {
+            while ( (c2=comm.find('\n',c1))!=string::npos )
+            {
                 compiler->output << "# " << comm.substr(c1,c2-c1) << endl;
                 c1=c2+1;
             }
             compiler->output << "# " << comm.substr(c1) << endl;
-            
             compiler->output << "# " << endl;
-            
-            current_rule_label=rl;
+            current_rule_label = rl;
         }
         
         string  command_line = RoutingRuleToString(rule);
         compiler->output << command_line;
     
-    } else {
-           
+    } else
+    {
         // the ecmp_id contains the table, the rule label and the metric. These are the properties the ecmp rules are distinguished
         string metric = rule->getMetricAsString();
         string ecmp_id = rule->getSortedDstIds() + "#" + metric;
                     
-        if (rl!=current_rule_label) {
-            
+        if (rl!=current_rule_label)
+        {
             compiler->output << "# Some sub rules belonging to an ECMP (Equal Cost Multi Path) rule were placed in the ECMP section below." << endl;
             current_rule_label=rl;
         }
         
-        map< string, string>& ecmp_rules_buffer = ((RoutingCompiler_ipt*)compiler)->ecmp_rules_buffer;
-        map< string, string>& ecmp_comments_buffer = ((RoutingCompiler_ipt*)compiler)->ecmp_comments_buffer;
+        map< string, string>& ecmp_rules_buffer =
+            ((RoutingCompiler_ipt*)compiler)->ecmp_rules_buffer;
+        map< string, string>& ecmp_comments_buffer =
+            ((RoutingCompiler_ipt*)compiler)->ecmp_comments_buffer;
 
         map< string, string>::iterator ecmp_rules_buffer_it;
         ecmp_rules_buffer_it = ecmp_rules_buffer.find(ecmp_id);
-        if( ecmp_rules_buffer_it == ecmp_rules_buffer.end() ) {
-                
+        if( ecmp_rules_buffer_it == ecmp_rules_buffer.end() )
+        {
             // ECMP Dst not seen so far, add "ip route add x.x.x.x" and comment's header
             ecmp_nb_string << ++ecmp_nb;
             ecmp_comments_buffer[ecmp_id] = "#\n# Multipath Rule #" + ecmp_nb_string.str() + " derivated from the following routing rules:\n#\n";
             
-            if (rule->getMetricAsString() != "0") {
+            if (rule->getMetricAsString() != "0")
+            {
                 ecmp_rules_buffer[ecmp_id] += "$IP route add " + _printRDst(rule) + "metric " + metric;
-            } else {
+            } else
+            {
                 ecmp_rules_buffer[ecmp_id] += "$IP route add " + _printRDst(rule);
             }
         }
         
         ecmp_comments_buffer[ecmp_id] += "# Rule " + rl + "\n";
         
-        while ( (c2=comm.find('\n',c1))!=string::npos ) {
-            
-            ecmp_comments_buffer[ecmp_id] += "#    " + comm.substr(c1,c2-c1) + "\n";
+        while ( (c2=comm.find('\n',c1))!=string::npos )
+        {
+            ecmp_comments_buffer[ecmp_id] +=
+                "#    " + comm.substr(c1,c2-c1) + "\n";
             c1=c2+1;
         }
         ecmp_comments_buffer[ecmp_id] += "#    " + comm.substr(c1) + "\n";
@@ -266,7 +303,8 @@ string RoutingCompiler_ipt::PrintRule::RoutingRuleToString(RoutingRule *rule)
 
     command_line << "$IP route add ";
     command_line << _printRDst(rule);
-    if (rule->getMetricAsString() != "0") {
+    if (rule->getMetricAsString() != "0")
+    {
         command_line << " metric " << rule->getMetricAsString() << " ";
     }
     command_line << _printRGtw(rule);
@@ -275,9 +313,11 @@ string RoutingCompiler_ipt::PrintRule::RoutingRuleToString(RoutingRule *rule)
 
     FWObject *opt_dummy = rule->getFirstByType(RoutingRuleOptions::TYPENAME);
     RoutingRuleOptions *opt = opt_dummy ? RoutingRuleOptions::cast(opt_dummy) : 0;
-    if ( opt && opt->getBool("no_fail") ) {
+    if ( opt && opt->getBool("no_fail") )
+    {
         command_line << "echo \"*** Warning: routing rule " << rule->getLabel() << " failed. ignored. ***\"\n";
-    } else {
+    } else
+    {
         command_line << "routeFailed " << "\"" << rule->getLabel() << "\"" << endl;;
     }
     command_line << endl;
@@ -289,9 +329,9 @@ string RoutingCompiler_ipt::PrintRule::_printRGtw(RoutingRule *rule)
 {
     FWObject    *ref;
     
-    RuleElementRGtw *gtwrel=rule->getRGtw();
-    ref=gtwrel->front();
-    Address *gtw=Address::cast(FWReference::cast(ref)->getPointer());
+    RuleElementRGtw *gtwrel = rule->getRGtw();
+    ref = gtwrel->front();
+    Address *gtw = Address::cast(FWReference::cast(ref)->getPointer());
     if(gtw==NULL)
         throw FWException(_("Broken GTW in ")+rule->getLabel());
     

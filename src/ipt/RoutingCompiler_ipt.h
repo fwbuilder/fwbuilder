@@ -6,22 +6,25 @@
 
   Author:  Tidei Maurizio     <fwbuilder-routing at compal.de>
   
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-  of the Software, and to permit persons to whom the Software is furnished to do
-  so, subject to the following conditions: 
+  Permission is hereby granted, free of charge, to any person
+  obtaining a copy of this software and associated documentation files
+  (the "Software"), to deal in the Software without restriction,
+  including without limitation the rights to use, copy, modify, merge,
+  publish, distribute, sublicense, and/or sell copies of the Software,
+  and to permit persons to whom the Software is furnished to do so,
+  subject to the following conditions:
 
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software. 
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-  INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-  PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+  BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
 
 */
 
@@ -33,6 +36,7 @@
 #include "fwcompiler/RoutingCompiler.h"
 #include "fwbuilder/RuleElement.h"
 #include "config.h"
+
 namespace libfwbuilder {
     class RuleElementRDst;
     class RuleElementRItf;
@@ -64,6 +68,10 @@ namespace fwcompiler {
 	 */
         DECLARE_ROUTING_RULE_PROCESSOR(DstNegation);
 
+	/**
+	 * check if we have to install default route
+	 */
+        DECLARE_ROUTING_RULE_PROCESSOR(FindDefaultRoute);
 
         /**
          * remove duplicate rules
@@ -154,13 +162,17 @@ namespace fwcompiler {
         
         std::map< std::string, std::string> ecmp_rules_buffer; // sortedDstId+metric-->nexthops
         std::map< std::string, std::string> ecmp_comments_buffer; // sortedDstId+metric-->rule's info for the fw script
+        bool have_default_route;
 
     public:
 
 	RoutingCompiler_ipt(libfwbuilder::FWObjectDatabase *_db,
                             const std::string &fwname, bool ipv6_policy,
                             fwcompiler::OSConfigurator *_oscnf) :
-        RoutingCompiler(_db, fwname, ipv6_policy, _oscnf) {}
+        RoutingCompiler(_db, fwname, ipv6_policy, _oscnf)
+        {
+            have_default_route = false;
+        }
 
 
 	virtual int  prolog();
