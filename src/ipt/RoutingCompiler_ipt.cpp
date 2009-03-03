@@ -263,12 +263,14 @@ void RoutingCompiler_ipt::epilog()
     
             output << ecmp_rules_buffer[ecmp_comments_buffer_it->first] << flush;
            
-            output << " \\\n|| routeFailed " << "\"" << ++nb << "\"" << endl;
+            output << " \\\n|| route_command_error " << "\"" << ++nb << "\"" << endl;
 
             //echo \"Error: The ECMP routing rule #" << ++nb <<" couldn't be activated! Please make sure your kernel is compiled with the CONFIG_IP_ROUTE_MULTIPATH option.\"" << endl;
             
         }
     }
     
+    output << endl;
+    output << "restore_script_output" << endl;
     output << "echo \"...done.\"" << endl;
 }

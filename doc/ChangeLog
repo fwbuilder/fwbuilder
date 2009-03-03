@@ -1,3 +1,14 @@
+2009-03-02  vadim  <vadim@vk.crocodile.org>
+
+	* RoutingCompiler_ipt_writers.cpp (PrintRule::processNext): finish
+	fixes for bugs #2540389: "Routing Broken from 2.1 to 3.0.3" and
+	#2356151 "Routing broken when default route has a 0
+	metric". Redirect script output to a file for the time when we
+	remove static routing entries and add new ones to prevent ssh
+	session from stalling. Restore output back to the terminal when
+	script finishes or when an error is detected. Using idea suggested
+	by Heiko Helmle <helman@gmx.de>
+
 2009-02-27  vadim  <vadim@vk.crocodile.org>
 
 	* RoutingCompiler_ipt_writers.cpp (PrintRule::processNext): fixed

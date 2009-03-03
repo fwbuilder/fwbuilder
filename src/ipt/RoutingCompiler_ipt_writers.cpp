@@ -146,9 +146,20 @@ bool RoutingCompiler_ipt::PrintRule::processNext()
         compiler->output
             << "#\n#\n# ============== ROUTING RULES ============== \n#"
             << endl;
-        
+
+        compiler->output << "# This function stops stdout redirection"
+                         << endl;
+        compiler->output << "# and sends previously saved output to terminal"
+                         << endl;
+        compiler->output << "restore_script_output()" << endl;
+        compiler->output << "{" << endl;
+        compiler->output << "  exec 1>&3 2>&1" << endl;
+        compiler->output << "  cat /tmp/.fwbuilder.out" << endl;
+        compiler->output << "}" << endl;
+        compiler->output << endl;
+
         compiler->output << "# if any routing rule fails we do our best to prevent freezing the firewall" << endl;
-        compiler->output << "routeFailed()" << endl;
+        compiler->output << "route_command_error()" << endl;
         compiler->output << "{" << endl;
         compiler->output << "  echo \"Error: Routing rule $1 couldn't be activated!\"" << endl;
         compiler->output << "  echo \"Recovering previous routing configuration...\"" << endl;
@@ -160,6 +171,8 @@ bool RoutingCompiler_ipt::PrintRule::processNext()
          * csh and tcsh */
         compiler->output << "  (IFS=\"\n\"; for route in $oldRoutes; do (IFS=' '; $IP route add $route); done)" << endl;
         compiler->output << "  echo \"...done\"" << endl;
+        compiler->output << "  restore_script_output" << endl;
+
         /* Note that we call epilog_commands in case when
          * iptables-restore returns with an error. We should also call
          * it if routing commands fail.
@@ -167,7 +180,14 @@ bool RoutingCompiler_ipt::PrintRule::processNext()
         compiler->output << "  epilog_commands" << endl;
         compiler->output << "  exit 1" << endl;
         compiler->output << "}" << endl << endl;
- 
+
+        compiler->output << "# redirect output to prevent ssh session from stalling"
+                         << endl;
+        compiler->output << "exec 3>&1" << endl;
+        compiler->output << "exec 1> /tmp/.fwbuilder.out" << endl;
+        compiler->output << "exec 2>&1" << endl;
+        compiler->output << endl;
+
         compiler->output << "# store previous routing configuration "
                          << "(sort: 'via' GW has to be inserted after device routes)" << endl;
         compiler->output << "oldRoutes=$($IP route show | sort -k 2)" << endl << endl;
@@ -315,10 +335,12 @@ string RoutingCompiler_ipt::PrintRule::RoutingRuleToString(RoutingRule *rule)
     RoutingRuleOptions *opt = opt_dummy ? RoutingRuleOptions::cast(opt_dummy) : 0;
     if ( opt && opt->getBool("no_fail") )
     {
-        command_line << "echo \"*** Warning: routing rule " << rule->getLabel() << " failed. ignored. ***\"\n";
+        command_line << "echo \"*** Warning: routing rule "
+                     << rule->getLabel() << " failed. ignored. ***\"\n";
     } else
     {
-        command_line << "routeFailed " << "\"" << rule->getLabel() << "\"" << endl;;
+        command_line << "route_command_error "
+                     << "\"" << rule->getLabel() << "\"" << endl;;
     }
     command_line << endl;
 
