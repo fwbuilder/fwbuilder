@@ -179,7 +179,7 @@ void FirewallDialog::platformChanged()
     ]->getResourceStr("/FWBuilderResources/Target/supported_os").c_str();
     if (so.isEmpty()) return;
 
-    QString ho=so.section(",",0);
+    QString ho = so.section(",",0);
     setHostOS( m_dialog->hostOS, ho.toLatin1().constData() );
 
     QString pl = readPlatform(m_dialog->platform);

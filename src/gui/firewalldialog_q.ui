@@ -33,9 +33,6 @@
      <property name="spacing" >
       <number>2</number>
      </property>
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <item>
       <widget class="QFrame" name="frame3" >
        <property name="sizePolicy" >
@@ -524,7 +521,7 @@
    <sender>platform</sender>
    <signal>activated(int)</signal>
    <receiver>FirewallDialog_q</receiver>
-   <slot>changed()</slot>
+   <slot>platformChanged()</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>20</x>
@@ -556,7 +553,7 @@
    <sender>hostOS</sender>
    <signal>activated(int)</signal>
    <receiver>FirewallDialog_q</receiver>
-   <slot>changed()</slot>
+   <slot>hostOSChanged()</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>20</x>
@@ -569,4 +566,8 @@
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>platformChanged()</slot>
+  <slot>hostOSChanged()</slot>
+ </slots>
 </ui>

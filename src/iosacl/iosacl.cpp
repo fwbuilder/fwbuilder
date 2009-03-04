@@ -262,6 +262,17 @@ int main(int argc, char * const * argv)
         string fwvers = fw->getStr("version");
         if (fwvers == "") fw->setStr("version", "12.x");
 
+        string platform = fw->getStr("platform");
+        string clearACLCmd = Resources::platform_res[platform]->getResourceStr(
+            string("/FWBuilderResources/Target/options/") +
+            "version_" + fwvers + "/iosacl_commands/clear_ip_acl");
+        if (clearACLCmd.empty())
+        {
+            // incorrect version. This could have happened if user converted
+            // firewall platform. See bug #2662290
+            fw->setStr("version", "12.x");
+        }
+
         bool ios_acl_basic=options->getBool("ios_acl_basic");
         bool ios_acl_no_clear=options->getBool("ios_acl_no_clear");
         bool ios_acl_substitution=options->getBool("ios_acl_substitution");
@@ -490,11 +501,8 @@ int main(int argc, char * const * argv)
 
         ofile << endl;
 
-        string vers = fw->getStr("version");
-        string platform = fw->getStr("platform");
-
         ofile << "!" << endl;
-        ofile << "!" << " Compiled for " << platform << " " << vers << endl;
+        ofile << "!" << " Compiled for " << platform << " " << fwvers << endl;
 
         ofile << "!" << endl;
         ofile << "!" << MANIFEST_MARKER << "* " << ofname << endl;

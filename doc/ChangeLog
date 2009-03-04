@@ -1,3 +1,11 @@
+2009-03-04  vadim  <vadim@vk.crocodile.org>
+
+	* iosacl.cpp (main), FirewallDialog::platformChanged(): fixed bug
+	#2662290: "fwb_iosacl crash after firewall converted from
+	iptables". If user changed platform setting of the firewall
+	object, the program preserved its old version which was invalid
+	for the new platform.
+
 2009-03-02  vadim  <vadim@vk.crocodile.org>
 
 	* RoutingCompiler_ipt_writers.cpp (PrintRule::processNext): finish
