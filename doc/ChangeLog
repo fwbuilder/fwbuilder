@@ -1,3 +1,10 @@
+2009-03-05  vadim  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::insertRule),
+	ProjectPanel.cpp (ProjectPanel::closeEvent): fixed bug #2656815
+	"Copy/paste does not work properly". Fixed Copy/Paste problem with
+	policy rules and crash reported in this bug report.
+
 2009-03-04  vadim  <vadim@vk.crocodile.org>
 
 	* iosacl.cpp (main), FirewallDialog::platformChanged(): fixed bug

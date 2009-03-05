@@ -1287,6 +1287,9 @@ void ProjectPanel::closeEvent(QCloseEvent * ev)
     if (fwbdebug) qDebug("ProjectPanel::closeEvent %p title=%s",
                          this, getPageTitle().toAscii().constData());
 
+    // Can't just call fileClose() because I need to ignore event in
+    // case user clicks Cancel in dialog if some data has not been
+    // saved.
     if (isEditorVisible())
     {
         if (!oe->validateAndSave())
@@ -1297,6 +1300,16 @@ void ProjectPanel::closeEvent(QCloseEvent * ev)
         closeEditorPanel();
     }
 
+    if (!saveIfModified() || !checkin(true))
+    {
+        ev->ignore();
+        return;
+    }
+
+    saveState();
+    fileClose();
+
+#if 0
 
 //    if (!closing)
     saveState();
@@ -1322,6 +1335,7 @@ void ProjectPanel::closeEvent(QCloseEvent * ev)
 
     if (fwbdebug)
         qDebug("ProjectPanel::closeEvent main window houskeeping tasks");
+#endif
 
     mw->updateWindowTitle();
 

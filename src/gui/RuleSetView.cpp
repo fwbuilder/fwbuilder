@@ -2376,6 +2376,7 @@ Rule* RuleSetView::insertRule(Rule *next_to_rule, insertRuleOp rule_op,
 
     if (table_row<0) table_row = 0;
 
+    int new_table_row = table_row;
     Rule *newrule = NULL;
     if ( ruleset->getRuleSetSize()==0 || next_to_rule==NULL)
     {
@@ -2397,6 +2398,7 @@ Rule* RuleSetView::insertRule(Rule *next_to_rule, insertRuleOp rule_op,
             for (int i=ruleIndex.size(); i>table_row+1; --i)  
                 ruleIndex[i] = ruleIndex[i-1];
             ruleIndex[table_row+1] = newrule;
+            new_table_row = table_row + 1;
             break;
 
         case insertBefore:
@@ -2407,6 +2409,7 @@ Rule* RuleSetView::insertRule(Rule *next_to_rule, insertRuleOp rule_op,
             for (int i=ruleIndex.size(); i>table_row; --i)  
                 ruleIndex[i] = ruleIndex[i-1];
             ruleIndex[table_row] = newrule;
+            new_table_row = table_row;
             break;
         }
     }
@@ -2421,9 +2424,11 @@ Rule* RuleSetView::insertRule(Rule *next_to_rule, insertRuleOp rule_op,
 
     ruleModel->insertRow(table_row);
     rowsInfo.insert(table_row,NULL);
-    adjustRow(table_row);
-    update();
 
+    adjustRow(table_row);
+    adjustRow(new_table_row);
+
+    update();
     updateGroups();
     setCurrentCell( table_row, currentColumn() );
     updateCell(table_row, currentColumn());
