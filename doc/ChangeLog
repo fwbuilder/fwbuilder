@@ -1,5 +1,10 @@
 2009-03-05  vadim  <vadim@vk.crocodile.org>
 
+	* RoutingCompiler_ipt.cpp (addressRangesInDst::processNext): fixed
+	bug #2666971 "fwb_ipt crashes when Address Range object in routing
+	rule". Policy compiler for iptables crashed if Address Range
+	object was used in "Destination" of a routing rule.
+
 	* RuleSetView.cpp (RuleSetView::insertRule),
 	ProjectPanel.cpp (ProjectPanel::closeEvent): fixed bug #2656815
 	"Copy/paste does not work properly". Fixed Copy/Paste problem with

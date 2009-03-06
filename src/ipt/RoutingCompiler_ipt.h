@@ -74,6 +74,11 @@ namespace fwcompiler {
         DECLARE_ROUTING_RULE_PROCESSOR(FindDefaultRoute);
 
         /**
+	 * expand address range objects in destination
+	 */
+        DECLARE_ROUTING_RULE_PROCESSOR(addressRangesInDst);
+        
+        /**
          * remove duplicate rules
          */
 	class PrintRule;

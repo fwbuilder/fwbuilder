@@ -151,6 +151,20 @@ bool RoutingCompiler_ipt::eliminateDuplicateRules::processNext()
     return true;
 }
 
+bool RoutingCompiler_ipt::addressRangesInDst::processNext()
+{
+    RoutingCompiler_ipt *ipt_comp = dynamic_cast<RoutingCompiler_ipt*>(compiler);
+    RoutingRule *rule;
+    rule=getNext(); if (rule==NULL) return false;
+
+    RuleElementRDst *dstrel = rule->getRDst();
+    compiler->_expandAddressRanges(rule, dstrel);
+
+    tmp_queue.push_back(rule);
+    return true;
+}
+
+
 bool RoutingCompiler_ipt::FindDefaultRoute::processNext()
 {
     RoutingCompiler_ipt *ipt_comp = dynamic_cast<RoutingCompiler_ipt*>(compiler);
@@ -198,6 +212,9 @@ void RoutingCompiler_ipt::compile()
         add(new ExpandGroups("Expand groups in DST"));
         add(new ExpandMultipleAddresses(
                 "Expand objects with multiple addresses in DST"));
+
+        add(new addressRangesInDst("process address ranges"));
+
         add(new eliminateDuplicatesInDST("Eliminate duplicates in DST"));
         
         add(new FindDefaultRoute("Find rules that install default route"));

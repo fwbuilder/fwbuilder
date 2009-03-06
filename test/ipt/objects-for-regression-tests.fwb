@@ -800,8 +800,9 @@
     </Interface>
     <ObjectRef ref="id4733FFE419714"/>
     <ObjectRef ref="id40860X98946"/>
-    <ObjectRef ref="sysid0"/>
     <ObjectRef ref="id118609X9876"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
     <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
@@ -19723,7 +19724,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id43A2BF7416451" host_OS="linux24" inactive="False" lastCompiled="1215360266" lastInstalled="1142003872" lastModified="1235803788" platform="iptables" version="" name="firewall36" comment="&#10;testing routing rules - both actually routing  and ROUTE target&#10;&#10;routing ruleset installs ECMP default" ro="False">
+      <Firewall id="id43A2BF7416451" host_OS="linux24" inactive="False" lastCompiled="1215360266" lastInstalled="1142003872" lastModified="1236314795" platform="iptables" version="" name="firewall36" comment="&#10;testing routing rules - both actually routing  and ROUTE target&#10;&#10;routing ruleset installs ECMP default" ro="False">
         <NAT id="id43A2C00E16451" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id43A2BF7A16451" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id43A2BFF616451" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="This permits access from internal net&#10;to the Internet and DMZ">
@@ -20003,6 +20004,18 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <RoutingRule id="id40851X98946" disabled="False" group="" metric="0" position="2" comment="">
             <RDst neg="False">
               <ObjectRef ref="id4733FFE419714"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id40860X98946"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="id43A2C03E16451"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+          <RoutingRule id="id42129X3455" disabled="False" group="" metric="0" position="3" comment="">
+            <RDst neg="False">
+              <ObjectRef ref="id4368AD8615884"/>
             </RDst>
             <RGtw neg="False">
               <ObjectRef ref="id40860X98946"/>
