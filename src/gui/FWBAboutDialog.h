@@ -32,8 +32,18 @@ public:
                 libfwbuilder::Constants::getLibraryVersion().c_str() ) );
 
 #ifdef ELC
-        if (registered) m_aboutDialog->reg->setText(tr("Registered"));
-        else            m_aboutDialog->reg->setText(tr("Unregistered"));
+        switch (registered)
+        {
+        case 1:
+            m_aboutDialog->reg->setText(tr("Invalid license"));
+            break;
+        case 2:
+            m_aboutDialog->reg->setText(tr("Registered"));
+            break;
+        default:
+            m_aboutDialog->reg->setText(tr("Unregistered"));
+            break;
+        }            
 #endif
         
         setWindowTitle(QString("Firewall Builder: About..."));

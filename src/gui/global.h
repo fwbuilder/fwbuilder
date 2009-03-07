@@ -48,7 +48,7 @@ extern std::string     tempfname;
 extern std::string     argv0;
 extern std::string     ee;
 extern int             fwbdebug;
-extern bool            registered;
+extern int             registered;
 extern bool            gui_experiment1;
 
 #define SETTINGS_PATH_PREFIX  "/3.0"

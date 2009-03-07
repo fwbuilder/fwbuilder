@@ -114,11 +114,11 @@
 #include "../common/init.cpp"
 
 #ifdef ELC
-extern bool init2(const std::string &a1,
-                  const std::string &moduleName,
-                  const std::string &rp,
-                  const std::string &rp1,
-                  bool f1, bool f2, bool d);
+extern int init2(const std::string &a1,
+                 const std::string &moduleName,
+                 const std::string &rp,
+                 const std::string &rp1,
+                 bool f1, bool f2, bool d);
 #endif
 
 #if defined(Q_WS_MAC)
@@ -137,7 +137,7 @@ FWWindow *mw = NULL;
 FWBSettings *st = NULL;
 int fwbdebug = 0;
 bool safemode = false;
-bool registered = false;
+int registered = 0;
 bool gui_experiment1 = false;
 bool cli_print = false;
 QString cli_print_fwname = "";
