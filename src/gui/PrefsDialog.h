@@ -72,7 +72,6 @@ public slots:
     virtual void findWDir();
     virtual void findSSH();
     virtual void findSCP();
-    virtual void libClick(QTreeWidgetItem* itm, int col);
     virtual void changeRedColor();
     virtual void changeOrangeColor();
     virtual void changeYellowColor();

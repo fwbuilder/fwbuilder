@@ -1178,13 +1178,6 @@ bool ProjectPanel::requestEditorOwnership(QWidget *w,
     return true;
 }
 
-// NOTE: add-on libraries are obsolete in v3.0.0
-// TODO: remove this.
-listOfLibraries *ProjectPanel::getAddOnLibs()
-{
-    return addOnLibs;
-}
-
 bool ProjectPanel::isSystem(FWObject *obj)
 {
     return objectTreeFormat->isSystem(obj);

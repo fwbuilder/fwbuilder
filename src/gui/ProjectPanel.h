@@ -376,8 +376,6 @@ public:
                                 bool validate = true);
     void releaseEditor();
     void connectEditor(QWidget *w);
-    listOfLibraries *getAddOnLibs();
-
 
     bool isSystem(libfwbuilder::FWObject *obj);
     bool isStandardId(libfwbuilder::FWObject *obj);    

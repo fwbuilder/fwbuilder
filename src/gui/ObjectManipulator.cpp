@@ -2070,9 +2070,10 @@ void ObjectManipulator::delObj(FWObject *obj, bool openobj)
                    "isDelObj=%d", islib, isfw, isDelObj);
     
         /*
-         * TODO: we have to remove not only the object, but also all its child
-         * objects from the database, as well as all references to them. This
-         * logic should really be in FWObject::removeAllInstances(FWObject*);
+         * TODO: we have to remove not only the object, but also all
+         * its child objects from the database, as well as all
+         * references to them. This logic should really be in
+         * FWObject::removeAllInstances(FWObject*);
          */
     
         /* remove from our internal tables before it is removed from the
@@ -2184,9 +2185,9 @@ void ObjectManipulator::groupObjects()
             FWObject *lib=*i;
             if (libName==QString::fromUtf8(lib->getName().c_str()))
             {
-/* TODO: need to show a dialog and say that chosen library is read-only.
- * this is not critical though since newGroupDialog fills the pull-down
- * only with names of read-write libraries
+/* TODO: need to show a dialog and say that chosen library is
+ * read-only.  this is not critical though since newGroupDialog fills
+ * the pull-down only with names of read-write libraries
  */
                 if (lib->isReadOnly()) return;
                 FWObject *parent = m_project->getFWTree()->getStandardSlotForObject(lib,type);
@@ -2590,9 +2591,6 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
         qDebug("lib: %s %s",
                lib->getName().c_str(),
                FWObjectDatabase::getStringId(lib->getId()).c_str());
-        qDebug("lib: isReadOnly=%d isLoaded=%d",
-               lib->isReadOnly(),
-               m_project->getAddOnLibs()->isLoaded( lib->getName().c_str() ) );
         qDebug("libs->count()=%d", m_objectManipulator->libs->count() );
     }
 
@@ -2618,9 +2616,6 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
             qDebug("lib: %s %s",
                    lib->getName().c_str(),
                    FWObjectDatabase::getStringId(lib->getId()).c_str());
-            qDebug("lib: isReadOnly=%d isLoaded=%d",
-                   lib->isReadOnly(),
-                   m_project->getAddOnLibs()->isLoaded(lib->getName().c_str()));
         }
         i++;
     }

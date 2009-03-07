@@ -1366,7 +1366,7 @@ void DiscoveryDruid::startSNMPScan()
         }
         catch (const FWException &ex)
         {
-            //TODO: to do something usefull
+            //TODO: do something usefull
         }
     }
     libfwbuilder::SNMPCrawler *q = new SNMPCrawler();

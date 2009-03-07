@@ -313,47 +313,6 @@ void PrefsDialog::findSCP()
     if (!fp.isEmpty()) m_dialog->scpPath->setText(fp);
 }
 
-void PrefsDialog::libClick(QTreeWidgetItem* itm, int col)
-{
-    if (itm && col==1)
-    {
-        if (itm->text(0)=="Standard") return;
-
-        for (list<libData>::iterator i=mw->getAddOnLibs()->begin();
-             i!=mw->getAddOnLibs()->end(); ++i)
-        {
-            if (i->name == itm->text(0)) //fromUtf8
-            {
-                if (i->load)  itm->setIcon(1, QIcon());
-                else
-                {
-                    //itm->setPixmap(1, QPixmap::fromMimeSource( "apply.png" ) );
-                    QPixmap pm;
-                    QString icn = ":/Icons/apply.png";
-                    if ( ! QPixmapCache::find( icn, pm) )
-                    {
-                        pm.load( icn );
-                        QPixmapCache::insert( icn, pm);
-                    }
-                    itm->setIcon(1, QIcon(pm));
-                }
-
-                i->load = !i->load;
-
-#if 0
-// commented out for bug #1620284
-                if (i->load)
-                {
-                    mw->loadLibrary( i->path.latin1() );
-                    mw->loadObjects();
-                }
-#endif
-                break;
-            }
-        }
-    }
-}
-
 void PrefsDialog::accept()
 {
     QString wd=m_dialog->wDir->text();

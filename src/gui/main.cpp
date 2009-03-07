@@ -701,8 +701,6 @@ int main( int argc, char *argv[] )
     app->exec();
 
     mw->hide();  // must do this before settings object is destroyed
-    if (mw->getAddOnLibs()!=NULL)
-        mw->getAddOnLibs()->save();  // ditto
 
     if ( st->getStartupAction()==1 )
     {

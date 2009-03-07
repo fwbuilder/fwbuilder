@@ -377,8 +377,6 @@ public slots:
                                       QString outputFileName);
 
 
-    listOfLibraries *getAddOnLibs();
-
     bool isSystem(libfwbuilder::FWObject *obj);
 
  protected:

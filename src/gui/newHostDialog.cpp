@@ -239,9 +239,9 @@ void  newHostDialog::monitor()
 
             QStringList qsl;
             qsl << idata->name.c_str() << idata->label.c_str();
-            // TODO: redesign the way we pass information from the snmp crawler
-            // down the line so that multiple ip addresses per interface
-            // can be processed.
+            // TODO: redesign the way we pass information from the
+            // snmp crawler down the line so that multiple ip
+            // addresses per interface can be processed.
             if (idata->addr_mask.size())
                 qsl << idata->addr_mask.front()->getAddressPtr()->toString().c_str()
                     << idata->addr_mask.front()->getNetmaskPtr()->toString().c_str();

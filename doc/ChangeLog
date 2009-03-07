@@ -1,3 +1,8 @@
+2009-03-06  vadim  <vadim@vk.crocodile.org>
+
+	* ProjectPanel.h (class ProjectPanel): code clean-up: removed
+	obsolete method getAddOnLibs()
+
 2009-03-05  vadim  <vadim@vk.crocodile.org>
 
 	* RoutingCompiler_ipt.cpp (addressRangesInDst::processNext): fixed
