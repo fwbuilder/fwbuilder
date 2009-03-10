@@ -106,8 +106,8 @@ bool HttpGet::get(const QUrl &url)
     agent += locale;
     agent += QString("; b:%1; ").arg(BUILD_NUM);
 #ifdef ELC
-    if (registered) agent += "r";
-    else            agent += "u";
+    if (registered==2) agent += "r";
+    else               agent += "u";
 #else
     agent += "u";
 #endif
