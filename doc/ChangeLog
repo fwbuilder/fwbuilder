@@ -1,3 +1,11 @@
+2009-03-11  vadim  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::createGroup): fixed bug (no #): if
+	user selected some rules that belonged to a group and few other
+	rules that did not belong to any group at the same time and used
+	context menu to place all these rules in a new group, the GUI used
+	to crash.
+
 2009-03-06  vadim  <vadim@vk.crocodile.org>
 
 	* ProjectPanel.h (class ProjectPanel): code clean-up: removed

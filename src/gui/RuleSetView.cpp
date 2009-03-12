@@ -2829,7 +2829,11 @@ void RuleSetView::createGroup(int row, int count, const QString &groupName)
     if (!isTreeReadWrite(this,ruleset)) return;
 
     for (int idx=0 ; idx<count; idx++)
-        ruleIndex[row + idx]->setRuleGroupName(groupName.toUtf8().data());
+    {
+        Rule *rule = ruleIndex[row + idx];
+        if (rule)
+            rule->setRuleGroupName(groupName.toUtf8().data());
+    }
     // Note that ProjectPanel::reopenFirewall destroys all RuleSetView
     // objects and creates new ones. Save stored inside RuleSetView
     // object does not survive call to reopenFirewall()

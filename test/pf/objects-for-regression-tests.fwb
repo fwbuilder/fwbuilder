@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1230465686" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1236662578" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <Library id="id40E233F3" color="#FFFFFF" name="West Coast" comment="" ro="False">
@@ -353,6 +353,54 @@
       </PolicyRule>
     </Policy>
     <ServiceRef ref="id41F9FFBA"/>
+    <ServiceRef ref="sysid1"/>
+    <Policy id="id15947X59575" name="rule3_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
+      <PolicyRule id="id15948X59575" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="block fragments">
+        <Src neg="False">
+          <ObjectRef ref="sysid0"/>
+        </Src>
+        <Dst neg="False">
+          <ObjectRef ref="id15868X59575"/>
+        </Dst>
+        <Srv neg="False">
+          <ServiceRef ref="ip-IP_Fragments"/>
+        </Srv>
+        <Itf neg="False">
+          <ObjectRef ref="sysid0"/>
+        </Itf>
+        <When neg="False">
+          <IntervalRef ref="sysid2"/>
+        </When>
+        <PolicyRuleOptions>
+          <Option name="stateless">True</Option>
+        </PolicyRuleOptions>
+      </PolicyRule>
+      <PolicyRule id="id15960X59575" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+        <Src neg="True">
+          <ObjectRef ref="id4144D59F"/>
+          <ObjectRef ref="id4144D5A0"/>
+        </Src>
+        <Dst neg="False">
+          <ObjectRef ref="id15868X59575"/>
+        </Dst>
+        <Srv neg="False">
+          <ServiceRef ref="tcp-SMTP"/>
+          <ServiceRef ref="tcp-HTTP"/>
+          <ServiceRef ref="tcp-SSH"/>
+          <ServiceRef ref="tcp-FTP"/>
+          <ServiceRef ref="tcp-Telnet"/>
+          <ServiceRef ref="icmp-Unreachables"/>
+          <ServiceRef ref="icmp-ping_request"/>
+        </Srv>
+        <Itf neg="False">
+          <ObjectRef ref="sysid0"/>
+        </Itf>
+        <When neg="False">
+          <IntervalRef ref="sysid2"/>
+        </When>
+        <PolicyRuleOptions/>
+      </PolicyRule>
+    </Policy>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -14276,6 +14324,206 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
+      <Firewall id="id15868X59575" host_OS="openbsd" inactive="False" lastCompiled="1236662709" lastInstalled="1236662718" lastModified="1236662645" platform="pf" version="4.x" name="openbsd-4.2-2" comment="firewall protects host it is running on&#10;&#10;Note that we set output file name to  /tmp/labfw.fw to test what compiler is going to do (since it generates three files rather than one), as well as to test installer in this case&#10;" ro="False">
+        <NAT id="id15979X59575" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Policy id="id15874X59575" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id15899X59575" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id15984X59575"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id15911X59575" disabled="False" log="False" position="1" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id15868X59575"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id15981X59575"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="branch_name">rule3_branch</Option>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id15935X59575" disabled="False" log="True" position="2" action="Deny" direction="Both" comment="'catch all' rule">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Routing id="id15980X59575" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id15981X59575" bridgeport="False" dyn="False" label="" mgmt="True" security_level="0" unnum="False" unprotected="False" name="pcn0" comment="" ro="False">
+          <IPv4 id="id15983X59575" name="openbsd-4.2-2:pcn0:ip" comment="" ro="False" address="10.3.14.50" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id15984X59575" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id15986X59575" name="openbsd-4.2-2:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+        </Interface>
+        <Management address="10.3.14.50">
+          <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
+          <FWBDManagement enabled="True" identity="" port="9999"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">True</Option>
+          <Option name="accept_new_tcp_with_no_syn">True</Option>
+          <Option name="action_on_reject">ICMP host prohibited</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser">root</Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">True</Option>
+          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">False</Option>
+          <Option name="debug">True</Option>
+          <Option name="dyn_addr">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="fallback_log">False</Option>
+          <Option name="firewall_dir">/etc/fw</Option>
+          <Option name="firewall_is_part_of_any">True</Option>
+          <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">True</Option>
+          <Option name="inst_cmdline"></Option>
+          <Option name="inst_script"></Option>
+          <Option name="install_script"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="limit_suffix">/day</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">0</Option>
+          <Option name="linux24_tcp_fin_timeout">30</Option>
+          <Option name="linux24_tcp_keepalive_interval">1800</Option>
+          <Option name="load_modules">False</Option>
+          <Option name="log_all_dropped">False</Option>
+          <Option name="log_ip_opt">False</Option>
+          <Option name="log_level">debug</Option>
+          <Option name="log_limit_suffix"></Option>
+          <Option name="log_limit_value">0</Option>
+          <Option name="log_prefix"></Option>
+          <Option name="log_tcp_opt">False</Option>
+          <Option name="log_tcp_seq">False</Option>
+          <Option name="manage_virtual_addr">False</Option>
+          <Option name="mgmt_addr">10.3.14.30</Option>
+          <Option name="mgmt_ssh">True</Option>
+          <Option name="modulate_state">False</Option>
+          <Option name="no_iochains_for_any">False</Option>
+          <Option name="no_optimisation">False</Option>
+          <Option name="openbsd_ip_directed_broadcast"></Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="openbsd_ip_redirect"></Option>
+          <Option name="openbsd_ip_sourceroute"></Option>
+          <Option name="openbsd_path_pfctl"></Option>
+          <Option name="openbsd_path_sysctl"></Option>
+          <Option name="output_file"></Option>
+          <Option name="pass_all_out">False</Option>
+          <Option name="pf_adaptive_end">0</Option>
+          <Option name="pf_adaptive_start">0</Option>
+          <Option name="pf_do_limit_frags">False</Option>
+          <Option name="pf_do_limit_src_nodes">False</Option>
+          <Option name="pf_do_limit_states">False</Option>
+          <Option name="pf_do_limit_table_entries">False</Option>
+          <Option name="pf_do_limit_tables">False</Option>
+          <Option name="pf_do_scrub">True</Option>
+          <Option name="pf_do_timeout_frag">False</Option>
+          <Option name="pf_do_timeout_interval">False</Option>
+          <Option name="pf_flush_states">True</Option>
+          <Option name="pf_icmp_error">0</Option>
+          <Option name="pf_icmp_first">0</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_src_nodes">0</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_limit_table_entries">0</Option>
+          <Option name="pf_limit_tables">0</Option>
+          <Option name="pf_optimization"></Option>
+          <Option name="pf_other_first">0</Option>
+          <Option name="pf_other_multiple">0</Option>
+          <Option name="pf_other_single">0</Option>
+          <Option name="pf_scrub_fragm_crop">False</Option>
+          <Option name="pf_scrub_fragm_drop_ovl">False</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_scrub_minttl">1</Option>
+          <Option name="pf_scrub_no_df">False</Option>
+          <Option name="pf_scrub_random_id">False</Option>
+          <Option name="pf_scrub_reassemble">True</Option>
+          <Option name="pf_scrub_use_maxmss">False</Option>
+          <Option name="pf_scrub_use_minttl">False</Option>
+          <Option name="pf_set_adaptive">False</Option>
+          <Option name="pf_set_icmp_error">False</Option>
+          <Option name="pf_set_icmp_first">False</Option>
+          <Option name="pf_set_other_first">False</Option>
+          <Option name="pf_set_other_multiple">False</Option>
+          <Option name="pf_set_other_single">False</Option>
+          <Option name="pf_set_tcp_closed">False</Option>
+          <Option name="pf_set_tcp_closing">False</Option>
+          <Option name="pf_set_tcp_established">False</Option>
+          <Option name="pf_set_tcp_finwait">False</Option>
+          <Option name="pf_set_tcp_first">False</Option>
+          <Option name="pf_set_tcp_opening">False</Option>
+          <Option name="pf_set_udp_first">False</Option>
+          <Option name="pf_set_udp_multiple">False</Option>
+          <Option name="pf_set_udp_single">False</Option>
+          <Option name="pf_tcp_closed">0</Option>
+          <Option name="pf_tcp_closing">0</Option>
+          <Option name="pf_tcp_established">0</Option>
+          <Option name="pf_tcp_finwait">0</Option>
+          <Option name="pf_tcp_first">0</Option>
+          <Option name="pf_tcp_opening">0</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pf_udp_first">0</Option>
+          <Option name="pf_udp_multiple">0</Option>
+          <Option name="pf_udp_single">0</Option>
+          <Option name="platform">iptables</Option>
+          <Option name="prolog_place">fw_file</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_env_path"></Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
+          <Option name="use_ip_tool">False</Option>
+          <Option name="use_numeric_log_levels">False</Option>
+          <Option name="use_tables">True</Option>
+        </FirewallOptions>
+      </Firewall>
     </ObjectGroup>
     <IntervalGroup id="id415276D7" name="Time" comment="" ro="False"/>
   </Library>
@@ -14572,13 +14820,13 @@
       </ServiceGroup>
       <ServiceGroup id="stdid09" name="TCP" comment="" ro="False">
         <TCPService id="tcp-SSH" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ssh" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="22" dst_range_end="22"/>
+        <TCPService id="tcp-SMTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="smtp" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="25" dst_range_end="25"/>
+        <TCPService id="tcp-HTTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="http" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="80" dst_range_end="80"/>
+        <TCPService id="tcp-FTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ftp" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="21" dst_range_end="21"/>
+        <TCPService id="tcp-Telnet" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="telnet" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="23" dst_range_end="23"/>
         <TCPService id="tcp-Auth" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="auth" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="113" dst_range_end="113"/>
         <TCPService id="tcp-DNS_zone_transf" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="dns-tcp" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
-        <TCPService id="tcp-FTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ftp" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="21" dst_range_end="21"/>
-        <TCPService id="tcp-HTTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="http" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="80" dst_range_end="80"/>
         <TCPService id="tcp-NNTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="nntp" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="119" dst_range_end="119"/>
-        <TCPService id="tcp-SMTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="smtp" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="25" dst_range_end="25"/>
-        <TCPService id="tcp-Telnet" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="telnet" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="23" dst_range_end="23"/>
         <TCPService id="tcp-uucp" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="uucp" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="540" dst_range_end="540"/>
         <TCPService id="id3AEDBE6E" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="daytime" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="13" dst_range_end="13"/>
         <TCPService id="id3B4FEDA3" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="eklogin" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="2105" dst_range_end="2105"/>
@@ -14610,6 +14858,14 @@
         <TCPService id="tcp-All_TCP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="All TCP" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
         <TCPService id="tcp-DNS" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="domain" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
       </ServiceGroup>
+      <ServiceGroup id="stdid07" name="ICMP" comment="" ro="False">
+        <ICMPService id="icmp-Unreachables" code="-1" type="3" name="all ICMP unreachables" comment="" ro="False"/>
+        <ICMPService id="icmp-ping_request" code="0" type="8" name="ping request" comment="" ro="False"/>
+        <ICMPService id="id3C20EEB5" code="-1" type="-1" name="any ICMP" comment="" ro="False"/>
+        <ICMPService id="icmp-Time_exceeded" code="0" type="11" name="time exceeded" comment="ICMP messages of this type are needed for traceroute" ro="False"/>
+        <ICMPService id="icmp-Time_exceeded_in_transit" code="1" type="11" name="time exceeded in transit" comment="" ro="False"/>
+        <ICMPService id="icmp-ping_reply" code="0" type="0" name="ping reply" comment="" ro="False"/>
+      </ServiceGroup>
       <ServiceGroup id="stdid08" name="UDP" comment="" ro="False">
         <UDPService id="udp-DNS" name="domain" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
         <UDPService id="udp-All_UDP" name="All UDP" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
@@ -14630,14 +14886,6 @@
           <ServiceRef ref="udp-DNS"/>
           <ServiceRef ref="tcp-DNS"/>
         </ServiceGroup>
-      </ServiceGroup>
-      <ServiceGroup id="stdid07" name="ICMP" comment="" ro="False">
-        <ICMPService id="icmp-ping_request" code="0" type="8" name="ping request" comment="" ro="False"/>
-        <ICMPService id="icmp-Unreachables" code="-1" type="3" name="all ICMP unreachables" comment="" ro="False"/>
-        <ICMPService id="id3C20EEB5" code="-1" type="-1" name="any ICMP" comment="" ro="False"/>
-        <ICMPService id="icmp-Time_exceeded" code="0" type="11" name="time exceeded" comment="ICMP messages of this type are needed for traceroute" ro="False"/>
-        <ICMPService id="icmp-Time_exceeded_in_transit" code="1" type="11" name="time exceeded in transit" comment="" ro="False"/>
-        <ICMPService id="icmp-ping_reply" code="0" type="0" name="ping reply" comment="" ro="False"/>
       </ServiceGroup>
     </ServiceGroup>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
