@@ -409,10 +409,10 @@ string PolicyCompiler_iosacl::PrintRule::_printProtocol(Service *srv)
 
 string PolicyCompiler_iosacl::PrintRule::_printAddr(Address  *o)
 {
-    PolicyCompiler_iosacl *iosacl_comp=dynamic_cast<PolicyCompiler_iosacl*>(compiler);
+    PolicyCompiler_iosacl *iosacl_comp = dynamic_cast<PolicyCompiler_iosacl*>(compiler);
     if (Interface::cast(o)!=NULL)
     {
-	Interface *interface_=Interface::cast(o);
+	Interface *interface_ = Interface::cast(o);
 	if (interface_->isDyn())
         {
 	    return string("interface ") + interface_->getLabel() + " ";
@@ -433,6 +433,7 @@ string PolicyCompiler_iosacl::PrintRule::_printAddr(Address  *o)
         {
             if (Interface::cast(o)==NULL &&
                 Interface::cast(o->getParent())==NULL &&
+                o->dimension() > 1 &&
                 !srcmask.isHostMask())
             {
                 if (iosacl_comp->ipv6)

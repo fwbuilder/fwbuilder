@@ -1,3 +1,11 @@
+2009-03-12  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printAddr): fixed
+	bug (no #): compiler for IOS ACL used not to ignore netmasks of
+	IPv4 and IPv6 objects and added them to the generated access list
+	with netmask wildcard bits 255.255.255.255 which was equivalen to
+	'any'.
+
 2009-03-11  vadim  <vadim@vk.crocodile.org>
 
 	* RuleSetView.cpp (RuleSetView::createGroup): fixed bug (no #): if
