@@ -92,98 +92,125 @@ int PolicyCompiler_iosacl::prolog()
         */
 
         string temp_acl = "tmp_acl";
-        string temp_acl_addr = fw->getOptionsObject()->getStr("iosacl_acl_temp_addr");
+        string temp_acl_addr = fw->getOptionsObject()->getStr(
+            "iosacl_acl_temp_addr");
+
         if (temp_acl_addr.empty())
         {
             abort("Missing address for management host or subnet for temporary ACL.\nPlease enter it in the tab 'Script options' in 'Firewall Settings' dialog");
         }
 
-        string::size_type slash_idx = temp_acl_addr.find('/');
-        string addr = temp_acl_addr;
-        string netmask = "255.255.255.255";
+        // if templ_acl_addr is ipv4 address, then we can not create this
+        // temporary ACL while compiling ipv6 policy. And vice versa.
 
-        if (slash_idx!=string::npos)
+        bool create_temp_acl = false;
+        if (temp_acl_addr.find(":")!=string::npos)
         {
-            addr = temp_acl_addr.substr(0,slash_idx);
-            netmask = temp_acl_addr.substr(slash_idx+1);
+            //looks like ipv6
+            create_temp_acl = ipv6;
+        } else
+        {
+            // not ipv6, assume ipv4
+            create_temp_acl = !ipv6;
+        }
+
+        if (create_temp_acl)
+        {
+            string::size_type slash_idx = temp_acl_addr.find('/');
+            string addr = temp_acl_addr;
+            string netmask = "255.255.255.255";
+
+            if (slash_idx!=string::npos)
+            {
+                addr = temp_acl_addr.substr(0,slash_idx);
+                netmask = temp_acl_addr.substr(slash_idx+1);
+                try
+                {
+                    if (netmask.find(".")!=string::npos)
+                    {
+                        InetAddr nm(netmask);
+                        nm.getLength(); // to avoid warning abt unused var
+                    } else
+                    {
+                        int nm_length;
+                        istringstream  str(netmask);
+                        str >> nm_length;
+                        InetAddr nm(nm_length);
+                        netmask = nm.toString();
+                    }
+                } catch(FWException &ex)
+                {
+                    abort("Invalid netmask for management subnet: '"+netmask+"'");
+                }
+            }
+
             try
             {
-                if (netmask.find(".")!=string::npos)
-                {
-                    InetAddr nm(netmask);
-                    nm.getLength(); // to avoid warning abt unused var
-                } else
-                {
-                    int nm_length;
-                    istringstream  str(netmask);
-                    str >> nm_length;
-                    InetAddr nm(nm_length);
-                    netmask = nm.toString();
-                }
+                InetAddr a(addr);
+                a.isAny();
             } catch(FWException &ex)
             {
-                abort("Invalid netmask for management subnet: '"+netmask+"'");
+                abort("Invalid address for management subnet: '"+addr+"'");
             }
-        }
 
-        try
-        {
-            InetAddr a(addr);
-            a.isAny();
-        } catch(FWException &ex)
-        {
-            abort("Invalid address for management subnet: '"+addr+"'");
-        }
+            string xml_element = "clear_ip_acl";
+            if (ipv6) xml_element = "clear_ipv6_acl";
 
-        string clearACLcmd = Resources::platform_res[platform]->getResourceStr(
-            string("/FWBuilderResources/Target/options/")+
-               "version_"+version+"/iosacl_commands/clear_ip_acl");
+            string clearACLcmd = Resources::platform_res[platform]->getResourceStr(
+                string("/FWBuilderResources/Target/options/")+
+                "version_"+version+"/iosacl_commands/" + xml_element);
 
-        output << endl;
+            output << endl;
 
 
-        // cisco uses "wildcards" instead of netmasks
+            // cisco uses "wildcards" instead of netmasks
 
-        //long nm = InetAddr(netmask).to32BitInt();
-        //struct in_addr na;
-        //na.s_addr = ~nm;
-        InetAddr nnm( ~(InetAddr(netmask)) );
+            //long nm = InetAddr(netmask).to32BitInt();
+            //struct in_addr na;
+            //na.s_addr = ~nm;
+            InetAddr nnm( ~(InetAddr(netmask)) );
 
-        string addr_family_prefix = "ip";
-        if (ipv6) addr_family_prefix = "ipv6";
+            string addr_family_prefix = "ip";
+            if (ipv6) addr_family_prefix = "ipv6";
 
-        output << clearACLcmd << " " << temp_acl << endl;
-        output << addr_family_prefix
-               << " access-list extended " << temp_acl << endl;
-        output << "  permit ip "
-               << addr << " " << nnm.toString() << " any " << endl;
-        output << "  deny " << addr_family_prefix
-               << " any any " << endl;
-        output << "exit" << endl;
-        output << endl;
+            output << clearACLcmd << " " << temp_acl << endl;
+            output << addr_family_prefix
+                   << " access-list extended " << temp_acl << endl;
+            output << "  permit ip "
+                   << addr << " " << nnm.toString() << " any " << endl;
+            output << "  deny " << addr_family_prefix
+                   << " any any " << endl;
+            output << "exit" << endl;
+            output << endl;
 
-        // find management interface
-        int nmi = 0;
-        list<FWObject*> ll = fw->getByType(Interface::TYPENAME);
-        for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
-        {
-            Interface *intf = Interface::cast( *i );
-            if (intf->isManagement())
+            // find management interface
+            int nmi = 0;
+            list<FWObject*> ll = fw->getByType(Interface::TYPENAME);
+            for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
             {
-                nmi++;
-                output << "interface " << intf->getName() << endl;
-                output << "  no " << addr_family_prefix
-                       << " access-group in" << endl;
-                output << "  no " << addr_family_prefix
-                       << " access-group out" << endl;
-                output << "  " << addr_family_prefix
-                       << " access-group " << temp_acl << " in" << endl;
-                output << "exit" << endl;
+                Interface *intf = Interface::cast( *i );
+                if (intf->isManagement())
+                {
+                    nmi++;
+                    output << "interface " << intf->getName() << endl;
+                    output << "  no " << addr_family_prefix << " ";
+                    output << getAccessGroupCommandForAddressFamily();
+                    output << " in" << endl;
+
+                    output << "  no " << addr_family_prefix << " ";
+                    output << getAccessGroupCommandForAddressFamily();
+                    output << " out" << endl;
+
+                    output << " " << addr_family_prefix << " ";
+                    output << getAccessGroupCommandForAddressFamily();
+                    output << " " << temp_acl << " in" << endl;
+                    output << "exit" << endl;
+                }
             }
-        }
-        if (nmi==0)
-        {
-            abort("One of the interfaces of the firewall must be marked as management interface.");
+            if (nmi==0)
+            {
+                abort("One of the interfaces of the firewall must be marked as management interface.");
+            }
         }
 
         output << endl;
@@ -414,8 +441,9 @@ string PolicyCompiler_iosacl::printAccessGroupCmd(ciscoACL *acl)
         if (acl->direction()=="out" || acl->direction()=="Outbound") dir="out";
 
         str << "interface " << acl->getInterface()->getName() << endl;
-        str << "  " << addr_family_prefix
-            << " access-group " << acl->workName() << " " << dir << endl;
+        str << "  " << addr_family_prefix << " ";
+        str << getAccessGroupCommandForAddressFamily();
+        str << " " << acl->workName() << " " << dir << endl;
         str << "exit" << endl;
     }
     return str.str();
@@ -439,3 +467,8 @@ void PolicyCompiler_iosacl::epilog()
     }
 }
 
+string PolicyCompiler_iosacl::getAccessGroupCommandForAddressFamily()
+{
+    if (ipv6) return "traffic-filter";
+    return "access-group";
+}

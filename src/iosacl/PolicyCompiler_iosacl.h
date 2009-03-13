@@ -249,6 +249,7 @@ namespace fwcompiler {
 
 	virtual std::string myPlatformName();
         std::string printAccessGroupCmd(ciscoACL *acl);
+        std::string getAccessGroupCommandForAddressFamily();
 
 	public:
 

@@ -30,6 +30,7 @@
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
+#include "fwbuilder/ICMP6Service.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/CustomService.h"
@@ -136,9 +137,13 @@ bool PolicyCompiler_iosacl::PrintCompleteACLs::processNext()
     PolicyCompiler_iosacl *iosacl_comp=dynamic_cast<PolicyCompiler_iosacl*>(compiler);
     string vers = compiler->fw->getStr("version");
     string platform = compiler->fw->getStr("platform");
+
+    string xml_element = "clear_ip_acl";
+    if (iosacl_comp->ipv6) xml_element = "clear_ipv6_acl";
+
     string clearACLCmd = Resources::platform_res[platform]->getResourceStr(
         string("/FWBuilderResources/Target/options/")+
-        "version_"+vers+"/iosacl_commands/clear_ip_acl");
+        "version_"+vers+"/iosacl_commands/" + xml_element);
 
     assert( !clearACLCmd.empty());
 
@@ -165,8 +170,11 @@ bool PolicyCompiler_iosacl::PrintCompleteACLs::processNext()
     {
         ciscoACL *acl=(*i).second;
         compiler->output << addr_family_prefix
-                         << " access-list extended "
-                         << acl->workName() << endl;
+                         << " access-list ";
+
+        if (!iosacl_comp->ipv6) compiler->output << "extended ";
+
+        compiler->output<< acl->workName() << endl;
         std::for_each(tmp_queue.begin(), tmp_queue.end(),
                       printRulesForACL(iosacl_comp,
                                        this, acl, &(compiler->output)));
@@ -403,6 +411,20 @@ string PolicyCompiler_iosacl::PrintRule::_printProtocol(Service *srv)
     if (iosacl_comp->ipv6) addr_family_prefix = "ipv6 ";
 
     string proto = srv->getProtocolName();
+    if (ICMP6Service::isA(srv)) proto = "icmp";
+
+    if (CustomService::isA(srv)) 
+    {
+        // special case standard CusctomService objects "ESTABLISHED"
+        // and "ESTABLISHED ipv6": these require protocol "tcp" but
+        // protocol is set in the Custom Service object for all
+        // platforms at once, so we can't have protocol defined only
+        // for iosacl to be used here.
+	string srv_code = CustomService::cast(srv)->getCodeForPlatform(
+            compiler->myPlatformName());
+        if (srv_code == "established") proto = "tcp";
+    }
+
     if (proto=="ip") return addr_family_prefix;
     return proto + " ";
 }

@@ -25,6 +25,7 @@
           <iosacl_commands>
             <clear_acl>no access-list</clear_acl>
             <clear_ip_acl>no ip access-list extended</clear_ip_acl>
+            <clear_ipv6_acl>no ipv6 access-list</clear_ipv6_acl>
             <ip_addr_static>
 interface %in
   ip address %a %n
