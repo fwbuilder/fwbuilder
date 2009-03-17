@@ -3790,7 +3790,7 @@ workstation with this address:</string>
              <enum>Qt::ClickFocus</enum>
             </property>
             <property name="text" >
-             <string>Do not clear access lists and object group, just generate PIX commands for the new ones. Use this optin if you have your own policy installation scripts.</string>
+             <string>Do not clear access lists and object group, just generate PIX commands for the new ones. Use this option if you have your own policy installation scripts.</string>
             </property>
             <property name="alignment" >
              <set>Qt::AlignVCenter</set>

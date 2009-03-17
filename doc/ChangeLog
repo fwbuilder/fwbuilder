@@ -1,3 +1,18 @@
+2009-03-17  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_iosacl.cpp (PolicyCompiler_iosacl::prolog): fixed
+	bug #2689978: "IOS ACL 'safety net' doesn't support
+	IPv6?". Compiler did not process properly ipv6 address entered in
+	the "safety net" install script option parameter.
+
+	* iosaclAdvancedDialog.cpp, pixAdvancedDialog.cpp: fixed bug
+	#2689987: "Typo in "script options" tab in 'Firewall settings'".
+
+	* IPv6Dialog.cpp (IPv6Dialog::changed): fixed bug #2689958 "Error
+	changing properties of a IPv6 address". Button "Apply" would stay
+	greyed out when user changed network prefix length in IPv6 address
+	dialog.
+
 2009-03-12  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_iosacl.cpp (PolicyCompiler_iosacl::prolog): fixed

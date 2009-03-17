@@ -119,38 +119,49 @@ int PolicyCompiler_iosacl::prolog()
             string::size_type slash_idx = temp_acl_addr.find('/');
             string addr = temp_acl_addr;
             string netmask = "255.255.255.255";
+            bool tmp_acl_v6 = false;
 
-            if (slash_idx!=string::npos)
-            {
-                addr = temp_acl_addr.substr(0,slash_idx);
-                netmask = temp_acl_addr.substr(slash_idx+1);
-                try
-                {
-                    if (netmask.find(".")!=string::npos)
-                    {
-                        InetAddr nm(netmask);
-                        nm.getLength(); // to avoid warning abt unused var
-                    } else
-                    {
-                        int nm_length;
-                        istringstream  str(netmask);
-                        str >> nm_length;
-                        InetAddr nm(nm_length);
-                        netmask = nm.toString();
-                    }
-                } catch(FWException &ex)
-                {
-                    abort("Invalid netmask for management subnet: '"+netmask+"'");
-                }
-            }
+            // check if addr is v6
 
             try
             {
-                InetAddr a(addr);
-                a.isAny();
+                InetAddr addrv6(AF_INET6, temp_acl_addr);
+                tmp_acl_v6 = true;
             } catch(FWException &ex)
             {
-                abort("Invalid address for management subnet: '"+addr+"'");
+                // Assume cnf->maddr is ipv4 
+                if (slash_idx!=string::npos)
+                {
+                    addr = temp_acl_addr.substr(0,slash_idx);
+                    netmask = temp_acl_addr.substr(slash_idx+1);
+                    try
+                    {
+                        if (netmask.find(".")!=string::npos)
+                        {
+                            InetAddr nm(netmask);
+                            nm.getLength(); // to avoid warning abt unused var
+                        } else
+                        {
+                            int nm_length;
+                            istringstream  str(netmask);
+                            str >> nm_length;
+                            InetAddr nm(nm_length);
+                            netmask = nm.toString();
+                        }
+                    } catch(FWException &ex)
+                    {
+                        abort("Invalid netmask for management subnet: '"+netmask+"'");
+                    }
+                }
+
+                try
+                {
+                    InetAddr a(addr);
+                    a.isAny();
+                } catch(FWException &ex)
+                {
+                    abort("Invalid address for management subnet: '"+addr+"'");
+                }
             }
 
             string xml_element = "clear_ip_acl";
@@ -162,26 +173,37 @@ int PolicyCompiler_iosacl::prolog()
 
             output << endl;
 
-
-            // cisco uses "wildcards" instead of netmasks
-
-            //long nm = InetAddr(netmask).to32BitInt();
-            //struct in_addr na;
-            //na.s_addr = ~nm;
-            InetAddr nnm( ~(InetAddr(netmask)) );
-
             string addr_family_prefix = "ip";
-            if (ipv6) addr_family_prefix = "ipv6";
 
-            output << clearACLcmd << " " << temp_acl << endl;
-            output << addr_family_prefix
-                   << " access-list extended " << temp_acl << endl;
-            output << "  permit ip "
-                   << addr << " " << nnm.toString() << " any " << endl;
-            output << "  deny " << addr_family_prefix
-                   << " any any " << endl;
-            output << "exit" << endl;
-            output << endl;
+            if (ipv6 && tmp_acl_v6)
+            {
+                addr_family_prefix = "ipv6";
+                output << clearACLcmd << " " << temp_acl << endl;
+                output << "ipv6 access-list " << temp_acl << endl;
+                output << "  permit ipv6 " << addr << " any " << endl;
+                output << "  deny ipv6 any any " << endl;
+                output << "exit" << endl;
+                output << endl;
+            }
+
+            if (!ipv6 && !tmp_acl_v6)
+            {
+                // cisco uses "wildcards" instead of netmasks
+
+                //long nm = InetAddr(netmask).to32BitInt();
+                //struct in_addr na;
+                //na.s_addr = ~nm;
+                InetAddr nnm( ~(InetAddr(netmask)) );
+                addr_family_prefix = "ip";
+                output << clearACLcmd << " " << temp_acl << endl;
+                output << "ip access-list extended " << temp_acl << endl;
+                output << "  permit ip "
+                       << addr << " " << nnm.toString() << " any " << endl;
+                output << "  deny ip any any " << endl;
+                output << "exit" << endl;
+                output << endl;
+            }
+
 
             // find management interface
             int nmi = 0;
