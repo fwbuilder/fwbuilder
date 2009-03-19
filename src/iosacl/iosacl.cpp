@@ -240,6 +240,7 @@ string safetyNetInstall(Firewall *fw)
                     output << "  permit ipv6 " << addr << " any " << endl;
                 else
                     output << "  permit ipv6 host " << addr << " any " << endl;
+                output << "  permit icmp any any " << endl;
                 output << "  deny ipv6 any any " << endl;
                 output << "exit" << endl;
                 output << endl;

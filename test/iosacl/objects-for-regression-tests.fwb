@@ -172,7 +172,7 @@
       <ServiceGroup id="id4511636C23682_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id4511637423682" name="Firewalls" comment="" ro="False">
-      <Firewall id="id46412B5226577" host_OS="ios" inactive="False" lastCompiled="1230498567" lastInstalled="0" lastModified="1237438960" platform="iosacl" version="12.x" name="testios1" comment="" ro="False">
+      <Firewall id="id46412B5226577" host_OS="ios" inactive="False" lastCompiled="1230498567" lastInstalled="0" lastModified="1237473570" platform="iosacl" version="12.x" name="testios1" comment="" ro="False">
         <NAT id="id46412B5626577" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id46412B5526577" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id464154BB29061" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti-spoofing">
@@ -637,7 +637,7 @@
           </PolicyRule>
         </Policy>
         <Routing id="id46412B5726577" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id46412B5826577" bridgeport="False" dyn="False" label="" security_level="50" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Interface id="id46412B5826577" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="id46412B5926577" name="testios1:ethernet0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface id="id46412B5A26577" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="True" name="ethernet1" comment="" ro="False">
@@ -1933,7 +1933,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id19020X65694" host_OS="ios" inactive="False" lastCompiled="1237437124" lastInstalled="0" lastModified="1237437119" platform="iosacl" version="12.x" name="firewall-ipv6-1" comment="" ro="False">
+      <Firewall id="id19020X65694" host_OS="ios" inactive="False" lastCompiled="1237437124" lastInstalled="0" lastModified="1237473586" platform="iosacl" version="12.x" name="firewall-ipv6-1" comment="" ro="False">
         <NAT id="id19428X65694" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id19026X65694" name="fw-ipv6-1-ipv4" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False">
           <PolicyRule id="id19054X65694" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -2266,7 +2266,7 @@
           </PolicyRule>
         </Policy>
         <Routing id="id19429X65694" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id19430X65694" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="Ethernet0/0" comment="" ro="False">
+        <Interface id="id19430X65694" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="Ethernet0/0" comment="" ro="False">
           <IPv4 id="id19431X65694" name="firewall-ipv6-1:Ethernet0/0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
           <IPv6 id="id19432X65694" name="firewall-ipv6-1:Ethernet0/0:ip6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
         </Interface>
