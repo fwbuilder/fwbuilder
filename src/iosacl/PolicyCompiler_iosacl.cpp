@@ -180,7 +180,10 @@ int PolicyCompiler_iosacl::prolog()
                 addr_family_prefix = "ipv6";
                 output << clearACLcmd << " " << temp_acl << endl;
                 output << "ipv6 access-list " << temp_acl << endl;
-                output << "  permit ipv6 " << addr << " any " << endl;
+                if (slash_idx!=string::npos)
+                    output << "  permit ipv6 " << addr << " any " << endl;
+                else
+                    output << "  permit ipv6 host " << addr << " any " << endl;
                 output << "  deny ipv6 any any " << endl;
                 output << "exit" << endl;
                 output << endl;

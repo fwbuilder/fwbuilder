@@ -51,6 +51,11 @@
 #include <ctype.h>
 #include <stdio.h>
 
+#include <errno.h>
+#ifndef errno
+extern int errno;
+#endif
+
 #ifdef HAVE_GETOPT_H
 #  include <getopt.h>
 #else
@@ -560,7 +565,6 @@ int main(int argc, char * const *argv)
         if (cmd == STRUCT)
         {
             checkAndRepairTree(objdb);
-            return(0);
         }
         else if (cmd == LIST)
         {
@@ -634,10 +638,15 @@ int main(int argc, char * const *argv)
             }
         }
 
-        string bakfile=filename+".bak";
-    
-        rename(filename.c_str(),bakfile.c_str());
-    objdb->saveFile(filename);
+        string bakfile = filename+".bak";
+        if (rename(filename.c_str(),bakfile.c_str()) == 0)
+            objdb->saveFile(filename);
+        else
+        {
+            cout << "Could not rename data file, abroting operation" << endl;
+            cout << strerror(errno) << endl;
+            exit(-1);
+        }
 
     } catch(FWException &ex)  {
     cerr << ex.toString() << endl;

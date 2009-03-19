@@ -2629,7 +2629,7 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
                            QObject::tr(
 "Type '%1': new object can not be created because\n"
 "corresponding branch is missing in the object tree.\n"
-"Please repair the tree using command 'fwbedit -s -f file.fwb'.")
+"Please repair the tree using command 'fwbedit checktree -f file.fwb'.")
                            .arg(objType),
                            "&Continue", QString::null, QString::null,
                            0, 1 );

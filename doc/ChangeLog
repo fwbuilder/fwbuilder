@@ -1,3 +1,12 @@
+2009-03-18  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_iosacl.cpp (PolicyCompiler_iosacl::prolog): fixed
+	bug (no #): temporary access list created for IOS when option
+	"safety net install" is used and ipv6 address is provided should
+	use keyword "host" if provided address does not specify netmask.
+
+	* fwbedit: properly saving data file after "checktree" operation
+
 2009-03-17  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_iosacl.cpp (PolicyCompiler_iosacl::prolog): fixed
