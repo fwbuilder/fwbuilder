@@ -172,7 +172,7 @@
       <ServiceGroup id="id4511636C23682_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id4511637423682" name="Firewalls" comment="" ro="False">
-      <Firewall id="id46412B5226577" host_OS="ios" inactive="False" lastCompiled="1230498567" lastInstalled="0" lastModified="1230500015" platform="iosacl" version="12.x" name="testios1" comment="" ro="False">
+      <Firewall id="id46412B5226577" host_OS="ios" inactive="False" lastCompiled="1230498567" lastInstalled="0" lastModified="1237438960" platform="iosacl" version="12.x" name="testios1" comment="" ro="False">
         <NAT id="id46412B5626577" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id46412B5526577" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id464154BB29061" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti-spoofing">
@@ -668,10 +668,10 @@
           <Option name="in_out_code">true</Option>
           <Option name="ios_ip_address">True</Option>
           <Option name="ios_set_host_name">True</Option>
-          <Option name="iosacl_acl_basic">True</Option>
+          <Option name="iosacl_acl_basic">False</Option>
           <Option name="iosacl_acl_no_clear">False</Option>
-          <Option name="iosacl_acl_substitution">False</Option>
-          <Option name="iosacl_acl_temp_addr"></Option>
+          <Option name="iosacl_acl_substitution">True</Option>
+          <Option name="iosacl_acl_temp_addr">10.10.10.1</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
           <Option name="iosacl_epilog_script">! This is epilog for testing
@@ -679,11 +679,11 @@
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
-          <Option name="iosacl_logging_buffered_level">0</Option>
+          <Option name="iosacl_logging_buffered_level">2</Option>
           <Option name="iosacl_logging_console">False</Option>
-          <Option name="iosacl_logging_console_level">0</Option>
+          <Option name="iosacl_logging_console_level">2</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
-          <Option name="iosacl_logging_trap_level">0</Option>
+          <Option name="iosacl_logging_trap_level">2</Option>
           <Option name="iosacl_prolog_script">! This is prolog</Option>
           <Option name="iosacl_regroup_commands">False</Option>
           <Option name="iosacl_syslog_facility"></Option>
@@ -1046,7 +1046,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id464264CC12807" host_OS="ios" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1178755598" platform="iosacl" version="12.x" name="testios2" comment="" ro="False">
+      <Firewall id="id464264CC12807" host_OS="ios" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1237438938" platform="iosacl" version="12.x" name="testios2" comment="" ro="False">
         <NAT id="id464265C412807" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id464264D212807" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id464264D312807" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti-spoofing">
@@ -1503,17 +1503,19 @@
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
           <Option name="iosacl_epilog_script"></Option>
+          <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
-          <Option name="iosacl_logging_buffered_level"></Option>
+          <Option name="iosacl_logging_buffered_level">0</Option>
           <Option name="iosacl_logging_console">False</Option>
-          <Option name="iosacl_logging_console_level"></Option>
+          <Option name="iosacl_logging_console_level">0</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
-          <Option name="iosacl_logging_trap_level"></Option>
+          <Option name="iosacl_logging_trap_level">0</Option>
           <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
           <Option name="iosacl_syslog_facility"></Option>
           <Option name="iosacl_syslog_host"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">true</Option>
@@ -1547,6 +1549,7 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
           <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
@@ -2946,7 +2949,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4881X21941" host_OS="ios" inactive="False" lastCompiled="1237092851" lastInstalled="0" lastModified="1237092844" platform="iosacl" version="12.x" name="ccie4u-r1" comment="CCIE4U router R1&#10;2600&#10;" ro="False">
+      <Firewall id="id4881X21941" host_OS="ios" inactive="False" lastCompiled="1237438900" lastInstalled="0" lastModified="1237438894" platform="iosacl" version="12.x" name="ccie4u-r1" comment="CCIE4U router R1&#10;2600&#10;" ro="False">
         <NAT id="id5087X21941" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id4887X21941" name="r1-ipv4" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False">
           <PolicyRule id="id4888X21941" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -3309,7 +3312,7 @@
         <Interface id="id8437X21941" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="FastEthernet0/1" comment="" ro="False">
           <IPv4 id="id8438X21941" name="ccie4u-r1:FastEthernet0/1:ip" comment="" ro="False" address="10.1.2.1" netmask="255.255.255.0"/>
         </Interface>
-        <Management address="1.1.1.1">
+        <Management address="10.1.1.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
           <FWBDManagement enabled="False" identity="" port="-1"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
@@ -3350,18 +3353,18 @@
           <Option name="iosacl_acl_basic">False</Option>
           <Option name="iosacl_acl_no_clear">False</Option>
           <Option name="iosacl_acl_substitution">True</Option>
-          <Option name="iosacl_acl_temp_addr">10.1.1.0/24</Option>
+          <Option name="iosacl_acl_temp_addr">10.1.1.0</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
           <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
-          <Option name="iosacl_logging_buffered_level">1</Option>
+          <Option name="iosacl_logging_buffered_level">2</Option>
           <Option name="iosacl_logging_console">False</Option>
-          <Option name="iosacl_logging_console_level">1</Option>
+          <Option name="iosacl_logging_console_level">2</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
-          <Option name="iosacl_logging_trap_level">1</Option>
+          <Option name="iosacl_logging_trap_level">2</Option>
           <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
           <Option name="iosacl_syslog_facility"></Option>
@@ -3480,7 +3483,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id12133X53662" host_OS="ios" inactive="False" lastCompiled="1237437336" lastInstalled="0" lastModified="1237437327" platform="iosacl" version="12.x" name="firewall-ipv6-3" comment="test &quot;safety net&quot; install in case when there are many rulesets" ro="False">
+      <Firewall id="id12133X53662" host_OS="ios" inactive="False" lastCompiled="1237438591" lastInstalled="0" lastModified="1237437327" platform="iosacl" version="12.x" name="firewall-ipv6-3" comment="test &quot;safety net&quot; install in case when there are many rulesets" ro="False">
         <NAT id="id12339X53662" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id12139X53662" name="fw-ipv6-3-ipv4" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id12140X53662" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">

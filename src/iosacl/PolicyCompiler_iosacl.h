@@ -249,7 +249,6 @@ namespace fwcompiler {
 
 	virtual std::string myPlatformName();
         std::string printAccessGroupCmd(ciscoACL *acl);
-        std::string getAccessGroupCommandForAddressFamily();
 
 	public:
 
@@ -262,6 +261,8 @@ namespace fwcompiler {
 	virtual int  prolog();
 	virtual void compile();
 	virtual void epilog();
+
+        static std::string getAccessGroupCommandForAddressFamily(bool ipv6);
 
     };
 

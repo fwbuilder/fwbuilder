@@ -1,5 +1,10 @@
 2009-03-18  vadim  <vadim@vk.crocodile.org>
 
+	* iosacl.cpp (safetyNetInstall): fixed bug (no #): when "safety
+	net install" option is used, temporary access list must be
+	generated only once even when firewall object has multiple
+	rulesets.
+
 	* PolicyCompiler_iosacl.cpp (PolicyCompiler_iosacl::prolog): fixed
 	bug (no #): temporary access list created for IOS when option
 	"safety net install" is used and ipv6 address is provided should
