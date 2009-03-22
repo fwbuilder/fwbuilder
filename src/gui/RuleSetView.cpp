@@ -349,7 +349,6 @@ void RuleDelegate::paint(QPainter *painter,
 
     if (ruleSetView->ruleIndex[index.row()]==NULL)
     {
-//        if (index.column() > 1) return;
         if (index.column() == 1)
         {
             // Correct geometry rect for the rule group head row
@@ -1020,7 +1019,9 @@ void RuleSetView::debugPrintRows()
         qDebug("ruleIndex[%d]=%p", i1, ruleIndex[i1]);
 
     qDebug(" ");
-        
+
+    return;
+
     for (int i = 0 ; i < rowsInfo.size(); i++)
     {
         if (rowsInfo[i]!=NULL)
@@ -1188,8 +1189,12 @@ void RuleSetView::updateGroups()
             rri->collapsedGroup = 
                 bool(collapsed_groups.count(rri->groupName) > 0);
             if (rri->isFirstRow) setSpan(row, 1, 1, ncols-1);
-            else hideRow(row);
-        }
+            else
+            {
+                hideRow(row);
+            }
+        } else
+            setSpan(row, 1, 1, 1);
     }
 
     if (fwbdebug) qDebug("RuleSetView::updateGroups done");
@@ -2296,20 +2301,22 @@ void RuleSetView::selectionChanged(const QItemSelection &,
 
 void RuleSetView::adjustColumn( int col )
 {
-    QString lbl = ruleModel->headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();
+    QString lbl = ruleModel->headerData(col,
+                                        Qt::Horizontal,
+                                        Qt::DisplayRole).toString();
 
     QFontMetrics p(st->getRulesFont());//(this);
-    QRect br=p.boundingRect(QRect(0, 0, 1000, 1000),
-                            Qt::AlignLeft|Qt::AlignVCenter,
-                            lbl );
+    QRect br = p.boundingRect(QRect(0, 0, 1000, 1000),
+                              Qt::AlignLeft|Qt::AlignVCenter,
+                              lbl );
 
-    int     w = br.width() + 10;
+    int w = br.width() + 10;
 
-    int row=0;
+    int row = 0;
     for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++,row++)
     {
         QRect cr = calculateCellSize(row,col);
-        w=QMAX(w,cr.width());
+        w = QMAX(w,cr.width());
     }
 
     horizontalHeader()->resizeSection(col, w);
@@ -2361,11 +2368,14 @@ Rule* RuleSetView::insertRule(Rule *next_to_rule, insertRuleOp rule_op,
     int next_to_position = (next_to_rule) ? next_to_rule->getPosition() : 0;
 
     if (fwbdebug)
+    {
         qDebug("RuleSetView::insertRule next_to_rule=%p next_to_position=%d "
                "rule_op=%d table_row=%d ruleset->getRuleSetSize()=%d "
                "rowsInfo.size()=%d ruleIndex.size()=%d ",
                next_to_rule, next_to_position, rule_op, table_row,
                ruleset->getRuleSetSize(), rowsInfo.size(), ruleIndex.size());
+        debugPrintRows();
+    }
 
     if (old_rule!=NULL &&
         ruleset->getTypeName()==Policy::TYPENAME &&
@@ -2377,59 +2387,80 @@ Rule* RuleSetView::insertRule(Rule *next_to_rule, insertRuleOp rule_op,
     if (table_row<0) table_row = 0;
 
     int new_table_row = table_row;
+    list<int> old_group_header_rows;
+
     Rule *newrule = NULL;
     if ( ruleset->getRuleSetSize()==0 || next_to_rule==NULL)
     {
         // inserting into an empty ruleset or at the top of any ruleset
         // if next_to_rule==NULL
         newrule = ruleset->insertRuleAtTop();
-        for (int i=ruleIndex.size(); i>table_row; --i)  
-            ruleIndex[i] = ruleIndex[i-1];
-        ruleIndex[table_row] = newrule;
+        new_table_row = table_row;
     } else
     {
         switch (rule_op)
         {
         case appendAfter:
-            if (fwbdebug)
-                qDebug("RuleSetView::insertRule append after rule %d",
-                       next_to_position);
             newrule = ruleset->appendRuleAfter(next_to_position);
-            for (int i=ruleIndex.size(); i>table_row+1; --i)  
-                ruleIndex[i] = ruleIndex[i-1];
-            ruleIndex[table_row+1] = newrule;
             new_table_row = table_row + 1;
             break;
 
         case insertBefore:
-            if (fwbdebug)
-                qDebug("RuleSetView::insertRule insert before rule %d",
-                       next_to_position);
             newrule = ruleset->insertRuleBefore(next_to_position);
-            for (int i=ruleIndex.size(); i>table_row; --i)  
-                ruleIndex[i] = ruleIndex[i-1];
-            ruleIndex[table_row] = newrule;
             new_table_row = table_row;
             break;
         }
     }
     assert(newrule!=NULL);
 
+    if (fwbdebug)
+        qDebug("RuleSetView::insertRule new_table_row=%d", new_table_row);
+
+    for (int i=ruleIndex.size(); i>new_table_row; --i)  
+    {
+        if (ruleIndex[i] == NULL) old_group_header_rows.push_back(i);
+        ruleIndex[i] = ruleIndex[i-1];
+    }
+    ruleIndex[new_table_row] = newrule;
+
     initRule(newrule, Rule::cast(old_rule));
     if (next_to_rule!=NULL)
-        newrule->setRuleGroupName(next_to_rule->getRuleGroupName());
+    {
+        string group_name = next_to_rule->getRuleGroupName();
+        newrule->setRuleGroupName(group_name);
+    }
 
-    for (int i=ruleIndex.size(); i>=table_row; --i)
+    for (int i=ruleIndex.size()-1; i>=table_row; --i)
         setRuleNumber(i, ruleIndex[i]);
 
     ruleModel->insertRow(table_row);
-    rowsInfo.insert(table_row,NULL);
+    rowsInfo.insert(table_row, NULL);
 
     adjustRow(table_row);
     adjustRow(new_table_row);
 
+    for (list<int>::iterator i=old_group_header_rows.begin(); 
+         i!=old_group_header_rows.end(); ++i)
+    {
+        int row = *i;
+        updateCell(row, 3);
+
+//        for (int col=0; col<ncols; col++)
+//        {
+//            QModelIndex ind = ruleModel->index(row, col);
+//            update(ind);
+//        }
+    }
+
     update();
     updateGroups();
+
+    if (fwbdebug)
+    {
+        qDebug(" ");
+        debugPrintRows();
+    }
+
     setCurrentCell( table_row, currentColumn() );
     updateCell(table_row, currentColumn());
     mw->reloadAllWindowsWithFile(m_project);

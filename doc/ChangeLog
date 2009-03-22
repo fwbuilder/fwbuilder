@@ -1,3 +1,10 @@
+2009-03-22  vadim  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::updateGroups): fixed bug #2701593
+	"gui problem". Adding a rule to a policy with rule groups caused
+	weird rule display - a rule immediately above rule group header
+	would appear empty, with only "Source" shoring.
+
 2009-03-19  vadim  <vadim@vk.crocodile.org>
 
 	* iosacl.cpp (safetyNetInstall): fixed bug #2694146: "IPv6
