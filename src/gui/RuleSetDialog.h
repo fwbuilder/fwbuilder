@@ -32,6 +32,7 @@
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
+#include "fwbuilder/FWOptions.h"
 
 class ProjectPanel;
 
@@ -41,6 +42,8 @@ class RuleSetDialog : public QWidget
 
     libfwbuilder::FWObject *obj;
     bool init;
+    std::string platform;
+    libfwbuilder::FWOptions *fwopt;
     Ui::RuleSetDialog_q *m_dialog;
     ProjectPanel *m_project;
 

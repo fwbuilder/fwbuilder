@@ -61,6 +61,7 @@ RuleSetDialog::RuleSetDialog(ProjectPanel *project,
     m_dialog = new Ui::RuleSetDialog_q;
     m_dialog->setupUi(this);
     obj = NULL;
+    platform = "";
 }
 
 RuleSetDialog::~RuleSetDialog()
@@ -90,12 +91,11 @@ void RuleSetDialog::loadFWObject(FWObject *o)
 
     m_dialog->top_rule_set->setChecked(s->isTop());
 
-    string platform = "";
     FWObject *fw = o;
     while (fw && fw->getTypeName()!="Firewall") fw = fw->getParent();
     assert(fw!=NULL);
     platform = fw->getStr("platform");
-    FWOptions  *fwopt = Firewall::cast(fw)->getOptionsObject();
+    fwopt = Firewall::cast(fw)->getOptionsObject();
 
     if (platform == "iptables")
     {
@@ -165,17 +165,27 @@ void RuleSetDialog::changed()
 
 void RuleSetDialog::validate(bool *res)
 {
-    *res=true;
-    if (!isTreeReadWrite(this,obj)) { *res=false; return; }
-    if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
-    QRegExp rx("([a-zA-Z0-9_-+=@%^]+)");
+    *res = true;
+    if (!isTreeReadWrite(this, obj)) { *res = false; return; }
+    if (!validateName(this, obj, m_dialog->obj_name->text())) { *res = false; return; }
+
+    QString pattern("([a-zA-Z0-9_-+=@%^]+)");
+
+    // branch (anchor) names for PF may end with "/*"
+    if (platform == "pf")
+        pattern = "([a-zA-Z0-9_-+=@%^]+)(/\\*)?";
+
+    QRegExp rx(pattern);
+
     if (!rx.exactMatch(m_dialog->obj_name->text()))
     {
-        *res=false ;
-        QMessageBox::critical(this, "Firewall Builder",
-                              tr("Rule set name '%1' is invalid. Only '[a-z][A-Z][0-9]_-+=@%^' characters are allowed.").arg( m_dialog->obj_name->text() ),
-                              tr("&Continue"), 0, 0,
-                              0 );
+        *res = false ;
+        QMessageBox::critical(
+            this,
+            "Firewall Builder",
+            tr("Rule set name '%1' is invalid. Only '[a-z][A-Z][0-9]_-+=@%^' characters are allowed.").arg( m_dialog->obj_name->text() ),
+            tr("&Continue"), 0, 0,
+            0 );
 
         return ;
     }
@@ -195,14 +205,7 @@ void RuleSetDialog::applyChanges()
     RuleSet *s = dynamic_cast<RuleSet*>(obj);
     assert(s!=NULL);
 
-    string platform = "";
-    FWObject *fw = obj;
-    while (fw && fw->getTypeName()!="Firewall") fw = fw->getParent();
-    assert(fw!=NULL);
-    platform = fw->getStr("platform");
-    FWOptions  *fwopt = Firewall::cast(fw)->getOptionsObject();
-
-    string oldname=obj->getName();
+    string oldname = obj->getName();
     obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     obj->setComment(
         string(m_dialog->comment->toPlainText().toUtf8().constData()) );

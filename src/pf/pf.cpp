@@ -679,16 +679,15 @@ int main(int argc, char * const *argv)
           ]->Resources::getResourceStr("/FWBuilderResources/Target/family");
 
 	if (family=="solaris")
-            oscnf=new OSConfigurator_solaris(objdb , fwobjectname, false);
+            oscnf = new OSConfigurator_solaris(objdb , fwobjectname, false);
 
 	if (family=="openbsd")
         {
-            cerr << "Calling OSConfigurator_openbsd" << endl;
-            oscnf=new OSConfigurator_openbsd(objdb , fwobjectname, false);
+            oscnf = new OSConfigurator_openbsd(objdb , fwobjectname, false);
         }
 
 	if (family=="freebsd")
-            oscnf=new OSConfigurator_freebsd(objdb , fwobjectname, false);
+            oscnf = new OSConfigurator_freebsd(objdb , fwobjectname, false);
 
 	if (oscnf==NULL)
 	    throw FWException(_("Unrecognized host OS ") + 
@@ -892,6 +891,8 @@ int main(int argc, char * const *argv)
             string ruleset_name = fi->first;
             string file_name = output_dir + conf_files[ruleset_name];
             ostringstream *strm = fi->second;
+
+            if (ruleset_name.find("/*")!=string::npos) continue;
 
             ofstream pf_file;
             pf_file.exceptions(

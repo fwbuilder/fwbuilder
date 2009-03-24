@@ -124,7 +124,11 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
         if (ruleset==NULL)
             compiler->abort(string("Branching rule ") + rule->getLabel() +
                             " refers ruleset that does not exist");
-        compiler->output << "anchor " << ruleset->getName() << " ";
+        string ruleset_name = ruleset->getName();
+        if (ruleset_name.find("/*")!=string::npos)
+            compiler->output << "anchor \"" << ruleset_name << "\" ";
+        else
+            compiler->output << "anchor " << ruleset_name << " ";
         break;
     }
     default:

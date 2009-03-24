@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1237864567" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1237878936" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <Library id="id40E233F3" color="#FFFFFF" name="West Coast" comment="" ro="False">
@@ -3906,7 +3906,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3B0C6380" host_OS="openbsd" inactive="False" lastCompiled="1237869303" lastInstalled="0" lastModified="1237869296" platform="pf" version="" name="firewall4" comment="this object is used to test a configuration where firewall has dynamic address " ro="False">
+      <Firewall id="id3B0C6380" host_OS="openbsd" inactive="False" lastCompiled="1237879885" lastInstalled="0" lastModified="1237879862" platform="pf" version="" name="firewall4" comment="this object is used to test a configuration where firewall has dynamic address " ro="False">
         <NAT id="id3B0C6381" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3B0C6382" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -4019,7 +4019,49 @@
           </NATRule>
         </NAT>
         <Policy id="id3B0C639E" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id3B54F071" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id16047X49036" disabled="False" group="" log="False" position="0" action="Branch" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_id">id16046X49036</Option>
+              <Option name="classify_str"></Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_route_load_option">none</Option>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3B54F071" disabled="False" log="True" position="1" action="Deny" direction="Both" comment="">
             <Src neg="True">
               <ObjectRef ref="id3B022266"/>
             </Src>
@@ -4036,7 +4078,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B0C63E3" disabled="False" log="True" position="1" action="Deny" direction="Inbound" comment="Anti-spoofing rule">
+          <PolicyRule id="id3B0C63E3" disabled="False" log="True" position="2" action="Deny" direction="Inbound" comment="Anti-spoofing rule">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B0C6380"/>
@@ -4054,7 +4096,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B0C63EB" disabled="False" log="True" position="2" action="Deny" direction="Outbound" comment="Anti-spoofing rule">
+          <PolicyRule id="id3B0C63EB" disabled="False" log="True" position="3" action="Deny" direction="Outbound" comment="Anti-spoofing rule">
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B0C6380"/>
@@ -4072,7 +4114,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B0C639F" disabled="False" log="True" position="3" action="Accept" direction="Both" comment="hostF has the same IP address as firewal.">
+          <PolicyRule id="id3B0C639F" disabled="False" log="True" position="4" action="Accept" direction="Both" comment="hostF has the same IP address as firewal.">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4092,7 +4134,7 @@
               <Option name="id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B0C63B4" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id3B0C63B4" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
             <Src neg="True">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
@@ -4114,7 +4156,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B0C63A9" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="testing negation in the policy rule">
+          <PolicyRule id="id3B0C63A9" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="testing negation in the policy rule">
             <Src neg="True">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
@@ -4136,7 +4178,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B0C63BF" disabled="True" log="True" position="6" action="Deny" direction="Both" comment="testing negation in service field">
+          <PolicyRule id="id3B0C63BF" disabled="True" log="True" position="7" action="Deny" direction="Both" comment="testing negation in service field">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4159,7 +4201,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B0C63CB" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="'masquerading' rule">
+          <PolicyRule id="id3B0C63CB" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="'masquerading' rule">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -4177,48 +4219,6 @@
             </When>
             <PolicyRuleOptions>
               <Option name="id"></Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id16047X36408" disabled="False" group="" log="True" position="8" action="Branch" direction="Both" comment="">
-            <Src neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="branch_id">id16059X36408</Option>
-              <Option name="classify_str"></Option>
-              <Option name="custom_str"></Option>
-              <Option name="ipf_route_opt_addr"></Option>
-              <Option name="ipf_route_opt_if"></Option>
-              <Option name="ipf_route_option">route_through</Option>
-              <Option name="ipfw_classify_method">2</Option>
-              <Option name="ipfw_pipe_port_num">0</Option>
-              <Option name="ipfw_pipe_queue_num">0</Option>
-              <Option name="ipt_continue">False</Option>
-              <Option name="ipt_gw"></Option>
-              <Option name="ipt_iif"></Option>
-              <Option name="ipt_mark_connections">False</Option>
-              <Option name="ipt_oif"></Option>
-              <Option name="ipt_tee">False</Option>
-              <Option name="pf_fastroute">False</Option>
-              <Option name="pf_route_load_option">none</Option>
-              <Option name="pf_route_opt_addr"></Option>
-              <Option name="pf_route_opt_if"></Option>
-              <Option name="pf_route_option">route_through</Option>
-              <Option name="rule_name_accounting"></Option>
-              <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3B0C63D5" disabled="False" log="True" position="9" action="Deny" direction="Both" comment="'catch all' rule">
@@ -4243,7 +4243,7 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Policy id="id16059X36408" name="ftp-proxy" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False"/>
+        <Policy id="id16046X49036" name="ftp-proxy/*" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False"/>
         <Routing id="id3B0C6380-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id3B0C63DF" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3B0C63DF-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
