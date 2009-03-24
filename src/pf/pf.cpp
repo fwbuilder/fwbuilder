@@ -825,10 +825,20 @@ int main(int argc, char * const *argv)
                  p!=all_policies.end(); ++p )
             {
                 Policy *policy = Policy::cast(*p);
+                string ruleset_name = policy->getName();
+
+                if (ruleset_name.find("/*")!=string::npos)
+                {
+                    cout << "The name of the policy ruleset "
+                         << ruleset_name
+                         << " ends with '/*', assuming it is externally"
+                         << " controlled and skipping it."
+                         << endl;
+                    continue;
+                }
 
                 if (!policy->matchingAddressFamily(policy_af)) continue;
 
-                string ruleset_name = policy->getName();
                 if (policy->isTop())
                     ruleset_name = "__main__";
 

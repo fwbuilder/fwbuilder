@@ -1,5 +1,11 @@
 2009-03-24  vadim  <vadim@vk.crocodile.org>
 
+	* pf.cpp (main): more changes to add support for
+	externally-controlled policy rulesets for PF: if policy ruelset
+	name ends with "/*", the program assumes it is controlled by
+	external means and does not compile rules in it and does not
+	create .conf file from it.
+
 	* PolicyCompiler_pf_writers.cpp (PrintRule::_printAction): Added
 	support for anchor names with "/*" suffix for PF. Now the user can
 	create policy ruleset with name e.g. "ftp-proxy/*" and then set up
