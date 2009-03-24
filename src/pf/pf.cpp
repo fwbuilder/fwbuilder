@@ -433,8 +433,8 @@ void printStaticOptions(ofstream &file, Firewall* fw)
     //file << table_factory->PrintTables();
     //file << endl;
 
-    if (prolog_place == "pf_file_after_tables")
-        printProlog(file, pre_hook);
+    //if (prolog_place == "pf_file_after_tables")
+    //    printProlog(file, pre_hook);
 
 }
 
@@ -906,10 +906,20 @@ int main(int argc, char * const *argv)
             if (ruleset_name == "__main__")
             {
                 printStaticOptions(pf_file, fw);
+
+                pf_file << table_factories[ruleset_name]->PrintTables();
+
+                if (prolog_place == "pf_file_after_tables")
+                    printProlog(pf_file, pre_hook);
+            } else 
+            {
+                pf_file << table_factories[ruleset_name]->PrintTables();
             }
-            pf_file << table_factories[ruleset_name]->PrintTables();
+
             pf_file << strm->str();
             pf_file.close();
+
+
         }
 
         char          *timestr;

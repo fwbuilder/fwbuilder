@@ -1,3 +1,9 @@
+2009-03-23  vadim  <vadim@vk.crocodile.org>
+
+	* pf.cpp (main): fixed bug (no #): compiler for pf added code
+	provided in the "prolog" section while option was set to "add
+	after table definitions" in the incorrect place.
+
 2009-03-22  vadim  <vadim@vk.crocodile.org>
 
 	* RuleSetView.cpp (RuleSetView::updateGroups): fixed bug #2701593
