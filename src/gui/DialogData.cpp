@@ -107,8 +107,6 @@ void DialogData::loadToWidget( DialogOption &dopt , bool override)
         QComboBox *cbx = dynamic_cast<QComboBox*>(dopt.w);
         QString      s = (override) ? dopt.override_str_val : QString(dopt.obj->getStr(dopt.attr.toLatin1().constData()).c_str());
 
-        QStringList slist;
-
         int current_item = 0;
         if (!dopt.mapping.empty())
         {
@@ -125,8 +123,6 @@ void DialogData::loadToWidget( DialogOption &dopt , bool override)
  *  strings define what is stored in the object (counting strings in
  *  the array from 1).
  */
-            slist.clear();
-
             int idx = 0;
             QStringList::iterator i1 = dopt.mapping.begin();
             QStringList::iterator i2 = dopt.mapping.begin();
@@ -146,7 +142,6 @@ void DialogData::loadToWidget( DialogOption &dopt , bool override)
                     qDebug("loadToWidget -- QComboBox  (*i2)=%s",(*i2).toAscii().constData());
                 }
 
-                slist.insert( idx, (*i1) );
                 if (s== (*i2)) { current_item = idx; }
                 i1++; i1++;
                 i2++; i2++;
@@ -154,12 +149,7 @@ void DialogData::loadToWidget( DialogOption &dopt , bool override)
             }
         } else {
 // no mapping, just scan items and find current
-            for (int i = 0; i < slist.size(); i++)
-                if (slist[i] == s)
-                {
-                    current_item = i; //lbx->index( lbx->findItem(s,Qt::ExactMatch) );
-                    break;
-                }
+            current_item= cbx->findText(s,Qt::MatchExactly);
         }
         cbx->setCurrentIndex( current_item );
     }

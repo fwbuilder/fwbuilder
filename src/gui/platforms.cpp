@@ -147,6 +147,8 @@ void init_platforms()
 
     routeLoadOptions_pf.push_back(QObject::tr("None"));
     routeLoadOptions_pf.push_back("none");
+    routeLoadOptions_pf.push_back(QObject::tr("Bitmask"));
+    routeLoadOptions_pf.push_back("bitmask");
     routeLoadOptions_pf.push_back(QObject::tr("Random"));
     routeLoadOptions_pf.push_back("random");
     routeLoadOptions_pf.push_back(QObject::tr("Source Hash"));

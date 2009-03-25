@@ -113,7 +113,7 @@
            <enum>QFrame::Plain</enum>
           </property>
           <property name="currentIndex" >
-           <number>7</number>
+           <number>12</number>
           </property>
           <widget class="QWidget" name="TagStrPage" >
            <layout class="QGridLayout" >
@@ -899,6 +899,11 @@ object properties dialog.</string>
              <layout class="QHBoxLayout" >
               <item>
                <widget class="QComboBox" name="pf_route_option" >
+                <item>
+                 <property name="text" >
+                  <string>None</string>
+                 </property>
+                </item>
                 <item>
                  <property name="text" >
                   <string>Route through</string>

@@ -1,5 +1,15 @@
 2009-03-24  vadim  <vadim@vk.crocodile.org>
 
+	* DialogData.cpp (DialogData::loadToWidget): fixed bug #2710309:
+	"Bug in gui/DialogData.cpp when not using mapping.". There was a
+	bug in DialogData.cpp that when setting the value of a combobox
+	and not using a mapping array the requested value would not be
+	selected. Applied patch provided by Tom Judge ( tomjudge )
+
+	* platforms.cpp (init_platforms): fixed bug #2710300 "Bug in
+	gui/platforms.cpp". there was a discrepancy between the list of
+	route-to options for PF and UI elements.
+
 	* pf.cpp (main): more changes to add support for
 	externally-controlled policy rulesets for PF: if policy ruelset
 	name ends with "/*", the program assumes it is controlled by
