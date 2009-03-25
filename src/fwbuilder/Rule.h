@@ -247,6 +247,42 @@ class NATRule : public Rule
     
     public:
 
+/*
+ *  Supported NAT rule actions:
+ *      
+ *      Unknown - Uknown action
+ *         
+ *      NONAT - Exception to other nat rules
+ *
+ *      SNAT - Source NAT - Translate Source Address
+ *
+ *      Masq - Masquerading.
+ *
+ *      DNAT - Destnation NAT - Translate Destination Address.
+ *
+ *      SDNAT - Source & Destination NAT - Translate both source and
+ *      destination addresses.
+ *
+ *      SNetNAT - Source Network Translation - Translate source
+ *      address network.
+ *
+ *      DNetNAT - Destination Network Translation - Translate
+ *      destination address network.
+ *
+ *      Redirect - Redirect to firewall - Translate destination to a
+ *      firewall address.
+ *
+ *      Return - Internal use for rule chains.
+ *
+ *      Skip - 
+ *
+ *      Continue - Internal use for nat rules with negation.
+ *
+ *      LB - NAT Rule that does load ballencing.
+ *
+ *  NOTE: Not all types supported on all platforms.
+ *
+ */
     typedef enum { Unknown, 
                    NONAT, 
                    SNAT, 

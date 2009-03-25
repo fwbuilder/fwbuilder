@@ -6,7 +6,7 @@ QTDIR         = $$(QTDIR)
 
 TEMPLATE      = lib
 
-SO_VERSION    = 8.1.0
+SO_VERSION    = 8.2.0
 
 DEFINES      += $$(DEFINES)
 INCLUDEPATH  += .. ../.. $$(INCLUDEPATH)
