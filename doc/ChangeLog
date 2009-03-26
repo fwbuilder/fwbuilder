@@ -1,3 +1,10 @@
+2009-03-25  vadim  <vadim@vk.crocodile.org>
+
+	* RuleElement.cpp (RuleElementTSrv::validateChild): fixed bug
+	#2712575: "NAT RuleSetView allows TagService to be in Translated
+	Svc". TagService object should not be allowed in "Translated
+	Service" in NAT rules.
+
 2009-02-21  vadim  <vadim@vk.crocodile.org>
 
 	* VERSION (LIBFWBUILDER_REVISION): because of internal changes in

@@ -199,6 +199,7 @@ class RuleElementTSrv : public ServiceGroup, public RuleElement {
     RuleElementTSrv();
     RuleElementTSrv(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
+    virtual bool validateChild(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
 };

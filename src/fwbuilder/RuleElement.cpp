@@ -33,6 +33,8 @@
 #include <fwbuilder/Rule.h>
 
 #include <fwbuilder/IPService.h>
+#include <fwbuilder/TagService.h>
+
 #include <fwbuilder/Interval.h>
 #include <fwbuilder/Interface.h>
 #include <fwbuilder/Network.h>
@@ -502,6 +504,25 @@ xmlNodePtr RuleElementTSrv::toXML(xmlNodePtr parent) throw(FWException)
         (*j)->toXML(me);
 
     return me;
+}
+
+bool RuleElementTSrv::validateChild(FWObject *o)
+{
+  if (FWObjectReference::cast(o)!=NULL) return true;
+  if ( o->getId() == getAnyElementId()) return true;
+
+  // TagService is not allowed in translated service
+  if (TagService::isA(o)) return false;
+
+  if (ServiceGroup::cast(o)!=NULL)
+  {
+      for (FWObject::iterator i=o->begin(); i!=o->end(); ++i)
+      {
+          FWObject *o1 = FWReference::getObject(*i);
+          if (!validateChild(o1)) return false;
+      }
+  }
+  return true;
 }
 
 
