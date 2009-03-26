@@ -249,7 +249,16 @@ void NATCompiler_pf::PrintRule::_printProtocol(Service *srv)
     }
 }
 
-void NATCompiler_pf::PrintRule::_printPort(Service *srv, bool print_range_end)
+/*
+ * print port numbers for the service. For most platforms that inherit
+ * classes for PF this is sufficient, but PF itself also supports
+ * TagService and this method prints "tagged" keyword for it as well.
+ * Arg <lhs> controls which side of the "->" this service is on.  On
+ * the right hand side PF supports shortcut spec 'NNNN:*', but it is
+ * not allowed on the left hand side. Also keyword "tagged" is only
+ * allowed on the left hand side of "->".
+ */
+void NATCompiler_pf::PrintRule::_printPort(Service *srv, bool lhs)
 {
     if (TCPService::isA(srv) || UDPService::isA(srv))
     {
@@ -260,7 +269,7 @@ void NATCompiler_pf::PrintRule::_printPort(Service *srv, bool print_range_end)
             compiler->output << "port " << drs;
             if (dre!=0 && dre!=drs)
             {
-                if (print_range_end)
+                if (lhs)
                     compiler->output << ":" << dre;
                 else
                     compiler->output << ":*";
@@ -268,7 +277,8 @@ void NATCompiler_pf::PrintRule::_printPort(Service *srv, bool print_range_end)
         }
         compiler->output  << " ";
     }
-    if (TagService::isA(srv)) 
+
+    if (lhs && TagService::isA(srv)) 
     {
 	compiler->output << "tagged "
                          << TagService::constcast(srv)->getCode() << " ";

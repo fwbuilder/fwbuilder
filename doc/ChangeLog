@@ -1,3 +1,15 @@
+2009-03-25  vadim  <vadim@vk.crocodile.org>
+
+	* NATCompiler_pf_writers.cpp (PrintRule::_printPort): fixed bug
+	#2712514: "Bug in PF NAT Writer - 'tagged' keyword". Keyword
+	'tagged' is only allowed on the left hand side of '->' in nat
+	and rdr rules.
+
+	* RuleElement.cpp (RuleElementTSrv::validateChild): (change in
+	libfwbuilder) fixed bug #2712575: "NAT RuleSetView allows
+	TagService to be in Translated Svc". TagService object should not
+	be allowed in "Translated Service" in NAT rules.
+
 2009-03-24  vadim  <vadim@vk.crocodile.org>
 
 	* DialogData.cpp (DialogData::loadToWidget): fixed bug #2710309:
