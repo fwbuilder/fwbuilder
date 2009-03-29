@@ -1,3 +1,7 @@
+2009-03-29  vadim  <vadim@vk.crocodile.org>
+
+	* v3.0.4 release
+
 2009-03-25  vadim  <vadim@vk.crocodile.org>
 
 	* RuleElement.cpp (RuleElementTSrv::validateChild): fixed bug
