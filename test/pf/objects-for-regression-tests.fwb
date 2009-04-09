@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1237954093" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1239317986" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <Library id="id40E233F3" color="#FFFFFF" name="West Coast" comment="" ro="False">
@@ -400,6 +400,21 @@
         <PolicyRuleOptions/>
       </PolicyRule>
     </Policy>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ServiceRef ref="sysid1"/>
+    <ObjectRef ref="sysid0"/>
+    <IPv4 id="id16587X32012" name="firewal11:eth1:ip1" comment="" ro="False" address="33.33.33.34" netmask="255.255.255.0"/>
+    <ObjectRef ref="id3BBC0EFC"/>
+    <ObjectRef ref="host-hostA"/>
+    <ObjectRef ref="host-hostB"/>
+    <ObjectRef ref="net-Internal_net"/>
+    <ObjectRef ref="id3B022266"/>
+    <ObjectRef ref="id3BBC0EFC"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="id3B4572AF"/>
+    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -13687,6 +13702,143 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
+      <Firewall id="id16377X32012" host_OS="openbsd" inactive="False" lastCompiled="1239317855" lastInstalled="0" lastModified="1239317850" platform="pf" version="" name="firewal11" comment="example to illustrate access to the firewall limited to only few&#10;source addresses. Since in PF firewall is always part of &quot;any&quot;,&#10;have to explcitly add a rule to block ssh to the firewall&#10;from other sources." ro="False">
+        <NAT id="id16456X32012" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Policy id="id16383X32012" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id16601X32012" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3B4572AF"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id16377X32012"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id57898X32012" disabled="False" group="" log="False" position="1" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id16377X32012"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id23480X32012" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3BBC0EFC"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id16444X32012" disabled="False" log="False" position="3" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Routing id="id16583X32012" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id16584X32012" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="en1" comment="" ro="False">
+          <IPv4 id="id16588X32012" name="firewal11:en1:ip" comment="" ro="False" address="33.33.33.33" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id16589X32012" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="en0" comment="" ro="False">
+          <IPv4 id="id16591X32012" name="firewal11:en0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id16592X32012" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
+          <IPv4 id="id16594X32012" name="firewal11:lo0:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+        </Interface>
+        <Interface id="id16595X32012" bridgeport="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="ppp0" comment="" ro="False"/>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="True" identity="" port="9999"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="check_shading">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">False</Option>
+          <Option name="debug">False</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">True</Option>
+          <Option name="log_prefix"></Option>
+          <Option name="manage_virtual_addr">False</Option>
+          <Option name="modulate_state">False</Option>
+          <Option name="no_optimisation">False</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="openbsd_path_pfctl">/usr/sbin/pfctl</Option>
+          <Option name="openbsd_path_sysctl">/usr/sbin/sysctl</Option>
+          <Option name="pass_all_out">False</Option>
+          <Option name="pf_do_scrub">True</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_optimization"></Option>
+          <Option name="pf_scrub_fragm_crop">False</Option>
+          <Option name="pf_scrub_fragm_drop_ovl">False</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_scrub_minttl">1</Option>
+          <Option name="pf_scrub_no_df">False</Option>
+          <Option name="pf_scrub_random_id">False</Option>
+          <Option name="pf_scrub_use_maxmss">False</Option>
+          <Option name="pf_scrub_use_minttl">False</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
+          <Option name="use_tables">True</Option>
+        </FirewallOptions>
+      </Firewall>
     </ObjectGroup>
     <IntervalGroup id="stdid11_1" name="Time" comment="" ro="False"/>
     <ObjectRef ref="id483F5B7623190"/>
@@ -15531,6 +15683,209 @@
     </ServiceGroup>
     <ObjectGroup id="id81409X3490" name="Firewalls" comment="" ro="False"/>
     <IntervalGroup id="id81410X3490" name="Time" comment="" ro="False"/>
+  </Library>
+  <Library id="id154425X32012" color="#FFFFFF" name="ssh access example" comment="" ro="False">
+    <ObjectGroup id="id154426X32012" name="Objects" comment="" ro="False">
+      <ObjectGroup id="id154427X32012" name="Addresses" comment="" ro="False"/>
+      <ObjectGroup id="id154428X32012" name="DNS Names" comment="" ro="False"/>
+      <ObjectGroup id="id154429X32012" name="Address Tables" comment="" ro="False"/>
+      <ObjectGroup id="id154430X32012" name="Groups" comment="" ro="False">
+        <ObjectGroup id="id161498X32012" name="group1" comment="" ro="False">
+          <ObjectRef ref="id168492X32012"/>
+          <ObjectRef ref="id168501X32012"/>
+        </ObjectGroup>
+        <ObjectGroup id="id161501X32012" name="netgroup1" comment="" ro="False">
+          <ObjectRef ref="id168491X32012"/>
+          <ObjectRef ref="id168510X32012"/>
+        </ObjectGroup>
+      </ObjectGroup>
+      <ObjectGroup id="id154431X32012" name="Hosts" comment="" ro="False">
+        <Host id="id168492X32012" name="hostA" comment="" ro="False">
+          <Interface id="id168494X32012" bridgeport="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="hostA_eth0" comment="" ro="False">
+            <IPv4 id="id168495X32012" name="hostA:hostA_eth0:ip" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.255"/>
+          </Interface>
+          <Management address="192.168.1.10">
+            <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
+            <FWBDManagement enabled="False" identity="" port="-1"/>
+            <PolicyInstallScript arguments="" command="" enabled="False"/>
+          </Management>
+          <HostOptions>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
+            <Option name="use_mac_addr_filter">False</Option>
+          </HostOptions>
+        </Host>
+        <Host id="id168501X32012" name="hostB" comment="" ro="False">
+          <Interface id="id168503X32012" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+            <IPv4 id="id168504X32012" name="hostB:unknown:ip" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.255"/>
+          </Interface>
+          <Management address="192.168.1.20">
+            <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
+            <FWBDManagement enabled="False" identity="" port="-1"/>
+            <PolicyInstallScript arguments="" command="" enabled="False"/>
+          </Management>
+          <HostOptions>
+            <Option name="use_mac_addr_filter">false</Option>
+          </HostOptions>
+        </Host>
+      </ObjectGroup>
+      <ObjectGroup id="id154432X32012" name="Networks" comment="" ro="False">
+        <Network id="id168491X32012" name="dmz_net" comment="DMZ net - using NAT" ro="False" address="192.168.2.0" netmask="255.255.255.0"/>
+        <Network id="id168510X32012" name="Internal_net" comment="" ro="False" address="192.168.1.0" netmask="255.255.255.0"/>
+      </ObjectGroup>
+      <ObjectGroup id="id154433X32012" name="Address Ranges" comment="" ro="False"/>
+    </ObjectGroup>
+    <ServiceGroup id="id154434X32012" name="Services" comment="" ro="False">
+      <ServiceGroup id="id154435X32012" name="Groups" comment="" ro="False"/>
+      <ServiceGroup id="id154436X32012" name="ICMP" comment="" ro="False"/>
+      <ServiceGroup id="id154437X32012" name="IP" comment="" ro="False"/>
+      <ServiceGroup id="id154438X32012" name="TCP" comment="" ro="False"/>
+      <ServiceGroup id="id154439X32012" name="UDP" comment="" ro="False"/>
+      <ServiceGroup id="id154440X32012" name="Users" comment="" ro="False"/>
+      <ServiceGroup id="id154441X32012" name="Custom" comment="" ro="False"/>
+      <ServiceGroup id="id154442X32012" name="TagServices" comment="" ro="False"/>
+    </ServiceGroup>
+    <ObjectGroup id="id154443X32012" name="Firewalls" comment="" ro="False">
+      <Firewall id="id154445X32012" host_OS="openbsd" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1239318033" platform="pf" version="" name="firewal11" comment="example to illustrate access to the firewall limited to only few&#10;source addresses. Since in PF firewall is always part of &quot;any&quot;,&#10;have to explcitly add a rule to block ssh to the firewall&#10;from other sources." ro="False">
+        <NAT id="id154500X32012" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Policy id="id154451X32012" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id154452X32012" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id161498X32012"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id154445X32012"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id154464X32012" disabled="False" group="" log="False" position="1" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id154445X32012"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id154476X32012" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id161501X32012"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id154488X32012" disabled="False" log="False" position="3" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Routing id="id154501X32012" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id154502X32012" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="en1" comment="" ro="False">
+          <IPv4 id="id154504X32012" name="firewal11:en1:ip" comment="" ro="False" address="33.33.33.33" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id154505X32012" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="en0" comment="" ro="False">
+          <IPv4 id="id154507X32012" name="firewal11:en0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id154508X32012" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
+          <IPv4 id="id154510X32012" name="firewal11:lo0:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+        </Interface>
+        <Interface id="id154511X32012" bridgeport="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="ppp0" comment="" ro="False"/>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="True" identity="" port="9999"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="check_shading">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">False</Option>
+          <Option name="debug">False</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">True</Option>
+          <Option name="log_prefix"></Option>
+          <Option name="manage_virtual_addr">False</Option>
+          <Option name="modulate_state">False</Option>
+          <Option name="no_optimisation">False</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="openbsd_path_pfctl">/usr/sbin/pfctl</Option>
+          <Option name="openbsd_path_sysctl">/usr/sbin/sysctl</Option>
+          <Option name="pass_all_out">False</Option>
+          <Option name="pf_do_scrub">True</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_optimization"></Option>
+          <Option name="pf_scrub_fragm_crop">False</Option>
+          <Option name="pf_scrub_fragm_drop_ovl">False</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_scrub_minttl">1</Option>
+          <Option name="pf_scrub_no_df">False</Option>
+          <Option name="pf_scrub_random_id">False</Option>
+          <Option name="pf_scrub_use_maxmss">False</Option>
+          <Option name="pf_scrub_use_minttl">False</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
+          <Option name="use_tables">True</Option>
+        </FirewallOptions>
+      </Firewall>
+    </ObjectGroup>
+    <IntervalGroup id="id154444X32012" name="Time" comment="" ro="False"/>
   </Library>
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
