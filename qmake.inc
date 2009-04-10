@@ -12,7 +12,7 @@ DEFINES      += $$(DEFINES)
 LANGUAGE      = C++
 UI_DIR        = ui
 MANDIR        = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/man/
-DOCDIR        = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/doc/fwbuilder-3.0.4
+DOCDIR        = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/doc/fwbuilder-3.0.5
 
 HAVE_ANTLR_RUNTIME = 1
 HAVE_EXTERNAL_ANTLR = 0
@@ -43,7 +43,7 @@ unix {
 	target.path             = $$PREFIX/bin
 	dtd.path                = @TEMPLATE_DIR@/
 	migration.path          = @TEMPLATE_DIR@/migration
-	doc.path                = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/doc/fwbuilder-3.0.4
+	doc.path                = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/doc/fwbuilder-3.0.5
 	datadir.path		    = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/
 
 
