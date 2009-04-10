@@ -235,7 +235,6 @@ void FindWhereUsedWidget::humanizeSearchResults(std::set<FWObject *> &resset)
     for (;i!=resset.end();++i)
     {
         FWReference  *ref = FWReference::cast(*i);
-
         if (ref)
         {
             FWObject *o = ref->getParent();  // NB! We need parent of this ref.
@@ -243,18 +242,6 @@ void FindWhereUsedWidget::humanizeSearchResults(std::set<FWObject *> &resset)
             if (fwbdebug)
                 qDebug("humanizeSearchResults: adding %s (%s)",
                        o->getName().c_str(), o->getTypeName().c_str());
-#if 0
-            if (RuleElement::cast(o)!=NULL)
-            {
-                tmp_res.insert(o->getParent());  // rule
-                continue;
-            }
-            if (Group::cast(o)!=NULL)
-            {
-                tmp_res.insert(o);
-                continue;
-            }
-#endif
         } else
             tmp_res.insert(*i);
     }

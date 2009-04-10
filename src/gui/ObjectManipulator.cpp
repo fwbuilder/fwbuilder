@@ -3174,25 +3174,67 @@ bool ObjectManipulator::isSelected()
     return active;
 }
 
+/*
+ * per bug #2412334, FWObjectDatabase::findWhereObjectIsUsed finds
+ * only "direct" uses of object (i.e. it finds group the object is
+ * member of, but not other groups or rules the group is member of).
+ * This method is recursive wrapper around FWObjectDatabase::findWhereObjectIsUsed
+ */
+void ObjectManipulator::findWhereUsedRecursively(FWObject *obj,
+                                                 FWObject *top,
+                                                 set<FWObject*> &resset)
+{
+    if (fwbdebug)
+        qDebug("ObjectManipulator::findWhereUsedRecursively obj=%s (%s)",
+               obj->getName().c_str(), obj->getTypeName().c_str());
+
+    set<FWObject*> resset_tmp;
+    set<FWObject*> resset_tmp2;
+
+    m_project->db()->findWhereObjectIsUsed(obj, top, resset_tmp);
+
+    set<FWObject *>::iterator i = resset_tmp.begin();
+    for ( ; i!=resset_tmp.end(); ++i)
+    {
+        FWObject *parent_obj = *i;
+        FWReference  *ref = FWReference::cast(parent_obj);
+        if (ref)
+            parent_obj = ref->getParent();  // NB! We need parent of this ref.
+
+        // add new results to a separate set to avoid modifying the resset_tmp
+        // in the middle of iteration
+        if (Group::cast(parent_obj) && !RuleElement::cast(parent_obj))
+            findWhereUsedRecursively(parent_obj, top, resset_tmp2);
+    }
+
+    resset.insert(resset_tmp.begin(), resset_tmp.end());
+    resset.insert(resset_tmp2.begin(), resset_tmp2.end());
+}
+
 list<Firewall *> ObjectManipulator::findFirewallsForObject(FWObject *o)
 {
     if (fwbdebug)
         qDebug("ObjectManipulator::findFirewallsForObject");
 
     list<Firewall *> fws;
+
     set<FWObject *> resset;
     QTime tt;
     tt.start();
     FWObject *f=o;
     while (f!=NULL && !Firewall::isA(f)) f=f->getParent();
     if (f) fws.push_back(Firewall::cast(f));
-    m_project->db()->findWhereObjectIsUsed(o, m_project->db(), resset);
+
+    findWhereUsedRecursively(o, m_project->db(), resset);
+
+    //m_project->db()->findWhereObjectIsUsed(o, m_project->db(), resset);
+
     FindWhereUsedWidget::humanizeSearchResults(resset);
 
-    set<FWObject *>::iterator i=resset.begin();
+    set<FWObject *>::iterator i = resset.begin();
     for ( ;i!=resset.end();++i)
     {
-        RuleElement *re=RuleElement::cast(*i);
+        RuleElement *re = RuleElement::cast(*i);
         if (re==NULL) continue;
 
         Rule *r=Rule::cast(re->getParent());

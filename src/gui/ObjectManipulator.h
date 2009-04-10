@@ -122,23 +122,26 @@ class ObjectManipulator : public QWidget/*ObjectManipulator_q*/ {
     void updateCreateObjectMenu(libfwbuilder::FWObject* lib);
     void makeNameUnique(libfwbuilder::FWObject* p,libfwbuilder::FWObject* obj);
 
-    libfwbuilder::FWObject* actuallyCreateObject(libfwbuilder::FWObject *parent,
-                                                 const QString &objType,
-                                                 const QString &objName,
-                                                 libfwbuilder::FWObject *copyFrom=NULL);
+    libfwbuilder::FWObject* actuallyCreateObject(
+        libfwbuilder::FWObject *parent,
+        const QString &objType,
+        const QString &objName,
+        libfwbuilder::FWObject *copyFrom=NULL);
 
     void autorename(libfwbuilder::FWObject *obj,bool ask=true);
-    void extractFirewallsFromGroup(
-            libfwbuilder::ObjectGroup *gr,
-            std::set<libfwbuilder::Firewall*> &fo);
+    void extractFirewallsFromGroup(libfwbuilder::ObjectGroup *gr,
+                                   std::set<libfwbuilder::Firewall*> &fo);
+    
+    libfwbuilder::FWObject* actuallyPasteTo(libfwbuilder::FWObject *target,
+                                            libfwbuilder::FWObject *obj,
+                                            std::map<int,int> &map_ids);
 
-     libfwbuilder::FWObject* actuallyPasteTo(libfwbuilder::FWObject *target,
-                                             libfwbuilder::FWObject *obj,
-                                             std::map<int,int> &map_ids);
-
-     bool validateForPaste(libfwbuilder::FWObject *target,
-                           libfwbuilder::FWObject *obj);
-
+    bool validateForPaste(libfwbuilder::FWObject *target,
+                          libfwbuilder::FWObject *obj);
+    
+    void findWhereUsedRecursively(libfwbuilder::FWObject *obj,
+                                  libfwbuilder::FWObject *top,
+                                  std::set<libfwbuilder::FWObject*> &resset);
     
 public slots:
      virtual void libChanged(int l);

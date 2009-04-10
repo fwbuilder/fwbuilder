@@ -1,3 +1,11 @@
+2009-04-10  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::findWhereUsedRecursively):
+	fixed bug #2744798 "dependency checking failed". In case when an
+	object was used in a group and group used in a rule of a firewall,
+	the program failed to properly update "last modified" attribute
+	of the firewall when the object was changed.
+
 2009-04-09  vadim  <vadim@vk.crocodile.org>
 
 	* VERSION: start v3.0.5
