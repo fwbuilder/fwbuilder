@@ -23,9 +23,9 @@ unix {
 	DESTDIR =
 
 	target.path = $$exec_prefix/lib
-	dtd.path = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.4/
-	migration.path = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.4/migration
-	doc.path = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/doc/libfwbuilder-3.0.4
+	dtd.path = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.5/
+	migration.path = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.5/migration
+	doc.path = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/doc/libfwbuilder-3.0.5
 
 	CONFIG                 += warn_on debug
 	QMAKE_CFLAGS_DEBUG     += -Wno-unused-parameter
