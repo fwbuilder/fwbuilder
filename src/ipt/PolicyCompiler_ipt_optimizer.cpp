@@ -295,7 +295,7 @@ bool PolicyCompiler_ipt::optimize3::processNext()
 
     if (printRule==NULL)
     {
-        printRule=new PrintRule("");
+        printRule = new PrintRule("");
         printRule->setContext(compiler);
     }
     string thisRule = rule->getLabel() + " " + printRule->PolicyRuleToString(rule);

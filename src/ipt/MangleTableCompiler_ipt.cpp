@@ -147,7 +147,7 @@ string MangleTableCompiler_ipt::printAutomaticRulesForMangleTable(
 
     PolicyCompiler_ipt::PrintRule *prp = createPrintRuleProcessor();
 
-    res << prp->_declareTable();
+    // res << prp->_declareTable();
 
     if (have_connmark)
     {

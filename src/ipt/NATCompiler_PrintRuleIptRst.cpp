@@ -108,7 +108,6 @@ string NATCompiler_ipt::PrintRuleIptRst::_printRuleLabel(NATRule *rule)
                 c1=c2+1;
             }
             res << "# " << comm.substr(c1) << endl;
-//            res << "# " << endl;
         }
         current_rule_label=rl;
     }

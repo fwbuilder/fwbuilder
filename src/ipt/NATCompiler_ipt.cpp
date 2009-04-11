@@ -2385,11 +2385,10 @@ string NATCompiler_ipt::flushAndSetDefaultPolicy()
     string res="";
 
 /* printRule may be null if there are no NAT rules and we never ran compile() */
-    if(printRule!=NULL)
+    if (printRule!=NULL)
     {
-        res += printRule->_declareTable();
+        //res += printRule->_declareTable();
         res += printRule->_flushAndSetDefaultPolicy();
-//    res += printRule->_printOptionalGlobalRules();
     }
 
     return res;

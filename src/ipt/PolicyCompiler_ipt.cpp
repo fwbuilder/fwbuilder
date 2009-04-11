@@ -3856,7 +3856,6 @@ void PolicyCompiler_ipt::addRuleFilter()
  */
 void PolicyCompiler_ipt::compile()
 {
-    printRule=NULL;
     string version = fw->getStr("version");
 
     cout << " Compiling ruleset " << getRuleSetName() << " for '" << my_table << "' table";
@@ -4346,7 +4345,7 @@ void PolicyCompiler_ipt::epilog()
 
 PolicyCompiler_ipt::PrintRule* PolicyCompiler_ipt::createPrintRuleProcessor()
 {
-    if(printRule==NULL)
+    if (printRule==NULL)
     {
         if (fwopt->getBool("use_iptables_restore"))
         {
@@ -4370,7 +4369,7 @@ string PolicyCompiler_ipt::flushAndSetDefaultPolicy()
     string res="";
 
     createPrintRuleProcessor();
-    res += printRule->_declareTable();
+    //res += printRule->_declareTable();
     res += printRule->_flushAndSetDefaultPolicy();
 
     return res;
@@ -4379,6 +4378,8 @@ string PolicyCompiler_ipt::flushAndSetDefaultPolicy()
 std::string PolicyCompiler_ipt::printAutomaticRules()
 {
     string res="";
+
+    createPrintRuleProcessor();
     // iptables accepted TCPMSS target in filter table, FORWARD chain 
     // in the older versions, but requires it to be in mangle filter
     // starting somewhere 1.3.x

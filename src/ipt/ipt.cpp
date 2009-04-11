@@ -208,8 +208,7 @@ void findImportedRuleSets(Firewall *fw, list<FWObject*> &all_policies)
     for (list<FWObject*>::iterator i=all_policies.begin();
          i!=all_policies.end(); ++i)
     {
-        for (list<FWObject*>::iterator r=(*i)->begin();
-             r!=(*i)->end(); ++r)
+        for (list<FWObject*>::iterator r=(*i)->begin(); r!=(*i)->end(); ++r)
         {
             PolicyRule *rule = PolicyRule::cast(*r);
             RuleSet *ruleset = NULL;
@@ -240,24 +239,29 @@ string dumpScript(bool nocomm, Firewall *fw,
 
     if (fw->getOptionsObject()->getBool("use_iptables_restore"))
     {
-        script << reset_script;
-
-        if (!filter_script.empty())
+        if (!reset_script.empty() && !filter_script.empty())
         {
+            script << "echo '*filter'\n";
+            script << reset_script;
             script << filter_script;
             script << "echo COMMIT\n";
+            script << "\n";
         }
 
         if (!mangle_script.empty())
         {
+            script << "echo '*mangle'\n";
             script << mangle_script;
             script << "echo COMMIT\n";
+            script << "\n";
         }
 
         if (!nat_script.empty())
         {
+            script << "echo '*nat'\n";
             script << nat_script;
             script << "echo COMMIT\n";
+            script << "\n";
         }
 
         if (script.tellp() > 0)
@@ -356,30 +360,40 @@ bool processPolicyRuleSet(
 
         if (policy->isTop())
         {
-            mangle_table_stream << "# ================ Table 'mangle', ";
-            mangle_table_stream << "automatic rules";
-            mangle_table_stream << "\n";
-            mangle_table_stream << m.flushAndSetDefaultPolicy();
-            mangle_table_stream << m.printAutomaticRules();
+            ostringstream tmp;
+            tmp << m.flushAndSetDefaultPolicy();
+            tmp << m.printAutomaticRules();
+
+            if (tmp.tellp() > 0)
+            {
+                mangle_table_stream << "# ================ Table 'mangle', ";
+                mangle_table_stream << "automatic rules";
+                mangle_table_stream << "\n";
+                mangle_table_stream << tmp.str();
+            }
         }
 
         if (m.getCompiledScriptLength() > 0)
         {
-            mangle_table_stream << "# ================ Table 'mangle', ";
-            mangle_table_stream << "rule set " << branch_name << "\n";
+            ostringstream tmp;
             if (m.haveErrorsAndWarnings())
             {
-                mangle_table_stream << "# Policy compiler errors and warnings:"
-                      << "\n";
-                mangle_table_stream << m.getErrors("# ");
+                tmp << "# Policy compiler errors and warnings:" << "\n";
+                tmp << m.getErrors("# ");
             }
 
-            mangle_table_stream << m.getCompiledScript();
+            tmp << m.getCompiledScript();
+
+            if (tmp.tellp() > 0)
+            {
+                mangle_table_stream << "# ================ Table 'mangle', ";
+                mangle_table_stream << "rule set " << branch_name << "\n";
+                mangle_table_stream << tmp.str();
+            }
         }
 
         if (m_str_pos!=mangle_table_stream.tellp())
         {
-            //mangle_table_stream << m.commit();
             mangle_table_stream << "\n";
             empty_output = false;
         }
@@ -408,18 +422,22 @@ bool processPolicyRuleSet(
 
         if (c.getCompiledScriptLength() > 0)
         {
-            filter_table_stream << "# ================ Table 'filter', ";
-            filter_table_stream << "rule set " << branch_name << "\n";
+            ostringstream tmp;
+
             if (c.haveErrorsAndWarnings())
             {
-                filter_table_stream << "# Policy compiler errors and warnings:"
-                      << "\n";
-                filter_table_stream << c.getErrors("# ");
+                tmp << "# Policy compiler errors and warnings:" << "\n";
+                tmp << c.getErrors("# ");
             }
-            filter_table_stream << c.getCompiledScript();
-            //filter_table_stream << c.commit();
-            filter_table_stream << "\n";
-            empty_output = false;
+            tmp << c.getCompiledScript();
+
+            if (tmp.tellp() > 0)
+            {
+                empty_output = false;
+                filter_table_stream << "# ================ Table 'filter', ";
+                filter_table_stream << "rule set " << branch_name << "\n";
+                filter_table_stream << tmp.str();
+            }
         }
     }
 
@@ -435,20 +453,27 @@ bool processPolicyRuleSet(
 
     if (policy->isTop() && auto_rules_stream_position <= 0)
     {
-        automatic_rules_stream
-            << "# ================ Table 'filter', automatic rules"
-            << "\n";
-        automatic_rules_stream << c.flushAndSetDefaultPolicy();
+        ostringstream tmp;
+
+        tmp << c.flushAndSetDefaultPolicy();
 
         if (!prolog_done && prolog_place == "after_flush" &&
             !fw->getOptionsObject()->getBool("use_iptables_restore"))
         {
-            automatic_rules_stream << "prolog_commands" << endl << endl;
+            tmp << "prolog_commands" << endl << endl;
             prolog_done = true;
         }
 
-        automatic_rules_stream << c.printAutomaticRules();
-        empty_output = false;
+        tmp << c.printAutomaticRules();
+
+        if (tmp.tellp() > 0)
+        {
+            empty_output = false;
+            automatic_rules_stream
+                << "# ================ Table 'filter', automatic rules"
+                << "\n";
+            automatic_rules_stream << tmp.str();
+        }
     }
 
     return empty_output;
@@ -875,6 +900,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             ostringstream filter_rules_stream;
             ostringstream mangle_rules_stream;
             ostringstream nat_rules_stream;
+
             bool empty_output = true;
             //MangleTableCompiler_ipt *top_level_mangle_compiler = NULL;
 
@@ -930,7 +956,6 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                     }
 
                     nat_rules_stream << n.getCompiledScript();
-                    //nat_rules_stream << n.commit();
                     nat_rules_stream << "\n";
                     empty_output = false;
                 }
@@ -939,18 +964,19 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             for (list<FWObject*>::iterator p=all_policies.begin();
                  p!=all_policies.end(); ++p )
             {
-                bool empty_policy = processPolicyRuleSet(
-                    fw,
-                    *p,
-                    filter_rules_stream,
-                    mangle_rules_stream,
-                    automaitc_rules_stream,
-                    oscnf,
-                    policy_af,
-                    minus_n_commands_filter,
-                    minus_n_commands_mangle);
+                Policy *policy = Policy::cast(*p);
+                if (!policy->matchingAddressFamily(policy_af)) continue;
 
-                if (!empty_policy) empty_output = false;
+                if (! processPolicyRuleSet(
+                        fw,
+                        policy,
+                        filter_rules_stream,
+                        mangle_rules_stream,
+                        automaitc_rules_stream,
+                        oscnf,
+                        policy_af,
+                        minus_n_commands_filter,
+                        minus_n_commands_mangle)) empty_output = false;
             }
 
             if (!empty_output)
