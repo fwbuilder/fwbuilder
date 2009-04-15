@@ -201,6 +201,10 @@ class FWBSettings : public QSettings {
     QStringList getRecentFiles();
     void setRecentFiles(QStringList &list);
 
+    QString getNewFirewallPlatform();
+    void setNewFirewallPlatform(const QString &platform);
+
+    
 private:
     QFont getFontByType(const char*type);
 };

@@ -28,6 +28,7 @@
 #include "PolicyCompiler_ipt.h"
 #include "OSConfigurator_linux24.h"
 
+#include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/IPService.h"
@@ -416,10 +417,19 @@ void PolicyCompiler_ipt::registerRuleSetChain(const std::string &chain_name)
     chain_usage_counter[chain_name] = 1;
 }
 
+void PolicyCompiler_ipt::verifyPlatform()
+{
+    string family = Resources::platform_res[fw->getStr("platform")]->
+        getResourceStr("/FWBuilderResources/Target/family");
+
+    if (family != myPlatformName()) 
+	abort("Unsupported platform " + fw->getStr("platform") +
+        " (family " + family + ")");
+}
+
 int PolicyCompiler_ipt::prolog()
 {
-    if (fw->getStr("platform")!="iptables")
-	abort(_("Unsupported platform ") + fw->getStr("platform") );
+    verifyPlatform(); 
 
     int n = PolicyCompiler::prolog();
 
@@ -4366,12 +4376,18 @@ PolicyCompiler_ipt::PrintRule* PolicyCompiler_ipt::createPrintRuleProcessor()
 
 string PolicyCompiler_ipt::flushAndSetDefaultPolicy()
 {
-    string res="";
+    string res = "";
 
-    createPrintRuleProcessor();
-    //res += printRule->_declareTable();
-    res += printRule->_flushAndSetDefaultPolicy();
-
+    if (fwopt->getBool("use_iptables_restore"))
+    {
+        res += "echo :INPUT DROP [0:0]\n";
+        res += "echo :FORWARD DROP [0:0]\n";
+        res += "echo :OUTPUT DROP [0:0]\n";
+    } else
+    {
+        if (!ipv6) res += "reset_iptables_v4\n\n";
+        else res += "reset_iptables_v6\n\n";
+    }
     return res;
 }
 

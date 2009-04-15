@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
-<FWBuilderResources version="3.0.5-">
+<FWBuilderResources version="3.1.0-">
     <Target name="FWSM">
-      <description>FWSM</description>
+      <description>Cisco FWSM</description>
+      <group>Cisco</group>
       <compiler>fwb_pix</compiler>
       <dialog>pix</dialog>
       <installer>fwb_inst_pix</installer>
@@ -129,6 +130,7 @@ nameif %in %il security%sl
         <security_levels>True</security_levels>
         <network_zones>True</network_zones>
         <unprotected_interfaces>False</unprotected_interfaces>
+        <supports_prolog_epilog>True</supports_prolog_epilog>
         <actions>
             <Accept>
                 <supported>True</supported>

@@ -88,6 +88,7 @@ HEADERS += ../../config.h \
 	TimeDialog.h \
 	RuleSetView.h \
 	iptAdvancedDialog.h \
+	ipcopAdvancedDialog.h \
 	ipfAdvancedDialog.h \
 	ipfwAdvancedDialog.h \
 	pfAdvancedDialog.h \
@@ -95,6 +96,7 @@ HEADERS += ../../config.h \
 	pixosAdvancedDialog.h \
 	iosaclAdvancedDialog.h \
 	iosAdvancedDialog.h \
+	ipcoposAdvancedDialog.h \
 	linux24AdvancedDialog.h \
 	linksysAdvancedDialog.h \
 	freebsdAdvancedDialog.h \
@@ -203,6 +205,7 @@ SOURCES += ProjectPanel.cpp \
 	RuleSetDialog.cpp \
 	RuleSetView.cpp \
 	iptAdvancedDialog.cpp \
+	ipcopAdvancedDialog.cpp \
 	ipfAdvancedDialog.cpp \
 	ipfwAdvancedDialog.cpp \
 	pfAdvancedDialog.cpp \
@@ -210,6 +213,7 @@ SOURCES += ProjectPanel.cpp \
 	pixosAdvancedDialog.cpp \
 	iosaclAdvancedDialog.cpp \
 	iosAdvancedDialog.cpp \
+	ipcoposAdvancedDialog.cpp \
 	linux24AdvancedDialog.cpp \
 	linksysAdvancedDialog.cpp \
 	freebsdAdvancedDialog.cpp \
@@ -281,6 +285,8 @@ FORMS = FWBMainWindow_q.ui \
 	rcsfilepreview_q.ui \
 	rcsfilesavedialog_q.ui \
 	iptadvanceddialog_q.ui \
+	ipcopadvanceddialog_q.ui \
+	ipcoposadvanceddialog_q.ui \
 	objectmanipulator_q.ui \
 	prefsdialog_q.ui \
 	pixadvanceddialog_q.ui \

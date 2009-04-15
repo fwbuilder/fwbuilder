@@ -85,31 +85,11 @@ void OSConfigurator_linux24::processFirewallOptions()
     string s;
     int    i;
 
-/*
- * check if all interfaces configured for the firewall are present
- */
     if (options->getBool("verify_interfaces")) 
     {
         list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
         if ( ! l2.empty() )
-        {
-            output << endl;
-            output << "INTERFACES=\"";
-            for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
-            {
-                Interface *iface=Interface::cast(*i);
-                if (iface->getName().find("*")==string::npos)
-                    output << iface->getName() << " ";
-            }
-            output << "\"" << endl;
-            output << "for i in $INTERFACES ; do" << endl;
-            output << "  $IP link show \"$i\" > /dev/null 2>&1 || {" << endl;
-            output << "    log \"Interface $i does not exist\"" << endl;
-            output << "    exit 1" << endl;
-            output << "  }" << endl;
-            output << "done" << endl;
-            output << endl;
-        }
+            output << "verify_interfaces" << endl;
     }
 
 /*
@@ -125,70 +105,70 @@ void OSConfigurator_linux24::processFirewallOptions()
 
     s=options->getStr("linux24_ip_dynaddr");
     if (!s.empty())
-	output << "echo " << s << " > /proc/sys/net/ipv4/ip_dynaddr\n\n";
+	output << "echo " << s << " > /proc/sys/net/ipv4/ip_dynaddr\n";
 
 
     s=options->getStr("linux24_rp_filter");
     if (!s.empty())
-	output << "echo " << s << " > /proc/sys/net/ipv4/conf/all/rp_filter\n\n";
+	output << "echo " << s << " > /proc/sys/net/ipv4/conf/all/rp_filter\n";
 
     s=options->getStr("linux24_accept_source_route");
     if (!s.empty())
-	output << "echo " << s << " > /proc/sys/net/ipv4/conf/all/accept_source_route\n\n";
+	output << "echo " << s << " > /proc/sys/net/ipv4/conf/all/accept_source_route\n";
 
     s=options->getStr("linux24_accept_redirects");
     if (!s.empty())
-	output << "echo " << s << " > /proc/sys/net/ipv4/conf/all/accept_redirects\n\n";
+	output << "echo " << s << " > /proc/sys/net/ipv4/conf/all/accept_redirects\n";
 
     s=options->getStr("linux24_log_martians");
     if (!s.empty())
-	output << "echo " << s << " > /proc/sys/net/ipv4/conf/all/log_martians\n\n";
+	output << "echo " << s << " > /proc/sys/net/ipv4/conf/all/log_martians\n";
 
 
     
     s=options->getStr("linux24_icmp_echo_ignore_broadcasts");
     if (!s.empty())
-	output << "echo " << s << " > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts\n\n";
+	output << "echo " << s << " > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts\n";
 
     s=options->getStr("linux24_icmp_echo_ignore_all");
     if (!s.empty())
-	output << "echo " << s << " > /proc/sys/net/ipv4/icmp_echo_ignore_all\n\n";
+	output << "echo " << s << " > /proc/sys/net/ipv4/icmp_echo_ignore_all\n";
 
     s=options->getStr("linux24_icmp_ignore_bogus_error_responses");
     if (!s.empty())
-	output << "echo " << s << " > /proc/sys/net/ipv4/icmp_ignore_bogus_error_responses\n\n";
+	output << "echo " << s << " > /proc/sys/net/ipv4/icmp_ignore_bogus_error_responses\n";
 
 
     
     if ( (i=options->getInt("linux24_tcp_fin_timeout"))>0 )
-	output << "echo " << i << " > /proc/sys/net/ipv4/tcp_fin_timeout\n\n";
+	output << "echo " << i << " > /proc/sys/net/ipv4/tcp_fin_timeout\n";
 
     if ( (i=options->getInt("linux24_tcp_keepalive_interval"))>0 )
-	output << "echo " << i << " > /proc/sys/net/ipv4/tcp_keepalive_intvl\n\n";
+	output << "echo " << i << " > /proc/sys/net/ipv4/tcp_keepalive_intvl\n";
 
     s=options->getStr("linux24_tcp_window_scaling");
     if (!s.empty())
-	output << "echo " << s << " > /proc/sys/net/ipv4/tcp_window_scaling\n\n";
+	output << "echo " << s << " > /proc/sys/net/ipv4/tcp_window_scaling\n";
 
     s=options->getStr("linux24_tcp_sack");
     if (!s.empty())
-	output << "echo " << s << " > /proc/sys/net/ipv4/tcp_sack\n\n";
+	output << "echo " << s << " > /proc/sys/net/ipv4/tcp_sack\n";
 
     s=options->getStr("linux24_tcp_fack");
     if (!s.empty())
-	output << "echo " << s << " > /proc/sys/net/ipv4/tcp_fack\n\n";
+	output << "echo " << s << " > /proc/sys/net/ipv4/tcp_fack\n";
 
     s=options->getStr("linux24_tcp_syncookies");
     if (!s.empty())
-	output << "echo " << s << " > /proc/sys/net/ipv4/tcp_syncookies\n\n";
+	output << "echo " << s << " > /proc/sys/net/ipv4/tcp_syncookies\n";
 
     s=options->getStr("linux24_tcp_ecn");
     if (!s.empty())
-	output << "echo " << s << " > /proc/sys/net/ipv4/tcp_ecn\n\n";
+	output << "echo " << s << " > /proc/sys/net/ipv4/tcp_ecn\n";
 
     s=options->getStr("linux24_tcp_timestamps");
     if (!s.empty())
-	output << "echo " << s << " > /proc/sys/net/ipv4/tcp_timestamps\n\n";
+	output << "echo " << s << " > /proc/sys/net/ipv4/tcp_timestamps\n";
 
 
     output << endl;
@@ -307,6 +287,7 @@ void OSConfigurator_linux24::registerMultiAddressObject(MultiAddressRunTime *at)
 
 void OSConfigurator_linux24::printChecksForRunTimeMultiAddress()
 {
+    output << endl;
     output << "# Using " << address_table_objects.size() << " address table files" << endl;
 
     map<string,string>::iterator i;
@@ -565,8 +546,7 @@ string OSConfigurator_linux24::printShellFunctions(bool )
     str << endl;
 
     str << "# increment ip address" << endl;
-    str << "incaddr()" << endl;
-    str << "{" << endl;
+    str << "incaddr() {" << endl;
     str << "  n1=$4" << endl;
     str << "  n2=$3" << endl;
     str << "  n3=$2" << endl;
@@ -583,6 +563,113 @@ string OSConfigurator_linux24::printShellFunctions(bool )
     str << "  fi" << endl;
     str << "}" << endl;
     str << endl;
+
+/* check if package iproute2 is installed, but do this only if
+ * we really need /usr/sbin/ip 
+ */
+    if (options->getBool("verify_interfaces") || 
+        options->getBool("manage_virtual_addr") ||
+        options->getBool("configure_interfaces") )
+    {
+        str << "check_tools() {" << endl;
+        str << "  if $IP link ls >/dev/null 2>&1; then" << endl;
+        str << "    echo;" << endl;
+        str << "  else" << endl;
+        str << "    echo \"iproute not found\"" << endl;
+        str << "    exit 1" << endl;
+        str << "  fi" << endl;
+        str << "}" << endl;
+        str << endl;
+    }
+
+    /*
+     * Generate commands to reset all tables and chains and set
+     * default policy
+     */
+    str << "reset_iptables_v4() {" << endl;
+    str << "  $IPTABLES -P OUTPUT  DROP" << endl;
+    str << "  $IPTABLES -P INPUT   DROP" << endl;
+    str << "  $IPTABLES -P FORWARD DROP" << endl;
+
+    str << "\n\
+cat /proc/net/ip_tables_names | while read table; do\n\
+  $IPTABLES -t $table -L -n | while read c chain rest; do\n\
+      if test \"X$c\" = \"XChain\" ; then\n\
+        $IPTABLES -t $table -F $chain\n\
+      fi\n\
+  done\n\
+  $IPTABLES -t $table -X\n\
+done\n";
+    str << "}" << endl;
+    str << endl;
+
+    str << "reset_iptables_v6() {" << endl;
+    str << "  $IP6TABLES -P OUTPUT  DROP" << endl;
+    str << "  $IP6TABLES -P INPUT   DROP" << endl;
+    str << "  $IP6TABLES -P FORWARD DROP" << endl;
+    
+    str << "\n\
+cat /proc/net/ip6_tables_names | while read table; do\n\
+  $IP6TABLES -t $table -L -n | while read c chain rest; do\n\
+      if test \"X$c\" = \"XChain\" ; then\n\
+        $IP6TABLES -t $table -F $chain\n\
+      fi\n\
+  done\n\
+  $IP6TABLES -t $table -X\n\
+done\n";
+    str << "}" << endl;
+    str << endl;
+
+    std::string sed_command = "sed  -e 's/^.*\\///' -e 's/\\([^\\.]\\)\\..*/\\1/'";
+    str << "load_modules() {" << endl;
+    str << "  HAVE_NAT=$1" << endl;
+    str << "  MODULES_DIR=\"/lib/modules/`uname -r`/kernel/net/\"" << endl;
+    str << "  MODULES=`find $MODULES_DIR -name '*conntrack*'|" << sed_command <<  "`" << endl;
+    str << "  test -n \"$HAVE_NAT\" && {" << endl;
+    str << "    MODULES=\"$MODULES `find $MODULES_DIR -name '*nat*'|" << sed_command <<  "`\"" << endl;
+    str << "  }" << endl;
+    str << "  for module in $MODULES; do " << endl;
+    str << "    if $LSMOD | grep ${module} >/dev/null; then continue; fi" << endl;
+    str << "    $MODPROBE ${module} ||  exit 1 " << endl;
+    str << "  done" << endl;
+    str << "}" << endl;
+    str << endl;
+
+/*
+ * check if all interfaces configured for the firewall are present
+ */
+    if (options->getBool("verify_interfaces")) 
+    {
+        list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
+        if ( ! l2.empty() )
+        {
+            str << endl;
+            str << "verify_interfaces() {" << endl;
+            str << "  INTERFACES=\"";
+            for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
+            {
+                Interface *iface=Interface::cast(*i);
+                if (iface->getName().find("*")==string::npos)
+                    str << iface->getName() << " ";
+            }
+            str << "\"" << endl;
+            str << "  for i in $INTERFACES ; do" << endl;
+            str << "    $IP link show \"$i\" > /dev/null 2>&1 || {" << endl;
+            str << "      log \"Interface $i does not exist\"" << endl;
+            str << "      exit 1" << endl;
+            str << "    }" << endl;
+            str << "  done" << endl;
+            str << "}" << endl;
+            str << endl;
+        }
+    }
+
+    return str.str();
+}
+
+string OSConfigurator_linux24::printPrologEpilogFunctions(bool )
+{
+    ostringstream str;
 
     str << endl;
     str << "prolog_commands() {" << endl;
@@ -603,22 +690,6 @@ string OSConfigurator_linux24::printShellFunctions(bool )
     str << "}" << endl;
     str << endl;
 
-/* check if package iproute2 is installed, but do this only if
- * we really need /usr/sbin/ip 
- */
-    if (options->getBool("verify_interfaces") || 
-        options->getBool("manage_virtual_addr") ||
-        options->getBool("configure_interfaces") )
-    {
-        str << "if $IP link ls >/dev/null 2>&1; then" << endl;
-        str << "  echo;" << endl;
-        str << "else" << endl;
-        str << "  echo \"iproute not found\"" << endl;
-        str << "  exit 1" << endl;
-        str << "fi" << endl;
-        str << endl;
-    }
-
     return str.str();
 }
 
@@ -626,42 +697,42 @@ string  OSConfigurator_linux24::printPathForAllTools(const string &os)
 {
     string res;
 
-    FWOptions* options=fw->getOptionsObject();
+    FWOptions* options = fw->getOptionsObject();
     
     string s, path_lsmod, path_modprobe, path_iptables, path_ip6tables;
     string path_iptables_restore, path_ip6tables_restore, path_ip, path_logger;
 
     s=options->getStr("linux24_path_lsmod");
     if (!s.empty()) path_lsmod=s;
-    else            path_lsmod=os_data.getPathForTool(os,OSData::LSMOD);
+    else            path_lsmod=os_data.getPathForTool(os, OSData::LSMOD);
 
     s=options->getStr("linux24_path_modprobe");
     if (!s.empty()) path_modprobe=s;
-    else            path_modprobe=os_data.getPathForTool(os,OSData::MODPROBE);
+    else            path_modprobe=os_data.getPathForTool(os, OSData::MODPROBE);
 
     s=options->getStr("linux24_path_iptables");
     if (!s.empty()) path_iptables=s;
-    else            path_iptables=os_data.getPathForTool(os,OSData::IPTABLES);
+    else            path_iptables=os_data.getPathForTool(os, OSData::IPTABLES);
 
     s=options->getStr("linux24_path_ip6tables");
     if (!s.empty()) path_ip6tables=s;
-    else            path_ip6tables=os_data.getPathForTool(os,OSData::IP6TABLES);
+    else            path_ip6tables=os_data.getPathForTool(os, OSData::IP6TABLES);
 
     s=options->getStr("linux24_path_iptables_restore");
     if (!s.empty()) path_iptables_restore=s;
-    else            path_iptables_restore=os_data.getPathForTool(os,OSData::IPTABLES_RESTORE);
+    else            path_iptables_restore=os_data.getPathForTool(os, OSData::IPTABLES_RESTORE);
 
     s=options->getStr("linux24_path_ip6tables_restore");
     if (!s.empty()) path_ip6tables_restore=s;
-    else            path_ip6tables_restore=os_data.getPathForTool(os,OSData::IP6TABLES_RESTORE);
+    else            path_ip6tables_restore=os_data.getPathForTool(os, OSData::IP6TABLES_RESTORE);
 
     s=options->getStr("linux24_path_ip");
     if (!s.empty()) path_ip=s;
-    else            path_ip=os_data.getPathForTool(os,OSData::IP);
+    else            path_ip=os_data.getPathForTool(os, OSData::IP);
 
     s=options->getStr("linux24_path_logger");
     if (!s.empty()) path_logger=s;
-    else            path_logger=os_data.getPathForTool(os,OSData::LOGGER);
+    else            path_logger=os_data.getPathForTool(os, OSData::LOGGER);
 
 
     res += "LSMOD=\""   +path_lsmod+"\"\n";
@@ -679,30 +750,17 @@ string  OSConfigurator_linux24::printPathForAllTools(const string &os)
 
 void OSConfigurator_linux24::generateCodeForProtocolHandlers(bool have_nat)
 {
-    FWOptions* options=fw->getOptionsObject();
-
-    bool nomod=Resources::os_res[fw->getStr("host_OS")]->Resources::getResourceBool("/FWBuilderResources/Target/options/suppress_modules");
+    FWOptions* options = fw->getOptionsObject();
+    bool nomod = Resources::os_res[fw->getStr("host_OS")]->Resources::getResourceBool("/FWBuilderResources/Target/options/suppress_modules");
 
 /* there is no need to load modules on linksys */
     if (options->getBool("load_modules") && !nomod)
     {
-        std::string sed_command = "sed  -e 's/^.*\\///' -e 's/\\([^\\.]\\)\\..*/\\1/'";
-	output << endl;
-        output << "MODULES_DIR=\"/lib/modules/`uname -r`/kernel/net/\"" << endl;
-        output << "MODULES=`find $MODULES_DIR -name '*conntrack*'|" << sed_command <<  "`" << endl;
-        if (have_nat)
-        {
-            output << "MODULES=\"$MODULES `find $MODULES_DIR -name '*nat*'|" << sed_command <<  "`\"" << endl;
-
-        }
-
-	output << "for module in $MODULES; do " << endl;
-        output << "  if $LSMOD | grep ${module} >/dev/null; then continue; fi" << endl;
-	output << "  $MODPROBE ${module} ||  exit 1 " << endl;
-	output << "done" << endl;
-
-	output << endl;
-	output << endl;
+        output << "load_modules ";
+        if (have_nat) output << "\"with_nat\"";
+        else output << "\"\"";
+        output << endl;
+        output << endl;
     }
 }
 
@@ -826,7 +884,7 @@ string OSConfigurator_linux24::printIPForwardingCommands(bool )
         {
             if (s=="1" || s=="On" || s=="on") s="1";
             else                              s="0";
-            str << "echo " << s << " > /proc/sys/net/ipv4/ip_forward\n\n";
+            str << "echo " << s << " > /proc/sys/net/ipv4/ip_forward\n";
         }
 
         s = options->getStr("linux24_ipv6_forward");
@@ -835,11 +893,11 @@ string OSConfigurator_linux24::printIPForwardingCommands(bool )
             if (s=="1" || s=="On" || s=="on") s="1";
             else                              s="0";
             str << "echo "
-                << s << " > /proc/sys/net/ipv6/conf/all/forwarding\n\n";
+                << s << " > /proc/sys/net/ipv6/conf/all/forwarding\n";
         }
 
 //        else
-//            str << "echo \"$FWD\" > /proc/sys/net/ipv4/ip_forward\n\n";
+//            str << "echo \"$FWD\" > /proc/sys/net/ipv4/ip_forward\n";
 
     } catch (FWException ex)
     {

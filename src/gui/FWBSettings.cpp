@@ -96,6 +96,8 @@ const char* clipComment = SETTINGS_PATH_PREFIX "/UI/ClipComment";
 const char* checkUpdates = SETTINGS_PATH_PREFIX "/UI/CheckUpdates";
 const char* checkUpdatesProxy = SETTINGS_PATH_PREFIX "/UI/CheckUpdatesProxy";
 
+const char* newFirewallPlatform = SETTINGS_PATH_PREFIX "/Objects/NewFireallPlatform";
+
 FWBSettings::FWBSettings() :
     QSettings(QSettings::UserScope, "netcitadel.com", "Firewall Builder")
 {
@@ -764,3 +766,14 @@ void FWBSettings::setRecentFiles(QStringList &list)
 {
     return setList("recentFiles", list);
 }
+
+QString FWBSettings::getNewFirewallPlatform()
+{
+    return value(newFirewallPlatform).toString();
+}
+
+void FWBSettings::setNewFirewallPlatform(const QString &platform)
+{
+    setValue(newFirewallPlatform, platform);
+}
+

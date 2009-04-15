@@ -73,15 +73,6 @@ using namespace std;
 using namespace libfwbuilder;
 
 
-class mapValEQPredicate {
-    string descr;
-    public:
-    mapValEQPredicate(const string &d) { descr=d; }
-    bool operator()(pair<string,string> _d) { return (descr == _d.second); }
-};
-
-
-
 QAction* addPopupMenuItem(QObject *res,
                      QMenu* menu,
                      const QString &resourceIconPath,
@@ -308,77 +299,6 @@ QString getFileDir(const QString &file)
     if (dir.indexOf(":")==(dir.length()-1)) dir=dir + "\\";
 #endif
     return dir;
-}
-
-QMap<QString,QString> getAllPlatforms()
-{
-    QMap<QString,QString> res;
-
-    map<string,string> platforms = Resources::getPlatforms();
-    map<string,string>::iterator i;
-    for (i=platforms.begin(); i!=platforms.end(); i++)
-        res[ i->first.c_str() ] = i->second.c_str();
-
-    return res;
-}
-
-QMap<QString,QString> getAllOS()
-{
-    QMap<QString,QString> res;
-
-    map<string,string> OSs = Resources::getOS();
-    map<string,string>::iterator i;
-    for (i=OSs.begin(); i!=OSs.end(); i++)
-        res[ i->first.c_str() ] = i->second.c_str();
-
-    return res;
-}
-
-QString readPlatform(QComboBox *platform)
-{
-    map<string,string> platforms = Resources::getPlatforms();
-    map<string,string>::iterator i1 = std::find_if( platforms.begin(), platforms.end(),
-                         mapValEQPredicate(static_cast<const char*>(platform->currentText().toLatin1())));
-    return (*i1).first.c_str();
-}
-
-void setPlatform(QComboBox *platform,const QString &pl)
-{
-    platform->clear();
-    int cp=0;
-    QMap<QString,QString> platforms = getAllPlatforms();
-    QMap<QString,QString>::iterator i;
-    int ind=0;
-    for (i=platforms.begin(); i!=platforms.end(); i++,cp++)
-    {
-        platform->addItem( i.value() );
-        if ( pl == i.key() ) ind = cp;
-    }
-    platform->setCurrentIndex( ind );
-}
-
-QString readHostOS(QComboBox *hostOS)
-{
-    map<string,string> OSs       = Resources::getOS();
-    map<string,string>::iterator i2 = std::find_if( OSs.begin(), OSs.end(),
-                           mapValEQPredicate(static_cast<const char*>(hostOS->currentText().toLatin1())));
-    return (*i2).first.c_str();
-}
-
-void setHostOS(QComboBox *hostOS,const QString &os)
-{
-    hostOS->clear();
-
-    int cp=0;
-    QMap<QString,QString> OSs = getAllOS();
-    QMap<QString,QString>::iterator i;
-    int ind=0;
-    for (i=OSs.begin(); i!=OSs.end(); i++,cp++)
-    {
-        hostOS->addItem( i.value() );
-        if ( os == i.key() ) ind = cp;
-    }
-    hostOS->setCurrentIndex( ind );
 }
 
 void setDisabledPalette(QWidget *w)

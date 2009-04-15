@@ -110,20 +110,6 @@ extern QString quoteString(const QString &str);
 extern QString getUserName();
 extern QString getFileDir(const QString &file);
 
-/*
- * convenience method that calls Resourcess::getPlatforms() and
- * converts the result to QMap<QString,QString>
- */
-extern QMap<QString,QString> getAllPlatforms();
-
-extern QMap<QString,QString> getAllOS();
-
-extern QString readPlatform(QComboBox *platform);
-extern QString readHostOS(QComboBox *hostOS);
-
-extern void setPlatform(QComboBox *platform,const QString &pl);
-extern void setHostOS(QComboBox *hostOS,const QString &os);
-
 extern void loadIcon(QPixmap &pm, libfwbuilder::FWObject *obj);
 
 extern void setDisabledPalette(QWidget *w);

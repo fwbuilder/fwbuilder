@@ -517,7 +517,6 @@ namespace fwcompiler {
             public:
             PrintRule(const std::string &name);
             virtual std::string _declareTable();
-            virtual std::string _flushAndSetDefaultPolicy();
             virtual std::string _commit();
             virtual std::string _quote(const std::string &s);
             virtual bool processNext();
@@ -535,7 +534,6 @@ namespace fwcompiler {
             
             PrintRuleIptRst(const std::string &name) : PrintRule(name) {};
             virtual std::string _declareTable();
-            virtual std::string _flushAndSetDefaultPolicy();
             virtual std::string _commit();
             virtual std::string _quote(const std::string &s);
             virtual bool processNext();
@@ -552,7 +550,6 @@ namespace fwcompiler {
             
             PrintRuleIptRstEcho(const std::string &name) : PrintRuleIptRst(name) {};
             virtual std::string _declareTable();
-            virtual std::string _flushAndSetDefaultPolicy();
             virtual std::string _commit();
             virtual std::string _quote(const std::string &s);
             virtual bool processNext();
@@ -577,6 +574,7 @@ namespace fwcompiler {
         }
 
 
+        virtual void verifyPlatform();
 	virtual int  prolog();
 	virtual void compile();
 	virtual void epilog();

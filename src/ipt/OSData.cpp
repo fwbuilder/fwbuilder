@@ -26,10 +26,12 @@
 #include "OSData.h"
 #include "fwbuilder/Resources.h"
 
+#include <iostream>
+
 using namespace std;
 
 
-string  OSData::getPathForTool(const string &distro,tools t)
+string  OSData::getPathForTool(const string &distro, tools t)
 {
     string r="/FWBuilderResources/Target/tools/"+distro+"/";
 
@@ -47,6 +49,7 @@ string  OSData::getPathForTool(const string &distro,tools t)
     case IP:                r+="path_ip";               break;
     case LOGGER:            r+="path_logger";           break;
     }
+
     return Resources::os_res[host_os]->getResourceStr(r);
 }
 

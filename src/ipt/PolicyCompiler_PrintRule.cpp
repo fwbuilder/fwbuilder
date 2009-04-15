@@ -1486,60 +1486,6 @@ string PolicyCompiler_ipt::PrintRule::_declareTable()
     return "";
 }
 
-string PolicyCompiler_ipt::PrintRule::_flushAndSetDefaultPolicy()
-{
-    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    ostringstream res;
-
-    if (!ipt_comp->ipv6)
-    {
-        res << "$IPTABLES -P OUTPUT  DROP" << endl;
-        res << "$IPTABLES -P INPUT   DROP" << endl;
-        res << "$IPTABLES -P FORWARD DROP" << endl;
-
-        /*
-         * need to flush all tables and chains before setting up any rules
-         */
-        res << "\n\
-cat /proc/net/ip_tables_names | while read table; do\n\
-  $IPTABLES -t $table -L -n | while read c chain rest; do\n\
-      if test \"X$c\" = \"XChain\" ; then\n\
-        $IPTABLES -t $table -F $chain\n\
-      fi\n\
-  done\n\
-  $IPTABLES -t $table -X\n\
-done\n";
-
-        res << endl;
-        res << endl;
-    }
-
-    if (ipt_comp->ipv6)
-    {
-        /*
-         * test if ip6tables is installed and if it works. It may be installed
-         * on the system but fail because ipv6 is not compiled into the
-         * kernel.
-         */
-        res << "$IP6TABLES -P OUTPUT  DROP" << endl;
-        res << "$IP6TABLES -P INPUT   DROP" << endl;
-        res << "$IP6TABLES -P FORWARD DROP" << endl;
-
-        res << "\n\
-cat /proc/net/ip6_tables_names | while read table; do\n\
-  $IP6TABLES -t $table -L -n | while read c chain rest; do\n\
-      if test \"X$c\" = \"XChain\" ; then\n\
-        $IP6TABLES -t $table -F $chain\n\
-      fi\n\
-  done\n\
-  $IP6TABLES -t $table -X\n\
-done\n";
-        res << endl;
-        res << endl;
-    }
-    return res.str();
-}
-
 string PolicyCompiler_ipt::PrintRule::_commit()
 {
     return "";

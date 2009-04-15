@@ -33,6 +33,7 @@
 #include "FirewallDialog.h"
 #include "DialogFactory.h"
 #include "FWWindow.h"
+#include "FWBSettings.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
@@ -40,7 +41,6 @@
 #include "fwbuilder/Management.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Resources.h"
-#include "FWBSettings.h"
 
 #include <vector>
 #include <map>
@@ -85,13 +85,14 @@ void FirewallDialog::loadFWObject(FWObject *o)
     init = true;
     modified = false;
 
+    QString platform = obj->getStr("platform").c_str();
 /* fill in platform */
-    setPlatform(m_dialog->platform, obj->getStr("platform").c_str() );
+    setPlatform(m_dialog->platform, platform);
 
     fillVersion();
 
 /* fill in host OS  */
-    setHostOS(m_dialog->hostOS, obj->getStr("host_OS").c_str() );
+    setHostOS(m_dialog->hostOS, platform, obj->getStr("host_OS").c_str());
 
 /* ---------------- */
 
@@ -174,13 +175,9 @@ void FirewallDialog::platformChanged()
     fillVersion();
     changed();
 
-    QString so = Resources::platform_res[
-        readPlatform(m_dialog->platform).toLatin1().constData()
-    ]->getResourceStr("/FWBuilderResources/Target/supported_os").c_str();
-    if (so.isEmpty()) return;
+    QString platform = readPlatform(m_dialog->platform);
 
-    QString ho = so.section(",",0);
-    setHostOS( m_dialog->hostOS, ho.toLatin1().constData() );
+    setHostOS( m_dialog->hostOS, platform, "");
 
     QString pl = readPlatform(m_dialog->platform);
     m_dialog->fwAdvanced->setEnabled( pl!="unknown" );
@@ -228,38 +225,38 @@ void FirewallDialog::libChanged()
 void FirewallDialog::applyChanges()
 {
     Firewall *s = dynamic_cast<Firewall*>(obj);
-    Management *mgmt=s->getManagementObject();
+    Management *mgmt = s->getManagementObject();
     assert(mgmt!=NULL);
 
 //    FWOptions  *opt =s->getOptionsObject();
 
     assert(s!=NULL);
 
-    string oldname=obj->getName();
-    string newname=string(m_dialog->obj_name->text().toUtf8().constData());
-    string oldplatform=obj->getStr("platform");
+    string old_name = obj->getName();
+    string new_name = string(m_dialog->obj_name->text().toUtf8().constData());
+    string old_platform = obj->getStr("platform");
+    string old_host_os = obj->getStr("host_OS");
+    string old_version = obj->getStr("version");
 
-    string oldVer=obj->getStr("version");
+    obj->setName(new_name);
+    obj->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()));
 
-    obj->setName(newname);
-    obj->setComment(
-        string(m_dialog->comment->toPlainText().toUtf8().constData()));
+    string new_platform = readPlatform(m_dialog->platform).toLatin1().constData();
+    obj->setStr("platform", new_platform );
 
-    string pl = readPlatform(m_dialog->platform).toLatin1().constData();
-    obj->setStr("platform", pl );
-
-    obj->setStr("host_OS",
-                readHostOS(m_dialog->hostOS).toLatin1().constData());
+    string new_host_os = readHostOS(m_dialog->hostOS).toLatin1().constData();
+    obj->setStr("host_OS", new_host_os);
 
     s->setInactive(m_dialog->inactive->isChecked());
 
     saveVersion();
 
-    string newVer=obj->getStr("version");
+    string new_version = obj->getStr("version");
 
-    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    mw->updateObjName(obj,QString::fromUtf8(old_name.c_str()));
 
-    if (oldplatform!=pl || oldname!=newname || oldVer!=newVer)
+    if (old_platform!=new_platform || old_host_os!=new_host_os ||
+        old_name!=new_name || old_version!=new_version)
     {
         if (fwbdebug)
             qDebug("FirewallDialog::applyChanges() scheduling call "
@@ -267,15 +264,29 @@ void FirewallDialog::applyChanges()
         mw->scheduleRuleSetRedraw();
     }
 
-    if (oldplatform!=pl)
+    if (old_platform!=new_platform)
     {
         if (fwbdebug)
-            qDebug("FirewallDialog::applyChanges() platform has changed - "
-                   "clear option 'compiler'");
+            qDebug("FirewallDialog::applyChanges() platform has changed to %s - "
+                   "clear option 'compiler'", new_platform.c_str());
         Firewall *s = Firewall::cast(obj);
         assert(s!=NULL);
         FWOptions  *opt =s->getOptionsObject();
-        opt->setStr("compiler","");
+        opt->setStr("compiler", "");
+
+        // Set default options for the new platform
+        Resources::setDefaultTargetOptions(new_platform, s);
+    }
+
+    if (old_host_os!=new_host_os)
+    {
+        if (fwbdebug)
+            qDebug("FirewallDialog::applyChanges() host_OS has changed to %s",
+                   new_host_os.c_str());
+        Firewall *s = Firewall::cast(obj);
+        assert(s!=NULL);
+        // Set default options for the new host os
+        Resources::setDefaultTargetOptions(new_host_os, s);
     }
 
     mw->updateLastModifiedTimestampForAllFirewalls(s);

@@ -33,6 +33,7 @@
 #include "FWWindow.h"
 #include "ObjConflictResolutionDialog.h"
 #include "upgradePredicate.h"
+#include "FWBSettings.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
@@ -74,20 +75,25 @@ newFirewallDialog::newFirewallDialog() : QDialog()
     m_dialog = new Ui::newFirewallDialog_q;
     m_dialog->setupUi(this);
 
+    possible_inside_interface_labels.push_back("inside");
+    possible_inside_interface_labels.push_back("GREEN");
+    possible_inside_interface_labels.push_back("green");
+
+    possible_outside_interface_labels.push_back("outside");
+    possible_outside_interface_labels.push_back("RED");
+    possible_outside_interface_labels.push_back("red");
+
+    possible_dmz_interface_labels.push_back("dmz");
+    possible_dmz_interface_labels.push_back("ORANGE");
+    possible_dmz_interface_labels.push_back("orange");
+
+
     setControlWidgets(this, m_dialog->stackedWidget,
                       m_dialog->nextButton,
                       m_dialog->finishButton,
                       m_dialog->backButton,
                       m_dialog->cancelButton,
                       m_dialog->titleLabel);
-    /*connect( m_dialog->nextButton, SIGNAL( clicked() ),
-             this, SLOT( nextClicked() ));
-    connect( m_dialog->backButton, SIGNAL( clicked() ),
-             this, SLOT( backClicked() ));
-    connect( m_dialog->finishButton, SIGNAL( clicked() ),
-             this, SLOT( finishClicked() ));
-    connect( m_dialog->cancelButton, SIGNAL( clicked() ),
-             this, SLOT( cancelClicked() ));*/
 
     nfw = NULL;
     tmpldb = NULL;
@@ -104,13 +110,23 @@ newFirewallDialog::newFirewallDialog() : QDialog()
     m_dialog->templaterFilePath->setText(tempfname.c_str());
     m_dialog->templaterFrame->setVisible(false);
 
-/* fill in platform */
-    setPlatform(m_dialog->platform, "" );
+    /* fill in platform. Since iptables is the most popular, start with
+     * it.
+     */
+    QString new_fw_platform = st->getNewFirewallPlatform();
 
-/* fill in host OS  */
-    setHostOS(m_dialog->hostOS, "" );
+    /* if new_fw_platform is empty, the drop-down list will have empty
+     * item which will be current. This is so only on the first run of
+     * the program because it remembers chosen platform and uses it on
+     * subsequent runs.
+     */
+    setPlatform(m_dialog->platform, new_fw_platform);
+
+    /* fill in host OS  */
+    setHostOS(m_dialog->hostOS, readPlatform(m_dialog->platform), "");
 
     setNextEnabled( 0, false );
+
     /*for (int i=0; i<pageCount(); ++i)
         setHelpEnabled( i, false );*/
 
@@ -170,7 +186,7 @@ void newFirewallDialog::changed()
     if (p==0)
     {
         setNextEnabled( p, !m_dialog->obj_name->text().isEmpty() );
-        
+        setHostOS(m_dialog->hostOS, readPlatform(m_dialog->platform), "");
     }
 
     if (p==1)
@@ -543,21 +559,29 @@ void newFirewallDialog::templateSelected(QListWidgetItem *itm)
     for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
     {
         Interface *intf = Interface::cast( *i );
-        if (intf->getLabel()=="outside")
+        if (std::find(possible_outside_interface_labels.begin(),
+                      possible_outside_interface_labels.end(),
+                      intf->getLabel()) != possible_outside_interface_labels.end())
         {
             haveOutside=true;
             m_dialog->intfOutsideLine->show();
             m_dialog->intfOutsideText->show();
             fillInterfaceData(intf,m_dialog->intfOutsideText);
         }
-        if (intf->getLabel()=="inside")
+
+        if (std::find(possible_inside_interface_labels.begin(),
+                      possible_inside_interface_labels.end(),
+                      intf->getLabel()) != possible_inside_interface_labels.end())
         {
             haveInside=true;
             m_dialog->intfInsideLine->show();
             m_dialog->intfInsideText->show();
             fillInterfaceData(intf,m_dialog->intfInsideText);
         }
-        if (intf->getLabel()=="dmz")
+
+        if (std::find(possible_dmz_interface_labels.begin(),
+                      possible_dmz_interface_labels.end(),
+                      intf->getLabel()) != possible_dmz_interface_labels.end())
         {
             haveDMZ=true;
             m_dialog->intfDMZLine->show();
@@ -791,6 +815,11 @@ void newFirewallDialog::cancelClicked()
 void newFirewallDialog::finishClicked()
 {
     int p = currentPage();
+ 
+    string platform = readPlatform(m_dialog->platform).toAscii().constData();
+    string host_os = readHostOS(m_dialog->hostOS).toAscii().constData();
+
+    st->setNewFirewallPlatform(platform.c_str());
 
     if (p==2)  fillInterfaceSLList();
 
@@ -811,21 +840,15 @@ void newFirewallDialog::finishClicked()
             return;
         }
 
-        map<string,string> platforms = Resources::getPlatforms();
-        map<string,string>::iterator i;
-        for (i=platforms.begin(); i!=platforms.end(); i++)
-            Resources::setDefaultTargetOptions(i->first, Firewall::cast(no) );
-
-        map<string,string> OSs = Resources::getOS();
-        for (i=OSs.begin(); i!=OSs.end(); i++)
-            Resources::setDefaultTargetOptions(i->first, Firewall::cast(no) );
-
-        no->setStr("platform",
-                   readPlatform(m_dialog->platform).toLatin1().constData() );
-        no->setStr("host_OS",
-                   readHostOS(m_dialog->hostOS).toLatin1().constData() );
-
         nfw=Firewall::cast(no);
+
+        no->setStr("platform", platform);
+        Resources::setDefaultTargetOptions(platform , nfw);
+
+        no->setStr("host_OS", host_os);
+        Resources::setDefaultTargetOptions(host_os , nfw);
+
+
     } else
     {
         // Create from interface list (obtained either manually or via snmp)
@@ -839,21 +862,13 @@ void newFirewallDialog::finishClicked()
             return;
         }
 
-        map<string,string> platforms = Resources::getPlatforms();
-        map<string,string>::iterator i;
-        for (i=platforms.begin(); i!=platforms.end(); i++)
-            Resources::setDefaultTargetOptions( i->first , Firewall::cast(o) );
-
-        map<string,string> OSs = Resources::getOS();
-        for (i=OSs.begin(); i!=OSs.end(); i++)
-            Resources::setDefaultTargetOptions( i->first  , Firewall::cast(o) );
-
-        o->setStr("platform",
-                  readPlatform(m_dialog->platform).toLatin1().constData() );
-        o->setStr("host_OS",
-                  readHostOS(m_dialog->hostOS).toLatin1().constData() );
-
         nfw = Firewall::cast(o);
+
+        o->setStr("platform", platform);
+        Resources::setDefaultTargetOptions(platform , nfw);
+
+        o->setStr("host_OS", host_os);
+        Resources::setDefaultTargetOptions(host_os , nfw);
 
 /* create interfaces */
 

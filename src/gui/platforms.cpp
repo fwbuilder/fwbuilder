@@ -28,8 +28,9 @@
 
 #include "platforms.h"
 
-#include <qobject.h>
-#include <qstringlist.h>
+#include <QObject>
+#include <QStringList>
+#include <QComboBox>
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/FWOptions.h"
@@ -43,8 +44,8 @@
 using namespace std;
 using namespace libfwbuilder;
 
-QStringList emptyList;
 
+QStringList emptyList;
 QStringList logLevels;
 QStringList logFacilities;
 QStringList actionsOnReject;
@@ -642,4 +643,176 @@ QString getReadableRuleElementName(const string &rule_element_type_name)
     if (rule_element_type_name == "Comment") return QObject::tr("Comment");
 
     return QString();
+}
+
+QMap<QString,QString> getAllPlatforms()
+{
+    QMap<QString,QString> res;
+
+    map<string,string> platforms = Resources::getPlatforms();
+    map<string,string>::iterator i;
+    for (i=platforms.begin(); i!=platforms.end(); i++)
+        res[ i->first.c_str() ] = i->second.c_str();
+
+    return res;
+}
+
+QMap<QString,QString> getAllOS()
+{
+    QMap<QString,QString> res;
+
+    map<string,string> OSs = Resources::getOS();
+    map<string,string>::iterator i;
+    for (i=OSs.begin(); i!=OSs.end(); i++)
+        res[ i->first.c_str() ] = i->second.c_str();
+
+    return res;
+}
+
+QString readPlatform(QComboBox *platform)
+{
+    return platform->itemData(platform->currentIndex()).toString();
+}
+
+QString readHostOS(QComboBox *hostOS)
+{
+    return hostOS->itemData(hostOS->currentIndex()).toString();
+}
+
+/*
+ * Fill combobox widget <platform> with items that exist in resources.
+ * If second argument is not an empty string, make corresponding item current.
+ * If it is an empty string, add an empty item on top to the combo box and make
+ * it current.
+ */
+void setPlatform(QComboBox *platform, const QString &pl)
+{
+    platform->clear();
+    // platforms maps platform name (pix) to readable name (Cisco PIX)
+    QMap<QString,QString> platforms = getAllPlatforms();
+
+    QMap<QString,QString>::iterator i;
+
+    // platform_mapping maps key (<group>.<platform name>) to pair
+    // <group>, <platform name>
+    QMap<QString, QPair<QString, QString> > platform_mapping;
+    QStringList platform_keys;
+
+    for (i=platforms.begin(); i!=platforms.end(); i++)
+    {
+        QString group =
+            Resources::platform_res[i.key().toLatin1().constData()]->
+                getResourceStr("/FWBuilderResources/Target/group").c_str();
+        QString key = group + "." + i.key();
+        platform_mapping[key] = QPair<QString,QString>(group, i.key());
+        platform_keys.push_back(key);
+    }
+
+    qSort(platform_keys);
+
+    QStringList::iterator iter;
+    int ind = 0;
+    int cp = 0;
+
+    if (pl.isEmpty())
+    {
+        platform->addItem("", "");
+        cp++;
+    }
+
+    QString current_group = "";
+    for (iter=platform_keys.begin(); iter!=platform_keys.end(); iter++)
+    {
+        if (fwbdebug) qDebug(iter->toLatin1().constData());
+
+        QString group = platform_mapping[*iter].first;
+        QString platform_name = platform_mapping[*iter].second;
+        if (group != current_group)
+        {
+            current_group = group;
+            //platform->addItem(group, "");
+            platform->insertSeparator(cp);
+            cp++;
+        }
+
+        platform->addItem(platforms[platform_name], platform_name);
+        // note that if pl is "", then no real platform name will match it
+        // and ind will remain 0, which makes the top item in the combobox current.
+        if ( pl == platform_name ) ind = cp;
+        cp++;
+    }
+    platform->setCurrentIndex( ind );
+}
+
+/*
+ * Fill in "host os" combo box with list of os supported for the given
+ * platform and make current host os item current.
+ *
+ * If platform == "", then use all known host OS but also add
+ *  empty item on top of the combobox and make that item current.
+ * If os == "", make the first OS in the list current.
+ */
+void setHostOS(QComboBox *hostOS, const QString &platform, const QString &os)
+{
+    hostOS->clear();
+
+    QStringList supported_os_list;
+
+    if (!platform.isEmpty())
+    {
+        QString supported_os =
+            Resources::platform_res[platform.toLatin1().constData()]->
+            getResourceStr("/FWBuilderResources/Target/supported_os").c_str();
+
+        if (fwbdebug)
+            qDebug("supported_os %s", supported_os.toLatin1().constData());
+
+        if (supported_os.isEmpty())
+        {
+            // something is broken, we have no supported host OS for
+            // this platform.  Just add os to the combo box and return
+            if (fwbdebug)
+                qDebug("No supported host OS for platform %s",
+                       platform.toLatin1().constData());
+
+            hostOS->addItem(os, os);
+            hostOS->setCurrentIndex(0);
+            return;
+        }
+        supported_os_list = supported_os.split(",");
+
+        int cp = 0;
+        int ind = 0;
+        QMap<QString,QString> OSs = getAllOS();
+        QStringList::iterator os_iter;
+        for (os_iter=supported_os_list.begin();
+             os_iter!=supported_os_list.end(); ++os_iter)
+        {
+            QString os_code = *os_iter;
+            hostOS->addItem( OSs[os_code], os_code);
+            if ( os == os_code ) ind = cp;
+            cp++;
+        }
+        hostOS->setCurrentIndex( ind );
+        return;
+    }
+
+    // platform is empty
+
+    int cp = 0;
+    int ind = 0;
+
+    hostOS->addItem("", "");
+    cp++;
+
+    QMap<QString,QString> OSs = getAllOS();
+    QMap<QString,QString>::iterator i;
+    for (i=OSs.begin(); i!=OSs.end(); i++)
+    {
+        hostOS->addItem( i.value(), i.key() );
+        if ( os == i.key() ) ind = cp;
+        cp++;
+    }
+
+    hostOS->setCurrentIndex( ind );
 }

@@ -31,6 +31,7 @@
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
+#include "fwbuilder/Resources.h"
 
 #include <qcheckbox.h>
 #include <qspinbox.h>
@@ -57,6 +58,11 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
     m_dialog = new Ui::linux24AdvancedDialog_q;
     m_dialog->setupUi(this);
     obj=o;
+
+    string host_os = obj->getStr("host_OS");
+    string description = Resources::os_res[host_os]->
+        getResourceStr("/FWBuilderResources/Target/description");
+    setWindowTitle(QObject::tr("%1 advanced settings").arg(description.c_str()));
 
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
     assert(fwopt!=NULL);

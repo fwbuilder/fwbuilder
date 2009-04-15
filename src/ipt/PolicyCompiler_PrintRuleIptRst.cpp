@@ -137,17 +137,6 @@ string PolicyCompiler_ipt::PrintRuleIptRst::_declareTable()
     return res.str();
 }
 
-string PolicyCompiler_ipt::PrintRuleIptRst::_flushAndSetDefaultPolicy()
-{
-    ostringstream res;
-
-    res << ":INPUT DROP [0:0]" << endl;
-    res << ":FORWARD DROP [0:0]" << endl;
-    res << ":OUTPUT DROP [0:0]" << endl;
-
-    return res.str();
-}
-
 string PolicyCompiler_ipt::PrintRuleIptRst::_commit()
 {
     return "COMMIT\n";

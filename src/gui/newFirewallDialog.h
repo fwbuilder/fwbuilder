@@ -63,6 +63,10 @@ class newFirewallDialog : public QDialog, public FakeWizard
     std::map<QListWidgetItem*, libfwbuilder::FWObject*> templates;
     bool                                unloadTemplatesLib;
     bool                                getInterfacesBusy;
+
+    std::list<std::string>              possible_inside_interface_labels;
+    std::list<std::string>              possible_outside_interface_labels;
+    std::list<std::string>              possible_dmz_interface_labels;
     
     void adjustSL(QTreeWidgetItem *itm1);
     void fillInterfaceData(libfwbuilder::Interface *intf, QTextBrowser *qte);

@@ -930,6 +930,10 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
     if (fw)
     {
         fwopt = fw->getOptionsObject();
+
+        string platform = cnf.fwobj->getStr("platform");
+        string host_OS = cnf.fwobj->getStr("host_OS");
+
         cnf.user = fwopt->getStr("admUser").c_str();
         QString aaddr = fwopt->getStr("altAddress").c_str();
         if (!aaddr.isEmpty()) cnf.maddr = aaddr;
@@ -944,8 +948,6 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
             else 
                 cnf.maddr = "";
         }
-        if (fwbdebug) qDebug("management address: %s",
-                             cnf.maddr.toAscii().constData());
         /*
          * if user requested test run, store firewall script in a temp
          * file.  Always store it in a temp file on linksys
@@ -954,12 +956,12 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
 
         /* user_can_change_install_dir */
         bool uccid = Resources::getTargetOptionBool(
-            cnf.fwobj->getStr("host_OS"),"user_can_change_install_dir");
+            host_OS, "user_can_change_install_dir");
 
         if (uccid) s = fwopt->getStr("firewall_dir").c_str();
 
         if (s.isEmpty()) s = Resources::getTargetOptionStr(
-            cnf.fwobj->getStr("host_OS"), "activation/fwdir").c_str();
+            host_OS, "activation/fwdir").c_str();
 
         cnf.fwdir = s;
 
@@ -967,7 +969,7 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
         cnf.fwbfile = mw->db()->getFileName().c_str();
         cnf.wdir = getFileDir( mw->getRCS()->getFileName() );
         cnf.diff_file = QString(cnf.fwobj->getName().c_str())+".diff";
-        cnf.diff_pgm = Resources::platform_res[cnf.fwobj->getStr("platform")]->
+        cnf.diff_pgm = Resources::platform_res[platform]->
             getResourceStr("/FWBuilderResources/Target/diff").c_str();
         cnf.diff_pgm = getPathToBinary(
             cnf.diff_pgm.toAscii().constData()).c_str();
@@ -979,8 +981,20 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
         cnf.activationCmd = fwopt->getStr("activationCmd").c_str();
 
         cnf.rollbackTimeUnit =
-            Resources::getTargetOptionStr(cnf.fwobj->getStr("host_OS"),
-                                          "activation/timeout_units").c_str();
+            Resources::getTargetOptionStr(
+                host_OS, "activation/timeout_units").c_str();
+
+        if (fwbdebug)
+        {
+            qDebug("platform: %s", platform.c_str());
+            qDebug("host_OS: %s", host_OS.c_str());
+            qDebug("user_can_change_install_dir=%d", uccid);
+            qDebug("firewall_dir='%s'", fwopt->getStr("firewall_dir").c_str());
+            qDebug("management address: %s", cnf.maddr.toAscii().constData());
+            qDebug("cnf.fwdir='%s'", cnf.fwdir.toAscii().constData());
+            qDebug("activationCmd='%s'", cnf.activationCmd.toAscii().constData());
+        }
+
     }
 }
 

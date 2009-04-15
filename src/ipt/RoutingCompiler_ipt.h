@@ -180,6 +180,7 @@ namespace fwcompiler {
         }
 
 
+        virtual void verifyPlatform();
 	virtual int  prolog();
 	virtual void compile();
 	virtual void epilog();	

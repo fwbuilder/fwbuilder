@@ -27,6 +27,7 @@
 #include "../../config.h"
 #include "global.h"
 #include "utils.h"
+#include "platforms.h"
 #include "ProjectPanel.h"
 
 #include "FWBTree.h"

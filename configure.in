@@ -26,9 +26,6 @@ AC_SUBST(SHORTVERSION)
 AC_SUBST(RELEASE_NUM)
 AC_DEFINE_UNQUOTED(RELEASE_NUM, "$RELEASE_NUM", [release_num])
 
-AC_SUBST(REQUIRED_LIBFWBUILDER_VERSION)
-AC_SUBST(LIBFWBUILDER_SOMAJOR)
-
 echo "Creating VERSION.h file..."
 
 echo "#define VERSION      \"$VERSION\""      > VERSION.h
@@ -444,6 +441,7 @@ AC_CONFIG_FILES([ qmake.inc ])
 AC_CONFIG_FILES([ src/res/objects_init.xml ])
 AC_CONFIG_FILES([ src/res/templates.xml ])
 AC_CONFIG_FILES([ src/res/resources.xml ])
+
 AC_CONFIG_FILES([ src/res/os/fwsm_os.xml ])
 AC_CONFIG_FILES([ src/res/os/freebsd.xml ])
 AC_CONFIG_FILES([ src/res/os/linux24.xml ])
@@ -453,7 +451,11 @@ AC_CONFIG_FILES([ src/res/os/openbsd.xml ])
 AC_CONFIG_FILES([ src/res/os/pix_os.xml ])
 AC_CONFIG_FILES([ src/res/os/ios.xml ])
 AC_CONFIG_FILES([ src/res/os/solaris.xml ])
+AC_CONFIG_FILES([ src/res/os/ipcop_os.xml ])
+AC_CONFIG_FILES([ src/res/os/endian_os.xml ])
+AC_CONFIG_FILES([ src/res/os/oneshield_os.xml ])
 AC_CONFIG_FILES([ src/res/os/unknown_os.xml ])
+
 AC_CONFIG_FILES([ src/res/platform/fwsm.xml ])
 AC_CONFIG_FILES([ src/res/platform/ipf.xml ])
 AC_CONFIG_FILES([ src/res/platform/ipfw.xml ])
@@ -461,6 +463,9 @@ AC_CONFIG_FILES([ src/res/platform/iptables.xml ])
 AC_CONFIG_FILES([ src/res/platform/pf.xml ])
 AC_CONFIG_FILES([ src/res/platform/pix.xml ])
 AC_CONFIG_FILES([ src/res/platform/iosacl.xml ])
+AC_CONFIG_FILES([ src/res/platform/ipcop.xml ])
+AC_CONFIG_FILES([ src/res/platform/endian.xml ])
+AC_CONFIG_FILES([ src/res/platform/oneshield.xml ])
 AC_CONFIG_FILES([ src/res/platform/unknown.xml ])
 
 

@@ -103,17 +103,6 @@ string PolicyCompiler_ipt::PrintRuleIptRstEcho::_declareTable()
     return res.str();
 }
 
-string PolicyCompiler_ipt::PrintRuleIptRstEcho::_flushAndSetDefaultPolicy()
-{
-    ostringstream res;
-
-    res << "echo :INPUT DROP [0:0]" << endl;
-    res << "echo :FORWARD DROP [0:0]" << endl;
-    res << "echo :OUTPUT DROP [0:0]" << endl;
-
-    return res.str();
-}
-
 string PolicyCompiler_ipt::PrintRuleIptRstEcho::_commit()
 {
     return "echo COMMIT\n";

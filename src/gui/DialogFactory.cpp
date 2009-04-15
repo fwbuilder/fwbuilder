@@ -60,6 +60,7 @@
 #include "pfAdvancedDialog.h"
 #include "pixAdvancedDialog.h"
 #include "iosaclAdvancedDialog.h"
+#include "ipcopAdvancedDialog.h"
 
 #include "linux24AdvancedDialog.h"
 #include "linksysAdvancedDialog.h"
@@ -69,6 +70,7 @@
 #include "macosxAdvancedDialog.h"
 #include "pixosAdvancedDialog.h"
 #include "iosAdvancedDialog.h"
+#include "ipcoposAdvancedDialog.h"
 
 #include "RuleOptionsDialog.h"
 #include "RoutingRuleOptionsDialog.h"
@@ -182,7 +184,7 @@ QWidget *DialogFactory::createFWDialog(QWidget *parent,FWObject *o)
     if (platform==NULL)
         throw FWException((const char*)(QObject::tr("Support module for %1 is not available").arg(o->getStr("platform").c_str()).toLocal8Bit().constData()));
 
-    string dlgname=platform->Resources::getResourceStr("/FWBuilderResources/Target/dialog");
+    string dlgname = platform->Resources::getResourceStr("/FWBuilderResources/Target/dialog");
 
 //    string pl=o->getStr("platform");
     if (dlgname=="iptables") return new iptAdvancedDialog(parent,o);
@@ -191,6 +193,7 @@ QWidget *DialogFactory::createFWDialog(QWidget *parent,FWObject *o)
     if (dlgname=="pf")       return new pfAdvancedDialog(parent,o);
     if (dlgname=="pix")      return new pixAdvancedDialog(parent,o);
     if (dlgname=="iosacl")   return new iosaclAdvancedDialog(parent,o);
+    if (dlgname=="ipcop")    return new ipcopAdvancedDialog(parent,o);
 
     cerr << "Firewall settings dialog for " << dlgname
          << " is not implemented" << endl;
@@ -216,6 +219,7 @@ QWidget *DialogFactory::createOSDialog(QWidget *parent,FWObject *o)
     if (dlgname=="macosx")    return new macosxAdvancedDialog(parent,o);
     if (dlgname=="pix_os")    return new pixosAdvancedDialog(parent,o);
     if (dlgname=="ios")       return new iosAdvancedDialog(parent,o);
+    if (dlgname=="ipcop_os")  return new ipcoposAdvancedDialog(parent,o);
 
     cerr << "OS settings dialog for " << dlgname
          << " is not implemented" << endl;

@@ -61,6 +61,11 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
     obj=o;
     QStringList slm;
 
+    string platform = obj->getStr("platform");
+    string description = Resources::platform_res[platform]->
+        getResourceStr("/FWBuilderResources/Target/description");
+    setWindowTitle(QObject::tr("%1 advanced settings").arg(description.c_str()));
+
     FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
     assert(fwoptions!=NULL);
 

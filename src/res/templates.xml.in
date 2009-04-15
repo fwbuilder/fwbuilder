@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="@FWBUILDER_XML_VERSION@" lastModified="1215463063" id="root">
-  <Library id="sysid99" name="Deleted Objects" ro="False">
-    <ICMP6Service id="idE0C27650" name="ipv6 dest unreachable" comment="No route to destination" code="0" type="1"/>
-    <Interface id="id4699503D32343" name="Null0" bridgeport="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False">
-      <IPv4 id="id4699503E32343" name="c36xx:Null0:ip" address="0.0.0.0" netmask="255.255.255.255"/>
-    </Interface>
-  </Library>
-  <Library id="syslib100" name="Firewall Templates" comment="Template objects that can be used to generate typical firewall configurations" color="#ffb4b4" ro="True">
-    <ObjectGroup id="id4070BB9B" name="Objects">
-      <ObjectGroup id="id4070BB9B_og_ats_1" name="Address Tables"/>
-      <ObjectGroup id="id4070BB9B_og_dnsn_1" name="DNS Names"/>
-      <ObjectGroup id="id4070BB9C" name="Addresses"/>
-      <ObjectGroup id="id4070BB9D" name="Groups"/>
-      <ObjectGroup id="id4070BB9E" name="Hosts">
-        <Host id="id40CBF1A5" name="PC with 1 interface" comment="This object represents a PC with a single network interface">
-          <Interface id="id40CBF1A7" name="eth0" bridgeport="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False">
-            <IPv4 id="id40CBF1A9" name="pc:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="@FWBUILDER_XML_VERSION@" lastModified="1239820101" id="root">
+  <Library id="sysid99" name="Deleted Objects" comment="" ro="False"/>
+  <Library id="syslib100" color="#ffb4b4" name="Firewall Templates" comment="Template objects that can be used to generate typical firewall configurations" ro="True">
+    <ObjectGroup id="id4070BB9B" name="Objects" comment="" ro="False">
+      <ObjectGroup id="id4070BB9B_og_ats_1" name="Address Tables" comment="" ro="False"/>
+      <ObjectGroup id="id4070BB9B_og_dnsn_1" name="DNS Names" comment="" ro="False"/>
+      <ObjectGroup id="id4070BB9C" name="Addresses" comment="" ro="False"/>
+      <ObjectGroup id="id4070BB9D" name="Groups" comment="" ro="False"/>
+      <ObjectGroup id="id4070BB9E" name="Hosts" comment="" ro="False">
+        <Host id="id40CBF1A5" name="PC with 1 interface" comment="This object represents a PC with a single network interface" ro="False">
+          <Interface id="id40CBF1A7" bridgeport="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+            <IPv4 id="id40CBF1A9" name="pc:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -27,12 +22,12 @@
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
-        <Host id="id40CBF1AC" name="PC with 2 interfaces" comment="This object represents a PC with two network interfaces">
-          <Interface id="id40CBF1AE" name="eth0" bridgeport="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False">
-            <IPv4 id="id40CBF1B0" name="pc:eth0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
+        <Host id="id40CBF1AC" name="PC with 2 interfaces" comment="This object represents a PC with two network interfaces" ro="False">
+          <Interface id="id40CBF1AE" bridgeport="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+            <IPv4 id="id40CBF1B0" name="pc:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           </Interface>
-          <Interface id="id40CBF1B1" name="eth1" bridgeport="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False">
-            <IPv4 id="id40CBF1B3" name="pc:eth1:ip" address="192.168.2.1" netmask="255.255.255.0"/>
+          <Interface id="id40CBF1B1" bridgeport="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+            <IPv4 id="id40CBF1B3" name="pc:eth1:ip" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -43,12 +38,12 @@
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
-        <Host id="id40CBF1C8" name="Router with 2 interfaces" comment="This object represents a router with two interfaces. You may need to change interface names if your router uses different naming scheme.">
-          <Interface id="id40CBF1CB" name="FastEthernet 0/0" bridgeport="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False">
-            <IPv4 id="id40CBF1CD" name="rtr:FE0/0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
+        <Host id="id40CBF1C8" name="Router with 2 interfaces" comment="This object represents a router with two interfaces. You may need to change interface names if your router uses different naming scheme." ro="False">
+          <Interface id="id40CBF1CB" bridgeport="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="FastEthernet 0/0" comment="" ro="False">
+            <IPv4 id="id40CBF1CD" name="rtr:FE0/0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           </Interface>
-          <Interface id="id40CBF1CE" name="FastEthernet 0/1" bridgeport="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False">
-            <IPv4 id="id40CBF1D0" name="rtr:FE0/1:ip" address="192.168.2.1" netmask="255.255.255.0"/>
+          <Interface id="id40CBF1CE" bridgeport="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="FastEthernet 0/1" comment="" ro="False">
+            <IPv4 id="id40CBF1D0" name="rtr:FE0/1:ip" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -60,23 +55,23 @@
           </HostOptions>
         </Host>
       </ObjectGroup>
-      <ObjectGroup id="id4070BB9F" name="Networks"/>
-      <ObjectGroup id="id4070BBA0" name="Address Ranges"/>
+      <ObjectGroup id="id4070BB9F" name="Networks" comment="" ro="False"/>
+      <ObjectGroup id="id4070BBA0" name="Address Ranges" comment="" ro="False"/>
     </ObjectGroup>
-    <ServiceGroup id="id4070BBA1" name="Services">
-      <ServiceGroup id="id4070BBA1_userservices" name="Users"/>
-      <ServiceGroup id="id4070BBA1_og_tag_1" name="TagServices"/>
-      <ServiceGroup id="id4070BBA2" name="Groups"/>
-      <ServiceGroup id="id4070BBA3" name="ICMP"/>
-      <ServiceGroup id="id4070BBA4" name="IP"/>
-      <ServiceGroup id="id4070BBA5" name="TCP"/>
-      <ServiceGroup id="id4070BBA6" name="UDP"/>
-      <ServiceGroup id="id4070BBA7" name="Custom"/>
+    <ServiceGroup id="id4070BBA1" name="Services" comment="" ro="False">
+      <ServiceGroup id="id4070BBA1_userservices" name="Users" comment="" ro="False"/>
+      <ServiceGroup id="id4070BBA1_og_tag_1" name="TagServices" comment="" ro="False"/>
+      <ServiceGroup id="id4070BBA2" name="Groups" comment="" ro="False"/>
+      <ServiceGroup id="id4070BBA3" name="ICMP" comment="" ro="False"/>
+      <ServiceGroup id="id4070BBA4" name="IP" comment="" ro="False"/>
+      <ServiceGroup id="id4070BBA5" name="TCP" comment="" ro="False"/>
+      <ServiceGroup id="id4070BBA6" name="UDP" comment="" ro="False"/>
+      <ServiceGroup id="id4070BBA7" name="Custom" comment="" ro="False"/>
     </ServiceGroup>
-    <ObjectGroup id="id4070BBA8" name="Firewalls">
-      <Firewall id="id40708A6A" name="fw template 1" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" host_OS="unknown_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="unknown" ro="False" version="">
-        <NAT id="id40708A6E" name="NAT" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id4070BFF5" disabled="False" position="0">
+    <ObjectGroup id="id4070BBA8" name="Firewalls" comment="" ro="False">
+      <Firewall id="id40708A6A" host_OS="unknown_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="unknown" version="" name="fw template 1" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
+        <NAT id="id40708A6E" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id4070BFF5" disabled="False" position="0" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -98,8 +93,8 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id40708A6D" name="Policy" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id4070BFE9" comment="anti spoofing rule" action="Deny" direction="Inbound" disabled="False" log="True" position="0">
+        <Policy id="id40708A6D" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id4070BFE9" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id40708A6A"/>
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -118,7 +113,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id4094092C" action="Accept" direction="Both" disabled="False" log="False" position="1">
+          <PolicyRule id="id4094092C" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -136,7 +131,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40941C75" comment="SSH Access to firewall is permitted&#10;only from internal network" action="Accept" disabled="False" log="False" position="2">
+          <PolicyRule id="id40941C75" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -154,7 +149,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40941D2E" comment="Firewall uses one of the machines&#10;on internal network for DNS" action="Accept" disabled="False" log="True" position="3">
+          <PolicyRule id="id40941D2E" disabled="False" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
             <Src neg="False">
               <ObjectRef ref="id40708A6A"/>
             </Src>
@@ -172,7 +167,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40941CB8" comment="All other attempts to connect to&#10;the firewall are denied and logged" action="Deny" disabled="False" log="True" position="4">
+          <PolicyRule id="id40941CB8" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -190,7 +185,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id4070BFDE" action="Accept" disabled="False" log="False" position="5">
+          <PolicyRule id="id4070BFDE" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -208,7 +203,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40708A71" action="Deny" disabled="False" log="True" position="6">
+          <PolicyRule id="id40708A71" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -227,13 +222,13 @@
             <PolicyRuleOptions/>
           </PolicyRule>
         </Policy>
-        <Routing id="id40708A6A-routing" name="Routing" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id4070BFD8" name="eth0" bridgeport="False" dyn="True" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False"/>
-        <Interface id="id4070BFDA" name="eth1" bridgeport="False" dyn="False" label="inside" mgmt="True" security_level="100" unnum="False" unprotected="False">
-          <IPv4 id="id4070BFDC" name="ip" address="192.168.1.1" netmask="255.255.255.0"/>
+        <Routing id="id40708A6A-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id4070BFD8" bridgeport="False" dyn="True" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False"/>
+        <Interface id="id4070BFDA" bridgeport="False" dyn="False" label="inside" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+          <IPv4 id="id4070BFDC" name="ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
-        <Interface id="id40940929" name="lo" bridgeport="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False">
-          <IPv4 id="id4094092B" name="lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
+        <Interface id="id40940929" bridgeport="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id4094092B" name="lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Management address="0.0.0.0">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -280,9 +275,9 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id40941E8C" name="fw template 2" comment="Similar to fw 1, but the firewall is used as DHCP and DNS server for internal network.&#10;This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall can send DNS queries to servers out on the Internet. Another rule permits DNS queries from internal network to the firewall. Special rules permit DHCP requests from internal network and replies sent by the firewall." host_OS="unknown_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="unknown" ro="False" version="">
-        <NAT id="id40941E91" name="NAT" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id40941E92" disabled="False" position="0">
+      <Firewall id="id40941E8C" host_OS="unknown_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="unknown" version="" name="fw template 2" comment="Similar to fw 1, but the firewall is used as DHCP and DNS server for internal network.&#10;This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall can send DNS queries to servers out on the Internet. Another rule permits DNS queries from internal network to the firewall. Special rules permit DHCP requests from internal network and replies sent by the firewall." ro="False">
+        <NAT id="id40941E91" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id40941E92" disabled="False" position="0" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -304,8 +299,8 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id40941EA0" name="Policy" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id40941ED5" comment="anti spoofing rule" action="Deny" direction="Inbound" disabled="False" log="True" position="2">
+        <Policy id="id40941EA0" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id40941ED5" disabled="False" log="True" position="2" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id40941E8C"/>
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -324,7 +319,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40941EE6" action="Accept" direction="Both" disabled="False" log="False" position="3">
+          <PolicyRule id="id40941EE6" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -342,7 +337,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40941EA1" comment="SSH Access to firewall is permitted&#10;only from internal network&#10;Also firewall serves DNS for internal&#10;network" action="Accept" disabled="False" log="False" position="2">
+          <PolicyRule id="id40941EA1" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network&#10;Also firewall serves DNS for internal&#10;network">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -361,7 +356,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40942038" comment="DHCP requests are permitted&#10;from internal network" action="Accept" disabled="False" log="False" position="3">
+          <PolicyRule id="id40942038" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="DHCP requests are permitted&#10;from internal network">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
               <ObjectRef ref="id3F6D115D"/>
@@ -381,7 +376,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id4094204A" comment="DHCP replies" action="Accept" disabled="False" log="False" position="4">
+          <PolicyRule id="id4094204A" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="DHCP replies">
             <Src neg="False">
               <ObjectRef ref="id40941E8C"/>
             </Src>
@@ -399,7 +394,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40941EAB" comment="Firewall should be able to send&#10;DNS queries to the Internet" action="Accept" disabled="False" log="True" position="5">
+          <PolicyRule id="id40941EAB" disabled="False" log="True" position="5" action="Accept" direction="Both" comment="Firewall should be able to send&#10;DNS queries to the Internet">
             <Src neg="False">
               <ObjectRef ref="id40941E8C"/>
             </Src>
@@ -417,7 +412,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40941EB5" comment="All other attempts to connect to&#10;the firewall are denied and logged" action="Deny" disabled="False" log="True" position="6">
+          <PolicyRule id="id40941EB5" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -435,7 +430,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40941EBF" action="Accept" disabled="False" log="False" position="7">
+          <PolicyRule id="id40941EBF" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -453,7 +448,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40941EC9" action="Deny" disabled="False" log="True" position="8">
+          <PolicyRule id="id40941EC9" disabled="False" log="True" position="8" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -472,13 +467,13 @@
             <PolicyRuleOptions/>
           </PolicyRule>
         </Policy>
-        <Routing id="id40941E8C-routing" name="Routing" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id40941ED3" name="eth0" bridgeport="False" dyn="True" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False"/>
-        <Interface id="id40941EE0" name="eth1" bridgeport="False" dyn="False" label="inside" mgmt="True" security_level="100" unnum="False" unprotected="False">
-          <IPv4 id="id40941EE1" name="ip" address="192.168.1.1" netmask="255.255.255.0"/>
+        <Routing id="id40941E8C-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id40941ED3" bridgeport="False" dyn="True" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False"/>
+        <Interface id="id40941EE0" bridgeport="False" dyn="False" label="inside" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+          <IPv4 id="id40941EE1" name="ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
-        <Interface id="id40941EE3" name="lo" bridgeport="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False">
-          <IPv4 id="id40941EE4" name="lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
+        <Interface id="id40941EE3" bridgeport="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id40941EE4" name="lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Management address="0.0.0.0">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -525,9 +520,9 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id40986AFE" name="fw template 3" comment="This firewall has three interfaces. Eth0 faces outside and has a static routable address; eth1 faces inside; eth2 is connected to DMZ subnet.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0, DMZ is 192.168.2.0/255.255.255.0. Since DMZ used private IP address, it needs NAT. There is a mail relay host located on DMZ (object 'server on dmz'). Policy rules permit SMTP connections to it from the Internet and allow this server to connect to a host on internal network 'internal server'. All other access from DMZ to internal net is denied. To provide access to the mail relay its private address is mapped to firewall's outside interface address by NAT rule #1." host_OS="freebsd" lastCompiled="0" lastInstalled="0" lastModified="0" platform="unknown" ro="False" version="">
-        <NAT id="id40986B03" name="NAT" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id40987169" comment="no need to translate&#10;between DMZ and &#10;internal net" disabled="False" position="0">
+      <Firewall id="id40986AFE" host_OS="freebsd" lastCompiled="0" lastInstalled="0" lastModified="0" platform="unknown" version="" name="fw template 3" comment="This firewall has three interfaces. Eth0 faces outside and has a static routable address; eth1 faces inside; eth2 is connected to DMZ subnet.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0, DMZ is 192.168.2.0/255.255.255.0. Since DMZ used private IP address, it needs NAT. There is a mail relay host located on DMZ (object 'server on dmz'). Policy rules permit SMTP connections to it from the Internet and allow this server to connect to a host on internal network 'internal server'. All other access from DMZ to internal net is denied. To provide access to the mail relay its private address is mapped to firewall's outside interface address by NAT rule #1." ro="False">
+        <NAT id="id40986B03" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id40987169" disabled="False" position="0" comment="no need to translate&#10;between DMZ and &#10;internal net">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-2"/>
             </OSrc>
@@ -548,7 +543,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id40986B04" comment="Translate source address&#10;for outgoing connections" disabled="False" position="1">
+          <NATRule id="id40986B04" disabled="False" position="1" comment="Translate source address&#10;for outgoing connections">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
               <ObjectRef ref="id3DC75CE7-2"/>
@@ -570,7 +565,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id40986E4B" disabled="False" position="2">
+          <NATRule id="id40986E4B" disabled="False" position="2" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -592,8 +587,8 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id40986B12" name="Policy" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id40986B47" comment="anti spoofing rule" action="Deny" direction="Inbound" disabled="False" log="True" position="4">
+        <Policy id="id40986B12" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id40986B47" disabled="False" log="True" position="4" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id40986AFE"/>
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -613,7 +608,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40986B58" action="Accept" direction="Both" disabled="False" log="False" position="5">
+          <PolicyRule id="id40986B58" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -631,7 +626,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40986B13" comment="SSH Access to firewall is permitted&#10;only from internal network" action="Accept" disabled="False" log="False" position="2">
+          <PolicyRule id="id40986B13" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -649,7 +644,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40986B1D" comment="Firewall uses one of the machines&#10;on internal network for DNS" action="Accept" disabled="False" log="False" position="3">
+          <PolicyRule id="id40986B1D" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
             <Src neg="False">
               <ObjectRef ref="id40986AFE"/>
             </Src>
@@ -667,7 +662,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40986B27" comment="All other attempts to connect to&#10;the firewall are denied and logged" action="Deny" disabled="False" log="True" position="4">
+          <PolicyRule id="id40986B27" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -685,7 +680,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40986E5C" comment="Quickly reject attempts to connect&#10;to ident server to avoid SMTP delays" action="Reject" disabled="False" log="False" position="5">
+          <PolicyRule id="id40986E5C" disabled="False" log="False" position="5" action="Reject" direction="Both" comment="Quickly reject attempts to connect&#10;to ident server to avoid SMTP delays">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -703,7 +698,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40986E16" comment="Mail relay on DMZ can accept&#10;connections from hosts on the&#10;Internet" action="Accept" disabled="False" log="False" position="6">
+          <PolicyRule id="id40986E16" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="Mail relay on DMZ can accept&#10;connections from hosts on the&#10;Internet">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -721,7 +716,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40986EE1" comment="this rule permits a mail relay&#10;located on DMZ to connect&#10;to internal mail server" action="Accept" disabled="False" log="False" position="7">
+          <PolicyRule id="id40986EE1" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="this rule permits a mail relay&#10;located on DMZ to connect&#10;to internal mail server">
             <Src neg="False">
               <ObjectRef ref="id3D84EECF"/>
             </Src>
@@ -739,7 +734,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40987009" comment="Mail relay needs DNS and can&#10;connect to mail servers on the&#10;Internet" action="Accept" disabled="False" log="False" position="8">
+          <PolicyRule id="id40987009" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="Mail relay needs DNS and can&#10;connect to mail servers on the&#10;Internet">
             <Src neg="False">
               <ObjectRef ref="id3D84EECF"/>
             </Src>
@@ -758,7 +753,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40986B79" comment="All other access from DMZ to&#10;internal  net is denied" action="Deny" disabled="False" log="True" position="9">
+          <PolicyRule id="id40986B79" disabled="False" log="True" position="9" action="Deny" direction="Both" comment="All other access from DMZ to&#10;internal  net is denied">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-2"/>
             </Src>
@@ -776,7 +771,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40986B31" comment="This permits access from internal net&#10;to the Internet and DMZ" action="Accept" disabled="False" log="False" position="10">
+          <PolicyRule id="id40986B31" disabled="False" log="False" position="10" action="Accept" direction="Both" comment="This permits access from internal net&#10;to the Internet and DMZ">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -794,7 +789,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40986B3B" action="Deny" disabled="False" log="True" position="11">
+          <PolicyRule id="id40986B3B" disabled="False" log="True" position="11" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -813,18 +808,18 @@
             <PolicyRuleOptions/>
           </PolicyRule>
         </Policy>
-        <Routing id="id40986AFE-routing" name="Routing" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id40986B45" name="eth0" bridgeport="False" dyn="False" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False">
-          <IPv4 id="id40986E5B" name="fw 3:eth0:ip" comment="This is a test address, change it to your real one" address="192.0.2.1" netmask="255.255.255.0"/>
+        <Routing id="id40986AFE-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id40986B45" bridgeport="False" dyn="False" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <IPv4 id="id40986E5B" name="fw 3:eth0:ip" comment="This is a test address, change it to your real one" ro="False" address="192.0.2.1" netmask="255.255.255.0"/>
         </Interface>
-        <Interface id="id40986B52" name="eth1" bridgeport="False" dyn="False" label="inside" mgmt="True" security_level="100" unnum="False" unprotected="False">
-          <IPv4 id="id40986B53" name="ip" address="192.168.1.1" netmask="255.255.255.0"/>
+        <Interface id="id40986B52" bridgeport="False" dyn="False" label="inside" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+          <IPv4 id="id40986B53" name="ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
-        <Interface id="id40986B55" name="lo" bridgeport="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False">
-          <IPv4 id="id40986B56" name="lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
+        <Interface id="id40986B55" bridgeport="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id40986B56" name="lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
-        <Interface id="id40986B67" name="eth2" bridgeport="False" dyn="False" label="dmz" mgmt="False" security_level="0" unnum="False" unprotected="False">
-          <IPv4 id="id40986B69" name="ip" address="192.168.2.1" netmask="255.255.255.0"/>
+        <Interface id="id40986B67" bridgeport="False" dyn="False" label="dmz" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+          <IPv4 id="id40986B69" name="ip" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
         </Interface>
         <Management address="0.0.0.0">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -871,10 +866,10 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id409878E4" name="host fw template 1" comment="This is an example of a firewall protecting a host ( a server or a workstation). Only SSH access to the host is permitted. Host has dynamic address." host_OS="unknown_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="unknown" ro="False" version="">
-        <NAT id="id409878E9" name="NAT" ipv6_rule_set="False" top_rule_set="True"/>
-        <Policy id="id409878F8" name="Policy" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id4098792D" comment="anti spoofing rule" action="Deny" direction="Inbound" disabled="False" log="True" position="6">
+      <Firewall id="id409878E4" host_OS="unknown_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="unknown" version="" name="host fw template 1" comment="This is an example of a firewall protecting a host ( a server or a workstation). Only SSH access to the host is permitted. Host has dynamic address." ro="False">
+        <NAT id="id409878E9" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Policy id="id409878F8" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id4098792D" disabled="False" log="True" position="6" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id409878E4"/>
             </Src>
@@ -892,7 +887,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id4098793E" action="Accept" direction="Both" disabled="False" log="False" position="7">
+          <PolicyRule id="id4098793E" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -910,7 +905,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id409878F9" comment="SSH Access to the host; useful ICMP&#10;types; ping request" action="Accept" disabled="False" log="False" position="2">
+          <PolicyRule id="id409878F9" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to the host; useful ICMP&#10;types; ping request">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -930,7 +925,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40987917" action="Accept" disabled="False" log="False" position="3">
+          <PolicyRule id="id40987917" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id409878E4"/>
             </Src>
@@ -948,7 +943,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40987921" action="Deny" disabled="False" log="True" position="4">
+          <PolicyRule id="id40987921" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -967,10 +962,10 @@
             <PolicyRuleOptions/>
           </PolicyRule>
         </Policy>
-        <Routing id="id409878E4-routing" name="Routing" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id4098792B" name="eth0" bridgeport="False" dyn="True" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False"/>
-        <Interface id="id4098793B" name="lo" bridgeport="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False">
-          <IPv4 id="id4098793C" name="lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
+        <Routing id="id409878E4-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id4098792B" bridgeport="False" dyn="True" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False"/>
+        <Interface id="id4098793B" bridgeport="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id4098793C" name="lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Management address="0.0.0.0">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1013,9 +1008,9 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id41293477" name="linksys firewall" comment="This firewall is based on Linksys appliance running Sveasoft firmware; it has two interfaces. Interface vlan1 faces outside and has a dynamic address; br0 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH or HTTP. The firewall uses name servers supplied by the ISP for DNS.  Special rule blocks DHCP requests on external interface without logging to reduce noise in the log.&#10;&#10;Internal network is configured with address 192.168.1.0/255.255.255.0" host_OS="linksys" lastCompiled="0" lastInstalled="0" lastModified="0" platform="iptables" ro="False" version="">
-        <NAT id="id412934D3" name="NAT" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id412934D4" disabled="False" position="0">
+      <Firewall id="id41293477" host_OS="linksys" lastCompiled="0" lastInstalled="0" lastModified="0" platform="iptables" version="" name="linksys firewall" comment="This firewall is based on Linksys appliance running Sveasoft firmware; it has two interfaces. Interface vlan1 faces outside and has a dynamic address; br0 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH or HTTP. The firewall uses name servers supplied by the ISP for DNS.  Special rule blocks DHCP requests on external interface without logging to reduce noise in the log.&#10;&#10;Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
+        <NAT id="id412934D3" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id412934D4" disabled="False" position="0" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -1037,8 +1032,8 @@
             <NATRuleOptions/>
           </NATRule>
         </NAT>
-        <Policy id="id4129347C" name="Policy" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id412934E4" comment="anti spoofing rule" action="Deny" direction="Inbound" disabled="False" log="True" position="8">
+        <Policy id="id4129347C" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id412934E4" disabled="False" log="True" position="8" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id41293477"/>
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -1057,7 +1052,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id412934F5" action="Accept" direction="Both" disabled="False" log="False" position="9">
+          <PolicyRule id="id412934F5" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1075,7 +1070,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id4129347D" action="Deny" disabled="False" log="False" position="2">
+          <PolicyRule id="id4129347D" disabled="False" log="False" position="2" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1093,7 +1088,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id41293488" comment="SSH Access to firewall is permitted&#10;only from internal network" action="Accept" disabled="False" log="False" position="3">
+          <PolicyRule id="id41293488" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -1115,7 +1110,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id41293496" comment="need this rule for ping and traceroute" action="Accept" disabled="False" log="False" position="4">
+          <PolicyRule id="id41293496" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="need this rule for ping and traceroute">
             <Src neg="False">
               <ObjectRef ref="id41293477"/>
             </Src>
@@ -1144,7 +1139,7 @@
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id412934A1" action="Accept" disabled="False" log="False" position="5">
+          <PolicyRule id="id412934A1" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id41293477"/>
             </Src>
@@ -1162,7 +1157,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id412934AB" comment="All other attempts to connect to&#10;the firewall are denied and logged" action="Deny" disabled="False" log="True" position="6">
+          <PolicyRule id="id412934AB" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1180,7 +1175,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id412934B5" action="Accept" disabled="False" log="False" position="7">
+          <PolicyRule id="id412934B5" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1198,7 +1193,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id412934BF" action="Accept" disabled="False" log="False" position="8">
+          <PolicyRule id="id412934BF" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -1216,7 +1211,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id412934C9" action="Deny" disabled="False" log="True" position="9">
+          <PolicyRule id="id412934C9" disabled="False" log="True" position="9" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1235,13 +1230,13 @@
             <PolicyRuleOptions/>
           </PolicyRule>
         </Policy>
-        <Routing id="id41293477-routing" name="Routing" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id412934E2" name="vlan1" bridgeport="False" dyn="True" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False"/>
-        <Interface id="id412934EF" name="br0" bridgeport="False" dyn="False" label="inside" mgmt="True" security_level="100" unnum="False" unprotected="False">
-          <IPv4 id="id412934F0" name="linksys firewall:br0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
+        <Routing id="id41293477-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id412934E2" bridgeport="False" dyn="True" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False" name="vlan1" comment="" ro="False"/>
+        <Interface id="id412934EF" bridgeport="False" dyn="False" label="inside" mgmt="True" security_level="100" unnum="False" unprotected="False" name="br0" comment="" ro="False">
+          <IPv4 id="id412934F0" name="linksys firewall:br0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
-        <Interface id="id412934F2" name="lo" bridgeport="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False">
-          <IPv4 id="id412934F3" name="linksys firewall:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
+        <Interface id="id412934F2" bridgeport="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id412934F3" name="linksys firewall:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1340,10 +1335,10 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4129355E" name="web server" host_OS="linux24" lastCompiled="0" lastInstalled="0" lastModified="0" platform="iptables" ro="False" version="">
-        <NAT id="id41293598" name="NAT" ipv6_rule_set="False" top_rule_set="True"/>
-        <Policy id="id41293563" name="Policy" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id4129359C" action="Deny" direction="Inbound" disabled="False" log="True" position="10">
+      <Firewall id="id4129355E" host_OS="linux24" lastCompiled="0" lastInstalled="0" lastModified="0" platform="iptables" version="" name="web server" comment="" ro="False">
+        <NAT id="id41293598" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Policy id="id41293563" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id4129359C" disabled="False" log="True" position="10" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id4129355E"/>
             </Src>
@@ -1361,7 +1356,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id412935A9" action="Accept" direction="Both" disabled="False" log="False" position="11">
+          <PolicyRule id="id412935A9" disabled="False" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1379,7 +1374,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id41293564" action="Accept" disabled="False" log="False" position="2">
+          <PolicyRule id="id41293564" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1399,7 +1394,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id41293570" comment="server needs DNS to back-resolve clients IPs.&#10;Even if it does not log host names during its&#10;normal operations, statistics scripts such as&#10;webalizer need it for reporting." action="Accept" disabled="False" log="False" position="3">
+          <PolicyRule id="id41293570" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="server needs DNS to back-resolve clients IPs.&#10;Even if it does not log host names during its&#10;normal operations, statistics scripts such as&#10;webalizer need it for reporting.">
             <Src neg="False">
               <ObjectRef ref="id4129355E"/>
             </Src>
@@ -1417,7 +1412,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id4129357A" comment="this rule allows the server to send&#10;statistics and reports via email. Disable&#10;this rule if you do not need it." action="Accept" disabled="False" log="False" position="4">
+          <PolicyRule id="id4129357A" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="this rule allows the server to send&#10;statistics and reports via email. Disable&#10;this rule if you do not need it.">
             <Src neg="False">
               <ObjectRef ref="id4129355E"/>
             </Src>
@@ -1435,7 +1430,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id41293584" comment="this rejects auth (ident) queries that remote&#10;mail relays may send to this server when it&#10;tries to send email out." action="Reject" disabled="False" log="False" position="5">
+          <PolicyRule id="id41293584" disabled="False" log="False" position="5" action="Reject" direction="Both" comment="this rejects auth (ident) queries that remote&#10;mail relays may send to this server when it&#10;tries to send email out.">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1453,7 +1448,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id4129358E" action="Deny" disabled="False" log="True" position="6">
+          <PolicyRule id="id4129358E" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1472,12 +1467,12 @@
             <PolicyRuleOptions/>
           </PolicyRule>
         </Policy>
-        <Routing id="id4129355E-routing" name="Routing" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id41293599" name="eth0" bridgeport="False" dyn="False" label="outside" mgmt="True" security_level="0" unnum="False" unprotected="False">
-          <IPv4 id="id4129359A" name="web server:eth0:ip" address="192.168.1.10" netmask="255.255.255.0"/>
+        <Routing id="id4129355E-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id41293599" bridgeport="False" dyn="False" label="outside" mgmt="True" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <IPv4 id="id4129359A" name="web server:eth0:ip" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.0"/>
         </Interface>
-        <Interface id="id412935A6" name="lo" bridgeport="False" dyn="False" label="loopback" security_level="100" unnum="False" unprotected="False">
-          <IPv4 id="id412935A7" name="web server:lo:ip" address="127.0.0.1" netmask="255.0.0.0"/>
+        <Interface id="id412935A6" bridgeport="False" dyn="False" label="loopback" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id412935A7" name="web server:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Management address="192.168.1.10">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1536,10 +1531,10 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4699503132343" name="c36xx" comment="An example of Cisco router" host_OS="ios" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1184450093" platform="iosacl" ro="False" version="12.x">
-        <NAT id="id4699503532343" name="NAT" ipv6_rule_set="False" top_rule_set="True"/>
-        <Policy id="id4699503432343" name="Policy" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id46995E2832343" comment="anti-spoofing rule" action="Deny" direction="Inbound" disabled="False" log="True" position="0">
+      <Firewall id="id4699503132343" host_OS="ios" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1184450093" platform="iosacl" version="12.x" name="c36xx" comment="An example of Cisco router" ro="False">
+        <NAT id="id4699503532343" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Policy id="id4699503432343" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id46995E2832343" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti-spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
               <ObjectRef ref="id4699503132343"/>
@@ -1560,7 +1555,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id469954CB32343" action="Accept" direction="Inbound" disabled="False" log="False" position="1">
+          <PolicyRule id="id469954CB32343" disabled="False" log="False" position="1" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -1580,7 +1575,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id469954DA32343" action="Deny" direction="Both" disabled="False" log="True" position="2">
+          <PolicyRule id="id469954DA32343" disabled="False" log="True" position="2" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1600,7 +1595,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id469954B332343" action="Deny" direction="Both" disabled="False" log="True" position="3">
+          <PolicyRule id="id469954B332343" disabled="False" log="True" position="3" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1621,18 +1616,18 @@
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
-        <Routing id="id4699503632343" name="Routing" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id4699503732343" name="Ethernet1/0" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False">
-          <IPv4 id="id4699503832343" name="c36xx:Ethernet1/0:ip" address="192.0.2.1" netmask="255.255.255.0"/>
+        <Routing id="id4699503632343" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id4699503732343" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="Ethernet1/0" comment="" ro="False">
+          <IPv4 id="id4699503832343" name="c36xx:Ethernet1/0:ip" comment="" ro="False" address="192.0.2.1" netmask="255.255.255.0"/>
         </Interface>
-        <Interface id="id4699503932343" name="Ethernet1/1" bridgeport="False" dyn="False" label="" security_level="50" unnum="False" unprotected="False">
-          <IPv4 id="id4699503A32343" name="c36xx:Ethernet1/1:ip" comment="Configure IP address and netmask for this interface" address="0.0.0.0" netmask="0.0.0.0"/>
+        <Interface id="id4699503932343" bridgeport="False" dyn="False" label="" security_level="50" unnum="False" unprotected="False" name="Ethernet1/1" comment="" ro="False">
+          <IPv4 id="id4699503A32343" name="c36xx:Ethernet1/1:ip" comment="Configure IP address and netmask for this interface" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
         </Interface>
-        <Interface id="id4699503B32343" name="FastEthernet0/0" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False">
-          <IPv4 id="id4699503C32343" name="c36xx:FastEthernet0/0:ip" address="192.168.1.1" netmask="255.255.255.0"/>
+        <Interface id="id4699503B32343" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="FastEthernet0/0" comment="" ro="False">
+          <IPv4 id="id4699503C32343" name="c36xx:FastEthernet0/0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
-        <Interface id="id4699503F32343" name="Serial1/0" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False">
-          <IPv4 id="id4699504032343" name="c36xx:Serial1/0:ip" comment="Configure IP address and netmask for this interface" address="0.0.0.0" netmask="0.0.0.0"/>
+        <Interface id="id4699503F32343" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="Serial1/0" comment="" ro="False">
+          <IPv4 id="id4699504032343" name="c36xx:Serial1/0:ip" comment="Configure IP address and netmask for this interface" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1710,23 +1705,152 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
+      <Firewall id="id3836X47925" host_OS="endian_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1239820196" platform="endian" version="" name="IPCOP or Endian appliance (2 interfaces)" comment="Endian firewall appliance, 2 interfaces:&#10;br0 is GREEN&#10;eth1 is RED&#10;Do not forget to change IP addresses to &#10;match your firewall." ro="False">
+        <NAT id="id3840X47925" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Policy id="id3839X47925" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Routing id="id3841X47925" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id3842X47925" bridgeport="False" dyn="False" label="GREEN" mgmt="True" security_level="100" unnum="False" unprotected="False" name="br0" comment="" ro="False">
+          <IPv4 id="id3843X47925" name="br0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id3844X47925" bridgeport="False" dyn="False" label="RED" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+          <IPv4 id="id3845X47925" name="eth1:ip" comment="" ro="False" address="192.0.2.1" netmask="255.255.255.0"/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">true</Option>
+          <Option name="accept_new_tcp_with_no_syn">true</Option>
+          <Option name="activationCmd">/etc/rc.d/rc.firewall restart</Option>
+          <Option name="admUser">root</Option>
+          <Option name="check_shading">true</Option>
+          <Option name="comment"> defaults for ipcop </Option>
+          <Option name="configure_interfaces">true</Option>
+          <Option name="firewall_dir">/etc/rc.d/</Option>
+          <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_accept_redirects"></Option>
+          <Option name="linux24_accept_source_route"></Option>
+          <Option name="linux24_icmp_echo_ignore_all"></Option>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
+          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linux24_ip_forward"></Option>
+          <Option name="linux24_ipv6_forward"></Option>
+          <Option name="linux24_log_martians"></Option>
+          <Option name="linux24_path_ip"></Option>
+          <Option name="linux24_path_ip6tables"></Option>
+          <Option name="linux24_path_ip6tables_restore"></Option>
+          <Option name="linux24_path_iptables"></Option>
+          <Option name="linux24_path_iptables_restore"></Option>
+          <Option name="linux24_path_logger"></Option>
+          <Option name="linux24_path_lsmod"></Option>
+          <Option name="linux24_path_modprobe"></Option>
+          <Option name="linux24_rp_filter"></Option>
+          <Option name="linux24_tcp_ecn"></Option>
+          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_tcp_fin_timeout">0</Option>
+          <Option name="linux24_tcp_keepalive_interval">0</Option>
+          <Option name="linux24_tcp_sack"></Option>
+          <Option name="linux24_tcp_syncookies"></Option>
+          <Option name="linux24_tcp_timestamps"></Option>
+          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="load_modules">true</Option>
+          <Option name="local_nat">false</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo</Option>
+          <Option name="manage_virtual_addr">true</Option>
+          <Option name="output_file">rc.firewall.local</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="verify_interfaces">true</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id3872X48257" host_OS="endian_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1239820203" platform="endian" version="" name="IPCOP or Endian appliance (3 interfaces)" comment="Endian firewall appliance, 3 interfaces:&#10;br0 is GREEN&#10;eth1 is RED&#10;eth2 is ORANGE&#10;Do not forget to change IP addresses to &#10;match your firewall." ro="False">
+        <NAT id="id3879X48257" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Policy id="id3878X48257" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Routing id="id3880X48257" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id3881X48257" bridgeport="False" dyn="False" label="GREEN" mgmt="True" security_level="100" unnum="False" unprotected="False" name="br0" comment="" ro="False">
+          <IPv4 id="id3883X48257" name="br0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id3884X48257" bridgeport="False" dyn="False" label="RED" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+          <IPv4 id="id3886X48257" name="eth1:ip" comment="" ro="False" address="192.0.2.1" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id4907X48257" bridgeport="False" dyn="False" label="ORANGE" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+          <IPv4 id="id4908X48257" name="eth2:ip" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">true</Option>
+          <Option name="accept_new_tcp_with_no_syn">true</Option>
+          <Option name="activationCmd">/etc/rc.d/rc.firewall restart</Option>
+          <Option name="admUser">root</Option>
+          <Option name="check_shading">true</Option>
+          <Option name="comment"> defaults for ipcop </Option>
+          <Option name="configure_interfaces">true</Option>
+          <Option name="firewall_dir">/etc/rc.d/</Option>
+          <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_accept_redirects"></Option>
+          <Option name="linux24_accept_source_route"></Option>
+          <Option name="linux24_icmp_echo_ignore_all"></Option>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
+          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linux24_ip_forward"></Option>
+          <Option name="linux24_ipv6_forward"></Option>
+          <Option name="linux24_log_martians"></Option>
+          <Option name="linux24_path_ip"></Option>
+          <Option name="linux24_path_ip6tables"></Option>
+          <Option name="linux24_path_ip6tables_restore"></Option>
+          <Option name="linux24_path_iptables"></Option>
+          <Option name="linux24_path_iptables_restore"></Option>
+          <Option name="linux24_path_logger"></Option>
+          <Option name="linux24_path_lsmod"></Option>
+          <Option name="linux24_path_modprobe"></Option>
+          <Option name="linux24_rp_filter"></Option>
+          <Option name="linux24_tcp_ecn"></Option>
+          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_tcp_fin_timeout">0</Option>
+          <Option name="linux24_tcp_keepalive_interval">0</Option>
+          <Option name="linux24_tcp_sack"></Option>
+          <Option name="linux24_tcp_syncookies"></Option>
+          <Option name="linux24_tcp_timestamps"></Option>
+          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="load_modules">true</Option>
+          <Option name="local_nat">false</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo</Option>
+          <Option name="manage_virtual_addr">true</Option>
+          <Option name="output_file">rc.firewall.local</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="verify_interfaces">true</Option>
+        </FirewallOptions>
+      </Firewall>
     </ObjectGroup>
-    <IntervalGroup id="id4070BBA9" name="Time"/>
+    <IntervalGroup id="id4070BBA9" name="Time" comment="" ro="False"/>
   </Library>
-  <Library id="syslib000" name="Standard" comment="Standard objects" color="#d4f8ff" ro="True">
-    <ObjectGroup id="stdid01" name="Objects">
-      <ObjectGroup id="stdid03" name="Networks">
-        <Network id="id3DC75CE7-1" name="net-192.168.1.0" comment="192.168.1.0/24 - Address often used for home and small office networks.&#10;" address="192.168.1.0" netmask="255.255.255.0"/>
-        <Network id="id3DC75CE7-2" name="net-192.168.2.0" comment="192.168.2.0/24 - Address often used for home and small office networks.&#10;" address="192.168.2.0" netmask="255.255.255.0"/>
+  <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
+    <ObjectGroup id="stdid01" name="Objects" comment="" ro="False">
+      <ObjectGroup id="stdid03" name="Networks" comment="" ro="False">
+        <Network id="id3DC75CE7-1" name="net-192.168.1.0" comment="192.168.1.0/24 - Address often used for home and small office networks.&#10;" ro="False" address="192.168.1.0" netmask="255.255.255.0"/>
+        <Network id="id3DC75CE7-2" name="net-192.168.2.0" comment="192.168.2.0/24 - Address often used for home and small office networks.&#10;" ro="False" address="192.168.2.0" netmask="255.255.255.0"/>
       </ObjectGroup>
-      <ObjectGroup id="stdid15" name="Address Ranges">
-        <AddressRange id="id3F6D115D" name="old-broadcast" start_address="0.0.0.0" end_address="0.0.0.0"/>
-        <AddressRange id="id3F6D115C" name="broadcast" start_address="255.255.255.255" end_address="255.255.255.255"/>
+      <ObjectGroup id="stdid15" name="Address Ranges" comment="" ro="False">
+        <AddressRange id="id3F6D115D" name="old-broadcast" comment="" ro="False" start_address="0.0.0.0" end_address="0.0.0.0"/>
+        <AddressRange id="id3F6D115C" name="broadcast" comment="" ro="False" start_address="255.255.255.255" end_address="255.255.255.255"/>
       </ObjectGroup>
-      <ObjectGroup id="stdid02" name="Hosts">
-        <Host id="id3D84EECE" name="internal server" comment="This host is used in examples and template objects">
-          <Interface id="id3D84EED2" name="eth0" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False">
-            <IPv4 id="id3D84EED3" name="ip" address="192.168.1.10" netmask="255.255.255.0"/>
+      <ObjectGroup id="stdid02" name="Hosts" comment="" ro="False">
+        <Host id="id3D84EECE" name="internal server" comment="This host is used in examples and template objects" ro="False">
+          <Interface id="id3D84EED2" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+            <IPv4 id="id3D84EED3" name="ip" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.0"/>
           </Interface>
           <Management address="192.168.1.10">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1741,9 +1865,9 @@
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
-        <Host id="id3D84EECF" name="server on dmz" comment="This host is used in examples and template objects">
-          <Interface id="id3D84EEE3" name="eth0" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False">
-            <IPv4 id="id3D84EEE4" name="ip" address="192.168.2.10" netmask="255.255.255.0"/>
+        <Host id="id3D84EECF" name="server on dmz" comment="This host is used in examples and template objects" ro="False">
+          <Interface id="id3D84EEE3" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+            <IPv4 id="id3D84EEE4" name="ip" comment="" ro="False" address="192.168.2.10" netmask="255.255.255.0"/>
           </Interface>
           <Management address="192.168.2.10">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1760,54 +1884,54 @@
         </Host>
       </ObjectGroup>
     </ObjectGroup>
-    <AnyNetwork id="sysid0" name="Any" comment="Any Network" address="0.0.0.0" netmask="0.0.0.0"/>
-    <AnyIPService id="sysid1" name="Any" comment="Any IP Service" protocol_num="0"/>
-    <AnyInterval id="sysid2" name="Any" comment="Any Interval" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1"/>
-    <ServiceGroup id="stdid05" name="Services">
-      <ServiceGroup id="stdid09" name="TCP">
-        <TCPService id="tcp-SSH" name="ssh" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" src_range_start="0" src_range_end="0" dst_range_start="22" dst_range_end="22"/>
-        <TCPService id="tcp-Auth" name="auth" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" src_range_start="0" src_range_end="0" dst_range_start="113" dst_range_end="113"/>
-        <TCPService id="tcp-SMTP" name="smtp" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" src_range_start="0" src_range_end="0" dst_range_start="25" dst_range_end="25"/>
-        <TCPService id="tcp-HTTP" name="http" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" src_range_start="0" src_range_end="0" dst_range_start="80" dst_range_end="80"/>
-        <TCPService id="tcp-DNS" name="domain" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
-        <TCPService id="id41291784" name="upnp" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" src_range_start="0" src_range_end="0" dst_range_start="5000" dst_range_end="5000"/>
-        <TCPService id="id41291785" name="upnp-5431" comment="Although UPnP specification say it should use TCP port 5000, Linksys running Sveasoft firmware listens on port 5431" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" src_range_start="0" src_range_end="0" dst_range_start="5431" dst_range_end="5431"/>
-        <TCPService id="id412Z18A9" name="icslap" comment="Sometimes this protocol is called icslap, but Microsoft does not call it that and just says that DSPP uses port 2869 in Windows XP SP2" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" src_range_start="0" src_range_end="0" dst_range_start="2869" dst_range_end="2869"/>
+    <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
+    <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
+    <AnyInterval id="sysid2" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1" name="Any" comment="Any Interval" ro="False"/>
+    <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
+      <ServiceGroup id="stdid09" name="TCP" comment="" ro="False">
+        <TCPService id="tcp-SSH" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ssh" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="22" dst_range_end="22"/>
+        <TCPService id="tcp-Auth" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="auth" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="113" dst_range_end="113"/>
+        <TCPService id="tcp-SMTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="smtp" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="25" dst_range_end="25"/>
+        <TCPService id="tcp-HTTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="http" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="80" dst_range_end="80"/>
+        <TCPService id="tcp-DNS" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="domain" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
+        <TCPService id="id41291784" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="upnp" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5000" dst_range_end="5000"/>
+        <TCPService id="id41291785" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="upnp-5431" comment="Although UPnP specification say it should use TCP port 5000, Linksys running Sveasoft firmware listens on port 5431" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5431" dst_range_end="5431"/>
+        <TCPService id="id412Z18A9" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="icslap" comment="Sometimes this protocol is called icslap, but Microsoft does not call it that and just says that DSPP uses port 2869 in Windows XP SP2" ro="False" src_range_start="0" src_range_end="0" dst_range_start="2869" dst_range_end="2869"/>
       </ServiceGroup>
-      <ServiceGroup id="stdid10" name="Groups">
-        <ServiceGroup id="id3F530CC8" name="DNS">
+      <ServiceGroup id="stdid10" name="Groups" comment="" ro="False">
+        <ServiceGroup id="id3F530CC8" name="DNS" comment="" ro="False">
           <ServiceRef ref="udp-DNS"/>
           <ServiceRef ref="tcp-DNS"/>
         </ServiceGroup>
-        <ServiceGroup id="sg-DHCP" name="DHCP">
+        <ServiceGroup id="sg-DHCP" name="DHCP" comment="" ro="False">
           <ServiceRef ref="udp-bootpc"/>
           <ServiceRef ref="udp-bootps"/>
         </ServiceGroup>
-        <ServiceGroup id="sg-Useful_ICMP" name="Useful_ICMP">
+        <ServiceGroup id="sg-Useful_ICMP" name="Useful_ICMP" comment="" ro="False">
           <ServiceRef ref="icmp-Time_exceeded"/>
           <ServiceRef ref="icmp-Time_exceeded_in_transit"/>
           <ServiceRef ref="icmp-ping_reply"/>
           <ServiceRef ref="icmp-Unreachables"/>
         </ServiceGroup>
-        <ServiceGroup id="id41291786" name="UPnP">
+        <ServiceGroup id="id41291786" name="UPnP" comment="" ro="False">
           <ServiceRef ref="id41291784"/>
           <ServiceRef ref="id41291785"/>
           <ServiceRef ref="id41291783"/>
           <ServiceRef ref="id412Z18A9"/>
         </ServiceGroup>
       </ServiceGroup>
-      <ServiceGroup id="stdid07" name="ICMP">
-        <ICMPService id="icmp-ping_request" name="ping request" code="0" type="8"/>
-        <ICMPService id="icmp-ping_reply" name="ping reply" code="0" type="0"/>
-        <ICMPService id="icmp-Time_exceeded" name="time exceeded" comment="ICMP messages of this type are needed for traceroute" code="0" type="11"/>
-        <ICMPService id="icmp-Unreachables" name="all ICMP unreachables" code="-1" type="3"/>
-        <ICMPService id="icmp-Time_exceeded_in_transit" name="time exceeded in transit" code="1" type="11"/>
+      <ServiceGroup id="stdid07" name="ICMP" comment="" ro="False">
+        <ICMPService id="icmp-ping_request" code="0" type="8" name="ping request" comment="" ro="False"/>
+        <ICMPService id="icmp-ping_reply" code="0" type="0" name="ping reply" comment="" ro="False"/>
+        <ICMPService id="icmp-Time_exceeded" code="0" type="11" name="time exceeded" comment="ICMP messages of this type are needed for traceroute" ro="False"/>
+        <ICMPService id="icmp-Unreachables" code="-1" type="3" name="all ICMP unreachables" comment="" ro="False"/>
+        <ICMPService id="icmp-Time_exceeded_in_transit" code="1" type="11" name="time exceeded in transit" comment="" ro="False"/>
       </ServiceGroup>
-      <ServiceGroup id="stdid08" name="UDP">
-        <UDPService id="udp-DNS" name="domain" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
-        <UDPService id="udp-bootpc" name="bootpc" src_range_start="0" src_range_end="0" dst_range_start="68" dst_range_end="68"/>
-        <UDPService id="udp-bootps" name="bootps" src_range_start="0" src_range_end="0" dst_range_start="67" dst_range_end="67"/>
-        <UDPService id="id41291783" name="SSDP" comment="Simple Service Discovery Protocol (used for UPnP)" src_range_start="0" src_range_end="0" dst_range_start="1900" dst_range_end="1900"/>
+      <ServiceGroup id="stdid08" name="UDP" comment="" ro="False">
+        <UDPService id="udp-DNS" name="domain" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
+        <UDPService id="udp-bootpc" name="bootpc" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="68" dst_range_end="68"/>
+        <UDPService id="udp-bootps" name="bootps" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="67" dst_range_end="67"/>
+        <UDPService id="id41291783" name="SSDP" comment="Simple Service Discovery Protocol (used for UPnP)" ro="False" src_range_start="0" src_range_end="0" dst_range_start="1900" dst_range_end="1900"/>
       </ServiceGroup>
     </ServiceGroup>
   </Library>

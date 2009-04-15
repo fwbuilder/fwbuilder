@@ -2,6 +2,7 @@
 <FWBuilderResources version="@VERSION@">
     <Target name="pf">
       <description>PF</description>
+      <group>Open Source Firewalls</group>
       <compiler>fwb_pf</compiler>
       <dialog>pf</dialog>
       <supported_os>openbsd,freebsd</supported_os>
@@ -36,6 +37,7 @@
         <security_levels>False</security_levels>
         <network_zones>False</network_zones>
         <unprotected_interfaces>True</unprotected_interfaces>
+        <supports_prolog_epilog>True</supports_prolog_epilog>
         <actions>
             <Accept>
                 <supported>True</supported>

@@ -325,6 +325,16 @@ QString FirewallInstaller::getDestinationDir()
     // need to trim dir because it picks up '\n' and possibly spaces
     // from XML element body text formatting
     dir = dir.trimmed();
+
+    if (fwbdebug)
+        qDebug("FirewallInstaller::getDestinationDir:  "
+               "optpath=%s  "
+               "destination directory=%s  "
+               "cnf->fwdir=%s",
+               optpath.c_str(),
+               dir.toAscii().constData(),
+               cnf->fwdir.toAscii().constData());
+
     if (dir.isEmpty()) return cnf->fwdir;
     if (!dir.endsWith('/')) dir = dir + "/";
     return inst_dlg->replaceMacrosInCommand(dir);

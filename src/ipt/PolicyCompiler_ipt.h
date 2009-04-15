@@ -920,7 +920,6 @@ namespace fwcompiler {
             virtual std::string _printGlobalLogParameters();
             virtual std::string _printOptionalGlobalRules();
             virtual std::string _declareTable();
-            virtual std::string _flushAndSetDefaultPolicy();
             virtual std::string _clampTcpToMssRule();
             virtual std::string _commit();
             virtual std::string _quote(const std::string &s);
@@ -945,7 +944,6 @@ namespace fwcompiler {
             public:
             PrintRuleIptRst(const std::string &name) : PrintRule(name) {};
             virtual std::string _declareTable();
-            virtual std::string _flushAndSetDefaultPolicy();
             virtual std::string _commit();
             virtual std::string _quote(const std::string &s);
 
@@ -962,7 +960,6 @@ namespace fwcompiler {
             public:
             PrintRuleIptRstEcho(const std::string &name) : PrintRuleIptRst(name) {};
             virtual std::string _declareTable();
-            virtual std::string _flushAndSetDefaultPolicy();
             virtual std::string _commit();
             virtual std::string _quote(const std::string &s);
 
@@ -1000,7 +997,7 @@ namespace fwcompiler {
             minus_n_commands = m_n_commands_map;
         }
 
-
+        virtual void verifyPlatform();
 	virtual int  prolog();
 	virtual void compile();
 	virtual void epilog();

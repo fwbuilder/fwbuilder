@@ -115,5 +115,19 @@ bool getStatelessFlagForAction(libfwbuilder::PolicyRule *rule);
 
 QString getReadableRuleElementName(const std::string &rule_element_type_name);
 
+/*
+ * convenience method that calls Resourcess::getPlatforms() and
+ * converts the result to QMap<QString,QString>
+ */
+QMap<QString,QString> getAllPlatforms();
+
+QMap<QString,QString> getAllOS();
+
+QString readPlatform(QComboBox *platform);
+QString readHostOS(QComboBox *hostOS);
+
+void setPlatform(QComboBox *platform, const QString &pl);
+void setHostOS(QComboBox *hostOS, const QString &platform, const QString &os);
+
 #endif
 

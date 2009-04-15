@@ -30,6 +30,7 @@
 
 #include "fwcompiler/OSConfigurator.h"
 
+#include "fwbuilder/Resources.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/NAT.h"
 #include "fwbuilder/AddressRange.h"
@@ -162,8 +163,20 @@ string NATCompiler_ipt::debugPrintRule(Rule *r)
 }
 
 
+void NATCompiler_ipt::verifyPlatform()
+{
+    string family = Resources::platform_res[fw->getStr("platform")]->
+        getResourceStr("/FWBuilderResources/Target/family");
+
+    if (family != myPlatformName()) 
+	abort("Unsupported platform " + fw->getStr("platform") +
+        " (family " + family + ")");
+}
+
 int NATCompiler_ipt::prolog()
 {
+    verifyPlatform(); 
+
     // initialize counters for the standard chains
     for (list<string>::const_iterator i =
              NATCompiler_ipt::getStandardChains().begin();
@@ -172,7 +185,7 @@ int NATCompiler_ipt::prolog()
         chain_usage_counter[*i] = 1;
     }
 
-    int n=NATCompiler::prolog();
+    int n = NATCompiler::prolog();
 
     if ( n>0 ) 
     {
@@ -2384,11 +2397,11 @@ string NATCompiler_ipt::flushAndSetDefaultPolicy()
 {
     string res="";
 
-/* printRule may be null if there are no NAT rules and we never ran compile() */
-    if (printRule!=NULL)
+    if (fwopt->getBool("use_iptables_restore"))
     {
-        //res += printRule->_declareTable();
-        res += printRule->_flushAndSetDefaultPolicy();
+        res += "echo :PREROUTING ACCEPT [0:0]\n";
+        res += "echo :POSTROUTING ACCEPT [0:0]\n";
+        res += "echo :OUTPUT ACCEPT [0:0]\n";
     }
 
     return res;

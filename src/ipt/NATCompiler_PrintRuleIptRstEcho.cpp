@@ -99,15 +99,6 @@ string NATCompiler_ipt::PrintRuleIptRstEcho::_declareTable()
     return res.str();
 }
 
-string NATCompiler_ipt::PrintRuleIptRstEcho::_flushAndSetDefaultPolicy()
-{
-    ostringstream res;
-    res << "echo :PREROUTING ACCEPT [0:0]" << endl;
-    res << "echo :POSTROUTING ACCEPT [0:0]" << endl;
-    res << "echo :OUTPUT ACCEPT [0:0]" << endl;
-    return res.str();
-}
-
 string NATCompiler_ipt::PrintRuleIptRstEcho::_commit()
 {
     return "echo COMMIT\n";

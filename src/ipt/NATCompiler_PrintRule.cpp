@@ -716,11 +716,6 @@ string NATCompiler_ipt::PrintRule::_declareTable()
     return "";
 }
 
-string NATCompiler_ipt::PrintRule::_flushAndSetDefaultPolicy()
-{
-    return "";
-}
-
 string NATCompiler_ipt::PrintRule::_commit()
 {
     return "";

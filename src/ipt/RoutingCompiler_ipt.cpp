@@ -30,6 +30,7 @@
 
 #include "RoutingCompiler_ipt.h"
 
+#include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Routing.h"
@@ -64,13 +65,22 @@ static std::map<std::string,int> tmp_chain_no;
 string RoutingCompiler_ipt::myPlatformName() { return "iptables"; }
 
 
+void RoutingCompiler_ipt::verifyPlatform()
+{
+    //TODO: Routing based on the 'ip' command is independent from iptables
+    string family = Resources::platform_res[fw->getStr("platform")]->
+        getResourceStr("/FWBuilderResources/Target/family");
+
+    if (family != myPlatformName()) 
+	abort("Unsupported platform " + fw->getStr("platform") +
+        " (family " + family + ")");
+}
+
 int RoutingCompiler_ipt::prolog()
 {
     int n = RoutingCompiler::prolog();    
 
-    //TODO: Routing based on the 'ip' command is independent from iptables
-    if (fw->getStr("platform")!="iptables") 
-	abort(_("Unsupported platform ") + fw->getStr("platform") );
+    verifyPlatform(); 
 
     return n;
 }

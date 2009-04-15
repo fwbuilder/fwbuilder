@@ -66,17 +66,17 @@ namespace fwcompiler {
 	virtual void addVirtualAddressForNAT(const libfwbuilder::Address *addr);
 	virtual void addVirtualAddressForNAT(const libfwbuilder::Network *nw);
 
-        void registerMultiAddressObject(libfwbuilder::MultiAddressRunTime *at);
-        void printChecksForRunTimeMultiAddress();
-        std::string printShellFunctions(bool no_comment);
-        std::string printPathForAllTools(const std::string &os);
-        std::string printIPForwardingCommands(bool no_comment);
-        void configureInterfaces();
-        void printCommandsToAddVirtualAddressesForNAT();
-        
-        std::string  printRunTimeWrappers(libfwbuilder::FWObject *rule,
-                                          const std::string &command,
-                                          bool ipv6=false);
+        virtual void registerMultiAddressObject(libfwbuilder::MultiAddressRunTime *at);
+        virtual void printChecksForRunTimeMultiAddress();
+        virtual std::string printShellFunctions(bool no_comment);
+        virtual std::string printPrologEpilogFunctions(bool no_comment);
+        virtual std::string printPathForAllTools(const std::string &os);
+        virtual std::string printIPForwardingCommands(bool no_comment);
+        virtual void configureInterfaces();
+        virtual void printCommandsToAddVirtualAddressesForNAT();
+        virtual std::string  printRunTimeWrappers(libfwbuilder::FWObject *rule,
+                                                  const std::string &command,
+                                                  bool ipv6=false);
 
     };
 };

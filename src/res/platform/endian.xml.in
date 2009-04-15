@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<FWBuilderResources version="@VERSION@">
+    <Target name="endian">
+      <description>Endian Firewall Apliance (iptables)</description>
+      <group>Appliances</group>
+      <compiler>fwb_ipt</compiler>
+      <dialog>ipcop</dialog>
+      <supported_os>endian_os</supported_os>
+      <family>ipcop</family>
+
+      <options>
+        <default>
+          <load_modules>true</load_modules>
+          <verify_interfaces>true</verify_interfaces>
+          <firewall_is_part_of_any_and_networks>true</firewall_is_part_of_any_and_networks>
+          <accept_new_tcp_with_no_syn>true</accept_new_tcp_with_no_syn>
+          <accept_established>true</accept_established>
+          <configure_interfaces>true</configure_interfaces>
+          <manage_virtual_addr>true</manage_virtual_addr>
+          <log_level>info</log_level>
+          <log_prefix>RULE %N -- %A </log_prefix>
+          <ulog_nlgroup>1</ulog_nlgroup>
+          <limit_value>0</limit_value>
+          <check_shading>true</check_shading>
+          <verify_interfaces>true</verify_interfaces>
+          <local_nat>false</local_nat>
+          <!-- defaults for ipcop -->
+          <firewall_dir>/etc/rc.d/</firewall_dir>
+          <output_file>rc.firewall.local</output_file>
+          <admUser>root</admUser>
+          <activationCmd>/etc/rc.d/rc.firewall restart</activationCmd>
+          <linux24_ip_forward></linux24_ip_forward>
+          <linux24_ipv6_forward></linux24_ipv6_forward>
+        </default>
+      </options>
+
+      <capabilities>
+        <negation_in_interface_policy>True</negation_in_interface_policy>
+        <negation_in_policy>True</negation_in_policy>
+        <negation_in_nat>True</negation_in_nat>
+        <logging_in_policy>True</logging_in_policy>
+        <options_in_policy>True</options_in_policy>
+        <supports_nat>True</supports_nat>
+        <supports_time>True</supports_time>
+        <supports_accounting>True</supports_accounting>
+        <supports_routing_itf>True</supports_routing_itf>
+        <security_levels>False</security_levels>
+        <network_zones>False</network_zones>
+        <unprotected_interfaces>False</unprotected_interfaces>
+        <supports_prolog_epilog>True</supports_prolog_epilog>
+        <flush_and_set_default_policy>False</flush_and_set_default_policy>
+        <actions>
+            <Accept>
+                <supported>True</supported>
+                <parameter>None</parameter>
+            </Accept>
+            <Deny>
+                <supported>True</supported>
+                <parameter>None</parameter>
+            </Deny>
+            <Reject>
+                <supported>True</supported>
+                <parameter>Reject</parameter>
+            </Reject>
+            <Accounting>
+                <supported>True</supported>
+                <parameter>AccountingStr</parameter>
+            </Accounting>
+            <Tag>
+                <supported>True</supported>
+                <parameter>TagInt</parameter>
+            </Tag>
+            <Pipe>
+                <supported>True</supported>
+                <parameter>None</parameter>
+            </Pipe>
+            <Classify>
+                <supported>True</supported>
+                <parameter>ClassifyStr</parameter>
+            </Classify>
+            <Custom>
+                <supported>True</supported>
+                <parameter>CustomStr</parameter>
+            </Custom>
+            <Branch>
+                <supported>True</supported>
+                <parameter>BranchChain</parameter>
+            </Branch>
+            <Route>
+                <supported>True</supported>
+                <parameter>RouteIPT</parameter>
+            </Route>
+            <Continue>
+                <supported>True</supported>
+                <parameter>None</parameter>
+            </Continue>
+        </actions>
+      </capabilities>
+    </Target>
+
+</FWBuilderResources>

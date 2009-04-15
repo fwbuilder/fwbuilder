@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
-<FWBuilderResources version="3.0.5">
+<FWBuilderResources version="3.1.0">
     <Target name="unknown">
       <description>Unknown</description>
+      <group>Unknown</group>
       <compiler></compiler>
       <dialog>unknown</dialog>
       <supported_os>unknown</supported_os>
@@ -23,6 +24,7 @@
         <security_levels>False</security_levels>
         <network_zones>False</network_zones>
         <unprotected_interfaces>False</unprotected_interfaces>
+        <supports_prolog_epilog>False</supports_prolog_epilog>
         <actions>
             <Accept>
                 <supported>True</supported>

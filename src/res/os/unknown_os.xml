@@ -1,5 +1,5 @@
 <?xml version="1.0"?> <!-- -*- mode: xml; -*- -->
-<FWBuilderResources version="3.0.5">
+<FWBuilderResources version="3.1.0">
     <Target name="unknown_os">
       <description>Unknown</description>
       <family>unknown</family>
@@ -97,16 +97,18 @@ sh /tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
       </capabilities>
 
       <tools>
-        <path_lsmod>/sbin/lsmod</path_lsmod>
-        <path_modprobe>/sbin/modprobe</path_modprobe>
-        <path_iptables>/sbin/iptables</path_iptables>
-        <path_ip>/sbin/ip</path_ip>
-        <path_logger>/usr/bin/logger</path_logger>
-        <path_expect>/usr/bin/expect</path_expect>
-        <path_ipfw>/sbin/ipfw</path_ipfw>
-        <path_ipf>/sbin/ipf</path_ipf>
-        <path_ipnat>/sbin/ipnat</path_ipnat>
-        <path_sysctl>/sbin/sysctl</path_sysctl>
+        <Unknown>
+          <path_lsmod>/sbin/lsmod</path_lsmod>
+          <path_modprobe>/sbin/modprobe</path_modprobe>
+          <path_iptables>/sbin/iptables</path_iptables>
+          <path_ip>/sbin/ip</path_ip>
+          <path_logger>/usr/bin/logger</path_logger>
+          <path_expect>/usr/bin/expect</path_expect>
+          <path_ipfw>/sbin/ipfw</path_ipfw>
+          <path_ipf>/sbin/ipf</path_ipf>
+          <path_ipnat>/sbin/ipnat</path_ipnat>
+          <path_sysctl>/sbin/sysctl</path_sysctl>
+        </Unknown>
       </tools>
 
     </Target>

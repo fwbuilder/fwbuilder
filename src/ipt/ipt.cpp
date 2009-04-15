@@ -51,12 +51,19 @@
 #include <ctype.h>
 #include <assert.h>
 #include <cstring>
+#include <iomanip>
 
 #include "PolicyCompiler_ipt.h"
 #include "MangleTableCompiler_ipt.h"
 #include "NATCompiler_ipt.h"
 #include "RoutingCompiler_ipt.h"
 #include "OSConfigurator_linux24.h"
+
+#include "PolicyCompiler_ipcop.h"
+#include "MangleTableCompiler_ipcop.h"
+#include "NATCompiler_ipcop.h"
+#include "RoutingCompiler_ipcop.h"
+#include "OSConfigurator_ipcop.h"
 
 #include "fwcompiler/Preprocessor.h"
 
@@ -113,6 +120,7 @@ static bool             fw_by_id       = false;
 
 FWObjectDatabase *objdb = NULL;
 bool prolog_done = false;
+bool epilog_done = false;
 
 static map<string,RuleSet*> branches;
 
@@ -138,6 +146,22 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
 	return false;
     }
 };
+
+/*
+ * Add indentation to each line in txt
+ */
+string indent(int n_spaces, const string &txt)
+{
+    ostringstream output;
+    istringstream str(txt);
+    char line[4096];
+    while (!str.eof())
+    {
+        str.getline(line, sizeof(line));
+        output << std::setw(n_spaces) << std::setfill(' ') << " " << line << endl;
+    }
+    return output.str();
+}
 
 void assignRuleSetChain(RuleSet *ruleset)
 {
@@ -311,6 +335,12 @@ bool processPolicyRuleSet(
     bool have_connmark_in_output = false;
     bool empty_output = true;
     string prolog_place = fw->getOptionsObject()->getStr("prolog_place");
+    string platform = fw->getStr("platform");
+    bool flush_and_set_default_policy = Resources::getTargetCapabilityBool(
+        platform, "flush_and_set_default_policy");
+    string platform_family = Resources::platform_res[platform]->
+        getResourceStr("/FWBuilderResources/Target/family");
+
 
     Policy *policy = Policy::cast(ruleset);
     assignRuleSetChain(policy);
@@ -320,27 +350,35 @@ bool processPolicyRuleSet(
 
     bool ipv6_policy = (policy_af == AF_INET6);
 
-    MangleTableCompiler_ipt m(
-        objdb , fwobjectname.toUtf8().constData(),
-        ipv6_policy , oscnf,
-        &minus_n_commands_mangle );
+    MangleTableCompiler_ipt *mangle_compiler;
+
+    if (platform_family == "ipcop")
+        mangle_compiler = new MangleTableCompiler_ipcop(
+            objdb , fwobjectname.toUtf8().constData(),
+            ipv6_policy , oscnf,
+            &minus_n_commands_mangle );
+    else
+        mangle_compiler = new MangleTableCompiler_ipt(
+            objdb , fwobjectname.toUtf8().constData(),
+            ipv6_policy , oscnf,
+            &minus_n_commands_mangle );
 
     if (!policy->isTop())
-        m.registerRuleSetChain(branch_name);
+        mangle_compiler->registerRuleSetChain(branch_name);
 
-    m.setSourceRuleSet( policy );
-    m.setRuleSetName(branch_name);
+    mangle_compiler->setSourceRuleSet( policy );
+    mangle_compiler->setRuleSetName(branch_name);
 
-    m.setDebugLevel( dl );
-    m.setDebugRule(  drp );
-    m.setVerbose( (bool)(verbose) );
-    m.setHaveDynamicInterfaces(have_dynamic_interfaces);
-    if (test_mode) m.setTestMode();
+    mangle_compiler->setDebugLevel( dl );
+    mangle_compiler->setDebugRule(  drp );
+    mangle_compiler->setVerbose( (bool)(verbose) );
+    mangle_compiler->setHaveDynamicInterfaces(have_dynamic_interfaces);
+    if (test_mode) mangle_compiler->setTestMode();
 
-    if ( (mangle_rules_count = m.prolog()) > 0 )
+    if ( (mangle_rules_count = mangle_compiler->prolog()) > 0 )
     {
-        m.compile();
-        m.epilog();
+        mangle_compiler->compile();
+        mangle_compiler->epilog();
 
         // We need to generate automatic rules in mangle
         // table (-j CONNMARK --restore-mark) if CONNMARK
@@ -353,16 +391,19 @@ bool processPolicyRuleSet(
         // later if either of these flags is true after
         // all rulesets have been processed.
 
-        have_connmark |= m.haveConnMarkRules();
-        have_connmark_in_output |= m.haveConnMarkRulesInOutput();
+        have_connmark |= mangle_compiler->haveConnMarkRules();
+        have_connmark_in_output |= mangle_compiler->haveConnMarkRulesInOutput();
 
         long m_str_pos = mangle_table_stream.tellp();
 
         if (policy->isTop())
         {
             ostringstream tmp;
-            tmp << m.flushAndSetDefaultPolicy();
-            tmp << m.printAutomaticRules();
+
+            if (flush_and_set_default_policy)
+                tmp << mangle_compiler->flushAndSetDefaultPolicy();
+
+            tmp << mangle_compiler->printAutomaticRules();
 
             if (tmp.tellp() > 0)
             {
@@ -373,16 +414,16 @@ bool processPolicyRuleSet(
             }
         }
 
-        if (m.getCompiledScriptLength() > 0)
+        if (mangle_compiler->getCompiledScriptLength() > 0)
         {
             ostringstream tmp;
-            if (m.haveErrorsAndWarnings())
+            if (mangle_compiler->haveErrorsAndWarnings())
             {
                 tmp << "# Policy compiler errors and warnings:" << "\n";
-                tmp << m.getErrors("# ");
+                tmp << mangle_compiler->getErrors("# ");
             }
 
-            tmp << m.getCompiledScript();
+            tmp << mangle_compiler->getCompiledScript();
 
             if (tmp.tellp() > 0)
             {
@@ -399,37 +440,44 @@ bool processPolicyRuleSet(
         }
     }
 
-    PolicyCompiler_ipt c(
-        objdb,fwobjectname.toUtf8().constData(), ipv6_policy, oscnf,
-        &minus_n_commands_filter);
+    PolicyCompiler_ipt *policy_compiler;
+
+    if (platform_family == "ipcop")
+        policy_compiler = new PolicyCompiler_ipcop(
+            objdb,fwobjectname.toUtf8().constData(), ipv6_policy, oscnf,
+            &minus_n_commands_filter);
+    else
+        policy_compiler = new PolicyCompiler_ipt(
+            objdb,fwobjectname.toUtf8().constData(), ipv6_policy, oscnf,
+            &minus_n_commands_filter);
 
     if (!policy->isTop())
-        c.registerRuleSetChain(branch_name);
+        policy_compiler->registerRuleSetChain(branch_name);
 
-    c.setSourceRuleSet( policy );
-    c.setRuleSetName(branch_name);
+    policy_compiler->setSourceRuleSet( policy );
+    policy_compiler->setRuleSetName(branch_name);
 
-    c.setDebugLevel( dl );
-    c.setDebugRule(  drp );
-    c.setVerbose( (bool)(verbose) );
-    c.setHaveDynamicInterfaces(have_dynamic_interfaces);
-    if (test_mode) c.setTestMode();
+    policy_compiler->setDebugLevel( dl );
+    policy_compiler->setDebugRule(  drp );
+    policy_compiler->setVerbose( (bool)(verbose) );
+    policy_compiler->setHaveDynamicInterfaces(have_dynamic_interfaces);
+    if (test_mode) policy_compiler->setTestMode();
 
-    if ( (policy_rules_count=c.prolog()) > 0 )
+    if ( (policy_rules_count=policy_compiler->prolog()) > 0 )
     {
-        c.compile();
-        c.epilog();
+        policy_compiler->compile();
+        policy_compiler->epilog();
 
-        if (c.getCompiledScriptLength() > 0)
+        if (policy_compiler->getCompiledScriptLength() > 0)
         {
             ostringstream tmp;
 
-            if (c.haveErrorsAndWarnings())
+            if (policy_compiler->haveErrorsAndWarnings())
             {
                 tmp << "# Policy compiler errors and warnings:" << "\n";
-                tmp << c.getErrors("# ");
+                tmp << policy_compiler->getErrors("# ");
             }
-            tmp << c.getCompiledScript();
+            tmp << policy_compiler->getCompiledScript();
 
             if (tmp.tellp() > 0)
             {
@@ -455,16 +503,17 @@ bool processPolicyRuleSet(
     {
         ostringstream tmp;
 
-        tmp << c.flushAndSetDefaultPolicy();
+        if (flush_and_set_default_policy)
+            tmp << policy_compiler->flushAndSetDefaultPolicy();
 
         if (!prolog_done && prolog_place == "after_flush" &&
             !fw->getOptionsObject()->getBool("use_iptables_restore"))
         {
-            tmp << "prolog_commands" << endl << endl;
+            tmp << "prolog_commands" << endl;
             prolog_done = true;
         }
 
-        tmp << c.printAutomaticRules();
+        tmp << policy_compiler->printAutomaticRules();
 
         if (tmp.tellp() > 0)
         {
@@ -785,24 +834,60 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 	string pfctl_dbg=(debug)?"-v":"";
 
 	OSConfigurator_linux24 *oscnf = NULL;
-        string family = Resources::os_res[
-            fw->getStr("host_OS")]->Resources::getResourceStr(
-                "/FWBuilderResources/Target/family");
         string fw_version = fw->getStr("version");
         if (fw_version.empty()) fw_version = "(any version)";
+        string platform = fw->getStr("platform");
+        string host_os = fw->getStr("host_OS");
 
-        if ( family=="linux24" )
+        string platform_family = Resources::platform_res[platform]->
+            getResourceStr("/FWBuilderResources/Target/family");
+        string os_family = Resources::os_res[host_os]->
+            getResourceStr("/FWBuilderResources/Target/family");
+
+        bool supports_prolog_epilog = Resources::getTargetCapabilityBool(
+            platform, "supports_prolog_epilog");
+
+        if (!supports_prolog_epilog)
+        {
+            prolog_done = true;
+            epilog_done = true;
+        }
+
+        string os_variant = DISTRO;
+
+        bool flush_and_set_default_policy = Resources::getTargetCapabilityBool(
+            platform, "flush_and_set_default_policy");
+
+/* minimal sanity checking */
+        if (platform_family == "ipcop")
+        {
+            os_variant = "ipcop";
+
+            // can't use iptables-restore with ipcop
+            fw->getOptionsObject()->setBool("use_iptables_restore", false);
+            // ipcop has its own iptables commands that accept packets
+            // in states ESTABLISHED,RELATED
+            fw->getOptionsObject()->setBool("accept_established", false);
+        }
+
+
+        if (os_family == "ipcop")
+            oscnf = new OSConfigurator_ipcop(
+                objdb , fwobjectname.toUtf8().constData(), false);
+
+        if (os_family == "linux24")
             oscnf = new OSConfigurator_linux24(
                 objdb , fwobjectname.toUtf8().constData(), false);
 
 	if (oscnf==NULL)
-	    throw FWException(_("Unrecognized host OS ")+fw->getStr("host_OS")+"  (family "+family+")");
+	    throw FWException("Unrecognized host OS " +
+                              fw->getStr("host_OS") +
+                              "  (family " + os_family+")");
 
 /* do not put comment in the script if it is intended for linksys */
         bool nocomm = Resources::os_res[fw->getStr("host_OS")]->
             Resources::getResourceBool(
                 "/FWBuilderResources/Target/options/suppress_comments");
-
 
         oscnf->prolog();
 
@@ -812,6 +897,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         int nat_rules_count     = 0;
         int routing_rules_count = 0;
         bool have_nat = false;
+        bool have_ipv6 = false;
 
         // track chains in each table separately. Can we have the same
         // chain in filter and mangle tables ? Would it be the same
@@ -822,7 +908,6 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         std::map<const std::string, bool> minus_n_commands_filter;
         std::map<const std::string, bool> minus_n_commands_mangle;
         std::map<const std::string, bool> minus_n_commands_nat;
-
 
         vector<int> ipv4_6_runs;
         string generated_script;
@@ -848,8 +933,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
         }
 
-        for (vector<int>::iterator i=ipv4_6_runs.begin(); 
-             i!=ipv4_6_runs.end(); ++i)
+        for (vector<int>::iterator i=ipv4_6_runs.begin(); i!=ipv4_6_runs.end(); ++i)
         {
             int policy_af = *i;
             bool ipv6_policy = (policy_af == AF_INET6);
@@ -916,46 +1000,56 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 // compile NAT rules before policy rules because policy
                 // compiler needs to know the number of virtual addresses
                 // being created for NAT
-                NATCompiler_ipt n(
-                    objdb, fwobjectname.toUtf8().constData(), ipv6_policy,
-                    oscnf, &minus_n_commands_nat);
-                n.setSourceRuleSet( nat );
-                n.setRuleSetName(branch_name);
+                NATCompiler_ipt *nat_compiler;
 
-                n.setDebugLevel( dl );
-                n.setDebugRule(  drn );
-                n.setVerbose( (bool)(verbose) );
-                n.setHaveDynamicInterfaces(have_dynamic_interfaces);
-                if (test_mode) n.setTestMode();
+                if (platform_family == "ipcop")
+                    nat_compiler = new NATCompiler_ipcop(
+                        objdb, fwobjectname.toUtf8().constData(), ipv6_policy,
+                        oscnf, &minus_n_commands_nat);
+                else
+                    nat_compiler = new NATCompiler_ipt(
+                        objdb, fwobjectname.toUtf8().constData(), ipv6_policy,
+                        oscnf, &minus_n_commands_nat);
 
-                if ( (nat_rules_count=n.prolog()) > 0 )
+                nat_compiler->setSourceRuleSet( nat );
+                nat_compiler->setRuleSetName(branch_name);
+
+                nat_compiler->setDebugLevel( dl );
+                nat_compiler->setDebugRule(  drn );
+                nat_compiler->setVerbose( (bool)(verbose) );
+                nat_compiler->setHaveDynamicInterfaces(have_dynamic_interfaces);
+                if (test_mode) nat_compiler->setTestMode();
+
+                if ( (nat_rules_count=nat_compiler->prolog()) > 0 )
                 {
-                    n.compile();
-                    n.epilog();
+                    nat_compiler->compile();
+                    nat_compiler->epilog();
                 }
 
                 have_nat = (have_nat || (nat_rules_count > 0));
 
-                if (n.getCompiledScriptLength() > 0)
+                if (nat_compiler->getCompiledScriptLength() > 0)
                 {
                     nat_rules_stream << "# ================ Table 'nat', "
                                      << " rule set "
                                      << branch_name << "\n";
 
-                    if (n.haveErrorsAndWarnings())
+                    if (nat_compiler->haveErrorsAndWarnings())
                     {
                         nat_rules_stream << "# NAT compiler errors and "
                                          << "warnings:\n";
-                        nat_rules_stream << n.getErrors("# ");
+                        nat_rules_stream << nat_compiler->getErrors("# ");
                     }
 
                     if (nat->isTop())
                     {
-                        nat_rules_stream << n.flushAndSetDefaultPolicy();
-                        nat_rules_stream << n.printAutomaticRules();
+                        if (flush_and_set_default_policy)
+                            nat_rules_stream << nat_compiler->flushAndSetDefaultPolicy();
+
+                        nat_rules_stream << nat_compiler->printAutomaticRules();
                     }
 
-                    nat_rules_stream << n.getCompiledScript();
+                    nat_rules_stream << nat_compiler->getCompiledScript();
                     nat_rules_stream << "\n";
                     empty_output = false;
                 }
@@ -983,6 +1077,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             {
                 if (ipv6_policy)
                 {
+                    have_ipv6 = true;
                     generated_script += "\n\n";
                     generated_script += "# ================ IPv6\n";
                     generated_script += "\n\n";
@@ -1002,22 +1097,27 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                                            ipv6_policy);
         }
 
-        RoutingCompiler_ipt r(
-            objdb , fwobjectname.toUtf8().constData() , false, oscnf );
+        RoutingCompiler_ipt *routing_compiler;
 
-	r.setDebugLevel( dl );
-	r.setDebugRule(  drp );
-	r.setVerbose( verbose );
-        if (test_mode) r.setTestMode();
+        if (platform_family == "ipcop")
+            routing_compiler = new RoutingCompiler_ipcop(
+                objdb , fwobjectname.toUtf8().constData() , false, oscnf );
+        else
+            routing_compiler = new RoutingCompiler_ipt(
+                objdb , fwobjectname.toUtf8().constData() , false, oscnf );
 
-	if ( (routing_rules_count=r.prolog()) > 0 )
+	routing_compiler->setDebugLevel( dl );
+	routing_compiler->setDebugRule(  drp );
+	routing_compiler->setVerbose( verbose );
+        if (test_mode) routing_compiler->setTestMode();
+
+	if ( (routing_rules_count=routing_compiler->prolog()) > 0 )
         {
-	    r.compile();
-	    r.epilog();
+	    routing_compiler->compile();
+	    routing_compiler->epilog();
 	}
 
         oscnf->generateCodeForProtocolHandlers(have_nat);
-
         oscnf->printChecksForRunTimeMultiAddress();
         oscnf->processFirewallOptions();
         oscnf->configureInterfaces();
@@ -1079,7 +1179,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                << fw_file_info.fileName() << "\n";
         script << "#" << "\n";
         script << "#" << "\n";
-        script << "# Compiled for iptables " << fw_version << "\n";
+        script << "# Compiled for " << platform << " " << fw_version << "\n";
         script << "#" << "\n";
         if ( !nocomm )
         {
@@ -1102,14 +1202,37 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         script << "export PATH" << "\n";
         script << "\n";
 
-/*
- * print definitions for variables IPTABLES, IP, LOGGER. Some day we may
- * add a choice of distro in the GUI. Right now paths are either default
- * for a given distro, or custom strings entered by user in the GUI and stored
- * in firewall options.
- */
-        script << oscnf->printPathForAllTools(DISTRO);
+        /*
+         * print definitions for variables IPTABLES, IP, LOGGER. Some
+         * day we may add a choice of os_variant in the GUI. Right now
+         * paths are either default for a given os_variant, or custom
+         * strings entered by user in the GUI and stored in firewall
+         * options.
+         */
+        script << oscnf->printPathForAllTools(os_variant);
         script << oscnf->printShellFunctions(nocomm);
+        if (supports_prolog_epilog)
+            script << oscnf->printPrologEpilogFunctions(nocomm);
+
+        /*
+         * All functions have been defined.
+         * Actual script begins here
+         */
+
+        script << "# See how we were called." << endl;
+        script << "# For backwards compatibility missing argument is equivalent to 'start'" << endl;
+        script << endl;
+
+        script << "test -z \"$1\" && {" << endl;
+        script << "  $0 start" << endl;
+        script << "  exit $?" << endl;
+        script << "}" << endl;
+        script << endl;
+
+        script << "case \"$1\" in" << endl;
+        script << "  start)" << endl;
+        script << endl;
+        script << "  " << "check_tools" << endl;
 
         string prolog_place = fw->getOptionsObject()->getStr("prolog_place");
         if (prolog_place == "") prolog_place="top";
@@ -1125,28 +1248,30 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
              (prolog_place == "after_flush" && 
               fw->getOptionsObject()->getBool("use_iptables_restore"))))
         {
-            script << "prolog_commands" << endl << endl;
+            script << "  prolog_commands" << endl;
             prolog_done = true;
         }
 
-	script << oscnf->getCompiledScript();
+	script << indent(2, oscnf->getCompiledScript());
 
         script << "\n";
 
         if (!prolog_done && prolog_place == "after_interfaces")
         {
-            script << "prolog_commands" << endl << endl;
+            script << "  prolog_commands" << endl;
             prolog_done = true;
         }
 
-        script << "log '";
-        if (omit_timestamp)
+        if (platform_family != "ipcop")
         {
-            script << _("Activating firewall script");
-        } else
-        {
-        script << _("Activating firewall script generated ")
-               << timestr << " " << _(" by ")
+            script << "  log '";
+            if (omit_timestamp)
+            {
+                script << _("Activating firewall script");
+            } else
+            {
+                script << _("Activating firewall script generated ")
+                       << timestr << " " << _(" by ")
 /* timezone removed because of bug #1205665 - sometimes timezone name
  * has "'" in it which confuses shell and causes an error (for
  * instance French daylight savings time is "Paris, Madrid (heure
@@ -1154,22 +1279,21 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
  * 
  *               << timestr << " " << tzname[stm->tm_isdst] << _(" by ")
  */
-               << user_name;
+                       << user_name;
+            }
+            script << "'" << endl;
+            script << endl;
         }
 
-        script << "'" << endl;
-	script << endl;
 
-        script << generated_script;
-
-        script << r.getCompiledScript();
-
-	script << oscnf->getCompiledScript();
+        script << indent(2, generated_script);
+        script << indent(2, routing_compiler->getCompiledScript());
+	script << indent(2, oscnf->getCompiledScript());
 
 	script << endl;
-        script << "epilog_commands" << endl;
+        if (!epilog_done) script << "  epilog_commands" << endl;
 
-        script << oscnf->printIPForwardingCommands(nocomm);
+        script << indent(2, oscnf->printIPForwardingCommands(nocomm));
         script << endl;
 
         // no need to do this because we now abort the script if
@@ -1181,6 +1305,15 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
         //     script << "exit $IPTABLES_RESTORE_RES";
 
 	script << endl;
+
+        script << "  ;;" << endl;
+        script << endl;
+        script << "stop)" << endl;
+        script << "  reset_iptables_v4" << endl;
+        if (have_ipv6) script << "  reset_iptables_v6" << endl;
+        script << "  ;;" << endl;
+        script << "esac" << endl;
+        script << endl;
 
         QFile fw_file(fw_file_name);
         if (fw_file.open(QIODevice::WriteOnly))
