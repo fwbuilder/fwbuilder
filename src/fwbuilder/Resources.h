@@ -46,6 +46,7 @@
 namespace libfwbuilder {
     class Host;
     class Firewall;
+    class Interface;
     class FWOptions;
 };
 
@@ -92,6 +93,7 @@ public:
     std::string  getVersion();
     std::string  getCompiler();
     std::string  getInstaller();
+    std::string  getExporter();
 
     static std::vector<std::string>             getListOfPlatforms();
     static std::map<std::string,std::string>    getPlatforms();
@@ -131,6 +133,13 @@ public:
      */
     static void    setDefaultTargetOptions(const std::string &target,
                                            libfwbuilder::Firewall *o) throw (libfwbuilder::FWException);
+
+    /**
+     *  This method sets default values to the platform-specific interface
+     *  or OS-specific interface options.
+     */
+    static void    setDefaultIfaceOptions(const std::string &target,
+                                          libfwbuilder::Interface *iface) throw (libfwbuilder::FWException);
 
     /**
      * returns string value of target's capability

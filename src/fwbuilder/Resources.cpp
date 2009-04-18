@@ -49,6 +49,7 @@
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/FWOptions.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Interface.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Tools.h"
 
@@ -280,6 +281,11 @@ string  Resources::getInstaller()
     return getResourceStr("/FWBuilderResources/Target/installer");
 }
 
+string  Resources::getExporter()
+{
+    return getResourceStr("/FWBuilderResources/Target/exporter");
+}
+
 vector<string>    Resources::getListOfPlatforms()
 {
     vector<string> vs;
@@ -426,6 +432,26 @@ void    Resources::setDefaultTargetOptions(const string &target,Firewall *fw)  t
         throw FWException("Support module for target '"+target+"' is not available");
 
     r->setDefaultOptionsAll(opt,"/FWBuilderResources/Target/options/default");
+}
+
+void    Resources::setDefaultIfaceOptions(const string &target,Interface *iface)
+        throw (FWException)
+{
+    FWOptions *opt=iface->getOptionsObject();
+    /* if InterfaceOptions object does not yet exist -> create one */
+    if (opt == NULL) {
+        iface->add(iface->getRoot()->create(InterfaceOptions::TYPENAME));
+        opt = iface->getOptionsObject();
+    }
+
+    Resources *r=NULL;
+
+    if (platform_res.count(target)!=0)      r=platform_res[target];
+    if (r==NULL && os_res.count(target)!=0) r=os_res[target];
+    if (r==NULL)
+        throw FWException("Support module for target '"+target+"' is not available");
+
+    r->setDefaultOptionsAll(opt,"/FWBuilderResources/Target/options/interface");
 }
 
 void    Resources::setDefaultOptions(Host *h)

@@ -35,6 +35,7 @@
 #include <fwbuilder/FWObjectReference.h>
 #include <fwbuilder/FWOptions.h>
 #include <fwbuilder/Interface.h>
+#include <fwbuilder/ClusterGroup.h>
 #include <fwbuilder/Management.h>
 #include <fwbuilder/IPv4.h>
 #include <fwbuilder/IPv6.h>
@@ -301,6 +302,84 @@ FWObject& Firewall::duplicate(const FWObject *obj,
 
             if (opa!=NULL && opa1!=NULL)
                 replaceRef(opa->getId(),  opa1->getId() );
+        }
+
+        for (FWObjectTypedChildIterator k = o->findByType(InterfaceOptions::TYPENAME);
+             k!=k.end(); ++k )
+        {
+            FWObject *opa = *k;
+            FWObject *opa1= o1->addCopyOf(opa,preserve_id);
+
+            if (opa!=NULL && opa1!=NULL)
+                replaceRef(opa->getId(),  opa1->getId() );
+        }
+
+        /*
+         * duplicate ClusterGroup object of all interfaces
+         * this is actually used for Cluster object only atm
+         */
+        for (FWObjectTypedChildIterator k = o->findByType(ClusterGroup::TYPENAME);
+             k!=k.end(); ++k )
+        {
+            FWObject *opa = *k;
+            FWObject *opa1= o1->addCopyOf(opa,preserve_id);
+
+            if (opa!=NULL && opa1!=NULL)
+                replaceRef(opa->getId(),  opa1->getId() );
+        }
+
+        /*
+         * duplicate sub-interfaces (only for interfaces with advanced
+         * interface config mode enabled)
+         */
+        for (FWObjectTypedChildIterator s = o->findByType(Interface::TYPENAME);
+             s!=s.end(); ++s )
+        {
+            FWObject *os   = *s;
+            FWObject *os1  = o1->addCopyOf(os,preserve_id);
+
+            replaceRef(os->getId(),   os1->getId()   );
+            os1->destroyChildren();
+
+            for (FWObjectTypedChildIterator k=os->findByType(IPv4::TYPENAME);
+                 k!=k.end(); ++k )
+            {
+                FWObject *oa = *k;
+                FWObject *oa1= os1->addCopyOf(oa,preserve_id);
+
+                if (oa!=NULL && oa1!=NULL)
+                    replaceRef(oa->getId(),  oa1->getId() );
+            }
+
+            for (FWObjectTypedChildIterator k=os->findByType(IPv6::TYPENAME);
+                 k!=k.end(); ++k )
+            {
+                FWObject *oa = *k;
+                FWObject *oa1= os1->addCopyOf(oa,preserve_id);
+
+                if (oa!=NULL && oa1!=NULL)
+                    replaceRef(oa->getId(),  oa1->getId() );
+            }
+
+            for (FWObjectTypedChildIterator k = os->findByType(physAddress::TYPENAME);
+                 k!=k.end(); ++k )
+            {
+                FWObject *opa = *k;
+                FWObject *opa1= os1->addCopyOf(opa,preserve_id);
+
+                if (opa!=NULL && opa1!=NULL)
+                    replaceRef(opa->getId(),  opa1->getId() );
+            }
+
+            for (FWObjectTypedChildIterator k = os->findByType(InterfaceOptions::TYPENAME);
+                 k!=k.end(); ++k )
+            {
+                FWObject *opa = *k;
+                FWObject *opa1= os1->addCopyOf(opa,preserve_id);
+
+                if (opa!=NULL && opa1!=NULL)
+                    replaceRef(opa->getId(),  opa1->getId() );
+            }
         }
     }
 

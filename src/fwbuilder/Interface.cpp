@@ -30,6 +30,7 @@
 #include <fwbuilder/libfwbuilder-config.h>
 
 #include <fwbuilder/Interface.h>
+#include <fwbuilder/ClusterGroup.h>
 #include <fwbuilder/XMLTools.h>
 #include <fwbuilder/IPv4.h>
 #include <fwbuilder/IPv6.h>
@@ -75,7 +76,7 @@ Interface::Interface(const FWObjectDatabase *root,bool prepopulate) :
 
     bcast_bits       = 1    ;
     ostatus          = true ;
-    snmp_type        = -1   ;     
+    snmp_type        = -1   ;
 }
 
 Interface::~Interface() {}
@@ -202,10 +203,33 @@ xmlNodePtr Interface::toXML(xmlNodePtr parent) throw(FWException)
             o->toXML(me);
     }
 
+    o=getFirstByType( InterfaceOptions::TYPENAME );
+    if (o) o->toXML(me);
+
+    /*
+     * serialize ClusterGroup members (if any)
+     */
+    o=getFirstByType( ClusterGroup::TYPENAME );
+    if (o) o->toXML(me);
+
+    /*
+     * serialize sub-interfaces (only for interfaces with advanced interface
+     * config mode enabled)
+     */
+    for(FWObjectTypedChildIterator j1=findByType(Interface::TYPENAME);
+        j1!=j1.end(); ++j1)
+    {
+        if((o=(*j1))!=NULL)
+            o->toXML(me);
+    }
+
     return me;
 }
 
-
+FWOptions* Interface::getOptionsObject()
+{
+    return FWOptions::cast( getFirstByType(InterfaceOptions::TYPENAME) );
+}
 
 int  Interface::getSecurityLevel() const
 {
@@ -256,15 +280,30 @@ void Interface::setBroadcastBits(int _val) { bcast_bits=_val; }
 bool  Interface::validateChild(FWObject *o)
 {
     string otype=o->getTypeName();
-    return (otype==IPv4::TYPENAME ||
+
+    return (otype==Interface::TYPENAME ||
+            otype==IPv4::TYPENAME ||
             otype==IPv6::TYPENAME ||
-            otype==physAddress::TYPENAME);
+            otype==physAddress::TYPENAME ||
+            otype==InterfaceOptions::TYPENAME ||
+            otype==ClusterGroup::TYPENAME);
 }
 
 bool Interface::isLoopback() const
 {
     const Address *iaddr = getAddressObject();
     return (iaddr && *(iaddr->getAddressPtr()) == InetAddr::getLoopbackAddr());
+}
+
+FWObject* Interface::getParentHost() const
+{
+    FWObject *p = this->getParent();
+    if (!Interface::isA(p)) {
+        return p;
+    } else {
+        p = p->getParent();
+    }
+    return p;
 }
 
 physAddress*  Interface::getPhysicalAddress () const

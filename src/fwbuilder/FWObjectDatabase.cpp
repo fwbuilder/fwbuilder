@@ -63,6 +63,8 @@
 #include <fwbuilder/RuleSet.h>
 #include <fwbuilder/FWOptions.h>
 #include <fwbuilder/Firewall.h>
+#include <fwbuilder/Cluster.h>
+#include <fwbuilder/ClusterGroup.h>
 #include <fwbuilder/NAT.h>
 #include <fwbuilder/Policy.h>
 #include <fwbuilder/Routing.h>
@@ -76,6 +78,7 @@
 #include <fwbuilder/XMLTools.h>
 #include <fwbuilder/TagService.h>
 #include <fwbuilder/UserService.h>
+#include <fwbuilder/VRRPService.h>
 
 #include <iostream>
 #include <sstream>

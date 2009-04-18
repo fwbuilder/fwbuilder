@@ -1,3 +1,18 @@
+2009-04-17  vadim  <vadim@vk.crocodile.org>
+
+	* Cluster.cpp (Cluster::Cluster): Support for clusters of
+	firewalls.
+
+	* FWObjectDatabase_10.xslt: auto-upgrade transformation adds tree
+	branch Clusters
+
+	* VERSION: DTD version 11
+
+	* Merging patches from Secunet Security Networks AG to add support
+	for Secuwall firewall.
+
+	* VERSION: start v3.1.0 branch v3_1_secunet
+
 2009-04-09  vadim  <vadim@vk.crocodile.org>
 
 	* VERSION: start v3.0.5

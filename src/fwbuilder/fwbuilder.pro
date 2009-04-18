@@ -15,6 +15,8 @@ SOURCES  = 	InetAddr.cpp \
 			CustomService.cpp \
 			dns.cpp \
 			Firewall.cpp \
+			Cluster.cpp \
+			ClusterGroup.cpp \
 			FWException.cpp \
 			FWIntervalReference.cpp \
 			FWObject.cpp \
@@ -55,6 +57,7 @@ SOURCES  = 	InetAddr.cpp \
 			Rule.cpp \
 			RuleElement.cpp \
 			RuleSet.cpp \
+			SecuwallMgmtFile.cpp \
 			Service.cpp \
 			ServiceGroup.cpp \
 			snmp.cpp \
@@ -64,6 +67,7 @@ SOURCES  = 	InetAddr.cpp \
 			TCPUDPService.cpp \
 			UDPService.cpp \
 			UserService.cpp \
+			VRRPService.cpp \
             TagService.cpp \
 			XMLTools.cpp \
 			ObjectMatcher.cpp \
@@ -83,6 +87,8 @@ HEADERS  = 	inet_net.h \
 			CustomService.h \
 			dns.h \
 			Firewall.h \
+			Cluster.h \
+			ClusterGroup.h \
 			FWException.h \
 			FWIntervalReference.h \
 			FWObjectDatabase.h \
@@ -123,6 +129,7 @@ HEADERS  = 	inet_net.h \
 			RuleElement.h \
 			Rule.h \
 			RuleSet.h \
+			SecuwallMgmtFile.h \
 			ServiceGroup.h \
 			Service.h \
 			snmp.h \
@@ -133,6 +140,7 @@ HEADERS  = 	inet_net.h \
 			TCPUDPService.h \
 			UDPService.h \
 			UserService.h \
+			VRRPService.h \
             TagService.h \
 			ObjectMatcher.h \
 			XMLTools.h

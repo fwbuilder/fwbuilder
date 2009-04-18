@@ -39,44 +39,49 @@
 #include <fwbuilder/FWObject.h>
 #include <fwbuilder/FWObjectDatabase.h>
 
-#include <fwbuilder/Library.h>
-#include <fwbuilder/Interval.h>
-#include <fwbuilder/ICMPService.h>
-#include <fwbuilder/ICMP6Service.h>
-#include <fwbuilder/IPService.h>
-#include <fwbuilder/TCPService.h>
-#include <fwbuilder/UDPService.h>
+#include <fwbuilder/AddressRange.h>
+#include <fwbuilder/AddressTable.h>
 #include <fwbuilder/CustomService.h>
-#include <fwbuilder/FWReference.h>
-#include <fwbuilder/FWObjectReference.h>
-#include <fwbuilder/FWServiceReference.h>
+#include <fwbuilder/DNSName.h>
 #include <fwbuilder/FWIntervalReference.h>
+#include <fwbuilder/FWObjectReference.h>
+#include <fwbuilder/FWOptions.h>
+#include <fwbuilder/FWReference.h>
+#include <fwbuilder/FWServiceReference.h>
+
+#include <fwbuilder/Firewall.h>
+#include <fwbuilder/Cluster.h>
+#include <fwbuilder/ClusterGroup.h>
+
+#include <fwbuilder/Group.h>
 #include <fwbuilder/Host.h>
-#include <fwbuilder/Interface.h>
+#include <fwbuilder/ICMP6Service.h>
+#include <fwbuilder/ICMPService.h>
+#include <fwbuilder/IPService.h>
 #include <fwbuilder/IPv4.h>
 #include <fwbuilder/IPv6.h>
-#include <fwbuilder/physAddress.h>
-#include <fwbuilder/DNSName.h>
-#include <fwbuilder/AddressTable.h>
-#include <fwbuilder/Group.h>
+#include <fwbuilder/Interface.h>
+#include <fwbuilder/Interval.h>
+#include <fwbuilder/IntervalGroup.h>
+#include <fwbuilder/Library.h>
+#include <fwbuilder/Management.h>
+#include <fwbuilder/NAT.h>
+#include <fwbuilder/Network.h>
+#include <fwbuilder/NetworkIPv6.h>
+#include <fwbuilder/ObjectGroup.h>
+#include <fwbuilder/Policy.h>
+#include <fwbuilder/Routing.h>
 #include <fwbuilder/Rule.h>
 #include <fwbuilder/RuleElement.h>
 #include <fwbuilder/RuleSet.h>
-#include <fwbuilder/FWOptions.h>
-#include <fwbuilder/Firewall.h>
-#include <fwbuilder/NAT.h>
-#include <fwbuilder/Policy.h>
-#include <fwbuilder/Routing.h>
-#include <fwbuilder/ObjectGroup.h>
 #include <fwbuilder/ServiceGroup.h>
-#include <fwbuilder/IntervalGroup.h>
-#include <fwbuilder/Network.h>
-#include <fwbuilder/NetworkIPv6.h>
-#include <fwbuilder/AddressRange.h>
-#include <fwbuilder/Management.h>
-#include <fwbuilder/XMLTools.h>
+#include <fwbuilder/TCPService.h>
 #include <fwbuilder/TagService.h>
+#include <fwbuilder/UDPService.h>
 #include <fwbuilder/UserService.h>
+#include <fwbuilder/VRRPService.h>
+#include <fwbuilder/XMLTools.h>
+#include <fwbuilder/physAddress.h>
 
 #include <iostream>
 #include <sstream>
@@ -111,6 +116,10 @@ void FWObjectDatabase::init_create_methods_table()
             &FWObjectDatabase::createFWObjectAddressRange;
         create_methods["AddressTable"] =
             &FWObjectDatabase::createFWObjectAddressTable;
+        create_methods["Cluster"] =
+            &FWObjectDatabase::createFWObjectCluster;
+        create_methods["ClusterGroup"] =
+            &FWObjectDatabase::createFWObjectClusterGroup;
         create_methods["CustomService"] =
             &FWObjectDatabase::createFWObjectCustomService;
         create_methods["DNSName"] =
@@ -135,6 +144,8 @@ void FWObjectDatabase::init_create_methods_table()
             &FWObjectDatabase::createFWObjectICMP6Service;
         create_methods["ICMPService"] =
             &FWObjectDatabase::createFWObjectICMPService;
+        create_methods["InterfaceOptions"] =
+            &FWObjectDatabase::createFWObjectInterfaceOptions;
         create_methods["IPService"] =
             &FWObjectDatabase::createFWObjectIPService;
         create_methods["IPv4"] =
@@ -219,6 +230,8 @@ void FWObjectDatabase::init_create_methods_table()
             &FWObjectDatabase::createFWObjectUDPService;
         create_methods["UserService"] =
             &FWObjectDatabase::createFWObjectUserService;
+        create_methods["VRRPService"] =
+            &FWObjectDatabase::createFWObjectVRRPService;
         create_methods["physAddress"] =
             &FWObjectDatabase::createFWObjectphysAddress;
     }
@@ -296,6 +309,8 @@ FWObject *FWObjectDatabase::createFromXML(xmlNodePtr data)
 
 CREATE_OBJ_METHOD(AddressRange);
 CREATE_OBJ_METHOD(AddressTable);
+CREATE_OBJ_METHOD(Cluster);
+CREATE_OBJ_METHOD(ClusterGroup);
 CREATE_OBJ_METHOD(CustomService);
 CREATE_OBJ_METHOD(DNSName);
 CREATE_OBJ_METHOD(FWBDManagement);
@@ -304,6 +319,7 @@ CREATE_OBJ_METHOD(FWObjectReference);
 CREATE_OBJ_METHOD(FWServiceReference);
 CREATE_OBJ_METHOD(Firewall);
 CREATE_OBJ_METHOD(FirewallOptions);
+CREATE_OBJ_METHOD(InterfaceOptions);
 CREATE_OBJ_METHOD(Host);
 CREATE_OBJ_METHOD(HostOptions);
 CREATE_OBJ_METHOD(ICMP6Service);
@@ -349,5 +365,6 @@ CREATE_OBJ_METHOD(TCPService);
 CREATE_OBJ_METHOD(TagService);
 CREATE_OBJ_METHOD(UDPService);
 CREATE_OBJ_METHOD(UserService);
+CREATE_OBJ_METHOD(VRRPService);
 CREATE_OBJ_METHOD(physAddress);
 

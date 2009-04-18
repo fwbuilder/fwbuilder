@@ -33,6 +33,7 @@
 #include <fwbuilder/physAddress.h>
 #include <fwbuilder/FWException.h>
 #include <fwbuilder/ObjectMatcher.h>
+#include <fwbuilder/FWOptions.h>
 
 namespace libfwbuilder
 {
@@ -77,7 +78,15 @@ public:
 
         virtual bool  validateChild(FWObject *o);
 
+        virtual FWOptions* getOptionsObject();
+
         DECLARE_FWOBJECT_SUBTYPE(Interface);
+
+        /**
+         *  helper-function, needed when dealing with sub-interfaces: function
+         *  returns the parent host (or firewall) of an interface.
+         */
+        FWObject* getParentHost() const;
 
         /**
          *   each interface must be associated with some security level. Level
@@ -178,7 +187,7 @@ public:
 
         virtual bool dispatchComplexMatch(ObjectMatcher *om, FWObject *obj)
         { return om->checkComplexMatch(this, obj); }
-};
+    };
 
 }
 
