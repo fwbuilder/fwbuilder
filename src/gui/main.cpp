@@ -418,7 +418,6 @@ int main( int argc, char *argv[] )
             for (const char **cptr = arg; *cptr!=NULL; cptr++)
             {
                 qDebug("    %s", *cptr);
-                cptr++;
             }
         }
 
