@@ -97,6 +97,7 @@ class RuleElementSrc : public ObjectGroup, public RuleElement {
     RuleElementSrc();
     RuleElementSrc(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
+    virtual bool validateChild(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
 };
@@ -107,6 +108,7 @@ class RuleElementDst : public ObjectGroup, public RuleElement {
     RuleElementDst();
     RuleElementDst(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
+    virtual bool validateChild(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
 };
@@ -117,6 +119,7 @@ class RuleElementSrv : public ServiceGroup, public RuleElement {
     RuleElementSrv();
     RuleElementSrv(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
+    virtual bool validateChild(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
 };
@@ -139,6 +142,7 @@ class RuleElementInterval : public IntervalGroup, public RuleElement {
     RuleElementInterval();
     RuleElementInterval(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
+    virtual bool validateChild(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
 };
@@ -149,6 +153,7 @@ class RuleElementOSrc : public ObjectGroup, public RuleElement {
     RuleElementOSrc();
     RuleElementOSrc(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
+    virtual bool validateChild(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
 };
@@ -159,6 +164,7 @@ class RuleElementODst : public ObjectGroup, public RuleElement {
     RuleElementODst();
     RuleElementODst(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
+    virtual bool validateChild(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
 };
@@ -169,6 +175,7 @@ class RuleElementOSrv : public ServiceGroup, public RuleElement {
     RuleElementOSrv();
     RuleElementOSrv(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
+    virtual bool validateChild(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
 };
@@ -179,6 +186,7 @@ class RuleElementTSrc : public ObjectGroup, public RuleElement {
     RuleElementTSrc();
     RuleElementTSrc(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
+    virtual bool validateChild(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
 };
@@ -189,6 +197,7 @@ class RuleElementTDst : public ObjectGroup, public RuleElement {
     RuleElementTDst();
     RuleElementTDst(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
+    virtual bool validateChild(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
 };
@@ -210,6 +219,7 @@ class RuleElementRDst : public ObjectGroup, public RuleElement {
     RuleElementRDst();
     RuleElementRDst(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
+    virtual bool validateChild(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
 };

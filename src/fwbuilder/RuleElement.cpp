@@ -202,6 +202,13 @@ xmlNodePtr RuleElementSrc::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
+bool RuleElementSrc::validateChild(FWObject *o)
+{
+  if ( o->getId() == getAnyElementId()) return true;
+  if (Interval::cast(o)!=NULL) return false;
+  return ObjectGroup::validateChild(o);
+}
+
 
 
 const char *RuleElementDst::TYPENAME={"Dst"};
@@ -227,6 +234,13 @@ xmlNodePtr RuleElementDst::toXML(xmlNodePtr parent) throw(FWException)
         (*j)->toXML(me);
 
     return me;
+}
+
+bool RuleElementDst::validateChild(FWObject *o)
+{
+  if ( o->getId() == getAnyElementId()) return true;
+  if (Interval::cast(o)!=NULL) return false;
+  return ObjectGroup::validateChild(o);
 }
 
 
@@ -255,6 +269,13 @@ xmlNodePtr RuleElementSrv::toXML(xmlNodePtr parent) throw(FWException)
         (*j)->toXML(me);
 
     return me;
+}
+
+bool RuleElementSrv::validateChild(FWObject *o)
+{
+  if ( o->getId() == getAnyElementId()) return true;
+  if (Interval::cast(o)!=NULL) return false;
+  return ServiceGroup::validateChild(o);
 }
 
 
@@ -369,6 +390,13 @@ xmlNodePtr RuleElementOSrc::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
+bool RuleElementOSrc::validateChild(FWObject *o)
+{
+  if ( o->getId() == getAnyElementId()) return true;
+  if (Interval::cast(o)!=NULL) return false;
+  return ObjectGroup::validateChild(o);
+}
+
 
 const char *RuleElementODst::TYPENAME={"ODst"};
 RuleElementODst::RuleElementODst() {}
@@ -396,6 +424,13 @@ xmlNodePtr RuleElementODst::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
+bool RuleElementODst::validateChild(FWObject *o)
+{
+  if ( o->getId() == getAnyElementId()) return true;
+  if (Interval::cast(o)!=NULL) return false;
+  return ObjectGroup::validateChild(o);
+}
+
 
 const char *RuleElementOSrv::TYPENAME={"OSrv"};
 RuleElementOSrv::RuleElementOSrv() {}
@@ -421,6 +456,13 @@ xmlNodePtr RuleElementOSrv::toXML(xmlNodePtr parent) throw(FWException)
         (*j)->toXML(me);
 
     return me;
+}
+
+bool RuleElementOSrv::validateChild(FWObject *o)
+{
+  if ( o->getId() == getAnyElementId()) return true;
+  if (Interval::cast(o)!=NULL) return false;
+  return ServiceGroup::validateChild(o);
 }
 
 
@@ -452,6 +494,13 @@ xmlNodePtr RuleElementTSrc::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
+bool RuleElementTSrc::validateChild(FWObject *o)
+{
+  if ( o->getId() == getAnyElementId()) return true;
+  if (Interval::cast(o)!=NULL) return false;
+  return ObjectGroup::validateChild(o);
+}
+
 
 const char *RuleElementTDst::TYPENAME={"TDst"};
 RuleElementTDst::RuleElementTDst() {}
@@ -477,6 +526,13 @@ xmlNodePtr RuleElementTDst::toXML(xmlNodePtr parent) throw(FWException)
         (*j)->toXML(me);
 
     return me;
+}
+
+bool RuleElementTDst::validateChild(FWObject *o)
+{
+  if ( o->getId() == getAnyElementId()) return true;
+  if (Interval::cast(o)!=NULL) return false;
+  return ObjectGroup::validateChild(o);
 }
 
 
@@ -513,6 +569,7 @@ bool RuleElementTSrv::validateChild(FWObject *o)
 
   // TagService is not allowed in translated service
   if (TagService::isA(o)) return false;
+  if (Interval::isA(o)) return false;
 
   if (ServiceGroup::cast(o)!=NULL)
   {
@@ -554,6 +611,11 @@ xmlNodePtr RuleElementInterval::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
+bool RuleElementInterval::validateChild(FWObject *o)
+{
+  if ( o->getId() == getAnyElementId()) return true;
+  return (Interval::cast(o)!=NULL || IntervalGroup::cast(o)!=NULL);
+}
 
 
 
@@ -580,6 +642,13 @@ xmlNodePtr RuleElementRDst::toXML(xmlNodePtr parent) throw(FWException)
         (*j)->toXML(me);
 
     return me;
+}
+
+bool RuleElementRDst::validateChild(FWObject *o)
+{
+  if ( o->getId() == getAnyElementId()) return true;
+  if (Interval::cast(o)!=NULL) return false;
+  return ObjectGroup::validateChild(o);
 }
 
 
