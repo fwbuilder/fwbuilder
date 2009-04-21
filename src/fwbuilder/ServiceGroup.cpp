@@ -36,6 +36,8 @@
 #include <fwbuilder/Address.h>
 #include <fwbuilder/Interval.h>
 
+#include <iostream>
+
 using namespace std;
 using namespace libfwbuilder;
 
@@ -48,13 +50,13 @@ ServiceGroup::~ServiceGroup() {}
 
 bool  ServiceGroup::validateChild(FWObject *o)
 { 
-    FWObject *oo = FWReference::getObject(o);
+    if (FWServiceReference::cast(o)!=NULL) return true;
 
-    return (FWObject::validateChild(oo) && 
-            Address::cast(oo)==NULL &&
-            ObjectGroup::cast(oo)==NULL &&
-            Interval::cast(oo)==NULL &&
-            FWObjectReference::cast(oo)==NULL);
+    return (FWObject::validateChild(o) && 
+            Address::cast(o)==NULL &&
+            ObjectGroup::cast(o)==NULL &&
+            Interval::cast(o)==NULL &&
+            FWObjectReference::cast(o)==NULL);
 }
 
 FWReference* ServiceGroup::createRef()
