@@ -32,6 +32,7 @@
 #include <fwbuilder/ServiceGroup.h>
 #include <fwbuilder/FWServiceReference.h>
 #include <fwbuilder/FWObjectDatabase.h>
+#include <fwbuilder/Interval.h>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -46,12 +47,13 @@ ObjectGroup::~ObjectGroup() {}
 
 bool ObjectGroup::validateChild(FWObject *o)
 { 
-    string otype=o->getTypeName();
+    FWObject *oo = FWReference::getObject(o);
 
-    return (FWObject::validateChild(o) && 
-            Service::cast(o)==NULL &&
-            ServiceGroup::cast(o)==NULL &&
-            FWServiceReference::cast(o)==NULL);
+    return (FWObject::validateChild(oo) && 
+            Service::cast(oo)==NULL &&
+            ServiceGroup::cast(oo)==NULL &&
+            Interval::cast(oo)==NULL &&
+            FWServiceReference::cast(oo)==NULL);
 }
 
 xmlNodePtr ObjectGroup::toXML(xmlNodePtr parent) throw(FWException)
