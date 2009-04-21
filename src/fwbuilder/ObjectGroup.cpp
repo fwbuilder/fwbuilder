@@ -47,13 +47,13 @@ ObjectGroup::~ObjectGroup() {}
 
 bool ObjectGroup::validateChild(FWObject *o)
 { 
-    FWObject *oo = FWReference::getObject(o);
+    if (FWObjectReference::cast(o)!=NULL) return true;
 
-    return (FWObject::validateChild(oo) && 
-            Service::cast(oo)==NULL &&
-            ServiceGroup::cast(oo)==NULL &&
-            Interval::cast(oo)==NULL &&
-            FWServiceReference::cast(oo)==NULL);
+    return (FWObject::validateChild(o) && 
+            Service::cast(o)==NULL &&
+            ServiceGroup::cast(o)==NULL &&
+            Interval::cast(o)==NULL &&
+            FWServiceReference::cast(o)==NULL);
 }
 
 xmlNodePtr ObjectGroup::toXML(xmlNodePtr parent) throw(FWException)
