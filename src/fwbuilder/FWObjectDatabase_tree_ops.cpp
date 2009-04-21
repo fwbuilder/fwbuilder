@@ -120,7 +120,8 @@ void FWObjectTreeScanner::addRecursively(FWObject *src)
         FWObject *pdst = dstMap[src->getParent()->getId()];
         assert(pdst!=NULL);
 
-        pdst->add(o1);
+        // no validation is necessary - this copies existing tree
+        pdst->add(o1, false);
 
         if (src->size()==0) o1->shallowDuplicate(src, false);
         else 
@@ -284,7 +285,8 @@ void FWObjectTreeScanner::merge(FWObject *dst,FWObject *src)
             FWObject *pdst = dstMap[ src->getId() ];
             assert(pdst!=NULL);
 
-            pdst->add(o1);
+            // no validation is necessary - this copies existing tree
+            pdst->add(o1, false);
 
 #ifdef DEBUG_MERGE
             cerr << "--------------------------------" << endl;
@@ -391,7 +393,8 @@ FWObjectDatabase* FWObjectDatabase::exportSubtree( const list<FWObject*> &libs )
     {
         FWObject *lib = *i;
         FWObject *nlib = ndb->create(lib->getTypeName());
-        ndb->add(nlib);
+        // no validation is necessary - this copies existing tree
+        ndb->add(nlib, false);
         *nlib = *lib;
     }
 
@@ -410,7 +413,8 @@ FWObjectDatabase* FWObjectDatabase::exportSubtree( FWObject *lib )
     ndb->init = true;
 
     FWObject *nlib = ndb->create(lib->getTypeName());
-    ndb->add(nlib);
+    // no validation is necessary - this copies existing tree
+    ndb->add(nlib, false);
     *nlib = *lib;
 
     FWObjectTreeScanner scanner(ndb);
@@ -488,7 +492,8 @@ FWObject* FWObjectDatabase::_recursivelyCopySubtree(
     nobj->shallowDuplicate(source, true);
     id_map[source->getId()] = nobj->getId();
     nobj->setInt(dedup_attribute, source->getId());
-    target->add(nobj);
+    // no validation is necessary - this copies existing tree
+    target->add(nobj, false);
 
     for(list<FWObject*>::iterator m=source->begin(); m!=source->end(); ++m) 
     {
@@ -601,7 +606,8 @@ FWObject* FWObjectDatabase::reproduceRelativePath(FWObject *lib,
         {
             nobj = create(obj->getTypeName());
             nobj->shallowDuplicate(obj, false);
-            target->add(nobj);
+            // no validation is necessary - this copies existing tree
+            target->add(nobj, false);
         }
         target = nobj;
     }
