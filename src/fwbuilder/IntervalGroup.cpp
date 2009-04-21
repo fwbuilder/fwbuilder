@@ -43,7 +43,11 @@ IntervalGroup::~IntervalGroup() {}
 
 bool  IntervalGroup::validateChild(FWObject *o)
 { 
-    string otype=o->getTypeName();
+    FWObject *oo = o;
+    if (FWObjectReference::cast(o)!=NULL) 
+        oo = FWObjectReference::cast(o)->getPointer();
+
+    string otype = oo->getTypeName();
     return (FWObject::validateChild(o) && 
 	    (otype=="Interval" ||
 	     otype=="IntervalGroup" ||

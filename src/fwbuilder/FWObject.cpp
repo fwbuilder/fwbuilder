@@ -102,7 +102,8 @@ void FWObject::fromXML(xmlNodePtr root) throw(FWException)
             FWObject *o = dbr->createFromXML(cur);
             if (o!=NULL) 
             {
-		add(o);
+                /* Add w/o validation. Trust XML to do that */
+		add(o, false);
                 try
                 {
                     o->fromXML(cur);
@@ -374,6 +375,7 @@ FWObject* FWObject::addCopyOf(const FWObject *x, bool preserve_id)
     if(!o1)
         throw FWException(string("Error creating object with type: ")+
                           x->getTypeName());
+    // This adds with validation
     add(o1);
 
     o1->duplicate(x, preserve_id);
@@ -677,7 +679,7 @@ void FWObject::add(FWObject *obj, bool validate)
 {
     checkReadOnly();
 
-    if(!validate || validateChild(obj)) 
+    if (!validate || validateChild(obj)) 
     {
 	push_back(obj);
 	_adopt(obj);
@@ -698,7 +700,7 @@ void FWObject::addRef(FWObject *obj)
 {
     checkReadOnly();
 
-    if(validateChild(obj)) 
+    if (validateChild(obj)) 
     {
 	FWReference *oref = obj->createRef();
 	obj->ref();

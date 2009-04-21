@@ -35,22 +35,21 @@ namespace libfwbuilder
     class Service;
     class ServiceGroup;
 
-/**
- * This class represents object reference.
- */
-class FWServiceReference : public FWReference
-{
-    public:
+    /**
+     * This class represents object reference.
+     */
+    class FWServiceReference : public FWReference
+    {
+public:
 
-    DECLARE_FWOBJECT_SUBTYPE(FWServiceReference);
+        DECLARE_FWOBJECT_SUBTYPE(FWServiceReference);
 
-    FWServiceReference();
-    FWServiceReference(const FWObjectDatabase *root,bool prepopulate);
+        FWServiceReference();
+        FWServiceReference(const FWObjectDatabase *root, bool prepopulate);
 
-    void setPointer(Service *o);
-    void setPointer(ServiceGroup *o);
-
-};
+        void setPointer(Service *o);
+        void setPointer(ServiceGroup *o);
+    };
 
 }
 

@@ -204,9 +204,9 @@ xmlNodePtr RuleElementSrc::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementSrc::validateChild(FWObject *o)
 {
-  if ( o->getId() == getAnyElementId()) return true;
-  if (Interval::cast(o)!=NULL) return false;
-  return ObjectGroup::validateChild(o);
+    if (FWObjectReference::cast(o)!=NULL) return true;
+    if ( o->getId() == getAnyElementId()) return true;
+    return ObjectGroup::validateChild(o);
 }
 
 
@@ -238,9 +238,9 @@ xmlNodePtr RuleElementDst::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementDst::validateChild(FWObject *o)
 {
-  if ( o->getId() == getAnyElementId()) return true;
-  if (Interval::cast(o)!=NULL) return false;
-  return ObjectGroup::validateChild(o);
+    if (FWObjectReference::cast(o)!=NULL) return true;
+    if ( o->getId() == getAnyElementId()) return true;
+    return ObjectGroup::validateChild(o);
 }
 
 
@@ -273,9 +273,9 @@ xmlNodePtr RuleElementSrv::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementSrv::validateChild(FWObject *o)
 {
-  if ( o->getId() == getAnyElementId()) return true;
-  if (Interval::cast(o)!=NULL) return false;
-  return ServiceGroup::validateChild(o);
+    if (FWServiceReference::cast(o)!=NULL) return true;
+    if ( o->getId() == getAnyElementId()) return true;
+    return ServiceGroup::validateChild(o);
 }
 
 
@@ -308,20 +308,22 @@ xmlNodePtr RuleElementItf::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementItf::validateChild(FWObject *o)
 {
-  if (FWObjectReference::cast(o)!=NULL) return true;  //I dont like this
-  if ( o->getId() == getAnyElementId()) return true;
-  if (Interface::cast(o)!=NULL) return checkItfChildOfThisFw(o);
-  if (ObjectGroup::cast(o)!=NULL)
-  {
-      bool all_intf = true;
-      for (FWObject::iterator i=o->begin(); i!=o->end(); ++i)
-      {
-          FWObject *o1 = FWReference::getObject(*i);
-          if (!Interface::isA(o1)) { all_intf = false; break; }
-      }
-      return all_intf;  // group is allowed if all members are interfaces
-  }
-  return false;
+    if (FWObjectReference::cast(o)!=NULL) return true;
+
+    if ( o->getId() == getAnyElementId()) return true;
+    if (Interface::cast(o)!=NULL) return checkItfChildOfThisFw(o);
+
+    if (ObjectGroup::cast(o)!=NULL)
+    {
+        bool all_intf = true;
+        for (FWObject::iterator i=o->begin(); i!=o->end(); ++i)
+        {
+            FWObject *o1 = FWReference::getObject(*i);
+            if (!Interface::isA(o1)) { all_intf = false; break; }
+        }
+        return all_intf;  // group is allowed if all members are interfaces
+    }
+    return false;
 }
 
 /*
@@ -392,9 +394,9 @@ xmlNodePtr RuleElementOSrc::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementOSrc::validateChild(FWObject *o)
 {
-  if ( o->getId() == getAnyElementId()) return true;
-  if (Interval::cast(o)!=NULL) return false;
-  return ObjectGroup::validateChild(o);
+    if (FWObjectReference::cast(o)!=NULL) return true;
+    if ( o->getId() == getAnyElementId()) return true;
+    return ObjectGroup::validateChild(o);
 }
 
 
@@ -426,9 +428,9 @@ xmlNodePtr RuleElementODst::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementODst::validateChild(FWObject *o)
 {
-  if ( o->getId() == getAnyElementId()) return true;
-  if (Interval::cast(o)!=NULL) return false;
-  return ObjectGroup::validateChild(o);
+    if (FWObjectReference::cast(o)!=NULL) return true;
+    if ( o->getId() == getAnyElementId()) return true;
+    return ObjectGroup::validateChild(o);
 }
 
 
@@ -441,7 +443,8 @@ RuleElementOSrv::RuleElementOSrv(const FWObjectDatabase *root,bool prepopulate) 
         _initialize(root);
 }
 
-int RuleElementOSrv::getAnyElementId() {
+int RuleElementOSrv::getAnyElementId()
+{
     return FWObjectDatabase::ANY_SERVICE_ID;
 }
 
@@ -460,9 +463,9 @@ xmlNodePtr RuleElementOSrv::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementOSrv::validateChild(FWObject *o)
 {
-  if ( o->getId() == getAnyElementId()) return true;
-  if (Interval::cast(o)!=NULL) return false;
-  return ServiceGroup::validateChild(o);
+    if (FWServiceReference::cast(o)!=NULL) return true;
+    if ( o->getId() == getAnyElementId()) return true;
+    return ServiceGroup::validateChild(o);
 }
 
 
@@ -477,7 +480,8 @@ RuleElementTSrc::RuleElementTSrc(const FWObjectDatabase *root,bool prepopulate) 
         _initialize(root);
 }
 
-int RuleElementTSrc::getAnyElementId() {
+int RuleElementTSrc::getAnyElementId()
+{
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
@@ -496,9 +500,9 @@ xmlNodePtr RuleElementTSrc::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementTSrc::validateChild(FWObject *o)
 {
-  if ( o->getId() == getAnyElementId()) return true;
-  if (Interval::cast(o)!=NULL) return false;
-  return ObjectGroup::validateChild(o);
+    if (FWObjectReference::cast(o)!=NULL) return true;
+    if ( o->getId() == getAnyElementId()) return true;
+    return ObjectGroup::validateChild(o);
 }
 
 
@@ -530,9 +534,9 @@ xmlNodePtr RuleElementTDst::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementTDst::validateChild(FWObject *o)
 {
-  if ( o->getId() == getAnyElementId()) return true;
-  if (Interval::cast(o)!=NULL) return false;
-  return ObjectGroup::validateChild(o);
+    if (FWObjectReference::cast(o)!=NULL) return true;
+    if ( o->getId() == getAnyElementId()) return true;
+    return ObjectGroup::validateChild(o);
 }
 
 
@@ -564,22 +568,21 @@ xmlNodePtr RuleElementTSrv::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementTSrv::validateChild(FWObject *o)
 {
-  if (FWObjectReference::cast(o)!=NULL) return true;
-  if ( o->getId() == getAnyElementId()) return true;
+    if (FWServiceReference::cast(o)!=NULL) return true;
 
-  // TagService is not allowed in translated service
-  if (TagService::isA(o)) return false;
-  if (Interval::isA(o)) return false;
+    if ( o->getId() == getAnyElementId()) return true;
 
-  if (ServiceGroup::cast(o)!=NULL)
-  {
-      for (FWObject::iterator i=o->begin(); i!=o->end(); ++i)
-      {
-          FWObject *o1 = FWReference::getObject(*i);
-          if (!validateChild(o1)) return false;
-      }
-  }
-  return true;
+    // TagService is not allowed in translated service
+    if (TagService::isA(o)) return false;
+    if (ServiceGroup::cast(o)!=NULL)
+    {
+        for (FWObject::iterator i=o->begin(); i!=o->end(); ++i)
+        {
+            FWObject *o1 = FWReference::getObject(*i);
+            if (!validateChild(o1)) return false;
+        }
+    }
+    return ServiceGroup::validateChild(o);
 }
 
 
@@ -613,8 +616,9 @@ xmlNodePtr RuleElementInterval::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementInterval::validateChild(FWObject *o)
 {
-  if ( o->getId() == getAnyElementId()) return true;
-  return (Interval::cast(o)!=NULL || IntervalGroup::cast(o)!=NULL);
+    if (FWIntervalReference::cast(o)!=NULL)  return true;
+    if ( o->getId() == getAnyElementId()) return true;
+    return (Interval::cast(o)!=NULL || IntervalGroup::cast(o)!=NULL);
 }
 
 
@@ -646,9 +650,9 @@ xmlNodePtr RuleElementRDst::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementRDst::validateChild(FWObject *o)
 {
-  if ( o->getId() == getAnyElementId()) return true;
-  if (Interval::cast(o)!=NULL) return false;
-  return ObjectGroup::validateChild(o);
+    if (FWObjectReference::cast(o)!=NULL) return true;
+    if ( o->getId() == getAnyElementId()) return true;
+    return ObjectGroup::validateChild(o);
 }
 
 
@@ -678,43 +682,35 @@ xmlNodePtr RuleElementRGtw::toXML(xmlNodePtr parent) throw(FWException)
 }
 
 
-bool RuleElementRGtw::validateChild(FWObject *o) {
-
+bool RuleElementRGtw::validateChild(FWObject *o)
+{
+    if (FWObjectReference::cast(o)!=NULL) return true;
     if( getChildrenCount() > 0 && !isAny()) return false;
-    
     return checkSingleIPAdress(o);
 }
 
 // check if the gateway has only one interface with only one ipv4 adress
-bool RuleElementRGtw::checkSingleIPAdress(FWObject *o) {
-
-    if( Host::cast(o) != NULL) {
-
+bool RuleElementRGtw::checkSingleIPAdress(FWObject *o)
+{
+    if( Host::cast(o) != NULL)
+    {
         list<FWObject*> obj_list = o->getByType("Interface");
-
-        if( obj_list.size() == 1) {
-
+        if( obj_list.size() == 1)
+        {
             obj_list = (obj_list.front())->getByType("IPv4");
-
-            if( obj_list.size() == 1) {
-
+            if( obj_list.size() == 1)
+            {
                 return true;
-
             } else return false;
-
         } else return false;
-
-    } else if( Interface::cast(o) != NULL) {
-
+    } else if( Interface::cast(o) != NULL)
+    {
         list<FWObject*> obj_list = o->getByType("IPv4");
-
-        if( obj_list.size() == 1) {
-
+        if( obj_list.size() == 1)
+        {
             return true;
-
         } else return false;
     }
-    
     return ( o->getId() == getAnyElementId() ||
             (FWObject::validateChild(o) && 
             (IPv4::cast(o)!=NULL || FWObjectReference::cast(o)!=NULL)));
@@ -729,11 +725,16 @@ RuleElementRItf::RuleElementRItf(const FWObjectDatabase *root,bool prepopulate) 
  * Unlike RuleElementItf, RuleElementRItf can hold only single object.
  * Both RuleElementItf and RuleElementRItf can only hold Interface objects
  * which must belong to the same firewall the rule element belongs to.
- * Method RuleElementItf::validateChild checks for these conditions.
  */
 bool RuleElementRItf::validateChild(FWObject *o)
 {
-  if( getChildrenCount() > 0 && !isAny()) return false;
-  return RuleElementItf::validateChild(o);
+    if (FWObjectReference::cast(o)!=NULL) return true;
+
+    if (getChildrenCount() > 0 && !isAny()) return false;
+
+    if ( o->getId() == getAnyElementId()) return true;
+    if (Interface::cast(o)!=NULL) return checkItfChildOfThisFw(o);
+
+    return false;
 }
 
