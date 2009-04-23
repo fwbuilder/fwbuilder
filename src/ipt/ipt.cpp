@@ -705,7 +705,7 @@ int main(int argc, char **argv)
                 {
                     char errstr[256];
                     sprintf(errstr,
-_("Wildcard interface '%s' should not have a physcal address object attached to it. The physical address object will be ignored.\n"),
+"Wildcard interface '%s' should not have a physcal address object attached to it. The physical address object will be ignored.\n",
                             iface->getName().c_str() );
                     cerr << errstr;
                     for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) 
@@ -727,13 +727,13 @@ _("Wildcard interface '%s' should not have a physcal address object attached to 
                         if ( objdb->findAllReferences(*j).size()!=0 )
                         {
                             sprintf(errstr,
-_("Dynamic interface %s has an IP address that is used in the firewall policy rule.\n"),
+"Dynamic interface %s has an IP address that is used in the firewall policy rule.\n",
                                     iface->getName().c_str() );
                             throw FWException(errstr);
                         }
 
                     sprintf(errstr,
-_("Dynamic interface %s should not have an IP address object attached to it. This IP address object will be ignored.\n"),
+"Dynamic interface %s should not have an IP address object attached to it. This IP address object will be ignored.\n",
                             iface->getName().c_str() );
                     cerr << errstr;
                     for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) 
