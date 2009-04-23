@@ -804,6 +804,10 @@
     <Interface id="id42484X60089" bridgeport="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="ppp*" comment="" ro="False">
       <IPv4 id="id42486X60089" name="firewall71:ppp*:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
     </Interface>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="id3B0221F1-ipv4"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -5079,7 +5083,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AFB66C6" host_OS="linux24" inactive="False" lastCompiled="1215360886" lastInstalled="1142003872" lastModified="1232745604" platform="iptables" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
+      <Firewall id="id3AFB66C6" host_OS="linux24" inactive="False" lastCompiled="1240458844" lastInstalled="1142003872" lastModified="1240458834" platform="iptables" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
         <NAT id="id3AFB66C7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3AFB66C8" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -5291,7 +5295,49 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D1519E8" disabled="False" position="9" comment="">
+          <NATRule id="id42323X29127" disabled="False" group="" position="9" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3B022266"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3B0221F1-ipv4"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id42340X29127" disabled="False" group="" position="10" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3B022266"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3B0221F1"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id3D1519E8" disabled="False" position="11" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
@@ -5316,7 +5362,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D151BA0" disabled="False" position="10" comment="">
+          <NATRule id="id3D151BA0" disabled="False" position="12" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
@@ -5339,7 +5385,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3AFB69BD" disabled="False" position="11" comment="">
+          <NATRule id="id3AFB69BD" disabled="False" position="13" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5364,7 +5410,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3E76DDFF" disabled="False" position="12" comment="">
+          <NATRule id="id3E76DDFF" disabled="False" position="14" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3AFB66C6"/>
             </OSrc>
@@ -5387,7 +5433,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3E76DE15" disabled="False" position="13" comment="">
+          <NATRule id="id3E76DE15" disabled="False" position="15" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3AFB68D2"/>
             </OSrc>
@@ -5409,7 +5455,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3E76DF9A" disabled="False" position="14" comment="">
+          <NATRule id="id3E76DF9A" disabled="False" position="16" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3AFB66C6"/>
               <ObjectRef ref="id3B19C5EB"/>
@@ -5432,7 +5478,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DEA75AF" disabled="True" position="15" comment="">
+          <NATRule id="id3DEA75AF" disabled="True" position="17" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5454,7 +5500,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DE47C72" disabled="False" position="16" comment="">
+          <NATRule id="id3DE47C72" disabled="False" position="18" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5476,7 +5522,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BEEF6D2" disabled="False" position="17" comment="">
+          <NATRule id="id3BEEF6D2" disabled="False" position="19" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5497,7 +5543,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BD67563" disabled="False" position="18" comment="">
+          <NATRule id="id3BD67563" disabled="False" position="20" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostB"/>
             </OSrc>
@@ -5520,7 +5566,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3BD6757E" disabled="False" position="19" comment="">
+          <NATRule id="id3BD6757E" disabled="False" position="21" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5541,7 +5587,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id4368AD8715884" disabled="False" position="20" comment="">
+          <NATRule id="id4368AD8715884" disabled="False" position="22" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -5562,7 +5608,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3B66568B" disabled="False" position="21" comment="NETMAP ">
+          <NATRule id="id3B66568B" disabled="False" position="23" comment="NETMAP ">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -5583,7 +5629,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3B6656EF" disabled="False" position="22" comment="NETMAP">
+          <NATRule id="id3B6656EF" disabled="False" position="24" comment="NETMAP">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5604,7 +5650,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3AFB69F7" disabled="False" position="23" comment="">
+          <NATRule id="id3AFB69F7" disabled="False" position="25" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5625,7 +5671,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id446BA34525148" disabled="False" position="24" comment="">
+          <NATRule id="id446BA34525148" disabled="False" position="26" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5647,7 +5693,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3B7313C4" disabled="False" position="25" comment="">
+          <NATRule id="id3B7313C4" disabled="False" position="27" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5668,7 +5714,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3E04C979" disabled="False" position="26" comment="">
+          <NATRule id="id3E04C979" disabled="False" position="28" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5690,7 +5736,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3E74F756" disabled="False" position="27" comment="">
+          <NATRule id="id3E74F756" disabled="False" position="29" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5711,7 +5757,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3E74F620" disabled="False" position="28" comment="">
+          <NATRule id="id3E74F620" disabled="False" position="30" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5736,7 +5782,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3FB3526D" disabled="False" position="29" comment="transparent proxy rule">
+          <NATRule id="id3FB3526D" disabled="False" position="31" comment="transparent proxy rule">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -5757,7 +5803,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id402335CD" disabled="True" position="30" comment="">
+          <NATRule id="id402335CD" disabled="True" position="32" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5779,7 +5825,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3FC6531F" disabled="False" position="31" comment="">
+          <NATRule id="id3FC6531F" disabled="False" position="33" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5800,7 +5846,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id40F2F9C1" disabled="False" position="32" comment="">
+          <NATRule id="id40F2F9C1" disabled="False" position="34" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5821,7 +5867,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id407EDDBD" disabled="False" position="33" comment="">
+          <NATRule id="id407EDDBD" disabled="False" position="35" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -5842,7 +5888,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id407EDE37" disabled="False" position="34" comment="">
+          <NATRule id="id407EDE37" disabled="False" position="36" comment="">
             <OSrc neg="True">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -5863,7 +5909,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id40F195C3" disabled="False" position="35" comment="">
+          <NATRule id="id40F195C3" disabled="False" position="37" comment="">
             <OSrc neg="True">
               <ObjectRef ref="id3B4572AF"/>
             </OSrc>
@@ -5884,7 +5930,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id40F1C52F" disabled="False" position="36" comment="">
+          <NATRule id="id40F1C52F" disabled="False" position="38" comment="">
             <OSrc neg="True">
               <ObjectRef ref="id3B4572AF"/>
             </OSrc>
@@ -5905,7 +5951,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id407EDCD5" disabled="False" position="37" comment="">
+          <NATRule id="id407EDCD5" disabled="False" position="39" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -5926,7 +5972,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id46D6DA2024736" disabled="False" position="38" comment="this is the &quot;exception&quot; rule&#10;used in support req. originally">
+          <NATRule id="id46D6DA2024736" disabled="False" position="40" comment="this is the &quot;exception&quot; rule&#10;used in support req. originally">
             <OSrc neg="False">
               <ObjectRef ref="id3B4572AF"/>
             </OSrc>
@@ -5949,7 +5995,7 @@
               <Option name="color">#C08B5A</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id46D6DA3124736" disabled="False" position="39" comment="">
+          <NATRule id="id46D6DA3124736" disabled="False" position="41" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -5972,7 +6018,7 @@
               <Option name="color">#C08B5A</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id46D49F4824736" disabled="False" position="40" comment="&quot;exception&quot; rule in the pair&#10;from a support req.">
+          <NATRule id="id46D49F4824736" disabled="False" position="42" comment="&quot;exception&quot; rule in the pair&#10;from a support req.">
             <OSrc neg="False">
               <ObjectRef ref="id3B4572AF"/>
             </OSrc>
@@ -5995,7 +6041,7 @@
               <Option name="color">#8BC065</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id46D67A4324736" disabled="False" position="41" comment="testing transparent proxy&#10;roules for a support req.">
+          <NATRule id="id46D67A4324736" disabled="False" position="43" comment="testing transparent proxy&#10;roules for a support req.">
             <OSrc neg="True">
               <ObjectRef ref="id3B4572AF"/>
             </OSrc>
@@ -6018,7 +6064,7 @@
               <Option name="color">#8BC065</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id46D67A5924736" disabled="False" position="42" comment="testing transparent proxy&#10;roules for a support req.">
+          <NATRule id="id46D67A5924736" disabled="False" position="44" comment="testing transparent proxy&#10;roules for a support req.">
             <OSrc neg="True">
               <ObjectRef ref="id3B4572AF"/>
             </OSrc>
@@ -6041,7 +6087,7 @@
               <Option name="color">#8BC065</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id46D49F3624736" disabled="False" position="43" comment="testing transparent proxy&#10;roules for a support req.">
+          <NATRule id="id46D49F3624736" disabled="False" position="45" comment="testing transparent proxy&#10;roules for a support req.">
             <OSrc neg="True">
               <ObjectRef ref="id3B4572AF"/>
             </OSrc>
@@ -6064,7 +6110,7 @@
               <Option name="color">#8BC065</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id46D6AA1B24736" disabled="False" position="44" comment="&quot;exception&quot; rule in the pair&#10;from a support req.">
+          <NATRule id="id46D6AA1B24736" disabled="False" position="46" comment="&quot;exception&quot; rule in the pair&#10;from a support req.">
             <OSrc neg="False">
               <ObjectRef ref="id3B4572AF"/>
             </OSrc>
@@ -6087,7 +6133,7 @@
               <Option name="color">#C0BA44</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id46D6AA2F24736" disabled="False" position="45" comment="testing transparent proxy&#10;roules for a support req.">
+          <NATRule id="id46D6AA2F24736" disabled="False" position="47" comment="testing transparent proxy&#10;roules for a support req.">
             <OSrc neg="True">
               <ObjectRef ref="id3B4572AF"/>
             </OSrc>
@@ -6786,7 +6832,7 @@
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">True</Option>
           <Option name="classify_mark_terminating">False</Option>
-          <Option name="cmdline"></Option>
+          <Option name="cmdline">-xt</Option>
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
