@@ -749,7 +749,7 @@ int main(int argc, char **argv)
                 if (iface->isRegular() && all_addr.empty() && all_ipv6.empty())
                 {
                     char errstr[256];
-                    sprintf(errstr,_("Missing IP address for interface %s\n"),
+                    sprintf(errstr, "Missing IP address for interface %s\n",
                             iface->getName().c_str() );
                     throw FWException(errstr);
                 }
@@ -792,7 +792,9 @@ int main(int argc, char **argv)
                 objdb , fwobjectname.toUtf8().constData(), false);
 
 	if (oscnf==NULL)
-	    throw FWException(_("Unrecognized host OS ")+fw->getStr("host_OS")+"  (family "+family+")");
+	    throw FWException("Unrecognized host OS " +
+                              fw->getStr("host_OS") +
+                              "  (family "+family+")");
 
 /* do not put comment in the script if it is intended for linksys */
         bool nocomm = Resources::os_res[fw->getStr("host_OS")]->
