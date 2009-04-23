@@ -475,10 +475,8 @@ bool processPolicyRuleSet(
             automatic_rules_stream << tmp.str();
         }
     }
-
     return empty_output;
 }
-
 
 void usage(const char *name)
 {
@@ -647,8 +645,6 @@ int main(int argc, char **argv)
 
         FWObject *slib = objdb->findInIndex(FWObjectDatabase::STANDARD_LIB_ID);
         if (slib && slib->isReadOnly()) slib->setReadOnly(false);
-
-	/* Review firewall and OS options and generate commands */
 
 	Firewall* fw;
         if (fw_by_id)
