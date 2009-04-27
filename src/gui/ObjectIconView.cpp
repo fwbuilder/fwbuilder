@@ -119,6 +119,8 @@ bool ObjectIconView::event(QEvent *event)
 QDrag* ObjectIconView::dragObject()
 {
     QListWidgetItem *ivi = currentItem();
+    // currentItem returns NULL if the list is empty
+    if (ivi==NULL) return NULL;
     int obj_id = ivi->data(Qt::UserRole).toInt();
     FWObject *obj = mw->db()->findInIndex(obj_id);
     QString icn =
@@ -188,9 +190,7 @@ void ObjectIconView::mouseMoveEvent ( QMouseEvent * event )
     {
         startingDrag = false;
         QDrag *dr = dragObject();
-
-        if (dr)
-            dr->start();
+        if (dr) dr->start();
     }
     QListWidget::mouseMoveEvent(event);
 }

@@ -121,6 +121,9 @@ bool ObjectListView::event(QEvent *event)
 QDrag* ObjectListView::dragObject()
 {
     QTreeWidgetItem *ovi = currentItem();
+    // currentItem returns NULL if the list is empty
+    if (ovi==NULL) return NULL;
+
     int obj_id = ovi->data(0, Qt::UserRole).toInt();
     FWObject *obj = mw->db()->findInIndex(obj_id);
     QString icn = (":/Icons/"+obj->getTypeName()+"/icon-ref").c_str();
@@ -167,7 +170,7 @@ void ObjectListView::dropEvent(QDropEvent *ev)
     emit dropped(ev);
 }
 
-void ObjectListView::keyPressEvent( QKeyEvent* ev )
+void ObjectListView::keyPressEvent(QKeyEvent *ev)
 {
     if (ev->key()==Qt::Key_Delete)
     {
@@ -176,19 +179,18 @@ void ObjectListView::keyPressEvent( QKeyEvent* ev )
     QTreeWidget::keyPressEvent(ev);
 }
 
-void ObjectListView::mousePressEvent ( QMouseEvent * event )
+void ObjectListView::mousePressEvent(QMouseEvent *event)
 {
     startingDrag = true;
     QTreeWidget::mousePressEvent(event);
 }
 
-void ObjectListView::mouseMoveEvent ( QMouseEvent * event )
+void ObjectListView::mouseMoveEvent(QMouseEvent *event)
 {
     if (startingDrag)
     {
         QDrag *dr = dragObject();
-        dr->start();
-
+        if (dr) dr->start();
         startingDrag = false;
     }
     QTreeWidget::mouseMoveEvent(event);

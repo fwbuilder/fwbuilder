@@ -344,6 +344,8 @@ void ObjectTreeView::updateTreeItems()
 void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
 {
     QTreeWidgetItem *ovi = currentItem();
+    if (ovi==NULL) return;
+
     ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(ovi);
 
     FWObject *current_obj = getCurrentObject();
