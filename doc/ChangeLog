@@ -1,3 +1,10 @@
+2009-04-27  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectListView.cpp (ObjectListView::dragObject): fixed bug
+	#2781952: "fwbuilder (3.0.4-b794) crashes when creating a new
+	group".  The GUI crashed if user clicked and dragged mouse inside
+	empty list of group members in the dialog of the new group object.
+
 2009-04-10  vadim  <vadim@vk.crocodile.org>
 
 	* ipt.cpp (dumpScript): fixed bug #2356131: "Iptables-restore
