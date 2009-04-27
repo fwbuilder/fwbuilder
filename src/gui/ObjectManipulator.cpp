@@ -437,12 +437,15 @@ void ObjectManipulator::showDeletedObjects(bool f)
 
 void ObjectManipulator::removeObjectFromTreeView(FWObject *obj )
 {
-    QTreeWidget *objTreeView = idxToTrees[ getIdxForLib(getCurrentLib()) ];
+//    QTreeWidget *objTreeView = idxToTrees[ getIdxForLib(getCurrentLib()) ];
+    int current_lib_idx = m_objectManipulator->libs->currentIndex();
+    QTreeWidget *objTreeView = idxToTrees[current_lib_idx];
+    assert(objTreeView);
     dynamic_cast<ObjectTreeView*>(objTreeView)->clearLastSelected();
     
     ObjectTreeViewItem *itm = allItems[obj];
-    allItems[obj]=NULL;
-    itm->parent()->takeChild( itm->parent()->indexOfChild(itm) );
+    allItems[obj] = NULL;
+    itm->parent()->takeChild(itm->parent()->indexOfChild(itm));
     delete itm;
 }
 
@@ -1216,21 +1219,26 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
 
     inDeletedObjects = false;
 
-    FWObject *delObjLib =
+    FWObject *del_obj_library =
         m_project->db()->findInIndex( FWObjectDatabase::DELETED_OBJECTS_ID);
+
+    FWObject *current_library = getCurrentLib();
 
     vector<FWObject*> so = getCurrentObjectTree()->getSelectedObjects();
     for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
     {
         FWObject *obj= *i;
 
-        QString objPath = obj->getPath(true).c_str();
+        QString object_path = obj->getPath(true).c_str();
 
-        copyMenuItem = copyMenuItem && m_project->getCopyMenuState(objPath);
+        copyMenuItem = copyMenuItem && m_project->getCopyMenuState(object_path);
         pasteMenuItem = pasteMenuItem &&
-            m_project->getPasteMenuState(objPath) &&
+            m_project->getPasteMenuState(object_path) &&
             (FWObjectClipboard::obj_clipboard->size()!=0);
         delMenuItem = delMenuItem && m_project->getDeleteMenuState(obj);
+        delMenuItem = delMenuItem && 
+            current_library->getId() != FWObjectDatabase::STANDARD_LIB_ID &&
+            current_library->getId() != FWObjectDatabase::TEMPLATE_LIB_ID;
 
         if (pasteMenuItem)
         {
@@ -1257,7 +1265,7 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
         dupMenuItem=
             (dupMenuItem && ! m_project->isSystem(obj) && ! Library::isA(obj) );
 
-        inDeletedObjects = (delObjLib!=NULL && obj->isChildOf(delObjLib));
+        inDeletedObjects = (del_obj_library!=NULL && obj->isChildOf(del_obj_library));
         dupMenuItem = dupMenuItem && !inDeletedObjects;
 
 // can't move system objects
@@ -1865,6 +1873,11 @@ void ObjectManipulator::deleteObj()
     
     if (getCurrentObjectTree()->getNumSelected()==0) return;
 
+    FWObject *current_library = getCurrentLib();
+    if (current_library->getId() == FWObjectDatabase::STANDARD_LIB_ID ||
+        current_library->getId() == FWObjectDatabase::TEMPLATE_LIB_ID)
+        return;
+
     FWObject *obj;
     bool emptyingTrash      = false;
     bool emptyingTrashInLib = false;
@@ -2028,22 +2041,23 @@ void ObjectManipulator::delObj(FWObject *obj, bool openobj)
         qDebug("ObjectManipulator::delObj  delete obj %p %s openobj=%d",
                obj,obj->getName().c_str(),openobj);
 
-    FWObject *parent=obj->getParent();
-    FWObject *delObjLib = m_project->db()->findInIndex( FWObjectDatabase::DELETED_OBJECTS_ID );
+    FWObject *obj_library = obj->getLibrary();
+    FWObject *parent = obj->getParent();
+    FWObject *delObjLib = m_project->db()->findInIndex(
+        FWObjectDatabase::DELETED_OBJECTS_ID );
 
-    if (fwbdebug)
-        qDebug("ObjectManipulator::delObj  deleted obj lib %p",
-               delObjLib);
+    if (obj_library->getId() == FWObjectDatabase::STANDARD_LIB_ID ||
+        obj_library->getId() == FWObjectDatabase::TEMPLATE_LIB_ID)
+        return;
 
+    if (obj->getId() == FWObjectDatabase::STANDARD_LIB_ID ||
+        obj->getId() == FWObjectDatabase::DELETED_OBJECTS_ID) return;
+    
     bool islib  = Library::isA(obj);
 //        bool isintf = (Interface::isA(obj) && Firewall::isA(parent));
     bool isfw   = Firewall::isA(obj);
     bool isDelObj = (delObjLib!=NULL && obj->isChildOf(delObjLib));
-
-
-    if (obj->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
-        obj->getId()==FWObjectDatabase::DELETED_OBJECTS_ID) return;
-    
+   
     m_project->findObjectWidget->reset();
 
     if (RuleSet::cast(obj)!=NULL)

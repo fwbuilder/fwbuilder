@@ -1193,6 +1193,9 @@ bool ProjectPanel::validateForInsertion(FWObject *target, FWObject *obj)
     return objectTreeFormat->validateForInsertion(target, obj);
 }
 
+/*
+ * TODO: move get*MenuState methods to ObjectManipulator
+ */
 bool ProjectPanel::getCopyMenuState(const QString &objPath)
 {
     return objectTreeFormat->getCopyMenuState(objPath);

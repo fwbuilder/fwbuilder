@@ -1,5 +1,11 @@
 2009-04-27  vadim  <vadim@vk.crocodile.org>
 
+	* ObjectManipulator.cpp (ObjectManipulator::getMenuState): for bug
+	#2782289: "Crashes when deleting unused host object". Added
+	safeguards to make it impossible to delete objects in the Standard
+	library, as well as for a few other cases. Waiting for a
+	clarification on the bug anyway.
+
 	* ObjectListView.cpp (ObjectListView::dragObject): fixed bug
 	#2781952: "fwbuilder (3.0.4-b794) crashes when creating a new
 	group".  The GUI crashed if user clicked and dragged mouse inside
