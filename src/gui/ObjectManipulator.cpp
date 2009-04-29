@@ -864,7 +864,7 @@ void ObjectManipulator::addTreePage( FWObject *lib)
         insertSubtree( itm1, (*m) );
 
     objTreeView->updateTreeItems();
-    objTreeView->sortByColumn(0,Qt::AscendingOrder);
+    objTreeView->sortByColumn(0, Qt::AscendingOrder);
 }
 
 void ObjectManipulator::removeLib(FWObject* lib)
@@ -2689,8 +2689,7 @@ FWObject* ObjectManipulator::createObject(FWObject *parent,
 
     if (parent==NULL) parent=lib;
 
-    return actuallyCreateObject(parent,objType,objName,copyFrom);
-   
+    return actuallyCreateObject(parent, objType, objName, copyFrom);   
 }
 
 FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
@@ -2714,6 +2713,8 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
                parent->getName().c_str(), parent_item);
 
     insertSubtree(parent_item, nobj);
+    parent_item->sortChildren(0, Qt::AscendingOrder);
+
     m_project->db()->setDirty(true);
     mw->reloadAllWindowsWithFile(m_project);
     return nobj;
@@ -2750,8 +2751,7 @@ void ObjectManipulator::newPolicyRuleSet ()
         openObject(o);
         editObject(o);
     }
-    this->getCurrentObjectTree()->sortItems(0,Qt::AscendingOrder);
-
+    this->getCurrentObjectTree()->sortItems(0, Qt::AscendingOrder);
 }
 
 void ObjectManipulator::newNATRuleSet ()
@@ -2777,7 +2777,7 @@ void ObjectManipulator::newNATRuleSet ()
         openObject(o);
         editObject(o);
     }
-    this->getCurrentObjectTree()->sortItems(0,Qt::AscendingOrder);
+    this->getCurrentObjectTree()->sortItems(0, Qt::AscendingOrder);
 }
 
 
@@ -2799,7 +2799,7 @@ void ObjectManipulator::newFirewall()
 
 void ObjectManipulator::newHost()
 {
-    newHostDialog *nhd=new newHostDialog();
+    newHostDialog *nhd = new newHostDialog();
     if (m_project->isEditorVisible()) m_project->hideEditor();
     nhd->exec();
     FWObject *o = nhd->getNewHost();

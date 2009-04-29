@@ -50,9 +50,9 @@ string RoutingCompiler_pix::myPlatformName() { return "pix"; }
 int RoutingCompiler_pix::prolog()
 {
     int n = RoutingCompiler_cisco::prolog();    
-
-    if (fw->getStr("platform")!="pix") 
-	abort("Unsupported platform " + fw->getStr("platform") );
+    string platform = fw->getStr("platform");
+    if (platform!="pix" && platform!="fwsm") 
+	abort("Unsupported platform " + platform );
 
     return n;
 }
