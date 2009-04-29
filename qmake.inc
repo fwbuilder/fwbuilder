@@ -18,14 +18,14 @@ unix {
 	MOC_DIR = .moc
 	OBJECTS_DIR = .obj
 
-    prefix = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root
+    prefix = /private/var/tmp/src/fwb3-branch-v3/install_root
 	exec_prefix = $$prefix
 	DESTDIR =
 
 	target.path = $$exec_prefix/lib
-	dtd.path = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.5/
-	migration.path = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.5/migration
-	doc.path = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/doc/libfwbuilder-3.0.5
+	dtd.path = /private/var/tmp/src/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.5/
+	migration.path = /private/var/tmp/src/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.5/migration
+	doc.path = /private/var/tmp/src/fwb3-branch-v3/install_root/share/doc/libfwbuilder-3.0.5
 
 	CONFIG                 += warn_on debug
 	QMAKE_CFLAGS_DEBUG     += -Wno-unused-parameter
@@ -43,7 +43,7 @@ unix {
 }
 
 macx {
-    prefix = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root
+    prefix = /private/var/tmp/src/fwb3-branch-v3/install_root
 }
 
 exists(qmake2.inc) {
