@@ -1,3 +1,16 @@
+2009-04-29  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RoutingCompiler_pix.cpp (RoutingCompiler_pix::prolog): fixes bug
+	#2782645: "Can't compile for FWSM platform". Routing compiler for
+	PIX should accept firewall object with platform "fwsm" as well as
+	"pix".
+
+	* ObjectManipulator.cpp (ObjectManipulator::actuallyCreateObject):
+	fixes bug #2783780: "Tree objects not sorted in
+	3.0.4". Automatically re-sort object branch when new host or
+	firewall object is created so that the new object is positioned in
+	the alphabetic sorting order.
+
 2009-04-27  vadim  <vadim@vk.crocodile.org>
 
 	* ObjectManipulator.cpp (ObjectManipulator::getMenuState): for bug
