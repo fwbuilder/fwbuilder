@@ -29,6 +29,7 @@ static int  inet_cidr_pton_ipv4(const char *src, u_char *dst, size_t size);
 static int  inet_net_pton_ipv6(const char *src, u_char *dst);
 static int  inet_cidr_pton_ipv6(const char *src, u_char *dst, size_t size);
 
+static const size_t invalid_size = -1;
 
 /*
  * int
@@ -53,11 +54,11 @@ int inet_net_pton(int af, const char *src, void *dst, size_t size)
     switch (af)
     {
         case AF_INET:
-            return size == -1 ?
+            return size == invalid_size ?
                 inet_net_pton_ipv4(src, dst) :
                 inet_cidr_pton_ipv4(src, dst, size);
         case AF_INET6:
-            return size == -1 ?
+            return size == invalid_size ?
                 inet_net_pton_ipv6(src, dst) :
                 inet_cidr_pton_ipv6(src, dst, size);
         default:
