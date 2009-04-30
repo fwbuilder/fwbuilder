@@ -31,7 +31,7 @@ namespace libfwbuilder
     class Cluster : public Firewall
     {
 
-public:
+    public:
 
         Cluster();
         Cluster(const FWObjectDatabase *root, bool prepopulate);

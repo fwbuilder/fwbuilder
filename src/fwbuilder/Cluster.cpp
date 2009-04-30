@@ -11,7 +11,7 @@
  *   Software Foundation, either version 2 of the License, or (at your option)
  *   any later version.
  *
- * o The terms of NetCitadel End User License Agreement 
+ * o The terms of NetCitadel End User License Agreement
  */
 
 #include <time.h>
@@ -48,9 +48,9 @@ Cluster::Cluster()
 {
     setStr("platform", "unknown");
     setStr("host_OS", "unknown");
-    setInt("lastModified" ,0);
-    setInt("lastInstalled" ,0);
-    setInt("lastCompiled" ,0);
+    setInt("lastModified", 0);
+    setInt("lastInstalled", 0);
+    setInt("lastCompiled", 0);
 }
 
 Cluster::Cluster(const FWObjectDatabase *root, bool prepopulate)
@@ -76,7 +76,7 @@ xmlNodePtr Cluster::toXML(xmlNodePtr parent) throw(FWException)
     xmlNodePtr me = Firewall::toXML(parent);
     FWObject *o;
     for (FWObjectTypedChildIterator it = findByType(ClusterGroup::TYPENAME);
-         it != it.end(); ++it)
+        it != it.end(); ++it)
     {
         o = *it;
         if (o)
@@ -123,16 +123,16 @@ ClusterGroup* Cluster::getMembersObject()
 
 bool Cluster::validateChild(FWObject *o)
 {
-    string otype=o->getTypeName();
+    string otype = o->getTypeName();
     return (FWObject::validateChild(o) &&
-            (otype==Interface::TYPENAME    ||
-             otype==RuleSet::TYPENAME      ||
-             otype==Policy::TYPENAME       ||
-             otype==NAT::TYPENAME          ||
-             otype==Routing::TYPENAME      ||
-             otype==Management::TYPENAME   ||
-             otype==ClusterGroup::TYPENAME ||
-             otype==FirewallOptions::TYPENAME ));
+            (otype == Interface::TYPENAME    ||
+             otype == RuleSet::TYPENAME      ||
+             otype == Policy::TYPENAME       ||
+             otype == NAT::TYPENAME          ||
+             otype == Routing::TYPENAME      ||
+             otype == Management::TYPENAME   ||
+             otype == ClusterGroup::TYPENAME ||
+             otype == FirewallOptions::TYPENAME));
 }
 
 FWObject& Cluster::duplicate(const FWObject *obj,
@@ -142,7 +142,7 @@ FWObject& Cluster::duplicate(const FWObject *obj,
 
     FWObject *o;
     for (FWObjectTypedChildIterator it =
-             obj->findByType(ClusterGroup::TYPENAME); it != it.end(); ++it)
+        obj->findByType(ClusterGroup::TYPENAME); it != it.end(); ++it)
     {
         o = *it;
         if (o)
@@ -195,7 +195,7 @@ time_t Cluster::getLastCompiled()
 
 void Cluster::updateLastCompiledTimestamp()
 {
-    setInt("lastCompiled",time(NULL));
+    setInt("lastCompiled", time(NULL));
 }
 
 bool Cluster::getInactive()
