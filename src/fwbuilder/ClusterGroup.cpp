@@ -41,8 +41,8 @@ bool ClusterGroup::validateChild(FWObject *o)
     string otype = o->getTypeName();
 
     return (FWObject::validateChild(o) &&
-            otype == Interface::TYPENAME ||
-            otype == FWObjectReference::TYPENAME);
+            (otype == Interface::TYPENAME ||
+             otype == FWObjectReference::TYPENAME));
 }
 
 void ClusterGroup::fromXML(xmlNodePtr parent) throw(FWException)
