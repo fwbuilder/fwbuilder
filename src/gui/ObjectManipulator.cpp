@@ -287,21 +287,19 @@ QString ObjectManipulator::getTreeLabel( FWObject *obj )
     return name;
 }
 
-ObjectTreeViewItem* ObjectManipulator::insertObject( ObjectTreeViewItem *itm,
-                                                     FWObject *obj )
+ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
+                                                    FWObject *obj)
 {
     if (FWReference::cast(obj)!=NULL) return NULL;
     if (Resources::global_res->getObjResourceBool(obj,"hidden") ) return NULL;
-//    if (RuleSet::cast(obj)!=NULL) return NULL;
 
-    ObjectTreeViewItem *nitm=NULL;
-
+    ObjectTreeViewItem *nitm = NULL;
     QString icn_filename;
 
-    if (m_project->isSystem(obj))  icn_filename=":/Icons/folder1.png";
+    if (m_project->isSystem(obj))
+        icn_filename=":/Icons/folder1.png";
     else
         icn_filename=(":/Icons/"+obj->getTypeName()+"/icon-tree").c_str();
-        //icn_filename=Resources::global_res->getObjResourceStr(obj, "icon-tree").c_str();
 
     if (obj->getRO()) icn_filename = ":/Icons/lock.png";
 
@@ -310,7 +308,6 @@ ObjectTreeViewItem* ObjectManipulator::insertObject( ObjectTreeViewItem *itm,
             obj->getTypeName() + "/hidden") ) return NULL;
 
     nitm = new ObjectTreeViewItem( itm );
-
 
     nitm->setLib("");
     nitm->setText( 0, getTreeLabel(obj) );
@@ -324,22 +321,23 @@ ObjectTreeViewItem* ObjectManipulator::insertObject( ObjectTreeViewItem *itm,
     nitm->setIcon( 1, QIcon(pm) );
     nitm->setFlags(nitm->flags() | Qt::ItemIsDragEnabled);
 
-    //nitm->setProperty("id",   obj->getId().c_str()   );
     nitm->setProperty("type", obj->getTypeName().c_str() );
     nitm->setFWObject( obj );
 
     allItems[obj] = nitm;
 
+//    itm->sortChildren(0, Qt::AscendingOrder);
+
     return nitm;
 }
 
-void ObjectManipulator::insertSubtree( ObjectTreeViewItem *itm, FWObject *obj )
+void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
 {
-//    obj->dump(false,false);
     ObjectTreeViewItem *nitm = insertObject(itm, obj);
-
     if (nitm==NULL) return;
+
     if ( m_project->isSystem(obj) ) nitm->setExpanded( st->getExpandTree() );
+
     if (Firewall::isA(obj))
     {
          for (FWObjectTypedChildIterator it = Firewall::cast(obj)->findByType(Interface::TYPENAME);
@@ -370,17 +368,6 @@ void ObjectManipulator::insertSubtree( ObjectTreeViewItem *itm, FWObject *obj )
         if (FWReference::cast(o1)!=NULL) continue;
         insertSubtree( nitm, o1 );
     }
-  /*  if (Firewall::cast(obj)!=NULL)
-    {
-        obj = obj ;
-         for (FWObjectTypedChildIterator it = Firewall::cast(obj)->findByType(NAT::TYPENAME);
-         it != it.end(); ++it)
-        {
-            insertSubtree( nitm, *it );
- 
-        }
- 
-    }*/
 }
 
 void ObjectManipulator::showDeletedObjects(bool f)
@@ -843,7 +830,6 @@ void ObjectManipulator::addTreePage( FWObject *lib)
     } else
     {
         string icn=":/Icons/"+lib->getTypeName()+"/icon-tree";
-                //Resources::global_res->getObjResourceStr(lib,"icon-tree").c_str();
         QPixmap pm;
         if ( ! QPixmapCache::find( icn.c_str(), pm) )
         {
@@ -858,13 +844,12 @@ void ObjectManipulator::addTreePage( FWObject *lib)
     itm1->setFWObject( lib );
     allItems[lib] = itm1;
 
-//    objTreeView->setSelected( itm1, true );
-
     for (list<FWObject*>::iterator m=lib->begin(); m!=lib->end(); m++)
         insertSubtree( itm1, (*m) );
 
     objTreeView->updateTreeItems();
-    objTreeView->sortByColumn(0, Qt::AscendingOrder);
+    // objTreeView->sortByColumn(0, Qt::AscendingOrder);
+    objTreeView->sortItems(0, Qt::AscendingOrder);
 }
 
 void ObjectManipulator::removeLib(FWObject* lib)

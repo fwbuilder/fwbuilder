@@ -1,3 +1,9 @@
+2009-04-30  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::addTreePage):
+	references bug #2783780: trying QTreeWidget::sortItems() instead
+	of sortByColumn
+
 2009-04-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* RoutingCompiler_pix.cpp (RoutingCompiler_pix::prolog): fixes bug
