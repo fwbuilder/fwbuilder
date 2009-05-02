@@ -23,25 +23,27 @@
 #include <string>
 #include <map>
 
-namespace libfwbuilder {
+namespace libfwbuilder
+{
 
-/**
- * This class is parser for file in hosts(5) format
- * (e.g. /etc/hosts)
- */
-class SecuwallMgmtFile {
-public:
+    /**
+     * This class is parser for file in hosts(5) format
+     * (e.g. /etc/hosts)
+     */
+    class SecuwallMgmtFile
+    {
+    public:
 
-    void parse(const std::string &filename) throw (FWException);
-    void parse(std::istream &from) throw (FWException);
+        void parse(const std::string &filename) throw(FWException);
+        void parse(std::istream &from) throw(FWException);
 
-    /* Return data */
-    std::map<std::string, std::string> getData() { return data; }
+        /* Return data */
+        std::map<std::string, std::string> getData() { return data; }
 
-private:
+    private:
 
-    std::map<std::string, std::string> data;
-};
+        std::map<std::string, std::string> data;
+    };
 
 }
 
