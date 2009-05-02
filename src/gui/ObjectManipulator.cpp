@@ -839,7 +839,6 @@ void ObjectManipulator::addTreePage( FWObject *lib)
         itm1->setIcon( 0, pm);
     }
 
-    //itm1->setProperty("id", lib->getId().c_str()   );
     itm1->setProperty("type", lib->getTypeName().c_str() );
     itm1->setFWObject( lib );
     allItems[lib] = itm1;
@@ -848,7 +847,7 @@ void ObjectManipulator::addTreePage( FWObject *lib)
         insertSubtree( itm1, (*m) );
 
     objTreeView->updateTreeItems();
-    // objTreeView->sortByColumn(0, Qt::AscendingOrder);
+    // apparently sortByColumn does not work in QT 4.5, use sortItems
     objTreeView->sortItems(0, Qt::AscendingOrder);
 }
 

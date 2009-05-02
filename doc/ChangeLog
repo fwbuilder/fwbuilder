@@ -1,8 +1,17 @@
+2009-05-02  vadim  <vadim@vk.crocodile.org>
+
+	* DiscoveryDruid.cpp (DiscoveryDruid::DiscoveryDruid): fixed bug
+	#2785671 "Menu 'Import Policy' opens wizard with wrong option
+	checked". The "discovery druid' dialog would open on the first
+	page (where user makes a choice which discovery method to use)
+	even when called via main menu "File/Import Policy" and radio
+	button for the SNMP discovery was activated.
+
 2009-04-30  Vadim Kurland  <vadim@vk.crocodile.org>
 
-	* ObjectManipulator.cpp (ObjectManipulator::addTreePage):
-	references bug #2783780: trying QTreeWidget::sortItems() instead
-	of sortByColumn
+	* ObjectManipulator.cpp (ObjectManipulator::addTreePage): fixed
+	bug #2783780: using QTreeWidget::sortItems() instead of
+	sortByColumn to sort objects in the tree.
 
 2009-04-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
