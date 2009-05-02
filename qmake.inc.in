@@ -2,79 +2,68 @@
 #
 ######### fwbuilder/qmake.inc.in
 #
-QTDIR         = $$(QTDIR)
-
-TEMPLATE      = app
-
-SO_VERSION    = @LIBFWBUILDER_SOLIB_VERSION@
-
-DEFINES      += $$(DEFINES)
-LANGUAGE      = C++
-UI_DIR        = ui
-MANDIR        = @MANDIR@
-DOCDIR        = @DOCDIR@
+QTDIR = $$(QTDIR)
+TEMPLATE = app
+SO_VERSION = @LIBFWBUILDER_SOLIB_VERSION@
+DEFINES += $$(DEFINES)
+LANGUAGE = C++
+UI_DIR = ui
+MANDIR = @MANDIR@
+DOCDIR = @DOCDIR@
 
 HAVE_ANTLR_RUNTIME = @HAVE_ANTLR_RUNTIME@
 HAVE_EXTERNAL_ANTLR = @HAVE_EXTERNAL_ANTLR@
 
 unix {
+    PREFIX = @PREFIX@
+
     ANTLR_INCLUDEPATH =  @ANTLR_INCLUDEPATH@
     ANTLR_LIBS =  @ANTLR_LIBS@
     FWBPARSER_LIB = ../parsers/libfwbparser.a
-}
 
+    QMAKE_CXX = @CCACHE@ g++
 
-unix {
-!macx {
-	UI_DIR = .ui
-	MOC_DIR = .moc
-	OBJECTS_DIR = .obj
+    !macx {
 
-	PREFIX                  = @PREFIX@
-	exec_prefix             = @EXEC_PREFIX@
-	DESTDIR                 =
-	ICONSDIR                = @ICONSDIR@
+        UI_DIR = .ui
+        MOC_DIR = .moc
+        OBJECTS_DIR = .obj
 
-    INCLUDEPATH  += .. ../.. $$(INCLUDEPATH) @LIBFWBUILDER_INCLUDEPATH@
+        exec_prefix = @EXEC_PREFIX@
+        DESTDIR =
+        ICONSDIR = @ICONSDIR@
 
-    LIBS_FWCOMPILER         = @LIBFWBUILDER_LIBS_FWCOMPILER@
-    LIBS_FWBUILDER          = @LIBFWBUILDER_LIBS_FWBUILDER@
+        INCLUDEPATH += .. ../.. $$(INCLUDEPATH) @LIBFWBUILDER_INCLUDEPATH@
 
-	target.path             = $$PREFIX/bin
-	dtd.path                = @TEMPLATE_DIR@/
-	migration.path          = @TEMPLATE_DIR@/migration
-	doc.path                = @DOCDIR@
-	datadir.path		    = @DATADIR@
+        LIBS_FWCOMPILER = @LIBFWBUILDER_LIBS_FWCOMPILER@
+        LIBS_FWBUILDER = @LIBFWBUILDER_LIBS_FWBUILDER@
 
+        target.path = $$PREFIX/bin
+        dtd.path = @TEMPLATE_DIR@/
+        migration.path = @TEMPLATE_DIR@/migration
+        doc.path = @DOCDIR@
+        datadir.path   = @DATADIR@
 
-#	win32:target.path    = $$PREFIX/
-#	unix:target.path     = $$PREFIX/share/fwbuilder/
-#	macx:target.path     = $$PREFIX/
+        res.path = @RES_DIR@
+        res_os.path = @RES_DIR@/os/
+        res_platform.path = @RES_DIR@/platform/
+        res_help.path = @RES_DIR@/help/
+        res_desktop.path = @DATADIR@/applications/
 
-	res.path			= @RES_DIR@
-	res_os.path 		= @RES_DIR@/os/
-	res_platform.path 	= @RES_DIR@/platform/
-	res_help.path 	    = @RES_DIR@/help/
-	res_desktop.path	= @DATADIR@/applications/
+        INSTALLS += res 
+        INSTALLS += res_os
+        INSTALLS += res_platform
+        # INSTALLS += icns
+        LIBS += $$LIBS_FWBUILDER @LIBS@
 
-    INSTALLS		   += res 
-    INSTALLS		   += res_os
-    INSTALLS		   += res_platform
-#        INSTALLS   += icns
-	LIBS                   += $$LIBS_FWBUILDER @LIBS@
+        PKGLOCALEDIR = $$res.path/locale
 
-	PKGLOCALEDIR			= $$res.path/locale
-
-	CONFIG                 += warn_on debug
-	QMAKE_CFLAGS_DEBUG     += -Wno-unused-parameter
-	QMAKE_CFLAGS_RELEASE   += -Wno-unused-parameter
-	QMAKE_CXXFLAGS_DEBUG   += -Wno-unused-parameter @CXXFLAGS@
-	QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter @CXXFLAGS@
-}
-}
-
-macx {
-    PREFIX = @PREFIX@
+        CONFIG += warn_on debug
+        QMAKE_CFLAGS_DEBUG += -Wno-unused-parameter
+        QMAKE_CFLAGS_RELEASE += -Wno-unused-parameter
+        QMAKE_CXXFLAGS_DEBUG += -Wno-unused-parameter @CXXFLAGS@
+        QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter @CXXFLAGS@
+    }
 }
 
 win32 {
