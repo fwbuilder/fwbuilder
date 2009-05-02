@@ -23,7 +23,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-const char *ClusterGroup::TYPENAME={"ClusterGroup"};
+const char *ClusterGroup::TYPENAME = {"ClusterGroup"};
 
 ClusterGroup::ClusterGroup() : ObjectGroup()
 {
@@ -51,12 +51,14 @@ void ClusterGroup::fromXML(xmlNodePtr parent) throw(FWException)
 
     const char *n;
     n = FROMXMLCAST(xmlGetProp(parent, TOXMLCAST("type")));
-    if (n != NULL) {
+    if (n != NULL)
+    {
         setStr("type", n);
         FREEXMLBUFF(n);
     }
     n = FROMXMLCAST(xmlGetProp(parent, TOXMLCAST("master_iface")));
-    if (n != NULL) {
+    if (n != NULL)
+    {
         setStr("master_iface", n);
         FREEXMLBUFF(n);
     }
@@ -68,7 +70,8 @@ xmlNodePtr ClusterGroup::toXML(xmlNodePtr parent) throw(FWException)
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
     xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
 
-    for(list<FWObject*>::const_iterator j = begin(); j != end(); ++j) {
+    for (list<FWObject*>::const_iterator j = begin(); j != end(); ++j)
+    {
         (*j)->toXML(me);
     }
 

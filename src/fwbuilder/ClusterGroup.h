@@ -24,7 +24,7 @@ namespace libfwbuilder
 
     class ClusterGroup : public ObjectGroup
     {
-public:
+    public:
         ClusterGroup();
         ClusterGroup(const FWObjectDatabase *root, bool prepopulate);
         virtual ~ClusterGroup() {};
