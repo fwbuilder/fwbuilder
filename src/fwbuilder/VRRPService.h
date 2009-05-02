@@ -22,23 +22,23 @@
 namespace libfwbuilder
 {
 
-class VRRPService : public Service
-{
+    class VRRPService : public Service
+    {
 
-public:
+    public:
 
-    VRRPService();
-    VRRPService(const FWObjectDatabase *root, bool prepopulate);
-    virtual ~VRRPService();
+        VRRPService();
+        VRRPService(const FWObjectDatabase *root, bool prepopulate);
+        virtual ~VRRPService();
 
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
+        virtual void fromXML(xmlNodePtr parent) throw(FWException);
+        virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
 
-    DECLARE_FWOBJECT_SUBTYPE(VRRPService);
+        DECLARE_FWOBJECT_SUBTYPE(VRRPService);
 
-    virtual std::string getProtocolName();
-    virtual int getProtocolNumber();
-};
+        virtual std::string getProtocolName();
+        virtual int getProtocolNumber();
+    };
 
 }
 

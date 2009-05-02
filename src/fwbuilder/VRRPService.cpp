@@ -24,15 +24,16 @@
 using namespace libfwbuilder;
 using namespace std;
 
-const char *VRRPService::TYPENAME={"VRRPService"};
+const char *VRRPService::TYPENAME = {"VRRPService"};
 
-VRRPService::VRRPService() {
+VRRPService::VRRPService()
+{
     setStr("type", "-1");
     setStr("code", "-1");
 }
 
-VRRPService::VRRPService(const FWObjectDatabase *root,bool prepopulate) :
-    Service(root,prepopulate)
+VRRPService::VRRPService(const FWObjectDatabase *root, bool prepopulate)
+    : Service(root, prepopulate)
 {
     setStr("type", "-1");
     setStr("code", "-1");
@@ -47,13 +48,13 @@ void VRRPService::fromXML(xmlNodePtr root) throw(FWException)
 {
     FWObject::fromXML(root);
 
-    const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("type")));
-    assert(n!=NULL);
+    const char *n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("type")));
+    assert(n != NULL);
     setStr("type", n);
     FREEXMLBUFF(n);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("code")));
-    if(n!=NULL)
+    n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("code")));
+    if (n != NULL)
     {
         setStr("code", n);
         FREEXMLBUFF(n);
