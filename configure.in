@@ -1,8 +1,9 @@
 dnl $Id: configure.in 1046 2007-10-21 20:27:01Z vk $
 
-AC_INIT(src/fwbuilder/FWObject.cpp)
+AC_INIT
+AC_CONFIG_SRCDIR([src/fwbuilder/FWObject.cpp])
 
-AC_CANONICAL_SYSTEM
+AC_CANONICAL_TARGET
 AC_CONFIG_HEADER(src/fwbuilder/libfwbuilder-config.h)
 
 AC_PROG_INSTALL
@@ -314,7 +315,7 @@ AC_CHECK_LIB(z, gzopen, [ LIBS="-lz ${LIBS}"], [
    AC_MSG_ERROR([libz library not found])
 ])
 
-AC_LANG_CPLUSPLUS
+AC_LANG([C++])
 
 
 
@@ -370,7 +371,7 @@ AC_SUBST(STL_LIBS)
 AC_SUBST(STL_LDFLAGS) 
 
 
-dnl AC_LANG_CPLUSPLUS
+dnl AC_LANG([C++])
 
 
 dnl
@@ -438,6 +439,7 @@ AC_SUBST(DOCDIR)
 AC_DEFINE_UNQUOTED(DOCDIR,           "${DOCDIR}")
 
 AC_PATH_PROG(CCACHE, ccache, , )
+AC_SUBST(CCACHE)
 
 
 
@@ -463,12 +465,14 @@ else
 fi
 AC_SUBST(EXEC_PREFIX)
 
-AC_OUTPUT(qmake.inc
+AC_CONFIG_FILES([qmake.inc
           src/confscript/libfwbuilder-config-3
-	  etc/fwbuilder.dtd )
+	  etc/fwbuilder.dtd ])
+AC_OUTPUT
 
 dnl qmake just copies the file; we need to make it executable before that
 dnl 
 chmod a+x src/confscript/libfwbuilder-config-3
 
-QMAKE=$QMAKE CCACHE=$CCACHE ./runqmake.sh
+# QMAKE=$QMAKE CCACHE=$CCACHE ./runqmake.sh
+QMAKE=$QMAKE ./runqmake.sh

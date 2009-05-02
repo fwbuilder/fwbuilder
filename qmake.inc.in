@@ -13,37 +13,35 @@ INCLUDEPATH  += .. ../.. $$(INCLUDEPATH)
 LANGUAGE      = C++
 
 unix {
-!macx {
-	UI_DIR = .ui
-	MOC_DIR = .moc
-	OBJECTS_DIR = .obj
 
     prefix = @prefix@
-	exec_prefix = @EXEC_PREFIX@
-	DESTDIR =
 
-	target.path = @LIBDIR@
-	dtd.path = @TEMPLATE_DIR@/
-	migration.path = @TEMPLATE_DIR@/migration
-	doc.path = @DOCDIR@
+    QMAKE_CXX = @CCACHE@ g++
 
-	CONFIG                 += warn_on debug
-	QMAKE_CFLAGS_DEBUG     += -Wno-unused-parameter
-	QMAKE_CFLAGS_RELEASE   += -Wno-unused-parameter
-	QMAKE_CXXFLAGS_DEBUG   += -Wno-unused-parameter @CXXFLAGS@
-	QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter @CXXFLAGS@
-}
-}
+    INCLUDEPATH += /usr/include @XML_CFLAGS_Q@ @XSLT_CFLAGS_Q@ \
+        @PTHREAD_CFLAGS_Q@ 
+    LIBS += @PTHREAD_LIBS@ @XML_LIBS@ @XSLT_LIBS@ @LIBSNMP_LIBS@ \
+        @LIB_RESOLV@ @LIBS@
 
-unix {
-	INCLUDEPATH += /usr/include @XML_CFLAGS_Q@ @XSLT_CFLAGS_Q@ \
-				   @PTHREAD_CFLAGS_Q@ 
-	LIBS += @PTHREAD_LIBS@ @XML_LIBS@ @XSLT_LIBS@ @LIBSNMP_LIBS@ \
-				   @LIB_RESOLV@ @LIBS@
-}
+    !macx {
+         UI_DIR = .ui
+         MOC_DIR = .moc
+         OBJECTS_DIR = .obj
 
-macx {
-    prefix = @prefix@
+         exec_prefix = @EXEC_PREFIX@
+         DESTDIR =
+
+         target.path = @LIBDIR@
+         dtd.path = @TEMPLATE_DIR@/
+         migration.path = @TEMPLATE_DIR@/migration
+         doc.path = @DOCDIR@
+
+         CONFIG                 += warn_on debug
+         QMAKE_CFLAGS_DEBUG     += -Wno-unused-parameter
+         QMAKE_CFLAGS_RELEASE   += -Wno-unused-parameter
+         QMAKE_CXXFLAGS_DEBUG   += -Wno-unused-parameter @CXXFLAGS@
+         QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter @CXXFLAGS@
+    }
 }
 
 exists(qmake2.inc) {
