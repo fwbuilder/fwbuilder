@@ -23,6 +23,7 @@ fi
 sys=`uname -s`
 
 which libtoolize >/dev/null 2>&1 && libtoolize --force --copy
+which glibtoolize >/dev/null 2>&1 && glibtoolize --force --copy
 which acinclude >/dev/null 2>&1 && acinclude
 which aclocal >/dev/null 2>&1 && aclocal
 autoconf
