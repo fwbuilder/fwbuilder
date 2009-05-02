@@ -4,7 +4,6 @@ test -z "${QMAKE}" && QMAKE="qmake"
 
 C="-recursive"
 test -n "$QMAKESPEC" && C="$C -spec $QMAKESPEC "
-test -n "$CCACHE" && C="$C QMAKE_CXX='ccache	g++' "
 
 echo "QTDIR=\"$QTDIR\""
 echo "Running qmake: $QMAKE $C"

@@ -6,44 +6,42 @@ QTDIR         = $$(QTDIR)
 
 TEMPLATE      = lib
 
-SO_VERSION    = 9.0.0
+SO_VERSION    = 8.2.0
 
 DEFINES      += $$(DEFINES)
 INCLUDEPATH  += .. ../.. $$(INCLUDEPATH)
 LANGUAGE      = C++
 
 unix {
-!macx {
-	UI_DIR = .ui
-	MOC_DIR = .moc
-	OBJECTS_DIR = .obj
 
-    prefix = /Users/vadim/src/fwbuilder/fwb3-branch-v3_1/install_root
-	exec_prefix = $$prefix
-	DESTDIR =
+    prefix = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root
 
-	target.path = $$exec_prefix/lib
-	dtd.path = /Users/vadim/src/fwbuilder/fwb3-branch-v3_1/install_root/share/libfwbuilder-3.1.0/
-	migration.path = /Users/vadim/src/fwbuilder/fwb3-branch-v3_1/install_root/share/libfwbuilder-3.1.0/migration
-	doc.path = /Users/vadim/src/fwbuilder/fwb3-branch-v3_1/install_root/share/doc/libfwbuilder-3.1.0
+    QMAKE_CXX = /usr/local/bin/ccache g++
 
-	CONFIG                 += warn_on debug
-	QMAKE_CFLAGS_DEBUG     += -Wno-unused-parameter
-	QMAKE_CFLAGS_RELEASE   += -Wno-unused-parameter
-	QMAKE_CXXFLAGS_DEBUG   += -Wno-unused-parameter -g -O2
-	QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter -g -O2
-}
-}
+    INCLUDEPATH += /usr/include /usr/include/libxml2  \
+         
+    LIBS +=  -L/usr/lib -lxml2 -lz -lpthread -licucore -lm  -lxslt -lnetsnmp \
+         -lz -lnetsnmp 
 
-unix {
-	INCLUDEPATH += /usr/include /usr/include/libxml2  \
-				    
-	LIBS +=  -L/usr/lib -lxml2 -lz -lpthread -licucore -lm  -lxslt -lnetsnmp \
-				    -lz -lnetsnmp 
-}
+    !macx {
+         UI_DIR = .ui
+         MOC_DIR = .moc
+         OBJECTS_DIR = .obj
 
-macx {
-    prefix = /Users/vadim/src/fwbuilder/fwb3-branch-v3_1/install_root
+         exec_prefix = $$prefix
+         DESTDIR =
+
+         target.path = $$exec_prefix/lib
+         dtd.path = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.5/
+         migration.path = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/libfwbuilder-3.0.5/migration
+         doc.path = /Users/vadim/src/fwbuilder/fwb3-branch-v3/install_root/share/doc/libfwbuilder-3.0.5
+
+         CONFIG                 += warn_on debug
+         QMAKE_CFLAGS_DEBUG     += -Wno-unused-parameter
+         QMAKE_CFLAGS_RELEASE   += -Wno-unused-parameter
+         QMAKE_CXXFLAGS_DEBUG   += -Wno-unused-parameter -g -O2
+         QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter -g -O2
+    }
 }
 
 exists(qmake2.inc) {
