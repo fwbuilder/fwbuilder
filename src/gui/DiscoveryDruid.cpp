@@ -160,6 +160,9 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
 
     importPlatformChanged(m_dialog->import_platform->currentIndex());
 
+    showPage(0);
+    setNextEnabled(0, true);
+
 #ifdef HAVE_ANTLR_RUNTIME
     if (start_with_import)
     {
@@ -168,12 +171,11 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
         setAppropriate( 0, false );
         // show the first page of the "import policy" track of the wizard
         showPage( 2 );
+        setNextEnabled(2, true);
         cancelButton->show();
     }
 #endif
 
-    showPage(0);
-    setNextEnabled(0, true);
     prg_timer->start(100);
 }
 
