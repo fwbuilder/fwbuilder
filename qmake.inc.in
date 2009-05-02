@@ -2,24 +2,17 @@
 #
 ######### libfwbuilder/qmake.inc.in
 #
-QTDIR         = $$(QTDIR)
-
-TEMPLATE      = lib
-
-SO_VERSION    = @LIBFWBUILDER_SOLIB_VERSION@
-
-DEFINES      += $$(DEFINES)
-INCLUDEPATH  += .. ../.. $$(INCLUDEPATH)
-LANGUAGE      = C++
+QTDIR = $$(QTDIR)
+TEMPLATE = lib
+SO_VERSION = @LIBFWBUILDER_SOLIB_VERSION@
+DEFINES += $$(DEFINES)
+INCLUDEPATH += .. ../.. $$(INCLUDEPATH)
+LANGUAGE = C++
 
 unix {
-
     prefix = @prefix@
-
     QMAKE_CXX = @CCACHE@ g++
-
-    INCLUDEPATH += /usr/include @XML_CFLAGS_Q@ @XSLT_CFLAGS_Q@ \
-        @PTHREAD_CFLAGS_Q@ 
+    INCLUDEPATH += /usr/include @XML_CFLAGS_Q@ @XSLT_CFLAGS_Q@ @PTHREAD_CFLAGS_Q@
     LIBS += @PTHREAD_LIBS@ @XML_LIBS@ @XSLT_LIBS@ @LIBSNMP_LIBS@ \
         @LIB_RESOLV@ @LIBS@
 
@@ -36,10 +29,10 @@ unix {
          migration.path = @TEMPLATE_DIR@/migration
          doc.path = @DOCDIR@
 
-         CONFIG                 += warn_on debug
-         QMAKE_CFLAGS_DEBUG     += -Wno-unused-parameter
-         QMAKE_CFLAGS_RELEASE   += -Wno-unused-parameter
-         QMAKE_CXXFLAGS_DEBUG   += -Wno-unused-parameter @CXXFLAGS@
+         CONFIG += warn_on debug
+         QMAKE_CFLAGS_DEBUG += -Wno-unused-parameter
+         QMAKE_CFLAGS_RELEASE += -Wno-unused-parameter
+         QMAKE_CXXFLAGS_DEBUG += -Wno-unused-parameter @CXXFLAGS@
          QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter @CXXFLAGS@
     }
 }
