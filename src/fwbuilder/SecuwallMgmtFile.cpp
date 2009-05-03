@@ -65,97 +65,97 @@ void SecuwallMgmtFile::parse(istream &from) throw(FWException)
     {
         switch (state)
         {
-            case s_begin:
-                if (c == '#')
-                {
-                    /* Ignore commented lines */
-                    state = s_rest;
-                    break;
-                }
-                else if (c != '\n' && c != ' ' && c != '\t' && c != '\"')
-                {
-                    /* Found key entry */
-                    state = s_key;
-                }
-                else
-                    break;
-            case s_key:
-                if (c == '=' || c == ' ' || c == '\t' || c == '\"')
-                {
-                    /* End of key */
-                    if (temp.empty())
-                    {
-                        ostringstream err;
-                        cerr << "Found line without key: " << ln;
-                        throw FWException(err.str());
-                    }
-                    key = temp;
-                    temp.clear();
-                    state = s_space;
-                }
-                else
-                {
-                    /* Processing key entry */
-                    temp += c;
-                }
+        case s_begin:
+            if (c == '#')
+            {
+                /* Ignore commented lines */
+                state = s_rest;
                 break;
-            case s_space:
-                if (c == '#' || c == '\n')
+            }
+            else if (c != '\n' && c != ' ' && c != '\t' && c != '\"')
+            {
+                /* Found key entry */
+                state = s_key;
+            }
+            else
+                break;
+        case s_key:
+            if (c == '=' || c == ' ' || c == '\t' || c == '\"')
+            {
+                /* End of key */
+                if (temp.empty())
                 {
-                    /* Key entry without value */
                     ostringstream err;
-                    cerr << "Found key without value: " << ln;
+                    cerr << "Found line without key: " << ln;
                     throw FWException(err.str());
                 }
-                else if (c == ' ' || c == '\t')
-                {
-                    /* Ignore whitespaces */
-                    break;
-                }
-                else
-                {
-                    /* Process value */
-                    state = s_value;
-                }
-                /* FALLTHROUGH */
-            case s_value:
-                if (c == ' ' || c == '\t' || c == '#' || c == '\n')
-                {
-                    /* Store data */
-                    data.insert(make_pair(key, temp));
-                    /* Reset processing variables */
-                    key.clear();
-                    temp.clear();
-                    if (c == '\n')
-                    {
-                        /* Process next line */
-                        ln++;
-                        state = s_begin;
-                    }
-                    else
-                    {
-                        /* Process rest of line */
-                        state = s_rest;
-                    }
-                    break;
-                }
-                else if (c == '\"')
-                {
-                    /* Ignore Quotation marks */
-                    break;
-                }
-                else
-                {
-                    temp += c;
-                    break;
-                }
-            case s_rest:
+                key = temp;
+                temp.clear();
+                state = s_space;
+            }
+            else
+            {
+                /* Processing key entry */
+                temp += c;
+            }
+            break;
+        case s_space:
+            if (c == '#' || c == '\n')
+            {
+                /* Key entry without value */
+                ostringstream err;
+                cerr << "Found key without value: " << ln;
+                throw FWException(err.str());
+            }
+            else if (c == ' ' || c == '\t')
+            {
+                /* Ignore whitespaces */
+                break;
+            }
+            else
+            {
+                /* Process value */
+                state = s_value;
+            }
+            /* FALLTHROUGH */
+        case s_value:
+            if (c == ' ' || c == '\t' || c == '#' || c == '\n')
+            {
+                /* Store data */
+                data.insert(make_pair(key, temp));
+                /* Reset processing variables */
+                key.clear();
+                temp.clear();
                 if (c == '\n')
                 {
+                    /* Process next line */
                     ln++;
                     state = s_begin;
                 }
+                else
+                {
+                    /* Process rest of line */
+                    state = s_rest;
+                }
                 break;
+            }
+            else if (c == '\"')
+            {
+                /* Ignore Quotation marks */
+                break;
+            }
+            else
+            {
+                temp += c;
+                break;
+            }
+        case s_rest:
+            if (c == '\n')
+            {
+                ln++;
+                state = s_begin;
+            }
+            break;
         }
     }
 }
