@@ -1,3 +1,9 @@
+2009-05-06  vadim  <vadim@vk.crocodile.org>
+
+	* FirewallInstallerCisco.cpp (FirewallInstallerCisco::activatePolicy):
+	fixed bug #2787932 "External install script is not supported for
+	PIX".
+
 2009-05-07  vadim  <vadim@vk.crocodile.org>
 
 	* fixed bug #2787857: "b847 crashes on Start". v3.0.5 build 847

@@ -165,35 +165,6 @@ void FirewallInstallerUnx::activatePolicy()
         executeInstallScript();
 }
 
-void FirewallInstallerUnx::executeInstallScript()
-{
-    Management *mgmt = cnf->fwobj->getManagementObject();
-    assert(mgmt!=NULL);
-    PolicyInstallScript *pis = mgmt->getPolicyInstallScript();
-    QString command = pis->getCommand().c_str();
-    QString wdir = getFileDir( mw->getRCS()->getFileName() );
-    QStringList args;
-    args.push_back(command.trimmed());
-
-    QString qs = pis->getArguments().c_str();
-    args += qs.trimmed().split(" ", QString::SkipEmptyParts);
-
-    args.push_back("-f");
-    args.push_back(mw->db()->getFileName().c_str());
-
-    if (wdir!="")
-    {
-        args.push_back("-d");
-        args.push_back(wdir);
-    }
-    args.push_back(cnf->fwobj->getName().c_str());
-
-    if (cnf->verbose) inst_dlg->displayCommand(args);
-    qApp->processEvents();
-
-    executeCommand(args);
-}
-
 void FirewallInstallerUnx::executeSession(const QString &cmd)
 {
     QStringList args;
@@ -242,57 +213,4 @@ void FirewallInstallerUnx::copyFile(const QString &file_name)
 }
 
 // ************************************************************************
-
-void FirewallInstallerUnx::executeCommand(const QString &cmd)
-{
-    QStringList args;
-    packSSHArgs(args);
-    args.push_back( cmd );
-    if (cnf->verbose) inst_dlg->displayCommand(args);
-    qApp->processEvents();
-
-    executeCommand(args);
-}
-
-// ************************************************************************
-
-/*
- * All other methods operate with SSHSession objects because they are
- * interactive (even if only to enter password). We do not need
- * interactivity to run single command so here we use QProcess instead
- * of SSHSession.
- */
-void FirewallInstallerUnx::executeCommand(QStringList &args)
-{
-    connect(&proc, SIGNAL(readyReadStandardOutput()),
-            inst_dlg, SLOT(readFromStdout()) );
-
-    // even though we set channel mode to "merged", QProcess
-    // seems to not merge them on windows.
-    proc.setProcessChannelMode(QProcess::MergedChannels);
-
-    // set codecs so that command line parameters can be encoded
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
-
-    QString path = args.at(0);
-    args.pop_front();
-
-    proc.disconnect(SIGNAL(finished(int,QProcess::ExitStatus)));
-    connect(&proc, SIGNAL(finished(int,QProcess::ExitStatus)),
-            inst_dlg, SLOT(installerFinished(int,QProcess::ExitStatus)) );
-    inst_dlg->enableStopButton();
-
-    proc.start(path, args);
-
-    if ( !proc.waitForStarted() )
-    {
-        inst_dlg->addToLog(tr("Error: Failed to start program:"));
-        inst_dlg->addToLog(path);
-        inst_dlg->opError(cnf->fwobj);
-        QTimer::singleShot( 0, inst_dlg, SLOT(mainLoopInstall()));
-        return;
-    }
-    args.push_front(path);
-}
 

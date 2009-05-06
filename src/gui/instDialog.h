@@ -63,7 +63,7 @@ namespace libfwbuilder
 }
 
 enum BatchOperation {BATCH_INSTALL, BATCH_COMPILE} ;
-enum Page1Operation {COMPILE, INSTALL};
+enum Page1Operation {INST_DLG_COMPILE, INST_DLG_INSTALL};
 
 typedef std::map<libfwbuilder::Firewall *,QTableWidgetItem *> t_tableMap;
 typedef std::list<libfwbuilder::Firewall *> t_fwList;
@@ -171,9 +171,11 @@ class instDialog : public QDialog, public FakeWizard
     void enableStopButton();
     void disableStopButton();
 
+    void setUpProcessToCompile();
+    void setUpProcessToInstall();
+    bool executeCommand(const QString &path, QStringList &args);
     
 protected:
-    void executeCommand(QStringList &args);
     
     virtual void showEvent( QShowEvent *ev);
     virtual void hideEvent( QHideEvent *ev);

@@ -99,7 +99,7 @@ instDialog::instDialog(QWidget* p,
 
     installer = NULL;
 
-    page_1_op = COMPILE;
+    page_1_op = INST_DLG_COMPILE;
 
     showSelectedFlag = false;
     rejectDialogFlag = false;
@@ -218,7 +218,7 @@ void instDialog::mainLoopCompile()
         fillInstallOpList();
         if (install_fw_list.size() > 0)
         {
-            page_1_op = INSTALL;
+            page_1_op = INST_DLG_INSTALL;
             setNextEnabled(1, true);
         }
     }
@@ -294,7 +294,7 @@ void instDialog::showPage(const int page)
         // controlled by flag page_1_op
         switch (page_1_op)
         {
-        case COMPILE:
+        case INST_DLG_COMPILE:
         {
             if (fwbdebug) qDebug("Page 1 compile");
             if (compile_fw_list.size()==0)
@@ -304,7 +304,7 @@ void instDialog::showPage(const int page)
                     showPage(0);
                     return;
                 }
-                page_1_op = INSTALL;
+                page_1_op = INST_DLG_INSTALL;
                 showPage(1);
                 return;
             }
@@ -320,7 +320,7 @@ void instDialog::showPage(const int page)
             break;
         }
 
-        case INSTALL:
+        case INST_DLG_INSTALL:
         {
             if (fwbdebug) qDebug("Page 1 install");
             if (install_fw_list.size() > 0)
@@ -436,5 +436,55 @@ bool instDialog::isCiscoFamily()
 void instDialog::blockInstallForFirewall(Firewall *fw)
 {
     installMapping[fw]->setCheckState(Qt::Unchecked);
+}
+
+void instDialog::setUpProcessToCompile()
+{
+    connect(&proc, SIGNAL(readyReadStandardOutput()),
+            this, SLOT(readFromStdout()) );
+
+    // even though we set channel mode to "merged", QProcess
+    // seems to not merge them on windows.
+    proc.setProcessChannelMode(QProcess::MergedChannels);
+
+    proc.disconnect(SIGNAL(finished(int,QProcess::ExitStatus)));
+    connect(&proc, SIGNAL(finished(int,QProcess::ExitStatus)),
+            this, SLOT(compilerFinished(int,QProcess::ExitStatus)) );
+}
+
+void instDialog::setUpProcessToInstall()
+{
+    connect(&proc, SIGNAL(readyReadStandardOutput()),
+            this, SLOT(readFromStdout()) );
+
+    // even though we set channel mode to "merged", QProcess
+    // seems to not merge them on windows.
+    proc.setProcessChannelMode(QProcess::MergedChannels);
+
+    proc.disconnect(SIGNAL(finished(int,QProcess::ExitStatus)));
+    connect(&proc, SIGNAL(finished(int,QProcess::ExitStatus)),
+            this, SLOT(installerFinished(int,QProcess::ExitStatus)) );
+}
+
+/*
+ * This method is used to launch compiler AND user-defined external
+ * installation script.
+ */
+bool instDialog::executeCommand(const QString &path, QStringList &args)
+{
+    // set codecs so that command line parameters can be encoded
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
+    enableStopButton();
+    proc.start(path, args);
+    if ( !proc.waitForStarted() )
+    {
+        opError(cnf.fwobj);
+        addToLog( tr("Error: Failed to start program") );
+        addToLog(path);
+        //blockInstallForFirewall(cnf.fwobj);
+        return false;
+    }
+    return true;
 }
 

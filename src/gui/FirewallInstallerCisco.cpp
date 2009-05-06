@@ -62,6 +62,17 @@ bool FirewallInstallerCisco::packInstallJobsList(Firewall*)
 
 void FirewallInstallerCisco::activatePolicy()
 {
+    // Someone may have external expect script to talk to PIX or a router
+    // Let them run it too.
+    Management *mgmt = cnf->fwobj->getManagementObject();
+    assert(mgmt!=NULL);
+    PolicyInstallScript *pis = mgmt->getPolicyInstallScript();
+    if (pis->getCommand()!="" )
+    {
+        executeInstallScript();
+        return;
+    }
+
     QStringList args;
 
     packSSHArgs(args);

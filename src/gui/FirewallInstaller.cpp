@@ -221,9 +221,54 @@ void FirewallInstaller::copyFile(const QString &file_name)
 {
 }
 
+void FirewallInstaller::executeInstallScript()
+{
+    Management *mgmt = cnf->fwobj->getManagementObject();
+    assert(mgmt!=NULL);
+    PolicyInstallScript *pis = mgmt->getPolicyInstallScript();
+    QString command = pis->getCommand().c_str();
+    QString wdir = getFileDir( mw->getRCS()->getFileName() );
+    QStringList args;
+    //args.push_back(command.trimmed());
+
+    QString qs = pis->getArguments().c_str();
+    args += qs.trimmed().split(" ", QString::SkipEmptyParts);
+
+    args.push_back("-f");
+    args.push_back(mw->db()->getFileName().c_str());
+
+    if (wdir!="")
+    {
+        args.push_back("-d");
+        args.push_back(wdir);
+    }
+    args.push_back(cnf->fwobj->getName().c_str());
+
+    if (cnf->verbose) inst_dlg->displayCommand(args);
+    qApp->processEvents();
+
+    inst_dlg->setUpProcessToInstall();
+    if (!inst_dlg->executeCommand(command.trimmed(), args))
+        QTimer::singleShot( 0, this, SLOT(mainLoopInstall()));
+}
+
 void FirewallInstaller::executeCommand(const QString &cmd)
 {
-}    
+    QStringList args;
+    packSSHArgs(args);
+    args.push_back( cmd );
+    if (cnf->verbose) inst_dlg->displayCommand(args);
+    qApp->processEvents();
+
+    QString path = args.at(0);
+    args.pop_front();
+
+    inst_dlg->setUpProcessToInstall();
+    if (!inst_dlg->executeCommand(path, args))
+        QTimer::singleShot( 0, this, SLOT(mainLoopInstall()));
+}
+
+// ************************************************************************
 
 void FirewallInstaller::activatePolicy()
 {
