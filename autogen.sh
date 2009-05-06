@@ -7,10 +7,10 @@ if test ! -x "$MAKE" ; then MAKE=`which make` ; fi
 HAVE_GNU_MAKE=`$MAKE --version|grep -c "Free Software Foundation"`
 
 if test "$HAVE_GNU_MAKE" != "1"; then 
-  echo "Could not find GNU make on this system, can not proceed with build."
+  echo Could not find GNU make on this system, can not proceed with build.
   exit 1
 else
-  echo "Found GNU Make at $MAKE ... good."
+  echo Found GNU Make at $MAKE ... good.
 fi
 
 if test ! -x "`which aclocal`"
@@ -20,20 +20,30 @@ then
   exit 1
 fi
 
-if test ! -x "`which libtoolize`"
+if test -x "`which libtoolize`"
 then
-  if test ! -x "`which glibtoolize`"
+  LIBTOOLIZE="libtoolize"
+else
+  if test -x "`which glibtoolize`"
   then
+    LIBTOOLIZE="glibtoolize"
+  else
     echo "You need libtoolize to generate autoconf and libtool scripts."
     echo "Please install libtool package."
     exit 1
   fi
 fi
 
-echo "This script runs configure ..."
+$LIBTOOLIZE --dry-run --install > /dev/null 2>&1 && {
+    LIBTOOLIZE_ARGS="--force --copy --install"
+} || {
+    LIBTOOLIZE_ARGS="--force --copy"
+}
 
-which libtoolize >/dev/null 2>&1 && libtoolize --force --copy
-which glibtoolize >/dev/null 2>&1 && glibtoolize --force --copy
+echo This script runs configure ...
+
+$LIBTOOLIZE $LIBTOOLIZE_ARGS
+
 which acinclude >/dev/null 2>&1 && acinclude
 which aclocal >/dev/null 2>&1 && aclocal
 autoconf
