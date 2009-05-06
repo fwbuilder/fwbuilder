@@ -57,13 +57,22 @@ namespace libfwbuilder
         Routing* getRouting();
 
         /**
-         * return attached cluster group members object.
+         * return attached cluster group members object that
+         * supports state synchronization (e.g. conntrackd).
          *
          * if the object is not found, a new one is created.
          *
          * @return assigned cluster group members object
          */
-        virtual ClusterGroup* getMembersObject();
+        virtual ClusterGroup* getStateSyncGroupObject();
+
+        /**
+         * Build a list of member firewalls. This method scans all
+         * failover groups as well as state sync groups of the
+         * cluster. Upon return, each firewall object appears in the
+         * list exactly once.
+         */
+        virtual void getMembersList(std::list<libfwbuilder::Firewall*> &members);
 
         time_t getLastModified();
         time_t getLastInstalled();

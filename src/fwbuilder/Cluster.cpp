@@ -59,10 +59,10 @@ Cluster::Cluster(const FWObjectDatabase *root, bool prepopulate)
     if (prepopulate)
     {
         // create one conntrack member group
-        FWObject *members = getRoot()->create(ClusterGroup::TYPENAME);
-        members->setName("Members (conntrack)");
-        members->setStr("type", "conntrack");
-        add(members);
+        FWObject *state_sync_members = getRoot()->create(ClusterGroup::TYPENAME);
+        state_sync_members->setName("Members (conntrack)");
+        state_sync_members->setStr("type", "conntrack");
+        add(state_sync_members);
     }
 }
 
@@ -107,18 +107,53 @@ Routing* Cluster::getRouting()
     return(Routing::cast(findObjectByName(Routing::TYPENAME, "Routing")));
 }
 
-ClusterGroup* Cluster::getMembersObject()
+ClusterGroup* Cluster::getStateSyncGroupObject()
 {
-    ClusterGroup *members = NULL;
-    members = ClusterGroup::cast(getFirstByType(ClusterGroup::TYPENAME));
+    ClusterGroup *group = ClusterGroup::cast(getFirstByType(
+                                                 ClusterGroup::TYPENAME));
 
-    if (members == NULL)
+    if (group == NULL)
     {
         // create a new ClusterGroup object
-        members = ClusterGroup::cast(getRoot()->create(ClusterGroup::TYPENAME));
-        add(members);
+        group = ClusterGroup::cast(getRoot()->create(ClusterGroup::TYPENAME));
+        add(group);
     }
-    return members;
+    return group;
+}
+
+/*
+ * List members should contain each member firewall only once, but the
+ * same member firewall can be present in several failover groups and
+ * possibly in state synchronization group. Using set<int> to make the
+ * list unique.
+ */
+void Cluster::getMembersList(list<libfwbuilder::Firewall*> &members)
+{
+    set<int> members_ids;
+    list<FWObject*> all_firewalls = getByTypeDeep(ClusterGroup::TYPENAME);
+    for (list<FWObject*>::iterator it = all_firewalls.begin();
+         it != all_firewalls.end(); ++it)
+    {
+        for (list<FWObject*>::iterator j = (*it)->begin();
+             j != (*it)->end(); ++j)
+        {
+            FWObject *member = FWReference::getObject(*j);
+            Firewall *fw = NULL;
+            // as of 05/04 members of ClusterGroup are interfaces. See
+            // tickets #10 and #11
+            if (Interface::cast(member))
+                fw = Firewall::cast(member->getParent());
+            else
+                fw = Firewall::cast(member);
+            members_ids.insert(fw->getId());
+        }
+    }
+    for (set<int>::iterator it = members_ids.begin();
+         it != members_ids.end(); ++it)
+    {
+        Firewall *fw = Firewall::cast(getRoot()->findInIndex(*it));
+        if (fw) members.push_back(fw);
+    }
 }
 
 bool Cluster::validateChild(FWObject *o)
