@@ -34,7 +34,6 @@
 
 #include <qstring.h>
 #include <qstringlist.h>
-#include <qprocess.h>
 #include <qobject.h>
 
 namespace libfwbuilder
@@ -46,11 +45,7 @@ class FirewallInstallerUnx : public FirewallInstaller
 {
     Q_OBJECT
 
-    QProcess  proc;
-        
-    void executeInstallScript();
     void executeSession(const QString &cmd);
-    void executeCommand(QStringList &args);
         
 public:
 
@@ -59,7 +54,6 @@ public:
 
     virtual bool packInstallJobsList(libfwbuilder::Firewall*);
     virtual void copyFile(const QString &file_name);
-    virtual void executeCommand(const QString &cmd);
     virtual void activatePolicy();
 
     

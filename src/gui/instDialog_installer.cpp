@@ -169,7 +169,13 @@ void instDialog::installerFinished(int ret_code, QProcess::ExitStatus status)
     if( fwbdebug) qDebug("instDialog::installerFinished "
                          "exit code = %d exit_status=%d",
                          ret_code, status);
-
+    // run readFromStdout() and processEvents() to make sure all
+    // events that pass output from the external installer script have
+    // been processed. Otherwise the output from the next installer
+    // pass in batch install mixes with the tail of the output from
+    // the previous one.
+    readFromStdout();
+    qApp->processEvents();
     if (ret_code==0 && status==QProcess::NormalExit)
         installerSuccess();
     else

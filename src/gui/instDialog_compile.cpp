@@ -109,24 +109,12 @@ bool instDialog::runCompiler(Firewall *fw)
     connect(currentStopButton, SIGNAL(clicked()),
             this, SLOT(stopCompile()));
 
-    proc.disconnect(SIGNAL(finished(int,QProcess::ExitStatus)));
-    connect(&proc, SIGNAL(finished(int,QProcess::ExitStatus)),
-            this, SLOT(compilerFinished(int,QProcess::ExitStatus)) );
-
-    proc.start(path, args);
-
     currentStopButton->setText(tr("Stop"));
     currentStopButton->setEnabled(true);
 
-    if ( !proc.waitForStarted() )
-    {
-        opError(cnf.fwobj);
-        addToLog( tr("Error: Failed to start program") );
-        blockInstallForFirewall(cnf.fwobj);
+    setUpProcessToCompile();
+    if (!executeCommand(path, args))
         QTimer::singleShot( 0, this, SLOT(mainLoopCompile()));
-        return false;
-    }
-    args.push_front(path);
 
     return true;
 }

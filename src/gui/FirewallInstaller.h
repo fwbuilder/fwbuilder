@@ -71,7 +71,8 @@ protected:
 
     instDialog *inst_dlg;
     instConf *cnf;
-    // session is used when e run built-in installer
+    QProcess  proc;
+    // session is used when we run built-in installer
     SSHSession  *session;
     std::list<instJob> job_list;
     QString fwb_prompt;
@@ -79,6 +80,7 @@ protected:
     void runSSHSession(SSHSession *s, bool intermediate=false);
     QString getFullPath(const QString &file );
 
+    void executeInstallScript();
     
 public:
 
