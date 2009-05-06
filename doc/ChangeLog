@@ -1,3 +1,10 @@
+2009-05-07  vadim  <vadim@vk.crocodile.org>
+
+	* fixed bug #2787857: "b847 crashes on Start". v3.0.5 build 847
+	links with QtDBus framework as part of the future development but
+	the framework file was not included in the bundle. This caused
+	crash on Mac OS X.
+
 2009-05-02  vadim  <vadim@vk.crocodile.org>
 
 	* DiscoveryDruid.cpp (DiscoveryDruid::DiscoveryDruid): fixed bug
