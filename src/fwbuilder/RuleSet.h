@@ -87,11 +87,11 @@ class RuleSet : public FWObject
     
     Rule* getRuleByNum(int n);
     
-    Rule* insertRuleAtTop();
+    Rule* insertRuleAtTop(bool hidden_rule=false);
     Rule* insertRuleBefore(int rule_n);
     
     Rule* appendRuleAfter(int rule_n);
-    Rule* appendRuleAtBottom();
+    Rule* appendRuleAtBottom(bool hidden_rule=false);
     
     bool  deleteRule(int rule_n);
     bool  deleteRule(Rule *r);
