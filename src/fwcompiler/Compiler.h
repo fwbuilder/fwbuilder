@@ -559,6 +559,14 @@ protected:
                           bool recognize_broadcasts=true,
                           bool recognize_multicasts=true);
 
+        /**
+         * Compares given object with firewall or its parent cluster
+         * (if any).  Compares only IDs of these objects. Relies on
+         * class CompilerDriver to set integer variable
+         * "parent_cluster_id" in the firewall object if it is a
+         * member of a cluster.
+         */
+        bool isFirewallOrCluster(libfwbuilder::FWObject *obj);
         
         /**
          * This method finds interface of obj2 (which is usually

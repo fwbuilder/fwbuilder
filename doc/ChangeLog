@@ -1,3 +1,19 @@
+2009-05-08  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler.cpp (Compiler::IsFirewallOrCluster): This new method
+	compares given object with firewall or its parent cluster (if
+	any).  Compares only IDs of these objects. This operation is often
+	used in compilers to check if an object in source or destination
+	is firewall, however when policy belongs to a cluster, it is
+	cluster object that is usually found in rules and we need generic
+	method to check for both conditions. This method checks an object
+	if it is firewall or its parent cluster.
+
+	* PolicyCompiler.cpp (PolicyCompiler::prolog): compilers reassign
+	position numbers to rules before compilation to protect against
+	possible errors upstream. Positional rule numbers are almost not used
+	anywhere except for compiler debugging.
+
 2009-05-07  vadim  <vadim@vk.crocodile.org>
 
 	* FWObjectDatabase::_findFirewallByNameRecursive: Made this method

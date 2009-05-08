@@ -51,7 +51,7 @@ int NATCompiler::prolog()
 {
     Compiler::prolog();
 
-    FWObject  *nat=fw->getFirstByType(NAT::TYPENAME);
+    NAT *nat = NAT::cast(fw->getFirstByType(NAT::TYPENAME));
     assert(nat);
 
     combined_ruleset = new NAT();
@@ -74,12 +74,14 @@ int NATCompiler::prolog()
 //    list<FWObject*> l3=nat->getByType(NATRule::TYPENAME);
 //    for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) {
 
-    FWObject *ruleset = source_ruleset;
+    RuleSet *ruleset = source_ruleset;
     if (ruleset == NULL)
     {
         source_ruleset = RuleSet::cast(nat);
         ruleset = nat;
     }
+
+    ruleset->renumberRules();
 
     combined_ruleset->setName(ruleset->getName());
     temp_ruleset->setName(ruleset->getName());

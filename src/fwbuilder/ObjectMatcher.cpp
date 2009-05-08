@@ -187,29 +187,13 @@ bool ObjectMatcher::checkComplexMatch(Host *obj1,
                                       FWObject *obj2)
 {
 /*
- *  match only if object 'obj1' is Network, AddressRange or Host/Firewall
- *  with one interface. Simple and general rule is object 'obj1' should
- *  have zero or one interface child object.
+ *  match only if all interfaces of obj1 match obj2
  */
-    list<FWObject*> l;
-    l=obj1->getByType(Interface::TYPENAME);
-    if (l.size()>1) return false;
-
-    return checkComplexMatchForSingleAddress(obj1, obj2);
-}
-
-bool ObjectMatcher::checkComplexMatch(Firewall *obj1, FWObject *obj2)
-{
-/*
- *  match only if object 'obj1' is Network, AddressRange or Host/Firewall
- *  with one interface. Simple and general rule is object 'obj1' should
- *  have zero or one interface child object.
- */
-    list<FWObject*> l;
-    l=obj1->getByType(Interface::TYPENAME);
-    if (l.size()>1) return false;
-
-    return checkComplexMatchForSingleAddress(obj1, obj2);
+    bool res = true;
+    list<FWObject*> l = obj1->getByType(Interface::TYPENAME);
+    for (list<FWObject*>::iterator it = l.begin(); it!=l.end(); ++it)
+        res &= checkComplexMatchForSingleAddress(Interface::cast(*it), obj2);
+    return res;
 }
 
 bool ObjectMatcher::checkComplexMatch(physAddress *obj1, FWObject *obj2)

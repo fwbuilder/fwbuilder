@@ -296,7 +296,7 @@ void RuleSet::renumberRules()
     for (; it!=end(); ++it)
     {
         Rule *rule = Rule::cast(*it);
-        if (rule && rule->isHidden()) continue;
+        if (rule && !rule->isHidden()) break;
     }
 
     list<FWObject*>::reverse_iterator rev_it(it);

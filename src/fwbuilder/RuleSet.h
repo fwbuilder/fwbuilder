@@ -46,8 +46,6 @@ class RuleSet : public FWObject
 
     protected:
     
-    void   renumberRules();
-        
     public:
     
     RuleSet();
@@ -110,6 +108,8 @@ class RuleSet : public FWObject
     
     virtual bool isPrimaryObject() const { return false; }
 
+    void   renumberRules();
+        
 }; //__RULESET_HH_FLAG__
 
 }

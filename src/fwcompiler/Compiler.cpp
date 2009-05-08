@@ -1215,3 +1215,16 @@ Service* Compiler::getFirstTSrv(NATRule *rule)
     return Service::cast(o);
 }
 
+/*
+ * Compares given object with firewall or its parent cluster (if any).
+ * Compares only IDs of these objects. Relies on class CompilerDriver
+ * to set integer variable "parent_cluster_id" in the firewall object
+ * if it is a member of a cluster.
+ */
+bool Compiler::isFirewallOrCluster(FWObject *obj)
+{
+    int fw_id = fw->getId();
+    int cluster_id = fw->getInt("parent_cluster_id");
+    return obj->getId() == fw_id || obj->getId() == cluster_id;
+}
+

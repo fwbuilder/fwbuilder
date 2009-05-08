@@ -64,7 +64,7 @@ int PolicyCompiler::prolog()
 {
     Compiler::prolog();
 
-    FWObject *policy = fw->getFirstByType(Policy::TYPENAME);
+    Policy *policy = Policy::cast(fw->getFirstByType(Policy::TYPENAME));
     assert(policy);
 
     combined_ruleset = new Policy();   // combined ruleset (all interface policies and global policy)
@@ -75,12 +75,13 @@ int PolicyCompiler::prolog()
 
     int global_num=0;
 
-    FWObject *ruleset = source_ruleset;
+    RuleSet *ruleset = source_ruleset;
     if (ruleset == NULL)
     {
         source_ruleset = RuleSet::cast(policy);
         ruleset = policy;
     }
+    ruleset->renumberRules();
 
     combined_ruleset->setName(ruleset->getName());
     temp_ruleset->setName(ruleset->getName());
@@ -90,10 +91,12 @@ int PolicyCompiler::prolog()
 
     for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++)
     {
-	PolicyRule *r= PolicyRule::cast(*i);
+	PolicyRule *r = PolicyRule::cast(*i);
+
 	if (r->isDisabled()) continue;
 
-        RuleElementItf *itfre=r->getItf();   assert(itfre);
+        RuleElementItf *itfre = r->getItf();
+        assert(itfre);
 
         if (itfre->isAny())
         {
