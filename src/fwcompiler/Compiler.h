@@ -44,6 +44,8 @@ namespace libfwbuilder {
     class FWObjectDatabase;
     class InetAddr;
     class Address;
+    class Cluster;
+    class ClusterGroup;
     class Service;
     class Interval;
     class IPv4;
@@ -221,6 +223,16 @@ protected:
          */
         int cache_objects(libfwbuilder::FWObject *o);
 
+        /* Methods added to support clusters */
+        virtual int checkCluster(libfwbuilder::Cluster* cluster);
+        void processVRRPGroup(libfwbuilder::Cluster *cluster,
+                              libfwbuilder::Firewall *fw,
+                              libfwbuilder::ClusterGroup *cluster_group,
+                              libfwbuilder::Interface *iface);
+
+        // checks if address @addr belongs to the subnet defined by @subnet
+        bool isReachable(const libfwbuilder::Address* const subnet,
+                         const libfwbuilder::InetAddr* const addr);
 
 	public:
 
@@ -641,7 +653,7 @@ protected:
 	 * this method should return platform name. It is used 
 	 * to construct proper error and warning messages.
 	 */
-	virtual std::string myPlatformName() =0;
+	virtual std::string myPlatformName() { return ""; }
 
 	std::string getUniqueRuleLabel();
 
@@ -662,6 +674,12 @@ protected:
 	 * debug_rule member variable)
 	 */
         void debugRule();
+
+        /* Methods added to support clusters */
+
+        virtual int populateClusterElements(libfwbuilder::Cluster *cluster,
+                                            libfwbuilder::Firewall *fw);
+  
 
     };
 
