@@ -97,10 +97,15 @@ void FWObjectDatabase::_findObjectsInGroup(Group *g, set<FWObject *> &res)
 /*
  ***********************************************************************
  */
+
+/**
+ * Find firewall object by name. Finds Firewall and Cluster objects.
+ */
 Firewall* FWObjectDatabase::_findFirewallByNameRecursive(FWObject* db,
                                          const string &name) throw(FWException)
 {
-    if (Firewall::isA(db) &&
+    // use Firewall::cast so that both Firewall and Cluster objects match
+    if (Firewall::cast(db) &&
         db->getName()==name &&
         db->getParent()->getId()!=FWObjectDatabase::DELETED_OBJECTS_ID)
         return static_cast<Firewall*>(db);
@@ -110,7 +115,7 @@ Firewall* FWObjectDatabase::_findFirewallByNameRecursive(FWObject* db,
     {
         FWObject *o=*j;
 
-        o = _findFirewallByNameRecursive(o,name);
+        o = _findFirewallByNameRecursive(o, name);
         if(o) return static_cast<Firewall*>(o);
     }
     if (db==this)
@@ -120,7 +125,7 @@ Firewall* FWObjectDatabase::_findFirewallByNameRecursive(FWObject* db,
 
 Firewall* FWObjectDatabase::findFirewallByName(const string &name) throw(FWException)
 {
-    return _findFirewallByNameRecursive(this,name);
+    return _findFirewallByNameRecursive(this, name);
 }
 
 //#define DEBUG_WHERE_USED 1

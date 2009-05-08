@@ -166,21 +166,22 @@ string Compiler::getErrors(const string &comment_sep)
 
 void Compiler::_init(FWObjectDatabase *_db, const string &fwobjectname)
 { 
-    initialized=false;
-    _cntr_=1; 
+    initialized = false;
+    _cntr_ = 1; 
 
-    fw=NULL; 
-    temp_ruleset=NULL; 
-    combined_ruleset=NULL;
+    fw = NULL; 
+    temp_ruleset = NULL; 
+    combined_ruleset = NULL;
 
-    debug=0;
-    debug_rule=-1;
-    verbose=true;
+    debug = 0;
+    debug_rule = -1;
+    verbose = true;
     
-    dbcopy=new FWObjectDatabase(*_db);  // copies entire tree
+    dbcopy = new FWObjectDatabase(*_db);  // copies entire tree
 
-    fw=dbcopy->findFirewallByName(fwobjectname);
-    if (fw==NULL) {
+    fw = dbcopy->findFirewallByName(fwobjectname);
+    if (fw==NULL)
+    {
 	cerr << "Firewall object '" << fwobjectname << "' not found \n";
 	exit(1);
     }

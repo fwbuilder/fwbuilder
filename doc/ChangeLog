@@ -1,5 +1,8 @@
 2009-05-07  vadim  <vadim@vk.crocodile.org>
 
+	* FWObjectDatabase::_findFirewallByNameRecursive: Made this method
+	find both Firewall and Cluster objects in the database.
+
 	* RuleSet.cpp (RuleSet::insertRuleAtTop): methods insertRuleAtTop
 	and appendRuleAtBottom now accept argument "hidden_rule". If this
 	arg is true, added new rule becomes "hidden" (using
