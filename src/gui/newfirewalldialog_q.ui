@@ -50,7 +50,7 @@
       </size>
      </property>
      <property name="currentIndex" >
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page1" >
       <layout class="QGridLayout" name="gridLayout" >
@@ -1311,22 +1311,6 @@
   </connection>
   <connection>
    <sender>platform</sender>
-   <signal>activated(int)</signal>
-   <receiver>newFirewallDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>hostOS</sender>
    <signal>activated(int)</signal>
    <receiver>newFirewallDialog_q</receiver>
    <slot>changed()</slot>

@@ -336,11 +336,13 @@ bool processPolicyRuleSet(
     bool empty_output = true;
     string prolog_place = fw->getOptionsObject()->getStr("prolog_place");
     string platform = fw->getStr("platform");
-    bool flush_and_set_default_policy = Resources::getTargetCapabilityBool(
-        platform, "flush_and_set_default_policy");
+    string host_os = fw->getStr("host_OS");
+    bool flush_and_set_default_policy = Resources::getTargetOptionBool(
+        host_os, "default/flush_and_set_default_policy");
     string platform_family = Resources::platform_res[platform]->
         getResourceStr("/FWBuilderResources/Target/family");
-
+    string os_family = Resources::os_res[host_os]->
+        getResourceStr("/FWBuilderResources/Target/family");
 
     Policy *policy = Policy::cast(ruleset);
     assignRuleSetChain(policy);
@@ -352,7 +354,7 @@ bool processPolicyRuleSet(
 
     MangleTableCompiler_ipt *mangle_compiler;
 
-    if (platform_family == "ipcop")
+    if (os_family == "ipcop")
         mangle_compiler = new MangleTableCompiler_ipcop(
             objdb , fwobjectname.toUtf8().constData(),
             ipv6_policy , oscnf,
@@ -442,7 +444,7 @@ bool processPolicyRuleSet(
 
     PolicyCompiler_ipt *policy_compiler;
 
-    if (platform_family == "ipcop")
+    if (os_family == "ipcop")
         policy_compiler = new PolicyCompiler_ipcop(
             objdb,fwobjectname.toUtf8().constData(), ipv6_policy, oscnf,
             &minus_n_commands_filter);
@@ -855,11 +857,11 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
         string os_variant = DISTRO;
 
-        bool flush_and_set_default_policy = Resources::getTargetCapabilityBool(
-            platform, "flush_and_set_default_policy");
+        bool flush_and_set_default_policy = Resources::getTargetOptionBool(
+            host_os, "default/flush_and_set_default_policy");
 
 /* minimal sanity checking */
-        if (platform_family == "ipcop")
+        if (os_family == "ipcop")
         {
             os_variant = "ipcop";
 
@@ -1002,7 +1004,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 // being created for NAT
                 NATCompiler_ipt *nat_compiler;
 
-                if (platform_family == "ipcop")
+                if (os_family == "ipcop")
                     nat_compiler = new NATCompiler_ipcop(
                         objdb, fwobjectname.toUtf8().constData(), ipv6_policy,
                         oscnf, &minus_n_commands_nat);
@@ -1099,7 +1101,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
         RoutingCompiler_ipt *routing_compiler;
 
-        if (platform_family == "ipcop")
+        if (os_family == "ipcop")
             routing_compiler = new RoutingCompiler_ipcop(
                 objdb , fwobjectname.toUtf8().constData() , false, oscnf );
         else
@@ -1262,7 +1264,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
             prolog_done = true;
         }
 
-        if (platform_family != "ipcop")
+        if (os_family != "ipcop")
         {
             script << "  log '";
             if (omit_timestamp)

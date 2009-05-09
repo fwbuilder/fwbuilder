@@ -1705,7 +1705,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3836X47925" host_OS="endian_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1239820196" platform="endian" version="" name="IPCOP or Endian appliance (2 interfaces)" comment="Endian firewall appliance, 2 interfaces:&#10;br0 is GREEN&#10;eth1 is RED&#10;Do not forget to change IP addresses to &#10;match your firewall." ro="False">
+      <Firewall id="id3836X47925" host_OS="ipcop_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1239820196" platform="iptables" version="" name="IPCOP or Endian appliance (2 interfaces)" comment="Endian firewall appliance, 2 interfaces:&#10;br0 is GREEN&#10;eth1 is RED&#10;Do not forget to change IP addresses to &#10;match your firewall." ro="False">
         <NAT id="id3840X47925" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id3839X47925" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Routing id="id3841X47925" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
@@ -1768,7 +1768,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3872X48257" host_OS="endian_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1239820203" platform="endian" version="" name="IPCOP or Endian appliance (3 interfaces)" comment="Endian firewall appliance, 3 interfaces:&#10;br0 is GREEN&#10;eth1 is RED&#10;eth2 is ORANGE&#10;Do not forget to change IP addresses to &#10;match your firewall." ro="False">
+      <Firewall id="id3872X48257" host_OS="ipcop_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1239820203" platform="iptables" version="" name="IPCOP or Endian appliance (3 interfaces)" comment="Endian firewall appliance, 3 interfaces:&#10;br0 is GREEN&#10;eth1 is RED&#10;eth2 is ORANGE&#10;Do not forget to change IP addresses to &#10;match your firewall." ro="False">
         <NAT id="id3879X48257" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id3878X48257" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Routing id="id3880X48257" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>

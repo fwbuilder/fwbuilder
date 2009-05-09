@@ -8,7 +8,7 @@
       <!-- maintian order of supported os names to make them appear in the dialog
         in the right order
         -->
-      <supported_os>linux24,linksys</supported_os>
+      <supported_os>linux24,linksys,ipcop_os,endian_os,oneshield_os</supported_os>
       <family>iptables</family>
 
       <options>
@@ -44,7 +44,6 @@
         <network_zones>False</network_zones>
         <unprotected_interfaces>False</unprotected_interfaces>
         <supports_prolog_epilog>True</supports_prolog_epilog>
-        <flush_and_set_default_policy>True</flush_and_set_default_policy>
         <actions>
             <Accept>
                 <supported>True</supported>

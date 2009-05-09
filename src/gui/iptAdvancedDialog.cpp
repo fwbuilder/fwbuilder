@@ -77,10 +77,10 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
                    obj->getStr("host_OS"),"user_can_change_install_dir").c_str());
 
     if (!Resources::getTargetOptionBool(
-            obj->getStr("host_OS"),"user_can_change_install_dir"))
+            obj->getStr("host_OS"), "user_can_change_install_dir"))
     {
         m_dialog->ipt_fw_dir->setEnabled(false);
-        fwoptions->setStr("firewall_dir","");
+        //fwoptions->setStr("firewall_dir", "");
     }
 
     //QString s = fwoptions->getStr("ipv4_6_order")

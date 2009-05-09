@@ -1,3 +1,11 @@
+2009-05-09  vadim  <vadim@vk.crocodile.org>
+
+	* platform/iptables.xml.in: Unified support for different iptables
+	appliances: configuration will require platform "iptables" and
+	host os that corresponds to the chosen appliance. This matches
+	support for Secuwall and is easier to maintain than separate
+	platform-os pairs for each appliance.
+
 2009-05-06  vadim  <vadim@vk.crocodile.org>
 
 	* FirewallInstallerCisco.cpp (FirewallInstallerCisco::activatePolicy):

@@ -840,13 +840,15 @@ void newFirewallDialog::finishClicked()
             return;
         }
 
-        nfw=Firewall::cast(no);
+        nfw = Firewall::cast(no);
 
-        no->setStr("platform", platform);
-        Resources::setDefaultTargetOptions(platform , nfw);
+        // preserve platform and host OS from the template, do not
+        // reset from the first page of the dialog.
 
-        no->setStr("host_OS", host_os);
-        Resources::setDefaultTargetOptions(host_os , nfw);
+        //no->setStr("platform", platform);
+        //Resources::setDefaultTargetOptions(platform , nfw);
+        //no->setStr("host_OS", host_os);
+        //Resources::setDefaultTargetOptions(host_os , nfw);
 
 
     } else

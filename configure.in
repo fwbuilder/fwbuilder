@@ -465,9 +465,6 @@ AC_CONFIG_FILES([ src/res/platform/iptables.xml ])
 AC_CONFIG_FILES([ src/res/platform/pf.xml ])
 AC_CONFIG_FILES([ src/res/platform/pix.xml ])
 AC_CONFIG_FILES([ src/res/platform/iosacl.xml ])
-AC_CONFIG_FILES([ src/res/platform/ipcop.xml ])
-AC_CONFIG_FILES([ src/res/platform/endian.xml ])
-AC_CONFIG_FILES([ src/res/platform/oneshield.xml ])
 AC_CONFIG_FILES([ src/res/platform/unknown.xml ])
 
 
