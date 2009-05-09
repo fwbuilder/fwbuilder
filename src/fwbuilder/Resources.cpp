@@ -286,37 +286,49 @@ string  Resources::getExporter()
     return getResourceStr("/FWBuilderResources/Target/exporter");
 }
 
-vector<string>    Resources::getListOfPlatforms()
+vector<string> Resources::getListOfPlatforms()
 {
     vector<string> vs;
     for (map<string,Resources*>::iterator i1=platform_res.begin();
          i1!=platform_res.end(); ++i1)
-        vs.push_back( (*i1).first );
-    return vs;
-}
-
-
-
-map<string,string>    Resources::getPlatforms()
-{
-    map<string,string> vs;
-    for (map<string,Resources*>::iterator i1=platform_res.begin();
-         i1!=platform_res.end(); ++i1)
     {
-        string desc=(*i1).second->getResourceStr("/FWBuilderResources/Target/description");
-        vs[ (*i1).first ]=desc;
+        vs.push_back( (*i1).first );
     }
     return vs;
 }
 
 
-map<string,string>    Resources::getOS()
+
+map<string,string> Resources::getPlatforms()
+{
+    map<string,string> vs;
+    for (map<string,Resources*>::iterator i1=platform_res.begin();
+         i1!=platform_res.end(); ++i1)
+    {
+        Resources *res = (*i1).second;
+        if (res)
+        {
+            string desc = res->getResourceStr(
+                "/FWBuilderResources/Target/description");
+            vs[ (*i1).first ]=desc;
+        }
+    }
+    return vs;
+}
+
+
+map<string,string> Resources::getOS()
 {
     map<string,string> vs;
     for (map<string,Resources*>::iterator i1=os_res.begin(); i1!=os_res.end(); ++i1)
     {
-        string desc=(*i1).second->getResourceStr("/FWBuilderResources/Target/description");
-        vs[ (*i1).first ]=desc;
+        Resources *res = (*i1).second;
+        if (res)
+        {
+            string desc = res->getResourceStr(
+                "/FWBuilderResources/Target/description");
+            vs[ (*i1).first ]=desc;
+        }
     }
     return vs;
 }

@@ -1,3 +1,9 @@
+2009-05-09  vadim  <vadim@vk.crocodile.org>
+
+	* Resources.cpp (map): additional checks to protect against empty
+	items created in map<string,Resources*> when we try to get
+	resource for non-existent platform or host os.
+
 2009-05-08  vadim  <vadim@vk.crocodile.org>
 
 	* Compiler.cpp (Compiler::IsFirewallOrCluster): This new method
