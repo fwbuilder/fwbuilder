@@ -59,10 +59,6 @@
 #include "RoutingCompiler_ipt.h"
 #include "OSConfigurator_linux24.h"
 
-#include "PolicyCompiler_ipcop.h"
-#include "MangleTableCompiler_ipcop.h"
-#include "NATCompiler_ipcop.h"
-#include "RoutingCompiler_ipcop.h"
 #include "OSConfigurator_ipcop.h"
 
 #include "fwcompiler/Preprocessor.h"
@@ -354,16 +350,10 @@ bool processPolicyRuleSet(
 
     MangleTableCompiler_ipt *mangle_compiler;
 
-    if (os_family == "ipcop")
-        mangle_compiler = new MangleTableCompiler_ipcop(
-            objdb , fwobjectname.toUtf8().constData(),
-            ipv6_policy , oscnf,
-            &minus_n_commands_mangle );
-    else
-        mangle_compiler = new MangleTableCompiler_ipt(
-            objdb , fwobjectname.toUtf8().constData(),
-            ipv6_policy , oscnf,
-            &minus_n_commands_mangle );
+    mangle_compiler = new MangleTableCompiler_ipt(
+        objdb , fwobjectname.toUtf8().constData(),
+        ipv6_policy , oscnf,
+        &minus_n_commands_mangle );
 
     if (!policy->isTop())
         mangle_compiler->registerRuleSetChain(branch_name);
@@ -444,14 +434,9 @@ bool processPolicyRuleSet(
 
     PolicyCompiler_ipt *policy_compiler;
 
-    if (os_family == "ipcop")
-        policy_compiler = new PolicyCompiler_ipcop(
-            objdb,fwobjectname.toUtf8().constData(), ipv6_policy, oscnf,
-            &minus_n_commands_filter);
-    else
-        policy_compiler = new PolicyCompiler_ipt(
-            objdb,fwobjectname.toUtf8().constData(), ipv6_policy, oscnf,
-            &minus_n_commands_filter);
+    policy_compiler = new PolicyCompiler_ipt(
+        objdb,fwobjectname.toUtf8().constData(), ipv6_policy, oscnf,
+        &minus_n_commands_filter);
 
     if (!policy->isTop())
         policy_compiler->registerRuleSetChain(branch_name);
@@ -1004,14 +989,9 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 // being created for NAT
                 NATCompiler_ipt *nat_compiler;
 
-                if (os_family == "ipcop")
-                    nat_compiler = new NATCompiler_ipcop(
-                        objdb, fwobjectname.toUtf8().constData(), ipv6_policy,
-                        oscnf, &minus_n_commands_nat);
-                else
-                    nat_compiler = new NATCompiler_ipt(
-                        objdb, fwobjectname.toUtf8().constData(), ipv6_policy,
-                        oscnf, &minus_n_commands_nat);
+                nat_compiler = new NATCompiler_ipt(
+                    objdb, fwobjectname.toUtf8().constData(), ipv6_policy,
+                    oscnf, &minus_n_commands_nat);
 
                 nat_compiler->setSourceRuleSet( nat );
                 nat_compiler->setRuleSetName(branch_name);
@@ -1101,13 +1081,9 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
 
         RoutingCompiler_ipt *routing_compiler;
 
-        if (os_family == "ipcop")
-            routing_compiler = new RoutingCompiler_ipcop(
-                objdb , fwobjectname.toUtf8().constData() , false, oscnf );
-        else
-            routing_compiler = new RoutingCompiler_ipt(
-                objdb , fwobjectname.toUtf8().constData() , false, oscnf );
-
+        routing_compiler = new RoutingCompiler_ipt(
+            objdb , fwobjectname.toUtf8().constData() , false, oscnf );
+        
 	routing_compiler->setDebugLevel( dl );
 	routing_compiler->setDebugRule(  drp );
 	routing_compiler->setVerbose( verbose );

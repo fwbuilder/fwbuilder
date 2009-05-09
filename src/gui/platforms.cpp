@@ -760,8 +760,11 @@ void setHostOS(QComboBox *hostOS, const QString &platform, const QString &os)
 
     if (!platform.isEmpty())
     {
-        QString supported_os =
-            Resources::platform_res[platform.toLatin1().constData()]->
+        Resources *platform_res = Resources::platform_res[platform.toLatin1().constData()];
+        if (!platform_res)
+            platform_res = Resources::platform_res["unknown"];
+
+        QString supported_os = platform_res->
             getResourceStr("/FWBuilderResources/Target/supported_os").c_str();
 
         if (fwbdebug)

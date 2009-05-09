@@ -22,16 +22,12 @@ SOURCES	 =  ipt.cpp \
 			combinedAddress.cpp
 
 HEADERS	 = ../../config.h \
-			MangleTableCompiler_ipcop.h \
 			MangleTableCompiler_ipt.h \
-			NATCompiler_ipcop.h \
 			NATCompiler_ipt.h \
 			OSConfigurator_ipcop.h \
 			OSConfigurator_linux24.h \
 			OSData.h \
-			PolicyCompiler_ipcop.h \
 			PolicyCompiler_ipt.h \
-			RoutingCompiler_ipcop.h \
 			RoutingCompiler_ipt.h \
 			combinedAddress.h
 

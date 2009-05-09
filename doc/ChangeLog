@@ -1,5 +1,9 @@
 2009-05-09  vadim  <vadim@vk.crocodile.org>
 
+	* ipt.cpp (main): Now that we use the same platform name for
+	iptables on linux, ipcop, endian, oneshield and secuwall, there is
+	no need in policy/nat/routing compiler classes for ipcop.
+
 	* platform/iptables.xml.in: Unified support for different iptables
 	appliances: configuration will require platform "iptables" and
 	host os that corresponds to the chosen appliance. This matches
