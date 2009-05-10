@@ -259,7 +259,9 @@ SOURCES += ProjectPanel.cpp \
 	ObjectListViewItem.cpp \
 	Help.cpp \
 	HttpGet.cpp \
-	StartTipDialog.cpp
+	StartTipDialog.cpp \
+	FWBAboutDialog.cpp \
+	FWBAboutDialog2.cpp
 
 FORMS = FWBMainWindow_q.ui \
 	customservicedialog_q.ui \

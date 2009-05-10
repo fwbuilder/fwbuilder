@@ -24,23 +24,31 @@
 */
 
 
-#ifndef __ABOUTDIALOG_H_
-#define __ABOUTDIALOG_H_
+#include "global.h"
+#include "FWBAboutDialog.h"
 
+#include "fwbuilder/Constants.h"
 
-#include <ui_aboutdialog_q.h>
+#include "../../VERSION.h"
+#include "../../build_num"
 
-class FWBAboutDialog: public QDialog {
-    Q_OBJECT
+FWBAboutDialog::FWBAboutDialog() 
+{
+    m_aboutDialog = new Ui::AboutDialog_q;
+    m_aboutDialog->setupUi(this);
+    m_aboutDialog->titleLbl->setText(
+        QString("Firewall Builder v%1").arg(VERSION) );
+    m_aboutDialog->revLbl->setText(
+        tr("Revision: %1 ( Build: %2 )").arg(RELEASE_NUM).arg(BUILD_NUM) );
+    m_aboutDialog->apiLbl->setText(
+        tr("Using Firewall Builder API %1").arg(
+            libfwbuilder::Constants::getLibraryVersion().c_str() ) );
 
-    Ui::AboutDialog_q *m_aboutDialog;
-
-    void fillTheBlanks();
-
-public:
-    
-    FWBAboutDialog();
-    ~FWBAboutDialog();
+    fillTheBlanks();
+        
+    setWindowTitle(QString("Firewall Builder: About..."));
+    adjustSize();
 };
 
-#endif
+FWBAboutDialog::~FWBAboutDialog() { delete m_aboutDialog; };
+
