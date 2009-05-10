@@ -1,9 +1,9 @@
 <?xml version="1.0"?> <!-- -*- mode: xml; -*- -->
-<FWBuilderResources version="3.1.0">
+<FWBuilderResources version="@VERSION@">
     <Target name="oneshield_os">
       <description>OneShield Firewall Appliance</description>
       <family>ipcop</family>
-      <dialog>ipcop_os</dialog>
+      <dialog>ipcop</dialog>
 
       <options>
         <user_can_change_install_dir>false</user_can_change_install_dir>
@@ -16,6 +16,7 @@
           <admUser>root</admUser>
           <activationCmd>/etc/rc.d/rc.firewall restart</activationCmd>
           <flush_and_set_default_policy>False</flush_and_set_default_policy>
+          <modules_dir>/lib/modules/`uname -r`/kernel/net/</modules_dir>
         </default>
 
         <activation>

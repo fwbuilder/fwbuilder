@@ -8,7 +8,7 @@
       <!-- maintian order of supported os names to make them appear in the dialog
         in the right order
         -->
-      <supported_os>linux24,linksys,ipcop_os,endian_os,oneshield_os</supported_os>
+      <supported_os>linux24,linksys,ipcop,endian,oneshield,openwrt</supported_os>
       <family>iptables</family>
 
       <options>

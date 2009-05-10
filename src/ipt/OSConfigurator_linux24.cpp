@@ -620,10 +620,15 @@ done\n";
     str << "}" << endl;
     str << endl;
 
+    // See ticket #2
+    string modules_dir = Resources::os_res[fw->getStr("host_OS")]->
+        Resources::getResourceStr("/FWBuilderResources/Target/options/default/modules_dir");
+
     std::string sed_command = "sed  -e 's/^.*\\///' -e 's/\\([^\\.]\\)\\..*/\\1/'";
+    string host_os = fw->getStr("host_OS");
     str << "load_modules() {" << endl;
     str << "  HAVE_NAT=$1" << endl;
-    str << "  MODULES_DIR=\"/lib/modules/`uname -r`/kernel/net/\"" << endl;
+    str << "  MODULES_DIR=\"" << modules_dir << "\"" << endl;
     str << "  MODULES=`find $MODULES_DIR -name '*conntrack*'|" << sed_command <<  "`" << endl;
     str << "  test -n \"$HAVE_NAT\" && {" << endl;
     str << "    MODULES=\"$MODULES `find $MODULES_DIR -name '*nat*'|" << sed_command <<  "`\"" << endl;
@@ -634,6 +639,7 @@ done\n";
     str << "  done" << endl;
     str << "}" << endl;
     str << endl;
+
 
 /*
  * check if all interfaces configured for the firewall are present
@@ -751,7 +757,8 @@ string  OSConfigurator_linux24::printPathForAllTools(const string &os)
 void OSConfigurator_linux24::generateCodeForProtocolHandlers(bool have_nat)
 {
     FWOptions* options = fw->getOptionsObject();
-    bool nomod = Resources::os_res[fw->getStr("host_OS")]->Resources::getResourceBool("/FWBuilderResources/Target/options/suppress_modules");
+    bool nomod = Resources::os_res[fw->getStr("host_OS")]->
+        Resources::getResourceBool("/FWBuilderResources/Target/options/suppress_modules");
 
 /* there is no need to load modules on linksys */
     if (options->getBool("load_modules") && !nomod)

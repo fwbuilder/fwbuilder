@@ -177,23 +177,39 @@ QWidget *DialogFactory::createDialog(ProjectPanel *project, QWidget *parent,cons
 }
 
 
-QWidget *DialogFactory::createFWDialog(QWidget *parent,FWObject *o)
+QWidget *DialogFactory::createFWDialog(QWidget *parent, FWObject *o)
     throw(FWException)
 {
-    Resources* platform = Resources::platform_res[o->getStr("platform")];
-    if (platform==NULL)
-        throw FWException((const char*)(QObject::tr("Support module for %1 is not available").arg(o->getStr("platform").c_str()).toLocal8Bit().constData()));
+    string platform = o->getStr("platform");
+    string host_os = o->getStr("host_OS");
 
-    string dlgname = platform->Resources::getResourceStr("/FWBuilderResources/Target/dialog");
+    Resources* platform_res = Resources::platform_res[platform];
+    if (platform_res==NULL)
+        throw FWException(
+            (const char*)(QObject::tr("Support module for %1 is not available").
+                          arg(platform.c_str()).toLocal8Bit().constData()));
 
-//    string pl=o->getStr("platform");
-    if (dlgname=="iptables") return new iptAdvancedDialog(parent,o);
-    if (dlgname=="ipf")      return new ipfAdvancedDialog(parent,o);
-    if (dlgname=="ipfw")     return new ipfwAdvancedDialog(parent,o);
-    if (dlgname=="pf")       return new pfAdvancedDialog(parent,o);
-    if (dlgname=="pix")      return new pixAdvancedDialog(parent,o);
+    Resources* os_res = Resources::os_res[host_os];
+    if (os_res==NULL)
+        throw FWException(
+            (const char*)(QObject::tr("Support module for %1 is not available").
+                          arg(host_os.c_str()).toLocal8Bit().constData()));
+
+    string os_family = os_res->getResourceStr(
+        "/FWBuilderResources/Target/family");
+
+    string dlgname = platform_res->Resources::getResourceStr(
+        "/FWBuilderResources/Target/dialog");
+    if (platform == "iptables" && os_family == "ipcop")
+        dlgname = "ipcop";
+
     if (dlgname=="iosacl")   return new iosaclAdvancedDialog(parent,o);
     if (dlgname=="ipcop")    return new ipcopAdvancedDialog(parent,o);
+    if (dlgname=="ipf")      return new ipfAdvancedDialog(parent,o);
+    if (dlgname=="ipfw")     return new ipfwAdvancedDialog(parent,o);
+    if (dlgname=="iptables") return new iptAdvancedDialog(parent,o);
+    if (dlgname=="pf")       return new pfAdvancedDialog(parent,o);
+    if (dlgname=="pix")      return new pixAdvancedDialog(parent,o);
 
     cerr << "Firewall settings dialog for " << dlgname
          << " is not implemented" << endl;
@@ -204,22 +220,27 @@ QWidget *DialogFactory::createFWDialog(QWidget *parent,FWObject *o)
 QWidget *DialogFactory::createOSDialog(QWidget *parent,FWObject *o)
     throw(FWException)
 {
-    Resources *os = Resources::os_res[o->getStr("host_OS")];
-    if (os==NULL)
-        throw FWException((const char*)(QObject::tr("Support module for %1 is not available").arg(o->getStr("host_OS").c_str()).toLocal8Bit().constData()));
+    string host_os = o->getStr("host_OS");
 
-    string dlgname=os->Resources::getResourceStr("/FWBuilderResources/Target/dialog");
+    Resources *os = Resources::os_res[host_os];
+    if (os==NULL)
+        throw FWException(
+            (const char*)(QObject::tr("Support module for %1 is not available").
+                          arg(host_os.c_str()).toLocal8Bit().constData()));
+
+    string dlgname = os->Resources::getResourceStr(
+        "/FWBuilderResources/Target/dialog");
 
 //    string os=o->getStr("host_OS");
-    if (dlgname=="linux24")   return new linux24AdvancedDialog(parent,o);
-    if (dlgname=="linksys")   return new linksysAdvancedDialog(parent,o);
-    if (dlgname=="freebsd")   return new freebsdAdvancedDialog(parent,o);
-    if (dlgname=="openbsd")   return new openbsdAdvancedDialog(parent,o);
-    if (dlgname=="solaris")   return new solarisAdvancedDialog(parent,o);
-    if (dlgname=="macosx")    return new macosxAdvancedDialog(parent,o);
-    if (dlgname=="pix_os")    return new pixosAdvancedDialog(parent,o);
-    if (dlgname=="ios")       return new iosAdvancedDialog(parent,o);
-    if (dlgname=="ipcop_os")  return new ipcoposAdvancedDialog(parent,o);
+    if (dlgname=="linux24")   return new linux24AdvancedDialog(parent, o);
+    if (dlgname=="linksys")   return new linksysAdvancedDialog(parent, o);
+    if (dlgname=="freebsd")   return new freebsdAdvancedDialog(parent, o);
+    if (dlgname=="openbsd")   return new openbsdAdvancedDialog(parent, o);
+    if (dlgname=="solaris")   return new solarisAdvancedDialog(parent, o);
+    if (dlgname=="macosx")    return new macosxAdvancedDialog(parent, o);
+    if (dlgname=="pix_os")    return new pixosAdvancedDialog(parent, o);
+    if (dlgname=="ios")       return new iosAdvancedDialog(parent, o);
+    if (dlgname=="ipcop")     return new ipcoposAdvancedDialog(parent, o);
 
     cerr << "OS settings dialog for " << dlgname
          << " is not implemented" << endl;

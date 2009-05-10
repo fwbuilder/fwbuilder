@@ -1,5 +1,21 @@
 2009-05-09  vadim  <vadim@vk.crocodile.org>
 
+	* OSConfigurator_linux24.cpp (OSConfigurator_linux24::printShellFunctions):
+	Moved configuration for the location of kernel modules to host os
+	resource file (attribute Target/options/default/modules_dir).  The
+	value of this attribute is different for OpenWRT. This fixes
+	ticket #2.
+
+	* DialogFactory.cpp (DialogFactory::createFWDialog): Now that we
+	use common platform "iptables" for linux-based appliances and
+	differentiate then by host_OS, dialog for IPCOP, Endian and
+	OneShield is determined using combination of platform and
+	host family attribute from the os resource file.
+
+	* OSConfigurator_linux24.cpp (OSConfigurator_linux24::printShellFunctions):
+	Fixes #2: added host OS "OpenWRT"; the only difference at this time
+	is the path to the directory where kernel modules are found.
+
 	* ipt.cpp (main): Now that we use the same platform name for
 	iptables on linux, ipcop, endian, oneshield and secuwall, there is
 	no need in policy/nat/routing compiler classes for ipcop.

@@ -1,26 +1,22 @@
 <?xml version="1.0"?> <!-- -*- mode: xml; -*- -->
-<FWBuilderResources version="@VERSION@">
-    <Target name="ipcop_os">
-      <description>IPCOP Firewall Appliance</description>
-      <family>ipcop</family>
-      <dialog>ipcop_os</dialog>
+<FWBuilderResources version="3.1.0">
+    <Target name="openwrt">
+      <description>OpenWRT</description>
+      <family>linux24</family>
+      <dialog>linux24</dialog>
 
       <options>
-        <user_can_change_install_dir>false</user_can_change_install_dir>
+        <user_can_change_install_dir>true</user_can_change_install_dir>
         <default>
           <linux24_ip_forward>1</linux24_ip_forward>
-          <linux24_ipv6_forward></linux24_ipv6_forward>
           <loopback_interface>lo</loopback_interface>
-          <firewall_dir>/etc/rc.d/</firewall_dir>
-          <output_file>rc.firewall.local</output_file>
-          <admUser>root</admUser>
-          <activationCmd>/etc/rc.d/rc.firewall restart</activationCmd>
-          <flush_and_set_default_policy>False</flush_and_set_default_policy>
+          <flush_and_set_default_policy>True</flush_and_set_default_policy>
+          <modules_dir>/lib/modules/`uname -r`/</modules_dir>
         </default>
 
         <activation>
 
-          <fwdir>/etc/rc.d</fwdir>
+          <fwdir>/etc/fw</fwdir>
 
           <fwdir_test>/tmp</fwdir_test>
 
@@ -33,11 +29,14 @@
               </copy>
 
               <compression>
+echo '%FWBPROMPT%';
+chmod +x %FWDIR%/%FWSCRIPT%;
+sudo -S %FWDIR%/%FWSCRIPT% &#38;&#38; ( which pkill > /dev/null &#38;&#38; sudo -S pkill shutdown; echo 'Policy activated' )
               </compression>
               <no_compression>
 echo '%FWBPROMPT%';
 chmod +x %FWDIR%/%FWSCRIPT%;
-sudo -S %FWDIR%/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
+sudo -S %FWDIR%/%FWSCRIPT% &#38;&#38; ( which pkill > /dev/null &#38;&#38; sudo -S pkill shutdown; echo 'Policy activated' )
               </no_compression>
             </run>
 
@@ -67,10 +66,12 @@ sudo -S %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
               </copy>
 
               <compression>
+echo '%FWBPROMPT%';
+sh %FWDIR%/%FWSCRIPT% &#38;&#38; ( which pkill > /dev/null &#38;&#38; pkill shutdown; echo 'Policy activated' )
               </compression>
               <no_compression>
 echo '%FWBPROMPT%';
-sh %FWDIR%/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
+sh %FWDIR%/%FWSCRIPT% &#38;&#38; ( which pkill > /dev/null &#38;&#38; pkill shutdown; echo 'Policy activated' )
               </no_compression>
             </run>
 
@@ -89,14 +90,14 @@ echo '%FWBPROMPT%';
 sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
               </no_rollback>
             </test>
-          </root>
 
+          </root>
         </activation>
 
 <!-- set to True if you want to suppress comments in the generated script -->
         <suppress_comments>False</suppress_comments>
 <!-- set to True if you do not need the script to load kernel modules -->
-        <suppress_modules>True</suppress_modules>
+        <suppress_modules>False</suppress_modules>
 
       </options>
 
@@ -105,17 +106,15 @@ sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
       </capabilities>
 
       <tools>
-        <ipcop>
-          <path_lsmod>/sbin/lsmod</path_lsmod>
-          <path_modprobe>/sbin/modprobe</path_modprobe>
-          <path_iptables>/sbin/iptables</path_iptables>
-          <path_ip6tables>/sbin/ip6tables</path_ip6tables>
-          <path_iptables_restore>/sbin/iptables-restore</path_iptables_restore>
-          <path_ip6tables_restore>/sbin/ip6tables-restore</path_ip6tables_restore>
-          <path_ip>/sbin/ip</path_ip>
-          <path_logger>/usr/bin/logger</path_logger>
-          <path_expect>/usr/bin/expect</path_expect>
-        </ipcop>
+        <path_lsmod>/sbin/lsmod</path_lsmod>
+        <path_modprobe>/sbin/modprobe</path_modprobe>
+        <path_iptables>/sbin/iptables</path_iptables>
+        <path_ip6tables>/sbin/ip6tables</path_ip6tables>
+        <path_iptables_restore>/sbin/iptables-restore</path_iptables_restore>
+        <path_ip6tables_restore>/sbin/ip6tables-restore</path_ip6tables_restore>
+        <path_ip>/sbin/ip</path_ip>
+        <path_logger>/usr/bin/logger</path_logger>
+        <path_expect>/usr/bin/expect</path_expect>
       </tools>
     </Target>
 

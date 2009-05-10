@@ -3,7 +3,7 @@
     <Target name="ipcop_os">
       <description>IPCOP Firewall Appliance</description>
       <family>ipcop</family>
-      <dialog>ipcop_os</dialog>
+      <dialog>ipcop</dialog>
 
       <options>
         <user_can_change_install_dir>false</user_can_change_install_dir>
@@ -16,6 +16,7 @@
           <admUser>root</admUser>
           <activationCmd>/etc/rc.d/rc.firewall restart</activationCmd>
           <flush_and_set_default_policy>False</flush_and_set_default_policy>
+          <modules_dir>/lib/modules/`uname -r`/kernel/net/</modules_dir>
         </default>
 
         <activation>
