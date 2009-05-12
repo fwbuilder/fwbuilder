@@ -28,6 +28,8 @@
 #define  __FWWINDOW_H_
 
 #include <ui_FWBMainWindow_q.h>
+#include <ui_pagesetupdialog_q.h>
+
 #include "RCS.h"
 #include "ObjectEditor.h"
 #include "HttpGet.h"
@@ -69,6 +71,8 @@ class FWWindow : public QMainWindow {
 
     Q_OBJECT
 
+    Ui::pageSetupDialog_q *psd;
+        
     QMdiArea *m_space;
     QWidget *instd;
     HttpGet *current_version_http_getter;
@@ -185,6 +189,8 @@ public slots:
     virtual void checkForUpgrade(const QString&);
 
     virtual void projectWindowClosed();
+
+    void tableResolutionSettingChanged(int );
     
  public:
     Ui::FWBMainWindow_q *m_mainWindow;

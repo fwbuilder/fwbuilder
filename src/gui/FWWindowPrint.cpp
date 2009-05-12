@@ -38,8 +38,6 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/RuleSet.h"
 
-#include <ui_pagesetupdialog_q.h>
-
 #include <qglobal.h>
 
 #include <QPrintDialog>
@@ -71,7 +69,7 @@ void FWWindow::filePrint()
     bool  print_legend = true;
     bool  print_objects = true;
     bool  newPageForSection = false;
-    int   tableResolution = 2;   // 50%, 75%, 100%, 150%, 200%, default 100%
+    int   tableResolution = 100;
 
     FWObject *firewall_to_print = NULL;
     FWObject *current_ruleset = activeProject()->getCurrentRuleSet();
@@ -100,43 +98,47 @@ void FWWindow::filePrint()
         print_objects = st->getBool("PrintSetup/printObjects");
 
     if (!st->getStr("PrintSetup/tableResolution").isEmpty())
+    {
         tableResolution = st->getInt("PrintSetup/tableResolution");
+        // for backwards compatibility, convert resolutino from an index
+        // in a table to float 0..1.0
+        // Previously values were from the following list:
+        // 50%, 75%, 100%, 150%, 200%, default 100%
+        float old_res[] = {50, 75, 100, 150, 200 };
+        if (tableResolution <= 4  )
+            tableResolution = old_res[int(tableResolution)];
+    }
 
-    Ui::pageSetupDialog_q psd;
     QDialog dlg;
 
-    psd.setupUi(&dlg);
+    psd = new Ui::pageSetupDialog_q();
+    psd->setupUi(&dlg);
+    connect(psd->tableResolution, SIGNAL(valueChanged(int)),
+            this, SLOT(tableResolutionSettingChanged(int)));
 
-    psd.newPageForSection->setChecked(newPageForSection);
-    psd.printHeader->setChecked(print_header);
-    psd.printLegend->setChecked(print_legend);
-    psd.printObjects->setChecked(print_objects);
-    psd.tableResolution->setCurrentIndex(tableResolution);
+    psd->newPageForSection->setChecked(newPageForSection);
+    psd->printHeader->setChecked(print_header);
+    psd->printLegend->setChecked(print_legend);
+    psd->printObjects->setChecked(print_objects);
+    psd->tableResolution->setValue(tableResolution);
 
     if ( dlg.exec() == QDialog::Accepted )
     {
-        newPageForSection = psd.newPageForSection->isChecked();
-        print_header       = psd.printHeader->isChecked();
-        print_legend       = psd.printLegend->isChecked();
-        print_objects      = psd.printObjects->isChecked();
-        tableResolution   = psd.tableResolution->currentIndex();
+        newPageForSection = psd->newPageForSection->isChecked();
+        print_header = psd->printHeader->isChecked();
+        print_legend = psd->printLegend->isChecked();
+        print_objects = psd->printObjects->isChecked();
+        tableResolution = psd->tableResolution->value();
 
-        st->setBool("PrintSetup/newPageForSection",newPageForSection);
-        st->setBool("PrintSetup/printHeader",      print_header      );
-        st->setBool("PrintSetup/printLegend",      print_legend      );
-        st->setBool("PrintSetup/printObjects",     print_objects     );
-        st->setInt("PrintSetup/tableResolution",   tableResolution  );
+        st->setBool("PrintSetup/newPageForSection", newPageForSection);
+        st->setBool("PrintSetup/printHeader", print_header);
+        st->setBool("PrintSetup/printLegend", print_legend);
+        st->setBool("PrintSetup/printObjects", print_objects);
+        st->setInt("PrintSetup/tableResolution", tableResolution);
 
         st->getPrinterOptions(printer, pageWidth, pageHeight);
 
-        switch (tableResolution)
-        {
-        case 0: table_scaling = 0.5; break;
-        case 1: table_scaling = 0.75; break;
-        case 2: table_scaling = 1.0; break;
-        case 3: table_scaling = 1.5; break;
-        case 4: table_scaling = 2.0; break;
-        }
+        table_scaling = float(tableResolution) / 100;
 
         //printer->setResolution(resolution);
         printer->setFullPage(fullPage);
@@ -212,8 +214,18 @@ void FWWindow::filePrint()
         st->setPrinterOptions(printer,pageWidth,pageHeight);
     }
 
+    delete psd;
+    psd = NULL;
 }
 
+void FWWindow::tableResolutionSettingChanged(int )
+{
+    if (psd)
+    {
+        QString res_lbl = QString("%1 %").arg(psd->tableResolution->value());
+        psd->tableResolutionLabel->setText(res_lbl);
+    }
+}
 
 void FWWindow::printFirewallFromFile(QString fileName,
                                      QString firewallName,
@@ -249,7 +261,7 @@ void FWWindow::printFirewallFromFile(QString fileName,
         bool  print_legend = true;
         bool  print_objects = true;
         bool  newPageForSection = false;
-        int   tableResolution = 2;   // 50%, 75%, 100%, 150%, 200%, default 100%
+        int   tableResolution = 100;
     
         if (!st->getStr("PrintSetup/newPageForSection").isEmpty())
             newPageForSection = st->getBool("PrintSetup/newPageForSection");
@@ -266,14 +278,7 @@ void FWWindow::printFirewallFromFile(QString fileName,
         if (!st->getStr("PrintSetup/tableResolution").isEmpty())
             tableResolution = st->getInt("PrintSetup/tableResolution");
     
-        switch (tableResolution)
-        {
-        case 0: table_scaling = 0.5; break;
-        case 1: table_scaling = 0.75; break;
-        case 2: table_scaling = 1.0; break;
-        case 3: table_scaling = 1.5; break;
-        case 4: table_scaling = 2.0; break;
-        }
+        table_scaling = float(tableResolution) / 100;
 
         st->getPrinterOptions(printer,pageWidth,pageHeight);
 

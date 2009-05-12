@@ -511,10 +511,8 @@ bool processPolicyRuleSet(
             automatic_rules_stream << tmp.str();
         }
     }
-
     return empty_output;
 }
-
 
 void usage(const char *name)
 {
@@ -684,8 +682,6 @@ int main(int argc, char **argv)
         FWObject *slib = objdb->findInIndex(FWObjectDatabase::STANDARD_LIB_ID);
         if (slib && slib->isReadOnly()) slib->setReadOnly(false);
 
-	/* Review firewall and OS options and generate commands */
-
 	Firewall* fw;
         if (fw_by_id)
         {
@@ -745,7 +741,7 @@ int main(int argc, char **argv)
                 {
                     char errstr[256];
                     sprintf(errstr,
-_("Wildcard interface '%s' should not have a physcal address object attached to it. The physical address object will be ignored.\n"),
+"Wildcard interface '%s' should not have a physcal address object attached to it. The physical address object will be ignored.\n",
                             iface->getName().c_str() );
                     cerr << errstr;
                     for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) 
@@ -767,13 +763,13 @@ _("Wildcard interface '%s' should not have a physcal address object attached to 
                         if ( objdb->findAllReferences(*j).size()!=0 )
                         {
                             sprintf(errstr,
-_("Dynamic interface %s has an IP address that is used in the firewall policy rule.\n"),
+"Dynamic interface %s has an IP address that is used in the firewall policy rule.\n",
                                     iface->getName().c_str() );
                             throw FWException(errstr);
                         }
 
                     sprintf(errstr,
-_("Dynamic interface %s should not have an IP address object attached to it. This IP address object will be ignored.\n"),
+"Dynamic interface %s should not have an IP address object attached to it. This IP address object will be ignored.\n",
                             iface->getName().c_str() );
                     cerr << errstr;
                     for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) 
@@ -789,7 +785,7 @@ _("Dynamic interface %s should not have an IP address object attached to it. Thi
                 if (iface->isRegular() && all_addr.empty() && all_ipv6.empty())
                 {
                     char errstr[256];
-                    sprintf(errstr,_("Missing IP address for interface %s\n"),
+                    sprintf(errstr, "Missing IP address for interface %s\n",
                             iface->getName().c_str() );
                     throw FWException(errstr);
                 }

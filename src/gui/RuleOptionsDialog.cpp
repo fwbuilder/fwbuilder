@@ -176,9 +176,14 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
 
     if (platform=="pf")
     {
-        data.registerOption(m_dialog->pf_logPrefix, ropt,  "log_prefix");
-        data.registerOption(m_dialog->pf_stateless, ropt,  "stateless");
-        data.registerOption(m_dialog->pf_keep_state, ropt,  "pf_keep_state");
+        data.registerOption(m_dialog->pf_logPrefix, ropt,
+                            "log_prefix");
+        data.registerOption(m_dialog->pf_stateless, ropt,
+                            "stateless");
+        data.registerOption(m_dialog->pf_keep_state, ropt,
+                            "pf_keep_state");
+        data.registerOption(m_dialog->pf_sloppy_tracker, ropt,
+                            "pf_sloppy_tracker");
         data.registerOption(m_dialog->pf_rule_max_state, ropt,
                             "pf_rule_max_state");
         data.registerOption(m_dialog->pf_source_tracking, ropt,
@@ -187,7 +192,6 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
                             "pf_max_src_nodes");
         data.registerOption(m_dialog->pf_max_src_states, ropt,
                             "pf_max_src_states");
-
         data.registerOption(m_dialog->pf_max_src_conn, ropt,
                             "pf_max_src_conn");
         data.registerOption(m_dialog->pf_overload_table, ropt,
@@ -196,12 +200,10 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
                             "pf_max_src_conn_flush");
         data.registerOption(m_dialog->pf_global, ropt,
                             "pf_max_src_conn_global");
-
         data.registerOption(m_dialog->pf_max_src_conn_rate_num, ropt,
                              "pf_max_src_conn_rate_num");
         data.registerOption(m_dialog->pf_max_src_conn_rate_seconds, ropt,
                              "pf_max_src_conn_rate_seconds");
-
         data.registerOption(m_dialog->pf_modulate, ropt,
                              "pf_modulate_state");
         data.registerOption(m_dialog->pf_synproxy, ropt,

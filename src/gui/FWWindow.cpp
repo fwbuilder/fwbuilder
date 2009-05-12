@@ -169,6 +169,8 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     m_mainWindow = new Ui::FWBMainWindow_q();
     m_mainWindow->setupUi(dynamic_cast<QMainWindow*>(this));
 
+    psd = NULL;
+
     prepareFileOpenRecentMenu();
 
     m_space = new QMdiArea(this);
