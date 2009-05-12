@@ -69,7 +69,7 @@ void FWWindow::filePrint()
     bool  print_legend = true;
     bool  print_objects = true;
     bool  newPageForSection = false;
-    int   tableResolution = 2;   // 50%, 75%, 100%, 150%, 200%, default 100%
+    int   tableResolution = 100;
 
     FWObject *firewall_to_print = NULL;
     FWObject *current_ruleset = activeProject()->getCurrentRuleSet();
@@ -261,7 +261,7 @@ void FWWindow::printFirewallFromFile(QString fileName,
         bool  print_legend = true;
         bool  print_objects = true;
         bool  newPageForSection = false;
-        int   tableResolution = 2;   // 50%, 75%, 100%, 150%, 200%, default 100%
+        int   tableResolution = 100;
     
         if (!st->getStr("PrintSetup/newPageForSection").isEmpty())
             newPageForSection = st->getBool("PrintSetup/newPageForSection");
