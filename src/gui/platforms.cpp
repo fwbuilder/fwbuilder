@@ -268,7 +268,8 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
                        opt->getInt("pf_max_src_conn")<=0       &&
                        opt->getInt("pf_max_src_conn_rate_num")<=0       &&
                        opt->getInt("pf_max_src_conn_rate_seconds")<=0 &&
-                       ! opt->getBool("pf_keep_state")
+                       ! opt->getBool("pf_keep_state") &&
+                       ! opt->getBool("pf_sloppy_tracker")
                 );
             }else
             {
@@ -277,7 +278,8 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
                        ! opt->getBool("pf_source_tracking")    &&
                        opt->getInt("pf_max_src_conn")<=0       &&
                        opt->getInt("pf_max_src_conn_rate_num")<=0       &&
-                       opt->getInt("pf_max_src_conn_rate_seconds")<=0
+                       opt->getInt("pf_max_src_conn_rate_seconds")<=0 &&
+                       ! opt->getBool("pf_sloppy_tracker")
                 );
             }
 	}

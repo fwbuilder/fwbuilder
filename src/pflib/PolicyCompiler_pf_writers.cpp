@@ -942,13 +942,11 @@ bool PolicyCompiler_pf::PrintRule::processNext()
         // "keep state" can be used with any protocol, while "modulate state"
         // and "synproxy state" can only be used with tcp.
 
-	if (compiler->getCachedFwOpt()->getBool("pf_synproxy") &&
-            tcpsrv!=NULL)
+	if (compiler->getCachedFwOpt()->getBool("pf_synproxy") && tcpsrv!=NULL)
 	    compiler->output << "synproxy state ";
         else
         {
-            if (compiler->getCachedFwOpt()->getBool("pf_modulate_state") &&
-                tcpsrv!=NULL)
+            if (compiler->getCachedFwOpt()->getBool("pf_modulate_state") && tcpsrv!=NULL)
                 compiler->output << "modulate state ";
             else
             {
@@ -984,6 +982,7 @@ bool PolicyCompiler_pf::PrintRule::processNext()
         if (ruleopt->getInt("pf_max_src_conn")>0)          nopt++;
         if (ruleopt->getStr("pf_max_src_conn_overload_table")!="") nopt++;
         if (ruleopt->getInt("pf_max_src_conn_rate_num")>0) nopt++;
+        if (ruleopt->getBool("pf_sloppy_tracker"))         nopt++;
 
         bool not_the_first = false;
         if (nopt)
@@ -994,6 +993,13 @@ bool PolicyCompiler_pf::PrintRule::processNext()
             {
                 compiler->output << " max "
                                  << ruleopt->getInt("pf_rule_max_state");
+                not_the_first = true;
+            }
+
+            if (ruleopt->getBool("pf_sloppy_tracker"))
+            {
+                if (not_the_first) compiler->output << ",";
+                compiler->output << " sloppy ";
                 not_the_first = true;
             }
 

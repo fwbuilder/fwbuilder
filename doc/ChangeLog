@@ -1,5 +1,8 @@
 2009-05-12  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_pf_writers.cpp (PrintRule::processNext): fixed
+	bug #2790927: "Add support for "sloppy" state tracking for PF".
+
 	* FWWindowPrint.cpp (FWWindow::tableResolutionSettingChanged):
 	Using slider widget to set table scaling factor; now user can
 	choose any scaling factor between 1 and 200%. This fixes bug
