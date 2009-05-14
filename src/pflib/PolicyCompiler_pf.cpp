@@ -347,10 +347,23 @@ bool PolicyCompiler_pf::fillDirection::processNext()
  * as long as it misses interface - we need to determine direction
  * again anyway.
  */
-    if (rule->getDirectionAsString()=="" || rule->getInterfaceId()==-1 )
-    {
+    if (rule->getDirectionAsString()=="")   // || rule->getInterfaceId()==-1 )
         rule->setDirection( PolicyRule::Both );
 
+/*
+ * Correction for bug #2791950 "no way to generate "pass out" rule
+ *  with no interface". Do not reset direction just because interface
+ *  rule element is "any", otherwise we can not create rule with no
+ *  interface spec:
+ *
+ * pass out quick inet from any to any
+ *
+ * If we reset direction here, instead of this one rule we get two,
+ * one "pass out" and another "pass in". However it is still useful to
+ * change direction if fw is in source or destination.
+ */
+    if (rule->getDirection() == PolicyRule::Both)
+    {
         Address  *src = compiler->getFirstSrc(rule);
         Address  *dst = compiler->getFirstDst(rule);
         //int fwid = compiler->getFwId();
@@ -502,7 +515,8 @@ bool PolicyCompiler_pf::SplitDirection::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    if (rule->getDirection()==PolicyRule::Both) {
+    if (rule->getDirection()==PolicyRule::Both)
+    {
 	PolicyRule *r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);

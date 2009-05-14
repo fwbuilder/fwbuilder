@@ -79,36 +79,6 @@ namespace fwcompiler {
 
         /**
 	 *   decides on direction if it is empty.
-	 *
-	 *  Algorithm is as follows:
-	 *
-	 *   I now support two modes for this compiler:
-	 *
-	 *   1. compiler produces two pf (or ipf) rules per each
-	 *   global policy rule, one "Inbound" and another
-	 *   "Outbound". Predicate SplitDirection does this for me if
-	 *   I set direction to Both here.
-	 *
-	 *      Special cases:
-	 *        If Src is single object which is firewall itself, then set
-	 *        direction to Outbound
-	 *        If Dst is single object which is firewall itself, then set
-	 *        direction to Inbound
-	 *        If oth Src and Dst contain firewall, then set directon to
-	 *        Both
-	 *
-	 *      In fact predicates splitIfFirewallInSrc and
-	 *      splitIfFirewallInDst make sure that if firewall is in
-	 *      Src or Dst, then it is the only object there. Thus we
-	 *      do not need to check number of objects in Src and Dst.
-	 *
-	 *   2. compiler produces one pf (or ipf) "in" rule per each
-	 *   global policy rule. In this case I set direction to
-	 *   Inbound here.
-	 *      
-	 *   I distinguish modes using firewall option "pass_all_out"
-	 *
-	 *             03/21/02   --vk
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(fillDirection);
 
