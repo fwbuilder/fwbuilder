@@ -45,7 +45,7 @@ namespace libfwbuilder {
     class InetAddr;
     class Address;
     class Cluster;
-    class ClusterGroup;
+    class FailoverClusterGroup;
     class Service;
     class Interval;
     class IPv4;
@@ -227,7 +227,7 @@ protected:
         virtual int checkCluster(libfwbuilder::Cluster* cluster);
         void processVRRPGroup(libfwbuilder::Cluster *cluster,
                               libfwbuilder::Firewall *fw,
-                              libfwbuilder::ClusterGroup *cluster_group,
+                              libfwbuilder::FailoverClusterGroup *cluster_group,
                               libfwbuilder::Interface *iface);
 
         // checks if address @addr belongs to the subnet defined by @subnet

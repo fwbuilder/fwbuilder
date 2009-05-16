@@ -35,7 +35,8 @@
 #include <fwbuilder/FWObjectReference.h>
 #include <fwbuilder/FWOptions.h>
 #include <fwbuilder/Interface.h>
-#include <fwbuilder/ClusterGroup.h>
+#include <fwbuilder/StateSyncClusterGroup.h>
+#include <fwbuilder/FailoverClusterGroup.h>
 #include <fwbuilder/Management.h>
 #include <fwbuilder/IPv4.h>
 #include <fwbuilder/IPv6.h>
@@ -315,14 +316,14 @@ FWObject& Firewall::duplicate(const FWObject *obj,
         }
 
         /*
-         * duplicate ClusterGroup object of all interfaces
+         * duplicate FailoverClusterGroup object of all interfaces
          * this is actually used for Cluster object only atm
          */
-        for (FWObjectTypedChildIterator k = o->findByType(ClusterGroup::TYPENAME);
+        for (FWObjectTypedChildIterator k = o->findByType(FailoverClusterGroup::TYPENAME);
              k!=k.end(); ++k )
         {
             FWObject *opa = *k;
-            FWObject *opa1= o1->addCopyOf(opa,preserve_id);
+            FWObject *opa1= o1->addCopyOf(opa, preserve_id);
 
             if (opa!=NULL && opa1!=NULL)
                 replaceRef(opa->getId(),  opa1->getId() );

@@ -95,6 +95,14 @@ class RoutingRuleOptions : public FWOptions
     DECLARE_FWOBJECT_SUBTYPE(RoutingRuleOptions);
 };
 
+class ClusterGroupOptions : public FWOptions
+{
+    public:
+    ClusterGroupOptions();
+    ClusterGroupOptions(const FWObjectDatabase *root,bool prepopulate);
+    DECLARE_FWOBJECT_SUBTYPE(ClusterGroupOptions);
+};
+
 }
 
 #endif // __FWOPTINS_HH_FLAG

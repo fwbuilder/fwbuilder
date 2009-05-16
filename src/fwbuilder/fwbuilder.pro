@@ -17,6 +17,8 @@ SOURCES  = 	InetAddr.cpp \
 			Firewall.cpp \
 			Cluster.cpp \
 			ClusterGroup.cpp \
+			FailoverClusterGroup.cpp \
+			StateSyncClusterGroup.cpp \
 			FWException.cpp \
 			FWIntervalReference.cpp \
 			FWObject.cpp \
@@ -89,6 +91,8 @@ HEADERS  = 	inet_net.h \
 			Firewall.h \
 			Cluster.h \
 			ClusterGroup.h \
+			FailoverClusterGroup.h \
+			StateSyncClusterGroup.h \
 			FWException.h \
 			FWIntervalReference.h \
 			FWObjectDatabase.h \

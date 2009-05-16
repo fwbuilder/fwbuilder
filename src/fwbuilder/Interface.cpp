@@ -30,7 +30,7 @@
 #include <fwbuilder/libfwbuilder-config.h>
 
 #include <fwbuilder/Interface.h>
-#include <fwbuilder/ClusterGroup.h>
+#include <fwbuilder/FailoverClusterGroup.h>
 #include <fwbuilder/XMLTools.h>
 #include <fwbuilder/IPv4.h>
 #include <fwbuilder/IPv6.h>
@@ -203,13 +203,13 @@ xmlNodePtr Interface::toXML(xmlNodePtr parent) throw(FWException)
             o->toXML(me);
     }
 
-    o=getFirstByType( InterfaceOptions::TYPENAME );
+    o = getFirstByType(InterfaceOptions::TYPENAME);
     if (o) o->toXML(me);
 
     /*
      * serialize ClusterGroup members (if any)
      */
-    o=getFirstByType( ClusterGroup::TYPENAME );
+    o = getFirstByType(FailoverClusterGroup::TYPENAME);
     if (o) o->toXML(me);
 
     /*
@@ -286,7 +286,7 @@ bool  Interface::validateChild(FWObject *o)
             otype==IPv6::TYPENAME ||
             otype==physAddress::TYPENAME ||
             otype==InterfaceOptions::TYPENAME ||
-            otype==ClusterGroup::TYPENAME);
+            otype==FailoverClusterGroup::TYPENAME);
 }
 
 bool Interface::isLoopback() const

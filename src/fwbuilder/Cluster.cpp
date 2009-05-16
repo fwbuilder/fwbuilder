@@ -20,7 +20,8 @@
 #include <fwbuilder/libfwbuilder-config.h>
 
 #include <fwbuilder/Cluster.h>
-#include <fwbuilder/ClusterGroup.h>
+#include <fwbuilder/StateSyncClusterGroup.h>
+#include <fwbuilder/FailoverClusterGroup.h>
 
 #include <fwbuilder/FWObjectDatabase.h>
 #include <fwbuilder/FWObjectReference.h>
@@ -59,8 +60,9 @@ Cluster::Cluster(const FWObjectDatabase *root, bool prepopulate)
     if (prepopulate)
     {
         // create one conntrack member group
-        FWObject *state_sync_members = getRoot()->create(ClusterGroup::TYPENAME);
-        state_sync_members->setName("Members (conntrack)");
+        FWObject *state_sync_members = getRoot()->create(
+            StateSyncClusterGroup::TYPENAME);
+        state_sync_members->setName("State Sync Group");
         state_sync_members->setStr("type", "conntrack");
         add(state_sync_members);
     }
@@ -75,7 +77,7 @@ xmlNodePtr Cluster::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = Firewall::toXML(parent);
     FWObject *o;
-    for (FWObjectTypedChildIterator it = findByType(ClusterGroup::TYPENAME);
+    for (FWObjectTypedChildIterator it = findByType(StateSyncClusterGroup::TYPENAME);
         it != it.end(); ++it)
     {
         o = *it;
@@ -109,13 +111,14 @@ Routing* Cluster::getRouting()
 
 ClusterGroup* Cluster::getStateSyncGroupObject()
 {
-    ClusterGroup *group = ClusterGroup::cast(getFirstByType(
-                                                 ClusterGroup::TYPENAME));
+    StateSyncClusterGroup *group = StateSyncClusterGroup::cast(
+        getFirstByType(StateSyncClusterGroup::TYPENAME));
 
     if (group == NULL)
     {
         // create a new ClusterGroup object
-        group = ClusterGroup::cast(getRoot()->create(ClusterGroup::TYPENAME));
+        group = StateSyncClusterGroup::cast(getRoot()->create(
+                                                StateSyncClusterGroup::TYPENAME));
         add(group);
     }
     return group;
@@ -130,7 +133,8 @@ ClusterGroup* Cluster::getStateSyncGroupObject()
 void Cluster::getMembersList(list<libfwbuilder::Firewall*> &members)
 {
     set<int> members_ids;
-    list<FWObject*> all_firewalls = getByTypeDeep(ClusterGroup::TYPENAME);
+    list<FWObject*> all_firewalls =
+        getByTypeDeep(StateSyncClusterGroup::TYPENAME);
     for (list<FWObject*>::iterator it = all_firewalls.begin();
          it != all_firewalls.end(); ++it)
     {
@@ -139,7 +143,7 @@ void Cluster::getMembersList(list<libfwbuilder::Firewall*> &members)
         {
             FWObject *member = FWReference::getObject(*j);
             Firewall *fw = NULL;
-            // as of 05/04 members of ClusterGroup are interfaces. See
+            // as of 05/04 members of StateSyncClusterGroup are interfaces. See
             // tickets #10 and #11
             if (Interface::cast(member))
                 fw = Firewall::cast(member->getParent());
@@ -166,7 +170,7 @@ bool Cluster::validateChild(FWObject *o)
              otype == NAT::TYPENAME          ||
              otype == Routing::TYPENAME      ||
              otype == Management::TYPENAME   ||
-             otype == ClusterGroup::TYPENAME ||
+             otype == StateSyncClusterGroup::TYPENAME ||
              otype == FirewallOptions::TYPENAME));
 }
 
@@ -177,7 +181,7 @@ FWObject& Cluster::duplicate(const FWObject *obj,
 
     FWObject *o;
     for (FWObjectTypedChildIterator it =
-        obj->findByType(ClusterGroup::TYPENAME); it != it.end(); ++it)
+        obj->findByType(StateSyncClusterGroup::TYPENAME); it != it.end(); ++it)
     {
         o = *it;
         if (o)

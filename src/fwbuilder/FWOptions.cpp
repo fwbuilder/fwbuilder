@@ -138,3 +138,10 @@ RoutingRuleOptions::RoutingRuleOptions(const FWObjectDatabase *root,
                                        bool prepopulate) :
     FWOptions(root,prepopulate) {}
 
+const char *ClusterGroupOptions::TYPENAME={"ClusterGroupOptions"};
+ClusterGroupOptions::ClusterGroupOptions() : FWOptions() {}
+ClusterGroupOptions::ClusterGroupOptions(const FWObjectDatabase *root,
+                                         bool prepopulate) :
+    FWOptions(root,prepopulate) {}
+
+

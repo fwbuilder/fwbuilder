@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland vadim@fwbuilder.org
 
-  $Id: FWObjectDatabase_tree_ops.cpp 233 2008-12-23 05:27:43Z vadim $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms

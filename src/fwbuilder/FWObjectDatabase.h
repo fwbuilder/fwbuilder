@@ -55,7 +55,9 @@ namespace libfwbuilder
     class AddressRange;
     class AddressTable;
     class Cluster;
-    class ClusterGroup;
+    class StateSyncClusterGroup;
+    class FailoverClusterGroup;
+    class ClusterGroupOptions;
     class CustomService;
     class DNSName;
     class FWBDManagement;
@@ -372,7 +374,9 @@ public:
         DECLARE_CREATE_OBJ_METHOD(AddressRange);
         DECLARE_CREATE_OBJ_METHOD(AddressTable);
         DECLARE_CREATE_OBJ_METHOD(Cluster);
-        DECLARE_CREATE_OBJ_METHOD(ClusterGroup);
+        DECLARE_CREATE_OBJ_METHOD(StateSyncClusterGroup);
+        DECLARE_CREATE_OBJ_METHOD(FailoverClusterGroup);
+        DECLARE_CREATE_OBJ_METHOD(ClusterGroupOptions);
         DECLARE_CREATE_OBJ_METHOD(CustomService);
         DECLARE_CREATE_OBJ_METHOD(DNSName);
         DECLARE_CREATE_OBJ_METHOD(FWBDManagement);

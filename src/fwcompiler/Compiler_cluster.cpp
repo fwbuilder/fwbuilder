@@ -20,7 +20,8 @@
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Cluster.h"
-#include "fwbuilder/ClusterGroup.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Policy.h"
@@ -104,7 +105,7 @@ bool Compiler::isReachable(const Address* const client,
  */
 void Compiler::processVRRPGroup(Cluster *cluster,
                                 Firewall *fw,
-                                ClusterGroup *cluster_group,
+                                FailoverClusterGroup *cluster_group,
                                 Interface *iface)
 {
     Interface* cluster_if = Interface::cast(cluster_group->getParent());
@@ -186,43 +187,68 @@ int Compiler::populateClusterElements(Cluster *cluster,
 
     checkCluster(cluster);
     
-    FWObjectTypedChildIterator fw_ifaces = fw->findByType(Interface::TYPENAME);
-    for (; fw_ifaces != fw_ifaces.end(); ++fw_ifaces)
+    for (FWObjectTypedChildIterator it = cluster->findByType(StateSyncClusterGroup::TYPENAME);
+        it != it.end(); ++it)
     {
-        set<FWObject *> resset;
-        Interface *iface = Interface::cast(*fw_ifaces);
-        // confine search to children objects of the cluster
-        dbcopy->findWhereObjectIsUsed(iface, cluster, resset);
-        for (set<FWObject *>::iterator iter = resset.begin(); iter != resset.end(); iter++)
+        FWObject *state_sync_group = *it;
+        FWObject *conntrack_iface = NULL;
+        for (FWObjectTypedChildIterator grp_it =
+                 state_sync_group->findByType(FWObjectReference::TYPENAME);
+             grp_it != grp_it.end(); ++grp_it)
         {
-            /* For VRRP references hierarchy is as follows: Cluster->Interface->ClusterGroup->ObjectRef */
-            ClusterGroup* cluster_group = ClusterGroup::cast((*iter)->getParent());
+            FWObject *iface = FWObjectReference::getObject(*grp_it);
+            if (iface->getParent() == fw)
+            {
+                conntrack_iface = iface;
+                break;
+            }
+        }
 
-            if (ClusterGroup::isA(cluster_group))
+        /* Check if element is part of a conntrack ObjectGroup */
+        /* For CONNTRACK references hierarchy is as follows:
+         *  StateSyncCluster->ClusterGroup->ObjectRef
+         */
+        /* TODO: Extract magic number! */
+        if (state_sync_group->getStr("type") == "conntrack")
+        {
+            if (hasConntrack)
+            {
+                cout << " Warning: multiple conntrack devices specified."
+                     << endl;
+            } else
+            {
+                if (conntrack_iface)
+                    fw->getOptionsObject()->setStr("conntrack_interface",
+                                                   conntrack_iface->getName());
+
+                hasConntrack = true;
+            }
+        }
+    }
+
+    /* For VRRP references the hierarchy is as follows:
+     * Cluster->Interface->FailoverClusterGroup->ObjectRef
+     */
+    FWObjectTypedChildIterator cl_iface = cluster->findByType(Interface::TYPENAME);
+    for (; cl_iface != cl_iface.end(); ++cl_iface)
+    {
+        FailoverClusterGroup *failover_group =
+            FailoverClusterGroup::cast(
+                (*cl_iface)->getFirstByType(FailoverClusterGroup::TYPENAME));
+        for (FWObjectTypedChildIterator it =
+                 failover_group->findByType(FWObjectReference::TYPENAME);
+             it != it.end(); ++it)
+        {
+            Interface *iface = Interface::cast(FWObjectReference::getObject(*it));
+            assert(iface);
+            if (iface->getParent() == fw)
             {
                 // We need to do some sanity checks of cluster
                 // interfaces for VRRP and then add them to the
                 // firewall object. Other failover protocols may
                 // require different actions
-                if (cluster_group->getStr("type") == "vrrp")
-                    processVRRPGroup(cluster, fw, cluster_group, iface);
-
-                /* Check if element is part of a conntrack ObjectGroup */
-                /* For CONNTRACK references hierarchy is as follows: Cluster->ClusterGroup->ObjectRef */
-                /* TODO: Extract magic number! */
-                if (cluster_group->getStr("type") == "conntrack")
-                {
-                    if(hasConntrack)
-                    {
-                        cout << " Warning: multiple conntrack devices specified."
-                             << endl;
-                    } else
-                    {
-                        fw->getOptionsObject()->setStr("conntrack_interface",
-                                                       iface->getName());
-                        hasConntrack = true;
-                    }
-                }
+                if (failover_group->getStr("type") == "vrrp")
+                    processVRRPGroup(cluster, fw, failover_group, iface);
             }
         }
     }

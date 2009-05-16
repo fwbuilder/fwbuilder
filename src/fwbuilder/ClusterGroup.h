@@ -12,6 +12,11 @@
  *   any later version.
  *
  * o The terms of NetCitadel End User License Agreement
+ *
+ *
+ * Class ClusterGroup serves as a base class for StateSyncClusterGroup and
+ * FailoverClusterGroup. Objects of the class ClusterGroup are never used
+ * and can not be stored in XML file.
  */
 
 #ifndef __CLUSTERGROUP_HH_
@@ -21,6 +26,7 @@
 
 namespace libfwbuilder
 {
+    class ClusterGroupOptions;
 
     class ClusterGroup : public ObjectGroup
     {
@@ -38,6 +44,8 @@ namespace libfwbuilder
          * verify whether given object type is approppriate as a child
          */
         virtual bool validateChild(FWObject *o);
+
+        virtual ClusterGroupOptions* getOptionsObject();
     };
 }
 

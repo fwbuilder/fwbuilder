@@ -51,7 +51,8 @@
 
 #include <fwbuilder/Firewall.h>
 #include <fwbuilder/Cluster.h>
-#include <fwbuilder/ClusterGroup.h>
+#include <fwbuilder/StateSyncClusterGroup.h>
+#include <fwbuilder/FailoverClusterGroup.h>
 
 #include <fwbuilder/Group.h>
 #include <fwbuilder/Host.h>
@@ -118,8 +119,12 @@ void FWObjectDatabase::init_create_methods_table()
             &FWObjectDatabase::createFWObjectAddressTable;
         create_methods["Cluster"] =
             &FWObjectDatabase::createFWObjectCluster;
-        create_methods["ClusterGroup"] =
-            &FWObjectDatabase::createFWObjectClusterGroup;
+        create_methods["StateSyncClusterGroup"] =
+            &FWObjectDatabase::createFWObjectStateSyncClusterGroup;
+        create_methods["FailoverClusterGroup"] =
+            &FWObjectDatabase::createFWObjectFailoverClusterGroup;
+        create_methods["ClusterGroupOptions"] =
+            &FWObjectDatabase::createFWObjectClusterGroupOptions;
         create_methods["CustomService"] =
             &FWObjectDatabase::createFWObjectCustomService;
         create_methods["DNSName"] =
@@ -310,7 +315,9 @@ FWObject *FWObjectDatabase::createFromXML(xmlNodePtr data)
 CREATE_OBJ_METHOD(AddressRange);
 CREATE_OBJ_METHOD(AddressTable);
 CREATE_OBJ_METHOD(Cluster);
-CREATE_OBJ_METHOD(ClusterGroup);
+CREATE_OBJ_METHOD(StateSyncClusterGroup);
+CREATE_OBJ_METHOD(FailoverClusterGroup);
+CREATE_OBJ_METHOD(ClusterGroupOptions);
 CREATE_OBJ_METHOD(CustomService);
 CREATE_OBJ_METHOD(DNSName);
 CREATE_OBJ_METHOD(FWBDManagement);

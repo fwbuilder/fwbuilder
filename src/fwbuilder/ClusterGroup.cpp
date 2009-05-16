@@ -19,6 +19,7 @@
 #include <fwbuilder/ClusterGroup.h>
 #include <fwbuilder/Interface.h>
 #include <fwbuilder/FWObjectDatabase.h>
+#include <fwbuilder/FWOptions.h>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -27,13 +28,18 @@ const char *ClusterGroup::TYPENAME = {"ClusterGroup"};
 
 ClusterGroup::ClusterGroup() : ObjectGroup()
 {
-    setStr("type", "vrrp");
+    setStr("type", "");
 }
 
 ClusterGroup::ClusterGroup(const FWObjectDatabase *root, bool prepopulate)
     : ObjectGroup(root, prepopulate)
 {
-    setStr("type", "vrrp");
+    setStr("type", "");
+    if (prepopulate)
+    {
+        FWObject *gopt = getRoot()->create(ClusterGroupOptions::TYPENAME);
+        add(gopt);
+    }
 }
 
 bool ClusterGroup::validateChild(FWObject *o)
@@ -42,6 +48,7 @@ bool ClusterGroup::validateChild(FWObject *o)
 
     return (FWObject::validateChild(o) &&
             (otype == Interface::TYPENAME ||
+             otype == ClusterGroupOptions::TYPENAME ||
              otype == FWObjectReference::TYPENAME));
 }
 
@@ -70,11 +77,33 @@ xmlNodePtr ClusterGroup::toXML(xmlNodePtr parent) throw(FWException)
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
     xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
 
-    for (list<FWObject*>::const_iterator j = begin(); j != end(); ++j)
+    FWObject *o;
+    for (FWObjectTypedChildIterator it = findByType(FWObjectReference::TYPENAME);
+        it != it.end(); ++it)
     {
-        (*j)->toXML(me);
+        o = *it; if (o) o->toXML(me);
+    }
+
+    for (FWObjectTypedChildIterator it = findByType(ClusterGroupOptions::TYPENAME);
+        it != it.end(); ++it)
+    {
+        o = *it; if (o) o->toXML(me);
     }
 
     return me;
 }
+
+ClusterGroupOptions* ClusterGroup::getOptionsObject()
+{
+    ClusterGroupOptions *gopt = ClusterGroupOptions::cast(
+        getFirstByType(ClusterGroupOptions::TYPENAME));
+    if (gopt == NULL)
+    {
+        gopt = ClusterGroupOptions::cast(
+            getRoot()->create(ClusterGroupOptions::TYPENAME));
+    }
+    return gopt;
+}
+
+
 

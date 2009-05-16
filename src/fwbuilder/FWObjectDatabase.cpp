@@ -64,7 +64,8 @@
 #include <fwbuilder/FWOptions.h>
 #include <fwbuilder/Firewall.h>
 #include <fwbuilder/Cluster.h>
-#include <fwbuilder/ClusterGroup.h>
+#include <fwbuilder/StateSyncClusterGroup.h>
+#include <fwbuilder/FailoverClusterGroup.h>
 #include <fwbuilder/NAT.h>
 #include <fwbuilder/Policy.h>
 #include <fwbuilder/Routing.h>
