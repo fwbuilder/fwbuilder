@@ -400,21 +400,15 @@
         <PolicyRuleOptions/>
       </PolicyRule>
     </Policy>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ServiceRef ref="sysid1"/>
-    <ObjectRef ref="sysid0"/>
     <IPv4 id="id16587X32012" name="firewal11:eth1:ip1" comment="" ro="False" address="33.33.33.34" netmask="255.255.255.0"/>
     <ObjectRef ref="id3BBC0EFC"/>
     <ObjectRef ref="host-hostA"/>
     <ObjectRef ref="host-hostB"/>
-    <ObjectRef ref="net-Internal_net"/>
     <ObjectRef ref="id3B022266"/>
-    <ObjectRef ref="id3BBC0EFC"/>
-    <ObjectRef ref="sysid0"/>
     <ObjectRef ref="id3B4572AF"/>
     <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="net-Internal_net"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -971,7 +965,7 @@
       </ServiceGroup>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="openbsd" inactive="False" lastCompiled="1157930800" lastInstalled="0" lastModified="1230447370" platform="pf" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="openbsd" inactive="False" lastCompiled="1157930800" lastInstalled="0" lastModified="1242336454" platform="pf" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -1523,7 +1517,67 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="pol-firewall2-7" disabled="False" log="True" position="20" action="Deny" direction="Both" comment="Automatically generated 'catch all' rule">
+          <PolicyRule id="id16809X4058" disabled="False" group="" log="False" position="20" action="Accept" direction="Outbound" comment="bug #2791950  &quot;no way to generate &quot;pass out&quot; rule with no interface&quot;&#10;Interface field should be &quot;any&quot;, direction &quot;outbound&quot;&#10;">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id16821X4058" disabled="False" group="" log="False" position="21" action="Accept" direction="Outbound" comment="bug #2791950  &quot;no way to generate &quot;pass out&quot; rule with no interface&quot;&#10;&#10;">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id23867X4058" disabled="False" group="" log="False" position="22" action="Accept" direction="Outbound" comment="bug #2791950  &quot;no way to generate &quot;pass out&quot; rule with no interface&quot;&#10;&#10;">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="pol-firewall2-7" disabled="False" log="True" position="23" action="Deny" direction="Both" comment="Automatically generated 'catch all' rule">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -13702,7 +13756,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id16377X32012" host_OS="openbsd" inactive="False" lastCompiled="1239317855" lastInstalled="0" lastModified="1239317850" platform="pf" version="" name="firewal11" comment="example to illustrate access to the firewall limited to only few&#10;source addresses. Since in PF firewall is always part of &quot;any&quot;,&#10;have to explcitly add a rule to block ssh to the firewall&#10;from other sources." ro="False">
+      <Firewall id="id16377X32012" host_OS="openbsd" inactive="False" lastCompiled="1239317855" lastInstalled="0" lastModified="1242337567" platform="pf" version="" name="firewall11" comment="example to illustrate access to the firewall limited to only few&#10;source addresses. Since in PF firewall is always part of &quot;any&quot;,&#10;have to explcitly add a rule to block ssh to the firewall&#10;from other sources." ro="False">
         <NAT id="id16456X32012" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id16383X32012" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id16601X32012" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -13788,13 +13842,13 @@
         </Policy>
         <Routing id="id16583X32012" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id16584X32012" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="en1" comment="" ro="False">
-          <IPv4 id="id16588X32012" name="firewal11:en1:ip" comment="" ro="False" address="33.33.33.33" netmask="255.255.255.0"/>
+          <IPv4 id="id16588X32012" name="firewall11:en1:ip" comment="" ro="False" address="33.33.33.33" netmask="255.255.255.0"/>
         </Interface>
         <Interface id="id16589X32012" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="en0" comment="" ro="False">
-          <IPv4 id="id16591X32012" name="firewal11:en0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <IPv4 id="id16591X32012" name="firewall11:en0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
         <Interface id="id16592X32012" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
-          <IPv4 id="id16594X32012" name="firewal11:lo0:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <IPv4 id="id16594X32012" name="firewall11:lo0:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Interface id="id16595X32012" bridgeport="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="ppp0" comment="" ro="False"/>
         <Management address="0.0.0.0">

@@ -1,3 +1,11 @@
+2009-05-14  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_pf.cpp (fillDirection::processNext): fixed bug
+	#2791950 "no way to generate "pass out" rule with no interface".
+	Compiler created two rules "pass out" and "pass in" for rules with
+	no interface and direction "in" or "out". It should create one
+	rule with direction defined by the rule in the GUI.
+
 2009-05-12  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_pf_writers.cpp (PrintRule::processNext): fixed
