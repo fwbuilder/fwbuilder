@@ -4,7 +4,7 @@
 
                  Copyright (C) 2008 NetCitadel, LLC
 
-  Author:  Vadim Kurland <vadim@fwbuilder.org>
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   $Id$
 
@@ -24,48 +24,14 @@
 */
 
 
-#ifndef __STARTTIPDIALOG_H_
-#define __STARTTIPDIALOG_H_
+#ifndef STARTUP_TIP_URL_HH
+#define STARTUP_TIP_URL_HH
 
-#include "../../config.h"
+#include "../../VERSION.h"
+#include "../../build_num"
 
-#include "ui_starttipdialog_q.h"
-#include "HttpGet.h"
+#define STARTUP_TIP_URL "http://update.fwbuilder.org/tips/gettip.cgi?v="VERSION
 
-#include <QStringList>
-#include <QString>
-#include <QDialog>
+#endif
 
-#include <time.h>
 
-class StartTipDialog : public QDialog
-{
-    Q_OBJECT
-
-    HttpGet *http_getter;
-    QStringList tips;
-    int current_tip;
-    time_t start_time;
-    bool first_run;
-    
-    void showTip(const QString &txt, bool new_tip=true);
-    void showTip(int tip_idx);
-    QString getRandomTip();
-
-public:
-    Ui::StartTipDialog_q *m_dialog;
-
-    StartTipDialog();
-    
-    virtual ~StartTipDialog() {};
-
-    void run();
-
-public slots:
-    void downloadComplete(const QString&);
-    void nextTip();
-    void prevTip();
-    virtual void close();
-};
-
-#endif 

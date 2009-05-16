@@ -5,22 +5,25 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>711</width>
-    <height>537</height>
+    <width>520</width>
+    <height>267</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Welcome to Firewall Builder</string>
   </property>
   <layout class="QGridLayout" name="gridLayout" >
-   <property name="margin" >
-    <number>30</number>
-   </property>
-   <property name="spacing" >
-    <number>20</number>
-   </property>
    <item rowspan="2" row="0" column="0" >
     <widget class="QTextBrowser" name="textview" >
+     <property name="frameShape" >
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth" >
+      <number>0</number>
+     </property>
      <property name="openExternalLinks" >
       <bool>true</bool>
      </property>
@@ -68,16 +71,42 @@
        </property>
        <property name="sizeHint" stdset="0" >
         <size>
-         <width>128</width>
-         <height>20</height>
+         <width>18</width>
+         <height>17</height>
         </size>
        </property>
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="prevTipButton" >
+       <property name="text" >
+        <string>Previous Tip</string>
+       </property>
+       <property name="autoDefault" >
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="nextTipButton" >
+       <property name="text" >
+        <string>Next Tip</string>
+       </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
+       <property name="flat" >
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="closeButton" >
        <property name="text" >
         <string>Close</string>
+       </property>
+       <property name="autoDefault" >
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -105,5 +134,41 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>nextTipButton</sender>
+   <signal>clicked()</signal>
+   <receiver>StartTipDialog_q</receiver>
+   <slot>nextTip()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>382</x>
+     <y>238</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>259</x>
+     <y>133</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>prevTipButton</sender>
+   <signal>clicked()</signal>
+   <receiver>StartTipDialog_q</receiver>
+   <slot>prevTip()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>275</x>
+     <y>238</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>259</x>
+     <y>133</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>nextTip()</slot>
+  <slot>prevTip()</slot>
+ </slots>
 </ui>

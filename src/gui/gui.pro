@@ -137,7 +137,8 @@ HEADERS += ../../config.h \
 	Help.h \
 	HttpGet.h \
 	StartTipDialog.h \
-	check_update_url.h
+	check_update_url.h \
+	startup_tip_url.h
 
 SOURCES += ProjectPanel.cpp \
 	ProjectPanel_file_ops.cpp \

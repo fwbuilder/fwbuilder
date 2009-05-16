@@ -390,13 +390,15 @@ void FWWindow::startupLoad()
     {
         loadFile(file, auto_load_from_rcs_head_revision);
         updateOpenRecentMenu(file);
-     }
+    }
 
     if (! st->getBool("UI/NoStartTip"))
     {
         StartTipDialog *stdlg = new StartTipDialog();
-        stdlg->show();
-        stdlg->raise();
+        stdlg->run();
+
+        //stdlg->show();
+        //stdlg->raise();
     }
 }
 

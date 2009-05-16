@@ -28,10 +28,13 @@
 #include "utils.h"
 
 #include "StartTipDialog.h"
+#include "startup_tip_url.h"
 #include "FWBSettings.h"
 #include "Help.h"
 
 #include <QCheckBox>
+
+#include <stdlib.h>
 
 
 using namespace std;
@@ -42,14 +45,132 @@ StartTipDialog::StartTipDialog()
     setAttribute(Qt::WA_DeleteOnClose);
     setModal(false);
 
+    http_getter = new HttpGet();
+    connect(http_getter, SIGNAL(done(const QString&)),
+            this, SLOT(downloadComplete(const QString&)));
+
     m_dialog = new Ui::StartTipDialog_q;
     m_dialog->setupUi(this);
 
-    m_dialog->textview->setText(Help::getHelpFileContents("main"));
+    current_tip = -1;
+
+    // preload tips that come with the package
+    int tip_no = 1;
+    while (true)
+    {
+        char buf[64];
+        sprintf(buf, "tip%02d", tip_no);
+        QString tip_file = QString(buf);
+        QString contents;
+        if (fwbdebug)
+            qDebug("Trying tip file %s", tip_file.toAscii().constData());
+        if (Help::getHelpFileContents(tip_file, contents))
+        {
+            tips.append(contents);
+            tip_no++;
+        } else
+            break;
+    }
+    current_tip = tips.size() - 1;
+
+    if (fwbdebug) qDebug("Have %d tips", tips.size());
+
+    first_run = st->getBool("UI/FirstRun");
+
+    //m_dialog->textview->setText(Help::getHelpFileContents("main"));
+}
+
+QString StartTipDialog::getRandomTip()
+{
+    if (tips.size())
+    {
+        int n = rand() % tips.size();
+        if (fwbdebug) qDebug("Showing tip %d", n);
+        return tips[n];
+    }
+    return "";
+}
+
+void StartTipDialog::run()
+{
+    if (first_run)
+    {
+        showTip(0);
+        st->setBool("UI/FirstRun", false);
+    } else
+    {
+        if (http_getter->get(QUrl(STARTUP_TIP_URL)))
+        {
+            start_time = time(NULL);
+        } else
+        {
+            if (fwbdebug) qDebug("Can not connect to the url %s", STARTUP_TIP_URL);
+            showTip(getRandomTip(), false);
+        }
+    }
+}
+
+void StartTipDialog::downloadComplete(const QString &txt)
+{
+    // Do not show dialog if download took too long (time out occurred)
+    if (time(NULL) - start_time < 15)
+    {
+        QString tip;
+        if (http_getter->getStatus())
+        {
+            showTip(txt);
+        } else
+        {
+            if (fwbdebug)
+            {
+                qDebug("Error connecting to the url %s", STARTUP_TIP_URL);
+                qDebug(http_getter->getLastError().toAscii().constData());
+            }
+            showTip(getRandomTip(), false);
+        }
+    } else
+    {
+        if (fwbdebug)
+            qDebug("Suppressing startup tip dialog because download took too long");
+    }
+}
+
+void StartTipDialog::showTip(const QString &txt, bool new_tip)
+{
+    if (new_tip)
+    {
+        tips.append(txt);
+        current_tip = tips.size() - 1;
+    }
+    m_dialog->textview->setText(txt);
+    show();
+    raise();
+}
+
+void StartTipDialog::showTip(int tip_idx)
+{
+    showTip(tips[tip_idx], false);
 }
 
 void StartTipDialog::close()
 {
     if (m_dialog->donotshow->isChecked()) st->setBool("UI/NoStartTip", true);
     QDialog::close();
+}
+
+void StartTipDialog::nextTip()
+{
+    if (current_tip < (tips.size() - 1))
+    {
+        current_tip++;
+        showTip(current_tip);
+    } else
+        run();   // gets next tip, caches it and shows it
+}
+
+void StartTipDialog::prevTip()
+{
+    current_tip--;
+    if (current_tip < 0) current_tip = 0;
+    showTip(current_tip);
 }

@@ -44,7 +44,8 @@ public:
 
     void scrollToAnchor(const QString &anchor);
 
-    static QString getHelpFileContents(const QString &help_file);
+    static bool getHelpFileContents(const QString &help_file,
+                                    QString &contents);
     static bool getFile(const QString &help_file, const QString &locale,
                         QFile &file);
 

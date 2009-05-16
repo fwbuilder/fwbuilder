@@ -48,21 +48,21 @@ Help::Help(QWidget *parent, const QString &help_file, const QString &title) :
     resize(500, 600);
     raise();
 
-    setText(getHelpFileContents(help_file));
+    QString contents;
+    getHelpFileContents(help_file, contents);
+    setText(contents);
 };
-
 
 void Help::scrollToAnchor(const QString &anchor)
 {
     m_dialog->textview->scrollToAnchor(anchor);
 }
 
-
-QString Help::getHelpFileContents(const QString &help_file)
+bool Help::getHelpFileContents(const QString &help_file, QString &contents)
 {
     QString locale = QLocale::system().name(); //"en_US";
 
-    QString res;
+    bool res = false;
     QFile f;
     QTextStream ts;
 
@@ -76,11 +76,12 @@ QString Help::getHelpFileContents(const QString &help_file)
     if (Help::getFile(help_file, locale, f) && f.open(QIODevice::ReadOnly ))
     {
         ts.setDevice(&f);
-        res = ts.readAll();
+        contents = ts.readAll();
         f.close();
+        res = true;
     } else
     {
-        res = QString("Help file %1 not found.").arg(f.fileName());
+        contents = QString("Help file %1 not found.").arg(f.fileName());
     }
     return res;
 }
