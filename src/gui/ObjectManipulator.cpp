@@ -2956,9 +2956,9 @@ void ObjectManipulator::newInterfaceAddressIPv6()
         if (intf &&
             (intf->isDyn() || intf->isUnnumbered() || intf->isBridgePort())
         ) return;
-    QString iname=QString("%1:%2:ipv6")
-        .arg(QString::fromUtf8(currentObj->getParent()->getName().c_str()))
-        .arg(QString::fromUtf8(currentObj->getName().c_str()));
+        QString iname=QString("%1:%2:ipv6")
+            .arg(QString::fromUtf8(currentObj->getParent()->getName().c_str()))
+            .arg(QString::fromUtf8(currentObj->getName().c_str()));
         FWObject *o=createObject(currentObj, IPv6::TYPENAME, iname);
         if (o!=NULL)
         {
