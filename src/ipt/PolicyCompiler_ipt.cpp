@@ -40,6 +40,7 @@
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 #include "fwbuilder/physAddress.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Network.h"
@@ -3836,6 +3837,38 @@ bool PolicyCompiler_ipt::countChainUsage::processNext()
     return true;
 }
 
+bool PolicyCompiler_ipt::checkInterfaceAgainstAddressFamily::processNext()
+{
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+
+    /*
+     * If interface is "regular", compiler expects its addresses to
+     * match addresses on real firewall. If it does not have any
+     * addresses that match address family of the rule set, drop the
+     * rule. If interface is not "Regular", i.e. dynamic, unnumbered
+     * or bridge port, then compiler assumes it gets its address(es)
+     * at run time and therefore can have address that matches address
+     * family of the rule set. Therefore we can not drop the rule.
+     */
+
+    Interface *rule_iface = compiler->getFirstItf(rule);
+    if (rule_iface==NULL || !rule_iface->isRegular()) 
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
+
+    string addr_type = IPv4::TYPENAME;
+    if (ipt_comp->ipv6) addr_type = IPv6::TYPENAME;
+
+    list<FWObject*> addr_list = rule_iface->getByType(addr_type);
+    if (addr_list.size() == 0) return true;
+
+    tmp_queue.push_back(rule);
+    return true;
+}
+
 
 
 bool PolicyCompiler_ipt::addPredefinedRules::processNext()
@@ -4112,6 +4145,9 @@ void PolicyCompiler_ipt::compile()
     add( new InterfacePolicyRulesWithOptimization(
              "process interface policy rules and store interface ids") );
 
+    add( new checkInterfaceAgainstAddressFamily(
+             "check if interface matches address family") );
+
 /* this is just a patch for those who do not understand how does
  * "assume firewall is part of any" work. It also eliminates redundant
  * and useless rules in the FORWARD chain for rules assigned to a
@@ -4130,7 +4166,7 @@ void PolicyCompiler_ipt::compile()
  * removed call to processor removeFW to make changes for bug #685947:
  * "Rules with firewall object allow too much. "
  */
-    add( new removeFW(                   "remove fw"              ) );
+    add( new removeFW("remove fw") );
 
     add( new ExpandMultipleAddresses("expand multiple addresses"  ) );
     add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));

@@ -833,6 +833,13 @@ namespace fwcompiler {
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(accounting);
 
+        /*
+         * Check if interface uses in the element "interface" has address
+         * that matches address family of the rule set. If interface does
+         * not have ipv6 address but rule set is ipv6, this interface will
+         * never see ipv6 packets and rule should be dropped.
+         */
+        DECLARE_POLICY_RULE_PROCESSOR(checkInterfaceAgainstAddressFamily);
         
         /**
          * if action is Continue and logging is off, skip this rule.

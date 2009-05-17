@@ -1,3 +1,15 @@
+2009-05-16  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt.cpp (checkInterfaceAgainstAddressFamily::processNext):
+	fixed bug #2792888: "interface with only v4 address is used in v6
+	rules". Compiler should drop rule if it is associate with an
+	interface that does not have address that belongs to the address
+	family declared for the rule set. If interface has only ipv4
+	address, it will never see ipv6 packets and therefore rules that
+	have this interface in the "interface" rule element should not be
+	included in the output generated for the ipv6 or combined
+	ipv4+ipv6 rule sets.
+
 2009-05-14  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_pf.cpp (fillDirection::processNext): fixed bug
