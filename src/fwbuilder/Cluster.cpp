@@ -142,6 +142,7 @@ void Cluster::getMembersList(list<libfwbuilder::Firewall*> &members)
              j != (*it)->end(); ++j)
         {
             FWObject *member = FWReference::getObject(*j);
+            if (ClusterGroupOptions::isA(member)) continue;
             Firewall *fw = NULL;
             // as of 05/04 members of StateSyncClusterGroup are interfaces. See
             // tickets #10 and #11

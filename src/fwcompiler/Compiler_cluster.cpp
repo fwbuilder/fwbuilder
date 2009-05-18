@@ -187,11 +187,10 @@ void Compiler::processVRRPGroup(Cluster *cluster,
  * 2. clear Policy, NAT & Routing rules of the firewall, then copy cluster
  *    policy, NAT and routing rules.
  */
-int Compiler::populateClusterElements(Cluster *cluster,
-                                      Firewall *fw)
+int Compiler::populateClusterElements(Cluster *cluster, Firewall *fw)
 {
     int addedPolicies = 0;
-    bool hasConntrack = false;
+    set<string> state_sync_types;
 
     checkCluster(cluster);
     
@@ -217,21 +216,15 @@ int Compiler::populateClusterElements(Cluster *cluster,
          *  StateSyncCluster->ClusterGroup->ObjectRef
          */
         /* TODO: Extract magic number! */
-        if (state_sync_group->getStr("type") == "conntrack")
-        {
-            if (hasConntrack)
-            {
-                cout << " Warning: multiple conntrack devices specified."
-                     << endl;
-            } else
-            {
-                if (conntrack_iface)
-                    fw->getOptionsObject()->setStr("conntrack_interface",
-                                                   conntrack_iface->getName());
+        string grp_type = state_sync_group->getStr("type");
+        if (state_sync_types.count(grp_type) > 0)
+            abort("Several state synchronization groups of the same type in one cluster object.");
 
-                hasConntrack = true;
-            }
-        }
+        state_sync_types.insert(grp_type);
+
+        if (state_sync_group->getStr("type") == "conntrack" && conntrack_iface)
+            fw->getOptionsObject()->setStr("conntrack_interface",
+                                           conntrack_iface->getName());
     }
 
     /* For VRRP references the hierarchy is as follows:

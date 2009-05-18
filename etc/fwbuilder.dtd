@@ -531,7 +531,7 @@ Interface can have the following attributes:
  inactive             %BOOLEAN;   #IMPLIED
 >
 
-<!ELEMENT Cluster (NAT*, Policy*, Routing, Interface*, Management?, FirewallOptions?, StateSyncClusterGroup?)>
+<!ELEMENT Cluster (NAT*, Policy*, Routing, Interface*, Management?, FirewallOptions?, StateSyncClusterGroup*)>
 <!ATTLIST Cluster
  %STD_ATTRIBUTES;
  platform             %STRING;    #REQUIRED
