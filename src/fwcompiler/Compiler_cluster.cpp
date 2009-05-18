@@ -112,15 +112,23 @@ void Compiler::processVRRPGroup(Cluster *cluster,
     assert(cluster_if != NULL);
     string cluster_if_name = cluster_if->getName();
 
-    /* Check that VRRP interface and fw interface are in same subnet */
-    if (!isReachable(cluster_if->getAddressObject(),
-                     iface->getAddressObject()->getAddressPtr()))
+    /* Check that VRRP interface and fw interface are in same subnet.
+     * Exception: if interface is dynamic and does not have an ip address in
+     * fwbuilder configuration, assume it is ok.
+     */
+    if (iface->isRegular())
     {
-        cerr << " Warning: "
-             << cluster_if_name
-             << " and "
-             << iface->getName() 
-             << " are not in same subnet." << endl;
+        const Address *iface_addr = iface->getAddressObject();
+        // even regular interface may have no address if user forgot to add one
+        if (iface_addr &&
+            !isReachable(cluster_if->getAddressObject(), iface_addr->getAddressPtr()))
+        {
+            cerr << " Warning: "
+                 << cluster_if_name
+                 << " and "
+                 << iface->getName() 
+                 << " are not in same subnet." << endl;
+        }
     }
 
     assert(fw->getOptionsObject() != NULL);
@@ -235,20 +243,23 @@ int Compiler::populateClusterElements(Cluster *cluster,
         FailoverClusterGroup *failover_group =
             FailoverClusterGroup::cast(
                 (*cl_iface)->getFirstByType(FailoverClusterGroup::TYPENAME));
-        for (FWObjectTypedChildIterator it =
-                 failover_group->findByType(FWObjectReference::TYPENAME);
-             it != it.end(); ++it)
+        if (failover_group)
         {
-            Interface *iface = Interface::cast(FWObjectReference::getObject(*it));
-            assert(iface);
-            if (iface->getParent() == fw)
+            for (FWObjectTypedChildIterator it =
+                     failover_group->findByType(FWObjectReference::TYPENAME);
+                 it != it.end(); ++it)
             {
-                // We need to do some sanity checks of cluster
-                // interfaces for VRRP and then add them to the
-                // firewall object. Other failover protocols may
-                // require different actions
-                if (failover_group->getStr("type") == "vrrp")
-                    processVRRPGroup(cluster, fw, failover_group, iface);
+                Interface *iface = Interface::cast(FWObjectReference::getObject(*it));
+                assert(iface);
+                if (iface->getParent() == fw)
+                {
+                    // We need to do some sanity checks of cluster
+                    // interfaces for VRRP and then add them to the
+                    // firewall object. Other failover protocols may
+                    // require different actions
+                    if (failover_group->getStr("type") == "vrrp")
+                        processVRRPGroup(cluster, fw, failover_group, iface);
+                }
             }
         }
     }
