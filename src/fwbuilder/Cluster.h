@@ -74,6 +74,13 @@ namespace libfwbuilder
          */
         virtual void getMembersList(std::list<libfwbuilder::Firewall*> &members);
 
+        /**
+         * Check validity of a given member. This is where we
+         * implement logic to check if host OS of the cluster and
+         * members is the same and possibly other criteria.
+         */
+        virtual bool validateMember(libfwbuilder::Firewall*);
+        
         time_t getLastModified();
         time_t getLastInstalled();
         time_t getLastCompiled();
