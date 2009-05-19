@@ -198,33 +198,14 @@ int Compiler::populateClusterElements(Cluster *cluster, Firewall *fw)
         it != it.end(); ++it)
     {
         FWObject *state_sync_group = *it;
-        FWObject *conntrack_iface = NULL;
-        for (FWObjectTypedChildIterator grp_it =
-                 state_sync_group->findByType(FWObjectReference::TYPENAME);
-             grp_it != grp_it.end(); ++grp_it)
-        {
-            FWObject *iface = FWObjectReference::getObject(*grp_it);
-            if (iface->getParent() == fw)
-            {
-                conntrack_iface = iface;
-                break;
-            }
-        }
-
-        /* Check if element is part of a conntrack ObjectGroup */
-        /* For CONNTRACK references hierarchy is as follows:
-         *  StateSyncCluster->ClusterGroup->ObjectRef
+        /* For the state syncing cluster group, hierarchy looks like this:
+         * Cluster->StateSyncClusterGroup->ObjectRef
          */
-        /* TODO: Extract magic number! */
         string grp_type = state_sync_group->getStr("type");
         if (state_sync_types.count(grp_type) > 0)
             abort("Several state synchronization groups of the same type in one cluster object.");
 
         state_sync_types.insert(grp_type);
-
-        if (state_sync_group->getStr("type") == "conntrack" && conntrack_iface)
-            fw->getOptionsObject()->setStr("conntrack_interface",
-                                           conntrack_iface->getName());
     }
 
     /* For VRRP references the hierarchy is as follows:
