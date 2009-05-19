@@ -371,3 +371,7 @@ int Interface::countInetAddresses(bool skip_loopback) const
     return res;
 }
 
+bool Interface::isFailoverInterface() const
+{
+    return getFirstByType(FailoverClusterGroup::TYPENAME) != NULL;
+}

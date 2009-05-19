@@ -146,6 +146,8 @@ public:
         bool isUp () const { return ostatus; }
         void setOStatus(bool value);
 
+        bool isFailoverInterface() const;
+
         void setInterfaceType(int _snmp_type);
         int  getInterfaceType() const { return snmp_type; }
 

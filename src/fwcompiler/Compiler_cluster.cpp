@@ -100,13 +100,22 @@ bool Compiler::isReachable(const Address* const client,
 }
 
 /*
- * Perform checks for VRRP interfaces and their addresses,
- * Add a copy of VRRP interface form the cluster to the firewall object
+ * Perform checks for fialover interfaces and their addresses, add a
+ * copy of failover interface form the cluster to the firewall object.
+ *
+ * This method assumes the following:
+ *
+ * - Failover interface owns its ip address which is different from
+ *   addresses of either firewall
+ *
+ * - address of the failover interface must be on the same subnet as
+ *   addresses of the firewalls (perhaps this restriction can be
+ *   lifted? Was originally implemented by Secunet folks like this)
  */
-void Compiler::processVRRPGroup(Cluster *cluster,
-                                Firewall *fw,
-                                FailoverClusterGroup *cluster_group,
-                                Interface *iface)
+void Compiler::processFailoverGroup(Cluster *cluster,
+                                    Firewall *fw,
+                                    FailoverClusterGroup *cluster_group,
+                                    Interface *iface)
 {
     Interface* cluster_if = Interface::cast(cluster_group->getParent());
     assert(cluster_if != NULL);
@@ -120,8 +129,8 @@ void Compiler::processVRRPGroup(Cluster *cluster,
     {
         const Address *iface_addr = iface->getAddressObject();
         // even regular interface may have no address if user forgot to add one
-        if (iface_addr &&
-            !isReachable(cluster_if->getAddressObject(), iface_addr->getAddressPtr()))
+        if (iface_addr && !isReachable(cluster_if->getAddressObject(),
+                                       iface_addr->getAddressPtr()))
         {
             cerr << " Warning: "
                  << cluster_if_name
@@ -152,25 +161,16 @@ void Compiler::processVRRPGroup(Cluster *cluster,
     }
 
     /* Add copy of VRRP interface from the cluster to the firewall object */
-    Interface* new_cl_if = Interface::cast(
-        fw->addCopyOf(cluster_if, false));
+    Interface* new_cl_if = Interface::cast(fw->addCopyOf(cluster_if, false));
     assert(new_cl_if != NULL);
-    new_cl_if->getOptionsObject()->setStr("base_device",
-                                          iface->getName());
+    new_cl_if->getOptionsObject()->setStr("base_device", iface->getName());
 
     /* Set master property if interface is referenced
      * as master_iface
      */
-    if (cluster_group->getStr("master_iface") == iface->getStr("id"))
-    {
-        new_cl_if->getOptionsObject()->setBool("vrrp_master",
-                                               "true");
-    } else
-    {
-        new_cl_if->getOptionsObject()->setBool("vrrp_master",
-                                               "false");
-    };
-
+    new_cl_if->getOptionsObject()->setBool(
+        "failover_master", cluster_group->getStr("master_iface") == iface->getStr("id"));
+    
     fw->getOptionsObject()->setBool("cluster_member", true);
 
     /* Add copy of firewall's real interface to the cluster to make sure
@@ -248,10 +248,13 @@ int Compiler::populateClusterElements(Cluster *cluster, Firewall *fw)
                 {
                     // We need to do some sanity checks of cluster
                     // interfaces for VRRP and then add them to the
-                    // firewall object. Other failover protocols may
-                    // require different actions
-                    if (failover_group->getStr("type") == "vrrp")
-                        processVRRPGroup(cluster, fw, failover_group, iface);
+                    // firewall object.
+                    // These actions are very generic and have nothing specific
+                    // to VRRP. Unless new protocol is added that requires
+                    // something radically different, will always call this method
+                    // for failover groups.
+                    //if (failover_group->getStr("type") == "vrrp")
+                    processFailoverGroup(cluster, fw, failover_group, iface);
                 }
             }
         }
