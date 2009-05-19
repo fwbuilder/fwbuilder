@@ -238,6 +238,7 @@ protected:
 
 	int                                debug;
 	int                                debug_rule;
+        bool                               rule_debug_on;
 	bool                               verbose;
 
 	fwcompiler::OSConfigurator        *osconfigurator;
@@ -633,7 +634,7 @@ protected:
 	Compiler(libfwbuilder::FWObjectDatabase *_db, bool ipv6_policy);
         
 	void setDebugLevel(int dl) { debug=dl;       }
-	void setDebugRule(int dr)  { debug_rule=dr;  }
+	void setDebugRule(int dr)  { debug_rule = dr; rule_debug_on = true; }
 	void setVerbose(bool v)    { verbose=v;      }
         void setTestMode()         { test_mode=true; }
         void setSourceRuleSet(libfwbuilder::RuleSet *rs) { source_ruleset = rs; }

@@ -175,6 +175,7 @@ void Compiler::_init(FWObjectDatabase *_db, const string &fwobjectname)
 
     debug = 0;
     debug_rule = -1;
+    rule_debug_on = false;
     verbose = true;
     
     dbcopy = new FWObjectDatabase(*_db);  // copies entire tree
@@ -229,6 +230,7 @@ Compiler::Compiler(FWObjectDatabase*, bool ipv6_policy)
     combined_ruleset = NULL;
     debug = 0;
     debug_rule = -1;
+    rule_debug_on = false;
     verbose = true;
 }
 
@@ -567,7 +569,7 @@ void Compiler::debugRule()
          i!=combined_ruleset->end(); i++)
     {
 	Rule *rule = Rule::cast( *i );
-        if ( rule->getPosition()==debug_rule )
+        if (rule_debug_on && rule->getPosition()==debug_rule )
         {
             cout << debugPrintRule(rule);
             cout << endl;
@@ -594,7 +596,7 @@ string Compiler::debugPrintRule(libfwbuilder::Rule *rule)
 void Compiler::add(BasicRuleProcessor* rp) 
 { 
     rule_processors.push_back(rp); 
-    if (debug_rule>=0  && dynamic_cast<simplePrintProgress*>(rp)==NULL) 
+    if (rule_debug_on && dynamic_cast<simplePrintProgress*>(rp)==NULL) 
         rule_processors.push_back(new Debug());
 }
 
@@ -681,14 +683,16 @@ bool Compiler::Debug::processNext()
     slurp();
     if (tmp_queue.size()==0) return false;
 
-    if (compiler->debug_rule>=0) {
+    if (compiler->rule_debug_on)
+    {
         string n=prev_processor->getName();
         cout << endl << flush;
         cout << "--- "  << n << " " << setw(74-n.length()) << setfill('-') << "-" << flush;
 
         for (std::deque<Rule*>::iterator i=tmp_queue.begin(); i!=tmp_queue.end(); ++i) {
             Rule *rule=Rule::cast(*i);
-            if ( rule->getPosition()==compiler->debug_rule ) {
+            if (compiler->rule_debug_on && rule->getPosition()==compiler->debug_rule )
+            {
                 cout << compiler->debugPrintRule(rule) << flush;
                 cout << endl << flush;
             }
