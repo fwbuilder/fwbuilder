@@ -13,25 +13,14 @@
    <string>Form</string>
   </property>
   <property name="windowIcon" >
-   <iconset resource="MainRes.qrc" >:/Images/fwbuilder3.png</iconset>
+   <iconset resource="MainRes.qrc" >
+    <normaloff>:/Images/fwbuilder3.png</normaloff>:/Images/fwbuilder3.png</iconset>
   </property>
   <layout class="QGridLayout" >
-   <property name="leftMargin" >
+   <property name="margin" >
     <number>2</number>
    </property>
-   <property name="topMargin" >
-    <number>2</number>
-   </property>
-   <property name="rightMargin" >
-    <number>2</number>
-   </property>
-   <property name="bottomMargin" >
-    <number>2</number>
-   </property>
-   <property name="horizontalSpacing" >
-    <number>2</number>
-   </property>
-   <property name="verticalSpacing" >
+   <property name="spacing" >
     <number>2</number>
    </property>
    <item row="0" column="0" >
@@ -52,16 +41,7 @@
       <property name="spacing" >
        <number>0</number>
       </property>
-      <property name="leftMargin" >
-       <number>0</number>
-      </property>
-      <property name="topMargin" >
-       <number>0</number>
-      </property>
-      <property name="rightMargin" >
-       <number>0</number>
-      </property>
-      <property name="bottomMargin" >
+      <property name="margin" >
        <number>0</number>
       </property>
       <item>
@@ -110,22 +90,10 @@
           <enum>QFrame::Plain</enum>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
+          <property name="margin" >
            <number>0</number>
           </property>
-          <property name="topMargin" >
-           <number>0</number>
-          </property>
-          <property name="rightMargin" >
-           <number>0</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>0</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>0</number>
-          </property>
-          <property name="verticalSpacing" >
+          <property name="spacing" >
            <number>0</number>
           </property>
           <item row="1" column="0" >
@@ -143,22 +111,10 @@
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" >
-             <property name="leftMargin" >
+             <property name="margin" >
               <number>2</number>
              </property>
-             <property name="topMargin" >
-              <number>2</number>
-             </property>
-             <property name="rightMargin" >
-              <number>2</number>
-             </property>
-             <property name="bottomMargin" >
-              <number>2</number>
-             </property>
-             <property name="horizontalSpacing" >
-              <number>0</number>
-             </property>
-             <property name="verticalSpacing" >
+             <property name="spacing" >
               <number>0</number>
              </property>
              <item row="0" column="1" >
@@ -176,7 +132,8 @@
                 <string/>
                </property>
                <property name="icon" >
-                <iconset resource="MainRes.qrc" >:/Icons/info_25.png</iconset>
+                <iconset resource="MainRes.qrc" >
+                 <normaloff>:/Icons/info_25.png</normaloff>:/Icons/info_25.png</iconset>
                </property>
                <property name="autoRaise" >
                 <bool>true</bool>
@@ -191,7 +148,7 @@
                <property name="sizeType" >
                 <enum>QSizePolicy::Fixed</enum>
                </property>
-               <property name="sizeHint" >
+               <property name="sizeHint" stdset="0" >
                 <size>
                  <width>8</width>
                  <height>20</height>
@@ -207,7 +164,7 @@
                <property name="sizeType" >
                 <enum>QSizePolicy::Expanding</enum>
                </property>
-               <property name="sizeHint" >
+               <property name="sizeHint" stdset="0" >
                 <size>
                  <width>40</width>
                  <height>20</height>
@@ -298,67 +255,51 @@
          <property name="frameShadow" >
           <enum>QFrame::Plain</enum>
          </property>
-         <layout class="QGridLayout" >
-          <property name="leftMargin" >
-           <number>0</number>
-          </property>
-          <property name="topMargin" >
-           <number>0</number>
-          </property>
-          <property name="rightMargin" >
-           <number>0</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>0</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>0</number>
-          </property>
-          <property name="verticalSpacing" >
-           <number>0</number>
-          </property>
-          <item row="3" column="0" >
-           <widget class="QFrame" name="auxiliaryPanel" >
+         <layout class="QGridLayout" name="gridLayout_2" >
+          <item row="0" column="0" >
+           <widget class="QLabel" name="rulesetname" >
+            <property name="font" >
+             <font>
+              <pointsize>14</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text" >
+             <string>Firewall / ruleset</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QFrame" name="ruleSets2" >
             <property name="sizePolicy" >
-             <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+             <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
               <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
+              <verstretch>144</verstretch>
              </sizepolicy>
             </property>
-            <property name="minimumSize" >
-             <size>
-              <width>0</width>
-              <height>160</height>
-             </size>
-            </property>
-            <property name="maximumSize" >
-             <size>
-              <width>32767</width>
-              <height>160</height>
-             </size>
-            </property>
             <property name="frameShape" >
-             <enum>QFrame::Box</enum>
+             <enum>QFrame::StyledPanel</enum>
             </property>
             <property name="frameShadow" >
-             <enum>QFrame::Plain</enum>
+             <enum>QFrame::Raised</enum>
             </property>
-            <layout class="QHBoxLayout" >
+            <layout class="QGridLayout" >
+             <property name="margin" >
+              <number>0</number>
+             </property>
              <property name="spacing" >
               <number>0</number>
              </property>
-             <property name="leftMargin" >
-              <number>11</number>
-             </property>
-             <property name="topMargin" >
-              <number>11</number>
-             </property>
-             <property name="rightMargin" >
-              <number>11</number>
-             </property>
-             <property name="bottomMargin" >
-              <number>11</number>
-             </property>
+             <item row="0" column="0" >
+              <widget class="QStackedWidget" name="ruleSets" >
+               <widget class="QWidget" name="page" />
+               <widget class="QWidget" name="page_2" />
+              </widget>
+             </item>
             </layout>
            </widget>
           </item>
@@ -382,24 +323,9 @@
             <property name="frameShadow" >
              <enum>QFrame::Plain</enum>
             </property>
-            <layout class="QGridLayout" >
-             <property name="leftMargin" >
-              <number>0</number>
-             </property>
-             <property name="topMargin" >
-              <number>0</number>
-             </property>
-             <property name="rightMargin" >
-              <number>0</number>
-             </property>
-             <property name="bottomMargin" >
-              <number>0</number>
-             </property>
-             <property name="horizontalSpacing" >
-              <number>0</number>
-             </property>
-             <property name="verticalSpacing" >
-              <number>0</number>
+            <layout class="QGridLayout" name="gridLayout" >
+             <property name="margin" >
+              <number>2</number>
              </property>
              <item row="0" column="0" >
               <widget class="QStackedWidget" name="objectEditorStack" >
@@ -432,22 +358,7 @@
               </widget>
              </item>
              <item row="1" column="0" >
-              <layout class="QHBoxLayout" >
-               <property name="spacing" >
-                <number>10</number>
-               </property>
-               <property name="leftMargin" >
-                <number>0</number>
-               </property>
-               <property name="topMargin" >
-                <number>0</number>
-               </property>
-               <property name="rightMargin" >
-                <number>0</number>
-               </property>
-               <property name="bottomMargin" >
-                <number>0</number>
-               </property>
+              <layout class="QHBoxLayout" name="horizontalLayout" >
                <item>
                 <spacer>
                  <property name="orientation" >
@@ -456,7 +367,30 @@
                  <property name="sizeType" >
                   <enum>QSizePolicy::Fixed</enum>
                  </property>
-                 <property name="sizeHint" >
+                 <property name="sizeHint" stdset="0" >
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="helpObjectEditorButton" >
+                 <property name="text" >
+                  <string>Help</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer" >
+                 <property name="orientation" >
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType" >
+                  <enum>QSizePolicy::Fixed</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0" >
                   <size>
                    <width>40</width>
                    <height>20</height>
@@ -504,10 +438,10 @@
                  <property name="sizeType" >
                   <enum>QSizePolicy::MinimumExpanding</enum>
                  </property>
-                 <property name="sizeHint" >
+                 <property name="sizeHint" stdset="0" >
                   <size>
-                   <width>400</width>
-                   <height>20</height>
+                   <width>158</width>
+                   <height>17</height>
                   </size>
                  </property>
                 </spacer>
@@ -517,63 +451,40 @@
             </layout>
            </widget>
           </item>
-          <item row="1" column="0" >
-           <widget class="QFrame" name="ruleSets2" >
+          <item row="3" column="0" >
+           <widget class="QFrame" name="auxiliaryPanel" >
             <property name="sizePolicy" >
-             <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+             <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
               <horstretch>0</horstretch>
-              <verstretch>144</verstretch>
+              <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize" >
+             <size>
+              <width>0</width>
+              <height>160</height>
+             </size>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>32767</width>
+              <height>160</height>
+             </size>
+            </property>
             <property name="frameShape" >
-             <enum>QFrame::StyledPanel</enum>
+             <enum>QFrame::Box</enum>
             </property>
             <property name="frameShadow" >
-             <enum>QFrame::Raised</enum>
+             <enum>QFrame::Plain</enum>
             </property>
-            <layout class="QGridLayout" >
-             <property name="leftMargin" >
+            <layout class="QHBoxLayout" >
+             <property name="spacing" >
               <number>0</number>
              </property>
-             <property name="topMargin" >
-              <number>0</number>
+             <property name="margin" >
+              <number>11</number>
              </property>
-             <property name="rightMargin" >
-              <number>0</number>
-             </property>
-             <property name="bottomMargin" >
-              <number>0</number>
-             </property>
-             <property name="horizontalSpacing" >
-              <number>0</number>
-             </property>
-             <property name="verticalSpacing" >
-              <number>0</number>
-             </property>
-             <item row="0" column="0" >
-              <widget class="QStackedWidget" name="ruleSets" >
-               <widget class="QWidget" name="page" />
-               <widget class="QWidget" name="page_2" />
-              </widget>
-             </item>
             </layout>
-           </widget>
-          </item>
-          <item row="0" column="0" >
-           <widget class="QLabel" name="rulesetname" >
-            <property name="font" >
-             <font>
-              <pointsize>14</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text" >
-             <string>Firewall / ruleset</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignCenter</set>
-            </property>
            </widget>
           </item>
          </layout>

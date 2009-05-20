@@ -106,6 +106,11 @@ void ActionsDialog::loadFWObject(FWObject *o)
     setRule(PolicyRule::cast(o));
 }
 
+void ActionsDialog::getHelpName(QString *str)
+{
+    *str = help_name;
+}
+
 void ActionsDialog::changed()
 {
     //apply->setEnabled( true );
@@ -135,7 +140,7 @@ void ActionsDialog::validate(bool *res)
         {
             *res=false;
             QMessageBox::critical(this, "Firewall Builder",
-                                  tr("'Chabge inbound interface', 'Continue packet inspection' and 'Make a copy' options are mutually exclusive"),
+                                  tr("'Change inbound interface', 'Continue packet inspection' and 'Make a copy' options are mutually exclusive"),
                                   tr("&Continue"), 0, 0,
                                   0 );
         }
@@ -255,7 +260,8 @@ void ActionsDialog::setRule(PolicyRule *r )
         .arg(rule->getActionAsString().c_str());
     m_dialog->action->setText(title);
 
-    string act=rule->getActionAsString();
+    string act = rule->getActionAsString();
+    help_name = string(platform + "_" + act).c_str();
 
     QStringList actionsOnReject=getActionsOnReject( platform.c_str() );
     m_dialog->rejectvalue->clear();

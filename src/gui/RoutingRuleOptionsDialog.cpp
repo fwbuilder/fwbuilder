@@ -67,6 +67,11 @@ RoutingRuleOptionsDialog::RoutingRuleOptionsDialog(ProjectPanel *project, QWidge
     m_dialog->setupUi(this);
 }
 
+void RoutingRuleOptionsDialog::getHelpName(QString *str)
+{
+    *str = "RoutingRuleOptionsDialog";
+}
+
 void RoutingRuleOptionsDialog::loadFWObject(FWObject *o)
 {
     obj=o;

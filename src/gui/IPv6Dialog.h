@@ -62,6 +62,7 @@ public slots:
     virtual void validate(bool*);
     virtual void isChanged(bool*);
     virtual void DNSlookup();
+    virtual void getHelpName(QString*);
     
  signals:
 /**

@@ -64,6 +64,11 @@ PhysicalAddressDialog::~PhysicalAddressDialog()
     delete m_dialog;
 }
 
+void PhysicalAddressDialog::getHelpName(QString *str)
+{
+    *str = "PhysicalAddressDialog";
+}
+
 void PhysicalAddressDialog::loadFWObject(FWObject *o)
 {
     obj=o;

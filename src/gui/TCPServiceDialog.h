@@ -58,6 +58,7 @@ public slots:
     virtual void isChanged(bool*);
     virtual void closeEvent(QCloseEvent *e);
     virtual void toggleEstablished();
+    virtual void getHelpName(QString*);
 
  signals:
 /**

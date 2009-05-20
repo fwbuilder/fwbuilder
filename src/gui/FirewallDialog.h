@@ -66,6 +66,7 @@ public slots:
     virtual void openFWDialog();
     virtual void openOSDialog();
     virtual void closeEvent(QCloseEvent *e);
+    virtual void getHelpName(QString*);
     
  signals:
 /**

@@ -91,6 +91,7 @@ class GroupObjectDialog : public QWidget
     virtual void listContextMenu(const QPoint & pos);
     virtual void closeEvent(QCloseEvent *e);
     virtual void hideEvent(QHideEvent *e);
+    virtual void getHelpName(QString*);
     
     void copyObj();
     void cutObj();

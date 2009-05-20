@@ -59,6 +59,11 @@ NetworkDialog::NetworkDialog(ProjectPanel *project, QWidget *parent) : QWidget(p
 
 NetworkDialog::~NetworkDialog() { delete m_dialog; }
 
+void NetworkDialog::getHelpName(QString *str)
+{
+    *str = "NetworkDialog";
+}
+
 void NetworkDialog::loadFWObject(FWObject *o)
 {
     obj=o;

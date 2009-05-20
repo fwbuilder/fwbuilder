@@ -62,6 +62,11 @@ CustomServiceDialog::~CustomServiceDialog()
     delete m_dialog;
 }
 
+void CustomServiceDialog::getHelpName(QString *str)
+{
+    *str = "CustomServiceDialog";
+}
+
 void CustomServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;

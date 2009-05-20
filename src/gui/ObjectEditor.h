@@ -52,23 +52,28 @@ class ObjectEditor : public QObject {
     QMap<int, QWidget*> dialogs;
     libfwbuilder::FWObject *opened;
     int current_dialog_idx;
+    QString current_dialog_name;
     QStackedWidget *parentWidget;
     QPushButton *closeButton;
     QPushButton *applyButton;
+    QPushButton *helpButton;
     ProjectPanel *m_project;
+    
+    QMap<QString,bool> help_available_cache;
 
     void disconnectSignals();
-    
+    void findAndLoadHelp();
+
 public: 
     enum OptType{optAction,optComment,optMetric,optNone};
+
 private: 
    OptType  openedOpt;
 
 public:
    
-    ObjectEditor( QWidget *parent, ProjectPanel *project);
+    ObjectEditor(QWidget *parent, ProjectPanel *project);
     virtual ~ObjectEditor() {}
-    
 
     QString getOptDialogName(OptType t);
     void open(libfwbuilder::FWObject *o);
@@ -86,6 +91,7 @@ public:
     bool validateAndSave();
     void setCloseButton(QPushButton * b);
     void setApplyButton(QPushButton * b);
+    void setHelpButton(QPushButton * b);
     void selectObject(libfwbuilder::FWObject *o);
     void selectionChanged(libfwbuilder::FWObject *o);
     void actionChanged(libfwbuilder::FWObject *o);
@@ -96,43 +102,48 @@ public:
 public slots:
     void validateAndClose(QCloseEvent *e);
     void apply();
+    void help();
     void discard();
     void close();
     void changed();
     void blank();
 signals:
 
-/**
- * the dialog class should have a slot that can load object's data
- * into dialog elements when ObjectEditor emits this signal
- */
+    /**
+     * the dialog class should have a slot that can load object's data
+     * into dialog elements when ObjectEditor emits this signal
+     */
     void loadObject_sign(libfwbuilder::FWObject *);
 
-/**
- * the dialog class should have a slot that can verify data entered by
- * user in the dialog elements when ObjectEditor emits this
- * signal. The validation result is returned in variable "bool *res"
- */
+    /**
+     * the dialog class should have a slot that can verify data entered by
+     * user in the dialog elements when ObjectEditor emits this
+     * signal. The validation result is returned in variable "bool *res"
+     */
     void validate_sign(bool *res);
 
-/**
- * the dialog class should have a slot that can verify if the data in
- * dialog has been edited.
- */
+    /**
+     * the dialog class should have a slot that can verify if the data in
+     * dialog has been edited.
+     */
     void isChanged_sign(bool *res);
 
-/**
- * the dialog class should have a slot that applies changes made by
- * the user and saves data in the object.
- */
+    /**
+     * the dialog class should have a slot that applies changes made by
+     * the user and saves data in the object.
+     */
     void applyChanges_sign();
 
-/**
- * the dialog class should have a slot that discards changes made by
- * the user 
- */
+    /**
+     * the dialog class should have a slot that discards changes made by
+     * the user 
+     */
     void discardChanges_sign();
 
+    /**
+     * the dialog class returns corresponding help file name
+     */
+    void getHelpName_sign(QString *str);
 };
 
 #endif

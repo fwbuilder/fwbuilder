@@ -76,6 +76,11 @@ FirewallDialog::FirewallDialog(ProjectPanel *project, QWidget *parent) :
     obj=NULL;
 }
 
+void FirewallDialog::getHelpName(QString *str)
+{
+    *str = "FirewallDialog";
+}
+
 void FirewallDialog::loadFWObject(FWObject *o)
 {
     obj=o;

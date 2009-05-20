@@ -73,6 +73,11 @@ AddressTableDialog::~AddressTableDialog()
     delete m_dialog;
 }
 
+void AddressTableDialog::getHelpName(QString *str)
+{
+    *str = "AddressTableDialog";
+}
+
 void AddressTableDialog::loadFWObject(FWObject *o)
 {
     obj=o;

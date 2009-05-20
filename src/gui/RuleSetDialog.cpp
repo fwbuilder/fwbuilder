@@ -69,6 +69,11 @@ RuleSetDialog::~RuleSetDialog()
     delete m_dialog;
 }
 
+void RuleSetDialog::getHelpName(QString *str)
+{
+    *str = QString(obj->getTypeName().c_str());
+}
+
 void RuleSetDialog::loadFWObject(FWObject *o)
 {
     obj = o;

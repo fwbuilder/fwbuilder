@@ -1,0 +1,25 @@
+<h2>Rule Action "Tag"</h2>
+
+<p>
+This action associates internal tag with the packet. Tag can later be
+inspected using service object <b>TagService</b>. This action is
+translated into MARK target with corresponding --set-mark parameter
+and optionally additional rule with CONNMARK --save-mark target for
+iptables. If option that activates CONNMARK target is used, compiler
+also adds a rule at the very top of the policy to restore the
+mark. Rules are placed in INPUT,OUTPUT and FORWARD chain of the
+"mangle" table, this ensures that DNAT happens before rules placed in
+the mangle table see the packet. PREROUTING chain in mangle table is
+executed before PREROUTING chain in the nat table, so placing tagging
+rules in the PREROUTING chain would make them fire before
+DNAT. POSTROUTING chain of the mangle table, as well as its FORWARD
+and OUTPUT chains, work before corresponding chains of the nat
+table. In all cases the goal is to make sure DNAT rules process the
+packet before, and SNAT rules process it after filtering and tagging
+rules.
+</p>
+
+<p>
+To use this action create <b>TagService</b> object with tag code you
+want to use, then drag and drop it into the well in the action dialog.
+</p>
