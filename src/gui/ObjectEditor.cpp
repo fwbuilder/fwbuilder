@@ -48,6 +48,9 @@
 #include "MetricEditorPanel.h"
 #include "CommentEditorPanel.h"
 #include "ObjectManipulator.h"
+#include "Help.h"
+
+
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Host.h"
@@ -92,10 +95,11 @@ using namespace libfwbuilder;
 
 
 ObjectEditor::ObjectEditor( QWidget *parent, ProjectPanel *project):
-    QObject(parent), opened(0), current_dialog_idx(-1),
+    QObject(parent), opened(0), current_dialog_idx(-1), current_dialog_name(""),
     parentWidget(dynamic_cast<QStackedWidget*>(parent)),
     closeButton(0),
     applyButton(0),
+    helpButton(0),
     m_project(project),
     openedOpt(optNone)
 {
@@ -276,6 +280,7 @@ void ObjectEditor::hide()
 {
     m_project->closeEditorPanel();
     current_dialog_idx = -1;
+    current_dialog_name = "";
 }
 
 bool ObjectEditor::isVisible()
@@ -299,36 +304,41 @@ void ObjectEditor::openOpt(FWObject *obj,OptType t)
 
     disconnectSignals();
 
-    int wid = stackIds[getOptDialogName(t)];
-
-    current_dialog_idx = wid;
+    current_dialog_name = getOptDialogName(t);
+    current_dialog_idx = stackIds[current_dialog_name];
 
     show();
 
     connect(this, SIGNAL(loadObject_sign(libfwbuilder::FWObject*)),
-            dialogs[ wid ],
+            dialogs[ current_dialog_idx ],
             SLOT(loadFWObject(libfwbuilder::FWObject*)));
 
     connect(this, SIGNAL(validate_sign(bool*)),
-            dialogs[ wid ],
+            dialogs[ current_dialog_idx ],
             SLOT(validate(bool*)));
 
     connect(this, SIGNAL(applyChanges_sign()),
-            dialogs[ wid ],
+            dialogs[ current_dialog_idx ],
             SLOT(applyChanges()));
 
     connect(this, SIGNAL(discardChanges_sign()),
-            dialogs[ wid ],
+            dialogs[ current_dialog_idx ],
             SLOT(discardChanges()));
 
-    connect(dialogs[ wid ], SIGNAL(close_sign(QCloseEvent*)),
+    connect(dialogs[ current_dialog_idx ], SIGNAL(close_sign(QCloseEvent*)),
             this,
             SLOT(validateAndClose(QCloseEvent*)));
-    connect(dialogs[ wid ], SIGNAL(changed_sign()),
+
+    connect(dialogs[ current_dialog_idx ], SIGNAL(changed_sign()),
             this,
             SLOT(changed()));
 
+    connect(this, SIGNAL(getHelpName_sign(QString*)),
+            dialogs[ current_dialog_idx ],
+            SLOT(getHelpName(QString*)));
+
     emit loadObject_sign(obj);
+    findAndLoadHelp();
 
     opened = obj;
     openedOpt = t;
@@ -343,7 +353,8 @@ void ObjectEditor::open(FWObject *obj)
     {
         disconnectSignals();
 
-        int wid= stackIds[obj->getTypeName().c_str()];
+        current_dialog_name = obj->getTypeName().c_str();
+        current_dialog_idx = stackIds[current_dialog_name];
 
 //        disconnect( SIGNAL(loadObject_sign(libfwbuilder::FWObject*)) );
 //        disconnect( SIGNAL(validate_sign(bool*)) );
@@ -355,38 +366,43 @@ void ObjectEditor::open(FWObject *obj)
         //hide();
 
 
-        current_dialog_idx = wid;
 
         show();
 
         connect(this, SIGNAL(loadObject_sign(libfwbuilder::FWObject*)),
-                dialogs[ wid ],
+                dialogs[ current_dialog_idx ],
                 SLOT(loadFWObject(libfwbuilder::FWObject*)));
 
         connect(this, SIGNAL(validate_sign(bool*)),
-                dialogs[ wid ],
+                dialogs[ current_dialog_idx ],
                 SLOT(validate(bool*)));
 
         //connect(this, SIGNAL(isChanged_sign(bool*)),
-        //        dialogs[ wid ],
+        //        dialogs[ current_dialog_idx ],
         //        SLOT(isChanged(bool*)));
 
         connect(this, SIGNAL(applyChanges_sign()),
-                dialogs[ wid ],
+                dialogs[ current_dialog_idx ],
                 SLOT(applyChanges()));
 
         connect(this, SIGNAL(discardChanges_sign()),
-                dialogs[ wid ],
+                dialogs[ current_dialog_idx ],
                 SLOT(discardChanges()));
 
-        connect(dialogs[ wid ], SIGNAL(close_sign(QCloseEvent*)),
+        connect(dialogs[ current_dialog_idx ], SIGNAL(close_sign(QCloseEvent*)),
                 this,
                 SLOT(validateAndClose(QCloseEvent*)));
-        connect(dialogs[ wid ], SIGNAL(changed_sign()),
+
+        connect(dialogs[ current_dialog_idx ], SIGNAL(changed_sign()),
                 this,
                 SLOT(changed()));
 
+        connect(this, SIGNAL(getHelpName_sign(QString*)),
+                dialogs[ current_dialog_idx ],
+                SLOT(getHelpName(QString*)));
+
         emit loadObject_sign(obj);
+        findAndLoadHelp();
     }
 
     opened = obj;
@@ -400,6 +416,7 @@ void ObjectEditor::disconnectSignals()
     //disconnect( SIGNAL(isChanged_sign(bool*)) );
     disconnect( SIGNAL(applyChanges_sign()) );
     disconnect( SIGNAL(discardChanges_sign()) );
+    disconnect( SIGNAL(getHelpName_sign(QString*)) );
     if (current_dialog_idx>=0) dialogs[current_dialog_idx]->disconnect( this );
 }
 
@@ -408,8 +425,9 @@ void ObjectEditor::purge()
     if (fwbdebug) qDebug("ObjectEditor::purge");
 
     applyButton->setEnabled(false);
-    int wid = stackIds["BLANK"];
-    current_dialog_idx = wid;
+    current_dialog_idx = stackIds["BLANK"];
+    current_dialog_name = "BLANK";
+    findAndLoadHelp();
     opened = NULL;
     openedOpt = optNone;
 }
@@ -525,13 +543,18 @@ void ObjectEditor::setApplyButton(QPushButton * b)
     applyButton=b;
     applyButton->setEnabled(false);
     connect((QWidget*)applyButton,SIGNAL(clicked()),this,SLOT(apply()));
+}
 
+void ObjectEditor::setHelpButton(QPushButton * b)
+{
+    helpButton=b;
+    helpButton->setEnabled(true);
+    connect((QWidget*)helpButton,SIGNAL(clicked()),this,SLOT(help()));
 }
 
 void ObjectEditor::close()
 {
     if (fwbdebug) qDebug("ObjectEditor::close");
-
     validateAndClose(NULL);
 }
 
@@ -549,6 +572,37 @@ void ObjectEditor::apply()
         m_project->updateRuleSetView( );
         m_project->updateTreeViewItemOrder();
     }
+}
+
+void ObjectEditor::help()
+{
+    QString help_name;
+    emit getHelpName_sign(&help_name);
+    if (fwbdebug)
+        qDebug("ObjectEditor::help: %s", help_name.toStdString().c_str());
+    Help *h = new Help(parentWidget, help_name, "");
+    h->show();
+}
+
+void ObjectEditor::findAndLoadHelp()
+{
+    QString help_name;
+    emit getHelpName_sign(&help_name);
+
+    if (help_available_cache.count(help_name)==0)
+    {
+        QString contents;
+        help_available_cache[help_name] = Help::getHelpFileContents(help_name, contents);
+    }
+
+    if (fwbdebug)
+        qDebug("ObjectEditor::findAndLoadHelp: %s: %d",
+               help_name.toStdString().c_str(),
+               help_available_cache[help_name]);
+
+
+    // is help available?
+    helpButton->setEnabled(help_available_cache[help_name]);
 }
 
 void ObjectEditor::discard()
@@ -591,8 +645,9 @@ void ObjectEditor::blank()
     if (isVisible())
     {
         applyButton->setEnabled(false);
-        int wid = stackIds["BLANK"];
-        current_dialog_idx = wid;
+        current_dialog_idx = stackIds["BLANK"];
+        current_dialog_name = "BLANK";
+        findAndLoadHelp();
         opened = NULL;
         show();
     }

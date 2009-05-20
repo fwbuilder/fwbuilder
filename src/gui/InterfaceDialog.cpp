@@ -74,6 +74,11 @@ InterfaceDialog::~InterfaceDialog()
     delete m_dialog;
 }
 
+void InterfaceDialog::getHelpName(QString *str)
+{
+    *str = "InterfaceDialog";
+}
+
 void InterfaceDialog::loadFWObject(FWObject *o)
 {
     obj=o;

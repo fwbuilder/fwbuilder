@@ -1,3 +1,16 @@
+2009-05-20  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectEditor.cpp (ObjectEditor::help): Added support for the
+	built-in help page for all objects dialogs, including rule
+	actions and options dialog. Implemented help pages for actions
+	"Route", "Branch", "Tag", "Classify" and rule options dialogs for
+	iptables and pf. Button "Help" is greyed out if corresponding help
+	page is unavailable.
+
+	* RuleSetView.cpp (RuleSetView::switchObjectInEditor): fixed bug
+	#2794484 "Crash after click in the "Options" col of rule group
+	title".
+
 2009-05-16  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (checkInterfaceAgainstAddressFamily::processNext):

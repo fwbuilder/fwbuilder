@@ -114,6 +114,7 @@ void ProjectPanel::initMain(FWWindow *main)
     oe  = new ObjectEditor((QWidget*)m_panel->objectEditorStack, this);
     oe->setCloseButton(m_panel->closeObjectEditorButton);
     oe->setApplyButton(m_panel->applyObjectEditorButton);
+    oe->setHelpButton(m_panel->helpObjectEditorButton);
     closeEditorPanel();
     oe->hide();
 

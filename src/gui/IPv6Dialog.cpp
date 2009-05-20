@@ -69,6 +69,11 @@ IPv6Dialog::~IPv6Dialog()
     delete m_dialog;
 }
 
+void IPv6Dialog::getHelpName(QString *str)
+{
+    *str = "IPv6Dialog";
+}
+
 void IPv6Dialog::loadFWObject(FWObject *o)
 {
     obj=o;

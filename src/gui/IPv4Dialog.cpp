@@ -68,6 +68,11 @@ IPv4Dialog::~IPv4Dialog()
     delete m_dialog;
 }
 
+void IPv4Dialog::getHelpName(QString *str)
+{
+    *str = "IPv4Dialog";
+}
+
 void IPv4Dialog::loadFWObject(FWObject *o)
 {
     obj=o;

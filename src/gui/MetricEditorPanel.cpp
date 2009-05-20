@@ -67,19 +67,28 @@ int MetricEditorPanel::value()
 {
     return m_widget->spin_box->value();
 }
+
 void MetricEditorPanel::changed()
 {
     emit changed_sign();
 }
+
 void MetricEditorPanel::applyChanges()
 {
     mw->updateLastModifiedTimestampForAllFirewalls(rule);
     rule->setMetric( value() );
     mw->updateRuleSetView();
 }
+
 void MetricEditorPanel::discardChanges()
 {
 }
+
+void MetricEditorPanel::getHelpName(QString *str)
+{
+    *str = "MetricEditorPanel";
+}
+
 void MetricEditorPanel::loadFWObject(libfwbuilder::FWObject *obj)
 {
     RoutingRule *r=RoutingRule::cast(obj);

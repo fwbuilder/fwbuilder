@@ -66,6 +66,11 @@ TagServiceDialog::TagServiceDialog(ProjectPanel *project, QWidget *parent) : QWi
     obj=NULL;
 }
 
+void TagServiceDialog::getHelpName(QString *str)
+{
+    *str = "TagServiceDialog";
+}
+
 void TagServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;

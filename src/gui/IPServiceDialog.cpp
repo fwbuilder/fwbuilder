@@ -76,6 +76,11 @@ void IPServiceDialog::setCodeLabel()
     }
 }
 
+void IPServiceDialog::getHelpName(QString *str)
+{
+    *str = "IPServiceDialog";
+}
+
 void IPServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;

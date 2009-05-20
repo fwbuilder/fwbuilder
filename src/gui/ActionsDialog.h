@@ -61,6 +61,8 @@ class ActionsDialog : public QWidget
     FWObjectDropArea * TagIntArea ;
     FWObjectDropArea * TagStrArea ;
 
+    QString help_name;
+
  public:
     Ui::ActionsDialog_q *m_dialog;
      
@@ -80,6 +82,7 @@ public slots:
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
     virtual void isChanged(bool*);
+    virtual void getHelpName(QString*);
     void setRule(libfwbuilder::PolicyRule*);
     
  signals:

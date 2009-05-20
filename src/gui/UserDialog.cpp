@@ -58,6 +58,11 @@ UserDialog::UserDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent)
 
 UserDialog::~UserDialog() { delete m_dialog; }
 
+void UserDialog::getHelpName(QString *str)
+{
+    *str = "UserDialog";
+}
+
 void UserDialog::loadFWObject(FWObject *o)
 {
     obj=o;

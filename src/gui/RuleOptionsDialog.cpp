@@ -69,6 +69,12 @@ RuleOptionsDialog::RuleOptionsDialog(ProjectPanel *project, QWidget *parent) : Q
     init=false;
 }
 
+void RuleOptionsDialog::getHelpName(QString *str)
+{
+    // can make help name different depending on the currently opened tab
+    *str = help_name;
+}
+
 void RuleOptionsDialog::loadFWObject(FWObject *o)
 {
     obj=o;
@@ -78,6 +84,7 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
     while ( !Firewall::isA(p) ) p=p->getParent();
     platform=p->getStr("platform").c_str();
 
+    help_name = platform + "_rule_options";
 
     Rule      *rule = dynamic_cast<Rule*>(o);
     FWOptions *ropt = rule->getOptionsObject();

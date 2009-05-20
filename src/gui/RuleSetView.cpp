@@ -4808,6 +4808,10 @@ bool RuleSetView::switchObjectInEditor(int col,bool validate)
     */
 
     int crn=currentRow();
+
+    Rule *rule = getRule(crn);
+    if (rule==NULL) return false; // rule group header
+
     switch (getColType(col))
     {
         case Comment:
@@ -4835,7 +4839,7 @@ bool RuleSetView::switchObjectInEditor(int col,bool validate)
             /* both policy and routing rules have options. so cast to
              * Rule here. */
             Rule *rule = ruleIndex[currentRow()];
-            assert(rule);
+            assert(rule!=NULL);
             Object = rule;
             Operation = ObjectEditor::optNone;
             break;

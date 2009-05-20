@@ -63,6 +63,11 @@ HostDialog::~HostDialog()
     delete m_dialog;
 }
 
+void HostDialog::getHelpName(QString *str)
+{
+    *str = "HostDialog";
+}
+
 void HostDialog::loadFWObject(FWObject *o)
 {
     obj=o;

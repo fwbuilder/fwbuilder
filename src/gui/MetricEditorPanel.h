@@ -59,7 +59,7 @@ public slots:
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
     virtual void isChanged(bool*);
-
+    virtual void getHelpName(QString*);
     virtual void closeEvent(QCloseEvent *e);
     
  signals:

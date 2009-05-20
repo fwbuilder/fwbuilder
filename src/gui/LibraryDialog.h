@@ -62,6 +62,7 @@ public slots:
     virtual void isChanged(bool*);
     virtual void changeColor();
     virtual void closeEvent(QCloseEvent *e);
+    virtual void getHelpName(QString*);
     
  signals:
 /**

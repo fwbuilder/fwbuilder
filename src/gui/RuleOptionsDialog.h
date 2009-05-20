@@ -49,9 +49,10 @@ class RuleOptionsDialog : public QWidget
     Ui::RuleOptionsDialog_q*m_dialog;
     
     bool init;
-
+    QString help_name;
     ProjectPanel *m_project;
- public:
+
+public:
     RuleOptionsDialog(ProjectPanel *project, QWidget *parent);
     ~RuleOptionsDialog();
     
@@ -65,6 +66,7 @@ public slots:
     virtual void validate(bool*);
     virtual void isChanged(bool*);
     virtual void closeEvent(QCloseEvent *e);
+    virtual void getHelpName(QString*);
 
  signals:
 /**

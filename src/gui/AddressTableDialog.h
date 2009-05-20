@@ -59,7 +59,9 @@ public slots:
     virtual void isChanged(bool*);
     virtual void browse();
     virtual void preview( void  );
- signals:
+    virtual void getHelpName(QString*);
+
+signals:
 /**
  * This signal is emitted from closeEvent, ObjectEditor connects
  * to this signal to make checks before the object editor can be closed
