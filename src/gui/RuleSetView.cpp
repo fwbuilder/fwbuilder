@@ -61,6 +61,7 @@
 #include "SimpleTextEditor.h"
 #include "findDialog.h"
 #include "platforms.h"
+#include "FWBTree.h"
 
 #include <ui_askrulenumberdialog_q.h>
 
@@ -3982,14 +3983,40 @@ void RuleSetView::pasteObject()
     for (i= FWObjectClipboard::obj_clipboard->begin();
          i!=FWObjectClipboard::obj_clipboard->end(); ++i)
     {
-        FWObject *co= m_project->db()->findInIndex(i->first);
+        ProjectPanel *proj_p = i->second;
+        FWObject *co = proj_p->db()->findInIndex(i->first);
+
         if (Rule::cast(co)!=NULL)  pasteRuleAbove();
         else
         {
             if (currentRow()>=0)
+            {
+                bool need_to_reload_tree = false;
+                if (proj_p!=m_project)
+                {
+                    // object is being copied from another project file
+                    FWObject *target = m_project->getFWTree()->getStandardSlotForObject(
+                        ruleset->getLibrary(), co->getTypeName().c_str());
+
+                    map<int,int> map_ids;
+                    co = m_project->db()->recursivelyCopySubtree(
+                        target, co, map_ids);
+                    need_to_reload_tree = true;
+                }
                 insertObject(currentRow(),currentColumn(),co);
+
+                if (need_to_reload_tree)
+                {
+                    m_project->m_panel->om->loadObjects();
+                    m_project->m_panel->om->openObject(co);
+                    // but still need to reopen this ruleset
+                    m_project->m_panel->om->openObject(ruleset);
+                }
+            }
         }
     }
+
+    mw->reloadAllWindowsWithFile(m_project);
 
 /*
     if (FWObjectClipboard::obj_clipboard->getObject()!=NULL)
