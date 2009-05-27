@@ -26,8 +26,11 @@
 
 #include "../../config.h"
 #include "global.h"
-#include "utils.h"
 #include "check_update_url.h"
+#include "../../VERSION.h"
+#include "../../build_num"
+
+#include "utils.h"
 
 #include "PrefsDialog.h"
 #include "FWBSettings.h"
@@ -390,7 +393,8 @@ void PrefsDialog::checkSwUpdates()
 
     connect(&current_version_http_getter, SIGNAL(done(const QString&)),
             this, SLOT(checkForUpgrade(const QString&)));
-    current_version_http_getter.get(QUrl(CHECK_UPDATE_URL));
+    QString url = QString(CHECK_UPDATE_URL).arg(VERSION).arg(st->getAppGUID());
+    current_version_http_getter.get(QUrl(url));
 }
 
 void PrefsDialog::checkForUpgrade(const QString& server_response)

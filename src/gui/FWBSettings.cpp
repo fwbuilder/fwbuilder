@@ -37,6 +37,7 @@
 #include <qapplication.h>
 #include <QDir>
 #include <QDesktopWidget>
+#include <QUuid>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -96,6 +97,8 @@ const char* clipComment = SETTINGS_PATH_PREFIX "/UI/ClipComment";
 const char* checkUpdates = SETTINGS_PATH_PREFIX "/UI/CheckUpdates";
 const char* checkUpdatesProxy = SETTINGS_PATH_PREFIX "/UI/CheckUpdatesProxy";
 
+const char* appGUID = SETTINGS_PATH_PREFIX "/ApplicationGUID";
+
 FWBSettings::FWBSettings() :
     QSettings(QSettings::UserScope, "netcitadel.com", "Firewall Builder")
 {
@@ -114,6 +117,9 @@ void FWBSettings::init()
 {
     bool ok=false;
 
+    ok = contains(appGUID);
+    if (!ok) setValue(appGUID, QUuid::createUuid().toString() );
+    
     ok = contains(infoStyleSetpath);
     if (!ok) setValue(infoStyleSetpath,2);
 
@@ -198,6 +204,11 @@ void FWBSettings::init()
     if (getSSHPath().isEmpty())  setSSHPath("ssh");
     if (getSCPPath().isEmpty())  setSCPPath("scp");
 #endif
+}
+
+QString FWBSettings::getAppGUID()
+{
+    return value(appGUID).toString();
 }
 
 QString FWBSettings::getStr(const QString &attribute)

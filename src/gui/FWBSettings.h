@@ -149,6 +149,8 @@ class FWBSettings : public QSettings {
     void    getPrinterOptions(QPrinter *printer,int &pageWidth,int &pageHeight);
     void    setPrinterOptions(QPrinter *printer,int pageWidth,int pageHeight);
 
+    QString getAppGUID();
+
     enum IconSize getIconsInRulesSize();
     void setIconsInRulesSize(enum IconSize size);
 

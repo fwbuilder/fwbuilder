@@ -23,10 +23,12 @@
 
 */
 
-
 #include "../../config.h"
 #include "global.h"
 #include "check_update_url.h"
+#include "../../VERSION.h"
+#include "../../build_num"
+
 #include "utils.h"
 #include "utils_no_qt.h"
 
@@ -375,7 +377,8 @@ void FWWindow::startupLoad()
     if (st->getCheckUpdates())
     {
         // start http query to get latest version from the web site
-        current_version_http_getter->get(QUrl(CHECK_UPDATE_URL));
+        QString url = QString(CHECK_UPDATE_URL).arg(VERSION).arg(st->getAppGUID());
+        current_version_http_getter->get(QUrl(url));
     }
 
     if (activeProject())

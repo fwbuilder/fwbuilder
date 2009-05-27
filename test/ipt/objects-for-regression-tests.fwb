@@ -806,15 +806,10 @@
     </Interface>
     <ObjectRef ref="id3B0221F1-ipv4"/>
     <IPv6 id="id42610X47974" name="firewall-ipv6-5:eth0:ip6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
-    <ServiceRef ref="sysid1"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
     <IPv6 id="id100945X48026" name="firewall-ipv6-5:eth1:ipv6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
     <ObjectRef ref="id178392X48026"/>
     <IPv6 id="id197751X48026" name="firewall-ipv6-5:eth0:ipv6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
-    <ObjectRef ref="sysid0"/>
     <IPv6 id="id178394X48026" name="firewall-ipv6-6:eth1:ip6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
-    <ObjectRef ref="id178392X48026"/>
     <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
@@ -823,7 +818,7 @@
         <AddressTable id="id4385C1081434" filename="addr-table-1.tbl" run_time="False" name="addrtbl 1" comment="" ro="False"/>
         <AddressTable id="id4389EE9018346" filename="addr-table-1.tbl" run_time="False" name="addr-table-1" comment="" ro="False"/>
         <AddressTable id="id4389EE9118346" filename="block-hosts.tbl" run_time="True" name="block these" comment="this is run-time table" ro="False"/>
-        <AddressTable id="id44F7056328576" filename="/home/vadim/tmp/bug-1544488/addr-table-1.tbl" run_time="True" name="atbl.1" comment="the name contains character that is special to shell" ro="False"/>
+        <AddressTable id="id44F7056328576" filename="addr-table-1.tbl" run_time="True" name="atbl.1" comment="the name contains character that is special to shell" ro="False"/>
         <AddressTable id="id459673BE7794" filename="emtpy-table.tbl" run_time="False" name="empty table" comment="" ro="False"/>
       </ObjectGroup>
       <ObjectGroup id="stdid01_1_og_dnsn_1" name="DNS Names" comment="" ro="False">
@@ -24829,7 +24824,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id44EC18128791" host_OS="linux24" inactive="False" lastCompiled="1215360281" lastInstalled="0" lastModified="1168820241" platform="iptables" version="" name="firewall41" comment="testing rule shadowing with run-time objects, rules with such objects should be ignored&#10;&#10;" ro="False">
+      <Firewall id="id44EC18128791" host_OS="linux24" inactive="False" lastCompiled="1243319968" lastInstalled="0" lastModified="1243319947" platform="iptables" version="" name="firewall41" comment="testing rule shadowing with run-time objects, rules with such objects should be ignored&#10;&#10;" ro="False">
         <NAT id="id44EC18168791" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id44EC18158791" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id44EC181E8791" disabled="False" log="True" position="0" action="Accept" direction="Both" comment="">
@@ -24885,6 +24880,26 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id42683X89554" disabled="False" group="" log="True" position="3" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id44F7056328576"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
         <Routing id="id44EC18178791" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>

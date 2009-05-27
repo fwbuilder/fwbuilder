@@ -9,7 +9,7 @@
     <x>0</x>
     <y>0</y>
     <width>669</width>
-    <height>419</height>
+    <height>422</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -29,9 +29,6 @@
        <string>General</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_4" >
-       <property name="verticalSpacing" >
-        <number>20</number>
-       </property>
        <item row="0" column="0" >
         <spacer name="verticalSpacer_5" >
          <property name="orientation" >
@@ -116,14 +113,21 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0" >
+          <item row="1" column="1" colspan="2" >
+           <widget class="QPushButton" name="checkUpdatesNow" >
+            <property name="text" >
+             <string>Check Now</string>
+            </property>
+           </widget>
+          </item>
+          <item rowspan="2" row="2" column="0" >
            <widget class="QCheckBox" name="checkUpdates" >
             <property name="text" >
              <string>Check for updates automatically</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1" >
+          <item row="2" column="1" >
            <spacer name="horizontalSpacer_2" >
             <property name="orientation" >
              <enum>Qt::Horizontal</enum>
@@ -136,14 +140,7 @@
             </property>
            </spacer>
           </item>
-          <item row="1" column="2" >
-           <widget class="QPushButton" name="checkUpdatesNow" >
-            <property name="text" >
-             <string>Check Now</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3" >
+          <item row="2" column="3" >
            <spacer name="spacer_3" >
             <property name="orientation" >
              <enum>Qt::Horizontal</enum>
@@ -156,34 +153,38 @@
             </property>
            </spacer>
           </item>
-          <item row="2" column="0" colspan="4" >
+          <item row="4" column="0" colspan="4" >
            <widget class="QLabel" name="label_2" >
             <property name="text" >
              <string>Use http proxy while checking for updates  (host:port)</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="0" colspan="4" >
+          <item row="5" column="0" colspan="4" >
            <widget class="QLineEdit" name="checkUpdatesProxy" />
+          </item>
+          <item row="6" column="0" colspan="4" >
+           <widget class="QLabel" name="label_3" >
+            <property name="text" >
+             <string>No identifiable information will be sent to the server during update check</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="2" >
+           <spacer name="verticalSpacer_9" >
+            <property name="orientation" >
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0" >
+             <size>
+              <width>20</width>
+              <height>7</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>
-       </item>
-       <item row="3" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>86</width>
-           <height>31</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
