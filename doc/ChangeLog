@@ -1,3 +1,8 @@
+2009-05-27  vadim  <vadim@vk.crocodile.org>
+
+	* XMLTools.cpp (XMLTools::version_compare): made it possible to
+	compare version strings with different number of components.
+
 2009-04-20  vadim  <vadim@vk.crocodile.org>
 
 	* RuleElement.cpp: Additional validation to make sure Inteval
