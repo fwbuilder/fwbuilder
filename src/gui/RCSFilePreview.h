@@ -41,8 +41,8 @@ class RCSViewItem : public QTreeWidgetItem {
 
     RCSViewItem(QTreeWidget *parent)     : QTreeWidgetItem(parent) {}
     RCSViewItem(QTreeWidgetItem *parent) : QTreeWidgetItem(parent) {}
-    virtual int compare(QTreeWidgetItem *i, int col, bool ascending) const;
 
+    virtual bool operator<(const QTreeWidgetItem &other) const;
 };
 
 class RCSFilePreview : public QDialog
@@ -54,18 +54,25 @@ class RCSFilePreview : public QDialog
     QString                   current_file;
     std::map<QString,QString> rcsComments;
     bool                      RO;
-    
+
+    RCSViewItem* addRevision(Revision &rev, QTreeWidgetItem *parent_item);
+
  public:
     RCSFilePreview(QWidget *parent);
     ~RCSFilePreview();
     RCS*     getSelectedRev();
     bool     showFileRLog( const QString &filename );
 
+
 public slots:
 
- virtual void openReadOnly();
- virtual void selectedRevision(QTreeWidgetItem *itm);
- virtual void openFile();
+    virtual void openReadOnly();
+    virtual void selectedRevision(QTreeWidgetItem *itm);
+    virtual void openFile();
+    virtual void switchToTreeView();
+    virtual void switchToListView();
+    virtual void closeEvent(QCloseEvent *event);
+
 
 };
 

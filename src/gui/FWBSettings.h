@@ -105,6 +105,12 @@ class FWBSettings : public QSettings {
     bool    getRCSLogState();
     void    setRCSLogState(bool f);
 
+    int     getRCSFilePreviewStyle();
+    void    setRCSFilePreviewStyle(int style);
+
+    int     getRCSFilePreviewSortColumn();
+    void    setRCSFilePreviewSortColumn(int col);
+
     bool    getAutoSave();
     void    setAutoSave(bool f);
 

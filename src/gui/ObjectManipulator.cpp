@@ -1747,13 +1747,16 @@ FWObject*  ObjectManipulator::actuallyPasteTo(FWObject *target,
         }
 
         if ( m_project->isSystem(ta) ||
-             (Firewall::isA(ta) && RuleSet::cast(obj)!=NULL))
+             (Firewall::isA(ta) && RuleSet::cast(obj)!=NULL) ||
+             (Interface::isA(ta) && (IPv4::cast(obj) || IPv6::cast(obj)))
+        )
         {
 /* add a copy of the object to system group , or
  * add ruleset object to a firewall.
  */
-            if (fwbdebug) qDebug("Copy object %s (%d) to a system group, firewall or ruleset",
-                                 obj->getName().c_str(), obj->getId());
+            if (fwbdebug)
+                qDebug("Copy object %s (%d) to a system group, a ruleset to a firewall or an address to an interface",
+                       obj->getName().c_str(), obj->getId());
             FWObject *nobj= m_project->db()->create(obj->getTypeName());
             assert (nobj!=NULL);
             nobj->ref();
@@ -1775,7 +1778,7 @@ FWObject*  ObjectManipulator::actuallyPasteTo(FWObject *target,
 /* check for duplicates. We just won't add an object if it is already there */
             int cp_id = obj->getId();
             list<FWObject*>::iterator j;
-            for(j=grp->begin(); j!=grp->end(); ++j)
+            for (j=grp->begin(); j!=grp->end(); ++j)
             {
                 FWObject *o1=*j;
                 if(cp_id==o1->getId()) return o1;
@@ -1787,6 +1790,7 @@ FWObject*  ObjectManipulator::actuallyPasteTo(FWObject *target,
 
             grp->addRef(obj);
         }
+
     }
     catch(FWException &ex)
     {

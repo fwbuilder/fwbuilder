@@ -79,6 +79,9 @@ const char* objTooltips = SETTINGS_PATH_PREFIX "/UI/objTooltips";
 const char* tooltipDelay = SETTINGS_PATH_PREFIX "/UI/tooltipDelay";
 
 const char* emptyRCSLog = SETTINGS_PATH_PREFIX "/RCS/emptyLog";
+const char* rcsFilePreviewStyle = SETTINGS_PATH_PREFIX "/RCS/FilePreviewStyle";
+const char* rcsFilePreviewSortColumn = SETTINGS_PATH_PREFIX "/RCS/FilePreviewSortColumn";
+
 const char* dontSaveStdLib = SETTINGS_PATH_PREFIX "/DataFormat/dontSaveStdLib";
 const char* WindowGeometrySetpath= SETTINGS_PATH_PREFIX "/Layout/";
 const char* screenPositionSetpath= SETTINGS_PATH_PREFIX "/ScreenPos/";
@@ -119,7 +122,11 @@ void FWBSettings::init()
 
     ok = contains(appGUID);
     if (!ok) setValue(appGUID, QUuid::createUuid().toString() );
-    
+
+    // By default sort RCS File preview by date, which is column 1
+    ok = contains(rcsFilePreviewSortColumn);
+    if (!ok) setRCSFilePreviewSortColumn(1);
+
     ok = contains(infoStyleSetpath);
     if (!ok) setValue(infoStyleSetpath,2);
 
@@ -313,7 +320,6 @@ void FWBSettings::setSaveFileDir( const QString &d )
      setValue(sfdirSetpath,d);
 }
 
-
 void FWBSettings::save()
 {
     if (mw->db()!=NULL)
@@ -322,6 +328,26 @@ void FWBSettings::save()
 
 bool FWBSettings::getRCSLogState() { return value( emptyRCSLog ).toBool(); }
 void FWBSettings::setRCSLogState(bool f) { setValue( emptyRCSLog , f ); }
+
+int  FWBSettings::getRCSFilePreviewStyle()
+{
+    return value(rcsFilePreviewStyle).toInt();
+}
+
+void FWBSettings::setRCSFilePreviewStyle(int style)
+{
+    setValue(rcsFilePreviewStyle, style);
+}
+
+int  FWBSettings::getRCSFilePreviewSortColumn()
+{
+    return value(rcsFilePreviewSortColumn).toInt();
+}
+
+void FWBSettings::setRCSFilePreviewSortColumn(int col)
+{
+    setValue(rcsFilePreviewSortColumn, col);
+}
 
 bool FWBSettings::getAutoSave() { return value( autoSave ).toBool(); }
 void FWBSettings::setAutoSave(bool f) { setValue( autoSave, f); }

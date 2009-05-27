@@ -30,8 +30,8 @@
   <property name="modal" >
    <bool>true</bool>
   </property>
-  <layout class="QVBoxLayout" >
-   <item>
+  <layout class="QGridLayout" name="gridLayout_2" >
+   <item row="0" column="1" >
     <widget class="QTreeWidget" name="RCSTreeView" >
      <property name="minimumSize" >
       <size>
@@ -50,6 +50,9 @@
      </property>
      <property name="alternatingRowColors" >
       <bool>false</bool>
+     </property>
+     <property name="sortingEnabled" >
+      <bool>true</bool>
      </property>
      <property name="allColumnsShowFocus" >
       <bool>true</bool>
@@ -76,7 +79,46 @@
      </column>
     </widget>
    </item>
-   <item>
+   <item rowspan="2" row="1" column="0" colspan="2" >
+    <widget class="QFrame" name="frame" >
+     <property name="frameShape" >
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout" >
+      <item row="0" column="0" >
+       <widget class="QRadioButton" name="tree_view" >
+        <property name="text" >
+         <string>Tree View</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="QRadioButton" name="list_view" >
+        <property name="text" >
+         <string>List View</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" >
+       <spacer name="horizontalSpacer" >
+        <property name="orientation" >
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0" >
+         <size>
+          <width>267</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="1" >
     <widget class="Line" name="line2" >
      <property name="frameShape" >
       <enum>QFrame::HLine</enum>
@@ -89,7 +131,7 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item row="3" column="1" >
     <layout class="QHBoxLayout" >
      <property name="spacing" >
       <number>0</number>
@@ -140,7 +182,7 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item row="4" column="1" >
     <layout class="QHBoxLayout" >
      <item>
       <spacer>
@@ -150,7 +192,7 @@
        <property name="sizeType" >
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>111</width>
          <height>30</height>
@@ -210,7 +252,6 @@
   <tabstop>comment</tabstop>
   <tabstop>openButton</tabstop>
  </tabstops>
- <includes/>
  <resources/>
  <connections>
   <connection>
@@ -218,22 +259,6 @@
    <signal>released()</signal>
    <receiver>RCSFilePreview_q</receiver>
    <slot>openReadOnly()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>RCSTreeView</sender>
-   <signal>currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</signal>
-   <receiver>RCSFilePreview_q</receiver>
-   <slot>selectedRevision(QTreeWidgetItem*)</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>20</x>
@@ -261,5 +286,41 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>tree_view</sender>
+   <signal>clicked()</signal>
+   <receiver>RCSFilePreview_q</receiver>
+   <slot>switchToTreeView()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>66</x>
+     <y>301</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>253</x>
+     <y>243</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>list_view</sender>
+   <signal>clicked()</signal>
+   <receiver>RCSFilePreview_q</receiver>
+   <slot>switchToListView()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>160</x>
+     <y>301</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>253</x>
+     <y>243</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>switchToTreeView()</slot>
+  <slot>switchToListView()</slot>
+ </slots>
 </ui>

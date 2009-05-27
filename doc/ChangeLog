@@ -1,5 +1,19 @@
 2009-05-27  vadim  <vadim@vk.crocodile.org>
 
+	* RCSFilePreview.cpp (RCSViewItem::operator<): implemented feature
+	req. #2796238 "3.0.4 - FEAT REQ: Sort order for RCSFilePreview".
+	RCS file preview dialog (the one that shows RCS revisions and RCS
+	log records) can display revisions in the tree or list view style,
+	controlled by radio-buttons. Style setting is saved in user
+	preferences and persists from session to session. In both cases
+	the view can be sorted by revision number or data. Sort column
+	choice is also saved in preferences. By default program sorts by
+	date and selects the latest revision.
+
+	* ObjectManipulator.cpp (ObjectManipulator::actuallyPasteTo):
+	fixed bug (no #): the GUI did not allow to copy/paste an address
+	from one interface to another. This should be possible.
+
 	* PolicyCompiler_pf_writers.cpp (PrintRule::_printAddr): fixed
 	bug (no #): policy compiler for pf crashed when dynamic interface
 	was used in source or destination of a policy rule.
