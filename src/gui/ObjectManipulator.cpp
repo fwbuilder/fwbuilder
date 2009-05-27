@@ -1018,6 +1018,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                                SLOT( newInterface() ) );
 
         }
+
         if ((Firewall::isA(currentObj)  &&! currentObj->isReadOnly()))
         {
             newID1=popup->addAction( tr("Add Policy Rule Set"), this,
@@ -1025,6 +1026,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
             newID1=popup->addAction( tr("Add NAT Rule Set"), this,
                                SLOT( newNATRuleSet() ) );
         }
+
         if (Interface::isA(currentObj) && ! currentObj->isReadOnly())
         {
             newID1=popup->addAction( tr("Add IP Address"), this,
@@ -1046,6 +1048,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
             newID1=popup->addAction( tr("New Address IPv6"), this,
                                SLOT( newAddressIPv6() ) );
         }
+
         if (currentObj->getPath(true)=="Objects/DNS Names")
         {
             newID1=popup->addAction( tr("New DNS Name"), this,
@@ -1073,6 +1076,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
             newID1=popup->addAction( tr("New Network IPv6"), this,
                                SLOT( newNetworkIPv6() ) );
         }
+
         if (currentObj->getPath(true)=="Objects/Groups")
             newID1=popup->addAction( tr("New Group"), this,
                                SLOT( newObjectGroup() ) );
@@ -1108,6 +1112,10 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         if (currentObj->getPath(true)=="Services/Groups")
             newID1=popup->addAction( tr("New Group"), this,
                                SLOT( newServiceGroup() ) );
+
+        if (currentObj->getPath(true)=="Services/Users")
+            newID1=popup->addAction(tr("New User Service"), this,
+                                    SLOT(newUserService() ));
 
         if (currentObj->getPath(true)=="Time")
             newID1=popup->addAction( tr("New Time Interval"), this,
