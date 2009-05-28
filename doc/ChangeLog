@@ -1,3 +1,17 @@
+2009-05-28  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::actuallyCreateObject):
+	fixed bug #2797791: "Display error when duplicating an object".
+
+	* InterfaceData.cpp (InterfaceData::guessSecurityLevel): (change
+	in libfwbuilder) set security level to 0 (insecure) by
+	default. This makes all interfaces of the newly created firewall
+	be "external" or "insecure" unless they were assigned labels or
+	addresses from the private address space in which case
+	guessSecurityLevel() assigns level 100. This addresses bug
+	#2796760 "Display error when adding new FW with multiple
+	interfaces".
+
 2009-05-27  vadim  <vadim@vk.crocodile.org>
 
 	* RCSFilePreview.cpp (RCSViewItem::operator<): implemented feature

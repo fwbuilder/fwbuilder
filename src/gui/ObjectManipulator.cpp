@@ -2709,7 +2709,9 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
                parent->getName().c_str(), parent_item);
 
     insertSubtree(parent_item, nobj);
-    parent_item->sortChildren(0, Qt::AscendingOrder);
+
+    parent_item->treeWidget()->sortItems(0, Qt::AscendingOrder);
+    
 
     m_project->db()->setDirty(true);
     mw->reloadAllWindowsWithFile(m_project);
@@ -2784,6 +2786,8 @@ void ObjectManipulator::newFirewall()
     nfd->exec();
     FWObject *o = nfd->getNewFirewall();
     delete nfd;
+
+    this->getCurrentObjectTree()->sortItems(0, Qt::AscendingOrder);
     
     if (o!=NULL)
     {
@@ -2800,6 +2804,8 @@ void ObjectManipulator::newHost()
     nhd->exec();
     FWObject *o = nhd->getNewHost();
     delete nhd;
+
+    this->getCurrentObjectTree()->sortItems(0, Qt::AscendingOrder);
 
     if (o!=NULL)
     {
@@ -3096,6 +3102,7 @@ void ObjectManipulator::newTCP()
 {
     FWObject *o;
     o=createObject(TCPService::TYPENAME,tr("New TCP Service"));
+
     if (o!=NULL)
     {
         openObject(o);

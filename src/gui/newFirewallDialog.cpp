@@ -238,8 +238,7 @@ void  newFirewallDialog::monitor()
 
         if ( idata->ostatus )
         {
-            idata->guessLabel(
-                readPlatform(m_dialog->platform).toLatin1().constData() );
+            idata->guessLabel(readPlatform(m_dialog->platform).toStdString());
 
             QString dn;
             if (idata->isDyn)        dn+="dyn";
@@ -500,7 +499,8 @@ void newFirewallDialog::fillInterfaceSLList()
 
         try
         {
-            idata.guessSecurityLevel( readPlatform(m_dialog->platform).toLatin1().constData() );
+            idata.guessSecurityLevel(
+                readPlatform(m_dialog->platform).toStdString() );
         }
         catch (FWException &ex)
         {
