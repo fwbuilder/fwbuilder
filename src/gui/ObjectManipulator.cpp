@@ -287,6 +287,12 @@ QString ObjectManipulator::getTreeLabel( FWObject *obj )
     return name;
 }
 
+void ObjectManipulator::insertObjectInTree(FWObject *parent, FWObject *obj)
+{
+    ObjectTreeViewItem* parent_item = allItems[parent];
+    insertObject(parent_item, obj);
+}
+
 ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
                                                     FWObject *obj)
 {
@@ -2819,25 +2825,24 @@ void ObjectManipulator::newInterface()
 {
     if ( currentObj->isReadOnly() ) return;
 
-    FWObject *i=NULL;
+    FWObject *new_interface = NULL;
 
     if (Host::isA(currentObj) || Firewall::isA(currentObj))
-        i=createObject(currentObj,Interface::TYPENAME,tr("New Interface"));
+        new_interface = createObject(currentObj,Interface::TYPENAME,tr("New Interface"));
 
     if (Interface::isA(currentObj))
-        i=createObject(currentObj->getParent(),Interface::TYPENAME,tr("New Interface"));
+        new_interface = createObject(currentObj->getParent(),Interface::TYPENAME,tr("New Interface"));
 
-    if (i==NULL) return;
+    if (new_interface==NULL) return;
 
-#ifdef USE_INTERFACE_POLICY
-    if (Firewall::isA(i->getParent())) i->add(new InterfacePolicy());
-#endif
+    if (fwbdebug)
+        qDebug("New interface: ext=%d", Interface::cast(new_interface)->isExt());
 
-    openObject( i );
+    openObject(new_interface);
 
-    updateLastModifiedTimestampForAllFirewalls(i);
+    updateLastModifiedTimestampForAllFirewalls(new_interface);
 
-    editObject(i);
+    editObject(new_interface);
 }
 
 void ObjectManipulator::newNetwork()

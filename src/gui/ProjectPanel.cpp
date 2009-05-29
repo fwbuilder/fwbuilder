@@ -623,6 +623,11 @@ void ProjectPanel::loadDataFromFw(Firewall *fw)
     }
 }
 
+void ProjectPanel::insertObjectInTree(FWObject *parent, FWObject *obj)
+{
+    m_panel->om->insertObjectInTree(parent, obj);
+}
+
 FWObject* ProjectPanel::createObject(const QString &objType,
                                      const QString &objName,
                                      FWObject *copyFrom)

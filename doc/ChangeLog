@@ -1,3 +1,9 @@
+2009-05-29  vadim  <vadim@vk.crocodile.org>
+
+	* newFirewallDialog.cpp (newFirewallDialog::finishClicked): better
+	fix for the bug #2796760 "Display error when adding new FW with
+	multiple interfaces".
+
 2009-05-28  vadim  <vadim@vk.crocodile.org>
 
 	* ObjectManipulator.cpp (ObjectManipulator::actuallyCreateObject):

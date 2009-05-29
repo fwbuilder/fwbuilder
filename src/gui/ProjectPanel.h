@@ -140,6 +140,9 @@ public:
     
     libfwbuilder::FWObject*  getCurrentLib();
 
+    void insertObjectInTree(libfwbuilder::FWObject *parent,
+                            libfwbuilder::FWObject *obj);
+    
     libfwbuilder::FWObject* createObject(const QString &objType,
                                          const QString &objName,
                                          libfwbuilder::FWObject *copyFrom=NULL);
