@@ -288,6 +288,13 @@ void Compiler::compile()
 
 void Compiler::_expand_group_recursive(FWObject *o, list<FWObject*> &ol)
 {
+/*
+ * ref #50: ignore various Options child objects. In particular this
+ * skips ClusterGroupOptions object which is a child of
+ * FailoverClusterGroup and StateSyncClusterGroup objects.
+ */
+    if (FWOptions::cast(o)) return;
+
 /* special case: MultiAddress. This class inherits ObjectGroup, but
  * should not be expanded if it is expanded at run time
  *

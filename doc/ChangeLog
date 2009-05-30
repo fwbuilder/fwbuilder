@@ -1,3 +1,10 @@
+2009-05-30  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler.cpp (Compiler::_expand_group_recursive): ref #50:
+	ignore various FWOptions child objects while expanding groups. In
+	particular this skips ClusterGroupOptions object which is a child
+	of FailoverClusterGroup and StateSyncClusterGroup objects.
+
 2009-05-28  vadim  <vadim@vk.crocodile.org>
 
 	* InterfaceData.cpp (InterfaceData::guessSecurityLevel): set
