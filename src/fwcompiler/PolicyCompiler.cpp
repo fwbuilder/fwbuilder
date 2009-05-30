@@ -1246,3 +1246,62 @@ string PolicyCompiler::debugPrintRule(Rule *r)
     return str.str();
 }
 
+PolicyRule* PolicyCompiler::addMgmtRule(Address* const src,
+                                        Address* const dst,
+                                        Service* const service,
+                                        Interface* const iface,
+                                        PolicyRule::Direction direction,
+                                        PolicyRule::Action action,
+                                        const string label)
+{
+    assert(combined_ruleset != NULL);
+
+    /* Insert PolicyRules at top so they do not get shadowed by other
+     * rules. Call insertRuleAtTop() with hidden_rule argument true to
+     * make sure this rule gets negative position number and does not
+     * shift positions of other rules. See ticket #16. Also, hidden
+     * rules are not considered for shadowing.
+     */
+
+    PolicyRule* rule = PolicyRule::cast(combined_ruleset->insertRuleAtTop(true));
+    assert(rule != NULL);
+
+    ostringstream str;
+    str << rule->getPosition() << " " << label << " (automatic)" ;
+    rule->setLabel(str.str());
+
+    FWObject *re;
+    re = rule->getSrc();  assert(re!=NULL);
+    RuleElementSrc::cast(re)->reset();
+    if(src != NULL)
+        re->addRef(src);
+
+    re = rule->getDst();  assert(re!=NULL);
+    RuleElementDst::cast(re)->reset();
+    if(dst != NULL)
+        re->addRef(dst);
+
+    re = rule->getSrv();  assert(re!=NULL);
+    RuleElementSrv::cast(re)->reset();
+    if(service != NULL)
+        re->addRef(service);
+
+    re = rule->getWhen(); assert(re!=NULL);
+    RuleElementInterval::cast(re)->reset();
+
+    re = rule->getItf(); assert(re!=NULL);
+    RuleElementItf::cast(re)->reset();
+    if(iface != NULL)
+    {
+        re->addRef(iface);
+        rule->setInterfaceId(iface->getId());
+    }
+
+    rule->add(dbcopy->create(PolicyRuleOptions::TYPENAME));
+    rule->setLogging(false);
+    rule->enable();
+    rule->setAction(action);
+    rule->setDirection(direction);
+    
+    return rule;
+}
