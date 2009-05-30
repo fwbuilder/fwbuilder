@@ -689,7 +689,7 @@ void PolicyCompiler_pf::PrintRule::_printAddr(Address  *o,bool )
     }
 
     const InetAddr *addr = o->getAddressPtr();
-    InetAddr mask = *(o->getNetmaskPtr());
+    InetAddr mask;
 
     if (Interface::cast(o)!=NULL)
     {
@@ -701,6 +701,9 @@ void PolicyCompiler_pf::PrintRule::_printAddr(Address  *o,bool )
 	}
 
 	mask = InetAddr(InetAddr::getAllOnes());
+    } else
+    {
+        mask = *(o->getNetmaskPtr());
     }
 
     if (o->dimension()==1) 

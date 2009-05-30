@@ -105,6 +105,12 @@ class FWBSettings : public QSettings {
     bool    getRCSLogState();
     void    setRCSLogState(bool f);
 
+    int     getRCSFilePreviewStyle();
+    void    setRCSFilePreviewStyle(int style);
+
+    int     getRCSFilePreviewSortColumn();
+    void    setRCSFilePreviewSortColumn(int col);
+
     bool    getAutoSave();
     void    setAutoSave(bool f);
 
@@ -148,6 +154,8 @@ class FWBSettings : public QSettings {
 
     void    getPrinterOptions(QPrinter *printer,int &pageWidth,int &pageHeight);
     void    setPrinterOptions(QPrinter *printer,int pageWidth,int pageHeight);
+
+    QString getAppGUID();
 
     enum IconSize getIconsInRulesSize();
     void setIconsInRulesSize(enum IconSize size);

@@ -287,6 +287,12 @@ QString ObjectManipulator::getTreeLabel( FWObject *obj )
     return name;
 }
 
+void ObjectManipulator::insertObjectInTree(FWObject *parent, FWObject *obj)
+{
+    ObjectTreeViewItem* parent_item = allItems[parent];
+    insertObject(parent_item, obj);
+}
+
 ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
                                                     FWObject *obj)
 {
@@ -1018,6 +1024,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                                SLOT( newInterface() ) );
 
         }
+
         if ((Firewall::isA(currentObj)  &&! currentObj->isReadOnly()))
         {
             newID1=popup->addAction( tr("Add Policy Rule Set"), this,
@@ -1025,6 +1032,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
             newID1=popup->addAction( tr("Add NAT Rule Set"), this,
                                SLOT( newNATRuleSet() ) );
         }
+
         if (Interface::isA(currentObj) && ! currentObj->isReadOnly())
         {
             newID1=popup->addAction( tr("Add IP Address"), this,
@@ -1046,6 +1054,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
             newID1=popup->addAction( tr("New Address IPv6"), this,
                                SLOT( newAddressIPv6() ) );
         }
+
         if (currentObj->getPath(true)=="Objects/DNS Names")
         {
             newID1=popup->addAction( tr("New DNS Name"), this,
@@ -1073,6 +1082,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
             newID1=popup->addAction( tr("New Network IPv6"), this,
                                SLOT( newNetworkIPv6() ) );
         }
+
         if (currentObj->getPath(true)=="Objects/Groups")
             newID1=popup->addAction( tr("New Group"), this,
                                SLOT( newObjectGroup() ) );
@@ -1108,6 +1118,10 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         if (currentObj->getPath(true)=="Services/Groups")
             newID1=popup->addAction( tr("New Group"), this,
                                SLOT( newServiceGroup() ) );
+
+        if (currentObj->getPath(true)=="Services/Users")
+            newID1=popup->addAction(tr("New User Service"), this,
+                                    SLOT(newUserService() ));
 
         if (currentObj->getPath(true)=="Time")
             newID1=popup->addAction( tr("New Time Interval"), this,
@@ -1739,13 +1753,16 @@ FWObject*  ObjectManipulator::actuallyPasteTo(FWObject *target,
         }
 
         if ( m_project->isSystem(ta) ||
-             (Firewall::isA(ta) && RuleSet::cast(obj)!=NULL))
+             (Firewall::isA(ta) && RuleSet::cast(obj)!=NULL) ||
+             (Interface::isA(ta) && (IPv4::cast(obj) || IPv6::cast(obj)))
+        )
         {
 /* add a copy of the object to system group , or
  * add ruleset object to a firewall.
  */
-            if (fwbdebug) qDebug("Copy object %s (%d) to a system group, firewall or ruleset",
-                                 obj->getName().c_str(), obj->getId());
+            if (fwbdebug)
+                qDebug("Copy object %s (%d) to a system group, a ruleset to a firewall or an address to an interface",
+                       obj->getName().c_str(), obj->getId());
             FWObject *nobj= m_project->db()->create(obj->getTypeName());
             assert (nobj!=NULL);
             nobj->ref();
@@ -1767,7 +1784,7 @@ FWObject*  ObjectManipulator::actuallyPasteTo(FWObject *target,
 /* check for duplicates. We just won't add an object if it is already there */
             int cp_id = obj->getId();
             list<FWObject*>::iterator j;
-            for(j=grp->begin(); j!=grp->end(); ++j)
+            for (j=grp->begin(); j!=grp->end(); ++j)
             {
                 FWObject *o1=*j;
                 if(cp_id==o1->getId()) return o1;
@@ -1779,6 +1796,7 @@ FWObject*  ObjectManipulator::actuallyPasteTo(FWObject *target,
 
             grp->addRef(obj);
         }
+
     }
     catch(FWException &ex)
     {
@@ -2697,7 +2715,9 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
                parent->getName().c_str(), parent_item);
 
     insertSubtree(parent_item, nobj);
-    parent_item->sortChildren(0, Qt::AscendingOrder);
+
+    parent_item->treeWidget()->sortItems(0, Qt::AscendingOrder);
+    
 
     m_project->db()->setDirty(true);
     mw->reloadAllWindowsWithFile(m_project);
@@ -2772,6 +2792,8 @@ void ObjectManipulator::newFirewall()
     nfd->exec();
     FWObject *o = nfd->getNewFirewall();
     delete nfd;
+
+    this->getCurrentObjectTree()->sortItems(0, Qt::AscendingOrder);
     
     if (o!=NULL)
     {
@@ -2789,6 +2811,8 @@ void ObjectManipulator::newHost()
     FWObject *o = nhd->getNewHost();
     delete nhd;
 
+    this->getCurrentObjectTree()->sortItems(0, Qt::AscendingOrder);
+
     if (o!=NULL)
     {
         openObject(o);
@@ -2801,25 +2825,24 @@ void ObjectManipulator::newInterface()
 {
     if ( currentObj->isReadOnly() ) return;
 
-    FWObject *i=NULL;
+    FWObject *new_interface = NULL;
 
     if (Host::isA(currentObj) || Firewall::isA(currentObj))
-        i=createObject(currentObj,Interface::TYPENAME,tr("New Interface"));
+        new_interface = createObject(currentObj,Interface::TYPENAME,tr("New Interface"));
 
     if (Interface::isA(currentObj))
-        i=createObject(currentObj->getParent(),Interface::TYPENAME,tr("New Interface"));
+        new_interface = createObject(currentObj->getParent(),Interface::TYPENAME,tr("New Interface"));
 
-    if (i==NULL) return;
+    if (new_interface==NULL) return;
 
-#ifdef USE_INTERFACE_POLICY
-    if (Firewall::isA(i->getParent())) i->add(new InterfacePolicy());
-#endif
+    if (fwbdebug)
+        qDebug("New interface: ext=%d", Interface::cast(new_interface)->isExt());
 
-    openObject( i );
+    openObject(new_interface);
 
-    updateLastModifiedTimestampForAllFirewalls(i);
+    updateLastModifiedTimestampForAllFirewalls(new_interface);
 
-    editObject(i);
+    editObject(new_interface);
 }
 
 void ObjectManipulator::newNetwork()
@@ -3084,6 +3107,7 @@ void ObjectManipulator::newTCP()
 {
     FWObject *o;
     o=createObject(TCPService::TYPENAME,tr("New TCP Service"));
+
     if (o!=NULL)
     {
         openObject(o);

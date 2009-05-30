@@ -104,8 +104,8 @@ class ObjectManipulator : public QWidget/*ObjectManipulator_q*/ {
 
     int dedup_marker_global_counter;
     
-    ObjectTreeViewItem* insertObject( ObjectTreeViewItem *itm,
-                                      libfwbuilder::FWObject *obj );
+    ObjectTreeViewItem* insertObject(ObjectTreeViewItem *itm,
+                                     libfwbuilder::FWObject *obj);
     void insertSubtree( ObjectTreeViewItem *itm,libfwbuilder::FWObject *obj );
 
     void removeObjectFromTreeView(libfwbuilder::FWObject *obj );
@@ -265,6 +265,9 @@ public:
      void invalidateDialog();
 
      void reopenCurrentItemParent();
+
+     void insertObjectInTree(libfwbuilder::FWObject *parent,
+                             libfwbuilder::FWObject *obj);
 
      void openObject(libfwbuilder::FWObject *obj, bool register_in_history);
      void openObject(ObjectTreeViewItem *otvi,    bool register_in_history);

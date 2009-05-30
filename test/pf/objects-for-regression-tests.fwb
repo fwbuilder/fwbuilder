@@ -407,8 +407,14 @@
     <ObjectRef ref="id3B022266"/>
     <ObjectRef ref="id3B4572AF"/>
     <ObjectRef ref="sysid0"/>
+    <ServiceRef ref="sysid1"/>
     <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="net-Internal_net"/>
+    <ObjectRef ref="sysid0"/>
+    <ServiceRef ref="sysid1"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="id3B0C63E1"/>
+    <ObjectRef ref="host-hostA"/>
+    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -3975,7 +3981,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3B0C6380" host_OS="openbsd" inactive="False" lastCompiled="1237879885" lastInstalled="0" lastModified="1237879862" platform="pf" version="" name="firewall4" comment="this object is used to test a configuration where firewall has dynamic address " ro="False">
+      <Firewall id="id3B0C6380" host_OS="openbsd" inactive="False" lastCompiled="1237879885" lastInstalled="0" lastModified="1243442216" platform="pf" version="" name="firewall4" comment="this object is used to test a configuration where firewall has dynamic address " ro="False">
         <NAT id="id3B0C6381" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3B0C6382" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -4086,6 +4092,27 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <NATRule id="id30999X2816" disabled="False" group="" position="5" comment="eth1 is dynamic">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3B0C63E1"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
         </NAT>
         <Policy id="id3B0C639E" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id16047X49036" disabled="False" group="" log="False" position="0" action="Branch" direction="Both" comment="">
@@ -4130,7 +4157,27 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B54F071" disabled="False" log="True" position="1" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id16878X2816" disabled="False" group="" log="True" position="1" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3B0C63E1"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3B54F071" disabled="False" log="True" position="2" action="Deny" direction="Both" comment="">
             <Src neg="True">
               <ObjectRef ref="id3B022266"/>
             </Src>
@@ -4147,7 +4194,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B0C63E3" disabled="False" log="True" position="2" action="Deny" direction="Inbound" comment="Anti-spoofing rule">
+          <PolicyRule id="id3B0C63E3" disabled="False" log="True" position="3" action="Deny" direction="Inbound" comment="Anti-spoofing rule">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B0C6380"/>
@@ -4165,7 +4212,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B0C63EB" disabled="False" log="True" position="3" action="Deny" direction="Outbound" comment="Anti-spoofing rule">
+          <PolicyRule id="id3B0C63EB" disabled="False" log="True" position="4" action="Deny" direction="Outbound" comment="Anti-spoofing rule">
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B0C6380"/>
@@ -4183,7 +4230,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B0C639F" disabled="False" log="True" position="4" action="Accept" direction="Both" comment="hostF has the same IP address as firewal.">
+          <PolicyRule id="id3B0C639F" disabled="False" log="True" position="5" action="Accept" direction="Both" comment="hostF has the same IP address as firewal.">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4203,7 +4250,7 @@
               <Option name="id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B0C63B4" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id3B0C63B4" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="True">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
@@ -4225,7 +4272,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B0C63A9" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="testing negation in the policy rule">
+          <PolicyRule id="id3B0C63A9" disabled="False" log="True" position="7" action="Deny" direction="Both" comment="testing negation in the policy rule">
             <Src neg="True">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
@@ -4247,7 +4294,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B0C63BF" disabled="True" log="True" position="7" action="Deny" direction="Both" comment="testing negation in service field">
+          <PolicyRule id="id3B0C63BF" disabled="True" log="True" position="8" action="Deny" direction="Both" comment="testing negation in service field">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4270,7 +4317,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B0C63CB" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="'masquerading' rule">
+          <PolicyRule id="id3B0C63CB" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="'masquerading' rule">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -4290,7 +4337,7 @@
               <Option name="id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B0C63D5" disabled="False" log="True" position="9" action="Deny" direction="Both" comment="'catch all' rule">
+          <PolicyRule id="id3B0C63D5" disabled="False" log="True" position="10" action="Deny" direction="Both" comment="'catch all' rule">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>

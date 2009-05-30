@@ -254,8 +254,7 @@ void  newFirewallDialog::monitor()
 
         if ( idata->ostatus )
         {
-            idata->guessLabel(
-                readPlatform(m_dialog->platform).toLatin1().constData() );
+            idata->guessLabel(readPlatform(m_dialog->platform).toStdString());
 
             QString dn;
             if (idata->isDyn)        dn+="dyn";
@@ -356,11 +355,6 @@ void newFirewallDialog::getInterfacesViaSNMP()
 bool newFirewallDialog::appropriate(const int page) const
 {
     int p  = page;
-
-    if (fwbdebug)
-    {
-        qDebug("newFirewallDialog::appropriate  p=%d",p);
-    }
 
     switch (p)
     {
@@ -516,7 +510,8 @@ void newFirewallDialog::fillInterfaceSLList()
 
         try
         {
-            idata.guessSecurityLevel( readPlatform(m_dialog->platform).toLatin1().constData() );
+            idata.guessSecurityLevel(
+                readPlatform(m_dialog->platform).toStdString() );
         }
         catch (FWException &ex)
         {
@@ -896,16 +891,24 @@ void newFirewallDialog::finishClicked()
 
             int sl = itm2->text(3).toInt();
 
-            Interface *oi = Interface::cast(mw->createObject(
-                                                nfw,
-                                                Interface::TYPENAME,
-                                                name));
-            oi->setLabel( label.toLatin1().constData() );
+            Interface *oi = Interface::cast(mw->db()->create(Interface::TYPENAME));
+            assert(oi!=NULL);
+
+            nfw->add(oi);
+
+            oi->setName(name.toStdString());
+            oi->setLabel(label.toStdString());
 
             oi->setDyn(dyn);
             oi->setUnnumbered(unnum);
             oi->setBridgePort(bridgeport);
             oi->setSecurityLevel(sl);
+
+            mw->insertObjectInTree(nfw, oi);
+
+            if (fwbdebug)
+                qDebug("Adding interface %s: security_level=%d",
+                       oi->getName().c_str(), sl);
 
             if (!dyn && !unnum && !bridgeport &&
                 !addr.isEmpty() && addr!="0.0.0.0")
@@ -915,9 +918,9 @@ void newFirewallDialog::finishClicked()
                     // ipv6 address
                     QString addrname = QString("%1:%2:ip6")
                         .arg(m_dialog->obj_name->text()).arg(name);
-                    IPv6 *oa = IPv6::cast(
-                        mw->createObject(oi, IPv6::TYPENAME, addrname)
-                    );
+                    IPv6 *oa = IPv6::cast(mw->db()->create(IPv6::TYPENAME));
+                    oi->add(oa);
+                    oa->setName(addrname.toStdString());
                     oa->setAddress(
                         InetAddr(AF_INET6, addr.toLatin1().constData()) );
                     bool ok = false ;
@@ -932,15 +935,16 @@ void newFirewallDialog::finishClicked()
                             InetAddr(AF_INET6, netmask.toLatin1().constData()));
                     }
 
+                    mw->insertObjectInTree(oi, oa);
+
                 } else
                 {
                     QString addrname = QString("%1:%2:ip").arg(
                         m_dialog->obj_name->text()).arg(name);
-                    IPv4 *oa = IPv4::cast(
-                        mw->createObject(oi, IPv4::TYPENAME,addrname)
-                    );
+                    IPv4 *oa = IPv4::cast(mw->db()->create(IPv4::TYPENAME));
+                    oi->add(oa);
+                    oa->setName(addrname.toStdString());
                     oa->setAddress( InetAddr(addr.toLatin1().constData()) );
-
                     bool ok = false ;
                     int inetmask = netmask.toInt(&ok);
                     if (ok)
@@ -952,6 +956,8 @@ void newFirewallDialog::finishClicked()
                         oa->setNetmask(
                             InetAddr(netmask.toLatin1().constData()) );
                     }
+
+                    mw->insertObjectInTree(oi, oa);
                 }
             }
 
