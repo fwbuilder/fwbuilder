@@ -70,6 +70,7 @@ SOURCES  = 	InetAddr.cpp \
 			UDPService.cpp \
 			UserService.cpp \
 			VRRPService.cpp \
+			CARPService.cpp \
             TagService.cpp \
 			XMLTools.cpp \
 			ObjectMatcher.cpp \
@@ -145,6 +146,7 @@ HEADERS  = 	inet_net.h \
 			UDPService.h \
 			UserService.h \
 			VRRPService.h \
+			CARPService.h \
             TagService.h \
 			ObjectMatcher.h \
 			XMLTools.h

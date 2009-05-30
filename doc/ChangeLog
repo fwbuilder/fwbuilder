@@ -1,5 +1,13 @@
 2009-05-30  vadim  <vadim@vk.crocodile.org>
 
+	* CARPService.cpp: Added trivial CARPService class that defines IP
+	service with name "carp" and protocol number 112. There is no
+	standard object of this type at this time and no XML DTD
+	definition. Objects of this class are created internally by policy
+	compilers. This is the same as VRRPService object. The purpose of
+	having separate classes VRRPService and CARPService is to insert
+	protocol name "vrrp" and "carp" in generated scripts.
+
 	* Compiler.cpp (Compiler::_expand_group_recursive): ref #50:
 	ignore various FWOptions child objects while expanding groups. In
 	particular this skips ClusterGroupOptions object which is a child
