@@ -848,18 +848,28 @@ int XMLTools::major_number(const string &v, string &rest)
         rest = v.substr(pos+1);
     }
     //TODO: handle conversion errors, by using 'strtol'
+    if (a.empty()) a = "0";
     return atoi(v.c_str());
 }
 
+/*
+ * Compare two version numbers.
+ * If versions have different length (different total number of components)
+ * consider  missing components equal to zero. That is,
+ * 1.2.3 is equal to 1.2.3.0 so, if we have to compare "1.2.3.4" to "1.2.3", then
+ * this is equivalent to comparing "1.2.3.4" to "1.2.3.0". The opposite
+ * is also true.
+ */
 int XMLTools::version_compare(const string &v1, const string &v2)
 {
     string rest1, rest2;
     int x1=major_number(v1, rest1);
     int x2=major_number(v2, rest2);
-    if(x1!=x2 || rest1.length()==0 || rest2.length()==0)
-        return x1-x2;
-    else 
-        return version_compare(rest1, rest2);
+    if (rest1.empty() && rest2.empty()) return x1-x2;
+    if (rest1.empty() && !rest2.empty()) rest1 = "0";
+    if (rest2.empty() && !rest1.empty()) rest2 = "0";
+    if (x1!=x2) return x1-x2;
+    else return version_compare(rest1, rest2);
 }
 
 string XMLTools::quote_linefeeds(const string &s)
