@@ -151,12 +151,12 @@ void InterfaceData::guessSecurityLevel(const string&)
     InetAddrMask n172(InetAddr("172.16.0.0"), InetAddr("255.240.0.0"));
     InetAddrMask n192(InetAddr("192.168.0.0"), InetAddr("255.255.0.0"));
 
-    securityLevel=-1;
+    securityLevel = -1;
 
-    string llbl=label;
+    string llbl = label;
 
     for (string::size_type i=0; i<llbl.length(); i++)
-        llbl[i]= tolower( llbl[i] );
+        llbl[i] = tolower( llbl[i] );
 
     if ( llbl=="outside" ||
          llbl=="out" ||
@@ -166,29 +166,35 @@ void InterfaceData::guessSecurityLevel(const string&)
          llbl=="internet" ||
          llbl=="wan" ||
          llbl=="dsl" ||
-         llbl=="cable")        securityLevel=0;
+         llbl=="cable") securityLevel = 0;
 
     if ( llbl=="inside" ||
          llbl=="lan" ||
          llbl=="in" ||
          llbl=="internal" ||
          llbl=="internal_net" ||
-         llbl=="internal net" )      securityLevel=100;
+         llbl=="internal net" ) securityLevel = 100;
 
     if ( (*(addr_mask.front()->getAddressPtr()))==InetAddr::getLoopbackAddr())
-        securityLevel=100; 
-    if ( name=="Null0" )       securityLevel=100; 
+        securityLevel = 100; 
+
+    if (name=="Null0") securityLevel = 100; 
 
     if (securityLevel==-1 && !isDyn && !isUnnumbered && !isBridgePort)
     {
-        if (n10.belongs(  InetAddr( *(addr_mask.front()->getAddressPtr()) ) )) securityLevel=100;
-        if (n172.belongs( InetAddr( *(addr_mask.front()->getAddressPtr()) ) )) securityLevel=100;
-        if (n192.belongs( InetAddr( *(addr_mask.front()->getAddressPtr()) ) )) securityLevel=100;
+        if (n10.belongs(  InetAddr( *(addr_mask.front()->getAddressPtr()) ) ))
+            securityLevel = 100;
+
+        if (n172.belongs( InetAddr( *(addr_mask.front()->getAddressPtr()) ) ))
+            securityLevel = 100;
+
+        if (n192.belongs( InetAddr( *(addr_mask.front()->getAddressPtr()) ) ))
+            securityLevel = 100;
     }
 
-    if (isDyn || isUnnumbered || isBridgePort) securityLevel=0;
+    if (isDyn || isUnnumbered || isBridgePort) securityLevel = 0;
 
-    if (securityLevel==-1) securityLevel=50;
+    if (securityLevel==-1) securityLevel = 0;
 }
 
 
