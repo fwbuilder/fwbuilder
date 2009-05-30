@@ -34,6 +34,6 @@ using namespace std;
 const char *CARPService::TYPENAME = {"CARPService"};
 
 /* Note that according to RFC 3768 CARP uses the same protocol number as VRRP */
-string CARPService::getProtocolName()    { return "CARP"; }
+string CARPService::getProtocolName()    { return "carp"; }
 int    CARPService::getProtocolNumber()  { return 112; }
 
