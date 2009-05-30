@@ -38,7 +38,7 @@ namespace libfwbuilder
     public:
 
         CARPService() {}
-        CARPService(const FWObjectDatabase *root, bool prepopulate) {}
+        CARPService(const FWObjectDatabase*, bool) {}
         virtual ~CARPService() {}
 
         DECLARE_FWOBJECT_SUBTYPE(CARPService);
