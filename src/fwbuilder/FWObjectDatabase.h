@@ -113,6 +113,7 @@ namespace libfwbuilder
     class UDPService;
     class UserService;
     class VRRPService;
+    class CARPService;
     class physAddress;
     
     class IDcounter {
@@ -432,6 +433,7 @@ public:
         DECLARE_CREATE_OBJ_METHOD(UDPService);
         DECLARE_CREATE_OBJ_METHOD(UserService);
         DECLARE_CREATE_OBJ_METHOD(VRRPService);
+        DECLARE_CREATE_OBJ_METHOD(CARPService);
         DECLARE_CREATE_OBJ_METHOD(physAddress);
     
     };
