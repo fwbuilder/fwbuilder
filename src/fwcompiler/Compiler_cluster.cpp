@@ -136,7 +136,7 @@ void Compiler::processFailoverGroup(Cluster *cluster,
                  << cluster_if_name
                  << " and "
                  << iface->getName() 
-                 << " are not in same subnet." << endl;
+                 << " are not in the same subnet." << endl;
         }
     }
 
@@ -145,8 +145,7 @@ void Compiler::processFailoverGroup(Cluster *cluster,
     /* Verify uniqueness of cluster interface name.  Firewall object
      * should not have interface with the same name as cluster.
      */
-    FWObjectTypedChildIterator current_ifaces =
-        fw->findByType(Interface::TYPENAME);
+    FWObjectTypedChildIterator current_ifaces = fw->findByType(Interface::TYPENAME);
     for (; current_ifaces != current_ifaces.end(); ++current_ifaces)
     {
         if (cluster_if_name ==  (*current_ifaces)->getName())
@@ -169,7 +168,8 @@ void Compiler::processFailoverGroup(Cluster *cluster,
      * as master_iface
      */
     new_cl_if->getOptionsObject()->setBool(
-        "failover_master", cluster_group->getStr("master_iface") == iface->getStr("id"));
+        "failover_master",
+        cluster_group->getStr("master_iface") == iface->getStr("id"));
     
     fw->getOptionsObject()->setBool("cluster_member", true);
 
