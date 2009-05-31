@@ -4339,63 +4339,66 @@ void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
     QWidget *fromWidget = ev->source();
 
     // The source of DnD object must be the same instance of fwbuilder
-    if (fromWidget)
+    if (!fromWidget)
     {
-        if (ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) && !ruleset->isReadOnly())
+        ev->setAccepted(false);
+        return;
+    }
+   
+    if (ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) && !ruleset->isReadOnly())
+    {
+        if (ev->keyboardModifiers() & Qt::ControlModifier)
+            ev->setDropAction(Qt::CopyAction);
+        else
+            ev->setDropAction(Qt::MoveAction);
+
+        int  row = rowAt( ev->pos().y() );
+        int  col = columnAt( ev->pos().x() );
+
+        if (col<0 || ( getColType(col)!=Object && getColType(col)!=Time) )
         {
-            if (ev->keyboardModifiers() & Qt::ControlModifier)
-                ev->setDropAction(Qt::CopyAction);
-            else
-                ev->setDropAction(Qt::MoveAction);
+            ev->setAccepted(false);
+            return;
+        }
 
-            int  row = rowAt( ev->pos().y() );
-            int  col = columnAt( ev->pos().x() );
+        RuleElement *re = getRE(row,col);
+        if (re==NULL)
+        {
+            ev->setAccepted(false);
+            return;
+        }
 
-            if (col<0 || ( getColType(col)!=Object && getColType(col)!=Time) )
+        bool  acceptE = true;
+        list<FWObject*> dragol;
+
+        /*
+         * See bug 1226069  Segfault: Drag&Drop between two instances
+         *
+         * v3.0: we do not permit d&d of an object from one data
+         * file to another. mostly just to avoid confusing side
+         * effects because such operation requires copy of all
+         * object's dependencies. This means simple d&d operation
+         * can in fact silently copy whole bunch of objects into
+         * the tree, which is may not be even visible for the user
+         * if parts of the tree are collapsed or obscured by other
+         * windows.
+         */
+
+        if (FWObjectDrag::decode(ev, dragol))
+        {
+            for (list<FWObject*>::iterator i=dragol.begin();
+                 i!=dragol.end(); ++i)
             {
-                ev->setAccepted(false);
-                return;
-            }
-
-            RuleElement *re = getRE(row,col);
-            if (re==NULL)
-            {
-                ev->setAccepted(false);
-                return;
-            }
-
-            bool  acceptE = true;
-            list<FWObject*> dragol;
-
-            /*
-            * See bug 1226069  Segfault: Drag&Drop between two instances
-            *
-            * v3.0: we do not permit d&d of an object from one data
-            * file to another. mostly just to avoid confusing side
-            * effects because such operation requires copy of all
-            * object's dependencies. This means simple d&d operation
-            * can in fact silently copy whole bunch of objects into
-            * the tree, which is may not be even visible for the user
-            * if parts of the tree are collapsed or obscured by other
-            * windows.
-            */
-
-            if (FWObjectDrag::decode(ev, dragol))
-            {
-                for (list<FWObject*>::iterator i=dragol.begin();
-                     i!=dragol.end(); ++i)
+                FWObject *dragobj = NULL;
+                dragobj = dynamic_cast<FWObject*>(*i);
+                if(dragobj!=NULL)
                 {
-                    FWObject *dragobj = NULL;
-                    dragobj = dynamic_cast<FWObject*>(*i);
-                    if(dragobj!=NULL)
-                    {
-                        acceptE &= (dragobj->getRoot()==ruleset->getRoot());
-                        acceptE &= re->validateChild(dragobj);
-                    }
+                    acceptE &= (dragobj->getRoot()==ruleset->getRoot());
+                    acceptE &= re->validateChild(dragobj);
                 }
-                ev->setAccepted( acceptE );
-                return;
             }
+            ev->setAccepted( acceptE );
+            return;
         }
     }
 
@@ -4406,6 +4409,16 @@ void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
 void RuleSetView::dropEvent(QDropEvent *ev)
 {
     if (fwbdebug) qDebug("RuleSetView::dropEvent");
+
+    QWidget *fromWidget = ev->source();
+
+    // The source of DnD object must be the same instance of fwbuilder
+    if (!fromWidget)
+    {
+        ev->setAccepted(false);
+        return;
+    }
+   
 
     if (!isTreeReadWrite(this,ruleset)) return;
 

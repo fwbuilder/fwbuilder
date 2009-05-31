@@ -491,15 +491,24 @@ bool ObjectTreeView::isCurrReadOnly(QDragMoveEvent *ev)
 
 void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
 {
+    QWidget *fromWidget = ev->source();
+
+    // The source of DnD object must be the same instance of fwbuilder
+    if (!fromWidget)
+    {
+        ev->setAccepted(false);
+        return;
+    }
+   
     if (isCurrReadOnly(ev) ||
-          !ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE))
+        !ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE))
     {
         ev->setAccepted(false);
         return;
     }
     list<FWObject*> dragol;
     if (!FWObjectDrag::decode(ev, dragol))
-       ev->setAccepted(false);
+        ev->setAccepted(false);
     for (list<FWObject*>::iterator i=dragol.begin();i!=dragol.end(); ++i)
     {
         FWObject *dragobj = *i;
@@ -512,13 +521,22 @@ void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
             return;
         }
     }
+
     ev->setAccepted(true);
 }
 
 void ObjectTreeView::dropEvent(QDropEvent *ev)
 {
     if (fwbdebug) qDebug("ObjectTreeView::dropEvent");
+    QWidget *fromWidget = ev->source();
 
+    // The source of DnD object must be the same instance of fwbuilder
+    if (!fromWidget)
+    {
+        ev->setAccepted(false);
+        return;
+    }
+   
     list<FWObject*> dragol;
     if (FWObjectDrag::decode(ev, dragol))
     {

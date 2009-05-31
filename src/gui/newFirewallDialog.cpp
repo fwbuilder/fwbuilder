@@ -686,16 +686,18 @@ void newFirewallDialog::addInterface()
 void newFirewallDialog::selectedInterface(QTreeWidgetItem*cur,QTreeWidgetItem*)
 {
     QTreeWidgetItem *itm = cur; //current item
-
-    m_dialog->iface_name->setText( itm->text(0) );
-    m_dialog->iface_label->setText( itm->text(1) );
-    m_dialog->iface_addr->setText( itm->text(2) );
-    m_dialog->iface_netmask->setText( itm->text(3) );
-    m_dialog->iface_reg->setChecked( itm->text(4).isEmpty() );
-    m_dialog->iface_dyn->setChecked( itm->text(4).indexOf("Dyn")!=-1 );
-    m_dialog->iface_unnum->setChecked( itm->text(4).indexOf("Unn")!=-1 );
-    m_dialog->iface_bridgeport->setChecked( itm->text(4).indexOf("Bridge")!=-1 );
-    m_dialog->iface_physaddr->setText( itm->text(5) );
+    if (itm)
+    {
+        m_dialog->iface_name->setText( itm->text(0) );
+        m_dialog->iface_label->setText( itm->text(1) );
+        m_dialog->iface_addr->setText( itm->text(2) );
+        m_dialog->iface_netmask->setText( itm->text(3) );
+        m_dialog->iface_reg->setChecked( itm->text(4).isEmpty() );
+        m_dialog->iface_dyn->setChecked( itm->text(4).indexOf("Dyn")!=-1 );
+        m_dialog->iface_unnum->setChecked( itm->text(4).indexOf("Unn")!=-1 );
+        m_dialog->iface_bridgeport->setChecked( itm->text(4).indexOf("Bridge")!=-1 );
+        m_dialog->iface_physaddr->setText( itm->text(5) );
+    }
 }
 
 void newFirewallDialog::updateInterface()
