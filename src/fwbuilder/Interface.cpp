@@ -228,7 +228,14 @@ xmlNodePtr Interface::toXML(xmlNodePtr parent) throw(FWException)
 
 FWOptions* Interface::getOptionsObject()
 {
-    return FWOptions::cast( getFirstByType(InterfaceOptions::TYPENAME) );
+    FWOptions *iface_opt = FWOptions::cast(getFirstByType(InterfaceOptions::TYPENAME));
+
+    if (iface_opt == NULL)
+    {
+        iface_opt = FWOptions::cast(getRoot()->create(InterfaceOptions::TYPENAME));
+        add(iface_opt);
+    }
+    return iface_opt;
 }
 
 int  Interface::getSecurityLevel() const

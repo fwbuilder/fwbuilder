@@ -167,9 +167,11 @@ void Compiler::processFailoverGroup(Cluster *cluster,
     /* Set master property if interface is referenced
      * as master_iface
      */
-    new_cl_if->getOptionsObject()->setBool(
-        "failover_master",
-        cluster_group->getStr("master_iface") == iface->getStr("id"));
+    string master_id = cluster_group->getStr("master_iface");
+    string iface_str_id = FWObjectDatabase::getStringId(iface->getId());
+
+    new_cl_if->getOptionsObject()->setBool("failover_master",
+                                           master_id == iface_str_id);
     
     fw->getOptionsObject()->setBool("cluster_member", true);
 
