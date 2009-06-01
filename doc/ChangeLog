@@ -1,3 +1,26 @@
+2009-05-31  vadim  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::contextMenu): fixed bug #2799254
+	"Erratic behavior when rule is removed from the group". If user
+	tried to remove a rule from the middle of a group of rules, the
+	GUI behaved erratically. It showed two groups with the same name,
+	each of these two groups claimed to have more rules than it really
+	did. Also only one of these two groups could be collapsed at the
+	time. Other weird things also happened. The fix is to not allow
+	removing a rule from the rule group if the rule is in the middle.
+
+	* newFirewallDialog.cpp (newFirewallDialog::selectedInterface):
+	fixed bug #2799163: "crash on correcting an error". The GUI
+	crashed if user tried to add, then delete interfaces in the new
+	firewall wizard. The crash occurred when the last interface was
+	deleted on the page where interfaces can be configured manually.
+
+	* ObjectTreeView.cpp (ObjectTreeView::dragMoveEvent): fixed bug
+	#2799174: "Multiple instance crashes a bug". The GUI crashed if
+	user tried to drag and drop an object between two different
+	running copies. Copy/Paste and Drag&Drop between separate copies
+	are not supported at this time.
+
 2009-05-29  vadim  <vadim@vk.crocodile.org>
 
 	* newFirewallDialog.cpp (newFirewallDialog::finishClicked): better

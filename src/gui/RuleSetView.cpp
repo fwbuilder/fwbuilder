@@ -2775,30 +2775,21 @@ void RuleSetView::removeRuleIndex(int idx)
  //   ruleIndex.remove (ruleIndex.size());
 }
 
-int RuleSetView::getUpNullRuleIndex (int idx)
+int RuleSetView::getUpNullRuleIndex(int idx)
 {
     for (int i=idx; i>=0; --i) 
     { 
-        if (rowsInfo[i]!=NULL)
-        {
-            return i;
-            
-        }
+        if (rowsInfo[i]!=NULL)  return i;
     }
     return -1 ;
-
 }
 
-int RuleSetView::getDownNullRuleIndex (int idx)
+int RuleSetView::getDownNullRuleIndex(int idx)
 {
 
     for ( int i=idx; i<rowsInfo.size(); ++i) 
     { 
-        if (rowsInfo[i]!=NULL)
-        {
-            return i;
-            
-        }
+        if (rowsInfo[i]!=NULL) return i;
     }
     return -1;
 }
@@ -3127,7 +3118,7 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
 
     lastPopupMenuAction=None;
 
-    QMenu *popup=new QMenu(this);
+    QMenu *popup = new QMenu(this);
     Rule *r = ruleIndex[row];
     if (r!=NULL)
     {
@@ -3138,7 +3129,7 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
 
             popup->addAction( tr("New group"), this, SLOT( newGroup() ));
             int top = getUpNullRuleIndex(firstSelectedRow);
-            if (top!=-1&&top==firstSelectedRow-1)
+            if (top != -1 && top == (firstSelectedRow - 1))
             {
                 RuleRowInfo * ri= rowsInfo[top];
                 QString label = tr("Add to the group ");
@@ -3146,7 +3137,7 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
                 popup->addAction( label, this, SLOT( addToGroupAbove() ));
             }
             int bottom = getDownNullRuleIndex(lastSelectedRow);
-            if (bottom!=-1&&bottom==lastSelectedRow+1)
+            if (bottom != -1 && bottom == (lastSelectedRow + 1))
             {
                 RuleRowInfo * ri= rowsInfo[bottom];
                 QString label = tr("Add to the group ");
@@ -3157,71 +3148,78 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
         }
         else
         {
-            popup->addAction( tr("Remove from the group"), this,
-                              SLOT( removeFromGroup() ));
+            // Check if the rule is in the middle of a group.
+            // Note that rules above or below may belong to another group,
+            // in which case we provide "remove from group" menu item.
+            Rule *rule_above = getRule(row - 1);
+            Rule *rule_below = getRule(row + 1);
+            if (rule_above == NULL || rule_below == NULL ||
+                r->getRuleGroupName() != rule_above->getRuleGroupName() ||
+                r->getRuleGroupName() != rule_below->getRuleGroupName())
+            {
+                popup->addAction( tr("Remove from the group"), this,
+                                  SLOT( removeFromGroup() ));
+            }
         }
         popup->addSeparator ();
     }
     else
     {
-            if (row==0)
-                popup->addAction( tr("Insert Rule Above"), this,
-                                  SLOT( insertRuleAboveFirstGroup() ));
+        if (row==0)
+            popup->addAction( tr("Insert Rule Above"), this,
+                              SLOT( insertRuleAboveFirstGroup() ));
 
-            popup->addAction( tr("Rename group"), this, SLOT( renameGroup() ));
-            popup->addSeparator();
+        popup->addAction( tr("Rename group"), this, SLOT( renameGroup() ));
+        popup->addSeparator();
 
-            QMenu *subcolor = popup->addMenu(tr("Change color") );
+        QMenu *subcolor = popup->addMenu(tr("Change color") );
 
-            QPixmap pcolor(16,16);
-            pcolor.fill(QColor(255,255,255));
-            subcolor->addAction(QIcon(pcolor), tr("No color"),
-                                 this, SLOT(setColorEmpty() ));
+        QPixmap pcolor(16,16);
+        pcolor.fill(QColor(255,255,255));
+        subcolor->addAction(QIcon(pcolor), tr("No color"),
+                            this, SLOT(setColorEmpty() ));
 
-            pcolor.fill(st->getLabelColor(FWBSettings::RED));
-            subcolor->addAction(QIcon(pcolor),
-                                 st->getLabelText(FWBSettings::RED),
-                                 this, SLOT(setColorRed() ));
+        pcolor.fill(st->getLabelColor(FWBSettings::RED));
+        subcolor->addAction(QIcon(pcolor),
+                            st->getLabelText(FWBSettings::RED),
+                            this, SLOT(setColorRed() ));
 
-            pcolor.fill(st->getLabelColor(FWBSettings::ORANGE));
-            subcolor->addAction(QIcon(pcolor),
-                                 st->getLabelText(FWBSettings::ORANGE),
-                                 this, SLOT(setColorOrange() ));
+        pcolor.fill(st->getLabelColor(FWBSettings::ORANGE));
+        subcolor->addAction(QIcon(pcolor),
+                            st->getLabelText(FWBSettings::ORANGE),
+                            this, SLOT(setColorOrange() ));
 
-            pcolor.fill(st->getLabelColor(FWBSettings::YELLOW));
-            subcolor->addAction(QIcon(pcolor),
-                                 st->getLabelText(FWBSettings::YELLOW),
-                                 this, SLOT(setColorYellow() ));
+        pcolor.fill(st->getLabelColor(FWBSettings::YELLOW));
+        subcolor->addAction(QIcon(pcolor),
+                            st->getLabelText(FWBSettings::YELLOW),
+                            this, SLOT(setColorYellow() ));
 
-            pcolor.fill(st->getLabelColor(FWBSettings::GREEN));
-            subcolor->addAction(QIcon(pcolor),
-                                 st->getLabelText(FWBSettings::GREEN),
-                                 this, SLOT(setColorGreen() ));
+        pcolor.fill(st->getLabelColor(FWBSettings::GREEN));
+        subcolor->addAction(QIcon(pcolor),
+                            st->getLabelText(FWBSettings::GREEN),
+                            this, SLOT(setColorGreen() ));
 
-            pcolor.fill(st->getLabelColor(FWBSettings::BLUE));
-            subcolor->addAction(QIcon(pcolor),
-                                 st->getLabelText(FWBSettings::BLUE),
-                                 this, SLOT(setColorBlue() ));
+        pcolor.fill(st->getLabelColor(FWBSettings::BLUE));
+        subcolor->addAction(QIcon(pcolor),
+                            st->getLabelText(FWBSettings::BLUE),
+                            this, SLOT(setColorBlue() ));
 
-            pcolor.fill(st->getLabelColor(FWBSettings::PURPLE));
-            subcolor->addAction(QIcon(pcolor),
-                                 st->getLabelText(FWBSettings::PURPLE),
-                                 this, SLOT(setColorPurple() ));
+        pcolor.fill(st->getLabelColor(FWBSettings::PURPLE));
+        subcolor->addAction(QIcon(pcolor),
+                            st->getLabelText(FWBSettings::PURPLE),
+                            this, SLOT(setColorPurple() ));
 
-            pcolor.fill(st->getLabelColor(FWBSettings::GRAY));
-            subcolor->addAction(QIcon(pcolor),
-                                 st->getLabelText(FWBSettings::GRAY),
-                                 this, SLOT(setColorGray() ));
+        pcolor.fill(st->getLabelColor(FWBSettings::GRAY));
+        subcolor->addAction(QIcon(pcolor),
+                            st->getLabelText(FWBSettings::GRAY),
+                            this, SLOT(setColorGray() ));
 
-            popup->exec(pos );
+        popup->exec(pos );
 
-            delete popup;
-            return ;
-
+        delete popup;
+        return ;
     }
         
-
-
     switch (getColType(col))
     {
         case Action:
@@ -3436,11 +3434,26 @@ void RuleSetView::contextMenu(int row, int col, const QPoint &pos)
                 int selectionSize=lastSelectedRow-firstSelectedRow+1;
 
                 if (lastSelectedRow > firstSelectedRow)
-                popup->addAction( tr("Rules %1-%2").
-                    arg(firstSelectedRow).arg(lastSelectedRow) )->setEnabled(false);
-                else
-                popup->addAction( tr("Rule %1").
-                    arg(firstSelectedRow) )->setEnabled(false);
+                {
+                    int first_selected_rule_num = -1;
+                    int last_selected_rule_num = -1;
+                    for (int r=firstSelectedRow; r <= lastSelectedRow; ++r)
+                    {
+                        Rule *selected_rule = getRule(r);
+                        if (selected_rule)
+                        {
+                            int n = selected_rule->getPosition();
+                            if (first_selected_rule_num < 0)
+                                first_selected_rule_num = n;
+                            last_selected_rule_num = n;
+                        }
+                    }
+                    popup->addAction( tr("Rules %1-%2").
+                                      arg(first_selected_rule_num).
+                                      arg(last_selected_rule_num) )->setEnabled(false);
+                } else
+                    popup->addAction( tr("Rule %1").
+                                      arg(rule->getPosition()))->setEnabled(false);
 
                 QMenu *subcolor = popup->addMenu( tr("Change color") );
 
@@ -4339,63 +4352,66 @@ void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
     QWidget *fromWidget = ev->source();
 
     // The source of DnD object must be the same instance of fwbuilder
-    if (fromWidget)
+    if (!fromWidget)
     {
-        if (ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) && !ruleset->isReadOnly())
+        ev->setAccepted(false);
+        return;
+    }
+   
+    if (ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) && !ruleset->isReadOnly())
+    {
+        if (ev->keyboardModifiers() & Qt::ControlModifier)
+            ev->setDropAction(Qt::CopyAction);
+        else
+            ev->setDropAction(Qt::MoveAction);
+
+        int  row = rowAt( ev->pos().y() );
+        int  col = columnAt( ev->pos().x() );
+
+        if (col<0 || ( getColType(col)!=Object && getColType(col)!=Time) )
         {
-            if (ev->keyboardModifiers() & Qt::ControlModifier)
-                ev->setDropAction(Qt::CopyAction);
-            else
-                ev->setDropAction(Qt::MoveAction);
+            ev->setAccepted(false);
+            return;
+        }
 
-            int  row = rowAt( ev->pos().y() );
-            int  col = columnAt( ev->pos().x() );
+        RuleElement *re = getRE(row,col);
+        if (re==NULL)
+        {
+            ev->setAccepted(false);
+            return;
+        }
 
-            if (col<0 || ( getColType(col)!=Object && getColType(col)!=Time) )
+        bool  acceptE = true;
+        list<FWObject*> dragol;
+
+        /*
+         * See bug 1226069  Segfault: Drag&Drop between two instances
+         *
+         * v3.0: we do not permit d&d of an object from one data
+         * file to another. mostly just to avoid confusing side
+         * effects because such operation requires copy of all
+         * object's dependencies. This means simple d&d operation
+         * can in fact silently copy whole bunch of objects into
+         * the tree, which is may not be even visible for the user
+         * if parts of the tree are collapsed or obscured by other
+         * windows.
+         */
+
+        if (FWObjectDrag::decode(ev, dragol))
+        {
+            for (list<FWObject*>::iterator i=dragol.begin();
+                 i!=dragol.end(); ++i)
             {
-                ev->setAccepted(false);
-                return;
-            }
-
-            RuleElement *re = getRE(row,col);
-            if (re==NULL)
-            {
-                ev->setAccepted(false);
-                return;
-            }
-
-            bool  acceptE = true;
-            list<FWObject*> dragol;
-
-            /*
-            * See bug 1226069  Segfault: Drag&Drop between two instances
-            *
-            * v3.0: we do not permit d&d of an object from one data
-            * file to another. mostly just to avoid confusing side
-            * effects because such operation requires copy of all
-            * object's dependencies. This means simple d&d operation
-            * can in fact silently copy whole bunch of objects into
-            * the tree, which is may not be even visible for the user
-            * if parts of the tree are collapsed or obscured by other
-            * windows.
-            */
-
-            if (FWObjectDrag::decode(ev, dragol))
-            {
-                for (list<FWObject*>::iterator i=dragol.begin();
-                     i!=dragol.end(); ++i)
+                FWObject *dragobj = NULL;
+                dragobj = dynamic_cast<FWObject*>(*i);
+                if(dragobj!=NULL)
                 {
-                    FWObject *dragobj = NULL;
-                    dragobj = dynamic_cast<FWObject*>(*i);
-                    if(dragobj!=NULL)
-                    {
-                        acceptE &= (dragobj->getRoot()==ruleset->getRoot());
-                        acceptE &= re->validateChild(dragobj);
-                    }
+                    acceptE &= (dragobj->getRoot()==ruleset->getRoot());
+                    acceptE &= re->validateChild(dragobj);
                 }
-                ev->setAccepted( acceptE );
-                return;
             }
+            ev->setAccepted( acceptE );
+            return;
         }
     }
 
@@ -4406,6 +4422,16 @@ void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
 void RuleSetView::dropEvent(QDropEvent *ev)
 {
     if (fwbdebug) qDebug("RuleSetView::dropEvent");
+
+    QWidget *fromWidget = ev->source();
+
+    // The source of DnD object must be the same instance of fwbuilder
+    if (!fromWidget)
+    {
+        ev->setAccepted(false);
+        return;
+    }
+   
 
     if (!isTreeReadWrite(this,ruleset)) return;
 
