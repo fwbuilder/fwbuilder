@@ -1,3 +1,13 @@
+2009-06-01  vadim  <vadim@vk.crocodile.org>
+
+	* newHostDialog.cpp (newHostDialog::selectedInterface): fixed the
+	same error reported in bug #2799163: "crash on correcting an
+	error". The GUI crashed if user tried to add, then delete
+	interfaces in the new firewall wizard. The crash occurred when the
+	last interface was deleted on the page where interfaces can be
+	configured manually. This needed to be fixed in both "new
+	firewall" and "new host" dialogs.
+
 2009-05-31  vadim  <vadim@vk.crocodile.org>
 
 	* FindObjectWidget.cpp (FindObjectWidget::findNext): fixed bug
