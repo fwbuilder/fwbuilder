@@ -1,5 +1,14 @@
 2009-05-31  vadim  <vadim@vk.crocodile.org>
 
+	* RuleSetView.cpp (RuleSetView::contextMenu): fixed bug #2799254
+	"Erratic behavior when rule is removed from the group". If user
+	tried to remove a rule from the middle of a group of rules, the
+	GUI behaved erratically. It showed two groups with the same name,
+	each of these two groups claimed to have more rules than it really
+	did. Also only one of these two groups could be collapsed at the
+	time. Other weird things also happened. The fix is to not allow
+	removing a rule from the rule group if the rule is in the middle.
+
 	* newFirewallDialog.cpp (newFirewallDialog::selectedInterface):
 	fixed bug #2799163: "crash on correcting an error". The GUI
 	crashed if user tried to add, then delete interfaces in the new
