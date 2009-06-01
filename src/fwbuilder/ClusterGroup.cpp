@@ -97,10 +97,12 @@ ClusterGroupOptions* ClusterGroup::getOptionsObject()
 {
     ClusterGroupOptions *gopt = ClusterGroupOptions::cast(
         getFirstByType(ClusterGroupOptions::TYPENAME));
+
     if (gopt == NULL)
     {
         gopt = ClusterGroupOptions::cast(
             getRoot()->create(ClusterGroupOptions::TYPENAME));
+        add(gopt);
     }
     return gopt;
 }
