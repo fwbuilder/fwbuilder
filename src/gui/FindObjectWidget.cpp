@@ -38,7 +38,7 @@
 #include "ObjectTreeView.h"
 #include "RuleSetView.h"
 #include "ObjectEditor.h"
-
+#include "ProjectPanel.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWReference.h"
@@ -76,8 +76,10 @@ FindObjectWidget::FindObjectWidget(QWidget*p, const char * n, Qt::WindowFlags f)
     setObjectName(n);
 
     replaceDisable();
-    m_widget->srScope->setCurrentIndex(st->getInt(SETTINGS_PATH_PREFIX"/Search/Scope"));
+    m_widget->srScope->setCurrentIndex(
+        st->getInt(SETTINGS_PATH_PREFIX"/Search/Scope"));
 }
+
 void FindObjectWidget::findObject(FWObject *o)
 {
     if (fwbdebug) qDebug("FindObjectWidget::findObject");
@@ -117,12 +119,11 @@ void FindObjectWidget::objectInserted()
      reset();
 }
 
-
 void FindObjectWidget::reset()
 {
     lastFound=NULL;
     lastAttrSearch="";
-    treeSeeker=mw->db()->tree_begin();
+    treeSeeker = mw->db()->tree_begin();
 }
 
 
@@ -142,7 +143,7 @@ void FindObjectWidget::find()
         if (m_widget->findAttr->count()>=MAX_SEARCH_ITEMS_COUNT)
             m_widget->findAttr->removeItem(MAX_SEARCH_ITEMS_COUNT-1);
 
-        m_widget->findAttr->insertItem( 0, m_widget->findAttr->lineEdit()->text() );
+        m_widget->findAttr->insertItem(0, m_widget->findAttr->lineEdit()->text());
 
         if (fwbdebug)
             qDebug("FindObjectWidget::find() : m_widget->findAttr->text(0)=%s",
@@ -179,6 +180,7 @@ bool FindObjectWidget::matchAttr(libfwbuilder::FWObject *obj)
         break;
 
     }
+
     case 1:   // Address
     {
         Address *a = Address::cast(obj);
@@ -198,6 +200,7 @@ bool FindObjectWidget::matchAttr(libfwbuilder::FWObject *obj)
         }
         break;
     }
+
     case 2:   // port
         if (TCPService::cast(obj)!=NULL || UDPService::cast(obj)!=NULL)
         {
@@ -228,6 +231,7 @@ bool FindObjectWidget::matchAttr(libfwbuilder::FWObject *obj)
             break;
         }
         break;
+
     case 3:   // protocol num.
         if (IPService::cast(obj)!=NULL)
         {
@@ -245,6 +249,7 @@ bool FindObjectWidget::matchAttr(libfwbuilder::FWObject *obj)
             break;
         }
         break;
+
     case 4:   // icmp type
         if (ICMPService::cast(obj)!=NULL)
         {
@@ -277,7 +282,18 @@ void FindObjectWidget::findNext()
     if (m_widget->findAttr->count()>MAX_SEARCH_ITEMS_COUNT)
         m_widget->findAttr->removeItem(0);
 
-    FWObject *o=NULL;
+    FWObject *o = NULL;
+
+    // if scope is "policies of opened firewall" then we need to get 
+    // pointer to the currently opened firewall object
+    RuleSet* current_rule_set = mw->activeProject()->getCurrentRuleSet();
+    if (current_rule_set)
+        selectedFirewall = Firewall::cast(current_rule_set->getParent());
+    else
+        selectedFirewall = NULL;
+
+    if (fwbdebug)
+        qDebug("selectedFirewall: %p", selectedFirewall);
 
 loop:
 
@@ -286,6 +302,9 @@ loop:
     for (; treeSeeker!=mw->db()->tree_end(); ++treeSeeker)
     {
         o = *treeSeeker;
+
+//        if (fwbdebug)
+//            qDebug("Found object %s (%s)", o->getName().c_str(), o->getTypeName().c_str());
 
         if( RuleElement::cast(o->getParent())!=NULL)
         {
@@ -296,7 +315,8 @@ loop:
                     continue;
 
                 }
-            } else if (m_widget->srScope->currentIndex()==0) continue ; // scope == tree only
+            } else
+                if (m_widget->srScope->currentIndex()==0) continue ; // scope == tree only
         } else
         {
 /* if not in rules, then in the tree. */
@@ -526,7 +546,6 @@ FWObject* FindObjectWidget::_replaceCurrent()
 }
 bool FindObjectWidget::inSelectedFirewall( RuleElement* r)
 {
-
     FWObject *f=r;
     while (f!=NULL && !Firewall::isA(f)) f=f->getParent();
     if (f==NULL) return false;
@@ -589,8 +608,9 @@ void FindObjectWidget::init()
 void FindObjectWidget::firewallOpened(Firewall *f)
 {
     if (f==NULL) return;
-    selectedFirewall=f;
-    m_widget->srScope->setItemText( 3, tr("Policy of firewall '")+f->getName().c_str()+"'" );
+    selectedFirewall = f;
+    m_widget->srScope->setItemText(
+        3, tr("Policy of firewall '")+f->getName().c_str()+"'" );
 }
 
 void FindObjectWidget::findPrev()
@@ -605,6 +625,6 @@ void FindObjectWidget::replaceNext()
 }
 void FindObjectWidget::scopeChanged()
 {
-    st->setValue(SETTINGS_PATH_PREFIX"/Search/Scope",m_widget->srScope->currentIndex ());
-
+    st->setValue(SETTINGS_PATH_PREFIX"/Search/Scope",
+                 m_widget->srScope->currentIndex ());
 }

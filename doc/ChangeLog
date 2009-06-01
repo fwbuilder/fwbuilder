@@ -1,5 +1,11 @@
 2009-05-31  vadim  <vadim@vk.crocodile.org>
 
+	* FindObjectWidget.cpp (FindObjectWidget::findNext): fixed bug
+	#2799315 "Find object" cant find object in rules of opened
+	firewall.  If scope was set to "policy of the opened firewall",
+	"Find object" function could not find anything. It worked when
+	scope was set to "policy of all firewalls".
+
 	* RuleSetView.cpp (RuleSetView::contextMenu): fixed bug #2799254
 	"Erratic behavior when rule is removed from the group". If user
 	tried to remove a rule from the middle of a group of rules, the
