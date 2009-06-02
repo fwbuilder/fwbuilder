@@ -81,7 +81,6 @@
 #include <fwbuilder/UDPService.h>
 #include <fwbuilder/UserService.h>
 #include <fwbuilder/VRRPService.h>
-#include <fwbuilder/CARPService.h>
 #include <fwbuilder/XMLTools.h>
 #include <fwbuilder/physAddress.h>
 
@@ -238,8 +237,6 @@ void FWObjectDatabase::init_create_methods_table()
             &FWObjectDatabase::createFWObjectUserService;
         create_methods["VRRPService"] =
             &FWObjectDatabase::createFWObjectVRRPService;
-        create_methods["CARPService"] =
-            &FWObjectDatabase::createFWObjectCARPService;
         create_methods["physAddress"] =
             &FWObjectDatabase::createFWObjectphysAddress;
     }
@@ -376,6 +373,5 @@ CREATE_OBJ_METHOD(TagService);
 CREATE_OBJ_METHOD(UDPService);
 CREATE_OBJ_METHOD(UserService);
 CREATE_OBJ_METHOD(VRRPService);
-CREATE_OBJ_METHOD(CARPService);
 CREATE_OBJ_METHOD(physAddress);
 

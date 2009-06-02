@@ -35,9 +35,12 @@ namespace libfwbuilder
 
 class IPService : public Service
 {
-    
-    private:
-    
+    void initNamedProtocols();
+
+    protected:
+
+    static std::map<int, std::string> named_protocols;
+
     public:
     
     IPService();
@@ -50,13 +53,17 @@ class IPService : public Service
     DECLARE_FWOBJECT_SUBTYPE(IPService);
 
     virtual std::string getProtocolName();
-    virtual int    getProtocolNumber();
+    virtual int getProtocolNumber();
 
+    void setProtocolNumber(int n);
+    
     std::string getTOSCode() const;
     void setTOSCode(const std::string &c);
 
     std::string getDSCPCode() const;
     void setDSCPCode(const std::string &c);
+
+    static void addNamedProtocol(int proto_num, const std::string &proto_name);
 };
 
 }

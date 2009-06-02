@@ -1,3 +1,20 @@
+2009-06-01  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler_cluster.cpp (Compiler::processStateSyncGroup):
+	This method finds StateSyncClusterGroup objects and saves
+	essential parameters in the Interface objects of the firewall
+	so that compilers later can use this information to generate
+	script to confgure state synchronisation.
+
+	* IPService.cpp (IPService::addNamedProtocol): class IPService now
+	has internal mapping table of protocols numbers and names.  By
+	default it comes with a list of typical protocols "ip", "icmp",
+	"tcp" and "udp". More protocols can be added to the table using
+	IPService::addNamedProtocol() method. After that, method
+	IPService::getProtocolName() will return protocol name for the
+	registered named protocols. This facility replaces CARPService
+	class.
+
 2009-05-30  vadim  <vadim@vk.crocodile.org>
 
 	* CARPService.cpp: Added trivial CARPService class that defines IP

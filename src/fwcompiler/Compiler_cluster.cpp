@@ -159,6 +159,9 @@ void Compiler::processFailoverGroup(Cluster *cluster,
         }
     }
 
+    iface->getOptionsObject()->setStr(
+        "failover_group_id", FWObjectDatabase::getStringId(cluster_group->getId()));
+
     /* Add copy of VRRP interface from the cluster to the firewall object */
     Interface* new_cl_if = Interface::cast(fw->addCopyOf(cluster_if, false));
     assert(new_cl_if != NULL);
@@ -183,6 +186,35 @@ void Compiler::processFailoverGroup(Cluster *cluster,
 }
 
 /*
+ * process state sync group
+ *
+ * @cluster   - Cluster object
+ * @fw        - Firewall object (cluster member)
+ * @cluster_group - StateSyncClusterGroup object (child of the cluster object)
+ * @iface     - intefrace of @fw listed in the cluster_group
+ *
+ * Policy compilers process firewall objects, not clusters. However,
+ * state sync group objects belong to the clusters. So we need to copy
+ * essential information from the state sync group to the interface of
+ * the firewall to help compilers generate commands that configure
+ * state synchronisation.
+ */
+void Compiler::processStateSyncGroup(Cluster *cluster,
+                                     Firewall *fw,
+                                     StateSyncClusterGroup *cluster_group,
+                                     Interface *iface)
+{
+    iface->getOptionsObject()->setBool("state_sync_group_member", true);
+    iface->getOptionsObject()->setStr(
+        "state_sync_group_id", FWObjectDatabase::getStringId(cluster_group->getId()));
+    string master_id = cluster_group->getStr("master_iface");
+    string iface_str_id = FWObjectDatabase::getStringId(iface->getId());
+    iface->getOptionsObject()->setBool("state_sync_master",
+                                       master_id == iface_str_id);
+    fw->getOptionsObject()->setBool("cluster_member", true);
+}
+
+/*
  * 1. Iterate over all fw interfaces and check if they are referenced in a
  *    ClusterGroup.
  *    -> if yes then make copy of vrrp interface and set BASEDEV accordingly
@@ -199,7 +231,7 @@ int Compiler::populateClusterElements(Cluster *cluster, Firewall *fw)
     for (FWObjectTypedChildIterator it = cluster->findByType(StateSyncClusterGroup::TYPENAME);
         it != it.end(); ++it)
     {
-        FWObject *state_sync_group = *it;
+        StateSyncClusterGroup *state_sync_group = StateSyncClusterGroup::cast(*it);
         /* For the state syncing cluster group, hierarchy looks like this:
          * Cluster->StateSyncClusterGroup->ObjectRef
          */
@@ -208,6 +240,18 @@ int Compiler::populateClusterElements(Cluster *cluster, Firewall *fw)
             abort("Several state synchronization groups of the same type in one cluster object.");
 
         state_sync_types.insert(grp_type);
+
+        for (FWObjectTypedChildIterator it =
+                 state_sync_group->findByType(FWObjectReference::TYPENAME);
+             it != it.end(); ++it)
+        {
+            Interface *iface = Interface::cast(FWObjectReference::getObject(*it));
+            assert(iface);
+            if (iface->getParent() == fw)
+            {
+                processStateSyncGroup(cluster, fw, state_sync_group, iface);
+            }
+        }
     }
 
     /* For VRRP references the hierarchy is as follows:

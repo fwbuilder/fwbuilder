@@ -46,6 +46,7 @@ namespace libfwbuilder {
     class Address;
     class Cluster;
     class FailoverClusterGroup;
+    class StateSyncClusterGroup;
     class Service;
     class Interval;
     class IPv4;
@@ -229,6 +230,10 @@ protected:
                                   libfwbuilder::Firewall *fw,
                                   libfwbuilder::FailoverClusterGroup *cluster_group,
                                   libfwbuilder::Interface *iface);
+        void processStateSyncGroup(libfwbuilder::Cluster *cluster,
+                                   libfwbuilder::Firewall *fw,
+                                   libfwbuilder::StateSyncClusterGroup *cluster_group,
+                                   libfwbuilder::Interface *iface);
 
         // checks if address @addr belongs to the subnet defined by @subnet
         bool isReachable(const libfwbuilder::Address* const subnet,
