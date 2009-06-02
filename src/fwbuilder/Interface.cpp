@@ -35,6 +35,7 @@
 #include <fwbuilder/IPv4.h>
 #include <fwbuilder/IPv6.h>
 #include <fwbuilder/FWObjectDatabase.h>
+#include <fwbuilder/Resources.h>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -234,6 +235,10 @@ FWOptions* Interface::getOptionsObject()
     {
         iface_opt = FWOptions::cast(getRoot()->create(InterfaceOptions::TYPENAME));
         add(iface_opt);
+
+        // set default interface options
+        const string host_OS = this->getParentHost()->getStr("host_OS");
+        Resources::setDefaultIfaceOptions(host_OS, this);
     }
     return iface_opt;
 }
