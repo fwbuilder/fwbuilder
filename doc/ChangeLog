@@ -1,3 +1,12 @@
+2009-06-03  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::findWhereUsedRecursively):
+	fixed bug #2800625 "recursive groups cause infinite loop and crash
+	in compiler". When a group included itself, compiler used to go
+	into infinite loop and crash. The fix in this function also takes
+	care of the situation when group A referenced group B, which in
+	turn referenced group A again.
+
 2009-06-01  vadim  <vadim@vk.crocodile.org>
 
 	* newHostDialog.cpp (newHostDialog::selectedInterface): fixed the
