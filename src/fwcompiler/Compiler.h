@@ -235,10 +235,6 @@ protected:
                                    libfwbuilder::StateSyncClusterGroup *cluster_group,
                                    libfwbuilder::Interface *iface);
 
-        // checks if address @addr belongs to the subnet defined by @subnet
-        bool isReachable(const libfwbuilder::Address* const subnet,
-                         const libfwbuilder::InetAddr* const addr);
-
 	public:
 
 	int                                debug;
@@ -265,6 +261,10 @@ protected:
 
         void registerIPv6Rule() { countIPv6Rules++; }
         bool haveIPv6Rules() { return countIPv6Rules > 0; }
+
+        // checks if address @addr belongs to the subnet defined by @subnet
+        static bool isReachable(const libfwbuilder::Address* const subnet,
+                                const libfwbuilder::InetAddr* const addr);
 
         /**
          * returns first object referenced by given rule
