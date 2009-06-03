@@ -79,7 +79,6 @@
 #include <fwbuilder/XMLTools.h>
 #include <fwbuilder/TagService.h>
 #include <fwbuilder/UserService.h>
-#include <fwbuilder/VRRPService.h>
 
 #include <iostream>
 #include <sstream>
