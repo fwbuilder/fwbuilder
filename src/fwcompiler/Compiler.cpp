@@ -826,7 +826,7 @@ void  Compiler::recursiveGroupsInRE::isRecursiveGroup(int grid, FWObject *obj)
         FWObject *o = FWReference::getObject(*i);
         if (Group::cast(o)!=NULL)
         {
-            if (o->getId()==grid)
+            if (o->getId()==grid || obj->getId()==o->getId())
             {
                 compiler->abort("Group '"+o->getName()+"' references itself recursively");
             }
