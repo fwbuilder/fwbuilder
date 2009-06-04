@@ -56,6 +56,8 @@
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/NAT.h"
 #include "fwbuilder/RuleElement.h"
+#include "fwbuilder/FWServiceReference.h"
+#include "fwbuilder/CustomService.h"
 
 using namespace libfwbuilder;
 
@@ -565,18 +567,34 @@ void IPTImporter::pushPolicyRule()
     rule->getSrv()->setNeg(srv_neg);
     rule->getItf()->setNeg(intf_neg);
 
-    if (rule->getSrc()->isAny() &&
-        rule->getDst()->isAny() &&
-        rule->getSrv()->isAny() &&
-        current_state == "RELATED,ESTABLISHED")
+    if (current_state == "RELATED,ESTABLISHED")
     {
-        fwopt->setBool("accept_established", true);
-        skip_rule = true;
-        *Importer::logger
-            << "Using automatic rule controlled by option "
-            << "'Accept established,related states' to match "
-            << "states RELATED,ESTABLISHED"
-            << "\n";
+        if (rule->getSrc()->isAny() &&
+            rule->getDst()->isAny() &&
+            rule->getSrv()->isAny())
+        {
+            fwopt->setBool("accept_established", true);
+            skip_rule = true;
+            *Importer::logger
+                << "Using automatic rule controlled by option "
+                << "'Accept established,related states' to match "
+                << "states RELATED,ESTABLISHED"
+                << "\n";
+        } else
+        {
+            RuleElementSrv *srv = rule->getSrv();
+            std::string protocol = "";
+            if (!rule->getSrv()->isAny())
+            {
+                Service *srv_obj = Service::cast(FWServiceReference::getObject(
+                                                     srv->front()));
+                protocol = srv_obj->getProtocolName();
+            }
+            FWObject *established = getCustomService(
+                "iptables", "-m state --state RELATED,ESTABLISHED", protocol);
+            srv->clearChildren();
+            srv->addRef(established);
+        }
     }
 
     if (rule->getSrc()->isAny() &&

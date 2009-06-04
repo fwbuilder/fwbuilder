@@ -1,3 +1,15 @@
+2009-06-04  vadim  <vadim@vk.crocodile.org>
+
+	* IPTImporter.cpp (IPTImporter::pushPolicyRule): fixed bug
+	#2801362 "Iptables policy import does not handle rules with
+	ESTABLISED". Policy importer for iptables should properly
+	handle rules that use combination of a "-p protocol" and
+	match state "RELATED,ESTABLISHED". Example:
+	-A INBOUND -p tcp -m state --state RELATED,ESTABLISHED -j ACCEPT
+	This rule should translate into fwbuilder rule using CustomService
+	object with code "-m state --state RELATED,ESTABLISHED"
+	and protocol spec "tcp".
+
 2009-06-03  vadim  <vadim@vk.crocodile.org>
 
 	* ObjectManipulator.cpp (ObjectManipulator::findWhereUsedRecursively):

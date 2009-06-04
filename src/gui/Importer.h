@@ -105,7 +105,10 @@ protected:
     // map :  object signature : object
     // use this to quickly find objects to avoid creating duplicates
     std::map<const std::string,libfwbuilder::FWObject*>   all_objects;
-    
+
+    int custom_service_code_tracker;
+    std::map<const std::string, int> custom_service_codes;
+
     UnidirectionalRuleSet* current_ruleset;
 
     libfwbuilder::Rule* current_rule;
@@ -140,6 +143,9 @@ protected:
     // exists, it is created
     UnidirectionalRuleSet* getUnidirRuleSet(const std::string &rsname);
     
+    virtual libfwbuilder::FWObject* getCustomService(const std::string &platform,
+                                                     const std::string &code,
+                                                     const std::string &protocol);
     virtual libfwbuilder::FWObject* getIPService(int proto);
     virtual libfwbuilder::FWObject* getICMPService(int type, int code);
 
