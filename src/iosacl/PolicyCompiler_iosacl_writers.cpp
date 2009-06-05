@@ -275,8 +275,7 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
     aclstr << _printDstService( compiler->getFirstSrv(rule) );
     aclstr << _printLog( rule );
     // "fragments" should be the last option in the access-list command
-    aclstr << _printFragm( compiler->getFirstSrv(rule) );
-    aclstr << _printTOS( compiler->getFirstSrv(rule) );
+    aclstr << _printIPServiceOptions(rule);
 
 //    aclstr << endl;
 
@@ -345,20 +344,20 @@ string PolicyCompiler_iosacl::PrintRule::_printSrcService(Service *srv)
     return str.str();
 }
 
-string PolicyCompiler_iosacl::PrintRule::_printFragm(Service *srv)
+string PolicyCompiler_iosacl::PrintRule::_printIPServiceOptions(PolicyRule *r)
 {
-    if (IPService::isA(srv) && (
-            srv->getBool("fragm") || srv->getBool("short_fragm")))
-        return "fragments ";
-    
-    return "";
-}
-
-string PolicyCompiler_iosacl::PrintRule::_printTOS(Service *srv)
-{
+    Service *srv = compiler->getFirstSrv(r);
     const IPService *ip;
     if ((ip=IPService::constcast(srv))!=NULL)
     {
+        if (ip->getBool("lsrr") || ip->getBool("ssrr") || ip->getBool("rr"))
+            compiler->abort(
+                string("Source routing options match is not supported. Rule ") +
+                r->getLabel());
+
+        if (srv->getBool("fragm") || srv->getBool("short_fragm"))
+            return "fragments ";
+
         string tos = ip->getTOSCode();
         string dscp = ip->getDSCPCode();
         if (!dscp.empty()) return string("dscp ") + dscp;

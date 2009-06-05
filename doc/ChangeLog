@@ -1,3 +1,24 @@
+2009-06-05  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_printIP): fixed bug
+	#2801548 "fwb_ipt should issue error for ipsrv with options for
+	ipv6". Since IP options lsrr, ssrr, rr do not exist in ipv6,
+	compiler should refuse to compile rules that request matching
+	these options.
+
+	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printIPServiceOptions):
+	fixed bug #2801547 "fwb_iosacl should issue an error for ipservice
+	with options". IOS access lists can not match source routing
+	options set in IPService object, compiler should issue an error
+	and abort processing when an object like this is encountered in a
+	rule.
+
+	* IPServiceDialog.cpp (IPServiceDialog::loadFWObject): fixed bug
+	#2801545 "IP Service object: lsrr, ssrr, rr options not saved".
+
+	* PolicyCompiler_pf_writers.cpp (PrintRule::_printDstService):
+	fixed bug #2801544 "missing space after tos option in pf config"
+
 2009-06-04  vadim  <vadim@vk.crocodile.org>
 
 	* IPTImporter.cpp (IPTImporter::pushPolicyRule): fixed bug

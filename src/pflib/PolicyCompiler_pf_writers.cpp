@@ -580,7 +580,7 @@ void PolicyCompiler_pf::PrintRule::_printDstService(RuleElementSrv  *rel)
             const IPService *ip = IPService::constcast(srv);
             string tos = ip->getTOSCode();
             string dscp = ip->getDSCPCode();
-            if (!tos.empty()) compiler->output << " tos " << tos;
+            if (!tos.empty()) compiler->output << " tos " << tos << " ";
             if (!dscp.empty())
                 compiler->abort("PF does not support DSCP matching");
         }

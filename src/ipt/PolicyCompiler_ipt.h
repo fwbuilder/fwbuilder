@@ -890,7 +890,8 @@ namespace fwcompiler {
             virtual std::string _printSrcPorts(libfwbuilder::Service *srv);
             virtual std::string _printDstPorts(libfwbuilder::Service *srv);
             virtual std::string _printICMP(libfwbuilder::ICMPService *srv);
-            virtual std::string _printIP(libfwbuilder::IPService *srv);
+            virtual std::string _printIP(libfwbuilder::IPService *srv,
+                                         libfwbuilder::PolicyRule *rule);
             virtual std::string _printTCPFlags(libfwbuilder::TCPService *srv);
             virtual std::string _printSrcAddr(libfwbuilder::RuleElement *rel,
                                               libfwbuilder::Address *o);
