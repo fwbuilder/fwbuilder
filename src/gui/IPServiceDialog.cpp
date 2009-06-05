@@ -91,9 +91,9 @@ void IPServiceDialog::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->protocolNum->setValue( s->getProtocolNumber() );
-    m_dialog->lsrr->setChecked( s->getBool("m_dialog->lsrr") );
-    m_dialog->ssrr->setChecked( s->getBool("m_dialog->ssrr") );
-    m_dialog->rr->setChecked( s->getBool("m_dialog->rr") );
+    m_dialog->lsrr->setChecked( s->getBool("lsrr") );
+    m_dialog->ssrr->setChecked( s->getBool("ssrr") );
+    m_dialog->rr->setChecked( s->getBool("rr") );
     m_dialog->timestamp->setChecked( s->getBool("ts") );
     m_dialog->all_fragments->setChecked( s->getBool("fragm") );
     m_dialog->short_fragments->setChecked( s->getBool("short_fragm") );

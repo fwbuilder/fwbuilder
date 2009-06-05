@@ -46,6 +46,7 @@
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
+#include "fwbuilder/CustomService.h"
 #include "fwbuilder/TagService.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Policy.h"
@@ -125,6 +126,7 @@ Importer::Importer(FWObject *_lib,
     current_interface = NULL;
     current_ruleset = NULL;
     current_rule = NULL;
+    custom_service_code_tracker = 0;
 
     tcp_flag_names[libfwbuilder::TCPService::URG]="u";
     tcp_flag_names[libfwbuilder::TCPService::ACK]="a";
@@ -492,6 +494,37 @@ void Importer::addOSrv()
 Firewall* Importer::finalize()
 {
     return fw;
+}
+
+FWObject* Importer::getCustomService(const std::string &platform,
+                                     const std::string &code,
+                                     const std::string &protocol)
+{
+    // this assumes protocol is represented by a number
+    if (custom_service_codes.count(platform + code)==0)
+    {
+        custom_service_codes[platform + code] = custom_service_code_tracker;
+        custom_service_code_tracker++;
+    }
+
+    std::ostringstream nstr, cstr, sstr;
+    nstr << "cust-" << custom_service_codes[platform + code] << "-" << protocol;
+    sstr << "cust-" << custom_service_codes[platform + code] << "-" << protocol;
+    cstr << "Imported from " << getFirewallObject()->getName() << "\n"
+         << "code: " << code << "\n"
+         << "protocol: " << protocol;
+
+    if (all_objects.count(sstr.str())!=0) return all_objects[sstr.str()];
+
+    CustomService *s = CustomService::cast(
+        createObject(CustomService::TYPENAME, nstr.str()));
+    if (!protocol.empty()) s->setProtocol(protocol);
+    s->setCodeForPlatform(platform, code);
+    s->setComment(cstr.str());
+    all_objects[sstr.str()] = s;
+
+    *logger << "Custom Service object: " << nstr.str() << "\n";
+    return s;
 }
 
 FWObject* Importer::getIPService(int proto)

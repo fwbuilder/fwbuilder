@@ -3211,11 +3211,19 @@ void ObjectManipulator::findWhereUsedRecursively(FWObject *obj,
                obj->getName().c_str(), obj->getTypeName().c_str());
 
     set<FWObject*> resset_tmp;
-    set<FWObject*> resset_tmp2;
 
+/*
+ * findWhereObjectIsUsed() finds references to object 'obj' in a subtree
+ *  rooted at object 'top'.
+ */
     m_project->db()->findWhereObjectIsUsed(obj, top, resset_tmp);
+    set<FWObject *>::iterator i = resset.begin();
+    for ( ; i!=resset.end(); ++i)
+        if (resset_tmp.count(*i)) resset_tmp.erase(*i);
 
-    set<FWObject *>::iterator i = resset_tmp.begin();
+    resset.insert(resset_tmp.begin(), resset_tmp.end());
+
+    i = resset_tmp.begin();
     for ( ; i!=resset_tmp.end(); ++i)
     {
         FWObject *parent_obj = *i;
@@ -3226,11 +3234,8 @@ void ObjectManipulator::findWhereUsedRecursively(FWObject *obj,
         // add new results to a separate set to avoid modifying the resset_tmp
         // in the middle of iteration
         if (Group::cast(parent_obj) && !RuleElement::cast(parent_obj))
-            findWhereUsedRecursively(parent_obj, top, resset_tmp2);
+            findWhereUsedRecursively(parent_obj, top, resset);
     }
-
-    resset.insert(resset_tmp.begin(), resset_tmp.end());
-    resset.insert(resset_tmp2.begin(), resset_tmp2.end());
 }
 
 list<Firewall *> ObjectManipulator::findFirewallsForObject(FWObject *o)

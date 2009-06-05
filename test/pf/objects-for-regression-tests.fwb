@@ -406,15 +406,6 @@
     <ObjectRef ref="host-hostB"/>
     <ObjectRef ref="id3B022266"/>
     <ObjectRef ref="id3B4572AF"/>
-    <ObjectRef ref="sysid0"/>
-    <ServiceRef ref="sysid1"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ServiceRef ref="sysid1"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="id3B0C63E1"/>
-    <ObjectRef ref="host-hostA"/>
-    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -5302,7 +5293,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3E853CBE" host_OS="freebsd" inactive="False" lastCompiled="1157930825" lastInstalled="0" lastModified="1200415214" platform="pf" version="" name="firewall9" comment="testing rules with broadcasts" ro="False">
+      <Firewall id="id3E853CBE" host_OS="freebsd" inactive="False" lastCompiled="1244147946" lastInstalled="0" lastModified="1200415214" platform="pf" version="" name="firewall9" comment="testing rules with broadcasts" ro="False">
         <NAT id="id3E853CBF" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3E853EF8" disabled="True" position="0" comment="">
             <OSrc neg="False">
