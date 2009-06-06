@@ -1,3 +1,12 @@
+2009-06-06  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_pf.cpp (PolicyCompiler_pf::compile): fixed
+	bug (no #): compiler for PF did not remove rules using IPv4
+	objects while compiling policy set to be "combined IPv4 and IPv6"
+	for IPv6 and vice versa. As the result, it used to double some
+	rules because the would appear both in IPv4 and IPv6 sections of
+	generated .conf file.
+
 2009-06-05  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printIP): fixed bug

@@ -1088,6 +1088,11 @@ void PolicyCompiler_pf::compile()
         add( new separateTagged("split on TagService"));
         add( new separateTOS("split on IPService with TOS"));
 
+        if (ipv6)
+            add( new DropIPv4Rules("drop ipv4 rules"));
+        else
+            add( new DropIPv6Rules("drop ipv6 rules"));
+
 	add( new verifyCustomServices(
                  "verify custom services for this platform"));
 //	add( new ProcessScrubOption(    "process 'scrub' option"         ));

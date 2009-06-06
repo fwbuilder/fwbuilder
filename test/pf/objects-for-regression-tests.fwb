@@ -406,6 +406,7 @@
     <ObjectRef ref="host-hostB"/>
     <ObjectRef ref="id3B022266"/>
     <ObjectRef ref="id3B4572AF"/>
+    <ServiceRef ref="sysid1"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -13387,7 +13388,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id33881X22329" host_OS="freebsd" inactive="False" lastCompiled="1228758356" lastInstalled="0" lastModified="1229404684" platform="pf" version="" name="firewall-ipv6-2" comment="Combined ipv4/ipv6 policy ruleset" ro="False">
+      <Firewall id="id33881X22329" host_OS="freebsd" inactive="False" lastCompiled="1228758356" lastInstalled="0" lastModified="1244319416" platform="pf" version="" name="firewall-ipv6-2" comment="Combined ipv4/ipv6 policy ruleset" ro="False">
         <NAT id="id34057X22329" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id33912X22329" name="Policy" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="True" top_rule_set="True">
           <PolicyRule id="id22170X16797" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -13473,6 +13474,8 @@
           <PolicyRule id="id22102X16797" disabled="False" group="" log="True" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4834A2238571"/>
+              <ObjectRef ref="id20598X3490"/>
+              <ObjectRef ref="id20599X3490"/>
             </Src>
             <Dst neg="False">
               <ObjectRef ref="id34059X22329"/>
@@ -13493,6 +13496,7 @@
           <PolicyRule id="id22085X16797" disabled="False" group="" log="True" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4834A2278571"/>
+              <ObjectRef ref="id4387287918346"/>
             </Src>
             <Dst neg="False">
               <ObjectRef ref="id34059X22329"/>
@@ -13619,6 +13623,27 @@
             </Dst>
             <Srv neg="False">
               <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id16929X60595" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="ipv6-icmp-ping_request"/>
+              <ServiceRef ref="icmp-ping_request"/>
             </Srv>
             <Itf neg="False">
               <ObjectRef ref="sysid0"/>
@@ -16033,6 +16058,7 @@
         <ICMPService id="icmp-Unreachables" code="-1" type="3" name="all ICMP unreachables" comment="" ro="False"/>
         <ICMPService id="icmp-ping_request" code="0" type="8" name="ping request" comment="" ro="False"/>
         <ICMPService id="id3C20EEB5" code="-1" type="-1" name="any ICMP" comment="" ro="False"/>
+        <ICMP6Service id="ipv6-icmp-ping_request" code="0" type="128" name="ipv6 ping request" comment="IPv6 ping request" ro="False"/>
         <ICMPService id="icmp-Time_exceeded" code="0" type="11" name="time exceeded" comment="ICMP messages of this type are needed for traceroute" ro="False"/>
         <ICMPService id="icmp-Time_exceeded_in_transit" code="1" type="11" name="time exceeded in transit" comment="" ro="False"/>
         <ICMPService id="icmp-ping_reply" code="0" type="0" name="ping reply" comment="" ro="False"/>
