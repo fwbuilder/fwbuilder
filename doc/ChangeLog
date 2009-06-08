@@ -1,3 +1,10 @@
+2009-06-08  vadim  <vadim@vk.crocodile.org>
+
+	* NATCompiler.cpp (classifyNATRule::processNext): rules that
+	translate only source port are now classified as SNAT, rules that
+	translate only dest. port are classified as DNAT. Rules that try
+	to translate one service type into another cause exception
+
 2009-06-03  vadim  <vadim@vk.crocodile.org>
 
 	* Compiler.cpp (recursiveGroupsInRE::isRecursiveGroup): fixed bug

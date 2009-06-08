@@ -37,6 +37,7 @@
 #include "fwbuilder/Network.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
+#include "fwbuilder/TCPUDPService.h"
 
 #include <iostream>
 #include <iomanip>
@@ -172,13 +173,46 @@ bool NATCompiler::classifyNATRule::processNext()
     Address  *tdst=compiler->getFirstTDst(rule);
     Service  *tsrv=compiler->getFirstTSrv(rule);
 
-    if (   tsrc->isAny() &&   tdst->isAny() && tsrv->isAny() ) 
+    if (tsrc->isAny() && tdst->isAny() && tsrv->isAny())
     {
 	rule->setRuleType(NATRule::NONAT);
 	return true;
     }
 
-    if ( ! tsrc->isAny() &&   tdst->isAny() ) 
+    if ( !( *osrv == *tsrv ) )  // have operator==, but do not have operator!=
+    {
+        if (osrv->getTypeName() != tsrv->getTypeName())
+            throw FWException("NAT rule can not change service types: " +
+                              osrv->getTypeName() + " to " +
+                              tsrv->getTypeName() + "; NAT rule: "+rule->getLabel());
+
+        if (TCPUDPService::cast(osrv))
+        {
+            TCPUDPService *tu_osrv = TCPUDPService::cast(osrv);
+            TCPUDPService *tu_tsrv = TCPUDPService::cast(tsrv);
+            if (tu_osrv->getSrcRangeStart() != 0 && tu_osrv->getDstRangeStart() == 0 &&
+                tu_tsrv->getSrcRangeStart() != 0 && tu_tsrv->getDstRangeStart() == 0)
+            {
+                // translating source port
+                rule->setRuleType(NATRule::SNAT);
+                return true;
+            }
+
+            if (tu_osrv->getSrcRangeStart() == 0 && tu_osrv->getDstRangeStart() != 0 &&
+                tu_tsrv->getSrcRangeStart() == 0 && tu_tsrv->getDstRangeStart() != 0)
+            {
+                // translating dest port
+                rule->setRuleType(NATRule::DNAT);
+                return true;
+            }
+        }
+
+        rule->setRuleType(NATRule::DNAT);
+	return true;
+    }
+
+
+    if ( ! tsrc->isAny() && tdst->isAny())
     {
         if ( Network::isA(tsrc) )
 /* 
@@ -191,7 +225,7 @@ bool NATCompiler::classifyNATRule::processNext()
         return true;
     }
 
-    if (   tsrc->isAny() && ! tdst->isAny() ) 
+    if (tsrc->isAny() && ! tdst->isAny() ) 
     {
 /* this is load balancing rule if there are multiple objects in TDst */
         if ( tdstre->size()>1 ) rule->setRuleType(NATRule::LB);
@@ -231,12 +265,6 @@ bool NATCompiler::classifyNATRule::processNext()
     if ( ! tsrc->isAny() && ! tdst->isAny() ) 
     {
         rule->setRuleType(NATRule::SDNAT);
-	return true;
-    }
-
-    if ( !( *osrv == *tsrv ) )  // have operator==, but do not have operator!=
-    {
-        rule->setRuleType(NATRule::DNAT);
 	return true;
     }
 
