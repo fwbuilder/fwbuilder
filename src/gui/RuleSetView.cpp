@@ -1404,11 +1404,10 @@ QRect RuleSetView::calculateCellSize( int row, int col )
             if (ruleP==NULL)
                 break ;
             QString ac = ruleP->getDirectionAsString().c_str();
-                   // FWObjectPropertiesFactory::getRuleActionProperties(
-                   // PolicyRule::cast(rule));
-            QRect br=p.boundingRect(QRect(0, 0, 1000, 1000),
-                                    Qt::AlignLeft|Qt::AlignVCenter, ac );
-
+            if (ac == "Undefined") ac = "Both";
+            QRect br = p.boundingRect(QRect(0, 0, 1000, 1000),
+                                      Qt::AlignLeft|Qt::AlignVCenter, ac );
+            
             hc = item_h;
             wc = RuleElementSpacing/2 + pixmap_w + RuleElementSpacing + br.width();
             break;
@@ -1785,11 +1784,10 @@ void RuleSetView::paintCell(QPainter *pntr,
             {
                 PolicyRule *rule = PolicyRule::cast( ruleIndex[row] );
                 if (rule==NULL) return;
-
+                
                 string dir = rule->getDirectionAsString();
-		        QString dir_ = rule->getDirectionAsString().c_str();
-                if (dir.empty()) 
-			        dir = "Both";
+                if (dir.empty() || dir == "Undefined") 
+                    dir = "Both";
 		//dir="Both-tree";
 		         
                 QString icn = chooseIcon((":/Icons/" + dir).c_str());

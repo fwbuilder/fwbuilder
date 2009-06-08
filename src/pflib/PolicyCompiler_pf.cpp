@@ -347,7 +347,7 @@ bool PolicyCompiler_pf::fillDirection::processNext()
  * as long as it misses interface - we need to determine direction
  * again anyway.
  */
-    if (rule->getDirectionAsString()=="")   // || rule->getInterfaceId()==-1 )
+    if (rule->getDirection() == PolicyRule::Undefined)   // || rule->getInterfaceId()==-1 )
         rule->setDirection( PolicyRule::Both );
 
 /*
