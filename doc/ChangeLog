@@ -1,5 +1,8 @@
 2009-06-08  vadim  <vadim@vk.crocodile.org>
 
+	* Rule.cpp (PolicyRule::getDirectionAsString): should return
+	string "Undefined" for the direction equal to PolicyRule::Undefined
+
 	* NATCompiler.cpp (classifyNATRule::processNext): support for
 	SDNAT rules that translate both addresses and ports.
 

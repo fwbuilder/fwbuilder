@@ -278,7 +278,7 @@ string PolicyRule::getDirectionAsString() const
     case Outbound:  return "Outbound";
     case Both:      return "Both";
     }
-    return "Both";
+    return "Undefined";
 }
 
 void PolicyRule::setDirection(const string& dir)
