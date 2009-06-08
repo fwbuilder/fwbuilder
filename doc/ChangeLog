@@ -1,5 +1,16 @@
 2009-06-08  vadim  <vadim@vk.crocodile.org>
 
+	* NATCompiler_ipt.cpp (splitSDNATRule::processNext): Improved
+	support for NAT rules that translate both source and destination:
+	now a rule like this can translate both source and destination
+	addresses and at the same time source and destination port ranges.
+	Compiler generates two iptables commands, one with SNAT and
+	another with DNAT translation for a rule like this.
+
+	* PolicyCompiler_ipt.cpp (checkForDynamicInterfacesOfOtherObjects::findDynamicInterfaces):
+	Using Compiler::abort() instead of throwing exception on all error
+	conditions in the compiler.
+
 	* NATCompiler_PrintRule.cpp (PrintRule::processNext): Added
 	support for SNAT rules that translate only source port of udp or
 	tcp packets. This rule generate "-j SNAT --to-source :<port>"

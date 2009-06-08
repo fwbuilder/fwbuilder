@@ -2422,7 +2422,7 @@ bool PolicyCompiler_ipt::checkSrcAndDst1::processNext()
     if (src->getId()!=compiler->getFwId() &&
 	dst->getId()==compiler->getFwId() &&
 	rule->getDirection()==PolicyRule::Outbound )
-	throw FWException(_("direction can not be outbound when destination is firewall, in rule ")+rule->getLabel());
+	compiler->abort(_("direction can not be outbound when destination is firewall, in rule ")+rule->getLabel());
 
     tmp_queue.push_back(rule);
     return true;
@@ -2440,7 +2440,7 @@ bool PolicyCompiler_ipt::checkSrcAndDst2::processNext()
     if (src->getId()==compiler->getFwId() &&
 	dst->getId()!=compiler->getFwId() &&
 	rule->getDirection()==PolicyRule::Inbound )
-	throw FWException(_("direction can not be inbound when source is firewall, in rule ")+rule->getLabel());
+	compiler->abort(_("direction can not be inbound when source is firewall, in rule ")+rule->getLabel());
 
     tmp_queue.push_back(rule);
     return true;
@@ -2611,7 +2611,7 @@ void PolicyCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInt
                     ifs->getParent()->getName().c_str(),
                     rule->getLabel().c_str() );
 
-            throw FWException(errstr);
+            compiler->abort(errstr);
         }
     }
 }

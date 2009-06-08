@@ -188,7 +188,7 @@ int NATCompiler_ipt::prolog()
 	}
 
 	if (!found_ext)
-	    throw FWException(_("At least one interface should be marked as external, can not configure NAT"));
+	    abort(_("At least one interface should be marked as external, can not configure NAT"));
     }
 
     return n;
@@ -373,10 +373,45 @@ bool NATCompiler_ipt::splitSDNATRule::processNext()
 
         if ( ! rule->getTSrv()->isAny())
         {
-            osrv=r->getOSrv();
-            osrv->clearChildren();
-            for (FWObject::iterator i=rule->getTSrv()->begin(); i!=rule->getTSrv()->end(); i++)
-                osrv->add( *i );
+            /*
+             * If the first rule in the pair translated service and
+             * changed destination port, we need to match it in the
+             * second rule to only trsnslate source in the packets
+             * that have been processed by the first rule. However
+             * this only applies to the case when destination port has
+             * been translated because the first rule uses DNAT which
+             * can only translate dest. port. So, if TSrv has zero
+             * dest.  port range but non-zero source port range, we
+             * should not match it here because in this case no
+             * dest. port translation occurs.  If TSrv translates both
+             * source and destination ports, we create new TCP(UDP)
+             * service object with only dest. port part and use it to
+             * match.
+             */
+            Service *tsrv = compiler->getFirstTSrv(rule);
+            TCPUDPService *tu_tsrv = TCPUDPService::cast(tsrv);
+            if (tu_tsrv && tu_tsrv->getDstRangeStart() != 0)
+            {
+                TCPUDPService *match_service = NULL;
+                if (tu_tsrv->getSrcRangeStart() == 0)
+                {
+                    // no source port tranlsation
+                    match_service = tu_tsrv;
+                } else
+                {
+                    // both source and dest port translation occurs
+                    match_service = TCPUDPService::cast(
+                        compiler->dbcopy->create(tsrv->getTypeName()));
+                    match_service->setName(tsrv->getName() + "_dport");
+                    compiler->dbcopy->add(match_service);
+                    compiler->cacheObj(match_service); // to keep cache consistent
+                    match_service->setDstRangeStart(tu_tsrv->getDstRangeStart());
+                    match_service->setDstRangeEnd(tu_tsrv->getDstRangeEnd());
+                }
+                osrv = r->getOSrv();
+                osrv->clearChildren();
+                osrv->addRef(match_service);
+            }
         }
 
         tdst=r->getTDst();
@@ -407,23 +442,23 @@ bool NATCompiler_ipt::VerifyRules::processNext()
     RuleElementTSrv  *tsrv=rule->getTSrv();  assert(tsrv);
 
     if (tsrc->getNeg())
-	throw FWException(_("Can not use negation in translated source. Rule ")+rule->getLabel());
+	compiler->abort(_("Can not use negation in translated source. Rule ")+rule->getLabel());
 
     if (tdst->getNeg())
-	throw FWException(_("Can not use negation in translated destination. Rule ")+rule->getLabel());
+	compiler->abort(_("Can not use negation in translated destination. Rule ")+rule->getLabel());
 
     if (tsrv->getNeg())
-	throw FWException(_("Can not use negation in translated service. Rule ")+rule->getLabel());
+	compiler->abort(_("Can not use negation in translated service. Rule ")+rule->getLabel());
 
     if (tsrv->size()!=1) 
-	throw FWException(_("Translated service should be 'Original' or should contain single object. Rule: ")+rule->getLabel());
+	compiler->abort(_("Translated service should be 'Original' or should contain single object. Rule: ")+rule->getLabel());
 
     if ( Group::cast( compiler->getFirstTSrv(rule) )!=NULL)
-	throw FWException(_("Can not use group in translated service. Rule ")+rule->getLabel());
+	compiler->abort(_("Can not use group in translated service. Rule ")+rule->getLabel());
 
 
     if (rule->getRuleType()==NATRule::LB)
-        throw FWException(_("Load balancing rules are not supported. Rule ")+rule->getLabel());
+        compiler->abort(_("Load balancing rules are not supported. Rule ")+rule->getLabel());
 
 
     if (rule->getRuleType()==NATRule::DNAT) 
@@ -482,7 +517,7 @@ bool NATCompiler_ipt::VerifyRules::processNext()
 
         Address* o1=compiler->getFirstTSrc(rule);
         if ( ! tsrc->isAny() && Network::cast(o1)!=NULL)
-            throw FWException(_("Can not use network object in translated source. Rule ")+rule->getLabel());
+            compiler->abort(_("Can not use network object in translated source. Rule ")+rule->getLabel());
     }
 
 
@@ -492,7 +527,7 @@ bool NATCompiler_ipt::VerifyRules::processNext()
         Network *a2=Network::cast(compiler->getFirstTSrc(rule));
         if ( a1==NULL || a2==NULL ||
              a1->getNetmaskPtr()->getLength() != a2->getNetmaskPtr()->getLength() )
-            throw FWException(_("Original and translated source should both be networks of the same size . Rule ")+rule->getLabel());
+            compiler->abort(_("Original and translated source should both be networks of the same size . Rule ")+rule->getLabel());
     }
 
     if (rule->getRuleType()==NATRule::DNetnat && !tsrc->isAny() ) 
@@ -501,8 +536,11 @@ bool NATCompiler_ipt::VerifyRules::processNext()
         Network *a2=Network::cast(compiler->getFirstTDst(rule));
         if ( a1==NULL || a2==NULL ||
              a1->getNetmaskPtr()->getLength() != a2->getNetmaskPtr()->getLength() )
-            throw FWException(_("Original and translated destination should both be networks of the same size . Rule ")+rule->getLabel());
+            compiler->abort(_("Original and translated destination should both be networks of the same size . Rule ")+rule->getLabel());
     }
+
+    Service  *osrv_obj = compiler->getFirstOSrv(rule);
+    Service  *tsrv_obj = compiler->getFirstTSrv(rule);
 
     return true;
 }
@@ -527,10 +565,10 @@ bool NATCompiler_ipt::VerifyRules2::processNext()
         Service *s2=compiler->getFirstTSrv(rule);
 
         if (osrv->isAny() && ! tsrv->isAny())
-            throw FWException(_("Can not use service object in Translated Service if Original Service is 'Any'. Rule ")+rule->getLabel());
+            compiler->abort(_("Can not use service object in Translated Service if Original Service is 'Any'. Rule ")+rule->getLabel());
         
         if (!tsrv->isAny() && s1->getProtocolNumber()!=s2->getProtocolNumber())
-            throw FWException(_("Translated Service should be either 'Original' or should contain object of the same type as Original Service. Rule ")+rule->getLabel());
+            compiler->abort(_("Translated Service should be either 'Original' or should contain object of the same type as Original Service. Rule ")+rule->getLabel());
     }
     return true;
 }
@@ -1131,7 +1169,7 @@ void NATCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInterf
                     ifs->getParent()->getName().c_str(),
                     rule->getLabel().c_str() );
 
-            throw FWException(errstr);
+            compiler->abort(errstr);
         }
     }
 }
