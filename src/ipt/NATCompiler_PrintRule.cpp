@@ -652,8 +652,10 @@ bool NATCompiler_ipt::PrintRule::processNext()
 	if (rule->getStr("ipt_target")=="SNAT")
         {
 	    cmdout << "--to-source ";
-	    cmdout << _printAddr(tsrc,false,true);
-	    string ports=_printSNATPorts(tsrv);
+            // if TSrc is "any" and this is SNAT rule, then this rule only
+            // translates source port. Skip address part.
+            if (!tsrc->isAny()) cmdout << _printAddr(tsrc, false, true);
+	    string ports = _printSNATPorts(tsrv);
 	    if (!ports.empty()) cmdout << ":" << ports;
 	}
 	break;
@@ -667,8 +669,10 @@ bool NATCompiler_ipt::PrintRule::processNext()
 	if (rule->getStr("ipt_target")=="DNAT")
         {
 	    cmdout << "--to-destination ";
-            if (!tdst->isAny()) cmdout << _printAddr(tdst,false,true);
-	    string ports=_printDNATPorts(tsrv);
+            // if TDst is "any" and this is DNAT rule, then this rule only
+            // translates source port. Skip address part.
+            if (!tdst->isAny()) cmdout << _printAddr(tdst, false, true);
+	    string ports = _printDNATPorts(tsrv);
 	    if (!ports.empty()) cmdout << ":" << ports;
 	}
 	break;
