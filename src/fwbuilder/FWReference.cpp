@@ -166,6 +166,7 @@ void FWReference::dump(std::ostream &f, bool recursive, bool brief, int offset)
 
 FWObject* FWReference::getObject(FWObject* o)
 {
+    if (o==NULL) return NULL;
     if (FWReference::cast(o)!=NULL) return FWReference::cast(o)->getPointer();
     return o;
 }

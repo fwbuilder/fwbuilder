@@ -1167,7 +1167,7 @@ Interval* Compiler::getFirstWhen(PolicyRule *rule)
 Interface* Compiler::getFirstItf(PolicyRule *rule)
 {
     RuleElementItf *itf = rule->getItf();
-    if (itf==NULL) return NULL;  // itf is optional element
+    if (itf==NULL || itf->size()==0) return NULL;  // itf is optional element
     FWObject *o = FWReference::getObject(itf->front());
     return Interface::cast(o);
 }
