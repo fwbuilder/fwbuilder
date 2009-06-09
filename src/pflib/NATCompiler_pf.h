@@ -343,8 +343,8 @@ namespace fwcompiler {
             std::string                      current_rule_label;
 
             virtual void _printProtocol(libfwbuilder::Service *srv);
-            virtual void _printPort(libfwbuilder::Service *srv,
-                                    bool lhs);
+            virtual void _printPort(libfwbuilder::Service *srv, bool lhs);
+            virtual void _printSrcPort(libfwbuilder::Service *srv);
 
             virtual void _printAddrList(libfwbuilder::FWObject  *o,bool negflag);
             virtual void _printREAddr(libfwbuilder::RuleElement *o);

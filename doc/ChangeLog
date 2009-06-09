@@ -1,3 +1,16 @@
+2009-06-09  vadim  <vadim@vk.crocodile.org>
+
+	* NATCompiler_pf_writers.cpp (PrintRule::_printSrcPort): fixed bug
+	#2803702 "NAT rule with source port range in TSrv is broken for
+	PF".  NAT rules matching source port ranges and translating source
+	port ranges should be possible.
+
+	* NATCompiler.cpp (classifyNATRule::processNext): (change in
+	libfwbuilder) fixed bug #2803689 "NAT rule matching dport but
+	chaning sport is broken".  NAT rules that match destination port
+	but translate source port should be possible (and the opposite
+	too).
+
 2009-06-08  vadim  <vadim@vk.crocodile.org>
 
 	* NATCompiler_ipt.cpp (splitSDNATRule::processNext): Improved

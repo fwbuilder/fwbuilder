@@ -11422,7 +11422,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3DDDE6C3" host_OS="linux24" lastCompiled="1244480616" lastInstalled="1142003872" lastModified="1244491057" platform="iptables" name="firewall12" comment="This firewall does not do NAT for addresses, but translates port for a server&#10;" ro="False">
+      <Firewall id="id3DDDE6C3" host_OS="linux24" lastCompiled="1244480616" lastInstalled="1142003872" lastModified="1244582487" platform="iptables" name="firewall12" comment="This firewall does not do NAT for addresses, but translates port for a server&#10;" ro="False">
         <NAT id="id3DDDE6C7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3DDDE6D6" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -11739,7 +11739,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id46935X95438" disabled="False" group="" position="15" comment="invalid rule">
+          <NATRule id="id46935X95438" disabled="False" group="" position="15" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>

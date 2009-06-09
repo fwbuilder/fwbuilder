@@ -84,7 +84,7 @@ int NATCompiler_pf::prolog()
 	}
 
 	if (!found_ext)
-	    throw FWException(
+	    abort(
                 "At least one interface should be marked as external, "
                 "can not configure NAT");
     }
@@ -130,25 +130,60 @@ bool NATCompiler_pf::NATRuleType::processNext()
 
     if (rule->getRuleType()!=NATRule::Unknown) return true;
 
-    RuleElementTDst *tdstre=rule->getTDst();
+    RuleElementTDst *tdstre = rule->getTDst();
 
-    //Address  *osrc=compiler->getFirstOSrc(rule);
-    //Address  *odst=compiler->getFirstODst(rule);
+    Service  *osrv=compiler->getFirstOSrv(rule);
                                              
-    Address  *tsrc=compiler->getFirstTSrc(rule);
-    Address  *tdst=compiler->getFirstTDst(rule);
+    Address *tsrc = compiler->getFirstTSrc(rule);
+    Address *tdst = compiler->getFirstTDst(rule);
+    Service  *tsrv=compiler->getFirstTSrv(rule);
 
-    if (   tsrc->isAny() &&   tdst->isAny() ) {
+    if (tsrc->isAny() && tdst->isAny() && tsrv->isAny())
+    {
 	rule->setRuleType(NATRule::NONAT);
 	return true;
     }
 
-    if ( ! tsrc->isAny() && tdst->isAny() ) {
+    bool osrv_defines_src_port = false;
+    bool osrv_defines_dst_port = false;
+    bool tsrv_translates_src_port = false;
+    bool tsrv_translates_dst_port = false;
+
+    if (TCPUDPService::cast(osrv))
+    {
+        TCPUDPService *tu_osrv = TCPUDPService::cast(osrv);
+
+        osrv_defines_src_port =                                         \
+            (tu_osrv->getSrcRangeStart() != 0 && tu_osrv->getDstRangeStart() == 0);
+        osrv_defines_dst_port =                                         \
+            (tu_osrv->getSrcRangeStart() == 0 && tu_osrv->getDstRangeStart() != 0);
+    }
+
+    if (TCPUDPService::cast(tsrv))
+    {
+        TCPUDPService *tu_tsrv = TCPUDPService::cast(tsrv);
+
+        tsrv_translates_src_port =                                      \
+            (tu_tsrv->getSrcRangeStart() != 0 && tu_tsrv->getDstRangeStart() == 0);
+        tsrv_translates_dst_port =                                      \
+            (tu_tsrv->getSrcRangeStart() == 0 && tu_tsrv->getDstRangeStart() != 0);
+    }
+
+
+    if (
+        (! tsrc->isAny() && tdst->isAny()) ||
+        (tsrc->isAny() && tdst->isAny() && tsrv_translates_src_port)
+    )
+    {
         rule->setRuleType(NATRule::SNAT);
 	return true;
     }
 
-    if (   tsrc->isAny() && ! tdst->isAny() ) {
+    if (
+        (tsrc->isAny() && ! tdst->isAny()) ||
+        (tsrc->isAny() && tdst->isAny() && tsrv_translates_dst_port)
+    )
+    {
 /* this is load balancing rule if there are multiple objects in TDst */
         if ( tdstre->size()>1 ) rule->setRuleType(NATRule::LB);
         else
@@ -163,13 +198,17 @@ bool NATCompiler_pf::NATRuleType::processNext()
         return true;
     }
 
-    if ( ! tsrc->isAny() && ! tdst->isAny() ) 
+    if (
+        ( ! tsrc->isAny() && ! tdst->isAny() ) ||
+        ( ! tsrc->isAny() && tsrv_translates_dst_port) ||
+        ( ! tdst->isAny() && tsrv_translates_src_port)
+    )
     {
         rule->setRuleType(NATRule::SDNAT);
 	return true;
     }
 
-    throw FWException(_("Unsupported translation. Rule: ")+rule->getLabel());
+    compiler->abort(_("Unsupported translation. Rule: ")+rule->getLabel());
    
     return false;
 }
@@ -223,10 +262,49 @@ bool NATCompiler_pf::splitSDNATRule::processNext()
 
         if ( ! rule->getTSrv()->isAny())
         {
-            osrv=r->getOSrv();
-            osrv->clearChildren();
-            for (FWObject::iterator i=rule->getTSrv()->begin(); i!=rule->getTSrv()->end(); i++)
-                osrv->add( *i );
+            /*
+             * See "pf flow diagram" at  http://homepage.mac.com/quension/pf/flow.png
+             * rdr happens first, then nat. This means nat sees packet with
+             * translated destination address and port.
+             *
+             * If the first rule in the pair translated service and
+             * changed destination port, we need to match it in the
+             * second rule to only trsnslate source in the packets
+             * that have been processed by the first rule. However
+             * this only applies to the case when destination port has
+             * been translated because the first rule uses DNAT which
+             * can only translate dest. port. So, if TSrv has zero
+             * dest.  port range but non-zero source port range, we
+             * should not match it here because in this case no
+             * dest. port translation occurs.  If TSrv translates both
+             * source and destination ports, we create new TCP(UDP)
+             * service object with only dest. port part and use it to
+             * match.
+             */
+            Service *tsrv = compiler->getFirstTSrv(rule);
+            TCPUDPService *tu_tsrv = TCPUDPService::cast(tsrv);
+            if (tu_tsrv && tu_tsrv->getDstRangeStart() != 0)
+            {
+                TCPUDPService *match_service = NULL;
+                if (tu_tsrv->getSrcRangeStart() == 0)
+                {
+                    // no source port tranlsation
+                    match_service = tu_tsrv;
+                } else
+                {
+                    // both source and dest port translation occurs
+                    match_service = TCPUDPService::cast(
+                        compiler->dbcopy->create(tsrv->getTypeName()));
+                    match_service->setName(tsrv->getName() + "_dport");
+                    compiler->dbcopy->add(match_service);
+                    compiler->cacheObj(match_service); // to keep cache consistent
+                    match_service->setDstRangeStart(tu_tsrv->getDstRangeStart());
+                    match_service->setDstRangeEnd(tu_tsrv->getDstRangeEnd());
+                }
+                osrv = r->getOSrv();
+                osrv->clearChildren();
+                osrv->addRef(match_service);
+            }
         }
 
         tdst=r->getTDst();
@@ -256,62 +334,71 @@ bool NATCompiler_pf::VerifyRules::processNext()
     RuleElementTSrv  *tsrv=rule->getTSrv();  assert(tsrv);
 
 //    if (rule->getRuleType()==NATRule::LB)
-//        throw FWException(_("Load balancing rules are not supported. Rule ")+rule->getLabel());
+//        compiler->abort(_("Load balancing rules are not supported. Rule ")+rule->getLabel());
 
     if (rule->getRuleType()==NATRule::DNAT && odst->size()!=1)
-	throw FWException(_("There should be no more than one object in original destination in the rule ")+rule->getLabel());
+	compiler->abort(_("There should be no more than one object in original destination in the rule ")+rule->getLabel());
 
 //    if (rule->getRuleType()==NATRule::SNAT && tsrc->size()!=1)
-//	throw FWException(_("There should be no more than one object in translated source in the rule ")+rule->getLabel());
+//	compiler->abort(_("There should be no more than one object in translated source in the rule ")+rule->getLabel());
 
     if (osrv->getNeg())
-        throw FWException(_("Negation in original service is not supported. Rule ")+rule->getLabel());
+        compiler->abort(_("Negation in original service is not supported. Rule ")+rule->getLabel());
 
     /* bug #1276083: "Destination NAT rules". this restriction is not
      * true at least as of OpenBSD 3.5
      *
     if (rule->getRuleType()==NATRule::DNAT && osrv->isAny()) 
-	throw FWException(_("Service must be specified for destination translation rule. Rule ")+rule->getLabel());
+	compiler->abort(_("Service must be specified for destination translation rule. Rule ")+rule->getLabel());
     */
 
     if (rule->getRuleType()==NATRule::DNAT && osrv->isAny() && !tsrv->isAny())
-	throw FWException(_("Can not translate 'any' into a specific service. Rule ")+rule->getLabel());
+	compiler->abort(_("Can not translate 'any' into a specific service. Rule ")+rule->getLabel());
 
     if (tsrc->getNeg())
-        throw FWException(_("Can not use negation in translated source. Rule ")+rule->getLabel());
+        compiler->abort(_("Can not use negation in translated source. Rule ")+rule->getLabel());
 
     if (tdst->getNeg())
-        throw FWException(_("Can not use negation in translated destination. Rule ")+rule->getLabel());
+        compiler->abort(_("Can not use negation in translated destination. Rule ")+rule->getLabel());
 
     if (tsrv->getNeg())
-        throw FWException(_("Can not use negation in translated service. Rule ")+rule->getLabel());
+        compiler->abort(_("Can not use negation in translated service. Rule ")+rule->getLabel());
 
     if (tsrv->size()!=1) 
-	throw FWException(_("Translated service should be 'Original' or should contain single object. Rule: ")+rule->getLabel());
+	compiler->abort(_("Translated service should be 'Original' or should contain single object. Rule: ")+rule->getLabel());
 
     FWObject *o=tsrv->front();
     if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 
     if ( Group::cast(o)!=NULL)
-	throw FWException(_("Can not use group in translated service. Rule ")+rule->getLabel());
+	compiler->abort(_("Can not use group in translated service. Rule ")+rule->getLabel());
 
 #if 0
     if (rule->getRuleType()==NATRule::SNAT ) 
     {
         Address* o1=compiler->getFirstTSrc(rule);
         if ( Network::cast(o1)!=NULL || AddressRange::cast(o1)!=NULL )
-            throw FWException(_("Can not use network or address range object in translated source. Rule ")+rule->getLabel());
+            compiler->abort(_("Can not use network or address range object in translated source. Rule ")+rule->getLabel());
     }
 #endif
 
+    if (rule->getRuleType()==NATRule::SNAT ) 
+    {
+        if (tsrc->isAny())
+            compiler->abort("Source translation rule needs an address in Translated Source. Rule " + rule->getLabel());
+    }
+
     if (rule->getRuleType()==NATRule::DNAT || rule->getRuleType()==NATRule::Redirect ) 
     {
+        if (tdst->isAny())
+            compiler->abort("Destination translation rule needs an address in Translated Destination. Rule " + rule->getLabel());
+
         if ( tdst->size()!=1)
-            throw FWException(_("There should be no more than one object in translated destination in the rule ")+rule->getLabel());
+            compiler->abort(_("There should be no more than one object in translated destination in the rule ")+rule->getLabel());
 
         Address* o1=compiler->getFirstTDst(rule);
         if ( Network::cast(o1)!=NULL || AddressRange::cast(o1)!=NULL )
-            throw FWException(_("Can not use network or address range object in translated destination. Rule ")+rule->getLabel());
+            compiler->abort(_("Can not use network or address range object in translated destination. Rule ")+rule->getLabel());
     }
 
 
@@ -321,7 +408,7 @@ bool NATCompiler_pf::VerifyRules::processNext()
         Network *a2=Network::cast(compiler->getFirstTSrc(rule));
         if ( a1==NULL || a2==NULL ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
-            throw FWException(_("Original and translated source should both be networks of the same size . Rule ")+rule->getLabel());
+            compiler->abort(_("Original and translated source should both be networks of the same size . Rule ")+rule->getLabel());
     }
 
     if (rule->getRuleType()==NATRule::DNetnat && !tsrc->isAny() ) 
@@ -330,7 +417,7 @@ bool NATCompiler_pf::VerifyRules::processNext()
         Network *a2=Network::cast(compiler->getFirstTDst(rule));
         if ( a1==NULL || a2==NULL ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
-            throw FWException(_("Original and translated destination should both be networks of the same size . Rule ")+rule->getLabel());
+            compiler->abort(_("Original and translated destination should both be networks of the same size . Rule ")+rule->getLabel());
     }
 
     return true;
@@ -870,7 +957,7 @@ void NATCompiler_pf::checkForDynamicInterfacesOfOtherObjects::findDynamicInterfa
                     ifs->getParent()->getName().c_str(),
                     rule->getLabel().c_str() );
 
-            throw FWException(errstr);
+            compiler->abort(errstr);
         }
     }
 }

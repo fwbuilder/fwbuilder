@@ -179,12 +179,14 @@ bool NATCompiler_pf::PrintRule::processNext()
 	_printProtocol(osrv);
 	compiler->output  << "from ";
 	_printREAddr( osrcrel );
+	_printSrcPort(osrv);
 	compiler->output  << "to ";
 	_printREAddr( odstrel );
         _printPort( osrv, true );
 
 	compiler->output  << "-> ";
 	_printREAddr( tsrcrel );
+	_printSrcPort(tsrv);
         _printNATRuleOptions(rule);
 
 	compiler->output  << endl;
@@ -197,6 +199,7 @@ bool NATCompiler_pf::PrintRule::processNext()
 	_printProtocol(osrv);
 	compiler->output  << "from ";
 	_printREAddr( osrcrel );
+	_printSrcPort(osrv);
 	compiler->output  << "to ";
 	_printREAddr( odstrel );
 	_printPort(osrv, true);
@@ -260,7 +263,7 @@ void NATCompiler_pf::PrintRule::_printProtocol(Service *srv)
  */
 void NATCompiler_pf::PrintRule::_printPort(Service *srv, bool lhs)
 {
-    if (TCPService::isA(srv) || UDPService::isA(srv))
+    if (TCPUDPService::cast(srv))
     {
 	int drs = TCPUDPService::cast(srv)->getDstRangeStart();
 	int dre = TCPUDPService::cast(srv)->getDstRangeEnd();
@@ -282,6 +285,27 @@ void NATCompiler_pf::PrintRule::_printPort(Service *srv, bool lhs)
     {
 	compiler->output << "tagged "
                          << TagService::constcast(srv)->getCode() << " ";
+    }
+}
+
+/*
+ * Print port range spec using source ports of the given service object
+ */
+void NATCompiler_pf::PrintRule::_printSrcPort(libfwbuilder::Service *srv)
+{
+    if (TCPUDPService::cast(srv))
+    {
+	int srs = TCPUDPService::cast(srv)->getSrcRangeStart();
+	int sre = TCPUDPService::cast(srv)->getSrcRangeEnd();
+	if (srs!=0)
+        {
+            compiler->output << "port " << srs;
+            if (sre != 0 && sre != srs)
+            {
+                compiler->output << ":" << sre;
+            }
+        }
+        compiler->output  << " ";
     }
 }
 
