@@ -218,7 +218,7 @@ bool NATCompiler::classifyNATRule::processNext()
 
     if (
         (! tsrc->isAny() && tdst->isAny()) ||
-        (tsrc->isAny() && tdst->isAny() && osrv_defines_src_port && tsrv_translates_src_port)
+        (tsrc->isAny() && tdst->isAny() && tsrv_translates_src_port)
     )
     {
         if ( ! tsrc->isAny() && Network::isA(tsrc) )
@@ -234,7 +234,7 @@ bool NATCompiler::classifyNATRule::processNext()
 
     if (
         (tsrc->isAny() && ! tdst->isAny() )  ||
-        (tsrc->isAny() && tdst->isAny() && osrv_defines_dst_port && tsrv_translates_dst_port)
+        (tsrc->isAny() && tdst->isAny() && tsrv_translates_dst_port)
     )
     {
 /* this is load balancing rule if there are multiple objects in TDst */

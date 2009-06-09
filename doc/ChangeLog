@@ -1,3 +1,10 @@
+2009-06-09  vadim  <vadim@vk.crocodile.org>
+
+	* NATCompiler.cpp (classifyNATRule::processNext): fixed bug
+	#2803689 "NAT rule matching dport but chaning sport is broken".
+	NAT rules that match destination port but translate source port
+	should be possible (and the opposite too).
+
 2009-06-08  vadim  <vadim@vk.crocodile.org>
 
 	* Rule.cpp (PolicyRule::getDirectionAsString): should return
