@@ -440,6 +440,11 @@ AC_SUBST(ICONSDIR)
 AC_PATH_PROG(CCACHE, ccache, , )
 AC_SUBST(CCACHE)
 
+if test -n "$CCACHE"
+then
+        ccache -s
+fi
+
 dnl AC_CONFIG_FILES([ Main.make ])
 AC_CONFIG_FILES([ qmake.inc ])
 
