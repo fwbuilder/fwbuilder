@@ -119,8 +119,8 @@ string NATCompiler_ipt::getAddressTableVarName(FWObject *at)
     ostringstream  ostr;
     string name=at->getName();
     string::size_type p1;
-    char *bad_shell_chars = " !#$&*()-+=\\|{}[]?<>,.";
-    for (char *cptr=bad_shell_chars; *cptr; cptr++)
+    const char *bad_shell_chars = " !#$&*()-+=\\|{}[]?<>,.";
+    for (const char *cptr=bad_shell_chars; *cptr; cptr++)
     {
         while ( (p1=name.find(*cptr))!=string::npos)
             name=name.replace(p1,1,"_");

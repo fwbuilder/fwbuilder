@@ -40,6 +40,11 @@ $LIBTOOLIZE --dry-run --install > /dev/null 2>&1 && {
     LIBTOOLIZE_ARGS="--force --copy"
 }
 
+if test -x "`which ccache`"
+then
+    ccache -s
+fi
+
 echo This script runs configure ...
 
 $LIBTOOLIZE $LIBTOOLIZE_ARGS
