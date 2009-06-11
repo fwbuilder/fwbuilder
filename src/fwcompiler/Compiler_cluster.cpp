@@ -165,7 +165,10 @@ void Compiler::processFailoverGroup(Cluster *cluster,
     /* Add copy of VRRP interface from the cluster to the firewall object */
     Interface* new_cl_if = Interface::cast(fw->addCopyOf(cluster_if, false));
     assert(new_cl_if != NULL);
+    new_cl_if->getOptionsObject()->setBool("cluster_interface", true);
     new_cl_if->getOptionsObject()->setStr("base_device", iface->getName());
+    new_cl_if->getOptionsObject()->setStr("base_interface_id",
+                                          FWObjectDatabase::getStringId(iface->getId()));
 
     /* Set master property if interface is referenced
      * as master_iface

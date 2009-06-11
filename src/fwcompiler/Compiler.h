@@ -471,6 +471,19 @@ protected:
             virtual bool processNext();
         };
 
+        /**
+         * Replace cluster interface object with corresponding real
+         * interface
+         */
+        class replaceFailoverInterfaceInRE : public BasicRuleProcessor
+        {
+            std::string re_type;
+            public:
+            replaceFailoverInterfaceInRE(const std::string &name,
+                      const std::string &t) : BasicRuleProcessor(name) { re_type=t; }
+            virtual bool processNext();
+        };
+
 	/**
 	 * generic rule debugger: prints name of the previous rule
 	 * processor in a chain and then a rule if its number is

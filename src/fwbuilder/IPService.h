@@ -35,7 +35,7 @@ namespace libfwbuilder
 
 class IPService : public Service
 {
-    void initNamedProtocols();
+    static void initNamedProtocols();
 
     protected:
 

@@ -33,6 +33,7 @@
 #include "fwbuilder/FWObjectReference.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/RuleElement.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
@@ -1041,6 +1042,50 @@ bool Compiler::swapMultiAddressObjectsInRE::processNext()
         return true;
     }
 
+    tmp_queue.push_back(rule);
+    return true;
+}
+
+bool Compiler::replaceFailoverInterfaceInRE::processNext()
+{
+    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    RuleElement *re = RuleElement::cast( rule->getFirstByType(re_type) );
+
+    // list of pointers to cluster interfaces used in the RE
+    list<Interface*> cl;
+    for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
+    {
+        Interface *intf = Interface::cast(FWReference::getObject(*i));
+        if (intf==NULL) continue;
+
+        // Remember that even if this interface used to be cluster
+        // interface, here we have its copy which belongs to the
+        // firewall. This is done in
+        // Compiler::processFailoverGroup. Dont use interface name to
+        // distinguish cluster interface. Better method is to check
+        // for the variable "cluster_interface".
+        if (intf->getOptionsObject()->getBool("cluster_interface"))
+            cl.push_back(intf);
+    }
+
+    if (!cl.empty())
+    {
+        for (list<Interface*>::iterator i=cl.begin(); i!=cl.end(); i++)
+        {
+            Interface *intf = *i;
+            string base_interface_id = intf->getOptionsObject()->getStr("base_interface_id");
+            if (!base_interface_id.empty())
+            {
+                FWObject *base_interface = compiler->dbcopy->findInIndex(
+                    FWObjectDatabase::getIntId(base_interface_id));
+                if (base_interface)
+                {
+                    re->removeRef(intf);
+                    re->addRef(base_interface);
+                }
+            }
+        }
+    }
     tmp_queue.push_back(rule);
     return true;
 }

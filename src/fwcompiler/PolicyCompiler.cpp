@@ -1167,6 +1167,7 @@ string PolicyCompiler::debugPrintRule(Rule *r)
     RuleElementSrc *srcrel=rule->getSrc();
     RuleElementDst *dstrel=rule->getDst();
     RuleElementSrv *srvrel=rule->getSrv();
+    RuleElementItf *itfrel=rule->getItf();
 
     int iface_id = rule->getInterfaceId();
     Interface *rule_iface = fw_interfaces[iface_id];
@@ -1179,21 +1180,26 @@ string PolicyCompiler::debugPrintRule(Rule *r)
     FWObject::iterator i1=srcrel->begin();
     FWObject::iterator i2=dstrel->begin(); 
     FWObject::iterator i3=srvrel->begin();
-    while ( i1!=srcrel->end() || i2!=dstrel->end() || i3!=srvrel->end() ) {
+    FWObject::iterator i4=itfrel->begin();
 
+    while ( i1!=srcrel->end() || i2!=dstrel->end() || i3!=srvrel->end() ||
+            i4!=itfrel->end())
+    {
         str << endl;
 
         string src=" ";
         string dst=" ";
         string srv=" ";
+        string itf=" ";
 
         int src_id = -1;
         int dst_id = -1;
         int srv_id = -1;
 
-        if (srcrel->getNeg()) src="!";
-        if (dstrel->getNeg()) dst="!";
-        if (srvrel->getNeg()) srv="!";
+        if (srcrel->getNeg()) src = "!";
+        if (dstrel->getNeg()) dst = "!";
+        if (srvrel->getNeg()) srv = "!";
+        if (itfrel->getNeg()) itf = "!";
 
         if (i1!=srcrel->end())
         {
@@ -1216,6 +1222,12 @@ string PolicyCompiler::debugPrintRule(Rule *r)
             srv_id = o->getId();
         }
 
+        if (i4!=itfrel->end()) {
+            FWObject *o=*i4;
+            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+            itf+=o->getName();
+        }
+
         int w=0;
         if (no==0) {
             str << rule->getLabel();
@@ -1227,6 +1239,7 @@ string PolicyCompiler::debugPrintRule(Rule *r)
         str <<  setw(18) << setfill(' ') << src.c_str() << "(" << src_id << ")";
         str <<  setw(18) << setfill(' ') << dst.c_str() << "(" << dst_id << ")";
         str <<  setw(12) << setfill(' ') << srv.c_str() << "(" << srv_id << ")";
+        str <<  setw(8)  << setfill(' ') << itf.c_str();
 
         if (no==0)
         {
@@ -1242,6 +1255,7 @@ string PolicyCompiler::debugPrintRule(Rule *r)
         if ( i1!=srcrel->end() ) ++i1;
         if ( i2!=dstrel->end() ) ++i2;
         if ( i3!=srvrel->end() ) ++i3;
+        if ( i4!=itfrel->end() ) ++i4;
     }
     return str.str();
 }
