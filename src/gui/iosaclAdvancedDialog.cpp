@@ -258,6 +258,9 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->iosacl_include_comments, fwoptions,
                          "iosacl_include_comments" );
 
+    data.registerOption( m_dialog->iosacl_use_acl_remarks, fwoptions,
+                         "iosacl_use_acl_remarks" );
+
     data.registerOption( m_dialog->iosacl_regroup_commands, fwoptions,
                          "iosacl_regroup_commands" );
 

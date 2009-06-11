@@ -1,3 +1,11 @@
+2009-06-11  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printRule):
+	implemented feature request #1778536: "IOSACL - remark command".
+	This adds support for the "remark" command in generated IOS
+	ACL configuration. Controlled by the checkbox "Add ACL remarks"
+	in the "Script" tab of the firewall object settings dialog.
+
 2009-06-09  vadim  <vadim@vk.crocodile.org>
 
 	* NATCompiler_pf_writers.cpp (PrintRule::_printSrcPort): fixed bug
