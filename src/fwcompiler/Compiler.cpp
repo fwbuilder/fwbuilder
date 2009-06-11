@@ -839,7 +839,7 @@ void  Compiler::recursiveGroupsInRE::isRecursiveGroup(int grid, FWObject *obj)
         FWObject *o = FWReference::getObject(*i);
         if (Group::cast(o)!=NULL)
         {
-            if (o->getId()==grid)
+            if (o->getId()==grid || obj->getId()==o->getId())
             {
                 compiler->abort("Group '"+o->getName()+"' references itself recursively");
             }
@@ -1224,7 +1224,7 @@ Interval* Compiler::getFirstWhen(PolicyRule *rule)
 Interface* Compiler::getFirstItf(PolicyRule *rule)
 {
     RuleElementItf *itf = rule->getItf();
-    if (itf==NULL) return NULL;  // itf is optional element
+    if (itf==NULL || itf->size()==0) return NULL;  // itf is optional element
     FWObject *o = FWReference::getObject(itf->front());
     return Interface::cast(o);
 }
