@@ -22,7 +22,7 @@
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="compiler_tab" >
       <attribute name="title" >
@@ -228,10 +228,7 @@ workstation with this address:</string>
          <property name="title" >
           <string/>
          </property>
-         <layout class="QGridLayout" >
-          <property name="margin" >
-           <number>6</number>
-          </property>
+         <layout class="QGridLayout" name="gridLayout_7" >
           <item row="0" column="0" >
            <widget class="QCheckBox" name="iosacl_include_comments" >
             <property name="toolTip" >
@@ -239,6 +236,16 @@ workstation with this address:</string>
             </property>
             <property name="text" >
              <string>Comment the code</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QCheckBox" name="iosacl_use_acl_remarks" >
+            <property name="toolTip" >
+             <string>Insert comments into generated IOSACL configuration file</string>
+            </property>
+            <property name="text" >
+             <string>Use ACL remarks</string>
             </property>
            </widget>
           </item>

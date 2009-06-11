@@ -811,7 +811,6 @@
     <IPv6 id="id197751X48026" name="firewall-ipv6-5:eth0:ipv6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
     <IPv6 id="id178394X48026" name="firewall-ipv6-6:eth1:ip6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
     <IPv6 id="id42754X3791" name="ipv4-ipv6-host-1:eth0:ip6" comment="" ro="False" address="e80::21d:9ff:fe8b:8e94" netmask="64"/>
-    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -847,6 +846,10 @@
         <IPv6 id="id48416A7216880" name="6bone.net" comment="" ro="False" address="2001:5c0:0:2::24" netmask="128"/>
         <IPv4 id="id40860X98946" name="internal gw" comment="" ro="False" address="192.168.1.254" netmask="0.0.0.0"/>
         <IPv4 id="id118625X9876" name="ext gateway" comment="" ro="False" address="192.0.2.100" netmask="0.0.0.0"/>
+        <IPv4 id="id45813X95438" name="h-10.3.14.40" comment="Imported from &quot;c3620&quot; 10.3.14.40/255.255.255.255" ro="False" address="10.3.14.40" netmask="255.255.255.255"/>
+        <IPv4 id="id45817X95438" name="h-192.168.171.2" comment="Imported from &quot;c3620&quot; 192.168.171.2/255.255.255.255" ro="False" address="192.168.171.2" netmask="255.255.255.255"/>
+        <IPv4 id="id45847X95438" name="h-10.3.14.201" comment="Imported from &quot;c3620&quot; 10.3.14.201/255.255.255.255" ro="False" address="10.3.14.201" netmask="255.255.255.255"/>
+        <IPv4 id="id46523X95438" name="a-192.168.1.10" comment="" ro="False" address="192.168.1.10" netmask="0.0.0.0"/>
       </ObjectGroup>
       <ObjectGroup id="stdid04_1" name="Groups" comment="" ro="False">
         <ObjectGroup id="id3B4572AF" name="group1" comment="" ro="False">
@@ -1687,6 +1690,8 @@
         <NetworkIPv6 id="id40507X82687" name="3ffff:ffff::/32" comment="" ro="False" address="3fff:ffff::" netmask="32"/>
         <NetworkIPv6 id="id40508X82687" name="2001:db8::/32" comment="" ro="False" address="2001:db8::" netmask="32"/>
         <NetworkIPv6 id="id169012X82687" name="3ffff:ffff::/16" comment="" ro="False" address="3fff:ffff::" netmask="16"/>
+        <Network id="id45876X95438" name="net-10.3.14.0/24" comment="Imported from &quot;c3620&quot; 10.3.14.0/255.255.255.0" ro="False" address="10.3.14.0" netmask="255.255.255.0"/>
+        <NetworkIPv6 id="id46155X95438" name="ipv6 net fe80::/64" comment="" ro="False" address="fe80::" netmask="64"/>
       </ObjectGroup>
       <ObjectGroup id="stdid15_1" name="Address Ranges" comment="" ro="False">
         <AddressRange id="id3CD8769F" name="test_range_1" comment="" ro="False" start_address="192.168.1.11" end_address="192.168.1.15"/>
@@ -1819,6 +1824,7 @@
         <IPService id="idAF4D18769" dscp="" fragm="False" lsrr="False" protocol_num="0" rr="False" short_fragm="False" ssrr="False" tos="0x20" ts="False" name="tos 0x20" comment="" ro="False"/>
         <IPService id="idAF4E18769" dscp="0x20" fragm="False" lsrr="False" protocol_num="0" rr="False" short_fragm="False" ssrr="False" tos="" ts="False" name="dscp 0x20" comment="" ro="False"/>
         <IPService id="idAF4F18769" dscp="BE" fragm="False" lsrr="False" protocol_num="0" rr="False" short_fragm="False" ssrr="False" tos="" ts="False" name="dscp BE" comment="" ro="False"/>
+        <IPService id="id45790X95438" fragm="True" protocol_num="0" name="ip-0 fragm" comment="Imported from &quot;c3620&quot;&#10;protocol 0" ro="False"/>
       </ServiceGroup>
       <ServiceGroup id="stdid09_1" name="TCP" comment="" ro="False">
         <TCPService id="id3C1A66EF" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="gopher" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="70" dst_range_end="70"/>
@@ -1836,10 +1842,18 @@
         <TCPService id="id3E3747AF" ack_flag="False" ack_flag_mask="True" fin_flag="False" fin_flag_mask="True" psh_flag="False" psh_flag_mask="True" rst_flag="False" rst_flag_mask="True" syn_flag="False" syn_flag_mask="True" urg_flag="False" urg_flag_mask="True" name="TCP no flags" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
         <TCPService id="id40038E79" ack_flag="False" ack_flag_mask="True" fin_flag="False" fin_flag_mask="True" psh_flag="False" psh_flag_mask="True" rst_flag="False" rst_flag_mask="True" syn_flag="True" syn_flag_mask="True" urg_flag="False" urg_flag_mask="True" name="new AIM connection" comment="TCP packet with dest. port 5190 (AIM) and SYN flag set&#10;This is the opening of the new AIM session" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5190" dst_range_end="5190"/>
         <TCPService id="id459E36F110170" ack_flag="True" ack_flag_mask="True" fin_flag="False" fin_flag_mask="True" psh_flag="False" psh_flag_mask="True" rst_flag="False" rst_flag_mask="True" syn_flag="False" syn_flag_mask="True" urg_flag="False" urg_flag_mask="True" name="ack" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
+        <TCPService id="id45821X95438" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp 0-0:22-22" comment="Imported from &quot;c3620&quot;&#10;0-0:22-22" ro="False" src_range_start="0" src_range_end="0" dst_range_start="22" dst_range_end="22"/>
+        <TCPService id="id46355X95438" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="True" syn_flag_mask="True" urg_flag="False" urg_flag_mask="False" name="New TCP Service 1" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="1" dst_range_end="1"/>
       </ServiceGroup>
       <ServiceGroup id="stdid08_1" name="UDP" comment="" ro="False">
         <UDPService id="id3ED59BF0" name="udp-src-6767" comment="" ro="False" src_range_start="6767" src_range_end="6767" dst_range_start="0" dst_range_end="0"/>
         <UDPService id="id3ED59BF1" name="udp-src-67" comment="" ro="False" src_range_start="67" src_range_end="67" dst_range_start="0" dst_range_end="0"/>
+        <UDPService id="id46447X95438" name="sport123" comment="" ro="False" src_range_start="123" src_range_end="123" dst_range_start="0" dst_range_end="0"/>
+        <UDPService id="id46457X95438" name="sport5050" comment="" ro="False" src_range_start="5050" src_range_end="5050" dst_range_start="0" dst_range_end="0"/>
+        <UDPService id="id46482X95438" name="dport53" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
+        <UDPService id="id46492X95438" name="dport1053" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="1053" dst_range_end="1053"/>
+        <UDPService id="id46617X95438" name="sdport53" comment="" ro="False" src_range_start="1024" src_range_end="65535" dst_range_start="53" dst_range_end="53"/>
+        <UDPService id="id46627X95438" name="sdport1053" comment="" ro="False" src_range_start="32767" src_range_end="65535" dst_range_start="1053" dst_range_end="1053"/>
       </ServiceGroup>
       <ServiceGroup id="stdid13_1" name="Custom" comment="" ro="False">
         <CustomService id="id3B64FE22" name="talk" comment="Talk support" ro="False" protocol="any" address_family="ipv4">
@@ -11408,7 +11422,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3DDDE6C3" host_OS="linux24" lastCompiled="1215360875" lastInstalled="1142003872" lastModified="0" platform="iptables" name="firewall12" comment="This firewall does not do NAT for addresses, but translates port for a server&#10;" ro="False">
+      <Firewall id="id3DDDE6C3" host_OS="linux24" lastCompiled="1244480616" lastInstalled="1142003872" lastModified="1244582487" platform="iptables" name="firewall12" comment="This firewall does not do NAT for addresses, but translates port for a server&#10;" ro="False">
         <NAT id="id3DDDE6C7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3DDDE6D6" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -11557,7 +11571,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3ED59B00" disabled="False" position="7" comment="">
+          <NATRule id="id3ED59B00" disabled="False" position="7" comment="port-only translation">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -11599,7 +11613,28 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3ED59D48" disabled="False" position="9" comment="">
+          <NATRule id="id62195X80061" disabled="False" group="" position="9" comment="port-only translation">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3DDDE4E4"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id3ED59D48" disabled="False" position="10" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -11617,6 +11652,132 @@
             </TDst>
             <TSrv neg="False">
               <ServiceRef ref="id3DDDE4E4"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id46723X95438" disabled="False" group="" position="11" comment="SDNAT ">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id45738X95438"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id45821X95438"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id45738X95438"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id46523X95438"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id46776X95438" disabled="False" group="" position="12" comment="SDNAT with source port">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id45738X95438"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id46447X95438"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id45738X95438"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id46523X95438"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id46457X95438"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id46829X95438" disabled="False" group="" position="13" comment="SDNAT with dest port">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id46482X95438"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id45738X95438"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id46523X95438"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id46492X95438"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id46882X95438" disabled="False" group="" position="14" comment="SDNAT&#10;translate src and dst addresses&#10;and src and dst ports">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id46617X95438"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id45738X95438"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id46523X95438"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id46627X95438"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id46935X95438" disabled="False" group="" position="15" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id46482X95438"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id46457X95438"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id46988X95438" disabled="False" group="" position="16" comment="invalid rule">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id45821X95438"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id46457X95438"/>
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
@@ -39765,6 +39926,804 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="use_iptables_restore">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id45738X95438" host_OS="linux24" lastCompiled="1244482781" lastInstalled="0" lastModified="1244487383" platform="iptables" version="" name="fw1" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
+        <NAT id="id46392X95438" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id46393X95438" disabled="False" position="0" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False"/>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id46425X95438" disabled="False" group="" position="1" comment="source port only">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id46447X95438"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id46457X95438"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id46460X95438" disabled="False" group="" position="2" comment="dest port only">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id46482X95438"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id46492X95438"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id46495X95438" disabled="False" group="" position="3" comment="SDNAT ">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id45738X95438"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id45821X95438"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id45738X95438"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id46523X95438"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id46529X95438" disabled="False" group="" position="4" comment="SDNAT with source port">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id45738X95438"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id46447X95438"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id45738X95438"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id46523X95438"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id46457X95438"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id46562X95438" disabled="False" group="" position="5" comment="SDNAT with dest port">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id46482X95438"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id45738X95438"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id46523X95438"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id46492X95438"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id46595X95438" disabled="False" group="" position="6" comment="SDNAT&#10;translate src and dst addresses&#10;and src and dst ports">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id46617X95438"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id45738X95438"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id46523X95438"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id46627X95438"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id46630X95438" disabled="False" group="" position="7" comment="invalid rule">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id46482X95438"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id46457X95438"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id46663X95438" disabled="False" group="" position="8" comment="invalid rule">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id45821X95438"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id46457X95438"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+        </NAT>
+        <Policy id="id45744X95438" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id45745X95438" disabled="False" group="New Group" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
+            <Src neg="False">
+              <ObjectRef ref="id45738X95438"/>
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46203X95438"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False"/>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color"></Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id46224X95438" disabled="False" group="New Group" log="False" position="1" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False"/>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color"></Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id46251X95438" disabled="False" group="New Group" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id45738X95438"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color"></Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id46279X95438" disabled="False" group="New Group" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
+            <Src neg="False">
+              <ObjectRef ref="id45738X95438"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id3F530CC8"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id46307X95438" disabled="False" group="New Group" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id45738X95438"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color"></Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id46335X95438" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id46355X95438"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color"></Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id46364X95438" disabled="False" log="True" position="6" action="Reject" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Routing id="id46696X95438" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id46697X95438" bridgeport="False" dyn="False" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <IPv4 id="id46698X95438" name="fw1:eth0:ip" comment="" ro="False" address="192.0.2.1" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id46699X95438" bridgeport="False" dyn="False" label="inside" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+          <IPv4 id="id46700X95438" name="fw1:eth1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <IPv6 id="id46701X95438" name="fw1:eth1:ipv6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
+        </Interface>
+        <Interface id="id46702X95438" bridgeport="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id46703X95438" name="fw1:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">true</Option>
+          <Option name="accept_new_tcp_with_no_syn">true</Option>
+          <Option name="add_check_state_rule">true</Option>
+          <Option name="check_shading">true</Option>
+          <Option name="configure_interfaces">true</Option>
+          <Option name="eliminate_duplicates">true</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="in_out_code">true</Option>
+          <Option name="iosacl_add_clear_statements">true</Option>
+          <Option name="iosacl_assume_fw_part_of_any">true</Option>
+          <Option name="iosacl_include_comments">true</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">true</Option>
+          <Option name="local_nat">false</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo0</Option>
+          <Option name="macosx_ip_forward">1</Option>
+          <Option name="manage_virtual_addr">true</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="pass_all_out">false</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pix_add_clear_statements">true</Option>
+          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_default_logint">300</Option>
+          <Option name="pix_emblem_log_format">false</Option>
+          <Option name="pix_emulate_out_acl">true</Option>
+          <Option name="pix_floodguard">true</Option>
+          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_route_dnat_supported">true</Option>
+          <Option name="pix_rule_syslog_settings">false</Option>
+          <Option name="pix_security_fragguard_supported">true</Option>
+          <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="prompt1">$ </Option>
+          <Option name="prompt2"> # </Option>
+          <Option name="solaris_ip_forward">1</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="verify_interfaces">true</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id45763X95438" host_OS="ios" inactive="False" lastCompiled="1221357477" lastInstalled="1223233524" lastModified="1243804646" platform="iosacl" version="12.x" name="c3620" comment="ff" ro="False">
+        <NAT id="id46197X95438" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Policy id="id45769X95438" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id45770X95438" disabled="False" log="False" position="0" action="Deny" direction="Inbound" comment="Imported from e1_0_acl_in&#10;">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id45790X95438"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id45799X95438" disabled="False" log="True" position="1" action="Accept" direction="Inbound" comment="Imported from e1_0_acl_in&#10;">
+            <Src neg="False">
+              <ObjectRef ref="id45813X95438"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id45817X95438"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id45821X95438"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id45830X95438" disabled="False" log="True" position="2" action="Accept" direction="Inbound" comment="Imported from e1_0_acl_in&#10;">
+            <Src neg="False">
+              <ObjectRef ref="id45813X95438"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id45847X95438"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id45821X95438"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id45859X95438" disabled="False" log="True" position="3" action="Accept" direction="Inbound" comment="Imported from e1_0_acl_in&#10;">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id45876X95438"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id45888X95438" disabled="False" log="True" position="4" action="Deny" direction="Inbound" comment="Imported from e1_0_acl_in&#10;">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id45916X95438" disabled="False" log="True" position="5" action="Accept" direction="Outbound" comment="Imported from e1_0_acl_out&#10;">
+            <Src neg="False">
+              <ObjectRef ref="id45876X95438"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C08B5A</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id45944X95438" disabled="False" log="True" position="6" action="Deny" direction="Outbound" comment="Imported from e1_0_acl_out&#10;">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id45972X95438" disabled="False" log="True" position="7" action="Accept" direction="Inbound" comment="Imported from fe0_0_acl_in&#10;">
+            <Src neg="False">
+              <ObjectRef ref="id45813X95438"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id45817X95438"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id45821X95438"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id46000X95438" disabled="False" log="True" position="8" action="Accept" direction="Inbound" comment="Imported from fe0_0_acl_in&#10;">
+            <Src neg="False">
+              <ObjectRef ref="id45813X95438"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id45847X95438"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id45821X95438"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id46028X95438" disabled="False" log="True" position="9" action="Accept" direction="Inbound" comment="Imported from fe0_0_acl_in&#10;">
+            <Src neg="False">
+              <ObjectRef ref="id45876X95438"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id46056X95438" disabled="False" log="True" position="10" action="Deny" direction="Inbound" comment="Imported from fe0_0_acl_in&#10;">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id46084X95438" disabled="False" log="True" position="11" action="Accept" direction="Outbound" comment="Imported from fe0_0_acl_out&#10;">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id45876X95438"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id46112X95438" disabled="False" log="True" position="12" action="Deny" direction="Outbound" comment="Imported from fe0_0_acl_out&#10;">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Policy id="id46140X95438" name="ipv6_rules" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="True">
+          <PolicyRule id="id46141X95438" disabled="False" log="False" position="0" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id46155X95438"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Policy id="id46170X95438" name="extra_acl" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
+          <PolicyRule id="id46171X95438" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False"/>
+            <Dst neg="False"/>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Routing id="id46198X95438" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id46199X95438" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="FastEthernet0/0" comment="" ro="False">
+          <IPv4 id="id46200X95438" name="c3620:FastEthernet0/0:ip1" comment="" ro="False" address="192.168.100.100" netmask="255.255.255.0"/>
+          <IPv4 id="id46201X95438" name="c3620:FastEthernet0/0:ip2" comment="" ro="False" address="10.3.14.201" netmask="255.255.255.0"/>
+          <IPv6 id="id46202X95438" name="c3620:FastEthernet0/0:ipv6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
+        </Interface>
+        <Interface id="id46203X95438" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="Ethernet1/0" comment="" ro="False">
+          <IPv4 id="id46204X95438" name="c3620:Ethernet1/0:ip" comment="" ro="False" address="192.168.171.2" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id46205X95438" bridgeport="False" dyn="False" security_level="0" unnum="True" unprotected="False" name="Serial1/0" comment="" ro="False"/>
+        <Interface id="id46206X95438" bridgeport="False" dyn="False" security_level="0" unnum="True" unprotected="False" name="Ethernet1/1" comment="" ro="False"/>
+        <Interface id="id46207X95438" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="Serial1/1" comment="" ro="False">
+          <IPv4 id="id46208X95438" name="c3620:Serial1/1:ip" comment="" ro="False" address="3.3.3.3" netmask="255.255.255.0"/>
+        </Interface>
+        <Management address="192.168.100.100">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">true</Option>
+          <Option name="accept_new_tcp_with_no_syn">true</Option>
+          <Option name="add_check_state_rule">true</Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">True</Option>
+          <Option name="configure_interfaces">true</Option>
+          <Option name="eliminate_duplicates">true</Option>
+          <Option name="enable_ipv6">True</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">true</Option>
+          <Option name="iosacl_acl_basic">True</Option>
+          <Option name="iosacl_acl_no_clear">False</Option>
+          <Option name="iosacl_acl_substitution">False</Option>
+          <Option name="iosacl_acl_temp_addr"></Option>
+          <Option name="iosacl_add_clear_statements">true</Option>
+          <Option name="iosacl_assume_fw_part_of_any">true</Option>
+          <Option name="iosacl_epilog_script"></Option>
+          <Option name="iosacl_include_comments">True</Option>
+          <Option name="iosacl_logging_buffered">False</Option>
+          <Option name="iosacl_logging_buffered_level">0</Option>
+          <Option name="iosacl_logging_console">False</Option>
+          <Option name="iosacl_logging_console_level">0</Option>
+          <Option name="iosacl_logging_timestamp">False</Option>
+          <Option name="iosacl_logging_trap_level">0</Option>
+          <Option name="iosacl_prolog_script"></Option>
+          <Option name="iosacl_regroup_commands">False</Option>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
+          <Option name="ipt_mangle_only_rulesets"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">true</Option>
+          <Option name="local_nat">false</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo0</Option>
+          <Option name="macosx_ip_forward">1</Option>
+          <Option name="manage_virtual_addr">true</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
+          <Option name="pass_all_out">false</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pix_add_clear_statements">true</Option>
+          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_default_logint">300</Option>
+          <Option name="pix_emblem_log_format">false</Option>
+          <Option name="pix_emulate_out_acl">true</Option>
+          <Option name="pix_floodguard">true</Option>
+          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_route_dnat_supported">true</Option>
+          <Option name="pix_rule_syslog_settings">false</Option>
+          <Option name="pix_security_fragguard_supported">true</Option>
+          <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="prompt1">$ </Option>
+          <Option name="prompt2"> # </Option>
+          <Option name="solaris_ip_forward">1</Option>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>

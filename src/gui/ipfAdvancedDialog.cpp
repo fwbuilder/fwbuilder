@@ -86,8 +86,6 @@ ipfAdvancedDialog::ipfAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->ipf_check_shadowing,fwopt, "check_shading"       );
     data.registerOption( m_dialog->ipf_eliminate_duplicates,fwopt, "eliminate_duplicates");
     data.registerOption( m_dialog->ipf_accept_new_tcp_with_no_syn,fwopt, "accept_new_tcp_with_no_syn");
-    data.registerOption( m_dialog->ipf_in_out_code,fwopt, "in_out_code"   );
-    data.registerOption( m_dialog->ipf_pass_all_out,fwopt, "pass_all_out"  );
     data.registerOption( m_dialog->ipf_ignore_empty_groups,fwopt, "ignore_empty_groups");
     data.registerOption( m_dialog->ipf_return_icmp_as_dest,fwopt, "ipf_return_icmp_as_dest");
     data.registerOption( m_dialog->ipf_nat_raudio_proxy,fwopt, "ipf_nat_raudio_proxy");

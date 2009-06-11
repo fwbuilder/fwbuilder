@@ -279,6 +279,9 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
 
 //    aclstr << endl;
 
+    if (compiler->fw->getOptionsObject()->getBool("iosacl_use_acl_remarks"))
+        ruleout << acl->addRemark( rule->getLabel() );
+
     ruleout << acl->addLine(aclstr.str());
 
     return ruleout.str();

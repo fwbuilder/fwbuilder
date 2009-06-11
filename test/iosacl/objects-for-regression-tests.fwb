@@ -1556,7 +1556,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id464359FE16989" host_OS="ios" inactive="False" lastCompiled="1230880328" lastInstalled="0" lastModified="1236918502" platform="iosacl" version="12.x" name="c3620" comment="" ro="False">
+      <Firewall id="id464359FE16989" host_OS="ios" inactive="False" lastCompiled="1244751217" lastInstalled="0" lastModified="1244750432" platform="iosacl" version="12.x" name="c3620" comment="" ro="False">
         <NAT id="id46435A0216989" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id46435A0116989" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id464D2B0E24319" disabled="False" log="False" position="0" action="Accept" direction="Inbound" comment="interface eth 1/1 has only&#10;inbound access list">
@@ -1855,7 +1855,7 @@
         <Interface id="id46435A0C16989" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="True" name="Serial1/0" comment="" ro="False">
           <IPv4 id="id46435A0D16989" name="c3620:Serial1/0:ip" comment="" ro="False" address="0.0.0.0" netmask="255.255.255.255"/>
         </Interface>
-        <Management address="192.168.171.2">
+        <Management address="10.3.14.201">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
           <FWBDManagement enabled="False" identity="" port="-1"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
@@ -1884,15 +1884,16 @@
           <Option name="iosacl_generate_logging_commands">True</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">True</Option>
-          <Option name="iosacl_logging_buffered_level">4</Option>
+          <Option name="iosacl_logging_buffered_level">5</Option>
           <Option name="iosacl_logging_console">True</Option>
-          <Option name="iosacl_logging_console_level">4</Option>
+          <Option name="iosacl_logging_console_level">5</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
-          <Option name="iosacl_logging_trap_level">1</Option>
+          <Option name="iosacl_logging_trap_level">2</Option>
           <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
           <Option name="iosacl_syslog_facility"></Option>
           <Option name="iosacl_syslog_host"></Option>
+          <Option name="iosacl_use_acl_remarks">True</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
@@ -1927,6 +1928,7 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
           <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>

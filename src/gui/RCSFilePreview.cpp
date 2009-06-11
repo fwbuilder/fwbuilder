@@ -166,7 +166,7 @@ bool RCSFilePreview::showFileRLog( const QString &filename )
     {
         rcsComments[(*i).rev] = (*i).log;
 
-        RCSViewItem *itm;
+        RCSViewItem *itm = NULL;
         if (st->getRCSFilePreviewStyle()==1)
         {
             // List style

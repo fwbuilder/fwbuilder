@@ -347,7 +347,7 @@ bool PolicyCompiler_pf::fillDirection::processNext()
  * as long as it misses interface - we need to determine direction
  * again anyway.
  */
-    if (rule->getDirectionAsString()=="")   // || rule->getInterfaceId()==-1 )
+    if (rule->getDirection() == PolicyRule::Undefined)   // || rule->getInterfaceId()==-1 )
         rule->setDirection( PolicyRule::Both );
 
 /*
@@ -1087,6 +1087,11 @@ void PolicyCompiler_pf::compile()
         add( new separateSrcPort("split on TCP and UDP with source ports"));
         add( new separateTagged("split on TagService"));
         add( new separateTOS("split on IPService with TOS"));
+
+        if (ipv6)
+            add( new DropIPv4Rules("drop ipv4 rules"));
+        else
+            add( new DropIPv6Rules("drop ipv6 rules"));
 
 	add( new verifyCustomServices(
                  "verify custom services for this platform"));

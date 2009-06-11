@@ -831,21 +831,25 @@ string PolicyCompiler_ipt::PrintRule::_printIP(IPService *srv, PolicyRule *rule)
                 str << " -m dscp --dscp " << dscp;
         }
         
-    if (!ipt_comp->ipv6)
+    if  (srv->getBool("lsrr") ||
+         srv->getBool("ssrr") ||
+         srv->getBool("rr") ||
+         srv->getBool("ts") )
     {
-        if  (srv->getBool("lsrr") ||
-             srv->getBool("ssrr") ||
-             srv->getBool("rr") ||
-             srv->getBool("ts") ) str << " -m ipv4options ";
-
-        if  (srv->getBool("lsrr")) str << " --lsrr";
-        if  (srv->getBool("ssrr")) str << " --ssrr";
-        if  (srv->getBool("rr"))   str << " --rr";
-        if  (srv->getBool("ts"))   str << " --ts";
-    } else
-        compiler->abort(
-            string("IP options match is not supported for IPv6. Rule ") +
-            rule->getLabel());
+        if (!ipt_comp->ipv6)
+        {
+            str << " -m ipv4options ";
+            if  (srv->getBool("lsrr")) str << " --lsrr";
+            if  (srv->getBool("ssrr")) str << " --ssrr";
+            if  (srv->getBool("rr"))   str << " --rr";
+            if  (srv->getBool("ts"))   str << " --ts";
+        } else
+        {
+            compiler->abort(
+                string("IP options match is not supported for IPv6. Rule ") +
+                rule->getLabel());
+        }
+    }
     return str.str();
 }
 
