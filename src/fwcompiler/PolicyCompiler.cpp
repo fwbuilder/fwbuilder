@@ -1228,7 +1228,7 @@ string PolicyCompiler::debugPrintRule(Rule *r)
         if (no==0)
         {
             str <<  setw(9)  << setfill(' ') << rule->getActionAsString().c_str();
-            str <<  setw(9)  << setfill(' ') << rule->getDirectionAsString().c_str();
+            str <<  setw(12)  << setfill(' ') << rule->getDirectionAsString().c_str();
             if (rule_iface!=NULL) str << " " << rule_iface->getName();
             if (rule->getLogging()) str << " LOG";
         } else
