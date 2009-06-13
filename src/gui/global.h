@@ -51,7 +51,7 @@ extern int             fwbdebug;
 extern int             registered;
 extern bool            gui_experiment1;
 
-#define SETTINGS_PATH_PREFIX  "/3.0"
+#define SETTINGS_PATH_PREFIX  "/3.1"
 
 #ifdef NDEBUG
 #  undef NDEBUG

@@ -41,15 +41,9 @@ void init(char * const*)
 
 
 /*
- * We do it in a different way on different OS in order to be able to
- * avoid dependency on QT on Linux and BSD, so people can
- * (theoretically) build and install compilers on the firewall machine
- * where they do not have X11 and QT. It may not be easy but should be
- * possible. (Unless I broke it in 3.0)
- *
  * Note appRootDir is the path to the directory where fwbuilder binary
- * is installed (on Mac it is <wherever>/fwbuilder3.app/Contents/MacOS
- * , On Windows it is c:\FWBuilder30, on Linux it is something like
+ * is installed (on Mac it is <wherever>/fwbuilder3.app/Contents/MacOS.
+ * On Windows it is c:\FWBuilder30, on Linux it is something like
  * /usr/bin or /usr/local/bin and so on.
  */
 #if defined(Q_OS_WIN32) || defined(Q_OS_MACX)
