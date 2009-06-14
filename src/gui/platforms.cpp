@@ -732,8 +732,9 @@ void setPlatform(QComboBox *platform, const QString &pl)
         if (group != current_group)
         {
             current_group = group;
-            //platform->addItem(group, "");
-            platform->insertSeparator(cp);
+            platform->addItem(group, "");
+            // QT before 4.4.? does not support separator in QComboBox
+            //platform->insertSeparator(cp);
             cp++;
         }
 
