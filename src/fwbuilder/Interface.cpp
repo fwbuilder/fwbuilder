@@ -253,21 +253,6 @@ void Interface::setSecurityLevel(int level)
     setInt("security_level",level);
 }
 
-bool Interface::isExt() const 
-{ 
-    return( getInt("security_level")==0 );
-}
-
-/**
- *   if parameter value is true, then security level is set to 0 (least secure,
- *   or "outside")
- *   if parameter value is false, then current security level is set to 100
- */
-void Interface::setExt(bool external)
-{
-    setInt("security_level",(external)?0:100);
-}
-
 void Interface::setDyn(bool value) { setBool("dyn",value); }
 bool Interface::isDyn() const { return(getBool("dyn")); }
 

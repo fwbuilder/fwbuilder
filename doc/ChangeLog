@@ -1,3 +1,10 @@
+2009-06-14  vadim  <vadim@vk.crocodile.org>
+
+	* Interface.h (libfwbuilder): Ticket #55: deprecated isExt()
+	and setExt() methods. Platforms that care about interface being
+	external should use security levels. Currently this is only PIX
+	and it uses sec. levels already.
+
 2009-06-09  vadim  <vadim@vk.crocodile.org>
 
 	* NATCompiler.cpp (classifyNATRule::processNext): fixed bug

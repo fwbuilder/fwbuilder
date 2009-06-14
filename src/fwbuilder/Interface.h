@@ -98,13 +98,6 @@ public:
         void setSecurityLevel(int level);
 
         /**
-         *   Convenience methods: interface is considered "external" if its
-         *   security level is 0
-         */
-        void setExt(bool value);
-        bool isExt() const ;
-
-        /**
          * set and check 'dyn' attribute - for interfaces that get their
          * IP address dynamically
          */
