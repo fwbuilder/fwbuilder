@@ -43,6 +43,11 @@ namespace libfwbuilder
 class Firewall : public Host 
 {
 
+    void duplicateInterfaces(FWObject *target,
+                             const FWObject *source,
+                             std::map<int,int> &id_mapping,
+                             bool preserve_id = true);
+    
 public:
     
     Firewall();

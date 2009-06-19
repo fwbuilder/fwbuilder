@@ -1,3 +1,11 @@
+2009-06-18  vadim  <vadim@vk.crocodile.org>
+
+	* Firewall.cpp (Firewall::duplicateInterfaces): Fixes #142 : Copy
+	interfaces of the firewall before policies in
+	Firewall::duplicate() because interfaces might be referenced in
+	rules and should be coped before rule elements for the latter
+	to set up references to the copies.
+
 2009-06-14  vadim  <vadim@vk.crocodile.org>
 
 	* Interface.h (libfwbuilder): Ticket #55: deprecated isExt()
