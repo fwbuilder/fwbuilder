@@ -400,7 +400,7 @@ void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
             continue;
         }
     }
-
+ 
     if (addrlist.empty())
     {
         if (RuleElement::cast(s)==NULL) ol.push_back(s);
@@ -475,6 +475,10 @@ void Compiler::_expandInterface(Interface *iface, std::list<FWObject*> &ol)
             if (use_mac) ol.push_back(o);
             continue;
         }
+
+        // Skip bridge ports
+        Interface *subint = Interface::cast(o);
+        if (subint && subint->isBridgePort()) continue;
 
         if (Address::cast(o)!=NULL && MatchesAddressFamily(o)) ol.push_back(o);
     }
@@ -734,7 +738,7 @@ bool Compiler::convertInterfaceIdToStr::processNext()
 
     if (rule->getInterfaceStr().empty())
     {
-        Interface *iface = compiler->getCachedFwInterface(rule->getInterfaceId());
+        FWObject *iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
         string iface_name= (iface!=NULL) ? iface->getName() : "";
         rule->setInterfaceStr( iface_name );
     } else

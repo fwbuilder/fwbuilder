@@ -111,12 +111,17 @@ public:
         bool isUnnumbered() const ;
 
         /**
-         * set and check 'bridgeport' attribute.  The difference between
-         * bridge port and unnumbered interface is that compilers may use
-         * special modules or commands for bridge ports on platforms that
-         * support them, such as module physdev for iptables.
+         * Check if this is a bridge port. Bridge port is an
+         * interfaces with type "ethernet" that is a child of an
+         * interface with type "bridge". Type is defined in the
+         * InterfaceOptions object.  This is different from how it was
+         * in v3.0.x where bridge port was defined by an attribute
+         * "bridgeport" of the interface object.  There is no
+         * automatic conversion! User must conver their bridge port
+         * interfaces manually by dragging them under the bridge
+         * interface (typically br0) and setting the type
+         * appropriately.
          */
-        void setBridgePort(bool value);
         bool isBridgePort() const ;
 
         /**

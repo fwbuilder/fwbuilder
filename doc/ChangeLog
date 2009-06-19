@@ -1,5 +1,9 @@
 2009-06-18  vadim  <vadim@vk.crocodile.org>
 
+	* Interface.cpp (Interface::isBridgePort): Refs #90 :
+	deprecated attribute "bridgeport" in Interface object, using
+	type set in the InterfaceOptions object.
+
 	* Firewall.cpp (Firewall::duplicateInterfaces): Fixes #142 : Copy
 	interfaces of the firewall before policies in
 	Firewall::duplicate() because interfaces might be referenced in

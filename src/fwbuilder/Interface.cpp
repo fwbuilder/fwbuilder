@@ -57,7 +57,6 @@ Interface::Interface():Address()
     setBool("dyn",false);
     setBool("unnum",false);
     setBool("unprotected",false);
-    setBool("bridgeport",false);
     setInt("security_level",0);
 
     bcast_bits       = 1    ;
@@ -72,7 +71,6 @@ Interface::Interface(const FWObjectDatabase *root,bool prepopulate) :
     setBool("dyn",false);
     setBool("unnum",false);
     setBool("unprotected",false);
-    setBool("bridgeport",false);
     setInt("security_level",0);
 
     bcast_bits       = 1    ;
@@ -144,13 +142,6 @@ void Interface::fromXML(xmlNodePtr root) throw(FWException)
     if (n!=NULL)
     {
         setStr("unprotected",n);
-        FREEXMLBUFF(n);
-    }
-
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("bridgeport")));
-    if (n!=NULL)
-    {
-        setStr("bridgeport",n);
         FREEXMLBUFF(n);
     }
 
@@ -262,9 +253,6 @@ bool Interface::isUnnumbered() const { return getBool("unnum"); }
 void Interface::setUnprotected(bool value) { setBool("unprotected",value); }
 bool Interface::isUnprotected() const { return getBool("unprotected"); }
 
-void Interface::setBridgePort(bool value) { setBool("bridgeport",value); }
-bool Interface::isBridgePort() const { return getBool("bridgeport"); }
-
 void Interface::setManagement(bool value) { setBool("mgmt",value); }
 bool Interface::isManagement() const { return (getBool("mgmt")); }
 
@@ -284,6 +272,12 @@ bool  Interface::validateChild(FWObject *o)
             otype==physAddress::TYPENAME ||
             otype==InterfaceOptions::TYPENAME ||
             otype==FailoverClusterGroup::TYPENAME);
+}
+
+bool Interface::isBridgePort() const
+{
+    Interface *parent = Interface::cast(getParent());
+    return (parent && parent->getOptionsObject()->getStr("type") == "bridge");
 }
 
 bool Interface::isLoopback() const
