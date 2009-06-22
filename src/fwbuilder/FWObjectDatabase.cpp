@@ -415,6 +415,7 @@ FWObject* FWObjectDatabase::checkIndex(int id)
 
 FWObject* FWObjectDatabase::findInIndex(int id)
 {
+    if (id < 0) return NULL;
     FWObject *o = checkIndex(id);
     if (o!=NULL) index_hits++;
     else
