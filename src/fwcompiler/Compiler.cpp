@@ -99,14 +99,6 @@ int Compiler::prolog()
 
     fw->add(temp,false);
 
-/* caching firewall interfaces */
-    FWObjectTypedChildIterator j=fw->findByType(Interface::TYPENAME);
-    for ( ; j!=j.end(); ++j )
-    {
-        Interface *interface_ = Interface::cast(*j);
-        fw_interfaces[interface_->getId()] = interface_;
-    }
-    
     fw_id=fw->getId();
 
     fwopt = fw->getOptionsObject();
@@ -365,7 +357,7 @@ void Compiler::expandGroupsInRuleElement(RuleElement *s)
 void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
                                       list<FWObject*> &ol)
 {
-    Interface *rule_iface = fw_interfaces[rule->getInterfaceId()];
+    Interface *rule_iface = Interface::cast(dbcopy->findInIndex(rule->getInterfaceId()));
     bool on_loopback= ( rule_iface && rule_iface->isLoopback() );
 
     list<FWObject*> addrlist;

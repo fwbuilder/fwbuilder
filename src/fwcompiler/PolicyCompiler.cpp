@@ -1170,7 +1170,7 @@ string PolicyCompiler::debugPrintRule(Rule *r)
     RuleElementItf *itfrel=rule->getItf();
 
     int iface_id = rule->getInterfaceId();
-    Interface *rule_iface = fw_interfaces[iface_id];
+    Interface *rule_iface = Interface::cast(dbcopy->findInIndex(iface_id));
 
     ostringstream str;
 

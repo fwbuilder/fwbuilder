@@ -214,7 +214,6 @@ protected:
         * the following variables are simply a cache for frequently used
         * objects
         */
-        std::map<int, libfwbuilder::Interface*> fw_interfaces;
         int                                     fw_id;
         libfwbuilder::FWOptions                *fwopt;
         std::map<int, libfwbuilder::FWObject*>  objcache;
@@ -511,12 +510,6 @@ protected:
          * to user in the GUI). Used for debugging purposes
          */
         virtual std::string debugPrintRule(libfwbuilder::Rule *rule);
-
-        /**
-         * returns pointer to cached interface
-         */
-        libfwbuilder::Interface* getCachedFwInterface(int id)
-        { return fw_interfaces[id]; }
 
         /**
          * returns cached firewall object ID

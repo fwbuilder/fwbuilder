@@ -61,6 +61,7 @@ int Compiler::checkCluster(Cluster* cluster)
     {
         string iface_name = Interface::cast(*cluster_ifaces)->getName();
         const InetAddr* iface_address = Interface::cast(*cluster_ifaces)->getAddressPtr();
+        if (iface_address==NULL) continue; // cluster interface with no address
         FWObjectTypedChildIterator other_ifaces = cluster_ifaces;
         for (++other_ifaces; other_ifaces != cluster_ifaces.end(); ++other_ifaces)
         {
@@ -69,7 +70,9 @@ int Compiler::checkCluster(Cluster* cluster)
                 cout << " Warning: found duplicate cluster interface name " << iface_name << "." << endl;
                 incorrect_cluster = true;
             }
-            if (*iface_address == *(Interface::cast(*other_ifaces)->getAddressPtr()))
+            const InetAddr *other_iface_address = Interface::cast(*other_ifaces)->getAddressPtr();
+            if (other_iface_address==NULL) continue; // cluster interface with no address
+            if (*iface_address == *other_iface_address)
             {
                 cout << " Warning: found duplicate cluster interface address ";
                 cout << iface_address->toString() << "." << endl;
