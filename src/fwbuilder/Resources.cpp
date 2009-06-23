@@ -281,9 +281,9 @@ string  Resources::getInstaller()
     return getResourceStr("/FWBuilderResources/Target/installer");
 }
 
-string  Resources::getExporter()
+string  Resources::getTransferAgent()
 {
-    return getResourceStr("/FWBuilderResources/Target/exporter");
+    return getResourceStr("/FWBuilderResources/Target/transfer_agent");
 }
 
 vector<string> Resources::getListOfPlatforms()

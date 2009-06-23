@@ -93,7 +93,7 @@ public:
     std::string  getVersion();
     std::string  getCompiler();
     std::string  getInstaller();
-    std::string  getExporter();
+    std::string  getTransferAgent();
 
     static std::vector<std::string>             getListOfPlatforms();
     static std::map<std::string,std::string>    getPlatforms();
