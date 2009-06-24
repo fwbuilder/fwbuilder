@@ -69,8 +69,15 @@ void InetAddr::init_from_string(const char* data)
 {
     if(!data) throw FWException("NULL IP address data..");
     if (strchr(data, '.')==NULL && strchr(data, ':')==NULL)
-        init_from_int(atoi(data));
-    else
+    {
+        char *invalid_chars;
+        long r = strtol(data, &invalid_chars, 10);
+        if (invalid_chars && *invalid_chars == '\0')
+            init_from_int(r);
+        else
+            throw FWException(string("Invalid IP address: '") + string(data) + "'");
+
+    } else
     {
         if (address_family == AF_INET)
         {
