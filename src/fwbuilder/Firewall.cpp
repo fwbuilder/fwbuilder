@@ -423,3 +423,29 @@ void   Firewall::setInactive(bool b)
     setBool("inactive",b);
 }
 
+/*
+ * There are only two levels of interfaces, i.e. a top-level interface can only
+ * have a subinterface. Subinterfaces can not have further subinterfaces.
+ */
+list<Interface*> Firewall::getInterfacesByType(const string &iface_type)
+{
+    list<Interface*> res;
+
+    for (FWObjectTypedChildIterator it = findByType(Interface::TYPENAME);
+         it != it.end(); ++it)
+    {
+        Interface *iface = Interface::cast(*it);
+        if (iface->getOptionsObject()->getStr("type") == iface_type)
+            res.push_back(iface);
+
+        for (FWObjectTypedChildIterator subit = iface->findByType(Interface::TYPENAME);
+             subit != subit.end(); ++subit)
+        {
+            Interface *subiface = Interface::cast(*subit);
+            if (subiface->getOptionsObject()->getStr("type") == iface_type)
+                res.push_back(subiface);
+        }
+    }
+    return res;
+}
+

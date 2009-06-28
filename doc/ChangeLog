@@ -1,5 +1,8 @@
 2009-06-28  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* Firewall.cpp (Firewall::getIntrfacesByType()): Simple method to
+	get a list of pointers to all intrfaces of given type.
+
         * Compiler_cluster.cpp (Compiler::processFailoverGroup): fixes
         #166: cluster should be allowed to have interfaces with the same
         name as interfaces of the member firewall (i.e. "eth0"). This is

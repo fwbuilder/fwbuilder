@@ -34,7 +34,7 @@
 
 namespace libfwbuilder
 {
-
+    class Interface;
     class Policy;
     class NAT;
     class RuleSet;
@@ -81,6 +81,12 @@ public:
     NAT     *getNAT();
     Routing *getRouting();
 
+    /**
+     * Return list of interfaces of given type. This walks all interfaces recursively,
+     * including subinterfaces.
+     */
+    std::list<libfwbuilder::Interface*> getInterfacesByType(const std::string &iface_type);
+    
     time_t getLastModified();
     time_t getLastInstalled();
     time_t getLastCompiled();
