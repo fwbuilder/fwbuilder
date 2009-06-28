@@ -145,23 +145,6 @@ void Compiler::processFailoverGroup(Cluster *cluster,
 
     assert(fw->getOptionsObject() != NULL);
 
-    /* Verify uniqueness of cluster interface name.  Firewall object
-     * should not have interface with the same name as cluster.
-     */
-    FWObjectTypedChildIterator current_ifaces = fw->findByType(Interface::TYPENAME);
-    for (; current_ifaces != current_ifaces.end(); ++current_ifaces)
-    {
-        if (cluster_if_name ==  (*current_ifaces)->getName())
-        {
-            /* Fatal missconfiguration */
-            /* TODO: Find more elegant way to bailout */
-            cerr << " Error: multiple cluster interfaces with same name ("
-                 << cluster_if_name;
-            cerr << ") found." << endl;
-            exit(1);
-        }
-    }
-
     iface->getOptionsObject()->setStr(
         "failover_group_id", FWObjectDatabase::getStringId(cluster_group->getId()));
 

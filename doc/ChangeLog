@@ -1,3 +1,12 @@
+2009-06-28  Vadim Kurland  <vadim@vk.crocodile.org>
+
+        * Compiler_cluster.cpp (Compiler::processFailoverGroup): fixes
+        #166: cluster should be allowed to have interfaces with the same
+        name as interfaces of the member firewall (i.e. "eth0"). This is
+        necessary to support failover protocols that do not create virtual
+        interfaces, but rather operate over normal interfaces, such as
+        heartbeat.
+
 2009-06-23  vadim  <vadim@vk.crocodile.org>
 
 	* InetAddr.cpp (InetAddr::init_from_string): Fixes #112: use strtol
