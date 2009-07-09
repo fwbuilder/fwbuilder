@@ -1,3 +1,10 @@
+2009-07-09  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Compiler_cluster.cpp (Compiler::populateClusterElements): user
+	can now add loopback interface to the cluster object and use it in
+	rules. This interface does not have failover group and has the
+	usual 127.0.0.1/8 ip address. refers #163
+
 2009-06-28  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Firewall.cpp (Firewall::getIntrfacesByType()): Simple method to

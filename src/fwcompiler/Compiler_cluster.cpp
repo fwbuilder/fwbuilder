@@ -273,6 +273,22 @@ int Compiler::populateClusterElements(Cluster *cluster, Firewall *fw)
                     processFailoverGroup(cluster, fw, failover_group, iface);
                 }
             }
+        } else
+        {
+            // cluster interface without failover group
+            // is this a loopback interface ?
+            Interface *cluster_interface = Interface::cast(*cl_iface);
+            if (cluster_interface->isLoopback())
+            {
+
+                /* Add copy of the interface from the cluster to the firewall object
+                 * so that when it is encountered in the "intrface" rule element of
+                 * its rules, it belongs to the firewall and is therefore valid.
+                 */
+                Interface* new_cl_if = Interface::cast(fw->addCopyOf(cluster_interface, false));
+                assert(new_cl_if != NULL);
+                new_cl_if->getOptionsObject()->setBool("cluster_interface", true);
+            }
         }
     }
     
