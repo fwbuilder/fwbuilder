@@ -811,6 +811,7 @@
     <IPv6 id="id197751X48026" name="firewall-ipv6-5:eth0:ipv6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
     <IPv6 id="id178394X48026" name="firewall-ipv6-6:eth1:ip6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
     <IPv6 id="id42754X3791" name="ipv4-ipv6-host-1:eth0:ip6" comment="" ro="False" address="e80::21d:9ff:fe8b:8e94" netmask="64"/>
+    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -27325,7 +27326,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4833F62B6131" host_OS="linux24" inactive="False" lastCompiled="1230838020" lastInstalled="0" lastModified="1230076763" platform="iptables" version="" name="firewall-ipv6-1" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
+      <Firewall id="id4833F62B6131" host_OS="linux24" inactive="False" lastCompiled="1247351442" lastInstalled="0" lastModified="1247351429" platform="iptables" version="" name="firewall-ipv6-1" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
         <NAT id="id4833F62F6131" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id483F5B7623190" name="Policy_ipv6" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="True">
           <PolicyRule id="id30141X31704" disabled="False" log="False" position="0" action="Accept" direction="Outbound" comment="for bug 2047082&#10;&#10;">
@@ -27528,6 +27529,26 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id43963X63240" disabled="False" group="" log="True" position="10" action="Deny" direction="Both" comment="ipv4 address range">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id42386X35957"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
         </Policy>
