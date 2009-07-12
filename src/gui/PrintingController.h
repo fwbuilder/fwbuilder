@@ -51,7 +51,7 @@ public:
                           QTableWidget *tbl, int &row, int &col);
     bool addObjectsByTypeToTable(libfwbuilder::FWObject *parent,
                                  const std::string &type_name,
-                                 QTableWidget &tbl, int &row, int &col);
+                                 QTableWidget *tbl, int &row, int &col);
     void findAllGroups(std::list<libfwbuilder::FWObject*> &objects,
                        std::list<libfwbuilder::FWObject*> &groups);
     void printRuleSet(libfwbuilder::FWObject *fw,
@@ -61,7 +61,7 @@ public:
     void printLegend(bool newPageForSection);
     void printObjects(libfwbuilder::FWObject *firewall_to_print,
                       bool newPageForSection);
-    void configureQTableForPrint(QTableWidget &tbl);
+    void configureQTableForPrint(QTableWidget *tbl);
 };
 
 #endif

@@ -233,12 +233,12 @@ int PrintingController::addObjectsToTable(list<FWObject*> &objects,
 
 bool PrintingController::addObjectsByTypeToTable(FWObject *parent,
                                                  const string &type_name,
-                                                 QTableWidget &tbl,
+                                                 QTableWidget *tbl,
                                                  int &row, int &col)
 {
     list<FWObject*> objects;
     findAllUsedByType(objects, parent, type_name);
-    int added = addObjectsToTable(objects, &tbl, row, col);
+    int added = addObjectsToTable(objects, tbl, row, col);
     if (fwbdebug) qDebug("Objects table: type %s, added %d",
                          type_name.c_str(), added);
     if (added)
@@ -246,7 +246,7 @@ bool PrintingController::addObjectsByTypeToTable(FWObject *parent,
         if (col!=0)
         {
             row++; col=0;
-            tbl.insertRow(row);
+            tbl->insertRow(row);
         }
         return true;
     }
@@ -351,7 +351,7 @@ void PrintingController::printLegend(bool newPageForSection)
     pr->printText(QObject::tr("Legend"));
     pr->printText(" ");
 
-    QTableWidget legendTbl(1,2);
+    QTableWidget *legendTbl = new QTableWidget(1,2);
     configureQTableForPrint(legendTbl);
 
     string icon_path="/FWBuilderResources/Type/";
@@ -365,7 +365,7 @@ void PrintingController::printLegend(bool newPageForSection)
 
     for (int i=0; !legendList[i].isEmpty(); ++i,++i)
     {
-        if (row >= legendTbl.rowCount()) legendTbl.insertRow(row);
+        if (row >= legendTbl->rowCount()) legendTbl->insertRow(row);
 
         QString type_name = legendList[i];
         QString objName = legendList[i+1];
@@ -395,23 +395,23 @@ void PrintingController::printLegend(bool newPageForSection)
         QTableWidgetItem *itm = new QTableWidgetItem;
         itm->setIcon(QIcon(bfr));
         itm->setText(objName);
-        legendTbl.setItem(row, col, itm);
+        legendTbl->setItem(row, col, itm);
 
         row++;
     }
 
-    legendTbl.resizeColumnToContents(0);
-    legendTbl.resizeColumnToContents(1);
+    legendTbl->resizeColumnToContents(0);
+    legendTbl->resizeColumnToContents(1);
 
-    for (int i=0; i<legendTbl.rowCount(); ++i)
-        legendTbl.resizeRowToContents(i);
+    for (int i=0; i<legendTbl->rowCount(); ++i)
+        legendTbl->resizeRowToContents(i);
 
-    QSize sh = legendTbl.sizeHint();
-    legendTbl.resize(sh.width(),sh.height());
+    QSize sh = legendTbl->sizeHint();
+    legendTbl->resize(sh.width(),sh.height());
     if (fwbdebug) qDebug("legendTbl size: %dx%d",
-                         legendTbl.width(),legendTbl.height());
+                         legendTbl->width(),legendTbl->height());
 
-    pr->printQTable(&legendTbl, false, false);
+    pr->printQTable(legendTbl, false, false);
 }
 
 void PrintingController::printObjects(FWObject *firewall_to_print,
@@ -432,7 +432,7 @@ void PrintingController::printObjects(FWObject *firewall_to_print,
     bool haveObjGroups = false;
     bool haveSrvGroups = false;
 
-    QTableWidget fwObjTbl(1,3);
+    QTableWidget *fwObjTbl = new QTableWidget(1,3);
     configureQTableForPrint(fwObjTbl);
 
     QString descr;
@@ -443,17 +443,17 @@ void PrintingController::printObjects(FWObject *firewall_to_print,
     addObjectsByTypeToTable(firewall_to_print, Firewall::TYPENAME,
                             fwObjTbl, row, col);
 
-    for (int i=0; i<fwObjTbl.columnCount(); ++i)
-        fwObjTbl.resizeColumnToContents(i);
-    for (int i=0; i<fwObjTbl.rowCount(); ++i)
-        fwObjTbl.resizeRowToContents(i);
+    for (int i=0; i<fwObjTbl->columnCount(); ++i)
+        fwObjTbl->resizeColumnToContents(i);
+    for (int i=0; i<fwObjTbl->rowCount(); ++i)
+        fwObjTbl->resizeRowToContents(i);
 
-    QSize sh = fwObjTbl.sizeHint();
-    fwObjTbl.resize(sh.width(), sh.height());
-    pr->printQTable(&fwObjTbl, false, false);
+    QSize sh = fwObjTbl->sizeHint();
+    fwObjTbl->resize(sh.width(), sh.height());
+    pr->printQTable(fwObjTbl, false, false);
     pr->printText(" ");
 
-    QTableWidget objTbl(1,6);
+    QTableWidget *objTbl = new QTableWidget(1,6);
     configureQTableForPrint(objTbl);
 
     row = 0;
@@ -500,14 +500,14 @@ void PrintingController::printObjects(FWObject *firewall_to_print,
     addObjectsByTypeToTable(firewall_to_print, Interval::TYPENAME,
                             objTbl, row, col);
 
-    for (int i=0; i<objTbl.columnCount(); ++i)
-        objTbl.resizeColumnToContents(i);
-    for (int i=0; i<objTbl.rowCount(); ++i)
-        objTbl.resizeRowToContents(i);
+    for (int i=0; i<objTbl->columnCount(); ++i)
+        objTbl->resizeColumnToContents(i);
+    for (int i=0; i<objTbl->rowCount(); ++i)
+        objTbl->resizeRowToContents(i);
 
-    sh = objTbl.sizeHint();
-    objTbl.resize(sh.width(), sh.height());
-    pr->printQTable(&objTbl, false, false);
+    sh = objTbl->sizeHint();
+    objTbl->resize(sh.width(), sh.height());
+    pr->printQTable(objTbl, false, false);
 
     if (haveObjGroups || haveSrvGroups)
     {
@@ -532,7 +532,7 @@ void PrintingController::printObjects(FWObject *firewall_to_print,
         for (FWObject::iterator obj=groups.begin();
              obj!=groups.end(); ++obj)
         {
-            QTableWidget objTbl(1,6);
+            QTableWidget *objTbl = new QTableWidget(1,6);
             configureQTableForPrint(objTbl);
 
             row = 0;
@@ -549,41 +549,41 @@ void PrintingController::printObjects(FWObject *firewall_to_print,
             }
 
             int added = addObjectsToTable(
-                groupMembers, &objTbl, row, col);
+                groupMembers, objTbl, row, col);
             if (fwbdebug) qDebug("Group %s: added %d group members",
                                  (*obj)->getName().c_str(),added);
 
             if (added == 0)
             {
-                objTbl.setItem(row, col,
-                               new QTableWidgetItem(QObject::tr("EMPTY")) );
+                objTbl->setItem(row, col,
+                                new QTableWidgetItem(QObject::tr("EMPTY")) );
             }
 
-            for (int i=0; i<objTbl.columnCount(); ++i)
-                objTbl.resizeColumnToContents(i);
-            for (int i=0; i<objTbl.rowCount(); ++i)
-                objTbl.resizeRowToContents(i);
+            for (int i=0; i<objTbl->columnCount(); ++i)
+                objTbl->resizeColumnToContents(i);
+            for (int i=0; i<objTbl->rowCount(); ++i)
+                objTbl->resizeRowToContents(i);
 
             pr->printText((*obj)->getName().c_str());
-            pr->printQTable(&objTbl, false, false);
+            pr->printQTable(objTbl, false, false);
             pr->printText("\n");
         }
     }
 
 }
 
-void PrintingController::configureQTableForPrint(QTableWidget &tbl)
+void PrintingController::configureQTableForPrint(QTableWidget *tbl)
 {
-    tbl.resize(pr->getWorkspaceWidth(), pr->getWorkspaceHeight());
-    tbl.setSizePolicy( QSizePolicy( (QSizePolicy::Policy)7,
+    tbl->resize(pr->getWorkspaceWidth(), pr->getWorkspaceHeight());
+    tbl->setSizePolicy( QSizePolicy( (QSizePolicy::Policy)7,
                                     (QSizePolicy::Policy)7) );
-    tbl.setShowGrid(false);
-    tbl.setFrameStyle(QFrame::NoFrame | QFrame::Plain);
+    tbl->setShowGrid(false);
+    tbl->setFrameStyle(QFrame::NoFrame | QFrame::Plain);
 
-    tbl.horizontalHeader()->hide();
-    tbl.verticalHeader()->hide();
+    tbl->horizontalHeader()->hide();
+    tbl->verticalHeader()->hide();
 
-    tbl.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    tbl.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    tbl->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    tbl->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
