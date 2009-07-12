@@ -17,6 +17,13 @@
         interfaces, but rather operate over normal interfaces, such as
         heartbeat.
 
+2009-06-24  vadim  <vadim@vk.crocodile.org>
+
+	* Rule.cpp (PolicyRule::getDirectionAsString): Direction
+	"Undefined" is not allowed per DTD, have to assume it is "Both"
+	if it is not "Inbound" or "Outbound". This is a last-minute fix
+	which causes re-relase of 3.0.5
+
 2009-06-23  vadim  <vadim@vk.crocodile.org>
 
 	* InetAddr.cpp (InetAddr::init_from_string): Fixes #112: use strtol
@@ -34,6 +41,10 @@
 	Firewall::duplicate() because interfaces might be referenced in
 	rules and should be coped before rule elements for the latter
 	to set up references to the copies.
+
+2009-06-17  vadim  <vadim@vk.crocodile.org>
+
+	* v3.0.5 released
 
 2009-06-14  vadim  <vadim@vk.crocodile.org>
 
