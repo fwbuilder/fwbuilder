@@ -1,5 +1,9 @@
 2009-07-11  vadim  <vadim@vk.crocodile.org>
 
+	* OSConfigurator_openbsd.cpp (OSConfigurator_openbsd::processFirewallOptions):
+	fixed bug #2820162 "Bad sysctl name for OpenBSD pf" - the sysctl
+	argument for IPv6 forwarding was incorrect.
+
 	* AddressRange.h (libfwbuilder): fixed bug #2820152: "Address
 	ranges and other such need IPv4/v6 typing". AddressRange object
 	should be recognized and removed from the rule if it is used in
