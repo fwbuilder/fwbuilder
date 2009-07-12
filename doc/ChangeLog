@@ -1,3 +1,15 @@
+2009-07-11  vadim  <vadim@vk.crocodile.org>
+
+	* AddressRange.h (libfwbuilder): fixed bug #2820152: "Address
+	ranges and other such need IPv4/v6 typing". AddressRange object
+	should be recognized and removed from the rule if it is used in
+	ipv6 rule set. To do this, add virtual method
+	hasInetAddress() (should return true) to indicate that this object
+	has an address. This works since virtual method getAddressPtr()
+	has been implemented anyway.
+
+	* VERSION (VERSION): started v3.0.6
+
 2009-06-24  vadim  <vadim@vk.crocodile.org>
 
 	* Rule.cpp (PolicyRule::getDirectionAsString): Direction

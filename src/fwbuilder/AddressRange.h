@@ -56,6 +56,7 @@ class AddressRange : public Address
     /**
      * virtual methods inherited from Address
      */
+    virtual bool hasInetAddress() const { return true; }
     virtual const InetAddr* getAddressPtr() const;
     virtual unsigned int dimension()  const;
 
