@@ -77,27 +77,27 @@ bool printerStream::begin()
     ymargin = (int) ( (margin/2.54)*dpiy );
 // assuming printer's resolutions by X and Y axes are the same
     xmargin = ymargin;
-    pageBody=QRect( xmargin,
-                    ymargin,
-                    printer->width() - 2*xmargin,
-                    printer->height() - 2*ymargin );
+    pageBody = QRect( xmargin,
+                      ymargin,
+                      printer->width() - 2 * xmargin,
+                      printer->height() - 2 * ymargin );
 
-    yHeaderHeight = int((headerHeight/2.54)*dpiy);
-    yHeaderLine = int(((headerHeight-0.5)/2.54)*dpiy);
+    yHeaderHeight = int((headerHeight / 2.54) * dpiy);
+    yHeaderLine = int(((headerHeight - 0.5) / 2.54) * dpiy);
 
     pr.setFont(headerFont);
     QFontMetrics fm = pr.fontMetrics();
     QRect br = fm.boundingRect("Page 999");
 
-    headerTextBox=QRect(xmargin,
-                        ymargin + yHeaderLine - fm.lineSpacing() - 1,
-                        printer->width() - 2 * xmargin,
-                        fm.lineSpacing() + 1);
+    headerTextBox = QRect(xmargin,
+                          ymargin + yHeaderLine - fm.lineSpacing() - 1,
+                          printer->width() - 2 * xmargin,
+                          fm.lineSpacing() + 1);
 
-    headerBox=QRect(xmargin,
-                    ymargin,
-                    printer->width() - 2 * xmargin,
-                    yHeaderHeight);
+    headerBox = QRect(xmargin,
+                      ymargin,
+                      printer->width() - 2 * xmargin,
+                      yHeaderHeight);
 
     if (fwbdebug)
     {
@@ -228,6 +228,8 @@ void printerStream::printText(const QString &txt, bool newLine)
 void printerStream::printPixmap(const QPixmap &pm, bool newLine)
 {
     QPaintDevice *dev = pr.device();
+
+#if 0
     if (fwbdebug)
     {
         qDebug("printPixmap: width=%d height=%d", pm.width(), pm.height());
@@ -243,6 +245,7 @@ void printerStream::printPixmap(const QPixmap &pm, bool newLine)
                    dev->physicalDpiY(), dev->physicalDpiX());
         }
     }
+#endif
 
     int target_w = (int)(pm.width() * pixmap_scaling_ratio);
     int target_h = (int)(pm.height() * pixmap_scaling_ratio);
@@ -252,19 +255,30 @@ void printerStream::printPixmap(const QPixmap &pm, bool newLine)
     {
         int yFrag = pageBody.height() - yPos;
         if (pageNo>=fromPage && pageNo<=toPage)
+        {
+            if (fwbdebug)
+                qDebug("Print pixmap 1: yPos=%d pmYOffset=%d "
+                       "yFrag=%d target_w=%d target_h=%d",
+                       yPos, pmYOffset, yFrag, target_w, target_h);
             pr.drawPixmap(xmargin, yPos, target_w, target_h,
                           pm,
                           0, pmYOffset, -1, yFrag);
+        }
         pmYOffset = pmYOffset + yFrag;
         flushPage();
         beginPage();   // resets yPos
     }
     if (pageNo>=fromPage && pageNo<=toPage)
+    {
+        if (fwbdebug)
+            qDebug("Print pixmap 2: yPos=%d pmYOffset=%d target_w=%d target_h=%d",
+                   yPos, pmYOffset, target_w, target_h);
         pr.drawPixmap(xmargin, yPos, target_w, target_h,
                       pm,
                       0, pmYOffset, -1, -1);
+    }
 
-    if (newLine) yPos = yPos + (target_h - pmYOffset); //  (pm.height() - pmYOffset);
+    if (newLine) yPos = yPos + (target_h - pmYOffset);
 }
 
 void printerStream::printQTable(QTableView *tbl, bool left_margin,
@@ -274,22 +288,17 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
     {
         qDebug("printQTable ----------------------------------------------");
         qDebug("Size: %dx%d", tbl->width(), tbl->height());
-        qDebug("Visible: %dx%d",
-               tbl->contentsRect().width(), tbl->contentsRect().height());
-        qDebug("Viewport: %dx%d",
-               tbl->viewport()->width(), tbl->viewport()->height());
-        /*qDebug("Clipper: %dx%d",
-          tbl->clipper()->width(),tbl->clipper()->height());*/
-
+//        qDebug("Visible: %dx%d",
+//               tbl->contentsRect().width(), tbl->contentsRect().height());
+//        qDebug("Viewport: %dx%d",
+//               tbl->viewport()->width(), tbl->viewport()->height());
+//        qDebug("pageBody.height(): %d", pageBody.height());
         qDebug("YSpace: %d", getYSpace());
-        qDebug("pageBody.height(): %d", pageBody.height());
         qDebug("yPos: %d", yPos);
     }
 
-    int firstRow = 0;
-    int lastRow = 1;
-    int tblHeight = (int)((float)(tbl->horizontalHeader()->height()) *
-                          pixmap_scaling_ratio);
+    int top_row = 0;
+    int bottom_row = 1;
 
     int columnsWidth = 0;
     int i = 0;
@@ -299,17 +308,14 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
         i++;
     }
 
-    if ( tblHeight + tbl->rowHeight(0)*pixmap_scaling_ratio > getYSpace() )
-    {
-        // even one row of the table won't fit on the space left on page
-        flushPage();
-        beginPage();
-    }
-
     int rowCount = tbl->model()->rowCount();
-    while (firstRow<=(rowCount-1))
+    while (top_row <= (rowCount-1))
     {
         int row = 0;
+
+        int tblHeight = (int)(
+            (float)(tbl->horizontalHeader()->height()) * pixmap_scaling_ratio);
+
         /* ===================================================================
          * Row height is screen pixels, getYSpace returns remaining
          * space in printer resolution units. Keep track of both to
@@ -317,13 +323,16 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
          * ===================================================================
          */
         int pixMapHeight = tbl->horizontalHeader()->height();
-
-        for (row=firstRow; row < rowCount; ++row)
+        for (row=top_row; row < rowCount; ++row)
         {
+            if (tbl->isRowHidden(row))
+            {
+                // hidden rows count but do not contribute to table height
+                continue;
+            }
 
-            int nth = tblHeight + (int)((float)(tbl->rowHeight(row)) *
-                                        pixmap_scaling_ratio);
-            int pmh = pixMapHeight + tbl->rowHeight(row);
+            int nth = tblHeight +
+                (int)((float)(tbl->rowHeight(row)) * pixmap_scaling_ratio);
 
             if ( nth==getYSpace() )  break;
 
@@ -332,16 +341,21 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
                 row--; 
                 break; 
             }
+
             tblHeight = nth;
-            pixMapHeight  = pmh;
+            pixMapHeight += tbl->rowHeight(row);
         }
         
-        // if row < firstRow then even single row does not fit on the page
-        if (row < firstRow)
+        // if row < top_row then even single row does not fit on the page
+        if (row < top_row)
         {
-            row = firstRow;
-            pixMapHeight = tbl->rowHeight(firstRow);
+            row = top_row;
+            pixMapHeight = tbl->rowHeight(top_row);
         }
+
+        if (row == rowCount) row--;
+
+        bottom_row = row;
 
         int left_hdr_w = 0;
         if (left_margin && tbl->verticalHeader() != NULL)
@@ -353,20 +367,9 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
 
         int tblWidth = columnsWidth + left_hdr_w;
 
-        if (row == rowCount) row--;
-
-        lastRow = row;
-
         if (fwbdebug)
             qDebug("Page %d -- (%d-%d of %d rows) tblWidth: %d   tblHeight: %d",
-                   pageNo, firstRow, lastRow, rowCount, tblWidth, tblHeight);
-
-        int firstRowPos = tbl->verticalHeader()->sectionPosition(firstRow);
-        int lastRowPos = tbl->verticalHeader()->sectionPosition(lastRow);
-
-        if (fwbdebug)
-            qDebug("    firstRowPos: %d lastRowPos: %d  pixMapHeight: %d",
-                   firstRowPos, lastRowPos, pixMapHeight);
+                   pageNo, top_row, bottom_row, rowCount, tblWidth, tblHeight);
 
         tbl->resize(tblWidth, pixMapHeight);
 
@@ -377,43 +380,29 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
             tbl->width() - tbl->verticalHeader()->width(),
             tbl->horizontalHeader()->height());
 
-        if (fwbdebug)
-        {
-            qDebug("    ### After resize:");
-            qDebug("    Size: %dx%d", tbl->width(), tbl->height());
-            qDebug("    Visible: %dx%d",
-                   tbl->contentsRect().width(), tbl->contentsRect().height());
-            qDebug("    vheader size: %dx%d",
-                   tbl->verticalHeader()->width(),
-                   tbl->verticalHeader()->height());
-        }
 
-        tbl->verticalHeader()->setOffsetToSectionPosition(firstRow);
+// QTableView::scrollTo() makes row visible, but if there are not enough
+// rows below it, it appears in the middle of the table. This means the table
+// shows few rows that belong on the previous page, which is bad.
+//
+//        tbl->scrollTo(tbl->model()->index(top_row, 0),
+//                      QAbstractItemView::PositionAtTop);
+
+        int top_row_position = tbl->verticalHeader()->sectionPosition(top_row);
+        tbl->verticalHeader()->setOffset(top_row_position);
+
         tbl->update();
 
-        if (fwbdebug)
-        {
-            qDebug("    ### After scroll:");
-            /* qDebug("    contents X: %d  contents Y: %d",
-                   tbl->horizontalOffset(),tbl->verticalOffset()); */
-            int count = tbl->verticalHeader()->count();
-            int offset= tbl->verticalHeader()->offset();
-            qDebug("    vheader count: %d",count);
-            qDebug("    vheader offset: %d",offset);
-            qDebug("    vheader sectionAt(%d): %d",
-                   offset,
-                   tbl->verticalHeader()->logicalIndexAt(offset));
-        }
 
         printPixmap(QPixmap::grabWidget(tbl));  //,0,0,-1,pixMapHeight));
 
-        if (lastRow>=(rowCount-1)) break;
+        if (bottom_row>=(rowCount-1)) break;
 
         flushPage();
         beginPage();
 
-        firstRow = lastRow + 1;
-        tblHeight = (int)((float)(tbl->horizontalHeader()->height())*pixmap_scaling_ratio);
+        top_row = bottom_row + 1;
+
     }
 }
 

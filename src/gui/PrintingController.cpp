@@ -295,19 +295,14 @@ void PrintingController::printRuleSet(FWObject *fw,
 
         ruleView->setMaximumHeight(pr->getPageHeight());
 
-        /*if (fwbdebug) qDebug("Contents: %dx%d",
-          ruleView->contentsWidth(),ruleView->contentsHeight());
-          if (fwbdebug) qDebug("Visible: %dx%d",
-          ruleView->visibleWidth(),ruleView->visibleHeight());*/
+        ruleView->restoreCollapsedGroups();
+
         if (fwbdebug)
             qDebug("Viewport: %dx%d",
                    ruleView->viewport()->width(),ruleView->viewport()->height());
-        /*if (fwbdebug) qDebug("Clipper: %dx%d",
-          ruleView->clipper()->width(),ruleView->clipper()->height());*/
 
         if (fwbdebug) qDebug("Size: %dx%d",ruleView->width(),ruleView->height());
 
-//    pr->printPixmap(QPixmap::grabWidget(ruleView,0,0));
         pr->printQTable(ruleView);
 
         delete ruleView;
