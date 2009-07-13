@@ -635,7 +635,7 @@ bool PolicyCompiler_pix::PrintRule::processNext()
 
     if (compiler->fw->getOptionsObject()->getBool("pix_use_acl_remarks"))
     {
-        compiler->output << acl->addRemark( rule->getLabel() );
+        compiler->output << acl->addRemark(rule->getLabel(), rule->getComment());
     }
 
     /*

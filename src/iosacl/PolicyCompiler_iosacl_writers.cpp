@@ -60,6 +60,7 @@
 
 #include <assert.h>
 
+
 using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
@@ -280,7 +281,9 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
 //    aclstr << endl;
 
     if (compiler->fw->getOptionsObject()->getBool("iosacl_use_acl_remarks"))
-        ruleout << acl->addRemark( rule->getLabel() );
+    {
+        ruleout << acl->addRemark(rule->getLabel(), rule->getComment());
+    }
 
     ruleout << acl->addLine(aclstr.str());
 

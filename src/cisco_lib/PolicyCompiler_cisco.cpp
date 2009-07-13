@@ -126,7 +126,7 @@ void PolicyCompiler_cisco::addDefaultPolicyRule()
         r->setLogging(false);
         r->setDirection(PolicyRule::Inbound);
         r->setPosition(-1);
-        r->setComment("   backup ssh access rule ");
+//        r->setComment("   backup ssh access rule ");
         r->setHidden(true);
         r->setFallback(false);
         r->setLabel("backup ssh access rule");

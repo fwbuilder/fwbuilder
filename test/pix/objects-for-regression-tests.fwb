@@ -3,19 +3,7 @@
 <FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1231213988" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
     <ObjectRef ref="id16325X21455"/>
-    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -2508,6 +2496,7 @@
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
           <Option name="pass_all_out">False</Option>
+          <Option name="pix_acl_no_clear">True</Option>
           <Option name="pix_add_clear_statements">False</Option>
           <Option name="pix_assume_fw_part_of_any">False</Option>
           <Option name="pix_check_duplicate_nat">False</Option>
@@ -3955,7 +3944,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3F8F9590" host_OS="pix_os" lastCompiled="1145688317" lastInstalled="0" lastModified="0" platform="pix" version="6.3" name="firewall12" comment="this firewall has DMZ using routable address&#10;" ro="False">
+      <Firewall id="id3F8F9590" host_OS="pix_os" lastCompiled="1145688317" lastInstalled="0" lastModified="1247498770" platform="pix" version="6.3" name="firewall12" comment="this firewall has DMZ using routable address&#10;" ro="False">
         <NAT id="id3F8F9591" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3F8F9592" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -4055,7 +4044,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3F8F95CD" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3F8F95CD" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="this comment&#10;consists of&#10;3 lines of text">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
