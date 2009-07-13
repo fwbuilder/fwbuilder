@@ -688,13 +688,18 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
                  Interface::cast(o)->isBridgePort()))
                 continue;
 
-            if ( ! addr->isAny() 
-                 && addr->getAddressPtr()->isAny()
-                 && addr->getNetmaskPtr()->isAny()
-            ) 
+            if ( ! addr->isAny())
             {
-                a = addr;
-                break;
+                const InetAddr *ad = addr->getAddressPtr();
+                const InetAddr *nm = addr->getNetmaskPtr();
+                // AddressRange has address but not netmask
+                // AddressRange with address 0.0.0.0 is acceptable
+                // (not equivalent to "any")
+                if (ad->isAny() && nm!=NULL && nm->isAny())
+                {
+                    a = addr;
+                    break;
+                }
             }
         }
     }
