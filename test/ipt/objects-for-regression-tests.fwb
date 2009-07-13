@@ -19599,7 +19599,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id439254F225682" host_OS="linux24" inactive="False" lastCompiled="1247364062" lastInstalled="1142003872" lastModified="1215124221" platform="iptables" version="" name="firewall35" comment="testing AddressTable object&#10;&#10;like firewall34, but uses different script format" ro="False">
+      <Firewall id="id439254F225682" host_OS="linux24" inactive="False" lastCompiled="1247364062" lastInstalled="1142003872" lastModified="1247524742" platform="iptables" version="" name="firewall35" comment="testing AddressTable object&#10;&#10;like firewall34, but uses different script format" ro="False">
         <NAT id="id4392558E25682" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id4392558F25682" disabled="False" position="0" comment="">
             <OSrc neg="True">
@@ -19968,6 +19968,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="prolog_place">top</Option>
           <Option name="prolog_script"></Option>
           <Option name="proxy_arp">False</Option>
+          <Option name="scpArgs"></Option>
           <Option name="script_env_path"></Option>
           <Option name="snmp_contact"></Option>
           <Option name="snmp_description"></Option>

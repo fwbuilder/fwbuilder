@@ -87,11 +87,6 @@ const QStringList& getRouteOptions_pf_ipf(const QString &platform);
 const QStringList& getRouteLoadOptions_pf(const QString &platform);
 
 /**
- * returns a list of Prolog places (mapping list)
- */
-const QStringList& getPrologPlaces(const QString &platform);
-
-/**
  * returns a list of Limit Suffixes (mapping list)
  */
 const QStringList& getLimitSuffixes(const QString &platform);

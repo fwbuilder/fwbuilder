@@ -773,6 +773,13 @@ int main(int argc, char **argv)
             }
         }
 
+        if (fw->getOptionsObject()->getStr("prolog_place") == "after_flush" &&
+            fw->getOptionsObject()->getBool("use_iptables_restore"))
+        {
+            throw FWException("Prolog place \"after policy reset\" can not be used"
+                              " when policy is activated with iptables-restore");
+        }
+
 	string firewall_dir = options->getStr("firewall_dir");
 	if (firewall_dir=="") firewall_dir="/etc";
 

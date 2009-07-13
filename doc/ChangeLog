@@ -1,5 +1,17 @@
 2009-07-13  vadim  <vadim@vk.crocodile.org>
 
+	* iptAdvancedDialog.cpp (iptAdvancedDialog::iptAdvancedDialog):
+	fixed bug #2820840: "IPT: prolog script+iptables-restore silent
+	incompatibility". With this fix the GUI does not allow for the
+	prolog script to be placed after policy reset if iptables-restore
+	is used to activate iptables rules. Also policy compiler for
+	iptables checks for this condition and aborts with an error
+	message if prolog place is set to "after reset" but
+	iptables-restore is used to activate policy. Configuration may end
+	up with this combination of options if user set prolog place to
+	"after reset" first and switched activation method to
+	iptables-restore later.
+
 	* ACL.cpp (ciscoACL::addRemark): fixed bug #1778536 "IOSACL -
 	remark command". Remarks now include rule comments; if comment
 	consists of several lines, each line is added using separate

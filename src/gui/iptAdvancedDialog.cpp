@@ -160,11 +160,23 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption(m_dialog->prolog_script, fwoptions,
                         "prolog_script");
 
-    slm = getPrologPlaces( obj->getStr("platform").c_str());
+    QStringList prologPlaces_ipt;
+    prologPlaces_ipt.push_back(QObject::tr("on top of the script"));
+    prologPlaces_ipt.push_back("top");
+    prologPlaces_ipt.push_back(QObject::tr("after interface configuration"));
+    prologPlaces_ipt.push_back("after_interfaces");
+
+    // bug #2820840: can't put prolog "after policy reset" if iptables-restore
+    if (!fwoptions->getBool("use_iptables_restore"))
+    {
+        prologPlaces_ipt.push_back(QObject::tr("after policy reset"));
+        prologPlaces_ipt.push_back("after_flush");
+    }
+
     m_dialog->prologPlace->clear();
-    m_dialog->prologPlace->addItems(getScreenNames(slm));
+    m_dialog->prologPlace->addItems(getScreenNames(prologPlaces_ipt));
     data.registerOption(m_dialog-> prologPlace, fwoptions,
-                        "prolog_place", slm);
+                        "prolog_place", prologPlaces_ipt);
 
     data.registerOption(m_dialog->epilog_script, fwoptions,
                         "epilog_script");

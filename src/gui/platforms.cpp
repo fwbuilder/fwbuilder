@@ -50,8 +50,6 @@ QStringList logFacilities;
 QStringList actionsOnReject;
 QStringList routeOptions_pf_ipf;
 QStringList routeLoadOptions_pf;
-QStringList prologPlaces_ipt;
-QStringList prologPlaces_pf;
 QStringList limitSuffixes;
 
 void init_platforms()
@@ -155,28 +153,6 @@ void init_platforms()
     routeLoadOptions_pf.push_back("source_hash");
     routeLoadOptions_pf.push_back(QObject::tr("Round Robin"));
     routeLoadOptions_pf.push_back("round_robin");
-
-    prologPlaces_ipt.push_back(QObject::tr("on top of the script"));
-    prologPlaces_ipt.push_back("top");
-    prologPlaces_ipt.push_back(QObject::tr("after interface configuration"));
-    prologPlaces_ipt.push_back("after_interfaces");
-    prologPlaces_ipt.push_back(QObject::tr("after policy reset"));
-    prologPlaces_ipt.push_back("after_flush");
-
-    prologPlaces_pf.push_back(QObject::tr("in the activation shell script"));
-    prologPlaces_pf.push_back("fw_file");
-
-    prologPlaces_pf.push_back(QObject::tr("in the pf rule file, at the very top"));
-    prologPlaces_pf.push_back("pf_file_top");
-
-    prologPlaces_pf.push_back(QObject::tr("in the pf rule file, after set comamnds"));
-    prologPlaces_pf.push_back("pf_file_after_set");
-
-    prologPlaces_pf.push_back(QObject::tr("in the pf rule file, after scrub comamnds"));
-    prologPlaces_pf.push_back("pf_file_after_scrub");
-
-    prologPlaces_pf.push_back(QObject::tr("in the pf rule file, after table definitions"));
-    prologPlaces_pf.push_back("pf_file_after_tables");
 
     limitSuffixes.push_back("");
     limitSuffixes.push_back("");
@@ -481,14 +457,6 @@ const QStringList& getRouteOptions_pf_ipf(const QString&)
 const QStringList& getRouteLoadOptions_pf(const QString&)
 {
     return routeLoadOptions_pf;
-}
-
-const QStringList& getPrologPlaces(const QString &platform)
-{
-    if (platform=="pf")
-        return prologPlaces_pf;
-    else
-        return prologPlaces_ipt;
 }
 
 const QStringList& getLimitSuffixes(const QString&)

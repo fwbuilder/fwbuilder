@@ -190,10 +190,26 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
 
 /* page "Prolog/Epilog" */
 
-    slm = getPrologPlaces( obj->getStr("platform").c_str());
+    QStringList prologPlaces_pf;
+    prologPlaces_pf.push_back(QObject::tr("in the activation shell script"));
+    prologPlaces_pf.push_back("fw_file");
+
+    prologPlaces_pf.push_back(QObject::tr("in the pf rule file, at the very top"));
+    prologPlaces_pf.push_back("pf_file_top");
+
+    prologPlaces_pf.push_back(QObject::tr("in the pf rule file, after set comamnds"));
+    prologPlaces_pf.push_back("pf_file_after_set");
+
+    prologPlaces_pf.push_back(QObject::tr("in the pf rule file, after scrub comamnds"));
+    prologPlaces_pf.push_back("pf_file_after_scrub");
+
+    prologPlaces_pf.push_back(QObject::tr("in the pf rule file, after table definitions"));
+    prologPlaces_pf.push_back("pf_file_after_tables");
+
     m_dialog->prologPlace->clear();
-    m_dialog->prologPlace->addItems(getScreenNames(slm));
-    data.registerOption( m_dialog->prologPlace, fwopt, "prolog_place", slm);
+    m_dialog->prologPlace->addItems(getScreenNames(prologPlaces_pf));
+    data.registerOption( m_dialog->prologPlace, fwopt, "prolog_place",
+                         prologPlaces_pf);
 
     data.registerOption( m_dialog->prolog_script, fwopt, "prolog_script");
     data.registerOption( m_dialog->epilog_script, fwopt, "epilog_script");
