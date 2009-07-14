@@ -424,8 +424,10 @@ string PolicyCompiler_ipt::PrintRule::_printDirectionAndInterface(PolicyRule *ru
 {
     std::ostringstream ostr;
 
-    string       iface_name = rule->getInterfaceStr();
+    string iface_name = rule->getInterfaceStr();
     if (iface_name.empty() || iface_name=="nil" )   return "";
+
+    RuleElementItf *itfrel = rule->getItf();
 
 /* if interface name ends with '*', this is a wildcard
  * interface. Iptables supports wildcard interfaces but uses '+' as a
@@ -449,10 +451,10 @@ string PolicyCompiler_ipt::PrintRule::_printDirectionAndInterface(PolicyRule *ru
     } else
     {
         if (rule->getDirection()==PolicyRule::Inbound)   
-            ostr << " -i "  << iface_name; 
+            ostr << _printSingleOptionWithNegation(" -i", itfrel, iface_name);
 
         if (rule->getDirection()==PolicyRule::Outbound)  
-            ostr << " -o "  << iface_name; 
+            ostr << _printSingleOptionWithNegation(" -o", itfrel, iface_name);
     }
 
 //    if (rule->getDirection()==PolicyRule::Both)      

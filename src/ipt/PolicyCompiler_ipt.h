@@ -222,6 +222,11 @@ namespace fwcompiler {
         DECLARE_POLICY_RULE_PROCESSOR(convertAnyToNotFWForShadowing);
 
 	/**
+	 * processes rules with negation in Itf if it holds only one object
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(singleItfNegation);
+
+	/**
 	 * processes rules with negation in Src if it holds only one object
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(singleSrcNegation);

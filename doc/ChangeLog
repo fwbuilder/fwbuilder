@@ -1,5 +1,13 @@
 2009-07-14  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipt.cpp (singleItfNegation::processNext): fixed
+	bug #2819901: "sub-optimal expansion of negated interface". Policy
+	rules with single interface object in "interface" rule element
+	with negation should generate iptables commands using "-i ! itf"
+	or "-o ! itf" rather than multiply the rule using all other
+	interfaces of the firewall. Note that for iptables v1.4.3 and
+	later, extrapositioned syntax is used, such as "! -i itf".
+
 	* PolicyCompiler_PrintRule.cpp, NATCompiler_PrintRule.cpp: fixed
 	bug #2821050: "loading new fw rules on iptables 1.4.3.2+ gives
 	warnings". starting with v1.4.3.1 iptables started giving warnings

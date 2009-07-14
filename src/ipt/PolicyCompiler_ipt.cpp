@@ -942,6 +942,26 @@ bool PolicyCompiler_ipt::printRuleElements::processNext()
     return true;
 }
 
+bool PolicyCompiler_ipt::singleItfNegation::processNext()
+{
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    RuleElementItf *itfrel = rule->getItf();
+
+    if (itfrel->getNeg() && itfrel->size()==1)
+    {
+        Interface *itf = compiler->getFirstItf(rule);
+        // note: itf can be NULL if object in this rule element is a group
+        if (itf!=NULL && itf->isChildOf(compiler->fw))
+        {
+            itfrel->setNeg(false);
+            itfrel->setBool("single_object_negation", true);
+        }
+    }
+
+    tmp_queue.push_back(rule);
+    return true;
+}
+
 bool PolicyCompiler_ipt::singleSrcNegation::processNext()
 {
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
@@ -3992,6 +4012,7 @@ void PolicyCompiler_ipt::compile()
     //add( new setChainForMangle("set chain for other rules in mangle"));
 
     add( new Logging1("check global logging override option"));
+    add( new singleItfNegation("negation in Itf if it holds single object"));
     add( new ItfNegation("process negation in Itf"));
 
     add( new decideOnChainForClassify("set chain for action is Classify"));
