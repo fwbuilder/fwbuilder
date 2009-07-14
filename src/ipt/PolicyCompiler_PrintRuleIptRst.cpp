@@ -62,7 +62,7 @@ string PolicyCompiler_ipt::PrintRuleIptRst::_createChain(const string &chain)
     string res;
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
 
-    if (!minus_n_tracker_initialized) InitializeMinusNTracker();
+    if (!minus_n_tracker_initialized) initializeMinusNTracker();
 
     if ( ipt_comp->minus_n_commands->count(chain)==0 )
     {

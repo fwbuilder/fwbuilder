@@ -979,7 +979,7 @@ bool NATCompiler_ipt::ReplaceFirewallObjectsTSrc::processNext()
                     if (iface->isLoopback() ||
                         iface->isUnnumbered() ||
                         iface->isBridgePort() ) continue;
-                    if (odstrel->getBool("single_object_negation") &&
+                    if (odstrel->getBool("single_object_negation") && odst_iface &&
                         odst_iface->getId()==iface->getId()) continue;
 
                     rel->addRef( *i );
@@ -2396,6 +2396,8 @@ void NATCompiler_ipt::compile()
         } else
             printRule=new PrintRule("generate iptables shell script");
 
+        printRule->setContext(this);
+        printRule->initialize();
         add( printRule );
 
         add( new simplePrintProgress() );

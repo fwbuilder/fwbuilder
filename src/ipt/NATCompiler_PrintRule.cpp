@@ -71,7 +71,31 @@ using namespace std;
  *                    Methods for printing
  */
 
-void NATCompiler_ipt::PrintRule::InitializeMinusNTracker()
+/*
+ * Prints single --option with argument and negation "!"
+ * taking into account the change that happened in iptables 1.4.3.1
+ * that causes warning
+ * Using intrapositioned negation (`--option ! this`) is deprecated in favor of extrapositioned (`! --option this`).
+ */
+string NATCompiler_ipt::PrintRule::_printSingleOptionWithNegation(
+    const string &option, RuleElement *rel, const string &arg)
+{
+    ostringstream ostr;
+    if (XMLTools::version_compare(version, "1.4.3")>=0)
+    {
+        ostr  << _printSingleObjectNegation(rel);
+        ostr << option << " ";
+        ostr << arg << " ";
+    } else
+    {
+        ostr << option << " ";
+        ostr  << _printSingleObjectNegation(rel);
+        ostr << arg << " ";
+    }
+    return ostr.str();
+}
+
+void NATCompiler_ipt::PrintRule::initializeMinusNTracker()
 {
     NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
     for (list<string>::const_iterator i =
@@ -83,7 +107,16 @@ void NATCompiler_ipt::PrintRule::InitializeMinusNTracker()
     minus_n_tracker_initialized = true;
 }
             
-
+/*
+ * Initialize some internal variables. Need to do this in a separate
+ * method because pointer to the compiler object is set by
+ * RuleProcessor::setContext and is not available in constructor.
+ */
+void NATCompiler_ipt::PrintRule::initialize()
+{
+    // retrieve and save version for _printSingleOptionWithNegation and others
+    version = compiler->fw->getStr("version");
+}
 
 /*
  *  check and create new chain if needed
@@ -93,7 +126,7 @@ string NATCompiler_ipt::PrintRule::_createChain(const string &chain)
     NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
     ostringstream  res;
 
-    if (!minus_n_tracker_initialized) InitializeMinusNTracker();
+    if (!minus_n_tracker_initialized) initializeMinusNTracker();
 
     if ( ipt_comp->minus_n_commands->count(chain)==0 )
     {
@@ -384,9 +417,8 @@ string NATCompiler_ipt::PrintRule::_printSrcService(RuleElementOSrv  *rel)
 	}
 	if ( !str.empty() )
         {
-            string v = compiler->fw->getStr("version");
-            if (v.empty() || v=="ge_1.2.6" ||
-                XMLTools::version_compare(v, "1.2.6")>=0)
+            if (version.empty() || version=="ge_1.2.6" ||
+                XMLTools::version_compare(version, "1.2.6")>=0)
                 ostr << "--sports ";
             else
                 ostr << "--source-port ";
@@ -454,10 +486,8 @@ string NATCompiler_ipt::PrintRule::_printDstService(RuleElementOSrv  *rel)
 	}
 	if ( !str.empty() )
         {
-            string v = compiler->fw->getStr("version");
-//            if (v.empty() || v=="ge_1.2.6" || v=="1.2.9" || v=="1.3.0")
-            if (v.empty() || v=="ge_1.2.6" ||
-                XMLTools::version_compare(v, "1.2.6")>=0)
+            if (version.empty() || version=="ge_1.2.6" ||
+                XMLTools::version_compare(version, "1.2.6")>=0)
                 ostr << "--dports ";
             else
                 ostr << "--destination-port ";
@@ -622,24 +652,23 @@ bool NATCompiler_ipt::PrintRule::processNext()
         if (osrc_addr==NULL || !osrc_addr->isAny())
         {
             string osrc_out = _printAddr(osrc);
-            if (!osrc_out.empty()) cmdout << " -s "
-                                          << _printSingleObjectNegation(osrcrel)
-                                          << osrc_out;
+            if (!osrc_out.empty())
+                cmdout << _printSingleOptionWithNegation(" -s", osrcrel, osrc_out);
         }
 
 //	cmdout << " -s ";
 //	cmdout << _printAddr(osrc);
     }
 
-    if (!osrv->isAny()) {
+    if (!osrv->isAny())
+    {
 	cmdout << " ";
 	cmdout << _printSrcService(osrvrel);
     }
 
-    if (!odst->isAny()) {
-	cmdout << " -d "
-               << _printSingleObjectNegation(odstrel)
-               << _printAddr(odst);
+    if (!odst->isAny())
+    {
+        cmdout << _printSingleOptionWithNegation(" -d", odstrel, _printAddr(odst));
     }
 
     cmdout << " ";

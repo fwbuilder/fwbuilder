@@ -81,7 +81,31 @@ using namespace std;
  *                    Methods for printing
  */
 
-void PolicyCompiler_ipt::PrintRule::InitializeMinusNTracker()
+/*
+ * Prints single --option with argument and negation "!"
+ * taking into account the change that happened in iptables 1.4.3.1
+ * that causes warning
+ * Using intrapositioned negation (`--option ! this`) is deprecated in favor of extrapositioned (`! --option this`).
+ */
+string PolicyCompiler_ipt::PrintRule::_printSingleOptionWithNegation(
+    const string &option, RuleElement *rel, const string &arg)
+{
+    ostringstream ostr;
+    if (XMLTools::version_compare(version, "1.4.3")>=0)
+    {
+        ostr  << _printSingleObjectNegation(rel);
+        ostr << option << " ";
+        ostr << arg << " ";
+    } else
+    {
+        ostr << option << " ";
+        ostr  << _printSingleObjectNegation(rel);
+        ostr << arg << " ";
+    }
+    return ostr.str();
+}
+
+void PolicyCompiler_ipt::PrintRule::initializeMinusNTracker()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     for (list<string>::const_iterator i =
@@ -102,7 +126,7 @@ string PolicyCompiler_ipt::PrintRule::_createChain(const string &chain)
     string res;
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
 
-    if (!minus_n_tracker_initialized) InitializeMinusNTracker();
+    if (!minus_n_tracker_initialized) initializeMinusNTracker();
 
     if ( ipt_comp->minus_n_commands->count(chain)==0 )
     {
@@ -410,8 +434,6 @@ string PolicyCompiler_ipt::PrintRule::_printDirectionAndInterface(PolicyRule *ru
     string::size_type n;
     if ( (n=iface_name.find("*"))!=string::npos)    iface_name[n]='+';
 
-    string version = compiler->fw->getStr("version");
-
     Interface *rule_iface =
         compiler->getCachedFwInterface(rule->getInterfaceId());
 
@@ -451,7 +473,6 @@ string PolicyCompiler_ipt::PrintRule::_printActionOnReject(PolicyRule *rule)
     Service *srv = compiler->getFirstSrv(rule);
     assert(srv);
 
-    string version = compiler->fw->getStr("version");
     string s = ipt_comp->getActionOnReject(rule);
     if (!s.empty()) 
     {
@@ -684,7 +705,6 @@ string PolicyCompiler_ipt::PrintRule::_printLimit(libfwbuilder::PolicyRule *rule
 string PolicyCompiler_ipt::PrintRule::_printProtocol(Service *srv)
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    string version = compiler->fw->getStr("version");
     string s;
     // CustomService returns protocol name starting with v3.0.4
     // However CustomService can return protocol name "any", which we should
@@ -930,8 +950,7 @@ string PolicyCompiler_ipt::PrintRule::_printSrcService(RuleElementSrv  *rel)
 	    string str=_printSrcPorts( srv );
 	    if (! str.empty() ) 
             {
-                ostr << " --sport ";
-                ostr  << _printSingleObjectNegation(rel) << str << " ";
+                ostr << _printSingleOptionWithNegation(" --sport", rel, str);
             }
 	}
     } else
@@ -955,8 +974,7 @@ string PolicyCompiler_ipt::PrintRule::_printSrcService(RuleElementSrv  *rel)
 	}
 	if ( !str.empty() ) 
         {
-            string v=compiler->fw->getStr("version");
-            if (ipt_comp->newIptables(v))
+            if (ipt_comp->newIptables(version))
                 ostr << " --sports ";
             else
                 ostr << " --source-port ";
@@ -972,7 +990,6 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     std::ostringstream  ostr;
     FWObject *o=rel->front();
-    string version=compiler->fw->getStr("version");
     if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 
     Service *srv= Service::cast(o);
@@ -984,8 +1001,7 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
 	    string str=_printDstPorts( srv );
 	    if (! str.empty() )
             {
-                ostr << " --dport ";
-                ostr << _printSingleObjectNegation(rel) << str << " ";
+                ostr << _printSingleOptionWithNegation(" --dport", rel, str);
             }
 	}
 	if (TCPService::isA(srv)) 
@@ -993,8 +1009,7 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
 	    string str=_printTCPFlags(TCPService::cast(srv));
 	    if (!str.empty()) 
             {
-                ostr  << _printSingleObjectNegation(rel)
-                      << str << " ";
+                ostr << _printSingleOptionWithNegation("", rel, str);
             }
 	}
 	if (ICMPService::isA(srv) || ICMP6Service::isA(srv)) 
@@ -1012,10 +1027,7 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
                     ostr << icmp_type_str << " any ";
             } else
             {
-                ostr << icmp_type_str 
-                     << " "
-                     << _printSingleObjectNegation(rel)
-                     << str << " ";
+                ostr << _printSingleOptionWithNegation(icmp_type_str, rel, str);
             }
 	}
 	if (IPService::isA(srv)) 
@@ -1023,8 +1035,7 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
 	    string str = _printIP(IPService::cast(srv), PolicyRule::cast(rel->getParent()));
 	    if (! str.empty() ) 
             {
-                ostr  << _printSingleObjectNegation(rel)
-                      << str << " ";
+                ostr  << _printSingleObjectNegation(rel) << str << " ";
             }
 	}
 	if (CustomService::isA(srv)) 
@@ -1067,8 +1078,7 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
 	}
 	if ( !str.empty() ) 
         {
-            string v=compiler->fw->getStr("version");
-            if (ipt_comp->newIptables(v))
+            if (ipt_comp->newIptables(version))
                 ostr << " --dports ";
             else
                 ostr << " --destination-port ";
@@ -1095,7 +1105,7 @@ string PolicyCompiler_ipt::PrintRule::_printSrcAddr(RuleElement *rel,
             return res;
         }
     }
-    return string(" -s ") + _printSingleObjectNegation(rel) + _printAddr(o);
+    return _printSingleOptionWithNegation(" -s", rel, _printAddr(o));
 }
 
 string PolicyCompiler_ipt::PrintRule::_printDstAddr(RuleElement *rel,
@@ -1115,7 +1125,7 @@ string PolicyCompiler_ipt::PrintRule::_printDstAddr(RuleElement *rel,
             return res;
         }
     }
-    return string(" -d ") + _printSingleObjectNegation(rel) + _printAddr(o);
+    return _printSingleOptionWithNegation(" -d", rel, _printAddr(o));
 }
 
 string PolicyCompiler_ipt::PrintRule::_printAddr(Address  *o)
@@ -1231,8 +1241,6 @@ string PolicyCompiler_ipt::PrintRule::_printTimeInterval(PolicyRule *r)
 
     bool use_timestart_timestop = true;
 
-    string version = compiler->fw->getStr("version");
-
     if (XMLTools::version_compare(version, "1.4.0")>=0)
     {
         // in 1.4.0 date format has changed, it is now ISO 8601
@@ -1341,6 +1349,17 @@ PolicyCompiler_ipt::PrintRule::PrintRule(const std::string &name) :
     minus_n_tracker_initialized = false;
 }
 
+/*
+ * Initialize some internal variables. Need to do this in a separate
+ * method because pointer to the compiler object is set by
+ * RuleProcessor::setContext and is not available in constructor.
+ */
+void PolicyCompiler_ipt::PrintRule::initialize()
+{
+    // retrieve and save version for _printSingleOptionWithNegation and others
+    version = compiler->fw->getStr("version");
+}
+
 bool  PolicyCompiler_ipt::PrintRule::processNext()
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
@@ -1425,9 +1444,10 @@ string PolicyCompiler_ipt::PrintRule::PolicyRuleToString(PolicyRule *rule)
  */
             if (!physaddress.empty())
             {
-                command_line << " -m mac --mac-source "
-                             << _printSingleObjectNegation(srcrel);
-                command_line << physaddress;
+                command_line << " -m mac";
+                command_line << _printSingleOptionWithNegation(" --mac-source",
+                                                               srcrel,
+                                                               physaddress);
             }
 
 /*
@@ -1564,7 +1584,6 @@ string PolicyCompiler_ipt::PrintRule::_clampTcpToMssRule()
             // before 1.4.0 In fact I am not sure of the minimal required
             // version. According to the netfilter git log, it was added in
             // 1.3.8
-            string version = compiler->fw->getStr("version");
             if (XMLTools::version_compare(version, "1.3.8")<0)
             {
                 if (ipforw)

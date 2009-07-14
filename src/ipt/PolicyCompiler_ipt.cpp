@@ -4378,7 +4378,6 @@ void PolicyCompiler_ipt::epilog()
     }
 }
 
-
 PolicyCompiler_ipt::PrintRule* PolicyCompiler_ipt::createPrintRuleProcessor()
 {
     if (printRule==NULL)
@@ -4396,6 +4395,7 @@ PolicyCompiler_ipt::PrintRule* PolicyCompiler_ipt::createPrintRuleProcessor()
             printRule = new PrintRule("generate shell script");
         }
         printRule->setContext(this);
+        printRule->initialize();
     }
     return printRule;
 }

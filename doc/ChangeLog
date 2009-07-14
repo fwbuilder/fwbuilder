@@ -1,3 +1,13 @@
+2009-07-14  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_PrintRule.cpp, NATCompiler_PrintRule.cpp: fixed
+	bug #2821050: "loading new fw rules on iptables 1.4.3.2+ gives
+	warnings". starting with v1.4.3.1 iptables started giving warnings
+	when negation ("!")  is used after --option. This fix adds version
+	"1.4.3" to the list of recognized iptables versions in fwbuilder
+	and makes compiler generate extrapositioned version of the option
+	such as "!  --option arg".
+
 2009-07-13  vadim  <vadim@vk.crocodile.org>
 
 	* iptAdvancedDialog.cpp (iptAdvancedDialog::iptAdvancedDialog):

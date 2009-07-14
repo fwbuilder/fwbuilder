@@ -876,8 +876,20 @@ namespace fwcompiler {
             bool minus_n_tracker_initialized;
             bool have_m_iprange;
             std::string current_rule_label;
+            std::string version;
 
-            void InitializeMinusNTracker();
+            void initializeMinusNTracker();
+
+            /*
+             * Prints single --option with argument and negation "!"
+             * taking into account the change that happened in iptables 1.4.3.1
+             * that causes warning
+             * Using intrapositioned negation (`--option ! this`) is deprecated in favor of extrapositioned (`! --option this`).
+             */
+            virtual std::string _printSingleOptionWithNegation(
+                const std::string &option,
+                libfwbuilder::RuleElement *rel,
+                const std::string &arg);
             
             virtual std::string _createChain(const std::string &chain);
             virtual std::string _printRuleLabel(libfwbuilder::PolicyRule *r);
@@ -925,6 +937,8 @@ namespace fwcompiler {
             public:
 
             PrintRule(const std::string &name);
+            void initialize();
+
             virtual std::string _printGlobalLogParameters();
             virtual std::string _printOptionalGlobalRules();
             virtual std::string _declareTable();

@@ -61,7 +61,7 @@ string NATCompiler_ipt::PrintRuleIptRstEcho::_createChain(const string &chain)
     string res;
     NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
 
-    if (!minus_n_tracker_initialized) InitializeMinusNTracker();
+    if (!minus_n_tracker_initialized) initializeMinusNTracker();
 
     if ( ipt_comp->minus_n_commands->count(chain)==0 )
     {
