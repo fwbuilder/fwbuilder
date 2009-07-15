@@ -849,38 +849,6 @@
       <IPv4 id="id854458X92250" name="firewall72-1.4.3:eth2:ip" comment="" ro="False" address="192.168.100.1" netmask="255.255.255.0"/>
     </Interface>
     <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
     <ObjectRef ref="id854441X92250"/>
     <Firewall id="id854441X92250" host_OS="linux24" inactive="False" lastCompiled="1247604459" lastInstalled="0" lastModified="1247615570" platform="iptables" version="1.4.3" name="firewall72-1.4.3-delete" comment="this firewall is used to test a rule in the global policy of object &quot;firewall&quot;&#10;" ro="False">
       <NAT id="id854448X92250" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
@@ -1259,54 +1227,6 @@
         <Option name="verify_interfaces">False</Option>
       </FirewallOptions>
     </Firewall>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id45370X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
-    <ObjectRef ref="id44530X92250"/>
     <ObjectRef ref="id44530X92250"/>
     <Firewall id="id44530X92250" host_OS="linux24" inactive="False" lastCompiled="1247604231" lastInstalled="0" lastModified="1247615721" platform="iptables" version="1.4.3" name="firewall72-base" comment="this object is used to test all kinds of single object&#10;negation in policy and NAT rules&#10;&#10;Iptables version 1.4.3 for extrapositioned negation&#10;" ro="False">
       <NAT id="id45091X92250" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
@@ -1820,10 +1740,6 @@
         <Option name="verify_interfaces">False</Option>
       </FirewallOptions>
     </Firewall>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -2949,7 +2865,7 @@
       </ServiceGroup>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="linux24" inactive="False" lastCompiled="1247363777" lastInstalled="1142003872" lastModified="1219534909" platform="iptables" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="linux24" inactive="False" lastCompiled="1247363777" lastInstalled="1142003872" lastModified="1247691497" platform="iptables" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -3700,7 +3616,7 @@
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id469F1CF730391" disabled="False" log="False" position="10" action="Accept" direction="Inbound" comment="INTPUT">
+          <PolicyRule id="id469F1CF730391" disabled="False" log="False" position="10" action="Accept" direction="Inbound" comment="INTPUT with &quot;-i +&quot;&#10;This rule should have &quot;-i +&quot; option &#10;to implement restriction on direction while interface field is &quot;any&quot;.&#10;">
             <Src neg="False">
               <ObjectRef ref="id44F7082928576"/>
             </Src>
@@ -8649,7 +8565,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3B0C6380" host_OS="linux24" inactive="False" lastCompiled="1247364135" lastInstalled="1142003872" lastModified="1221323996" platform="iptables" version="" name="firewall4" comment="this object is used to test a configuration where firewall has dynamic address " ro="False">
+      <Firewall id="id3B0C6380" host_OS="linux24" inactive="False" lastCompiled="1247364135" lastInstalled="1142003872" lastModified="1247691557" platform="iptables" version="" name="firewall4" comment="this object is used to test a configuration where firewall has dynamic address " ro="False">
         <NAT id="id3B0C6381" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3B0C6382" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -8945,7 +8861,7 @@
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id469F02B014773" disabled="False" log="False" position="6" action="Accept" direction="Inbound" comment="INTPUT">
+          <PolicyRule id="id469F02B014773" disabled="False" log="False" position="6" action="Accept" direction="Inbound" comment="INTPUT with &quot;-i +&quot;&#10;the &quot;-i +&quot; option enforces direction while interface rule element is &quot;any&quot;">
             <Src neg="False">
               <ObjectRef ref="id44F7082928576"/>
             </Src>
