@@ -307,3 +307,26 @@ bool PolicyCompiler_ipt::optimize3::processNext()
 
     return true;
 }
+
+bool PolicyCompiler_ipt::optimizeForMinusIOPlus::processNext()
+{
+    PolicyRule *rule;
+    rule=getNext(); if (rule==NULL) return false;
+
+    string iface_name = rule->getInterfaceStr();
+    if (iface_name.empty() || iface_name=="nil" )
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
+
+    string chain = rule->getStr("ipt_chain");
+
+    RuleElementItf *itfrel = rule->getItf();
+    if (itfrel->isAny() && (chain == "INPUT" || chain == "OUTPUT"))
+        rule->setInterfaceStr("");
+
+    tmp_queue.push_back(rule);
+    return true;
+}
+

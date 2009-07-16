@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1247697289" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1247704166" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -1744,23 +1744,8 @@
       <IPv4 id="id46854X38889" name="firewall73:eth2:ip" comment="" ro="False" address="192.168.100.1" netmask="255.255.255.0"/>
     </Interface>
     <Interface id="id46855X38889" bridgeport="False" dyn="True" label="fw8:ppp0" mgmt="False" security_level="0" unnum="False" unprotected="False" name="ppp0" comment="" ro="False"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="id46837X38889"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="id46837X38889"/>
-    <ObjectRef ref="sysid0"/>
     <ObjectRef ref="id46837X38889"/>
     <ObjectRef ref="id46846X38889"/>
-    <ObjectRef ref="id46846X38889"/>
-    <ObjectRef ref="id46846X38889"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
     <ObjectRef ref="sysid0"/>
     <ObjectRef ref="sysid0"/>
     <ObjectRef ref="sysid0"/>
@@ -2889,7 +2874,7 @@
       </ServiceGroup>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="linux24" inactive="False" lastCompiled="1247363777" lastInstalled="1142003872" lastModified="1247691497" platform="iptables" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="linux24" inactive="False" lastCompiled="1247363777" lastInstalled="1142003872" lastModified="1247704124" platform="iptables" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -3640,7 +3625,7 @@
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id469F1CF730391" disabled="False" log="False" position="10" action="Accept" direction="Inbound" comment="INTPUT with &quot;-i +&quot;&#10;This rule should have &quot;-i +&quot; option &#10;to implement restriction on direction while interface field is &quot;any&quot;.&#10;">
+          <PolicyRule id="id469F1CF730391" disabled="False" log="False" position="10" action="Accept" direction="Inbound" comment="INTPUT with &quot;-i +&quot;&#10;&quot;-i +&quot; is redundant if chain is INPUT,&#10;optimization removes it">
             <Src neg="False">
               <ObjectRef ref="id44F7082928576"/>
             </Src>
@@ -8589,7 +8574,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3B0C6380" host_OS="linux24" inactive="False" lastCompiled="1247364135" lastInstalled="1142003872" lastModified="1247691557" platform="iptables" version="" name="firewall4" comment="this object is used to test a configuration where firewall has dynamic address " ro="False">
+      <Firewall id="id3B0C6380" host_OS="linux24" inactive="False" lastCompiled="1247364135" lastInstalled="1142003872" lastModified="1247704084" platform="iptables" version="" name="firewall4" comment="this object is used to test a configuration where firewall has dynamic address " ro="False">
         <NAT id="id3B0C6381" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3B0C6382" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -8885,7 +8870,7 @@
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id469F02B014773" disabled="False" log="False" position="6" action="Accept" direction="Inbound" comment="INTPUT with &quot;-i +&quot;&#10;the &quot;-i +&quot; option enforces direction while interface rule element is &quot;any&quot;">
+          <PolicyRule id="id469F02B014773" disabled="False" log="False" position="6" action="Accept" direction="Inbound" comment="INTPUT with &quot;-i +&quot;&#10;the &quot;-i +&quot; option is redundant if chain is INPUT,&#10;it should be removed by optimization">
             <Src neg="False">
               <ObjectRef ref="id44F7082928576"/>
             </Src>
@@ -43330,7 +43315,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id46837X38889" host_OS="linux24" inactive="False" lastCompiled="1247697632" lastInstalled="0" lastModified="1247697740" platform="iptables" version="1.4.3" name="firewall73" comment="testing for &quot;-i +&quot; that is generated&#10;when interface rule element is &quot;any&quot;&#10;but direction is inbound. Trying different&#10;combinations. Bug 2822098&#10;&quot;Firewall is part of any&quot; is on&#10;&#10;" ro="False">
+      <Firewall id="id46837X38889" host_OS="linux24" inactive="False" lastCompiled="1247704200" lastInstalled="0" lastModified="1247704190" platform="iptables" version="1.4.3" name="firewall73" comment="testing for &quot;-i +&quot; that is generated&#10;when interface rule element is &quot;any&quot;&#10;but direction is inbound. Trying different&#10;combinations. Bug 2822098&#10;&quot;Firewall is part of any&quot; is on&#10;&#10;" ro="False">
         <NAT id="id46844X38889" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id46843X38889" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id89496X38889" disabled="False" group="group 1" log="False" position="0" action="Deny" direction="Both" comment="">
@@ -43393,7 +43378,67 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id282692X38889" disabled="False" group="group 1" log="False" position="3" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id68891X42406" disabled="False" group="group 1" log="False" position="3" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id68889X42406"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id68908X42406" disabled="False" group="group 1" log="False" position="4" action="Deny" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id68889X42406"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id68925X42406" disabled="False" group="group 1" log="False" position="5" action="Deny" direction="Outbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id68889X42406"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id282692X38889" disabled="False" group="group 1" log="False" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -43413,7 +43458,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id282709X38889" disabled="False" group="group 1" log="False" position="4" action="Deny" direction="Inbound" comment="">
+          <PolicyRule id="id282709X38889" disabled="False" group="group 1" log="False" position="7" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -43433,7 +43478,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id282726X38889" disabled="False" group="group 1" log="False" position="5" action="Deny" direction="Outbound" comment="">
+          <PolicyRule id="id282726X38889" disabled="False" group="group 1" log="False" position="8" action="Deny" direction="Outbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -43453,7 +43498,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id89557X38889" disabled="False" group="group 2" log="False" position="6" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id89557X38889" disabled="False" group="group 2" log="False" position="9" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -43473,7 +43518,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id110963X38889" disabled="False" group="group 2" log="False" position="7" action="Deny" direction="Inbound" comment="">
+          <PolicyRule id="id110963X38889" disabled="False" group="group 2" log="False" position="10" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -43493,7 +43538,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id110980X38889" disabled="False" group="group 2" log="False" position="8" action="Deny" direction="Outbound" comment="">
+          <PolicyRule id="id110980X38889" disabled="False" group="group 2" log="False" position="11" action="Deny" direction="Outbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -43513,7 +43558,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id282746X38889" disabled="False" group="group 2" log="False" position="9" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id282746X38889" disabled="False" group="group 2" log="False" position="12" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -43533,7 +43578,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id282763X38889" disabled="False" group="group 2" log="False" position="10" action="Deny" direction="Inbound" comment="">
+          <PolicyRule id="id282763X38889" disabled="False" group="group 2" log="False" position="13" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -43553,7 +43598,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id282780X38889" disabled="False" group="group 2" log="False" position="11" action="Deny" direction="Outbound" comment="">
+          <PolicyRule id="id282780X38889" disabled="False" group="group 2" log="False" position="14" action="Deny" direction="Outbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -43573,27 +43618,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id132415X38889" disabled="False" group="group 3" log="False" position="12" action="Deny" direction="Both" comment="">
-            <Src neg="False">
-              <ObjectRef ref="id46837X38889"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="id46846X38889"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id132432X38889" disabled="False" group="group 3" log="False" position="13" action="Deny" direction="Inbound" comment="">
+          <PolicyRule id="id132415X38889" disabled="False" group="group 3" log="False" position="15" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id46837X38889"/>
             </Src>
@@ -43613,7 +43638,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id132449X38889" disabled="False" group="group 3" log="False" position="14" action="Deny" direction="Outbound" comment="">
+          <PolicyRule id="id132432X38889" disabled="False" group="group 3" log="False" position="16" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id46837X38889"/>
             </Src>
@@ -43633,7 +43658,27 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id282797X38889" disabled="False" group="group 3" log="False" position="15" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id132449X38889" disabled="False" group="group 3" log="False" position="17" action="Deny" direction="Outbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id46837X38889"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id46846X38889"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id282797X38889" disabled="False" group="group 3" log="False" position="18" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id46837X38889"/>
             </Src>
@@ -43653,7 +43698,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id282814X38889" disabled="False" group="group 3" log="False" position="16" action="Deny" direction="Inbound" comment="">
+          <PolicyRule id="id282814X38889" disabled="False" group="group 3" log="False" position="19" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id46837X38889"/>
             </Src>
@@ -43673,7 +43718,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id282831X38889" disabled="False" group="group 3" log="False" position="17" action="Deny" direction="Outbound" comment="">
+          <PolicyRule id="id282831X38889" disabled="False" group="group 3" log="False" position="20" action="Deny" direction="Outbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id46837X38889"/>
             </Src>
@@ -43700,6 +43745,9 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         </Interface>
         <Interface id="id46849X38889" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id46851X38889" name="firewall73:eth1:ip" comment="" ro="False" address="172.16.1.1" netmask="255.255.255.0"/>
+        </Interface>
+        <Interface id="id68889X42406" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id68890X42406" name="firewall73:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Management address="192.168.100.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>

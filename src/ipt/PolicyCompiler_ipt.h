@@ -794,6 +794,11 @@ namespace fwcompiler {
         };
         friend class PolicyCompiler_ipt::optimize3;
 
+	/**
+	 * Optimize rules by dropping "-i +" or "-o +" if chain is
+         * INPUT or OUTPUT respectively.
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(optimizeForMinusIOPlus);
 
 	/**
 	 * split rules so multiport module can be used

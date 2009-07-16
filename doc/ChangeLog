@@ -1,3 +1,10 @@
+2009-07-15  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt_optimizer.cpp (optimizeForMinusIOPlus::processNext):
+	fixed bug #2822098: "IPT: adds useless "-i +" iin some cases".
+	Added optimization to remove redundant "-i +" and "-o +" if
+	chain is INPUT or OUTPUT.
+
 2009-07-14  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (singleItfNegation::processNext): fixed
