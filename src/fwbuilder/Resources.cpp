@@ -220,6 +220,36 @@ bool    Resources::getResourceBool(const string& resource_path)
     return (res=="true" || res=="True");
 }
 
+/*
+ * Adds bodies of xml elements found directly under resource_path to
+ * the list<string> res
+ *
+ * <element1>
+ *   <element2>
+ *      <string>value1</string>
+ *      <string>value2</string>
+ *      <string>value3</string>
+ *      <string>value4</string>
+ *   </element2>
+ * </element1>
+ *
+ * here resorce_path="/element1/element2", returned list consists of
+ * strings value1,value2,value3,value4
+ */
+void Resources::getResourceStrList(const string& resource_path, list<string> &res)
+{
+    xmlNodePtr node = XMLTools::getXmlNodeByPath(root, resource_path.c_str());
+    if (node)
+    {
+        xmlNodePtr c;
+        for(c=node->xmlChildrenNode; c; c=c->next) 
+        {
+            if ( xmlIsBlankNode(c) ) continue;
+            res.push_back(getXmlNodeContent(c));
+        }
+    }
+}
+
 string  Resources::getObjResourceStr(const FWObject *obj,
                                      const string& resource_name)
 {

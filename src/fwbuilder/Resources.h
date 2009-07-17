@@ -80,6 +80,8 @@ public:
     std::string  getResourceStr(const std::string& resource_path);
     int          getResourceInt(const std::string& resource_path);
     bool         getResourceBool(const std::string& resource_path);
+    void         getResourceStrList(const std::string& resource_path,
+                                    std::list<std::string> &res);
 
     bool         getObjResourceBool(const libfwbuilder::FWObject *obj,
                                     const std::string& resource_name);
