@@ -2578,10 +2578,10 @@ void RuleSetView::removeRule()
         setUpdatesEnabled(true);
 
         clearSelection();
-
         setCurrentCell( firstSelectedRow, currentColumn() );
         update();
         updateGroups();
+
         changingRules = false;
         m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
         mw->reloadAllWindowsWithFile(m_project);
@@ -4592,12 +4592,11 @@ void RuleSetView::moveRule()
         */
 
         QTimer::singleShot( 0, m_project, SLOT(reopenFirewall()) );
-        mw->reloadAllWindowsWithFile(m_project);
 
-        //update();
-        //updateGroups();
         changingRules = false;
         m_project->updateLastModifiedTimestampForOneFirewall(getFirewall());
+        mw->reloadAllWindowsWithFile(m_project);
+        m_project->selectRules();
     }
 }
 

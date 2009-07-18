@@ -1,3 +1,10 @@
+2009-07-18  vadim  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::moveRule): fixed bug #2823668:
+	"MDI window glitch". If the GUI had two or more MDI windows and
+	user moved rules in one of them, the GUI switched to another after
+	the operation was complete.
+
 2009-07-17  vadim  <vadim@vk.crocodile.org>
 
 	* fwbuilder.dtd.in (Library): fixed bug #2823424: "Deleting
