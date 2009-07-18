@@ -147,22 +147,27 @@ void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
     if (rule->getAction() == PolicyRule::Route)
     {
 	string prefix = "pf";
-	if (compiler->myPlatformName()=="ipf")
-		prefix="ipf";
+	if (compiler->myPlatformName()=="ipf") prefix="ipf";
+
 	string ro = ruleopt->getStr(prefix+"_route_option");
         if (ruleopt->getBool("pf_fastroute") && ro != "none")
 	{
-            compiler->abort("Cannot use fastroute and route method in same rule they are mutually exclusive in rule "+rule->getLabel());
-	} else if (ruleopt->getBool("pf_fastroute") && ro == "none" ) {
+            compiler->abort("Cannot use fastroute and route method in "
+                            "the same rule because they are mutually "
+                            "exclusive. Rule " + rule->getLabel());
+	} else if (ruleopt->getBool("pf_fastroute") && ro == "none")
+        {
             compiler->output << "fastroute ";
-	} else {
+	} else
+        {
             string roif = ruleopt->getStr(prefix+"_route_opt_if");
             string roaddr_list = ruleopt->getStr(prefix+"_route_opt_addr");
             string roload = ruleopt->getStr("pf_route_load_option");
             if (!ro.empty())
             {
                 if (roif.empty())
-                    compiler->abort("Interface specification is required for action Route in rule "+rule->getLabel());
+                    compiler->abort("Interface specification is required "
+                                    "for action Route. Rule " + rule->getLabel());
 
                 if (ro == "route_through")
                     compiler->output << "route-to ";
