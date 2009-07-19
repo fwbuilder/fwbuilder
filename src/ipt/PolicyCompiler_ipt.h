@@ -515,6 +515,15 @@ namespace fwcompiler {
         DECLARE_POLICY_RULE_PROCESSOR(specialCaseWithFW1);
 
 	/**
+	 * splits rule if firewall is in dst, interface is not empty,
+	 * direction is Outbound and chain is not OUTPUT (it makes
+	 * sense to check packets in OUTPUT chain with destination
+	 * address that belogns to the firewall, but it does not make
+	 * sense to do it in FORWARD chain)
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(specialCaseWithFWInDstAndOutbound);
+
+	/**
 	 * expands src and dst if both contain fw object. Unlike
 	 * standard processor ExpandMultipleAddresses, this one
 	 * uses loopback interface as well.
