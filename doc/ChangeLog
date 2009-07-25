@@ -1,3 +1,10 @@
+2009-07-24  vadim  <vadim@vk.crocodile.org>
+
+	* Rule.cpp (PolicyRule::getBranch): fixed problem #4 "GUI crash
+	when setting action to be a chain." reported in the bug #2826765:
+	"problems and suggestions for 3.1.0-b1187". The GUI crashed when
+	policy rule in the cluster policy was set to action "Chain".
+
 2009-07-17  vadim  <vadim@vk.crocodile.org>
 
 	* Resources.cpp (Resources::getResourceStrList): This function
