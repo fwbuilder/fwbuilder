@@ -134,10 +134,13 @@ ClusterGroup* Cluster::getStateSyncGroupObject()
 void Cluster::getMembersList(list<libfwbuilder::Firewall*> &members)
 {
     set<int> members_ids;
-    list<FWObject*> all_firewalls =
-        getByTypeDeep(StateSyncClusterGroup::TYPENAME);
-    for (list<FWObject*>::iterator it = all_firewalls.begin();
-         it != all_firewalls.end(); ++it)
+    list<FWObject*> all_groups = getByTypeDeep(StateSyncClusterGroup::TYPENAME);
+    list<FWObject*> all_failover = getByTypeDeep(FailoverClusterGroup::TYPENAME);
+
+    all_groups.merge(all_failover);
+
+    for (list<FWObject*>::iterator it = all_groups.begin();
+         it != all_groups.end(); ++it)
     {
         for (list<FWObject*>::iterator j = (*it)->begin();
              j != (*it)->end(); ++j)
@@ -154,6 +157,9 @@ void Cluster::getMembersList(list<libfwbuilder::Firewall*> &members)
             members_ids.insert(fw->getId());
         }
     }
+
+
+
     for (set<int>::iterator it = members_ids.begin();
          it != members_ids.end(); ++it)
     {

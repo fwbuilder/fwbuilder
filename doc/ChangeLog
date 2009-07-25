@@ -1,3 +1,13 @@
+2009-07-25  vadim  <vadim@vk.crocodile.org>
+
+	* Cluster.cpp (Cluster::getMembersList): need to scan not only
+	StateSyncClusterGroup child objects but also all
+	FailoverClusterGroup objects in order to find all member
+	firewalls. The program used to look only at StateSyncClusterGroup
+	objects, which meant it did not recognize any members if state
+	sync group was empty. This fixes issue #4 in the bug #2826765:
+	"problems and suggestions for 3.1.0-b1187".
+
 2009-07-24  vadim  <vadim@vk.crocodile.org>
 
 	* Rule.cpp (PolicyRule::getBranch): fixed problem #4 "GUI crash
