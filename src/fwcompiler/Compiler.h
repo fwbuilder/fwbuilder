@@ -216,12 +216,6 @@ protected:
         */
         int                                     fw_id;
         libfwbuilder::FWOptions                *fwopt;
-        std::map<int, libfwbuilder::FWObject*>  objcache;
-
-        /**
-         * stores object o and all its children in the cache, recursively
-         */
-        int cache_objects(libfwbuilder::FWObject *o);
 
         /* Methods added to support clusters */
         virtual int checkCluster(libfwbuilder::Cluster* cluster);
@@ -521,19 +515,6 @@ protected:
          */
         libfwbuilder::FWOptions* getCachedFwOpt() { return fwopt; }
         
-        /**
-         *  stores object with given ID in the cache
-         */
-        void cacheObj(libfwbuilder::FWObject *o);
-
-        /**
-         * does cache lookup for object with given ID
-         */
-        libfwbuilder::FWObject* getCachedObj(int id)
-        {
-            return objcache[id];
-        }
-	
 	/**
 	 * internal: scans children of 's' and, if finds host or
 	 * firewall with multiple interfaces, replaces reference to

@@ -76,23 +76,6 @@ FWCompilerException::FWCompilerException(Rule *r,const string &err) : FWExceptio
 
 Compiler::~Compiler() {}
 
-int Compiler::cache_objects(FWObject *o)
-{
-    if ( o->getId() > -1 )  cacheObj(o);
-
-    int n=0;
-    for (FWObject::iterator i=o->begin(); i!=o->end(); ++i) {
-        n=n+1+cache_objects((*i));
-    }
-    return n;
-}
-
-void Compiler::cacheObj(libfwbuilder::FWObject *o)
-{
-    objcache[o->getId()]=o;
-}
-
-
 int Compiler::prolog() 
 {
     temp=new Group();
@@ -102,10 +85,6 @@ int Compiler::prolog()
     fw_id=fw->getId();
 
     fwopt = fw->getOptionsObject();
-
-/* caching all objects */
-
-    cache_objects( dbcopy );
 
     return 0;
 }
@@ -542,7 +521,6 @@ void Compiler::_expandAddressRanges(Rule*, FWObject *re)
                     h->setName(string("%n-")+(*i).toString()+string("%") );
                     h->setNetmask(*(i->getNetmaskPtr()));
                     h->setAddress(*(i->getAddressPtr()));
-                    cacheObj(h); // to keep cache consistent
                     dbcopy->add(h,false);
                     cl.push_back(h);
                 }
@@ -1029,7 +1007,6 @@ bool Compiler::swapMultiAddressObjectsInRE::processNext()
                 mart->setId( mart_id );
                 compiler->dbcopy->addToIndex(mart);
                 compiler->dbcopy->add(mart);
-                compiler->cacheObj(mart);
             }
             re->removeRef(ma);
             re->addRef(mart);
