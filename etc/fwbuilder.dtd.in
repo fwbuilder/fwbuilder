@@ -89,7 +89,7 @@ TODO:
 >
 
 <!ELEMENT Library
-((AnyNetwork|AnyIPService|AnyInterval|ObjectGroup|StateSyncClusterGroup|FailoverClusterGroup|Host|Firewall|Cluster|Network|NetworkIPv6|IPv4|IPv6|DNSName|AddressTable|physAddress|AddressRange|ObjectRef|ServiceGroup|IPService|ICMPService|ICMP6Service|TCPService|UDPService|CustomService|ServiceRef|IntervalGroup|Interval|IntervalRef|Interface|Policy|NAT|PolicyRule|NATRule|Library|TagService)*)>
+((AnyNetwork|AnyIPService|AnyInterval|ObjectGroup|StateSyncClusterGroup|FailoverClusterGroup|Host|Firewall|Cluster|Network|NetworkIPv6|IPv4|IPv6|DNSName|AddressTable|physAddress|AddressRange|ObjectRef|ServiceGroup|IPService|ICMPService|ICMP6Service|TCPService|UDPService|CustomService|ServiceRef|IntervalGroup|Interval|IntervalRef|Interface|Policy|NAT|PolicyRule|NATRule|Library|TagService|UserService)*)>
 <!ATTLIST Library
  %STD_ATTRIBUTES;
  color   %STRING;  #IMPLIED

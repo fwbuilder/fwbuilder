@@ -23,6 +23,12 @@
 	* Resources.cpp (Resources::getResourceStrList): This function
 	provides a way to create lists of parameters in resource files.
 
+	* fwbuilder.dtd.in (Library): fixed bug #2823424: "Deleting
+	UserService object breaks data file format". When user deleted
+	UserService object, it was moved to the "Deleted Objects" library
+	which broke XML file because DTD did not allow UserService element
+	as a child of Library
+
 2009-07-16  vadim  <vadim@vk.crocodile.org>
 
 	* FWObjectDatabase_11.xslt: Bumped data file format to 12; system
