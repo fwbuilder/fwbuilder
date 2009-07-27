@@ -322,8 +322,7 @@ bool PolicyCompiler_ipt::optimizeForMinusIOPlus::processNext()
 
     string chain = rule->getStr("ipt_chain");
 
-    RuleElementItf *itfrel = rule->getItf();
-    if (itfrel->isAny() && (chain == "INPUT" || chain == "OUTPUT"))
+    if (iface_name == "*" && (chain == "INPUT" || chain == "OUTPUT"))
         rule->setInterfaceStr("");
 
     tmp_queue.push_back(rule);

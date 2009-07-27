@@ -1,3 +1,9 @@
+2009-07-26  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt_optimizer.cpp (optimizeForMinusIOPlus::processNext):
+	Better way to do optimization for "-i +", "-o +" for bug #2822098:
+	check for interfaceStr equal to "*" instead of re->isAny()
+
 2009-07-19  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (specialCaseWithFWInDstAndOutbound::processNext):
