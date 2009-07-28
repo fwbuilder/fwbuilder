@@ -1271,7 +1271,7 @@ PolicyRule* PolicyCompiler::addMgmtRule(Address* const src,
                                         Interface* const iface,
                                         PolicyRule::Direction direction,
                                         PolicyRule::Action action,
-                                        const string label)
+                                        const string &label)
 {
     assert(combined_ruleset != NULL);
 

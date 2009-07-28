@@ -151,7 +151,7 @@ void Cluster::getMembersList(list<libfwbuilder::Firewall*> &members)
             // as of 05/04 members of StateSyncClusterGroup are interfaces. See
             // tickets #10 and #11
             if (Interface::cast(member))
-                fw = Firewall::cast(member->getParent());
+                fw = Firewall::cast(Interface::cast(member)->getParentHost());
             else
                 fw = Firewall::cast(member);
             members_ids.insert(fw->getId());

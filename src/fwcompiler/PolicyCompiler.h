@@ -129,7 +129,7 @@ namespace fwcompiler {
                                               libfwbuilder::Interface* const iface,
                                               libfwbuilder::PolicyRule::Direction direction,
                                               libfwbuilder::PolicyRule::Action action,
-                                              const std::string label);
+                                              const std::string &label);
 
 
 	/**

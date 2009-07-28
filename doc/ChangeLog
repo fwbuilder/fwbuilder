@@ -1,3 +1,18 @@
+2009-07-27  vadim  <vadim@vk.crocodile.org>
+
+	* Cluster.cpp (Cluster::getMembersList): cluster group members can
+	be references to interfaces and subinterfaces; this change adds
+	support for subinterfaces.
+
+2009-07-26  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler_cluster.cpp (Compiler::processFailoverGroup): While
+	adding a copy of cluster interface to the firewall, make sure it
+	has new unique ID instead of a copy of the ID of the cluster's
+	interface object. If the ID is the same,
+	RuleElementItf::validateChild() finds clusters' interface which is
+	not a child of the firewall object and therefore is rejected.
+
 2009-07-25  vadim  <vadim@vk.crocodile.org>
 
 	* Compiler.h (fwcompiler): Deprecated object caching in compiler,

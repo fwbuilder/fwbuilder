@@ -148,13 +148,21 @@ void Compiler::processFailoverGroup(Cluster *cluster,
     iface->getOptionsObject()->setStr(
         "failover_group_id", FWObjectDatabase::getStringId(cluster_group->getId()));
 
-    /* Add copy of VRRP interface from the cluster to the firewall object */
-    Interface* new_cl_if = Interface::cast(fw->addCopyOf(cluster_if, false));
+    /* Add copy of the cluster interface to the firewall object
+     *
+     * While adding a copy of cluster interface to the firewall, make
+     * sure it has new unique ID instead of a copy of the ID of the
+     * cluster's interface object. If the ID is the same,
+     * RuleElementItf::validateChild() finds clusters' interface which
+     * is not a child of the firewall object and therefore is
+     * rejected.
+     */
+    Interface* new_cl_if = Interface::cast(fw->addCopyOf(cluster_if, true));
     assert(new_cl_if != NULL);
     new_cl_if->getOptionsObject()->setBool("cluster_interface", true);
     new_cl_if->getOptionsObject()->setStr("base_device", iface->getName());
-    new_cl_if->getOptionsObject()->setStr("base_interface_id",
-                                          FWObjectDatabase::getStringId(iface->getId()));
+    new_cl_if->getOptionsObject()->setStr(
+        "base_interface_id", FWObjectDatabase::getStringId(iface->getId()));
 
     /* Set master property if interface is referenced
      * as master_iface
@@ -171,7 +179,7 @@ void Compiler::processFailoverGroup(Cluster *cluster,
      * compiler recognizes it when it encounters cluster object in rules.
      * This fixes #15 (makes compiler choose correct chains)
      */
-    cluster->addCopyOf(iface, false);
+    cluster->addCopyOf(iface, true);
 }
 
 /*
@@ -236,10 +244,7 @@ int Compiler::populateClusterElements(Cluster *cluster, Firewall *fw)
         {
             Interface *iface = Interface::cast(FWObjectReference::getObject(*it));
             assert(iface);
-            if (iface->getParent() == fw)
-            {
-                processStateSyncGroup(cluster, fw, state_sync_group, iface);
-            }
+            processStateSyncGroup(cluster, fw, state_sync_group, iface);
         }
     }
 
@@ -260,18 +265,15 @@ int Compiler::populateClusterElements(Cluster *cluster, Firewall *fw)
             {
                 Interface *iface = Interface::cast(FWObjectReference::getObject(*it));
                 assert(iface);
-                if (iface->getParent() == fw)
-                {
-                    // We need to do some sanity checks of cluster
-                    // interfaces for VRRP and then add them to the
-                    // firewall object.
-                    // These actions are very generic and have nothing specific
-                    // to VRRP. Unless new protocol is added that requires
-                    // something radically different, will always call this method
-                    // for failover groups.
-                    //if (failover_group->getStr("type") == "vrrp")
-                    processFailoverGroup(cluster, fw, failover_group, iface);
-                }
+                // We need to do some sanity checks of cluster
+                // interfaces for VRRP and then add them to the
+                // firewall object.
+                // These actions are very generic and have nothing specific
+                // to VRRP. Unless new protocol is added that requires
+                // something radically different, will always call this method
+                // for failover groups.
+                //if (failover_group->getStr("type") == "vrrp")
+                processFailoverGroup(cluster, fw, failover_group, iface);
             }
         } else
         {
@@ -280,12 +282,12 @@ int Compiler::populateClusterElements(Cluster *cluster, Firewall *fw)
             Interface *cluster_interface = Interface::cast(*cl_iface);
             if (cluster_interface->isLoopback())
             {
-
-                /* Add copy of the interface from the cluster to the firewall object
-                 * so that when it is encountered in the "intrface" rule element of
-                 * its rules, it belongs to the firewall and is therefore valid.
+                /* Add copy of the interface from the cluster to the
+                 * firewall object so that when it is encountered in
+                 * the "intrface" rule element of its rules, it
+                 * belongs to the firewall and is therefore valid.
                  */
-                Interface* new_cl_if = Interface::cast(fw->addCopyOf(cluster_interface, false));
+                Interface* new_cl_if = Interface::cast(fw->addCopyOf(cluster_interface, true));
                 assert(new_cl_if != NULL);
                 new_cl_if->getOptionsObject()->setBool("cluster_interface", true);
             }
