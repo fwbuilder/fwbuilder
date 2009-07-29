@@ -304,8 +304,8 @@ void NATCompiler_pf::PrintRule::_printSrcPort(libfwbuilder::Service *srv)
             {
                 compiler->output << ":" << sre;
             }
+            compiler->output  << " ";
         }
-        compiler->output  << " ";
     }
 }
 

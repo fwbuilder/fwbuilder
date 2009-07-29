@@ -1,3 +1,26 @@
+2009-07-28  vadim  <vadim@vk.crocodile.org>
+
+	* NATCompiler_pf_writers.cpp (PrintRule::_printSrcPort): remove
+	extra white space after tcp port spec if source port match was not
+	used in the rule.
+
+	* PolicyCompiler_pf.cpp (fillDirection::processNext): Applied
+	patch per bug report #2828633: "Patch: Warning when changing rule
+	direction in compiler". This adds warning when rule direction is
+	changed by the compiler because object in source or destination
+	was firewall itself.
+
+	* PolicyCompiler_pf.cpp (PolicyCompiler_pf::compile): Implemented
+	change per bug #2828602: "PF Compiler Direction Both no
+	Duplication Patch". PF rules with direction "both" used to be
+	split to make two rules, one with direction "inbound" and another
+	with direction "outbound". This was an artefact of old rule
+	generation model where user could choose to permit everything
+	outbound and only generate inbound rules, or generate both inbound
+	and outbound rules. Since we now always generate both in abd out
+	rules and PF matches both directions when neither "in" or "out" is
+	specificed, this splitting has become redundant.
+
 2009-07-26  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt_optimizer.cpp (optimizeForMinusIOPlus::processNext):

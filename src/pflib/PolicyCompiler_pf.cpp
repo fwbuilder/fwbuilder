@@ -376,9 +376,15 @@ bool PolicyCompiler_pf::fillDirection::processNext()
             compiler->complexMatch(compiler->fw, dst)) return true;
 
         if (!src->isAny() && compiler->complexMatch(compiler->fw, src))
+        {
             rule->setDirection( PolicyRule::Outbound );
+            compiler->warning("Changing rule direction due to self reference in rule "+rule->getLabel());
+        }
         if (!dst->isAny() && compiler->complexMatch(compiler->fw, dst))
+        {
             rule->setDirection( PolicyRule::Inbound );
+            compiler->warning("Changing rule direction due to self reference in rule "+rule->getLabel());
+        }
     }
     return true;
 }
@@ -1071,7 +1077,10 @@ void PolicyCompiler_pf::compile()
 	add( new splitIfFirewallInSrc("split rule if firewall is in Src"   ));
 	add( new splitIfFirewallInDst("split rule if firewall is in Dst"   ));
 	add( new fillDirection("determine directions"               ));
-	add( new SplitDirection("split rules with direction 'both'"  ));
+
+// commented out for bug #2828602
+//	add( new SplitDirection("split rules with direction 'both'"  ));
+
         add( new addLoopbackForRedirect(
                  "add loopback to rules that permit redirected services" ) );
 	add( new ExpandMultipleAddresses(

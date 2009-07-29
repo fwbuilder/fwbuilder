@@ -339,8 +339,8 @@ void PolicyCompiler_pf::PrintRule::_printTag(PolicyRule *rule)
 
 void PolicyCompiler_pf::PrintRule::_printDirection(PolicyRule *rule)
 {
-    if (rule->getDirection()==PolicyRule::Outbound)  compiler->output << "out "; 
-    else	                                     compiler->output << "in  "; 
+    if (rule->getDirection()==PolicyRule::Outbound) compiler->output << "out ";
+    if (rule->getDirection()==PolicyRule::Inbound) compiler->output << "in  ";
 }
 
 void PolicyCompiler_pf::PrintRule::_printLogging(PolicyRule *rule)
