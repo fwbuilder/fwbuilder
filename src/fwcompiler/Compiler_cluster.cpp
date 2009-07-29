@@ -120,6 +120,8 @@ void Compiler::processFailoverGroup(Cluster *cluster,
                                     FailoverClusterGroup *cluster_group,
                                     Interface *iface)
 {
+    cerr << "Processing failover group. Interface " << iface->getName() << endl;
+
     Interface* cluster_if = Interface::cast(cluster_group->getParent());
     assert(cluster_if != NULL);
     string cluster_if_name = cluster_if->getName();
@@ -273,7 +275,8 @@ int Compiler::populateClusterElements(Cluster *cluster, Firewall *fw)
                 // something radically different, will always call this method
                 // for failover groups.
                 //if (failover_group->getStr("type") == "vrrp")
-                processFailoverGroup(cluster, fw, failover_group, iface);
+                if (iface->isChildOf(fw))
+                    processFailoverGroup(cluster, fw, failover_group, iface);
             }
         } else
         {
