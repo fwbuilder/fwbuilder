@@ -1260,7 +1260,6 @@ SNMPCrawler::SNMPCrawler()
 SNMPCrawler::SNMPCrawler(const InetAddr &_seed, 
                          const string &_community,
                          bool _recursive,
-                         bool _skip_virtual,
                          bool _do_dns,
                          bool _follow_ptp,
                          unsigned int _dns_threads,
@@ -1270,7 +1269,7 @@ SNMPCrawler::SNMPCrawler(const InetAddr &_seed,
 			 int  _dns_timeout,
                          const vector<InetAddrMask> *_include)
 {
-    init(_seed, _community, _recursive, _skip_virtual, 
+    init(_seed, _community, _recursive, 
          _do_dns, _follow_ptp, _dns_threads, 
 	 _snmp_retries,  _snmp_timeout, _dns_retries, _dns_timeout, 
 	 _include);
@@ -1283,7 +1282,6 @@ SNMPCrawler::~SNMPCrawler()
 void SNMPCrawler::init(const InetAddr &_seed, 
 		       const string &_community,
 		       bool _recursive,
-                       bool _skip_virtual,
                        bool _do_dns,
                        bool _follow_ptp,
                        unsigned int _dns_threads,
@@ -1298,7 +1296,6 @@ void SNMPCrawler::init(const InetAddr &_seed,
     snmp_retries = _snmp_retries;
     snmp_timeout = _snmp_timeout;
     recursive    = _recursive;
-    skip_virtual = _skip_virtual;
     do_dns       = _do_dns;
     follow_ptp   = _follow_ptp;
     dns_threads  = _dns_threads;
@@ -1369,43 +1366,6 @@ const InetAddrMask SNMPCrawler::IPV6_LOOPBACK_NET(
     InetAddr::getLoopbackAddr(AF_INET6), InetAddr(AF_INET6, 128));
 
 const InetAddr SNMPCrawler::PTP_NETMASK(InetAddr::getAllOnes());
-
-bool SNMPCrawler::isvirtual(const InetAddr&, const string&) const 
-{
-// 01/10/2009 : this code is very old. We used to explicitly check and skip
-// virtual interfaces, however on Linux at least virtual interfaces
-// are just secondary ip addresses that belong to normal interfaces and
-// should not be skipped.
-#if 0
-    if (!pa.length()) return false;
-    for (map<InetAddr, CrawlerFind>::const_iterator i=found.begin();
-         i!=found.end(); ++i)
-    {
-        const CrawlerFind &c = i->second;
-        
-        map<int, InterfaceData>::const_iterator j;
-        for(j=c.interfaces.begin(); j!=c.interfaces.end(); ++j)
-        {
-            if (!j->second.addr_mask) continue; // no ip addr.
-            try
-            {
-                const InetAddr *intf_addr =
-                    j->second.addr_mask->getAddressPtr();
-
-                string paddr = j->second.mac_addr;
-                if (paddr!="" && pa == paddr &&
-                    intf_addr!=NULL && addr != *intf_addr)
-                    return true;
-            } catch(FWException &ex)
-            {
-                // Exception caused by interface having bad IP address.
-                // we just skip this interface and go on
-            }
-        }
-    }
-#endif    
-    return false;
-}
 
 bool SNMPCrawler::point2point(const InetAddrMask &n,
                               const InterfaceData& intf) const
@@ -1529,8 +1489,7 @@ void SNMPCrawler::run_impl(Logger *logger,
 
             InetAddr  c = (*j).first;
             string    pa = (*j).second;
-            if (included(c) && !alreadyseen(c) &&
-                !isvirtual(c,pa) && !special(c))
+            if (included(c) && !alreadyseen(c) && !special(c))
             {
                 if(recursive)
                 {
@@ -1736,8 +1695,7 @@ void SNMPCrawler::run_impl(Logger *logger,
                         // for some of our interfaces, and if yes, ignore them.
                         // (see task #36520).
 
-                        if (included(*c) && !alreadyseen(*c) && 
-                            !isvirtual(*c,"") && !special(*c) && 
+                        if (included(*c) && !alreadyseen(*c) && !special(*c) && 
                             !interface_broadcasts.count(*c))
                         {
                             if(recursive && follow_ptp)
@@ -1770,7 +1728,7 @@ void SNMPCrawler::run_impl(Logger *logger,
                 }
 
                 InetAddr gw((*j).getGateway());
-                if (included(gw) && !alreadyseen(gw) && !isvirtual(gw, "") &&
+                if (included(gw) && !alreadyseen(gw) && 
                     !special(gw) && !interface_broadcasts.count(gw))
                 {
                     bool isptp=point2point(net, intf);
@@ -1828,9 +1786,6 @@ void SNMPCrawler::run_impl(Logger *logger,
         
     } while(recursive);
 
-    if(skip_virtual)
-        remove_virtual(logger,stop_program);
-    
     if(do_dns)
         bacresolve_results(logger,stop_program);
     
@@ -1839,14 +1794,6 @@ void SNMPCrawler::run_impl(Logger *logger,
     now=time(NULL);
     str << "SNMPCrawler - done at " << asctime(localtime(&now)) << "\n";
     *logger << str;
-}
-
-void SNMPCrawler::remove_virtual(Logger *logger, SyncFlag*) throw(FWException)
-{
-    *logger << "Removing virtual IPs.\n";
-    for(map<InetAddr, CrawlerFind>::iterator j=found.begin(); j!=found.end(); ++j)
-        if(isvirtual((*j).first, (*j).second.found_phys_addr))
-            found.erase(j);
 }
 
 void SNMPCrawler::bacresolve_results(Logger *logger,
