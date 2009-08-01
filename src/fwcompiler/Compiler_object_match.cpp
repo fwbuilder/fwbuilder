@@ -67,8 +67,9 @@ bool Compiler::complexMatch(Address *obj1, Address *obj2,
  */
 Interface* Compiler::findInterfaceFor(const Address *obj1, const Address *obj2)
 {
-    FWObjectTypedChildIterator j=obj2->findByType(Interface::TYPENAME);
-    for ( ; j!=j.end(); ++j ) 
+    list<FWObject*> interfaces = obj2->getByTypeDeep(Interface::TYPENAME);
+    list<FWObject*>::iterator j;
+    for (j=interfaces.begin(); j!=interfaces.end(); ++j )
     {
 	Interface *iface=Interface::cast(*j);
 	assert(iface);
@@ -102,10 +103,11 @@ Interface* Compiler::findInterfaceFor(const Address *obj1, const Address *obj2)
     return NULL;
 }
 
-FWObject* Compiler::findAddressFor(const Address *obj1,const Address *obj2)
+FWObject* Compiler::findAddressFor(const Address *obj1, const Address *obj2)
 {
-    FWObjectTypedChildIterator j=obj2->findByType(Interface::TYPENAME);
-    for ( ; j!=j.end(); ++j ) 
+    list<FWObject*> interfaces = obj2->getByTypeDeep(Interface::TYPENAME);
+    list<FWObject*>::iterator j;
+    for (j=interfaces.begin(); j!=interfaces.end(); ++j )
     {
 	Interface *iface=Interface::cast(*j);
 	assert(iface);
