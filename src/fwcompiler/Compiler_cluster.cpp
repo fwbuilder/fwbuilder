@@ -120,8 +120,6 @@ void Compiler::processFailoverGroup(Cluster *cluster,
                                     FailoverClusterGroup *cluster_group,
                                     Interface *iface)
 {
-    cerr << "Processing failover group. Interface " << iface->getName() << endl;
-
     Interface* cluster_if = Interface::cast(cluster_group->getParent());
     assert(cluster_if != NULL);
     string cluster_if_name = cluster_if->getName();
