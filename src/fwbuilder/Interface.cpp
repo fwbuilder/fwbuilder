@@ -274,9 +274,15 @@ void Interface::setBroadcastBits(int _val) { bcast_bits=_val; }
 bool  Interface::validateChild(FWObject *o)
 {
     string otype=o->getTypeName();
-
-    return (otype==Interface::TYPENAME ||
-            otype==IPv4::TYPENAME ||
+    if (otype==Interface::TYPENAME)
+    {
+        // Interface with subinterfaces is not allowed (DTD allows only one
+        // level of subinterfaces)
+        list<FWObject*> il = o->getByType(Interface::TYPENAME);
+        return (il.size() == 0);
+    }
+            
+    return (otype==IPv4::TYPENAME ||
             otype==IPv6::TYPENAME ||
             otype==physAddress::TYPENAME ||
             otype==InterfaceOptions::TYPENAME ||
