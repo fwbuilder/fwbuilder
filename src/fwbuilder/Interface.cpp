@@ -278,6 +278,7 @@ bool  Interface::validateChild(FWObject *o)
     {
         // Interface with subinterfaces is not allowed (DTD allows only one
         // level of subinterfaces)
+        if (Interface::isA(getParent())) return false;
         list<FWObject*> il = o->getByType(Interface::TYPENAME);
         return (il.size() == 0);
     }
