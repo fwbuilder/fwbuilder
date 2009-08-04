@@ -413,7 +413,7 @@ void Compiler::_expandInterface(Interface *iface, std::list<FWObject*> &ol)
 /*
  * if this is unnumbered interface or a bridge port, then do not use it
  */
-    if (iface->isUnnumbered() || iface->isBridgePort()) return;
+//    if (iface->isUnnumbered() || iface->isBridgePort()) return;
 
 /*
  * if this is an interface with dynamic address, then simply use it
@@ -430,12 +430,11 @@ void Compiler::_expandInterface(Interface *iface, std::list<FWObject*> &ol)
  * we use physAddress only if Host option "use_mac_addr_filter" of the
  * parent Host object is true
  */
-    FWObject  *p;
-    FWOptions *hopt;
-    p = iface->getParent();
+    FWObject  *p = iface->getParentHost();
     Host *hp = Host::cast(p);
-    bool use_mac= (hp && (hopt = hp->getOptionsObject())!=NULL &&
-                   hopt->getBool("use_mac_addr_filter") ); 
+    if (hp==NULL) return;  // something is very broken
+    FWOptions *hopt = hp->getOptionsObject();
+    bool use_mac = (hopt!=NULL && hopt->getBool("use_mac_addr_filter")); 
 
     for (FWObject::iterator i1=iface->begin(); i1!=iface->end(); ++i1) 
     {
@@ -449,7 +448,12 @@ void Compiler::_expandInterface(Interface *iface, std::list<FWObject*> &ol)
 
         // Skip bridge ports
         Interface *subint = Interface::cast(o);
-        if (subint && subint->isBridgePort()) continue;
+        if (subint)
+        {
+            if (subint->isBridgePort()) continue;
+            _expandInterface(subint, ol);
+            continue;
+        }
 
         if (Address::cast(o)!=NULL && MatchesAddressFamily(o)) ol.push_back(o);
     }
