@@ -309,9 +309,6 @@ int Compiler::populateClusterElements(Cluster *cluster, Firewall *fw)
     fw->getRouting()->clear();
 
 // Copy PolicyRules from the cluster.
-    cout << " Firewall " << fw->getName()
-         << " member of cluster " << cluster->getName() << endl;
-
     /* Policy rules */
     Policy* cluster_policy = cluster->getPolicy();
     Policy* fw_policy = fw->getPolicy();
