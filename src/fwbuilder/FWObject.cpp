@@ -179,6 +179,7 @@ FWObject::FWObject()
     setId(FWObjectDatabase::generateUniqueId());
 
     setDirty(false);
+    storeCreationTime();
 }
 
 FWObject::FWObject(bool new_id)
@@ -197,12 +198,14 @@ FWObject::FWObject(bool new_id)
         setId(FWObjectDatabase::generateUniqueId());
 
     setDirty(false);
+    storeCreationTime();
 }
 
 FWObject::FWObject(const FWObject &c) : list<FWObject*>(c)
 {
     init = false;
     *this = c;
+    storeCreationTime();
 }
 
 FWObject::FWObject(const FWObjectDatabase *root, bool )
@@ -220,6 +223,7 @@ FWObject::FWObject(const FWObjectDatabase *root, bool )
     setId(FWObjectDatabase::generateUniqueId());
 
     setDirty(false);
+    storeCreationTime();
 }
 
 FWObject::~FWObject() 

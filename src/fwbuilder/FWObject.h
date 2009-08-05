@@ -27,6 +27,7 @@
 #ifndef  __FWOBJECT_HH_FLAG__
 #define  __FWOBJECT_HH_FLAG__
 
+#include <time.h>
 #include <string>
 #include <list>
 #include <map>
@@ -99,6 +100,8 @@ private:
     std::string comment;
 
     static std::string NOT_FOUND;
+
+    time_t creation_time;
 
 protected:
 
@@ -238,31 +241,34 @@ public:
      */
     virtual bool cmp(const FWObject *obj) throw(FWException);
     
-    void      Show();
-    void      Hide();
+    void Show();
+    void Hide();
 
     FWObject* getParent() const;
-    void      setParent(FWObject *p);
+    void setParent(FWObject *p);
 
-    bool    exists(const std::string &name) const;
+    bool exists(const std::string &name) const;
 
-    void    remStr(const std::string &name);
+    void remStr(const std::string &name);
 
     const std::string &getStr(const std::string& name) const;
-    void    setStr(const std::string &name, const std::string &val);
+    void setStr(const std::string &name, const std::string &val);
 
-    int     getInt(const std::string &name) const;
-    void    setInt(const std::string &name, int    val);
+    int getInt(const std::string &name) const;
+    void setInt(const std::string &name, int    val);
 
-    bool    getBool(const std::string &name) const;
-    void    setBool(const std::string &name, bool val);
-    void    setBool(const std::string &name, const std::string &val);
+    bool getBool(const std::string &name) const;
+    void setBool(const std::string &name, bool val);
+    void setBool(const std::string &name, const std::string &val);
 
     const std::string &getName() const;
-    void          setName(const std::string& n);
+    void setName(const std::string& n);
     
     const std::string &getComment() const;
-    void          setComment(const std::string& c);
+    void setComment(const std::string& c);
+
+    void storeCreationTime() { creation_time = time(NULL); }
+    time_t getCreationTime() { return creation_time; }
 
     /**
      * convenience method: returns the name of the library this object belongs to.
