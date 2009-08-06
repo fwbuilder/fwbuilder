@@ -228,17 +228,19 @@ FWOptions* Interface::getOptionsObject()
         add(iface_opt);
 
         // set default interface options
-        const string host_OS = this->getParentHost()->getStr("host_OS");
-        try
+        if (this->getParentHost() != NULL)
         {
-            Resources::setDefaultIfaceOptions(host_OS, this);
-        } catch (FWException &ex)
-        {
-            // Resources::setDefaultIfaceOptions throws exception if it can't
-            // find resources module for the given host OS.
-            ;
+            const string host_OS = this->getParentHost()->getStr("host_OS");
+            try
+            {
+                Resources::setDefaultIfaceOptions(host_OS, this);
+            } catch (FWException &ex)
+            {
+                // Resources::setDefaultIfaceOptions throws exception if it can't
+                // find resources module for the given host OS.
+                ;
+            }
         }
-
     }
     return iface_opt;
 }
