@@ -713,22 +713,21 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
 Address* PolicyCompiler::checkForZeroAddr::findHostWithNoInterfaces(
     RuleElement *re)
 {
-    Address *a=NULL;
-
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++) 
     {
         FWObject *o = FWReference::getObject(*i);
 	assert(o!=NULL);
         Host *addr = Host::cast(o);
-        // if host has child of type Interface, it must be first of the children
-        if (addr!=NULL && addr->front()!=NULL && Interface::isA(addr->front()))
+
+        if (addr!=NULL && addr->front()!=NULL)
         {
-            a=addr;
-            break;
+            FWObject::iterator it;
+            for (it=addr->begin(); it!=addr->end() && !Interface::isA(*it); ++it);
+            if (it==addr->end()) return addr; // has no interfaces
         }
     }
 
-    return a;
+    return NULL;
 }
 
 
