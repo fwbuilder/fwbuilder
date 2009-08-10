@@ -1,3 +1,17 @@
+2009-08-10  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_pf_writers.cpp (PrintRule::processNext): For bug
+	#2835193: "Modulate state doesnt work for PF". Check variable
+	"modulate state" in rule optiopns and global firewall options. If
+	checkbox is turned on in the firewall options, then we always use
+	"modulate state". This option can also be turned on for an
+	individual rule using rule options dialog.
+
+	* pfAdvancedDialog.cpp (pfAdvancedDialog::pfAdvancedDialog): Fixed
+	bug #2835193: "Modulate state doesnt work for PF".  The name Xml
+	attribute used to hold the value of "module state" option was
+	entered incorrectly in the dialog.
+
 2009-07-28  vadim  <vadim@vk.crocodile.org>
 
 	* NATCompiler_pf_writers.cpp (PrintRule::_printSrcPort): remove

@@ -407,21 +407,6 @@
     <ObjectRef ref="id3B022266"/>
     <ObjectRef ref="id3B4572AF"/>
     <ObjectRef ref="id79413X23273"/>
-    <ObjectRef ref="id79413X23273"/>
-    <ObjectRef ref="id79413X23273"/>
-    <ObjectRef ref="id79413X23273"/>
-    <ObjectRef ref="id79413X23273"/>
-    <ObjectRef ref="id79413X23273"/>
-    <ObjectRef ref="id79413X23273"/>
-    <ObjectRef ref="id79413X23273"/>
-    <ObjectRef ref="id79413X23273"/>
-    <ObjectRef ref="id79413X23273"/>
-    <ObjectRef ref="id79413X23273"/>
-    <ObjectRef ref="id79413X23273"/>
-    <ObjectRef ref="id79413X23273"/>
-    <ObjectRef ref="id79413X23273"/>
-    <ObjectRef ref="id79413X23273"/>
-    <ObjectRef ref="id79413X23273"/>
     <Firewall id="id79413X23273" host_OS="linux24" lastCompiled="1244482781" lastInstalled="0" lastModified="1244584259" platform="iptables" version="" name="fw1" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
       <NAT id="id80067X23273" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
         <NATRule id="id80068X23273" disabled="False" position="0" comment="">
@@ -819,8 +804,6 @@
         <Option name="verify_interfaces">true</Option>
       </FirewallOptions>
     </Firewall>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -1401,7 +1384,7 @@
       </ServiceGroup>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="openbsd" inactive="False" lastCompiled="1157930800" lastInstalled="0" lastModified="1242336454" platform="pf" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="openbsd" inactive="False" lastCompiled="1249943117" lastInstalled="0" lastModified="1249943111" platform="pf" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -2063,7 +2046,7 @@
           <Option name="altAddress"></Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
+          <Option name="cmdline">-xt</Option>
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
@@ -2078,6 +2061,7 @@
           <Option name="inst_cmdline"></Option>
           <Option name="inst_script"></Option>
           <Option name="install_script"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix">/second</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">0</Option>
@@ -2116,6 +2100,7 @@
           <Option name="pf_do_scrub">True</Option>
           <Option name="pf_do_timeout_frag">True</Option>
           <Option name="pf_do_timeout_interval">True</Option>
+          <Option name="pf_flush_states">False</Option>
           <Option name="pf_icmp_error">10</Option>
           <Option name="pf_icmp_first">10</Option>
           <Option name="pf_limit_frags">4000</Option>
@@ -2123,6 +2108,7 @@
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_limit_table_entries">1000000</Option>
           <Option name="pf_limit_tables">1000</Option>
+          <Option name="pf_modulate_state">True</Option>
           <Option name="pf_optimization"></Option>
           <Option name="pf_other_first">10</Option>
           <Option name="pf_other_multiple">10</Option>
@@ -2166,6 +2152,7 @@
           <Option name="prolog_place">fw_file</Option>
           <Option name="prolog_script">echo 'This is prolog script'
 </Option>
+          <Option name="scpArgs"></Option>
           <Option name="script_env_path"></Option>
           <Option name="snmp_contact"></Option>
           <Option name="snmp_description"></Option>
@@ -8860,7 +8847,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4699570022254" host_OS="openbsd" inactive="False" lastCompiled="1202682007" lastInstalled="0" lastModified="1202682031" platform="pf" version="4.x" name="firewall10-2" comment="PF 4.x, testing &#10;&quot;flags S/SA keep state&quot;" ro="False">
+      <Firewall id="id4699570022254" host_OS="openbsd" inactive="False" lastCompiled="1249943166" lastInstalled="0" lastModified="1249943161" platform="pf" version="4.x" name="firewall10-2" comment="PF 4.x, testing &#10;&quot;flags S/SA keep state&quot;" ro="False">
         <NAT id="id4699573822254" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id4699573922254" disabled="True" position="0" comment="">
             <OSrc neg="False">
@@ -9058,6 +9045,7 @@
           <Option name="inst_cmdline"></Option>
           <Option name="inst_script"></Option>
           <Option name="install_script"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">0</Option>
@@ -9092,6 +9080,7 @@
           <Option name="pf_do_scrub">True</Option>
           <Option name="pf_do_timeout_frag">False</Option>
           <Option name="pf_do_timeout_interval">False</Option>
+          <Option name="pf_flush_states">False</Option>
           <Option name="pf_icmp_error">0</Option>
           <Option name="pf_icmp_first">0</Option>
           <Option name="pf_limit_frags">5000</Option>
@@ -9099,6 +9088,7 @@
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_limit_table_entries">0</Option>
           <Option name="pf_limit_tables">0</Option>
+          <Option name="pf_modulate_state">True</Option>
           <Option name="pf_optimization"></Option>
           <Option name="pf_other_first">0</Option>
           <Option name="pf_other_multiple">0</Option>
@@ -9142,6 +9132,7 @@
           <Option name="prolog_place">fw_file</Option>
           <Option name="prolog_script"></Option>
           <Option name="proxy_arp">False</Option>
+          <Option name="scpArgs"></Option>
           <Option name="script_env_path"></Option>
           <Option name="snmp_contact"></Option>
           <Option name="snmp_description"></Option>

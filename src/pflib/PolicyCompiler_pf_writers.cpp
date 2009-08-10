@@ -954,9 +954,12 @@ bool PolicyCompiler_pf::PrintRule::processNext()
 	    compiler->output << "synproxy state ";
         else
         {
-            if (compiler->getCachedFwOpt()->getBool("pf_modulate_state") && tcpsrv!=NULL)
+            if ((ruleopt->getBool("pf_modulate_state") || 
+                 compiler->getCachedFwOpt()->getBool("pf_modulate_state")) &&
+                tcpsrv!=NULL) 
+            {
                 compiler->output << "modulate state ";
-            else
+            } else
             {
                 /*
                  * "flags S/SA keep state" is implicit in 4.x

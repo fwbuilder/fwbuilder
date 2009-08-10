@@ -115,7 +115,7 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
                          "ignore_empty_groups");
 //    data.registerOption( pf_use_tables, fwopt, "use_tables");
     data.registerOption( m_dialog->pf_accept_new_tcp_with_no_syn,fwopt, "accept_new_tcp_with_no_syn");
-    data.registerOption( m_dialog->pf_modulate_state,fwopt, "modulate_state");
+    data.registerOption( m_dialog->pf_modulate_state,fwopt, "pf_modulate_state");
     data.registerOption( m_dialog->pf_scrub_random_id,fwopt, "pf_scrub_random_id");
 
     data.registerOption( m_dialog->pf_do_scrub,fwopt, "pf_do_scrub");
