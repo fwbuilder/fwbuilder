@@ -1,3 +1,10 @@
+2009-08-12  vadim  <vadim@vk.crocodile.org>
+
+	* NATCompiler.cpp (classifyNATRule::processNext): fixed bug
+	#2836321: "SNAT rule that changes Trans Src and Trans Port does
+	not work". Dual translation rule that changes source address and
+	destination port was not supported.
+
 2009-07-17  vadim  <vadim@vk.crocodile.org>
 
 	* fwbuilder.dtd.in (Library): fixed bug #2823424: "Deleting
