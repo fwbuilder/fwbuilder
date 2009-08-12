@@ -1,3 +1,10 @@
+2009-08-12  vadim  <vadim@vk.crocodile.org>
+
+	* NATCompiler_ipt.cpp (splitSDNATRule::processNext): fixed bug
+	#2836321: "SNAT rule that changes Trans Src and Trans Port does
+	not work". Dual translation rule that changes source address and
+	destination port was not supported.
+
 2009-08-10  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_pf_writers.cpp (PrintRule::processNext): For bug

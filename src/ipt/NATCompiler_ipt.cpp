@@ -336,23 +336,64 @@ bool NATCompiler_ipt::splitSDNATRule::processNext()
         RuleElementOSrv *osrv;
         RuleElementTSrc *tsrc;
         RuleElementTDst *tdst;
+        RuleElementTSrv *tsrv;
+
+        bool tsrv_translates_src_port = false;
+        bool tsrv_translates_dst_port = false;
+
+        Service  *osrv_obj = compiler->getFirstOSrv(rule);
+        Service  *tsrv_obj = compiler->getFirstTSrv(rule);
+        
+        if (TCPUDPService::cast(osrv_obj) && TCPUDPService::cast(tsrv_obj))
+        {
+            TCPUDPService *tu_osrv = TCPUDPService::cast(osrv_obj);
+            TCPUDPService *tu_tsrv = TCPUDPService::cast(tsrv_obj);
+
+            tsrv_translates_src_port =
+                (tu_tsrv->getSrcRangeStart() != 0 && tu_tsrv->getDstRangeStart() == 0);
+            tsrv_translates_dst_port =
+                (tu_tsrv->getSrcRangeStart() == 0 && tu_tsrv->getDstRangeStart() != 0);
+
+            if (tsrv_translates_dst_port &&
+                tu_osrv->getDstRangeStart() == tu_tsrv->getDstRangeStart() &&
+                tu_osrv->getDstRangeEnd() == tu_tsrv->getDstRangeEnd())
+                tsrv_translates_dst_port = false;  // osrv and tsrv define the same ports
+
+            if (tsrv_translates_src_port &&
+                tu_osrv->getSrcRangeStart() == tu_tsrv->getSrcRangeStart() &&
+                tu_osrv->getSrcRangeEnd() == tu_tsrv->getSrcRangeEnd())
+                tsrv_translates_src_port = false;  // osrv and tsrv define the same ports
+        }
 
 /* first rule translates destination and may translate service (depends
- * on the original rule) */
+ * on the original rule). Set type to Unknown because this may become
+ * DNAT or DNetNat - we will decide later.
+ */
         NATRule *r = compiler->dbcopy->createNATRule();
         r->duplicate(rule);
         compiler->temp_ruleset->add(r);
         r->setRuleType(NATRule::Unknown);
                 
-        tsrc=r->getTSrc();
+        tsrc = r->getTSrc();
         tsrc->clearChildren();
         tsrc->setAnyElement();
+
+/* this rule translates destination and can't deal with source port
+ * translation. Leave that to the second rule
+ */
+        if (tsrv_translates_src_port)
+        {
+            tsrv = r->getTSrv();
+            tsrv->clearChildren();
+            tsrv->setAnyElement();
+        }
 
         tmp_queue.push_back(r);
 
 /* the second rule translates source and uses translated object in
  * ODst. Since the service could have been translated by the first
- * rule, we use TSrv in OSrv */
+ * rule, we use TSrv in OSrv
+ */
         r = compiler->dbcopy->createNATRule();
         r->duplicate(rule);
         compiler->temp_ruleset->add(r);
@@ -414,9 +455,16 @@ bool NATCompiler_ipt::splitSDNATRule::processNext()
             }
         }
 
-        tdst=r->getTDst();
+        tdst = r->getTDst();
         tdst->clearChildren();
         tdst->setAnyElement();
+
+        if (tsrv_translates_dst_port)
+        {
+            tsrv = r->getTSrv();
+            tsrv->clearChildren();
+            tsrv->setAnyElement();
+        }
 
         tmp_queue.push_back(r);
     }
