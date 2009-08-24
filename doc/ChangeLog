@@ -1,3 +1,10 @@
+2009-08-24  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler_cluster.cpp (Compiler::processFailoverGroup): cluster
+	interface may not need an ip address, but this depends on the
+	failover protocol. Adding check for when the address is missing.
+	See #337
+
 2009-08-03  vadim  <vadim@vk.crocodile.org>
 
 	* Compiler.cpp (Compiler::_expandInterface): See #284:

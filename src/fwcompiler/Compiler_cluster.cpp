@@ -131,9 +131,14 @@ void Compiler::processFailoverGroup(Cluster *cluster,
     if (iface->isRegular())
     {
         const Address *iface_addr = iface->getAddressObject();
-        // even regular interface may have no address if user forgot to add one
-        if (iface_addr && !isReachable(cluster_if->getAddressObject(),
-                                       iface_addr->getAddressPtr()))
+        // even regular interface may have no address if user forgot
+        // to add one, so check if iface_addr == NULL
+        // Also check if cluster interface has ip address, it does not
+        // always need one.
+
+        if (iface_addr && cluster_if->getAddressObject() &&
+            !isReachable(cluster_if->getAddressObject(), iface_addr->getAddressPtr())
+        )
         {
             cerr << " Warning: "
                  << cluster_if_name
