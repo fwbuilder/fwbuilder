@@ -47,14 +47,13 @@ using namespace fwcompiler;
 int Compiler::checkCluster(Cluster* cluster)
 {
     assert(cluster != NULL);
-
-    bool incorrect_cluster = false;
     FWObjectTypedChildIterator cluster_ifaces = cluster->findByType(Interface::TYPENAME);
     if (cluster_ifaces == cluster_ifaces.end())
     {
         /* No configured cluster interface present */
-        cerr << "No configured cluster interface present." << endl;
-        incorrect_cluster = true;
+        ostringstream str;
+        str << "The cluster has no interfaces." << endl;
+        abort(str.str());
     }
 
     for (; cluster_ifaces != cluster_ifaces.end(); ++cluster_ifaces)
@@ -67,24 +66,22 @@ int Compiler::checkCluster(Cluster* cluster)
         {
             if (iface_name == Interface::cast(*other_ifaces)->getName())
             {
-                cout << " Warning: found duplicate cluster interface name " << iface_name << "." << endl;
-                incorrect_cluster = true;
+                ostringstream str;
+                str << "Found duplicate cluster interface name " << iface_name << "." << endl;
+                abort(str.str());
             }
             const InetAddr *other_iface_address = Interface::cast(*other_ifaces)->getAddressPtr();
             if (other_iface_address==NULL) continue; // cluster interface with no address
             if (*iface_address == *other_iface_address)
             {
-                cout << " Warning: found duplicate cluster interface address ";
-                cout << iface_address->toString() << "." << endl;
-                incorrect_cluster = true;
+                ostringstream str;
+                str << "Found duplicate cluster interface address ";
+                str << iface_address->toString() << "." << endl;
+                abort(str.str());
             }
         }
     }
-    if (incorrect_cluster)
-    {
-        cerr << "Incorrect cluster configuration found." << endl;
-        exit(1);
-    }
+
     return 0;
 }
 
