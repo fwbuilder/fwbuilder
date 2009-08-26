@@ -186,24 +186,30 @@ bool NATCompiler::classifyNATRule::processNext()
     bool tsrv_translates_src_port = false;
     bool tsrv_translates_dst_port = false;
 
-    if (TCPUDPService::cast(osrv))
+    if (TCPUDPService::cast(osrv) && TCPUDPService::cast(tsrv))
     {
         TCPUDPService *tu_osrv = TCPUDPService::cast(osrv);
-
-        osrv_defines_src_port =                                         \
-            (tu_osrv->getSrcRangeStart() != 0 && tu_osrv->getDstRangeStart() == 0);
-        osrv_defines_dst_port =                                         \
-            (tu_osrv->getSrcRangeStart() == 0 && tu_osrv->getDstRangeStart() != 0);
-    }
-
-    if (TCPUDPService::cast(tsrv))
-    {
         TCPUDPService *tu_tsrv = TCPUDPService::cast(tsrv);
 
-        tsrv_translates_src_port =                                      \
+        osrv_defines_src_port = 
+            (tu_osrv->getSrcRangeStart() != 0 && tu_osrv->getDstRangeStart() == 0);
+        osrv_defines_dst_port = 
+            (tu_osrv->getSrcRangeStart() == 0 && tu_osrv->getDstRangeStart() != 0);
+
+        tsrv_translates_src_port =
             (tu_tsrv->getSrcRangeStart() != 0 && tu_tsrv->getDstRangeStart() == 0);
-        tsrv_translates_dst_port =                                      \
+        tsrv_translates_dst_port =
             (tu_tsrv->getSrcRangeStart() == 0 && tu_tsrv->getDstRangeStart() != 0);
+
+        if (tsrv_translates_dst_port &&
+            tu_osrv->getDstRangeStart() == tu_tsrv->getDstRangeStart() &&
+            tu_osrv->getDstRangeEnd() == tu_tsrv->getDstRangeEnd())
+            tsrv_translates_dst_port = false;  // osrv and tsrv define the same ports
+
+        if (tsrv_translates_src_port &&
+            tu_osrv->getSrcRangeStart() == tu_tsrv->getSrcRangeStart() &&
+            tu_osrv->getSrcRangeEnd() == tu_tsrv->getSrcRangeEnd())
+            tsrv_translates_src_port = false;  // osrv and tsrv define the same ports
     }
 
     if (!osrv->isAny() && !tsrv->isAny() && !( *osrv == *tsrv ) )  // have operator==, but do not have operator!=
@@ -217,6 +223,24 @@ bool NATCompiler::classifyNATRule::processNext()
 //	return true;
     }
 
+
+/*
+ * SDNAT rule is rather special. We should split it onto two normal
+ * rules, one SNAT and another DNAT and run this rule processor again
+ * for each. This algorithm should be implemented for each platform
+ * separately.  Platforms where it does not seem possible to implement
+ * at all should catch SDNAT rules and abort in their own
+ * verifyNATRule processor.
+ */
+    if (
+        ( ! tsrc->isAny() && ! tdst->isAny() ) ||
+        ( ! tsrc->isAny() && tsrv_translates_dst_port) ||
+        ( ! tdst->isAny() && tsrv_translates_src_port)
+    )
+    {
+        rule->setRuleType(NATRule::SDNAT);
+	return true;
+    }
 
     if (
         (! tsrc->isAny() && tdst->isAny()) ||
@@ -263,24 +287,6 @@ bool NATCompiler::classifyNATRule::processNext()
 //            else                                             rule->setRuleType(NATRule::DNAT);
             }
         }
-	return true;
-    }
-
-/*
- * SDNAT rule is rather special. We should split it onto two normal
- * rules, one SNAT and another DNAT and run this rule processor again
- * for each. This algorithm should be implemented for each platform
- * separately.  Platforms where it does not seem possible to implement
- * at all should catch SDNAT rules and abort in their own
- * verifyNATRule processor.
- */
-    if (
-        ( ! tsrc->isAny() && ! tdst->isAny() ) ||
-        ( ! tsrc->isAny() && tsrv_translates_dst_port) ||
-        ( ! tdst->isAny() && tsrv_translates_src_port)
-    )
-    {
-        rule->setRuleType(NATRule::SDNAT);
 	return true;
     }
 

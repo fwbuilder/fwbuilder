@@ -5,6 +5,13 @@
 	failover protocol. Adding check for when the address is missing.
 	See #337
 
+2009-08-12  vadim  <vadim@vk.crocodile.org>
+
+	* NATCompiler.cpp (classifyNATRule::processNext): fixed bug
+	#2836321: "SNAT rule that changes Trans Src and Trans Port does
+	not work". Dual translation rule that changes source address and
+	destination port was not supported.
+
 2009-08-03  vadim  <vadim@vk.crocodile.org>
 
 	* Compiler.cpp (Compiler::_expandInterface): See #284:
