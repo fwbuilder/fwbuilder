@@ -123,11 +123,6 @@ protected:
                                     int anti_loop_id);
     
     /**
-     * deletes all objects in the tree regardless of their usage counter
-     */
-    void deleteChildren();
-    
-    /**
      * Finds direct child of this object with given name.
      */
     FWObject* _find(const std::string& name) const;

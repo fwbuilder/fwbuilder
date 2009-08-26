@@ -229,7 +229,7 @@ FWObject::FWObject(const FWObjectDatabase *root, bool )
 FWObject::~FWObject() 
 {
     init = true;  // ignore read-only
-    deleteChildren();
+    destroyChildren();
     data.clear();
 }
 
@@ -913,6 +913,10 @@ bool FWObject::validateChild(FWObject *obj)
     return true;
 }
 
+/*
+ * this method deletes all children recursively regardless of their
+ * usage counter. We call this method form destructor.
+ */
 void FWObject::destroyChildren()
 {
     FWObjectDatabase *dbr = getRoot();
@@ -922,7 +926,7 @@ void FWObject::destroyChildren()
         if (o && o->size())
         {
             o->destroyChildren();
-            if (dbr) dbr->removeFromIndex( o->getId() );
+            if (dbr && !dbr->init) dbr->removeFromIndex( o->getId() );
             delete o;
         }
     }
@@ -969,26 +973,6 @@ void FWObject::clearChildren(bool recursive)
     }
     clear();
     setDirty(true);
-}
-
-/*
- * this method deletes all children recursively regardless of their
- * usage counter. We call this method form destructor.
- */
-void FWObject::deleteChildren()
-{
-    FWObjectDatabase *dbr = getRoot();
-    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m)
-    {
-        FWObject *o = *m;
-        if (o && o->size())
-        {
-            o->deleteChildren();
-            if (dbr && !dbr->init) dbr->removeFromIndex(o->getId());
-            delete o;
-        }
-    }
-    clear();
 }
 
 int FWObject::getChildrenCount()

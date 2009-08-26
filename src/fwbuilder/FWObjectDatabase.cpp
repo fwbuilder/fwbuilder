@@ -266,7 +266,7 @@ void FWObjectDatabase::load(const string &f,
         init = true;
 
 //        clearChildren();
-        deleteChildren();
+        destroyChildren();
         clearIndex();
 
         fromXML(root);
