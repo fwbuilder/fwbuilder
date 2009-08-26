@@ -918,10 +918,13 @@ void FWObject::destroyChildren()
     FWObjectDatabase *dbr = getRoot();
     for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
     {
-        FWObject *o=*m;
-        o->destroyChildren();
-        if (dbr) dbr->removeFromIndex( o->getId() );
-        delete o;
+        FWObject *o = *m;
+        if (o && o->size())
+        {
+            o->destroyChildren();
+            if (dbr) dbr->removeFromIndex( o->getId() );
+            delete o;
+        }
     }
     clear();
 }
@@ -975,13 +978,15 @@ void FWObject::clearChildren(bool recursive)
 void FWObject::deleteChildren()
 {
     FWObjectDatabase *dbr = getRoot();
-
-    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
+    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m)
     {
-        FWObject *o=*m;
-        o->deleteChildren();
-        if (dbr && !dbr->init) dbr->removeFromIndex( o->getId() );
-        delete o;
+        FWObject *o = *m;
+        if (o && o->size())
+        {
+            o->deleteChildren();
+            if (dbr && !dbr->init) dbr->removeFromIndex(o->getId());
+            delete o;
+        }
     }
     clear();
 }
