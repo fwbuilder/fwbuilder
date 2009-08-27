@@ -95,7 +95,7 @@ void Compiler::epilog()
     exit(1);
 }
 
-int    Compiler::getCompiledScriptLength()
+int Compiler::getCompiledScriptLength()
 {
     return int(output.tellp());
 }
@@ -136,12 +136,11 @@ string Compiler::getErrors(const string &comment_sep)
     return ostr.str();
 }
 
-void Compiler::_init(FWObjectDatabase *_db, const string &fwobjectname)
+void Compiler::_init(FWObjectDatabase *_db, Firewall *_fw)
 { 
     initialized = false;
     _cntr_ = 1; 
 
-    fw = NULL; 
     temp_ruleset = NULL; 
     combined_ruleset = NULL;
 
@@ -149,20 +148,19 @@ void Compiler::_init(FWObjectDatabase *_db, const string &fwobjectname)
     debug_rule = -1;
     rule_debug_on = false;
     verbose = true;
+    single_rule_mode = false;
+    single_rule_ruleset_name = "";
+    single_rule_position = -1;
+
+    assert(_fw->getRoot() == _db);
+
+    string fw_str_id = FWObjectDatabase::getStringId(_fw->getId());
     
     dbcopy = new FWObjectDatabase(*_db);  // copies entire tree
-
-    fw = dbcopy->findFirewallByName(fwobjectname);
-    if (fw==NULL)
-    {
-	cerr << "Firewall object '" << fwobjectname << "' not found \n";
-	exit(1);
-    }
-
+    fw = Firewall::cast(dbcopy->findInIndex(FWObjectDatabase::getIntId(fw_str_id)));
 }
 
-Compiler::Compiler(FWObjectDatabase *_db, 
-		   const string &fwobjectname, bool ipv6_policy)
+Compiler::Compiler(FWObjectDatabase *_db, Firewall *fw, bool ipv6_policy)
 {
     source_ruleset = NULL;
     ruleSetName = "";
@@ -170,11 +168,10 @@ Compiler::Compiler(FWObjectDatabase *_db,
     osconfigurator = NULL;
     countIPv6Rules = 0;
     ipv6 = ipv6_policy;
-    _init(_db,fwobjectname);
+    _init(_db, fw);
 }
 
-Compiler::Compiler(FWObjectDatabase *_db, 
-		   const string &fwobjectname, bool ipv6_policy,
+Compiler::Compiler(FWObjectDatabase *_db, Firewall *fw, bool ipv6_policy,
 		   OSConfigurator *_oscnf)
 {
     source_ruleset = NULL;
@@ -183,7 +180,7 @@ Compiler::Compiler(FWObjectDatabase *_db,
     osconfigurator = _oscnf;
     countIPv6Rules = 0;
     ipv6 = ipv6_policy;
-    _init(_db,fwobjectname);
+    _init(_db, fw);
 }
 
 // this constructor is used by class Preprocessor, it does not call _init
@@ -204,6 +201,22 @@ Compiler::Compiler(FWObjectDatabase*, bool ipv6_policy)
     debug_rule = -1;
     rule_debug_on = false;
     verbose = true;
+    single_rule_mode = false;
+}
+
+void Compiler::setSingleRuleCompileMode(const string &rule_id)
+{
+    if (!rule_id.empty())
+    {
+        Rule *rule = Rule::cast(
+            dbcopy->findInIndex(FWObjectDatabase::getIntId(rule_id)));
+        if (rule)
+        {
+            single_rule_mode = true;
+            single_rule_position = rule->getPosition();
+            single_rule_ruleset_name = rule->getParent()->getName();
+        }
+    }
 }
 
 string Compiler::createRuleLabel(const std::string &prefix,
@@ -547,8 +560,6 @@ void Compiler::normalizePortRange(int &rs,int &re)
     if (rs!=0 && re==0) re=rs;
 }
 
-
-
 void Compiler::debugRule()
 {
     for (FWObject::iterator i=combined_ruleset->begin();
@@ -671,12 +682,13 @@ bool Compiler::Debug::processNext()
 
     if (compiler->rule_debug_on)
     {
-        string n=prev_processor->getName();
+        string n = prev_processor->getName();
         cout << endl << flush;
         cout << "--- "  << n << " " << setw(74-n.length()) << setfill('-') << "-" << flush;
 
-        for (std::deque<Rule*>::iterator i=tmp_queue.begin(); i!=tmp_queue.end(); ++i) {
-            Rule *rule=Rule::cast(*i);
+        for (std::deque<Rule*>::iterator i=tmp_queue.begin(); i!=tmp_queue.end(); ++i)
+        {
+            Rule *rule = Rule::cast(*i);
             if (compiler->rule_debug_on && rule->getPosition()==compiler->debug_rule )
             {
                 cout << compiler->debugPrintRule(rule) << flush;
@@ -684,6 +696,26 @@ bool Compiler::Debug::processNext()
             }
         }
     }
+    return true;
+}
+
+bool Compiler::singleRuleFilter::processNext()
+{
+    assert(compiler!=NULL);
+    assert(prev_processor!=NULL);
+
+    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+
+    if (!compiler->single_rule_mode)
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
+
+    if (compiler->single_rule_ruleset_name == compiler->ruleSetName &&
+        rule->getPosition() == compiler->single_rule_position)
+        tmp_queue.push_back(rule);
+
     return true;
 }
 

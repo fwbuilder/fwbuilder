@@ -126,8 +126,7 @@ namespace fwcompiler {
 
     class Compiler {
 
-        void _init(libfwbuilder::FWObjectDatabase *_db,
-                   const std::string &fwname);
+        void _init(libfwbuilder::FWObjectDatabase *_db, libfwbuilder::Firewall *fw);
 
         virtual void _expand_group_recursive(libfwbuilder::FWObject *o,
 				     std::list<libfwbuilder::FWObject*> &ol);
@@ -217,47 +216,35 @@ protected:
         int                                     fw_id;
         libfwbuilder::FWOptions                *fwopt;
 
-        /* Methods added to support clusters */
-        virtual int checkCluster(libfwbuilder::Cluster* cluster);
-        void processFailoverGroup(libfwbuilder::Cluster *cluster,
-                                  libfwbuilder::Firewall *fw,
-                                  libfwbuilder::FailoverClusterGroup *cluster_group,
-                                  libfwbuilder::Interface *iface);
-        void processStateSyncGroup(libfwbuilder::Cluster *cluster,
-                                   libfwbuilder::Firewall *fw,
-                                   libfwbuilder::StateSyncClusterGroup *cluster_group,
-                                   libfwbuilder::Interface *iface);
-
 	public:
 
-	int                                debug;
-	int                                debug_rule;
-        bool                               rule_debug_on;
-	bool                               verbose;
+	int  debug;
+	int  debug_rule;
+        bool rule_debug_on;
+	bool verbose;
+        bool test_mode;
+        bool single_rule_mode;
+        std::string single_rule_ruleset_name;
+        int single_rule_position;
 
-	fwcompiler::OSConfigurator        *osconfigurator;
-	libfwbuilder::FWObjectDatabase    *dbcopy;
-	libfwbuilder::Firewall            *fw;
+	fwcompiler::OSConfigurator *osconfigurator;
+	libfwbuilder::FWObjectDatabase *dbcopy;
+	libfwbuilder::Firewall *fw;
 
-        std::string                        ruleSetName;;
+        std::string ruleSetName;;
         
-	libfwbuilder::RuleSet             *source_ruleset;
-	libfwbuilder::RuleSet             *combined_ruleset;
-	libfwbuilder::RuleSet             *temp_ruleset;
+	libfwbuilder::RuleSet *source_ruleset;
+	libfwbuilder::RuleSet *combined_ruleset;
+	libfwbuilder::RuleSet *temp_ruleset;
 
-        libfwbuilder::Group               *temp;
+        libfwbuilder::Group *temp;
 
-	std::stringstream                  output;
-	std::stringstream                  errors_buffer;
+	std::stringstream output;
+	std::stringstream errors_buffer;
 
-        bool                               test_mode;
 
         void registerIPv6Rule() { countIPv6Rules++; }
         bool haveIPv6Rules() { return countIPv6Rules > 0; }
-
-        // checks if address @addr belongs to the subnet defined by @subnet
-        static bool isReachable(const libfwbuilder::Address* const subnet,
-                                const libfwbuilder::InetAddr* const addr);
 
         /**
          * returns first object referenced by given rule
@@ -265,10 +252,10 @@ protected:
          * reference. Uses cache, therefore is faster than
          * RuleElement::getFirst(true)
          */
-        libfwbuilder::Address*   getFirstSrc(libfwbuilder::PolicyRule *rule);
-        libfwbuilder::Address*   getFirstDst(libfwbuilder::PolicyRule *rule);
-        libfwbuilder::Service*   getFirstSrv(libfwbuilder::PolicyRule *rule);
-        libfwbuilder::Interval*  getFirstWhen(libfwbuilder::PolicyRule *rule);
+        libfwbuilder::Address* getFirstSrc(libfwbuilder::PolicyRule *rule);
+        libfwbuilder::Address* getFirstDst(libfwbuilder::PolicyRule *rule);
+        libfwbuilder::Service* getFirstSrv(libfwbuilder::PolicyRule *rule);
+        libfwbuilder::Interval* getFirstWhen(libfwbuilder::PolicyRule *rule);
         libfwbuilder::Interface* getFirstItf(libfwbuilder::PolicyRule *rule);
         
         libfwbuilder::Address* getFirstOSrc(libfwbuilder::NATRule *rule);
@@ -490,6 +477,16 @@ protected:
         };
 
 	/**
+         * this rule processor skips all rules except the one with ID
+         * set by call to setSingleRuleMode()
+	 */
+        class singleRuleFilter : public BasicRuleProcessor
+        {
+            public:
+            virtual bool processNext();
+        };
+
+	/**
 	 * prepare interface string
 	 */
         class convertInterfaceIdToStr : public BasicRuleProcessor
@@ -617,10 +614,10 @@ protected:
 	virtual ~Compiler();
 
 	Compiler(libfwbuilder::FWObjectDatabase *_db,
-		 const std::string &fwname, bool ipv6_policy);
+		 libfwbuilder::Firewall *fw, bool ipv6_policy);
 
 	Compiler(libfwbuilder::FWObjectDatabase *_db,
-		 const std::string &fwname, bool ipv6_policy,
+		 libfwbuilder::Firewall *fw, bool ipv6_policy,
 		 fwcompiler::OSConfigurator *_oscnf);
 
 	Compiler(libfwbuilder::FWObjectDatabase *_db, bool ipv6_policy);
@@ -629,6 +626,9 @@ protected:
 	void setDebugRule(int dr)  { debug_rule = dr; rule_debug_on = true; }
 	void setVerbose(bool v)    { verbose=v;      }
         void setTestMode()         { test_mode=true; }
+        void setSingleRuleCompileMode(const std::string &rule_id);
+        bool inSingleRuleCompileMode() { return single_rule_mode; }
+
         void setSourceRuleSet(libfwbuilder::RuleSet *rs) { source_ruleset = rs; }
         libfwbuilder::RuleSet* getSourceRuleSet() { return source_ruleset; }
 
@@ -668,15 +668,7 @@ protected:
 	 */
         void debugRule();
 
-        /* Methods added to support clusters */
-
-        virtual int populateClusterElements(libfwbuilder::Cluster *cluster,
-                                            libfwbuilder::Firewall *fw);
-  
-
     };
-
-
 }
 
 #endif

@@ -60,9 +60,9 @@ namespace fwcompiler {
 	public:
 
         NATCompiler(libfwbuilder::FWObjectDatabase *_db,
-		    const std::string &fwname, bool ipv6_policy,
+		    libfwbuilder::Firewall *fw, bool ipv6_policy,
 		    fwcompiler::OSConfigurator *_oscnf) :
-        Compiler(_db, fwname, ipv6_policy, _oscnf) {}
+        Compiler(_db, fw, ipv6_policy, _oscnf) {}
 
         virtual int prolog();
 

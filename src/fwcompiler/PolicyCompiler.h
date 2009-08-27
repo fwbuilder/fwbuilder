@@ -75,10 +75,10 @@ namespace fwcompiler {
 	public:
 
 	PolicyCompiler(libfwbuilder::FWObjectDatabase *_db,
-		       const std::string &fwname,
+		       libfwbuilder::Firewall *fw,
                        bool ipv6_policy,
 		       fwcompiler::OSConfigurator *_oscnf) :
-        Compiler(_db, fwname, ipv6_policy, _oscnf) {}
+        Compiler(_db, fw, ipv6_policy, _oscnf) {}
 
         /**
          * prints rule in some universal format (close to that visible
