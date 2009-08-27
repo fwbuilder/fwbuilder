@@ -521,7 +521,8 @@ bool PolicyCompiler_pf::SplitDirection::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    if (rule->getDirection()==PolicyRule::Both)
+    if (rule->getDirection()==PolicyRule::Both &&
+        rule->getAction()==PolicyRule::Route)
     {
 	PolicyRule *r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
@@ -1079,7 +1080,9 @@ void PolicyCompiler_pf::compile()
 	add( new fillDirection("determine directions"               ));
 
 // commented out for bug #2828602
-//	add( new SplitDirection("split rules with direction 'both'"  ));
+// ... and put back per #2844561
+// both bug reports/patches are by Tom Judge (tomjudge on sourceforge)
+	add( new SplitDirection("split rules with direction 'both'"  ));
 
         add( new addLoopbackForRedirect(
                  "add loopback to rules that permit redirected services" ) );

@@ -1,5 +1,10 @@
 2009-08-27  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_pf.cpp (SplitDirection::processNext): applied
+	patch per #2844561: "PF Compiler Direction Both Duplicate for
+	Route Action". Need to split the rule if direction is Both
+	and action is Route.
+
 	* newFirewallDialog.cpp (newFirewallDialog::templateSelected):
 	fixed bug #2844596: "Crash during newFirewallDialog". GUI crashed
 	if user clicked "next" in the new firewall dialog to open page
