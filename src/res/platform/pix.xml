@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<FWBuilderResources version="3.0.6-">
+<FWBuilderResources version="3.0.7-">
     <Target name="pix">
       <description>PIX</description>
       <compiler>fwb_pix</compiler>

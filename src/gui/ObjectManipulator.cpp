@@ -2571,7 +2571,14 @@ void ObjectManipulator::back()
 
 FWObject*  ObjectManipulator::getCurrentLib()
 {
-    return idxToLibs[ m_objectManipulator->libs->currentIndex() ];
+    int idx = m_objectManipulator->libs->currentIndex();
+    FWObject *lib = idxToLibs[idx];
+    if (fwbdebug)
+    {
+        qDebug("ObjectManipulator::getCurrentLib(): idx=%d  lib=%p", idx, lib);
+    }
+
+    return lib;
 }
 
 ObjectTreeView* ObjectManipulator::getCurrentObjectTree()
@@ -3165,6 +3172,9 @@ void ObjectManipulator::select()
     if (currentObj==NULL) return;
 
     if (fwbdebug) qDebug("currentObj=%s", currentObj->getName().c_str());
+
+    m_objectManipulator->libs->setCurrentIndex(
+        getIdxForLib(currentObj->getLibrary()));
 
     ObjectTreeViewItem *otvi = allItems[currentObj];
     if (otvi)

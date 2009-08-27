@@ -1,3 +1,12 @@
+2009-08-27  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::select): fixed bug
+	#2845667 "Crash after find object". When host object was found
+	using "Find object" function while searching by ip address,
+	clicking on the selected host in the tree caused crash.
+
+	* VERSION (LIBFWBUILDER_SOMAJOR): started 3.0.7
+
 2009-08-12  vadim  <vadim@vk.crocodile.org>
 
 	* NATCompiler_ipt.cpp (splitSDNATRule::processNext): fixed bug

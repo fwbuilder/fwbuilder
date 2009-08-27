@@ -1,2 +1,2 @@
-#define VERSION      "3.0.6"
+#define VERSION      "3.0.7"
 #define RELEASE_NUM  ""
