@@ -519,10 +519,15 @@ void newFirewallDialog::fillInterfaceSLList()
     }
 }
 
+/*
+ * this slot is connected to currentItemChanged signal of templateList
+ * As a side effect, this slot is called when we clear templateList.
+ */
 void newFirewallDialog::templateSelected(QListWidgetItem *itm)
 {
-    FWObject *o=templates[itm];
-    assert (o!=NULL);
+    if (templates.size()==0) return;
+    FWObject *o = templates[itm];
+    if (o==NULL) return;
 
     Firewall *fw = Firewall::cast(o);
 
