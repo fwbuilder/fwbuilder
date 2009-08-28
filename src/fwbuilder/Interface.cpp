@@ -245,6 +245,20 @@ FWOptions* Interface::getOptionsObject()
     return iface_opt;
 }
 
+FWOptions* Interface::getOptionsObjectConst() const
+{
+    FWOptions *iface_opt = FWOptions::cast(getFirstByType(InterfaceOptions::TYPENAME));
+    if (iface_opt == NULL)
+        cerr << "Interface "
+             << getName()
+             << " ("
+             << getPath()
+             << ") "
+             << " has no options object; late initialization failure"
+             << endl;
+    return iface_opt;
+}
+
 int  Interface::getSecurityLevel() const
 {
     return getInt("security_level") ;
@@ -292,10 +306,29 @@ bool  Interface::validateChild(FWObject *o)
             otype==FailoverClusterGroup::TYPENAME);
 }
 
+/*
+ * I get options obect directly instead of calling getOptionsObject()
+ * because that method tries to add options object if it is missing,
+ * which means @this can not be const.
+ */
 bool Interface::isBridgePort() const
 {
+    string my_type;
+    FWOptions *iface_opt = getOptionsObjectConst();
+    if (iface_opt) my_type = iface_opt->getStr("type");
     Interface *parent = Interface::cast(getParent());
-    return (parent && parent->getOptionsObject()->getStr("type") == "bridge");
+    return ((my_type.empty() || my_type == "ethernet") &&
+            parent && parent->getOptionsObject()->getStr("type") == "bridge");
+}
+
+bool Interface::isSlave() const
+{
+    string my_type;
+    FWOptions *iface_opt = getOptionsObjectConst();
+    if (iface_opt) my_type = iface_opt->getStr("type");
+    Interface *parent = Interface::cast(getParent());
+    return ((my_type.empty() || my_type == "ethernet") &&
+            parent && parent->getOptionsObject()->getStr("type") == "bonding");
 }
 
 bool Interface::isLoopback() const

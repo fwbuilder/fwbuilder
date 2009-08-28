@@ -79,6 +79,7 @@ public:
         virtual bool  validateChild(FWObject *o);
 
         virtual FWOptions* getOptionsObject();
+        virtual FWOptions* getOptionsObjectConst() const;
 
         DECLARE_FWOBJECT_SUBTYPE(Interface);
 
@@ -121,8 +122,17 @@ public:
          * interfaces manually by dragging them under the bridge
          * interface (typically br0) and setting the type
          * appropriately.
+         *
          */
-        bool isBridgePort() const ;
+        bool isBridgePort() const;
+
+        /**
+         * Check if this is a slave of bonding interface. Slave is an
+         * interfaces with type "ethernet" that is a child of an
+         * interface with type "bonding". Type is defined in the
+         * InterfaceOptions object. 
+         */
+        bool isSlave() const;
 
         /**
          * we often need to check if this is a regular interface
