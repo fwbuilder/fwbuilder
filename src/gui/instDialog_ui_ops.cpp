@@ -58,6 +58,9 @@
 #include <qfileinfo.h>
 #include <qtextstream.h>
 #include <QDateTime>
+#include <QTextBlockFormat>
+#include <QBrush>
+#include <QTextFormat>
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -223,36 +226,35 @@ void instDialog::storeInstallerOptions()
 
 void instDialog::summary()
 {
-    addToLog( "<hr>" + QObject::tr("<b>Summary:</b>\n") );
-    addToLog( QObject::tr("* firewall name : %1\n")
-              .arg(QString::fromUtf8(cnf.fwobj->getName().c_str())) );
-    addToLog( QObject::tr("* user name : %1\n")
-              .arg(cnf.user));
-    addToLog( QObject::tr("* management address : %1\n").arg(cnf.maddr) );
-    addToLog( QObject::tr("* platform : %1\n")
-              .arg(cnf.fwobj->getStr("platform").c_str())  );
-    addToLog( QObject::tr("* host OS : %1\n")
-              .arg(cnf.fwobj->getStr("host_OS").c_str()) );
-    addToLog( QObject::tr("* Loading configuration from file %1\n")
+    QStringList str;
+
+    str.append(QObject::tr("Summary:"));
+    str.append(QObject::tr("* firewall name : %1")
+               .arg(QString::fromUtf8(cnf.fwobj->getName().c_str())));
+    str.append(QObject::tr("* user name : %1").arg(cnf.user));
+    str.append(QObject::tr("* management address : %1").arg(cnf.maddr));
+    str.append(QObject::tr("* platform : %1")
+              .arg(cnf.fwobj->getStr("platform").c_str()));
+    str.append( QObject::tr("* host OS : %1")
+              .arg(cnf.fwobj->getStr("host_OS").c_str()));
+    str.append( QObject::tr("* Loading configuration from file %1")
               .arg(cnf.fwbfile));
 
     if (cnf.incremental)
-    {
-        addToLog( QObject::tr("* Incremental install\n"));
-    }
+        str.append(QObject::tr("* Incremental install"));
+
     if (cnf.save_diff && cnf.incremental)
-    {
-        addToLog(
-            QObject::tr("* Configuration diff will be saved in file %1\n").
-            arg(cnf.diff_file));
-    }
+        str.append(QObject::tr("* Configuration diff will be saved in file %1").
+                   arg(cnf.diff_file));
+
     if (cnf.dry_run)
-    {
-        addToLog(
-            QObject::tr(
-                "* Commands will not be executed on the firewall\n"));
-    }
-    addToLog("<hr>\n");
+        str.append(QObject::tr("* Commands will not be executed on the firewall"));
+
+    str.append("");
+
+    QTextCursor cursor = currentLog->textCursor();
+    cursor.insertBlock();
+    cursor.insertText(str.join("\n"), highlight_format);
 }
 
 void instDialog::fillCompileSelectList()
@@ -465,37 +467,39 @@ void instDialog::saveLog()
  */
 void instDialog::addToLog(const QString &line)
 {
-    if (fwbdebug) qDebug("instDialog::addToLog");
+    if (fwbdebug)
+        qDebug("instDialog::addToLog: '%s'", line.toLatin1().constData());
+
     if (line.isEmpty()) return;
 
     if (currentLog)
     {
-        QString txt = line;
-        txt.replace(QRegExp("(Error(:| )[^\n]*)"), 
-                    QString("<b><font color=\"red\">\\1</font></b>"));
-        txt.replace(QRegExp("(Abnormal[^\n]*)"), 
-                    QString("<b><font color=\"red\">\\1</font></b>"));
+        QString txt = line.trimmed();
+        QRegExp err1("(Error(:| )[^\n]*)");
+        QRegExp err2("(Abnormal[^\n]*)");
+        QRegExp err3("(fwb_[a-z]{1,}: \\S*\\.cpp:\\d{1,}: .*: Assertion .* failed.)");
 
-        // the following regex matches assertion errors
-        txt.replace(QRegExp("(fwb_[a-z]{1,}: \\S*\\.cpp:\\d{1,}: .*: Assertion .* failed.)"), 
-                    QString("<b><font color=\"red\">\\1</font></b>"));
+        QTextCharFormat format;
 
-        txt.replace('\r', "");
-        txt.replace('\n', "");
+        if (err1.indexIn(txt) != -1 ||
+            err2.indexIn(txt) != -1 ||
+            err3.indexIn(txt) != -1) format = error_format;
+        else format = normal_format;
 
         /* See sourceforge bug https://sourceforge.net/tracker/?func=detail&aid=2847263&group_id=5314&atid=1070394
          *
-         * insertHtml() becomes incrementally slow as the amount of text
-         * already in the QTextEditor increases. Compiling ~10 firewalls with
-         * few dozen rules each slows the output to a crawl on Windows.
-         * QTextEditor::append() seems to be much faster.
+         * QTextEditor::insertHtml() becomes incrementally slow as the
+         * amount of text already in the QTextEditor
+         * increases. Compiling ~10 firewalls with few dozen rules
+         * each slows the output to a crawl on Windows.  Keeping each
+         * line in a separate block makes it much faster.
          */
-        currentLog->append(txt);
-//        currentLog->insertHtml(txt);
-//        currentLog->ensureCursorVisible();
 
-        if (fwbdebug)
-            qDebug("instDialog::addToLog: '%s'", txt.toLatin1().constData());
+        QTextCursor cursor = currentLog->textCursor();
+        cursor.insertBlock();
+        cursor.insertText(txt, format);
+
+        currentLog->ensureCursorVisible();
 
         qApp->processEvents();
     }

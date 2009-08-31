@@ -105,6 +105,14 @@ instDialog::instDialog(QWidget* p,
     rejectDialogFlag = false;
 
     currentLog = m_dialog->procLogDisplay;
+    QTextCursor cursor(currentLog->textCursor());
+    normal_format = cursor.charFormat();
+    error_format = normal_format;
+    error_format.setForeground(QBrush(Qt::red));
+    error_format.setProperty(QTextFormat::FontWeight, 100);
+    highlight_format = normal_format;
+    highlight_format.setProperty(QTextFormat::FontWeight, 100);
+
     currentSaveButton = m_dialog->saveMCLogButton;
     currentSaveButton->setEnabled(true);
     currentStopButton = m_dialog->controlMCButton;

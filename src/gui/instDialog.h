@@ -55,6 +55,7 @@ class QCheckListItem;
 class QPushButton;
 class QProgressBar;
 class QStringList;
+class QTextCharFormat;
 //class QCheckTableItem;
 
 namespace libfwbuilder
@@ -116,6 +117,10 @@ class instDialog : public QDialog, public FakeWizard
     bool showSelectedFlag;
 
     QTextEdit *currentLog;
+    QTextCharFormat normal_format;
+    QTextCharFormat error_format;
+    QTextCharFormat highlight_format;
+    
     QPushButton *currentSaveButton;
     QPushButton *currentStopButton;
     QProgressBar *currentProgressBar;
