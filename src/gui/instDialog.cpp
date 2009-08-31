@@ -109,9 +109,11 @@ instDialog::instDialog(QWidget* p,
     normal_format = cursor.charFormat();
     error_format = normal_format;
     error_format.setForeground(QBrush(Qt::red));
-    error_format.setProperty(QTextFormat::FontWeight, 100);
+    // weight must be between 0 and 99. Qt 4.4.1 does not seem to mind if
+    // it is >99 (just caps it) but older versions assert
+    error_format.setProperty(QTextFormat::FontWeight, 99);
     highlight_format = normal_format;
-    highlight_format.setProperty(QTextFormat::FontWeight, 100);
+    highlight_format.setProperty(QTextFormat::FontWeight, 99);
 
     currentSaveButton = m_dialog->saveMCLogButton;
     currentSaveButton->setEnabled(true);
