@@ -471,15 +471,16 @@ void instDialog::addToLog(const QString &line)
     if (currentLog)
     {
         QString txt = line;
-        txt.replace(QRegExp("(Error(:| )[^\n]*)\n"), 
-                    QString("<b><font color=\"red\">\\1</font></b>\n"));
-        txt.replace(QRegExp("(Abnormal[^\n]*)\n"), 
-                    QString("<b><font color=\"red\">\\1</font></b>\n"));
+        txt.replace(QRegExp("(Error(:| )[^\n]*)"), 
+                    QString("<b><font color=\"red\">\\1</font></b>"));
+        txt.replace(QRegExp("(Abnormal[^\n]*)"), 
+                    QString("<b><font color=\"red\">\\1</font></b>"));
 
         // the following regex matches assertion errors
         txt.replace(QRegExp("(fwb_[a-z]{1,}: \\S*\\.cpp:\\d{1,}: .*: Assertion .* failed.)"), 
-                    QString("<b><font color=\"red\">\\1</font></b>\n"));
+                    QString("<b><font color=\"red\">\\1</font></b>"));
 
+        txt.replace('\r', "");
         txt.replace('\n', "");
 
         /* See sourceforge bug https://sourceforge.net/tracker/?func=detail&aid=2847263&group_id=5314&atid=1070394
@@ -492,6 +493,10 @@ void instDialog::addToLog(const QString &line)
         currentLog->append(txt);
 //        currentLog->insertHtml(txt);
 //        currentLog->ensureCursorVisible();
+
+        if (fwbdebug)
+            qDebug("instDialog::addToLog: '%s'", txt.toLatin1().constData());
+
         qApp->processEvents();
     }
 }
