@@ -480,9 +480,19 @@ void instDialog::addToLog(const QString &line)
         txt.replace(QRegExp("(fwb_[a-z]{1,}: \\S*\\.cpp:\\d{1,}: .*: Assertion .* failed.)"), 
                     QString("<b><font color=\"red\">\\1</font></b>\n"));
 
-        txt.replace('\n', "<br>\n");
-        currentLog->insertHtml( txt );
-        currentLog->ensureCursorVisible();
+        txt.replace('\n', "");
+
+        /* See sourceforge bug https://sourceforge.net/tracker/?func=detail&aid=2847263&group_id=5314&atid=1070394
+         *
+         * insertHtml() becomes incrementally slow as the amount of text
+         * already in the QTextEditor increases. Compiling ~10 firewalls with
+         * few dozen rules each slows the output to a crawl on Windows.
+         * QTextEditor::append() seems to be much faster.
+         */
+        currentLog->append(txt);
+//        currentLog->insertHtml(txt);
+//        currentLog->ensureCursorVisible();
+        qApp->processEvents();
     }
 }
 

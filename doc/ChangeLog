@@ -1,3 +1,10 @@
+2009-08-30  vadim  <vadim@vk.crocodile.org>
+
+	* instDialog_ui_ops.cpp (instDialog::addToLog): fixed bug #2847263
+	"Batch compiling incrementally slow". The time it took to add a
+	log line to the progress window in the "Compile" dialog slowed
+	down a lot as amount of text in QTextEditor increased.
+
 2009-08-27  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_pf.cpp (SplitDirection::processNext): applied
