@@ -1,3 +1,10 @@
+2009-09-05  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printDstService):
+	fixed bug (no #): policy compiler for Cisco IOS ACL did not add
+	icmp type to the generated ipv6 access-list statements for rules
+	that matched ICMPv6 services.
+
 2009-08-30  vadim  <vadim@vk.crocodile.org>
 
 	* instDialog_ui_ops.cpp (instDialog::addToLog): fixed bug #2847263

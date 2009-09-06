@@ -398,7 +398,7 @@ string PolicyCompiler_iosacl::PrintRule::_printDstService(Service *srv)
     if (TCPService::isA(srv) && srv->getBool("established"))
         str << "established ";
 
-    if (ICMPService::isA(srv) && srv->getInt("type")!=-1)
+    if ((ICMPService::isA(srv) || ICMP6Service::isA(srv)) && srv->getInt("type")!=-1)
 	    str << srv->getStr("type") << " ";
 
     if (CustomService::isA(srv)) 
