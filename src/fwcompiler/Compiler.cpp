@@ -119,7 +119,7 @@ string Compiler::getCompiledScript()
 
 bool Compiler::haveErrorsAndWarnings()
 {
-    return (int(output.tellp()) > 0);
+    return (int(errors_buffer.tellp()) > 0);
 }
 
 string Compiler::getErrors(const string &comment_sep)
