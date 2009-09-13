@@ -70,7 +70,7 @@ public:
 
 	virtual ~BaseCompiler() {};
 
-	BaseCompiler() {};
+	BaseCompiler() {test_mode = false;};
 
 	std::string getErrors(const std::string &comment_sep);
 	bool haveErrorsAndWarnings();
