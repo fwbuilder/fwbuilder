@@ -68,11 +68,6 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
-FWCompilerException::FWCompilerException(Rule *r,const string &err) : FWException(err)
-{
-    rule=r;
-}
-
 
 Compiler::~Compiler() {}
 
@@ -117,25 +112,6 @@ string Compiler::getCompiledScript()
     return res;
 }
 
-bool Compiler::haveErrorsAndWarnings()
-{
-    return (int(errors_buffer.tellp()) > 0);
-}
-
-string Compiler::getErrors(const string &comment_sep)
-{
-    ostringstream ostr;
-    istringstream istr(errors_buffer.str());
-    while (!istr.eof())
-    {
-        string tmpstr;
-        getline(istr, tmpstr);
-        ostr << comment_sep << tmpstr << endl;
-    }
-    errors_buffer.str("");
-    return ostr.str();
-}
-
 void Compiler::_init(FWObjectDatabase *_db, Firewall *_fw)
 { 
     initialized = false;
@@ -164,7 +140,6 @@ Compiler::Compiler(FWObjectDatabase *_db, Firewall *fw, bool ipv6_policy)
 {
     source_ruleset = NULL;
     ruleSetName = "";
-    test_mode = false;
     osconfigurator = NULL;
     countIPv6Rules = 0;
     ipv6 = ipv6_policy;
@@ -176,7 +151,6 @@ Compiler::Compiler(FWObjectDatabase *_db, Firewall *fw, bool ipv6_policy,
 {
     source_ruleset = NULL;
     ruleSetName = "";
-    test_mode = false;
     osconfigurator = _oscnf;
     countIPv6Rules = 0;
     ipv6 = ipv6_policy;
@@ -188,7 +162,6 @@ Compiler::Compiler(FWObjectDatabase*, bool ipv6_policy)
 {
     source_ruleset = NULL;
     ruleSetName = "";
-    test_mode = false;
     osconfigurator = NULL;
     countIPv6Rules = 0;
     ipv6 = ipv6_policy;
@@ -228,32 +201,6 @@ string Compiler::createRuleLabel(const std::string &prefix,
     str << rule_num << " ";
     str << "(" << txt << ")";
     return str.str();
-}
-
-void Compiler::abort(const string &errstr) throw(FWException)
-{
-    if (test_mode)
-        error(errstr);
-    else
-        throw FWException(errstr);
-}
-
-void Compiler::error(const string &errstr)
-{
-    cout << flush;
-    cerr << "Error (" << myPlatformName() << "): ";
-    cerr << errstr << endl;
-    errors_buffer << "Error (" << myPlatformName() << "): ";
-    errors_buffer << errstr << endl;
-}
-
-void Compiler::warning(const string &warnstr)
-{
-    cout << flush;
-    cerr << "Warning (" << myPlatformName() << "): ";
-    cerr << warnstr << endl;
-    errors_buffer << "Warning (" << myPlatformName() << "): ";
-    errors_buffer << warnstr << endl;
 }
 
 string Compiler::getUniqueRuleLabel()

@@ -29,6 +29,7 @@
 #include <fwbuilder/libfwbuilder-config.h>
 #include "fwbuilder/FWException.h"
 
+#include "fwcompiler/BaseCompiler.h"
 #include "fwcompiler/RuleProcessor.h"
 
 #include <list>
@@ -69,13 +70,6 @@ namespace libfwbuilder {
 namespace fwcompiler {
 
     class OSConfigurator;
-
-    class FWCompilerException : public libfwbuilder::FWException {
-	libfwbuilder::Rule *rule;
-	public:
-	FWCompilerException(libfwbuilder::Rule *r,const std::string &err);
-	libfwbuilder::Rule *getRule() const { return rule; }
-    };
 
 /* 
  * operations    (see Compiler_ops.cc)
@@ -124,7 +118,7 @@ namespace fwcompiler {
         libfwbuilder::Service *srv;
     };
 
-    class Compiler {
+    class Compiler : public BaseCompiler {
 
         void _init(libfwbuilder::FWObjectDatabase *_db, libfwbuilder::Firewall *fw);
 
@@ -222,7 +216,6 @@ protected:
 	int  debug_rule;
         bool rule_debug_on;
 	bool verbose;
-        bool test_mode;
         bool single_rule_mode;
         std::string single_rule_ruleset_name;
         int single_rule_position;
@@ -240,7 +233,6 @@ protected:
         libfwbuilder::Group *temp;
 
 	std::stringstream output;
-	std::stringstream errors_buffer;
 
 
         void registerIPv6Rule() { countIPv6Rules++; }
@@ -593,24 +585,6 @@ protected:
         libfwbuilder::FWObject* findAddressFor(
             const libfwbuilder::Address *o1, const libfwbuilder::Address *o2);
         
-
-        /**
-         * prints error message and aborts the program. If compiler is
-         * in testing mode (flag test_mode==true), then just prints
-         * the error message and returns.
-         */
-	void abort(const std::string &errstr) throw(libfwbuilder::FWException);
-
-        /**
-         * prints an error message and returns
-         */
-	void error(const std::string &warnstr);
-
-        /**
-         * prints warning message
-         */
-	void warning(const std::string &warnstr);
-
 	virtual ~Compiler();
 
 	Compiler(libfwbuilder::FWObjectDatabase *_db,
@@ -625,7 +599,6 @@ protected:
 	void setDebugLevel(int dl) { debug=dl;       }
 	void setDebugRule(int dr)  { debug_rule = dr; rule_debug_on = true; }
 	void setVerbose(bool v)    { verbose=v;      }
-        void setTestMode()         { test_mode=true; }
         void setSingleRuleCompileMode(const std::string &rule_id);
         bool inSingleRuleCompileMode() { return single_rule_mode; }
 
@@ -637,8 +610,6 @@ protected:
         
 	std::string getCompiledScript();
         int getCompiledScriptLength();
-	std::string getErrors(const std::string &comment_sep);
-	bool haveErrorsAndWarnings();
 
 	void expandGroupsInRuleElement(libfwbuilder::RuleElement *s);
 
