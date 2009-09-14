@@ -215,11 +215,11 @@ bool NATCompiler::classifyNATRule::processNext()
     if (!osrv->isAny() && !tsrv->isAny() && !( *osrv == *tsrv ) )  // have operator==, but do not have operator!=
     {
         if (osrv->getTypeName() != tsrv->getTypeName())
-            compiler->abort(compiler->stdErrorMessage(
+            compiler->abort(
                                 rule,
                                 "NAT rule can not change service types: " +
                                 osrv->getTypeName() + " to " +
-                                tsrv->getTypeName()));
+                                tsrv->getTypeName());
 
 //      rule->setRuleType(NATRule::DNAT);
 //	return true;
@@ -292,7 +292,7 @@ bool NATCompiler::classifyNATRule::processNext()
 	return true;
     }
 
-    compiler->abort(compiler->stdErrorMessage(rule, "Unsupported NAT rule"));
+    compiler->abort(rule, "Unsupported NAT rule");
     return false;
 }
 
@@ -386,8 +386,8 @@ bool NATCompiler::checkForUnnumbered::processNext()
          compiler->catchUnnumberedIfaceInRE( rule->getODst() ) ||
          compiler->catchUnnumberedIfaceInRE( rule->getTSrc() ) ||
          compiler->catchUnnumberedIfaceInRE( rule->getTDst() ) )
-        compiler->abort(compiler->stdErrorMessage(
-                            rule, "Can not use unnumbered interfaces in rules. "));
+        compiler->abort(
+                            rule, "Can not use unnumbered interfaces in rules. ");
 
     tmp_queue.push_back(rule);
     return true;
@@ -670,13 +670,13 @@ bool NATCompiler::MACFiltering::processNext()
     {
         if (last_rule_lbl!=lbl)
             compiler->warning(
-                compiler->stdErrorMessage(
-                    rule, "MAC address matching is not supported. One or several MAC addresses removed from Original Source "));
+                
+                    rule, "MAC address matching is not supported. One or several MAC addresses removed from Original Source ");
 
         if (osrc->empty() || osrc->isAny())
             compiler->abort(
-                compiler->stdErrorMessage(
-                    rule, "Original Source becomes 'Any' after all MAC addresses have been removed"));
+                
+                    rule, "Original Source becomes 'Any' after all MAC addresses have been removed");
 
         last_rule_lbl=lbl;
     }
@@ -686,13 +686,13 @@ bool NATCompiler::MACFiltering::processNext()
     {
         if (last_rule_lbl!=lbl)
             compiler->warning(
-                compiler->stdErrorMessage(
-                    rule, "MAC address matching is not supported. One or several MAC addresses removed from Original Destination "));
+                
+                    rule, "MAC address matching is not supported. One or several MAC addresses removed from Original Destination ");
 
         if (odst->empty() || odst->isAny())
             compiler->abort(
-                compiler->stdErrorMessage(
-                    rule, "Original Destination becomes 'Any' after all MAC addresses have been removed"));
+                
+                    rule, "Original Destination becomes 'Any' after all MAC addresses have been removed");
 
         last_rule_lbl=lbl;
     }

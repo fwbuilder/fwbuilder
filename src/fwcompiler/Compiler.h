@@ -599,10 +599,16 @@ protected:
         /**
          * overloaded methods: uses current firewall and ruleset objects
          */
-        std::string stdErrorMessage(libfwbuilder::FWObject *rule,
-                                    const std::string &errstr);
-        std::string stdErrorMessage(const std::string &errstr);
-        
+        virtual void abort(const std::string &errstr) throw(libfwbuilder::FWException);
+        virtual void abort(libfwbuilder::FWObject *rule, const std::string &errstr)
+            throw(libfwbuilder::FWException);
+
+        virtual void error(const std::string &errstr);
+        virtual void error(libfwbuilder::FWObject *rule, const std::string &errstr);
+
+        virtual void warning(const std::string &errstr);
+        virtual void warning(libfwbuilder::FWObject *rule, const std::string &errstr);
+
 	void setDebugLevel(int dl) { debug=dl;       }
 	void setDebugRule(int dr)  { debug_rule = dr; rule_debug_on = true; }
 	void setVerbose(bool v)    { verbose=v;      }

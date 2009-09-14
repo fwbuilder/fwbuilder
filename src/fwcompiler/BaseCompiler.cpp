@@ -95,30 +95,71 @@ string BaseCompiler::stdErrorMessage(FWObject *fw,
     return tmpstr.str();
 }
 
-void BaseCompiler::printError(const string &level, const string &errstr)
+string BaseCompiler::setLevel(const string &level, const string &errstr)
 {
     string str = errstr;
     while (str.at(str.length() - 1) == '\n') str = str.substr(0, str.length() - 1);
     size_t n = str.find(level_macro);
     if (n != string::npos) str.replace(n, level_macro.length(), level);
+    return str;
+}
+
+void BaseCompiler::message(const std::string &level,
+                           FWObject *fw,
+                           FWObject *ruleset,
+                           FWObject *rule,
+                           const string &errstr)
+{
+    string str = setLevel(level, stdErrorMessage(fw, ruleset, rule, errstr));
+    printError(str);
+    if (rule && Rule::cast(rule)) rule->setStr(".error_msg", str);
+}
+
+void BaseCompiler::printError(const string &errstr)
+{
     cout << flush;
-    cerr << str << endl;
-    errors_buffer << str << endl;
+    cerr << errstr << endl;
+    errors_buffer << errstr << endl;
 }
 
 void BaseCompiler::abort(const string &errstr) throw(FWException)
 {
-    printError("error", errstr);
+    printError(errstr);
+    if (!test_mode) throw FWException("Fatal error");
+}
+
+void BaseCompiler::abort(FWObject *fw,
+                         FWObject *ruleset,
+                         FWObject *rule,
+                         const string &errstr) throw(FWException)
+{
+    message("error", fw, ruleset, rule, errstr);
     if (!test_mode) throw FWException("Fatal error");
 }
 
 void BaseCompiler::error(const string &str)
 {
-    printError("error", str);
+    printError(str);
+}
+
+void BaseCompiler::error(FWObject *fw,
+                         FWObject *ruleset,
+                         FWObject *rule,
+                         const string &errstr)
+{
+    message("error", fw, ruleset, rule, errstr);
 }
 
 void BaseCompiler::warning(const string &str)
 {
-    printError("warning", str);
+    printError(str);
+}
+
+void BaseCompiler::warning(FWObject *fw,
+                           FWObject *ruleset,
+                           FWObject *rule,
+                           const string &errstr)
+{
+    message("warning", fw, ruleset, rule, errstr);
 }
 

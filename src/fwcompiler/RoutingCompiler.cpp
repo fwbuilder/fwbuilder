@@ -233,7 +233,7 @@ bool RoutingCompiler::emptyRDstAndRItf::processNext()
     {
         string msg;
         msg = "Gateway and interface are both empty in the rule";
-        compiler->abort(compiler->stdErrorMessage(rule, msg.c_str()));
+        compiler->abort(rule, msg.c_str());
     }
 
     return true;
@@ -255,7 +255,7 @@ bool RoutingCompiler::singleAdressInRGtw::processNext()
         msg = "Object \"" + o->getName() +
             "\" used as a gateway in the routing rule " +
             rule->getLabel() + " has multiple ip adresses";
-        compiler->abort(compiler->stdErrorMessage(rule, msg.c_str()));
+        compiler->abort(rule, msg.c_str());
     }
     return true;
 }
@@ -311,7 +311,7 @@ bool RoutingCompiler::validateNetwork::processNext()
         msg = "Object \"" + o->getName() +
             "\" used as destination in the routing rule " +
             rule->getLabel() + " has invalid netmask";
-        compiler->abort(compiler->stdErrorMessage(rule, msg.c_str()));
+        compiler->abort(rule, msg.c_str());
     }
     return true;
     
@@ -423,7 +423,7 @@ bool RoutingCompiler::reachableAddressInRGtw::processNext()
             "\" used as gateway in the routing rule " +
             rule->getLabel() +
             " is not reachable because it is not in any local network of the firewall";
-        compiler->abort(compiler->stdErrorMessage(rule, msg.c_str()));
+        compiler->abort(rule, msg.c_str());
     }
     return true;
 }
@@ -483,7 +483,7 @@ bool RoutingCompiler::contradictionRGtwAndRItf::processNext()
             rule->getLabel() +
             " is not in the same local network as interface " +
             oRItf->getName();
-        compiler->abort(compiler->stdErrorMessage(rule, msg.c_str()));
+        compiler->abort(rule, msg.c_str());
     }
 
     return true;
@@ -505,7 +505,7 @@ bool RoutingCompiler::rItfChildOfFw::processNext()
             "\" used as interface in the routing rule " +
             rule->getLabel() +
             " is not a child of the firewall the rule belongs to";
-        compiler->abort(compiler->stdErrorMessage(rule, msg.c_str()));
+        compiler->abort(rule, msg.c_str());
     }
     return true;
 }
@@ -529,10 +529,10 @@ bool RoutingCompiler::competingRules::processNext()
     string combiId = ostr.str();
     
     if( label == "") compiler->abort(
-        compiler->stdErrorMessage(
+        
             rule,         
             "Place 'createSortedDstIdsLabel()' before 'competingRules()' "
-            "in the rule processor chain"));
+            "in the rule processor chain");
     
     dest_it = rules_seen_so_far.find(label);
     if( dest_it != rules_seen_so_far.end()) {
@@ -557,7 +557,7 @@ bool RoutingCompiler::competingRules::processNext()
                     " and " + rule->getLabel() +
                     " are identical, skipping the second one. " +
                     "Delete one of them to avoid this warning";
-                compiler->warning(compiler->stdErrorMessage(rule,  msg.c_str()));
+                compiler->warning(rule,  msg.c_str());
             } else {
                 
                 // ... but different metric => what metric should I use? => abort
@@ -568,7 +568,7 @@ bool RoutingCompiler::competingRules::processNext()
                     " and " + rule->getLabel() +
                     " are identical except for the metric, " +
                     "please delete one of them";
-                compiler->abort(compiler->stdErrorMessage(rule,  msg.c_str()));
+                compiler->abort(rule,  msg.c_str());
             }
         
         } else
@@ -655,10 +655,10 @@ bool RoutingCompiler::classifyRoutingRules::processNext()
         
         if( label == "")
             compiler->abort(
-                compiler->stdErrorMessage(
+                
                     rule,
                     "Place 'createSortedDstIdsLabel()' right before "
-                    "'classifyRoutingRules()' in the rule processor chain"));
+                    "'classifyRoutingRules()' in the rule processor chain");
         
         dest_it = rules_seen_so_far.find(label);
         if( dest_it != rules_seen_so_far.end()) {

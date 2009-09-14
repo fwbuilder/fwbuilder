@@ -47,13 +47,6 @@ namespace fwcompiler {
 	std::stringstream errors_buffer;
         bool test_mode;
 
-        void printError(const std::string &level, const std::string &errstr);
-
-public:
-
-        void setTestMode() { test_mode = true; }
-        bool inTestMode() { return test_mode; }
-
         /**
          * assembles standard error message using format similar to
          * the error message format of gcc. Useful to prepare errors
@@ -64,22 +57,49 @@ public:
                                     libfwbuilder::FWObject *rule,
                                     const std::string &errstr);
 
+        std::string setLevel(const std::string &level, const std::string &errstr);
+
+        void printError(const std::string &errstr);
+
+        void message(const std::string &level,
+                     libfwbuilder::FWObject *fw,
+                     libfwbuilder::FWObject *ruleset,
+                     libfwbuilder::FWObject *rule,
+                     const std::string &errstr);
+
+public:
+
+        void setTestMode() { test_mode = true; }
+        bool inTestMode() { return test_mode; }
+
         /**
          * prints error message and aborts the program. If compiler is
          * in testing mode (flag test_mode==true), then just prints
          * the error message and returns.
          */
-	void abort(const std::string &errstr) throw(libfwbuilder::FWException);
+	virtual void abort(const std::string &errstr) throw(libfwbuilder::FWException);
+	virtual void abort(libfwbuilder::FWObject *fw,
+                           libfwbuilder::FWObject *ruleset,
+                           libfwbuilder::FWObject *rule,
+                           const std::string &errstr) throw(libfwbuilder::FWException);
 
         /**
          * prints an error message and returns
          */
-	void error(const std::string &warnstr);
+	virtual void error(const std::string &warnstr);
+	virtual void error(libfwbuilder::FWObject *fw,
+                           libfwbuilder::FWObject *ruleset,
+                           libfwbuilder::FWObject *rule,
+                           const std::string &warnstr);
 
         /**
          * prints warning message
          */
-	void warning(const std::string &warnstr);
+	virtual void warning(const std::string &warnstr);
+	virtual void warning(libfwbuilder::FWObject *fw,
+                             libfwbuilder::FWObject *ruleset,
+                             libfwbuilder::FWObject *rule,
+                             const std::string &warnstr);
 
 	virtual ~BaseCompiler() {};
 

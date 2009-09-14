@@ -91,15 +91,34 @@ void Compiler::epilog()
     exit(1);
 }
 
-string Compiler::stdErrorMessage(FWObject *rule,
-                                 const std::string &errstr)
+void Compiler::abort(const string &errstr) throw(FWException)
 {
-    return BaseCompiler::stdErrorMessage(fw, source_ruleset, rule, errstr);
+    BaseCompiler::abort(fw, source_ruleset, NULL, errstr);
 }
 
-string Compiler::stdErrorMessage(const std::string &errstr)
+void Compiler::abort(FWObject *rule, const string &errstr) throw(FWException)
 {
-    return BaseCompiler::stdErrorMessage(fw, source_ruleset, NULL, errstr);
+    BaseCompiler::abort(fw, source_ruleset, rule, errstr);
+}
+
+void Compiler::error(const string &errstr)
+{
+    BaseCompiler::error(fw, source_ruleset, NULL, errstr);
+}
+
+void Compiler::error(FWObject *rule, const string &errstr)
+{
+    BaseCompiler::error(fw, source_ruleset, rule, errstr);
+}
+
+void Compiler::warning(const string &errstr)
+{
+    BaseCompiler::warning(fw, source_ruleset, NULL, errstr);
+}
+
+void Compiler::warning(FWObject *rule, const string &errstr)
+{
+    BaseCompiler::warning(fw, source_ruleset, rule, errstr);
 }
 
 int Compiler::getCompiledScriptLength()
@@ -811,8 +830,8 @@ void  Compiler::recursiveGroupsInRE::isRecursiveGroup(int grid, FWObject *obj)
             if (o->getId()==grid || obj->getId()==o->getId())
             {
                 compiler->abort(
-                    compiler->stdErrorMessage(
-                        "Group '" + o->getName() + "' references itself recursively"));
+                    
+                        "Group '" + o->getName() + "' references itself recursively");
             }
             isRecursiveGroup(grid,o);
             isRecursiveGroup(o->getId(),o);
@@ -908,7 +927,7 @@ bool Compiler::emptyGroupsInRE::processNext()
                     << o->getName()
                     << "'";
                 re->removeRef(o);
-                compiler->warning(compiler->stdErrorMessage(rule, str.str()));
+                compiler->warning(rule, str.str());
             }
             if (re->isAny())
             {
@@ -921,7 +940,7 @@ bool Compiler::emptyGroupsInRE::processNext()
                     << "Dropping rule "
                     <<  rule->getLabel()
                     << " because option 'Ignore rules with empty groups' is in effect";
-                compiler->warning(compiler->stdErrorMessage(rule,  str.str()));
+                compiler->warning(rule,  str.str());
 
                 return true; // dropping this rule
             }
@@ -946,7 +965,7 @@ bool Compiler::emptyGroupsInRE::processNext()
                 << gr
                 << "'"
                 << " and option 'Ignore rules with empty groups' is off";
-            compiler->abort(compiler->stdErrorMessage(rule, str.str()));
+            compiler->abort(rule, str.str());
         }
     }
     tmp_queue.push_back(rule);
@@ -1150,7 +1169,7 @@ bool Compiler::catchUnnumberedIfaceInRE(RuleElement *re)
                 string("catchUnnumberedIfaceInRE: Can't find object ") +
                 string("in cache, ID=") +
                 FWObjectDatabase::getStringId(refo->getPointerId());
-            abort(stdErrorMessage(re->getParent(), errmsg));
+            abort(re->getParent(), errmsg);
         }
         err |= ((iface=Interface::cast(o))!=NULL &&
                 (iface->isUnnumbered() || iface->isBridgePort())
