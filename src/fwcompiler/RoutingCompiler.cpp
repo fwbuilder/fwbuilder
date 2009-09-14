@@ -232,9 +232,8 @@ bool RoutingCompiler::emptyRDstAndRItf::processNext()
          (FWReference::cast(gtwrel->front())->getPointer())->getName()=="Any")
     {
         string msg;
-        msg = "Gateway and interface are both empty in the rule " +
-            rule->getLabel();
-        compiler->abort( msg.c_str() );
+        msg = "Gateway and interface are both empty in the rule";
+        compiler->abort(compiler->stdErrorMessage(rule, msg.c_str()));
     }
 
     return true;
@@ -253,10 +252,10 @@ bool RoutingCompiler::singleAdressInRGtw::processNext()
     if( gtwrel->checkSingleIPAdress(o) == false)
     {       
         string msg;
-        msg = "The object \"" + o->getName() + "\" used as gateway in the routing rule "\
-            + rule->getLabel() + " has more than one interface resp. IP adress!";
-        compiler->abort( msg.c_str() );
-        
+        msg = "Object \"" + o->getName() +
+            "\" used as a gateway in the routing rule " +
+            rule->getLabel() + " has multiple ip adresses";
+        compiler->abort(compiler->stdErrorMessage(rule, msg.c_str()));
     }
     return true;
 }
@@ -309,10 +308,10 @@ bool RoutingCompiler::validateNetwork::processNext()
     if( checkValidNetwork(o) == false) {
     
         string msg;
-        msg = "The object \"" + o->getName() + "\" used as destination in the routing rule "\
-            + rule->getLabel() + " has an invalid netmask!";
-        compiler->abort( msg.c_str() );
-        
+        msg = "Object \"" + o->getName() +
+            "\" used as destination in the routing rule " +
+            rule->getLabel() + " has invalid netmask";
+        compiler->abort(compiler->stdErrorMessage(rule, msg.c_str()));
     }
     return true;
     
@@ -420,11 +419,11 @@ bool RoutingCompiler::reachableAddressInRGtw::processNext()
     if( checkReachableIPAddress(o) == false)
     {
         string msg;
-        msg = "The object \"" + o->getName() +
-            "\" used as gateway in the routing rule "\
-            + rule->getLabel() +
-            " is not reachable, since not in any local network of the firewall";
-        compiler->abort( msg.c_str() );
+        msg = "Object \"" + o->getName() +
+            "\" used as gateway in the routing rule " +
+            rule->getLabel() +
+            " is not reachable because it is not in any local network of the firewall";
+        compiler->abort(compiler->stdErrorMessage(rule, msg.c_str()));
     }
     return true;
 }
@@ -479,10 +478,12 @@ bool RoutingCompiler::contradictionRGtwAndRItf::processNext()
         }
 
         string msg;
-        msg = "The object \"" + oRGtw->getName() + "\" used as gateway in the routing rule "\
-            + rule->getLabel() + " is not in the same local network as the interface " + oRItf->getName() + "!";
-        compiler->abort( msg.c_str() );
-
+        msg = "Object \"" + oRGtw->getName() +
+            "\" used as gateway in the routing rule " +
+            rule->getLabel() +
+            " is not in the same local network as interface " +
+            oRItf->getName();
+        compiler->abort(compiler->stdErrorMessage(rule, msg.c_str()));
     }
 
     return true;
@@ -500,11 +501,11 @@ bool RoutingCompiler::rItfChildOfFw::processNext()
     if (!o->isChildOf(compiler->fw))
     {
         string msg;
-        msg = "The object \"" + o->getName() + 
+        msg = "Object \"" + o->getName() + 
             "\" used as interface in the routing rule " +
             rule->getLabel() +
             " is not a child of the firewall the rule belongs to";
-        compiler->abort( msg.c_str() );
+        compiler->abort(compiler->stdErrorMessage(rule, msg.c_str()));
     }
     return true;
 }
@@ -527,7 +528,11 @@ bool RoutingCompiler::competingRules::processNext()
     ostr << gtw->getId() << "_" << itf->getId();
     string combiId = ostr.str();
     
-    if( label == "") compiler->abort("Place 'createSortedDstIdsLabel()' before 'competingRules()' in the rule processor chain!");
+    if( label == "") compiler->abort(
+        compiler->stdErrorMessage(
+            rule,         
+            "Place 'createSortedDstIdsLabel()' before 'competingRules()' "
+            "in the rule processor chain"));
     
     dest_it = rules_seen_so_far.find(label);
     if( dest_it != rules_seen_so_far.end()) {
@@ -536,9 +541,10 @@ bool RoutingCompiler::competingRules::processNext()
         ///std::cout << "NO NEW DEST" << std::endl;
         
         gtwitf_it = dest_it->second.find(combiId);
-        if( gtwitf_it != dest_it->second.end() ) {
-            
-            // ... this gateway and interface combination were already seen for this destination
+        if( gtwitf_it != dest_it->second.end() )
+        {
+            // ... this gateway and interface combination were already
+            // seen for this destination
             ///std::cout << "NO NEW GTWITF" << std::endl;
             
             if( gtwitf_it->second.first == metric) {
@@ -547,40 +553,44 @@ bool RoutingCompiler::competingRules::processNext()
                 ///std::cout << "SAME METRIC" << std::endl;
                 
                 string msg;
-                msg = "The routing rules " + gtwitf_it->second.second +
+                msg = "Routing rules " + gtwitf_it->second.second +
                     " and " + rule->getLabel() +
-                    " are identical, skipping the second. " +
-                    "Please delete one of them to avoid this warning!";
-                compiler->warning( msg.c_str() );
-            
+                    " are identical, skipping the second one. " +
+                    "Delete one of them to avoid this warning";
+                compiler->warning(compiler->stdErrorMessage(rule,  msg.c_str()));
             } else {
                 
                 // ... but different metric => what metric should I use? => abort
                 ///std::cout << "DIFFERENT METRIC" << std::endl;
                 
                 string msg;
-                msg = "The routing rules " + gtwitf_it->second.second +
+                msg = "Routing rules " + gtwitf_it->second.second +
                     " and " + rule->getLabel() +
                     " are identical except for the metric, " +
-                    "please delete one of them!";
-                compiler->abort( msg.c_str() );
+                    "please delete one of them";
+                compiler->abort(compiler->stdErrorMessage(rule,  msg.c_str()));
             }
         
-        } else {
-
-            // ... this gateway and interface combination is new for this destination
+        } else
+        {
+            // ... this gateway and interface combination is new for
+            // this destination
             ///std::cout << "NEW GTWITF" << std::endl;///
             
-            if(false) {
+            if(false)
+            {
                 // TODO_lowPrio: if ( !compiler->fw->getOptionsObject()->getBool ("equal_cost_multi_path") ) ...If multipath is turned off, perform this check.
                 //               iterate all gtwitf combis in the map dest_it->second and search for the current metric
                 
                 // ... but has the same metric => what route should I use for this destination? => abort
                     
                 string msg;
-                msg = "The routing rules " + gtwitf_it->second.second + " and " + rule->getLabel() + " have the same destination,\
-                    \na different gateway and interface combination, but the same metric.\
-                    \nPlease set the metrics to different values or enable ECMP (Equal Cost MultiPath) routing!";
+                msg = "Routing rules " + gtwitf_it->second.second + " and " +
+                    rule->getLabel() +
+                    " have the same destination and same metric,"
+                    "but different gateway and interface combination. "
+                    "Set the metrics to different values or "
+                    "enable ECMP (Equal Cost MultiPath) routing";
                 compiler->abort( msg.c_str() );
             
             } else {
@@ -626,8 +636,8 @@ bool RoutingCompiler::classifyRoutingRules::processNext()
     if (tmp_queue.size()==0) return false;
     
     
-    for (std::deque<libfwbuilder::Rule *>::iterator tmp_queue_it=tmp_queue.begin(); tmp_queue_it!=tmp_queue.end(); ++tmp_queue_it) {
-        
+    for (std::deque<libfwbuilder::Rule *>::iterator tmp_queue_it=tmp_queue.begin(); tmp_queue_it!=tmp_queue.end(); ++tmp_queue_it)
+    {
         RoutingRule *rule = RoutingRule::cast( *tmp_queue_it);
         rule->setRuleType( RoutingRule::SinglePath);
         
@@ -643,7 +653,12 @@ bool RoutingCompiler::classifyRoutingRules::processNext()
         ostr << gtw->getId() << "_" << itf->getId();
         string combiId = ostr.str();
         
-        if( label == "") compiler->abort("Place 'createSortedDstIdsLabel()' right before 'classifyRoutingRules()' in the rule processor chain!");
+        if( label == "")
+            compiler->abort(
+                compiler->stdErrorMessage(
+                    rule,
+                    "Place 'createSortedDstIdsLabel()' right before "
+                    "'classifyRoutingRules()' in the rule processor chain"));
         
         dest_it = rules_seen_so_far.find(label);
         if( dest_it != rules_seen_so_far.end()) {

@@ -63,7 +63,7 @@ public:
                                     libfwbuilder::FWObject *ruleset,
                                     libfwbuilder::FWObject *rule,
                                     const std::string &errstr);
-        
+
         /**
          * prints error message and aborts the program. If compiler is
          * in testing mode (flag test_mode==true), then just prints

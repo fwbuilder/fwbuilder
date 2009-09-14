@@ -45,6 +45,7 @@
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Rule.h"
+#include "fwbuilder/RuleSet.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
@@ -88,6 +89,17 @@ void Compiler::epilog()
 {
     cerr << "Compiler::epilog must be overloaded\n";
     exit(1);
+}
+
+string Compiler::stdErrorMessage(FWObject *rule,
+                                 const std::string &errstr)
+{
+    return BaseCompiler::stdErrorMessage(fw, source_ruleset, rule, errstr);
+}
+
+string Compiler::stdErrorMessage(const std::string &errstr)
+{
+    return BaseCompiler::stdErrorMessage(fw, source_ruleset, NULL, errstr);
 }
 
 int Compiler::getCompiledScriptLength()
@@ -798,7 +810,9 @@ void  Compiler::recursiveGroupsInRE::isRecursiveGroup(int grid, FWObject *obj)
         {
             if (o->getId()==grid || obj->getId()==o->getId())
             {
-                compiler->abort("Group '"+o->getName()+"' references itself recursively");
+                compiler->abort(
+                    compiler->stdErrorMessage(
+                        "Group '" + o->getName() + "' references itself recursively"));
             }
             isRecursiveGroup(grid,o);
             isRecursiveGroup(o->getId(),o);
@@ -892,10 +906,9 @@ bool Compiler::emptyGroupsInRE::processNext()
                 ostringstream  str;
                 str << "Empty group or address table object '"
                     << o->getName()
-                    << "' used in the rule "
-                    << rule->getLabel();
+                    << "'";
                 re->removeRef(o);
-                compiler->warning( str.str() );
+                compiler->warning(compiler->stdErrorMessage(rule, str.str()));
             }
             if (re->isAny())
             {
@@ -908,7 +921,7 @@ bool Compiler::emptyGroupsInRE::processNext()
                     << "Dropping rule "
                     <<  rule->getLabel()
                     << " because option 'Ignore rules with empty groups' is in effect";
-                compiler->warning( str.str() );
+                compiler->warning(compiler->stdErrorMessage(rule,  str.str()));
 
                 return true; // dropping this rule
             }
@@ -931,10 +944,9 @@ bool Compiler::emptyGroupsInRE::processNext()
                 << sfx
                 << " '"
                 << gr
-                << "' found in the rule "
-                << rule->getLabel()
+                << "'"
                 << " and option 'Ignore rules with empty groups' is off";
-            compiler->abort( str.str() );
+            compiler->abort(compiler->stdErrorMessage(rule, str.str()));
         }
     }
     tmp_queue.push_back(rule);
@@ -1137,9 +1149,8 @@ bool Compiler::catchUnnumberedIfaceInRE(RuleElement *re)
             string errmsg =
                 string("catchUnnumberedIfaceInRE: Can't find object ") +
                 string("in cache, ID=") +
-                FWObjectDatabase::getStringId(refo->getPointerId()) +
-                "  rule " + rule->getLabel();
-            abort(errmsg);
+                FWObjectDatabase::getStringId(refo->getPointerId());
+            abort(stdErrorMessage(re->getParent(), errmsg));
         }
         err |= ((iface=Interface::cast(o))!=NULL &&
                 (iface->isUnnumbered() || iface->isBridgePort())

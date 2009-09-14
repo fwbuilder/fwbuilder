@@ -67,7 +67,7 @@ void Preprocessor::convertObject(FWObject *obj)
             adt->loadFromSource(ipv6);
         } catch (FWException &ex)
         {
-            abort(ex.toString());
+            abort(stdErrorMessage(ex.toString()));
         }
     }
 }

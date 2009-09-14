@@ -322,10 +322,8 @@ bool PolicyCompiler::ItfNegation::processNext()
     RuleElementItf *itfre = rule->getItf();
     if (itfre==NULL)
     {
-        compiler->abort("Missing interface RE in rule '" +
-                        rule->getLabel() +
-                        "' id=" + FWObjectDatabase::getStringId(rule->getId())
-        );
+        compiler->abort(
+            compiler->stdErrorMessage(rule, "Missing interface rule element"));
     }
 
     if (itfre->getNeg())
@@ -369,7 +367,12 @@ bool  PolicyCompiler::InterfacePolicyRules::processNext()
                 FWObject *o1 = FWReference::getObject(*i);
                 if (!Interface::isA(o1))
                 {
-                    compiler->warning("Object '" + o1->getName() + "', which is not an interface, is a member of the group '" + o->getName() + "' used in 'Interface' element of a rule.   Rule: " + rule->getLabel());
+                    compiler->warning(
+                        compiler->stdErrorMessage(
+                            rule,
+                            "Object '" + o1->getName() + "', which is not "
+                            "an interface, is a member of the group '" +
+                            o->getName() + "' used in 'Interface' element of a rule."));
                     continue;
                 }
                 PolicyRule *r= compiler->dbcopy->createPolicyRule();
@@ -679,9 +682,11 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
         
         if (addr==NULL && o!=NULL)
             compiler->warning(
-                string("findZeroAddress: Unknown object in rule element: ") +
-                o->getName() +
-                "  type=" + o->getTypeName());
+                compiler->stdErrorMessage(
+                    re->getParent(), 
+                    string("findZeroAddress: Unknown object in rule element: ") +
+                    o->getName() +
+                    "  type=" + o->getTypeName()));
 
         if (addr && addr->hasInetAddress())
         {
@@ -745,10 +750,11 @@ bool PolicyCompiler::checkForZeroAddr::processNext()
     if (a==NULL) a = findHostWithNoInterfaces( rule->getDst() );
 
     if (a!=NULL)
-        compiler->abort("Object '"+a->getName()+
-                        "' has no interfaces, therefore it does not have "
-                        "address and can not be used in the rule."+
-                        " Rule "+rule->getLabel());
+        compiler->abort(
+            compiler->stdErrorMessage(
+                rule, "Object '"+a->getName()+
+                "' has no interfaces, therefore it does not have "
+                "address and can not be used in the rule."));
 
     a = findZeroAddress( rule->getSrc() );
     if (a==NULL) a = findZeroAddress( rule->getDst() );
@@ -769,9 +775,9 @@ bool PolicyCompiler::checkForZeroAddr::processNext()
             }
         }
         err += " has address 0.0.0.0, which is equivalent to 'any'. "
-            "This is most likely an error. Rule " + rule->getLabel();
+            "This is likely an error.";
 
-        compiler->abort(err);
+        compiler->abort(compiler->stdErrorMessage(rule, err));
     }
 
     tmp_queue.push_back(rule);
@@ -786,7 +792,9 @@ bool PolicyCompiler::checkForUnnumbered::processNext()
 
     if ( compiler->catchUnnumberedIfaceInRE( rule->getSrc() ) || 
          compiler->catchUnnumberedIfaceInRE( rule->getDst() ) )
-        compiler->abort("Can not use unnumbered interfaces in rules. Rule "+rule->getLabel());
+        compiler->abort(
+            compiler->stdErrorMessage(
+                rule, "Can not use unnumbered interfaces in rules."));
 
     tmp_queue.push_back(rule);
     return true;
@@ -964,8 +972,9 @@ bool PolicyCompiler::DetectShadowing::processNext()
         if (r && r->getAbsRuleNumber() != rule->getAbsRuleNumber() && 
             ! (*r == *rule) ) 
         {
-            compiler->abort("Rule '" + r->getLabel() +
-             "' shadows rule '" + rule->getLabel() + "'  below it");
+            compiler->abort(compiler->stdErrorMessage(
+                                r, "Rule '" + r->getLabel() +
+                                "' shadows rule '" + rule->getLabel() + "'  below it"));
         }
     }
 
@@ -998,8 +1007,11 @@ bool PolicyCompiler::DetectShadowingForNonTerminatingRules::processNext()
         if (r && r->getAbsRuleNumber() != rule->getAbsRuleNumber() && 
             ! (*r == *rule) ) 
         {
-            compiler->abort("Non-terminating rule '" + rule->getLabel() +
-             "' shadows rule '" + r->getLabel() + "'  above it");
+            compiler->abort(
+                compiler->stdErrorMessage(
+                    rule, 
+                    "Non-terminating rule '" + rule->getLabel() +
+                    "' shadows rule '" + r->getLabel() + "'  above it"));
         }
     }
 
@@ -1038,10 +1050,17 @@ bool PolicyCompiler::MACFiltering::processNext()
     if ( ! checkRuleElement(src) )
     {
         if (last_rule_lbl!=lbl)
-            compiler->warning( "MAC address matching is not supported. One or several MAC addresses removed from source in the rule "+lbl);
+            compiler->warning(
+                compiler->stdErrorMessage(
+                    rule, "MAC address matching is not supported. "
+                    "One or several MAC addresses removed from source in the rule"));
 
         if (src->empty() || src->isAny())
-            compiler->abort("Source becomes 'Any' after all MAC addresses have been removed in the rule "+lbl);
+            compiler->abort(
+                compiler->stdErrorMessage(
+                    rule, 
+                    "Source becomes 'Any' after all MAC addresses "
+                    "have been removed in the rule"));
 
         last_rule_lbl=lbl;
     }
@@ -1050,10 +1069,18 @@ bool PolicyCompiler::MACFiltering::processNext()
     if ( ! checkRuleElement(dst) )
     {
         if (last_rule_lbl!=lbl)
-            compiler->warning("MAC address matching is not supported. One or several MAC addresses removed from destination in the rule "+lbl);
+            compiler->warning(
+                compiler->stdErrorMessage(
+                    rule, 
+                    "MAC address matching is not supported. "
+                    "One or several MAC addresses removed from destination in the rule"));
 
         if (dst->empty() || dst->isAny())
-            compiler->abort("Destination becomes 'Any' after all MAC addresses have been removed in the rule "+lbl);
+            compiler->abort(
+                compiler->stdErrorMessage(
+                    rule, 
+                    "Destination becomes 'Any' after all MAC addresses "
+                    "have been removed in the rule "));
 
         last_rule_lbl=lbl;
     }
@@ -1076,7 +1103,13 @@ bool PolicyCompiler::CheckForTCPEstablished::processNext()
         if (s==NULL) continue;
 
         if (s->getEstablished())
-            compiler->abort(string("TCPService object with option \"established\" is not supported by firewall platform \"") + compiler->myPlatformName() + string("\". Use stateful rule instead."));
+            compiler->abort(
+                compiler->stdErrorMessage(
+                    rule, 
+                    string("TCPService object with option \"established\" "
+                           "is not supported by firewall platform \"") +
+                    compiler->myPlatformName() +
+                    string("\". Use stateful rule instead.")));
     }
 
     tmp_queue.push_back(rule);
@@ -1094,8 +1127,11 @@ bool PolicyCompiler::CheckForUnsupportedUserService::processNext()
         FWObject *o = FWReference::getObject(*i);
 
         if (UserService::isA(o))
-            compiler->abort(string("UserService object is not supported by ") +
-                            compiler->myPlatformName());
+            compiler->abort(
+                compiler->stdErrorMessage(
+                    rule, 
+                    string("UserService object is not supported by ") +
+                    compiler->myPlatformName()));
     }
 
     tmp_queue.push_back(rule);

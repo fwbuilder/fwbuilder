@@ -61,9 +61,8 @@ string BaseCompiler::getErrors(const string &comment_sep)
     {
         string tmpstr;
         getline(istr, tmpstr);
-        // lines in errors_buffer always end with endl
         if (tmpstr.length())
-            ostr << comment_sep << tmpstr;
+            ostr << comment_sep << tmpstr << endl;
     }
     return ostr.str();
 }

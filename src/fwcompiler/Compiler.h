@@ -595,6 +595,13 @@ protected:
 		 fwcompiler::OSConfigurator *_oscnf);
 
 	Compiler(libfwbuilder::FWObjectDatabase *_db, bool ipv6_policy);
+
+        /**
+         * overloaded methods: uses current firewall and ruleset objects
+         */
+        std::string stdErrorMessage(libfwbuilder::FWObject *rule,
+                                    const std::string &errstr);
+        std::string stdErrorMessage(const std::string &errstr);
         
 	void setDebugLevel(int dl) { debug=dl;       }
 	void setDebugRule(int dr)  { debug_rule = dr; rule_debug_on = true; }
