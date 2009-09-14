@@ -592,7 +592,11 @@ void Compiler::runRuleProcessors()
 
 void Compiler::deleteRuleProcessors()
 {
-
+    list<BasicRuleProcessor*>::iterator i=rule_processors.begin();
+    for ( ; i!=rule_processors.end(); ++i)
+    {
+        delete *i;
+    }
     rule_processors.clear();
 }
 
@@ -711,7 +715,7 @@ bool Compiler::simplePrintProgress::processNext()
     if (rl!=current_rule_label) {
             
         if (compiler->verbose) {
-            std::string s=" rule "+rl+"\n";
+            std::string s=" rule "+rl;
             compiler->info(s);
         }
 
