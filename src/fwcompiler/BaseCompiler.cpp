@@ -91,37 +91,35 @@ string BaseCompiler::stdErrorMessage(FWObject *fw,
     tmpstr << ":";
     if (rule && Rule::cast(rule)) tmpstr << Rule::cast(rule)->getPosition();
     tmpstr << ": ";
+    tmpstr << level_macro << ": ";
     tmpstr << errstr;
     return tmpstr.str();
 }
 
-void BaseCompiler::abort(const string &errstr) throw(FWException)
-{
-    if (test_mode)
-        error(errstr);
-    else
-        throw FWException(errstr);
-}
-
-void BaseCompiler::error(const string &errstr)
+void BaseCompiler::printError(const string &level, const string &errstr)
 {
     string str = errstr;
     while (str.at(str.length() - 1) == '\n') str = str.substr(0, str.length() - 1);
+    size_t n = str.find(level_macro);
+    if (n != string::npos) str.replace(n, level_macro.length(), level);
     cout << flush;
-    cerr << "Error: ";
     cerr << str << endl;
-    errors_buffer << "Error: ";
     errors_buffer << str << endl;
 }
 
-void BaseCompiler::warning(const string &warnstr)
+void BaseCompiler::abort(const string &errstr) throw(FWException)
 {
-    string str = warnstr;
-    while (str.at(str.length() - 1) == '\n') str = str.substr(0, str.length() - 1);
-    cout << flush;
-    cerr << "Warning: ";
-    cerr << str << endl;
-    errors_buffer << "Warning: ";
-    errors_buffer << str << endl;
+    printError("error", errstr);
+    if (!test_mode) throw FWException("Fatal error");
+}
+
+void BaseCompiler::error(const string &str)
+{
+    printError("error", str);
+}
+
+void BaseCompiler::warning(const string &str)
+{
+    printError("warning", str);
 }
 

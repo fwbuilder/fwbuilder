@@ -43,8 +43,11 @@ namespace fwcompiler {
 
     class BaseCompiler {
 
+        std::string level_macro;
 	std::stringstream errors_buffer;
         bool test_mode;
+
+        void printError(const std::string &level, const std::string &errstr);
 
 public:
 
@@ -80,7 +83,7 @@ public:
 
 	virtual ~BaseCompiler() {};
 
-	BaseCompiler() {test_mode = false;};
+	BaseCompiler() {test_mode = false; level_macro = "%LEVEL%";};
 
 	std::string getErrors(const std::string &comment_sep);
 	bool haveErrorsAndWarnings();
