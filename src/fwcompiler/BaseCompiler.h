@@ -52,6 +52,16 @@ public:
         bool inTestMode() { return test_mode; }
 
         /**
+         * assembles standard error message using format similar to
+         * the error message format of gcc. Useful to prepare errors
+         * and warnings before calling error() or warning() methods
+         */
+        std::string stdErrorMessage(libfwbuilder::FWObject *fw,
+                                    libfwbuilder::FWObject *ruleset,
+                                    libfwbuilder::FWObject *rule,
+                                    const std::string &errstr);
+        
+        /**
          * prints error message and aborts the program. If compiler is
          * in testing mode (flag test_mode==true), then just prints
          * the error message and returns.

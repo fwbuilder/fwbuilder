@@ -73,6 +73,28 @@ void BaseCompiler::clearErrors()
     errors_buffer.str("");
 }
 
+/*
+ * Error and warning format:
+ *
+ *  fw-object-name:ruleset-name:rule-number: message 
+ */
+string BaseCompiler::stdErrorMessage(FWObject *fw,
+                                     FWObject *ruleset,
+                                     FWObject *rule,
+                                     const std::string &errstr)
+{
+    ostringstream tmpstr;
+
+    if (fw) tmpstr << fw->getName();
+    tmpstr << ":";
+    if (ruleset) tmpstr << ruleset->getName();
+    tmpstr << ":";
+    if (rule && Rule::cast(rule)) tmpstr << Rule::cast(rule)->getPosition();
+    tmpstr << ": ";
+    tmpstr << errstr;
+    return tmpstr.str();
+}
+
 void BaseCompiler::abort(const string &errstr) throw(FWException)
 {
     if (test_mode)
