@@ -61,12 +61,17 @@ string BaseCompiler::getErrors(const string &comment_sep)
     {
         string tmpstr;
         getline(istr, tmpstr);
-        ostr << comment_sep << tmpstr << endl;
+        // lines in errors_buffer always end with endl
+        if (tmpstr.length())
+            ostr << comment_sep << tmpstr;
     }
-    errors_buffer.str("");
     return ostr.str();
 }
 
+void BaseCompiler::clearErrors()
+{
+    errors_buffer.str("");
+}
 
 void BaseCompiler::abort(const string &errstr) throw(FWException)
 {
@@ -78,19 +83,23 @@ void BaseCompiler::abort(const string &errstr) throw(FWException)
 
 void BaseCompiler::error(const string &errstr)
 {
+    string str = errstr;
+    while (str.at(str.length() - 1) == '\n') str = str.substr(0, str.length() - 1);
     cout << flush;
     cerr << "Error: ";
-    cerr << errstr << endl;
+    cerr << str << endl;
     errors_buffer << "Error: ";
-    errors_buffer << errstr << endl;
+    errors_buffer << str << endl;
 }
 
 void BaseCompiler::warning(const string &warnstr)
 {
+    string str = warnstr;
+    while (str.at(str.length() - 1) == '\n') str = str.substr(0, str.length() - 1);
     cout << flush;
     cerr << "Warning: ";
-    cerr << warnstr << endl;
+    cerr << str << endl;
     errors_buffer << "Warning: ";
-    errors_buffer << warnstr << endl;
+    errors_buffer << str << endl;
 }
 
