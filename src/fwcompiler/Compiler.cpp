@@ -546,8 +546,8 @@ void Compiler::debugRule()
 	Rule *rule = Rule::cast( *i );
         if (rule_debug_on && rule->getPosition()==debug_rule )
         {
-            cout << debugPrintRule(rule);
-            cout << endl;
+            info(debugPrintRule(rule));
+            info("\n");
         }
     }
 }
@@ -621,7 +621,8 @@ bool Compiler::Begin::processNext()
             tmp_queue.push_back( r );
         }
         init=true;
-        if (!name.empty()) cout << " " << name << endl << flush;
+        if (!name.empty())
+            compiler->info(string(" ") + name);
 
         return true;
     }
@@ -635,7 +636,12 @@ bool Compiler::printTotalNumberOfRules::processNext()
 
     slurp();
     if (tmp_queue.size()==0) return false;
-    if (compiler->verbose) cout << " processing " << tmp_queue.size() << " rules" << endl << flush;
+    if (compiler->verbose)
+    {
+        ostringstream str;
+        str << " processing " << tmp_queue.size() << " rules";
+        compiler->info(str.str());
+    }
     return true;
 }
 
@@ -646,7 +652,7 @@ bool Compiler::createNewCompilerPass::processNext()
 
     slurp();
     if (tmp_queue.size()==0) return false;
-    cout << pass_name << endl << flush;
+    compiler->info(pass_name);
     return true;
 }
 
@@ -661,16 +667,16 @@ bool Compiler::Debug::processNext()
     if (compiler->rule_debug_on)
     {
         string n = prev_processor->getName();
-        cout << endl << flush;
-        cout << "--- "  << n << " " << setw(74-n.length()) << setfill('-') << "-" << flush;
-
+        ostringstream str;
+        str << endl << "--- "  << n << " " << setw(74-n.length()) << setfill('-') << "-";
+        compiler->info(str.str());
         for (std::deque<Rule*>::iterator i=tmp_queue.begin(); i!=tmp_queue.end(); ++i)
         {
             Rule *rule = Rule::cast(*i);
             if (compiler->rule_debug_on && rule->getPosition()==compiler->debug_rule )
             {
-                cout << compiler->debugPrintRule(rule) << flush;
-                cout << endl << flush;
+                compiler->info(compiler->debugPrintRule(rule));
+                compiler->info("\n");
             }
         }
     }
@@ -706,7 +712,7 @@ bool Compiler::simplePrintProgress::processNext()
             
         if (compiler->verbose) {
             std::string s=" rule "+rl+"\n";
-            cout << s << flush;
+            compiler->info(s);
         }
 
         current_rule_label=rl;

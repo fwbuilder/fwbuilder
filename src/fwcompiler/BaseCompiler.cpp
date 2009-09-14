@@ -117,8 +117,11 @@ void BaseCompiler::message(const std::string &level,
 
 void BaseCompiler::printError(const string &errstr)
 {
-    cout << flush;
-    cerr << errstr << endl;
+    if (!inEmbeddedMode())
+    {
+        cout << flush;
+        cerr << errstr << endl;
+    }
     errors_buffer << errstr << endl;
 }
 
@@ -161,5 +164,13 @@ void BaseCompiler::warning(FWObject *fw,
                            const string &errstr)
 {
     message("warning", fw, ruleset, rule, errstr);
+}
+
+void BaseCompiler::info(const string &str)
+{
+    if (!inEmbeddedMode())
+    {
+        cout << str << endl << flush;
+    }
 }
 

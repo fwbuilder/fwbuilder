@@ -46,6 +46,7 @@ namespace fwcompiler {
         std::string level_macro;
 	std::stringstream errors_buffer;
         bool test_mode;
+        bool embedded_mode;
 
         /**
          * assembles standard error message using format similar to
@@ -71,6 +72,9 @@ public:
 
         void setTestMode() { test_mode = true; }
         bool inTestMode() { return test_mode; }
+
+        void setEmbeddedMode() { embedded_mode = true; }
+        bool inEmbeddedMode() { return embedded_mode; }
 
         /**
          * prints error message and aborts the program. If compiler is
@@ -101,9 +105,15 @@ public:
                              libfwbuilder::FWObject *rule,
                              const std::string &warnstr);
 
+        /**
+         * prints info message. These are only printed to stdout if compiler
+         * is not in embedded mode. In embedded mode info messages are ignored.
+         */
+	virtual void info(const std::string &warnstr);
+        
 	virtual ~BaseCompiler() {};
 
-	BaseCompiler() {test_mode = false; level_macro = "%LEVEL%";};
+	BaseCompiler() {test_mode = false; embedded_mode = false; level_macro = "%LEVEL%";};
 
 	std::string getErrors(const std::string &comment_sep);
 	bool haveErrorsAndWarnings();
