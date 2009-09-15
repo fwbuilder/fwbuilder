@@ -174,3 +174,17 @@ void BaseCompiler::info(const string &str)
     }
 }
 
+void BaseCompiler::errorRegExp(std::list<std::string> *err_regexp)
+{
+    err_regexp->clear();
+    err_regexp->push_back("([^:]*):([^:]*):.*[Ee]rror:");
+    err_regexp->push_back("(Error(:| )[^\n]*)");
+}
+
+void BaseCompiler::warningRegExp(std::list<std::string> *warn_regexp)
+{
+    warn_regexp->clear();
+    warn_regexp->push_back("([^:]*):([^:]*):.*[Ww]arning:");
+    warn_regexp->push_back("(Warning(:| )[^\n]*)");
+}
+

@@ -118,6 +118,19 @@ public:
 	std::string getErrors(const std::string &comment_sep);
 	bool haveErrorsAndWarnings();
         void clearErrors();
+
+        /**
+         * fills a list of strings with regular expressions that match
+         * error messages
+         */
+        static void errorRegExp(std::list<std::string> *err_regexp);
+
+        /**
+         * fills a list of strings with regular expressions that match
+         * warning messages
+         */
+        static void warningRegExp(std::list<std::string> *warn_regexp);
+
     };
 }
 
