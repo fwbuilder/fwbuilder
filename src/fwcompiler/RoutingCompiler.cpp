@@ -43,6 +43,7 @@
 #include "fwbuilder/Routing.h"
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/RuleSet.h"
 #include "fwbuilder/InetAddr.h"
 #include "fwbuilder/IPRoute.h"
@@ -498,15 +499,31 @@ bool RoutingCompiler::rItfChildOfFw::processNext()
     RuleElementRItf *itfrel = rule->getRItf();
     FWObject *o = FWReference::cast(itfrel->front())->getPointer();
 
-    if (!o->isChildOf(compiler->fw))
+    if (o->isChildOf(compiler->fw)) return true;
+
+    // the interface is not a child of the firewall. Could be
+    // cluster interface though. In that case make sure the
+    // firewall is a member of that cluster.
+    Interface *iface = Interface::cast(o);
+    if (iface)
     {
-        string msg;
-        msg = "Object \"" + o->getName() + 
-            "\" used as interface in the routing rule " +
-            rule->getLabel() +
-            " is not a child of the firewall the rule belongs to";
-        compiler->abort(rule, msg.c_str());
+        Cluster *cluster = Cluster::cast(iface->getParentHost());
+        if (cluster)
+        {            
+            list<Firewall*> members;
+            cluster->getMembersList(members);
+            if (std::find(members.begin(), members.end(), compiler->fw) != members.end())
+                return true;
+        }
     }
+    string msg;
+    msg = "Object \"" + o->getName() + 
+        "\" used as interface in the routing rule " +
+        rule->getLabel() +
+        " is not a child of the firewall the rule belongs to";
+    compiler->abort(rule, msg.c_str());
+    // even though we call abort() here, it does not actually stop the
+    // program if it runs in the test mode.
     return true;
 }
 
