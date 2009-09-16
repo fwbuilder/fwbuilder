@@ -147,6 +147,11 @@ bool RoutingCompiler_ipt::PrintRule::processNext()
             << "#\n#\n# ============== ROUTING RULES ============== \n#"
             << endl;
 
+        compiler->output << "TMPDIRNAME=\"/tmp/.fwbuilder.tempdir.$$\"" << endl;
+        compiler->output << "TMPFILENAME=\"$TMPDIRNAME/.fwbuilder.out\"" << endl;
+        compiler->output << "(umask 077 && mkdir $TMPDIRNAME) || exit 1" << endl;
+        compiler->output << endl;
+
         compiler->output << "# This function stops stdout redirection"
                          << endl;
         compiler->output << "# and sends previously saved output to terminal"
@@ -154,7 +159,8 @@ bool RoutingCompiler_ipt::PrintRule::processNext()
         compiler->output << "restore_script_output()" << endl;
         compiler->output << "{" << endl;
         compiler->output << "  exec 1>&3 2>&1" << endl;
-        compiler->output << "  cat /tmp/.fwbuilder.out" << endl;
+        compiler->output << "  cat $TMPFILENAME" << endl;
+        compiler->output << "  rm -rf $TMPDIRNAME" << endl;
         compiler->output << "}" << endl;
         compiler->output << endl;
 
@@ -184,7 +190,7 @@ bool RoutingCompiler_ipt::PrintRule::processNext()
         compiler->output << "# redirect output to prevent ssh session from stalling"
                          << endl;
         compiler->output << "exec 3>&1" << endl;
-        compiler->output << "exec 1> /tmp/.fwbuilder.out" << endl;
+        compiler->output << "exec 1> $TMPFILENAME" << endl;
         compiler->output << "exec 2>&1" << endl;
         compiler->output << endl;
 
