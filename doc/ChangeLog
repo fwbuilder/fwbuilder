@@ -7,11 +7,12 @@
 
 2009-09-16  vadim  <vadim@vk.crocodile.org>
 
-	* RoutingCompiler_ipt_writers.cpp (PrintRule::processNext): Fixed
+ 	* RoutingCompiler_ipt_writers.cpp (PrintRule::processNext): Fixed
 	security issue with temporary file handling in the generated
-	iptables script. The problem only affected systems where Firewall
-	Builder was used to generate static routing configuration on
-	Linux.
+	iptables script. The problem only affects Linux systems where
+	Firewall Builder is used to generate static routing
+	configuration. The problem exists in Firewall Builder versions
+	3.0.4, 3.0.5, 3.0.6
 
 2009-09-05  vadim  <vadim@vk.crocodile.org>
 
