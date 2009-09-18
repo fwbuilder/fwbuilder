@@ -1,3 +1,10 @@
+2009-09-18  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler.cpp (ItfNegation::processNext): fix for bug
+	#2710034 "PF Compiler in 3.0.3 Unprotected Interface Bug". When we
+	expand "interface" rule element which uses negation, skip
+	unprotected interfaces.
+
 2009-08-12  vadim  <vadim@vk.crocodile.org>
 
 	* NATCompiler.cpp (classifyNATRule::processNext): fixed bug

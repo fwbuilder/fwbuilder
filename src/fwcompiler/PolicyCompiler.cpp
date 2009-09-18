@@ -312,9 +312,19 @@ bool PolicyCompiler::cmpRules(PolicyRule &r1, PolicyRule &r2)
 bool PolicyCompiler::ItfNegation::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-//    FWOptions  *ruleopt =rule->getOptionsObject();
 
-    list<FWObject*> allInterfaces=compiler->fw->getByType(Interface::TYPENAME);
+    // Use getByTypeDeep() to pick subinterfaces (vlans and such)
+    list<FWObject*> all_interfaces = compiler->fw->getByTypeDeep(Interface::TYPENAME);
+    list<FWObject*> work_interfaces;
+
+    // skip unprotected interfaces bug #2710034 "PF Compiler in 3.0.3
+    // Unprotected Interface Bug"
+    for (FWObject::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
+    {
+        Interface *intf = Interface::cast(*i);
+        if (intf && intf->isUnprotected()) continue;
+        work_interfaces.push_back(intf);
+    }
 
     RuleElementItf *itfre = rule->getItf();
     if (itfre==NULL)
@@ -330,11 +340,11 @@ bool PolicyCompiler::ItfNegation::processNext()
         for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
         {
             FWObject *o = FWReference::getObject(*i);
-            allInterfaces.remove(o);
+            work_interfaces.remove(o);
         }
         itfre->reset();
         itfre->setNeg(false);
-        for (FWObject::iterator i=allInterfaces.begin(); i!=allInterfaces.end(); ++i)
+        for (FWObject::iterator i=work_interfaces.begin(); i!=work_interfaces.end(); ++i)
             itfre->addRef(*i);
     }
 
@@ -366,7 +376,11 @@ bool  PolicyCompiler::InterfacePolicyRules::processNext()
                 FWObject *o1 = FWReference::getObject(*i);
                 if (!Interface::isA(o1))
                 {
-                    compiler->warning("Object '" + o1->getName() + "', which is not an interface, is a member of the group '" + o->getName() + "' used in 'Interface' element of a rule.   Rule: " + rule->getLabel());
+                    compiler->warning(
+                        "Object '" + o1->getName() +
+                        "', which is not an interface, is a member of the group '" +
+                        o->getName() +
+                        "' used in 'Interface' element of a rule.");
                     continue;
                 }
                 PolicyRule *r= compiler->dbcopy->createPolicyRule();
