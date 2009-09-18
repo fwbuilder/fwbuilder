@@ -404,18 +404,22 @@ void PrefsDialog::checkForUpgrade(const QString& server_response)
 
     if (current_version_http_getter.getStatus())
     {
-
-        if (server_response.trimmed().isEmpty())
-        {
-            QMessageBox::information(
-                this,"Firewall Builder",
-                tr("Your version of Firewall Builder is up to date."));
-        } else
+        /*
+         * server response may be some html or other data in case
+         * connection goes via proxy, esp. with captive portals. We
+         * should not interpret that as "new version is available"
+         */
+        if (server_response.trimmed() == "update = 1")
         {
             QMessageBox::warning(
                 this,"Firewall Builder",
                 tr("A new version of Firewall Builder is available at"
                    " http://www.fwbuilder.org"));
+        } else
+        {
+            QMessageBox::information(
+                this,"Firewall Builder",
+                tr("Your version of Firewall Builder is up to date."));
         }
     } else
     {

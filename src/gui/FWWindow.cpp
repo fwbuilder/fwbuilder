@@ -1740,9 +1740,21 @@ void FWWindow::updateTreeFont ()
 
 void FWWindow::checkForUpgrade(const QString& server_response)
 {
+    disconnect(current_version_http_getter, SIGNAL(done(const QString&)),
+               this, SLOT(checkForUpgrade(const QString&)));
+
+    /*
+     * getStatus() returns error status if server esponded with 302 or
+     * 301 redirect. Only "200" is considered success.
+     */
     if (current_version_http_getter->getStatus())
     {
-        if (!server_response.trimmed().isEmpty())
+        /*
+         * server response may be some html or other data in case
+         * connection goes via proxy, esp. with captive portals. We
+         * should not interpret that as "new version is available"
+         */
+        if (server_response.trimmed() == "update = 1")
         {
             QMessageBox::warning(
                 this,"Firewall Builder",
