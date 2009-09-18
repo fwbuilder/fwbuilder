@@ -8,11 +8,10 @@
 2009-09-16  vadim  <vadim@vk.crocodile.org>
 
 	* RoutingCompiler_ipt_writers.cpp (PrintRule::processNext): Fixed
-	security vulnerability in the generated script that was caused by
-	incorrect creation of a temporary file. The problem made generated
-	script vulnerable to symlink attacks. The vulnerability only
-	affected systems where Firewall Builder was used to generate
-	static routing configuration on Linux.
+	security issue with temporary file handling in the generated
+	iptables script. The problem only affected systems where Firewall
+	Builder was used to generate static routing configuration on
+	Linux.
 
 2009-09-05  vadim  <vadim@vk.crocodile.org>
 
